@@ -33,7 +33,7 @@
 
 #include <glib/gtypes.h>
 
-#if defined(G_PLATFORM_WIN32) || defined(__GI_SCANNER__)
+#ifdef G_PLATFORM_WIN32
 
 G_BEGIN_DECLS
 
@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 #define MAXPATHLEN 1024
 #endif
 
-#if defined(G_OS_WIN32) || defined(__GI_SCANNER__)
+#ifdef G_OS_WIN32
 
 /*
  * To get prototypes for the following POSIXish functions, you have to
@@ -68,7 +68,7 @@ G_BEGIN_DECLS
 GLIB_AVAILABLE_IN_ALL
 gint		g_win32_ftruncate	(gint		 f,
 					 guint		 size);
-#endif /* G_OS_WIN32 || __GI_SCANNER__ */
+#endif /* G_OS_WIN32 */
 
 /* The MS setlocale uses locale names of the form "English_United
  * States.1252" etc. We want the Unixish standard form "en", "zh_TW"
@@ -137,6 +137,6 @@ gboolean g_win32_check_windows_version (const gint major,
 
 G_END_DECLS
 
-#endif	 /* G_PLATFORM_WIN32 || __GI_SCANNER__ */
+#endif	 /* G_PLATFORM_WIN32 */
 
 #endif /* __G_WIN32_H__ */

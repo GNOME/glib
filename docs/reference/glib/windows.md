@@ -8,18 +8,18 @@ These functions provide some level of Unix emulation on the
 Windows platform. If your application really needs the POSIX
 APIs, we suggest you try the [Cygwin project](https://cygwin.com/).
 
- * [type@GLib.Win32OSType]
- * [func@GLib.win32_check_windows_version]
- * [func@GLib.win32_get_command_line]
- * [func@GLib.win32_error_message]
- * [func@GLib.win32_getlocale]
- * [func@GLib.win32_get_package_installation_directory]
- * [func@GLib.win32_get_package_installation_directory_of_module]
- * [func@GLib.win32_get_package_installation_subdirectory]
- * [func@GLib.win32_get_windows_version]
- * [func@GLib.win32_locale_filename_from_utf8]
- * [func@GLib.WIN32_HAVE_WIDECHAR_API]
- * [func@GLib.WIN32_IS_NT_BASED]
+ * [type@GLibWin32.OSType]
+ * [func@GLibWin32.check_windows_version]
+ * [func@GLibWin32.get_command_line]
+ * [func@GLibWin32.error_message]
+ * [func@GLibWin32.getlocale]
+ * [func@GLibWin32.get_package_installation_directory]
+ * [func@GLibWin32.get_package_installation_directory_of_module]
+ * [func@GLibWin32.get_package_installation_subdirectory]
+ * [func@GLibWin32.get_windows_version]
+ * [func@GLibWin32.locale_filename_from_utf8]
+ * [func@GLibWin32.HAVE_WIDECHAR_API]
+ * [func@GLibWin32.IS_NT_BASED]
 
 ## Deprecated API
 

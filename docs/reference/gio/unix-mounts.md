@@ -9,27 +9,27 @@ Routines for managing mounted UNIX mount points and paths.
 
 Note that `<gio/gunixmounts.h>` belongs to the UNIX-specific GIO
 interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
-file when using it.
+file or the `GioUnix-2.0` GIR namespace when using it.
 
 There are three main classes:
 
- * [struct@Gio.UnixMountEntry]
- * [struct@Gio.UnixMountPoint]
- * [class@Gio.UnixMountMonitor]
+ * [struct@GioUnix.MountEntry]
+ * [struct@GioUnix.MountPoint]
+ * [class@GioUnix.MountMonitor]
 
 Various helper functions for querying mounts:
 
- * [func@Gio.unix_mount_points_get]
- * [func@Gio.UnixMountPoint.at]
- * [func@Gio.unix_mounts_get]
- * [func@Gio.unix_mount_at]
- * [func@Gio.unix_mount_for]
- * [func@Gio.unix_mounts_changed_since]
- * [func@Gio.unix_mount_points_changed_since]
+ * [func@GioUnix.mount_points_get]
+ * [func@GioUnix.MountPoint.at]
+ * [func@GioUnix.mounts_get]
+ * [func@GioUnix.mount_at]
+ * [func@GioUnix.mount_for]
+ * [func@GioUnix.mounts_changed_since]
+ * [func@GioUnix.mount_points_changed_since]
 
 And several helper functions for checking the type of a mount or path:
 
- * [func@Gio.unix_is_mount_path_system_internal]
- * [func@Gio.unix_is_system_fs_type]
- * [func@Gio.unix_is_system_device_path]
+ * [func@GioUnix.is_mount_path_system_internal]
+ * [func@GioUnix.is_system_fs_type]
+ * [func@GioUnix.is_system_device_path]
 

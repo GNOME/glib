@@ -82,7 +82,6 @@ typedef struct _GFileInfo                     GFileInfo;
 typedef struct _GFileAttributeMatcher         GFileAttributeMatcher;
 typedef struct _GFileAttributeInfo            GFileAttributeInfo;
 typedef struct _GFileAttributeInfoList        GFileAttributeInfoList;
-typedef struct _GFileDescriptorBased          GFileDescriptorBased;
 typedef struct _GFileInputStream              GFileInputStream;
 typedef struct _GFileOutputStream             GFileOutputStream;
 typedef struct _GFileIOStream                 GFileIOStream;

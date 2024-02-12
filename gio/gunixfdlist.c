@@ -20,7 +20,8 @@
  * A `GUnixFDList` contains a list of file descriptors.  It owns the file
  * descriptors that it contains, closing them when finalized.
  *
- * It may be wrapped in a [class@Gio.UnixFDMessage] and sent over a
+ * It may be wrapped in a
+ * [`GUnixFDMessage`](../gio-unix/class.UnixFDMessage.html) and sent over a
  * [class@Gio.Socket] in the `G_SOCKET_FAMILY_UNIX` family by using
  * [method@Gio.Socket.send_message] and received using
  * [method@Gio.Socket.receive_message].

@@ -36,7 +36,9 @@
  *
  * This is useful when you obtained a [class@Gio.InputStream] and a
  * [class@Gio.OutputStream] by other means, for instance creating them with
- * platform specific methods as [ctor@Gio.UnixInputStream.new], and you want to
+ * platform specific methods as
+ * [`g_unix_input_stream_new()`](../gio-unix/ctor.UnixInputStream.new.html)
+ * (from `gio-unix-2.0.pc` / `GioUnix-2.0`), and you want to
  * take advantage of the methods provided by [class@Gio.IOStream].
  *
  * Since: 2.44

@@ -15,20 +15,33 @@ if get_option('b_sanitize') != ''
 endif
 
 # GLib
+glib_gir_sources = [
+  gi_gen_shared_sources,
+  glibconfig_h,
+  gversionmacros_h,
+  glib_visibility_h,
+  glib_headers,
+  glib_deprecated_headers,
+  glib_sub_headers,
+  glib_enumtypes_h,
+  glib_types_h,
+  glib_deprecated_sources,
+  glib_sources,
+]
+
+# For API compatibility reasons, GLib-2.0.gir needs to contain the platform
+# specific APIs which are also present in the (newer) GLibUnix-2.0.gir and
+# GLibWin32-2.0.gir repositories.
+# See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3892#note_2001361
+# These can be dropped when GLib next breaks API (i.e. with GLib-3.0.gir).
+if host_system == 'windows'
+  glib_gir_sources += files('../../glib/gwin32.h')
+else
+  glib_gir_sources += files('../../glib/glib-unix.h')
+endif
+
 glib_gir = gnome.generate_gir(libglib,
-  sources: [
-    gi_gen_shared_sources,
-    glibconfig_h,
-    gversionmacros_h,
-    glib_visibility_h,
-    glib_headers,
-    glib_deprecated_headers,
-    glib_sub_headers,
-    glib_enumtypes_h,
-    glib_types_h,
-    glib_deprecated_sources,
-    glib_sources,
-  ],
+  sources: glib_gir_sources,
   namespace: 'GLib',
   nsversion: '2.0',
   identifier_prefix: gi_identifier_prefix,
@@ -48,6 +61,65 @@ glib_gir = gnome.generate_gir(libglib,
     '--library=gobject-2.0',
   ],
 )
+
+if host_system == 'windows'
+  glib_win32_gir = gnome.generate_gir(libglib,
+    sources: [
+      gi_gen_shared_sources,
+      glib_win32_headers,
+    ],
+    namespace: 'GLibWin32',
+    nsversion: '2.0',
+    identifier_prefix: gi_identifier_prefix,
+    symbol_prefix: gi_symbol_prefix,
+    export_packages: 'glib-2.0',
+    header: 'glib.h',
+    includes: [ glib_gir[0] ],
+    install: true,
+    dependencies: [
+      libgobject_dep,
+    ],
+    env: gi_gen_env_variables,
+    extra_args: gir_args + [
+      '-DGLIB_COMPILATION',
+      '-DGETTEXT_PACKAGE="dummy"',
+      '--symbol-prefix=glib',
+      '--symbol-prefix=g_win32',
+      '--identifier-prefix=GWin32',
+      '--library-path=' + meson.current_build_dir(),
+      '--library=gobject-2.0',
+    ],
+  )
+else
+  glib_unix_gir = gnome.generate_gir(libglib,
+    sources: [
+      gi_gen_shared_sources,
+      glib_unix_headers,
+    ],
+    namespace: 'GLibUnix',
+    nsversion: '2.0',
+    identifier_prefix: gi_identifier_prefix,
+    symbol_prefix: gi_symbol_prefix,
+    export_packages: 'glib-2.0',
+    header: 'glib.h',
+    includes: [ glib_gir[0] ],
+    install: true,
+    dependencies: [
+      libgobject_dep,
+    ],
+    env: gi_gen_env_variables,
+    extra_args: gir_args + [
+      '-DGLIB_COMPILATION',
+      '-DGETTEXT_PACKAGE="dummy"',
+      '--symbol-prefix=glib',
+      '--symbol-prefix=g_unix',
+      '--identifier-prefix=GUnix',
+      '--library-path=' + meson.current_build_dir(),
+      '--library=gobject-2.0',
+      '--c-include=glib-unix.h',
+    ],
+  )
+endif
 
 # GObject
 gobject_gir = gnome.generate_gir(libgobject,
@@ -111,10 +183,7 @@ gio_gir_sources = [
   gio_base_sources,
   application_sources,
   gdbus_sources,
-  appinfo_sources,
   contenttype_sources,
-  unix_sources,
-  win32_sources,
   settings_sources,
 ]
 gio_gir_packages = [ 'gio-2.0' ]
@@ -123,15 +192,21 @@ gio_gir_args = [
   '-DG_SETTINGS_ENABLE_BACKEND',
   '--symbol-prefix=gio',
 ]
+
+# For API compatibility reasons, Gio-2.0.gir needs to contain the platform
+# specific APIs which are also present in the (newer) GioUnix-2.0.gir and
+# GioWin32-2.0.gir repositories.
+# See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3892#note_2001361
+# These can be dropped when GIO next breaks API (i.e. with Gio-3.0.gir).
 if host_system == 'windows'
-  gio_gir_sources += gio_win32_include_headers
+  gio_gir_sources += [ gio_win32_include_headers, win32_sources ]
   foreach h: gio_win32_include_headers
     gio_gir_args += '--c-include=@0@'.format(h)
   endforeach
   gio_gir_packages += 'gio-win32-2.0'
   gio_gir_args += '--pkg=gio-win32-2.0'
 else
-  gio_gir_sources += gio_unix_include_headers
+  gio_gir_sources += [ gio_unix_include_headers, unix_sources ]
   foreach h: gio_unix_include_headers
     gio_gir_args += '--c-include=@0@'.format(h)
   endforeach
@@ -158,6 +233,65 @@ gio_gir = gnome.generate_gir(libgio,
   extra_args: gir_args + gio_gir_args,
 )
 
+if host_system == 'windows'
+  gio_win32_gir_c_includes = []
+  foreach h: gio_win32_include_headers
+    gio_win32_gir_c_includes += '--c-include=@0@'.format(h)
+  endforeach
+
+  gio_win32_gir = gnome.generate_gir(libgio,
+    sources: gio_win32_include_headers + win32_sources,
+    namespace: 'GioWin32',
+    nsversion: '2.0',
+    identifier_prefix: gi_identifier_prefix,
+    symbol_prefix: gi_symbol_prefix,
+    export_packages: [ 'gio-win32-2.0' ],
+    header: 'gio/gio.h',
+    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+    install: true,
+    dependencies: [
+      libglib_dep,
+      libgobject_dep,
+      libgmodule_dep,
+    ],
+    env: gi_gen_env_variables,
+    extra_args: gir_args + gio_gir_args + gio_win32_gir_c_includes + [
+      '--pkg=gio-win32-2.0',
+      '--symbol-prefix=g_win32',
+      '--identifier-prefix=GWin32'
+    ],
+  )
+else
+  gio_unix_gir_c_includes = []
+  foreach h: gio_unix_include_headers
+    gio_unix_gir_c_includes += '--c-include=@0@'.format(h)
+  endforeach
+
+  gio_unix_gir = gnome.generate_gir(libgio,
+    sources: gio_unix_include_headers + unix_sources,
+    namespace: 'GioUnix',
+    nsversion: '2.0',
+    identifier_prefix: gi_identifier_prefix,
+    symbol_prefix: gi_symbol_prefix,
+    export_packages: [ 'gio-unix-2.0' ],
+    header: 'gio/gio.h',
+    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+    install: true,
+    dependencies: [
+      libglib_dep,
+      libgobject_dep,
+      libgmodule_dep,
+    ],
+    env: gi_gen_env_variables,
+    extra_args: gir_args + gio_gir_args + gio_unix_gir_c_includes + [
+      '--pkg=gio-unix-2.0',
+      '--symbol-prefix=g_unix',
+      '--identifier-prefix=GUnix'
+    ],
+  )
+endif
+
+# GIRepository
 libgirepository_gir_sources = [
   gi_visibility_h,
   girepo_headers,

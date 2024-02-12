@@ -3,16 +3,16 @@
 # Copyright 2023 Philip Withnall
 
 [library]
-name = "GModule"
+name = "GioUnix"
 version = "@VERSION@"
 browse_url = "https://gitlab.gnome.org/GNOME/glib/"
 repository_url = "https://gitlab.gnome.org/GNOME/glib.git"
 website_url = "https://www.gtk.org"
-docs_url = "https://docs.gtk.org/gmodule/"
+docs_urls = "https://docs.gtk.org/gio-unix/"
 authors = "GLib Development Team"
 license = "LGPL-2.1-or-later"
-description = "Portable API for dynamically loading modules"
-dependencies = [ "GLib-2.0", "GObject-2.0", "Gio-2.0" ]
+description = "Unix-specific APIs in Gio"
+dependencies = [ "GLib-2.0", "GModule-2.0", "GObject-2.0", "Gio-2.0" ]
 devhelp = true
 search_index = true
 
@@ -21,14 +21,19 @@ search_index = true
   description = "The base utility library"
   docs_url = "https://docs.gtk.org/glib/"
 
+  [dependencies."GModule-2.0"]
+  name = "GModule"
+  description = "Portable API for dynamically loading modules"
+  docs_url = "https://docs.gtk.org/gmodule/"
+
   [dependencies."GObject-2.0"]
   name = "GObject"
   description = "The base type system library"
   docs_url = "https://docs.gtk.org/gobject/"
 
   [dependencies."Gio-2.0"]
-  name = "GIO"
-  description = "GObject Interfaces and Objects, Networking, IPC, and I/O"
+  name = "Gio"
+  description = "A library of useful classes for I/O, networking and IPC"
   docs_url = "https://docs.gtk.org/gio/"
 
 [theme]
@@ -36,14 +41,10 @@ name = "basic"
 show_index_summary = true
 show_class_hierarchy = true
 
-[source-location]
-base_url = "https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/"
-
 [extra]
 urlmap_file = "../urlmap.js"
 # The same order will be used when generating the index
 content_files = [
-  "modules.md",
+  "unix-mounts.md",
 ]
-content_images = [
-]
+content_images = []

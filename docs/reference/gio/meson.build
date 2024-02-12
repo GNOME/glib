@@ -38,8 +38,11 @@ if get_option('documentation') and enable_gir
     'overview.md',
     'pollable-utils.md',
     'tls-overview.md',
+  ]
+  expand_content_unix_files = [
     'unix-mounts.md',
   ]
+  expand_content_win32_files = []
 
   gio_toml = configure_file(input: 'gio.toml.in', output: 'gio.toml', configuration: toml_conf)
 
@@ -61,4 +64,48 @@ if get_option('documentation') and enable_gir
     install_dir: docs_dir,
     install_tag: 'doc',
   )
+
+  if host_system == 'windows'
+    gio_win32_toml = configure_file(input: 'gio-win32.toml.in', output: 'gio-win32.toml', configuration: toml_conf)
+
+    custom_target('gio-win32-docs',
+      input: [ gio_win32_toml, gio_win32_gir[0] ],
+      output: 'gio-win32',
+      command: [
+        gidocgen,
+        'generate',
+        gidocgen_common_args,
+        '--config=@INPUT0@',
+        '--output-dir=@OUTPUT@',
+        '--content-dir=@0@'.format(meson.current_source_dir()),
+        '@INPUT1@',
+      ],
+      build_by_default: true,
+      depend_files: expand_content_win32_files,
+      install: true,
+      install_dir: docs_dir,
+      install_tag: 'doc',
+    )
+  else
+    gio_unix_toml = configure_file(input: 'gio-unix.toml.in', output: 'gio-unix.toml', configuration: toml_conf)
+
+    custom_target('gio-unix-docs',
+      input: [ gio_unix_toml, gio_unix_gir[0] ],
+      output: 'gio-unix',
+      command: [
+        gidocgen,
+        'generate',
+        gidocgen_common_args,
+        '--config=@INPUT0@',
+        '--output-dir=@OUTPUT@',
+        '--content-dir=@0@'.format(meson.current_source_dir()),
+        '@INPUT1@',
+      ],
+      build_by_default: true,
+      depend_files: expand_content_unix_files,
+      install: true,
+      install_dir: docs_dir,
+      install_tag: 'doc',
+    )
+  endif
 endif

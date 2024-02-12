@@ -234,8 +234,8 @@ information on how to use pkg-config to compile your application.
 
 If you are using GIO on UNIX-like systems, you may want to use UNIX-specific
 GIO interfaces such as `GUnixInputStream`, `GUnixOutputStream`, `GUnixMount`
-or `GDesktopAppInfo`. To do so, use the `gio-unix-2.0.pc` file instead of
-`gio-2.0.pc`.
+or `GDesktopAppInfo`. To do so, use the `gio-unix-2.0.pc` file as well as
+`gio-2.0.pc` (or, in GIR namespace terms, `GioUnix-2.0` as well as `Gio-2.0`).
 
 ## Running GIO applications
 
