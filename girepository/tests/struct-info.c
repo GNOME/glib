@@ -106,6 +106,21 @@ test_is_pointer_for_struct_method_arg (RepositoryFixture *fx,
   g_clear_pointer (&variant_info, gi_base_info_unref);
 }
 
+static void
+test_boxed (RepositoryFixture *fx,
+            const void        *unused)
+{
+  GIStructInfo *struct_info = NULL;
+
+  g_test_summary ("Test that a boxed struct is recognised as such");
+
+  struct_info = GI_STRUCT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "BookmarkFile"));
+  g_assert_nonnull (struct_info);
+  g_assert_true (gi_registered_type_info_is_boxed (GI_REGISTERED_TYPE_INFO (struct_info)));
+
+  g_clear_pointer (&struct_info, gi_base_info_unref);
+}
+
 int
 main (int argc,
       char *argv[])
@@ -115,6 +130,7 @@ main (int argc,
   ADD_REPOSITORY_TEST ("/struct-info/field-iterators", test_field_iterators, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/struct-info/sizeof-gvalue", test_size_of_gvalue, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/struct-info/is-pointer-for-struct-method-arg", test_is_pointer_for_struct_method_arg, &typelib_load_spec_glib);
+  ADD_REPOSITORY_TEST ("/struct-info/boxed", test_boxed, &typelib_load_spec_gobject);
 
   return g_test_run ();
 }

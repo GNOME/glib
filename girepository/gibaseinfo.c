@@ -257,7 +257,6 @@ GI_DEFINE_BASE_INFO_TYPE (gi_enum_info, GI_INFO_TYPE_ENUM)
 GI_DEFINE_BASE_INFO_TYPE (gi_flags_info, GI_INFO_TYPE_FLAGS)
 GI_DEFINE_BASE_INFO_TYPE (gi_object_info, GI_INFO_TYPE_OBJECT)
 GI_DEFINE_BASE_INFO_TYPE (gi_interface_info, GI_INFO_TYPE_INTERFACE)
-GI_DEFINE_BASE_INFO_TYPE (gi_boxed_info, GI_INFO_TYPE_BOXED)
 GI_DEFINE_BASE_INFO_TYPE (gi_constant_info, GI_INFO_TYPE_CONSTANT)
 GI_DEFINE_BASE_INFO_TYPE (gi_value_info, GI_INFO_TYPE_VALUE)
 GI_DEFINE_BASE_INFO_TYPE (gi_signal_info, GI_INFO_TYPE_SIGNAL)
@@ -296,7 +295,6 @@ gi_base_info_init_types (void)
           { GI_INFO_TYPE_FLAGS, "GIFlagsInfo", sizeof (GIFlagsInfo), gi_flags_info_class_init, GI_INFO_TYPE_ENUM, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_OBJECT, "GIObjectInfo", sizeof (GIObjectInfo), gi_object_info_class_init, GI_INFO_TYPE_REGISTERED_TYPE, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_INTERFACE, "GIInterfaceInfo", sizeof (GIInterfaceInfo), gi_interface_info_class_init, GI_INFO_TYPE_REGISTERED_TYPE, G_TYPE_FLAG_NONE },
-          { GI_INFO_TYPE_BOXED, "GIBoxedInfo", sizeof (GIBoxedInfo), gi_boxed_info_class_init, GI_INFO_TYPE_REGISTERED_TYPE, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_CONSTANT, "GIConstantInfo", sizeof (GIConstantInfo), gi_constant_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_VALUE, "GIValueInfo", sizeof (GIValueInfo), gi_value_info_class_init, 0, G_TYPE_FLAG_NONE },
           { GI_INFO_TYPE_SIGNAL, "GISignalInfo", sizeof (GISignalInfo), gi_signal_info_class_init, GI_INFO_TYPE_CALLABLE, G_TYPE_FLAG_NONE },
@@ -475,7 +473,8 @@ gi_info_from_entry (GIRepository *repository,
   DirEntry *entry = gi_typelib_get_dir_entry (typelib, index);
 
   if (entry->local)
-    result = gi_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
+    result = gi_info_new_full (gi_typelib_blob_type_to_info_type (entry->blob_type),
+                               repository, NULL, typelib, entry->offset);
   else
     {
       const char *namespace = gi_typelib_get_string (typelib, entry->offset);
@@ -667,7 +666,6 @@ gi_base_info_get_name (GIBaseInfo *info)
     case GI_INFO_TYPE_FUNCTION:
     case GI_INFO_TYPE_CALLBACK:
     case GI_INFO_TYPE_STRUCT:
-    case GI_INFO_TYPE_BOXED:
     case GI_INFO_TYPE_ENUM:
     case GI_INFO_TYPE_FLAGS:
     case GI_INFO_TYPE_OBJECT:
@@ -791,7 +789,6 @@ gi_base_info_is_deprecated (GIBaseInfo *info)
     case GI_INFO_TYPE_FUNCTION:
     case GI_INFO_TYPE_CALLBACK:
     case GI_INFO_TYPE_STRUCT:
-    case GI_INFO_TYPE_BOXED:
     case GI_INFO_TYPE_ENUM:
     case GI_INFO_TYPE_FLAGS:
     case GI_INFO_TYPE_OBJECT:

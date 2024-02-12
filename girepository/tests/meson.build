@@ -20,6 +20,9 @@ if enable_gir
     'object-info' : {
       'depends': [gio_gir],
     },
+    'registered-type-info' : {
+      'depends': [gobject_gir],
+    },
     'repository' : {
       'depends': [glib_gir, gio_gir, gobject_gir],
     },

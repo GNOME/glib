@@ -33,7 +33,6 @@
 
 #include <girepository/giarginfo.h>
 #include <girepository/gibaseinfo.h>
-#include <girepository/giboxedinfo.h>
 #include <girepository/gicallableinfo.h>
 #include <girepository/gicallbackinfo.h>
 #include <girepository/giconstantinfo.h>

@@ -69,4 +69,7 @@ const char *           gi_registered_type_info_get_type_init_function_name (GIRe
 GI_AVAILABLE_IN_ALL
 GType                  gi_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
 
+GI_AVAILABLE_IN_ALL
+gboolean               gi_registered_type_info_is_boxed (GIRegisteredTypeInfo *info);
+
 G_END_DECLS

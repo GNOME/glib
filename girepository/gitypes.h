@@ -92,10 +92,6 @@ GI_AVAILABLE_IN_ALL GType gi_object_info_get_type (void);
 typedef struct _GIInterfaceInfo GIInterfaceInfo;
 GI_AVAILABLE_IN_ALL GType gi_interface_info_get_type (void);
 
-/* Documented in giboxedinfo.c */
-typedef struct _GIBoxedInfo GIBoxedInfo;
-GI_AVAILABLE_IN_ALL GType gi_boxed_info_get_type (void);
-
 /* Documented in giconstantinfo.c */
 typedef struct _GIConstantInfo GIConstantInfo;
 GI_AVAILABLE_IN_ALL GType gi_constant_info_get_type (void);

@@ -278,7 +278,6 @@ gi_field_info_get_field (GIFieldInfo *field_info,
               {
               case GI_INFO_TYPE_STRUCT:
               case GI_INFO_TYPE_UNION:
-              case GI_INFO_TYPE_BOXED:
                 /* Needs to be handled by the language binding directly */
                 break;
               case GI_INFO_TYPE_OBJECT:
@@ -464,7 +463,6 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
               {
               case GI_INFO_TYPE_STRUCT:
               case GI_INFO_TYPE_UNION:
-              case GI_INFO_TYPE_BOXED:
                 /* Needs to be handled by the language binding directly */
                 break;
               case GI_INFO_TYPE_OBJECT:
