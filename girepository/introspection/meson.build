@@ -15,20 +15,33 @@ if get_option('b_sanitize') != ''
 endif
 
 # GLib
+glib_gir_sources = [
+  gi_gen_shared_sources,
+  glibconfig_h,
+  gversionmacros_h,
+  glib_visibility_h,
+  glib_headers,
+  glib_deprecated_headers,
+  glib_sub_headers,
+  glib_enumtypes_h,
+  glib_types_h,
+  glib_deprecated_sources,
+  glib_sources,
+]
+
+# For API compatibility reasons, GLib-2.0.gir needs to contain the platform
+# specific APIs which are also present in the (newer) GLibUnix-2.0.gir and
+# GLibWin32-2.0.gir repositories.
+# See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3892#note_2001361
+# These can be dropped when GLib next breaks API (i.e. with GLib-3.0.gir).
+if host_system == 'windows'
+  glib_gir_sources += files('../../glib/gwin32.h')
+else
+  glib_gir_sources += files('../../glib/glib-unix.h')
+endif
+
 glib_gir = gnome.generate_gir(libglib,
-  sources: [
-    gi_gen_shared_sources,
-    glibconfig_h,
-    gversionmacros_h,
-    glib_visibility_h,
-    glib_headers,
-    glib_deprecated_headers,
-    glib_sub_headers,
-    glib_enumtypes_h,
-    glib_types_h,
-    glib_deprecated_sources,
-    glib_sources,
-  ],
+  sources: glib_gir_sources,
   namespace: 'GLib',
   nsversion: '2.0',
   identifier_prefix: gi_identifier_prefix,
@@ -173,11 +186,33 @@ gio_gir_sources = [
   contenttype_sources,
   settings_sources,
 ]
+gio_gir_packages = [ 'gio-2.0' ]
 gio_gir_args = [
   '-DGIO_COMPILATION',
   '-DG_SETTINGS_ENABLE_BACKEND',
   '--symbol-prefix=gio',
 ]
+
+# For API compatibility reasons, Gio-2.0.gir needs to contain the platform
+# specific APIs which are also present in the (newer) GioUnix-2.0.gir and
+# GioWin32-2.0.gir repositories.
+# See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3892#note_2001361
+# These can be dropped when GIO next breaks API (i.e. with Gio-3.0.gir).
+if host_system == 'windows'
+  gio_gir_sources += [ gio_win32_include_headers, win32_sources ]
+  foreach h: gio_win32_include_headers
+    gio_gir_args += '--c-include=@0@'.format(h)
+  endforeach
+  gio_gir_packages += 'gio-win32-2.0'
+  gio_gir_args += '--pkg=gio-win32-2.0'
+else
+  gio_gir_sources += [ gio_unix_include_headers, unix_sources ]
+  foreach h: gio_unix_include_headers
+    gio_gir_args += '--c-include=@0@'.format(h)
+  endforeach
+  gio_gir_packages += 'gio-unix-2.0'
+  gio_gir_args += '--pkg=gio-unix-2.0'
+endif
 
 gio_gir = gnome.generate_gir(libgio,
   sources: gio_gir_sources,
@@ -185,7 +220,7 @@ gio_gir = gnome.generate_gir(libgio,
   nsversion: '2.0',
   identifier_prefix: gi_identifier_prefix,
   symbol_prefix: gi_symbol_prefix,
-  export_packages: [ 'gio-2.0' ],
+  export_packages: gio_gir_packages,
   header: 'gio/gio.h',
   includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0] ],
   install: true,
