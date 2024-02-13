@@ -6,6 +6,7 @@
    :copyright: Copyright 2018 Tomasz Miąsko
    :copyright: Copyright 2018 Christoph Reiter
    :copyright: Copyright 2020 Jan Tojnar
+   :copyright: Copyright 2024 Collabora Ltd.
    :license: LGPL-2.1-or-later
 ..
    This has to be duplicated from above to make it machine-readable by `reuse`:
@@ -15,15 +16,16 @@
    SPDX-FileCopyrightText: 2018 Tomasz Miąsko
    SPDX-FileCopyrightText: 2018 Christoph Reiter
    SPDX-FileCopyrightText: 2020 Jan Tojnar
+   SPDX-FileCopyrightText: 2024 Collabora Ltd.
    SPDX-License-Identifier: LGPL-2.1-or-later
 
-=============
-g-ir-generate
-=============
+====================
+gi-decompile-typelib
+====================
 
------------------
-Typelib generator
------------------
+------------------
+Typelib decompiler
+------------------
 
 :Manual section: 1
 
@@ -31,37 +33,52 @@ Typelib generator
 SYNOPSIS
 ========
 
-**g-ir-generate** [OPTION...] FILES...
+**gi-decompile-typelib** [*OPTION*…] *TYPELIB* [*TYPELIB*\ …]
 
 
 DESCRIPTION
 ===========
 
-g-ir-generate is an GIR generator, using the repository API. It generates GIR
-files from a raw typelib or in a shared library (``--shlib``). The output will
-be written to standard output unless the ``--output`` is specified.
+gi-decompile-typelib is a GIR decompiler, using the repository API.
+It generates GIR XML files from the compiled binary typelib format.
+The output will be written to standard output unless the ``--output``
+is specified.
+
+The binary typelib format stores a subset of the information available
+in GIR XML, so not all typelibs can be decompiled in this way, and the
+resulting GIR XML might be incomplete.
+
+Normally, GIR XML should be generated from source code, headers and
+shared libraries using `g-ir-scanner(1) <man:g-ir-scanner(1)>`_
+instead of using this tool.
 
 
 OPTIONS
 =======
 
---help
-    Show help options
+``--help``
+    Show help options.
 
---shlib=FILENAME
-    The shared library to read the symbols from.
+``--output`` *FILENAME*, ``-o`` *FILENAME*
+    Save the resulting output in *FILENAME*.
 
---output=FILENAME
-    Save the resulting output in FILENAME.
+``--includedir`` *DIRECTORY*
+    Add *DIRECTORY* to the search path for typelibs.
+    This option can be used more than once.
+    The first *DIRECTORY* on the command-line will be searched first
+    (highest precedence).
 
---version
-    Show program's version number and exit
+``--all``
+    Show all available information.
+
+``--version``
+    Show program’s version number and exit.
 
 
 BUGS
 ====
 
-Report bugs at https://gitlab.gnome.org/GNOME/gobject-introspection/issues
+Report bugs at https://gitlab.gnome.org/GNOME/glib/-/issues
 
 
 HOMEPAGE and CONTACT

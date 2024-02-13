@@ -7,6 +7,7 @@
    :copyright: Copyright 2018 Tomasz Miąsko
    :copyright: Copyright 2018 Christoph Reiter
    :copyright: Copyright 2020 Jan Tojnar
+   :copyright: Copyright 2024 Collabora Ltd.
    :license: LGPL-2.1-or-later
 ..
    This has to be duplicated from above to make it machine-readable by `reuse`:
@@ -17,11 +18,12 @@
    SPDX-FileCopyrightText: 2018 Tomasz Miąsko
    SPDX-FileCopyrightText: 2018 Christoph Reiter
    SPDX-FileCopyrightText: 2020 Jan Tojnar
+   SPDX-FileCopyrightText: 2024 Collabora Ltd.
    SPDX-License-Identifier: LGPL-2.1-or-later
 
-=============
-g-ir-compiler
-=============
+=====================
+gi-compile-repository
+=====================
 
 ----------------
 Typelib compiler
@@ -33,51 +35,53 @@ Typelib compiler
 SYNOPSIS
 ========
 
-**g-ir-compiler** [OPTION...] GIRFILE
+**gi-compile-repository** [*OPTION*…] *GIRFILE*
 
 
 DESCRIPTION
 ===========
 
-g-ir-compiler converts one or more GIR files into one or more typelib. The
-output will be written to standard output unless the ``--output`` is
+gi-compile-repository converts one or more GIR files into one or more typelibs.
+The output will be written to standard output unless the ``--output`` is
 specified.
 
 
 OPTIONS
 =======
 
---help
-    Show help options
+``--help``
+    Show help options.
 
---output=FILENAME
-    Save the resulting output in FILENAME.
+``--output`` *FILENAME*, ``-o`` *FILENAME*
+    Save the resulting output in *FILENAME*.
 
---verbose
-    Show verbose messages
+``--verbose``
+    Show verbose messages.
 
---debug
-    Show debug messages
+``--debug``
+    Show debug messages.
 
---includedir=DIRECTORY
-    Adds a directory which will be used to find includes inside the GIR format.
+``--includedir`` *DIRECTORY*
+    Add *DIRECTORY* to the search path for GIR XML.
+    This option can be used more than once.
+    The first *DIRECTORY* on the command-line will be searched first
+    (highest precedence).
 
---module=MODULE
-    FIXME
-
---shared-library=FILENAME
+``--shared-library`` *FILENAME*, ``-l`` *FILENAME*
     Specifies the shared library where the symbols in the typelib can be
     found. The name of the library should not contain the ending shared
     library suffix.
+    This option can be used more than once, for typelibs that describe
+    more than one shared library.
 
---version
-    Show program's version number and exit
+``--version``
+    Show program’s version number and exit.
 
 
 BUGS
 ====
 
-Report bugs at https://gitlab.gnome.org/GNOME/gobject-introspection/issues
+Report bugs at https://gitlab.gnome.org/GNOME/glib/-/issues
 
 
 HOMEPAGE and CONTACT
