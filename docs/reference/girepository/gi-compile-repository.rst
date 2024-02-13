@@ -89,4 +89,4 @@ https://gi.readthedocs.io/
 AUTHORS
 =======
 
-Mattias Clasen
+Matthias Clasen
