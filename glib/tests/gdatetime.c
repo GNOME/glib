@@ -1733,8 +1733,8 @@ test_non_utf8_printf (void)
   TEST_PRINTF ("%Ey", "21");
   TEST_PRINTF ("%EY", "平成21年");
 #else
-  TEST_PRINTF ("%Ec", "平成21年10月24日 00時00分00秒");
-  TEST_PRINTF ("%EC", "平成");
+  TEST_PRINTF ("%Ec", "2009年10月24日 00時00分00秒");
+  TEST_PRINTF ("%EC", "20");
   TEST_PRINTF ("%Ex", "2009\345\271\26410\346\234\21024\346\227\245");
   TEST_PRINTF ("%EX", "00\346\231\20200\345\210\20600\347\247\222");
   TEST_PRINTF ("%Ey", "09");
