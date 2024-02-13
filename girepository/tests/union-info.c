@@ -52,7 +52,7 @@ test_basic (RepositoryFixture *fx,
   g_assert_null (gi_union_info_get_discriminator (double_info, 0));
 
   g_assert_cmpuint (gi_union_info_get_size (double_info), ==, 8);
-  g_assert_cmpuint (gi_union_info_get_alignment (double_info), ==, 8);
+  g_assert_cmpuint (gi_union_info_get_alignment (double_info), ==, G_ALIGNOF (GDoubleIEEE754));
 
   g_assert_null (gi_union_info_get_copy_function_name (double_info));
   g_assert_null (gi_union_info_get_free_function_name (double_info));
