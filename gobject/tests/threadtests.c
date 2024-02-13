@@ -480,6 +480,7 @@ test_threaded_toggle_notify (void)
   ToggleNotifyThreadData data = { object, FALSE, 0 };
   GThread *threads[3];
   gsize i;
+  const int n_iterations = g_test_thorough () ? 1000000 : 100000;
 
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/2394");
   g_test_summary ("Test that toggle reference notifications can be changed "
@@ -498,7 +499,7 @@ test_threaded_toggle_notify (void)
    * race to happen, so we wait for an high number of toggle changes to be met
    * so that we can be consistent on each platform.
    */
-  while (g_atomic_int_get (&data.toggles) < 1000000)
+  while (g_atomic_int_get (&data.toggles) < n_iterations)
     ;
   g_atomic_int_set (&data.done, TRUE);
 
