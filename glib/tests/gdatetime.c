@@ -1552,29 +1552,38 @@ test_GDateTime_printf (void)
 #endif
 
 #define TEST_PRINTF(f,o)                        G_STMT_START {  \
-GDateTime *__dt = g_date_time_new_utc (2009, 10, 24, 0, 0, 0);\
-  gchar *__p = g_date_time_format (__dt, (f));                  \
-  g_assert_cmpstr (__p, ==, (o));                               \
+  const char *expected = (o);                                   \
+  GDateTime *__dt = g_date_time_new_utc (2009, 10, 24, 0, 0, 0);\
+  gchar *actual = g_date_time_format (__dt, (f));               \
+  g_test_message ("%s -> expected: %s", (f), expected);         \
+  g_test_message ("%s -> actual:   %s", (f), actual);           \
+  g_assert_cmpstr (actual, ==, expected);                       \
   g_date_time_unref (__dt);                                     \
-  g_free (__p);                                 } G_STMT_END
+  g_free (actual);                              } G_STMT_END
 
 #define TEST_PRINTF_DATE(y,m,d,f,o)             G_STMT_START {  \
-  GDateTime *dt = g_date_time_new_utc (y, m, d, 0, 0, 0);     \
-  gchar *p = g_date_time_format (dt, (f));                      \
-  gchar *o_casefold = g_utf8_casefold (o, -1);                  \
-  gchar *p_casefold = g_utf8_casefold (p, -1);                  \
-  g_assert_cmpstr (p_casefold, ==, (o_casefold));               \
+  const char *expected = (o);                                   \
+  GDateTime *dt = g_date_time_new_utc (y, m, d, 0, 0, 0);       \
+  gchar *actual = g_date_time_format (dt, (f));                 \
+  gchar *expected_casefold = g_utf8_casefold (expected, -1);    \
+  gchar *actual_casefold = g_utf8_casefold (actual, -1);        \
+  g_test_message ("%s -> expected: %s", (f), expected);         \
+  g_test_message ("%s -> actual:   %s", (f), actual);           \
+  g_assert_cmpstr (expected_casefold, ==, (actual_casefold));   \
   g_date_time_unref (dt);                                       \
-  g_free (p_casefold);                                          \
-  g_free (o_casefold);                                          \
-  g_free (p);                                   } G_STMT_END
+  g_free (expected_casefold);                                   \
+  g_free (actual_casefold);                                     \
+  g_free (actual);                                   } G_STMT_END
 
 #define TEST_PRINTF_TIME(h,m,s,f,o)             G_STMT_START { \
   GDateTime *dt = g_date_time_new_utc (2009, 10, 24, (h), (m), (s)); \
-  gchar *p = g_date_time_format (dt, (f));                      \
-  g_assert_cmpstr (p, ==, (o));                                 \
+  const char *expected = (o);                                   \
+  gchar *actual = g_date_time_format (dt, (f));                 \
+  g_test_message ("%s -> expected: %s", (f), expected);         \
+  g_test_message ("%s -> actual:   %s", (f), actual);           \
+  g_assert_cmpstr (actual, ==, expected);                       \
   g_date_time_unref (dt);                                       \
-  g_free (p);                                   } G_STMT_END
+  g_free (actual);                              } G_STMT_END
 
   old_lc_all = g_strdup (g_getenv ("LC_ALL"));
   g_unsetenv ("LC_ALL");
