@@ -175,6 +175,9 @@ fedora-x86_64:
   needs: []
   variables:
     CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -227,6 +230,9 @@ debian-stable-x86_64:
   image: $DEBIAN_IMAGE
   stage: build
   needs: []
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -296,6 +302,9 @@ muslc-alpine-x86_64:
   image: $ALPINE_IMAGE
   stage: build
   needs: []
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -368,6 +377,9 @@ G_DISABLE_ASSERT:
   needs: []
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 15
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -403,6 +415,9 @@ valgrind:
   needs: []
   variables:
     MESON_TEST_TIMEOUT_MULTIPLIER: 15
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
