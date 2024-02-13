@@ -15,9 +15,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2024-01-22 10:45+0000\n"
-"PO-Revision-Date: 2024-02-02 14:57+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
+"POT-Creation-Date: 2024-02-09 10:04+0000\n"
+"PO-Revision-Date: 2024-02-12 14:10+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -48,34 +48,38 @@ msgstr "Не удалось найти приложение по умолчан�
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "Не удалось найти приложение по умолчанию для схемы URI '%s'"
 
-#: gio/gapplication.c:503
+#: gio/gapplication.c:507
 msgid "GApplication Options:"
 msgstr "Параметры GApplication:"
 
-#: gio/gapplication.c:503
+#: gio/gapplication.c:507
 msgid "Show GApplication options"
 msgstr "Показать параметры GApplication"
 
-#: gio/gapplication.c:548
+#: gio/gapplication.c:552
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Запустить GApplication в режиме сервиса (использовать из сервисных файлов D-"
 "Bus)"
 
-#: gio/gapplication.c:560
+#: gio/gapplication.c:564
 msgid "Override the application’s ID"
 msgstr "Переопределить идентификатор приложения"
 
-#: gio/gapplication.c:572
+#: gio/gapplication.c:575
+msgid "Print the application version"
+msgstr "Вывести версию приложения"
+
+#: gio/gapplication.c:587
 msgid "Replace the running instance"
 msgstr "Заменить запущенный экземпляр"
 
 #: gio/gapplication-tool.c:47 gio/gapplication-tool.c:48 gio/gio-tool.c:230
-#: gio/gresource-tool.c:496 gio/gsettings-tool.c:586
+#: gio/gresource-tool.c:497 gio/gsettings-tool.c:586
 msgid "Print help"
 msgstr "Вывести справку"
 
-#: gio/gapplication-tool.c:49 gio/gresource-tool.c:497 gio/gresource-tool.c:565
+#: gio/gapplication-tool.c:49 gio/gresource-tool.c:498 gio/gresource-tool.c:566
 msgid "[COMMAND]"
 msgstr "[КОМАНДА]"
 
@@ -147,7 +151,7 @@ msgstr "Идентификатор приложения в формате D-Bus 
 
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
-#: gio/gresource-tool.c:503 gio/gresource-tool.c:569
+#: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 msgid "FILE"
 msgstr "ФАЙЛ"
 
@@ -173,7 +177,7 @@ msgstr "ПАРАМЕТР"
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Необязательный параметр для вызова действия в формате GVariant"
 
-#: gio/gapplication-tool.c:100 gio/gresource-tool.c:534
+#: gio/gapplication-tool.c:100 gio/gresource-tool.c:535
 #: gio/gsettings-tool.c:678
 #, c-format
 msgid ""
@@ -187,7 +191,7 @@ msgstr ""
 msgid "Usage:\n"
 msgstr "Использование:\n"
 
-#: gio/gapplication-tool.c:118 gio/gresource-tool.c:559
+#: gio/gapplication-tool.c:118 gio/gresource-tool.c:560
 #: gio/gsettings-tool.c:713
 msgid "Arguments:\n"
 msgstr "Аргументы:\n"
@@ -330,13 +334,13 @@ msgid "Not enough space in destination"
 msgstr "Недостаточно места в целевом расположении"
 
 #: gio/gcharsetconverter.c:354 gio/gdatainputstream.c:842
-#: gio/gdatainputstream.c:1260 glib/gconvert.c:351 glib/gconvert.c:783
+#: gio/gdatainputstream.c:1260 glib/gconvert.c:360 glib/gconvert.c:792
 #: glib/giochannel.c:1565 glib/giochannel.c:1607 glib/giochannel.c:2467
 #: glib/gutf8.c:958 glib/gutf8.c:1412
 msgid "Invalid byte sequence in conversion input"
 msgstr "Недопустимая последовательность байтов во входных преобразуемых данных"
 
-#: gio/gcharsetconverter.c:359 glib/gconvert.c:359 glib/gconvert.c:697
+#: gio/gcharsetconverter.c:359 glib/gconvert.c:368 glib/gconvert.c:706
 #: glib/giochannel.c:1572 glib/giochannel.c:2482
 #, c-format
 msgid "Error during conversion: %s"
@@ -346,12 +350,12 @@ msgstr "Произошла ошибка при преобразовании: %s"
 msgid "Cancellable initialization not supported"
 msgstr "Прерываемая инициализация не поддерживается"
 
-#: gio/gcharsetconverter.c:468 glib/gconvert.c:224 glib/giochannel.c:1393
+#: gio/gcharsetconverter.c:468 glib/gconvert.c:233 glib/giochannel.c:1393
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "Преобразование из набора символов «%s» в «%s» не поддерживается"
 
-#: gio/gcharsetconverter.c:472 glib/gconvert.c:228
+#: gio/gcharsetconverter.c:472 glib/gconvert.c:237
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Не удалось открыть преобразователь из «%s» в «%s»"
@@ -1468,7 +1472,7 @@ msgstr "Для GEmblemedIcon ожидается GEmblem"
 msgid "Containing mount does not exist"
 msgstr "Содержащая точка монтирования не существует"
 
-#: gio/gfile.c:2650 gio/glocalfile.c:2518
+#: gio/gfile.c:2650 gio/glocalfile.c:2520
 msgid "Can’t copy over directory"
 msgstr "Нельзя скопировать поверх каталога"
 
@@ -1587,7 +1591,7 @@ msgid "Truncate not supported on stream"
 msgstr "Усечение не поддерживается на потоке"
 
 #: gio/ghttpproxy.c:93 gio/gresolver.c:529 gio/gresolver.c:682
-#: glib/gconvert.c:1743
+#: glib/gconvert.c:1752
 msgid "Invalid hostname"
 msgstr "Недопустимое имя узла"
 
@@ -3101,125 +3105,125 @@ msgstr "Произошла ошибка при получении сведени
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: gio/glocalfile.c:1148
+#: gio/glocalfile.c:1150
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "Точка монтирования для файла %s не найдена"
 
-#: gio/glocalfile.c:1171
+#: gio/glocalfile.c:1173
 msgid "Can’t rename root directory"
 msgstr "Нельзя переименовать корневой каталог"
 
-#: gio/glocalfile.c:1189 gio/glocalfile.c:1212
+#: gio/glocalfile.c:1191 gio/glocalfile.c:1214
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "Произошла ошибка при переименовании файла %s: %s"
 
-#: gio/glocalfile.c:1196
+#: gio/glocalfile.c:1198
 msgid "Can’t rename file, filename already exists"
 msgstr "Невозможно переименовать файл, имя файла уже существует"
 
-#: gio/glocalfile.c:1209 gio/glocalfile.c:2412 gio/glocalfile.c:2440
-#: gio/glocalfile.c:2579 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1211 gio/glocalfile.c:2414 gio/glocalfile.c:2442
+#: gio/glocalfile.c:2581 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "Недопустимое имя файла"
 
-#: gio/glocalfile.c:1377 gio/glocalfile.c:1388
+#: gio/glocalfile.c:1379 gio/glocalfile.c:1390
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Произошла ошибка открытия файла %s: %s"
 
-#: gio/glocalfile.c:1513
+#: gio/glocalfile.c:1515
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Произошла ошибка при удалении файла %s: %s"
 
-#: gio/glocalfile.c:2007 gio/glocalfile.c:2018 gio/glocalfile.c:2045
+#: gio/glocalfile.c:2009 gio/glocalfile.c:2020 gio/glocalfile.c:2047
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Произошла ошибка при удалении файла в корзину %s: %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2067
 #, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "Не удалось создать каталог корзины %s: %s"
 
-#: gio/glocalfile.c:2086
+#: gio/glocalfile.c:2088
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Не удалось найти каталог верхнего уровня для корзины %s"
 
-#: gio/glocalfile.c:2094
+#: gio/glocalfile.c:2096
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr "Удаление в корзину на системных томах не поддерживается"
 
-#: gio/glocalfile.c:2180 gio/glocalfile.c:2208
+#: gio/glocalfile.c:2182 gio/glocalfile.c:2210
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr "Не удалось найти или создать каталог корзины %s для удаления %s"
 
-#: gio/glocalfile.c:2252
+#: gio/glocalfile.c:2254
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Не удалось создать запись о файле в корзине %s: %s"
 
-#: gio/glocalfile.c:2323
+#: gio/glocalfile.c:2325
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr ""
 "Не удалось удалить файл %s в корзину, из-за ограничений файловой системы"
 
-#: gio/glocalfile.c:2327 gio/glocalfile.c:2383
+#: gio/glocalfile.c:2329 gio/glocalfile.c:2385
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Не удалось удалить файл в корзину %s: %s"
 
-#: gio/glocalfile.c:2389
+#: gio/glocalfile.c:2391
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Не удалось удалить файл в корзину %s"
 
-#: gio/glocalfile.c:2415
+#: gio/glocalfile.c:2417
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Произошла ошибка при создании каталога %s: %s"
 
-#: gio/glocalfile.c:2444
+#: gio/glocalfile.c:2446
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Файловая система не поддерживает символьные ссылки"
 
-#: gio/glocalfile.c:2447
+#: gio/glocalfile.c:2449
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Произошла ошибка при создании символьной ссылки %s: %s"
 
-#: gio/glocalfile.c:2490 gio/glocalfile.c:2525 gio/glocalfile.c:2582
+#: gio/glocalfile.c:2492 gio/glocalfile.c:2527 gio/glocalfile.c:2584
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Произошла ошибка при перемещении файла %s: %s"
 
-#: gio/glocalfile.c:2513
+#: gio/glocalfile.c:2515
 msgid "Can’t move directory over directory"
 msgstr "Нельзя переместить каталог поверх каталога"
 
-#: gio/glocalfile.c:2539 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2541 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
 #: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1170
 msgid "Backup file creation failed"
 msgstr "Не удалось создать резервный файл"
 
-#: gio/glocalfile.c:2558
+#: gio/glocalfile.c:2560
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Произошла ошибка при удалении целевого файла: %s"
 
-#: gio/glocalfile.c:2572
+#: gio/glocalfile.c:2574
 msgid "Move between mounts not supported"
 msgstr "Перемещение между точками монтирования не поддерживается"
 
-#: gio/glocalfile.c:2748
+#: gio/glocalfile.c:2750
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Не удалось определить использование диска %s: %s"
@@ -3623,11 +3627,11 @@ msgstr "Ресурс из «%s» не является каталогом"
 msgid "Input stream doesn’t implement seek"
 msgstr "По входному потоку перемещение не поддерживается"
 
-#: gio/gresource-tool.c:502
+#: gio/gresource-tool.c:503
 msgid "List sections containing resources in an elf FILE"
 msgstr "Вывести разделы, содержащие ресурсы в elf-ФАЙЛЕ"
 
-#: gio/gresource-tool.c:508
+#: gio/gresource-tool.c:509
 msgid ""
 "List resources\n"
 "If SECTION is given, only list resources in this section\n"
@@ -3637,15 +3641,15 @@ msgstr ""
 "Если указан РАЗДЕЛ, то выводится список ресурсов только из этого раздела\n"
 "Если указан ПУТЬ, то выводится список совпадающих ресурсов"
 
-#: gio/gresource-tool.c:511 gio/gresource-tool.c:521
+#: gio/gresource-tool.c:512 gio/gresource-tool.c:522
 msgid "FILE [PATH]"
 msgstr "ФАЙЛ [ПУТЬ]"
 
-#: gio/gresource-tool.c:512 gio/gresource-tool.c:522 gio/gresource-tool.c:529
+#: gio/gresource-tool.c:513 gio/gresource-tool.c:523 gio/gresource-tool.c:530
 msgid "SECTION"
 msgstr "РАЗДЕЛ"
 
-#: gio/gresource-tool.c:517
+#: gio/gresource-tool.c:518
 msgid ""
 "List resources with details\n"
 "If SECTION is given, only list resources in this section\n"
@@ -3657,15 +3661,15 @@ msgstr ""
 "Если указан ПУТЬ, то выводится список совпадающих ресурсов\n"
 "Дополнительно выводится раздел, размер и сжатие"
 
-#: gio/gresource-tool.c:527
+#: gio/gresource-tool.c:528
 msgid "Extract a resource file to stdout"
 msgstr "Извлечь файл ресурса в stdout"
 
-#: gio/gresource-tool.c:528
+#: gio/gresource-tool.c:529
 msgid "FILE PATH"
 msgstr "ФАЙЛ ПУТЬ"
 
-#: gio/gresource-tool.c:542
+#: gio/gresource-tool.c:543
 msgid ""
 "Usage:\n"
 "  gresource [--section SECTION] COMMAND [ARGS…]\n"
@@ -3693,7 +3697,7 @@ msgstr ""
 "Для получения справки используйте «gresource help КОМАНДА».\n"
 "\n"
 
-#: gio/gresource-tool.c:556
+#: gio/gresource-tool.c:557
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3708,19 +3712,19 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: gio/gresource-tool.c:563
+#: gio/gresource-tool.c:564
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  РАЗДЕЛ    Имя раздела elf (необязательный)\n"
 
-#: gio/gresource-tool.c:567 gio/gsettings-tool.c:720
+#: gio/gresource-tool.c:568 gio/gsettings-tool.c:720
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  КОМАНДА   Команда для пояснения (необязательный)\n"
 
-#: gio/gresource-tool.c:573
+#: gio/gresource-tool.c:574
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr "  ФАЙЛ      Файл elf (исполняемый или общая библиотека)\n"
 
-#: gio/gresource-tool.c:576
+#: gio/gresource-tool.c:577
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
@@ -3728,20 +3732,20 @@ msgstr ""
 "  ФАЙЛ      Файл elf (исполняемый или общая библиотека)\n"
 "            или скомпилированный файл ресурсов\n"
 
-#: gio/gresource-tool.c:580
+#: gio/gresource-tool.c:581
 msgid "[PATH]"
 msgstr "[ПУТЬ]"
 
-#: gio/gresource-tool.c:582
+#: gio/gresource-tool.c:583
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr ""
 "  ПУТЬ      Путь ресурса (необязательный, можно указать только часть)\n"
 
-#: gio/gresource-tool.c:583
+#: gio/gresource-tool.c:584
 msgid "PATH"
 msgstr "ПУТЬ"
 
-#: gio/gresource-tool.c:585
+#: gio/gresource-tool.c:586
 msgid "  PATH      A resource path\n"
 msgstr "  ПУТЬ      Путь ресурса\n"
 
@@ -4458,7 +4462,7 @@ msgstr "Ошибка при чтении из файлового дескрип�
 msgid "Error closing file descriptor: %s"
 msgstr "Ошибка при закрытии файлового дескриптора: %s"
 
-#: gio/gunixmounts.c:2814 gio/gunixmounts.c:2867
+#: gio/gunixmounts.c:2890 gio/gunixmounts.c:2943
 msgid "Filesystem root"
 msgstr "Корень файловой системы"
 
@@ -4628,52 +4632,52 @@ msgstr "Нет приложения с именем «%s», создавшего
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Не удалось дополнить строку выполнения «%s» с помощью URI «%s»"
 
-#: glib/gconvert.c:370
+#: glib/gconvert.c:379
 msgid "Unrepresentable character in conversion input"
 msgstr "Во входной строке для преобразования обнаружен неотображаемый символ"
 
-#: glib/gconvert.c:397 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
+#: glib/gconvert.c:406 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
 #: glib/gutf8.c:1408
 msgid "Partial character sequence at end of input"
 msgstr ""
 "Неполная символьная последовательность содержится в конце входных данных"
 
-#: glib/gconvert.c:668
+#: glib/gconvert.c:677
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Невозможно корректно преобразовать символ «%s» в символ из набора «%s»"
 
-#: glib/gconvert.c:840
+#: glib/gconvert.c:849
 msgid "Embedded NUL byte in conversion input"
 msgstr "Байт со значением NUL во входных преобразуемых данных"
 
-#: glib/gconvert.c:861
+#: glib/gconvert.c:870
 msgid "Embedded NUL byte in conversion output"
 msgstr "Байт со значением NUL в выходных преобразованных данных"
 
-#: glib/gconvert.c:1599
+#: glib/gconvert.c:1608
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr ""
 "URI «%s» не является абсолютным идентификатором при использовании схемы "
 "«file»"
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1638
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "Недопустимый URI «%s»"
 
-#: glib/gconvert.c:1642
+#: glib/gconvert.c:1651
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Недопустимое имя узла в URI «%s»"
 
-#: glib/gconvert.c:1659
+#: glib/gconvert.c:1668
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI «%s» содержит недопустимо экранированные символы"
 
-#: glib/gconvert.c:1733
+#: glib/gconvert.c:1742
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Путь «%s» не является абсолютным"
@@ -6080,21 +6084,21 @@ msgstr ""
 "Произошла неожиданная ошибка в функции g_io_channel_win32_poll() при чтении "
 "данных из процесса-потомка"
 
-#: glib/gstrfuncs.c:3334 glib/gstrfuncs.c:3436
+#: glib/gstrfuncs.c:3339 glib/gstrfuncs.c:3441
 msgid "Empty string is not a number"
 msgstr "Пустая строка не является числом"
 
-#: glib/gstrfuncs.c:3358
+#: glib/gstrfuncs.c:3363
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "«%s» не является числом со знаком"
 
-#: glib/gstrfuncs.c:3368 glib/gstrfuncs.c:3472
+#: glib/gstrfuncs.c:3373 glib/gstrfuncs.c:3477
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Число «%s» is out of bounds [%s, %s]"
 
-#: glib/gstrfuncs.c:3462
+#: glib/gstrfuncs.c:3467
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» не является числом без знака"
