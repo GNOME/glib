@@ -1682,6 +1682,8 @@ test_non_utf8_printf (void)
   TEST_PRINTF ("%b", "10\346\234\210");
 #endif
   TEST_PRINTF ("%B", "10\346\234\210");
+  TEST_PRINTF ("%c", "2009年10月24日 00時00分00秒");
+  TEST_PRINTF ("%C", "20");
   TEST_PRINTF ("%d", "24");
   TEST_PRINTF_DATE (2009, 1, 1, "%d", "01");
   TEST_PRINTF ("%e", "24"); // fixme
