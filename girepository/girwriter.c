@@ -1319,6 +1319,7 @@ write_union_info (const char *ns,
 
 /**
  * gi_ir_writer_write:
+ * @repository: repository containing @ns
  * @filename: (type filename): filename to write to
  * @ns: GIR namespace to write
  * @needs_prefix: if the filename needs prefixing
@@ -1330,7 +1331,8 @@ write_union_info (const char *ns,
  * Since: 2.80
  */
 void
-gi_ir_writer_write (const char *filename,
+gi_ir_writer_write (GIRepository *repository,
+                    const char *filename,
                     const char *ns,
                     gboolean    needs_prefix,
                     gboolean    show_all)
@@ -1338,10 +1340,7 @@ gi_ir_writer_write (const char *filename,
   FILE *ofile;
   size_t i, j;
   char **dependencies;
-  GIRepository *repository = NULL;
   Xml *xml;
-
-  repository = gi_repository_new ();
 
   if (filename == NULL)
     ofile = stdout;
@@ -1446,6 +1445,4 @@ gi_ir_writer_write (const char *filename,
   xml_end_element (xml, "repository");
 
   xml_free (xml);
-
-  g_clear_object (&repository);
 }

@@ -24,10 +24,12 @@
 #pragma once
 
 #include <glib.h>
+#include <girepository.h>
 
 G_BEGIN_DECLS
 
-void gi_ir_writer_write (const char *filename,
+void gi_ir_writer_write (GIRepository *repository,
+                         const char *filename,
                          const char *ns,
                          gboolean    needs_prefix,
                          gboolean    show_all);
