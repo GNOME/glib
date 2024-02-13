@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-09 10:04+0000\n"
-"PO-Revision-Date: 2024-02-12 14:03+0100\n"
+"POT-Creation-Date: 2024-02-12 13:04+0000\n"
+"PO-Revision-Date: 2024-02-13 07:19+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -778,6 +778,7 @@ msgstr "ობიექტი არ არსებობს ბილიკზ
 #, c-format
 msgid "%s message: %s header field is invalid; expected a value of type ‘%s’"
 msgstr ""
+"%s შეტყობინება: %s თავსართის ველი არასწორია. მოველოდი '%s' ტიპის მნიშვნელობას"
 
 #: gio/gdbusmessage.c:1374
 #, c-format
@@ -787,7 +788,7 @@ msgstr "%s შეტყობინება: %s თავსართის ვ
 #: gio/gdbusmessage.c:1413
 #, c-format
 msgid "%s message: INVALID header field supplied"
-msgstr ""
+msgstr "%s შეტყობინება: მოწოდებულია არასწორი თავსართის ველი"
 
 #: gio/gdbusmessage.c:1424
 #, c-format
@@ -1494,15 +1495,15 @@ msgstr "შეერთება მხარდაჭერილი არა�
 
 #: gio/gfile.c:3327
 msgid "Copy (reflink/clone) between mounts is not supported"
-msgstr ""
+msgstr "მიმაგრების წერტილებს შორის კოპირება (reflink/clone) მხარდაჭერილი არაა"
 
 #: gio/gfile.c:3331
 msgid "Copy (reflink/clone) is not supported or invalid"
-msgstr ""
+msgstr "კოპირება (reflink/clone) მხარდაუჭერელი ან არასწორია"
 
 #: gio/gfile.c:3336
 msgid "Copy (reflink/clone) is not supported or didn’t work"
-msgstr ""
+msgstr "კოპირება (reflink/clone) მხარდაუჭერელია ან არ იმუშავა"
 
 #: gio/gfile.c:3401
 msgid "Can’t copy special file"
@@ -1809,6 +1810,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
+"gio cat ჩვეულებრივი cat ბრძანებასავით მუშაობს, მაგრამ\n"
+"ლოკალური ფაილების მაგიერ GIO მდებარეობებს იყენებს: მაგალითად,\n"
+"შეგიძლიათ, მდებარეობად smb://server/resource/file.txt გამოიყენოთ."
 
 #: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:414 gio/gio-tool-mkdir.c:78
 #: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1287 gio/gio-tool-open.c:98
@@ -3477,9 +3481,9 @@ msgstr "მიუთითებელი პროქსის მოძებ�
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
-#: gio/gresolver.c:472 gio/gthreadedresolver.c:317 gio/gthreadedresolver.c:338
-#: gio/gthreadedresolver.c:983 gio/gthreadedresolver.c:1007
-#: gio/gthreadedresolver.c:1032 gio/gthreadedresolver.c:1047
+#: gio/gresolver.c:472 gio/gthreadedresolver.c:318 gio/gthreadedresolver.c:339
+#: gio/gthreadedresolver.c:984 gio/gthreadedresolver.c:1008
+#: gio/gthreadedresolver.c:1033 gio/gthreadedresolver.c:1048
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "'%s'-ის ამოხსნის შეცდომა: %s"
@@ -3829,7 +3833,7 @@ msgid "Socket is already closed"
 msgstr "სოკეტი უკვე დახურულია"
 
 #: gio/gsocket.c:465 gio/gsocket.c:3291 gio/gsocket.c:4664 gio/gsocket.c:4722
-#: gio/gthreadedresolver.c:1453
+#: gio/gthreadedresolver.c:1454
 msgid "Socket I/O timed out"
 msgstr "სოკეტის I/O ვადა გავიდა"
 
@@ -4128,46 +4132,46 @@ msgstr "ამ პლატფორმაზე ფაიფები მხა
 msgid "Can’t handle version %d of GThemedIcon encoding"
 msgstr "GThemedIcon-ის კოდირების %d ვერსია უცნობია"
 
-#: gio/gthreadedresolver.c:319
+#: gio/gthreadedresolver.c:320
 msgid "No valid addresses were found"
 msgstr "სწორი მისამართები ვერ ვიპოვე"
 
-#: gio/gthreadedresolver.c:514
+#: gio/gthreadedresolver.c:515
 #, c-format
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "\"%s\"-ის უკუამოხსნის შეცდომა: %s"
 
 #. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
-#: gio/gthreadedresolver.c:737 gio/gthreadedresolver.c:759
-#: gio/gthreadedresolver.c:813 gio/gthreadedresolver.c:860
-#: gio/gthreadedresolver.c:889 gio/gthreadedresolver.c:901
+#: gio/gthreadedresolver.c:738 gio/gthreadedresolver.c:760
+#: gio/gthreadedresolver.c:814 gio/gthreadedresolver.c:861
+#: gio/gthreadedresolver.c:890 gio/gthreadedresolver.c:902
 #, c-format
 msgid "Error parsing DNS %s record: malformed DNS packet"
 msgstr "DNS %s ჩანაწერის დამუშავება ჩავარდა: DNS პაკეტი შეცდომებს შეიცავს"
 
-#: gio/gthreadedresolver.c:959 gio/gthreadedresolver.c:1096
-#: gio/gthreadedresolver.c:1194 gio/gthreadedresolver.c:1244
+#: gio/gthreadedresolver.c:960 gio/gthreadedresolver.c:1097
+#: gio/gthreadedresolver.c:1195 gio/gthreadedresolver.c:1245
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "მოთხოვნილი ტიპის DNS ჩანაწერის გარეშე \"%s\"-სთვის"
 
-#: gio/gthreadedresolver.c:964 gio/gthreadedresolver.c:1199
+#: gio/gthreadedresolver.c:965 gio/gthreadedresolver.c:1200
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "დროებით \"%s\" ვერ ამოვხსენი"
 
-#: gio/gthreadedresolver.c:969 gio/gthreadedresolver.c:1204
-#: gio/gthreadedresolver.c:1300
+#: gio/gthreadedresolver.c:970 gio/gthreadedresolver.c:1205
+#: gio/gthreadedresolver.c:1301
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "'%s'-ის ამოხსნის შეცდომა"
 
-#: gio/gthreadedresolver.c:983 gio/gthreadedresolver.c:1007
-#: gio/gthreadedresolver.c:1032 gio/gthreadedresolver.c:1047
+#: gio/gthreadedresolver.c:984 gio/gthreadedresolver.c:1008
+#: gio/gthreadedresolver.c:1033 gio/gthreadedresolver.c:1048
 msgid "Malformed DNS packet"
 msgstr "არასწორი DNS პაკეტი"
 
-#: gio/gthreadedresolver.c:1089
+#: gio/gthreadedresolver.c:1090
 #, c-format
 msgid "Failed to parse DNS response for “%s”: "
 msgstr "\"%s\"-სთვის DNS პასუხის დამუშავება ჩავარდა: "
@@ -5761,57 +5765,57 @@ msgstr ""
 msgid "Child process exited abnormally"
 msgstr ""
 
-#: glib/gspawn.c:1956 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
+#: glib/gspawn.c:1622 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "მონაცემთა წაკითხვა ქვეპროცესის არხიდან ვერ მოხერხდა (%s)"
 
-#: glib/gspawn.c:2335
+#: glib/gspawn.c:2001
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "ქვეპროცესის (%s) განტოტვის შეცდომა (%s)"
 
-#: glib/gspawn.c:2459
+#: glib/gspawn.c:2125
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "განტოტების შეცდომა (%s)"
 
-#: glib/gspawn.c:2620 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2286 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "საქაღალდის ცვლილების შეცდომა \"%s\" (%s)"
 
-#: glib/gspawn.c:2630
+#: glib/gspawn.c:2296
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "შვილობილი პროცესის %s გაშვების შეცდომა %s"
 
-#: glib/gspawn.c:2640
+#: glib/gspawn.c:2306
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "დესკრიპტორისთვის ფაილის გადამაგრების შეცდომა (%s)"
 
-#: glib/gspawn.c:2648
+#: glib/gspawn.c:2314
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "შვილეული პროცესისთვის (%s) ფაილის დესკრიპტორის დუბლირების შეცდომა"
 
-#: glib/gspawn.c:2657
+#: glib/gspawn.c:2323
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "დამხმარე პროცესის გაშვების შეცდომა (%s)"
 
-#: glib/gspawn.c:2665
+#: glib/gspawn.c:2331
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "შვილეული პროცესის (%s) ფაილის დესკრიპტორის დახურვის შეცდომა"
 
-#: glib/gspawn.c:2673
+#: glib/gspawn.c:2339
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "შეცდომა შვილეული პროცესის (%s) შესრულებისას"
 
-#: glib/gspawn.c:2697
+#: glib/gspawn.c:2363
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "ქვეპროცესის არხიდან საკმარის მონაცემთა წაკითხვა ვერ მოხერხდა (%s)"
