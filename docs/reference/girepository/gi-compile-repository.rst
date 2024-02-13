@@ -1,3 +1,24 @@
+.. _gi-compile-repository(1):
+.. meta::
+   :copyright: Copyright 2010 Johan Dahlin
+   :copyright: Copyright 2015 Ben Boeckel
+   :copyright: Copyright 2013, 2015 Dieter Verfaillie
+   :copyright: Copyright 2018 Emmanuele Bassi
+   :copyright: Copyright 2018 Tomasz Miąsko
+   :copyright: Copyright 2018 Christoph Reiter
+   :copyright: Copyright 2020 Jan Tojnar
+   :license: LGPL-2.1-or-later
+..
+   This has to be duplicated from above to make it machine-readable by `reuse`:
+   SPDX-FileCopyrightText: 2010 Johan Dahlin
+   SPDX-FileCopyrightText: 2015 Ben Boeckel
+   SPDX-FileCopyrightText: 2013, 2015 Dieter Verfaillie
+   SPDX-FileCopyrightText: 2018 Emmanuele Bassi
+   SPDX-FileCopyrightText: 2018 Tomasz Miąsko
+   SPDX-FileCopyrightText: 2018 Christoph Reiter
+   SPDX-FileCopyrightText: 2020 Jan Tojnar
+   SPDX-License-Identifier: LGPL-2.1-or-later
+
 =============
 g-ir-compiler
 =============

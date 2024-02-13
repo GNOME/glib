@@ -1,3 +1,22 @@
+.. _gi-decompile-typelib(1):
+.. meta::
+   :copyright: Copyright 2008, 2010 Johan Dahlin
+   :copyright: Copyright 2014 Robert Roth
+   :copyright: Copyright 2015 Dieter Verfaillie
+   :copyright: Copyright 2018 Tomasz Miąsko
+   :copyright: Copyright 2018 Christoph Reiter
+   :copyright: Copyright 2020 Jan Tojnar
+   :license: LGPL-2.1-or-later
+..
+   This has to be duplicated from above to make it machine-readable by `reuse`:
+   SPDX-FileCopyrightText: 2008, 2010 Johan Dahlin
+   SPDX-FileCopyrightText: 2014 Robert Roth
+   SPDX-FileCopyrightText: 2015 Dieter Verfaillie
+   SPDX-FileCopyrightText: 2018 Tomasz Miąsko
+   SPDX-FileCopyrightText: 2018 Christoph Reiter
+   SPDX-FileCopyrightText: 2020 Jan Tojnar
+   SPDX-License-Identifier: LGPL-2.1-or-later
+
 =============
 g-ir-generate
 =============
