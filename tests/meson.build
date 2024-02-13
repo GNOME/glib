@@ -13,7 +13,7 @@ if have_bash
     test(
       test_name, files(test_name),
       env : common_test_env,
-      suite : 'lint',
+      suite : ['lint', 'no-valgrind'],
       protocol : 'tap',
     )
   endforeach
