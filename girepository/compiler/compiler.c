@@ -44,7 +44,6 @@ gchar **includedirs = NULL;
 gchar **input = NULL;
 gchar *output = NULL;
 gchar **shlibs = NULL;
-gboolean include_cwd = FALSE;
 gboolean debug = FALSE;
 gboolean verbose = FALSE;
 gboolean show_version = FALSE;
