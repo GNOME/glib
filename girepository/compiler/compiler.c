@@ -40,13 +40,13 @@
 #include "girnode-private.h"
 #include "girparser-private.h"
 
-gchar **includedirs = NULL;
-gchar **input = NULL;
-gchar *output = NULL;
-gchar **shlibs = NULL;
-gboolean debug = FALSE;
-gboolean verbose = FALSE;
-gboolean show_version = FALSE;
+static gchar **includedirs = NULL;
+static gchar **input = NULL;
+static gchar *output = NULL;
+static gchar **shlibs = NULL;
+static gboolean debug = FALSE;
+static gboolean verbose = FALSE;
+static gboolean show_version = FALSE;
 
 static gboolean
 write_out_typelib (gchar     *prefix,
