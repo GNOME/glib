@@ -197,6 +197,12 @@ main (int argc, char **argv)
       return 1;
     }
 
+  if (g_strv_length (input) != 1)
+    {
+      g_printerr ("Please specify only one input file\n");
+      return 1;
+    }
+
   g_debug ("[parsing] start, %d includes",
            includedirs ? g_strv_length (includedirs) : 0);
 
