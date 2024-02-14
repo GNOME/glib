@@ -100,3 +100,13 @@ The `--includedir` option to `gi-decompile-typelib` treats the
 given directories as most-important-first, consistent with
 `gi-compile-repository --includedir` and `gcc -I`.
 `g-ir-generate` treated `--includedir` options as least-important-first.
+
+The unimplemented `g-ir-compiler --module` option has been removed in
+`gi-compile-repository`.
+
+The unimplemented `g-ir-generate --shlib` option has been removed in
+`gi-decompile-typelib`.
+
+`gi-inspect-typelib` only accepts one namespace parameter. `g-ir-inspect`
+accepted multiple namespaces, but would only inspect the first one,
+with the others being ignored.
