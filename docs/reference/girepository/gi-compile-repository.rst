@@ -78,6 +78,13 @@ OPTIONS
     Show program’s version number and exit.
 
 
+EXAMPLE
+=======
+
+::
+    $ gi-compile-repository -o Gio-2.0.typelib /usr/share/gir-1.0/Gio-2.0.gir
+
+
 BUGS
 ====
 

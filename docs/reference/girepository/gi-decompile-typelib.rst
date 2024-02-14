@@ -75,6 +75,20 @@ OPTIONS
     Show program’s version number and exit.
 
 
+EXAMPLE
+=======
+
+::
+    $ libdir=/usr/lib/x86_64-linux-gnu     # or /usr/lib64 or similar
+    $ gi-decompile-typelib -o Gio-2.0.gir \
+      $libdir/girepository-1.0/Gio-2.0.typelib
+
+    $ diff -u /usr/share/gir-1.0/Gio-2.0.gir Gio-2.0.gir
+
+You will see that the original GIR XML contains much more information
+than the decompiled typelib.
+
+
 BUGS
 ====
 
