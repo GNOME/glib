@@ -43,7 +43,6 @@
 gchar **includedirs = NULL;
 gchar **input = NULL;
 gchar *output = NULL;
-gchar *mname = NULL;
 gchar **shlibs = NULL;
 gboolean include_cwd = FALSE;
 gboolean debug = FALSE;
@@ -141,7 +140,6 @@ log_handler (const gchar   *log_domain,
 static GOptionEntry options[] = {
   { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL },
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" },
-  { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" },
   { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME_ARRAY, &shlibs, "shared library", "FILE" },
   { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "show debug messages", NULL },
   { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose, "show verbose messages", NULL },
