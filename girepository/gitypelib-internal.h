@@ -27,7 +27,6 @@
 
 #include <gmodule.h>
 #include "girepository.h"
-#include "girepository-private.h"
 
 G_BEGIN_DECLS
 
@@ -194,8 +193,6 @@ typedef enum {
   BLOB_TYPE_INVALID_0,
   BLOB_TYPE_UNION
 } GITypelibBlobType;
-
-GIInfoType gi_typelib_blob_type_to_info_type (GITypelibBlobType blob_type);
 
 
 #if defined (G_CAN_INLINE) && defined (G_ALWAYS_INLINE)

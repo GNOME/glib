@@ -31,6 +31,8 @@
 #include <girepository/girepository.h>
 #include <girepository/gitypelib.h>
 
+#include "gitypelib-internal.h"
+
 /* FIXME: For now, GIRealInfo is a compatibility define. This will eventually
  * be removed. */
 typedef struct _GIBaseInfo GIRealInfo;
@@ -132,6 +134,8 @@ typedef enum
   GI_INFO_TYPE_REGISTERED_TYPE = 21,
   /* keep GI_INFO_TYPE_N_TYPES in sync with this */
 } GIInfoType;
+
+GIInfoType gi_typelib_blob_type_to_info_type (GITypelibBlobType blob_type);
 
 /**
  * GI_INFO_TYPE_N_TYPES:
