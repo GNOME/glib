@@ -110,6 +110,7 @@ gboolean      gi_function_invoker_new_for_address  (void                 *addr,
 GI_AVAILABLE_IN_ALL
 void          gi_function_invoker_clear            (GIFunctionInvoker    *invoker);
 
+G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC (GIFunctionInvoker, gi_function_invoker_clear)
 
 GI_AVAILABLE_IN_ALL
 ffi_closure * gi_callable_info_create_closure (GICallableInfo       *callable_info,

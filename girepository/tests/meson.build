@@ -40,6 +40,15 @@ if enable_gir
       'depends': [glib_gir],
     },
   }
+
+  if cc.get_id() != 'msvc'
+    girepository_tests += {
+      'autoptr-girepository' : {
+        'source' : 'autoptr.c',
+        'depends': [glib_gir, gio_gir],
+      },
+    }
+  endif
 endif
 
 test_env = environment()
