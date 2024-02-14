@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-12 13:04+0000\n"
-"PO-Revision-Date: 2024-02-13 07:19+0100\n"
+"POT-Creation-Date: 2024-02-14 09:23+0000\n"
+"PO-Revision-Date: 2024-02-14 10:29+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -612,10 +612,10 @@ msgstr "საქაღალდის (\"%s\") შექმნის შეც�
 #: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1105 gio/gfile.c:1343
 #: gio/gfile.c:1481 gio/gfile.c:1718 gio/gfile.c:1773 gio/gfile.c:1831
 #: gio/gfile.c:1915 gio/gfile.c:1972 gio/gfile.c:2036 gio/gfile.c:2091
-#: gio/gfile.c:3955 gio/gfile.c:4094 gio/gfile.c:4501 gio/gfile.c:4966
-#: gio/gfile.c:5378 gio/gfile.c:5463 gio/gfile.c:5553 gio/gfile.c:5650
-#: gio/gfile.c:5737 gio/gfile.c:5836 gio/gfile.c:8990 gio/gfile.c:9080
-#: gio/gfile.c:9164 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:3969 gio/gfile.c:4108 gio/gfile.c:4515 gio/gfile.c:4980
+#: gio/gfile.c:5392 gio/gfile.c:5477 gio/gfile.c:5567 gio/gfile.c:5664
+#: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9004 gio/gfile.c:9094
+#: gio/gfile.c:9178 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "ოპერაცია მხარდაუჭერელია"
 
@@ -1505,37 +1505,42 @@ msgstr "კოპირება (reflink/clone) მხარდაუჭერ�
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "კოპირება (reflink/clone) მხარდაუჭერელია ან არ იმუშავა"
 
-#: gio/gfile.c:3401
+#: gio/gfile.c:3384 gio/gfile.c:3395
+#, c-format
+msgid "Cannot retrieve attribute %s"
+msgstr "ვერ მივიღე ატრიბუტი %s"
+
+#: gio/gfile.c:3415
 msgid "Can’t copy special file"
 msgstr "სპეციალური ფაილის კოპირება შეუძლებელია"
 
-#: gio/gfile.c:4318
+#: gio/gfile.c:4332
 msgid "Invalid symlink value given"
 msgstr "სიმბმბულის მითითებული მნიშვნელობა არასწორია"
 
-#: gio/gfile.c:4328 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2399
 msgid "Symbolic links not supported"
 msgstr "სიმბოლური ბმების გამოყენება არაა რეალიზებული"
 
-#: gio/gfile.c:4609
+#: gio/gfile.c:4623
 msgid "Trash not supported"
 msgstr "ნაგავი მხარდაუჭერელია"
 
-#: gio/gfile.c:4719
+#: gio/gfile.c:4733
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "ფაილის სახელი არ შეიძლება, \"%c\"-ს შეიცავდეს"
 
-#: gio/gfile.c:7145 gio/gfile.c:7271
+#: gio/gfile.c:7159 gio/gfile.c:7285
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "შაბლონისთვის \"%s\" დროებითი საქაღალდის შექმნის შეცდომა: %s"
 
-#: gio/gfile.c:7589 gio/gvolume.c:362
+#: gio/gfile.c:7603 gio/gvolume.c:362
 msgid "volume doesn’t implement mount"
 msgstr "ტომს მიმაგრების მხარდაჭერა არ გააჩნია"
 
-#: gio/gfile.c:7703 gio/gfile.c:7780
+#: gio/gfile.c:7717 gio/gfile.c:7794
 msgid "No application is registered as handling this file"
 msgstr "ამ ფაილის გასახსნელი პროგრამა დარეგისტრირებული არაა"
 
@@ -3234,7 +3239,7 @@ msgstr "ფაილის სახელის \"%s\" UTF-16-ში გად�
 #: gio/glocalfileinfo.c:2784
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
-msgstr ""
+msgstr "ფაილის \"%s\" გახსნა შეუძლებელია: Windows-ის შეცდომა %lu"
 
 #: gio/glocalfileinfo.c:2797
 #, c-format
@@ -3362,11 +3367,11 @@ msgstr ""
 
 #: gio/gmemoryoutputstream.c:761
 msgid "Requested seek before the beginning of the stream"
-msgstr ""
+msgstr "მოთხოვნილია გადახვევა ნაკადის დასაწყისამდე"
 
 #: gio/gmemoryoutputstream.c:776
 msgid "Requested seek beyond the end of the stream"
-msgstr ""
+msgstr "მოთხოვნილა გადახვევა ნაკადის ბოლოს შემდეგ"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -5613,7 +5618,7 @@ msgstr ""
 
 #: glib/gregex.c:724
 msgid "(*MARK) must have an argument"
-msgstr ""
+msgstr "(*MARK) არგუმენტის ქონა აუცილებელია"
 
 #: glib/gregex.c:728
 msgid "\\c must be followed by an ASCII character"
