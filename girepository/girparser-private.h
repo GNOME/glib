@@ -33,6 +33,8 @@ typedef struct _GIIrParser GIIrParser;
 
 GIIrParser *gi_ir_parser_new          (void);
 void        gi_ir_parser_free         (GIIrParser         *parser);
+void        gi_ir_parser_set_debug    (GIIrParser          *parser,
+                                       GLogLevelFlags       logged_levels);
 void        gi_ir_parser_set_includes (GIIrParser         *parser,
                                        const char  *const *includes);
 

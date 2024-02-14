@@ -61,6 +61,7 @@ struct _GIIrParser
   char **includes;
   char **gi_gir_path;
   GList *parsed_modules; /* All previously parsed modules */
+  GLogLevelFlags logged_levels;
 };
 
 typedef enum
@@ -191,7 +192,15 @@ gi_ir_parser_new (void)
   if (gi_gir_path != NULL)
     parser->gi_gir_path = g_strsplit (gi_gir_path, G_SEARCHPATH_SEPARATOR_S, 0);
 
+  parser->logged_levels = G_LOG_LEVEL_MASK & ~(G_LOG_LEVEL_MESSAGE | G_LOG_LEVEL_DEBUG);
   return parser;
+}
+
+void
+gi_ir_parser_set_debug (GIIrParser     *parser,
+                        GLogLevelFlags  logged_levels)
+{
+  parser->logged_levels = logged_levels;
 }
 
 void
@@ -2915,8 +2924,6 @@ parse_include (GMarkupParseContext *context,
   return TRUE;
 }
 
-extern GLogLevelFlags logged_levels;
-
 static void
 start_element_handler (GMarkupParseContext  *context,
                        const char           *element_name,
@@ -2927,7 +2934,7 @@ start_element_handler (GMarkupParseContext  *context,
 {
   ParseContext *ctx = user_data;
 
-  if (logged_levels & G_LOG_LEVEL_DEBUG)
+  if (ctx->parser->logged_levels & G_LOG_LEVEL_DEBUG)
     {
       GString *tags = g_string_new ("");
       int i;

@@ -124,7 +124,7 @@ out:
   return success;
 }
 
-GLogLevelFlags logged_levels;
+static GLogLevelFlags logged_levels;
 
 static void
 log_handler (const gchar   *log_domain,
@@ -198,6 +198,7 @@ main (int argc, char **argv)
            includedirs ? g_strv_length (includedirs) : 0);
 
   parser = gi_ir_parser_new ();
+  gi_ir_parser_set_debug (parser, logged_levels);
 
   gi_ir_parser_set_includes (parser, (const char *const *) includedirs);
 
