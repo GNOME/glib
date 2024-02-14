@@ -55,6 +55,23 @@ if [[ "$CFLAGS" == *"-coverage"* ]]; then
         --output-file "${DIR}/_coverage/${CI_JOB_NAME}-baseline.lcov"
 fi
 
+# FIXME: Workaround for https://github.com/mesonbuild/meson/issues/12330
+for tests in \
+    gio/tests \
+    girepository/tests \
+    glib/tests \
+    gmodule/tests \
+    gobject/tests \
+    gthread/tests \
+; do
+    cp _build/glib/libglib-2.0-0.dll "_build/$tests/"
+    cp _build/gmodule/libgmodule-2.0-0.dll "_build/$tests/"
+    cp _build/gobject/libgobject-2.0-0.dll "_build/$tests/"
+    cp _build/gthread/libgthread-2.0-0.dll "_build/$tests/"
+    cp _build/gio/libgio-2.0-0.dll "_build/$tests/"
+    cp _build/girepository/libgirepository-2.0-0.dll "_build/$tests/"
+done
+
 meson test -C _build -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
 meson test -C _build -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" \
     --setup=unstable_tests --suite=failing --suite=flaky || true
