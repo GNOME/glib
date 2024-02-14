@@ -2,6 +2,7 @@ if get_option('man-pages').enabled()
   manpages = [
     'gi-compile-repository',
     'gi-decompile-typelib',
+    'gi-inspect-typelib',
   ]
   foreach page : manpages
     custom_target(page + '-man',
