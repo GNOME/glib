@@ -443,7 +443,9 @@ gi_info_init (GIRealInfo   *info,
  * Clears memory allocated internally by a stack-allocated
  * [type@GIRepository.BaseInfo].
  *
- * This does not deallocate the [type@GIRepository.BaseInfo] struct itself.
+ * This does not deallocate the [type@GIRepository.BaseInfo] struct itself. It
+ * does clear the struct to zero so that calling this function subsequent times
+ * on the same struct is a no-op.
  *
  * This must only be called on stack-allocated [type@GIRepository.BaseInfo]s.
  * Use [method@GIRepository.BaseInfo.unref] for heap-allocated ones.
@@ -455,6 +457,11 @@ gi_base_info_clear (void *info)
 {
   GIBaseInfo *rinfo = (GIBaseInfo *) info;
 
+  /* If @info is zero-filled, do nothing. This allows gi_base_info_clear() to be
+   * used with g_auto(). */
+  if (rinfo->ref_count == 0)
+    return;
+
   g_return_if_fail (GI_IS_BASE_INFO (rinfo));
 
   g_assert (rinfo->ref_count == INVALID_REFCOUNT);
@@ -462,6 +469,8 @@ gi_base_info_clear (void *info)
   GI_BASE_INFO_GET_CLASS (info)->finalize (rinfo);
 
   g_type_class_unref (rinfo->parent_instance.g_class);
+
+  memset (rinfo, 0, sizeof (*rinfo));
 }
 
 GIBaseInfo *

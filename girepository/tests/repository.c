@@ -157,6 +157,42 @@ test_repository_dependencies (RepositoryFixture *fx,
 }
 
 static void
+test_repository_base_info_clear (RepositoryFixture *fx,
+                                 const void        *unused)
+{
+  GITypeInfo zeroed_type_info = { 0, };
+  GITypeInfo idempotent_type_info;
+  GIObjectInfo *object_info = NULL;
+  GIFunctionInfo *method_info = NULL;
+  GIArgInfo *arg_info = NULL;
+
+  g_test_summary ("Test calling gi_base_info_clear() on a zero-filled struct");
+
+  /* Load a valid #GITypeInfo onto the stack and clear it multiple times to
+   * check gi_base_info_clear() is idempotent after the first call. */
+  object_info = GI_OBJECT_INFO (gi_repository_find_by_name (fx->repository, "GObject", "Object"));
+  g_assert_nonnull (object_info);
+  method_info = gi_object_info_find_method (object_info, "get_property");
+  g_assert_nonnull (method_info);
+  arg_info = gi_callable_info_get_arg (GI_CALLABLE_INFO (method_info), 0);
+  g_assert_nonnull (arg_info);
+  gi_arg_info_load_type_info (arg_info, &idempotent_type_info);
+
+  gi_base_info_clear (&idempotent_type_info);
+  gi_base_info_clear (&idempotent_type_info);
+  gi_base_info_clear (&idempotent_type_info);
+
+  g_clear_pointer (&arg_info, gi_base_info_unref);
+  g_clear_pointer (&method_info, gi_base_info_unref);
+  g_clear_pointer (&object_info, gi_base_info_unref);
+
+  /* Try clearing a #GITypeInfo which has always been zero-filled on the stack. */
+  gi_base_info_clear (&zeroed_type_info);
+  gi_base_info_clear (&zeroed_type_info);
+  gi_base_info_clear (&zeroed_type_info);
+}
+
+static void
 test_repository_arg_info (RepositoryFixture *fx,
                           const void *unused)
 {
@@ -750,6 +786,7 @@ main (int   argc,
   ADD_REPOSITORY_TEST ("/repository/basic", test_repository_basic, &typelib_load_spec_glib);
   ADD_REPOSITORY_TEST ("/repository/info", test_repository_info, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/dependencies", test_repository_dependencies, &typelib_load_spec_gobject);
+  ADD_REPOSITORY_TEST ("/repository/base-info/clear", test_repository_base_info_clear, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/arg-info", test_repository_arg_info, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/callable-info", test_repository_callable_info, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/callback-info", test_repository_callback_info, &typelib_load_spec_gobject);
