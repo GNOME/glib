@@ -29,14 +29,19 @@ CCACHE_BASEDIR="$(pwd)"
 CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
 export CCACHE_BASEDIR CCACHE_DIR
 
-pip3 install --upgrade --user meson==1.2.3 packaging==23.2
+pip3 install --upgrade --user packaging==23.2
 
 PATH="$(cygpath "$USERPROFILE")/.local/bin:$HOME/.local/bin:$PATH"
 DIR="$(pwd)"
 export PATH CFLAGS
 
+# FIXME: We can’t use ${MESON_COMMON_OPTIONS} here because this script installs
+# Meson 1.3. See the comment in .gitlab-ci.yml about the same problem on
+# FreeBSD.
 # shellcheck disable=SC2086
-meson setup ${MESON_COMMON_OPTIONS} \
+meson setup \
+    --buildtype=debug \
+    --wrap-mode=nodownload \
     --werror \
     -Ddocumentation=true \
     -Dintrospection=enabled \
