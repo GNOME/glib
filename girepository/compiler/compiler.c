@@ -40,15 +40,13 @@
 #include "girnode-private.h"
 #include "girparser-private.h"
 
-gchar **includedirs = NULL;
-gchar **input = NULL;
-gchar *output = NULL;
-gchar *mname = NULL;
-gchar **shlibs = NULL;
-gboolean include_cwd = FALSE;
-gboolean debug = FALSE;
-gboolean verbose = FALSE;
-gboolean show_version = FALSE;
+static gchar **includedirs = NULL;
+static gchar **input = NULL;
+static gchar *output = NULL;
+static gchar **shlibs = NULL;
+static gboolean debug = FALSE;
+static gboolean verbose = FALSE;
+static gboolean show_version = FALSE;
 
 static gboolean
 write_out_typelib (gchar     *prefix,
@@ -126,7 +124,7 @@ out:
   return success;
 }
 
-GLogLevelFlags logged_levels;
+static GLogLevelFlags logged_levels;
 
 static void
 log_handler (const gchar   *log_domain,
@@ -141,7 +139,6 @@ log_handler (const gchar   *log_domain,
 static GOptionEntry options[] = {
   { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL },
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" },
-  { "module", 'm', 0, G_OPTION_ARG_STRING, &mname, "module to compile", "NAME" },
   { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME_ARRAY, &shlibs, "shared library", "FILE" },
   { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "show debug messages", NULL },
   { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose, "show verbose messages", NULL },
@@ -207,6 +204,7 @@ main (int argc, char **argv)
            includedirs ? g_strv_length (includedirs) : 0);
 
   parser = gi_ir_parser_new ();
+  gi_ir_parser_set_debug (parser, logged_levels);
 
   gi_ir_parser_set_includes (parser, (const char *const *) includedirs);
 

@@ -36,7 +36,6 @@ int
 main (int argc, char *argv[])
 {
   GIRepository *repository = NULL;
-  gboolean shlib = FALSE;
   gchar *output = NULL;
   gchar **includedirs = NULL;
   gboolean show_all = FALSE;
@@ -48,7 +47,6 @@ main (int argc, char *argv[])
   gint i;
   GOptionEntry options[] =
     {
-      { "shlib", 0, 0, G_OPTION_ARG_NONE, &shlib, "handle typelib embedded in shlib", NULL },
       { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" },
       { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL },
       { "all", 0, 0, G_OPTION_ARG_NONE, &show_all, "show all available information", NULL, },
