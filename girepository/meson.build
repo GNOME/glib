@@ -56,6 +56,7 @@ girepo_headers = files(
   'gipropertyinfo.h',
   'giregisteredtypeinfo.h',
   'girepository.h',
+  'girepository-autocleanups.h',
   'gisignalinfo.h',
   'gistructinfo.h',
   'gitypeinfo.h',

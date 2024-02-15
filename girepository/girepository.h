@@ -62,6 +62,7 @@ G_DECLARE_FINAL_TYPE (GIRepository, gi_repository, GI, REPOSITORY, GObject)
 
 /**
  * GIRepositoryLoadFlags:
+ * @GI_REPOSITORY_LOAD_FLAG_NONE: No flags set.
  * @GI_REPOSITORY_LOAD_FLAG_LAZY: Lazily load the typelib.
  *
  * Flags that control how a typelib is loaded.
@@ -70,6 +71,7 @@ G_DECLARE_FINAL_TYPE (GIRepository, gi_repository, GI, REPOSITORY, GObject)
  */
 typedef enum
 {
+  GI_REPOSITORY_LOAD_FLAG_NONE = 0,
   GI_REPOSITORY_LOAD_FLAG_LAZY = 1 << 0
 } GIRepositoryLoadFlags;
 
@@ -239,5 +241,7 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   const GValue   *param_values,
                                   void           *invocation_hint,
                                   void           *marshal_data);
+
+#include <girepository/girepository-autocleanups.h>
 
 G_END_DECLS

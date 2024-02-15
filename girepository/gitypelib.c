@@ -43,24 +43,6 @@
 
 G_DEFINE_BOXED_TYPE (GITypelib, gi_typelib, gi_typelib_ref, gi_typelib_unref)
 
-GIInfoType
-gi_typelib_blob_type_to_info_type (GITypelibBlobType blob_type)
-{
-  switch (blob_type)
-    {
-    case BLOB_TYPE_BOXED:
-      /* `BLOB_TYPE_BOXED` now always refers to a `StructBlob`, and
-       * `GIRegisteredTypeInfo` (the parent type of `GIStructInfo`) has a method
-       * for distinguishing whether the struct is a boxed type. So presenting
-       * `BLOB_TYPE_BOXED` as its own `GIBaseInfo` subclass is not helpful.
-       * See commit e28078c70cbf4a57c7dbd39626f43f9bd2674145 and
-       * https://gitlab.gnome.org/GNOME/glib/-/issues/3245. */
-      return GI_INFO_TYPE_STRUCT;
-    default:
-      return (GIInfoType) blob_type;
-    }
-}
-
 typedef struct {
   GITypelib *typelib;
   GSList *context_stack;

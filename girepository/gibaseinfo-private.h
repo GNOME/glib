@@ -31,9 +31,6 @@
 
 G_BEGIN_DECLS
 
-#define GI_IS_BASE_INFO_TYPE(info,type) \
-  (G_TYPE_INSTANCE_GET_CLASS ((info), GI_TYPE_BASE_INFO, GIBaseInfoClass)->info_type == (type))
-
 struct _GIBaseInfoClass
 {
   GTypeClass parent_class;
