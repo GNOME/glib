@@ -85,8 +85,13 @@ main (int argc, char *argv[])
   repository = gi_repository_new ();
 
   if (includedirs != NULL)
-    for (i = 0; includedirs[i]; i++)
-      gi_repository_prepend_search_path (repository, includedirs[i]);
+    {
+      guint n = g_strv_length (includedirs);
+      guint j;
+
+      for (j = 1; j <= n; j++)
+        gi_repository_prepend_search_path (repository, includedirs[n - j]);
+    }
 
   for (i = 0; input[i]; i++)
     {

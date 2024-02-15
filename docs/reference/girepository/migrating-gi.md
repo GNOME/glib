@@ -91,6 +91,12 @@ your code if integer type warnings are enabled.
 | `g-ir-generate`  | `gi-decompile-typelib`  |
 | `g-ir-inspect`   | `gi-inspect-typelib`    |
 
-In addition, the `--version` option for `g-ir-inspect` has been renamed to
+In addition, some command-line options have been changed.
+
+The `--version` option for `g-ir-inspect` has been renamed to
 `--typelib-version` in `gi-inspect-typelib`.
 
+The `--includedir` option to `gi-decompile-typelib` treats the
+given directories as most-important-first, consistent with
+`gi-compile-repository --includedir` and `gcc -I`.
+`g-ir-generate` treated `--includedir` options as least-important-first.
