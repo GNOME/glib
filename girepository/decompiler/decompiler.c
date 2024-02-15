@@ -116,7 +116,7 @@ main (int argc, char *argv[])
       if (namespace == NULL)
 	g_error ("failed to load typelib: %s", error->message);
 
-      gi_ir_writer_write (output, namespace, needs_prefix, show_all);
+      gi_ir_writer_write (repository, output, namespace, needs_prefix, show_all);
 
       /* when writing to stdout, stop after the first module */
       if (input[i + 1] && !output)
