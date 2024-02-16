@@ -1203,6 +1203,7 @@ g_app_info_launch_default_for_uri (const char         *uri,
 #ifdef G_OS_UNIX
   if (!res && glib_should_use_portal ())
     {
+      GFile *file = NULL;
       const char *parent_window = NULL;
 
       /* Reset any error previously set by launch_default_for_uri */
@@ -1211,7 +1212,9 @@ g_app_info_launch_default_for_uri (const char         *uri,
       if (launch_context && launch_context->priv->envp)
         parent_window = g_environ_getenv (launch_context->priv->envp, "PARENT_WINDOW_ID");
 
-      return g_openuri_portal_open_uri (uri, parent_window, error);
+      file = g_file_new_for_uri (uri);
+      res = g_openuri_portal_open_file (file, parent_window, error);
+      g_object_unref (file);
     }
 #endif
 
@@ -1241,7 +1244,7 @@ launch_default_for_uri_portal_open_uri_cb (GObject      *object,
   GTask *task = G_TASK (user_data);
   GError *error = NULL;
 
-  if (g_openuri_portal_open_uri_finish (result, &error))
+  if (g_openuri_portal_open_file_finish (result, &error))
     g_task_return_boolean (task, TRUE);
   else
     g_task_return_error (task, g_steal_pointer (&error));
@@ -1258,6 +1261,7 @@ launch_default_for_uri_portal_open_uri (GTask *task, GError *error)
 
   if (glib_should_use_portal ())
     {
+      GFile *file;
       const char *parent_window = NULL;
 
       /* Reset any error previously set by launch_default_for_uri */
@@ -1267,11 +1271,14 @@ launch_default_for_uri_portal_open_uri (GTask *task, GError *error)
         parent_window = g_environ_getenv (data->context->priv->envp,
                                           "PARENT_WINDOW_ID");
 
-      g_openuri_portal_open_uri_async (data->uri,
-                                       parent_window,
-                                       cancellable,
-                                       launch_default_for_uri_portal_open_uri_cb,
-                                       g_steal_pointer (&task));
+      file = g_file_new_for_uri (data->uri);
+      g_openuri_portal_open_file_async (file,
+                                        parent_window,
+                                        cancellable,
+                                        launch_default_for_uri_portal_open_uri_cb,
+                                        g_steal_pointer (&task));
+      g_object_unref (file);
+
       return;
     }
 #endif

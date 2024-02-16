@@ -80,11 +80,10 @@ init_openuri_portal (void)
 }
 
 gboolean
-g_openuri_portal_open_uri (const char  *uri,
-                           const char  *parent_window,
-                           GError     **error)
+g_openuri_portal_open_file (GFile       *file,
+                            const char  *parent_window,
+                            GError     **error)
 {
-  GFile *file = NULL;
   GVariantBuilder opt_builder;
   gboolean res;
 
@@ -97,7 +96,6 @@ g_openuri_portal_open_uri (const char  *uri,
 
   g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
 
-  file = g_file_new_for_uri (uri);
   if (g_file_is_native (file))
     {
       char *path = NULL;
@@ -138,6 +136,10 @@ g_openuri_portal_open_uri (const char  *uri,
     }
   else
     {
+      char *uri = NULL;
+
+      uri = g_file_get_uri (file);
+
       res = gxdp_open_uri_call_open_uri_sync (openuri,
                                               parent_window ? parent_window : "",
                                               uri,
@@ -145,9 +147,8 @@ g_openuri_portal_open_uri (const char  *uri,
                                               NULL,
                                               NULL,
                                               error);
+      g_free (uri);
     }
-
-  g_object_unref (file);
 
   return res;
 }
@@ -245,15 +246,14 @@ open_call_done (GObject      *source,
 }
 
 void
-g_openuri_portal_open_uri_async (const char          *uri,
-                                 const char          *parent_window,
-                                 GCancellable        *cancellable,
-                                 GAsyncReadyCallback  callback,
-                                 gpointer             user_data)
+g_openuri_portal_open_file_async (GFile               *file,
+                                  const char          *parent_window,
+                                  GCancellable        *cancellable,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data)
 {
   GDBusConnection *connection;
   GTask *task;
-  GFile *file;
   GVariant *opts = NULL;
   int i;
   guint signal_id;
@@ -308,7 +308,6 @@ g_openuri_portal_open_uri_async (const char          *uri,
   else
     task = NULL;
 
-  file = g_file_new_for_uri (uri);
   if (g_file_is_native (file))
     {
       char *path = NULL;
@@ -349,6 +348,10 @@ g_openuri_portal_open_uri_async (const char          *uri,
     }
   else
     {
+      char *uri = NULL;
+
+      uri = g_file_get_uri (file);
+
       gxdp_open_uri_call_open_uri (openuri,
                                    parent_window ? parent_window : "",
                                    uri,
@@ -356,14 +359,13 @@ g_openuri_portal_open_uri_async (const char          *uri,
                                    cancellable,
                                    task ? open_call_done : NULL,
                                    task);
+      g_free (uri);
     }
-
-  g_object_unref (file);
 }
 
 gboolean
-g_openuri_portal_open_uri_finish (GAsyncResult  *result,
-                                  GError       **error)
+g_openuri_portal_open_file_finish (GAsyncResult  *result,
+                                   GError       **error)
 {
   return g_task_propagate_boolean (G_TASK (result), error);
 }
