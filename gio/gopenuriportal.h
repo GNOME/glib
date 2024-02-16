@@ -27,10 +27,12 @@ G_BEGIN_DECLS
 
 gboolean g_openuri_portal_open_file        (GFile       *file,
                                             const char  *parent_window,
+                                            const char  *startup_id,
                                             GError     **error);
 
 void     g_openuri_portal_open_file_async  (GFile               *file,
                                             const char          *parent_window,
+                                            const char          *startup_id,
                                             GCancellable        *cancellable,
                                             GAsyncReadyCallback  callback,
                                             gpointer             user_data);

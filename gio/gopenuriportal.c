@@ -82,6 +82,7 @@ init_openuri_portal (void)
 gboolean
 g_openuri_portal_open_file (GFile       *file,
                             const char  *parent_window,
+                            const char  *startup_id,
                             GError     **error)
 {
   GVariantBuilder opt_builder;
@@ -95,6 +96,11 @@ g_openuri_portal_open_file (GFile       *file,
     }
 
   g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+
+  if (startup_id)
+    g_variant_builder_add (&opt_builder, "{sv}",
+                           "activation_token",
+                           g_variant_new_string (startup_id));
 
   if (g_file_is_native (file))
     {
@@ -248,6 +254,7 @@ open_call_done (GObject      *source,
 void
 g_openuri_portal_open_file_async (GFile               *file,
                                   const char          *parent_window,
+                                  const char          *startup_id,
                                   GCancellable        *cancellable,
                                   GAsyncReadyCallback  callback,
                                   gpointer             user_data)
@@ -302,6 +309,11 @@ g_openuri_portal_open_file_async (GFile               *file,
       g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
       g_variant_builder_add (&opt_builder, "{sv}", "handle_token", g_variant_new_string (token));
       g_free (token);
+
+      if (startup_id)
+        g_variant_builder_add (&opt_builder, "{sv}",
+                               "activation_token",
+                               g_variant_new_string (startup_id));
 
       opts = g_variant_builder_end (&opt_builder);
     }
