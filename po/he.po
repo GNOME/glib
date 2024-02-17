@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
 "POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-17 23:36+0200\n"
+"PO-Revision-Date: 2024-02-17 23:44+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -46,7 +46,7 @@ msgstr "Failed to find default application for URI Scheme ‘%s’"
 
 #: gio/gapplication.c:507
 msgid "GApplication Options:"
-msgstr "GApplication Options:"
+msgstr "אפשרויות GApplication:"
 
 #: gio/gapplication.c:507
 msgid "Show GApplication options"
@@ -771,11 +771,11 @@ msgid "%s message: %s header field is invalid; expected a value of type ‘%s’
 msgstr "הודעת %s:‏ %s שדה הכותרת שגוי, אמור להיות ערך מסוג ‚%s’"
 
 #: gio/gdbusmessage.c:1374
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
 msgid "%s message: %s header field is missing or invalid"
-msgstr "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+msgstr "הודעת %s: שדה הכותרת %s חסר או שגוי"
 
 #: gio/gdbusmessage.c:1413
 #, c-format
@@ -1503,10 +1503,9 @@ msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Copy (reflink/clone) is not supported or didn’t work"
 
 #: gio/gfile.c:3384 gio/gfile.c:3395
-#, fuzzy, c-format
-#| msgid "Unset given attribute"
+#, c-format
 msgid "Cannot retrieve attribute %s"
-msgstr "ביטול הגדרת מאפיין נתון"
+msgstr "לא ניתן למשוך את המאפיין %s"
 
 #: gio/gfile.c:3415
 msgid "Can’t copy special file"
@@ -1852,10 +1851,8 @@ msgid "Use default permissions for the destination"
 msgstr "Use default permissions for the destination"
 
 #: gio/gio-tool-copy.c:53
-#, fuzzy
-#| msgid "Use default permissions for the destination"
 msgid "Use default file modification timestamps for the destination"
-msgstr "Use default permissions for the destination"
+msgstr "להשתמש בחותמות זמן השינוי כברירת מחדל ליעד"
 
 #: gio/gio-tool-copy.c:78 gio/gio-tool-move.c:69
 #, c-format
@@ -5058,37 +5055,35 @@ msgstr "PM"
 #: glib/gdir.c:168
 #, c-format
 msgid "Error opening directory “%s”: %s"
-msgstr "Error opening directory “%s”: %s"
+msgstr "שגיאה בפתיחת התיקייה „%s”:‏ %s"
 
 #: glib/gfileutils.c:716 glib/gfileutils.c:820
-#, fuzzy
-#| msgid "Could not connect: "
 msgid "Could not allocate %"
 msgid_plural "Could not allocate %"
-msgstr[0] "Could not connect: "
-msgstr[1] "Could not connect: "
-msgstr[2] "Could not connect: "
-msgstr[3] "Could not connect: "
+msgstr[0] "לא ניתן להקצות %"
+msgstr[1] "לא ניתן להקצות %"
+msgstr[2] "לא ניתן להקצות %"
+msgstr[3] "לא ניתן להקצות %"
 
 #: glib/gfileutils.c:733
 #, c-format
 msgid "Error reading file “%s”: %s"
-msgstr "Error reading file “%s”: %s"
+msgstr "שגיאה בקריאת הקובץ „%s”:‏ %s"
 
 #: glib/gfileutils.c:769 glib/gfileutils.c:803
 #, c-format
 msgid "File “%s” is too large"
-msgstr "File “%s” is too large"
+msgstr "הקובץ „%s” גדול מדי"
 
 #: glib/gfileutils.c:845
 #, c-format
 msgid "Failed to read from file “%s”: %s"
-msgstr "Failed to read from file “%s”: %s"
+msgstr "קריאה מהקובץ „%s” נכשלה: %s"
 
 #: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
 #, c-format
 msgid "Failed to open file “%s”: %s"
-msgstr "Failed to open file “%s”: %s"
+msgstr "פתיחת הקובץ „%s” נכשלה: %s"
 
 #: glib/gfileutils.c:908
 #, c-format
@@ -5106,10 +5101,10 @@ msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 
 #: glib/gfileutils.c:1139
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to write file “%s”: write() failed: %s"
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
-msgstr "Failed to write file “%s”: write() failed: %s"
+msgstr "כתיבת הקובץ „%s” נכשלה: ftruncate()‎ נכשל: %s"
 
 #: glib/gfileutils.c:1184
 #, c-format
@@ -5139,7 +5134,7 @@ msgstr "Template “%s” invalid, should not contain a “%s”"
 #: glib/gfileutils.c:1761
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
-msgstr "Template “%s” doesn’t contain XXXXXX"
+msgstr "התבנית „%s” לא מכילה XXXXXX"
 
 #: glib/gfileutils.c:2355 glib/gfileutils.c:2384
 #, c-format
@@ -5173,7 +5168,7 @@ msgstr "Valid key file could not be found in search dirs"
 
 #: glib/gkeyfile.c:828
 msgid "Not a regular file"
-msgstr "Not a regular file"
+msgstr "לא קובץ רגיל"
 
 #: glib/gkeyfile.c:1286
 #, c-format
@@ -5185,11 +5180,11 @@ msgstr ""
 #: glib/gkeyfile.c:1343
 #, c-format
 msgid "Invalid group name: %s"
-msgstr "Invalid group name: %s"
+msgstr "שם הקבוצה שגוי: %s"
 
 #: glib/gkeyfile.c:1367
 msgid "Key file does not start with a group"
-msgstr "Key file does not start with a group"
+msgstr "קובץ המפתח לא מתחיל בקבוצה"
 
 #: glib/gkeyfile.c:1391
 #, c-format
@@ -5206,7 +5201,7 @@ msgstr "Key file contains unsupported encoding “%s”"
 #: glib/gkeyfile.c:3766 glib/gkeyfile.c:4015 glib/gkeyfile.c:4089
 #, c-format
 msgid "Key file does not have group “%s”"
-msgstr "Key file does not have group “%s”"
+msgstr "לקובץ המפתח אין קבוצה „%s”"
 
 #: glib/gkeyfile.c:1795
 #, c-format
@@ -5505,23 +5500,23 @@ msgstr "[OPTION…]"
 
 #: glib/goption.c:832
 msgid "Help Options:"
-msgstr "Help Options:"
+msgstr "אפשרויות עזרה:"
 
 #: glib/goption.c:833
 msgid "Show help options"
-msgstr "Show help options"
+msgstr "הצגת אפשרויות עזרה"
 
 #: glib/goption.c:839
 msgid "Show all help options"
-msgstr "Show all help options"
+msgstr "הצגת כל אפשרויות העזרה"
 
 #: glib/goption.c:902
 msgid "Application Options:"
-msgstr "Application Options:"
+msgstr "אפשרויות יישום:"
 
 #: glib/goption.c:904
 msgid "Options:"
-msgstr "Options:"
+msgstr "אפשרויות:"
 
 #: glib/goption.c:968 glib/goption.c:1038
 #, c-format
