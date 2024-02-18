@@ -12,15 +12,15 @@
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2014, 2015, 2016.
 # Serdar Sağlam <teknomobil@yandex.com>, 2019.
 # Sabri Ünal <libreajans@gmail.com>, 2023.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2023.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-14 17:48+0300\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"POT-Creation-Date: 2024-02-18 09:20+0000\n"
+"PO-Revision-Date: 2024-02-18 08:00+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -4436,13 +4436,14 @@ msgstr "bölüm, çıkartmayı veya eject_with_operation’ı yerine getirmiyor"
 #: gio/gwin32appinfo.c:5216
 #, c-format
 msgid "The app ‘%s’ in the application object has no verbs"
-msgstr ""
+msgstr "Uygulama nesnesindeki ‘%s’ uygulamasının eylemi yok"
 
 #: gio/gwin32appinfo.c:5220
 #, c-format
 msgid ""
 "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
 msgstr ""
+"Uygulama nesnesindeki ‘%s’ uygulamasının ve ‘%s’ işleyicisinin eylemi yok"
 
 #: gio/gwin32inputstream.c:184
 #, c-format
@@ -5042,11 +5043,9 @@ msgid "Error opening directory “%s”: %s"
 msgstr "“%s” dizini açılamadı: %s"
 
 #: glib/gfileutils.c:716 glib/gfileutils.c:820
-#, fuzzy
-#| msgid "Could not connect: "
 msgid "Could not allocate %"
 msgid_plural "Could not allocate %"
-msgstr[0] "Bağlanılamadı: "
+msgstr[0] "% ayrılamadı"
 
 #: glib/gfileutils.c:733
 #, c-format
