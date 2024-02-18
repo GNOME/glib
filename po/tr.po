@@ -17,9 +17,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues\n"
-"POT-Creation-Date: 2023-10-22 23:35+0000\n"
-"PO-Revision-Date: 2023-10-24 02:04+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
+"POT-Creation-Date: 2024-02-14 09:23+0000\n"
+"PO-Revision-Date: 2024-02-14 17:48+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-POOTLE-MTIME: 1433280446.000000\n"
 
 #: gio/gappinfo.c:339
@@ -49,36 +49,40 @@ msgstr "‘%s’ içerik türü için öntanımlı uygulama bulunamadı"
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "‘%s’ URI Şeması için öntanımlı uygulama bulunamadı"
 
-#: gio/gapplication.c:502
+#: gio/gapplication.c:507
 msgid "GApplication Options:"
 msgstr "GApplication Seçenekleri:"
 
-#: gio/gapplication.c:502
+#: gio/gapplication.c:507
 msgid "Show GApplication options"
 msgstr "GApplication seçeneklerini göster"
 
-#: gio/gapplication.c:547
+#: gio/gapplication.c:552
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "GApplication hizmet kipi girin (D-Bus hizmet dosyalarından kullan)"
 
-#: gio/gapplication.c:559
+#: gio/gapplication.c:564
 msgid "Override the application’s ID"
 msgstr "Uygulama kimliğini çiğne"
 
-#: gio/gapplication.c:571
+#: gio/gapplication.c:575
+msgid "Print the application version"
+msgstr "Uygulama sürümünü yazdır"
+
+#: gio/gapplication.c:587
 msgid "Replace the running instance"
 msgstr "Çalışan örneği değiştir"
 
-#: gio/gapplication-tool.c:47 gio/gapplication-tool.c:48 gio/gio-tool.c:229
-#: gio/gresource-tool.c:496 gio/gsettings-tool.c:586
+#: gio/gapplication-tool.c:47 gio/gapplication-tool.c:48 gio/gio-tool.c:230
+#: gio/gresource-tool.c:497 gio/gsettings-tool.c:586
 msgid "Print help"
 msgstr "Yardımı yazdır"
 
-#: gio/gapplication-tool.c:49 gio/gresource-tool.c:497 gio/gresource-tool.c:565
+#: gio/gapplication-tool.c:49 gio/gresource-tool.c:498 gio/gresource-tool.c:566
 msgid "[COMMAND]"
 msgstr "[KOMUT]"
 
-#: gio/gapplication-tool.c:51 gio/gio-tool.c:230
+#: gio/gapplication-tool.c:51 gio/gio-tool.c:231
 msgid "Print version"
 msgstr "Sürüm yazdır"
 
@@ -132,7 +136,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:226
+#: gio/gio-tool.c:259
 msgid "COMMAND"
 msgstr "KOMUT"
 
@@ -146,7 +150,7 @@ msgstr "D-Bus biçiminde uygulama tanımlayıcı (örneğin: org.example.viewer)
 
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
-#: gio/gresource-tool.c:503 gio/gresource-tool.c:569
+#: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 msgid "FILE"
 msgstr "DOSYA"
 
@@ -170,7 +174,7 @@ msgstr "PARAMETRE"
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "GVariant biçiminde başlatma eylemi için isteğe bağlı parametre"
 
-#: gio/gapplication-tool.c:100 gio/gresource-tool.c:534
+#: gio/gapplication-tool.c:100 gio/gresource-tool.c:535
 #: gio/gsettings-tool.c:678
 #, c-format
 msgid ""
@@ -184,12 +188,12 @@ msgstr ""
 msgid "Usage:\n"
 msgstr "Kullanım:\n"
 
-#: gio/gapplication-tool.c:118 gio/gresource-tool.c:559
+#: gio/gapplication-tool.c:118 gio/gresource-tool.c:560
 #: gio/gsettings-tool.c:713
 msgid "Arguments:\n"
 msgstr "Argümanlar:\n"
 
-#: gio/gapplication-tool.c:137 gio/gio-tool.c:226
+#: gio/gapplication-tool.c:137 gio/gio-tool.c:259
 msgid "[ARGS…]"
 msgstr "[ARGÜMANLAR…]"
 
@@ -282,78 +286,78 @@ msgstr ""
 "bilinmeyen komut: %s\n"
 "\n"
 
-#: gio/gbufferedinputstream.c:418 gio/gbufferedinputstream.c:496
+#: gio/gbufferedinputstream.c:421 gio/gbufferedinputstream.c:499
 #: gio/ginputstream.c:181 gio/ginputstream.c:381 gio/ginputstream.c:651
-#: gio/ginputstream.c:1056 gio/goutputstream.c:225 gio/goutputstream.c:1052
-#: gio/gpollableinputstream.c:221 gio/gpollableoutputstream.c:293
+#: gio/ginputstream.c:1056 gio/goutputstream.c:227 gio/goutputstream.c:1052
+#: gio/gpollableinputstream.c:217 gio/gpollableoutputstream.c:289
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "%s için çok büyük sayaç değeri geçildi"
 
-#: gio/gbufferedinputstream.c:889 gio/gbufferedoutputstream.c:573
-#: gio/gdataoutputstream.c:559
+#: gio/gbufferedinputstream.c:892 gio/gbufferedoutputstream.c:579
+#: gio/gdataoutputstream.c:557
 msgid "Seek not supported on base stream"
 msgstr "Taban akış üzerinde arama desteklenmez"
 
-#: gio/gbufferedinputstream.c:936
+#: gio/gbufferedinputstream.c:939
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "GBufferedInputStreamsonu kesilemiyor"
 
-#: gio/gbufferedinputstream.c:981 gio/ginputstream.c:1246 gio/giostream.c:302
+#: gio/gbufferedinputstream.c:984 gio/ginputstream.c:1246 gio/giostream.c:317
 #: gio/goutputstream.c:2208
 msgid "Stream is already closed"
 msgstr "Akış zaten kapalı"
 
-#: gio/gbufferedoutputstream.c:610 gio/gdataoutputstream.c:589
+#: gio/gbufferedoutputstream.c:616 gio/gdataoutputstream.c:587
 msgid "Truncate not supported on base stream"
 msgstr "Taban akış üzerinde sonunun kesilmesi desteklenmiyor"
 
-#: gio/gcancellable.c:326 gio/gdbusconnection.c:1861 gio/gdbusprivate.c:1432
-#: gio/gsimpleasyncresult.c:873 gio/gsimpleasyncresult.c:899
+#: gio/gcancellable.c:326 gio/gdbusconnection.c:1844 gio/gdbusprivate.c:1434
+#: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
 msgstr "İşlem iptal edildi"
 
-#: gio/gcharsetconverter.c:255
+#: gio/gcharsetconverter.c:272
 msgid "Invalid object, not initialized"
 msgstr "Geçersiz nesne, ilklendirilmemiş"
 
-#: gio/gcharsetconverter.c:276 gio/gcharsetconverter.c:304
+#: gio/gcharsetconverter.c:293 gio/gcharsetconverter.c:321
 msgid "Incomplete multibyte sequence in input"
 msgstr "Girdide tamamlanmamış çokbaytlı dizi"
 
-#: gio/gcharsetconverter.c:310 gio/gcharsetconverter.c:319
+#: gio/gcharsetconverter.c:327 gio/gcharsetconverter.c:336
 msgid "Not enough space in destination"
 msgstr "Hedefte yeterli alan yok"
 
-#: gio/gcharsetconverter.c:337 gio/gdatainputstream.c:846
-#: gio/gdatainputstream.c:1264 glib/gconvert.c:351 glib/gconvert.c:783
-#: glib/giochannel.c:1576 glib/giochannel.c:1618 glib/giochannel.c:2478
+#: gio/gcharsetconverter.c:354 gio/gdatainputstream.c:842
+#: gio/gdatainputstream.c:1260 glib/gconvert.c:360 glib/gconvert.c:792
+#: glib/giochannel.c:1565 glib/giochannel.c:1607 glib/giochannel.c:2467
 #: glib/gutf8.c:958 glib/gutf8.c:1412
 msgid "Invalid byte sequence in conversion input"
 msgstr "Dönüşüm girdisinde geçersiz bayt dizisi"
 
-#: gio/gcharsetconverter.c:342 glib/gconvert.c:359 glib/gconvert.c:697
-#: glib/giochannel.c:1583 glib/giochannel.c:2493
+#: gio/gcharsetconverter.c:359 glib/gconvert.c:368 glib/gconvert.c:706
+#: glib/giochannel.c:1572 glib/giochannel.c:2482
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Dönüşüm sırasında hata oluştu: %s"
 
-#: gio/gcharsetconverter.c:440 gio/gsocket.c:1164
+#: gio/gcharsetconverter.c:457 gio/gsocket.c:1217
 msgid "Cancellable initialization not supported"
 msgstr "İptal edilebilir başlatma desteklenmiyor"
 
-#: gio/gcharsetconverter.c:451 glib/gconvert.c:224 glib/giochannel.c:1404
+#: gio/gcharsetconverter.c:468 glib/gconvert.c:233 glib/giochannel.c:1393
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "“%s” karakter kümesinden “%s” karakter kümesine dönüşüm desteklenmiyor"
 
-#: gio/gcharsetconverter.c:455 glib/gconvert.c:228
+#: gio/gcharsetconverter.c:472 glib/gconvert.c:237
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "“%s”den “%s”e dönüştürücü açılamıyor"
 
-#: gio/gcontenttype.c:472
+#: gio/gcontenttype.c:470
 #, c-format
 msgid "%s type"
 msgstr "%s türü"
@@ -387,21 +391,21 @@ msgstr "GCredentials bu işletim sisteminde süreç kimliği içermez"
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Bu işletim sisteminde kimlik sızdırma olanaksızdır"
 
-#: gio/gdatainputstream.c:302
+#: gio/gdatainputstream.c:298
 msgid "Unexpected early end-of-stream"
 msgstr "Beklenmeyen erken akış-sonu"
 
-#: gio/gdbusaddress.c:168 gio/gdbusaddress.c:240 gio/gdbusaddress.c:327
+#: gio/gdbusaddress.c:165 gio/gdbusaddress.c:237 gio/gdbusaddress.c:324
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
 msgstr "“%2$s” adres girdisinde desteklenmeyen anahtar “%1$s”"
 
-#: gio/gdbusaddress.c:181
+#: gio/gdbusaddress.c:178
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
 msgstr "“%s” adres girdisinde anlamsız anahtar/değer çifti birleşimi"
 
-#: gio/gdbusaddress.c:190
+#: gio/gdbusaddress.c:187
 #, c-format
 msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract "
@@ -409,28 +413,28 @@ msgid ""
 msgstr ""
 "“%s” adresi geçersiz (tam bir yol, dir, tmpdir veya soyut anahtarlar gerekir)"
 
-#: gio/gdbusaddress.c:255 gio/gdbusaddress.c:266 gio/gdbusaddress.c:281
-#: gio/gdbusaddress.c:342 gio/gdbusaddress.c:353
+#: gio/gdbusaddress.c:252 gio/gdbusaddress.c:263 gio/gdbusaddress.c:278
+#: gio/gdbusaddress.c:339 gio/gdbusaddress.c:350
 #, c-format
 msgid "Error in address “%s” — the “%s” attribute is malformed"
 msgstr "“%s” adresinde hata — “%s” özniteliği hatalı oluşturulmuş"
 
-#: gio/gdbusaddress.c:423 gio/gdbusaddress.c:682
+#: gio/gdbusaddress.c:420 gio/gdbusaddress.c:679
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr "“%2$s” adresi için bilinmeyen ya da desteklenmeyen aktarım “%1$s”"
 
-#: gio/gdbusaddress.c:467
+#: gio/gdbusaddress.c:464
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
 msgstr "Adres ögesi “%s” iki nokta üst üste (:) içermez"
 
-#: gio/gdbusaddress.c:476
+#: gio/gdbusaddress.c:473
 #, c-format
 msgid "Transport name in address element “%s” must not be empty"
 msgstr "“%s” adres ögesindeki aktarım adı boş olmamalı"
 
-#: gio/gdbusaddress.c:497
+#: gio/gdbusaddress.c:494
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
@@ -439,7 +443,7 @@ msgstr ""
 "“%3$s” adres ögesi içindeki, Anahtar/Değer çifti %1$d, “%2$s” eşittir imi "
 "içermiyor"
 
-#: gio/gdbusaddress.c:508
+#: gio/gdbusaddress.c:505
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” must not have an empty key"
@@ -447,7 +451,7 @@ msgstr ""
 "“%3$s” adres ögesi içindeki, Anahtar/Değer çifti %1$d, “%2$s” boş anahtar "
 "olmamalıdır"
 
-#: gio/gdbusaddress.c:522
+#: gio/gdbusaddress.c:519
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
@@ -456,7 +460,7 @@ msgstr ""
 "“%3$s” adres ögesindeki, Anahtar/Değer çifti %1$d, “%2$s” içinde ters kaçış "
 "tuşu veya değeri hatası"
 
-#: gio/gdbusaddress.c:590
+#: gio/gdbusaddress.c:587
 #, c-format
 msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
@@ -465,78 +469,78 @@ msgstr ""
 "“%s” adresinde hata — unix aktarımı, “path” veya “abstract” anahtarlarından "
 "bir tanesinin kesinlikle ayarlanmış olmasını gerektirir"
 
-#: gio/gdbusaddress.c:625
+#: gio/gdbusaddress.c:622
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr "“%s” adresinde hata — host özniteliği eksik ya da hatalı oluşturulmuş"
 
-#: gio/gdbusaddress.c:639
+#: gio/gdbusaddress.c:636
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr ""
 "“%s” adresinde hata — bağlantı noktası özniteliği eksik ya da hatalı "
 "oluşturulmuş"
 
-#: gio/gdbusaddress.c:653
+#: gio/gdbusaddress.c:650
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "“%s” adresinde hata — noncefile özniteliği eksik ya da hatalı oluşturulmuş"
 
-#: gio/gdbusaddress.c:674
+#: gio/gdbusaddress.c:671
 msgid "Error auto-launching: "
 msgstr "Kendiliğinden başlatmada hata: "
 
-#: gio/gdbusaddress.c:727
+#: gio/gdbusaddress.c:724
 #, c-format
 msgid "Error opening nonce file “%s”: %s"
 msgstr "Tek seferlik dosya “%s” açılırken hata: %s"
 
-#: gio/gdbusaddress.c:746
+#: gio/gdbusaddress.c:743
 #, c-format
 msgid "Error reading from nonce file “%s”: %s"
 msgstr "Tek seferlik dosya “%s” okunurken hata: %s"
 
-#: gio/gdbusaddress.c:755
+#: gio/gdbusaddress.c:752
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr "Tek seferlik dosya “%s” okunurken hata, beklenen 16 bayt, alınan %d"
 
-#: gio/gdbusaddress.c:773
+#: gio/gdbusaddress.c:770
 #, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr "“%s” tek seferlik dosyasının akış için içeriklerini yazmada hata:"
 
-#: gio/gdbusaddress.c:988
+#: gio/gdbusaddress.c:985
 msgid "The given address is empty"
 msgstr "Verilen adres boş"
 
-#: gio/gdbusaddress.c:1101
+#: gio/gdbusaddress.c:1098
 #, c-format
 msgid "Cannot spawn a message bus when AT_SECURE is set"
 msgstr "AT_SECURE belirtildiğinde ileti veri yolu oluşturulamaz"
 
-#: gio/gdbusaddress.c:1108
+#: gio/gdbusaddress.c:1105
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "machine-id olmadan ileti veri yolu oluşturulamıyor: "
 
-#: gio/gdbusaddress.c:1115
+#: gio/gdbusaddress.c:1112
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
 msgstr "X11 $DISPLAY olmadan D-BUS kendiliğinden başlatılamaz"
 
-#: gio/gdbusaddress.c:1157
+#: gio/gdbusaddress.c:1154
 #, c-format
 msgid "Error spawning command line “%s”: "
 msgstr "“%s” komut satırı oluşturulurken hata: "
 
-#: gio/gdbusaddress.c:1226
+#: gio/gdbusaddress.c:1223
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Oturum veri yolu adresi saptanamıyor (bu işletim sistemi için uygulanmadı)"
 
-#: gio/gdbusaddress.c:1380 gio/gdbusconnection.c:7333
+#: gio/gdbusaddress.c:1377 gio/gdbusconnection.c:7339
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -545,7 +549,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE ortam değişkeninden veri yolu adresi saptanamıyor — "
 "bilinmeyen değer “%s”"
 
-#: gio/gdbusaddress.c:1389 gio/gdbusconnection.c:7342
+#: gio/gdbusaddress.c:1386 gio/gdbusconnection.c:7348
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -553,20 +557,20 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE ortam değişkenine değer atanmadığından dolayı veri "
 "yolu adresi belirlenemiyor"
 
-#: gio/gdbusaddress.c:1399
+#: gio/gdbusaddress.c:1396
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Bilinmeyen veri yolu türü %d"
 
-#: gio/gdbusauth.c:294
+#: gio/gdbusauth.c:292
 msgid "Unexpected lack of content trying to read a line"
 msgstr "Satır okunmaya çalışılırken beklenmeyen içerik eksikliği"
 
-#: gio/gdbusauth.c:338
+#: gio/gdbusauth.c:336
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "Satır okunmaya çalışılırken (güvenli) beklenmeyen içerik eksikliği"
 
-#: gio/gdbusauth.c:482
+#: gio/gdbusauth.c:480
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -574,15 +578,15 @@ msgstr ""
 "Tüm olası kimlik doğrulama yöntemleri tükendi (denenen: %s) (kullanılabilir: "
 "%s)"
 
-#: gio/gdbusauth.c:1045
+#: gio/gdbusauth.c:1043
 msgid "Unexpected lack of content trying to read a byte"
 msgstr "Bayt okunmaya çalışılırken beklenmeyen içerik eksikliği"
 
-#: gio/gdbusauth.c:1195
+#: gio/gdbusauth.c:1193
 msgid "User IDs must be the same for peer and server"
 msgstr "Kullanıcı kimlikleri eş ve sunucu için aynı olmalıdır"
 
-#: gio/gdbusauth.c:1207
+#: gio/gdbusauth.c:1205
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "GDBusAuthObserver::authorize-authenticated-peer yolu ile iptal edildi"
 
@@ -604,13 +608,13 @@ msgstr ""
 msgid "Error creating directory “%s”: %s"
 msgstr "“%s” dizini oluşturulurken hata: %s"
 
-#: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1102 gio/gfile.c:1340
-#: gio/gfile.c:1478 gio/gfile.c:1716 gio/gfile.c:1771 gio/gfile.c:1829
-#: gio/gfile.c:1913 gio/gfile.c:1970 gio/gfile.c:2034 gio/gfile.c:2089
-#: gio/gfile.c:3953 gio/gfile.c:4092 gio/gfile.c:4504 gio/gfile.c:4974
-#: gio/gfile.c:5386 gio/gfile.c:5471 gio/gfile.c:5561 gio/gfile.c:5658
-#: gio/gfile.c:5745 gio/gfile.c:5846 gio/gfile.c:9000 gio/gfile.c:9090
-#: gio/gfile.c:9174 gio/win32/gwinhttpfile.c:453
+#: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1105 gio/gfile.c:1343
+#: gio/gfile.c:1481 gio/gfile.c:1718 gio/gfile.c:1773 gio/gfile.c:1831
+#: gio/gfile.c:1915 gio/gfile.c:1972 gio/gfile.c:2036 gio/gfile.c:2091
+#: gio/gfile.c:3969 gio/gfile.c:4108 gio/gfile.c:4515 gio/gfile.c:4980
+#: gio/gfile.c:5392 gio/gfile.c:5477 gio/gfile.c:5567 gio/gfile.c:5664
+#: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9004 gio/gfile.c:9094
+#: gio/gfile.c:9178 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "İşlem desteklenmiyor"
 
@@ -675,156 +679,169 @@ msgstr "“%s” anahtarlığını yazma için açarken hata: "
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Ayrıca, “%s” için kilit açılamadı: %s) "
 
-#: gio/gdbusconnection.c:584 gio/gdbusconnection.c:2409
+#: gio/gdbusconnection.c:585 gio/gdbusconnection.c:2392
 msgid "The connection is closed"
 msgstr "Bağlantı kapalı"
 
-#: gio/gdbusconnection.c:1893
+#: gio/gdbusconnection.c:1876
 msgid "Timeout was reached"
 msgstr "Zaman aşımı gerçekleşti"
 
-#: gio/gdbusconnection.c:2532
+#: gio/gdbusconnection.c:2515
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "İstemci taraflı bağlantı kurulurken desteklenmeyen etiketlerle karşılaşıldı"
 
-#: gio/gdbusconnection.c:4271 gio/gdbusconnection.c:4625
+#: gio/gdbusconnection.c:4277 gio/gdbusconnection.c:4631
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
 msgstr ""
 "%s yolundaki nesnede “org.freedesktop.DBus.Properties” gibi bir arayüz yok"
 
-#: gio/gdbusconnection.c:4416
+#: gio/gdbusconnection.c:4422
 #, c-format
 msgid "No such property “%s”"
 msgstr "“%s” gibi bir özellik yok"
 
-#: gio/gdbusconnection.c:4428
+#: gio/gdbusconnection.c:4434
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "“%s” özelliği okunabilir değil"
 
-#: gio/gdbusconnection.c:4439
+#: gio/gdbusconnection.c:4445
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "“%s” özelliği yazılabilir değil"
 
-#: gio/gdbusconnection.c:4459
+#: gio/gdbusconnection.c:4465
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr "“%s” özelliği ayarlanırken hata: “%s” türü beklendi, “%s” elde edildi"
 
-#: gio/gdbusconnection.c:4564 gio/gdbusconnection.c:4779
-#: gio/gdbusconnection.c:6756
+#: gio/gdbusconnection.c:4570 gio/gdbusconnection.c:4785
+#: gio/gdbusconnection.c:6762
 #, c-format
 msgid "No such interface “%s”"
 msgstr "“%s” gibi bir arabirim yok"
 
-#: gio/gdbusconnection.c:4995 gio/gdbusconnection.c:7273
+#: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "%2$s yolundaki nesnede “%1$s” gibi bir arayüz yok"
 
-#: gio/gdbusconnection.c:5096
+#: gio/gdbusconnection.c:5102
 #, c-format
 msgid "No such method “%s”"
 msgstr "“%s” gibi bir anahtar yok"
 
-#: gio/gdbusconnection.c:5127
+#: gio/gdbusconnection.c:5133
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "“%s” iletisinin türü, beklenen “%s” türü ile örtüşmüyor"
 
-#: gio/gdbusconnection.c:5330
+#: gio/gdbusconnection.c:5336
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "%2$s konumundaki %1$s arayüzü için bir nesne zaten dışa aktarıldı"
 
-#: gio/gdbusconnection.c:5557
+#: gio/gdbusconnection.c:5563
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "%s.%s özelliği alınamadı"
 
-#: gio/gdbusconnection.c:5613
+#: gio/gdbusconnection.c:5619
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "%s.%s özelliği ayarlanamadı"
 
-#: gio/gdbusconnection.c:5792
+#: gio/gdbusconnection.c:5798
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "“%s” yöntemi “%s” türü döndürdü, ancak “%s” bekleniyordu"
 
-#: gio/gdbusconnection.c:6868
+#: gio/gdbusconnection.c:6874
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "“%3$s” imzalı “%2$s” arayüzü üzerinde “%1$s” yöntemi yok"
 
-#: gio/gdbusconnection.c:6989
+#: gio/gdbusconnection.c:6995
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "%s için bir alt ağaç zaten dışa aktarılmış"
 
-#: gio/gdbusconnection.c:7281
+#: gio/gdbusconnection.c:7287
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Nesne, “%s” yolunda yok"
 
-#: gio/gdbusmessage.c:1306
+#: gio/gdbusmessage.c:1351
+#, c-format
+msgid "%s message: %s header field is invalid; expected a value of type ‘%s’"
+msgstr ""
+"%s iletisi: %s başlık alanı geçersiz; ‘%s’ türünde bir değer bekleniyor"
+
+#: gio/gdbusmessage.c:1374
+#, c-format
+msgid "%s message: %s header field is missing or invalid"
+msgstr "%s iletisi: %s başlık alanı eksik veya geçersiz"
+
+#: gio/gdbusmessage.c:1413
+#, c-format
+msgid "%s message: INVALID header field supplied"
+msgstr "%s iletisi: INVALID başlık alanı sağlandı"
+
+#: gio/gdbusmessage.c:1424
+#, c-format
+msgid ""
+"%s message: PATH header field is using the reserved value /org/freedesktop/"
+"DBus/Local"
+msgstr ""
+"%s iletisi: PATH başlık alanı, ayrılmış olan /org/freedesktop/DBus/Local "
+"değerini kullanıyor"
+
+#: gio/gdbusmessage.c:1437
+#, c-format
+msgid ""
+"%s message: INTERFACE header field does not contain a valid interface name"
+msgstr "%s iletisi: INTERFACE başlık alanı geçerli bir arayüz içermiyor"
+
+#: gio/gdbusmessage.c:1446
+#, c-format
+msgid ""
+"%s message: INTERFACE header field is using the reserved value org."
+"freedesktop.DBus.Local"
+msgstr ""
+"%s iletisi: INTERFACE başlık alanı, ayrılmış olan org.freedesktop.DBus.Local "
+"değerini kullanıyor"
+
+#: gio/gdbusmessage.c:1459
+#, c-format
+msgid "%s message: MEMBER header field does not contain a valid member name"
+msgstr "%s iletisi: MEMBER başlık alanı geçerli bir üye adı içermiyor"
+
+#: gio/gdbusmessage.c:1472
+#, c-format
+msgid "%s message: ERROR_NAME header field does not contain a valid error name"
+msgstr "%s iletisi: ERROR_NAME başlık alanı geçerli bir hata adı içermiyor"
+
+#: gio/gdbusmessage.c:1511
 msgid "type is INVALID"
 msgstr "tür GEÇERSİZ"
 
-#: gio/gdbusmessage.c:1324
-msgid "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
-msgstr ""
-"METHOD_CALL iletisi:  PATH ya da MEMBER başlık alanı eksik veya geçersiz"
-
-#: gio/gdbusmessage.c:1340
-msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
-msgstr "METHOD_RETURN iletisi: REPLY_SERIAL başlık alanı eksik veya geçersiz"
-
-#: gio/gdbusmessage.c:1360
-msgid ""
-"ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"
-msgstr ""
-"ERROR iletisi: REPLY_SERIAL ya da ERROR_NAME başlık alanı eksik veya geçersiz"
-
-#: gio/gdbusmessage.c:1384
-msgid ""
-"SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"
-msgstr ""
-"SIGNAL iletisi: PATH, INTERFACE ya da MEMBER başlık alanı eksik veya geçersiz"
-
-#: gio/gdbusmessage.c:1392
-msgid ""
-"SIGNAL message: The PATH header field is using the reserved value /org/"
-"freedesktop/DBus/Local"
-msgstr ""
-"SIGNAL iletisi: PATH başlık alanı, ayrılmış olan /org/freedesktop/DBus/Local "
-"değerini kullanıyor"
-
-#: gio/gdbusmessage.c:1400
-msgid ""
-"SIGNAL message: The INTERFACE header field is using the reserved value org."
-"freedesktop.DBus.Local"
-msgstr ""
-"SIGNAL iletisi: INTERFACE başlık alanı, ayrılmış olan org.freedesktop.DBus."
-"Local değerini kullanıyor"
-
-#: gio/gdbusmessage.c:1449 gio/gdbusmessage.c:1509
+#: gio/gdbusmessage.c:1581 gio/gdbusmessage.c:1641
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "%lu bayt okumak istendi ancak yalnızca %lu var"
 
-#: gio/gdbusmessage.c:1463
+#: gio/gdbusmessage.c:1595
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "“%s” dizgesinden sonra NUL baytı beklendi, ama %d baytı bulundu"
 
-#: gio/gdbusmessage.c:1482
+#: gio/gdbusmessage.c:1614
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -833,21 +850,21 @@ msgstr ""
 "Geçerli bir UTF-8 dizgesi beklendi ama %d bayt konumunda geçersiz baytlar "
 "bulundu (dizge uzunluğu %d). Bu noktaya kadar geçerli olan dizge şudur: “%s”"
 
-#: gio/gdbusmessage.c:1546 gio/gdbusmessage.c:1822 gio/gdbusmessage.c:2033
+#: gio/gdbusmessage.c:1678 gio/gdbusmessage.c:1954 gio/gdbusmessage.c:2165
 msgid "Value nested too deeply"
 msgstr "Değer çok derine yuvalanmış"
 
-#: gio/gdbusmessage.c:1714
+#: gio/gdbusmessage.c:1846
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Ayrıştırılan değer “%s”, geçerli bir D-Bus nesne yolu değil"
 
-#: gio/gdbusmessage.c:1738
+#: gio/gdbusmessage.c:1870
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Ayrıştırılan değer “%s”, geçerli bir D-Bus imzası değil"
 
-#: gio/gdbusmessage.c:1789
+#: gio/gdbusmessage.c:1921
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -857,7 +874,7 @@ msgstr[0] ""
 "%u bayt uzunluğunda dizi ile karşılaşıldı. Olabilecek en çok uzunluk 2<<26 "
 "bayt (64 MiB)."
 
-#: gio/gdbusmessage.c:1809
+#: gio/gdbusmessage.c:1941
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -866,23 +883,23 @@ msgstr ""
 "“a%c” türünde dizi ile karşılaşıldı, birden çok %u bayt uzunluğu "
 "beklenmektedir ancak %u bayt uzunluk bulundu"
 
-#: gio/gdbusmessage.c:1963 gio/gdbusmessage.c:2682
+#: gio/gdbusmessage.c:2095 gio/gdbusmessage.c:2822
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "D-Bus’ta boş yapılara (demetler) izin verilmez"
 
-#: gio/gdbusmessage.c:2017
+#: gio/gdbusmessage.c:2149
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Varyant için ayrıştırılmış “%s” değeri geçeriz bir D-Bus imzasıdır"
 
-#: gio/gdbusmessage.c:2058
+#: gio/gdbusmessage.c:2190
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
 "GVariant, D-Bus tel biçiminden “%s” dizge türüyle geri dönüştürülürken hata"
 
-#: gio/gdbusmessage.c:2243
+#: gio/gdbusmessage.c:2375
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -891,57 +908,57 @@ msgstr ""
 "Geçersiz endian değeri. 0x6c (“l”) veya 0x42 (“B”) bekleniyordu ancak 0x%02x "
 "değeri bulundu"
 
-#: gio/gdbusmessage.c:2262
+#: gio/gdbusmessage.c:2394
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Geçersiz önemli iletişim kuralı sürümü. 1 beklendi, %d bulundu"
 
-#: gio/gdbusmessage.c:2320 gio/gdbusmessage.c:2918
+#: gio/gdbusmessage.c:2452 gio/gdbusmessage.c:3058
 msgid "Signature header found but is not of type signature"
 msgstr "İmza başlığı bulundu, ancak tür imzası değil"
 
-#: gio/gdbusmessage.c:2332
+#: gio/gdbusmessage.c:2464
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr "“%s” imzalı bir imza başlığı bulundu ama ileti gövdesi boş"
 
-#: gio/gdbusmessage.c:2347
+#: gio/gdbusmessage.c:2479
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Ayrıştırılan değer “%s” geçerli bir D-Bus imzası değil (gövde için)"
 
-#: gio/gdbusmessage.c:2379
+#: gio/gdbusmessage.c:2519
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "İletide imza başlığı yok ancak ileti gövdesi %u bayt"
 
-#: gio/gdbusmessage.c:2389
+#: gio/gdbusmessage.c:2529
 msgid "Cannot deserialize message: "
 msgstr "İleti geri dönüştürülemiyor: "
 
-#: gio/gdbusmessage.c:2735
+#: gio/gdbusmessage.c:2875
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr "GVariant, D-Bus tel biçimine “%s” dizge türüyle dönüştürülürken hata"
 
-#: gio/gdbusmessage.c:2872
+#: gio/gdbusmessage.c:3012
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr "İletideki dosya açıklayıcı sayısı (%d) başlık alanından (%d) farklı"
 
-#: gio/gdbusmessage.c:2880
+#: gio/gdbusmessage.c:3020
 msgid "Cannot serialize message: "
 msgstr "İleti dönüştürülemiyor: "
 
-#: gio/gdbusmessage.c:2933
+#: gio/gdbusmessage.c:3073
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "İleti gövdesi “%s” imzasına sahip ancak imza başlığı yok"
 
-#: gio/gdbusmessage.c:2943
+#: gio/gdbusmessage.c:3083
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -949,52 +966,52 @@ msgid ""
 msgstr ""
 "İleti gövdesi “%s” tür imzasına sahip ancak başlık alanındaki imza “%s”"
 
-#: gio/gdbusmessage.c:2959
+#: gio/gdbusmessage.c:3099
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "İleti gövdesi boş, ancak başlık alanındaki imza “(%s)”"
 
-#: gio/gdbusmessage.c:3514
+#: gio/gdbusmessage.c:3673
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "“%s” türünden bir gövdeyle dönüş hatası"
 
-#: gio/gdbusmessage.c:3522
+#: gio/gdbusmessage.c:3681
 msgid "Error return with empty body"
 msgstr "Boş gövdeyle dönüş hatası"
 
-#: gio/gdbusprivate.c:2199
+#: gio/gdbusprivate.c:2201
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Pencereyi kapatmak için herhangi bir karakter girin)\n"
 
-#: gio/gdbusprivate.c:2385
+#: gio/gdbusprivate.c:2387
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Dbus oturumu çalışmıyor ve kendiliğinden başlatılamadı"
 
-#: gio/gdbusprivate.c:2408
+#: gio/gdbusprivate.c:2410
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Donanım profili alınamıyor: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2464
+#: gio/gdbusprivate.c:2466
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "%s ya da %s yüklenemedi: "
 
-#: gio/gdbusproxy.c:1568
+#: gio/gdbusproxy.c:1552
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "%s için StartServiceByName çağrısında hata: "
 
-#: gio/gdbusproxy.c:1591
+#: gio/gdbusproxy.c:1575
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "StartServiceByName %d yönteminden beklenmeyen yanıt (\"%s\")"
 
-#: gio/gdbusproxy.c:2702 gio/gdbusproxy.c:2837
+#: gio/gdbusproxy.c:2686 gio/gdbusproxy.c:2821
 #, c-format
 msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
@@ -1003,25 +1020,25 @@ msgstr ""
 "Yöntem çağrılamıyor; vekil sunucu, sahibi olmayan bilindik %s adı için ve "
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START bayrağı ile oluşturuldu"
 
-#: gio/gdbusserver.c:758
+#: gio/gdbusserver.c:739
 msgid "Abstract namespace not supported"
 msgstr "Soyut ad alanı desteklenmiyor"
 
-#: gio/gdbusserver.c:850
+#: gio/gdbusserver.c:831
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Bir sunucu oluşturulurken nonce dosyası belirtilemez"
 
-#: gio/gdbusserver.c:932
+#: gio/gdbusserver.c:913
 #, c-format
 msgid "Error writing nonce file at “%s”: %s"
 msgstr "“%s” konumundaki tek seferlik dosyaya yazma hatası: %s"
 
-#: gio/gdbusserver.c:1107
+#: gio/gdbusserver.c:1088
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
 msgstr "“%s” dizgesi, geçerli bir D-Bus GUID değil"
 
-#: gio/gdbusserver.c:1145
+#: gio/gdbusserver.c:1126
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
 msgstr "Desteklenmeyen aktarım “%s” üzerinde dinlenemiyor"
@@ -1310,71 +1327,72 @@ msgstr "Hata: %s geçerli bilinen bir veri yolu adı değil.\n"
 msgid "Not authorized to change debug settings"
 msgstr "Hata ayıklama ayarlarını değiştirmeye yetkili değil"
 
-#: gio/gdesktopappinfo.c:2243 gio/gdesktopappinfo.c:5227
+#: gio/gdesktopappinfo.c:2235 gio/gdesktopappinfo.c:5219
+#: gio/gwin32appinfo.c:4256
 msgid "Unnamed"
 msgstr "Adlandırılmamış"
 
-#: gio/gdesktopappinfo.c:2653
+#: gio/gdesktopappinfo.c:2645
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Desktop dosyası Exec alanı belirtmemiş"
 
-#: gio/gdesktopappinfo.c:2943
+#: gio/gdesktopappinfo.c:2935
 msgid "Unable to find terminal required for application"
 msgstr "Uygulama için gerekli uçbirim bulunamadı"
 
-#: gio/gdesktopappinfo.c:3003
+#: gio/gdesktopappinfo.c:2995
 #, c-format
 msgid "Program ‘%s’ not found in $PATH"
 msgstr "‘%s’ programı $PATH içinde bulunamadı"
 
-#: gio/gdesktopappinfo.c:3739
+#: gio/gdesktopappinfo.c:3731
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Kullanıcı uygulaması yapılandırma klasörü %s oluşturulamıyor: %s"
 
-#: gio/gdesktopappinfo.c:3743
+#: gio/gdesktopappinfo.c:3735
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Kullanıcı MIME yapılandırma klasörü %s oluşturulamıyor: %s"
 
-#: gio/gdesktopappinfo.c:3985 gio/gdesktopappinfo.c:4009
+#: gio/gdesktopappinfo.c:3977 gio/gdesktopappinfo.c:4001
 msgid "Application information lacks an identifier"
 msgstr "Uygulama bilgisinde tanımlayıcı eksik"
 
-#: gio/gdesktopappinfo.c:4245
+#: gio/gdesktopappinfo.c:4237
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Kullanıcı masaüstü dosyası %s oluşturulamıyor"
 
-#: gio/gdesktopappinfo.c:4381
+#: gio/gdesktopappinfo.c:4373
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s için özel tanım"
 
-#: gio/gdrive.c:419
+#: gio/gdrive.c:417
 msgid "drive doesn’t implement eject"
 msgstr "sürücü çıkartmayı uygulamıyor"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gdrive.c:497
+#: gio/gdrive.c:495
 msgid "drive doesn’t implement eject or eject_with_operation"
 msgstr "sürücü eject veya eject_with_operation uygulamıyor"
 
-#: gio/gdrive.c:573
+#: gio/gdrive.c:571
 msgid "drive doesn’t implement polling for media"
 msgstr "sürücü ortam için yoklamayı uygulamıyor"
 
-#: gio/gdrive.c:780
+#: gio/gdrive.c:778
 msgid "drive doesn’t implement start"
 msgstr "sürücü start uygulamıyor"
 
-#: gio/gdrive.c:882
+#: gio/gdrive.c:880
 msgid "drive doesn’t implement stop"
 msgstr "sürücü stop uygulamıyor"
 
-#: gio/gdtlsconnection.c:1188 gio/gtlsconnection.c:957
+#: gio/gdtlsconnection.c:1154 gio/gtlsconnection.c:921
 msgid "TLS backend does not implement TLS binding retrieval"
 msgstr "TLS arka yüzü, TLS bağlanım geri alımı gerçeklemiyor"
 
@@ -1387,27 +1405,27 @@ msgstr "TLS desteği kullanılabilir değil"
 msgid "DTLS support is not available"
 msgstr "DTLS desteği kullanılabilir değil"
 
-#: gio/gemblem.c:325
+#: gio/gemblem.c:332
 #, c-format
 msgid "Can’t handle version %d of GEmblem encoding"
 msgstr "GEmblem kodlamasının %d sürümü işlenemiyor"
 
-#: gio/gemblem.c:335
+#: gio/gemblem.c:342
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "GEmblem kodlaması içerisinde bozuk jeton sayısı (%d)"
 
-#: gio/gemblemedicon.c:364
+#: gio/gemblemedicon.c:366
 #, c-format
 msgid "Can’t handle version %d of GEmblemedIcon encoding"
 msgstr "GEmblemedIcon kodlamasının %d sürümü işlenemiyor"
 
-#: gio/gemblemedicon.c:374
+#: gio/gemblemedicon.c:376
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "GEmblemedIcon kodlaması içerisinde bozuk jeton sayısı (%d)"
 
-#: gio/gemblemedicon.c:397
+#: gio/gemblemedicon.c:399
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon için bir Gemblem beklendi"
 
@@ -1415,131 +1433,136 @@ msgstr "GEmblemedIcon için bir Gemblem beklendi"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1601
+#: gio/gfile.c:1604
 msgid "Containing mount does not exist"
 msgstr "Bağlama yok"
 
-#: gio/gfile.c:2648 gio/glocalfile.c:2518
+#: gio/gfile.c:2650 gio/glocalfile.c:2520
 msgid "Can’t copy over directory"
 msgstr "Dizin üzerine kopyalanamıyor"
 
-#: gio/gfile.c:2708
+#: gio/gfile.c:2710
 msgid "Can’t copy directory over directory"
 msgstr "Dizin dizin üzerine kopyalanamıyor"
 
-#: gio/gfile.c:2716
+#: gio/gfile.c:2718
 msgid "Target file exists"
 msgstr "Hedef dosya var"
 
-#: gio/gfile.c:2735
+#: gio/gfile.c:2737
 msgid "Can’t recursively copy directory"
 msgstr "Dizin iç içe kopyalanamıyor"
 
-#: gio/gfile.c:3048 gio/gfile.c:3096
+#: gio/gfile.c:3050 gio/gfile.c:3098
 #, c-format
 msgid "Copy file range not supported"
 msgstr "Dosya kopyalama kapsamı desteklenmiyor"
 
-#: gio/gfile.c:3054 gio/gfile.c:3165
+#: gio/gfile.c:3056 gio/gfile.c:3167
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Dosya uç uca eklenirken hata: %s"
 
-#: gio/gfile.c:3161
+#: gio/gfile.c:3163
 msgid "Splice not supported"
 msgstr "Splice desteklenmiyor"
 
-#: gio/gfile.c:3325
+#: gio/gfile.c:3327
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "Bağlı sistemler arasında kopyalama (referans bağlantı/çoğaltmak) "
 "desteklenmiyor"
 
-#: gio/gfile.c:3329
+#: gio/gfile.c:3331
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopyalama desteklenmiyor ya da geçersiz"
 
-#: gio/gfile.c:3334
+#: gio/gfile.c:3336
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopyalama (bağlama/klonlama) destenlenmiyor ya da çalışmadı"
 
-#: gio/gfile.c:3399
+#: gio/gfile.c:3384 gio/gfile.c:3395
+#, c-format
+msgid "Cannot retrieve attribute %s"
+msgstr "%s özniteliği alınamıyor"
+
+#: gio/gfile.c:3415
 msgid "Can’t copy special file"
 msgstr "Özel dosya kopyalanamıyor"
 
-#: gio/gfile.c:4318
+#: gio/gfile.c:4332
 msgid "Invalid symlink value given"
 msgstr "Geçersiz simgesel bağ değeri verildi"
 
-#: gio/gfile.c:4328 glib/gfileutils.c:2424
+#: gio/gfile.c:4342 glib/gfileutils.c:2399
 msgid "Symbolic links not supported"
 msgstr "Simgesel bağlar desteklenmiyor"
 
-#: gio/gfile.c:4615
+#: gio/gfile.c:4623
 msgid "Trash not supported"
 msgstr "Çöp desteklenmiyor"
 
-#: gio/gfile.c:4727
+#: gio/gfile.c:4733
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Dosya adları “%c” içeremez"
 
-#: gio/gfile.c:7155 gio/gfile.c:7281
+#: gio/gfile.c:7159 gio/gfile.c:7285
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "“%s” şablonu için geçici dizin oluşturulamadı: %s"
 
-#: gio/gfile.c:7599 gio/gvolume.c:366
+#: gio/gfile.c:7603 gio/gvolume.c:362
 msgid "volume doesn’t implement mount"
 msgstr "bölüm, bağlamayı yerine getirmiyor"
 
-#: gio/gfile.c:7713 gio/gfile.c:7790
+#: gio/gfile.c:7717 gio/gfile.c:7794
 msgid "No application is registered as handling this file"
 msgstr "Bu dosyayı işleme amacıyla kayıtlı uygulama yok"
 
-#: gio/gfileenumerator.c:214
+#: gio/gfileenumerator.c:216
 msgid "Enumerator is closed"
 msgstr "Enumerator kapalı"
 
-#: gio/gfileenumerator.c:221 gio/gfileenumerator.c:280
-#: gio/gfileenumerator.c:425 gio/gfileenumerator.c:525
+#: gio/gfileenumerator.c:223 gio/gfileenumerator.c:282
+#: gio/gfileenumerator.c:427 gio/gfileenumerator.c:527
 msgid "File enumerator has outstanding operation"
 msgstr "Dosya numaralandırıcı sıra dışı işleme sahip"
 
-#: gio/gfileenumerator.c:416 gio/gfileenumerator.c:516
+#: gio/gfileenumerator.c:418 gio/gfileenumerator.c:518
 msgid "File enumerator is already closed"
 msgstr "Dosya numaralandırıcı zaten kapalı"
 
-#: gio/gfileicon.c:252
+#: gio/gfileicon.c:248
 #, c-format
 msgid "Can’t handle version %d of GFileIcon encoding"
 msgstr "GFileIcon kodlamasının %d sürümü işlenemiyor"
 
-#: gio/gfileicon.c:262
+#: gio/gfileicon.c:258
 msgid "Malformed input data for GFileIcon"
 msgstr "GFileIcon için bozuk girdi verisi"
 
-#: gio/gfileinputstream.c:151 gio/gfileinputstream.c:397
-#: gio/gfileiostream.c:169 gio/gfileoutputstream.c:166
-#: gio/gfileoutputstream.c:499
+#: gio/gfileinputstream.c:148 gio/gfileinputstream.c:394
+#: gio/gfileiostream.c:166 gio/gfileoutputstream.c:163
+#: gio/gfileoutputstream.c:497
 msgid "Stream doesn’t support query_info"
 msgstr "Akış query_info desteklemiyor"
 
-#: gio/gfileinputstream.c:328 gio/gfileiostream.c:382
-#: gio/gfileoutputstream.c:373
+#: gio/gfileinputstream.c:325 gio/gfileiostream.c:380
+#: gio/gfileoutputstream.c:371
 msgid "Seek not supported on stream"
 msgstr "Atlama akışta desteklenmiyor"
 
-#: gio/gfileinputstream.c:372
+#: gio/gfileinputstream.c:369
 msgid "Truncate not allowed on input stream"
 msgstr "Sonunu kesmeye giriş akışında izin verilmiyor"
 
-#: gio/gfileiostream.c:458 gio/gfileoutputstream.c:449
+#: gio/gfileiostream.c:456 gio/gfileoutputstream.c:447
 msgid "Truncate not supported on stream"
 msgstr "Akış üzerinde sonunun kesilmesi desteklenmiyor"
 
-#: gio/ghttpproxy.c:93 gio/gresolver.c:535 gio/gresolver.c:688
-#: glib/gconvert.c:1743
+#: gio/ghttpproxy.c:93 gio/gresolver.c:529 gio/gresolver.c:682
+#: glib/gconvert.c:1752
 msgid "Invalid hostname"
 msgstr "Geçersiz makine adı"
 
@@ -1572,64 +1595,64 @@ msgstr "HTTP vekil sunucu yanıtı çok büyük"
 msgid "HTTP proxy server closed connection unexpectedly."
 msgstr "HTTP vekil sunucusu bağlantıyı beklenmedik biçimde kesti."
 
-#: gio/gicon.c:299
+#: gio/gicon.c:298
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Yanlış jeton sayısı (%d)"
 
-#: gio/gicon.c:319
+#: gio/gicon.c:318
 #, c-format
 msgid "No type for class name %s"
 msgstr "Sınıf adı %s için tür yok"
 
-#: gio/gicon.c:329
+#: gio/gicon.c:328
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "%s türü GIcon arayüzü uygulamıyor"
 
-#: gio/gicon.c:340
+#: gio/gicon.c:339
 #, c-format
 msgid "Type %s is not classed"
 msgstr "%s türü sınıflandırılmış değil"
 
-#: gio/gicon.c:354
+#: gio/gicon.c:353
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Bozuk sürüm numarası: %s"
 
-#: gio/gicon.c:368
+#: gio/gicon.c:367
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "%s türü GIcon arayüzü üzerinde from_tokens() uygulamıyor"
 
-#: gio/gicon.c:470
+#: gio/gicon.c:469
 msgid "Can’t handle the supplied version of the icon encoding"
 msgstr "Simge kodlamasının verilen sürümü işlenemiyor"
 
-#: gio/ginetaddressmask.c:184
+#: gio/ginetaddressmask.c:192
 msgid "No address specified"
 msgstr "Belirtilen hiçbir adres yok"
 
-#: gio/ginetaddressmask.c:192
+#: gio/ginetaddressmask.c:200
 #, c-format
 msgid "Length %u is too long for address"
 msgstr "Adres için %u uzunluğu çok uzun"
 
-#: gio/ginetaddressmask.c:225
+#: gio/ginetaddressmask.c:233
 msgid "Address has bits set beyond prefix length"
 msgstr "Adres önek uzunluğundan daha çok bite sahiptir"
 
-#: gio/ginetaddressmask.c:302
+#: gio/ginetaddressmask.c:310
 #, c-format
 msgid "Could not parse “%s” as IP address mask"
 msgstr "“%s”, IP adresi maskesi olarak ayrıştırılamadı"
 
-#: gio/ginetsocketaddress.c:205 gio/ginetsocketaddress.c:222
-#: gio/gnativesocketaddress.c:111 gio/gunixsocketaddress.c:230
+#: gio/ginetsocketaddress.c:199 gio/ginetsocketaddress.c:216
+#: gio/gnativesocketaddress.c:107 gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "Yuva adresi için yeterli alan yok"
 
-#: gio/ginetsocketaddress.c:237
+#: gio/ginetsocketaddress.c:231
 msgid "Unsupported socket address"
 msgstr "Desteklenmeyen yuva adresi"
 
@@ -1643,7 +1666,7 @@ msgstr "Giriş akımı okumayı uygulamıyor"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:1256 gio/giostream.c:312 gio/goutputstream.c:2218
+#: gio/ginputstream.c:1256 gio/giostream.c:327 gio/goutputstream.c:2218
 msgid "Stream has outstanding operation"
 msgstr "Akışın sıra dışı işlemi var"
 
@@ -1659,7 +1682,7 @@ msgstr "Taşındığında dosyayla tut"
 msgid "“version” takes no arguments"
 msgstr "“version” hiçbir argüman almaz"
 
-#: gio/gio-tool.c:209 gio/gio-tool.c:225 glib/goption.c:711
+#: gio/gio-tool.c:209 gio/gio-tool.c:258 glib/goption.c:712
 msgid "Usage:"
 msgstr "Kullanım:"
 
@@ -1667,79 +1690,79 @@ msgstr "Kullanım:"
 msgid "Print version information and exit."
 msgstr "Sürüm bilgisini yazdır ve çık."
 
-#: gio/gio-tool.c:228
-msgid "Commands:"
-msgstr "Komutlar:"
-
-#: gio/gio-tool.c:231
+#: gio/gio-tool.c:232
 msgid "Concatenate files to standard output"
 msgstr "Dosyaları standart çıktıya bitiştir"
 
-#: gio/gio-tool.c:232
+#: gio/gio-tool.c:233
 msgid "Copy one or more files"
 msgstr "Bir veya daha çok dosya kopyala"
 
-#: gio/gio-tool.c:233
+#: gio/gio-tool.c:234
 msgid "Show information about locations"
 msgstr "Konumlar hakkında bilgi göster"
 
-#: gio/gio-tool.c:234
+#: gio/gio-tool.c:235
 msgid "Launch an application from a desktop file"
 msgstr "Masaüstü dosyasından uygulama başlat"
 
-#: gio/gio-tool.c:235
+#: gio/gio-tool.c:236
 msgid "List the contents of locations"
 msgstr "Konumların içeriklerini listele"
 
-#: gio/gio-tool.c:236
+#: gio/gio-tool.c:237
 msgid "Get or set the handler for a mimetype"
 msgstr "MIME türü için işleyici belirle veya al"
 
-#: gio/gio-tool.c:237
+#: gio/gio-tool.c:238
 msgid "Create directories"
 msgstr "Dizinler oluştur"
 
-#: gio/gio-tool.c:238
+#: gio/gio-tool.c:239
 msgid "Monitor files and directories for changes"
 msgstr "Dosyaları ve dizinleri değişiklikler için gözlemle"
 
-#: gio/gio-tool.c:239
+#: gio/gio-tool.c:240
 msgid "Mount or unmount the locations"
 msgstr "Konumları bağla veya ayır"
 
-#: gio/gio-tool.c:240
+#: gio/gio-tool.c:241
 msgid "Move one or more files"
 msgstr "Bir veya daha çok dosya taşı"
 
-#: gio/gio-tool.c:241
+#: gio/gio-tool.c:242
 msgid "Open files with the default application"
 msgstr "Dosyaları öntanımlı uygulamayla aç"
 
-#: gio/gio-tool.c:242
+#: gio/gio-tool.c:243
 msgid "Rename a file"
 msgstr "Dosyayı yeniden adlandır"
 
-#: gio/gio-tool.c:243
+#: gio/gio-tool.c:244
 msgid "Delete one or more files"
 msgstr "Bir veya daha çok dosya sil"
 
-#: gio/gio-tool.c:244
+#: gio/gio-tool.c:245
 msgid "Read from standard input and save"
 msgstr "Standart girdiden oku ve kaydet"
 
-#: gio/gio-tool.c:245
+#: gio/gio-tool.c:246
 msgid "Set a file attribute"
 msgstr "Dosya özniteliği belirle"
 
-#: gio/gio-tool.c:246
+#: gio/gio-tool.c:247
 msgid "Move files or directories to the trash"
 msgstr "Dosyaları veya dizinleri çöpe taşı"
 
-#: gio/gio-tool.c:247
+#: gio/gio-tool.c:248
 msgid "Lists the contents of locations in a tree"
 msgstr "Konumların içeriklerini ağaçta listele"
 
-#: gio/gio-tool.c:249
+#: gio/gio-tool.c:261
+msgid "Commands:"
+msgstr "Komutlar:"
+
+#: gio/gio-tool.c:275
 #, c-format
 msgid "Use %s to get detailed help.\n"
 msgstr "Ayrıntılı yardım almak için %s kullan.\n"
@@ -1749,7 +1772,7 @@ msgid "Error writing to stdout"
 msgstr "stdout’a yazılırken hata"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:382 gio/gio-tool-list.c:176
+#: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:383 gio/gio-tool-list.c:176
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
 #: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1236 gio/gio-tool-open.c:72
@@ -1772,7 +1795,7 @@ msgstr ""
 "yerine GIO konumlarını kullanır: örneğin, smb://sunucu/kaynak/dosya.txt\n"
 "gibi bir şeyi konum olarak kullanabilirsiniz."
 
-#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:413 gio/gio-tool-mkdir.c:78
+#: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:414 gio/gio-tool-mkdir.c:78
 #: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1287 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:303
 msgid "No locations given"
@@ -1885,52 +1908,52 @@ msgstr "gösterme adı: %s\n"
 msgid "edit name: %s\n"
 msgstr "adı düzenle: %s\n"
 
-#: gio/gio-tool-info.c:184
+#: gio/gio-tool-info.c:185
 #, c-format
 msgid "name: %s\n"
 msgstr "ad: %s\n"
 
-#: gio/gio-tool-info.c:191
+#: gio/gio-tool-info.c:192
 #, c-format
 msgid "type: %s\n"
 msgstr "tür: %s\n"
 
-#: gio/gio-tool-info.c:197
+#: gio/gio-tool-info.c:198
 msgid "size: "
 msgstr "boyut: "
 
-#: gio/gio-tool-info.c:203
+#: gio/gio-tool-info.c:204
 msgid "hidden\n"
 msgstr "gizli\n"
 
-#: gio/gio-tool-info.c:206
+#: gio/gio-tool-info.c:207
 #, c-format
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
-#: gio/gio-tool-info.c:213
+#: gio/gio-tool-info.c:214
 #, c-format
 msgid "local path: %s\n"
 msgstr "yerel yol: %s\n"
 
-#: gio/gio-tool-info.c:247
+#: gio/gio-tool-info.c:248
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
 msgstr "unix bağlaması: %s%s %s %s %s\n"
 
-#: gio/gio-tool-info.c:328
+#: gio/gio-tool-info.c:329
 msgid "Settable attributes:\n"
 msgstr "Belirlenebilir öznitelikler:\n"
 
-#: gio/gio-tool-info.c:352
+#: gio/gio-tool-info.c:353
 msgid "Writable attribute namespaces:\n"
 msgstr "Yazılabilir öznitelik ad boşlukları:\n"
 
-#: gio/gio-tool-info.c:387
+#: gio/gio-tool-info.c:388
 msgid "Show information about locations."
 msgstr "Konumlar hakkında bilgi göster."
 
-#: gio/gio-tool-info.c:389
+#: gio/gio-tool-info.c:390
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -3049,124 +3072,124 @@ msgstr "%s için dosya sistemi bilgisi alınırken hata: %s"
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: gio/glocalfile.c:1148
+#: gio/glocalfile.c:1150
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "%s dosyası için bağlama bulunamadı"
 
-#: gio/glocalfile.c:1171
+#: gio/glocalfile.c:1173
 msgid "Can’t rename root directory"
 msgstr "Kök dizini yeniden adlandırılamaz"
 
-#: gio/glocalfile.c:1189 gio/glocalfile.c:1212
+#: gio/glocalfile.c:1191 gio/glocalfile.c:1214
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "%s dosyası yeniden adlandırılırken hata: %s"
 
-#: gio/glocalfile.c:1196
+#: gio/glocalfile.c:1198
 msgid "Can’t rename file, filename already exists"
 msgstr "Dosya yeniden adlandırılamıyor, dosya adı zaten var"
 
-#: gio/glocalfile.c:1209 gio/glocalfile.c:2412 gio/glocalfile.c:2440
-#: gio/glocalfile.c:2579 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1211 gio/glocalfile.c:2414 gio/glocalfile.c:2442
+#: gio/glocalfile.c:2581 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "Geçersiz dosya adı"
 
-#: gio/glocalfile.c:1377 gio/glocalfile.c:1388
+#: gio/glocalfile.c:1379 gio/glocalfile.c:1390
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "%s dosyası açılırken hata: %s"
 
-#: gio/glocalfile.c:1513
+#: gio/glocalfile.c:1515
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "%s dosyası silinirken hata: %s"
 
-#: gio/glocalfile.c:2007 gio/glocalfile.c:2018 gio/glocalfile.c:2045
+#: gio/glocalfile.c:2009 gio/glocalfile.c:2020 gio/glocalfile.c:2047
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "%s dosyası çöpe atılırken hata: %s"
 
-#: gio/glocalfile.c:2065
+#: gio/glocalfile.c:2067
 #, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "Çöp dizini %s oluşturulamadı: %s"
 
-#: gio/glocalfile.c:2086
+#: gio/glocalfile.c:2088
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "%s çöpe atmak için en üst seviye dizin bulunamıyor"
 
-#: gio/glocalfile.c:2094
+#: gio/glocalfile.c:2096
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr "Sistem iç bağlarına çöpleme desteklenmiyor"
 
-#: gio/glocalfile.c:2180 gio/glocalfile.c:2208
+#: gio/glocalfile.c:2182 gio/glocalfile.c:2210
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr "%2$s çöpe atılırken %1$s çöp dizini bulunamıyor ya da oluşturulamıyor"
 
-#: gio/glocalfile.c:2252
+#: gio/glocalfile.c:2254
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "%s için çöp bilgi dosyası oluşturulamıyor: %s"
 
-#: gio/glocalfile.c:2323
+#: gio/glocalfile.c:2325
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "%s dosyası, dosya sistemi sınırları dışına, çöpe atılamıyor"
 
-#: gio/glocalfile.c:2327 gio/glocalfile.c:2383
+#: gio/glocalfile.c:2329 gio/glocalfile.c:2385
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "%s dosyası çöpe atılamıyor: %s"
 
-#: gio/glocalfile.c:2389
+#: gio/glocalfile.c:2391
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "%s dosyası çöpe atılamıyor"
 
-#: gio/glocalfile.c:2415
+#: gio/glocalfile.c:2417
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "%s dizini oluşturulurken hata: %s"
 
-#: gio/glocalfile.c:2444
+#: gio/glocalfile.c:2446
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Dosya sistemi simgesel bağları desteklemiyor"
 
-#: gio/glocalfile.c:2447
+#: gio/glocalfile.c:2449
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "%s simgesel bağlantısı yapılırken hata: %s"
 
-#: gio/glocalfile.c:2490 gio/glocalfile.c:2525 gio/glocalfile.c:2582
+#: gio/glocalfile.c:2492 gio/glocalfile.c:2527 gio/glocalfile.c:2584
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "%s dosyası taşınırken hata: %s"
 
-#: gio/glocalfile.c:2513
+#: gio/glocalfile.c:2515
 msgid "Can’t move directory over directory"
 msgstr "Dizin dizin üzerine taşınamıyor"
 
-#: gio/glocalfile.c:2539 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2541 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
 #: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1170
 msgid "Backup file creation failed"
 msgstr "Yedek dosyası oluşturulamadı"
 
-#: gio/glocalfile.c:2558
+#: gio/glocalfile.c:2560
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Hedef dosya silerken hata: %s"
 
-#: gio/glocalfile.c:2572
+#: gio/glocalfile.c:2574
 msgid "Move between mounts not supported"
 msgstr "Bağlı sistemler arasında taşıma desteklenmiyor"
 
-#: gio/glocalfile.c:2748
+#: gio/glocalfile.c:2750
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "%s’in disk kullanımı saptanamadı: %s"
@@ -3188,116 +3211,116 @@ msgstr "Geçersiz genişletilmiş öznitelik adı"
 msgid "Error setting extended attribute “%s”: %s"
 msgstr "“%s” genişletilmiş özniteliği atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:1785 gio/win32/gwinhttpfile.c:191
+#: gio/glocalfileinfo.c:1789 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
 msgstr " (geçersiz kodlama)"
 
-#: gio/glocalfileinfo.c:1944 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1948 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "“%s” dosyası için bilgi alınırken hata: %s"
 
-#: gio/glocalfileinfo.c:2250
+#: gio/glocalfileinfo.c:2254
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Dosya tanımlayıcı için bilgi alındığında hata: %s"
 
-#: gio/glocalfileinfo.c:2295
+#: gio/glocalfileinfo.c:2299
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Geçersiz öznitelik türü (uint32 beklendi)"
 
-#: gio/glocalfileinfo.c:2313
+#: gio/glocalfileinfo.c:2317
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Geçersiz öznitelik türü (uint64 beklendi)"
 
-#: gio/glocalfileinfo.c:2332 gio/glocalfileinfo.c:2351
+#: gio/glocalfileinfo.c:2336 gio/glocalfileinfo.c:2355
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Geçersiz öznitelik türü (byte dizisi beklendi)"
 
-#: gio/glocalfileinfo.c:2398
+#: gio/glocalfileinfo.c:2402
 msgid "Cannot set permissions on symlinks"
 msgstr "Simgesel bağlar üzerindeki yetkiler ayarlanamıyor"
 
-#: gio/glocalfileinfo.c:2414
+#: gio/glocalfileinfo.c:2418
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "İzinler atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2465
+#: gio/glocalfileinfo.c:2469
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Sahip atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2488
+#: gio/glocalfileinfo.c:2492
 msgid "symlink must be non-NULL"
 msgstr "simgesel bağ NULL olmamalı"
 
-#: gio/glocalfileinfo.c:2498 gio/glocalfileinfo.c:2517
-#: gio/glocalfileinfo.c:2528
+#: gio/glocalfileinfo.c:2502 gio/glocalfileinfo.c:2521
+#: gio/glocalfileinfo.c:2532
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Simgesel bağ atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2507
+#: gio/glocalfileinfo.c:2511
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Simgesel bağ atanırken hata: dosya bir simgesel bağ değil"
 
-#: gio/glocalfileinfo.c:2599
+#: gio/glocalfileinfo.c:2603
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "UNIX zaman damgası %2$lld için %1$d ek nanosaniye negatif"
 
-#: gio/glocalfileinfo.c:2608
+#: gio/glocalfileinfo.c:2612
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "UNIX zaman damgası %2$lld için %1$d ek nano saniye 1 saniyeye ulaştı"
 
-#: gio/glocalfileinfo.c:2618
+#: gio/glocalfileinfo.c:2622
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "UNIX zaman damgası %lld 64 bit’e sığmıyor"
 
-#: gio/glocalfileinfo.c:2629
+#: gio/glocalfileinfo.c:2633
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "UNIX zaman damgası %lld Windows tarafından desteklenen aralığın dışında"
 
-#: gio/glocalfileinfo.c:2761
+#: gio/glocalfileinfo.c:2765
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "“%s” dosya adı UTF-16’ya dönüştürülemedi"
 
-#: gio/glocalfileinfo.c:2780
+#: gio/glocalfileinfo.c:2784
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "“%s” dosyası açılamadı: Windows Hatası %lu"
 
-#: gio/glocalfileinfo.c:2793
+#: gio/glocalfileinfo.c:2797
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "“%s” dosyasına değiştirme veya erişim süresi atanırken hata: %lu"
 
-#: gio/glocalfileinfo.c:2970
+#: gio/glocalfileinfo.c:2974
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Değiştirme veya erişim süresi atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:2993
+#: gio/glocalfileinfo.c:2997
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux bağlamı NULL olmamalı"
 
-#: gio/glocalfileinfo.c:3000
+#: gio/glocalfileinfo.c:3004
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux bu sistede etkin değil"
 
-#: gio/glocalfileinfo.c:3010
+#: gio/glocalfileinfo.c:3014
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux bağlamı atanırken hata: %s"
 
-#: gio/glocalfileinfo.c:3107
+#: gio/glocalfileinfo.c:3111
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Öznitelik %s ataması desteklenmiyor"
@@ -3350,7 +3373,7 @@ msgid "Error truncating file: %s"
 msgstr "Dosyanın sonu kesilirken hata: %s"
 
 #: gio/glocalfileoutputstream.c:664 gio/glocalfileoutputstream.c:909
-#: gio/glocalfileoutputstream.c:1223 gio/gsubprocess.c:231
+#: gio/glocalfileoutputstream.c:1223 gio/gsubprocess.c:227
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "“%s” dosyası açılırken hata: %s"
@@ -3372,27 +3395,27 @@ msgstr "Dosya dışarıdan değiştirilmiş"
 msgid "Error removing old file: %s"
 msgstr "Eski dosya silinirken hata: %s"
 
-#: gio/gmemoryinputstream.c:476 gio/gmemoryoutputstream.c:764
+#: gio/gmemoryinputstream.c:473 gio/gmemoryoutputstream.c:751
 msgid "Invalid GSeekType supplied"
 msgstr "Geçersiz GSeekType sağlandı"
 
-#: gio/gmemoryinputstream.c:486
+#: gio/gmemoryinputstream.c:483
 msgid "Invalid seek request"
 msgstr "Geçersiz atlama isteği"
 
-#: gio/gmemoryinputstream.c:510
+#: gio/gmemoryinputstream.c:507
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream sonu silinemiyor"
 
-#: gio/gmemoryoutputstream.c:570
+#: gio/gmemoryoutputstream.c:557
 msgid "Memory output stream not resizable"
 msgstr "Bellek çıktı akışı yeniden boyutlandırılamaz"
 
-#: gio/gmemoryoutputstream.c:586
+#: gio/gmemoryoutputstream.c:573
 msgid "Failed to resize memory output stream"
 msgstr "Bellek çıktı akışı yeniden boyutlandırılamadı"
 
-#: gio/gmemoryoutputstream.c:665
+#: gio/gmemoryoutputstream.c:652
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
@@ -3400,32 +3423,32 @@ msgstr ""
 "Yazma işlemi için gereken bellek miktarı, kullanılabilir adres uzayından "
 "daha büyük"
 
-#: gio/gmemoryoutputstream.c:774
+#: gio/gmemoryoutputstream.c:761
 msgid "Requested seek before the beginning of the stream"
 msgstr "Akış başlamadan önce arama istendi"
 
-#: gio/gmemoryoutputstream.c:789
+#: gio/gmemoryoutputstream.c:776
 msgid "Requested seek beyond the end of the stream"
 msgstr "Akışın sonu dışında arama istendi"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: gio/gmount.c:401
+#: gio/gmount.c:400
 msgid "mount doesn’t implement “unmount”"
 msgstr "bağlama, “ayır” işlemini yerine getirmiyor"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: gio/gmount.c:477
+#: gio/gmount.c:476
 msgid "mount doesn’t implement “eject”"
 msgstr "bağlama, “çıkar” işlemini yerine getirmiyor"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: gio/gmount.c:555
+#: gio/gmount.c:554
 msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
 msgstr ""
 "bağlama, “ayır” veya “unmount_with_operation” işlemini yerine getirmiyor"
@@ -3433,7 +3456,7 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gmount.c:640
+#: gio/gmount.c:639
 msgid "mount doesn’t implement “eject” or “eject_with_operation”"
 msgstr ""
 "bağlama, “çıkar” veya “eject_with_operation” işlemini yerine getirmiyor"
@@ -3441,34 +3464,34 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: gio/gmount.c:728
+#: gio/gmount.c:727
 msgid "mount doesn’t implement “remount”"
 msgstr "bağlama, “remount” işlemini yerine getirmiyor"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:810
+#: gio/gmount.c:809
 msgid "mount doesn’t implement content type guessing"
 msgstr "bağlama, içerik türü tahminini yerine getirmiyor"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: gio/gmount.c:897
+#: gio/gmount.c:896
 msgid "mount doesn’t implement synchronous content type guessing"
 msgstr "bağlama, eş zamanlı içerik türü tahminini yerine getirmiyor"
 
-#: gio/gnetworkaddress.c:417
+#: gio/gnetworkaddress.c:424
 #, c-format
 msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "“%s” ana makine adı “[” içeriyor ama “]” içermiyor"
 
-#: gio/gnetworkmonitorbase.c:221 gio/gnetworkmonitorbase.c:325
+#: gio/gnetworkmonitorbase.c:221 gio/gnetworkmonitorbase.c:326
 msgid "Network unreachable"
 msgstr "Ağa erişilemiyor"
 
-#: gio/gnetworkmonitorbase.c:259 gio/gnetworkmonitorbase.c:289
+#: gio/gnetworkmonitorbase.c:259 gio/gnetworkmonitorbase.c:290
 msgid "Host unreachable"
 msgstr "Makineye erişilemiyor"
 
@@ -3496,7 +3519,7 @@ msgstr "NetworkManager çalışmıyor"
 msgid "NetworkManager version too old"
 msgstr "NetworkManager sürümü çok eski"
 
-#: gio/goutputstream.c:234 gio/goutputstream.c:777
+#: gio/goutputstream.c:236 gio/goutputstream.c:777
 msgid "Output stream doesn’t implement write"
 msgstr "Çıktı akışı yazmayı yerine getirmiyor"
 
@@ -3509,38 +3532,38 @@ msgstr "%s için geçilen vektörlerin toplamı çok büyük"
 msgid "Source stream is already closed"
 msgstr "Kaynak akışı zaten kapalı"
 
-#: gio/gproxyaddressenumerator.c:329 gio/gproxyaddressenumerator.c:347
+#: gio/gproxyaddressenumerator.c:328 gio/gproxyaddressenumerator.c:348
 msgid "Unspecified proxy lookup failure"
 msgstr "Belirtilmemiş vekil bakış başarısızlığı"
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
-#: gio/gresolver.c:478 gio/gthreadedresolver.c:317 gio/gthreadedresolver.c:338
-#: gio/gthreadedresolver.c:983 gio/gthreadedresolver.c:1007
-#: gio/gthreadedresolver.c:1032 gio/gthreadedresolver.c:1047
+#: gio/gresolver.c:472 gio/gthreadedresolver.c:318 gio/gthreadedresolver.c:339
+#: gio/gthreadedresolver.c:984 gio/gthreadedresolver.c:1008
+#: gio/gthreadedresolver.c:1033 gio/gthreadedresolver.c:1048
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "“%s” çözülürken hata: %s"
 
 #. Translators: The placeholder is for a function name.
-#: gio/gresolver.c:547 gio/gresolver.c:707
+#: gio/gresolver.c:541 gio/gresolver.c:701
 #, c-format
 msgid "%s not implemented"
 msgstr "%s uygulanmadı"
 
-#: gio/gresolver.c:1076 gio/gresolver.c:1128
+#: gio/gresolver.c:1070 gio/gresolver.c:1122
 msgid "Invalid domain"
 msgstr "Geçersiz alan adı"
 
-#: gio/gresource.c:683 gio/gresource.c:945 gio/gresource.c:985
-#: gio/gresource.c:1109 gio/gresource.c:1181 gio/gresource.c:1255
-#: gio/gresource.c:1336 gio/gresourcefile.c:482 gio/gresourcefile.c:606
+#: gio/gresource.c:706 gio/gresource.c:968 gio/gresource.c:1008
+#: gio/gresource.c:1132 gio/gresource.c:1204 gio/gresource.c:1278
+#: gio/gresource.c:1359 gio/gresourcefile.c:482 gio/gresourcefile.c:606
 #: gio/gresourcefile.c:757
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "“%s” konumundaki kaynak yok"
 
-#: gio/gresource.c:850
+#: gio/gresource.c:873
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "“%s” konumundaki kaynak açılamadı"
@@ -3558,11 +3581,11 @@ msgstr "“%s” konumundaki kaynak bir dizin değildir"
 msgid "Input stream doesn’t implement seek"
 msgstr "Girdi akışı aramayı yerine getirmiyor"
 
-#: gio/gresource-tool.c:502
+#: gio/gresource-tool.c:503
 msgid "List sections containing resources in an elf FILE"
 msgstr "Kaynakları içeren bölümleri bir elf DOSYASINDA listele"
 
-#: gio/gresource-tool.c:508
+#: gio/gresource-tool.c:509
 msgid ""
 "List resources\n"
 "If SECTION is given, only list resources in this section\n"
@@ -3572,15 +3595,15 @@ msgstr ""
 "Eğer BÖLÜM verilirse, yalnızca bu bölümün kaynaklarını listele\n"
 "Eğer YOL verilirse, yalnızca eşleşen kaynakları listele"
 
-#: gio/gresource-tool.c:511 gio/gresource-tool.c:521
+#: gio/gresource-tool.c:512 gio/gresource-tool.c:522
 msgid "FILE [PATH]"
 msgstr "DOSYA [YOL]"
 
-#: gio/gresource-tool.c:512 gio/gresource-tool.c:522 gio/gresource-tool.c:529
+#: gio/gresource-tool.c:513 gio/gresource-tool.c:523 gio/gresource-tool.c:530
 msgid "SECTION"
 msgstr "[BÖLÜM]"
 
-#: gio/gresource-tool.c:517
+#: gio/gresource-tool.c:518
 msgid ""
 "List resources with details\n"
 "If SECTION is given, only list resources in this section\n"
@@ -3592,15 +3615,15 @@ msgstr ""
 "Eğer YOL verilirse, yalnızca eşleşen kaynakları listele\n"
 "Ayrıntılar bölüm, boyut, sıkıştırma bilgilerini içerir"
 
-#: gio/gresource-tool.c:527
+#: gio/gresource-tool.c:528
 msgid "Extract a resource file to stdout"
 msgstr "Bir kaynak dosyasını stdout konumuna çıkar"
 
-#: gio/gresource-tool.c:528
+#: gio/gresource-tool.c:529
 msgid "FILE PATH"
 msgstr "DOSYA YOLU"
 
-#: gio/gresource-tool.c:542
+#: gio/gresource-tool.c:543
 msgid ""
 "Usage:\n"
 "  gresource [--section SECTION] COMMAND [ARGS…]\n"
@@ -3628,7 +3651,7 @@ msgstr ""
 "Ayrıntılı yardım almak için “gresource help KOMUT” komutunu kullan.\n"
 "\n"
 
-#: gio/gresource-tool.c:556
+#: gio/gresource-tool.c:557
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3643,19 +3666,19 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: gio/gresource-tool.c:563
+#: gio/gresource-tool.c:564
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  BÖLÜM   (İsteğe Bağlı) Bir elf bölüm adı\n"
 
-#: gio/gresource-tool.c:567 gio/gsettings-tool.c:720
+#: gio/gresource-tool.c:568 gio/gsettings-tool.c:720
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMUT   (İsteğe Bağlı) Açıklanacak komut\n"
 
-#: gio/gresource-tool.c:573
+#: gio/gresource-tool.c:574
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr "  DOSYA      Bir elf dosyası (ikili ya da paylaşımlı bir kütüphane)\n"
 
-#: gio/gresource-tool.c:576
+#: gio/gresource-tool.c:577
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
@@ -3663,19 +3686,19 @@ msgstr ""
 "  DOSYA      Bir elf dosyası (ikili ya da paylaşımlı bir kütüphane)\n"
 "            ya da derlenmiş bir kaynak dosyası\n"
 
-#: gio/gresource-tool.c:580
+#: gio/gresource-tool.c:581
 msgid "[PATH]"
 msgstr "[YOL]"
 
-#: gio/gresource-tool.c:582
+#: gio/gresource-tool.c:583
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  YOL      (isteğe bağlı) kaynak yolu (kısmi olabilir)\n"
 
-#: gio/gresource-tool.c:583
+#: gio/gresource-tool.c:584
 msgid "PATH"
 msgstr "YOL"
 
-#: gio/gresource-tool.c:585
+#: gio/gresource-tool.c:586
 msgid "  PATH      A resource path\n"
 msgstr "  YOL      Kaynak yolu\n"
 
@@ -3908,214 +3931,214 @@ msgstr "Boş şema adı verildi\n"
 msgid "No such key “%s”\n"
 msgstr "“%s” gibi bir anahtar yok\n"
 
-#: gio/gsocket.c:419
+#: gio/gsocket.c:435
 msgid "Invalid socket, not initialized"
 msgstr "Geçersiz yuva, başlatılmadı"
 
-#: gio/gsocket.c:426
+#: gio/gsocket.c:442
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Geçersiz yuva, başlatılamadı: %s"
 
-#: gio/gsocket.c:434
+#: gio/gsocket.c:450
 msgid "Socket is already closed"
 msgstr "Yuva zaten kapalı"
 
-#: gio/gsocket.c:449 gio/gsocket.c:3238 gio/gsocket.c:4469 gio/gsocket.c:4527
-#: gio/gthreadedresolver.c:1452
+#: gio/gsocket.c:465 gio/gsocket.c:3291 gio/gsocket.c:4664 gio/gsocket.c:4722
+#: gio/gthreadedresolver.c:1454
 msgid "Socket I/O timed out"
 msgstr "Yuva G/Ç zaman aşımı"
 
-#: gio/gsocket.c:586
+#: gio/gsocket.c:602
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "fd’den GSocket oluşturuluyor: %s"
 
-#: gio/gsocket.c:646 gio/gsocket.c:714 gio/gsocket.c:721
+#: gio/gsocket.c:662 gio/gsocket.c:730 gio/gsocket.c:737
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Yuva oluşturulamadı: %s"
 
-#: gio/gsocket.c:714
+#: gio/gsocket.c:730
 msgid "Unknown family was specified"
 msgstr "Bilinmeyen küme belirtildi"
 
-#: gio/gsocket.c:721
+#: gio/gsocket.c:737
 msgid "Unknown protocol was specified"
 msgstr "Bilinmeyen iletişim kuralı belirtildi"
 
-#: gio/gsocket.c:1190
+#: gio/gsocket.c:1243
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr "Datagram olmayan bir yuva üzerinde datagram işlemleri kullanılamaz."
 
-#: gio/gsocket.c:1207
+#: gio/gsocket.c:1260
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
 "Zamanaşımı ayarlanmış bir yuva üzerinde datagram işlemleri kullanılamaz."
 
-#: gio/gsocket.c:2014
+#: gio/gsocket.c:2067
 #, c-format
 msgid "could not get local address: %s"
 msgstr "yerel adres alınamadı: %s"
 
-#: gio/gsocket.c:2060
+#: gio/gsocket.c:2113
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "uzaktaki adres alınamadı: %s"
 
-#: gio/gsocket.c:2126
+#: gio/gsocket.c:2179
 #, c-format
 msgid "could not listen: %s"
 msgstr "dinlenemedi: %s"
 
-#: gio/gsocket.c:2230
+#: gio/gsocket.c:2283
 #, c-format
 msgid "Error binding to address %s: %s"
 msgstr "%s adresine bağlanırken hata: %s"
 
-#: gio/gsocket.c:2405 gio/gsocket.c:2442 gio/gsocket.c:2552 gio/gsocket.c:2577
-#: gio/gsocket.c:2644 gio/gsocket.c:2702 gio/gsocket.c:2720
+#: gio/gsocket.c:2458 gio/gsocket.c:2495 gio/gsocket.c:2605 gio/gsocket.c:2630
+#: gio/gsocket.c:2697 gio/gsocket.c:2755 gio/gsocket.c:2773
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Çok yöne yayın kümesine katılırken hata: %s"
 
-#: gio/gsocket.c:2406 gio/gsocket.c:2443 gio/gsocket.c:2553 gio/gsocket.c:2578
-#: gio/gsocket.c:2645 gio/gsocket.c:2703 gio/gsocket.c:2721
+#: gio/gsocket.c:2459 gio/gsocket.c:2496 gio/gsocket.c:2606 gio/gsocket.c:2631
+#: gio/gsocket.c:2698 gio/gsocket.c:2756 gio/gsocket.c:2774
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Çok yöne yayın kümesinden ayrılırken hata: %s"
 
-#: gio/gsocket.c:2407
+#: gio/gsocket.c:2460
 msgid "No support for source-specific multicast"
 msgstr "Kaynağa-özgü çok yöne yayın desteklenmiyor"
 
-#: gio/gsocket.c:2554
+#: gio/gsocket.c:2607
 msgid "Unsupported socket family"
 msgstr "Desteklenmeyen yuva ailesi"
 
-#: gio/gsocket.c:2579
+#: gio/gsocket.c:2632
 msgid "source-specific not an IPv4 address"
 msgstr "kaynağa-özgü bir IPv4 adresi değil"
 
-#: gio/gsocket.c:2603
+#: gio/gsocket.c:2656
 #, c-format
 msgid "Interface name too long"
 msgstr "Arayüz adı çok uzun"
 
-#: gio/gsocket.c:2616 gio/gsocket.c:2670
+#: gio/gsocket.c:2669 gio/gsocket.c:2723
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Arayüz bulunamadı: %s"
 
-#: gio/gsocket.c:2646
+#: gio/gsocket.c:2699
 msgid "No support for IPv4 source-specific multicast"
 msgstr "IPv4 kaynağa-özgü çok yöne yayın desteklenmiyor"
 
-#: gio/gsocket.c:2704
+#: gio/gsocket.c:2757
 msgid "No support for IPv6 source-specific multicast"
 msgstr "IPv6 kaynağa-özgü çok yöne yayın desteklenmiyor"
 
-#: gio/gsocket.c:2937
+#: gio/gsocket.c:2990
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Bağlantı kabul edilirken hata: %s"
 
-#: gio/gsocket.c:3063
+#: gio/gsocket.c:3116
 msgid "Connection in progress"
 msgstr "Bağlantı sürüyor"
 
-#: gio/gsocket.c:3114
+#: gio/gsocket.c:3167
 msgid "Unable to get pending error: "
 msgstr "Bekleyen hata alınamadı: "
 
-#: gio/gsocket.c:3303
+#: gio/gsocket.c:3356
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Veri alırken hata: %s"
 
-#: gio/gsocket.c:3500
+#: gio/gsocket.c:3695
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Veri gönderirken hata: %s"
 
-#: gio/gsocket.c:3687
+#: gio/gsocket.c:3882
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Yuva kapatılamadı: %s"
 
-#: gio/gsocket.c:3768
+#: gio/gsocket.c:3963
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Yuva kapatılırken hata: %s"
 
-#: gio/gsocket.c:4462
+#: gio/gsocket.c:4657
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Yuva durumu bekleniyor: %s"
 
-#: gio/gsocket.c:4852 gio/gsocket.c:4868 gio/gsocket.c:4881
+#: gio/gsocket.c:5047 gio/gsocket.c:5063 gio/gsocket.c:5076
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "İleti gönderilemedi: %s"
 
-#: gio/gsocket.c:4853 gio/gsocket.c:4869 gio/gsocket.c:4882
+#: gio/gsocket.c:5048 gio/gsocket.c:5064 gio/gsocket.c:5077
 msgid "Message vectors too large"
 msgstr "İleti vektörleri çok geniş"
 
-#: gio/gsocket.c:4898 gio/gsocket.c:4900 gio/gsocket.c:5047 gio/gsocket.c:5132
-#: gio/gsocket.c:5310 gio/gsocket.c:5350 gio/gsocket.c:5352
+#: gio/gsocket.c:5093 gio/gsocket.c:5095 gio/gsocket.c:5242 gio/gsocket.c:5327
+#: gio/gsocket.c:5505 gio/gsocket.c:5545 gio/gsocket.c:5547
 #, c-format
 msgid "Error sending message: %s"
 msgstr "İleti gönderme hatası: %s"
 
-#: gio/gsocket.c:5074
+#: gio/gsocket.c:5269
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage Windows işletim sisteminde desteklenmiyor"
 
-#: gio/gsocket.c:5547 gio/gsocket.c:5623 gio/gsocket.c:5849
+#: gio/gsocket.c:5742 gio/gsocket.c:5818 gio/gsocket.c:6044
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "İleti alma hatası: %s"
 
-#: gio/gsocket.c:6134 gio/gsocket.c:6145 gio/gsocket.c:6208
+#: gio/gsocket.c:6329 gio/gsocket.c:6340 gio/gsocket.c:6403
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Yuva kimliği okunamadı : %s"
 
-#: gio/gsocket.c:6217
+#: gio/gsocket.c:6412
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "bu işletim sistemi için g_socket_get_credentials uygulanmadı"
 
-#: gio/gsocketclient.c:193
+#: gio/gsocketclient.c:192
 #, c-format
 msgid "Could not connect to proxy server %s: "
 msgstr "%s vekil sunucusuna bağlanılamadı: "
 
-#: gio/gsocketclient.c:207
+#: gio/gsocketclient.c:206
 #, c-format
 msgid "Could not connect to %s: "
 msgstr "%s bağlantısı gerçekleştirilemedi:  "
 
-#: gio/gsocketclient.c:209
+#: gio/gsocketclient.c:208
 msgid "Could not connect: "
 msgstr "Bağlanılamadı: "
 
-#: gio/gsocketclient.c:1204 gio/gsocketclient.c:1807
+#: gio/gsocketclient.c:1234 gio/gsocketclient.c:1851
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "TCP olmayan bağlantılar üzerinden vekil sunucusu desteklenmiyor."
 
-#: gio/gsocketclient.c:1236 gio/gsocketclient.c:1836
+#: gio/gsocketclient.c:1266 gio/gsocketclient.c:1886
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "“%s” vekil iletişim kuralı desteklenmiyor."
 
-#: gio/gsocketlistener.c:232
+#: gio/gsocketlistener.c:235
 msgid "Listener is already closed"
 msgstr "Dinleyici zaten kapalı"
 
-#: gio/gsocketlistener.c:278
+#: gio/gsocketlistener.c:281
 msgid "Added socket is closed"
 msgstr "Eklenen yuva kapalı"
 
@@ -4207,94 +4230,94 @@ msgstr "SOCKSv5 vekil sunucusu verilen adres türünü desteklemiyor."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Bilinmeyen SOCKSv5 vekil hatası."
 
-#: gio/gtestdbus.c:611 glib/gspawn-win32.c:433
+#: gio/gtestdbus.c:608 glib/gspawn-win32.c:433
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Alt süreçle haberleşme için boru oluşturulamadı (%s)"
 
-#: gio/gtestdbus.c:618
+#: gio/gtestdbus.c:615
 #, c-format
 msgid "Pipes are not supported in this platform"
 msgstr "Borular bu platformda desteklenmiyor"
 
-#: gio/gthemedicon.c:597
+#: gio/gthemedicon.c:590
 #, c-format
 msgid "Can’t handle version %d of GThemedIcon encoding"
 msgstr "GThemedIcon kodlaması %d sürümü işlenemiyor"
 
-#: gio/gthreadedresolver.c:319
+#: gio/gthreadedresolver.c:320
 msgid "No valid addresses were found"
 msgstr "Geçersiz adresler bulundu"
 
-#: gio/gthreadedresolver.c:514
+#: gio/gthreadedresolver.c:515
 #, c-format
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "“%s” tersine çözülürken hata: %s"
 
 #. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
-#: gio/gthreadedresolver.c:737 gio/gthreadedresolver.c:759
-#: gio/gthreadedresolver.c:813 gio/gthreadedresolver.c:860
-#: gio/gthreadedresolver.c:889 gio/gthreadedresolver.c:901
+#: gio/gthreadedresolver.c:738 gio/gthreadedresolver.c:760
+#: gio/gthreadedresolver.c:814 gio/gthreadedresolver.c:861
+#: gio/gthreadedresolver.c:890 gio/gthreadedresolver.c:902
 #, c-format
 msgid "Error parsing DNS %s record: malformed DNS packet"
 msgstr "DNS %s kaydı ayrıştırılamadı: kusurlu DNS paketi"
 
-#: gio/gthreadedresolver.c:959 gio/gthreadedresolver.c:1096
-#: gio/gthreadedresolver.c:1194 gio/gthreadedresolver.c:1244
+#: gio/gthreadedresolver.c:960 gio/gthreadedresolver.c:1097
+#: gio/gthreadedresolver.c:1195 gio/gthreadedresolver.c:1245
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "“%s” için istenen türün DNS kaydı yok"
 
-#: gio/gthreadedresolver.c:964 gio/gthreadedresolver.c:1199
+#: gio/gthreadedresolver.c:965 gio/gthreadedresolver.c:1200
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Geçici olarak “%s” çözülemiyor"
 
-#: gio/gthreadedresolver.c:969 gio/gthreadedresolver.c:1204
-#: gio/gthreadedresolver.c:1300
+#: gio/gthreadedresolver.c:970 gio/gthreadedresolver.c:1205
+#: gio/gthreadedresolver.c:1301
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "“%s” çözerken hata"
 
-#: gio/gthreadedresolver.c:983 gio/gthreadedresolver.c:1007
-#: gio/gthreadedresolver.c:1032 gio/gthreadedresolver.c:1047
+#: gio/gthreadedresolver.c:984 gio/gthreadedresolver.c:1008
+#: gio/gthreadedresolver.c:1033 gio/gthreadedresolver.c:1048
 msgid "Malformed DNS packet"
 msgstr "Kusurlu DNS paketi"
 
-#: gio/gthreadedresolver.c:1089
+#: gio/gthreadedresolver.c:1090
 #, c-format
 msgid "Failed to parse DNS response for “%s”: "
 msgstr "“%s” için DNS yanıtı ayrıştırılamadı: "
 
-#: gio/gtlscertificate.c:480
+#: gio/gtlscertificate.c:438
 msgid "No PEM-encoded private key found"
 msgstr "Hiçbir PEM-kodlamalı özel anahtar bulunamadı"
 
-#: gio/gtlscertificate.c:490
+#: gio/gtlscertificate.c:448
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "PEM-kodlamalı özel anahtar şifresi çözülemiyor"
 
-#: gio/gtlscertificate.c:501
+#: gio/gtlscertificate.c:459
 msgid "Could not parse PEM-encoded private key"
 msgstr "PEM-kodlamalı özel anahtar ayrıştırılamadı"
 
-#: gio/gtlscertificate.c:528
+#: gio/gtlscertificate.c:486
 msgid "No PEM-encoded certificate found"
 msgstr "PEM-kodlamalı sertifika bulunamadı"
 
-#: gio/gtlscertificate.c:537
+#: gio/gtlscertificate.c:495
 msgid "Could not parse PEM-encoded certificate"
 msgstr "PEM-kodlamalı sertifika ayrıştırılamadı"
 
-#: gio/gtlscertificate.c:800
+#: gio/gtlscertificate.c:758
 msgid "The current TLS backend does not support PKCS #12"
 msgstr "Var olan TLS arka ucu PKCS #12 desteklemiyor"
 
-#: gio/gtlscertificate.c:1017
+#: gio/gtlscertificate.c:975
 msgid "This GTlsBackend does not support creating PKCS #11 certificates"
 msgstr "GTlsBackend, PKCS #11 sertifikası oluşturmayı desteklemiyor"
 
-#: gio/gtlspassword.c:113
+#: gio/gtlspassword.c:104
 msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
@@ -4303,7 +4326,7 @@ msgstr ""
 
 #. Translators: This is not the 'This is the last chance' string. It is
 #. * displayed when more than one attempt is allowed.
-#: gio/gtlspassword.c:117
+#: gio/gtlspassword.c:108
 msgid ""
 "Several passwords entered have been incorrect, and your access will be "
 "locked out after further failures."
@@ -4311,134 +4334,145 @@ msgstr ""
 "Girilen birkaç parola hatalı olmuştur ve daha çok hatalı girişten sonra "
 "erişiminiz kilitlenecektir."
 
-#: gio/gtlspassword.c:119
+#: gio/gtlspassword.c:110
 msgid "The password entered is incorrect."
 msgstr "Girilen parola hatalı."
 
-#: gio/gunixconnection.c:127
+#: gio/gunixconnection.c:116
 msgid "Sending FD is not supported"
 msgstr "FD gönderimi desteklenmiyor"
 
-#: gio/gunixconnection.c:181 gio/gunixconnection.c:602
+#: gio/gunixconnection.c:170 gio/gunixconnection.c:591
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgid_plural "Expecting 1 control message, got %d"
 msgstr[0] "Beklenen 1 denetim iletisi, alınan %d"
 
-#: gio/gunixconnection.c:197 gio/gunixconnection.c:614
+#: gio/gunixconnection.c:186 gio/gunixconnection.c:603
 msgid "Unexpected type of ancillary data"
 msgstr "Yardımcı verinin beklenmeyen türü"
 
-#: gio/gunixconnection.c:216
+#: gio/gunixconnection.c:205
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgid_plural "Expecting one fd, but got %d\n"
 msgstr[0] "Beklenen bir fd, ancak alınan %d\n"
 
-#: gio/gunixconnection.c:235
+#: gio/gunixconnection.c:224
 msgid "Received invalid fd"
 msgstr "Geçersiz fd alındı"
 
-#: gio/gunixconnection.c:242
+#: gio/gunixconnection.c:231
 msgid "Receiving FD is not supported"
 msgstr "FD alımı desteklenmiyor"
 
-#: gio/gunixconnection.c:384
+#: gio/gunixconnection.c:373
 msgid "Error sending credentials: "
 msgstr "Kimlik bilgileri gönderilirken hata oluştu: "
 
-#: gio/gunixconnection.c:542
+#: gio/gunixconnection.c:531
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Yuva için SO_PASSCRED’in etkin olup olmadığını denetleme hatası: %s"
 
-#: gio/gunixconnection.c:558
+#: gio/gunixconnection.c:547
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED etkinleştirmede hata: %s"
 
-#: gio/gunixconnection.c:587
+#: gio/gunixconnection.c:576
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Kimlik bilgileri almak için bir bayt okunması bekleniyordu, sıfır bayt okundu"
 
-#: gio/gunixconnection.c:628
+#: gio/gunixconnection.c:617
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "Beklenen denetim iletisi yok ancak %d alındı"
 
-#: gio/gunixconnection.c:653
+#: gio/gunixconnection.c:642
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "SO_PASSCRED devre dışı bırakılırken hata: %s"
 
-#: gio/gunixinputstream.c:359 gio/gunixinputstream.c:380
+#: gio/gunixinputstream.c:352 gio/gunixinputstream.c:373
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "Dosya tanımlayıcıdan okuma hatası: %s"
 
-#: gio/gunixinputstream.c:413 gio/gunixoutputstream.c:522
-#: gio/gwin32inputstream.c:219 gio/gwin32outputstream.c:206
+#: gio/gunixinputstream.c:406 gio/gunixoutputstream.c:515
+#: gio/gwin32inputstream.c:216 gio/gwin32outputstream.c:203
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Dosya tanımlayıcı kapatılırken hata: %s"
 
-#: gio/gunixmounts.c:2826 gio/gunixmounts.c:2879
+#: gio/gunixmounts.c:2890 gio/gunixmounts.c:2943
 msgid "Filesystem root"
 msgstr "Dosya sistemi kök dizini"
 
-#: gio/gunixoutputstream.c:359 gio/gunixoutputstream.c:379
-#: gio/gunixoutputstream.c:466 gio/gunixoutputstream.c:486
-#: gio/gunixoutputstream.c:632
+#: gio/gunixoutputstream.c:352 gio/gunixoutputstream.c:372
+#: gio/gunixoutputstream.c:459 gio/gunixoutputstream.c:479
+#: gio/gunixoutputstream.c:625
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "Dosya tanımlayıcıya yazmada hata: %s"
 
-#: gio/gunixsocketaddress.c:253
+#: gio/gunixsocketaddress.c:245
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "Soyut UNIX alan yuvası adresleri bu sistemde desteklenmiyor"
 
-#: gio/gvolume.c:440
+#: gio/gvolume.c:436
 msgid "volume doesn’t implement eject"
 msgstr "bölüm, çıkartmayı yerine getirmiyor"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: gio/gvolume.c:517
+#: gio/gvolume.c:513
 msgid "volume doesn’t implement eject or eject_with_operation"
 msgstr "bölüm, çıkartmayı veya eject_with_operation’ı yerine getirmiyor"
 
-#: gio/gwin32inputstream.c:187
+#: gio/gwin32appinfo.c:5216
+#, c-format
+msgid "The app ‘%s’ in the application object has no verbs"
+msgstr ""
+
+#: gio/gwin32appinfo.c:5220
+#, c-format
+msgid ""
+"The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
+msgstr ""
+
+#: gio/gwin32inputstream.c:184
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "İşleyiciden okumada hata: %s"
 
-#: gio/gwin32inputstream.c:234 gio/gwin32outputstream.c:221
+#: gio/gwin32inputstream.c:231 gio/gwin32outputstream.c:218
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "İşleyici kapatılırken hata: %s"
 
-#: gio/gwin32outputstream.c:174
+#: gio/gwin32outputstream.c:171
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "İşleyiciye yazmada hata: %s"
 
-#: gio/gzlibcompressor.c:396 gio/gzlibdecompressor.c:349
+#: gio/gzlibcompressor.c:399 gio/gzlibdecompressor.c:345
 msgid "Not enough memory"
 msgstr "Yeterli bellek yok"
 
-#: gio/gzlibcompressor.c:403 gio/gzlibdecompressor.c:356
+#: gio/gzlibcompressor.c:406 gio/gzlibdecompressor.c:352
 #, c-format
 msgid "Internal error: %s"
 msgstr "İç hata: %s"
 
-#: gio/gzlibcompressor.c:416 gio/gzlibdecompressor.c:370
+#: gio/gzlibcompressor.c:419 gio/gzlibdecompressor.c:366
 msgid "Need more input"
 msgstr "Daha çok girdi gerekli"
 
-#: gio/gzlibdecompressor.c:342
+#: gio/gzlibdecompressor.c:338
 msgid "Invalid compressed data"
 msgstr "Geçersiz sıkıştırılmış veri"
 
@@ -4541,74 +4575,74 @@ msgstr "“%s” adında hiçbir uygulama “%s” için yer imi kaydetmedi"
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Exec satırı “%s”, “%s” URI’si ile genişletilemedi"
 
-#: glib/gconvert.c:370
+#: glib/gconvert.c:379
 msgid "Unrepresentable character in conversion input"
 msgstr "Dönüşüm girdisi içinde temsil edilemez karakter"
 
-#: glib/gconvert.c:397 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
+#: glib/gconvert.c:406 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
 #: glib/gutf8.c:1408
 msgid "Partial character sequence at end of input"
 msgstr "Girdinin sonunda parçalı karakter dizisi"
 
-#: glib/gconvert.c:668
+#: glib/gconvert.c:677
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr ""
 "Geridönüş karakter kümesi “%s”, “%s” karakter kümesine dönüştürülemiyor"
 
-#: glib/gconvert.c:840
+#: glib/gconvert.c:849
 msgid "Embedded NUL byte in conversion input"
 msgstr "Dönüşüm girdisinde gömülü NUL baytı"
 
-#: glib/gconvert.c:861
+#: glib/gconvert.c:870
 msgid "Embedded NUL byte in conversion output"
 msgstr "Dönüşüm çıktısında gömülü NUL baytı"
 
-#: glib/gconvert.c:1599
+#: glib/gconvert.c:1608
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "“%s” URI’si, “file” şemasını kullanan kesin bir URI değil"
 
-#: glib/gconvert.c:1629
+#: glib/gconvert.c:1638
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "“%s” URI’si geçersiz"
 
-#: glib/gconvert.c:1642
+#: glib/gconvert.c:1651
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "“%s” URI’sinin ana makine adı geçersiz"
 
-#: glib/gconvert.c:1659
+#: glib/gconvert.c:1668
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "“%s” URI’si geçersiz olarak çıkış yapılmış karakterler içeriyor"
 
-#: glib/gconvert.c:1733
+#: glib/gconvert.c:1742
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Yol adı “%s”, kesin bir yol değil"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:196
+#: glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %d %b %Y %T %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:199
+#: glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:202
+#: glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:205
+#: glib/gdatetime.c:208
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4629,62 +4663,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:244
+#: glib/gdatetime.c:247
 msgctxt "full month name"
 msgid "January"
 msgstr "Ocak"
 
-#: glib/gdatetime.c:246
+#: glib/gdatetime.c:249
 msgctxt "full month name"
 msgid "February"
 msgstr "Şubat"
 
-#: glib/gdatetime.c:248
+#: glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "March"
 msgstr "Mart"
 
-#: glib/gdatetime.c:250
+#: glib/gdatetime.c:253
 msgctxt "full month name"
 msgid "April"
 msgstr "Nisan"
 
-#: glib/gdatetime.c:252
+#: glib/gdatetime.c:255
 msgctxt "full month name"
 msgid "May"
 msgstr "Mayıs"
 
-#: glib/gdatetime.c:254
+#: glib/gdatetime.c:257
 msgctxt "full month name"
 msgid "June"
 msgstr "Haziran"
 
-#: glib/gdatetime.c:256
+#: glib/gdatetime.c:259
 msgctxt "full month name"
 msgid "July"
 msgstr "Temmuz"
 
-#: glib/gdatetime.c:258
+#: glib/gdatetime.c:261
 msgctxt "full month name"
 msgid "August"
 msgstr "Ağustos"
 
-#: glib/gdatetime.c:260
+#: glib/gdatetime.c:263
 msgctxt "full month name"
 msgid "September"
 msgstr "Eylül"
 
-#: glib/gdatetime.c:262
+#: glib/gdatetime.c:265
 msgctxt "full month name"
 msgid "October"
 msgstr "Ekim"
 
-#: glib/gdatetime.c:264
+#: glib/gdatetime.c:267
 msgctxt "full month name"
 msgid "November"
 msgstr "Kasım"
 
-#: glib/gdatetime.c:266
+#: glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "December"
 msgstr "Aralık"
@@ -4706,132 +4740,132 @@ msgstr "Aralık"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:298
+#: glib/gdatetime.c:301
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Oca"
 
-#: glib/gdatetime.c:300
+#: glib/gdatetime.c:303
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Şub"
 
-#: glib/gdatetime.c:302
+#: glib/gdatetime.c:305
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: glib/gdatetime.c:304
+#: glib/gdatetime.c:307
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Nis"
 
-#: glib/gdatetime.c:306
+#: glib/gdatetime.c:309
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "May"
 
-#: glib/gdatetime.c:308
+#: glib/gdatetime.c:311
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Haz"
 
-#: glib/gdatetime.c:310
+#: glib/gdatetime.c:313
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Tem"
 
-#: glib/gdatetime.c:312
+#: glib/gdatetime.c:315
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ağu"
 
-#: glib/gdatetime.c:314
+#: glib/gdatetime.c:317
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Eyl"
 
-#: glib/gdatetime.c:316
+#: glib/gdatetime.c:319
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Eki"
 
-#: glib/gdatetime.c:318
+#: glib/gdatetime.c:321
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Kas"
 
-#: glib/gdatetime.c:320
+#: glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Ara"
 
-#: glib/gdatetime.c:335
+#: glib/gdatetime.c:338
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Pazartesi"
 
-#: glib/gdatetime.c:337
+#: glib/gdatetime.c:340
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Salı"
 
-#: glib/gdatetime.c:339
+#: glib/gdatetime.c:342
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Çarşamba"
 
-#: glib/gdatetime.c:341
+#: glib/gdatetime.c:344
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Perşembe"
 
-#: glib/gdatetime.c:343
+#: glib/gdatetime.c:346
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Cuma"
 
-#: glib/gdatetime.c:345
+#: glib/gdatetime.c:348
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Cumartesi"
 
-#: glib/gdatetime.c:347
+#: glib/gdatetime.c:350
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Pazar"
 
-#: glib/gdatetime.c:362
+#: glib/gdatetime.c:365
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Pzt"
 
-#: glib/gdatetime.c:364
+#: glib/gdatetime.c:367
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Sal"
 
-#: glib/gdatetime.c:366
+#: glib/gdatetime.c:369
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Çar"
 
-#: glib/gdatetime.c:368
+#: glib/gdatetime.c:371
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Per"
 
-#: glib/gdatetime.c:370
+#: glib/gdatetime.c:373
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Cum"
 
-#: glib/gdatetime.c:372
+#: glib/gdatetime.c:375
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Cmt"
 
-#: glib/gdatetime.c:374
+#: glib/gdatetime.c:377
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Paz"
@@ -4853,62 +4887,62 @@ msgstr "Paz"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:438
+#: glib/gdatetime.c:441
 msgctxt "full month name with day"
 msgid "January"
 msgstr "Ocak"
 
-#: glib/gdatetime.c:440
+#: glib/gdatetime.c:443
 msgctxt "full month name with day"
 msgid "February"
 msgstr "Şubat"
 
-#: glib/gdatetime.c:442
+#: glib/gdatetime.c:445
 msgctxt "full month name with day"
 msgid "March"
 msgstr "Mart"
 
-#: glib/gdatetime.c:444
+#: glib/gdatetime.c:447
 msgctxt "full month name with day"
 msgid "April"
 msgstr "Nisan"
 
-#: glib/gdatetime.c:446
+#: glib/gdatetime.c:449
 msgctxt "full month name with day"
 msgid "May"
 msgstr "Mayıs"
 
-#: glib/gdatetime.c:448
+#: glib/gdatetime.c:451
 msgctxt "full month name with day"
 msgid "June"
 msgstr "Haziran"
 
-#: glib/gdatetime.c:450
+#: glib/gdatetime.c:453
 msgctxt "full month name with day"
 msgid "July"
 msgstr "Temmuz"
 
-#: glib/gdatetime.c:452
+#: glib/gdatetime.c:455
 msgctxt "full month name with day"
 msgid "August"
 msgstr "Ağustos"
 
-#: glib/gdatetime.c:454
+#: glib/gdatetime.c:457
 msgctxt "full month name with day"
 msgid "September"
 msgstr "Eylül"
 
-#: glib/gdatetime.c:456
+#: glib/gdatetime.c:459
 msgctxt "full month name with day"
 msgid "October"
 msgstr "Ekim"
 
-#: glib/gdatetime.c:458
+#: glib/gdatetime.c:461
 msgctxt "full month name with day"
 msgid "November"
 msgstr "Kasım"
 
-#: glib/gdatetime.c:460
+#: glib/gdatetime.c:463
 msgctxt "full month name with day"
 msgid "December"
 msgstr "Aralık"
@@ -4930,195 +4964,196 @@ msgstr "Aralık"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:525
+#: glib/gdatetime.c:528
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Oca"
 
-#: glib/gdatetime.c:527
+#: glib/gdatetime.c:530
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Şub"
 
-#: glib/gdatetime.c:529
+#: glib/gdatetime.c:532
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Mar"
 
-#: glib/gdatetime.c:531
+#: glib/gdatetime.c:534
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Nis"
 
-#: glib/gdatetime.c:533
+#: glib/gdatetime.c:536
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "May"
 
-#: glib/gdatetime.c:535
+#: glib/gdatetime.c:538
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Haz"
 
-#: glib/gdatetime.c:537
+#: glib/gdatetime.c:540
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Tem"
 
-#: glib/gdatetime.c:539
+#: glib/gdatetime.c:542
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Ağu"
 
-#: glib/gdatetime.c:541
+#: glib/gdatetime.c:544
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Eyl"
 
-#: glib/gdatetime.c:543
+#: glib/gdatetime.c:546
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Eki"
 
-#: glib/gdatetime.c:545
+#: glib/gdatetime.c:548
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Kas"
 
-#: glib/gdatetime.c:547
+#: glib/gdatetime.c:550
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Ara"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:564
+#: glib/gdatetime.c:592
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "ÖÖ"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:567
+#: glib/gdatetime.c:595
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "ÖS"
 
-#: glib/gdir.c:158
+#: glib/gdir.c:168
 #, c-format
 msgid "Error opening directory “%s”: %s"
 msgstr "“%s” dizini açılamadı: %s"
 
-#: glib/gfileutils.c:753 glib/gfileutils.c:845
-#, c-format
-msgid "Could not allocate %lu byte to read file “%s”"
-msgid_plural "Could not allocate %lu bytes to read file “%s”"
-msgstr[0] "%lu bayt “%s” dosyasını okumak için ayrılamadı"
+#: glib/gfileutils.c:716 glib/gfileutils.c:820
+#, fuzzy
+#| msgid "Could not connect: "
+msgid "Could not allocate %"
+msgid_plural "Could not allocate %"
+msgstr[0] "Bağlanılamadı: "
 
-#: glib/gfileutils.c:770
+#: glib/gfileutils.c:733
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "“%s” dosyası okuma hatası: %s"
 
-#: glib/gfileutils.c:806
+#: glib/gfileutils.c:769 glib/gfileutils.c:803
 #, c-format
 msgid "File “%s” is too large"
 msgstr "“%s” dosyası çok büyük"
 
-#: glib/gfileutils.c:870
+#: glib/gfileutils.c:845
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "“%s” dosyasından okunamadı: %s"
 
-#: glib/gfileutils.c:920 glib/gfileutils.c:995 glib/gfileutils.c:1502
+#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "“%s” dosyası açılamadı: %s"
 
-#: glib/gfileutils.c:933
+#: glib/gfileutils.c:908
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "“%s” dosyasının öznitelikleri alınamadı: fstat() başarısız: %s"
 
-#: glib/gfileutils.c:964
+#: glib/gfileutils.c:939
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "“%s” dosyası açılamadı: fdopen() başarısız: %s"
 
-#: glib/gfileutils.c:1065
+#: glib/gfileutils.c:1040
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "“%s” dosyasının adı “%s” olarak değiştirilemedi: g_rename() başarısız: %s"
 
-#: glib/gfileutils.c:1164
+#: glib/gfileutils.c:1139
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "“%s” dosyasına yazılamadı: ftruncate() başarısız: %s"
 
-#: glib/gfileutils.c:1209
+#: glib/gfileutils.c:1184
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "“%s” dosyasına yazılamadı: write() başarısız: %s"
 
-#: glib/gfileutils.c:1230
+#: glib/gfileutils.c:1205
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "“%s” dosyasına yazılamadı: fsync() başarısız: %s"
 
-#: glib/gfileutils.c:1391 glib/gfileutils.c:1808
+#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "“%s” dosyası oluşturulamadı: %s"
 
-#: glib/gfileutils.c:1436
+#: glib/gfileutils.c:1411
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Var olan dosya “%s” kaldırılamadı: g_unlink() başarısızlığı: %s"
 
-#: glib/gfileutils.c:1773
+#: glib/gfileutils.c:1748
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "“%s” şablonu geçersiz, “%s” içermemeli"
 
-#: glib/gfileutils.c:1786
+#: glib/gfileutils.c:1761
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "“%s” şablonu XXXXXX içermiyor"
 
-#: glib/gfileutils.c:2380 glib/gfileutils.c:2409
+#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "“%s” simgesel bağı okunamadı: %s"
 
-#: glib/giochannel.c:1408
+#: glib/giochannel.c:1397
 #, c-format
 msgid "Could not open converter from “%s” to “%s”: %s"
 msgstr "“%s”-“%s” dönüştürücüsü açılamıyor: %s"
 
-#: glib/giochannel.c:1761
+#: glib/giochannel.c:1750
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string içinde ham okuma yapılamıyor"
 
-#: glib/giochannel.c:1808 glib/giochannel.c:2066 glib/giochannel.c:2153
+#: glib/giochannel.c:1797 glib/giochannel.c:2055 glib/giochannel.c:2142
 msgid "Leftover unconverted data in read buffer"
 msgstr "Okuma tampon belleğinde kalıntı çevrilmemiş veri"
 
-#: glib/giochannel.c:1889 glib/giochannel.c:1966
+#: glib/giochannel.c:1878 glib/giochannel.c:1955
 msgid "Channel terminates in a partial character"
 msgstr "Kanal kısmi bir karakterde sonlanıyor"
 
-#: glib/giochannel.c:1952
+#: glib/giochannel.c:1941
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end içinde ham okuma başarısız"
 
-#: glib/gkeyfile.c:792
+#: glib/gkeyfile.c:791
 msgid "Valid key file could not be found in search dirs"
 msgstr "Arama dizinlerinde geçerli anahtar dosyası bulunamadı"
 
-#: glib/gkeyfile.c:829
+#: glib/gkeyfile.c:828
 msgid "Not a regular file"
 msgstr "Normal dosya değil"
 
-#: glib/gkeyfile.c:1287
+#: glib/gkeyfile.c:1286
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5126,50 +5161,50 @@ msgstr ""
 "Anahtar dosyası; anahtar-değer çifti, küme veya yorum olmayan “%s” satırını "
 "içeriyor"
 
-#: glib/gkeyfile.c:1344
+#: glib/gkeyfile.c:1343
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Geçersiz küme adı: %s"
 
-#: glib/gkeyfile.c:1368
+#: glib/gkeyfile.c:1367
 msgid "Key file does not start with a group"
 msgstr "Anahtar dosyası kümeyle başlamıyor"
 
-#: glib/gkeyfile.c:1392
+#: glib/gkeyfile.c:1391
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Geçersiz anahtar adı: %.*s"
 
-#: glib/gkeyfile.c:1420
+#: glib/gkeyfile.c:1419
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Anahtar dosya desteklenmeyen “%s” kodlamasını içeriyor"
 
-#: glib/gkeyfile.c:1668 glib/gkeyfile.c:1841 glib/gkeyfile.c:3288
-#: glib/gkeyfile.c:3390 glib/gkeyfile.c:3495 glib/gkeyfile.c:3624
-#: glib/gkeyfile.c:3767 glib/gkeyfile.c:4016 glib/gkeyfile.c:4090
+#: glib/gkeyfile.c:1667 glib/gkeyfile.c:1840 glib/gkeyfile.c:3287
+#: glib/gkeyfile.c:3389 glib/gkeyfile.c:3494 glib/gkeyfile.c:3623
+#: glib/gkeyfile.c:3766 glib/gkeyfile.c:4015 glib/gkeyfile.c:4089
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Anahtar dosyasında “%s” kümesi yok"
 
-#: glib/gkeyfile.c:1796
+#: glib/gkeyfile.c:1795
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Anahtar dosyası, “%2$s” kümesinde “%1$s” anahtarı içermiyor"
 
-#: glib/gkeyfile.c:1958 glib/gkeyfile.c:2074
+#: glib/gkeyfile.c:1957 glib/gkeyfile.c:2073
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr "Anahtar dosyası, UTF-8 olmayan “%s” anahtarını “%s” değeriyle içeriyor"
 
-#: glib/gkeyfile.c:1978 glib/gkeyfile.c:2094 glib/gkeyfile.c:2533
+#: glib/gkeyfile.c:1977 glib/gkeyfile.c:2093 glib/gkeyfile.c:2532
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Anahtar dosyası yorumlanamayan bir değere sahip olan “%s” anahtarını içerir."
 
-#: glib/gkeyfile.c:2748 glib/gkeyfile.c:3117
+#: glib/gkeyfile.c:2747 glib/gkeyfile.c:3116
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5178,38 +5213,38 @@ msgstr ""
 "“%2$s” kümesindeki anahtar dosyası, yorumlanamayan “%1$s” anahtarını "
 "içeriyor."
 
-#: glib/gkeyfile.c:2826 glib/gkeyfile.c:2903
+#: glib/gkeyfile.c:2825 glib/gkeyfile.c:2902
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr ""
 "“%2$s” kümesindeki “%1$s” anahtarı “%4$s” değerine sahip olması beklenirken "
 "“%3$s” değerine sahip"
 
-#: glib/gkeyfile.c:4346
+#: glib/gkeyfile.c:4345
 msgid "Key file contains escape character at end of line"
 msgstr "Anahtar dosyası satır sonunda çıkış karakteri içeriyor"
 
-#: glib/gkeyfile.c:4368
+#: glib/gkeyfile.c:4367
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "“%s” anahtar dosyası geçersiz çıkış dizisi içeriyor"
 
-#: glib/gkeyfile.c:4520
+#: glib/gkeyfile.c:4519
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "“%s” değeri bir sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4534
+#: glib/gkeyfile.c:4533
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "“%s”, tamsayı değeri aralık dışında"
 
-#: glib/gkeyfile.c:4567
+#: glib/gkeyfile.c:4566
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "“%s” değeri bir gerçel sayı olarak yorumlanamıyor."
 
-#: glib/gkeyfile.c:4606
+#: glib/gkeyfile.c:4605
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "“%s” değeri mantıksal değer olarak yorumlanamıyor."
@@ -5451,239 +5486,239 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Belge bir yorum veya işlem talimatı içindeyken beklenmedik biçimde sonlandı"
 
-#: glib/goption.c:715
+#: glib/goption.c:716
 msgid "[OPTION…]"
 msgstr "[SEÇENEK…]"
 
-#: glib/goption.c:831
+#: glib/goption.c:832
 msgid "Help Options:"
 msgstr "Yardım Seçenekleri:"
 
-#: glib/goption.c:832
+#: glib/goption.c:833
 msgid "Show help options"
 msgstr "Yardım seçeneklerini göster"
 
-#: glib/goption.c:838
+#: glib/goption.c:839
 msgid "Show all help options"
 msgstr "Tüm yardım seçeneklerini göster"
 
-#: glib/goption.c:901
+#: glib/goption.c:902
 msgid "Application Options:"
 msgstr "Uygulama Seçenekleri:"
 
-#: glib/goption.c:903
+#: glib/goption.c:904
 msgid "Options:"
 msgstr "Seçenekler:"
 
-#: glib/goption.c:967 glib/goption.c:1037
+#: glib/goption.c:968 glib/goption.c:1038
 #, c-format
 msgid "Cannot parse integer value “%s” for %s"
 msgstr "%2$s için tamsayı değeri “%1$s” ayrıştırılamıyor"
 
-#: glib/goption.c:977 glib/goption.c:1045
+#: glib/goption.c:978 glib/goption.c:1046
 #, c-format
 msgid "Integer value “%s” for %s out of range"
 msgstr "%2$s için tamsayı değeri “%1$s” aralık dışında"
 
-#: glib/goption.c:1002
+#: glib/goption.c:1003
 #, c-format
 msgid "Cannot parse double value “%s” for %s"
 msgstr "%2$s için double değeri “%1$s” ayrıştırılamıyor"
 
-#: glib/goption.c:1010
+#: glib/goption.c:1011
 #, c-format
 msgid "Double value “%s” for %s out of range"
 msgstr "%2$s için double değeri “%1$s” aralık dışında"
 
-#: glib/goption.c:1302 glib/goption.c:1381
+#: glib/goption.c:1303 glib/goption.c:1382
 #, c-format
 msgid "Error parsing option %s"
 msgstr "%s seçeneği işlenirken hata"
 
-#: glib/goption.c:1403 glib/goption.c:1516
+#: glib/goption.c:1404 glib/goption.c:1517
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s için argüman eksik"
 
-#: glib/goption.c:2026
+#: glib/goption.c:2024
 #, c-format
 msgid "Unknown option %s"
 msgstr "Bilinmeyen seçenek %s"
 
-#: glib/gregex.c:478
+#: glib/gregex.c:486
 msgid "corrupted object"
 msgstr "bozuk nesne"
 
-#: glib/gregex.c:480
+#: glib/gregex.c:488
 msgid "out of memory"
 msgstr "yetersiz bellek"
 
-#: glib/gregex.c:495
+#: glib/gregex.c:503
 msgid "internal error"
 msgstr "iç hata"
 
-#: glib/gregex.c:497
+#: glib/gregex.c:505
 msgid "the pattern contains items not supported for partial matching"
 msgstr "doku (pattern), kısmi eşleme için desteklenmeyen ögeler içeriyor"
 
-#: glib/gregex.c:499
+#: glib/gregex.c:507
 msgid "back references as conditions are not supported for partial matching"
 msgstr "koşul olarak geri referanslar kısmi eşleme için desteklenmiyor"
 
-#: glib/gregex.c:505
+#: glib/gregex.c:513
 msgid "recursion limit reached"
 msgstr "iç içe yineleme sınırına ulaşıldı"
 
-#: glib/gregex.c:507
+#: glib/gregex.c:515
 msgid "bad offset"
 msgstr "geçersiz ofset"
 
-#: glib/gregex.c:509
+#: glib/gregex.c:517
 msgid "recursion loop"
 msgstr "yineleme döngüsü"
 
 #. should not happen in GRegex since we check modes before each match
-#: glib/gregex.c:512
+#: glib/gregex.c:520
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr "JIT için derlenmemiş eşleşme kipi istendi"
 
-#: glib/gregex.c:533 glib/gregex.c:1849
+#: glib/gregex.c:541 glib/gregex.c:1869
 msgid "unknown error"
 msgstr "bilinmeyen hata"
 
-#: glib/gregex.c:554
+#: glib/gregex.c:562
 msgid "\\ at end of pattern"
 msgstr "\\ desenin sonunda"
 
-#: glib/gregex.c:558
+#: glib/gregex.c:566
 msgid "\\c at end of pattern"
 msgstr "\\c desenin sonunda"
 
-#: glib/gregex.c:563
+#: glib/gregex.c:571
 msgid "unrecognized character following \\"
 msgstr "\\ imini takiben anlaşılamayan karakter"
 
-#: glib/gregex.c:567
+#: glib/gregex.c:575
 msgid "numbers out of order in {} quantifier"
 msgstr "sayılar {} niceliği içerisinde sıra dışı"
 
-#: glib/gregex.c:571
+#: glib/gregex.c:579
 msgid "number too big in {} quantifier"
 msgstr "sayılar {} niceliği içerisinde çok büyük"
 
-#: glib/gregex.c:575
+#: glib/gregex.c:583
 msgid "missing terminating ] for character class"
 msgstr "karakter sınıfı için eksik sonlanan ]"
 
-#: glib/gregex.c:579
+#: glib/gregex.c:587
 msgid "invalid escape sequence in character class"
 msgstr "karakter sınıfında geçersiz dizi"
 
-#: glib/gregex.c:583
+#: glib/gregex.c:591
 msgid "range out of order in character class"
 msgstr "karakter sınıfında sıra dışı kapsam"
 
-#: glib/gregex.c:588
+#: glib/gregex.c:596
 msgid "nothing to repeat"
 msgstr "yinelenecek bir şey yok"
 
-#: glib/gregex.c:592
+#: glib/gregex.c:600
 msgid "unrecognized character after (? or (?-"
 msgstr "(? ya da (?-  sonrası tanınmayan karakter"
 
-#: glib/gregex.c:596
+#: glib/gregex.c:604
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX adlandırılmış sınıflar yalnızca bir sınıf içinde desteklenir"
 
-#: glib/gregex.c:600
+#: glib/gregex.c:608
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX karşılaştırma ögeleri desteklenmiyor"
 
-#: glib/gregex.c:606
+#: glib/gregex.c:614
 msgid "missing terminating )"
 msgstr "eksik sonlandıran )"
 
-#: glib/gregex.c:610
+#: glib/gregex.c:618
 msgid "reference to non-existent subpattern"
 msgstr "var olmayan alt desene referans"
 
-#: glib/gregex.c:614
+#: glib/gregex.c:622
 msgid "missing ) after comment"
 msgstr "açıklama sonrası eksik )"
 
-#: glib/gregex.c:618
+#: glib/gregex.c:626
 msgid "regular expression is too large"
 msgstr "düzenli ifade çok uzun"
 
-#: glib/gregex.c:622
+#: glib/gregex.c:630
 msgid "malformed number or name after (?("
 msgstr "(?( sonrası bozuk rakam ya da ad"
 
-#: glib/gregex.c:626
+#: glib/gregex.c:634
 msgid "lookbehind assertion is not fixed length"
 msgstr "geribakma iddiası sabit uzunlukta değil"
 
-#: glib/gregex.c:630
+#: glib/gregex.c:638
 msgid "conditional group contains more than two branches"
 msgstr "koşul kümesi ikiden daha çok dal içeriyor"
 
-#: glib/gregex.c:634
+#: glib/gregex.c:642
 msgid "assertion expected after (?("
 msgstr "(?( sonrası ifade beklendi"
 
-#: glib/gregex.c:638
+#: glib/gregex.c:646
 msgid "a numbered reference must not be zero"
 msgstr "numaralandırılmış kaynak sıfır olmamalıdır"
 
-#: glib/gregex.c:642
+#: glib/gregex.c:650
 msgid "unknown POSIX class name"
 msgstr "bilinmeyen POSIX sınıf adı"
 
-#: glib/gregex.c:647
+#: glib/gregex.c:655
 msgid "character value in \\x{...} sequence is too large"
 msgstr "\\x{...} dizisi içerisinde karakter değeri çok büyük"
 
-#: glib/gregex.c:651
+#: glib/gregex.c:659
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C geriye bakma iddiası içerisinde izin verilmiyor"
 
-#: glib/gregex.c:655
+#: glib/gregex.c:663
 msgid "missing terminator in subpattern name"
 msgstr "alt desen adı içerisinde eksik sonlandırıcı"
 
-#: glib/gregex.c:659
+#: glib/gregex.c:667
 msgid "two named subpatterns have the same name"
 msgstr "iki adlı alt desenler aynı ada sahip"
 
-#: glib/gregex.c:663
+#: glib/gregex.c:671
 msgid "malformed \\P or \\p sequence"
 msgstr "bozulmuş \\P ya da \\p dizisi"
 
-#: glib/gregex.c:667
+#: glib/gregex.c:675
 msgid "unknown property name after \\P or \\p"
 msgstr "\\P ya da \\p sonrası bilinmeyen özellik adı"
 
-#: glib/gregex.c:671
+#: glib/gregex.c:679
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "alt desen adı çok uzun (en çok 32 karakter)"
 
-#: glib/gregex.c:675
+#: glib/gregex.c:683
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "çok fazla adlandırılmış alt desen (en çok 10.000)"
 
-#: glib/gregex.c:679
+#: glib/gregex.c:687
 msgid "octal value is greater than \\377"
 msgstr "sekizlik değer \\377’den daha büyük"
 
-#: glib/gregex.c:683
+#: glib/gregex.c:691
 msgid "DEFINE group contains more than one branch"
 msgstr "DEFINE kümesi birden çok dal içeriyor"
 
-#: glib/gregex.c:687
+#: glib/gregex.c:695
 msgid "inconsistent NEWLINE options"
 msgstr "kararsız NEWLINE seçenekleri"
 
-#: glib/gregex.c:691
+#: glib/gregex.c:699
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -5691,232 +5726,232 @@ msgstr ""
 "\\g bir parantezli ad ya da tercihten parentezli sıfır olmayan sayı "
 "tarafından takip edilmiyor"
 
-#: glib/gregex.c:696
+#: glib/gregex.c:704
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "(*ACCEPT), (*FAIL) ya da (*COMMIT) için bir argümana izin verilmez"
 
-#: glib/gregex.c:700
+#: glib/gregex.c:708
 msgid "(*VERB) not recognized"
 msgstr "(*VERB) tanınamadı"
 
-#: glib/gregex.c:704
+#: glib/gregex.c:712
 msgid "number is too big"
 msgstr "sayı çok büyük"
 
-#: glib/gregex.c:708
+#: glib/gregex.c:716
 msgid "missing subpattern name after (?&"
 msgstr "(?& den sonra eksik alt desen adı"
 
-#: glib/gregex.c:712
+#: glib/gregex.c:720
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "aynı sayıya izin verilmeyen alt desenler için farklı adlar"
 
-#: glib/gregex.c:716
+#: glib/gregex.c:724
 msgid "(*MARK) must have an argument"
 msgstr "(*MARK) bir argüman almalı"
 
-#: glib/gregex.c:720
+#: glib/gregex.c:728
 msgid "\\c must be followed by an ASCII character"
 msgstr "\\c karakteri ASCII karakterleri tarafından takip edilmelidir"
 
-#: glib/gregex.c:724
+#: glib/gregex.c:732
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "\\k bir parantezli ad ya da tercihten parentezli sıfır olmayan sayı "
 "tarafından takip edilmiyor"
 
-#: glib/gregex.c:728
+#: glib/gregex.c:736
 msgid "\\N is not supported in a class"
 msgstr "\\N bir sınıfta desteklenmez"
 
-#: glib/gregex.c:732
+#: glib/gregex.c:740
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "(*MARK), (*PRUNE), (*SKIP) ya da (*THEN) içinde ad çok uzun"
 
-#: glib/gregex.c:736 glib/gregex.c:872
+#: glib/gregex.c:744 glib/gregex.c:880
 msgid "code overflow"
 msgstr "kod akış taşması"
 
-#: glib/gregex.c:740
+#: glib/gregex.c:748
 msgid "unrecognized character after (?P"
 msgstr "(?P sonrası tanımlanmayan karakter"
 
-#: glib/gregex.c:744
+#: glib/gregex.c:752
 msgid "overran compiling workspace"
 msgstr "derleme çalışma alanı kaplandı"
 
-#: glib/gregex.c:748
+#: glib/gregex.c:756
 msgid "previously-checked referenced subpattern not found"
 msgstr "önceden denetlenmiş referanslı alt desen bulunamadı"
 
-#: glib/gregex.c:871 glib/gregex.c:1133 glib/gregex.c:2455
+#: glib/gregex.c:879 glib/gregex.c:1153 glib/gregex.c:2475
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Düzenli ifade %s eşleşirken hata: %s"
 
-#: glib/gregex.c:1733
+#: glib/gregex.c:1753
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE kütüphanesi UTF8 desteği olmadan derlenmiş"
 
-#: glib/gregex.c:1741
+#: glib/gregex.c:1761
 msgid "PCRE library is compiled with incompatible options"
 msgstr "PCRE kütüphanesi uyuşmayan seçenekler ile derlenmiş"
 
-#: glib/gregex.c:1858
+#: glib/gregex.c:1878
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "Düzenli ifade ‘%s’ derlenirken karakter %s hatalı: %s"
 
-#: glib/gregex.c:2898
+#: glib/gregex.c:2918
 msgid "hexadecimal digit or “}” expected"
 msgstr "onaltılı rakam ya da “}” beklendi"
 
-#: glib/gregex.c:2914
+#: glib/gregex.c:2934
 msgid "hexadecimal digit expected"
 msgstr "onaltılı rakam beklendi"
 
-#: glib/gregex.c:2954
+#: glib/gregex.c:2974
 msgid "missing “<” in symbolic reference"
 msgstr "simgesel referansda eksik “<”"
 
-#: glib/gregex.c:2963
+#: glib/gregex.c:2983
 msgid "unfinished symbolic reference"
 msgstr "tamamlanmamış simgesel referans"
 
-#: glib/gregex.c:2970
+#: glib/gregex.c:2990
 msgid "zero-length symbolic reference"
 msgstr "sıfır-uzunlukta simgesel referans"
 
-#: glib/gregex.c:2981
+#: glib/gregex.c:3001
 msgid "digit expected"
 msgstr "rakam beklendi"
 
-#: glib/gregex.c:2999
+#: glib/gregex.c:3019
 msgid "illegal symbolic reference"
 msgstr "geçersiz simgesel referans"
 
-#: glib/gregex.c:3062
+#: glib/gregex.c:3082
 msgid "stray final “\\”"
 msgstr "son “\\” kayıp"
 
-#: glib/gregex.c:3066
+#: glib/gregex.c:3086
 msgid "unknown escape sequence"
 msgstr "geçersiz çıkış dizisi"
 
-#: glib/gregex.c:3076
+#: glib/gregex.c:3096
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Yerine koyma metni “%s” işlenirken karakter %lu hatalı: %s"
 
-#: glib/gshell.c:98
+#: glib/gshell.c:84
 msgid "Quoted text doesn’t begin with a quotation mark"
 msgstr "Alıntılı metin tırnak imi ile başlamıyor"
 
-#: glib/gshell.c:188
+#: glib/gshell.c:174
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
 "Komut satırında veya diğer kabuk alıntısı metinde eşlenmemiş tırnak imi"
 
-#: glib/gshell.c:594
+#: glib/gshell.c:580
 #, c-format
 msgid "Text ended just after a “\\” character. (The text was “%s”)"
 msgstr "Metin “\\” karakterinden hemen sonra bitti. (Metin: “%s”)"
 
-#: glib/gshell.c:601
+#: glib/gshell.c:587
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was “%s”)"
 msgstr "%c için eşleşen alıntı bulunmadan metin bitti. (Metin: “%s”)"
 
-#: glib/gshell.c:613
+#: glib/gshell.c:599
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Metin boştu (veya yalnızca boşluk içeriyordu)"
 
-#: glib/gspawn.c:303
+#: glib/gspawn.c:242
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Alt süreçten bilgi okunamadı (%s)"
 
-#: glib/gspawn.c:456
+#: glib/gspawn.c:395
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Alt süreçten bilgi okurken beklenmeyen hata oluştu (%s)"
 
-#: glib/gspawn.c:536
+#: glib/gspawn.c:475
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) içinde beklenmeyen hata"
 
-#: glib/gspawn.c:1158 glib/gspawn-win32.c:1575
+#: glib/gspawn.c:1097 glib/gspawn-win32.c:1575
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Alt işlem %ld kodu ile sonlandı"
 
-#: glib/gspawn.c:1166
+#: glib/gspawn.c:1105
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Alt işlem, %ld sinyali ile sonlandı"
 
-#: glib/gspawn.c:1173
+#: glib/gspawn.c:1112
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Alt işlem %ld sinyali ile durduruldu"
 
-#: glib/gspawn.c:1180
+#: glib/gspawn.c:1119
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Alt işlem anormal bir biçimde sonlandı"
 
-#: glib/gspawn.c:2017 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
+#: glib/gspawn.c:1622 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Alt süreç borusundan okunamadı (%s)"
 
-#: glib/gspawn.c:2396
+#: glib/gspawn.c:2001
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "“%s” alt süreci üretilemedi (%s)"
 
-#: glib/gspawn.c:2520
+#: glib/gspawn.c:2125
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Çatallamadı (%s)"
 
-#: glib/gspawn.c:2681 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2286 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "“%s” dizinine değiştirilemedi (%s)"
 
-#: glib/gspawn.c:2691
+#: glib/gspawn.c:2296
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "“%s” alt süreç çalıştırılamadı (%s)"
 
-#: glib/gspawn.c:2701
+#: glib/gspawn.c:2306
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Dosya tanımlayıcıyı yeniden eşlemek için dosya açılamadı (%s)"
 
-#: glib/gspawn.c:2709
+#: glib/gspawn.c:2314
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Alt süreç için dosya tanımlayıcı çoğaltılamadı (%s)"
 
-#: glib/gspawn.c:2718
+#: glib/gspawn.c:2323
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Alt süreç çatallanamadı (%s)"
 
-#: glib/gspawn.c:2726
+#: glib/gspawn.c:2331
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Alt süreç için dosya tanımlayıcı kapatılamadı (%s)"
 
-#: glib/gspawn.c:2734
+#: glib/gspawn.c:2339
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Alt süreç “%s” çalıştırılırken bilinmeyen hata oluştu"
 
-#: glib/gspawn.c:2758
+#: glib/gspawn.c:2363
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Alt süreç borusundan yeterli bilgi okunamadı (%s)"
@@ -5973,78 +6008,78 @@ msgstr ""
 "Alt süreçten bilgi okurken g_io_channel_win32_poll() işleminde beklenmeyen "
 "hata"
 
-#: glib/gstrfuncs.c:3373 glib/gstrfuncs.c:3475
+#: glib/gstrfuncs.c:3339 glib/gstrfuncs.c:3441
 msgid "Empty string is not a number"
 msgstr "Boş dizge bir sayı değildir"
 
-#: glib/gstrfuncs.c:3397
+#: glib/gstrfuncs.c:3363
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "“%s” işaretli bir sayı değil"
 
-#: glib/gstrfuncs.c:3407 glib/gstrfuncs.c:3511
+#: glib/gstrfuncs.c:3373 glib/gstrfuncs.c:3477
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "“%s” sayısı sınırların dışındadır [%s, %s]"
 
-#: glib/gstrfuncs.c:3501
+#: glib/gstrfuncs.c:3467
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "“%s” işaretsiz bir sayı değil"
 
-#: glib/guri.c:318
+#: glib/guri.c:309
 #, no-c-format
 msgid "Invalid %-encoding in URI"
 msgstr "URI’de geçersiz %-kodlama"
 
-#: glib/guri.c:335
+#: glib/guri.c:326
 msgid "Illegal character in URI"
 msgstr "URI’de kural dışı karakter"
 
-#: glib/guri.c:369
+#: glib/guri.c:360
 msgid "Non-UTF-8 characters in URI"
 msgstr "URI’de UTF-8 olmayan karakterler"
 
-#: glib/guri.c:549
+#: glib/guri.c:540
 #, c-format
 msgid "Invalid IPv6 address ‘%.*s’ in URI"
 msgstr "URI’de geçersiz IPv6 adresi ‘%.*s’"
 
-#: glib/guri.c:604
+#: glib/guri.c:595
 #, c-format
 msgid "Illegal encoded IP address ‘%.*s’ in URI"
 msgstr "URI’de kural dışı kodlanmış IP adresi ‘%.*s’"
 
-#: glib/guri.c:616
+#: glib/guri.c:607
 #, c-format
 msgid "Illegal internationalized hostname ‘%.*s’ in URI"
 msgstr "URI’de kural dışı uluslararasılaştırılmış ana makine adı ‘%.*s’"
 
-#: glib/guri.c:648 glib/guri.c:660
+#: glib/guri.c:639 glib/guri.c:651
 #, c-format
 msgid "Could not parse port ‘%.*s’ in URI"
 msgstr "URI’deki ‘%.*s’ bağlantı noktası ayrıştırılamadı"
 
-#: glib/guri.c:667
+#: glib/guri.c:658
 #, c-format
 msgid "Port ‘%.*s’ in URI is out of range"
 msgstr "URI’deki ‘%.*s’ bağlantı noktası kapsam dışında"
 
-#: glib/guri.c:1230 glib/guri.c:1294
+#: glib/guri.c:1221 glib/guri.c:1285
 #, c-format
 msgid "URI ‘%s’ is not an absolute URI"
 msgstr "‘%s’ URI’si mutlak URI değil"
 
-#: glib/guri.c:1236
+#: glib/guri.c:1227
 #, c-format
 msgid "URI ‘%s’ has no host component"
 msgstr "‘%s’ URI’sinin ana makine bileşeni yok"
 
-#: glib/guri.c:1466
+#: glib/guri.c:1457
 msgid "URI is not absolute, and no base URI was provided"
 msgstr "URI mutlak değil ve temel URI sağlanmamış"
 
-#: glib/guri.c:2252
+#: glib/guri.c:2243
 msgid "Missing ‘=’ and parameter value"
 msgstr "‘=’ ve parametre değeri eksik"
 
@@ -6282,6 +6317,15 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#~ msgid ""
+#~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
+#~ msgstr ""
+#~ "METHOD_RETURN iletisi: REPLY_SERIAL başlık alanı eksik veya geçersiz"
+
+#~ msgid "Could not allocate %lu byte to read file “%s”"
+#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
+#~ msgstr[0] "%lu bayt “%s” dosyasını okumak için ayrılamadı"
 
 #~ msgid "kb"
 #~ msgstr "kb"
