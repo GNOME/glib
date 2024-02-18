@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-15 03:22+0100\n"
+"POT-Creation-Date: 2024-02-15 02:24+0000\n"
+"PO-Revision-Date: 2024-02-18 20:52+0100\n"
 "Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -808,13 +808,9 @@ msgstr ""
 "‘%s’"
 
 #: gio/gdbusmessage.c:1374
-#, fuzzy, c-format
-#| msgid ""
-#| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+#, c-format
 msgid "%s message: %s header field is missing or invalid"
-msgstr ""
-"Mensaxe METHOD_CALL: falta o campo da cabeceira PATH ou MEMBER ou non é "
-"válido"
+msgstr "Mensaxe %s: falta o campo da cabeceira %s ou non é válido"
 
 #: gio/gdbusmessage.c:1413
 #, c-format
@@ -822,58 +818,44 @@ msgid "%s message: INVALID header field supplied"
 msgstr "%s mensaxe: o campo fornecido da cabeceira NON VÁLIDA"
 
 #: gio/gdbusmessage.c:1424
-#, fuzzy, c-format
-#| msgid ""
-#| "SIGNAL message: The PATH header field is using the reserved value /org/"
-#| "freedesktop/DBus/Local"
+#, c-format
 msgid ""
 "%s message: PATH header field is using the reserved value /org/freedesktop/"
 "DBus/Local"
 msgstr ""
-"Mensaxe SIGNAL: o campo da cabeceira PATH está usando un valor reservado /"
-"org/freedesktop/DBus/Local"
+"Mensaxe %s: o campo da cabeceira PATH está usando un valor reservado /org/"
+"freedesktop/DBus/Local"
 
 #: gio/gdbusmessage.c:1437
-#, fuzzy, c-format
-#| msgid ""
-#| "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or "
-#| "invalid"
+#, c-format
 msgid ""
 "%s message: INTERFACE header field does not contain a valid interface name"
 msgstr ""
-"Mensaxe SIGNAL: falta o campo da cabeceira PATH, INTERFACE ou MEMBER ou non "
-"é válido"
+"Mensaxe %s: falta o campo da cabeceira INTERFACE non contén un nome de "
+"interface válido"
 
 #: gio/gdbusmessage.c:1446
-#, fuzzy, c-format
-#| msgid ""
-#| "SIGNAL message: The INTERFACE header field is using the reserved value "
-#| "org.freedesktop.DBus.Local"
+#, c-format
 msgid ""
 "%s message: INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
-"Mensaxe SIGNAL: O campo da cabeceira INTERFACE está usando un valor "
-"reservado org.freedesktop.DBus.Local"
+"Mensaxe %s: O campo da cabeceira INTERFACE está usando un valor reservado "
+"org.freedesktop.DBus.Local"
 
 #: gio/gdbusmessage.c:1459
-#, fuzzy, c-format
-#| msgid ""
-#| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+#, c-format
 msgid "%s message: MEMBER header field does not contain a valid member name"
 msgstr ""
-"Mensaxe METHOD_CALL: falta o campo da cabeceira PATH ou MEMBER ou non é "
+"Mensaxe %s: falta o campo da cabeceira MEMBER non contén un nome de membro "
 "válido"
 
 #: gio/gdbusmessage.c:1472
-#, fuzzy, c-format
-#| msgid ""
-#| "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or "
-#| "invalid"
+#, c-format
 msgid "%s message: ERROR_NAME header field does not contain a valid error name"
 msgstr ""
-"Mensaxe ERROR: falta o campo da cabeceira REPLY_SERIAL ou ERROR_NAME ou non "
-"é válido"
+"Mensaxe %s: falta o campo da cabeceira ERROR_NAME non contén un nome de erro "
+"válido"
 
 #: gio/gdbusmessage.c:1511
 msgid "type is INVALID"
@@ -1914,10 +1896,10 @@ msgid "Use default permissions for the destination"
 msgstr "Usar os permisos predeterminados para o destino"
 
 #: gio/gio-tool-copy.c:53
-#, fuzzy
-#| msgid "Use default permissions for the destination"
 msgid "Use default file modification timestamps for the destination"
-msgstr "Usar os permisos predeterminados para o destino"
+msgstr ""
+"Usar as marcas de tempo de modificación do ficheiro predeterminada para o "
+"destino"
 
 #: gio/gio-tool-copy.c:78 gio/gio-tool-move.c:69
 #, c-format
@@ -4564,13 +4546,14 @@ msgstr "o volume non implementa a «eject» ou «eject_with_operation»"
 #: gio/gwin32appinfo.c:5216
 #, c-format
 msgid "The app ‘%s’ in the application object has no verbs"
-msgstr ""
+msgstr "A aplicación «%s» no obxecto de aplicación non ten verbos"
 
 #: gio/gwin32appinfo.c:5220
 #, c-format
 msgid ""
 "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
 msgstr ""
+"A aplicación «%s» e o xestor «%s» no obxecto de aplicación non ten verbos"
 
 #: gio/gwin32inputstream.c:184
 #, c-format
