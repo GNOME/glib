@@ -664,12 +664,16 @@ freebsd-13-x86_64:
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
 
-macos-x86_64:
-  # The macOS runner is not allowed in forks. This is about trust, not capacity.
-  extends: .only-origin
+macos-arm64:
+  only:
+    - branches@GNOME/glib
+    # runner's maintainer
+    - branches@dehesselle/glib
+  except:
+    - tags
   stage: build
   tags:
-    - macosintel
+    - macosarm
   needs: []
   cache: []
   variables:
@@ -678,31 +682,26 @@ macos-x86_64:
     # libpcre2 gets built as a subproject, but the default Clang options on
     # macOS limit string lengths to 4095B — pcre2_error.c has a string of length
     # 4380B
-    CFLAGS: "-Wno-overlength-strings"
+    CFLAGS: -Wno-overlength-strings
     # redirect to the runner's volatile temporary directory
     TMPDIR: /Users/Shared/work/tmp
     # keep the user profile clean
-    PIP_CACHE_DIR: /Users/Shared/build/cache
+    PIP_CACHE_DIR: /Users/Shared/work/cache
     PIPENV_CACHE_DIR: $PIP_CACHE_DIR
     PYTHONPYCACHEPREFIX: $PIP_CACHE_DIR
-    # target OS X 10.9 Mavericks for backward compatibility
-    SDKROOT: /opt/sdks/MacOSX10.9.sdk
+    # target macOS 11 Big Sur
+    SDKROOT: /opt/sdks/MacOSX11.3.sdk
     # use the runner's ccache directory
     CCACHE_DIR: /Users/Shared/work/ccache
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
     - python3 -m venv .venv
-    - ln -s /opt/cmake/CMake.app/Contents/bin/cmake .venv/bin
-    - ln -s /opt/ccache/ccache .venv/bin
+    - curl -L https://github.com/ccache/ccache/releases/download/v4.9.1/ccache-4.9.1-darwin.tar.gz | tar -C .venv/bin -xz --strip-components=1 ccache-4.9.1-darwin/ccache
     - source .venv/bin/activate
-    - pip3 install meson==1.2.3
-    - pip3 install ninja==1.11.1
+    - pip3 install meson==1.2.3 ninja==1.11.1.1 packaging==23.2
   script:
-    # FIXME: Use --wrap-mode=default so we download dependencies each time,
-    # until the macOS runner is a VM where we can use a pre-made image which
-    # already contains the dependencies. See:
-    #  - https://gitlab.gnome.org/GNOME/glib/merge_requests/388
-    #  - https://gitlab.gnome.org/Infrastructure/Infrastructure/issues/225
+    # FIXME: These should use --wrap-mode=nodownload but the macOS CI machine
+    # isn't currently set up for that.
     - meson setup ${MESON_COMMON_OPTIONS}
             --wrap-mode=default
             --werror
