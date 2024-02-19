@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-16 01:51+0330\n"
+"POT-Creation-Date: 2024-02-15 22:22+0000\n"
+"PO-Revision-Date: 2024-02-19 16:41+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -930,7 +930,7 @@ msgstr "خطای بازگشت با بدنهٔ گونهٔ «%s»"
 
 #: gio/gdbusmessage.c:3681
 msgid "Error return with empty body"
-msgstr ""
+msgstr "خطا با بدنهٔ خالی برگردانده شد"
 
 #: gio/gdbusprivate.c:2201
 #, c-format
@@ -940,7 +940,7 @@ msgstr "(یک نویسه وارد کنید تا این پنجره بسته شو�
 #: gio/gdbusprivate.c:2387
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
-msgstr ""
+msgstr "دی‌باس نشست در حال اجرا نبوده و اجرای خودکار شکست خورد"
 
 #: gio/gdbusprivate.c:2410
 #, c-format
@@ -956,12 +956,12 @@ msgstr "ناتوان در بار کردن %s یا %s: "
 #: gio/gdbusproxy.c:1552
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
-msgstr ""
+msgstr "خطا در فراخوانی StartServiceByName برای %s: "
 
 #: gio/gdbusproxy.c:1575
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
-msgstr ""
+msgstr "پاسخ %Id نامنتظره از روش StartServiceByName‏(«%s»)"
 
 #: gio/gdbusproxy.c:2686 gio/gdbusproxy.c:2821
 #, c-format
@@ -986,12 +986,12 @@ msgstr "خطا در خواندن پروندهٔ فعلی «‎%s»‏: %s"
 #: gio/gdbusserver.c:1088
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
-msgstr ""
+msgstr "رشتهٔ «%s» شناسهٔ گروه دی‌باس معتبری نیست"
 
 #: gio/gdbusserver.c:1126
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
-msgstr ""
+msgstr "نمی‌توان روی حامل پشتیبانی نشدهٔ «%s» شنود کرد"
 
 #: gio/gdbus-tool.c:113
 #, c-format
@@ -1078,15 +1078,15 @@ msgstr "مقصد اختیاری برای سیگنال (نام یکتا)"
 
 #: gio/gdbus-tool.c:596
 msgid "Object path to emit signal on"
-msgstr ""
+msgstr "مسیر شی برای علامت دادن"
 
 #: gio/gdbus-tool.c:597
 msgid "Signal and interface name"
-msgstr ""
+msgstr "نام میانا و علامت"
 
 #: gio/gdbus-tool.c:630
 msgid "Emit a signal."
-msgstr ""
+msgstr "علامت دادن."
 
 #: gio/gdbus-tool.c:685 gio/gdbus-tool.c:1002 gio/gdbus-tool.c:1836
 #: gio/gdbus-tool.c:2068 gio/gdbus-tool.c:2288
@@ -1135,11 +1135,11 @@ msgstr "خطا در بستن اتّصال: %s\n"
 
 #: gio/gdbus-tool.c:896
 msgid "Destination name to invoke method on"
-msgstr ""
+msgstr "نام مقصد برای فراخوانی روش"
 
 #: gio/gdbus-tool.c:897
 msgid "Object path to invoke method on"
-msgstr ""
+msgstr "مسیر شی برای فراخوانی روش"
 
 #: gio/gdbus-tool.c:898
 msgid "Method and interface name"
@@ -1147,15 +1147,15 @@ msgstr "نام متد و واسط"
 
 #: gio/gdbus-tool.c:899
 msgid "Timeout in seconds"
-msgstr ""
+msgstr "مهلت زمانی به ثانیه"
 
 #: gio/gdbus-tool.c:900
 msgid "Allow interactive authorization"
-msgstr ""
+msgstr "اجازه به مجوّز دادن تعاملی"
 
 #: gio/gdbus-tool.c:947
 msgid "Invoke a method on a remote object."
-msgstr ""
+msgstr "فراخوانی روش روی شی دوردست"
 
 #: gio/gdbus-tool.c:1019 gio/gdbus-tool.c:1853 gio/gdbus-tool.c:2093
 msgid "Error: Destination is not specified\n"
@@ -1187,11 +1187,11 @@ msgstr "خطا در افزودن دستهٔ %Id‏: %s\n"
 
 #: gio/gdbus-tool.c:1695
 msgid "Destination name to introspect"
-msgstr ""
+msgstr "نام مقصد برای بازرسی"
 
 #: gio/gdbus-tool.c:1696
 msgid "Object path to introspect"
-msgstr ""
+msgstr "مسیر شی برای بازرسی"
 
 #: gio/gdbus-tool.c:1697
 msgid "Print XML"
@@ -1199,7 +1199,7 @@ msgstr "چاپ XML"
 
 #: gio/gdbus-tool.c:1698
 msgid "Introspect children"
-msgstr ""
+msgstr "بازرسی فرزندان"
 
 #: gio/gdbus-tool.c:1699
 msgid "Only print properties"
@@ -1207,7 +1207,7 @@ msgstr "تنها ترجیحات را چاپ کن"
 
 #: gio/gdbus-tool.c:1788
 msgid "Introspect a remote object."
-msgstr ""
+msgstr "بازرسی مسیر دوردست."
 
 #: gio/gdbus-tool.c:1994
 msgid "Destination name to monitor"
@@ -1223,17 +1223,19 @@ msgstr "پایش یک شیء دوردست."
 
 #: gio/gdbus-tool.c:2078
 msgid "Error: can’t monitor a non-message-bus connection\n"
-msgstr ""
+msgstr "خطا: نمی‌توان اتّصال non-message-bus را پایید\n"
 
 #: gio/gdbus-tool.c:2202
 msgid "Service to activate before waiting for the other one (well-known name)"
-msgstr ""
+msgstr "خدمت برای فعّال سازی پیش از انتظار برای دیگری (نام شناخته شده)"
 
 #: gio/gdbus-tool.c:2205
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
 msgstr ""
+"مهات زمانی برای انتظار پیش از خروج با خطا (ثانیه)؛ 0 برای بدون مهلت زمانی "
+"(پیش‌گزیده)"
 
 #: gio/gdbus-tool.c:2253
 msgid "[OPTION…] BUS-NAME"
@@ -1280,7 +1282,7 @@ msgstr "نمی‌توان پایانهٔ لازم برای این برنامه �
 #: gio/gdesktopappinfo.c:2995
 #, c-format
 msgid "Program ‘%s’ not found in $PATH"
-msgstr ""
+msgstr "برنامهٔ %s در ‪$PATH‬ پیدا نشد"
 
 #: gio/gdesktopappinfo.c:3731
 #, c-format
@@ -1331,7 +1333,7 @@ msgstr "گرداننده stop را پیاده نساخته"
 
 #: gio/gdtlsconnection.c:1154 gio/gtlsconnection.c:921
 msgid "TLS backend does not implement TLS binding retrieval"
-msgstr ""
+msgstr "پسانهٔ TLS بازیابی اتّصال TLS را پیاده نمی‌کند"
 
 #: gio/gdummytlsbackend.c:197 gio/gdummytlsbackend.c:323 gio/gdummytlsbackend.c:515
 msgid "TLS support is not available"
@@ -1544,7 +1546,7 @@ msgstr "گونهٔ %s واسط GIcon را پیاده نساخته"
 #: gio/gicon.c:339
 #, c-format
 msgid "Type %s is not classed"
-msgstr ""
+msgstr "گونهٔ %s طبقه‌بندی نشده"
 
 #: gio/gicon.c:353
 #, c-format
@@ -1607,7 +1609,7 @@ msgstr "رونوشت همراه پرونده"
 
 #: gio/gio-tool.c:166
 msgid "Keep with file when moved"
-msgstr ""
+msgstr "نگه‌داری با پرونده هنگام جابه‌جایی"
 
 #: gio/gio-tool.c:207
 msgid "“version” takes no arguments"
@@ -1623,27 +1625,27 @@ msgstr "چاپ اطّلاعات نگارش و خروج."
 
 #: gio/gio-tool.c:232
 msgid "Concatenate files to standard output"
-msgstr ""
+msgstr "چسباندن پرونده‌ها در خروجی استاندارد"
 
 #: gio/gio-tool.c:233
 msgid "Copy one or more files"
-msgstr ""
+msgstr "رونوشت یک یا چند پرونده"
 
 #: gio/gio-tool.c:234
 msgid "Show information about locations"
-msgstr ""
+msgstr "نمایش اطّلاعات دربارهٔ مکان‌ها"
 
 #: gio/gio-tool.c:235
 msgid "Launch an application from a desktop file"
-msgstr ""
+msgstr "اجرای برنامه از پروندهٔ میزکار"
 
 #: gio/gio-tool.c:236
 msgid "List the contents of locations"
-msgstr ""
+msgstr "سیاهه کردن محتوای مکان‌ها"
 
 #: gio/gio-tool.c:237
 msgid "Get or set the handler for a mimetype"
-msgstr ""
+msgstr "گرفتن یا تنظیم مدیر mimetype"
 
 #: gio/gio-tool.c:238
 msgid "Create directories"
@@ -1651,19 +1653,19 @@ msgstr "ایجاد شاخه‌ها"
 
 #: gio/gio-tool.c:239
 msgid "Monitor files and directories for changes"
-msgstr ""
+msgstr "پایش پرونده‌ها و شاخه‌ها برای دگرگونی‌ها"
 
 #: gio/gio-tool.c:240
 msgid "Mount or unmount the locations"
-msgstr ""
+msgstr "سوار یا پیاده کردن مکان‌ها"
 
 #: gio/gio-tool.c:241
 msgid "Move one or more files"
-msgstr ""
+msgstr "جابه‌جایی یک یا چند پرونده"
 
 #: gio/gio-tool.c:242
 msgid "Open files with the default application"
-msgstr ""
+msgstr "گشودن پرونده‌ها با برنامهٔ پیش‌گزیده"
 
 #: gio/gio-tool.c:243
 msgid "Rename a file"
@@ -1675,19 +1677,19 @@ msgstr "حذف یک یا چند پرونده"
 
 #: gio/gio-tool.c:245
 msgid "Read from standard input and save"
-msgstr ""
+msgstr "خواندن از ورودی استاندارد و ذخیره"
 
 #: gio/gio-tool.c:246
 msgid "Set a file attribute"
-msgstr ""
+msgstr "تنظیم یک ویژگی پرونده"
 
 #: gio/gio-tool.c:247
 msgid "Move files or directories to the trash"
-msgstr ""
+msgstr "جابه‌جایی پرونده‌ها یا شاخه‌ها به زباله‌دان"
 
 #: gio/gio-tool.c:248
 msgid "Lists the contents of locations in a tree"
-msgstr ""
+msgstr "محتوای مکان‌ها را به شکل درخت سیاهه می‌:ند"
 
 #: gio/gio-tool.c:261
 msgid "Commands:"
@@ -1696,7 +1698,7 @@ msgstr "دستورات:"
 #: gio/gio-tool.c:275
 #, c-format
 msgid "Use %s to get detailed help.\n"
-msgstr ""
+msgstr "استفاده ا ز%s برای گرفتن راهنمای با جزییات\n"
 
 #: gio/gio-tool-cat.c:89
 msgid "Error writing to stdout"
@@ -1714,7 +1716,7 @@ msgstr "LOCATION"
 
 #: gio/gio-tool-cat.c:140
 msgid "Concatenate files and print to standard output."
-msgstr ""
+msgstr "پرونده‌ها را چسبانده و در خروجی استاندارد چاپ می‌کند."
 
 #: gio/gio-tool-cat.c:142
 msgid ""
@@ -1795,11 +1797,11 @@ msgstr "مقصد %s یک شاخه نیست"
 #: gio/gio-tool-copy.c:202 gio/gio-tool-move.c:188
 #, c-format
 msgid "%s: overwrite “%s”? "
-msgstr ""
+msgstr "%s: پایمالی «%s»؟"
 
 #: gio/gio-tool-info.c:39
 msgid "List writable attributes"
-msgstr ""
+msgstr "سیاهه کردن ویژگی‌های قابل نوشتن"
 
 #: gio/gio-tool-info.c:40
 msgid "Get file system info"
@@ -1807,7 +1809,7 @@ msgstr "گرفتن اطَلاعات سامانهٔ پرونده"
 
 #: gio/gio-tool-info.c:41 gio/gio-tool-list.c:37
 msgid "The attributes to get"
-msgstr ""
+msgstr "ویژگی‌ها برای گرفتن"
 
 #: gio/gio-tool-info.c:41 gio/gio-tool-list.c:37
 msgid "ATTRIBUTES"
@@ -1815,7 +1817,7 @@ msgstr "ATTRIBUTES"
 
 #: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:37
 msgid "Don’t follow symbolic links"
-msgstr ""
+msgstr "دنبال نکردن پیوندهای نمادین"
 
 #: gio/gio-tool-info.c:105
 msgid "attributes:\n"
@@ -1859,7 +1861,7 @@ msgstr "نشانی: %s\n"
 #: gio/gio-tool-info.c:214
 #, c-format
 msgid "local path: %s\n"
-msgstr ""
+msgstr "مسیر محلی: %s\n"
 
 #: gio/gio-tool-info.c:248
 #, c-format
@@ -1868,15 +1870,15 @@ msgstr ""
 
 #: gio/gio-tool-info.c:329
 msgid "Settable attributes:\n"
-msgstr ""
+msgstr "ویژگی‌های تنظیم‌پذیر:\n"
 
 #: gio/gio-tool-info.c:353
 msgid "Writable attribute namespaces:\n"
-msgstr ""
+msgstr "فضانام ویژگی‌های قابل نوشتن:\n"
 
 #: gio/gio-tool-info.c:388
 msgid "Show information about locations."
-msgstr ""
+msgstr "نمایش اطّلاعات دربارهٔ مکان‌ها."
 
 #: gio/gio-tool-info.c:390
 msgid ""
@@ -1896,11 +1898,11 @@ msgstr "DESKTOP-FILE [FILE-ARG …]"
 msgid ""
 "Launch an application from a desktop file, passing optional filename arguments "
 "to it."
-msgstr ""
+msgstr "اجرای برنامه از پروندهٔ میزکار با دادن آرگومان‌های نام پروندهٔ اختیاری به آن."
 
 #: gio/gio-tool-launch.c:79
 msgid "No desktop file given"
-msgstr ""
+msgstr "هیچ پروندهٔ میزکاری داده نشد"
 
 #: gio/gio-tool-launch.c:87
 msgid "The launch command is not currently supported on this platform"
@@ -1914,7 +1916,7 @@ msgstr "ناتوان در بار کردن «%s»: %s"
 #: gio/gio-tool-launch.c:109
 #, c-format
 msgid "Unable to load application information for ‘%s‘"
-msgstr ""
+msgstr "ناتوان در بار کردن اطّلاعات برنامه برای «%s»"
 
 #: gio/gio-tool-launch.c:121
 #, c-format
@@ -1923,15 +1925,15 @@ msgstr "ناتوان در اجرای برنامهٔ «%s»: %s"
 
 #: gio/gio-tool-list.c:38 gio/gio-tool-tree.c:34
 msgid "Show hidden files"
-msgstr ""
+msgstr "نمایش پرونده‌های نهفته"
 
 #: gio/gio-tool-list.c:39
 msgid "Use a long listing format"
-msgstr ""
+msgstr "استفاده از قالب سیاهه‌ای بلند"
 
 #: gio/gio-tool-list.c:41
 msgid "Print display names"
-msgstr ""
+msgstr "چاپ نام‌های نمایشی"
 
 #: gio/gio-tool-list.c:42
 msgid "Print full URIs"
@@ -1960,7 +1962,7 @@ msgstr "HANDLER"
 
 #: gio/gio-tool-mime.c:78
 msgid "Get or set the handler for a mimetype."
-msgstr ""
+msgstr "گرفتن یا تنظیم مدیر برای mimetype."
 
 #: gio/gio-tool-mime.c:80
 msgid ""
@@ -1971,21 +1973,21 @@ msgstr ""
 
 #: gio/gio-tool-mime.c:102
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr ""
+msgstr "باید یک mimetype و احتمالاً یک مدیر مشخّص شود."
 
 #: gio/gio-tool-mime.c:118
 #, c-format
 msgid "No default applications for “%s”\n"
-msgstr ""
+msgstr "برنامهٔ پیش‌گزیده‌ای برای «%s» وجود ندارد\n"
 
 #: gio/gio-tool-mime.c:124
 #, c-format
 msgid "Default application for “%s”: %s\n"
-msgstr ""
+msgstr "برنامهٔ پیش‌گزیده برای «%s»: ‏%s\n"
 
 #: gio/gio-tool-mime.c:129
 msgid "Registered applications:\n"
-msgstr ""
+msgstr "برنامه‌های ثبت شده:\n"
 
 #: gio/gio-tool-mime.c:131
 msgid "No registered applications\n"
@@ -1993,7 +1995,7 @@ msgstr "بدون برنامهٔ ثبت شده\n"
 
 #: gio/gio-tool-mime.c:142
 msgid "Recommended applications:\n"
-msgstr ""
+msgstr "برنامه‌های توصیه شده:\n"
 
 #: gio/gio-tool-mime.c:144
 msgid "No recommended applications\n"
@@ -2007,7 +2009,7 @@ msgstr "شکست در بارکردن اطّلاعات برای مدیر «%s»"
 #: gio/gio-tool-mime.c:170
 #, c-format
 msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
-msgstr ""
+msgstr "شکست در تنظیم «%s» به مدیر پیش‌گزیده برای «%s»: ‏%s\n"
 
 #: gio/gio-tool-mkdir.c:33
 msgid "Create parent directories"
@@ -2026,23 +2028,23 @@ msgstr ""
 
 #: gio/gio-tool-monitor.c:39
 msgid "Monitor a directory (default: depends on type)"
-msgstr ""
+msgstr "پایش شاخه (پیش‌گزیده: بسته به گونه)"
 
 #: gio/gio-tool-monitor.c:41
 msgid "Monitor a file (default: depends on type)"
-msgstr ""
+msgstr "پایش پرونده (پیش‌گزیده: بسته به گونه)"
 
 #: gio/gio-tool-monitor.c:43
 msgid "Monitor a file directly (notices changes made via hardlinks)"
-msgstr ""
+msgstr "پیش مستقیم پرونده (آگاهی از دگرگونی‌های ایجاد شده به دست پیوندهای سخت)"
 
 #: gio/gio-tool-monitor.c:45
 msgid "Monitors a file directly, but doesn’t report changes"
-msgstr ""
+msgstr "پرونده‌ی را بهصورت مستقیم می‌پاید، ولی دگرگونی‌ها را گزارش نمی‌کند"
 
 #: gio/gio-tool-monitor.c:47
 msgid "Report moves and renames as simple deleted/created events"
-msgstr ""
+msgstr "گزارش جابه‌جایی‌ها و تغییر نام‌ها به شکل رویدادهای حذف و ایجاد ساده"
 
 #: gio/gio-tool-monitor.c:49
 msgid "Watch for mount events"
@@ -2050,7 +2052,7 @@ msgstr ""
 
 #: gio/gio-tool-monitor.c:211
 msgid "Monitor files or directories for changes."
-msgstr ""
+msgstr "پایش پرونده‌ها و شاخه‌ها برای دگرگونی‌ها."
 
 #: gio/gio-tool-mount.c:65
 msgid "Mount as mountable"
@@ -2094,7 +2096,7 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:72
 msgid "Use an anonymous user when authenticating"
-msgstr ""
+msgstr "استقاده از کاربری ناشناس هنگام هویت‌سنجی"
 
 #. Translator: List here is a verb as in 'List all mounts'
 #: gio/gio-tool-mount.c:74
@@ -2220,7 +2222,7 @@ msgstr "جایگذاری به صورتی که گویی مقصد وجود ندا�
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:57
 msgid "Print new etag at end"
-msgstr ""
+msgstr "چاپ etag جدید در پایان"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:59
@@ -2295,13 +2297,14 @@ msgstr "خالی کردن زباله‌دان"
 
 #: gio/gio-tool-trash.c:37
 msgid "List files in the trash with their original locations"
-msgstr ""
+msgstr "سیاهه کردن پرونده‌های داخل زباله‌دان با مکان‌های اصلیشان"
 
 #: gio/gio-tool-trash.c:38
 msgid ""
 "Restore a file from trash to its original location (possibly recreating the "
 "directory)"
 msgstr ""
+"برگرداندن پرونده‌ای از زباله‌دان به مکان اصلیش (ممکن است شاخه را دوباره ایجاد کند)"
 
 #: gio/gio-tool-trash.c:108
 msgid "Unable to find original path"
@@ -2313,11 +2316,11 @@ msgstr "ناتوان در بازایجاد مکان اصلی: "
 
 #: gio/gio-tool-trash.c:138
 msgid "Unable to move file to its original location: "
-msgstr ""
+msgstr "ناتوان در جابه‌جایی پرونده به مکان اصلیش: "
 
 #: gio/gio-tool-trash.c:227
 msgid "Move/Restore files or directories to the trash."
-msgstr ""
+msgstr "جابه‌جایی یا برگرداندن پرونده‌ها یا شاخه‌ها به زباله‌دان."
 
 #: gio/gio-tool-trash.c:229
 msgid ""
@@ -2327,7 +2330,7 @@ msgstr ""
 
 #: gio/gio-tool-trash.c:260
 msgid "Location given doesn't start with trash:///"
-msgstr ""
+msgstr "مکان داده شده با ‪trash:///‬ آغاز نمی‌شود"
 
 #: gio/gio-tool-tree.c:35
 msgid "Follow symbolic links, mounts and shortcuts"
@@ -2335,7 +2338,7 @@ msgstr "پیگیری پیوندهای نمادین، سوار شدن‌ها و �
 
 #: gio/gio-tool-tree.c:251
 msgid "List contents of directories in a tree-like format."
-msgstr ""
+msgstr "سیاهه کردن محتوای شاخه‌ها در قالبی درخت‌گون."
 
 #: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1514
 #, c-format
@@ -2350,7 +2353,7 @@ msgstr "عنصر <%s> به عنوان سطح بالا (toplevel) مجاز نیس
 #: gio/glib-compile-resources.c:236
 #, c-format
 msgid "File %s appears multiple times in the resource"
-msgstr ""
+msgstr "پروندهٔ %s چندین بار در منبع ظاهر شده"
 
 #: gio/glib-compile-resources.c:247
 #, c-format
@@ -2375,7 +2378,7 @@ msgstr "گزینهٔ پردازش ناشناختهٔ «%s»"
 #: gio/glib-compile-resources.c:426
 #, c-format
 msgid "%s preprocessing requested, but %s is not set, and %s is not in PATH"
-msgstr ""
+msgstr "پیش‌پردازش %s خواسته شد، ولی %s تنظیم نشده و %s در PATH نیست"
 
 #: gio/glib-compile-resources.c:459
 #, c-format
@@ -2404,7 +2407,7 @@ msgstr "نام پروندهٔ خروجی"
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
-msgstr ""
+msgstr "شاخه برای بار کردن پرونده‌های ارجاع شده در FILE (پیش‌گزیده: شاخهٔ کنونی)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2203
@@ -2413,7 +2416,7 @@ msgstr "DIRECTORY"
 
 #: gio/glib-compile-resources.c:824
 msgid "Generate output in the format selected for by the target filename extension"
-msgstr ""
+msgstr "تولید خروجی در قالب گزیده برای افزونهٔ نام پروندهٔ هدف"
 
 #: gio/glib-compile-resources.c:825
 msgid "Generate source header"
@@ -2421,7 +2424,7 @@ msgstr "ایجاد سرایند منبع"
 
 #: gio/glib-compile-resources.c:826
 msgid "Generate source code used to link in the resource file into your code"
-msgstr ""
+msgstr "تولید کد مبدأ استفاده شده برای پیوند در پروندهٔ مبدأ در کدتان"
 
 #: gio/glib-compile-resources.c:827
 msgid "Generate dependency list"
@@ -2433,11 +2436,11 @@ msgstr "نام پروندهٔ وابستگی برای ایجاد"
 
 #: gio/glib-compile-resources.c:829
 msgid "Include phony targets in the generated dependency file"
-msgstr ""
+msgstr "قراردادن هدف‌های ساختگی در پروندهٔ وابستگی تولید شده"
 
 #: gio/glib-compile-resources.c:830
 msgid "Don’t automatically create and register resource"
-msgstr ""
+msgstr "عدم ایجاد خودکار و ثبت منبع"
 
 #: gio/glib-compile-resources.c:831
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
@@ -2446,15 +2449,15 @@ msgstr ""
 #: gio/glib-compile-resources.c:832
 msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally instead"
-msgstr ""
+msgstr "تعبیه نکردن داده‌های منبع در پروندهٔ C. فرض کردن پیوند شدنش به صورت خارجی"
 
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
-msgstr ""
+msgstr "نام شناساگر C استفاده شده برای کد مبدأ تولیدی"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
-msgstr ""
+msgstr "مترجم C هدف (پیش‌گزیده: متغیّر محیطی CC)"
 
 #: gio/glib-compile-resources.c:861
 msgid ""
@@ -2490,7 +2493,7 @@ msgstr "مقدار=«%s» از پیش مشخّص شده"
 #: gio/glib-compile-schemas.c:136
 #, c-format
 msgid "flags values must have at most 1 bit set"
-msgstr ""
+msgstr "مقدارهای پرچم باید بیشینه ۱ بیت تنظیم شده باشند"
 
 #: gio/glib-compile-schemas.c:161
 #, c-format
@@ -2538,11 +2541,11 @@ msgstr "دستهٔ l10n پشتیبانی نشده: %s"
 
 #: gio/glib-compile-schemas.c:443
 msgid "l10n requested, but no gettext domain given"
-msgstr ""
+msgstr "درخواست بومی‌سازی بدون دادن دامنهٔ gettext"
 
 #: gio/glib-compile-schemas.c:455
 msgid "translation context given for value without l10n enabled"
-msgstr ""
+msgstr "بافتار ترجمه داده برای مقدار بدون به کار افتاده بومی‌سازی"
 
 #: gio/glib-compile-schemas.c:477
 #, c-format
@@ -3318,7 +3321,7 @@ msgstr ""
 #: gio/gnetworkaddress.c:424
 #, c-format
 msgid "Hostname “%s” contains “[” but not “]”"
-msgstr ""
+msgstr "نام میزبان «%s» ‏[ دارد، ولی ] نه"
 
 #: gio/gnetworkmonitorbase.c:221 gio/gnetworkmonitorbase.c:326
 msgid "Network unreachable"
@@ -3345,12 +3348,12 @@ msgstr "نتوانست وضعیت شبکه را بگیرد: "
 #: gio/gnetworkmonitornm.c:313
 #, c-format
 msgid "NetworkManager not running"
-msgstr ""
+msgstr "مدیر شبکه در حال اجرا نیست"
 
 #: gio/gnetworkmonitornm.c:324
 #, c-format
 msgid "NetworkManager version too old"
-msgstr ""
+msgstr "نگارش مدیر شبکه بیش از حد قدیمی"
 
 #: gio/goutputstream.c:236 gio/goutputstream.c:777
 msgid "Output stream doesn’t implement write"
@@ -3359,7 +3362,7 @@ msgstr "جریان خروجی write را پیاده نساخته"
 #: gio/goutputstream.c:474 gio/goutputstream.c:1539
 #, c-format
 msgid "Sum of vectors passed to %s too large"
-msgstr ""
+msgstr "جمع بردارهای داده شده به %s بیش از حد بزرگ"
 
 #: gio/goutputstream.c:738 gio/goutputstream.c:1769
 msgid "Source stream is already closed"
@@ -3382,7 +3385,7 @@ msgstr "خطا در حل «%s»: %s"
 #: gio/gresolver.c:541 gio/gresolver.c:701
 #, c-format
 msgid "%s not implemented"
-msgstr ""
+msgstr "%s پیاده نشده"
 
 #: gio/gresolver.c:1070 gio/gresolver.c:1122
 msgid "Invalid domain"
@@ -3394,21 +3397,21 @@ msgstr "دامنهٔ نامعتبر"
 #: gio/gresourcefile.c:757
 #, c-format
 msgid "The resource at “%s” does not exist"
-msgstr ""
+msgstr "منبع در «%s» وجود ندارد"
 
 #: gio/gresource.c:873
 #, c-format
 msgid "The resource at “%s” failed to decompress"
-msgstr ""
+msgstr "گشودن فشردگی منبع در «%s» شکست خورد"
 
 #: gio/gresourcefile.c:663
 msgid "Resource files cannot be renamed"
-msgstr ""
+msgstr "پرونده‌های منبع قابل تغییر نام نیستند"
 
 #: gio/gresourcefile.c:753
 #, c-format
 msgid "The resource at “%s” is not a directory"
-msgstr ""
+msgstr "منبع در «%s» شاخه نیست"
 
 #: gio/gresourcefile.c:961
 msgid "Input stream doesn’t implement seek"
@@ -3443,7 +3446,7 @@ msgstr ""
 
 #: gio/gresource-tool.c:528
 msgid "Extract a resource file to stdout"
-msgstr ""
+msgstr "استحراج پروندهٔ منبع در خروجی استاندارد"
 
 #: gio/gresource-tool.c:529
 msgid "FILE PATH"
@@ -3829,7 +3832,7 @@ msgstr ""
 #: gio/gsocket.c:2656
 #, c-format
 msgid "Interface name too long"
-msgstr ""
+msgstr "نام میانا بیش از حد بلند"
 
 #: gio/gsocket.c:2669 gio/gsocket.c:2723
 #, c-format
