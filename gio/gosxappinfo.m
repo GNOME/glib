@@ -656,7 +656,10 @@ g_osx_app_info_get_all_for_scheme (const char *cscheme)
   gint i;
   
   scheme = create_cfstring_from_cstr (cscheme);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  /* first deprecated in macOS 10.15 - Use LSCopyApplicationURLsForURL() instead */
   bundle_list = LSCopyAllHandlersForURLScheme (scheme);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   CFRelease (scheme);
 
   if (!bundle_list)
@@ -795,7 +798,10 @@ g_app_info_get_default_for_uri_scheme_impl (const char *uri_scheme)
   NSBundle *bundle;
 
   scheme = create_cfstring_from_cstr (uri_scheme);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  /* first deprecated in macOS 10.15 - Use LSCopyDefaultApplicationURLForURL() instead. */
   bundle_id = LSCopyDefaultHandlerForURLScheme (scheme);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   CFRelease (scheme);
 
   if (!bundle_id)
