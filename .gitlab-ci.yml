@@ -638,7 +638,8 @@ freebsd-13-x86_64:
       - "_build/meson-logs"
 
 macos-x86_64:
-  extends: .only-origin-or-manual
+  # The macOS runner is not allowed in forks. This is about trust, not capacity.
+  extends: .only-origin
   stage: build
   tags:
     - macosintel
