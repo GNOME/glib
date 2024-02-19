@@ -153,18 +153,8 @@ g_context_specific_group_request_state (GContextSpecificGroup *group,
         }
     }
 
-  /* we only block for positive transitions */
-  if (requested_state)
-    {
-      while (group->requested_state != group->effective_state)
-        g_cond_wait (&group->cond, &group->lock);
-
-      /* there is no way this could go back to FALSE because the object
-       * that we just created in this thread would have to have been
-       * destroyed again (from this thread) before that could happen.
-       */
-      g_assert (group->effective_state);
-    }
+  while (group->requested_state != group->effective_state)
+    g_cond_wait (&group->cond, &group->lock);
 }
 
 gpointer
