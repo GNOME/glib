@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-17 23:44+0200\n"
+"POT-Creation-Date: 2024-02-17 21:44+0000\n"
+"PO-Revision-Date: 2024-02-19 22:50+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -175,7 +175,7 @@ msgid ""
 "Unknown command %s\n"
 "\n"
 msgstr ""
-"Unknown command %s\n"
+"פקודה לא ידועה %s\n"
 "\n"
 
 #: gio/gapplication-tool.c:105
@@ -360,7 +360,7 @@ msgstr "%s type"
 
 #: gio/gcontenttype-win32.c:198
 msgid "Unknown type"
-msgstr "Unknown type"
+msgstr "סוג לא ידוע"
 
 #: gio/gcontenttype-win32.c:200
 #, c-format
@@ -369,19 +369,19 @@ msgstr "%s filetype"
 
 #: gio/gcredentials.c:327
 msgid "GCredentials contains invalid data"
-msgstr "GCredentials contains invalid data"
+msgstr "GCredentials מכיל נתונים שגויים"
 
 #: gio/gcredentials.c:387 gio/gcredentials.c:678
 msgid "GCredentials is not implemented on this OS"
-msgstr "GCredentials is not implemented on this OS"
+msgstr "GCredentials לא ממומש במערכת ההפעלה הזאת"
 
 #: gio/gcredentials.c:542 gio/gcredentials.c:560
 msgid "There is no GCredentials support for your platform"
-msgstr "There is no GCredentials support for your platform"
+msgstr "אין תמיכה ב־GCredentials לפלטפורמה שלך"
 
 #: gio/gcredentials.c:618
 msgid "GCredentials does not contain a process ID on this OS"
-msgstr "GCredentials does not contain a process ID on this OS"
+msgstr "GCredentials לא מכיל מזהה תהליך במערכת ההפעלה הזאת"
 
 #: gio/gcredentials.c:672
 msgid "Credentials spoofing is not possible on this OS"
@@ -692,17 +692,17 @@ msgstr ""
 #: gio/gdbusconnection.c:4422
 #, c-format
 msgid "No such property “%s”"
-msgstr "No such property “%s”"
+msgstr "אין מאפיין כזה „%s”"
 
 #: gio/gdbusconnection.c:4434
 #, c-format
 msgid "Property “%s” is not readable"
-msgstr "Property “%s” is not readable"
+msgstr "המאפיין „%s” לא זמין לקריאה"
 
 #: gio/gdbusconnection.c:4445
 #, c-format
 msgid "Property “%s” is not writable"
-msgstr "Property “%s” is not writable"
+msgstr "המאפיין „%s” לא זמין לכתיבה"
 
 #: gio/gdbusconnection.c:4465
 #, c-format
@@ -713,7 +713,7 @@ msgstr "Error setting property “%s”: Expected type “%s” but got “%s”
 #: gio/gdbusconnection.c:6762
 #, c-format
 msgid "No such interface “%s”"
-msgstr "No such interface “%s”"
+msgstr "אין כזה מנשק „%s”"
 
 #: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
 #, c-format
@@ -723,7 +723,7 @@ msgstr "No such interface “%s” on object at path %s"
 #: gio/gdbusconnection.c:5102
 #, c-format
 msgid "No such method “%s”"
-msgstr "No such method “%s”"
+msgstr "אין כזאת מתודה „%s”"
 
 #: gio/gdbusconnection.c:5133
 #, c-format
@@ -738,12 +738,12 @@ msgstr "An object is already exported for the interface %s at %s"
 #: gio/gdbusconnection.c:5563
 #, c-format
 msgid "Unable to retrieve property %s.%s"
-msgstr "Unable to retrieve property %s.%s"
+msgstr "לא ניתן למשוך את המאפיין %s.%s"
 
 #: gio/gdbusconnection.c:5619
 #, c-format
 msgid "Unable to set property %s.%s"
-msgstr "Unable to set property %s.%s"
+msgstr "לא ניתן להגדיר את המאפיין %s.%s"
 
 #: gio/gdbusconnection.c:5798
 #, c-format
@@ -772,8 +772,6 @@ msgstr "הודעת %s:‏ %s שדה הכותרת שגוי, אמור להיות �
 
 #: gio/gdbusmessage.c:1374
 #, c-format
-#| msgid ""
-#| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
 msgid "%s message: %s header field is missing or invalid"
 msgstr "הודעת %s: שדה הכותרת %s חסר או שגוי"
 
@@ -783,29 +781,26 @@ msgid "%s message: INVALID header field supplied"
 msgstr "הודעת %s: סופק שדה כותרת שגוי"
 
 #: gio/gdbusmessage.c:1424
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "SIGNAL message: The PATH header field is using the reserved value /org/"
 #| "freedesktop/DBus/Local"
 msgid ""
 "%s message: PATH header field is using the reserved value /org/freedesktop/"
 "DBus/Local"
-msgstr ""
-"SIGNAL message: The PATH header field is using the reserved value /org/"
-"freedesktop/DBus/Local"
+msgstr "הודעת %s: שדה הכותרת PATH משתמש בערך השגוי ‎/org/freedesktop/DBus/Local"
 
 #: gio/gdbusmessage.c:1437
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or "
 #| "invalid"
 msgid ""
 "%s message: INTERFACE header field does not contain a valid interface name"
-msgstr ""
-"SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or invalid"
+msgstr "הודעת %s: שדה הכותרת INTERFACE לא מכיל שם מנשק תקני"
 
 #: gio/gdbusmessage.c:1446
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "SIGNAL message: The INTERFACE header field is using the reserved value "
 #| "org.freedesktop.DBus.Local"
@@ -813,24 +808,22 @@ msgid ""
 "%s message: INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
-"SIGNAL message: The INTERFACE header field is using the reserved value org."
-"freedesktop.DBus.Local"
+"הודעת %s: שדה הכותרת INTERFACE משתמש בערך השגוי org.freedesktop.DBus.Local"
 
 #: gio/gdbusmessage.c:1459
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
 msgid "%s message: MEMBER header field does not contain a valid member name"
-msgstr "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+msgstr "הודעת %s: שדה הכותרת MEMBER לא מכיל שם חבר תקני"
 
 #: gio/gdbusmessage.c:1472
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or "
 #| "invalid"
 msgid "%s message: ERROR_NAME header field does not contain a valid error name"
-msgstr ""
-"ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or invalid"
+msgstr "הודעת %s: שדה הכותרת ERROR_NAME לא מכיל שם שגיאה תקני"
 
 #: gio/gdbusmessage.c:1511
 msgid "type is INVALID"
@@ -5102,7 +5095,6 @@ msgstr "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 
 #: glib/gfileutils.c:1139
 #, c-format
-#| msgid "Failed to write file “%s”: write() failed: %s"
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "כתיבת הקובץ „%s” נכשלה: ftruncate()‎ נכשל: %s"
 
