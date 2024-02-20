@@ -496,6 +496,15 @@ g_winhttp_file_query_info (GFile                *file,
   if (_g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_STANDARD_TYPE))
     g_file_info_set_file_type (info, G_FILE_TYPE_REGULAR);
 
+  if (!(_g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_STANDARD_SIZE) ||
+        _g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_STANDARD_CONTENT_TYPE) ||
+        _g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED) ||
+        _g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_NSEC) ||
+        _g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC)))
+    {
+      return info;
+    }
+
   connection = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpConnect
     (G_WINHTTP_VFS (winhttp_file->vfs)->session,
      winhttp_file->url.lpszHostName,
