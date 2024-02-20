@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-14 10:29+0100\n"
+"POT-Creation-Date: 2024-02-14 09:30+0000\n"
+"PO-Revision-Date: 2024-02-20 22:46+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -1874,7 +1874,7 @@ msgstr "დანიშნულება"
 
 #: gio/gio-tool-copy.c:109
 msgid "Copy one or more files from SOURCE to DESTINATION."
-msgstr ""
+msgstr "ერთი ან მეტი ფაილის კოპირება მითითებული წყაროდან მითითებულ სამიზნეში."
 
 #: gio/gio-tool-copy.c:111
 msgid ""
@@ -2067,7 +2067,7 @@ msgstr ""
 
 #: gio/gio-tool-mime.c:102
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr ""
+msgstr "უნდა მიუთითოთ ერთი MIME ტიპი ან, შეიძლება, დამმუშავებელი"
 
 #: gio/gio-tool-mime.c:118
 #, c-format
@@ -2135,7 +2135,7 @@ msgstr ""
 
 #: gio/gio-tool-monitor.c:45
 msgid "Monitors a file directly, but doesn’t report changes"
-msgstr ""
+msgstr "ფაილის პირდაპირი მონიტორინგი ცვლილებების გადმოცემის გარეშე"
 
 #: gio/gio-tool-monitor.c:47
 msgid "Report moves and renames as simple deleted/created events"
@@ -2244,7 +2244,7 @@ msgstr ""
 
 #: gio/gio-tool-move.c:101
 msgid "Move one or more files from SOURCE to DEST."
-msgstr ""
+msgstr "ერთი ან მეტი ფაილის გადატანა მითითებული წყაროდან მითითებულ სამიზნეში."
 
 #: gio/gio-tool-move.c:103
 msgid ""
@@ -2702,12 +2702,12 @@ msgstr "<alias value='%s'/> უკვე მითითებულია"
 #: gio/glib-compile-schemas.c:607
 #, c-format
 msgid "alias target “%s” is not in enumerated type"
-msgstr ""
+msgstr "ფსევდონიმის სამიზნე “%s” ჩამონათვლის ტიპი არაა"
 
 #: gio/glib-compile-schemas.c:608
 #, c-format
 msgid "alias target “%s” is not in <choices>"
-msgstr ""
+msgstr "ფსევდონიმის სამიზნე “%s” სიაში <choices> არაა"
 
 #: gio/glib-compile-schemas.c:623
 #, c-format
@@ -2791,7 +2791,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1060
 #, c-format
 msgid "No <key name='%s'> to override"
-msgstr ""
+msgstr "გადასაფარი <key name='%s'>-ის გარეშე"
 
 #: gio/glib-compile-schemas.c:1068
 #, c-format
@@ -2836,11 +2836,13 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
 "does not extend “%s”"
 msgstr ""
+"<schema id='%s' list-of='%s'> აფართოებს <schema id='%s' list-of='%s'>-ს, "
+"მაგრამ “%s” არ აფართოებს “%s”-ს"
 
 #: gio/glib-compile-schemas.c:1224
 #, c-format
 msgid "A path, if given, must begin and end with a slash"
-msgstr ""
+msgstr "ბილიკი, თუ მითითებულია, უნდა იწყებოდეს და მთავრდებოდეს დახრილი ხაზით"
 
 #: gio/glib-compile-schemas.c:1231
 #, c-format
@@ -3224,12 +3226,12 @@ msgstr ""
 #: gio/glocalfileinfo.c:2622
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
-msgstr ""
+msgstr "UNIX დროის შტამპი %lld 64 ბიტში არ ეტევა"
 
 #: gio/glocalfileinfo.c:2633
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
-msgstr ""
+msgstr "UNIX დროის შტამპი %lld Windows-ის მიერ მხარდაჭერილი შუალედის გარეთაა"
 
 #: gio/glocalfileinfo.c:2765
 #, c-format
@@ -3364,6 +3366,7 @@ msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr ""
+"მეხსიერება, რომელიც პროცესს ჩასაწერად სჭირდება, ხელმისაწვდომ სივრცეზე დიდია"
 
 #: gio/gmemoryoutputstream.c:761
 msgid "Requested seek before the beginning of the stream"
@@ -3531,7 +3534,7 @@ msgstr "შეყვანის ნაკადს გადახვევი�
 
 #: gio/gresource-tool.c:503
 msgid "List sections containing resources in an elf FILE"
-msgstr ""
+msgstr "რესურსების შემცველი სექციების სია მითითებულ elf ფაილში"
 
 #: gio/gresource-tool.c:509
 msgid ""
@@ -3796,7 +3799,7 @@ msgstr ""
 
 #: gio/gsettings-tool.c:729
 msgid "  KEY       The (optional) key within the schema\n"
-msgstr ""
+msgstr "  KEY       (არასავალდებულო) გასაღები სქემაში\n"
 
 #: gio/gsettings-tool.c:733
 msgid "  KEY       The key within the schema\n"
@@ -3863,12 +3866,14 @@ msgstr "მითითებული პროტოკოლი უცნო�
 #: gio/gsocket.c:1243
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
-msgstr ""
+msgstr "დატაგრამის ოპერაციებს არა-დატაგრამის სოკეტზე ვერ გამოიყენებთ."
 
 #: gio/gsocket.c:1260
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
+"დატაგრამის ოპერაციებს სოკეტზე, რომელსაც მოლოდინის დრო დაყენებული აქვს, ვერ "
+"გამოიყენებთ."
 
 #: gio/gsocket.c:2067
 #, c-format
@@ -4203,17 +4208,17 @@ msgstr "PEM-ით დაშიფრული სერტიფიკატი
 
 #: gio/gtlscertificate.c:758
 msgid "The current TLS backend does not support PKCS #12"
-msgstr ""
+msgstr "მიმდინარე TLS უკანაბოლოს PKCS #12-ის მხარდაჭერა არ გააჩნია"
 
 #: gio/gtlscertificate.c:975
 msgid "This GTlsBackend does not support creating PKCS #11 certificates"
-msgstr ""
+msgstr "GTlsBackend-ს PKCS #11 სერტიფიკატების შექმნის მხარდაჭერა არ გააჩნია"
 
 #: gio/gtlspassword.c:104
 msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
-msgstr ""
+msgstr "ბოლო შანსი, შეიყვანოთ სწორი პაროლი, სანამ წვდომა დაგებლოკებათ."
 
 #. Translators: This is not the 'This is the last chance' string. It is
 #. * displayed when more than one attempt is allowed.
@@ -4222,6 +4227,8 @@ msgid ""
 "Several passwords entered have been incorrect, and your access will be "
 "locked out after further failures."
 msgstr ""
+"რამდენიმე პაროლი, რომელიც შეიყვანეთ, არასწორი აღმოჩნდა. თუ ეს განმეორდება, "
+"წვდომა დაგებლოკებათ."
 
 #: gio/gtlspassword.c:110
 msgid "The password entered is incorrect."
@@ -4370,7 +4377,7 @@ msgstr "მოსასმენი მისამართი"
 
 #: gio/tests/gdbus-daemon.c:19
 msgid "Ignored, for compat with GTestDbus"
-msgstr ""
+msgstr "გამოტოვებულია. GTestDbus-სთან თავსებადობისთვის"
 
 #: gio/tests/gdbus-daemon.c:20
 msgid "Print address"
@@ -4414,7 +4421,7 @@ msgstr "უცნობი ჭდე '%s' - '%s'-ში"
 #: glib/gbookmarkfile.c:1672
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
-msgstr ""
+msgstr "არასწორი დრო/თარიღი ‘%s’ სანიშნეს ფაილში"
 
 #: glib/gbookmarkfile.c:1911
 msgid "No valid bookmark file found in data dirs"
@@ -5540,7 +5547,7 @@ msgstr "assertion expected after (?("
 
 #: glib/gregex.c:646
 msgid "a numbered reference must not be zero"
-msgstr ""
+msgstr "რიცხვითი მიმართვა ნუილის ტოლი ვერ იქნება"
 
 #: glib/gregex.c:650
 msgid "unknown POSIX class name"
@@ -5556,7 +5563,7 @@ msgstr "\\C not allowed in lookbehind assertion"
 
 #: glib/gregex.c:663
 msgid "missing terminator in subpattern name"
-msgstr ""
+msgstr "ქვეშაბლონის სახელს დამაბოლოებელი აკლია"
 
 #: glib/gregex.c:667
 msgid "two named subpatterns have the same name"
@@ -5753,22 +5760,22 @@ msgstr "მოულოდნელი შეცდომა ფუნქცი�
 #: glib/gspawn.c:1097 glib/gspawn-win32.c:1575
 #, c-format
 msgid "Child process exited with code %ld"
-msgstr ""
+msgstr "შვილეული პროცესი დასრულდა სტატუსით %ld"
 
 #: glib/gspawn.c:1105
 #, c-format
 msgid "Child process killed by signal %ld"
-msgstr ""
+msgstr "შვილი პროცესი მოკვდა სიგნალის მიერ: %ld"
 
 #: glib/gspawn.c:1112
 #, c-format
 msgid "Child process stopped by signal %ld"
-msgstr ""
+msgstr "შვილი პროცესი შეწყდა სიგნალის მიერ: %ld"
 
 #: glib/gspawn.c:1119
 #, c-format
 msgid "Child process exited abnormally"
-msgstr ""
+msgstr "შვილი პროცესი არანორმალურად დასრულდა"
 
 #: glib/gspawn.c:1622 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
