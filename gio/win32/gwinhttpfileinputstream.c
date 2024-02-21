@@ -45,6 +45,7 @@ struct _GWinHttpFileInputStreamClass
 };
 
 #define g_winhttp_file_input_stream_get_type _g_winhttp_file_input_stream_get_type
+
 G_DEFINE_TYPE (GWinHttpFileInputStream, g_winhttp_file_input_stream, G_TYPE_FILE_INPUT_STREAM)
 
 static gssize g_winhttp_file_input_stream_read (GInputStream    *stream,
@@ -65,12 +66,11 @@ g_winhttp_file_input_stream_finalize (GObject *object)
   winhttp_stream = G_WINHTTP_FILE_INPUT_STREAM (object);
 
   if (winhttp_stream->request != NULL)
-    G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (winhttp_stream->request);
+    WinHttpCloseHandle (winhttp_stream->request);
   if (winhttp_stream->connection != NULL)
-    G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (winhttp_stream->connection);
+    WinHttpCloseHandle (winhttp_stream->connection);
 
-  g_object_unref (winhttp_stream->file);
-  winhttp_stream->file = NULL;
+  g_clear_object (&winhttp_stream->file);
 
   G_OBJECT_CLASS (g_winhttp_file_input_stream_parent_class)->finalize (object);
 }
@@ -129,15 +129,13 @@ g_winhttp_file_input_stream_read (GInputStream  *stream,
 
   if (!winhttp_stream->request_sent)
     {
-      if (!G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpSendRequest
-          (winhttp_stream->request,
-           NULL, 0,
-           NULL, 0,
-           0,
-           0))
+      if (!WinHttpSendRequest (winhttp_stream->request,
+                               NULL, 0,
+                               NULL, 0,
+                               0,
+                               0))
         {
           _g_winhttp_set_error (error, GetLastError (), "GET request");
-
           return -1;
         }
 
@@ -150,11 +148,9 @@ g_winhttp_file_input_stream_read (GInputStream  *stream,
       winhttp_stream->request_sent = TRUE;
     }
 
-  if (!G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpReadData
-      (winhttp_stream->request, buffer, count, &bytes_read))
+  if (!WinHttpReadData (winhttp_stream->request, buffer, count, &bytes_read))
     {
       _g_winhttp_set_error (error, GetLastError (), "GET request");
-
       return -1;
     }
 
@@ -169,7 +165,10 @@ g_winhttp_file_input_stream_close (GInputStream         *stream,
   GWinHttpFileInputStream *winhttp_stream = G_WINHTTP_FILE_INPUT_STREAM (stream);
 
   if (winhttp_stream->connection != NULL)
-    G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (winhttp_stream->connection);
-  winhttp_stream->connection = NULL;
+    {
+      WinHttpCloseHandle (winhttp_stream->connection);
+      winhttp_stream->connection = NULL;
+    }
+
   return TRUE;
 }

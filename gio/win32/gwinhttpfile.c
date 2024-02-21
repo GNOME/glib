@@ -40,6 +40,7 @@
 static void g_winhttp_file_file_iface_init (GFileIface *iface);
 
 #define g_winhttp_file_get_type _g_winhttp_file_get_type
+
 G_DEFINE_TYPE_WITH_CODE (GWinHttpFile, g_winhttp_file, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
                                                 g_winhttp_file_file_iface_init))
@@ -47,9 +48,7 @@ G_DEFINE_TYPE_WITH_CODE (GWinHttpFile, g_winhttp_file, G_TYPE_OBJECT,
 static void
 g_winhttp_file_finalize (GObject *object)
 {
-  GWinHttpFile *file;
-
-  file = G_WINHTTP_FILE (object);
+  GWinHttpFile *file = G_WINHTTP_FILE (object);
 
   g_free (file->url.lpszScheme);
   g_free (file->url.lpszHostName);
@@ -107,7 +106,7 @@ _g_winhttp_file_new (GWinHttpVfs *vfs,
   file->url.dwUrlPathLength = 1;
   file->url.dwExtraInfoLength = 1;
 
-  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpCrackUrl (wuri, 0, 0, &file->url))
+  if (!WinHttpCrackUrl (wuri, 0, 0, &file->url))
     {
       g_free (wuri);
       return NULL;
@@ -120,7 +119,7 @@ _g_winhttp_file_new (GWinHttpVfs *vfs,
   file->url.lpszUrlPath = g_new (wchar_t, ++file->url.dwUrlPathLength);
   file->url.lpszExtraInfo = g_new (wchar_t, ++file->url.dwExtraInfoLength);
 
-  if (!G_WINHTTP_VFS_GET_CLASS (vfs)->funcs->pWinHttpCrackUrl (wuri, 0, 0, &file->url))
+  if (!WinHttpCrackUrl (wuri, 0, 0, &file->url))
     {
       g_free (file->url.lpszScheme);
       g_free (file->url.lpszHostName);
@@ -208,13 +207,13 @@ g_winhttp_file_get_uri (GFile *file)
   char *retval;
 
   len = 0;
-  if (!G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpCreateUrl (&winhttp_file->url, ICU_ESCAPE, NULL, &len) &&
+  if (!WinHttpCreateUrl (&winhttp_file->url, ICU_ESCAPE, NULL, &len) &&
       GetLastError () != ERROR_INSUFFICIENT_BUFFER)
     return NULL;
 
   wuri = g_new (wchar_t, ++len);
 
-  if (!G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpCreateUrl (&winhttp_file->url, ICU_ESCAPE, wuri, &len))
+  if (!WinHttpCreateUrl (&winhttp_file->url, ICU_ESCAPE, wuri, &len))
     {
       g_free (wuri);
       return NULL;
@@ -505,44 +504,36 @@ g_winhttp_file_query_info (GFile                *file,
       return info;
     }
 
-  connection = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpConnect
-    (G_WINHTTP_VFS (winhttp_file->vfs)->session,
-     winhttp_file->url.lpszHostName,
-     winhttp_file->url.nPort,
-     0);
-
+  connection = WinHttpConnect (G_WINHTTP_VFS (winhttp_file->vfs)->session,
+                               winhttp_file->url.lpszHostName,
+                               winhttp_file->url.nPort,
+                               0);
   if (connection == NULL)
     {
       _g_winhttp_set_error (error, GetLastError (), "HTTP connection");
-
       return NULL;
     }
 
-  request = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpOpenRequest
-    (connection,
-     L"HEAD",
-     winhttp_file->url.lpszUrlPath,
-     NULL,
-     WINHTTP_NO_REFERER,
-     accept_types,
-     winhttp_file->url.nScheme == INTERNET_SCHEME_HTTPS ? WINHTTP_FLAG_SECURE : 0);
-
+  request = WinHttpOpenRequest (connection,
+                                L"HEAD",
+                                winhttp_file->url.lpszUrlPath,
+                                NULL,
+                                WINHTTP_NO_REFERER,
+                                accept_types,
+                                winhttp_file->url.nScheme == INTERNET_SCHEME_HTTPS ? WINHTTP_FLAG_SECURE : 0);
   if (request == NULL)
     {
       _g_winhttp_set_error (error, GetLastError (), "HEAD request");
-
       return NULL;
     }
 
-  if (!G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpSendRequest
-      (request,
-       NULL, 0,
-       NULL, 0,
-       0,
-       0))
+  if (!WinHttpSendRequest (request,
+                           NULL, 0,
+                           NULL, 0,
+                           0,
+                           0))
     {
       _g_winhttp_set_error (error, GetLastError (), "HEAD request");
-
       return NULL;
     }
 
@@ -602,13 +593,12 @@ g_winhttp_file_query_info (GFile                *file,
     }
 
   last_modified_len = sizeof (last_modified);
-  if (G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpQueryHeaders
-      (request,
-       WINHTTP_QUERY_LAST_MODIFIED | WINHTTP_QUERY_FLAG_SYSTEMTIME,
-       NULL,
-       &last_modified,
-       &last_modified_len,
-       NULL) &&
+  if (WinHttpQueryHeaders (request,
+                           WINHTTP_QUERY_LAST_MODIFIED | WINHTTP_QUERY_FLAG_SYSTEMTIME,
+                           NULL,
+                           &last_modified,
+                           &last_modified_len,
+                           NULL) &&
       last_modified_len == sizeof (last_modified) &&
       /* Don't bother comparing to the exact Y2038 moment */
       last_modified.wYear >= 1970 &&
@@ -643,32 +633,26 @@ g_winhttp_file_read (GFile         *file,
       NULL,
     };
 
-  connection = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpConnect
-    (G_WINHTTP_VFS (winhttp_file->vfs)->session,
-     winhttp_file->url.lpszHostName,
-     winhttp_file->url.nPort,
-     0);
-
+  connection = WinHttpConnect (G_WINHTTP_VFS (winhttp_file->vfs)->session,
+                               winhttp_file->url.lpszHostName,
+                               winhttp_file->url.nPort,
+                               0);
   if (connection == NULL)
     {
       _g_winhttp_set_error (error, GetLastError (), "HTTP connection");
-
       return NULL;
     }
 
-  request = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpOpenRequest
-    (connection,
-     L"GET",
-     winhttp_file->url.lpszUrlPath,
-     NULL,
-     WINHTTP_NO_REFERER,
-     accept_types,
-     winhttp_file->url.nScheme == INTERNET_SCHEME_HTTPS ? WINHTTP_FLAG_SECURE : 0);
-
+  request = WinHttpOpenRequest (connection,
+                                L"GET",
+                                winhttp_file->url.lpszUrlPath,
+                                NULL,
+                                WINHTTP_NO_REFERER,
+                                accept_types,
+                                winhttp_file->url.nScheme == INTERNET_SCHEME_HTTPS ? WINHTTP_FLAG_SECURE : 0);
   if (request == NULL)
     {
       _g_winhttp_set_error (error, GetLastError (), "GET request");
-
       return NULL;
     }
 
@@ -684,16 +668,13 @@ g_winhttp_file_create (GFile             *file,
   GWinHttpFile *winhttp_file = G_WINHTTP_FILE (file);
   HINTERNET connection;
 
-  connection = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpConnect
-    (G_WINHTTP_VFS (winhttp_file->vfs)->session,
-     winhttp_file->url.lpszHostName,
-     winhttp_file->url.nPort,
-     0);
-
+  connection = WinHttpConnect (G_WINHTTP_VFS (winhttp_file->vfs)->session,
+                               winhttp_file->url.lpszHostName,
+                               winhttp_file->url.nPort,
+                               0);
   if (connection == NULL)
     {
       _g_winhttp_set_error (error, GetLastError (), "HTTP connection");
-
       return NULL;
     }
 

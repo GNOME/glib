@@ -2326,8 +2326,10 @@ endif
 
 if host_system == 'windows'
   winsock2 = cc.find_library('ws2_32')
+  winhttp = cc.find_library('winhttp')
 else
   winsock2 = not_found
+  winhttp = not_found
 endif
 
 selinux_dep = []

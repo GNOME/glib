@@ -44,6 +44,7 @@ struct _GWinHttpFileOutputStreamClass
 };
 
 #define g_winhttp_file_output_stream_get_type _g_winhttp_file_output_stream_get_type
+
 G_DEFINE_TYPE (GWinHttpFileOutputStream, g_winhttp_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM)
 
 static gssize     g_winhttp_file_output_stream_write      (GOutputStream     *stream,
@@ -60,7 +61,7 @@ g_winhttp_file_output_stream_finalize (GObject *object)
   winhttp_stream = G_WINHTTP_FILE_OUTPUT_STREAM (object);
 
   if (winhttp_stream->connection != NULL)
-    G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (winhttp_stream->connection);
+    WinHttpCloseHandle (winhttp_stream->connection);
 
   G_OBJECT_CLASS (g_winhttp_file_output_stream_parent_class)->finalize (object);
 }
@@ -117,19 +118,16 @@ g_winhttp_file_output_stream_write (GOutputStream  *stream,
   wchar_t *wheaders;
   DWORD bytes_written;
 
-  request = G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpOpenRequest
-    (winhttp_stream->connection,
-     L"PUT",
-     winhttp_stream->file->url.lpszUrlPath,
-     NULL,
-     WINHTTP_NO_REFERER,
-     NULL,
-     winhttp_stream->file->url.nScheme == INTERNET_SCHEME_HTTPS ? WINHTTP_FLAG_SECURE : 0);
-
+  request = WinHttpOpenRequest (winhttp_stream->connection,
+                                L"PUT",
+                                winhttp_stream->file->url.lpszUrlPath,
+                                NULL,
+                                WINHTTP_NO_REFERER,
+                                NULL,
+                                winhttp_stream->file->url.nScheme == INTERNET_SCHEME_HTTPS ? WINHTTP_FLAG_SECURE : 0);
   if (request == NULL)
     {
       _g_winhttp_set_error (error, GetLastError (), "PUT request");
-
       return -1;
     }
 
@@ -138,16 +136,15 @@ g_winhttp_file_output_stream_write (GOutputStream  *stream,
   wheaders = g_utf8_to_utf16 (headers, -1, NULL, NULL, NULL);
   g_free (headers);
 
-  if (!G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpSendRequest
-      (request,
-       wheaders, -1,
-       NULL, 0,
-       count,
-       0))
+  if (!WinHttpSendRequest (request,
+                           wheaders, -1,
+                           NULL, 0,
+                           count,
+                           0))
     {
       _g_winhttp_set_error (error, GetLastError (), "PUT request");
 
-      G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (request);
+      WinHttpCloseHandle (request);
       g_free (wheaders);
 
       return -1;
@@ -155,12 +152,11 @@ g_winhttp_file_output_stream_write (GOutputStream  *stream,
 
   g_free (wheaders);
 
-  if (!G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpWriteData
-      (request, buffer, count, &bytes_written))
+  if (!WinHttpWriteData (request, buffer, count, &bytes_written))
     {
       _g_winhttp_set_error (error, GetLastError (), "PUT request");
 
-      G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (request);
+      WinHttpCloseHandle (request);
 
       return -1;
     }
@@ -172,12 +168,12 @@ g_winhttp_file_output_stream_write (GOutputStream  *stream,
                             error,
                             "PUT request"))
     {
-      G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (request);
+      WinHttpCloseHandle (request);
 
       return -1;
     }
 
-  G_WINHTTP_VFS_GET_CLASS (winhttp_stream->file->vfs)->funcs->pWinHttpCloseHandle (request);
+  WinHttpCloseHandle (request);
 
   return bytes_written;
 }
