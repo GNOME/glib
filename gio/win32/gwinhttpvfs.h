@@ -27,8 +27,7 @@
 #include <gio/gvfs.h>
 
 #include <windows.h>
-
-#include "winhttp.h"
+#include <winhttp.h>
 
 G_BEGIN_DECLS
 
