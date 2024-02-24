@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-15 22:22+0000\n"
-"PO-Revision-Date: 2024-02-19 16:41+0330\n"
+"POT-Creation-Date: 2024-02-19 13:38+0000\n"
+"PO-Revision-Date: 2024-02-24 16:39+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -1155,7 +1155,7 @@ msgstr "اجازه به مجوّز دادن تعاملی"
 
 #: gio/gdbus-tool.c:947
 msgid "Invoke a method on a remote object."
-msgstr "فراخوانی روش روی شی دوردست"
+msgstr "فراخوانی روش روی شی دوردست."
 
 #: gio/gdbus-tool.c:1019 gio/gdbus-tool.c:1853 gio/gdbus-tool.c:2093
 msgid "Error: Destination is not specified\n"
@@ -1797,7 +1797,7 @@ msgstr "مقصد %s یک شاخه نیست"
 #: gio/gio-tool-copy.c:202 gio/gio-tool-move.c:188
 #, c-format
 msgid "%s: overwrite “%s”? "
-msgstr "%s: پایمالی «%s»؟"
+msgstr "%s: پایمالی «%s»؟ "
 
 #: gio/gio-tool-info.c:39
 msgid "List writable attributes"
@@ -1973,7 +1973,7 @@ msgstr ""
 
 #: gio/gio-tool-mime.c:102
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr "باید یک mimetype و احتمالاً یک مدیر مشخّص شود."
+msgstr "باید یک mimetype و احتمالاً یک مدیر مشخّص شود"
 
 #: gio/gio-tool-mime.c:118
 #, c-format
@@ -2217,7 +2217,7 @@ msgstr "محدود کردن دسترسی به کاربر کنونی هنگام �
 
 #: gio/gio-tool-save.c:55
 msgid "When replacing, replace as if the destination did not exist"
-msgstr "جایگذاری به صورتی که گویی مقصد وجود ندارد "
+msgstr "جایگذاری به صورتی که گویی مقصد وجود ندارد"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:57
