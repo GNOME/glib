@@ -477,6 +477,34 @@ g_winhttp_file_query_info (GFile                *file,
   SYSTEMTIME last_modified;
   DWORD last_modified_len;
 
+  matcher = g_file_attribute_matcher_new (attributes);
+  info = g_file_info_new ();
+  g_file_info_set_attribute_mask (info, matcher);
+
+  basename = g_winhttp_file_get_basename (file);
+  g_file_info_set_name (info, basename);
+  g_free (basename);
+
+  if (_g_file_attribute_matcher_matches_id (matcher,
+                                            G_FILE_ATTRIBUTE_ID_STANDARD_DISPLAY_NAME))
+    {
+      char *display_name = g_winhttp_file_get_display_name (file);
+      g_file_info_set_display_name (info, display_name);
+      g_free (display_name);
+    }
+
+  if (_g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_STANDARD_TYPE))
+    g_file_info_set_file_type (info, G_FILE_TYPE_REGULAR);
+
+  if (!(_g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_STANDARD_SIZE) ||
+        _g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_STANDARD_CONTENT_TYPE) ||
+        _g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED) ||
+        _g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_NSEC) ||
+        _g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED_USEC)))
+    {
+      return info;
+    }
+
   connection = G_WINHTTP_VFS_GET_CLASS (winhttp_file->vfs)->funcs->pWinHttpConnect
     (G_WINHTTP_VFS (winhttp_file->vfs)->session,
      winhttp_file->url.lpszHostName,
@@ -520,25 +548,6 @@ g_winhttp_file_query_info (GFile                *file,
 
   if (!_g_winhttp_response (winhttp_file->vfs, request, error, "HEAD request"))
     return NULL;
-
-  matcher = g_file_attribute_matcher_new (attributes);
-  info = g_file_info_new ();
-  g_file_info_set_attribute_mask (info, matcher);
-
-  basename = g_winhttp_file_get_basename (file);
-  g_file_info_set_name (info, basename);
-  g_free (basename);
-
-  if (_g_file_attribute_matcher_matches_id (matcher,
-                                            G_FILE_ATTRIBUTE_ID_STANDARD_DISPLAY_NAME))
-    {
-      char *display_name = g_winhttp_file_get_display_name (file);
-      g_file_info_set_display_name (info, display_name);
-      g_free (display_name);
-    }
-
-  if (_g_file_attribute_matcher_matches_id (matcher, G_FILE_ATTRIBUTE_ID_STANDARD_TYPE))
-    g_file_info_set_file_type (info, G_FILE_TYPE_REGULAR);
 
   content_length = NULL;
   if (_g_winhttp_query_header (winhttp_file->vfs,
