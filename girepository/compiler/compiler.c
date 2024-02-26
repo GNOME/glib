@@ -100,7 +100,7 @@ write_out_typelib (gchar     *prefix,
   written = fwrite (typelib->data, 1, typelib->len, file);
   if (written < typelib->len)
     {
-      char *message = g_strdup_printf (_("Error: Could not write the whole output: %s"), strerror (errno));
+      char *message = g_strdup_printf (_("Error: Could not write the whole output: %s"), g_strerror (errno));
       g_fprintf (stderr, "%s\n", message);
       g_free (message);
       goto out;
