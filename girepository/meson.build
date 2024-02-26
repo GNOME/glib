@@ -182,7 +182,7 @@ if cc.get_id() != 'msvc'
   ])
 endif
 
-libgirepository = shared_library('girepository-2.0',
+libgirepository = library('girepository-2.0',
   sources: girepo_sources + girepo_ffi_sources + [gi_visibility_h],
   include_directories: [configinc, girepoinc],
   c_args: gir_c_args,

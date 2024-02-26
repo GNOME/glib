@@ -81,7 +81,7 @@ def gen_visibility_macros(args, current_minor_version):
     - GLIB_UNAVAILABLE(maj,min)
     - GLIB_UNAVAILABLE_STATIC_INLINE(maj,min)
 
-    The GLIB namespace can be replaced with one of GOBJECT, GIO, GMODULE.
+    The GLIB namespace can be replaced with one of GOBJECT, GIO, GMODULE, GI.
     """
 
     ns = args.namespace

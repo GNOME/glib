@@ -316,6 +316,7 @@ if glib_build_static_only
   glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GIO_STATIC_COMPILATION', '1')
   glibconfig_conf.set('GMODULE_STATIC_COMPILATION', '1')
+  glibconfig_conf.set('GI_STATIC_COMPILATION', '1')
   glibconfig_conf.set('G_INTL_STATIC_COMPILATION', '1')
   glibconfig_conf.set('FFI_STATIC_BUILD', '1')
 endif
