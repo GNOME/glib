@@ -29,6 +29,7 @@
 #include <gio/gio.h>
 #include <girepository.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <glib/gstdio.h>
 
 #ifdef G_OS_WIN32
@@ -89,8 +90,9 @@ write_out_typelib (gchar     *prefix,
 
       if (file == NULL)
         {
-          g_fprintf (stderr, "failed to open '%s': %s\n",
-                     tmp_filename, g_strerror (errno));
+          char *message = g_strdup_printf (_("Failed to open ‘%s’: %s"), tmp_filename, g_strerror (errno));
+          g_fprintf (stderr, "%s\n", message);
+          g_free (message);
           goto out;
         }
     }
@@ -98,8 +100,9 @@ write_out_typelib (gchar     *prefix,
   written = fwrite (typelib->data, 1, typelib->len, file);
   if (written < typelib->len)
     {
-      g_fprintf (stderr, "ERROR: Could not write the whole output: %s",
-                 strerror (errno));
+      char *message = g_strdup_printf (_("Error: Could not write the whole output: %s"), strerror (errno));
+      g_fprintf (stderr, "%s\n", message);
+      g_free (message);
       goto out;
     }
 
@@ -109,7 +112,11 @@ write_out_typelib (gchar     *prefix,
     {
       if (!g_file_move (tmp_file_obj, file_obj, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &error))
         {
-          g_fprintf (stderr, "ERROR: failed to rename %s to %s: %s", tmp_filename, filename, error->message);
+          char *message = g_strdup_printf (_("Error: Failed to rename ‘%s’ to ‘%s’: %s"),
+                                           tmp_filename, filename,
+                                           error->message);
+          g_fprintf (stderr, "%s\n", message);
+          g_free (message);
           g_clear_error (&error);
           goto out;
         }
@@ -137,12 +144,12 @@ log_handler (const gchar   *log_domain,
 }
 
 static GOptionEntry options[] = {
-  { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL },
-  { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" },
-  { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME_ARRAY, &shlibs, "shared library", "FILE" },
-  { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "show debug messages", NULL },
-  { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose, "show verbose messages", NULL },
-  { "version", 0, 0, G_OPTION_ARG_NONE, &show_version, "show program's version number and exit", NULL },
+  { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, N_("Include directories in GIR search path"), NULL },
+  { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, N_("Output file"), N_("FILE") },
+  { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME_ARRAY, &shlibs, N_("Shared library"), N_("FILE") },
+  { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Show debug messages"), NULL },
+  { "verbose", 0, 0, G_OPTION_ARG_NONE, &verbose, N_("Show verbose messages"), NULL },
+  { "version", 0, 0, G_OPTION_ARG_NONE, &show_version, N_("Show program’s version number and exit"), NULL },
   { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
   G_OPTION_ENTRY_NULL
 };
@@ -164,7 +171,9 @@ main (int argc, char **argv)
 
   if (error)
     {
-      g_fprintf (stderr, "error parsing arguments: %s\n", error->message);
+      char *message = g_strdup_printf (_("Error parsing arguments: %s"), error->message);
+      g_fprintf (stderr, "%s\n", message);
+      g_free (message);
 
       g_error_free (error);
 
@@ -189,14 +198,14 @@ main (int argc, char **argv)
 
   if (!input)
     {
-      g_fprintf (stderr, "no input files\n");
+      g_fprintf (stderr, "%s\n", _("Please specify exactly one input file"));
 
       return 1;
     }
 
   if (g_strv_length (input) != 1)
     {
-      g_printerr ("Please specify only one input file\n");
+      g_printerr ("%s\n", _("Please specify exactly one input file"));
       return 1;
     }
 
@@ -211,8 +220,9 @@ main (int argc, char **argv)
   module = gi_ir_parser_parse_file (parser, input[0], &error);
   if (module == NULL)
     {
-      g_fprintf (stderr, "error parsing file %s: %s\n",
-                 input[0], error->message);
+      char *message = g_strdup_printf (_("Error parsing file ‘%s’: %s"), input[0], error->message);
+      g_fprintf (stderr, "%s\n", message);
+      g_free (message);
 
       return 1;
     }
@@ -235,9 +245,9 @@ main (int argc, char **argv)
 
     typelib = gi_ir_module_build_typelib (module);
     if (typelib == NULL)
-      g_error ("Failed to build typelib for module '%s'\n", module->name);
+      g_error (_("Failed to build typelib for module ‘%s’"), module->name);
     if (!gi_typelib_validate (typelib, &error))
-      g_error ("Invalid typelib for module '%s': %s",
+      g_error (_("Invalid typelib for module ‘%s’: %s"),
                module->name, error->message);
 
     if (!write_out_typelib (NULL, typelib))

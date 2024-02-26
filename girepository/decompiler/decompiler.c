@@ -25,6 +25,7 @@
 #include <locale.h>
 
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <glib/gstdio.h>
 #include <gmodule.h>
 #include <girepository.h>
@@ -47,10 +48,10 @@ main (int argc, char *argv[])
   gint i;
   GOptionEntry options[] =
     {
-      { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" },
-      { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL },
-      { "all", 0, 0, G_OPTION_ARG_NONE, &show_all, "show all available information", NULL, },
-      { "version", 0, 0, G_OPTION_ARG_NONE, &show_version, "show program's version number and exit", NULL },
+      { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, N_("Output file"), N_("FILE") },
+      { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, N_("Include directories in GIR search path"), NULL },
+      { "all", 0, 0, G_OPTION_ARG_NONE, &show_all, N_("Show all available information"), NULL, },
+      { "version", 0, 0, G_OPTION_ARG_NONE, &show_version, N_("Show program’s version number and exit"), NULL },
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
       G_OPTION_ENTRY_NULL
     };
@@ -63,7 +64,9 @@ main (int argc, char *argv[])
   g_option_context_add_main_entries (context, options, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
-      g_fprintf (stderr, "failed to parse: %s\n", error->message);
+      char *message = g_strdup_printf (_("Failed to parse: %s"), error->message);
+      g_fprintf (stderr, "%s\n", message);
+      g_free (message);
       g_error_free (error);
       return 1;
     }
@@ -77,7 +80,7 @@ main (int argc, char *argv[])
 
   if (!input)
     {
-      g_fprintf (stderr, "no input files\n");
+      g_fprintf (stderr, "%s\n", _("No input files"));
 
       return 1;
     }
@@ -103,7 +106,7 @@ main (int argc, char *argv[])
       error = NULL;
       mfile = g_mapped_file_new (input[i], FALSE, &error);
       if (!mfile)
-	g_error ("failed to read '%s': %s", input[i], error->message);
+	g_error (_("Failed to read ‘%s’: %s"), input[i], error->message);
 
       bytes = g_mapped_file_get_bytes (mfile);
       g_clear_pointer (&mfile, g_mapped_file_unref);
@@ -115,19 +118,20 @@ main (int argc, char *argv[])
 
       typelib = gi_typelib_new_from_bytes (bytes, &error);
       if (!typelib)
-	g_error ("failed to create typelib '%s': %s", input[i], error->message);
+	g_error (_("Failed to create typelib ‘%s’: %s"), input[i], error->message);
 
       namespace = gi_repository_load_typelib (repository, typelib, 0, &error);
       if (namespace == NULL)
-	g_error ("failed to load typelib: %s", error->message);
+	g_error (_("Failed to load typelib: %s"), error->message);
 
       gi_ir_writer_write (repository, output, namespace, needs_prefix, show_all);
 
       /* when writing to stdout, stop after the first module */
       if (input[i + 1] && !output)
 	{
-	  g_fprintf (stderr, "warning, %d modules omitted\n",
-		     g_strv_length (input) - 1);
+          char *message = g_strdup_printf (_("Warning: %u modules omitted"), g_strv_length (input) - 1);
+	  g_fprintf (stderr, "%s\n", message);
+          g_free (message);
 
 	  break;
 	}
