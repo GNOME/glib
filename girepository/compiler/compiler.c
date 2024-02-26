@@ -196,16 +196,10 @@ main (int argc, char **argv)
       return 0;
     }
 
-  if (!input)
+  if (!input || g_strv_length (input) != 1)
     {
       g_fprintf (stderr, "%s\n", _("Please specify exactly one input file"));
 
-      return 1;
-    }
-
-  if (g_strv_length (input) != 1)
-    {
-      g_printerr ("%s\n", _("Please specify exactly one input file"));
       return 1;
     }
 

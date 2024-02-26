@@ -90,19 +90,13 @@ main (gint   argc,
       goto out;
     }
 
-  if (!namespaces)
+  if (!namespaces || g_strv_length (namespaces) > 1)
     {
       status = EXIT_FAILURE;
       g_printerr ("%s\n", _("Please specify exactly one namespace"));
       goto out;
     }
 
-  if (g_strv_length (namespaces) > 1)
-    {
-      status = EXIT_FAILURE;
-      g_printerr ("%s\n", _("Please specify exactly one namespace"));
-      goto out;
-    }
   namespace = namespaces[0];
 
   if (!opt_shlibs && !opt_typelibs)
