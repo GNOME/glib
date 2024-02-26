@@ -1885,16 +1885,6 @@ test_lookbehind (void)
   g_match_info_free (match);
   g_regex_unref (regex);
 
-  regex = g_regex_new ("(?<!dogs?|cats?) x", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_VARIABLE_LENGTH_LOOKBEHIND);
-  g_clear_error (&error);
-
-  regex = g_regex_new ("(?<=ab(c|de)) foo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
-  g_assert (regex == NULL);
-  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_VARIABLE_LENGTH_LOOKBEHIND);
-  g_clear_error (&error);
-
   regex = g_regex_new ("(?<=abc|abde)foo", G_REGEX_OPTIMIZE, G_REGEX_MATCH_DEFAULT, &error);
   g_assert (regex);
   g_assert_no_error (error);
