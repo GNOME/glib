@@ -1,3 +1,58 @@
+Overview of changes in GLib 2.79.3, 2024-02-27
+==============================================
+
+* Various consistency improvements to the command line libgirepository tools
+  (!3926, !3927, !3928, !3930, work by Simon McVittie)
+
+* Bugs fixed:
+  - #3080 Gimp GTK file chooser hang when a remote file is open (Luca Bacci)
+  - #3210 Critical using Open location: GWinHttpFile doesn’t set
+    G_FILE_ATTRIBUTE_STANDARD_TYPE (Luca Bacci)
+  - #3252 [2.79.1] gdatetime installed tests fails on s390x (Simon McVittie)
+  - #3255 g_base_info_clear on zero-initialized stack-allocated introspection
+    info (Philip Withnall)
+  - #3258 Possible memory leak in GUnixVolumeMonitor (Ondrej Holy)
+  - #3260 Add man pages for girepository tools
+  - #3262 msys2-mingw32 build failing with error code 3221225785 (0xc0000139)
+    (Philip Withnall)
+  - #3263 Ensure girepository tools are translatable (Philip Withnall)
+  - #3266 Use-after-free in gsocketclient.c:connection_attempt_remove() (Philip
+    Withnall)
+  - #3271 GLib: string malformed for gettext (Philip Withnall)
+  - !3918 tests: Don’t run lint tests under valgrind
+  - !3919 tests: Speed up threaded toggle notify test unless -m slow is passed
+  - !3921 ci: Fix printing the execution environment
+  - !3922 gdatetime test: Produce more helpful output on mismatches
+  - !3923 girepository test: Don't assume doubles are naturally-aligned
+  - !3925 girwriter: Take the GIRepository as a parameter
+  - !3926 gi- tools: Remove unused options, improve --debug/--verbose
+  - !3927 g-ir-compiler: Only accept one input file
+  - !3928 gi-decompile-typelib: Interpret --includedir as most-important-first
+  - !3930 migrating-gi: Document command-line option removals
+  - !3935 Restrict macOS CI to origin
+  - !3937 girepository: Fix static build under Windows
+  - !3945 tests: Remove variable-length lookbehind tests for GRegex
+
+* Translation updates:
+  - Basque (Asier Sarasua Garmendia)
+  - Catalan (Jordi Mas i Hernandez)
+  - Chinese (China) (Boyuan Yang)
+  - Czech (Daniel Rusek)
+  - Galician (Fran Dieguez)
+  - Georgian (Ekaterine Papava)
+  - Hebrew (Yaron Shahrabani)
+  - Indonesian (Andika Triwidada)
+  - Kazakh (Baurzhan Muftakhidinov)
+  - Latvian (Rūdolfs Mazurs)
+  - Lithuanian (Aurimas Černius)
+  - Persian (Danial Behzadi)
+  - Russian (Artur S0)
+  - Slovenian (Matej Urbančič)
+  - Spanish (Daniel Mustieles)
+  - Turkish (Sabri Ünal, Emin Tufan Çetin)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.79.2, 2024-02-12
 ==============================================
 
