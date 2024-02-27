@@ -181,6 +181,9 @@ gio/gzlibcompressor.c
 gio/gzlibdecompressor.c
 gio/tests/gdbus-daemon.c
 gio/win32/gwinhttpfile.c
+girepository/compiler/compiler.c
+girepository/decompiler/decompiler.c
+girepository/inspector/inspector.c
 glib/gatomic.c
 glib/gbookmarkfile.c
 glib/gconvert.c
