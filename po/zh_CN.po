@@ -18,22 +18,22 @@
 # Mingcong Bai <jeffbai@aosc.xyz>, 2015, 2016, 2018.
 # Dingzhong Chen <wsxy162@gmail.com>, 2018-2021.
 # Nanling <neithern@outlook.com>, 2023.
-# lumingzh <lumingzh@qq.com>, 2022-2023.
+# lumingzh <lumingzh@qq.com>, 2022-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-22 11:06+0800\n"
+"POT-Creation-Date: 2024-02-27 09:41+0000\n"
+"PO-Revision-Date: 2024-02-27 19:05+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4.2\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 45.3\n"
 
 #: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
@@ -154,6 +154,8 @@ msgstr "D-Bus 格式的应用程序标识符（比如：org.example.viewer）"
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/decompiler/decompiler.c:51
 msgid "FILE"
 msgstr "文件"
 
@@ -1458,7 +1460,7 @@ msgstr "无法复制特殊文件"
 msgid "Invalid symlink value given"
 msgstr "给定的符号链接值无效"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2404
 msgid "Symbolic links not supported"
 msgstr "不支持符号链接"
 
@@ -4409,6 +4411,144 @@ msgstr "运行一个 dbus 服务"
 msgid "Wrong args\n"
 msgstr "参数错误\n"
 
+#: girepository/compiler/compiler.c:93
+#, c-format
+msgid "Failed to open ‘%s’: %s"
+msgstr "打开“%s”失败：%s"
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+msgid "Error: Could not write the whole output: %s"
+msgstr "错误：无法写入完整输出：%s"
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "错误：将“%s”重命名为“%s”失败：%s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:52
+msgid "Include directories in GIR search path"
+msgstr "包括 GIR 搜索路径中的目录"
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:51
+msgid "Output file"
+msgstr "输出文件"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "共享库"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "显示调试消息"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "显示详尽消息"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:54
+msgid "Show program’s version number and exit"
+msgstr "显示程序版本并退出"
+
+#: girepository/compiler/compiler.c:174
+#, c-format
+msgid "Error parsing arguments: %s"
+msgstr "解析参数时出错：%s"
+
+#: girepository/compiler/compiler.c:201
+msgid "Please specify exactly one input file"
+msgstr "请明确指定一个输入文件"
+
+#: girepository/compiler/compiler.c:217
+#, c-format
+msgid "Error parsing file ‘%s’: %s"
+msgstr "解析文件“%s”时出错：%s"
+
+#: girepository/compiler/compiler.c:242
+#, c-format
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "为模块“%s”构建类型库失败"
+
+#: girepository/compiler/compiler.c:244
+#, c-format
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "用于模块“%s”的无效类型库：%s"
+
+#: girepository/decompiler/decompiler.c:53
+msgid "Show all available information"
+msgstr "显示所有可用信息"
+
+#: girepository/decompiler/decompiler.c:67
+#, c-format
+msgid "Failed to parse: %s"
+msgstr "解析失败：%s"
+
+#: girepository/decompiler/decompiler.c:83
+msgid "No input files"
+msgstr "无输入文件"
+
+#: girepository/decompiler/decompiler.c:109
+#, c-format
+msgid "Failed to read ‘%s’: %s"
+msgstr "读取“%s”失败：%s"
+
+#: girepository/decompiler/decompiler.c:121
+#, c-format
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "创建类型库“%s”失败：%s"
+
+#: girepository/decompiler/decompiler.c:125
+#: girepository/inspector/inspector.c:113
+#, c-format
+msgid "Failed to load typelib: %s"
+msgstr "加载类型库失败：%s"
+
+#: girepository/decompiler/decompiler.c:132
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr "警告：%u 模块已忽略"
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr "要检查的类型库版本"
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "版本"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr "列出类型库需要的共享库"
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr "列出检查的类型库需要的其它类型库"
+
+#: girepository/inspector/inspector.c:75
+msgid "The typelib to inspect"
+msgstr "要检查的类型库"
+
+#: girepository/inspector/inspector.c:75
+msgid "NAMESPACE"
+msgstr "命名空间"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr "- 检查 GI 类型库"
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+msgid "Failed to parse command line options: %s"
+msgstr "解析命令行选项失败：%s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr "请明确指定一个命名空间"
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr "请指定 --print-shlibs、--print-typelibs 或全部"
+
 #: glib/gbookmarkfile.c:816
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
@@ -4953,82 +5093,90 @@ msgstr "下午"
 msgid "Error opening directory “%s”: %s"
 msgstr "打开目录“%s”时出错：%s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "无法分配 %"
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720
+#, c-format
+msgid "Could not allocate %s to read file “%s”"
+msgstr "无法分配 %s 空间来读取文件“%s”"
 
-#: glib/gfileutils.c:733
+#: glib/gfileutils.c:738
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "读取文件“%s”时出错：%s"
 
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
 #, c-format
 msgid "File “%s” is too large"
 msgstr "文件“%s”过大"
 
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:825
+msgid "Could not allocate %"
+msgid_plural "Could not allocate %"
+msgstr[0] "无法分配 %"
+
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "读取文件“%s”失败：%s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "打开文件“%s”失败：%s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:913
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "获得文件“%s”的属性失败：fstat() 失败：%s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "打开文件“%s”失败：fdopen() 失败：%s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "将文件“%s”重命名为“%s”失败：g_rename() 失败：%s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1144
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "写入文件“%s”失败：ftruncate() 失败：%s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1189
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "写入文件“%s”失败：write() 失败：%s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1210
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "写入文件“%s”失败：fsync() 失败：%s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "创建文件“%s”失败：%s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "无法删除已有文件“%s”：g_unlink() 失败：%s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1753
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "模板“%s”无效，不应该包含“%s”"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1766
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "模板“%s”不包含 XXXXXX"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "读取符号链接“%s”失败：%s"
@@ -6188,11 +6336,6 @@ msgstr "%.1f EB"
 #~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
 #~ msgstr "METHOD_RETURN 消息：REPLY_SERIAL 首部字段缺失或无效"
 
-#, c-format
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "无法分配 %lu 字节以读取文件“%s”"
-
 #~ msgid "kb"
 #~ msgstr "kb"
 
@@ -6417,9 +6560,6 @@ msgstr "%.1f EB"
 
 #~ msgid "[ARGS...]"
 #~ msgstr "[参数...]"
-
-#~ msgid "Failed to create temp file: %s"
-#~ msgstr "创建临时文件失败：%s"
 
 #~ msgid ""
 #~ "Message has %d file descriptors but the header field indicates %d file "
