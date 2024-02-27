@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-09 10:04+0000\n"
-"PO-Revision-Date: 2024-02-14 01:26+0100\n"
+"POT-Creation-Date: 2024-02-27 09:41+0000\n"
+"PO-Revision-Date: 2024-02-28 00:02+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -151,6 +151,8 @@ msgstr "Identifikátor aplikace ve formátu D-Bus (např. org.example.viewer)"
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/decompiler/decompiler.c:51
 msgid "FILE"
 msgstr "SOUBOR"
 
@@ -605,10 +607,10 @@ msgstr "Chyba při vytváření složky %s: %s"
 #: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1105 gio/gfile.c:1343
 #: gio/gfile.c:1481 gio/gfile.c:1718 gio/gfile.c:1773 gio/gfile.c:1831
 #: gio/gfile.c:1915 gio/gfile.c:1972 gio/gfile.c:2036 gio/gfile.c:2091
-#: gio/gfile.c:3955 gio/gfile.c:4094 gio/gfile.c:4501 gio/gfile.c:4966
-#: gio/gfile.c:5378 gio/gfile.c:5463 gio/gfile.c:5553 gio/gfile.c:5650
-#: gio/gfile.c:5737 gio/gfile.c:5836 gio/gfile.c:8990 gio/gfile.c:9080
-#: gio/gfile.c:9164 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:3969 gio/gfile.c:4108 gio/gfile.c:4515 gio/gfile.c:4980
+#: gio/gfile.c:5392 gio/gfile.c:5477 gio/gfile.c:5567 gio/gfile.c:5664
+#: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9004 gio/gfile.c:9094
+#: gio/gfile.c:9178 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Operace není podporována"
 
@@ -1507,37 +1509,43 @@ msgstr "Kopírování (reflink/clone) není podporováno nebo je neplatné"
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopírování (reflink/clone) není podporováno nebo neproběhlo správně"
 
-#: gio/gfile.c:3401
+#: gio/gfile.c:3384 gio/gfile.c:3395
+#, fuzzy, c-format
+#| msgid "Unset given attribute"
+msgid "Cannot retrieve attribute %s"
+msgstr "Zrušit nastavení zadaného atributu"
+
+#: gio/gfile.c:3415
 msgid "Can’t copy special file"
 msgstr "Nelze kopírovat zvláštní soubor"
 
-#: gio/gfile.c:4318
+#: gio/gfile.c:4332
 msgid "Invalid symlink value given"
 msgstr "Zadaný symbolický odkaz je neplatný"
 
-#: gio/gfile.c:4328 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2404
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nejsou podporovány"
 
-#: gio/gfile.c:4609
+#: gio/gfile.c:4623
 msgid "Trash not supported"
 msgstr "Zahozené není podporováno"
 
-#: gio/gfile.c:4719
+#: gio/gfile.c:4733
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Názvy souborů nemohou obsahovat „%c“"
 
-#: gio/gfile.c:7145 gio/gfile.c:7271
+#: gio/gfile.c:7159 gio/gfile.c:7285
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Selhalo vytvoření dočasné složky pro šablonu „%s“: %s"
 
-#: gio/gfile.c:7589 gio/gvolume.c:362
+#: gio/gfile.c:7603 gio/gvolume.c:362
 msgid "volume doesn’t implement mount"
 msgstr "svazek neumí připojení"
 
-#: gio/gfile.c:7703 gio/gfile.c:7780
+#: gio/gfile.c:7717 gio/gfile.c:7794
 msgid "No application is registered as handling this file"
 msgstr "Žádná aplikace není zaregistrována k obsluze tohoto souboru"
 
@@ -3558,9 +3566,9 @@ msgstr "Blíže neurčené selhání vyhledávání v proxy"
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
-#: gio/gresolver.c:472 gio/gthreadedresolver.c:317 gio/gthreadedresolver.c:338
-#: gio/gthreadedresolver.c:983 gio/gthreadedresolver.c:1007
-#: gio/gthreadedresolver.c:1032 gio/gthreadedresolver.c:1047
+#: gio/gresolver.c:472 gio/gthreadedresolver.c:318 gio/gthreadedresolver.c:339
+#: gio/gthreadedresolver.c:984 gio/gthreadedresolver.c:1008
+#: gio/gthreadedresolver.c:1033 gio/gthreadedresolver.c:1048
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "Chyba při řešení „%s“: %s"
@@ -3964,7 +3972,7 @@ msgid "Socket is already closed"
 msgstr "Soket je již ukončen"
 
 #: gio/gsocket.c:465 gio/gsocket.c:3291 gio/gsocket.c:4664 gio/gsocket.c:4722
-#: gio/gthreadedresolver.c:1453
+#: gio/gthreadedresolver.c:1454
 msgid "Socket I/O timed out"
 msgstr "Časový limit V/V soketu vypršel"
 
@@ -4263,46 +4271,46 @@ msgstr "Roury nejsou na této platformě podporovány"
 msgid "Can’t handle version %d of GThemedIcon encoding"
 msgstr "Nelze zpracovat verzi %d kódování GThemedIcon"
 
-#: gio/gthreadedresolver.c:319
+#: gio/gthreadedresolver.c:320
 msgid "No valid addresses were found"
 msgstr "Nebyly nalezeny žádné platné adresy"
 
-#: gio/gthreadedresolver.c:514
+#: gio/gthreadedresolver.c:515
 #, c-format
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "Chyba při reverzním řešení „%s“: %s"
 
 #. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
-#: gio/gthreadedresolver.c:737 gio/gthreadedresolver.c:759
-#: gio/gthreadedresolver.c:813 gio/gthreadedresolver.c:860
-#: gio/gthreadedresolver.c:889 gio/gthreadedresolver.c:901
+#: gio/gthreadedresolver.c:738 gio/gthreadedresolver.c:760
+#: gio/gthreadedresolver.c:814 gio/gthreadedresolver.c:861
+#: gio/gthreadedresolver.c:890 gio/gthreadedresolver.c:902
 #, c-format
 msgid "Error parsing DNS %s record: malformed DNS packet"
 msgstr "Chyba při zpracování záznamu %s z DNS: poškozený paket DNS"
 
-#: gio/gthreadedresolver.c:959 gio/gthreadedresolver.c:1096
-#: gio/gthreadedresolver.c:1194 gio/gthreadedresolver.c:1244
+#: gio/gthreadedresolver.c:960 gio/gthreadedresolver.c:1097
+#: gio/gthreadedresolver.c:1195 gio/gthreadedresolver.c:1245
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "Záznam DNS požadovaného typu pro „%s“ neexistuje"
 
-#: gio/gthreadedresolver.c:964 gio/gthreadedresolver.c:1199
+#: gio/gthreadedresolver.c:965 gio/gthreadedresolver.c:1200
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Dočasně není možné vyřešit „%s“"
 
-#: gio/gthreadedresolver.c:969 gio/gthreadedresolver.c:1204
-#: gio/gthreadedresolver.c:1300
+#: gio/gthreadedresolver.c:970 gio/gthreadedresolver.c:1205
+#: gio/gthreadedresolver.c:1301
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Chyba při řešení „%s“"
 
-#: gio/gthreadedresolver.c:983 gio/gthreadedresolver.c:1007
-#: gio/gthreadedresolver.c:1032 gio/gthreadedresolver.c:1047
+#: gio/gthreadedresolver.c:984 gio/gthreadedresolver.c:1008
+#: gio/gthreadedresolver.c:1033 gio/gthreadedresolver.c:1048
 msgid "Malformed DNS packet"
 msgstr "Poškozený paket DNS"
 
-#: gio/gthreadedresolver.c:1089
+#: gio/gthreadedresolver.c:1090
 #, c-format
 msgid "Failed to parse DNS response for “%s”: "
 msgstr "Selhalo zpracování odpovědi DNS pro „%s“: "
@@ -4523,6 +4531,164 @@ msgstr "Spustit službu dbus"
 #: gio/tests/gdbus-daemon.c:42
 msgid "Wrong args\n"
 msgstr "Nesprávné argumenty\n"
+
+#: girepository/compiler/compiler.c:93
+#, fuzzy, c-format
+#| msgid "Failed to open file “%s”: %s"
+msgid "Failed to open ‘%s’: %s"
+msgstr "Nelze otevřít soubor „%s“: %s"
+
+#: girepository/compiler/compiler.c:103
+#, fuzzy, c-format
+#| msgid "Could not create network monitor: %s"
+msgid "Error: Could not write the whole output: %s"
+msgstr "Nelze vytvořit sledování sítě: %s"
+
+#: girepository/compiler/compiler.c:115
+#, fuzzy, c-format
+#| msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "Nelze přejmenovat soubor „%s“ na „%s“: funkce g_rename() selhala: %s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:52
+msgid "Include directories in GIR search path"
+msgstr ""
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:51
+msgid "Output file"
+msgstr "Výstupní soubor"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "Sdílená knihovna"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "Zobrazit ladicí zprávy"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "Zobrazit podrobné zprávy"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:54
+msgid "Show program’s version number and exit"
+msgstr "Zobrazit číslo verze programu a skončit"
+
+#: girepository/compiler/compiler.c:174
+#, fuzzy, c-format
+#| msgid "Error parsing parameter %d: %s\n"
+msgid "Error parsing arguments: %s"
+msgstr "Chyba při analyzování parametru %d: %s\n"
+
+#: girepository/compiler/compiler.c:201
+msgid "Please specify exactly one input file"
+msgstr "Uveďte prosím přesně jeden vstupní soubor"
+
+#: girepository/compiler/compiler.c:217
+#, fuzzy, c-format
+#| msgid "Error opening file “%s”: %s"
+msgid "Error parsing file ‘%s’: %s"
+msgstr "Chyba při otevírání souboru %s: %s"
+
+#: girepository/compiler/compiler.c:242
+#, fuzzy, c-format
+#| msgid "Failed to load info for handler “%s”"
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "Selhalo načtení informací pro obsluhu „%s“"
+
+#: girepository/compiler/compiler.c:244
+#, fuzzy, c-format
+#| msgid "Unable to load ‘%s‘: %s"
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "Nezdařilo se načíst „%s“: %s"
+
+#: girepository/decompiler/decompiler.c:53
+#, fuzzy
+#| msgid "Show extra information"
+msgid "Show all available information"
+msgstr "Zobrazit doplňující informace"
+
+#: girepository/decompiler/decompiler.c:67
+#, fuzzy, c-format
+#| msgid "Failed to fork (%s)"
+msgid "Failed to parse: %s"
+msgstr "Selhalo rozvětvení procesu (%s)"
+
+#: girepository/decompiler/decompiler.c:83
+#, fuzzy
+#| msgid "Show hidden files"
+msgid "No input files"
+msgstr "Zobrazit skryté soubory"
+
+#: girepository/decompiler/decompiler.c:109
+#, fuzzy, c-format
+#| msgid "Failed to create file “%s”: %s"
+msgid "Failed to read ‘%s’: %s"
+msgstr "Nelze vytvořit soubor „%s“: %s"
+
+#: girepository/decompiler/decompiler.c:121
+#, fuzzy, c-format
+#| msgid "Failed to create file “%s”: %s"
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "Nelze vytvořit soubor „%s“: %s"
+
+#: girepository/decompiler/decompiler.c:125
+#: girepository/inspector/inspector.c:113
+#, fuzzy, c-format
+#| msgid "Failed to allocate memory"
+msgid "Failed to load typelib: %s"
+msgstr "Nelze alokovat paměť"
+
+#: girepository/decompiler/decompiler.c:132
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr ""
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr ""
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "VERZE"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr ""
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr ""
+
+#: girepository/inspector/inspector.c:75
+#, fuzzy
+#| msgid "The attributes to get"
+msgid "The typelib to inspect"
+msgstr "Atributy, které se mají vypsat"
+
+#: girepository/inspector/inspector.c:75
+#, fuzzy
+#| msgid "NAME"
+msgid "NAMESPACE"
+msgstr "NÁZEV"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr ""
+
+#: girepository/inspector/inspector.c:86
+#, fuzzy, c-format
+#| msgid "Failed to read from file “%s”: %s"
+msgid "Failed to parse command line options: %s"
+msgstr "Chyba při čtení ze souboru „%s“: %s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr ""
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr ""
 
 #: glib/gbookmarkfile.c:816
 #, c-format
@@ -5070,7 +5236,27 @@ msgstr "odp."
 msgid "Error opening directory “%s”: %s"
 msgstr "Chyba při otevírání složky „%s“: %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720
+#, fuzzy, c-format
+#| msgid "Could not allocate %lu byte to read file “%s”"
+#| msgid_plural "Could not allocate %lu bytes to read file “%s”"
+msgid "Could not allocate %s to read file “%s”"
+msgstr "Nelze alokovat %lu bajtů k přečtení souboru „%s“"
+
+#: glib/gfileutils.c:738
+#, c-format
+msgid "Error reading file “%s”: %s"
+msgstr "Chyba čtení souboru „%s“: %s"
+
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
+#, c-format
+msgid "File “%s” is too large"
+msgstr "Soubor „%s“ je příliš velký"
+
+#: glib/gfileutils.c:825
 #, fuzzy
 #| msgid "Could not connect: "
 msgid "Could not allocate %"
@@ -5079,78 +5265,68 @@ msgstr[0] "Nelze se připojit: "
 msgstr[1] "Nelze se připojit: "
 msgstr[2] "Nelze se připojit: "
 
-#: glib/gfileutils.c:733
-#, c-format
-msgid "Error reading file “%s”: %s"
-msgstr "Chyba čtení souboru „%s“: %s"
-
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
-#, c-format
-msgid "File “%s” is too large"
-msgstr "Soubor „%s“ je příliš velký"
-
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Chyba při čtení ze souboru „%s“: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Nelze otevřít soubor „%s“: %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:913
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Nelze získat atributy souboru „%s“: funkce fstat() selhala: %s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Nelze otevřít soubor „%s“: funkce fdopen() selhala: %s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Nelze přejmenovat soubor „%s“ na „%s“: funkce g_rename() selhala: %s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1144
 #, fuzzy, c-format
 #| msgid "Failed to write file “%s”: write() failed: %s"
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Nelze zapisovat do souboru „%s“: funkce write() selhala: %s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1189
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Nelze zapisovat do souboru „%s“: funkce write() selhala: %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1210
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Nelze zapisovat do souboru „%s“: funkce fsync() selhala: %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Nelze vytvořit soubor „%s“: %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Existující soubor „%s“ nelze odstranit: funkce g_unlink() selhala: %s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1753
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Šablona „%s“ je neplatná, neměla by obsahovat „%s“"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1766
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Šablona „%s“ neobsahuje XXXXXX"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Nelze přečíst symbolický odkaz „%s“: %s"
@@ -5925,57 +6101,57 @@ msgstr "Proces potomka byl zastaven signálem %ld"
 msgid "Child process exited abnormally"
 msgstr "Proces potomka neskončil normálně"
 
-#: glib/gspawn.c:1956 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
+#: glib/gspawn.c:1622 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Selhalo čtení z roury potomka (%s)"
 
-#: glib/gspawn.c:2335
+#: glib/gspawn.c:2001
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Selhalo zplození procesu potomka „%s“ (%s)"
 
-#: glib/gspawn.c:2459
+#: glib/gspawn.c:2125
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Selhalo rozvětvení procesu (%s)"
 
-#: glib/gspawn.c:2620 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2286 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Selhal přechod do složky „%s“ (%s)"
 
-#: glib/gspawn.c:2630
+#: glib/gspawn.c:2296
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Selhalo spuštění procesu potomka „%s“ (%s)"
 
-#: glib/gspawn.c:2640
+#: glib/gspawn.c:2306
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Selhalo otevření souboru pro přemapování popisovače souboru (%s)"
 
-#: glib/gspawn.c:2648
+#: glib/gspawn.c:2314
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Selhalo zduplikování popisovače souboru pro proces potomka (%s)"
 
-#: glib/gspawn.c:2657
+#: glib/gspawn.c:2323
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Selhalo rozvětvení procesu potomka (%s)"
 
-#: glib/gspawn.c:2665
+#: glib/gspawn.c:2331
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Selhalo zavření popisovače souboru pro proces potomka (%s)"
 
-#: glib/gspawn.c:2673
+#: glib/gspawn.c:2339
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Neznámá chyba při běhu procesu potomka „%s“"
 
-#: glib/gspawn.c:2697
+#: glib/gspawn.c:2363
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nezdařilo se přečíst dostatek dat z roury pid potomka (%s)"
@@ -6356,13 +6532,6 @@ msgstr "%.1f EB"
 #~ msgstr ""
 #~ "Zpráva METHOD_RETURN: pole se záhlavím REPLY_SERIAL schází nebo je "
 #~ "neplatné"
-
-#, c-format
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "Nelze alokovat %lu bajtů k přečtení souboru „%s“"
-#~ msgstr[1] "Nelze alokovat %lu bajty k přečtení souboru „%s“"
-#~ msgstr[2] "Nelze alokovat %lu bajtů k přečtení souboru „%s“"
 
 #~ msgid "kb"
 #~ msgstr "kb"
