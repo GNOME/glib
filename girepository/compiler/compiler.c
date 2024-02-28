@@ -144,7 +144,7 @@ log_handler (const gchar   *log_domain,
 }
 
 static GOptionEntry options[] = {
-  { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, N_("Include directories in GIR search path"), NULL },
+  { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, N_("Include directories in GIR search path"), N_("DIRECTORY") },
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, N_("Output file"), N_("FILE") },
   { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME_ARRAY, &shlibs, N_("Shared library"), N_("FILE") },
   { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Show debug messages"), NULL },

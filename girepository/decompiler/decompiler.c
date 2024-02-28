@@ -49,7 +49,7 @@ main (int argc, char *argv[])
   GOptionEntry options[] =
     {
       { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, N_("Output file"), N_("FILE") },
-      { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, N_("Include directories in GIR search path"), NULL },
+      { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, N_("Include directories in GIR search path"), N_("DIRECTORY") },
       { "all", 0, 0, G_OPTION_ARG_NONE, &show_all, N_("Show all available information"), NULL, },
       { "version", 0, 0, G_OPTION_ARG_NONE, &show_version, N_("Show program’s version number and exit"), NULL },
       { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &input, NULL, NULL },
