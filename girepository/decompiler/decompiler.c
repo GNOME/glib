@@ -37,6 +37,7 @@ int
 main (int argc, char *argv[])
 {
   GIRepository *repository = NULL;
+  gchar *param;
   gchar *output = NULL;
   gchar **includedirs = NULL;
   gboolean show_all = FALSE;
@@ -60,7 +61,10 @@ main (int argc, char *argv[])
 
   setlocale (LC_ALL, "");
 
-  context = g_option_context_new ("");
+  /* Translators: commandline placeholder */
+  param = g_strdup_printf ("%s…", _("FILE"));
+  context = g_option_context_new (param);
+  g_free (param);
   g_option_context_add_main_entries (context, options, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {

@@ -164,7 +164,8 @@ main (int argc, char **argv)
 
   setlocale (LC_ALL, "");
 
-  context = g_option_context_new ("");
+  /* Translators: commandline placeholder */
+  context = g_option_context_new (_("FILE"));
   g_option_context_add_main_entries (context, options, NULL);
   g_option_context_parse (context, &argc, &argv, &error);
   g_option_context_free (context);
