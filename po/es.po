@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-27 09:41+0000\n"
-"PO-Revision-Date: 2024-02-28 12:09+0100\n"
+"POT-Creation-Date: 2024-02-29 10:40+0000\n"
+"PO-Revision-Date: 2024-02-29 12:34+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -137,7 +137,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "COMANDO"
 
@@ -150,11 +150,13 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 "Identificador de la aplicación en formato D-Bus (ej. org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 #: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
-#: girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "ARCHIVO"
 
@@ -1165,6 +1167,10 @@ msgstr "Conectar con el bus de sesión"
 #: gio/gdbus-tool.c:407
 msgid "Connect to given D-Bus address"
 msgstr "Conectar con la dirección de D-Bus proporcionada"
+
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "DIRECCIÓN"
 
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
@@ -2590,7 +2596,8 @@ msgstr ""
 "(la predeterminada es la carpeta actual)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "CARPETA"
 
@@ -2642,6 +2649,10 @@ msgstr ""
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "Nombre del identificador C usado para el código fuente generado"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "IDENTIFICADOR"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -4631,11 +4642,11 @@ msgstr "Error: no se pudo escribir la salida completa: %s"
 msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
 msgstr "Error: falló al renombrar  «%s» a «%s»: %s"
 
-#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:52
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
 msgid "Include directories in GIR search path"
 msgstr "Incluir carpetas en la ruta de búsqueda GIR"
 
-#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
 msgid "Output file"
 msgstr "Archivo de salida"
 
@@ -4651,64 +4662,64 @@ msgstr "Mostrar mensajes de depuración"
 msgid "Show verbose messages"
 msgstr "Mostrar mensajes detallados"
 
-#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:54
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
 msgid "Show program’s version number and exit"
 msgstr "Mostrar el número de versión del programa y salir"
 
-#: girepository/compiler/compiler.c:174
+#: girepository/compiler/compiler.c:175
 #, c-format
 msgid "Error parsing arguments: %s"
 msgstr "Error al analizar los argumentos: %s"
 
-#: girepository/compiler/compiler.c:201
+#: girepository/compiler/compiler.c:202
 msgid "Please specify exactly one input file"
 msgstr "Especifique exactamente un archivo de salida"
 
-#: girepository/compiler/compiler.c:217
+#: girepository/compiler/compiler.c:218
 #, c-format
 msgid "Error parsing file ‘%s’: %s"
 msgstr "Error al analizar el archivo «%s»: %s"
 
-#: girepository/compiler/compiler.c:242
+#: girepository/compiler/compiler.c:243
 #, c-format
 msgid "Failed to build typelib for module ‘%s’"
 msgstr "Falló al construir el tipo de biblioteca para el módulo «%s»"
 
-#: girepository/compiler/compiler.c:244
+#: girepository/compiler/compiler.c:245
 #, c-format
 msgid "Invalid typelib for module ‘%s’: %s"
 msgstr "Tipo de biblioteca no valido para el módulo «%s»: %s"
 
-#: girepository/decompiler/decompiler.c:53
+#: girepository/decompiler/decompiler.c:54
 msgid "Show all available information"
 msgstr "Mostrar toda la información disponible"
 
-#: girepository/decompiler/decompiler.c:67
+#: girepository/decompiler/decompiler.c:71
 #, c-format
 msgid "Failed to parse: %s"
 msgstr "Falló al analizar: %s"
 
-#: girepository/decompiler/decompiler.c:83
+#: girepository/decompiler/decompiler.c:87
 msgid "No input files"
 msgstr "No hay archivos de entrada"
 
-#: girepository/decompiler/decompiler.c:109
+#: girepository/decompiler/decompiler.c:113
 #, c-format
 msgid "Failed to read ‘%s’: %s"
 msgstr "Falló al leer «%s»: %s"
 
-#: girepository/decompiler/decompiler.c:121
+#: girepository/decompiler/decompiler.c:125
 #, c-format
 msgid "Failed to create typelib ‘%s’: %s"
 msgstr "Falló al crear el tipo de biblioteca «%s»: %s"
 
-#: girepository/decompiler/decompiler.c:125
+#: girepository/decompiler/decompiler.c:129
 #: girepository/inspector/inspector.c:113
 #, c-format
 msgid "Failed to load typelib: %s"
 msgstr "Falló al cargar el tipo de biblioteca: %s"
 
-#: girepository/decompiler/decompiler.c:132
+#: girepository/decompiler/decompiler.c:136
 #, c-format
 msgid "Warning: %u modules omitted"
 msgstr "Advertencia: %u módulos omitidos"
