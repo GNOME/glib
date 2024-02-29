@@ -78,7 +78,7 @@
 
 typedef struct {
   size_t n_interfaces;
-  GIBaseInfo *interfaces[];
+  GIBaseInfo *interfaces[] G_COUNTED_BY(n_interfaces);
 } GTypeInterfaceCache;
 
 static void

@@ -549,7 +549,7 @@ typedef struct {
 
   uint16_t        n_arguments;
 
-  ArgBlob        arguments[];
+  ArgBlob         arguments[] G_COUNTED_BY(n_arguments);
 } SignatureBlob;
 
 /**
@@ -743,7 +743,7 @@ typedef struct {
   uint8_t        reserved2;
   uint16_t       n_types;
 
-  SimpleTypeBlob type[];
+  SimpleTypeBlob type[] G_COUNTED_BY(n_types);
 } ParamTypeBlob;
 
 /**
@@ -767,7 +767,7 @@ typedef struct {
   uint8_t  reserved2;
 
   uint16_t n_domains; /* Must be 0 */
-  uint16_t domains[];
+  uint16_t domains[] G_COUNTED_BY(n_domains);
 }  ErrorTypeBlob;
 
 /**
@@ -989,7 +989,7 @@ typedef struct {
 
   uint32_t  error_domain;
 
-  ValueBlob values[];
+  ValueBlob values[] G_COUNTED_BY(n_values);
 } EnumBlob;
 
 #define ACCESSOR_SENTINEL       0x3ff
@@ -1209,7 +1209,7 @@ typedef struct {
   uint32_t reserved3;
   uint32_t reserved4;
 
-  uint16_t interfaces[];
+  uint16_t interfaces[] G_COUNTED_BY(n_interfaces);
 } ObjectBlob;
 
 /**
@@ -1261,7 +1261,7 @@ typedef struct {
   uint32_t reserved2;
   uint32_t reserved3;
 
-  uint16_t prerequisites[];
+  uint16_t prerequisites[] G_COUNTED_BY(n_prerequisites);
 } InterfaceBlob;
 
 /**
