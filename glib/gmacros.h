@@ -405,6 +405,12 @@
 #define G_GNUC_ALLOC_SIZE2(x,y)
 #endif
 
+#if g_macro__has_attribute(__counted_by__)
+#define G_COUNTED_BY(x) __attribute__(__counted_by__(x))
+#else
+#define G_COUNTED_BY(x)
+#endif
+
 /**
  * G_GNUC_PRINTF:
  * @format_idx: the index of the argument corresponding to the

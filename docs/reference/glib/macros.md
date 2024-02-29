@@ -825,6 +825,25 @@ by application programmers.
 `G_HAVE_GNUC_VISIBILITY`
 :   Defined to 1 if GCC-style visibility handling is supported.
 
+`G_COUNTED_BY(element)`
+
+:   Indicates that the `struct` member being annotated is a flexible length
+    array and that the given `element` contains its length (in elements, not
+    bytes).
+
+    Place the attribute after the declaration of the `struct` member which is a
+    flexible array, just before the semicolon.
+
+        struct
+          {
+            size_t n_doubles;
+            double array_of_doubles[] G_COUNTED_BY(n_doubles);
+          };
+
+    See the [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-element-count-variable-attribute) for more details.
+
+    Since: 2.82
+
 
 ## Deprecation
 
