@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-27 09:41+0000\n"
-"PO-Revision-Date: 2024-02-27 19:54+0200\n"
+"POT-Creation-Date: 2024-02-29 10:40+0000\n"
+"PO-Revision-Date: 2024-02-29 20:20+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -132,7 +132,7 @@ msgid "APPID"
 msgstr "ІД_ПРОГРАМИ"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "КОМАНДА"
 
@@ -144,11 +144,13 @@ msgstr "Команда, за якою виводиться детальна до
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Ідентифікатор програми у форматі D-Bus (напр.: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 #: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
-#: girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "ФАЙЛ"
 
@@ -1145,6 +1147,10 @@ msgstr "Під'єднатися до користувацької шини"
 #: gio/gdbus-tool.c:407
 msgid "Connect to given D-Bus address"
 msgstr "Під'єднатися до вказаної адреси D-Bus"
+
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "АДРЕСА"
 
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
@@ -2570,7 +2576,8 @@ msgstr ""
 "каталог)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "КАТАЛОГ"
 
@@ -2624,6 +2631,10 @@ msgid "C identifier name used for the generated source code"
 msgstr ""
 "Назва C-ідентифікатора, який використовуватиметься для породження "
 "початкового коду"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "ІДЕНТИФІКАТОР"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -4596,27 +4607,24 @@ msgstr "Неправильні параметри\n"
 
 #: girepository/compiler/compiler.c:93
 #, c-format
-#| msgid "Failed to open file “%s”: %s"
 msgid "Failed to open ‘%s’: %s"
 msgstr "Не вдалося відкрити «%s»: %s"
 
 #: girepository/compiler/compiler.c:103
 #, c-format
-#| msgid "Could not create network monitor: %s"
 msgid "Error: Could not write the whole output: %s"
 msgstr "Помилка: не вдалося записати усі вихідні дані: %s"
 
 #: girepository/compiler/compiler.c:115
 #, c-format
-#| msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
 msgstr "Помилка: не вдалося перейменувати «%s» на «%s»: %s"
 
-#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:52
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
 msgid "Include directories in GIR search path"
 msgstr "Включити каталоги до шляху пошуку GIR"
 
-#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
 msgid "Output file"
 msgstr "Вихідний файл"
 
@@ -4632,75 +4640,64 @@ msgstr "Показувати діагностичні повідомлення"
 msgid "Show verbose messages"
 msgstr "Показувати докладні повідомлення"
 
-#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:54
-#| msgid "Show program version and exit"
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
 msgid "Show program’s version number and exit"
 msgstr "Показати дані щодо версії програми і завершити роботу"
 
-#: girepository/compiler/compiler.c:174
+#: girepository/compiler/compiler.c:175
 #, c-format
-#| msgid "Error parsing parameter %d: %s\n"
 msgid "Error parsing arguments: %s"
 msgstr "Помилка під час обробки аргументів: %s"
 
-#: girepository/compiler/compiler.c:201
+#: girepository/compiler/compiler.c:202
 msgid "Please specify exactly one input file"
 msgstr "Будь ласка, вкажіть точно один вхідний файл"
 
-#: girepository/compiler/compiler.c:217
+#: girepository/compiler/compiler.c:218
 #, c-format
-#| msgid "Error opening file “%s”: %s"
 msgid "Error parsing file ‘%s’: %s"
 msgstr "Помилка під час обробки файла «%s»: %s"
 
-#: girepository/compiler/compiler.c:242
+#: girepository/compiler/compiler.c:243
 #, c-format
-#| msgid "Failed to load info for handler “%s”"
 msgid "Failed to build typelib for module ‘%s’"
 msgstr "Не вдалося побудувати typelib для модуля «%s»"
 
-#: girepository/compiler/compiler.c:244
+#: girepository/compiler/compiler.c:245
 #, c-format
-#| msgid "Unable to load ‘%s‘: %s"
 msgid "Invalid typelib for module ‘%s’: %s"
 msgstr "Некоректна typelib для модуля «%s»: %s"
 
-#: girepository/decompiler/decompiler.c:53
-#| msgid "Show extra information"
+#: girepository/decompiler/decompiler.c:54
 msgid "Show all available information"
 msgstr "Показати усі доступні відомості"
 
-#: girepository/decompiler/decompiler.c:67
+#: girepository/decompiler/decompiler.c:71
 #, c-format
-#| msgid "Failed to fork (%s)"
 msgid "Failed to parse: %s"
 msgstr "Не вдалося обробити: %s"
 
-#: girepository/decompiler/decompiler.c:83
-#| msgid "Show hidden files"
+#: girepository/decompiler/decompiler.c:87
 msgid "No input files"
 msgstr "Немає вхідних файлів"
 
-#: girepository/decompiler/decompiler.c:109
+#: girepository/decompiler/decompiler.c:113
 #, c-format
-#| msgid "Failed to create file “%s”: %s"
 msgid "Failed to read ‘%s’: %s"
 msgstr "Не вдалося прочитати «%s»: %s"
 
-#: girepository/decompiler/decompiler.c:121
+#: girepository/decompiler/decompiler.c:125
 #, c-format
-#| msgid "Failed to create file “%s”: %s"
 msgid "Failed to create typelib ‘%s’: %s"
 msgstr "Не вдалося створити typelib «%s»: %s"
 
-#: girepository/decompiler/decompiler.c:125
+#: girepository/decompiler/decompiler.c:129
 #: girepository/inspector/inspector.c:113
 #, c-format
-#| msgid "Failed to allocate memory"
 msgid "Failed to load typelib: %s"
 msgstr "Не вдалося завантажити typelib: %s"
 
-#: girepository/decompiler/decompiler.c:132
+#: girepository/decompiler/decompiler.c:136
 #, c-format
 msgid "Warning: %u modules omitted"
 msgstr "Попередження: пропущено %u модулів"
@@ -4722,12 +4719,10 @@ msgid "List other typelibs the inspected typelib requires"
 msgstr "Список інших typelib, який потребує typelib, що вивчається"
 
 #: girepository/inspector/inspector.c:75
-#| msgid "The attributes to get"
 msgid "The typelib to inspect"
 msgstr "typelib для вивчення"
 
 #: girepository/inspector/inspector.c:75
-#| msgid "NAME"
 msgid "NAMESPACE"
 msgstr "ПРОСТІР_НАЗВ"
 
@@ -4737,7 +4732,6 @@ msgstr "- Вивчити typelib GI"
 
 #: girepository/inspector/inspector.c:86
 #, c-format
-#| msgid "Failed to read from file “%s”: %s"
 msgid "Failed to parse command line options: %s"
 msgstr "Не вдалося обробити параметри командного рядка: %s"
 
@@ -5295,8 +5289,6 @@ msgstr "Помилка відкривання каталогу «%s»: %s"
 #. * contains the file name
 #: glib/gfileutils.c:720
 #, c-format
-#| msgid "Could not allocate %lu byte to read file “%s”"
-#| msgid_plural "Could not allocate %lu bytes to read file “%s”"
 msgid "Could not allocate %s to read file “%s”"
 msgstr "Не вдалося розмістити у пам'яті %s для читання файла «%s»"
 
