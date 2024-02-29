@@ -96,7 +96,7 @@ struct _GData
 {
   guint32  len;     /* Number of elements */
   guint32  alloc;   /* Number of allocated elements */
-  GDataElt data[1]; /* Flexible array */
+  GDataElt data[] G_COUNTED_BY(alloc);
 };
 
 struct _GDataset

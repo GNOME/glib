@@ -216,7 +216,7 @@ struct _TypeNode
     GAtomicArray offsets;
   } _prot;
   GType       *prerequisites;
-  GType        supers[1]; /* flexible array */
+  GType        supers[] G_COUNTED_BY(n_supers);
 };
 
 #define SIZEOF_BASE_TYPE_NODE()			(G_STRUCT_OFFSET (TypeNode, supers))
@@ -260,12 +260,13 @@ struct _IFaceEntry
   InitState       init_state;
 };
 
+/* This is actually a GAtomicArray */
 struct _IFaceEntries {
   gsize offset_index;
-  IFaceEntry entry[1];
+  IFaceEntry entry[];  /* flexible array, but we can’t annotate it for the compiler because the number of elements are stored in the GAtomicArrayMetadata which is allocated before this struct */
 };
 
-#define IFACE_ENTRIES_HEADER_SIZE (sizeof(IFaceEntries) - sizeof(IFaceEntry))
+#define IFACE_ENTRIES_HEADER_SIZE (sizeof(IFaceEntries))
 #define IFACE_ENTRIES_N_ENTRIES(_entries) ( (G_ATOMIC_ARRAY_DATA_SIZE((_entries)) - IFACE_ENTRIES_HEADER_SIZE) / sizeof(IFaceEntry) )
 
 struct _CommonData
@@ -409,7 +410,7 @@ type_node_any_new_W (TypeNode             *pnode,
   if (!pnode)
     node_size += SIZEOF_FUNDAMENTAL_INFO;	      /* fundamental type info */
   node_size += SIZEOF_BASE_TYPE_NODE ();	      /* TypeNode structure */
-  node_size += (sizeof (GType) * (1 + n_supers + 1)); /* self + ancestors + (0) for ->supers[] */
+  node_size += (sizeof (GType) * (1 + n_supers + 1)); /* self + ancestors + null terminator for ->supers[] */
   node = g_malloc0 (node_size);
   if (!pnode)					      /* offset fundamental types */
     {

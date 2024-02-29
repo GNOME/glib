@@ -3630,7 +3630,7 @@ typedef struct {
   struct {
     GWeakNotify notify;
     gpointer    data;
-  } weak_refs[1];  /* flexible array */
+  } weak_refs[] G_COUNTED_BY(n_weak_refs);
 } WeakRefStack;
 
 static void
@@ -3678,11 +3678,11 @@ g_object_weak_ref (GObject    *object,
   if (wstack)
     {
       i = wstack->n_weak_refs++;
-      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
+      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * wstack->n_weak_refs);
     }
   else
     {
-      wstack = g_renew (WeakRefStack, NULL, 1);
+      wstack = g_malloc (sizeof (*wstack) + sizeof (wstack->weak_refs[0]));
       wstack->object = object;
       wstack->n_weak_refs = 1;
       i = 0;
@@ -3946,7 +3946,7 @@ typedef struct {
   struct {
     GToggleNotify notify;
     gpointer    data;
-  } toggle_refs[1];  /* flexible array */
+  } toggle_refs[] G_COUNTED_BY(n_toggle_refs);
 } ToggleRefStack;
 
 static GToggleNotify
@@ -4035,13 +4035,11 @@ g_object_add_toggle_ref (GObject       *object,
   if (tstack)
     {
       i = tstack->n_toggle_refs++;
-      /* allocate i = tstate->n_toggle_refs - 1 positions beyond the 1 declared
-       * in tstate->toggle_refs */
-      tstack = g_realloc (tstack, sizeof (*tstack) + sizeof (tstack->toggle_refs[0]) * i);
+      tstack = g_realloc (tstack, sizeof (*tstack) + sizeof (tstack->toggle_refs[0]) * tstack->n_toggle_refs);
     }
   else
     {
-      tstack = g_renew (ToggleRefStack, NULL, 1);
+      tstack = g_malloc (sizeof (*tstack) + sizeof (tstack->toggle_refs[0]));
       tstack->n_toggle_refs = 1;
       i = 0;
     }
@@ -5158,7 +5156,7 @@ g_signal_connect_object (gpointer      instance,
 typedef struct {
   GObject  *object;
   guint     n_closures;
-  GClosure *closures[1]; /* flexible array */
+  GClosure *closures[] G_COUNTED_BY(n_closures);
 } CArray;
 
 static void
@@ -5240,7 +5238,7 @@ g_object_watch_closure (GObject  *object,
   carray = g_datalist_id_remove_no_notify (&object->qdata, quark_closure_array);
   if (!carray)
     {
-      carray = g_renew (CArray, NULL, 1);
+      carray = g_malloc (sizeof (*carray) + sizeof (carray->closures[0]));
       carray->object = object;
       carray->n_closures = 1;
       i = 0;
@@ -5248,7 +5246,7 @@ g_object_watch_closure (GObject  *object,
   else
     {
       i = carray->n_closures++;
-      carray = g_realloc (carray, sizeof (*carray) + sizeof (carray->closures[0]) * i);
+      carray = g_realloc (carray, sizeof (*carray) + sizeof (carray->closures[0]) * carray->n_closures);
     }
   carray->closures[i] = closure;
   g_datalist_id_set_data_full (&object->qdata, quark_closure_array, carray, destroy_closure_array);
