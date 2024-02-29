@@ -144,7 +144,7 @@ log_handler (const gchar   *log_domain,
 }
 
 static GOptionEntry options[] = {
-  { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, N_("Include directories in GIR search path"), NULL },
+  { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, N_("Include directories in GIR search path"), N_("DIRECTORY") },
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, N_("Output file"), N_("FILE") },
   { "shared-library", 'l', 0, G_OPTION_ARG_FILENAME_ARRAY, &shlibs, N_("Shared library"), N_("FILE") },
   { "debug", 0, 0, G_OPTION_ARG_NONE, &debug, N_("Show debug messages"), NULL },
@@ -164,7 +164,8 @@ main (int argc, char **argv)
 
   setlocale (LC_ALL, "");
 
-  context = g_option_context_new ("");
+  /* Translators: commandline placeholder */
+  context = g_option_context_new (_("FILE"));
   g_option_context_add_main_entries (context, options, NULL);
   g_option_context_parse (context, &argc, &argv, &error);
   g_option_context_free (context);

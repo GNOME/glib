@@ -404,7 +404,7 @@ static const GOptionEntry connection_entries[] =
 {
   { "system", 'y', 0, G_OPTION_ARG_NONE, &opt_connection_system, N_("Connect to the system bus"), NULL},
   { "session", 'e', 0, G_OPTION_ARG_NONE, &opt_connection_session, N_("Connect to the session bus"), NULL},
-  { "address", 'a', 0, G_OPTION_ARG_STRING, &opt_connection_address, N_("Connect to given D-Bus address"), NULL},
+  { "address", 'a', 0, G_OPTION_ARG_STRING, &opt_connection_address, N_("Connect to given D-Bus address"), N_("ADDRESS") },
   G_OPTION_ENTRY_NULL
 };
 
