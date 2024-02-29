@@ -570,6 +570,10 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   ]
 
   warning_c_args = warning_common_args + [
+    # Ensure that any use of flexible arrays is C99-compatible
+    # See https://people.kernel.org/kees/bounded-flexible-arrays-in-c
+    '-fstrict-flex-arrays',
+    '-Werror=array-bounds',
     '-Wstrict-prototypes',
     # Due to pervasive use of things like GPOINTER_TO_UINT(), we do not support
     # building with -Wbad-function-cast.
