@@ -115,7 +115,7 @@ language and platform features.
     rather than a `long`).
 
 
-## Array Utilties
+## Array Utilities
 
 `G_N_ELEMENTS(array)`
 :   Determines the number of elements in an array. The array must be
