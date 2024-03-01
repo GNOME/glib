@@ -1007,6 +1007,16 @@ if cc.links('''#include <sys/eventfd.h>
   glib_conf.set('HAVE_EVENTFD', 1)
 endif
 
+# Check for timerfd_create(2)
+if cc.links('''#include <sys/timerfd.h>
+               #include <unistd.h>
+               int main (int argc, char ** argv) {
+                 timerfd_create (CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
+                 return 0;
+               }''', name : 'timerfd_create(2) system call')
+  glib_conf.set('HAVE_TIMERFD', 1)
+endif
+
 # Check for pidfd_open(2)
 if cc.links('''#include <sys/syscall.h>
                #include <sys/wait.h>

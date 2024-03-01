@@ -54,6 +54,9 @@
 #ifdef HAVE_EVENTFD
 #include <sys/eventfd.h>
 #endif
+#ifdef HAVE_TIMERFD
+#include <sys/timerfd.h>
+#endif
 #endif
 
 #include <signal.h>
@@ -189,7 +192,7 @@ struct _GMainContext
   GHashTable *sources;              /* guint -> GSource */
 
   GPtrArray *pending_dispatches;
-  gint timeout;			/* Timeout for current iteration */
+  gint64 timeout;                   /* Timeout for current iteration */
 
   guint next_id;
   GQueue source_lists;
@@ -203,6 +206,11 @@ struct _GMainContext
   GWakeup *wakeup;
 
   GPollFD wake_up_rec;
+
+#ifdef HAVE_TIMERFD
+  GPollFD timerfd_rec;
+  struct itimerspec timerfd_spec;
+#endif
 
 /* Flag indicating whether the set of fd's changed during a poll */
   gboolean poll_changed;
@@ -322,7 +330,7 @@ static gboolean g_main_context_prepare_unlocked (GMainContext *context,
                                                  gint         *priority);
 static gint g_main_context_query_unlocked       (GMainContext *context,
                                                  gint          max_priority,
-                                                 gint         *timeout,
+                                                 gint64       *timeout,
                                                  GPollFD      *fds,
                                                  gint          n_fds);
 static gboolean g_main_context_check_unlocked   (GMainContext *context,
@@ -331,7 +339,7 @@ static gboolean g_main_context_check_unlocked   (GMainContext *context,
                                                  gint          n_fds);
 static void g_main_context_dispatch_unlocked    (GMainContext *context);
 static void g_main_context_poll_unlocked        (GMainContext *context,
-                                                 int           timeout,
+                                                 gint64        timeout,
                                                  int           priority,
                                                  GPollFD      *fds,
                                                  int           n_fds);
@@ -563,6 +571,11 @@ g_main_context_unref (GMainContext *context)
   g_wakeup_free (context->wakeup);
   g_cond_clear (&context->cond);
 
+#ifdef HAVE_TIMERFD
+  if (context->timerfd_rec.fd > -1)
+    close (context->timerfd_rec.fd);
+#endif
+
   g_free (context);
 
   /* And now finally get rid of our references to the sources. This will cause
@@ -658,6 +671,20 @@ g_main_context_new_with_flags (GMainContextFlags flags)
   context->wakeup = g_wakeup_new ();
   g_wakeup_get_pollfd (context->wakeup, &context->wake_up_rec);
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
+
+#ifdef HAVE_TIMERFD
+  {
+    int tfd = timerfd_create (CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
+
+    if (tfd > -1)
+      {
+        context->timerfd_rec.fd = tfd;
+        context->timerfd_rec.events = G_IO_IN;
+        context->timerfd_rec.revents = 0;
+        g_main_context_add_poll_unlocked (context, 0, &context->timerfd_rec);
+      }
+  }
+#endif
 
   G_LOCK (main_context_list);
   main_context_list = g_slist_append (main_context_list, context);
@@ -3681,7 +3708,7 @@ g_main_context_prepare_unlocked (GMainContext *context,
   g_source_iter_init (&iter, context, TRUE);
   while (g_source_iter_next (&iter, &source))
     {
-      gint source_timeout = -1;
+      gint64 source_timeout_usec = -1;
 
       if (SOURCE_DESTROYED (source) || SOURCE_BLOCKED (source))
 	continue;
@@ -3699,14 +3726,20 @@ g_main_context_prepare_unlocked (GMainContext *context,
           if (prepare)
             {
               gint64 begin_time_nsec G_GNUC_UNUSED;
+              gint source_timeout_msec = -1;
 
               context->in_check_or_prepare++;
               UNLOCK_CONTEXT (context);
 
               begin_time_nsec = G_TRACE_CURRENT_TIME;
 
-              result = (* prepare) (source, &source_timeout);
-              TRACE (GLIB_MAIN_AFTER_PREPARE (source, prepare, source_timeout));
+              result = (* prepare) (source, &source_timeout_msec);
+              TRACE (GLIB_MAIN_AFTER_PREPARE (source, prepare, source_timeout_msec));
+
+              if (source_timeout_msec > 0)
+                source_timeout_usec = source_timeout_msec * 1000;
+              else
+                source_timeout_usec = source_timeout_msec;
 
               g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
                             "GLib", "GSource.prepare",
@@ -3730,18 +3763,13 @@ g_main_context_prepare_unlocked (GMainContext *context,
 
               if (source->priv->ready_time <= context->time)
                 {
-                  source_timeout = 0;
+                  source_timeout_usec = 0;
                   result = TRUE;
                 }
-              else
+              else if (source_timeout_usec < 0 ||
+                       (source->priv->ready_time < context->time + source_timeout_usec))
                 {
-                  gint64 timeout;
-
-                  /* rounding down will lead to spinning, so always round up */
-                  timeout = (source->priv->ready_time - context->time + 999) / 1000;
-
-                  if (source_timeout < 0 || timeout < source_timeout)
-                    source_timeout = MIN (timeout, G_MAXINT);
+                  source_timeout_usec = MAX (0, source->priv->ready_time - context->time);
                 }
             }
 
@@ -3763,13 +3791,13 @@ g_main_context_prepare_unlocked (GMainContext *context,
 	  current_priority = source->priority;
 	  context->timeout = 0;
 	}
-      
-      if (source_timeout >= 0)
+
+      if (source_timeout_usec >= 0)
 	{
 	  if (context->timeout < 0)
-	    context->timeout = source_timeout;
+	    context->timeout = source_timeout_usec;
 	  else
-	    context->timeout = MIN (context->timeout, source_timeout);
+	    context->timeout = MIN (context->timeout, source_timeout_usec);
 	}
     }
   g_source_iter_clear (&iter);
@@ -3811,6 +3839,7 @@ g_main_context_query (GMainContext *context,
 		      GPollFD      *fds,
 		      gint          n_fds)
 {
+  gint64 timeout_usec;
   gint n_poll;
 
   if (context == NULL)
@@ -3818,9 +3847,24 @@ g_main_context_query (GMainContext *context,
   
   LOCK_CONTEXT (context);
 
-  n_poll = g_main_context_query_unlocked (context, max_priority, timeout, fds, n_fds);
+  n_poll = g_main_context_query_unlocked (context, max_priority, &timeout_usec, fds, n_fds);
 
   UNLOCK_CONTEXT (context);
+
+  if (timeout != NULL)
+    {
+      /* Propagate timeout to caller but reduce resolution to milliseconds for
+       * a typical poll() cycle. Avoid returning 0 to reduce chances of
+       * spinning CPU by callers.
+       *
+       * When on Linux with timerfd(), we may get lower resolution internally
+       * from this by using our internal timerfd.
+       */
+      if (timeout_usec >= 0)
+        *timeout = ((timeout_usec + 999) / 1000);
+      else
+        *timeout = -1;
+    }
 
   return n_poll;
 }
@@ -3828,7 +3872,7 @@ g_main_context_query (GMainContext *context,
 static gint
 g_main_context_query_unlocked (GMainContext *context,
                                gint          max_priority,
-                               gint         *timeout,
+                               gint64       *timeout,
                                GPollFD      *fds,
                                gint          n_fds)
 {
@@ -4163,7 +4207,7 @@ g_main_context_iterate_unlocked (GMainContext *context,
                                  GThread      *self)
 {
   gint max_priority = 0;
-  gint timeout;
+  gint64 timeout;
   gboolean some_ready;
   gint nfds, allocated_nfds;
   GPollFD *fds = NULL;
@@ -4489,7 +4533,7 @@ g_main_loop_get_context (GMainLoop *loop)
 /* HOLDS: context's lock */
 static void
 g_main_context_poll_unlocked (GMainContext *context,
-                              int           timeout,
+                              gint64        timeout_usec,
                               int           priority,
                               GPollFD      *fds,
                               int           n_fds)
@@ -4501,8 +4545,50 @@ g_main_context_poll_unlocked (GMainContext *context,
 #endif
 
   GPollFunc poll_func;
+  int timeout_msec;
+#ifdef HAVE_TIMERFD
+  struct itimerspec timeout_ts;
+#endif
 
-  if (n_fds || timeout != 0)
+  /* Always round up for poll() to avoid spinning. When timerfd
+   * is available, that will allow for lower latency by awaking
+   * from poll() naturally.
+   */
+  if (timeout_usec == 0)
+    timeout_msec = 0;
+  else if (timeout_usec > 0)
+    timeout_msec = (timeout_usec + 999) / 1000;
+  else
+    timeout_msec = -1;
+
+#ifdef HAVE_TIMERFD
+  if (context->timerfd_rec.fd > -1)
+    {
+      timeout_ts.it_interval.tv_sec = 0;
+      timeout_ts.it_interval.tv_nsec = 0;
+
+      if (timeout_usec > 0)
+        {
+          gint64 abs = context->time + timeout_usec;
+
+          timeout_ts.it_value.tv_sec = abs / G_USEC_PER_SEC;
+          timeout_ts.it_value.tv_nsec = (abs % G_USEC_PER_SEC) * 1000;
+        }
+      else
+        {
+          timeout_ts.it_value.tv_sec = 0;
+          timeout_ts.it_value.tv_nsec = 0;
+        }
+
+      if (memcmp (&timeout_ts, &context->timerfd_spec, sizeof timeout_ts) != 0)
+        {
+          context->timerfd_spec = timeout_ts;
+          timerfd_settime (context->timerfd_rec.fd, TFD_TIMER_ABSTIME, &timeout_ts, NULL);
+        }
+    }
+#endif
+
+  if (n_fds || timeout_usec != 0)
     {
       int ret, errsv;
 
@@ -4511,14 +4597,14 @@ g_main_context_poll_unlocked (GMainContext *context,
       if (_g_main_poll_debug)
 	{
 	  g_print ("polling context=%p n=%d timeout=%d\n",
-		   context, n_fds, timeout);
+		   context, n_fds, timeout_msec);
 	  poll_timer = g_timer_new ();
 	}
 #endif
       poll_func = context->poll_func;
 
       UNLOCK_CONTEXT (context);
-      ret = (*poll_func) (fds, n_fds, timeout);
+      ret = (*poll_func) (fds, n_fds, timeout_msec);
       LOCK_CONTEXT (context);
 
       errsv = errno;
@@ -4537,7 +4623,7 @@ g_main_context_poll_unlocked (GMainContext *context,
 	{
 	  g_print ("g_main_poll(%d) timeout: %d - elapsed %12.10f seconds",
 		   n_fds,
-		   timeout,
+		   timeout_msec,
 		   g_timer_elapsed (poll_timer, NULL));
 	  g_timer_destroy (poll_timer);
 	  pollrec = context->poll_records;
@@ -4573,7 +4659,7 @@ g_main_context_poll_unlocked (GMainContext *context,
 	  g_print ("\n");
 	}
 #endif
-    } /* if (n_fds || timeout != 0) */
+    } /* if (n_fds || timeout_usec != 0) */
 }
 
 /**
