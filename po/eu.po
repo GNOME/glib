@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-18 10:00+0100\n"
+"POT-Creation-Date: 2024-03-01 12:22+0000\n"
+"PO-Revision-Date: 2024-03-01 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -124,7 +124,7 @@ msgid "APPID"
 msgstr "APP_ID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "KOMANDOA"
 
@@ -136,9 +136,13 @@ msgstr "Erakutsi komandoaren laguntza xehea"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Aplikazioaren identifikatzailea D-bus formatuan (adib: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "FITXATEGIA"
 
@@ -1042,6 +1046,10 @@ msgstr "Konektatu saioko bus-arekin"
 msgid "Connect to given D-Bus address"
 msgstr "Konektatu emandako D-Bus helbidera"
 
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "HELBIDEA"
+
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
 msgstr "Konexioaren amaierako puntuaren aukerak:"
@@ -1431,7 +1439,7 @@ msgstr "Ezin da fitxategi berezia kopiatu"
 msgid "Invalid symlink value given"
 msgstr "Esteka sinbolikoaren baliogabeko balioa eman da"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Esteka sinbolikoak ez dira onartzen"
 
@@ -2422,7 +2430,8 @@ msgid ""
 msgstr "FITXATEGIA atributuak erreferentziatutako fitxategiak kargatzeko direktorioak (lehenetsia: uneko direktorioa)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "DIREKTORIOA"
 
@@ -2468,6 +2477,10 @@ msgstr "Ez kapsulatu baliabide-datuak C fitxategian; onartu kanpotik estekatuta 
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "C identifikatzailearen izena (sortutako iturburuaren kodean erabilita)"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "IDENTIFIKATZAILEA"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -4345,16 +4358,154 @@ msgstr "Exekutatu dbus zerbitzua"
 msgid "Wrong args\n"
 msgstr "Okerreko argumentuak\n"
 
+#: girepository/compiler/compiler.c:93
+#, c-format
+msgid "Failed to open ‘%s’: %s"
+msgstr "Huts egin du ‘%s’ irekitzeak: %s"
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+msgid "Error: Could not write the whole output: %s"
+msgstr "Errorea: ezin izan da irteera osoa idatzi: %s"
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "Errorea: Huts egin du ‘%s’ izena aldatzeak ‘%s’ deitzeko: %s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
+msgid "Include directories in GIR search path"
+msgstr "Sartu GIR bilaketa-bidean dauden direktorioak"
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
+msgid "Output file"
+msgstr "Irteerako fitxategia"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "Liburutegi partekatua"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "Erakutsi arazketa-mezuak"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "Erakutsi mezu xeheak"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
+msgid "Show program’s version number and exit"
+msgstr "Erakutsi bertsioaren zenbakia eta irten"
+
+#: girepository/compiler/compiler.c:175
+#, c-format
+msgid "Error parsing arguments: %s"
+msgstr "Errorea argumentuak analizatzean: %s"
+
+#: girepository/compiler/compiler.c:202
+msgid "Please specify exactly one input file"
+msgstr "Zehaztu sarrerako fitxategi bakar bat"
+
+#: girepository/compiler/compiler.c:218
+#, c-format
+msgid "Error parsing file ‘%s’: %s"
+msgstr "Errorea '%s' fitxategia analizatzean: %s"
+
+#: girepository/compiler/compiler.c:243
+#, c-format
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "Huts egin du typelib ‘%s’ modulurako eraikitzeak"
+
+#: girepository/compiler/compiler.c:245
+#, c-format
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "Typelib baliogabea ‘%s’ modulurako: %s"
+
+#: girepository/decompiler/decompiler.c:54
+msgid "Show all available information"
+msgstr "Erabili informazio erabilgarri guztia"
+
+#: girepository/decompiler/decompiler.c:71
+#, c-format
+msgid "Failed to parse: %s"
+msgstr "Analisiak huts egin du: %s"
+
+#: girepository/decompiler/decompiler.c:87
+msgid "No input files"
+msgstr "Ez dago sarrerako fitxategirik"
+
+#: girepository/decompiler/decompiler.c:113
+#, c-format
+msgid "Failed to read ‘%s’: %s"
+msgstr "Huts egin du ‘%s’ irakurtzeak: %s"
+
+#: girepository/decompiler/decompiler.c:125
+#, c-format
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "Huts egin du ‘%s’ typelib sortzeak: %s"
+
+#: girepository/decompiler/decompiler.c:129
+#: girepository/inspector/inspector.c:113
+#, c-format
+msgid "Failed to load typelib: %s"
+msgstr "Huts egin du typelib kargatzeak: %s"
+
+#: girepository/decompiler/decompiler.c:136
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr "Abisua: %u moduluri ez ikusiarena egin zaie"
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr "Ikuskatuko den typelib bertsioa"
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "BERTSIOA"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr "Zerrendatu typelib-ek behar dituen liburutegi partekatuak"
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr "Zerrendatu ikuskatutako typelib-ek behar dituen beste typelib-ak"
+
+#: girepository/inspector/inspector.c:75
+msgid "The typelib to inspect"
+msgstr "Ikuskatuko den typelib-a"
+
+#: girepository/inspector/inspector.c:75
+msgid "NAMESPACE"
+msgstr "IZEN-ESPAZIOA"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr "- Ikuskatu GI typelib"
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+msgid "Failed to parse command line options: %s"
+msgstr "Huts egin du komando-lerroko aukeren analisiak: %s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr "Zehaztu sarrerako izan-espazio bakar bat"
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr "Zehaztu --print-shlibs, --print-typelibs edo biak"
+
 #: glib/gbookmarkfile.c:816
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
-msgstr "“%2$s” elementuaren ustekabeko “%1$s” atributua"
+msgstr "Ustekabeko “%s” atributua “%s” elementuan"
 
 #: glib/gbookmarkfile.c:827 glib/gbookmarkfile.c:907 glib/gbookmarkfile.c:917
 #: glib/gbookmarkfile.c:1030
 #, c-format
 msgid "Attribute “%s” of element “%s” not found"
-msgstr "“%2$s” elementuaren “%1$s” atributua ez da aurkitu"
+msgstr "“%s” atributua ez da aurkitu “%s” elementuan"
 
 #: glib/gbookmarkfile.c:1239 glib/gbookmarkfile.c:1304
 #: glib/gbookmarkfile.c:1368 glib/gbookmarkfile.c:1378
@@ -4366,7 +4517,7 @@ msgstr "Ustekabeko “%s” etiketa, “%s” espero zen"
 #: glib/gbookmarkfile.c:1346 glib/gbookmarkfile.c:1392
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
-msgstr "“%2$s” barruan ustekabeko “%1$s” etiketa"
+msgstr "ustekabeko “%s” etiketa “%s” barruan"
 
 #: glib/gbookmarkfile.c:1672
 #, c-format
@@ -4885,83 +5036,85 @@ msgstr "PM"
 msgid "Error opening directory “%s”: %s"
 msgstr "Errorea “%s” direktorioa irekitzean: %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "Ezin da % esleitu"
-msgstr[1] "Ezin izan da konektatu:"
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#, c-format
+msgid "Could not allocate %s to read file “%s”"
+msgstr "Ezin da %s esleitu “%s” fitxategia irakurtzeko"
 
-#: glib/gfileutils.c:733
+#: glib/gfileutils.c:738
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Errorea “%s” fitxategia irakurtzean: %s"
 
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
 #, c-format
 msgid "File “%s” is too large"
 msgstr "“%s” fitxategia handiegia da"
 
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Ezin izan da “%s” fitxategitik irakurri: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Ezin izan da “%s” fitxategia ireki: %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Ezin izan dira “%s” fitxategiko atributuak lortu, fstat() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Ezin izan da “%s” fitxategia ireki, fdopen() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Ezin izan da “%s” fitxategia “%s” gisa berrizendatu, g_rename() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1149
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Huts egin du “%s” fitxategian idazteak: ftruncate() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Huts egin du “%s” fitxategian idazteak: fwrite() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Huts egin du “%s” fitxategia idazteak: fsync() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Ezin izan da “%s” fitxategia sortu: %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "“%s” fitxategia ezin izan da kendu, g_unlik() funtzioak huts egin du: %s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "“%s” txantiloia baliogabea da, ez luke “%s” eduki behar"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "“%s” txantiloiak ez dauka: XXXXXX"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Ezin izan da “%s” esteka sinbolikorik irakurri: %s"
@@ -5055,7 +5208,7 @@ msgstr "Gako-fitxategiak “%s” gakoa dauka ('%s taldean), baina dagokion bali
 #: glib/gkeyfile.c:2825 glib/gkeyfile.c:2902
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
-msgstr "“%2$s” taldeko “%1$s” gakoaren balioa “%3$s” da, “%4$s” izan ordez."
+msgstr "“%s” gakoaren balioa “%s” taldean “%s” da, “%s” izan ordez."
 
 #: glib/gkeyfile.c:4345
 msgid "Key file contains escape character at end of line"
@@ -5314,22 +5467,22 @@ msgstr "Aukerak:"
 #: glib/goption.c:968 glib/goption.c:1038
 #, c-format
 msgid "Cannot parse integer value “%s” for %s"
-msgstr "Ezin da “%2$s“(r)en “%1$s” osoko balioa analizatu"
+msgstr "Ezin da “%s” osoko balioa analizatu “%s“(r)ako"
 
 #: glib/goption.c:978 glib/goption.c:1046
 #, c-format
 msgid "Integer value “%s” for %s out of range"
-msgstr "%2$s(r)en “%1$s” osoko balioa barrutitik kanpo"
+msgstr "“%s” osoko balioa barrutitik kanpo %s(r)ako"
 
 #: glib/goption.c:1003
 #, c-format
 msgid "Cannot parse double value “%s” for %s"
-msgstr "Ezin da “%2$s“(r)en “%1$s” balio bikoitza analizatu"
+msgstr "Ezin da “%s” balio bikoitza analizatu “%s“(r)ako"
 
 #: glib/goption.c:1011
 #, c-format
 msgid "Double value “%s” for %s out of range"
-msgstr "%2$s(r)en “%1$s” balio bikoitza barrutitik kanpo"
+msgstr "“%s” balio bikoitza barrutitik kanpo %s(r)ako"
 
 #: glib/goption.c:1303 glib/goption.c:1382
 #, c-format
@@ -6120,17 +6273,16 @@ msgstr "%.1f PB"
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "Ezin da % esleitu"
+#~ msgstr[1] "Ezin izan da konektatu:"
+
 #~ msgid ""
 #~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
 #~ msgstr ""
 #~ "METHOD_RETURN-en mezua: goiburuko REPLY_SERIAL eremua falta da edo "
 #~ "baliogabea da"
-
-#, c-format
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "Ezin izan da byte %lu esleitu “%s” fitxategia irakurtzeko"
-#~ msgstr[1] "Ezin izan dira %lu byte esleitu “%s” fitxategia irakurtzeko"
 
 #~ msgid "kb"
 #~ msgstr "kb"
