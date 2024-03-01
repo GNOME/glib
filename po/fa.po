@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-29 10:40+0000\n"
-"PO-Revision-Date: 2024-02-29 23:47+0330\n"
+"POT-Creation-Date: 2024-03-01 12:22+0000\n"
+"PO-Revision-Date: 2024-03-01 20:35+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -1438,7 +1438,7 @@ msgstr "نمی‌توان پروندهٔ خاص را رونوشت کرد"
 msgid "Invalid symlink value given"
 msgstr "مقدار نامعتبر پیوند نمادین داده شده"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2404
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "پیوندهای نمادی پشتیبانی نمی‌شوند"
 
@@ -3383,7 +3383,7 @@ msgstr "جریان منبع از قبل بسته شده است"
 
 #: gio/gproxyaddressenumerator.c:328 gio/gproxyaddressenumerator.c:348
 msgid "Unspecified proxy lookup failure"
-msgstr ""
+msgstr "شکست جست‌وجوی پیشکار نامشخّص"
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
@@ -3432,7 +3432,7 @@ msgstr "جریان ورودی seek را پیاده نساخته"
 
 #: gio/gresource-tool.c:503
 msgid "List sections containing resources in an elf FILE"
-msgstr ""
+msgstr "سیاهه کردن بخش‌های شامل منابع در یک پروندهٔ elf"
 
 #: gio/gresource-tool.c:509
 msgid ""
@@ -3561,7 +3561,7 @@ msgstr "مسیر با یک خط مورب (/) باید پایان یابد\n"
 
 #: gio/gsettings-tool.c:110
 msgid "Path must not contain two adjacent slashes (//)\n"
-msgstr ""
+msgstr "مسیر نباید دو خط مورب متوالی (//) داشته باشد\n"
 
 #: gio/gsettings-tool.c:555
 msgid "The provided value is outside of the valid range\n"
@@ -3573,11 +3573,11 @@ msgstr "کلید نوشتنی نیست\n"
 
 #: gio/gsettings-tool.c:598
 msgid "List the installed (non-relocatable) schemas"
-msgstr ""
+msgstr "سیاهه کردن طرحواره‌های نصب شده (غیر قابل جابه‌جایی)"
 
 #: gio/gsettings-tool.c:604
 msgid "List the installed relocatable schemas"
-msgstr ""
+msgstr "سیاهه کردن طرحواره‌های قابل جابه‌جایی"
 
 #: gio/gsettings-tool.c:610
 msgid "List the keys in SCHEMA"
@@ -3596,6 +3596,8 @@ msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
 msgstr ""
+"سیاهه کردن کلیدها و مقدارها به صورت بازگشتی\n"
+"اگر SCHEMA داده نشود، سیاهه کردن همهٔ کلیدها\n"
 
 #: gio/gsettings-tool.c:624
 msgid "[SCHEMA[:PATH]]"
@@ -3612,11 +3614,11 @@ msgstr "SCHEMA[:PATH] KEY"
 
 #: gio/gsettings-tool.c:635
 msgid "Query the range of valid values for KEY"
-msgstr ""
+msgstr "پرس‌وجوی بازهٔ مقدارهای معتبر برای KEY"
 
 #: gio/gsettings-tool.c:641
 msgid "Query the description for KEY"
-msgstr ""
+msgstr "پرس‌وجوی شرح برای KEY"
 
 #: gio/gsettings-tool.c:647
 msgid "Set the value of KEY to VALUE"
@@ -3644,6 +3646,9 @@ msgid ""
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
+"پایش KEY برای دگرگونی‌ها.\n"
+"اگر KEY مشخّص نشده باشد، پایش همهٔ کلیدها در SCHEMA.\n"
+"استفاده از ‪^C‬ برای پایان پاییدن.\n"
 
 #: gio/gsettings-tool.c:674
 msgid "SCHEMA[:PATH] [KEY]"
@@ -3714,7 +3719,7 @@ msgstr ""
 
 #: gio/gsettings-tool.c:716
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
-msgstr ""
+msgstr " SCHEMADIR شاخه‌ای برای جست‌وجوی طرحواره‌های اضافی\n"
 
 #: gio/gsettings-tool.c:724
 msgid ""
@@ -3793,12 +3798,12 @@ msgstr "پروتکل ناشناسی مشخص شده است"
 #: gio/gsocket.c:1243
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
-msgstr ""
+msgstr "نمی‌توان عملیات دیتاگرم را روی سوکتی غیر دیتاگرم استفاده کرد."
 
 #: gio/gsocket.c:1260
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
-msgstr ""
+msgstr "نمی‌توان عملیات دیتاگرم را روی سوکتی با مهلت زمانی استفاده کرد."
 
 #: gio/gsocket.c:2067
 #, c-format
@@ -3834,15 +3839,15 @@ msgstr "خطا در ترک گروه چندپخشی: %s"
 
 #: gio/gsocket.c:2460
 msgid "No support for source-specific multicast"
-msgstr ""
+msgstr "بدون پشتیبانی از چندپخشی مختص به منبع"
 
 #: gio/gsocket.c:2607
 msgid "Unsupported socket family"
-msgstr ""
+msgstr "خانوادهٔ سوکت پشیبانی نشده"
 
 #: gio/gsocket.c:2632
 msgid "source-specific not an IPv4 address"
-msgstr ""
+msgstr "مختص منبع نه نشانی IPv4"
 
 #: gio/gsocket.c:2656
 #, c-format
@@ -3856,11 +3861,11 @@ msgstr "میانا پیدا نشد: %s"
 
 #: gio/gsocket.c:2699
 msgid "No support for IPv4 source-specific multicast"
-msgstr ""
+msgstr "بدون پشتیبانی از چندپخشی مختص به منبع IPv4"
 
 #: gio/gsocket.c:2757
 msgid "No support for IPv6 source-specific multicast"
-msgstr ""
+msgstr "بدون پشتیبانی از چندپخشی مختص به منبع IPv6"
 
 #: gio/gsocket.c:2990
 #, c-format
@@ -3931,12 +3936,12 @@ msgstr "ناتوان در خواندن گواهی‌های سوکت: %s"
 
 #: gio/gsocket.c:6412
 msgid "g_socket_get_credentials not implemented for this OS"
-msgstr ""
+msgstr "روی این سیستم‌عامل g_socket_get_credentials پیاده نشده"
 
 #: gio/gsocketclient.c:192
 #, c-format
 msgid "Could not connect to proxy server %s: "
-msgstr ""
+msgstr "نتوانست به کارساز پیشکار %s وصل شود: "
 
 #: gio/gsocketclient.c:206
 #, c-format
@@ -4130,11 +4135,11 @@ msgstr "نمی‌توان گواهینامه رمزنگاری شده PEM را پ
 
 #: gio/gtlscertificate.c:758
 msgid "The current TLS backend does not support PKCS #12"
-msgstr ""
+msgstr "پسانهٔ کنونی TLS از ‪PKCS #12‬ پشتیبانی نمی‌کند"
 
 #: gio/gtlscertificate.c:975
 msgid "This GTlsBackend does not support creating PKCS #11 certificates"
-msgstr ""
+msgstr "این GTlsBackend از ایجاد گواهی‌های ‪PKCS #11‬ پشتیبانی نمی‌کند"
 
 #: gio/gtlspassword.c:104
 msgid ""
@@ -4240,7 +4245,7 @@ msgstr "خطا در نوشتن روی توصیف‌گر پرونده: %s"
 
 #: gio/gunixsocketaddress.c:245
 msgid "Abstract UNIX domain socket addresses not supported on this system"
-msgstr ""
+msgstr "انتزاع نشانی‌های سوکت دامنهٔ یونیکس روی این سامانه پشتیبانی نمی‌شود"
 
 #: gio/gvolume.c:436
 msgid "volume doesn’t implement eject"
@@ -4256,12 +4261,12 @@ msgstr "حجم eject یا eject_with_operation را پیاده نساخته"
 #: gio/gwin32appinfo.c:5216
 #, c-format
 msgid "The app ‘%s’ in the application object has no verbs"
-msgstr ""
+msgstr "کارهٔ «%s» در شی برنامه هیچ فعلی ندارد"
 
 #: gio/gwin32appinfo.c:5220
 #, c-format
 msgid "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
-msgstr ""
+msgstr "کارهٔ «%s» و مدیر «%s» در شی برنامه هیچ فعلی ندارند"
 
 #: gio/gwin32inputstream.c:184
 #, c-format
@@ -4301,7 +4306,7 @@ msgstr "نشانی برای شنود"
 
 #: gio/tests/gdbus-daemon.c:19
 msgid "Ignored, for compat with GTestDbus"
-msgstr ""
+msgstr "چشم‌پوشیده برای سازگاری با GTestDbus"
 
 #: gio/tests/gdbus-daemon.c:20
 msgid "Print address"
@@ -4336,7 +4341,7 @@ msgstr "خطا: شکست در تغییر نام «‎%s» به «%s»: ‏%s"
 
 #: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
 msgid "Include directories in GIR search path"
-msgstr ""
+msgstr "شامل شاخه‌ها در مسیر جست‌وجوی GIR"
 
 #: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
 msgid "Output file"
@@ -4344,15 +4349,15 @@ msgstr "پروندهٔ خروجی"
 
 #: girepository/compiler/compiler.c:149
 msgid "Shared library"
-msgstr ""
+msgstr "کتابخانهٔ هم‌رسانده"
 
 #: girepository/compiler/compiler.c:150
 msgid "Show debug messages"
-msgstr ""
+msgstr "نمایش پیام‌های رفع اشکال"
 
 #: girepository/compiler/compiler.c:151
 msgid "Show verbose messages"
-msgstr ""
+msgstr "نمایش پیام‌های پرگو"
 
 #: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
 msgid "Show program’s version number and exit"
@@ -4365,7 +4370,7 @@ msgstr "خطا در تجزیهٔ آرگومان‌ها: %s"
 
 #: girepository/compiler/compiler.c:202
 msgid "Please specify exactly one input file"
-msgstr ""
+msgstr "مشخّص کردن دقیقاً یک پروندهٔ ورودی"
 
 #: girepository/compiler/compiler.c:218
 #, c-format
@@ -4380,7 +4385,7 @@ msgstr "شکست در ساخت typelib برای پیمانهٔ «%s»"
 #: girepository/compiler/compiler.c:245
 #, c-format
 msgid "Invalid typelib for module ‘%s’: %s"
-msgstr "typelib نامعتبر برای پیمانهٔ «%s»: ‏%s"
+msgstr "مفدار typelib نامعتبر برای پیمانهٔ «%s»: ‏%s"
 
 #: girepository/decompiler/decompiler.c:54
 msgid "Show all available information"
@@ -4413,27 +4418,27 @@ msgstr "شکست در بار کردن typelib‏: %s"
 #: girepository/decompiler/decompiler.c:136
 #, c-format
 msgid "Warning: %u modules omitted"
-msgstr ""
+msgstr "هشدار: %Iu پیمانه حذف شده"
 
 #: girepository/inspector/inspector.c:72
 msgid "Typelib version to inspect"
-msgstr ""
+msgstr "نگارش Typelib برای بازرسی"
 
 #: girepository/inspector/inspector.c:72
 msgid "VERSION"
-msgstr ""
+msgstr "VERSION"
 
 #: girepository/inspector/inspector.c:73
 msgid "List the shared libraries the typelib requires"
-msgstr ""
+msgstr "سیاهه کردن کتابخانه‌های هم‌رساندهٔ لازم برای typelib"
 
 #: girepository/inspector/inspector.c:74
 msgid "List other typelibs the inspected typelib requires"
-msgstr ""
+msgstr "سیاهه کردن دیگر typelibهای لازم برای typelib بازررسی شده"
 
 #: girepository/inspector/inspector.c:75
 msgid "The typelib to inspect"
-msgstr "typelib برای بازرسی"
+msgstr "مقدار typelib برای بازرسی"
 
 #: girepository/inspector/inspector.c:75
 msgid "NAMESPACE"
@@ -4441,7 +4446,7 @@ msgstr "NAMESPACE"
 
 #: girepository/inspector/inspector.c:82
 msgid "- Inspect GI typelib"
-msgstr ""
+msgstr "- بازرسی GI typelib"
 
 #: girepository/inspector/inspector.c:86
 #, c-format
@@ -4450,11 +4455,11 @@ msgstr "شکست در تجزیهٔ گزینه‌های خط فرمان: %s"
 
 #: girepository/inspector/inspector.c:96
 msgid "Please specify exactly one namespace"
-msgstr ""
+msgstr "مشخّص کردن دقیقاً یک فضانام"
 
 #: girepository/inspector/inspector.c:105
 msgid "Please specify --print-shlibs, --print-typelibs or both"
-msgstr ""
+msgstr "مشخّص کردن ‪--print-shlibs‬، ‪--print-typelibs‬ یا هردو"
 
 #: glib/gbookmarkfile.c:816
 #, c-format
@@ -5000,7 +5005,7 @@ msgstr "خطا در گشودن شاخهٔ «‎%s»‏: %s"
 #. Translators: the first %s contains the file size
 #. * (already formatted with units), and the second %s
 #. * contains the file name
-#: glib/gfileutils.c:720
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
 #, c-format
 msgid "Could not allocate %s to read file “%s”"
 msgstr "نتوانست %s را برای خواندن پروندهٔ «‎%s» تخصیص دهد"
@@ -5015,73 +5020,67 @@ msgstr "خطا در خواندن پروندهٔ «%s»: %s"
 msgid "File “%s” is too large"
 msgstr "پروندهٔ «%s» بسیار بزرگ است"
 
-#: glib/gfileutils.c:825
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "نتوانست %s را تخصیص دهد"
-msgstr[1] "نتوانست %s را تخصیص دهد"
-
-#: glib/gfileutils.c:850
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "شکست در خواندن از پروندهٔ «‎%s»: %s"
 
-#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "شکست در گشودن پروندهٔ «‎%s»: %s"
 
-#: glib/gfileutils.c:913
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "شکست در گرفتن مشخصه‌های پروندهٔ «‎%s»: fstat()‎ شکست خورد: %s"
 
-#: glib/gfileutils.c:944
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "شکست در گشودن پروندهٔ «‎%s»: fdopen()‎ شکست خورد: %s"
 
-#: glib/gfileutils.c:1045
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "شکست در تغییر نام پروندهٔ «‎%s» به «‎%s»: g_rename()‎ شکست خورد: %s"
 
-#: glib/gfileutils.c:1144
+#: glib/gfileutils.c:1149
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "شکست در نوشتن پروندهٔ «‎%s»: ‪fturncate()‬ شکست خورد: %s"
 
-#: glib/gfileutils.c:1189
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "شکست در نوشتن پروندهٔ «‎%s»: fdwrite()‎ شکست خورد: %s"
 
-#: glib/gfileutils.c:1210
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "شکست در نوشتن پروندهٔ «‎%s»: fsync()‎ شکست خورد: %s"
 
-#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "شکست در ایجاد پروندهٔ «‎%s»: %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "پروندهٔ موجود «‎%s» نتوانست برداشته شود: g_unlink() شکست خورد: %s"
 
-#: glib/gfileutils.c:1753
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "قالب «%s» نامعتبر است، نباید «%s» داشته باشد"
 
-#: glib/gfileutils.c:1766
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "قالب «%s» شامل XXXXXX نیست"
 
-#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "شکست در خواندن پیوند نمادین «‎%s»: %s"
@@ -5504,7 +5503,7 @@ msgstr "الگو حاوی مواردی است که برای مطابقت جزئ�
 
 #: glib/gregex.c:507
 msgid "back references as conditions are not supported for partial matching"
-msgstr ""
+msgstr "ارجاع به پیش‌ها به عنوان شرط برای مطابقت‌های جزیی پشتیبانی نمی‌شوند"
 
 #: glib/gregex.c:513
 msgid "recursion limit reached"
@@ -5597,15 +5596,15 @@ msgstr "عدد یا نام بدریخت پس از ‪(?("
 
 #: glib/gregex.c:634
 msgid "lookbehind assertion is not fixed length"
-msgstr ""
+msgstr "ادعای پیش‌نگری طول ثابتی ندارد"
 
 #: glib/gregex.c:638
 msgid "conditional group contains more than two branches"
-msgstr ""
+msgstr "گروه شرطی بیش از دو شاخه دارد"
 
 #: glib/gregex.c:642
 msgid "assertion expected after (?("
-msgstr ""
+msgstr "پس از ‪(?(‬ انتظار ادّعا می‌رفت"
 
 #: glib/gregex.c:646
 msgid "a numbered reference must not be zero"
@@ -5621,7 +5620,7 @@ msgstr "مقدار نویسه در دنبالهٔ ‪\\x{...}‬ بیش از ح�
 
 #: glib/gregex.c:659
 msgid "\\C not allowed in lookbehind assertion"
-msgstr ""
+msgstr "در ادّعای پیش‌نگری ‪\\C‬ مجاز نیست"
 
 #: glib/gregex.c:663
 msgid "missing terminator in subpattern name"
@@ -5653,7 +5652,7 @@ msgstr "مقدار هشت‌هشتی بزرگ‌تر از \\377 است"
 
 #: glib/gregex.c:691
 msgid "DEFINE group contains more than one branch"
-msgstr ""
+msgstr "گروه DEFINE بیش از یک شاخه دارد"
 
 #: glib/gregex.c:695
 msgid "inconsistent NEWLINE options"
@@ -5667,11 +5666,11 @@ msgstr ""
 
 #: glib/gregex.c:704
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
-msgstr ""
+msgstr "آرکومان برای ‪(*ACCEPT)‬, ‪(*FAIL)‬, یا ‪(*COMMIT)‬ مجاز نیست"
 
 #: glib/gregex.c:708
 msgid "(*VERB) not recognized"
-msgstr ""
+msgstr "مقدار ‪(*VERB)‬ شناخته نشده"
 
 #: glib/gregex.c:712
 msgid "number is too big"
@@ -5679,19 +5678,19 @@ msgstr "عدد بیش از حد بزرگ است"
 
 #: glib/gregex.c:716
 msgid "missing subpattern name after (?&"
-msgstr ""
+msgstr "نام زیرالگوی ناموجود پس از ‪(?&"
 
 #: glib/gregex.c:720
 msgid "different names for subpatterns of the same number are not allowed"
-msgstr ""
+msgstr "نام‌های مستقیم برای زیرالگکوهایی از همان شماره مجاز نیستند"
 
 #: glib/gregex.c:724
 msgid "(*MARK) must have an argument"
-msgstr ""
+msgstr "باید ‪(*MARK) ‬ آرگومانی داشته باشد"
 
 #: glib/gregex.c:728
 msgid "\\c must be followed by an ASCII character"
-msgstr ""
+msgstr "باید ‪\\‬c‪‬ با نویسه‌ای اسکی همراه شود"
 
 #: glib/gregex.c:732
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
@@ -6259,6 +6258,11 @@ msgstr "%I.1f پ‌ب"
 #, c-format
 msgid "%.1f EB"
 msgstr "%I.1f اب"
+
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "نتوانست %s را تخصیص دهد"
+#~ msgstr[1] "نتوانست %s را تخصیص دهد"
 
 #~ msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
 #~ msgstr ""
