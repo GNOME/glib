@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-28 11:46+0000\n"
-"PO-Revision-Date: 2024-02-29 08:48+0200\n"
+"POT-Creation-Date: 2024-03-01 12:22+0000\n"
+"PO-Revision-Date: 2024-03-03 00:01+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -130,7 +130,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "COMMAND"
 
@@ -142,11 +142,13 @@ msgstr "The command to print detailed help for"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Application identifier in D-Bus format (eg: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 #: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
-#: girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "FILE"
 
@@ -1094,6 +1096,10 @@ msgstr "Connect to the session bus"
 msgid "Connect to given D-Bus address"
 msgstr "Connect to given D-Bus address"
 
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "כתובת"
+
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
 msgstr "Connection Endpoint Options:"
@@ -1488,7 +1494,7 @@ msgstr "Can’t copy special file"
 msgid "Invalid symlink value given"
 msgstr "Invalid symlink value given"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2404
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Symbolic links not supported"
 
@@ -2498,7 +2504,8 @@ msgstr ""
 "directory)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
@@ -2545,6 +2552,10 @@ msgstr ""
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "C identifier name used for the generated source code"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "מזהה"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -4498,15 +4509,14 @@ msgstr "שגיאה: לא ניתן לכתוב את כל הפלט: %s"
 
 #: girepository/compiler/compiler.c:115
 #, c-format
-#| msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
 msgstr "שגיאה: שינוי שם הקובץ ‚%s’ לשם ‚%s’ נכשל:‏ %s"
 
-#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:52
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
 msgid "Include directories in GIR search path"
 msgstr "לכלול תיקיות בנתיב חיפוש GIR"
 
-#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
 msgid "Output file"
 msgstr "קובץ פלט"
 
@@ -4522,69 +4532,64 @@ msgstr "הצגת הודעות ניפוי תקלות"
 msgid "Show verbose messages"
 msgstr "הצגת הודעות מפורטות"
 
-#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:54
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
 msgid "Show program’s version number and exit"
 msgstr "להציג את מספר גרסת התוכנה ולצאת"
 
-#: girepository/compiler/compiler.c:174
+#: girepository/compiler/compiler.c:175
 #, c-format
-#| msgid "Error parsing parameter %d: %s\n"
 msgid "Error parsing arguments: %s"
 msgstr "שגיאה בפענוח ארגומנטים: %s"
 
-#: girepository/compiler/compiler.c:201
+#: girepository/compiler/compiler.c:202
 msgid "Please specify exactly one input file"
 msgstr "נא לציין קובץ קלט אחד בלבד"
 
-#: girepository/compiler/compiler.c:217
+#: girepository/compiler/compiler.c:218
 #, c-format
 msgid "Error parsing file ‘%s’: %s"
 msgstr "שגיאה בפענוח הקובץ ‚%s’: %s"
 
-#: girepository/compiler/compiler.c:242
+#: girepository/compiler/compiler.c:243
 #, c-format
-#| msgid "Failed to load info for handler “%s”"
 msgid "Failed to build typelib for module ‘%s’"
 msgstr "בניית typelib למודול ‚%s’ נכשלה"
 
-#: girepository/compiler/compiler.c:244
+#: girepository/compiler/compiler.c:245
 #, c-format
 msgid "Invalid typelib for module ‘%s’: %s"
 msgstr "‫typelib שגוי למודול ‚%s’: %s"
 
-#: girepository/decompiler/decompiler.c:53
+#: girepository/decompiler/decompiler.c:54
 msgid "Show all available information"
 msgstr "להציג את כל המידע הזמין"
 
-#: girepository/decompiler/decompiler.c:67
+#: girepository/decompiler/decompiler.c:71
 #, c-format
-#| msgid "Failed to fork (%s)"
 msgid "Failed to parse: %s"
 msgstr "פענוח נכשל: %s"
 
-#: girepository/decompiler/decompiler.c:83
+#: girepository/decompiler/decompiler.c:87
 msgid "No input files"
 msgstr "אין קובצי קלט"
 
-#: girepository/decompiler/decompiler.c:109
+#: girepository/decompiler/decompiler.c:113
 #, c-format
-#| msgid "Failed to create file “%s”: %s"
 msgid "Failed to read ‘%s’: %s"
 msgstr "קריאת ‚%s’ נכשלה: %s"
 
-#: girepository/decompiler/decompiler.c:121
+#: girepository/decompiler/decompiler.c:125
 #, c-format
-#| msgid "Failed to create file “%s”: %s"
 msgid "Failed to create typelib ‘%s’: %s"
 msgstr "יצירת typelib‏ ‚%s’ נכשלה: %s"
 
-#: girepository/decompiler/decompiler.c:125
+#: girepository/decompiler/decompiler.c:129
 #: girepository/inspector/inspector.c:113
 #, c-format
 msgid "Failed to load typelib: %s"
 msgstr "טעינת typelib נכשלה: %s"
 
-#: girepository/decompiler/decompiler.c:132
+#: girepository/decompiler/decompiler.c:136
 #, c-format
 msgid "Warning: %u modules omitted"
 msgstr "אזהרה: %u מודולים הושמטו"
@@ -5170,7 +5175,7 @@ msgstr "שגיאה בפתיחת התיקייה „%s”:‏ %s"
 #. Translators: the first %s contains the file size
 #. * (already formatted with units), and the second %s
 #. * contains the file name
-#: glib/gfileutils.c:720
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
 #, c-format
 msgid "Could not allocate %s to read file “%s”"
 msgstr "‫לא ניתן להקצות בית %s לקריאת הקובץ „%s”"
@@ -5185,75 +5190,67 @@ msgstr "שגיאה בקריאת הקובץ „%s”:‏ %s"
 msgid "File “%s” is too large"
 msgstr "הקובץ „%s” גדול מדי"
 
-#: glib/gfileutils.c:825
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "לא ניתן להקצות %"
-msgstr[1] "לא ניתן להקצות %"
-msgstr[2] "לא ניתן להקצות %"
-msgstr[3] "לא ניתן להקצות %"
-
-#: glib/gfileutils.c:850
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "קריאה מהקובץ „%s” נכשלה: %s"
 
-#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "פתיחת הקובץ „%s” נכשלה: %s"
 
-#: glib/gfileutils.c:913
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Failed to get attributes of file “%s”: fstat() failed: %s"
 
-#: glib/gfileutils.c:944
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Failed to open file “%s”: fdopen() failed: %s"
 
-#: glib/gfileutils.c:1045
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 
-#: glib/gfileutils.c:1144
+#: glib/gfileutils.c:1149
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "כתיבת הקובץ „%s” נכשלה: ftruncate()‎ נכשל: %s"
 
-#: glib/gfileutils.c:1189
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Failed to write file “%s”: write() failed: %s"
 
-#: glib/gfileutils.c:1210
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Failed to write file “%s”: fsync() failed: %s"
 
-#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Failed to create file “%s”: %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Existing file “%s” could not be removed: g_unlink() failed: %s"
 
-#: glib/gfileutils.c:1753
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Template “%s” invalid, should not contain a “%s”"
 
-#: glib/gfileutils.c:1766
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "התבנית „%s” לא מכילה XXXXXX"
 
-#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Failed to read the symbolic link “%s”: %s"
@@ -6450,6 +6447,13 @@ msgstr "%.1f פ״ב"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f א״ב"
+
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "לא ניתן להקצות %"
+#~ msgstr[1] "לא ניתן להקצות %"
+#~ msgstr[2] "לא ניתן להקצות %"
+#~ msgstr[3] "לא ניתן להקצות %"
 
 #~ msgid ""
 #~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
