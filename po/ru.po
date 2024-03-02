@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-09 10:04+0000\n"
-"PO-Revision-Date: 2024-02-12 14:10+0300\n"
+"POT-Creation-Date: 2024-02-29 10:40+0000\n"
+"PO-Revision-Date: 2024-02-29 16:32+0300\n"
 "Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -137,7 +137,7 @@ msgid "APPID"
 msgstr "ID_ПРИЛОЖЕНИЯ"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "КОМАНДА"
 
@@ -149,9 +149,13 @@ msgstr "Команда, по которой выводится подробна�
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Идентификатор приложения в формате D-Bus (напр.: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "ФАЙЛ"
 
@@ -617,10 +621,10 @@ msgstr "Произошла ошибка при создании каталога
 #: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1105 gio/gfile.c:1343
 #: gio/gfile.c:1481 gio/gfile.c:1718 gio/gfile.c:1773 gio/gfile.c:1831
 #: gio/gfile.c:1915 gio/gfile.c:1972 gio/gfile.c:2036 gio/gfile.c:2091
-#: gio/gfile.c:3955 gio/gfile.c:4094 gio/gfile.c:4501 gio/gfile.c:4966
-#: gio/gfile.c:5378 gio/gfile.c:5463 gio/gfile.c:5553 gio/gfile.c:5650
-#: gio/gfile.c:5737 gio/gfile.c:5836 gio/gfile.c:8990 gio/gfile.c:9080
-#: gio/gfile.c:9164 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:3969 gio/gfile.c:4108 gio/gfile.c:4515 gio/gfile.c:4980
+#: gio/gfile.c:5392 gio/gfile.c:5477 gio/gfile.c:5567 gio/gfile.c:5664
+#: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9004 gio/gfile.c:9094
+#: gio/gfile.c:9178 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
 
@@ -1133,6 +1137,10 @@ msgstr "Подключиться к пользовательской шине"
 msgid "Connect to given D-Bus address"
 msgstr "Подключиться к заданному адресу D-Bus"
 
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "АДРЕС"
+
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
 msgstr "Параметры оконечной точки соединения:"
@@ -1515,37 +1523,42 @@ msgstr "Копирование (reflink/clone) не поддерживается
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Копирование (reflink/clone) не поддерживается или не работает"
 
-#: gio/gfile.c:3401
+#: gio/gfile.c:3384 gio/gfile.c:3395
+#, c-format
+msgid "Cannot retrieve attribute %s"
+msgstr "Невозможно получить атрибут %s"
+
+#: gio/gfile.c:3415
 msgid "Can’t copy special file"
 msgstr "Нельзя скопировать специальный файл"
 
-#: gio/gfile.c:4318
+#: gio/gfile.c:4332
 msgid "Invalid symlink value given"
 msgstr "Дано неверное значение символьной ссылки"
 
-#: gio/gfile.c:4328 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2404
 msgid "Symbolic links not supported"
 msgstr "Символьные ссылки не поддерживаются"
 
-#: gio/gfile.c:4609
+#: gio/gfile.c:4623
 msgid "Trash not supported"
 msgstr "Корзина не поддерживается"
 
-#: gio/gfile.c:4719
+#: gio/gfile.c:4733
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Имена файлов не могут содержать «%c»"
 
-#: gio/gfile.c:7145 gio/gfile.c:7271
+#: gio/gfile.c:7159 gio/gfile.c:7285
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Не удалось создать временный каталог для шаблона \"%s\": %s"
 
-#: gio/gfile.c:7589 gio/gvolume.c:362
+#: gio/gfile.c:7603 gio/gvolume.c:362
 msgid "volume doesn’t implement mount"
 msgstr "том не поддерживает присоединение"
 
-#: gio/gfile.c:7703 gio/gfile.c:7780
+#: gio/gfile.c:7717 gio/gfile.c:7794
 msgid "No application is registered as handling this file"
 msgstr "Нет зарегистрированного приложения для обработки данного файла"
 
@@ -2550,7 +2563,8 @@ msgstr ""
 "текущий каталог)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "КАТАЛОГ"
 
@@ -2601,6 +2615,10 @@ msgstr ""
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "Имя C-идентификатора, используемое для генерации исходного кода"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "ИДЕНТИФИКАТОР"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -3584,9 +3602,9 @@ msgstr "Неуказанный сбой поиска прокси-сервера
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
-#: gio/gresolver.c:472 gio/gthreadedresolver.c:317 gio/gthreadedresolver.c:338
-#: gio/gthreadedresolver.c:983 gio/gthreadedresolver.c:1007
-#: gio/gthreadedresolver.c:1032 gio/gthreadedresolver.c:1047
+#: gio/gresolver.c:472 gio/gthreadedresolver.c:318 gio/gthreadedresolver.c:339
+#: gio/gthreadedresolver.c:984 gio/gthreadedresolver.c:1008
+#: gio/gthreadedresolver.c:1033 gio/gthreadedresolver.c:1048
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "Ошибка разрешения «%s»: %s"
@@ -3991,7 +4009,7 @@ msgid "Socket is already closed"
 msgstr "Сокет уже закрыт"
 
 #: gio/gsocket.c:465 gio/gsocket.c:3291 gio/gsocket.c:4664 gio/gsocket.c:4722
-#: gio/gthreadedresolver.c:1453
+#: gio/gthreadedresolver.c:1454
 msgid "Socket I/O timed out"
 msgstr "Превышено время ожидания ввода-вывода сокета"
 
@@ -4294,46 +4312,46 @@ msgstr "Каналы не поддерживаются на этой платф�
 msgid "Can’t handle version %d of GThemedIcon encoding"
 msgstr "Не удалось обработать версию %d текстового представления GThemedIcon"
 
-#: gio/gthreadedresolver.c:319
+#: gio/gthreadedresolver.c:320
 msgid "No valid addresses were found"
 msgstr "Не найдено ни одного допустимого адреса"
 
-#: gio/gthreadedresolver.c:514
+#: gio/gthreadedresolver.c:515
 #, c-format
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "Ошибка обратного разрешения «%s»: %s"
 
 #. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
-#: gio/gthreadedresolver.c:737 gio/gthreadedresolver.c:759
-#: gio/gthreadedresolver.c:813 gio/gthreadedresolver.c:860
-#: gio/gthreadedresolver.c:889 gio/gthreadedresolver.c:901
+#: gio/gthreadedresolver.c:738 gio/gthreadedresolver.c:760
+#: gio/gthreadedresolver.c:814 gio/gthreadedresolver.c:861
+#: gio/gthreadedresolver.c:890 gio/gthreadedresolver.c:902
 #, c-format
 msgid "Error parsing DNS %s record: malformed DNS packet"
 msgstr "Ошибка при разборе записи DNS %s: некорректный DNS-пакет"
 
-#: gio/gthreadedresolver.c:959 gio/gthreadedresolver.c:1096
-#: gio/gthreadedresolver.c:1194 gio/gthreadedresolver.c:1244
+#: gio/gthreadedresolver.c:960 gio/gthreadedresolver.c:1097
+#: gio/gthreadedresolver.c:1195 gio/gthreadedresolver.c:1245
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "Запись DNS с запрашиваемым типом «%s» отсутствует"
 
-#: gio/gthreadedresolver.c:964 gio/gthreadedresolver.c:1199
+#: gio/gthreadedresolver.c:965 gio/gthreadedresolver.c:1200
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Временно невозможно разрешить «%s»"
 
-#: gio/gthreadedresolver.c:969 gio/gthreadedresolver.c:1204
-#: gio/gthreadedresolver.c:1300
+#: gio/gthreadedresolver.c:970 gio/gthreadedresolver.c:1205
+#: gio/gthreadedresolver.c:1301
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Произошла ошибка разрешения «%s»"
 
-#: gio/gthreadedresolver.c:983 gio/gthreadedresolver.c:1007
-#: gio/gthreadedresolver.c:1032 gio/gthreadedresolver.c:1047
+#: gio/gthreadedresolver.c:984 gio/gthreadedresolver.c:1008
+#: gio/gthreadedresolver.c:1033 gio/gthreadedresolver.c:1048
 msgid "Malformed DNS packet"
 msgstr "Некорректный DNS-пакет"
 
-#: gio/gthreadedresolver.c:1089
+#: gio/gthreadedresolver.c:1090
 #, c-format
 msgid "Failed to parse DNS response for “%s”: "
 msgstr "Не удалось разобрать ответ DNS для \"%s\": "
@@ -4556,6 +4574,144 @@ msgstr "Запуск службы dbus"
 #: gio/tests/gdbus-daemon.c:42
 msgid "Wrong args\n"
 msgstr "Неверные параметры\n"
+
+#: girepository/compiler/compiler.c:93
+#, c-format
+msgid "Failed to open ‘%s’: %s"
+msgstr "Не удалось открыть «%s»: %s"
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+msgid "Error: Could not write the whole output: %s"
+msgstr "Ошибка: Не удалось записать весь вывод целиком: %s"
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "Ошибка: Не удалось переименовать ‘%s’ в ‘%s’: %s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
+msgid "Include directories in GIR search path"
+msgstr "Включить каталоги в путь поиска GIR"
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
+msgid "Output file"
+msgstr "Выходной файл"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "Общая библиотека"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "Показывать сообщения об отладке"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "Показывать подробные сообщения"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
+msgid "Show program’s version number and exit"
+msgstr "Показать номер версии программы и выйти"
+
+#: girepository/compiler/compiler.c:175
+#, c-format
+msgid "Error parsing arguments: %s"
+msgstr "Ошибка при разборе аргументов: %s"
+
+#: girepository/compiler/compiler.c:202
+msgid "Please specify exactly one input file"
+msgstr "Укажите только один входной файл"
+
+#: girepository/compiler/compiler.c:218
+#, c-format
+msgid "Error parsing file ‘%s’: %s"
+msgstr "Ошибка при разборе файла ‘%s’: %s"
+
+#: girepository/compiler/compiler.c:243
+#, c-format
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "Не удалось собрать typelib для модуля ‘%s’"
+
+#: girepository/compiler/compiler.c:245
+#, c-format
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "Недопустимый typelib для модуля ‘%s’: %s"
+
+#: girepository/decompiler/decompiler.c:54
+msgid "Show all available information"
+msgstr "Показать всю доступную информацию"
+
+#: girepository/decompiler/decompiler.c:71
+#, c-format
+msgid "Failed to parse: %s"
+msgstr "Не удалось разобрать: %s"
+
+#: girepository/decompiler/decompiler.c:87
+msgid "No input files"
+msgstr "Нет входных файлов"
+
+#: girepository/decompiler/decompiler.c:113
+#, c-format
+msgid "Failed to read ‘%s’: %s"
+msgstr "Не удалось прочитать «%s»: %s"
+
+#: girepository/decompiler/decompiler.c:125
+#, c-format
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "Не удалось создать typelib «%s»: %s"
+
+#: girepository/decompiler/decompiler.c:129
+#: girepository/inspector/inspector.c:113
+#, c-format
+msgid "Failed to load typelib: %s"
+msgstr "Не удалось загрузить typelib: %s"
+
+#: girepository/decompiler/decompiler.c:136
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr "Предупреждение: %u модуля(ей) пропущено"
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr "Версия typelib для проверки"
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "ВЕРСИЯ"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr "Список общих библиотек, которые требуются typelib"
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr "Список других typelibs, которые требуются проверяемой typelib"
+
+#: girepository/inspector/inspector.c:75
+msgid "The typelib to inspect"
+msgstr "Typelib для проверки"
+
+#: girepository/inspector/inspector.c:75
+msgid "NAMESPACE"
+msgstr "ПРОСТРАНСТВО ИМЕН"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr "- Осмотр GI typelib"
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+msgid "Failed to parse command line options: %s"
+msgstr "Не удалось проанализировать параметры командной строки: %s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr "Укажите только одно пространство имен"
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr "Укажите --print-shlibs, --print-typelibs или оба варианта"
 
 #: glib/gbookmarkfile.c:816
 #, c-format
@@ -5100,86 +5256,94 @@ msgstr "ПП (PM)"
 msgid "Error opening directory “%s”: %s"
 msgstr "Произошла ошибка при открытии каталога «%s»: %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720
+#, c-format
+msgid "Could not allocate %s to read file “%s”"
+msgstr "Не удалось выделить %s для чтения файла «%s»"
+
+#: glib/gfileutils.c:738
+#, c-format
+msgid "Error reading file “%s”: %s"
+msgstr "Ошибка при чтении файла «%s»: %s"
+
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
+#, c-format
+msgid "File “%s” is too large"
+msgstr "Файл «%s» слишком велик"
+
+#: glib/gfileutils.c:825
 msgid "Could not allocate %"
 msgid_plural "Could not allocate %"
 msgstr[0] "Не удалось распределить %"
 msgstr[1] "Не удалось распределить %"
 msgstr[2] "Не удалось распределить %"
 
-#: glib/gfileutils.c:733
-#, c-format
-msgid "Error reading file “%s”: %s"
-msgstr "Ошибка при чтении файла «%s»: %s"
-
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
-#, c-format
-msgid "File “%s” is too large"
-msgstr "Файл «%s» слишком велик"
-
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Не удалось прочитать из файла «%s»: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Не удалось открыть файл «%s»: %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:913
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Не удалось получить атрибуты файла «%s»: сбой в функции fstat(): %s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Не удалось открыть файл «%s»: сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "Не удалось переименовать файл «%s» в «%s»: сбой в функции g_rename(): %s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1144
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции ftruncate(): %s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1189
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции write(): %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1210
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции fsync(): %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Не удалось создать файл «%s»: %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Не удалось удалить существующий файл «%s»: сбой в функции g_unlink(): %s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1753
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Шаблон «%s» недопустим: он не должен содержать «%s»"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1766
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Шаблон «%s» не содержит XXXXXX"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Не удалось прочитать символьную ссылку «%s»: %s"
@@ -5975,57 +6139,57 @@ msgstr "Дочерний процесс остановлен по сигналу
 msgid "Child process exited abnormally"
 msgstr "Дочерний процесс аварийно завершил работу"
 
-#: glib/gspawn.c:1956 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
+#: glib/gspawn.c:1622 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Не удалось выполнить чтение из дочернего канала (%s)"
 
-#: glib/gspawn.c:2335
+#: glib/gspawn.c:2001
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Не удалось запустить дочерний процесс \"%s\" (%s)"
 
-#: glib/gspawn.c:2459
+#: glib/gspawn.c:2125
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Функция fork завершилась неудачно (%s)"
 
-#: glib/gspawn.c:2620 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2286 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Не удалось сменить каталог на «%s» (%s)"
 
-#: glib/gspawn.c:2630
+#: glib/gspawn.c:2296
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Не удалось выполнить дочерний процесс \"%s\" (%s)"
 
-#: glib/gspawn.c:2640
+#: glib/gspawn.c:2306
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr "Не удалось открыть файл для изменения дескриптора файла (%s)"
 
-#: glib/gspawn.c:2648
+#: glib/gspawn.c:2314
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Не удалось дублировать дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn.c:2657
+#: glib/gspawn.c:2323
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "При создании дочернего процесса функция fork завершилась неудачно (%s)"
 
-#: glib/gspawn.c:2665
+#: glib/gspawn.c:2331
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Не удалось закрыть дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn.c:2673
+#: glib/gspawn.c:2339
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Произошла неизвестная ошибка при выполнении дочернего процесса «%s»"
 
-#: glib/gspawn.c:2697
+#: glib/gspawn.c:2363
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -6411,13 +6575,6 @@ msgstr "%.1f ЭБ"
 #~ msgstr ""
 #~ "Сообщение METHOD_RETURN: отсутствует или недопустимо поле заголовка "
 #~ "REPLY_SERIAL"
-
-#, c-format
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "Не удалось выделить %lu байт для чтения файла «%s»"
-#~ msgstr[1] "Не удалось выделить %lu байта для чтения файла «%s»"
-#~ msgstr[2] "Не удалось выделить %lu байт для чтения файла «%s»"
 
 #~ msgid "kb"
 #~ msgstr "кбит"
