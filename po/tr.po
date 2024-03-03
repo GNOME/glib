@@ -1,6 +1,6 @@
 # Turkish translation of Glib.
 # Copyright (C) 2001-2003, 2005, 2007, 2008 Free Software Foundation, Inc.
-# Copyright (C) 2009-2023 glib's COPYRIGHT HOLDER
+# Copyright (C) 2009-2024 glib's COPYRIGHT HOLDER
 # This file is distributed under the same license as the glib package.
 #
 # KEMAL YILMAZ <kyilmaz@uekae.tubitak.gov.tr>, 2001.
@@ -11,15 +11,15 @@
 # Kaan Özdinçer <kaanozdincer@gmail.com>, 2015.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2014, 2015, 2016.
 # Serdar Sağlam <teknomobil@yandex.com>, 2019.
-# Sabri Ünal <libreajans@gmail.com>, 2023.
+# Sabri Ünal <yakushabb@gmail.com>, 2023, 2024.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-18 09:20+0000\n"
-"PO-Revision-Date: 2024-02-18 08:00+0300\n"
+"POT-Creation-Date: 2024-03-01 12:22+0000\n"
+"PO-Revision-Date: 2024-03-03 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -136,7 +136,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "KOMUT"
 
@@ -148,9 +148,13 @@ msgstr "Ayrıntılı yardım yazdırmak için komut"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "D-Bus biçiminde uygulama tanımlayıcı (örneğin: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "DOSYA"
 
@@ -621,7 +625,7 @@ msgstr "İşlem desteklenmiyor"
 #: gio/gdbusauthmechanismsha1.c:411
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
-msgstr "Okumak için “%s” anahtarlığı açılırken hata: "
+msgstr "“%s” anahtarlığı okumak için açılırken hata: "
 
 #: gio/gdbusauthmechanismsha1.c:434 gio/gdbusauthmechanismsha1.c:775
 #, c-format
@@ -672,7 +676,7 @@ msgstr "“%s” kilit dosyasının bağlantısı kaldırılırken hata: %s"
 #: gio/gdbusauthmechanismsha1.c:742
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
-msgstr "“%s” anahtarlığını yazma için açarken hata: "
+msgstr "“%s” anahtarlığı yazma için açılırken hata: "
 
 #: gio/gdbusauthmechanismsha1.c:936
 #, c-format
@@ -1101,6 +1105,10 @@ msgstr "Oturum veri yoluna bağlan"
 msgid "Connect to given D-Bus address"
 msgstr "Verilen D-Bus adresine bağlan"
 
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "ADRES"
+
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
 msgstr "Bağlantı Uç Noktası Seçenekleri:"
@@ -1494,7 +1502,7 @@ msgstr "Özel dosya kopyalanamıyor"
 msgid "Invalid symlink value given"
 msgstr "Geçersiz simgesel bağ değeri verildi"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Simgesel bağlar desteklenmiyor"
 
@@ -2510,7 +2518,8 @@ msgstr ""
 "dizin)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "DİZİN"
 
@@ -2560,6 +2569,10 @@ msgstr ""
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "C oluşturulan kaynak kod için kullanılan tanımlayıcı ad"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "TANIMLAYICI"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -4260,7 +4273,7 @@ msgstr "“%s” tersine çözülürken hata: %s"
 #: gio/gthreadedresolver.c:890 gio/gthreadedresolver.c:902
 #, c-format
 msgid "Error parsing DNS %s record: malformed DNS packet"
-msgstr "DNS %s kaydı ayrıştırılamadı: kusurlu DNS paketi"
+msgstr "DNS %s kaydı ayrıştırılırken hata: kusurlu DNS paketi"
 
 #: gio/gthreadedresolver.c:960 gio/gthreadedresolver.c:1097
 #: gio/gthreadedresolver.c:1195 gio/gthreadedresolver.c:1245
@@ -4500,6 +4513,144 @@ msgstr "Bir dbus hizmeti çalıştır"
 #: gio/tests/gdbus-daemon.c:42
 msgid "Wrong args\n"
 msgstr "Yanlış değişkenler\n"
+
+#: girepository/compiler/compiler.c:93
+#, c-format
+msgid "Failed to open ‘%s’: %s"
+msgstr "‘%s’ açılamadı: %s"
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+msgid "Error: Could not write the whole output: %s"
+msgstr "Hata: Çıktının tümü yazılamadı: %s"
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "Hata: ‘%s’, ‘%s’ olarak yeniden adlandırılamadı: %s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
+msgid "Include directories in GIR search path"
+msgstr "Dizinleri GIR arama yolunda içer"
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
+msgid "Output file"
+msgstr "Çıktı dosyası"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "Paylaşılan kütüphane"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "Hata ayıklama iletilerini göster"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "Ayrıntılı iletileri göster"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
+msgid "Show program’s version number and exit"
+msgstr "Programın sürüm numarasını göster ve çık"
+
+#: girepository/compiler/compiler.c:175
+#, c-format
+msgid "Error parsing arguments: %s"
+msgstr "Argümanlar ayrıştırılırken hata: %s"
+
+#: girepository/compiler/compiler.c:202
+msgid "Please specify exactly one input file"
+msgstr "Lütfen yalnızca bir girdi dosyası belirtin"
+
+#: girepository/compiler/compiler.c:218
+#, c-format
+msgid "Error parsing file ‘%s’: %s"
+msgstr "‘%s’ dosyası ayrıştırılırken hata: %s"
+
+#: girepository/compiler/compiler.c:243
+#, c-format
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "‘%s’ modülü için typelib inşa edilemedi"
+
+#: girepository/compiler/compiler.c:245
+#, c-format
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "‘%s‘ yüklenemedi: %s"
+
+#: girepository/decompiler/decompiler.c:54
+msgid "Show all available information"
+msgstr "Tüm bilgileri göster"
+
+#: girepository/decompiler/decompiler.c:71
+#, c-format
+msgid "Failed to parse: %s"
+msgstr "Ayrıştırılamadı: %s"
+
+#: girepository/decompiler/decompiler.c:87
+msgid "No input files"
+msgstr "Girdi dosyaları yok"
+
+#: girepository/decompiler/decompiler.c:113
+#, c-format
+msgid "Failed to read ‘%s’: %s"
+msgstr "‘%s’ okunamadı: %s"
+
+#: girepository/decompiler/decompiler.c:125
+#, c-format
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "‘%s’ typelib oluşturulamadı: %s"
+
+#: girepository/decompiler/decompiler.c:129
+#: girepository/inspector/inspector.c:113
+#, c-format
+msgid "Failed to load typelib: %s"
+msgstr "Typelib yüklenemedi: %s"
+
+#: girepository/decompiler/decompiler.c:136
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr "Uyarı: %u modül dışlandı"
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr "İncelenecek typelib sürümü"
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "SÜRÜM"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr "Typelib’in gereksindiği paylaşılan kütüphaneleri listele"
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr "Denetlenen typelib’in gereksindiği diğer typelib’leri listele"
+
+#: girepository/inspector/inspector.c:75
+msgid "The typelib to inspect"
+msgstr "İncelenecek typelib"
+
+#: girepository/inspector/inspector.c:75
+msgid "NAMESPACE"
+msgstr "AD ALANI"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr "- GI typelib’i incele"
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+msgid "Failed to parse command line options: %s"
+msgstr "Komut satırı seçenekleri ayrıştırılamadı: %s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr "Lütfen yalnızca bir ad alanı belirtin"
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr "Lütfen --print-shlibs, --print-typelibs ya da her ikisini belirtin"
 
 #: glib/gbookmarkfile.c:816
 #, c-format
@@ -5042,83 +5193,86 @@ msgstr "ÖS"
 msgid "Error opening directory “%s”: %s"
 msgstr "“%s” dizini açılamadı: %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "% ayrılamadı"
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#, c-format
+msgid "Could not allocate %s to read file “%s”"
+msgstr "“%2$s” dosyasını okumak için %1$s ayrılamadı"
 
-#: glib/gfileutils.c:733
+#: glib/gfileutils.c:738
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "“%s” dosyası okuma hatası: %s"
 
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
 #, c-format
 msgid "File “%s” is too large"
 msgstr "“%s” dosyası çok büyük"
 
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "“%s” dosyasından okunamadı: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "“%s” dosyası açılamadı: %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "“%s” dosyasının öznitelikleri alınamadı: fstat() başarısız: %s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "“%s” dosyası açılamadı: fdopen() başarısız: %s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "“%s” dosyasının adı “%s” olarak değiştirilemedi: g_rename() başarısız: %s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1149
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "“%s” dosyasına yazılamadı: ftruncate() başarısız: %s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "“%s” dosyasına yazılamadı: write() başarısız: %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "“%s” dosyasına yazılamadı: fsync() başarısız: %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "“%s” dosyası oluşturulamadı: %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Var olan dosya “%s” kaldırılamadı: g_unlink() başarısızlığı: %s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "“%s” şablonu geçersiz, “%s” içermemeli"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "“%s” şablonu XXXXXX içermiyor"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "“%s” simgesel bağı okunamadı: %s"
@@ -5532,7 +5686,7 @@ msgstr "%2$s için double değeri “%1$s” aralık dışında"
 #: glib/goption.c:1303 glib/goption.c:1382
 #, c-format
 msgid "Error parsing option %s"
-msgstr "%s seçeneği işlenirken hata"
+msgstr "%s seçeneği ayrıştırılırken hata"
 
 #: glib/goption.c:1404 glib/goption.c:1517
 #, c-format
@@ -6317,56 +6471,6 @@ msgstr "%.1f PB"
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#~ msgid ""
-#~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
-#~ msgstr ""
-#~ "METHOD_RETURN iletisi: REPLY_SERIAL başlık alanı eksik veya geçersiz"
-
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "%lu bayt “%s” dosyasını okumak için ayrılamadı"
-
-#~ msgid "kb"
-#~ msgstr "kb"
-
-#~ msgid "Mb"
-#~ msgstr "Mb"
-
-#~ msgid "Gb"
-#~ msgstr "Gb"
-
-#~ msgid "Tb"
-#~ msgstr "Tb"
-
-#~ msgid "Pb"
-#~ msgstr "Pb"
-
-#~ msgid "Eb"
-#~ msgstr "Eb"
-
-#~ msgid "Kib"
-#~ msgstr "Kib"
-
-#~ msgid "Mib"
-#~ msgstr "Mib"
-
-#~ msgid "Gib"
-#~ msgstr "Gib"
-
-#~ msgid "Tib"
-#~ msgstr "Tib"
-
-#~ msgid "Pib"
-#~ msgstr "Pib"
-
-#~ msgid "Eib"
-#~ msgstr "Eib"
-
-#~ msgid "The local file URI “%s” may not include a “#”"
-#~ msgstr "Yerel dosya URI’si “%s”, “#” içeremez"
-
-#~ msgid "backtracking limit reached"
-#~ msgstr "geri takip sınırına ulaşıldı"
-
-#~ msgid "GApplication options"
-#~ msgstr "GApplication seçenekleri"
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "% ayrılamadı"
