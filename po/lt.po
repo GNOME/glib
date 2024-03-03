@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-18 12:30+0200\n"
+"POT-Creation-Date: 2024-03-01 12:22+0000\n"
+"PO-Revision-Date: 2024-03-03 22:34+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -132,7 +132,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "KOMANDA"
 
@@ -144,9 +144,13 @@ msgstr "Komandą, kuriai atspausdinti detalią pagalbą"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Programos identifikatorius D-Bus formatu (pvz.: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "FAILAS"
 
@@ -1121,6 +1125,10 @@ msgstr "Prisijungti prie sesijos magistralės"
 msgid "Connect to given D-Bus address"
 msgstr "Prisijungti prie pateikto D-Bus adreso"
 
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "ADRESAS"
+
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
 msgstr "Ryšio pabaigos parametrai:"
@@ -1517,7 +1525,7 @@ msgstr "Negalima kopijuoti specialaus failo"
 msgid "Invalid symlink value given"
 msgstr "Netaisyklinga simbolinės nuorodos reikšmė"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Simbolinės nuorodos nepalaikomos"
 
@@ -2531,7 +2539,8 @@ msgstr ""
 "katalogo)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "KATALOGAS"
 
@@ -2578,6 +2587,10 @@ msgstr ""
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "C identifikatoriaus vardas, naudojamas generuojamame kode"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "IDENTIFIKATORIUS"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -4523,6 +4536,144 @@ msgstr "Paleisti dbus tarnybą"
 msgid "Wrong args\n"
 msgstr "Blogi argumentai\n"
 
+#: girepository/compiler/compiler.c:93
+#, c-format
+msgid "Failed to open ‘%s’: %s"
+msgstr "Nepavyko atverti „%s“: %s"
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+msgid "Error: Could not write the whole output: %s"
+msgstr "Klaida: nepavyko įrašyti visos išvesties: %s"
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "Klaida: nepavyko pervadinti „%s“ į „%s“: %s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
+msgid "Include directories in GIR search path"
+msgstr "Įtraukti katalogus iš GIR paieškos kelio"
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
+msgid "Output file"
+msgstr "Išvesties failas"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "Bendro naudojimo biblioteka"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "Rodyti derinimo išvestį"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "Rodyti išsamius pranešimus"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
+msgid "Show program’s version number and exit"
+msgstr "Parodyti programos versiją ir išeiti"
+
+#: girepository/compiler/compiler.c:175
+#, c-format
+msgid "Error parsing arguments: %s"
+msgstr "Klaida analizuojant argumentus: %s"
+
+#: girepository/compiler/compiler.c:202
+msgid "Please specify exactly one input file"
+msgstr "Nurodykite vienintelė įvesties failą"
+
+#: girepository/compiler/compiler.c:218
+#, c-format
+msgid "Error parsing file ‘%s’: %s"
+msgstr "Klaida analizuojant failą „%s“: %s"
+
+#: girepository/compiler/compiler.c:243
+#, c-format
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "Nepavyko sukurti typelib moduliui „%s“"
+
+#: girepository/compiler/compiler.c:245
+#, c-format
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "Netinkamas typelib moduliui „%s“: %s"
+
+#: girepository/decompiler/decompiler.c:54
+msgid "Show all available information"
+msgstr "Rodyti visą prieinamą informaciją"
+
+#: girepository/decompiler/decompiler.c:71
+#, c-format
+msgid "Failed to parse: %s"
+msgstr "Nepavyko išanalizuoti: %s"
+
+#: girepository/decompiler/decompiler.c:87
+msgid "No input files"
+msgstr "Nėra įvesties failų"
+
+#: girepository/decompiler/decompiler.c:113
+#, c-format
+msgid "Failed to read ‘%s’: %s"
+msgstr "Nepavyko perskaityti „%s“: %s"
+
+#: girepository/decompiler/decompiler.c:125
+#, c-format
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "Nepavyko sukurti typelib „%s“: %s"
+
+#: girepository/decompiler/decompiler.c:129
+#: girepository/inspector/inspector.c:113
+#, c-format
+msgid "Failed to load typelib: %s"
+msgstr "Nepavyko įkelti typelib: %s"
+
+#: girepository/decompiler/decompiler.c:136
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr "Įspėjimas: praleisti %u moduliai"
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr "Inspektuojama typelib versija"
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "VERSIJA"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr "Bendro naudojimo bibliotekų sąrašas, reikalingas typelib"
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr "Kitų typelib sąrašas, kurių reikia inspektuojamam typelib"
+
+#: girepository/inspector/inspector.c:75
+msgid "The typelib to inspect"
+msgstr "Inspektuojamas typelib"
+
+#: girepository/inspector/inspector.c:75
+msgid "NAMESPACE"
+msgstr "VARDŲSRITIS"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr "- Inspektuoti GI typelib"
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+msgid "Failed to parse command line options: %s"
+msgstr "Nepavyko išanalizuoti komandų eilutės parametrų: %s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr "Nurodykite vienintelę vardų sritį"
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr "Nurodykite -print-shlibs, --print-typelibs arba abu"
+
 #: glib/gbookmarkfile.c:816
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
@@ -5063,84 +5214,85 @@ msgstr "PM"
 msgid "Error opening directory “%s”: %s"
 msgstr "Klaida atveriant aplanką „%s“: %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "Nepavyko išskirti %"
-msgstr[1] "Nepavyko išskirti %"
-msgstr[2] "Nepavyko išskirti %"
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#, c-format
+msgid "Could not allocate %s to read file “%s”"
+msgstr "Nepavyko išskirti %s failo „%s“ perskaitymui"
 
-#: glib/gfileutils.c:733
+#: glib/gfileutils.c:738
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Klaida skaitant failą „%s“: %s"
 
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Failas „%s“ per didelis"
 
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Nepavyko perskaityti failo „%s“: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Nepavyko atverti failo „%s“: %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Nepavyko gauti failo „%s“ atributų: fstat() klaida: %s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Nepavyko atverti failo „%s“: fdopen() klaida: %s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Nepavyko pervadinti failo „%s“ į „%s“: g_rename() klaida: %s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1149
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Nepavyko įrašyti failo „%s“: ftruncate() klaida: %s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Nepavyko įrašyti failo „%s“: write() klaida: %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Nepavyko įrašyti failo „%s“: fsync() klaida: %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Nepavyko sukurti failo „%s“: %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Nepavyko pašalinti egzistuojančio failo „%s“: g_unlink() klaida: %s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Šablonas „%s“ klaidingas, jame negali būti „%s“"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Šablone „%s“ nėra XXXXXX"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Nepavyko perskaityti simbolinės nuorodos „%s“: %s"
@@ -6347,17 +6499,16 @@ msgstr "%.1f PB"
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "Nepavyko išskirti %"
+#~ msgstr[1] "Nepavyko išskirti %"
+#~ msgstr[2] "Nepavyko išskirti %"
+
 #~ msgid ""
 #~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
 #~ msgstr ""
 #~ "METHOD_RETURN pranešimas: trūksta REPLY_SERIAL antraštės arba ji netinkama"
-
-#, c-format
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "Nepavyko išskirti %lu baito failo „%s“ perskaitymui"
-#~ msgstr[1] "Nepavyko išskirti %lu baitų failo „%s“ perskaitymui"
-#~ msgstr[2] "Nepavyko išskirti %lu baitų failo „%s“ perskaitymui"
 
 #~ msgid "kb"
 #~ msgstr "kb"
@@ -6589,9 +6740,6 @@ msgstr "%.1f EB"
 
 #~ msgid "[ARGS...]"
 #~ msgstr "[ARGUMENTAI...]"
-
-#~ msgid "Failed to create temp file: %s"
-#~ msgstr "Nepavyko sukurti laikino failo: %s"
 
 #~ msgid ""
 #~ "Message has %d file descriptors but the header field indicates %d file "
