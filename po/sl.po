@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-15 02:24+0000\n"
-"PO-Revision-Date: 2024-02-19 17:04+0100\n"
+"POT-Creation-Date: 2024-02-27 17:54+0000\n"
+"PO-Revision-Date: 2024-03-04 22:32+0100\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -145,6 +145,8 @@ msgstr ""
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/decompiler/decompiler.c:51
 msgid "FILE"
 msgstr "DATOTEKA"
 
@@ -1528,7 +1530,7 @@ msgstr "Ni mogoče kopirati posebne datoteke"
 msgid "Invalid symlink value given"
 msgstr "Neveljavna vrednost simbolne povezave"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2404
 msgid "Symbolic links not supported"
 msgstr "Simbolne povezave niso podprte"
 
@@ -4531,6 +4533,145 @@ msgstr "Zaženi storitev DBus"
 msgid "Wrong args\n"
 msgstr "Napačni argumenti\n"
 
+#: girepository/compiler/compiler.c:93
+#, c-format
+msgid "Failed to open ‘%s’: %s"
+msgstr "Odpiranje »%s« je spodletelo: %s"
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+msgid "Error: Could not write the whole output: %s"
+msgstr "Napaka: ni mogoče zapisati celotnega odvoda: %s"
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "Napaka: ni mogoče preimenovati »%s« v »%s«: %s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:52
+msgid "Include directories in GIR search path"
+msgstr "Vključi mape v iskalno pot GIR"
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:51
+msgid "Output file"
+msgstr "Odvodna datoteka"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "Skupna knjižnica"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "Pokaži sporočila razhroščevanja"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "Pokaži podrobna sporočila"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:54
+msgid "Show program’s version number and exit"
+msgstr "Izpiši podrobnosti različice in končaj"
+
+#: girepository/compiler/compiler.c:174
+#, c-format
+msgid "Error parsing arguments: %s"
+msgstr "Napaka razčlenjevanja argumentov: %s"
+
+#: girepository/compiler/compiler.c:201
+msgid "Please specify exactly one input file"
+msgstr "Določiti je treba le eno vhodno datoteko"
+
+#: girepository/compiler/compiler.c:217
+#, c-format
+msgid "Error parsing file ‘%s’: %s"
+msgstr "Napaka razčlenjevanja datoteke »%s«: %s"
+
+#: girepository/compiler/compiler.c:242
+#, c-format
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "Izgradnja predmetov typelib za modul »%s« je spodletela."
+
+#: girepository/compiler/compiler.c:244
+#, c-format
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "Neveljaven predmet typelib za modul »%s«: %s"
+
+#: girepository/decompiler/decompiler.c:53
+msgid "Show all available information"
+msgstr "Pokaži vse razpoložljive podrobnosti"
+
+#: girepository/decompiler/decompiler.c:67
+#, c-format
+msgid "Failed to parse: %s"
+msgstr "Razčlenitev je spodletela: %s"
+
+#: girepository/decompiler/decompiler.c:83
+msgid "No input files"
+msgstr "Ni vhodnih datotek"
+
+#: girepository/decompiler/decompiler.c:109
+#, c-format
+msgid "Failed to read ‘%s’: %s"
+msgstr "Branje »%s« je spodletelo: %s"
+
+#: girepository/decompiler/decompiler.c:121
+#, c-format
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "Ustvarjanje predmeta typelib »%s« je spodletelo: %s"
+
+#: girepository/decompiler/decompiler.c:125
+#: girepository/inspector/inspector.c:113
+#, c-format
+msgid "Failed to load typelib: %s"
+msgstr "Nalaganje predmetov typelib je spodletelo: %s"
+
+#: girepository/decompiler/decompiler.c:132
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr "Opozorilo: izpuščenih je %u modulov"
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr "Različica Typelib za pregled"
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "RAZLIČICA"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr "Seznam knjižnic v souporabi, ki jih zahteva predmet typelib"
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr "Seznam drugih vrst typelib, ki jih pregledani prdmet typelib zahteva"
+
+#: girepository/inspector/inspector.c:75
+msgid "The typelib to inspect"
+msgstr "Predmet typelib za pregled"
+
+#: girepository/inspector/inspector.c:75
+msgid "NAMESPACE"
+msgstr "IMENSKI PROSTOR"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr "- Pregled vrste typelib GI"
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+msgid "Failed to parse command line options: %s"
+msgstr "Razčlenjevanje možnosti ukazne vrstice je spodletelo: %s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr "Navesti je treba natanko en imenski prostor."
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr ""
+"Določiti je treba argument --print-shlibs, argument --print-typelibs ali oba"
+
 #: glib/gbookmarkfile.c:816
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
@@ -5071,7 +5212,25 @@ msgstr "pop"
 msgid "Error opening directory “%s”: %s"
 msgstr "Napaka med odpiranjem imenika »%s«: %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720
+#, c-format
+msgid "Could not allocate %s to read file “%s”"
+msgstr "Ni mogoče dodeliti %s za branje datoteke »%s«"
+
+#: glib/gfileutils.c:738
+#, c-format
+msgid "Error reading file “%s”: %s"
+msgstr "Napaka med branjem datoteke »%s«: %s"
+
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
+#, c-format
+msgid "File “%s” is too large"
+msgstr "Datoteka »%s« je prevelika."
+
+#: glib/gfileutils.c:825
 msgid "Could not allocate %"
 msgid_plural "Could not allocate %"
 msgstr[0] "Ni mogoče dodeliti % "
@@ -5079,83 +5238,73 @@ msgstr[1] "Ni mogoče dodeliti % "
 msgstr[2] "Ni mogoče dodeliti % "
 msgstr[3] "Ni mogoče dodeliti % "
 
-#: glib/gfileutils.c:733
-#, c-format
-msgid "Error reading file “%s”: %s"
-msgstr "Napaka med branjem datoteke »%s«: %s"
-
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
-#, c-format
-msgid "File “%s” is too large"
-msgstr "Datoteka »%s« je prevelika."
-
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:850
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Branje datoteke »%s« je spodletelo: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Odpiranje datoteke »%s« je spodletelo: %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:913
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr ""
 "Pridobivanje atributov datoteke »%s« je spodletelo: ukaz fstat() ni uspešno "
 "izveden: %s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:944
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Ni mogoče odpreti datoteke »%s«: ukaz fdopen() ni uspešno izveden: %s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1045
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "Ni mogoče preimenovati datoteke »%s« v »%s«: ukaz g_rename() ni uspešno "
 "izveden: %s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1144
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Ni mogoče zapisati datoteke »%s«: ukaz ftruncate() je spodletel: %s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1189
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Ni mogoče zapisati datoteke »%s«: ukaz write() je spodletel: %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1210
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Ni mogoče zapisati datoteke »%s«: ukaz fsync() ni uspešno izveden: %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Ni mogoče ustvariti datoteke »%s«: %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1416
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Obstoječe datoteke »%s« ni mogoče odstraniti: ukaz g_unlink() ni uspešno "
 "izveden: %s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1753
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Predloga »%s« je neveljavna, saj ne sme vsebovati »%s«"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1766
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Predloga »%s« ne vsebuje XXXXXX"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Branje simbolne povezave »%s« je spodletelo: %s"
@@ -6373,14 +6522,6 @@ msgstr "%.1f EB"
 #~ "Sporočilo METHOD_RETURN: manjka ali pa ni vpisane vrednosti polja glave "
 #~ "REPLY_SERIAL"
 
-#, c-format
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "Ni mogoče dodeliti %lu bajtov za branje datoteke »%s«"
-#~ msgstr[1] "Ni mogoče dodeliti %lu bajta za branje datoteke »%s«"
-#~ msgstr[2] "Ni mogoče dodeliti %lu bajtov za branje datoteke »%s«"
-#~ msgstr[3] "Ni mogoče dodeliti %lu bajtov za branje datoteke »%s«"
-
 #~ msgid "kb"
 #~ msgstr "kb"
 
@@ -6611,9 +6752,6 @@ msgstr "%.1f EB"
 
 #~ msgid "[ARGS...]"
 #~ msgstr "[ARGUMENTI ...]"
-
-#~ msgid "Failed to create temp file: %s"
-#~ msgstr "Ustvarjanje začasne datoteke je spodletelo: %s"
 
 #~ msgid ""
 #~ "Message has %d file descriptors but the header field indicates %d file "
