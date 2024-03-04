@@ -233,6 +233,13 @@ static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
 static GQuark	            quark_weak_locations = 0;
 
+static gpointer (*_local_g_datalist_id_update_atomic) (GData **datalist,
+                                                       GQuark key_id,
+                                                       GDataListUpdateAtomicFunc callback,
+                                                       gpointer user_data) = NULL;
+#undef _g_datalist_id_update_atomic
+#define _g_datalist_id_update_atomic(...) ((_local_g_datalist_id_update_atomic) (__VA_ARGS__))
+
 #if HAVE_PRIVATE
 G_ALWAYS_INLINE static inline GObjectPrivate *
 g_object_get_instance_private (GObject *object)
@@ -979,6 +986,8 @@ g_object_do_class_init (GObjectClass *class)
   quark_weak_locations = g_quark_from_static_string ("GObject-weak-locations");
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
+
+  g_atomic_pointer_set (&_local_g_datalist_id_update_atomic, GLIB_PRIVATE_CALL (g_datalist_id_update_atomic));
 
   g_object_init_pspec_pool ();
 
