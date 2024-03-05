@@ -38,6 +38,9 @@ GStrvBuilder *g_strv_builder_new (void);
 GLIB_AVAILABLE_IN_2_68
 void g_strv_builder_unref (GStrvBuilder *builder);
 
+GLIB_AVAILABLE_IN_2_82
+GStrv g_strv_builder_unref_to_strv (GStrvBuilder *builder);
+
 GLIB_AVAILABLE_IN_2_68
 GStrvBuilder *g_strv_builder_ref (GStrvBuilder *builder);
 
