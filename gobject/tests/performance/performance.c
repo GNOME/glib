@@ -33,6 +33,7 @@
 static gboolean verbose = FALSE;
 static gboolean quiet = FALSE;
 static int test_length = DEFAULT_TEST_TIME;
+static double test_factor = 0;
 
 static GOptionEntry cmd_entries[] = {
   {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
@@ -41,6 +42,8 @@ static GOptionEntry cmd_entries[] = {
    "Print extra information", NULL},
   {"seconds", 's', 0, G_OPTION_ARG_INT, &test_length,
    "Time to run each test in seconds", NULL},
+  {"factor", 'f', 0, G_OPTION_ARG_DOUBLE, &test_factor,
+   "Use a fixed factor for sample runs (also $GLIB_PERFORMANCE_FACTOR)", NULL},
   G_OPTION_ENTRY_NULL
 };
 
@@ -101,24 +104,32 @@ run_test (PerformanceTest *test)
       g_print ("Estimating round time\n");
     }
 
-  /* Estimate time for one run by doing a few test rounds */
   min_elapsed = 0;
-  for (i = 0; i < ESTIMATE_ROUND_TIME_N_RUNS; i++)
+
+  if (test_factor > 0)
     {
-      test->init (test, data, 1.0);
-      g_timer_start (timer);
-      test->run (test, data);
-      g_timer_stop (timer);
-      test->finish (test, data);
-
-      elapsed = g_timer_elapsed (timer, NULL);
-      if (i == 0)
-	min_elapsed = elapsed;
-      else
-	min_elapsed = MIN (min_elapsed, elapsed);
+      factor = test_factor;
     }
+  else
+    {
+      /* Estimate time for one run by doing a few test rounds. */
+      for (i = 0; i < ESTIMATE_ROUND_TIME_N_RUNS; i++)
+        {
+          test->init (test, data, 1.0);
+          g_timer_start (timer);
+          test->run (test, data);
+          g_timer_stop (timer);
+          test->finish (test, data);
 
-  factor = TARGET_ROUND_TIME / min_elapsed;
+          elapsed = g_timer_elapsed (timer, NULL);
+          if (i == 0)
+            min_elapsed = elapsed;
+          else
+            min_elapsed = MIN (min_elapsed, elapsed);
+        }
+
+      factor = TARGET_ROUND_TIME / min_elapsed;
+    }
 
   if (verbose)
     g_print ("Uncorrected round time: %.4f msecs, correction factor %.2f\n", 1000*min_elapsed, factor);
@@ -1550,13 +1561,25 @@ main (int   argc,
   PerformanceTest *test;
   GOptionContext *context;
   GError *error = NULL;
+  const char *str;
   int i;
+
+  if ((str = g_getenv ("GLIB_PERFORMANCE_FACTOR")) && str[0])
+    {
+      test_factor = g_strtod (str, NULL);
+    }
 
   context = g_option_context_new ("GObject performance tests");
   g_option_context_add_main_entries (context, cmd_entries, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       g_printerr ("%s: %s\n", argv[0], error->message);
+      return 1;
+    }
+
+  if (test_factor < 0)
+    {
+      g_printerr ("%s: test factor must be positive\n", argv[0]);
       return 1;
     }
 
