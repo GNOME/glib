@@ -552,6 +552,9 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  *
  * Logs a warning if the expression is not true.
  *
+ * Unlike g_return_if_fail(), the expression is always evaluated, even if
+ * checks and assertions are disabled.
+ *
  * Since: 2.16
  */
 #define g_warn_if_fail(expr) \
