@@ -22,6 +22,7 @@
 #include "../testcommon.h"
 
 #define WARM_UP_N_RUNS 50
+#define WARM_UP_ALWAYS_SEC 2.0
 #define ESTIMATE_ROUND_TIME_N_RUNS 5
 #define DEFAULT_TEST_TIME 15 /* seconds */
  /* The time we want each round to take, in seconds, this should
@@ -34,6 +35,7 @@ static gboolean verbose = FALSE;
 static gboolean quiet = FALSE;
 static int test_length = DEFAULT_TEST_TIME;
 static double test_factor = 0;
+static GTimer *global_timer = NULL;
 
 static GOptionEntry cmd_entries[] = {
   {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
@@ -88,11 +90,43 @@ run_test (PerformanceTest *test)
   g_timer_start (timer);
 
   /* Warm up the test by doing a few runs */
-  for (i = 0; i < WARM_UP_N_RUNS; i++)
+  for (i = 0; TRUE; i++)
     {
       test->init (test, data, 1.0);
       test->run (test, data);
       test->finish (test, data);
+
+      if (test_factor > 0)
+        {
+          /* The caller specified a constant factor. That makes mostly
+           * sense, to ensure that the test run is independent from
+           * external factors. In this case, don't make warm up dependent
+           * on WARM_UP_ALWAYS_SEC. */
+        }
+      else if (global_timer)
+        {
+          if (g_timer_elapsed (global_timer, NULL) < WARM_UP_ALWAYS_SEC)
+            {
+              /* We always warm up for a certain time where we keep the
+               * CPU busy.
+               *
+               * Note that when we run multiple tests, then this is only
+               * performed once for the first test. */
+              continue;
+            }
+          g_clear_pointer (&global_timer, g_timer_destroy);
+        }
+
+      if (i >= WARM_UP_N_RUNS)
+        break;
+
+      if (test_factor == 0 && g_timer_elapsed (timer, NULL) > test_length / 10)
+        {
+          /* The warm up should not take longer than 10 % of the entire
+           * test run. Note that the warm up time for WARM_UP_ALWAYS_SEC
+           * already passed. */
+          break;
+        }
     }
 
   g_timer_stop (timer);
@@ -142,7 +176,7 @@ run_test (PerformanceTest *test)
 
   /* Run the test */
   avg_elapsed = 0.0;
-  min_elapsed = 0.0;
+  min_elapsed = 1e100;
   max_elapsed = 0.0;
   for (i = 0; i < num_rounds; i++)
     {
@@ -151,16 +185,18 @@ run_test (PerformanceTest *test)
       test->run (test, data);
       g_timer_stop (timer);
       test->finish (test, data);
+
+      if (i < num_rounds / 20)
+        {
+          /* The first 5% are additional warm up. Ignore. */
+          continue;
+        }
+
       elapsed = g_timer_elapsed (timer, NULL);
 
-      if (i == 0)
-	max_elapsed = min_elapsed = avg_elapsed = elapsed;
-      else
-        {
-          min_elapsed = MIN (min_elapsed, elapsed);
-          max_elapsed = MAX (max_elapsed, elapsed);
-          avg_elapsed += elapsed;
-        }
+      min_elapsed = MIN (min_elapsed, elapsed);
+      max_elapsed = MAX (max_elapsed, elapsed);
+      avg_elapsed += elapsed;
     }
 
   if (num_rounds > 1)
@@ -1583,6 +1619,8 @@ main (int   argc,
       return 1;
     }
 
+  global_timer = g_timer_new ();
+
   if (argc > 1)
     {
       for (i = 1; i < argc; i++)
@@ -1600,5 +1638,6 @@ main (int   argc,
     }
 
   g_option_context_free (context);
+  g_clear_pointer (&global_timer, g_timer_destroy);
   return 0;
 }
