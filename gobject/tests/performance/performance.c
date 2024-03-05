@@ -159,6 +159,7 @@ run_test (PerformanceTest *test)
     }
 
   /* Print the results */
+  g_print ("%s: ", test->name);
   test->print_result (test, data, min_elapsed);
 
   /* Tear down */
