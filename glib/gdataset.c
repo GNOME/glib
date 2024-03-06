@@ -135,27 +135,19 @@ static GDataset     *g_dataset_cached = NULL; /* should this be
 
 /* --- functions --- */
 
-#define DATALIST_LOCK_BIT 2
-
 G_ALWAYS_INLINE static inline GData *
 g_datalist_lock_and_get (GData **datalist)
 {
   guintptr ptr;
 
-  g_pointer_bit_lock_and_get ((void **) datalist, DATALIST_LOCK_BIT, &ptr);
+  g_pointer_bit_lock_and_get ((void **) datalist, _G_DATALIST_LOCK_BIT, &ptr);
   return G_DATALIST_CLEAN_POINTER (ptr);
-}
-
-static void
-g_datalist_unlock (GData **datalist)
-{
-  g_pointer_bit_unlock ((void **)datalist, DATALIST_LOCK_BIT);
 }
 
 static void
 g_datalist_unlock_and_set (GData **datalist, gpointer ptr)
 {
-  g_pointer_bit_unlock_and_set ((void **) datalist, DATALIST_LOCK_BIT, ptr, G_DATALIST_FLAGS_MASK_INTERNAL);
+  g_pointer_bit_unlock_and_set ((void **) datalist, _G_DATALIST_LOCK_BIT, ptr, G_DATALIST_FLAGS_MASK_INTERNAL);
 }
 
 static gboolean

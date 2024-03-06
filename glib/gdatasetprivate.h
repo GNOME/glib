@@ -38,6 +38,26 @@ G_BEGIN_DECLS
 #define G_DATALIST_GET_FLAGS(datalist)				\
   ((gsize) g_atomic_pointer_get (datalist) & G_DATALIST_FLAGS_MASK)
 
+#define _G_DATALIST_LOCK_BIT 2
+
+#define g_datalist_lock(datalist)                                   \
+  G_STMT_START                                                      \
+  {                                                                 \
+    GData **const _datalist = (datalist);                           \
+                                                                    \
+    g_pointer_bit_lock ((void **) _datalist, _G_DATALIST_LOCK_BIT); \
+  }                                                                 \
+  G_STMT_END
+
+#define g_datalist_unlock(datalist)                                   \
+  G_STMT_START                                                        \
+  {                                                                   \
+    GData **const _datalist = (datalist);                             \
+                                                                      \
+    g_pointer_bit_unlock ((void **) _datalist, _G_DATALIST_LOCK_BIT); \
+  }                                                                   \
+  G_STMT_END
+
 /*< private >
  * GDataListUpdateAtomicFunc:
  * @data: (inout) (nullable) (not optional): the existing data corresponding
