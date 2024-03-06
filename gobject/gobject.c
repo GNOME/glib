@@ -367,8 +367,7 @@ weak_ref_data_unlock (WeakRefData *wrdata)
 }
 
 static gpointer
-weak_ref_data_get_or_create_cb (GQuark key_id,
-                                gpointer *data,
+weak_ref_data_get_or_create_cb (gpointer *data,
                                 GDestroyNotify *destroy_notify,
                                 gpointer user_data)
 {

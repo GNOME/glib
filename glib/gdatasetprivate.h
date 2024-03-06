@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 
 /*< private >
  * GDataListUpdateAtomicFunc:
- * @key_id: ID of the entry to update
  * @data: (inout) (nullable) (not optional): the existing data corresponding
  *   to @key_id, and return location for the new value for it
  * @destroy_notify: (inout) (nullable) (not optional): the existing destroy
@@ -52,8 +51,7 @@ G_BEGIN_DECLS
  *
  * Since: 2.80
  */
-typedef gpointer (*GDataListUpdateAtomicFunc) (GQuark key_id,
-                                               gpointer *data,
+typedef gpointer (*GDataListUpdateAtomicFunc) (gpointer *data,
                                                GDestroyNotify *destroy_notify,
                                                gpointer user_data);
 
