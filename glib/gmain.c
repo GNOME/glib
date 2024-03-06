@@ -189,7 +189,7 @@ struct _GMainContext
   GHashTable *sources;              /* guint -> GSource */
 
   GPtrArray *pending_dispatches;
-  gint timeout;			/* Timeout for current iteration */
+  gint64 timeout_usec; /* Timeout for current iteration */
 
   guint next_id;
   GQueue source_lists;
@@ -322,7 +322,7 @@ static gboolean g_main_context_prepare_unlocked (GMainContext *context,
                                                  gint         *priority);
 static gint g_main_context_query_unlocked       (GMainContext *context,
                                                  gint          max_priority,
-                                                 gint         *timeout,
+                                                 gint64       *timeout_usec,
                                                  GPollFD      *fds,
                                                  gint          n_fds);
 static gboolean g_main_context_check_unlocked   (GMainContext *context,
@@ -331,7 +331,7 @@ static gboolean g_main_context_check_unlocked   (GMainContext *context,
                                                  gint          n_fds);
 static void g_main_context_dispatch_unlocked    (GMainContext *context);
 static void g_main_context_poll_unlocked        (GMainContext *context,
-                                                 int           timeout,
+                                                 gint64        timeout_usec,
                                                  int           priority,
                                                  GPollFD      *fds,
                                                  int           n_fds);
@@ -3633,6 +3633,45 @@ g_main_context_prepare (GMainContext *context,
   return ready;
 }
 
+static inline int
+round_timeout_to_msec (gint64 timeout_usec)
+{
+  /* We need to round to milliseconds from our internal microseconds for
+   * various external API and GPollFunc which requires milliseconds.
+   *
+   * However, we want to ensure a few invariants for this.
+   *
+   *   Return == -1 if we have no timeout specified
+   *   Return ==  0 if we don't want to block at all
+   *   Return  >  0 if we have any timeout to avoid spinning the CPU
+   *
+   * This does cause jitter if the microsecond timeout is < 1000 usec
+   * because that is beyond our precision. However, using ppoll() instead
+   * of poll() (when available) avoids this jitter.
+   */
+
+  if (timeout_usec == 0)
+    return 0;
+
+  if (timeout_usec > 0)
+    {
+      guint64 timeout_msec = (timeout_usec + 999) / 1000;
+
+      return (int) MIN (timeout_msec, G_MAXINT);
+    }
+
+  return -1;
+}
+
+static inline gint64
+extend_timeout_to_usec (int timeout_msec)
+{
+  if (timeout_msec >= 0)
+    return (gint64) timeout_msec * 1000;
+
+  return -1;
+}
+
 static gboolean
 g_main_context_prepare_unlocked (GMainContext *context,
                                  gint         *priority)
@@ -3676,12 +3715,12 @@ g_main_context_prepare_unlocked (GMainContext *context,
   
   /* Prepare all sources */
 
-  context->timeout = -1;
+  context->timeout_usec = -1;
   
   g_source_iter_init (&iter, context, TRUE);
   while (g_source_iter_next (&iter, &source))
     {
-      gint source_timeout = -1;
+      gint64 source_timeout_usec = -1;
 
       if (SOURCE_DESTROYED (source) || SOURCE_BLOCKED (source))
 	continue;
@@ -3699,14 +3738,17 @@ g_main_context_prepare_unlocked (GMainContext *context,
           if (prepare)
             {
               gint64 begin_time_nsec G_GNUC_UNUSED;
+              int source_timeout_msec = -1;
 
               context->in_check_or_prepare++;
               UNLOCK_CONTEXT (context);
 
               begin_time_nsec = G_TRACE_CURRENT_TIME;
 
-              result = (* prepare) (source, &source_timeout);
-              TRACE (GLIB_MAIN_AFTER_PREPARE (source, prepare, source_timeout));
+              result = (*prepare) (source, &source_timeout_msec);
+              TRACE (GLIB_MAIN_AFTER_PREPARE (source, prepare, source_timeout_msec));
+
+              source_timeout_usec = extend_timeout_to_usec (source_timeout_msec);
 
               g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
                             "GLib", "GSource.prepare",
@@ -3730,18 +3772,13 @@ g_main_context_prepare_unlocked (GMainContext *context,
 
               if (source->priv->ready_time <= context->time)
                 {
-                  source_timeout = 0;
+                  source_timeout_usec = 0;
                   result = TRUE;
                 }
-              else
+              else if (source_timeout_usec < 0 ||
+                       (source->priv->ready_time < context->time + source_timeout_usec))
                 {
-                  gint64 timeout;
-
-                  /* rounding down will lead to spinning, so always round up */
-                  timeout = (source->priv->ready_time - context->time + 999) / 1000;
-
-                  if (source_timeout < 0 || timeout < source_timeout)
-                    source_timeout = MIN (timeout, G_MAXINT);
+                  source_timeout_usec = MAX (0, source->priv->ready_time - context->time);
                 }
             }
 
@@ -3761,16 +3798,16 @@ g_main_context_prepare_unlocked (GMainContext *context,
 	{
 	  n_ready++;
 	  current_priority = source->priority;
-	  context->timeout = 0;
+	  context->timeout_usec = 0;
 	}
-      
-      if (source_timeout >= 0)
-	{
-	  if (context->timeout < 0)
-	    context->timeout = source_timeout;
-	  else
-	    context->timeout = MIN (context->timeout, source_timeout);
-	}
+
+      if (source_timeout_usec >= 0)
+        {
+          if (context->timeout_usec < 0)
+            context->timeout_usec = source_timeout_usec;
+          else
+            context->timeout_usec = MIN (context->timeout_usec, source_timeout_usec);
+        }
     }
   g_source_iter_clear (&iter);
 
@@ -3807,20 +3844,24 @@ g_main_context_prepare_unlocked (GMainContext *context,
 gint
 g_main_context_query (GMainContext *context,
 		      gint          max_priority,
-		      gint         *timeout,
+		      gint         *timeout_msec,
 		      GPollFD      *fds,
 		      gint          n_fds)
 {
+  gint64 timeout_usec;
   gint n_poll;
 
   if (context == NULL)
     context = g_main_context_default ();
-  
+
   LOCK_CONTEXT (context);
 
-  n_poll = g_main_context_query_unlocked (context, max_priority, timeout, fds, n_fds);
+  n_poll = g_main_context_query_unlocked (context, max_priority, &timeout_usec, fds, n_fds);
 
   UNLOCK_CONTEXT (context);
+
+  if (timeout_msec != NULL)
+    *timeout_msec = round_timeout_to_msec (timeout_usec);
 
   return n_poll;
 }
@@ -3828,7 +3869,7 @@ g_main_context_query (GMainContext *context,
 static gint
 g_main_context_query_unlocked (GMainContext *context,
                                gint          max_priority,
-                               gint         *timeout,
+                               gint64       *timeout_usec,
                                GPollFD      *fds,
                                gint          n_fds)
 {
@@ -3881,15 +3922,15 @@ g_main_context_query_unlocked (GMainContext *context,
     }
 
   context->poll_changed = FALSE;
-  
-  if (timeout)
+
+  if (timeout_usec)
     {
-      *timeout = context->timeout;
-      if (*timeout != 0)
+      *timeout_usec = context->timeout_usec;
+      if (*timeout_usec != 0)
         context->time_is_fresh = FALSE;
     }
 
-  TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->timeout,
+  TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->timeout_usec,
                                         fds, n_poll));
 
   return n_poll;
@@ -4163,7 +4204,7 @@ g_main_context_iterate_unlocked (GMainContext *context,
                                  GThread      *self)
 {
   gint max_priority = 0;
-  gint timeout;
+  gint64 timeout_usec;
   gboolean some_ready;
   gint nfds, allocated_nfds;
   GPollFD *fds = NULL;
@@ -4196,10 +4237,10 @@ g_main_context_iterate_unlocked (GMainContext *context,
   fds = context->cached_poll_array;
   
   g_main_context_prepare_unlocked (context, &max_priority);
-  
+
   while ((nfds = g_main_context_query_unlocked (
-            context, max_priority, &timeout, fds,
-            allocated_nfds)) > allocated_nfds)
+              context, max_priority, &timeout_usec, fds,
+              allocated_nfds)) > allocated_nfds)
     {
       g_free (fds);
       context->cached_poll_array_size = allocated_nfds = nfds;
@@ -4207,10 +4248,10 @@ g_main_context_iterate_unlocked (GMainContext *context,
     }
 
   if (!block)
-    timeout = 0;
-  
-  g_main_context_poll_unlocked (context, timeout, max_priority, fds, nfds);
-  
+    timeout_usec = 0;
+
+  g_main_context_poll_unlocked (context, timeout_usec, max_priority, fds, nfds);
+
   some_ready = g_main_context_check_unlocked (context, max_priority, fds, nfds);
   
   if (dispatch)
@@ -4489,7 +4530,7 @@ g_main_loop_get_context (GMainLoop *loop)
 /* HOLDS: context's lock */
 static void
 g_main_context_poll_unlocked (GMainContext *context,
-                              int           timeout,
+                              gint64        timeout_usec,
                               int           priority,
                               GPollFD      *fds,
                               int           n_fds)
@@ -4502,7 +4543,7 @@ g_main_context_poll_unlocked (GMainContext *context,
 
   GPollFunc poll_func;
 
-  if (n_fds || timeout != 0)
+  if (n_fds || timeout_usec != 0)
     {
       int ret, errsv;
 
@@ -4510,16 +4551,20 @@ g_main_context_poll_unlocked (GMainContext *context,
       poll_timer = NULL;
       if (_g_main_poll_debug)
 	{
-	  g_print ("polling context=%p n=%d timeout=%d\n",
-		   context, n_fds, timeout);
-	  poll_timer = g_timer_new ();
+          g_print ("polling context=%p n=%d timeout_usec=%"G_GINT64_FORMAT"\n",
+                   context, n_fds, timeout_usec);
+          poll_timer = g_timer_new ();
 	}
 #endif
       poll_func = context->poll_func;
 
-      UNLOCK_CONTEXT (context);
-      ret = (*poll_func) (fds, n_fds, timeout);
-      LOCK_CONTEXT (context);
+        {
+          int timeout_msec = round_timeout_to_msec (timeout_usec);
+
+          UNLOCK_CONTEXT (context);
+          ret = (*poll_func) (fds, n_fds, timeout_msec);
+          LOCK_CONTEXT (context);
+        }
 
       errsv = errno;
       if (ret < 0 && errsv != EINTR)
@@ -4535,11 +4580,11 @@ g_main_context_poll_unlocked (GMainContext *context,
 #ifdef	G_MAIN_POLL_DEBUG
       if (_g_main_poll_debug)
 	{
-	  g_print ("g_main_poll(%d) timeout: %d - elapsed %12.10f seconds",
-		   n_fds,
-		   timeout,
-		   g_timer_elapsed (poll_timer, NULL));
-	  g_timer_destroy (poll_timer);
+          g_print ("g_main_poll(%d) timeout_usec: %"G_GINT64_FORMAT" - elapsed %12.10f seconds",
+                   n_fds,
+                   timeout_usec,
+                   g_timer_elapsed (poll_timer, NULL));
+          g_timer_destroy (poll_timer);
 	  pollrec = context->poll_records;
 
 	  while (pollrec != NULL)
@@ -4573,7 +4618,7 @@ g_main_context_poll_unlocked (GMainContext *context,
 	  g_print ("\n");
 	}
 #endif
-    } /* if (n_fds || timeout != 0) */
+    } /* if (n_fds || timeout_usec != 0) */
 }
 
 /**
