@@ -234,10 +234,11 @@ static GQuark	            quark_weak_locations = 0;
 
 static gpointer (*_local_g_datalist_id_update_atomic) (GData **datalist,
                                                        GQuark key_id,
+                                                       gboolean already_locked,
                                                        GDataListUpdateAtomicFunc callback,
                                                        gpointer user_data) = NULL;
-#undef _g_datalist_id_update_atomic
-#define _g_datalist_id_update_atomic(...) ((_local_g_datalist_id_update_atomic) (__VA_ARGS__))
+#undef _g_datalist_id_update_atomic_full
+#define _g_datalist_id_update_atomic_full(...) ((_local_g_datalist_id_update_atomic) (__VA_ARGS__))
 
 #if HAVE_PRIVATE
 G_ALWAYS_INLINE static inline GObjectPrivate *
