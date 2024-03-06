@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-03-01 12:22+0000\n"
-"PO-Revision-Date: 2024-03-01 20:35+0330\n"
+"POT-Creation-Date: 2024-03-01 17:06+0000\n"
+"PO-Revision-Date: 2024-03-07 01:06+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -745,7 +745,7 @@ msgstr "شی در مسیر «%s» وجود ندارد"
 #: gio/gdbusmessage.c:1351
 #, c-format
 msgid "%s message: %s header field is invalid; expected a value of type ‘%s’"
-msgstr ""
+msgstr "پیام %s: زمینهٔ سرایند %s نامعتبر است . انتظار مقداری از گونهٔ «%s» می‌رفت"
 
 #: gio/gdbusmessage.c:1374
 #, c-format
@@ -755,7 +755,7 @@ msgstr "پیام %s: زمینهٔ سرایند %s وجود نداشته یا ن�
 #: gio/gdbusmessage.c:1413
 #, c-format
 msgid "%s message: INVALID header field supplied"
-msgstr ""
+msgstr "پیام %s: زمینهٔ سرایند نامعتبر داده شده"
 
 #: gio/gdbusmessage.c:1424
 #, c-format
@@ -836,7 +836,9 @@ msgid ""
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
+"مواجهه با آرایه به درازای %Iu بایت. بیشینهٔ درازا ۲<<۲۶ بایت (۶۴ می‌ب) است."
 msgstr[1] ""
+"مواجهه با آرایه به درازای %Iu بایت. بیشینهٔ درازا ۲<<۲۶ بایت (۶۴ می‌ب) است."
 
 #: gio/gdbusmessage.c:1941
 #, c-format
@@ -844,21 +846,23 @@ msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
 "bytes, but found to be %u bytes in length"
 msgstr ""
+"مواجهه با آرایه از گونهٔ «a%c». انتظار درازایی از مضرب %Iu بایت می‌رفت؛ ولی %Iu "
+"بایت پیدا شد"
 
 #: gio/gdbusmessage.c:2095 gio/gdbusmessage.c:2822
 msgid "Empty structures (tuples) are not allowed in D-Bus"
-msgstr ""
+msgstr "ساختارهای خالی (تاپل‌ها) در دی‌باس مجاز نیستند"
 
 #: gio/gdbusmessage.c:2149
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
-msgstr ""
+msgstr "مقدار تجزیه شدهٔ «%s» برای دگرگونه، امضای دی‌باس معتبری نیست"
 
 #: gio/gdbusmessage.c:2190
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
-msgstr ""
+msgstr "خطا در نامرتّب کردن GVariant با رشتهٔ گونهٔ %s از قالب سیم دی‌باس"
 
 #: gio/gdbusmessage.c:2375
 #, c-format
@@ -866,66 +870,68 @@ msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
 msgstr ""
+"مقدار پایان‌پذیری نامعتبر. انتظار 0x6c (“l”) یا 0x42 (“B”) می‌رفت، ولی مقدار "
+"0x%02x پیدا شد"
 
 #: gio/gdbusmessage.c:2394
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
-msgstr ""
+msgstr "نگارش شیوه‌نامهٔ اصلی نامعتبر. انتظار ۱ می‌رفت؛ ولی %Id پیدا شد"
 
 #: gio/gdbusmessage.c:2452 gio/gdbusmessage.c:3058
 msgid "Signature header found but is not of type signature"
-msgstr ""
+msgstr "سرایند امضا پیدا شد ولی از گونهٔ امضا نیست"
 
 #: gio/gdbusmessage.c:2464
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
-msgstr ""
+msgstr "سرایند امضا با امضای «%s» پیدا شد ولی بدنهٔ پیام خالیست"
 
 #: gio/gdbusmessage.c:2479
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
-msgstr ""
+msgstr "مقدار تجزیه شدهٔ «%s» امضای دی‌باس معتبری (برای بدنه) نیست"
 
 #: gio/gdbusmessage.c:2519
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "سرایند امضایی در پیام نیست ولی بدنهٔ پیام %Iu بایت است"
+msgstr[1] "سرایند امضایی در پیام نیست ولی بدنهٔ پیام %Iu بایت است"
 
 #: gio/gdbusmessage.c:2529
 msgid "Cannot deserialize message: "
-msgstr ""
+msgstr "نمی‌توان پیام را نامرتّب کرد: "
 
 #: gio/gdbusmessage.c:2875
 #, c-format
 msgid "Error serializing GVariant with type string “%s” to the D-Bus wire format"
-msgstr ""
+msgstr "خطا در مرتّب کردن GVariant با رشتهٔ گونهٔ %s از قالب سیم دی‌باس"
 
 #: gio/gdbusmessage.c:3012
 #, c-format
 msgid "Number of file descriptors in message (%d) differs from header field (%d)"
-msgstr ""
+msgstr "تعداد توصیفگرهای پرونده در پیام (%Id) با زمینهٔ سرایند (%Id) متفاوت است"
 
 #: gio/gdbusmessage.c:3020
 msgid "Cannot serialize message: "
-msgstr ""
+msgstr "نمی‌توان پیام را مرتّب کرد: "
 
 #: gio/gdbusmessage.c:3073
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
-msgstr ""
+msgstr "بدنهٔ پیام امضای %s را دارد ولی هیچ سرایند امضایی وجود ندارد"
 
 #: gio/gdbusmessage.c:3083
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is “%s”"
-msgstr ""
+msgstr "بدنهٔ پیام امضای گونهٔ %s را دارد ولی امضا در زمینهٔ سرایند %s است"
 
 #: gio/gdbusmessage.c:3099
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
-msgstr ""
+msgstr "بدنهٔ پیام خالیست ولی امضا در زمینهٔ سرایند «(%s)» است"
 
 #: gio/gdbusmessage.c:3673
 #, c-format
@@ -973,6 +979,8 @@ msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
+"نمی‌توان روش را فراخوانی کرد. پیشکار برای نام شناخته شدهٔ %s بدون مالک بوده و "
+"پیشکار با پرچم G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START ساخته شده"
 
 #: gio/gdbusserver.c:739
 msgid "Abstract namespace not supported"
@@ -980,7 +988,7 @@ msgstr "فضانام انتزاعی پشتیبانی نمی‌شود"
 
 #: gio/gdbusserver.c:831
 msgid "Cannot specify nonce file when creating a server"
-msgstr ""
+msgstr "نمی‌توان هنگام ایجاد کارساز پروندهٔ nonce را مشخّص کرد"
 
 #: gio/gdbusserver.c:913
 #, c-format
@@ -1010,6 +1018,15 @@ msgid ""
 "\n"
 "Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
+"فرمان‌ها:\n"
+"  help         نمایش این اطّلاعات\n"
+"  introspect   درون‌نگری شی‌ای دوردست\n"
+"  monitor      پایش شی‌ای دوردست\n"
+"  call         فراخوانی روشی روی شی‌ای دوردست\n"
+"  emit         ساطع کردن علامت\n"
+"  wait         انتظار برای ظهور نام گذرگاه\n"
+"\n"
+"برای گرفتن راهنمایی دربارهٔ هر فرمان از ‪%s COMMAND --help‬ استفاده کنید.\n"
 
 #: gio/gdbus-tool.c:204 gio/gdbus-tool.c:276 gio/gdbus-tool.c:347
 #: gio/gdbus-tool.c:371 gio/gdbus-tool.c:861 gio/gdbus-tool.c:1246
@@ -1381,7 +1398,7 @@ msgstr "برای GEmblemedIcon انتظار GEmblem می‌رفت"
 #.
 #: gio/gfile.c:1604
 msgid "Containing mount does not exist"
-msgstr ""
+msgstr "سوار کردن داده شده وجود ندارد"
 
 #: gio/gfile.c:2650 gio/glocalfile.c:2520
 msgid "Can’t copy over directory"
@@ -1415,15 +1432,15 @@ msgstr "اتصال پشتیبانی نمی‌شود"
 
 #: gio/gfile.c:3327
 msgid "Copy (reflink/clone) between mounts is not supported"
-msgstr ""
+msgstr "رونوشت (پیوند مرجع یا شبیه‌سازی) بین سوار شده‌ها پشتیبانی نمی‌شود"
 
 #: gio/gfile.c:3331
 msgid "Copy (reflink/clone) is not supported or invalid"
-msgstr ""
+msgstr "رونوشت (پیوند مرجع یا شبیه‌سازی) پشتیبانی نشده یا نامعتبر است"
 
 #: gio/gfile.c:3336
 msgid "Copy (reflink/clone) is not supported or didn’t work"
-msgstr ""
+msgstr "رونوشت (پیوند مرجع یا شبیه‌سازی) پشتیبانی نشده یا کار نکرد"
 
 #: gio/gfile.c:3384 gio/gfile.c:3395
 #, c-format
@@ -1732,6 +1749,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
+"فرمان gio cat درست مثل ابزار cat سنّتی عمل می‌کند، ولی به جای\n"
+"پرونده‌های محلّی از مکان‌های GIO استفاده می‌کند. برای نمونه می‌توانید\n"
+"از چیزی چون ‪smb://server/resource/file.txt‬ به عنوان مکان استفاده کنید."
 
 #: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:414 gio/gio-tool-mkdir.c:78
 #: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1287 gio/gio-tool-open.c:98
@@ -1796,6 +1816,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
+"فرمان gio copy درست مثل ابزار cp سنّتی عمل می‌کند، ولی به جای\n"
+"پرونده‌های محلّی از مکان‌های GIO استفاده می‌کند. برای نمونه می‌توانید\n"
+"از چیزی چون ‪smb://server/resource/file.txt‬ به عنوان مکان استفاده کنید."
 
 #: gio/gio-tool-copy.c:153
 #, c-format
@@ -1874,7 +1897,7 @@ msgstr "مسیر محلی: %s\n"
 #: gio/gio-tool-info.c:248
 #, c-format
 msgid "unix mount: %s%s %s %s %s\n"
-msgstr ""
+msgstr "سوار کردن یونیکس: %s%s %s %s %s\n"
 
 #: gio/gio-tool-info.c:329
 msgid "Settable attributes:\n"
@@ -1896,6 +1919,11 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
 "namespace, e.g. unix, or by “*”, which matches all attributes"
 msgstr ""
+"فرمان gio info درست مثل ابزار ls سنّتی عمل می‌کند، ولی به جای\n"
+"پرونده‌های محلّی از مکان‌های GIO استفاده می‌کند. برای نمونه می‌توانید\n"
+"از چیزی چون ‪smb://server/resource/file.txt‬ به عنوان مکان استفاده کنید.\n"
+"ویژگی‌های پرونده می‌توانند با نام GIOشان چون standard::icon یا تنها با\n"
+"فضانام چون unix یا با «*» که با همهٔ ویژگی‌ها منطبق است مشخّص شوند"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-launch.c:56
@@ -1958,6 +1986,10 @@ msgid ""
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon"
 msgstr ""
+"فرمان gio list درست مثل ابزار ls سنّتی عمل می‌کند، ولی به جای\n"
+"پرونده‌های محلّی از مکان‌های GIO استفاده می‌کند. برای نمونه می‌توانید\n"
+"از چیزی چون ‪smb://server/resource/file.txt‬ به عنوان مکان استفاده کنید.\n"
+"ویژگی‌های پرونده مي‌توانند با نام GIOشان چون standard::icon مشخّص شوند"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-mime.c:73
@@ -1978,6 +2010,9 @@ msgid ""
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
 msgstr ""
+"اگر مدیری داده نشود، برنامه‌های توصیه شده و ثبت شده برای\n"
+"گونهٔ mime را سیاهه می‌کند. اگر مدیر داده شود، به عنوان\n"
+"مدیر پیش‌گزیدهٔ گونهٔ mime تنظیم شده است."
 
 #: gio/gio-tool-mime.c:102
 msgid "Must specify a single mimetype, and maybe a handler"
@@ -2033,6 +2068,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/mydir as location."
 msgstr ""
+"فرمان gio mkdir درست مثل ابزار mkdir سنّتی عمل می‌کند، ولی به جای\n"
+"پرونده‌های محلّی از مکان‌های GIO استفاده می‌کند. برای نمونه می‌توانید\n"
+"از چیزی چون ‪smb://server/resource/file.txt‬ به عنوان مکان استفاده کنید."
 
 #: gio/gio-tool-monitor.c:39
 msgid "Monitor a directory (default: depends on type)"
@@ -2056,7 +2094,7 @@ msgstr "گزارش جابه‌جایی‌ها و تغییر نام‌ها به �
 
 #: gio/gio-tool-monitor.c:49
 msgid "Watch for mount events"
-msgstr ""
+msgstr "رصد برای رویدادهای سوار کردن"
 
 #: gio/gio-tool-monitor.c:211
 msgid "Monitor files or directories for changes."
@@ -2092,7 +2130,7 @@ msgstr "DEVICE"
 
 #: gio/gio-tool-mount.c:70
 msgid "Unmount all mounts with the given scheme"
-msgstr ""
+msgstr "پیاده کردن همهٔ سوار کردن‌ها با طرحوارهٔ داده شده"
 
 #: gio/gio-tool-mount.c:70
 msgid "SCHEME"
@@ -2100,7 +2138,7 @@ msgstr "SCHEME"
 
 #: gio/gio-tool-mount.c:71
 msgid "Ignore outstanding file operations when unmounting or ejecting"
-msgstr ""
+msgstr "چشم‌پوشی از عملیات برحستهٔ پرونده هنگام پیاده کردن یا بیرون دادن"
 
 #: gio/gio-tool-mount.c:72
 msgid "Use an anonymous user when authenticating"
@@ -2121,7 +2159,7 @@ msgstr "نمایش اطَلاعات اضافی"
 
 #: gio/gio-tool-mount.c:77
 msgid "The numeric PIM when unlocking a VeraCrypt volume"
-msgstr ""
+msgstr "مقدار PIM عددی هنگام قفل‌گشایی یک حجم VeraCrypt"
 
 #: gio/gio-tool-mount.c:77
 msgid "PIM"
@@ -2335,6 +2373,8 @@ msgid ""
 "Note: for --restore switch, if the original location of the trashed file \n"
 "already exists, it will not be overwritten unless --force is set."
 msgstr ""
+"یادداشت: برای گزینهٔ ‪--restore‬ اگر مکان اصلی پروندهٔ زباله شده از پیش\n"
+"موجود باشد، تا وقتی ‪--force‬ تنظیم نشده باشد پایمال نخواهد شد."
 
 #: gio/gio-tool-trash.c:260
 msgid "Location given doesn't start with trash:///"
@@ -2453,7 +2493,7 @@ msgstr "عدم ایجاد خودکار و ثبت منبع"
 
 #: gio/glib-compile-resources.c:831
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
-msgstr ""
+msgstr "تابع‌ها را برون‌ریزی نکنید. به صورت G_GNUC_INTERNAL تعریفشان کنید"
 
 #: gio/glib-compile-resources.c:832
 msgid ""
@@ -2478,6 +2518,9 @@ msgid ""
 "Resource specification files have the extension .gresource.xml,\n"
 "and the resource file have the extension called .gresource."
 msgstr ""
+"ترجمهٔ مشخّصهٔ منبع در یک پروندهٔ منبع.\n"
+"پرونده‌های مشخّصهٔ منبع پسوند ‪.gresource.xml‬ داشته\n"
+"و پروندهٔ منبع پسوندی با نام ‪.gresource‬ دارد."
 
 #: gio/glib-compile-resources.c:893
 msgid "You should give exactly one file name\n"
@@ -2521,12 +2564,12 @@ msgstr "«%s» در بازهٔ مشخّص شده موجود نیست"
 #: gio/glib-compile-schemas.c:329
 #, c-format
 msgid "<%s> is not a valid member of the specified enumerated type"
-msgstr ""
+msgstr "<%s> عضوی معتبر از گونهٔ شمارشی مشخّص شده نیست"
 
 #: gio/glib-compile-schemas.c:335
 #, c-format
 msgid "<%s> contains string not in the specified flags type"
-msgstr ""
+msgstr "<%s> رشته‌ای دارد که در گونهٔ پرچم مشخّص شده نیست"
 
 #: gio/glib-compile-schemas.c:341
 #, c-format
@@ -2540,12 +2583,12 @@ msgstr "<range/> از پیش برای این کلید مشخّص شده"
 #: gio/glib-compile-schemas.c:393
 #, c-format
 msgid "<range> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<range> برای کلیدهایی از گونهٔ «%s» مجاز نیست"
 
 #: gio/glib-compile-schemas.c:410
 #, c-format
 msgid "<range> specified minimum is greater than maximum"
-msgstr ""
+msgstr "کمینهٔ مشخّص شدهٔ <range> بزرگ‌تر از بیشینه است"
 
 #: gio/glib-compile-schemas.c:435
 #, c-format
@@ -2705,7 +2748,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1060
 #, c-format
 msgid "No <key name='%s'> to override"
-msgstr ""
+msgstr "بدون <key name='%s'> برای پایمالی"
 
 #: gio/glib-compile-schemas.c:1068
 #, c-format
@@ -2900,6 +2943,9 @@ msgid ""
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
+"ترجمهٔ همهٔ پرونده‌های طرحوارهٔ GSettings در یک انبارهٔ طرحواره.\n"
+"پرونده‌های طرحواره پسوند ‪.gschema.xml‬ داشته\n"
+"و پروندهٔ انباره پسوندی با نام ‪.gschemas‬ دارد."
 
 #: gio/glib-compile-schemas.c:2238
 msgid "You should give exactly one directory name"
@@ -2930,7 +2976,7 @@ msgstr "خطا در گرفتن اطّلاعات سامانه‌پرونده‌ �
 #: gio/glocalfile.c:1150
 #, c-format
 msgid "Containing mount for file %s not found"
-msgstr ""
+msgstr "سوار کردن داده شده برای پروندهٔ %s پیدا نشد"
 
 #: gio/glocalfile.c:1173
 msgid "Can’t rename root directory"
@@ -2978,7 +3024,7 @@ msgstr "ناتوان در یافتن شاخهٔ سطح بالا برای دور 
 #: gio/glocalfile.c:2096
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
-msgstr ""
+msgstr "زباله اندازی روی سوار شده‌های درونی سامانه پشتیبانی نمی‌شود"
 
 #: gio/glocalfile.c:2182 gio/glocalfile.c:2210
 #, c-format
@@ -3042,7 +3088,7 @@ msgstr "خطا در هنگام حذف پرونده هدف: %s"
 
 #: gio/glocalfile.c:2574
 msgid "Move between mounts not supported"
-msgstr ""
+msgstr "جابه‌جایی بین سوار شده‌ها پشتیبانی نمی‌شود"
 
 #: gio/glocalfile.c:2750
 #, c-format
