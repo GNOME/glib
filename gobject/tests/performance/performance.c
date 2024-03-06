@@ -1307,6 +1307,21 @@ test_refcount_run (PerformanceTest *test,
 }
 
 static void
+test_refcount_1_run (PerformanceTest *test,
+                     gpointer _data)
+{
+  struct RefcountTest *data = _data;
+  GObject *object = data->object;
+  int i;
+
+  for (i = 0; i < data->n_checks; i++)
+    {
+      g_object_ref (object);
+      g_object_unref (object);
+    }
+}
+
+static void
 test_refcount_finish (PerformanceTest *test,
                       gpointer _data)
 {
@@ -1576,7 +1591,17 @@ static PerformanceTest tests[] = {
     test_refcount_finish,
     test_refcount_teardown,
     test_refcount_print_result
-  }
+  },
+  {
+    "refcount-1",
+    NULL,
+    test_refcount_setup,
+    test_refcount_init,
+    test_refcount_1_run,
+    test_refcount_finish,
+    test_refcount_teardown,
+    test_refcount_print_result
+  },
 };
 
 static PerformanceTest *
