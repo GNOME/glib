@@ -69,6 +69,10 @@
 #include <errno.h>
 #include <string.h>
 
+#ifdef HAVE_POLL_H
+#include <poll.h>
+#endif
+
 #ifdef HAVE_PIDFD
 #include <sys/syscall.h>
 #include <sys/wait.h>
@@ -4558,6 +4562,25 @@ g_main_context_poll_unlocked (GMainContext *context,
 #endif
       poll_func = context->poll_func;
 
+#if defined(HAVE_PPOLL) && defined(HAVE_POLL)
+      if (poll_func == g_poll)
+        {
+          struct timespec spec;
+          struct timespec *spec_p = NULL;
+
+          if (timeout_usec > -1)
+            {
+              spec.tv_sec = timeout_usec / G_USEC_PER_SEC;
+              spec.tv_nsec = (timeout_usec % G_USEC_PER_SEC) * 1000L;
+              spec_p = &spec;
+            }
+
+          UNLOCK_CONTEXT (context);
+          ret = ppoll ((struct pollfd *) fds, n_fds, spec_p, NULL);
+          LOCK_CONTEXT (context);
+        }
+      else
+#endif
         {
           int timeout_msec = round_timeout_to_msec (timeout_usec);
 
