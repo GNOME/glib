@@ -31,6 +31,21 @@ frequently happens at the end of an object class' creation), while user
 provided handlers are frequently connected and disconnected to/from a
 certain signal on certain object instances.
 
+A handler must match the type defined by the signal in both its arguments and
+return value (which is often `void`). All handlers take a pointer to the type
+instance as their first argument, and a `gpointer user_data` as their final
+argument, with signal-defined arguments in-between. The `user_data` is always
+filled with the user data provided when the handler was connected to the signal.
+Handlers are documented as having type [type@GObject.Callback], but this is
+simply a generic placeholder type — an artifact of the GSignal APIs being
+polymorphic.
+
+When a signal handler is connected, its first (‘instance’) and final (‘user
+data’) arguments may be swapped if [func@GObject.signal_connect_swapped] is used
+rather than [func@GObject.signal_connect]. This can sometimes be convenient for
+avoiding defining wrapper functions as signal handlers, instead just directly
+passing a function which takes the user data as its first argument.
+
 ## Emissions
 
 A signal emission consists of five stages, unless prematurely stopped:
