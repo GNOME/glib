@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-24 23:47+0600\n"
+"POT-Creation-Date: 2024-03-01 12:22+0000\n"
+"PO-Revision-Date: 2024-03-06 08:00+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -53,7 +53,6 @@ msgid "Override the application’s ID"
 msgstr ""
 
 #: gio/gapplication.c:575
-#| msgid "List applications"
 msgid "Print the application version"
 msgstr "Қолданба нұсқасын басып шығару"
 
@@ -123,7 +122,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "КОМАНДА"
 
@@ -135,9 +134,13 @@ msgstr ""
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "ФАЙЛ"
 
@@ -1027,6 +1030,10 @@ msgstr ""
 msgid "Connect to given D-Bus address"
 msgstr ""
 
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr ""
+
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
 msgstr ""
@@ -1405,7 +1412,6 @@ msgstr ""
 
 #: gio/gfile.c:3384 gio/gfile.c:3395
 #, c-format
-#| msgid "Error setting attribute: %s\n"
 msgid "Cannot retrieve attribute %s"
 msgstr ""
 
@@ -1417,7 +1423,7 @@ msgstr "Арнайы файлды көшіру мүмкін емес"
 msgid "Invalid symlink value given"
 msgstr ""
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Символдық сілтемелерге қолдау жоқ"
 
@@ -2396,7 +2402,8 @@ msgid ""
 msgstr ""
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "БУМА"
 
@@ -2441,6 +2448,10 @@ msgstr ""
 
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
+msgstr ""
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
 msgstr ""
 
 #: gio/glib-compile-resources.c:834
@@ -4261,6 +4272,158 @@ msgstr ""
 msgid "Wrong args\n"
 msgstr ""
 
+#: girepository/compiler/compiler.c:93
+#, c-format
+#| msgid "Failed to open file “%s”: %s"
+msgid "Failed to open ‘%s’: %s"
+msgstr ""
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+msgid "Error: Could not write the whole output: %s"
+msgstr ""
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+#| msgid "Failed to create file “%s”: %s"
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr ""
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
+msgid "Include directories in GIR search path"
+msgstr ""
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
+msgid "Output file"
+msgstr ""
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr ""
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr ""
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr ""
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
+msgid "Show program’s version number and exit"
+msgstr ""
+
+#: girepository/compiler/compiler.c:175
+#, c-format
+#| msgid "Error removing target file: %s"
+msgid "Error parsing arguments: %s"
+msgstr ""
+
+#: girepository/compiler/compiler.c:202
+msgid "Please specify exactly one input file"
+msgstr ""
+
+#: girepository/compiler/compiler.c:218
+#, c-format
+#| msgid "Error opening file “%s”: %s"
+msgid "Error parsing file ‘%s’: %s"
+msgstr ""
+
+#: girepository/compiler/compiler.c:243
+#, c-format
+#| msgid "Failed to open file “%s”: %s"
+msgid "Failed to build typelib for module ‘%s’"
+msgstr ""
+
+#: girepository/compiler/compiler.c:245
+#, c-format
+#| msgid "Unable to load ‘%s‘: %s"
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr ""
+
+#: girepository/decompiler/decompiler.c:54
+#| msgid "Show extra information"
+msgid "Show all available information"
+msgstr "Барлық қол жетімді ақпаратты көрсету"
+
+#: girepository/decompiler/decompiler.c:71
+#, c-format
+#| msgid "Failed to open file “%s”: %s"
+msgid "Failed to parse: %s"
+msgstr ""
+
+#: girepository/decompiler/decompiler.c:87
+#| msgid "Show hidden files"
+msgid "No input files"
+msgstr "Енгізу файлдары жоқ"
+
+#: girepository/decompiler/decompiler.c:113
+#, c-format
+#| msgid "Failed to create file “%s”: %s"
+msgid "Failed to read ‘%s’: %s"
+msgstr ""
+
+#: girepository/decompiler/decompiler.c:125
+#, c-format
+#| msgid "Failed to create file “%s”: %s"
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr ""
+
+#: girepository/decompiler/decompiler.c:129
+#: girepository/inspector/inspector.c:113
+#, c-format
+#| msgid "Failed to allocate memory"
+msgid "Failed to load typelib: %s"
+msgstr ""
+
+#: girepository/decompiler/decompiler.c:136
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr ""
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr ""
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "НҰСҚА"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr ""
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr ""
+
+#: girepository/inspector/inspector.c:75
+msgid "The typelib to inspect"
+msgstr ""
+
+#: girepository/inspector/inspector.c:75
+#| msgid "NAME"
+msgid "NAMESPACE"
+msgstr ""
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr ""
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+#| msgid "Failed to read from file “%s”: %s"
+msgid "Failed to parse command line options: %s"
+msgstr ""
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr ""
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr ""
+
 #: glib/gbookmarkfile.c:816
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
@@ -4801,84 +4964,86 @@ msgstr "PM"
 msgid "Error opening directory “%s”: %s"
 msgstr "\"%s\" бумасын ашу қатесі: %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
-#| msgid "Could not connect: "
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] ""
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#, c-format
+#| msgid "Failed to read from file “%s”: %s"
+msgid "Could not allocate %s to read file “%s”"
+msgstr ""
 
-#: glib/gfileutils.c:733
+#: glib/gfileutils.c:738
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "\"%s\" файлын оқу қатесі: %s"
 
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
 #, c-format
 msgid "File “%s” is too large"
 msgstr "\"%s\" файлы тым үлкен"
 
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "\"%s\" файлынан оқу қатесі: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "\"%s\" файлын ашу қатесі: %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1149
 #, c-format
-#| msgid "Failed to write file “%s”: write() failed: %s"
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "\"%s\" файлын жазу сәтсіз: write() сәтсіз аяқталды: %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "\"%s\" файлын жазу сәтсіз: fsync() сәтсіз аяқталды: %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "\"%s\" файлын жасау сәтсіз: %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr ""
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr ""
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr ""
