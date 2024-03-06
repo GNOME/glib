@@ -19,8 +19,8 @@ that is inherited.
 A signal emission mainly involves invocation of a certain set of
 callbacks in precisely defined manner. There are two main categories
 of such callbacks, per-object ones and user provided ones.
-(Although signals can deal with any kind of instantiatable type, I'm
-referring to those types as "object types" in the following, simply
+(Although signals can deal with any kind of instantiatable type, those types are
+referred to as ‘object types’ in the following, simply
 because that is the context most users will encounter signals in.)
 The per-object callbacks are most often referred to as "object method
 handler" or "default (signal) handler", while user provided callbacks are
