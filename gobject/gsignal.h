@@ -508,7 +508,10 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * See [memory management of signal handlers](signals.html#Memory_management_of_signal_handlers) for
  * details on how to handle the return value and memory management of @data.
  * 
- * Returns: the handler ID, of type #gulong (always greater than 0 for successful connections)
+ * This function cannot fail. If the given signal doesn’t exist, a critical
+ * warning is emitted.
+ *
+ * Returns: the handler ID, of type `gulong` (always greater than 0)
  */
 /* Intentionally not using G_CONNECT_DEFAULT here to avoid deprecation
  * warnings with older GLIB_VERSION_MAX_ALLOWED */
@@ -525,7 +528,10 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * 
  * The handler will be called synchronously, after the default handler of the signal.
  * 
- * Returns: the handler ID, of type #gulong (always greater than 0 for successful connections)
+ * This function cannot fail. If the given signal doesn’t exist, a critical
+ * warning is emitted.
+ *
+ * Returns: the handler ID, of type `gulong` (always greater than 0)
  */
 #define g_signal_connect_after(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_AFTER)
@@ -563,7 +569,10 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  *                   (GCallback) button_clicked_cb, other_widget);
  * ]|
  * 
- * Returns: the handler ID, of type #gulong (always greater than 0 for successful connections)
+ * This function cannot fail. If the given signal doesn’t exist, a critical
+ * warning is emitted.
+ *
+ * Returns: the handler ID, of type `gulong` (always greater than 0)
  */
 #define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_SWAPPED)
