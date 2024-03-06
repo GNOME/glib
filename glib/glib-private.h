@@ -305,6 +305,7 @@ typedef struct {
 
   gpointer (*g_datalist_id_update_atomic) (GData **datalist,
                                            GQuark key_id,
+                                           gboolean already_locked,
                                            GDataListUpdateAtomicFunc callback,
                                            gpointer user_data);
 
@@ -345,7 +346,10 @@ guint g_uint_hash (gconstpointer v);
 #endif
 
 /* Convenience wrapper to call private g_datalist_id_update_atomic() function. */
+#define _g_datalist_id_update_atomic_full(datalist, key_id, already_locked, callback, user_data) \
+  (GLIB_PRIVATE_CALL (g_datalist_id_update_atomic) ((datalist), (key_id), (already_locked), (callback), (user_data)))
+
 #define _g_datalist_id_update_atomic(datalist, key_id, callback, user_data) \
-  (GLIB_PRIVATE_CALL (g_datalist_id_update_atomic) ((datalist), (key_id), (callback), (user_data)))
+  _g_datalist_id_update_atomic_full ((datalist), (key_id), FALSE, (callback), (user_data))
 
 #endif /* __GLIB_PRIVATE_H__ */

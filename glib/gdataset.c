@@ -1062,6 +1062,7 @@ g_datalist_id_remove_no_notify (GData	**datalist,
  * g_datalist_id_update_atomic:
  * @datalist: the data list
  * @key_id: the key to add.
+ * @already_locked: whether the GData lock is already held.
  * @callback: (scope call): callback to update (set, remove, steal, update) the
  *   data.
  * @user_data: the user data for @callback.
@@ -1084,11 +1085,21 @@ g_datalist_id_remove_no_notify (GData	**datalist,
  * value of the function. This is an alternative to returning a result via
  * @user_data.
  *
+ * If @already_locked is TRUE, the caller previously already called
+ * g_datalist_lock(). In that case, g_datalist_id_update_atomic() assumes it
+ * already holds the lock and does not take the lock again. Note that in any
+ * case, at the end g_datalist_id_update_atomic() will always unlock the GData.
+ * This asymmetry is here, because update may reallocate the buffer and it is
+ * more efficient to do when releasing the lock. The few callers that set
+ * @already_locked to TRUE are fine with this asymmetry and anyway want to
+ * unlock afterwards.
+ *
  * Returns: the value returned by @callback.
  */
 gpointer
 g_datalist_id_update_atomic (GData **datalist,
                              GQuark key_id,
+                             gboolean already_locked,
                              GDataListUpdateAtomicFunc callback,
                              gpointer user_data)
 {
@@ -1102,7 +1113,14 @@ g_datalist_id_update_atomic (GData **datalist,
   g_return_val_if_fail (datalist, NULL);
   g_return_val_if_fail (key_id != 0, NULL);
 
-  d = g_datalist_lock_and_get (datalist);
+  if (G_UNLIKELY (already_locked))
+    {
+      d = G_DATALIST_GET_POINTER (datalist);
+    }
+  else
+    {
+      d = g_datalist_lock_and_get (datalist);
+    }
 
   data = datalist_find (d, key_id, &idx);
 
