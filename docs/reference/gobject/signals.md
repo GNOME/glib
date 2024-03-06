@@ -14,6 +14,8 @@ through strings. Signals introduced for a parent type are available
 in derived types as well, so basically they are a per-type facility
 that is inherited.
 
+## Handlers
+
 A signal emission mainly involves invocation of a certain set of
 callbacks in precisely defined manner. There are two main categories
 of such callbacks, per-object ones and user provided ones.
@@ -28,6 +30,8 @@ The object method handler is provided at signal creation time (this most
 frequently happens at the end of an object class' creation), while user
 provided handlers are frequently connected and disconnected to/from a
 certain signal on certain object instances.
+
+## Emissions
 
 A signal emission consists of five stages, unless prematurely stopped:
 
