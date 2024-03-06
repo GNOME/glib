@@ -1273,7 +1273,15 @@ test_get_teardown (PerformanceTest *test,
 struct RefcountTest {
   GObject *object;
   int n_checks;
+  gboolean is_toggle_ref;
 };
+
+static void
+test_refcount_toggle_ref_cb (gpointer data,
+                             GObject *object,
+                             gboolean is_last_ref)
+{
+}
 
 static gpointer
 test_refcount_setup (PerformanceTest *test)
@@ -1282,6 +1290,13 @@ test_refcount_setup (PerformanceTest *test)
 
   data = g_new0 (struct RefcountTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+
+  if (g_str_equal (test->name, "refcount-toggle"))
+    {
+      g_object_add_toggle_ref (data->object, test_refcount_toggle_ref_cb, NULL);
+      g_object_unref (data->object);
+      data->is_toggle_ref = TRUE;
+    }
 
   return data;
 }
@@ -1357,7 +1372,11 @@ test_refcount_teardown (PerformanceTest *test,
 {
   struct RefcountTest *data = _data;
 
-  g_object_unref (data->object);
+  if (data->is_toggle_ref)
+    g_object_remove_toggle_ref (data->object, test_refcount_toggle_ref_cb, NULL);
+  else
+    g_object_unref (data->object);
+
   g_free (data);
 }
 
@@ -1608,6 +1627,16 @@ static PerformanceTest tests[] = {
   },
   {
     "refcount-1",
+    NULL,
+    test_refcount_setup,
+    test_refcount_init,
+    test_refcount_1_run,
+    test_refcount_finish,
+    test_refcount_teardown,
+    test_refcount_print_result
+  },
+  {
+    "refcount-toggle",
     NULL,
     test_refcount_setup,
     test_refcount_init,
