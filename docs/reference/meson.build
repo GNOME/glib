@@ -15,9 +15,9 @@ if get_option('documentation') and enable_gir
     '--fatal-warnings',
     '--add-include-path=@0@'.format(meson.current_build_dir() / '../../girepository/introspection'),
   ]
-
-  docs_dir = glib_datadir / 'doc' / 'glib-2.0'
 endif
+
+docs_dir = glib_datadir / 'doc' / 'glib-2.0'
 
 subdir('glib')
 subdir('gmodule')
