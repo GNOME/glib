@@ -52,12 +52,12 @@ A signal emission consists of five stages, unless prematurely stopped:
 
 1. Invocation of the object method handler for `G_SIGNAL_RUN_FIRST` signals
 
-2. Invocation of normal user-provided signal handlers (where the @after
+2. Invocation of normal user-provided signal handlers (where the `after`
    flag is not set)
 
 3. Invocation of the object method handler for `G_SIGNAL_RUN_LAST` signals
 
-4. Invocation of user provided signal handlers (where the @after flag is set)
+4. Invocation of user provided signal handlers (where the `after` flag is set)
 
 5. Invocation of the object method handler for `G_SIGNAL_RUN_CLEANUP` signals
 
@@ -83,7 +83,7 @@ detail part of the signal specification upon connection) serves as a
 wildcard and matches any detail argument passed in to emission.
 
 While the `detail` argument is typically used to pass an object property name
-(as with `GObject::notify`), no specific format is mandated for the detail
+(as with [signal@GObject.Object::notify]), no specific format is mandated for the detail
 string, other than that it must be non-empty.
 
 ## Memory management of signal handlers
