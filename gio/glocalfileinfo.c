@@ -1915,6 +1915,10 @@ _g_local_file_info_get (const char             *basename,
   GVfs *vfs;
   GVfsClass *class;
   guint64 device;
+#ifdef G_OS_WIN32
+  DWORD attributes;
+  gboolean attributes_set;
+#endif
 
   info = g_file_info_new ();
 
@@ -2019,13 +2023,36 @@ _g_local_file_info_get (const char             *basename,
 #else
   _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_IS_BACKUP, FALSE);
 
-  g_file_info_set_is_hidden (info, (statbuf.attributes & FILE_ATTRIBUTE_HIDDEN));
+  attributes_set = FALSE;
 
-  _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_ARCHIVE,
-                                            (statbuf.attributes & FILE_ATTRIBUTE_ARCHIVE));
+  if (stat_ok)
+    {
+      attributes = statbuf.attributes;
+      attributes_set = TRUE;
+    }
+  else
+    {
+      wchar_t *path_utf16 = g_utf8_to_utf16 (path, -1, NULL, NULL, NULL);
 
-  _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_SYSTEM,
-                                            (statbuf.attributes & FILE_ATTRIBUTE_SYSTEM));
+      if (path_utf16)
+        {
+          attributes = GetFileAttributes (path_utf16);
+          attributes_set = (attributes != INVALID_FILE_ATTRIBUTES);
+        }
+
+      g_free (path_utf16);
+    }
+
+  if (attributes_set)
+    {
+      g_file_info_set_is_hidden (info, (attributes & FILE_ATTRIBUTE_HIDDEN));
+
+      _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_ARCHIVE,
+                                                (attributes & FILE_ATTRIBUTE_ARCHIVE));
+
+      _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_SYSTEM,
+                                                (attributes & FILE_ATTRIBUTE_SYSTEM));
+    }
 
   _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_MOUNTPOINT,
                                             (statbuf.reparse_tag == IO_REPARSE_TAG_MOUNT_POINT));
