@@ -1139,6 +1139,12 @@ test_set_setup (PerformanceTest *test)
   data = g_new0 (struct SetTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
 
+  /* g_object_get() will take a reference. Increasing the ref count from 1 to 2
+   * is more expensive, due to the check for toggle notifications. We have a
+   * performance test for that already. Don't also test that overhead during
+   * "property-get" test and avoid this by taking an additional reference. */
+  g_object_ref (data->object);
+
   return data;
 }
 
@@ -1176,6 +1182,7 @@ test_set_teardown (PerformanceTest *test,
   struct SetTest *data = _data;
 
   g_object_unref (data->object);
+  g_object_unref (data->object);
   g_free (data);
 }
 
@@ -1209,6 +1216,12 @@ test_get_setup (PerformanceTest *test)
 
   data = g_new0 (struct GetTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+
+  /* g_object_get() will take a reference. Increasing the ref count from 1 to 2
+   * is more expensive, due to the check for toggle notifications. We have a
+   * performance test for that already. Don't also test that overhead during
+   * "property-get" test and avoid this by taking an additional reference. */
+  g_object_ref (data->object);
 
   return data;
 }
@@ -1246,6 +1259,7 @@ test_get_teardown (PerformanceTest *test,
 {
   struct GetTest *data = _data;
 
+  g_object_unref (data->object);
   g_object_unref (data->object);
   g_free (data);
 }
