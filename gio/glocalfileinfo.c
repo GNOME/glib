@@ -2045,6 +2045,10 @@ _g_local_file_info_get (const char             *basename,
 
   if (attributes_set)
     {
+      g_file_info_set_file_type (info,
+                                 (attributes & FILE_ATTRIBUTE_DIRECTORY) ?
+                                 G_FILE_TYPE_DIRECTORY : G_FILE_TYPE_REGULAR);
+
       g_file_info_set_is_hidden (info, (attributes & FILE_ATTRIBUTE_HIDDEN));
 
       _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_ARCHIVE,
