@@ -77,6 +77,7 @@ typedef gpointer (*GDataListUpdateAtomicFunc) (gpointer *data,
 
 gpointer g_datalist_id_update_atomic (GData **datalist,
                                       GQuark key_id,
+                                      gboolean already_locked,
                                       GDataListUpdateAtomicFunc callback,
                                       gpointer user_data);
 

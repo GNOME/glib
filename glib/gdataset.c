@@ -885,6 +885,11 @@ g_datalist_id_remove_no_notify (GData	**datalist,
  * g_datalist_id_update_atomic:
  * @datalist: the data list
  * @key_id: the key to add.
+ * @already_locked: if TRUE, the caller already called g_datalist_lock(). Note
+ *   that the function will always unlock at the end. That is because the
+ *   function may need to reset the pointer, which is most efficiently done
+ *   with g_datalist_unlock_and_set(). This adds an asymmetry, but the usage
+ *   of this is very peculiar anyway.
  * @callback: (scope call): callback to update (set, remove, steal, update) the
  *   data.
  * @user_data: the user data for @callback.
@@ -914,6 +919,7 @@ g_datalist_id_remove_no_notify (GData	**datalist,
 gpointer
 g_datalist_id_update_atomic (GData **datalist,
                              GQuark key_id,
+                             gboolean already_locked,
                              GDataListUpdateAtomicFunc callback,
                              gpointer user_data)
 {
@@ -925,7 +931,14 @@ g_datalist_id_update_atomic (GData **datalist,
   guint32 idx;
   gboolean to_unlock = TRUE;
 
-  d = g_datalist_lock_and_get (datalist);
+  if (G_UNLIKELY (already_locked))
+    {
+      d = G_DATALIST_GET_POINTER (datalist);
+    }
+  else
+    {
+      d = g_datalist_lock_and_get (datalist);
+    }
 
   data = datalist_find (d, key_id, &idx);
 
