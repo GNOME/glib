@@ -2301,7 +2301,10 @@ g_signal_get_invocation_hint (gpointer instance)
  * If @closure is a floating reference (see g_closure_sink()), this function
  * takes ownership of @closure.
  *
- * Returns: the handler ID (always greater than 0 for successful connections)
+ * This function cannot fail. If the given signal doesn’t exist, a critical
+ * warning is emitted.
+ *
+ * Returns: the handler ID (always greater than 0)
  */
 gulong
 g_signal_connect_closure_by_id (gpointer  instance,
@@ -2366,7 +2369,10 @@ g_signal_connect_closure_by_id (gpointer  instance,
  * If @closure is a floating reference (see g_closure_sink()), this function
  * takes ownership of @closure.
  *
- * Returns: the handler ID (always greater than 0 for successful connections)
+ * This function cannot fail. If the given signal doesn’t exist, a critical
+ * warning is emitted.
+ *
+ * Returns: the handler ID (always greater than 0)
  */
 gulong
 g_signal_connect_closure (gpointer     instance,
@@ -2462,7 +2468,10 @@ node_check_deprecated (const SignalNode *node)
  * used. Specify @connect_flags if you need `..._after()` or
  * `..._swapped()` variants of this function.
  *
- * Returns: the handler ID (always greater than 0 for successful connections)
+ * This function cannot fail. If the given signal doesn’t exist, a critical
+ * warning is emitted.
+ *
+ * Returns: the handler ID (always greater than 0)
  */
 gulong
 g_signal_connect_data (gpointer       instance,

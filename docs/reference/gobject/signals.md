@@ -14,11 +14,13 @@ through strings. Signals introduced for a parent type are available
 in derived types as well, so basically they are a per-type facility
 that is inherited.
 
+## Handlers
+
 A signal emission mainly involves invocation of a certain set of
 callbacks in precisely defined manner. There are two main categories
 of such callbacks, per-object ones and user provided ones.
-(Although signals can deal with any kind of instantiatable type, I'm
-referring to those types as "object types" in the following, simply
+(Although signals can deal with any kind of instantiatable type, those types are
+referred to as ‘object types’ in the following, simply
 because that is the context most users will encounter signals in.)
 The per-object callbacks are most often referred to as "object method
 handler" or "default (signal) handler", while user provided callbacks are
@@ -29,16 +31,33 @@ frequently happens at the end of an object class' creation), while user
 provided handlers are frequently connected and disconnected to/from a
 certain signal on certain object instances.
 
+A handler must match the type defined by the signal in both its arguments and
+return value (which is often `void`). All handlers take a pointer to the type
+instance as their first argument, and a `gpointer user_data` as their final
+argument, with signal-defined arguments in-between. The `user_data` is always
+filled with the user data provided when the handler was connected to the signal.
+Handlers are documented as having type [type@GObject.Callback], but this is
+simply a generic placeholder type — an artifact of the GSignal APIs being
+polymorphic.
+
+When a signal handler is connected, its first (‘instance’) and final (‘user
+data’) arguments may be swapped if [func@GObject.signal_connect_swapped] is used
+rather than [func@GObject.signal_connect]. This can sometimes be convenient for
+avoiding defining wrapper functions as signal handlers, instead just directly
+passing a function which takes the user data as its first argument.
+
+## Emissions
+
 A signal emission consists of five stages, unless prematurely stopped:
 
 1. Invocation of the object method handler for `G_SIGNAL_RUN_FIRST` signals
 
-2. Invocation of normal user-provided signal handlers (where the @after
+2. Invocation of normal user-provided signal handlers (where the `after`
    flag is not set)
 
 3. Invocation of the object method handler for `G_SIGNAL_RUN_LAST` signals
 
-4. Invocation of user provided signal handlers (where the @after flag is set)
+4. Invocation of user provided signal handlers (where the `after` flag is set)
 
 5. Invocation of the object method handler for `G_SIGNAL_RUN_CLEANUP` signals
 
@@ -64,7 +83,7 @@ detail part of the signal specification upon connection) serves as a
 wildcard and matches any detail argument passed in to emission.
 
 While the `detail` argument is typically used to pass an object property name
-(as with `GObject::notify`), no specific format is mandated for the detail
+(as with [signal@GObject.Object::notify]), no specific format is mandated for the detail
 string, other than that it must be non-empty.
 
 ## Memory management of signal handlers
