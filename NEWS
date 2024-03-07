@@ -1,3 +1,39 @@
+Overview of changes in GLib 2.80.0, 2024-03-07
+==============================================
+
+* Bugs fixed:
+  - #3271 GLib: string malformed for gettext (Philip Withnall)
+  - !3940 tests: Don’t run check-missing-install-tag.py test under valgrind
+    (Philip Withnall)
+  - !3946 Add missing argument placeholders to several command-line tools (Simon
+    McVittie)
+  - !3947 docs: Fix a typo in the macros docs page (Philip Withnall)
+  - !3951 g_warn_if_fail: Document as always evaluating expr (Simon McVittie)
+  - !3953 docs: Specify gi-docgen as a native dependency (Bobby Rong)
+  - !3955 docs: Fix building with docs enabled and introspection disabled (Bobby
+    Rong)
+  - !3956 docs: Minor improvements to GSignal documentation (Philip Withnall)
+
+* Translation updates:
+  - Basque (Asier Sarasua Garmendia)
+  - British English (Andi Chandler, Bruce Cowan)
+  - Chinese (China) (Luming Zh)
+  - Czech (Daniel Rusek)
+  - Georgian (Ekaterine Papava)
+  - Hebrew (Yaron Shahrabani)
+  - Hungarian (Balázs Úr)
+  - Kazakh (Baurzhan Muftakhidinov)
+  - Lithuanian (Aurimas Černius)
+  - Norwegian Bokmål (Brage Fuglseth)
+  - Persian (Danial Behzadi)
+  - Russian (Artur S0)
+  - Slovenian (Matej Urbančič)
+  - Spanish (Daniel Mustieles)
+  - Swedish (Anders Jonsson)
+  - Turkish (Sabri Ünal)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.79.3, 2024-02-27
 ==============================================
 
