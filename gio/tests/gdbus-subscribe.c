@@ -441,6 +441,33 @@ static const TestPlan plan_limit_by_well_known_name =
       },
     },
     {
+      /* Attacker wants to trick subscriber into thinking that service
+       * sent a signal */
+      .action = TEST_ACTION_EMIT_SIGNAL,
+      .u.signal = {
+        .sender = TEST_CONN_ATTACKER,
+        .path = EXAMPLE_PATH,
+        .iface = EXAMPLE_INTERFACE,
+        .member = FOO_SIGNAL,
+        .received_by_conn = 0,
+        .received_by_proxy = 0
+      },
+    },
+    {
+      /* Attacker tries harder, by sending a signal unicast directly to
+       * the subscriber */
+      .action = TEST_ACTION_EMIT_SIGNAL,
+      .u.signal = {
+        .sender = TEST_CONN_ATTACKER,
+        .unicast_to = TEST_CONN_SUBSCRIBER,
+        .path = EXAMPLE_PATH,
+        .iface = EXAMPLE_INTERFACE,
+        .member = FOO_SIGNAL,
+        .received_by_conn = 0,
+        .received_by_proxy = 0
+      },
+    },
+    {
       /* When the service sends a signal with the name it already owns,
        * it should get through */
       .action = TEST_ACTION_EMIT_SIGNAL,
