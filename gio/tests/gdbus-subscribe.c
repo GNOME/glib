@@ -358,6 +358,53 @@ static const TestPlan plan_limit_by_unique_name =
   },
 };
 
+static const TestPlan plan_nonexistent_unique_name =
+{
+  .description = "A subscription via a unique name that doesn't exist "
+                 "accepts no messages",
+  .steps = {
+    {
+      /* Subscriber wants to receive signals from service */
+      .action = TEST_ACTION_SUBSCRIBE,
+      .u.subscribe = {
+        /* This relies on the implementation detail that the dbus-daemon
+         * (and presumably other bus implementations) never actually generates
+         * a unique name in this format */
+        .string_sender = ":0.this.had.better.not.exist",
+        .path = EXAMPLE_PATH,
+        .iface = EXAMPLE_INTERFACE,
+      },
+    },
+    {
+      /* Attacker wants to trick subscriber into thinking that service
+       * sent a signal */
+      .action = TEST_ACTION_EMIT_SIGNAL,
+      .u.signal = {
+        .sender = TEST_CONN_ATTACKER,
+        .path = EXAMPLE_PATH,
+        .iface = EXAMPLE_INTERFACE,
+        .member = FOO_SIGNAL,
+        .received_by_conn = 0,
+        .received_by_proxy = 0
+      },
+    },
+    {
+      /* Attacker tries harder, by sending a signal unicast directly to
+       * the subscriber */
+      .action = TEST_ACTION_EMIT_SIGNAL,
+      .u.signal = {
+        .sender = TEST_CONN_ATTACKER,
+        .unicast_to = TEST_CONN_SUBSCRIBER,
+        .path = EXAMPLE_PATH,
+        .iface = EXAMPLE_INTERFACE,
+        .member = FOO_SIGNAL,
+        .received_by_conn = 0,
+        .received_by_proxy = 0
+      },
+    },
+  },
+};
+
 static const TestPlan plan_limit_by_well_known_name =
 {
   .description = "A subscription via a well-known name only accepts messages "
@@ -1051,6 +1098,7 @@ main (int   argc,
   ADD_SUBSCRIBE_TEST (broadcast_from_anyone);
   ADD_SUBSCRIBE_TEST (match_twice);
   ADD_SUBSCRIBE_TEST (limit_by_unique_name);
+  ADD_SUBSCRIBE_TEST (nonexistent_unique_name);
   ADD_SUBSCRIBE_TEST (limit_by_well_known_name);
 
   return g_test_run();
