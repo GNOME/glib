@@ -188,6 +188,7 @@ if host_machine.system() != 'windows'
       ['gdbus-proxy', [], []],
       ['gdbus-proxy-threads', [], [dbus1_dep]],
       ['gdbus-proxy-well-known-name', [], []],
+      ['gdbus-subscribe', [], []],
       ['gdbus-test-codegen', [gdbus_test_codegen_generated], []],
       ['gdbus-threading', [], []],
       ['gmenumodel', [], []],
