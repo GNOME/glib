@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-25 13:01+0200\n"
+"POT-Creation-Date: 2024-03-01 12:22+0000\n"
+"PO-Revision-Date: 2024-03-08 21:44+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -57,7 +57,6 @@ msgid "Override the application’s ID"
 msgstr "Pārrakstīt lietotnes ID"
 
 #: gio/gapplication.c:575
-#| msgid "List applications"
 msgid "Print the application version"
 msgstr "Rādīt lietotnes versiju"
 
@@ -128,7 +127,7 @@ msgid "APPID"
 msgstr "LIETID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "KOMANDA"
 
@@ -140,9 +139,13 @@ msgstr "Komanda, lai drukātu detalizētu palīdzību priekš"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Lietotnes identifikators D-Bus formātā(piemēram: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "DATNE"
 
@@ -583,14 +586,15 @@ msgstr "Atcelts caur GDBusAuthObserver::authorize-authenticated-peer"
 #: gio/gdbusauthmechanismsha1.c:307
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
-msgstr "Kļūda, saņemot informāciju par mapi “%s” — %s"
+msgstr "Kļūda, saņemot informāciju par direktoriju “%s” — %s"
 
 #: gio/gdbusauthmechanismsha1.c:322
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Atļaujas mapei “%s” ir slikti formatētas. Gaidīja režīmu 0700, saņēma 0%o"
+"Atļaujas direktorijam “%s” ir slikti formatētas. Gaidīja režīmu 0700, saņēma"
+" 0%o"
 
 #: gio/gdbusauthmechanismsha1.c:355 gio/gdbusauthmechanismsha1.c:366
 #, c-format
@@ -774,8 +778,6 @@ msgstr ""
 
 #: gio/gdbusmessage.c:1374
 #, c-format
-#| msgid ""
-#| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
 msgid "%s message: %s header field is missing or invalid"
 msgstr "%s ziņojums — %s galvenes lauks ir nederīgs vai arī tas nav atrasts"
 
@@ -786,30 +788,21 @@ msgstr "%s ziņojums — ir sniegts NEDERĪGS galvenes lauks"
 
 #: gio/gdbusmessage.c:1424
 #, c-format
-#| msgid ""
-#| "SIGNAL message: The PATH header field is using the reserved value /org/"
-#| "freedesktop/DBus/Local"
 msgid ""
 "%s message: PATH header field is using the reserved value /org/freedesktop/"
 "DBus/Local"
 msgstr ""
-"%s ziņojums — PATH galvenes datne izmanto rezervēto vērtību /org/"
-"freedesktop/DBus/Local"
+"%s ziņojums — PATH galvenes datne izmanto rezervēto vērtību /org/freedesktop/"
+"DBus/Local"
 
 #: gio/gdbusmessage.c:1437
 #, c-format
-#| msgid ""
-#| "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or "
-#| "invalid"
 msgid ""
 "%s message: INTERFACE header field does not contain a valid interface name"
 msgstr "%s ziņojums — galvene INTERFACE nesatur derīgu saskarnes nosaukumu"
 
 #: gio/gdbusmessage.c:1446
 #, c-format
-#| msgid ""
-#| "SIGNAL message: The INTERFACE header field is using the reserved value "
-#| "org.freedesktop.DBus.Local"
 msgid ""
 "%s message: INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -819,17 +812,12 @@ msgstr ""
 
 #: gio/gdbusmessage.c:1459
 #, c-format
-#| msgid ""
-#| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
 msgid "%s message: MEMBER header field does not contain a valid member name"
 msgstr ""
 "%s ziņojums — MEMBER galvenes lauks nesatur derīgu dalībnieka nosaukumu"
 
 #: gio/gdbusmessage.c:1472
 #, c-format
-#| msgid ""
-#| "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or "
-#| "invalid"
 msgid "%s message: ERROR_NAME header field does not contain a valid error name"
 msgstr ""
 "%s ziņojums — ERROR_NAME galvenes lauks nesatur derīgu kļūdas nosaukumu"
@@ -1124,6 +1112,10 @@ msgstr "Savienoties ar sesijas kopni"
 #: gio/gdbus-tool.c:407
 msgid "Connect to given D-Bus address"
 msgstr "Savienoties ar doto D-Bus adresi"
+
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "ADRESE"
 
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
@@ -1466,11 +1458,11 @@ msgstr "Saturošais montējums neeksistē"
 
 #: gio/gfile.c:2650 gio/glocalfile.c:2520
 msgid "Can’t copy over directory"
-msgstr "Nevar kopēt virsū mapei"
+msgstr "Nevar kopēt virsū direktorijam"
 
 #: gio/gfile.c:2710
 msgid "Can’t copy directory over directory"
-msgstr "Nevar uzkopēt mapi virsū mapei"
+msgstr "Nevar uzkopēt mapi virsū direktorijam"
 
 #: gio/gfile.c:2718
 msgid "Target file exists"
@@ -1478,7 +1470,7 @@ msgstr "Mērķa datne eksistē"
 
 #: gio/gfile.c:2737
 msgid "Can’t recursively copy directory"
-msgstr "Nevar rekursīvi kopēt mapi"
+msgstr "Nevar rekursīvi kopēt direktoriju"
 
 #: gio/gfile.c:3050 gio/gfile.c:3098
 #, c-format
@@ -1508,7 +1500,6 @@ msgstr "Kopēšana (reflink/clone) nav atbalstīta vai nenostrādāja"
 
 #: gio/gfile.c:3384 gio/gfile.c:3395
 #, c-format
-#| msgid "Unset given attribute"
 msgid "Cannot retrieve attribute %s"
 msgstr "Nevar saņemt atribūtu %s"
 
@@ -1520,7 +1511,7 @@ msgstr "Nevar kopēt īpašu datni"
 msgid "Invalid symlink value given"
 msgstr "Ir dota nederīga simboliskās saites vērtība"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Simboliskās saites nav atbalstītas"
 
@@ -1742,11 +1733,11 @@ msgstr "Iegūt vai iestatīt apdarinātāju priekš mimetype"
 
 #: gio/gio-tool.c:238
 msgid "Create directories"
-msgstr "Izveidot mapes"
+msgstr "Izveidot direktorijus"
 
 #: gio/gio-tool.c:239
 msgid "Monitor files and directories for changes"
-msgstr "Pārraudzīt datnes un mapes pēc izmaiņām"
+msgstr "Pārraudzīt, vai nav izmaiņu datnēs un direktorijos"
 
 #: gio/gio-tool.c:240
 msgid "Mount or unmount the locations"
@@ -1762,7 +1753,7 @@ msgstr "Atver datnes ar noklusējuma lietotni"
 
 #: gio/gio-tool.c:243
 msgid "Rename a file"
-msgstr "Pārsaukt datni"
+msgstr "Pārdēvēt datni"
 
 #: gio/gio-tool.c:244
 msgid "Delete one or more files"
@@ -1778,7 +1769,7 @@ msgstr "Iestatīt datnes atribūtu"
 
 #: gio/gio-tool.c:247
 msgid "Move files or directories to the trash"
-msgstr "Pārvietot datnes vai mapes uz miskasti"
+msgstr "Pārvietot datnes vai direktorijus uz miskasti"
 
 #: gio/gio-tool.c:248
 msgid "Lists the contents of locations in a tree"
@@ -1830,7 +1821,7 @@ msgstr "Nav dotas atrašanās vietas"
 
 #: gio/gio-tool-copy.c:46 gio/gio-tool-move.c:40
 msgid "No target directory"
-msgstr "Nav mērķa mapes"
+msgstr "Nav mērķa direktorija"
 
 #: gio/gio-tool-copy.c:47 gio/gio-tool-move.c:41
 msgid "Show progress"
@@ -1857,7 +1848,6 @@ msgid "Use default permissions for the destination"
 msgstr "Lietot noklusējuma atļaujas mērķim"
 
 #: gio/gio-tool-copy.c:53
-#| msgid "Use default permissions for the destination"
 msgid "Use default file modification timestamps for the destination"
 msgstr "Lietot noklusējuma datnes modifikācijas laika spiedogu mērķim"
 
@@ -1894,7 +1884,7 @@ msgstr ""
 #: gio/gio-tool-copy.c:153
 #, c-format
 msgid "Destination %s is not a directory"
-msgstr "Mērķis %s nav mape"
+msgstr "Mērķis %s nav direktorijs"
 
 #: gio/gio-tool-copy.c:202 gio/gio-tool-move.c:188
 #, c-format
@@ -2131,11 +2121,11 @@ msgstr "Neizdevās iestatīt “%s” kā noklusējuma apdarinātāju priekš �
 
 #: gio/gio-tool-mkdir.c:33
 msgid "Create parent directories"
-msgstr "Izveidot vecākmapes"
+msgstr "Izveidot vecāka direktoriju"
 
 #: gio/gio-tool-mkdir.c:54
 msgid "Create directories."
-msgstr "Izveidot mapes."
+msgstr "Izveidot direktorijus."
 
 #: gio/gio-tool-mkdir.c:56
 msgid ""
@@ -2150,7 +2140,7 @@ msgstr ""
 
 #: gio/gio-tool-monitor.c:39
 msgid "Monitor a directory (default: depends on type)"
-msgstr "Pārraudzīt mapi (noklusējuma: atkarīgs no tipa)"
+msgstr "Pārraudzīt direktoriju (noklusējuma: atkarīgs no tipa)"
 
 #: gio/gio-tool-monitor.c:41
 msgid "Monitor a file (default: depends on type)"
@@ -2168,7 +2158,7 @@ msgstr "Pārrauga datni tieši, bet neziņo par izmaiņām"
 #: gio/gio-tool-monitor.c:47
 msgid "Report moves and renames as simple deleted/created events"
 msgstr ""
-"Ziņot par pārvietošanām un pārsaukšanām kā par vienkāršiem dzēsts/izveidots "
+"Ziņot par pārvietošanām un pārdēvēšanām kā par vienkāršiem dzēsts/izveidots "
 "notikumiem"
 
 #: gio/gio-tool-monitor.c:49
@@ -2177,7 +2167,7 @@ msgstr "Novērot montēšanas notikumus"
 
 #: gio/gio-tool-monitor.c:211
 msgid "Monitor files or directories for changes."
-msgstr "Pārraudzīt datnes vai mapes pēc izmaiņām."
+msgstr "Pārraudzīt, vai nav izmaiņu datnēs vai direktorijos."
 
 #: gio/gio-tool-mount.c:65
 msgid "Mount as mountable"
@@ -2290,7 +2280,7 @@ msgstr ""
 #: gio/gio-tool-move.c:145
 #, c-format
 msgid "Target %s is not a directory"
-msgstr "Mērķis %s nav mape"
+msgstr "Mērķis %s nav direktorijs"
 
 #: gio/gio-tool-open.c:77
 msgid ""
@@ -2314,7 +2304,7 @@ msgstr "NOSAUKUMS"
 
 #: gio/gio-tool-rename.c:52
 msgid "Rename a file."
-msgstr "Pārsaukt datni."
+msgstr "Pārdēvēt datni."
 
 #: gio/gio-tool-rename.c:72
 msgid "Missing argument"
@@ -2327,7 +2317,7 @@ msgstr "Pārāk daudz argumentu"
 #: gio/gio-tool-rename.c:97
 #, c-format
 msgid "Rename successful. New uri: %s\n"
-msgstr "Pārsaukšana veiksmīga. Jaunais uri: %s\n"
+msgstr "Pārdēvēšana veiksmīga. Jaunais uri — %s\n"
 
 #: gio/gio-tool-save.c:52
 msgid "Only create if not existing"
@@ -2447,7 +2437,7 @@ msgstr "Nevar pārvietot datni uz tās sākotnējo vietu: "
 
 #: gio/gio-tool-trash.c:227
 msgid "Move/Restore files or directories to the trash."
-msgstr "Pārvietot/atjaunot datnes vai mapes uz miskasti."
+msgstr "Pārvietot/atjaunot datnes vai direktoriju uz miskasti."
 
 #: gio/gio-tool-trash.c:229
 msgid ""
@@ -2467,7 +2457,7 @@ msgstr "Sekot simboliskajām saitēm, montējumiem un saīsnēm"
 
 #: gio/gio-tool-tree.c:251
 msgid "List contents of directories in a tree-like format."
-msgstr "Uzskaitīt mapju saturu kokam līdzīgā formātā."
+msgstr "Uzskaitīt direktoriju saturu kokam līdzīgā formātā."
 
 #: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1514
 #, c-format
@@ -2487,12 +2477,12 @@ msgstr "Datne %s resursā parādās vairākas reizes"
 #: gio/glib-compile-resources.c:247
 #, c-format
 msgid "Failed to locate “%s” in any source directory"
-msgstr "Neizdevās atrast “%s” nevienā avotu mapē"
+msgstr "Neizdevās atrast “%s” nevienā avotu direktorijā"
 
 #: gio/glib-compile-resources.c:258
 #, c-format
 msgid "Failed to locate “%s” in current directory"
-msgstr "Neizdevās atrast “%s” pašreizējā mapē"
+msgstr "Neizdevās atrast “%s” pašreizējā direktorijā"
 
 #: gio/glib-compile-resources.c:292
 #, c-format
@@ -2539,13 +2529,14 @@ msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 msgstr ""
-"Direktorijas, no kurām nolasīt datnes, kas ir norādītas DATNE (pēc "
-"noklusējuma pašreizējā direktorija)"
+"Direktoriji, no kuriem nolasīt datnes, kas ir norādītas DATNE (pēc "
+"noklusējuma pašreizējais direktorijs)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
-msgstr "MAPE"
+msgstr "DIREKTORIJS"
 
 #: gio/glib-compile-resources.c:824
 msgid ""
@@ -2590,6 +2581,10 @@ msgstr ""
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "C identifikatora nosaukums veidotajam pirmkodam"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "IDENTIFIKATORS"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -3069,7 +3064,7 @@ msgstr ""
 
 #: gio/glib-compile-schemas.c:2238
 msgid "You should give exactly one directory name"
-msgstr "Jums jānorāda tieši viens mapes nosaukums"
+msgstr "Jums jānorāda tieši viens direktorija nosaukums"
 
 #: gio/glib-compile-schemas.c:2285
 msgid "No schema files found: doing nothing."
@@ -3100,7 +3095,7 @@ msgstr "Saturošais montējums priekš datnes %s nav atrasts"
 
 #: gio/glocalfile.c:1173
 msgid "Can’t rename root directory"
-msgstr "Nevar pārsaukt saknes mapi"
+msgstr "Nevar pārdēvēt saknes direktoriju"
 
 #: gio/glocalfile.c:1191 gio/glocalfile.c:1214
 #, c-format
@@ -3109,7 +3104,7 @@ msgstr "Kļūda, pārsaucot datni %s — %s"
 
 #: gio/glocalfile.c:1198
 msgid "Can’t rename file, filename already exists"
-msgstr "Nevar pārsaukt datni; datnes nosaukums jau eksistē"
+msgstr "Nevar pārdēvēt datni; datnes nosaukums jau eksistē"
 
 #: gio/glocalfile.c:1211 gio/glocalfile.c:2414 gio/glocalfile.c:2442
 #: gio/glocalfile.c:2581 gio/glocalfileoutputstream.c:658
@@ -3139,7 +3134,7 @@ msgstr "Nevar izveidot miskastes direktoriju %s — %s"
 #: gio/glocalfile.c:2088
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
-msgstr "Nevar atrast augšējā līmeņa mapi, lai izmestu miskastē %s"
+msgstr "Nevar atrast augšējā līmeņa direktoriju, lai izmestu miskastē %s"
 
 #: gio/glocalfile.c:2096
 #, c-format
@@ -3174,7 +3169,7 @@ msgstr "Nevar izmest miskastē datni %s"
 #: gio/glocalfile.c:2417
 #, c-format
 msgid "Error creating directory %s: %s"
-msgstr "Kļūda, veidojot mapi %s — %s"
+msgstr "Kļūda, veidojot direktoriju %s — %s"
 
 #: gio/glocalfile.c:2446
 #, c-format
@@ -3193,7 +3188,7 @@ msgstr "Kļūda, pārvietojot datni %s — %s"
 
 #: gio/glocalfile.c:2515
 msgid "Can’t move directory over directory"
-msgstr "Nevar pārvietot mapi virsū mapei"
+msgstr "Nevar pārvietot direktoriju pa virsu direktorijam"
 
 #: gio/glocalfile.c:2541 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
@@ -3400,7 +3395,7 @@ msgstr "Kļūda, atverot datni “%s” — %s"
 
 #: gio/glocalfileoutputstream.c:959
 msgid "Target file is a directory"
-msgstr "Mērķa datne ir mape"
+msgstr "Mērķa datne ir direktorijs"
 
 #: gio/glocalfileoutputstream.c:973
 msgid "Target file is not a regular file"
@@ -3594,7 +3589,7 @@ msgstr "Resursa datnes nevar pārdēvēt"
 #: gio/gresourcefile.c:753
 #, c-format
 msgid "The resource at “%s” is not a directory"
-msgstr "Resurss pie “%s” nav mape"
+msgstr "Resurss pie “%s” nav direktorijs"
 
 #: gio/gresourcefile.c:961
 msgid "Input stream doesn’t implement seek"
@@ -3870,7 +3865,7 @@ msgid ""
 msgstr ""
 "Lietojums:\n"
 "  gsettings --version\n"
-"  gsettings [--schemadir SHĒMAS_MAPE] KOMANDA [ARGUMENTI…]\n"
+"  gsettings [--schemadir SHĒMAS_DIR] KOMANDA [ARGUMENTI…]\n"
 "\n"
 "Commands:\n"
 "  help                      Rāda šo informāciju\n"
@@ -3901,14 +3896,14 @@ msgid ""
 "\n"
 msgstr ""
 "Lietojums:\n"
-"  gsettings [--schemadir SHĒMAS_MAPE] %s %s\n"
+"  gsettings [--schemadir SHĒMAS_DIR] %s %s\n"
 "\n"
 "%s\n"
 "\n"
 
 #: gio/gsettings-tool.c:716
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
-msgstr "  SHĒMAS_MAPE Mape, kurā meklēt papildu shēmas\n"
+msgstr "  SHĒMAS_DIR direktorijs, kurā meklēt papildu shēmas\n"
 
 #: gio/gsettings-tool.c:724
 msgid ""
@@ -4520,6 +4515,161 @@ msgstr "Palaist dbus servisu"
 msgid "Wrong args\n"
 msgstr "Nepareizi parametri\n"
 
+#: girepository/compiler/compiler.c:93
+#, c-format
+#| msgid "Failed to open file “%s”: %s"
+msgid "Failed to open ‘%s’: %s"
+msgstr "Neizdevās atvērt “%s” — %s"
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+#| msgid "Could not create network monitor: %s"
+msgid "Error: Could not write the whole output: %s"
+msgstr "Kļūda: neizdevās rakstīt visu izvadi — %s"
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+#| msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "Kļūda: neizdevās pārdēvēt “%s” uz “%s” — %s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
+msgid "Include directories in GIR search path"
+msgstr "GIR meklēšanas ceļā iekļaut direktorijus"
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
+msgid "Output file"
+msgstr "Izvaddatne"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "Koplietota bibliotēka"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "Rādīt atkļūdošanas ziņojumus"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "Rādīt detalizētus ziņojumus"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
+#| msgid "Show program version and exit"
+msgid "Show program’s version number and exit"
+msgstr "Rādīt programmas versijas numuru un iziet"
+
+#: girepository/compiler/compiler.c:175
+#, c-format
+#| msgid "Error parsing parameter %d: %s\n"
+msgid "Error parsing arguments: %s"
+msgstr "Kļūda, parsējot  argumentus — %s"
+
+#: girepository/compiler/compiler.c:202
+msgid "Please specify exactly one input file"
+msgstr "Lūdzu, norādiet tieši vienu ievaddatni"
+
+#: girepository/compiler/compiler.c:218
+#, c-format
+#| msgid "Error opening file “%s”: %s"
+msgid "Error parsing file ‘%s’: %s"
+msgstr "Kļūda, parsējot datni “%s” — %s"
+
+#: girepository/compiler/compiler.c:243
+#, c-format
+#| msgid "Failed to load info for handler “%s”"
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "Neizdevās uzbūvēt typelib modulim “%s”"
+
+#: girepository/compiler/compiler.c:245
+#, c-format
+#| msgid "Unable to load ‘%s‘: %s"
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "Nederīgs typelib modulim “%s” — %s"
+
+#: girepository/decompiler/decompiler.c:54
+#| msgid "Show extra information"
+msgid "Show all available information"
+msgstr "Rādīt visu pieejamo informāciju"
+
+#: girepository/decompiler/decompiler.c:71
+#, c-format
+#| msgid "Failed to fork (%s)"
+msgid "Failed to parse: %s"
+msgstr "Neizdevās parsēt — %s"
+
+#: girepository/decompiler/decompiler.c:87
+#| msgid "Show hidden files"
+msgid "No input files"
+msgstr "Nav ievaddatņu"
+
+#: girepository/decompiler/decompiler.c:113
+#, c-format
+#| msgid "Failed to create file “%s”: %s"
+msgid "Failed to read ‘%s’: %s"
+msgstr "Neizdevās lasīt “%s” — %s"
+
+#: girepository/decompiler/decompiler.c:125
+#, c-format
+#| msgid "Failed to create file “%s”: %s"
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "Neizdevās izveidot typelib “%s” — %s"
+
+#: girepository/decompiler/decompiler.c:129
+#: girepository/inspector/inspector.c:113
+#, c-format
+#| msgid "Failed to create temp file: %s"
+msgid "Failed to load typelib: %s"
+msgstr "Neizdevās ielādēt typelib — %s"
+
+#: girepository/decompiler/decompiler.c:136
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr "Brīdinājums: %u moduļi netika iekļauti"
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr "Typelib versija, kuru izpētīt"
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "VERSIJA"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr "Saraksts ar koplietošanas bibliotēkām, kuras pieprasa typelib"
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr "Saraksts ar citām typelibs, kuras pieprasa izpētītais typelib"
+
+#: girepository/inspector/inspector.c:75
+#| msgid "The attributes to get"
+msgid "The typelib to inspect"
+msgstr "typelib, kuru izpētīt"
+
+#: girepository/inspector/inspector.c:75
+#| msgid "NAME"
+msgid "NAMESPACE"
+msgstr "VĀRDTELPA"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr "- Izpētīt GI typelib"
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+#| msgid "Failed to read from file “%s”: %s"
+msgid "Failed to parse command line options: %s"
+msgstr "Neizdevās parsēt komandrindas opcijas — %s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr "Lūdzu, norādiet tieši vienu vārdtelpu"
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr "Lūdzu, norādiet --print-shlibs, --print-typelibs vai abus"
+
 #: glib/gbookmarkfile.c:816
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
@@ -5060,86 +5210,87 @@ msgstr "PM"
 msgid "Error opening directory “%s”: %s"
 msgstr "Kļūda, atverot direktoriju “%s” — %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
-#| msgid "Could not connect: "
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "Nevarēja piešķirt %"
-msgstr[1] "Nevarēja piešķirt %"
-msgstr[2] "Nevarēja piešķirt %"
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#, c-format
+#| msgid "Could not allocate %lu byte to read file “%s”"
+#| msgid_plural "Could not allocate %lu bytes to read file “%s”"
+msgid "Could not allocate %s to read file “%s”"
+msgstr "Nevarēja piešķirt %s, lai nolasītu datni “%s”"
 
-#: glib/gfileutils.c:733
+#: glib/gfileutils.c:738
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Kļūda, nolasot datni “%s” — %s"
 
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Datne “%s” ir pārāk liela"
 
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Neizdevās nolasīt no datnes “%s” — %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Neizdevās atvērt datni “%s” — %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Neizdevās dabūt datnes “%s” atribūtus — fstat() neizdevās — %s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Neizdevās atvērt “%s” — fdopen() neizdevās — %s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
-msgstr "Neizdevās pārsaukt datni “%s” uz “%s” — g_rename() neizdevās — %s"
+msgstr "Neizdevās pārdēvēt datni “%s” uz “%s” — g_rename() neizdevās — %s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1149
 #, c-format
-#| msgid "Failed to write file “%s”: write() failed: %s"
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Neizdevās rakstīt datnē “%s” — ftruncate() neizdevās — %s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Neizdevās rakstīt datnē “%s” — write() neizdevās — %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Neizdevās rakstīt datnē “%s” — fsync() neizdevās — %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Neizdevās izveidot datni “%s” — %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Nevarēja izdzēst esošo datni “%s” — g_unlink() neizdevās — %s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Veidne “%s” ir nepareiza, nedrīkstētu saturēt “%s”"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Veidne “%s” nesatur XXXXXX"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Neizdevās nolasīt simbolisko saiti “%s” — %s"
@@ -6003,7 +6154,7 @@ msgstr "Nederīga virkne vidē — %s"
 #: glib/gspawn-win32.c:936
 #, c-format
 msgid "Invalid working directory: %s"
-msgstr "Nederīga darba mape — %s"
+msgstr "Nederīgs darba direktorijs — %s"
 
 #: glib/gspawn-win32.c:1001
 #, c-format
@@ -6337,18 +6488,18 @@ msgstr "%.1f PB"
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
+#~| msgid "Could not connect: "
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "Nevarēja piešķirt %"
+#~ msgstr[1] "Nevarēja piešķirt %"
+#~ msgstr[2] "Nevarēja piešķirt %"
+
 #~| msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 #~ msgid ""
 #~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
 #~ msgstr ""
 #~ "METHOD_RETURN ziņojums — trūkst vai nav derīga REPLY_SERIAL galvenes lauks"
-
-#, c-format
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "Nevarēja piešķirt %lu baitu, lai nolasītu datni “%s”"
-#~ msgstr[1] "Nevarēja atrast %lu baitus, lai nolasītu datni “%s”"
-#~ msgstr[2] "Nevarēja atrast %lu baitus, lai nolasītu datni “%s”"
 
 #~ msgid "kb"
 #~ msgstr "kb"
@@ -6564,9 +6715,6 @@ msgstr "%.1f EB"
 
 #~ msgid "Mounted %s at %s\n"
 #~ msgstr "Montēja %s pie %s\n"
-
-#~ msgid "Failed to create temp file: %s"
-#~ msgstr "Neizdevās izveidot pagaidu datni — %s"
 
 #~ msgid "; ignoring override for this key.\n"
 #~ msgstr "; ignorē pārrakstīšanu šai atslēgai.\n"
