@@ -441,6 +441,19 @@ static const TestPlan plan_limit_by_well_known_name =
       },
     },
     {
+      /* When the service sends a signal with the name it already owns,
+       * it should get through */
+      .action = TEST_ACTION_EMIT_SIGNAL,
+      .u.signal = {
+        .sender = TEST_CONN_SERVICE,
+        .path = EXAMPLE_PATH,
+        .iface = EXAMPLE_INTERFACE,
+        .member = FOO_SIGNAL,
+        .received_by_conn = 1,
+        .received_by_proxy = 1
+      },
+    },
+    {
       /* Service claims another name */
       .action = TEST_ACTION_OWN_NAME,
       .u.own_name = {
