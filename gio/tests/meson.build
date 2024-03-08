@@ -314,6 +314,7 @@ if host_machine.system() != 'windows'
       },
       'gdbus-proxy-unique-name' : {'extra_sources' : extra_sources},
       'gdbus-proxy-well-known-name' : {'extra_sources' : extra_sources},
+      'gdbus-subscribe' : {'extra_sources' : extra_sources},
       'gdbus-test-codegen' : {
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_32'],
