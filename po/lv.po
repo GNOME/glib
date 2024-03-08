@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
 "POT-Creation-Date: 2024-03-01 12:22+0000\n"
-"PO-Revision-Date: 2024-03-08 21:44+0200\n"
+"PO-Revision-Date: 2024-03-08 23:36+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -1070,9 +1070,9 @@ msgid ""
 msgstr ""
 "Komandas:\n"
 "  help         Rāda šo informāciju\n"
-"  introspect   Introspektēt attālinātu objektu\n"
-"  monitor      Pārraudzīt attālinātu objektu\n"
-"  call         Izsaukt metodi uz attālināta objekta\n"
+"  introspect   Introspektēt attālu objektu\n"
+"  monitor      Pārraudzīt attālu objektu\n"
+"  call         Izsaukt metodi uz attāla objekta\n"
 "  emit         Izplatīt signālu\n"
 "  wait         Gaidīt līdz parādīsies kopnes nosaukums\n"
 "\n"
@@ -1234,7 +1234,7 @@ msgstr "Atļaut interaktīvu pilnvarošanu"
 
 #: gio/gdbus-tool.c:947
 msgid "Invoke a method on a remote object."
-msgstr "Izsaukt metodi uz attālināta objekta."
+msgstr "Izsaukt metodi uz attāla objekta."
 
 #: gio/gdbus-tool.c:1019 gio/gdbus-tool.c:1853 gio/gdbus-tool.c:2093
 msgid "Error: Destination is not specified\n"
@@ -1286,7 +1286,7 @@ msgstr "Tikai drukāšanas īpašības"
 
 #: gio/gdbus-tool.c:1788
 msgid "Introspect a remote object."
-msgstr "Veikt introspekciju attālinātam objektam."
+msgstr "Veikt introspekciju attālam objektam."
 
 #: gio/gdbus-tool.c:1994
 msgid "Destination name to monitor"
@@ -1298,7 +1298,7 @@ msgstr "Objekta ceļš uz pārraugu"
 
 #: gio/gdbus-tool.c:2020
 msgid "Monitor a remote object."
-msgstr "Pārraudzīt attālinātu objektu."
+msgstr "Pārraudzīt attālu objektu."
 
 #: gio/gdbus-tool.c:2078
 msgid "Error: can’t monitor a non-message-bus connection\n"
@@ -3997,7 +3997,7 @@ msgstr "nevarēja iegūt lokālo adresi — %s"
 #: gio/gsocket.c:2113
 #, c-format
 msgid "could not get remote address: %s"
-msgstr "nevarēja iegūt attālināto adresi — %s"
+msgstr "nevarēja iegūt attālo adresi — %s"
 
 #: gio/gsocket.c:2179
 #, c-format
@@ -6727,4 +6727,5 @@ msgstr "%.1f EB"
 
 #~ msgid "doing nothing.\n"
 #~ msgstr "neko nedarīt.\n"
+
 
