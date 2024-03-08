@@ -463,6 +463,10 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'extra_programs': extra_programs,
       },
+      'gdbus-subscribe' : {
+        'extra_sources' : extra_sources,
+        'extra_programs': extra_programs,
+      },
       'gdbus-test-codegen' : {
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
         'c_args' : ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_32'],
