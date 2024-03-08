@@ -31,10 +31,13 @@
 #define TARGET_ROUND_TIME 0.008
 
 static gboolean verbose = FALSE;
+static gboolean quiet = FALSE;
 static int test_length = DEFAULT_TEST_TIME;
 
 static GOptionEntry cmd_entries[] = {
   {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
+   "Print extra information", NULL},
+  {"quiet", 'q', 0, G_OPTION_ARG_NONE, &quiet,
    "Print extra information", NULL},
   {"seconds", 's', 0, G_OPTION_ARG_INT, &test_length,
    "Time to run each test in seconds", NULL},
@@ -69,7 +72,8 @@ run_test (PerformanceTest *test)
   double elapsed, min_elapsed, max_elapsed, avg_elapsed, factor;
   GTimer *timer;
 
-  g_print ("Running test %s\n", test->name);
+  if (verbose || !quiet)
+    g_print ("Running test %s\n", test->name);
 
   /* Set up test */
   timer = g_timer_new ();
