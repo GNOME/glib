@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-27 09:41+0000\n"
-"PO-Revision-Date: 2024-02-27 18:18+0100\n"
+"POT-Creation-Date: 2024-03-01 12:22+0000\n"
+"PO-Revision-Date: 2024-03-10 13:29+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -127,7 +127,7 @@ msgid "APPID"
 msgstr "აპისID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "ბრძანება"
 
@@ -139,11 +139,13 @@ msgstr "ბრძანება დეტალური დახმარე�
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "აპლიკაციის იდენტიფიკატორი D-Bus-ის ფორმატში (მაგ: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 #: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
-#: girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "PROFILEID"
 
@@ -1124,6 +1126,10 @@ msgstr "სესიის მატარებელთან მიერთ�
 msgid "Connect to given D-Bus address"
 msgstr "მითითებულ D-Bus-ს მისამართზე მიერთება"
 
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "მისამართი"
+
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
 msgstr "მიერთების ბოლოწერტილის პარამეტრები:"
@@ -1520,7 +1526,7 @@ msgstr "სპეციალური ფაილის კოპირებ�
 msgid "Invalid symlink value given"
 msgstr "სიმბმბულის მითითებული მნიშვნელობა არასწორია"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2404
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "სიმბოლური ბმების გამოყენება არაა რეალიზებული"
 
@@ -1995,6 +2001,8 @@ msgid ""
 "Launch an application from a desktop file, passing optional filename "
 "arguments to it."
 msgstr ""
+"აპლიკაციის გაშვება სამუშაო მაგიდის ფაილიდან, არასავალდებულო ფაილის სახელის "
+"გადაცემით."
 
 #: gio/gio-tool-launch.c:79
 msgid "No desktop file given"
@@ -2133,7 +2141,7 @@ msgstr "ფაილის მონიტორინგი (ნაგული
 
 #: gio/gio-tool-monitor.c:43
 msgid "Monitor a file directly (notices changes made via hardlinks)"
-msgstr ""
+msgstr "ფაილის პირდაპირი თვალთვალი (ამჩნევს მყარი ბმულების ცვლილებებს)"
 
 #: gio/gio-tool-monitor.c:45
 msgid "Monitors a file directly, but doesn’t report changes"
@@ -2142,6 +2150,8 @@ msgstr "ფაილის პირდაპირი მონიტორი�
 #: gio/gio-tool-monitor.c:47
 msgid "Report moves and renames as simple deleted/created events"
 msgstr ""
+"გადატანების და სახელის გადარქმევის ოპერაციების ერთ წაშლა/შექმნის მოვლენებად "
+"გამოტანა"
 
 #: gio/gio-tool-monitor.c:49
 msgid "Watch for mount events"
@@ -2189,7 +2199,7 @@ msgstr "სქემა"
 
 #: gio/gio-tool-mount.c:71
 msgid "Ignore outstanding file operations when unmounting or ejecting"
-msgstr ""
+msgstr "დაუსრულებელი ფაილის ოპერაციების გამოტოვება მოხსნისას ან გამოღებისას"
 
 #: gio/gio-tool-mount.c:72
 msgid "Use an anonymous user when authenticating"
@@ -2242,7 +2252,7 @@ msgstr "მდებარეობების მიმაგრება ა�
 
 #: gio/gio-tool-move.c:44
 msgid "Don’t use copy and delete fallback"
-msgstr ""
+msgstr "მარქაფი არ გამოიყენება და წაიშლება"
 
 #: gio/gio-tool-move.c:101
 msgid "Move one or more files from SOURCE to DEST."
@@ -2265,6 +2275,8 @@ msgid ""
 "Open files with the default application that\n"
 "is registered to handle files of this type."
 msgstr ""
+"ფაილების გახსნა ნაგულისხმევი აპლიკაციით,\n"
+"რომელიც დარეგისტრირებულია, ამ ტიპის ფაილები გახსნას."
 
 #: gio/gio-tool-remove.c:33 gio/gio-tool-trash.c:35
 msgid "Ignore nonexistent files, never prompt"
@@ -2398,6 +2410,8 @@ msgid ""
 "Restore a file from trash to its original location (possibly recreating the "
 "directory)"
 msgstr ""
+"ფაილის აღდგენა ნაგვის ყუთიდან საწყის მდებარეობაზე (შეიძლება, საქაღალდეები "
+"თავიდან შეიქმნას)"
 
 #: gio/gio-tool-trash.c:108
 msgid "Unable to find original path"
@@ -2503,9 +2517,12 @@ msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 msgstr ""
+"საქაღალდეები, საიდანაც ფაილში მითითებული ფაილები ჩაიტვირთება (ნაგულისხმევი: "
+"მიმდინარე საქაღალდე)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
@@ -2513,6 +2530,8 @@ msgstr "DIRECTORY"
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
+"გამოტანის გენერაცია ფორმატში, რომელიც სამიზნე ფაილის სახელის გაფართოების "
+"მიხედვითაა არჩეული"
 
 #: gio/glib-compile-resources.c:825
 msgid "Generate source header"
@@ -2521,6 +2540,8 @@ msgstr "წყაროს თავსართის გენერაცი�
 #: gio/glib-compile-resources.c:826
 msgid "Generate source code used to link in the resource file into your code"
 msgstr ""
+"კოდის ფაილის შექმნა, რომელიც რესურსის ფაილის თქვენ კოდთან მისაბმელად "
+"გამოიყენება"
 
 #: gio/glib-compile-resources.c:827
 msgid "Generate dependency list"
@@ -2532,7 +2553,7 @@ msgstr "დასაგენერირებელი დამოკიდ�
 
 #: gio/glib-compile-resources.c:829
 msgid "Include phony targets in the generated dependency file"
-msgstr ""
+msgstr "ფიქტიური სამიზნეების ჩასმა შექმნილ დამოკიდებულების ფაილში"
 
 #: gio/glib-compile-resources.c:830
 msgid "Don’t automatically create and register resource"
@@ -2552,6 +2573,10 @@ msgstr ""
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "C იდენტიფიკატორი, რომელიც გენერირებული წყაროს კოდისთვის გამოიყენება"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "იდენტიფიკატორი"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -2643,17 +2668,18 @@ msgstr "l10n მოთხოვნილია, მაგრამ gettext-ი�
 
 #: gio/glib-compile-schemas.c:455
 msgid "translation context given for value without l10n enabled"
-msgstr ""
+msgstr "მითითებულია თარგმანის კონტექსტი l10n-ის ჩართვის გარეშე"
 
 #: gio/glib-compile-schemas.c:477
 #, c-format
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr ""
+msgstr "ჩავარდა დამუშავება <default> მნიშვნელობისა ტიპით “%s”: "
 
 #: gio/glib-compile-schemas.c:494
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
 msgstr ""
+"<choices> მითითებული ვერ იქნება გასაღებებისთვის, რომლებიც ჩამონათვლის ტიპისაა"
 
 #: gio/glib-compile-schemas.c:503
 msgid "<choices> already specified for this key"
@@ -2662,7 +2688,7 @@ msgstr "<choices> ამ გასაღებისთვის უკვე �
 #: gio/glib-compile-schemas.c:515
 #, c-format
 msgid "<choices> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<choices> დაუშვებელია გასაღებებისთვის ტიპით “%s”"
 
 #: gio/glib-compile-schemas.c:531
 #, c-format
@@ -2672,7 +2698,7 @@ msgstr "<choice value='%s'/> უკვე გადაცემულია"
 #: gio/glib-compile-schemas.c:546
 #, c-format
 msgid "<choices> must contain at least one <choice>"
-msgstr ""
+msgstr "<choices> უნდა შეიცავდეს სულ ცოტა ერთ <choice>"
 
 #: gio/glib-compile-schemas.c:560
 msgid "<aliases> already specified for this key"
@@ -2683,18 +2709,21 @@ msgid ""
 "<aliases> can only be specified for keys with enumerated or flags types or "
 "after <choices>"
 msgstr ""
+"<aliases> შეიძლება, მხოლოდ, ჩამონათვლის ან ალმების ტიპის გასაღებებისთვის, ან "
+"შემდეგ შეიძლება მითითებული იყოს <choices>"
 
 #: gio/glib-compile-schemas.c:583
 #, c-format
 msgid ""
 "<alias value='%s'/> given when “%s” is already a member of the enumerated "
 "type"
-msgstr ""
+msgstr "<alias value='%s'/> მოცემულია, როცა “%s” უკვე ჩამონათვლის ტიპის წევრია"
 
 #: gio/glib-compile-schemas.c:589
 #, c-format
 msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
 msgstr ""
+"მითითებულია <alias value='%s'/>, როცა <choice value='%s'/> უკვე მითითებულია"
 
 #: gio/glib-compile-schemas.c:597
 #, c-format
@@ -2714,7 +2743,7 @@ msgstr "ფსევდონიმის სამიზნე “%s” სი�
 #: gio/glib-compile-schemas.c:623
 #, c-format
 msgid "<aliases> must contain at least one <alias>"
-msgstr ""
+msgstr "<aliases> სულ ცოტა ერთ <alias>-ს უნდა შეიცავდეს"
 
 #: gio/glib-compile-schemas.c:797
 msgid "Empty names are not permitted"
@@ -2732,16 +2761,18 @@ msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
 "and hyphen (“-”) are permitted"
 msgstr ""
+"არასწორი სახელი \"%s\": არასწორი სიმბოლო \"%c\": დაშვებულია, მხოლოდ პატარა "
+"ასოები, ციფრები და ტირე (\"-\")"
 
 #: gio/glib-compile-schemas.c:828
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
-msgstr ""
+msgstr "არასწორი სახელი “%s”: ორი ტირე ზედიზედ (“--”) დაშვებული არაა"
 
 #: gio/glib-compile-schemas.c:837
 #, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
-msgstr ""
+msgstr "არასწორი სახელი “%s”: ბოლო სიმბოლო ტირე (“-”) ვერ იქნება"
 
 #: gio/glib-compile-schemas.c:845
 #, c-format
@@ -2755,7 +2786,7 @@ msgstr "<child name='%s'> უკვე მითითებულია"
 
 #: gio/glib-compile-schemas.c:943
 msgid "Cannot add keys to a “list-of” schema"
-msgstr ""
+msgstr "ვერ დავამატე გასაღებების სქემას \"list-of\""
 
 #: gio/glib-compile-schemas.c:954
 #, c-format
@@ -2775,6 +2806,8 @@ msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
 "to <key>"
 msgstr ""
+"აუცილებელია ერთ-ერთის, “type”, “enum” ან “flags” მითითება ატრიბუტად "
+"გასაღებისთვის <key>"
 
 #: gio/glib-compile-schemas.c:1002
 #, c-format
@@ -2788,7 +2821,7 @@ msgstr "არასწორი GVariant ტიპის სტრიქონ�
 
 #: gio/glib-compile-schemas.c:1047
 msgid "<override> given but schema isn’t extending anything"
-msgstr ""
+msgstr "<override> მითითებულია, მაგრამ სქემა არაფერს აფართოებს"
 
 #: gio/glib-compile-schemas.c:1060
 #, c-format
@@ -2857,6 +2890,8 @@ msgid ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
 "desktop/” or “/system/” are deprecated."
 msgstr ""
+"გაფრთხილება: სქემას “%s” აქვს ბილიკი “%s”.  ბილიკები, რომლებიც იწყება “/"
+"apps/”, “/desktop/” ან “/system/” მოძველებულია."
 
 #: gio/glib-compile-schemas.c:1270
 #, c-format
@@ -2866,7 +2901,7 @@ msgstr "<%s id='%s'> უკვე მითითებულია"
 #: gio/glib-compile-schemas.c:1420 gio/glib-compile-schemas.c:1436
 #, c-format
 msgid "Only one <%s> element allowed inside <%s>"
-msgstr ""
+msgstr "დაშვებულია, მხოლოდ, ერთი <%s> ელემენტი <%s>-ის შიგნით"
 
 #: gio/glib-compile-schemas.c:1518
 #, c-format
@@ -2875,7 +2910,7 @@ msgstr "ელემენტი <%s> დაუშვებელია უმ�
 
 #: gio/glib-compile-schemas.c:1536
 msgid "Element <default> is required in <key>"
-msgstr ""
+msgstr "ელემენტი <default> აუცილებელია გასაღებში <key>"
 
 #: gio/glib-compile-schemas.c:1626
 #, c-format
@@ -2885,7 +2920,7 @@ msgstr "<%s>-ის შიგნით შეუძლებელია, ტე
 #: gio/glib-compile-schemas.c:1694
 #, c-format
 msgid "Warning: undefined reference to <schema id='%s'/>"
-msgstr ""
+msgstr "გაფრთხილება: აღუწერელი მიმართვა სქემაზე <schema id='%s'/>"
 
 #. Translators: Do not translate "--strict".
 #: gio/glib-compile-schemas.c:1833 gio/glib-compile-schemas.c:1912
@@ -3218,12 +3253,12 @@ msgstr "სიმბმულის დაყენების შეცდო�
 #: gio/glocalfileinfo.c:2603
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
-msgstr ""
+msgstr "დამატებითი ნანოწამები %d UNIX დროის შტამპისთვის %lld უარყოფითებია"
 
 #: gio/glocalfileinfo.c:2612
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
-msgstr ""
+msgstr "დამატებითი ნანოწამები %d UNIX დროის შტამპისთვის %lld 1 წამს აღწევს"
 
 #: gio/glocalfileinfo.c:2622
 #, c-format
@@ -3627,6 +3662,7 @@ msgstr "[ბილიკი]"
 #: gio/gresource-tool.c:583
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr ""
+"  ბილიკი      (არასავალდებულო) რესურსის ბილიკი (შეიძლება იყოს ნაწილობრივი)\n"
 
 #: gio/gresource-tool.c:584
 msgid "PATH"
@@ -3700,6 +3736,8 @@ msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
 msgstr ""
+"გასაღებების და მნიშვნელობების რეკურსიული ჩამონათვალი\n"
+"თუ სქემა მითითებული არაა, გამოჩნდება ყველა გასაღები\n"
 
 #: gio/gsettings-tool.c:624
 msgid "[SCHEMA[:PATH]]"
@@ -3716,7 +3754,7 @@ msgstr "სქემა[:ბილიკი] გასაღები"
 
 #: gio/gsettings-tool.c:635
 msgid "Query the range of valid values for KEY"
-msgstr ""
+msgstr "მითითებული გასაღებისთვის სწორი მნიშვნელობის შუალედების გამოთხოვა"
 
 #: gio/gsettings-tool.c:641
 msgid "Query the description for KEY"
@@ -3748,6 +3786,10 @@ msgid ""
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
+"მითითებული გასაღების თვალყური ცვლილებებზე.\n"
+"თუ გასაღები მითითებული არაა, თვალყური მიდევნებული იქნება სქემაში არსებულ "
+"ყველა გასაღებზე.\n"
+"გასაჩერებლად გამოიყენეთ ^C.\n"
 
 #: gio/gsettings-tool.c:674
 msgid "SCHEMA[:PATH] [KEY]"
@@ -3788,16 +3830,23 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"გამოყენება:\n"
+"  gsettings [--schemadir SCHEMADIR] %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: gio/gsettings-tool.c:716
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
-msgstr ""
+msgstr "  SCHEMADIR საქაღალდე დამატებითი სქემების მოსაძებნად\n"
 
 #: gio/gsettings-tool.c:724
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 msgstr ""
+"  SCHEMA    სქემის სახელი\n"
+"  PATH      ბილიკი გადატანადი სქემებისთვის\n"
 
 #: gio/gsettings-tool.c:729
 msgid "  KEY       The (optional) key within the schema\n"
@@ -4271,7 +4320,7 @@ msgstr "შეცდომა ავტორიზაციის დეტა�
 #: gio/gunixconnection.c:531
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr ""
+msgstr "შემოწმების შეცდომა, ჩართულია თუ არა SO_PASSCRED სოკეტისთვის: %s"
 
 #: gio/gunixconnection.c:547
 #, c-format
@@ -4282,6 +4331,8 @@ msgstr "შეცდომა SO_PASSCRED-ის ჩართვისას: %s
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
+"მოველოდი ერთი ბაიტის წაკითხვას შესვლის დეტალების მისაღებად, მაგრამ წავიკითხე "
+"ნული ბაიტი"
 
 #: gio/gunixconnection.c:617
 #, c-format
@@ -4317,7 +4368,7 @@ msgstr "შეცდომა ფაილის დესკრიპტორ�
 
 #: gio/gunixsocketaddress.c:245
 msgid "Abstract UNIX domain socket addresses not supported on this system"
-msgstr ""
+msgstr "აბსტრაქტული UNIX სოკეტის მისამართები ამ სისტემაზე მხარდაჭერილი არაა"
 
 #: gio/gvolume.c:436
 msgid "volume doesn’t implement eject"
@@ -4328,18 +4379,18 @@ msgstr "ტომს გამოღების ფუნქცია არ �
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gvolume.c:513
 msgid "volume doesn’t implement eject or eject_with_operation"
-msgstr ""
+msgstr "ტომს eject ან eject_with_operaton ბრძანებების მხარდაჭერა არ გააჩნია"
 
 #: gio/gwin32appinfo.c:5216
 #, c-format
 msgid "The app ‘%s’ in the application object has no verbs"
-msgstr ""
+msgstr "აპს '%s' აპლიკაციის ობიექტში ზმნები არ გააჩნია"
 
 #: gio/gwin32appinfo.c:5220
 #, c-format
 msgid ""
 "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
-msgstr ""
+msgstr "აპს '%s' და დამმუშავებელს '%s' აპლიკაციის ობიექტში ზმნები არ გააჩნიათ"
 
 #: gio/gwin32inputstream.c:184
 #, c-format
@@ -4399,7 +4450,6 @@ msgstr "არასწორი არგუმენტები\n"
 
 #: girepository/compiler/compiler.c:93
 #, c-format
-#| msgid "Failed to open file “%s”: %s"
 msgid "Failed to open ‘%s’: %s"
 msgstr "'%s'-ის გახსნა ჩავარდა: %s"
 
@@ -4413,11 +4463,11 @@ msgstr "შეცდომა: გამოტანილი ინფორმ
 msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
 msgstr "შეცდომა: ჩავარდა სახელის გადარქმევა '%s'-დან '%s'-მდე: %s"
 
-#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:52
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
 msgid "Include directories in GIR search path"
 msgstr "საქაღალდეების ჩასმა GIR-ის ძებნის ბილიკში"
 
-#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
 msgid "Output file"
 msgstr "გამოტანის ფაილი"
 
@@ -4433,65 +4483,64 @@ msgstr "გამართვის შეტყობინებების �
 msgid "Show verbose messages"
 msgstr "დამატებითი შეტყობინებების ჩვენება"
 
-#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:54
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
 msgid "Show program’s version number and exit"
 msgstr "პროგრამის ვერსიის ნომრის ჩვენება და გასვლა"
 
-#: girepository/compiler/compiler.c:174
+#: girepository/compiler/compiler.c:175
 #, c-format
 msgid "Error parsing arguments: %s"
 msgstr "არგუმენტის დამუშავების შეცდომა: %s"
 
-#: girepository/compiler/compiler.c:201
+#: girepository/compiler/compiler.c:202
 msgid "Please specify exactly one input file"
 msgstr "მიუთითეთ ზუსტად ერთი შეყვანის ფაილი"
 
-#: girepository/compiler/compiler.c:217
+#: girepository/compiler/compiler.c:218
 #, c-format
 msgid "Error parsing file ‘%s’: %s"
 msgstr "ფაილის ('%s') დამუშავების შეცდომა: %s"
 
-#: girepository/compiler/compiler.c:242
+#: girepository/compiler/compiler.c:243
 #, c-format
 msgid "Failed to build typelib for module ‘%s’"
 msgstr "Typelib-ის აგება ჩავარდა მოდულისთვის '%s'"
 
-#: girepository/compiler/compiler.c:244
+#: girepository/compiler/compiler.c:245
 #, c-format
 msgid "Invalid typelib for module ‘%s’: %s"
 msgstr "არასწორი typelib მოდულისთვის '%s': %s"
 
-#: girepository/decompiler/decompiler.c:53
+#: girepository/decompiler/decompiler.c:54
 msgid "Show all available information"
 msgstr "ხელმისაწვდომი ინფორმაციის სრულად ჩვენება"
 
-#: girepository/decompiler/decompiler.c:67
+#: girepository/decompiler/decompiler.c:71
 #, c-format
 msgid "Failed to parse: %s"
 msgstr "დამუშავება ჩავარდა: %s"
 
-#: girepository/decompiler/decompiler.c:83
+#: girepository/decompiler/decompiler.c:87
 msgid "No input files"
 msgstr "შეყვანის ფაილების გარეშე"
 
-#: girepository/decompiler/decompiler.c:109
+#: girepository/decompiler/decompiler.c:113
 #, c-format
 msgid "Failed to read ‘%s’: %s"
 msgstr "'%s'-ის წაკითხვის შეცდომა: %s"
 
-#: girepository/decompiler/decompiler.c:121
+#: girepository/decompiler/decompiler.c:125
 #, c-format
-#| msgid "Failed to create file “%s”: %s"
 msgid "Failed to create typelib ‘%s’: %s"
 msgstr "ვერ შევქმენი typelib '%s': %s"
 
-#: girepository/decompiler/decompiler.c:125
+#: girepository/decompiler/decompiler.c:129
 #: girepository/inspector/inspector.c:113
 #, c-format
 msgid "Failed to load typelib: %s"
 msgstr "ჩავარდა ჩატვირთვა typelib-სთვის: %s"
 
-#: girepository/decompiler/decompiler.c:132
+#: girepository/decompiler/decompiler.c:136
 #, c-format
 msgid "Warning: %u modules omitted"
 msgstr "გაფრთხილება: %u მოდული ამოღებულია"
@@ -4610,11 +4659,11 @@ msgstr "პროგრამას სახელით \"%s\" სანიშ
 #: glib/gbookmarkfile.c:3818
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
-msgstr ""
+msgstr "ვერ დავასრულე შესრულების ხაზი \"%s\" URI-ით \"%s\""
 
 #: glib/gconvert.c:379
 msgid "Unrepresentable character in conversion input"
-msgstr ""
+msgstr "გადაყვანის შეტანაზე აღმოჩენილია არაჩვენებადი სიმბოლო"
 
 #: glib/gconvert.c:406 glib/gutf8.c:954 glib/gutf8.c:1167 glib/gutf8.c:1304
 #: glib/gutf8.c:1408
@@ -5081,10 +5130,8 @@ msgstr "ვერ გავხსენი საქაღალდე \"%s\": %
 #. Translators: the first %s contains the file size
 #. * (already formatted with units), and the second %s
 #. * contains the file name
-#: glib/gfileutils.c:720
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
 #, c-format
-#| msgid "Could not allocate %lu byte to read file “%s”"
-#| msgid_plural "Could not allocate %lu bytes to read file “%s”"
 msgid "Could not allocate %s to read file “%s”"
 msgstr "ვერ გამოვყავი %s, რომ წავიკითხო ფაილი \"%s\""
 
@@ -5098,72 +5145,67 @@ msgstr "ფაილის \"%s\" წაკითხვის შეცდომ
 msgid "File “%s” is too large"
 msgstr "%s: ფაილი ძალიან დიდია"
 
-#: glib/gfileutils.c:825
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "გამოყოფის შეცდომა %s-სთვის"
-
-#: glib/gfileutils.c:850
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "ფაილიდან \"%s\" წაკითხვის შეცდომა: %s"
 
-#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "ფაილის (%s) გახსნა შეუძლებელია: %s"
 
-#: glib/gfileutils.c:913
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "ფაილის \"%s\" ატრიბუტების წაკითხვის შეცდომა: fstat() ჩავარდა: %s"
 
-#: glib/gfileutils.c:944
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "ფაილის \"%s\" გახსნის შეცდომა: fdopen() ჩავარდა: %s"
 
-#: glib/gfileutils.c:1045
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "ვერ მოხერხდა '%s' ფაილის გადარქმევა - '%s': g_rename() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:1144
+#: glib/gfileutils.c:1149
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "ვერ ვწერ '%s' ფაილს: ftruncate() ჩავარდა: %s"
 
-#: glib/gfileutils.c:1189
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "ვერ ვწერ '%s' ფაილს: fwrite() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:1210
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "ვერ ვწერ '%s' ფაილს: fsync() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "ვერ ვქმნი '%s' ფაილს: %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "არსებული '%s' ფაილი ვერ ამოიშლება: g_unlink() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:1753
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "შაბლონი '%s' მცდარია და '%s'-ს არ უნდა შეიცავდეს"
 
-#: glib/gfileutils.c:1766
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "შაბლონი '%s' არ შეიცავს XXXXXX"
 
-#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "სიმბოლური ბმის \"%s\" წაკითხვის შეცდომა: %s"
@@ -5259,7 +5301,7 @@ msgstr ""
 #: glib/gkeyfile.c:2825 glib/gkeyfile.c:2902
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
-msgstr ""
+msgstr "გასაღებს “%s” ჯგუფში “%s” აქვს მნიშვნელობა “%s” სადაც მოველოდი %s"
 
 #: glib/gkeyfile.c:4345
 msgid "Key file contains escape character at end of line"
@@ -5293,7 +5335,7 @@ msgstr "მნიშვნელობა '%s' ვერ აღიქმებ�
 #: glib/gmappedfile.c:135
 #, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
-msgstr ""
+msgstr "ჩავარდა ატრიბუტების მიღება ფაილისთვის “%s%s%s%s”: fstat() failed: %s"
 
 #: glib/gmappedfile.c:201
 #, c-format
@@ -5743,7 +5785,7 @@ msgstr "რვაობითი მნიშვნელობა მეტი�
 
 #: glib/gregex.c:691
 msgid "DEFINE group contains more than one branch"
-msgstr ""
+msgstr "ჯგუფი DEFINE ერთზე მეტ ჯგუფს შეიცავს"
 
 #: glib/gregex.c:695
 msgid "inconsistent NEWLINE options"
@@ -5781,7 +5823,7 @@ msgstr "(*MARK) არგუმენტის ქონა აუცილე�
 
 #: glib/gregex.c:728
 msgid "\\c must be followed by an ASCII character"
-msgstr ""
+msgstr "\\c-ს ASCII სიმბოლო უნდა მოჰყვებოდეს"
 
 #: glib/gregex.c:732
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
@@ -6345,6 +6387,10 @@ msgstr "%.1f პბ"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ებ"
+
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "გამოყოფის შეცდომა %s-სთვის"
 
 #~ msgid ""
 #~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
