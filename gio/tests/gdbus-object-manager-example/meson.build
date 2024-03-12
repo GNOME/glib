@@ -1,4 +1,4 @@
-gdbus_example_objectmanager_visibility_h = configure_file(
+gdbus_example_objectmanager_visibility_h = custom_target('gdbus-example-objectmanager-visibility',
   output: 'gdbus-example-objectmanager-visibility.h',
   command: [gen_visibility_macros, '2.0', 'visibility-macros',
             'GDBUS_OBJECT_MANAGER_EXAMPLE', '@OUTPUT@'],
