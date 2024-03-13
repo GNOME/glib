@@ -17,7 +17,7 @@ if get_option('documentation') and enable_gir
   ]
 endif
 
-docs_dir = glib_datadir / 'doc' / 'glib-2.0'
+docs_dir = glib_datadir / 'doc'
 
 subdir('glib')
 subdir('gmodule')

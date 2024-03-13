@@ -34,7 +34,7 @@ if get_option('documentation') and enable_gir
 
   custom_target('girepository-docs',
     input: [ girepository_toml, girepository_gir[0] ],
-    output: 'girepository',
+    output: 'girepository-2.0',
     command: [
       gidocgen,
       'generate',
