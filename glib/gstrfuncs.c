@@ -2732,6 +2732,9 @@ g_strjoin (const gchar *separator,
  * A length of `-1` can be used to mean “search the entire string”, like
  * `strstr()`.
  *
+ * The fact that this function returns `gchar *` rather than `const gchar *` is
+ * a historical artifact.
+ *
  * Returns: (transfer none) (nullable): a pointer to the found occurrence, or
  *    `NULL` if not found
  */
@@ -2785,6 +2788,9 @@ g_strstr_len (const gchar *haystack,
  * Searches the string @haystack for the last occurrence
  * of the string @needle.
  *
+ * The fact that this function returns `gchar *` rather than `const gchar *` is
+ * a historical artifact.
+ *
  * Returns: (transfer none) (nullable): a pointer to the found occurrence, or
  *    `NULL` if not found
  */
@@ -2836,6 +2842,9 @@ g_strrstr (const gchar *haystack,
  * Searches the string @haystack for the last occurrence
  * of the string @needle, limiting the length of the search
  * to @haystack_len.
+ *
+ * The fact that this function returns `gchar *` rather than `const gchar *` is
+ * a historical artifact.
  *
  * Returns: (transfer none) (nullable): a pointer to the found occurrence, or
  *    `NULL` if not found
