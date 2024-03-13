@@ -7,7 +7,7 @@ if get_option('documentation') and enable_gir
 
   custom_target('gmodule-docs',
     input: [ gmodule_toml, gmodule_gir[0] ],
-    output: 'gmodule',
+    output: 'gmodule-2.0',
     command: [
       gidocgen,
       'generate',

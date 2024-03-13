@@ -76,5 +76,5 @@ fi
 # Copy the built documentation to an artifact directory. The build for docs.gtk.org
 # can then pull it from there — see https://gitlab.gnome.org/GNOME/gtk/-/blob/docs-gtk-org/README.md
 mkdir -p _reference/
-mv _build/docs/reference/glib/glib-win32/ _reference/glib-win32/
-mv _build/docs/reference/gio/gio-win32/ _reference/gio-win32/
+mv _build/docs/reference/glib/glib-win32-2.0/ _reference/glib-win32/
+mv _build/docs/reference/gio/gio-win32-2.0/ _reference/gio-win32/

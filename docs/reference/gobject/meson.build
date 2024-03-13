@@ -34,7 +34,7 @@ if get_option('documentation') and enable_gir
 
   custom_target('gobject-docs',
     input: [ gobject_toml, gobject_gir[0] ],
-    output: 'gobject',
+    output: 'gobject-2.0',
     command: [
       gidocgen,
       'generate',

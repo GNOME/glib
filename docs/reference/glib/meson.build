@@ -106,7 +106,7 @@ if get_option('documentation') and enable_gir
 
   custom_target('glib-docs',
     input: [ glib_toml, glib_gir[0] ],
-    output: 'glib',
+    output: 'glib-2.0',
     command: [
       gidocgen,
       'generate',
@@ -128,7 +128,7 @@ if get_option('documentation') and enable_gir
 
     custom_target('glib-win32-docs',
       input: [ glib_win32_toml, glib_win32_gir[0] ],
-      output: 'glib-win32',
+      output: 'glib-win32-2.0',
       command: [
         gidocgen,
         'generate',
@@ -149,7 +149,7 @@ if get_option('documentation') and enable_gir
 
     custom_target('glib-unix-docs',
       input: [ glib_unix_toml, glib_unix_gir[0] ],
-      output: 'glib-unix',
+      output: 'glib-unix-2.0',
       command: [
         gidocgen,
         'generate',

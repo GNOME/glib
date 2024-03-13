@@ -200,13 +200,13 @@ fedora-x86_64:
     # Copy the built documentation to an artifact directory. The build for docs.gtk.org
     # can then pull it from there — see https://gitlab.gnome.org/GNOME/gtk/-/blob/docs-gtk-org/README.md
     - mkdir -p _reference/
-    - mv _build/docs/reference/glib/glib/ _reference/glib/
-    - mv _build/docs/reference/glib/glib-unix/ _reference/glib-unix/
-    - mv _build/docs/reference/gmodule/gmodule/ _reference/gmodule/
-    - mv _build/docs/reference/gobject/gobject/ _reference/gobject/
-    - mv _build/docs/reference/gio/gio/ _reference/gio/
-    - mv _build/docs/reference/gio/gio-unix/ _reference/gio-unix/
-    - mv _build/docs/reference/girepository/girepository/ _reference/girepository/
+    - mv _build/docs/reference/glib/glib-2.0/ _reference/glib/
+    - mv _build/docs/reference/glib/glib-unix-2.0/ _reference/glib-unix/
+    - mv _build/docs/reference/gmodule/gmodule-2.0/ _reference/gmodule/
+    - mv _build/docs/reference/gobject/gobject-2.0/ _reference/gobject/
+    - mv _build/docs/reference/gio/gio-2.0/ _reference/gio/
+    - mv _build/docs/reference/gio/gio-unix-2.0/ _reference/gio-unix/
+    - mv _build/docs/reference/girepository/girepository-2.0/ _reference/girepository/
   artifacts:
     reports:
       junit:
@@ -805,11 +805,11 @@ dist-job:
     - meson dist -C _build
     # Compile again to build the docs
     - meson compile -C _build
-    - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/glib glib
-    - tar -c -J -f "gmodule-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gmodule gmodule
-    - tar -c -J -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gobject gobject
-    - tar -c -J -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gio gio
-    - tar -c -J -f "girepository-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/girepository girepository
+    - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/glib glib-2.0
+    - tar -c -J -f "gmodule-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gmodule gmodule-2.0
+    - tar -c -J -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gobject gobject-2.0
+    - tar -c -J -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gio gio-2.0
+    - tar -c -J -f "girepository-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/girepository girepository-2.0
   artifacts:
     paths:
       - "${CI_PROJECT_DIR}/_build/glib-docs-$CI_COMMIT_TAG.tar.xz"

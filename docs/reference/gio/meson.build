@@ -48,7 +48,7 @@ if get_option('documentation') and enable_gir
 
   custom_target('gio-docs',
     input: [ gio_toml, gio_gir[0] ],
-    output: 'gio',
+    output: 'gio-2.0',
     command: [
       gidocgen,
       'generate',
@@ -70,7 +70,7 @@ if get_option('documentation') and enable_gir
 
     custom_target('gio-win32-docs',
       input: [ gio_win32_toml, gio_win32_gir[0] ],
-      output: 'gio-win32',
+      output: 'gio-win32-2.0',
       command: [
         gidocgen,
         'generate',
@@ -91,7 +91,7 @@ if get_option('documentation') and enable_gir
 
     custom_target('gio-unix-docs',
       input: [ gio_unix_toml, gio_unix_gir[0] ],
-      output: 'gio-unix',
+      output: 'gio-unix-2.0',
       command: [
         gidocgen,
         'generate',
