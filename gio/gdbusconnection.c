@@ -3666,6 +3666,52 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/*
+ * Called in any thread.
+ * Must hold the connection lock when calling this, unless
+ * connection->finalizing is TRUE.
+ * May free signal_data, so do not dereference it after this.
+ */
+static void
+remove_signal_data_if_unused (GDBusConnection *connection,
+                              SignalData *signal_data)
+{
+  GPtrArray *signal_data_array;
+
+  if (signal_data->subscribers->len != 0)
+    return;
+
+  g_warn_if_fail (g_hash_table_remove (connection->map_rule_to_signal_data, signal_data->rule));
+
+  signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
+                                           signal_data->sender_unique_name);
+  g_warn_if_fail (signal_data_array != NULL);
+  g_warn_if_fail (g_ptr_array_remove (signal_data_array, signal_data));
+
+  if (signal_data_array->len == 0)
+    {
+      g_warn_if_fail (g_hash_table_remove (connection->map_sender_unique_name_to_signal_data_array,
+                                           signal_data->sender_unique_name));
+    }
+
+  /* remove the match rule from the bus unless NameLost or NameAcquired (see subscribe()) */
+  if ((connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION) &&
+      !is_signal_data_for_name_lost_or_acquired (signal_data) &&
+      !g_dbus_connection_is_closed (connection) &&
+      !connection->finalizing)
+    {
+      /* The check for g_dbus_connection_is_closed() means that
+       * sending the RemoveMatch message can't fail with
+       * G_IO_ERROR_CLOSED, because we're holding the lock,
+       * so on_worker_closed() can't happen between the check we just
+       * did, and releasing the lock later.
+       */
+      remove_match_rule (connection, signal_data->rule);
+    }
+
+  signal_data_free (signal_data);
+}
+
 /* called in any thread */
 /* must hold lock when calling this (except if connection->finalizing is TRUE)
  * returns the number of removed subscribers */
@@ -3674,7 +3720,6 @@ unsubscribe_id_internal (GDBusConnection *connection,
                          guint            subscription_id)
 {
   SignalData *signal_data;
-  GPtrArray *signal_data_array;
   guint n;
   guint n_removed = 0;
 
@@ -3701,40 +3746,8 @@ unsubscribe_id_internal (GDBusConnection *connection,
                                            GUINT_TO_POINTER (subscription_id)));
       n_removed++;
       g_ptr_array_remove_index_fast (signal_data->subscribers, n);
-
-      if (signal_data->subscribers->len == 0)
-        {
-          g_warn_if_fail (g_hash_table_remove (connection->map_rule_to_signal_data, signal_data->rule));
-
-          signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
-                                                   signal_data->sender_unique_name);
-          g_warn_if_fail (signal_data_array != NULL);
-          g_warn_if_fail (g_ptr_array_remove (signal_data_array, signal_data));
-
-          if (signal_data_array->len == 0)
-            {
-              g_warn_if_fail (g_hash_table_remove (connection->map_sender_unique_name_to_signal_data_array,
-                                                   signal_data->sender_unique_name));
-            }
-
-          /* remove the match rule from the bus unless NameLost or NameAcquired (see subscribe()) */
-          if ((connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION) &&
-              !is_signal_data_for_name_lost_or_acquired (signal_data) &&
-              !g_dbus_connection_is_closed (connection) &&
-              !connection->finalizing)
-            {
-              /* The check for g_dbus_connection_is_closed() means that
-               * sending the RemoveMatch message can't fail with
-               * G_IO_ERROR_CLOSED, because we're holding the lock,
-               * so on_worker_closed() can't happen between the check we just
-               * did, and releasing the lock later.
-               */
-              remove_match_rule (connection, signal_data->rule);
-            }
-
-          signal_data_free (signal_data);
-        }
-
+      /* May free signal_data */
+      remove_signal_data_if_unused (connection, signal_data);
       goto out;
     }
 
