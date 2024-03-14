@@ -29,6 +29,11 @@
 
 G_BEGIN_DECLS
 
+/* Bus name, interface and object path of the message bus itself */
+#define DBUS_SERVICE_DBUS "org.freedesktop.DBus"
+#define DBUS_INTERFACE_DBUS DBUS_SERVICE_DBUS
+#define DBUS_PATH_DBUS "/org/freedesktop/DBus"
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 typedef struct GDBusWorker GDBusWorker;
