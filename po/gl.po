@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-03-01 12:22+0000\n"
-"PO-Revision-Date: 2024-03-11 09:20+0100\n"
+"POT-Creation-Date: 2024-03-13 21:17+0000\n"
+"PO-Revision-Date: 2024-03-14 10:17+0100\n"
 "Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -4756,11 +4756,11 @@ msgstr "Produciuse un fallo ao analizar as opcións de liña de ordes: %s"
 
 #: girepository/inspector/inspector.c:96
 msgid "Please specify exactly one namespace"
-msgstr ""
+msgstr "Especifique exactamente un espazo de nomes"
 
 #: girepository/inspector/inspector.c:105
 msgid "Please specify --print-shlibs, --print-typelibs or both"
-msgstr ""
+msgstr "Especifique —print-shlibs, —print-typelibs ou ambas"
 
 #: glib/gbookmarkfile.c:816
 #, c-format
