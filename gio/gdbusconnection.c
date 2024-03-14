@@ -348,6 +348,30 @@ typedef struct
   GPtrArray *subscribers;  /* (owned) (element-type SignalSubscriber) */
 } SignalData;
 
+static SignalData *
+signal_data_new_take (gchar *rule,
+                      gchar *sender,
+                      gchar *sender_unique_name,
+                      gchar *interface_name,
+                      gchar *member,
+                      gchar *object_path,
+                      gchar *arg0,
+                      GDBusSignalFlags flags)
+{
+  SignalData *signal_data = g_new0 (SignalData, 1);
+
+  signal_data->rule = rule;
+  signal_data->sender = sender;
+  signal_data->sender_unique_name = sender_unique_name;
+  signal_data->interface_name = interface_name;
+  signal_data->member = member;
+  signal_data->object_path = object_path;
+  signal_data->arg0 = arg0;
+  signal_data->flags = flags;
+  signal_data->subscribers = g_ptr_array_new_with_free_func ((GDestroyNotify) signal_subscriber_unref);
+  return g_steal_pointer (&signal_data);
+}
+
 static void
 signal_data_free (SignalData *signal_data)
 {
@@ -3584,16 +3608,14 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
       goto out;
     }
 
-  signal_data = g_new0 (SignalData, 1);
-  signal_data->rule                  = rule;
-  signal_data->sender                = g_strdup (sender);
-  signal_data->sender_unique_name    = g_strdup (sender_unique_name);
-  signal_data->interface_name        = g_strdup (interface_name);
-  signal_data->member                = g_strdup (member);
-  signal_data->object_path           = g_strdup (object_path);
-  signal_data->arg0                  = g_strdup (arg0);
-  signal_data->flags                 = flags;
-  signal_data->subscribers           = g_ptr_array_new_with_free_func ((GDestroyNotify) signal_subscriber_unref);
+  signal_data = signal_data_new_take (g_steal_pointer (&rule),
+                                      g_strdup (sender),
+                                      g_strdup (sender_unique_name),
+                                      g_strdup (interface_name),
+                                      g_strdup (member),
+                                      g_strdup (object_path),
+                                      g_strdup (arg0),
+                                      flags);
   g_ptr_array_add (signal_data->subscribers, subscriber);
 
   g_hash_table_insert (connection->map_rule_to_signal_data,
