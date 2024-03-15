@@ -32,6 +32,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <time.h>       /* For time_t */
+#include <sys/types.h>  /* For off_t on both Unix and Windows */
+
+#ifdef G_OS_UNIX
+#include <sys/socket.h> /* For socklen_t */
+#endif
 
 /* This is a "major" version in the sense that it's only bumped
  * for incompatible changes.
@@ -448,6 +454,19 @@ typedef struct {
   unsigned int is_signed : 1;
 } IntegerAliasInfo;
 
+/* Ignore warnings from use of signedness() */
+#if G_GNUC_CHECK_VERSION(4, 6)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtype-limits"
+#elif defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wtype-limits"
+#endif
+
+#define signedness(T) (((T) -1) < 0)
+G_STATIC_ASSERT (signedness (int) == 1);
+G_STATIC_ASSERT (signedness (unsigned int) == 0);
+
 static IntegerAliasInfo integer_aliases[] = {
   { "gchar",    SIZEOF_CHAR,      1 },
   { "guchar",   SIZEOF_CHAR,      0 },
@@ -461,7 +480,24 @@ static IntegerAliasInfo integer_aliases[] = {
   { "gsize",    GLIB_SIZEOF_SIZE_T,    0 },
   { "gintptr",  sizeof (gintptr),      1 },
   { "guintptr", sizeof (guintptr),     0 },
+#define INTEGER_ALIAS(T) { #T, sizeof (T), signedness (T) }
+  INTEGER_ALIAS (off_t),
+  INTEGER_ALIAS (time_t),
+#ifdef G_OS_UNIX
+  INTEGER_ALIAS (dev_t),
+  INTEGER_ALIAS (gid_t),
+  INTEGER_ALIAS (pid_t),
+  INTEGER_ALIAS (socklen_t),
+  INTEGER_ALIAS (uid_t),
+#endif
+#undef INTEGER_ALIAS
 };
+
+#if G_GNUC_CHECK_VERSION(4, 6)
+#pragma GCC diagnostic pop
+#elif defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 typedef struct {
   const char *str;
