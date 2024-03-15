@@ -459,8 +459,8 @@ static IntegerAliasInfo integer_aliases[] = {
   { "gulong",   SIZEOF_LONG,      0 },
   { "gssize",   GLIB_SIZEOF_SIZE_T,    1 },
   { "gsize",    GLIB_SIZEOF_SIZE_T,    0 },
-  { "gintptr",  GLIB_SIZEOF_SIZE_T,    1 },
-  { "guintptr", GLIB_SIZEOF_SIZE_T,    0 },
+  { "gintptr",  sizeof (gintptr),      1 },
+  { "guintptr", sizeof (guintptr),     0 },
 };
 
 typedef struct {
