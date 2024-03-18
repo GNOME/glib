@@ -22,6 +22,7 @@
 #include "../testcommon.h"
 
 #define WARM_UP_N_RUNS 50
+#define WARM_UP_ALWAYS_SEC 2.0
 #define ESTIMATE_ROUND_TIME_N_RUNS 5
 #define DEFAULT_TEST_TIME 15 /* seconds */
  /* The time we want each round to take, in seconds, this should
@@ -31,13 +32,20 @@
 #define TARGET_ROUND_TIME 0.008
 
 static gboolean verbose = FALSE;
+static gboolean quiet = FALSE;
 static int test_length = DEFAULT_TEST_TIME;
+static double test_factor = 0;
+static GTimer *global_timer = NULL;
 
 static GOptionEntry cmd_entries[] = {
   {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
    "Print extra information", NULL},
+  {"quiet", 'q', 0, G_OPTION_ARG_NONE, &quiet,
+   "Print extra information", NULL},
   {"seconds", 's', 0, G_OPTION_ARG_INT, &test_length,
    "Time to run each test in seconds", NULL},
+  {"factor", 'f', 0, G_OPTION_ARG_DOUBLE, &test_factor,
+   "Use a fixed factor for sample runs (also $GLIB_PERFORMANCE_FACTOR)", NULL},
   G_OPTION_ENTRY_NULL
 };
 
@@ -69,7 +77,8 @@ run_test (PerformanceTest *test)
   double elapsed, min_elapsed, max_elapsed, avg_elapsed, factor;
   GTimer *timer;
 
-  g_print ("Running test %s\n", test->name);
+  if (verbose || !quiet)
+    g_print ("Running test %s\n", test->name);
 
   /* Set up test */
   timer = g_timer_new ();
@@ -81,11 +90,43 @@ run_test (PerformanceTest *test)
   g_timer_start (timer);
 
   /* Warm up the test by doing a few runs */
-  for (i = 0; i < WARM_UP_N_RUNS; i++)
+  for (i = 0; TRUE; i++)
     {
       test->init (test, data, 1.0);
       test->run (test, data);
       test->finish (test, data);
+
+      if (test_factor > 0)
+        {
+          /* The caller specified a constant factor. That makes mostly
+           * sense, to ensure that the test run is independent from
+           * external factors. In this case, don't make warm up dependent
+           * on WARM_UP_ALWAYS_SEC. */
+        }
+      else if (global_timer)
+        {
+          if (g_timer_elapsed (global_timer, NULL) < WARM_UP_ALWAYS_SEC)
+            {
+              /* We always warm up for a certain time where we keep the
+               * CPU busy.
+               *
+               * Note that when we run multiple tests, then this is only
+               * performed once for the first test. */
+              continue;
+            }
+          g_clear_pointer (&global_timer, g_timer_destroy);
+        }
+
+      if (i >= WARM_UP_N_RUNS)
+        break;
+
+      if (test_factor == 0 && g_timer_elapsed (timer, NULL) > test_length / 10)
+        {
+          /* The warm up should not take longer than 10 % of the entire
+           * test run. Note that the warm up time for WARM_UP_ALWAYS_SEC
+           * already passed. */
+          break;
+        }
     }
 
   g_timer_stop (timer);
@@ -97,24 +138,32 @@ run_test (PerformanceTest *test)
       g_print ("Estimating round time\n");
     }
 
-  /* Estimate time for one run by doing a few test rounds */
   min_elapsed = 0;
-  for (i = 0; i < ESTIMATE_ROUND_TIME_N_RUNS; i++)
+
+  if (test_factor > 0)
     {
-      test->init (test, data, 1.0);
-      g_timer_start (timer);
-      test->run (test, data);
-      g_timer_stop (timer);
-      test->finish (test, data);
-
-      elapsed = g_timer_elapsed (timer, NULL);
-      if (i == 0)
-	min_elapsed = elapsed;
-      else
-	min_elapsed = MIN (min_elapsed, elapsed);
+      factor = test_factor;
     }
+  else
+    {
+      /* Estimate time for one run by doing a few test rounds. */
+      for (i = 0; i < ESTIMATE_ROUND_TIME_N_RUNS; i++)
+        {
+          test->init (test, data, 1.0);
+          g_timer_start (timer);
+          test->run (test, data);
+          g_timer_stop (timer);
+          test->finish (test, data);
 
-  factor = TARGET_ROUND_TIME / min_elapsed;
+          elapsed = g_timer_elapsed (timer, NULL);
+          if (i == 0)
+            min_elapsed = elapsed;
+          else
+            min_elapsed = MIN (min_elapsed, elapsed);
+        }
+
+      factor = TARGET_ROUND_TIME / min_elapsed;
+    }
 
   if (verbose)
     g_print ("Uncorrected round time: %.4f msecs, correction factor %.2f\n", 1000*min_elapsed, factor);
@@ -127,7 +176,7 @@ run_test (PerformanceTest *test)
 
   /* Run the test */
   avg_elapsed = 0.0;
-  min_elapsed = 0.0;
+  min_elapsed = 1e100;
   max_elapsed = 0.0;
   for (i = 0; i < num_rounds; i++)
     {
@@ -136,16 +185,18 @@ run_test (PerformanceTest *test)
       test->run (test, data);
       g_timer_stop (timer);
       test->finish (test, data);
+
+      if (i < num_rounds / 20)
+        {
+          /* The first 5% are additional warm up. Ignore. */
+          continue;
+        }
+
       elapsed = g_timer_elapsed (timer, NULL);
 
-      if (i == 0)
-	max_elapsed = min_elapsed = avg_elapsed = elapsed;
-      else
-        {
-          min_elapsed = MIN (min_elapsed, elapsed);
-          max_elapsed = MAX (max_elapsed, elapsed);
-          avg_elapsed += elapsed;
-        }
+      min_elapsed = MIN (min_elapsed, elapsed);
+      max_elapsed = MAX (max_elapsed, elapsed);
+      avg_elapsed += elapsed;
     }
 
   if (num_rounds > 1)
@@ -159,6 +210,7 @@ run_test (PerformanceTest *test)
     }
 
   /* Print the results */
+  g_print ("%s: ", test->name);
   test->print_result (test, data, min_elapsed);
 
   /* Tear down */
@@ -1087,6 +1139,12 @@ test_set_setup (PerformanceTest *test)
   data = g_new0 (struct SetTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
 
+  /* g_object_get() will take a reference. Increasing the ref count from 1 to 2
+   * is more expensive, due to the check for toggle notifications. We have a
+   * performance test for that already. Don't also test that overhead during
+   * "property-get" test and avoid this by taking an additional reference. */
+  g_object_ref (data->object);
+
   return data;
 }
 
@@ -1124,6 +1182,7 @@ test_set_teardown (PerformanceTest *test,
   struct SetTest *data = _data;
 
   g_object_unref (data->object);
+  g_object_unref (data->object);
   g_free (data);
 }
 
@@ -1157,6 +1216,12 @@ test_get_setup (PerformanceTest *test)
 
   data = g_new0 (struct GetTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+
+  /* g_object_get() will take a reference. Increasing the ref count from 1 to 2
+   * is more expensive, due to the check for toggle notifications. We have a
+   * performance test for that already. Don't also test that overhead during
+   * "property-get" test and avoid this by taking an additional reference. */
+  g_object_ref (data->object);
 
   return data;
 }
@@ -1195,6 +1260,7 @@ test_get_teardown (PerformanceTest *test,
   struct GetTest *data = _data;
 
   g_object_unref (data->object);
+  g_object_unref (data->object);
   g_free (data);
 }
 
@@ -1207,7 +1273,15 @@ test_get_teardown (PerformanceTest *test,
 struct RefcountTest {
   GObject *object;
   int n_checks;
+  gboolean is_toggle_ref;
 };
+
+static void
+test_refcount_toggle_ref_cb (gpointer data,
+                             GObject *object,
+                             gboolean is_last_ref)
+{
+}
 
 static gpointer
 test_refcount_setup (PerformanceTest *test)
@@ -1216,6 +1290,13 @@ test_refcount_setup (PerformanceTest *test)
 
   data = g_new0 (struct RefcountTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+
+  if (g_str_equal (test->name, "refcount-toggle"))
+    {
+      g_object_add_toggle_ref (data->object, test_refcount_toggle_ref_cb, NULL);
+      g_object_unref (data->object);
+      data->is_toggle_ref = TRUE;
+    }
 
   return data;
 }
@@ -1255,6 +1336,21 @@ test_refcount_run (PerformanceTest *test,
 }
 
 static void
+test_refcount_1_run (PerformanceTest *test,
+                     gpointer _data)
+{
+  struct RefcountTest *data = _data;
+  GObject *object = data->object;
+  int i;
+
+  for (i = 0; i < data->n_checks; i++)
+    {
+      g_object_ref (object);
+      g_object_unref (object);
+    }
+}
+
+static void
 test_refcount_finish (PerformanceTest *test,
                       gpointer _data)
 {
@@ -1276,7 +1372,11 @@ test_refcount_teardown (PerformanceTest *test,
 {
   struct RefcountTest *data = _data;
 
-  g_object_unref (data->object);
+  if (data->is_toggle_ref)
+    g_object_remove_toggle_ref (data->object, test_refcount_toggle_ref_cb, NULL);
+  else
+    g_object_unref (data->object);
+
   g_free (data);
 }
 
@@ -1524,7 +1624,27 @@ static PerformanceTest tests[] = {
     test_refcount_finish,
     test_refcount_teardown,
     test_refcount_print_result
-  }
+  },
+  {
+    "refcount-1",
+    NULL,
+    test_refcount_setup,
+    test_refcount_init,
+    test_refcount_1_run,
+    test_refcount_finish,
+    test_refcount_teardown,
+    test_refcount_print_result
+  },
+  {
+    "refcount-toggle",
+    NULL,
+    test_refcount_setup,
+    test_refcount_init,
+    test_refcount_1_run,
+    test_refcount_finish,
+    test_refcount_teardown,
+    test_refcount_print_result
+  },
 };
 
 static PerformanceTest *
@@ -1545,7 +1665,13 @@ main (int   argc,
   PerformanceTest *test;
   GOptionContext *context;
   GError *error = NULL;
+  const char *str;
   int i;
+
+  if ((str = g_getenv ("GLIB_PERFORMANCE_FACTOR")) && str[0])
+    {
+      test_factor = g_strtod (str, NULL);
+    }
 
   context = g_option_context_new ("GObject performance tests");
   g_option_context_add_main_entries (context, cmd_entries, NULL);
@@ -1554,6 +1680,14 @@ main (int   argc,
       g_printerr ("%s: %s\n", argv[0], error->message);
       return 1;
     }
+
+  if (test_factor < 0)
+    {
+      g_printerr ("%s: test factor must be positive\n", argv[0]);
+      return 1;
+    }
+
+  global_timer = g_timer_new ();
 
   if (argc > 1)
     {
@@ -1572,5 +1706,6 @@ main (int   argc,
     }
 
   g_option_context_free (context);
+  g_clear_pointer (&global_timer, g_timer_destroy);
   return 0;
 }
