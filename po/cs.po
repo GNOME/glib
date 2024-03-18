@@ -10,14 +10,14 @@
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 # Petr Kovar <pknbe@volny.cz>, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015.
 # Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
-# Vojtěch Perník <translations@pervoj.cz>, 2023.
+# Vojtěch Perník <translations@pervoj.cz>, 2023-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-27 09:41+0000\n"
-"PO-Revision-Date: 2024-02-28 00:02+0100\n"
+"POT-Creation-Date: 2024-03-17 02:48+0000\n"
+"PO-Revision-Date: 2024-03-18 12:32+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -136,7 +136,7 @@ msgid "APPID"
 msgstr "IDAPLIKACE"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "PŘÍKAZ"
 
@@ -148,11 +148,13 @@ msgstr "Příkaz, ke kterému vypsat podrobnou nápovědu"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Identifikátor aplikace ve formátu D-Bus (např. org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 #: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
-#: girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "SOUBOR"
 
@@ -773,72 +775,51 @@ msgstr "V cestě „%s“ objekt neexistuje"
 #, c-format
 msgid "%s message: %s header field is invalid; expected a value of type ‘%s’"
 msgstr ""
+"Zpráva %s: pole se záhlavím %s je neplatné; očekává se hodnota typu „%s“"
 
 #: gio/gdbusmessage.c:1374
-#, fuzzy, c-format
-#| msgid ""
-#| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+#, c-format
 msgid "%s message: %s header field is missing or invalid"
-msgstr ""
-"Zpráva METHOD_CALL: pole se záhlavím PATH nebo MEMBER schází nebo je neplatné"
+msgstr "Zpráva %s: pole se záhlavím %s chybí, nebo je neplatné"
 
 #: gio/gdbusmessage.c:1413
 #, c-format
 msgid "%s message: INVALID header field supplied"
-msgstr ""
+msgstr "Zpráva %s: dodáno pole se záhlavím INVALID"
 
 #: gio/gdbusmessage.c:1424
-#, fuzzy, c-format
-#| msgid ""
-#| "SIGNAL message: The PATH header field is using the reserved value /org/"
-#| "freedesktop/DBus/Local"
+#, c-format
 msgid ""
 "%s message: PATH header field is using the reserved value /org/freedesktop/"
 "DBus/Local"
 msgstr ""
-"Zpráva SIGNAL: pole se záhlavím PATH používá rezervovanou hodnotu /org/"
+"Zpráva %s: pole se záhlavím PATH používá rezervovanou hodnotu /org/"
 "freedesktop/DBus/Local"
 
 #: gio/gdbusmessage.c:1437
-#, fuzzy, c-format
-#| msgid ""
-#| "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing or "
-#| "invalid"
+#, c-format
 msgid ""
 "%s message: INTERFACE header field does not contain a valid interface name"
-msgstr ""
-"Zpráva SIGNAL: pole se záhlavím PATH, INTERFACE nebo MEMBER schází nebo je "
-"neplatné"
+msgstr "Zpráva %s: pole se záhlavím INTERFACE neobsahuje platný název rozhraní"
 
 #: gio/gdbusmessage.c:1446
-#, fuzzy, c-format
-#| msgid ""
-#| "SIGNAL message: The INTERFACE header field is using the reserved value "
-#| "org.freedesktop.DBus.Local"
+#, c-format
 msgid ""
 "%s message: INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
-"Zpráva SIGNAL: pole se záhlavím INTERFACE používá rezervovanou hodnotu org."
+"Zpráva %s: pole se záhlavím INTERFACE používá rezervovanou hodnotu org."
 "freedesktop.DBus.Local"
 
 #: gio/gdbusmessage.c:1459
-#, fuzzy, c-format
-#| msgid ""
-#| "METHOD_CALL message: PATH or MEMBER header field is missing or invalid"
+#, c-format
 msgid "%s message: MEMBER header field does not contain a valid member name"
-msgstr ""
-"Zpráva METHOD_CALL: pole se záhlavím PATH nebo MEMBER schází nebo je neplatné"
+msgstr "Zpráva %s: pole se záhlavím MEMBER neobsahuje platný název členu"
 
 #: gio/gdbusmessage.c:1472
-#, fuzzy, c-format
-#| msgid ""
-#| "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing or "
-#| "invalid"
+#, c-format
 msgid "%s message: ERROR_NAME header field does not contain a valid error name"
-msgstr ""
-"Zpráva ERROR: pole se záhlavím REPLY_SERIAL nebo ERROR_NAME schází nebo je "
-"neplatné"
+msgstr "Zpráva %s: pole se záhlavím ERROR_NAME neobsahuje platný název chyby"
 
 #: gio/gdbusmessage.c:1511
 msgid "type is INVALID"
@@ -1125,6 +1106,10 @@ msgstr "Připojit ke sběrnici sezení"
 #: gio/gdbus-tool.c:407
 msgid "Connect to given D-Bus address"
 msgstr "Připojit k dané adrese D-Bus"
+
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "ADRESA"
 
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
@@ -1510,10 +1495,9 @@ msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopírování (reflink/clone) není podporováno nebo neproběhlo správně"
 
 #: gio/gfile.c:3384 gio/gfile.c:3395
-#, fuzzy, c-format
-#| msgid "Unset given attribute"
+#, c-format
 msgid "Cannot retrieve attribute %s"
-msgstr "Zrušit nastavení zadaného atributu"
+msgstr "Nezdařilo se získat atribut %s"
 
 #: gio/gfile.c:3415
 msgid "Can’t copy special file"
@@ -1523,7 +1507,7 @@ msgstr "Nelze kopírovat zvláštní soubor"
 msgid "Invalid symlink value given"
 msgstr "Zadaný symbolický odkaz je neplatný"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2404
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nejsou podporovány"
 
@@ -1859,10 +1843,8 @@ msgid "Use default permissions for the destination"
 msgstr "Používat pro tento cíl výchozí oprávnění"
 
 #: gio/gio-tool-copy.c:53
-#, fuzzy
-#| msgid "Use default permissions for the destination"
 msgid "Use default file modification timestamps for the destination"
-msgstr "Používat pro tento cíl výchozí oprávnění"
+msgstr "Používat pro tento cíl výchozí časové údaje změny souboru"
 
 #: gio/gio-tool-copy.c:78 gio/gio-tool-move.c:69
 #, c-format
@@ -2539,7 +2521,8 @@ msgstr ""
 "aktuální složka)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "SLOŽKA"
 
@@ -2590,6 +2573,10 @@ msgstr ""
 #: gio/glib-compile-resources.c:833
 msgid "C identifier name used for the generated source code"
 msgstr "Název identifikátoru C použitý ke generování zdrojového kódu"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "IDENTIFIKÁTOR"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -4533,28 +4520,25 @@ msgid "Wrong args\n"
 msgstr "Nesprávné argumenty\n"
 
 #: girepository/compiler/compiler.c:93
-#, fuzzy, c-format
-#| msgid "Failed to open file “%s”: %s"
+#, c-format
 msgid "Failed to open ‘%s’: %s"
-msgstr "Nelze otevřít soubor „%s“: %s"
+msgstr "Nelze otevřít „%s“: %s"
 
 #: girepository/compiler/compiler.c:103
-#, fuzzy, c-format
-#| msgid "Could not create network monitor: %s"
+#, c-format
 msgid "Error: Could not write the whole output: %s"
-msgstr "Nelze vytvořit sledování sítě: %s"
+msgstr "Chyba: Nezdařilo se zapsat celý výstup: %s"
 
 #: girepository/compiler/compiler.c:115
-#, fuzzy, c-format
-#| msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
+#, c-format
 msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
-msgstr "Nelze přejmenovat soubor „%s“ na „%s“: funkce g_rename() selhala: %s"
+msgstr "Chyba: Nelze přejmenovat soubor „%s“ na „%s“: %s"
 
-#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:52
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
 msgid "Include directories in GIR search path"
-msgstr ""
+msgstr "Zahrnout složky ve vyhledávací cestě GIR"
 
-#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:51
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
 msgid "Output file"
 msgstr "Výstupní soubor"
 
@@ -4570,83 +4554,71 @@ msgstr "Zobrazit ladicí zprávy"
 msgid "Show verbose messages"
 msgstr "Zobrazit podrobné zprávy"
 
-#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:54
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
 msgid "Show program’s version number and exit"
 msgstr "Zobrazit číslo verze programu a skončit"
 
-#: girepository/compiler/compiler.c:174
-#, fuzzy, c-format
-#| msgid "Error parsing parameter %d: %s\n"
+#: girepository/compiler/compiler.c:175
+#, c-format
 msgid "Error parsing arguments: %s"
-msgstr "Chyba při analyzování parametru %d: %s\n"
+msgstr "Chyba při analyzování parametrů: %s"
 
-#: girepository/compiler/compiler.c:201
+#: girepository/compiler/compiler.c:202
 msgid "Please specify exactly one input file"
 msgstr "Uveďte prosím přesně jeden vstupní soubor"
 
-#: girepository/compiler/compiler.c:217
-#, fuzzy, c-format
-#| msgid "Error opening file “%s”: %s"
+#: girepository/compiler/compiler.c:218
+#, c-format
 msgid "Error parsing file ‘%s’: %s"
-msgstr "Chyba při otevírání souboru %s: %s"
+msgstr "Chyba při načítání souboru „%s“: %s"
 
-#: girepository/compiler/compiler.c:242
-#, fuzzy, c-format
-#| msgid "Failed to load info for handler “%s”"
+#: girepository/compiler/compiler.c:243
+#, c-format
 msgid "Failed to build typelib for module ‘%s’"
-msgstr "Selhalo načtení informací pro obsluhu „%s“"
+msgstr "Selhalo sestavení typelib pro modul „%s“"
 
-#: girepository/compiler/compiler.c:244
-#, fuzzy, c-format
-#| msgid "Unable to load ‘%s‘: %s"
+#: girepository/compiler/compiler.c:245
+#, c-format
 msgid "Invalid typelib for module ‘%s’: %s"
-msgstr "Nezdařilo se načíst „%s“: %s"
+msgstr "Neplatný typelib pro modul „%s“: %s"
 
-#: girepository/decompiler/decompiler.c:53
-#, fuzzy
-#| msgid "Show extra information"
+#: girepository/decompiler/decompiler.c:54
 msgid "Show all available information"
-msgstr "Zobrazit doplňující informace"
+msgstr "Zobrazit všechny dostupné informace"
 
-#: girepository/decompiler/decompiler.c:67
-#, fuzzy, c-format
-#| msgid "Failed to fork (%s)"
+#: girepository/decompiler/decompiler.c:71
+#, c-format
 msgid "Failed to parse: %s"
-msgstr "Selhalo rozvětvení procesu (%s)"
+msgstr "Selhalo zpracování: %s"
 
-#: girepository/decompiler/decompiler.c:83
-#, fuzzy
-#| msgid "Show hidden files"
+#: girepository/decompiler/decompiler.c:87
 msgid "No input files"
-msgstr "Zobrazit skryté soubory"
+msgstr "Žádné vstupní soubory"
 
-#: girepository/decompiler/decompiler.c:109
-#, fuzzy, c-format
-#| msgid "Failed to create file “%s”: %s"
+#: girepository/decompiler/decompiler.c:113
+#, c-format
 msgid "Failed to read ‘%s’: %s"
-msgstr "Nelze vytvořit soubor „%s“: %s"
-
-#: girepository/decompiler/decompiler.c:121
-#, fuzzy, c-format
-#| msgid "Failed to create file “%s”: %s"
-msgid "Failed to create typelib ‘%s’: %s"
-msgstr "Nelze vytvořit soubor „%s“: %s"
+msgstr "Chyba při čtení „%s“: %s"
 
 #: girepository/decompiler/decompiler.c:125
-#: girepository/inspector/inspector.c:113
-#, fuzzy, c-format
-#| msgid "Failed to allocate memory"
-msgid "Failed to load typelib: %s"
-msgstr "Nelze alokovat paměť"
+#, c-format
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "Nelze vytvořit typelib „%s“: %s"
 
-#: girepository/decompiler/decompiler.c:132
+#: girepository/decompiler/decompiler.c:129
+#: girepository/inspector/inspector.c:113
+#, c-format
+msgid "Failed to load typelib: %s"
+msgstr "Nelze načíst typelib: %s"
+
+#: girepository/decompiler/decompiler.c:136
 #, c-format
 msgid "Warning: %u modules omitted"
-msgstr ""
+msgstr "Varování: %u modulů vynecháno"
 
 #: girepository/inspector/inspector.c:72
 msgid "Typelib version to inspect"
-msgstr ""
+msgstr "Verze typelib pro prozkoumání"
 
 #: girepository/inspector/inspector.c:72
 msgid "VERSION"
@@ -4654,41 +4626,36 @@ msgstr "VERZE"
 
 #: girepository/inspector/inspector.c:73
 msgid "List the shared libraries the typelib requires"
-msgstr ""
+msgstr "Vypsat sdílené knihovny, které tento typelib vyžaduje"
 
 #: girepository/inspector/inspector.c:74
 msgid "List other typelibs the inspected typelib requires"
-msgstr ""
+msgstr "Vypsat další soubory typelib, které zkoumaný typelib vyžaduje"
 
 #: girepository/inspector/inspector.c:75
-#, fuzzy
-#| msgid "The attributes to get"
 msgid "The typelib to inspect"
-msgstr "Atributy, které se mají vypsat"
+msgstr "Typelib pro prozkoumání"
 
 #: girepository/inspector/inspector.c:75
-#, fuzzy
-#| msgid "NAME"
 msgid "NAMESPACE"
-msgstr "NÁZEV"
+msgstr "JMENNÝ_PROSTOR"
 
 #: girepository/inspector/inspector.c:82
 msgid "- Inspect GI typelib"
-msgstr ""
+msgstr "- Prozkoumat typelib GI"
 
 #: girepository/inspector/inspector.c:86
-#, fuzzy, c-format
-#| msgid "Failed to read from file “%s”: %s"
+#, c-format
 msgid "Failed to parse command line options: %s"
-msgstr "Chyba při čtení ze souboru „%s“: %s"
+msgstr "Chyba při načítání parametrů příkazové řádky: %s"
 
 #: girepository/inspector/inspector.c:96
 msgid "Please specify exactly one namespace"
-msgstr ""
+msgstr "Prosím, specifikujte přesně jeden jmenný prostor"
 
 #: girepository/inspector/inspector.c:105
 msgid "Please specify --print-shlibs, --print-typelibs or both"
-msgstr ""
+msgstr "Prosím, specifikujte --print-shlibs, --print-typelibs nebo oba"
 
 #: glib/gbookmarkfile.c:816
 #, c-format
@@ -5239,12 +5206,10 @@ msgstr "Chyba při otevírání složky „%s“: %s"
 #. Translators: the first %s contains the file size
 #. * (already formatted with units), and the second %s
 #. * contains the file name
-#: glib/gfileutils.c:720
-#, fuzzy, c-format
-#| msgid "Could not allocate %lu byte to read file “%s”"
-#| msgid_plural "Could not allocate %lu bytes to read file “%s”"
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#, c-format
 msgid "Could not allocate %s to read file “%s”"
-msgstr "Nelze alokovat %lu bajtů k přečtení souboru „%s“"
+msgstr "Nelze alokovat %s k přečtení souboru „%s“"
 
 #: glib/gfileutils.c:738
 #, c-format
@@ -5256,77 +5221,67 @@ msgstr "Chyba čtení souboru „%s“: %s"
 msgid "File “%s” is too large"
 msgstr "Soubor „%s“ je příliš velký"
 
-#: glib/gfileutils.c:825
-#, fuzzy
-#| msgid "Could not connect: "
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "Nelze se připojit: "
-msgstr[1] "Nelze se připojit: "
-msgstr[2] "Nelze se připojit: "
-
-#: glib/gfileutils.c:850
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Chyba při čtení ze souboru „%s“: %s"
 
-#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Nelze otevřít soubor „%s“: %s"
 
-#: glib/gfileutils.c:913
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Nelze získat atributy souboru „%s“: funkce fstat() selhala: %s"
 
-#: glib/gfileutils.c:944
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Nelze otevřít soubor „%s“: funkce fdopen() selhala: %s"
 
-#: glib/gfileutils.c:1045
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Nelze přejmenovat soubor „%s“ na „%s“: funkce g_rename() selhala: %s"
 
-#: glib/gfileutils.c:1144
-#, fuzzy, c-format
-#| msgid "Failed to write file “%s”: write() failed: %s"
+#: glib/gfileutils.c:1149
+#, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
-msgstr "Nelze zapisovat do souboru „%s“: funkce write() selhala: %s"
+msgstr "Nelze zapisovat do souboru „%s“: funkce ftruncate() selhala: %s"
 
-#: glib/gfileutils.c:1189
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Nelze zapisovat do souboru „%s“: funkce write() selhala: %s"
 
-#: glib/gfileutils.c:1210
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Nelze zapisovat do souboru „%s“: funkce fsync() selhala: %s"
 
-#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Nelze vytvořit soubor „%s“: %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Existující soubor „%s“ nelze odstranit: funkce g_unlink() selhala: %s"
 
-#: glib/gfileutils.c:1753
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Šablona „%s“ je neplatná, neměla by obsahovat „%s“"
 
-#: glib/gfileutils.c:1766
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Šablona „%s“ neobsahuje XXXXXX"
 
-#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Nelze přečíst symbolický odkaz „%s“: %s"
@@ -6362,62 +6317,62 @@ msgstr "EiB"
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kbit"
 #: glib/gutils.c:2994
 msgid "kbit"
-msgstr ""
+msgstr "kbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mbit"
 #: glib/gutils.c:2996
 msgid "Mbit"
-msgstr ""
+msgstr "Mbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gbit"
 #: glib/gutils.c:2998
 msgid "Gbit"
-msgstr ""
+msgstr "Gbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tbit"
 #: glib/gutils.c:3000
 msgid "Tbit"
-msgstr ""
+msgstr "Tbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pbit"
 #: glib/gutils.c:3002
 msgid "Pbit"
-msgstr ""
+msgstr "Pbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Ebit"
 #: glib/gutils.c:3004
 msgid "Ebit"
-msgstr ""
+msgstr "Ebit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Kibit"
 #: glib/gutils.c:3008
 msgid "Kibit"
-msgstr ""
+msgstr "Kibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mibit"
 #: glib/gutils.c:3010
 msgid "Mibit"
-msgstr ""
+msgstr "Mibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gibit"
 #: glib/gutils.c:3012
 msgid "Gibit"
-msgstr ""
+msgstr "Gibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tibit"
 #: glib/gutils.c:3014
 msgid "Tibit"
-msgstr ""
+msgstr "Tibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pibit"
 #: glib/gutils.c:3016
 msgid "Pibit"
-msgstr ""
+msgstr "Pibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Eibit"
 #: glib/gutils.c:3018
 msgid "Eibit"
-msgstr ""
+msgstr "Eibit"
 
 #: glib/gutils.c:3056
 msgid "byte"
@@ -6526,6 +6481,14 @@ msgstr "%.1f PB"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
+
+#, fuzzy
+#~| msgid "Could not connect: "
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "Nelze se připojit: "
+#~ msgstr[1] "Nelze se připojit: "
+#~ msgstr[2] "Nelze se připojit: "
 
 #~ msgid ""
 #~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
