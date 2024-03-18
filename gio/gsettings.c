@@ -2991,6 +2991,148 @@ g_settings_bind_with_mapping (GSettings               *settings,
                            binding, g_settings_binding_free);
 }
 
+typedef struct _BindWithMappingClosuresData
+{
+  GClosure *get_mapping_closure;
+  GClosure *set_mapping_closure;
+} BindWithMappingClosuresData;
+
+static BindWithMappingClosuresData *
+bind_with_mapping_closures_data_new (GClosure *get_mapping_closure,
+                                     GClosure *set_mapping_closure)
+{
+  BindWithMappingClosuresData *data;
+
+  data = g_new0 (BindWithMappingClosuresData, 1);
+
+  if (get_mapping_closure != NULL)
+    {
+      data->get_mapping_closure = g_closure_ref (get_mapping_closure);
+      g_closure_sink (get_mapping_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (get_mapping_closure))
+        g_closure_set_marshal (get_mapping_closure, g_cclosure_marshal_generic);
+    }
+
+  if (set_mapping_closure != NULL)
+    {
+      data->set_mapping_closure = g_closure_ref (set_mapping_closure);
+      g_closure_sink (set_mapping_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (set_mapping_closure))
+        g_closure_set_marshal (set_mapping_closure, g_cclosure_marshal_generic);
+    }
+
+  return data;
+}
+
+static void
+bind_with_mapping_closures_data_free (BindWithMappingClosuresData *data)
+{
+  if (data->get_mapping_closure != NULL)
+    g_closure_unref (data->get_mapping_closure);
+
+  if (data->set_mapping_closure != NULL)
+    g_closure_unref (data->set_mapping_closure);
+
+  g_free (data);
+}
+
+static gboolean
+bind_with_mapping_invoke_get (GValue *value,
+                              GVariant *variant,
+                              void *user_data)
+{
+  BindWithMappingClosuresData *data = (BindWithMappingClosuresData *) user_data;
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
+  GValue out = G_VALUE_INIT;
+  gboolean retval;
+
+  g_value_init (&params[0], G_TYPE_VALUE);
+  g_value_set_boxed (&params[0], value);
+  g_value_init (&params[1], G_TYPE_VARIANT);
+  g_value_set_variant (&params[1], variant);
+  g_value_init (&out, G_TYPE_BOOLEAN);
+
+  g_closure_invoke (data->get_mapping_closure, &out, 2, params, /* hint = */ NULL);
+
+  retval = g_value_get_boolean (&out);
+
+  g_value_unset (&out);
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+
+  return retval;
+}
+
+static GVariant *
+bind_with_mapping_invoke_set (const GValue *value,
+                              const GVariantType *expected_type,
+                              void *user_data)
+{
+  BindWithMappingClosuresData *data = (BindWithMappingClosuresData *) user_data;
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
+  GValue out = G_VALUE_INIT;
+  GVariant *retval;
+
+  g_value_init (&params[0], G_TYPE_VALUE);
+  g_value_set_boxed (&params[0], value);
+  g_value_init (&params[1], G_TYPE_VARIANT_TYPE);
+  g_value_set_boxed (&params[1], expected_type);
+  g_value_init (&out, G_TYPE_VARIANT);
+
+  g_closure_invoke (data->set_mapping_closure, &out, 2, params, /* hint = */ NULL);
+
+  retval = g_value_dup_variant (&out);
+
+  g_value_unset (&out);
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+
+  return retval;
+}
+
+static void
+bind_with_mapping_destroy (void *user_data)
+{
+  BindWithMappingClosuresData *data = (BindWithMappingClosuresData *) user_data;
+  bind_with_mapping_closures_data_free (data);
+}
+
+/**
+ * g_settings_bind_with_mapping_closures: (rename-to g_settings_bind_with_mapping):
+ * @settings: a #GSettings object
+ * @key: the key to bind
+ * @object: a #GObject
+ * @property: the name of the property to bind
+ * @flags: flags for the binding
+ * @get_mapping: (nullable): a function that gets called to convert values
+ *     from @settings to @object, or %NULL to use the default GIO mapping
+ * @set_mapping: (nullable): a function that gets called to convert values
+ *     from @object to @settings, or %NULL to use the default GIO mapping
+ *
+ * Version of g_settings_bind_with_mapping() using closures instead of callbacks
+ * for easier binding in other languages.
+ *
+ * Since: 2.82
+ */
+void
+g_settings_bind_with_mapping_closures (GSettings *settings,
+                                       const char *key,
+                                       GObject *object,
+                                       const char *property,
+                                       GSettingsBindFlags flags,
+                                       GClosure *get_mapping,
+                                       GClosure *set_mapping)
+{
+  BindWithMappingClosuresData *data;
+
+  data = bind_with_mapping_closures_data_new (get_mapping, set_mapping);
+
+  g_settings_bind_with_mapping (settings, key, object, property, flags,
+                                bind_with_mapping_invoke_get,
+                                bind_with_mapping_invoke_set, data,
+                                bind_with_mapping_destroy);
+}
+
 /* Writability binding {{{1 */
 typedef struct
 {
