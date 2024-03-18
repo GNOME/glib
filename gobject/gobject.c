@@ -644,6 +644,9 @@ object_bit_unlock (GObject *object, guint lock_bit)
   _object_bit_is_locked = 0;
 #endif
 
+  /* Warning: after unlock, @object may be a dangling pointer (destroyed on
+   * another thread) and must not be touched anymore. */
+
   g_bit_unlock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
 }
 
@@ -3949,25 +3952,68 @@ typedef struct {
   } toggle_refs[1];  /* flexible array */
 } ToggleRefStack;
 
-static GToggleNotify
-toggle_refs_get_notify_unlocked (GObject *object,
-                                 gpointer *out_data)
+G_ALWAYS_INLINE static inline gboolean
+toggle_refs_check_and_ref_or_deref (GObject *object,
+                                    gboolean is_ref,
+                                    gint *old_ref,
+                                    GToggleNotify *toggle_notify,
+                                    gpointer *toggle_data)
 {
-  ToggleRefStack *tstackptr;
+  const gint ref_curr = is_ref ? 1 : 2;
+  const gint ref_next = is_ref ? 2 : 1;
+  gboolean success;
 
-  if (!OBJECT_HAS_TOGGLE_REF (object))
-    return NULL;
+#if G_ENABLE_DEBUG
+  g_assert (ref_curr == *old_ref);
+#endif
 
-  tstackptr = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
+  *toggle_notify = NULL;
+  *toggle_data = NULL;
 
-  if (tstackptr->n_toggle_refs != 1)
+  object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+
+  /* @old_ref is mainly an (out) parameter. On failure to compare-and-exchange,
+   * we MUST return the new value which the caller will use for retry.*/
+
+  success = g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
+                                                    ref_curr,
+                                                    ref_next,
+                                                    old_ref);
+
+  /* Note that if we are called during g_object_unref (@is_ref set to FALSE),
+   * then we drop the ref count from 2 to 1 and give up our reference. We thus
+   * no longer hold a strong reference and another thread may race against
+   * destroying the object.
+   *
+   * After this point with is_ref=FALSE and success=TRUE, @object must no
+   * longer be accessed.
+   *
+   * The exception is here. While we still hold the object lock, we know that
+   * @object could not be destroyed, because g_object_unref() also needs to
+   * acquire the same lock during g_object_notify_queue_freeze(). Thus, we know
+   * object cannot yet be destroyed and we can access it until the unlock
+   * below. */
+
+  if (success && OBJECT_HAS_TOGGLE_REF (object))
     {
-      g_critical ("Unexpected number of toggle-refs. g_object_add_toggle_ref() must be paired with g_object_remove_toggle_ref()");
-      return NULL;
+      ToggleRefStack *tstackptr;
+
+      tstackptr = g_datalist_id_get_data (&object->qdata, quark_toggle_refs);
+
+      if (tstackptr->n_toggle_refs != 1)
+        {
+          g_critical ("Unexpected number of toggle-refs. g_object_add_toggle_ref() must be paired with g_object_remove_toggle_ref()");
+        }
+      else
+        {
+          *toggle_notify = tstackptr->toggle_refs[0].notify;
+          *toggle_data = tstackptr->toggle_refs[0].data;
+        }
     }
 
-  *out_data = tstackptr->toggle_refs[0].data;
-  return tstackptr->toggle_refs[0].notify;
+  object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+
+  return success;
 }
 
 /**
@@ -4148,15 +4194,8 @@ retry:
     }
   else if (old_ref == 1)
     {
-      gboolean do_retry;
-
       /* With ref count 1, check whether we need to emit a toggle notification. */
-      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
-      do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                          old_ref, old_ref + 1, &old_ref);
-      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-      if (do_retry)
+      if (!toggle_refs_check_and_ref_or_deref (object, TRUE, &old_ref, &toggle_notify, &toggle_data))
         goto retry;
     }
   else
@@ -4281,7 +4320,6 @@ g_object_unref (gpointer _object)
   GToggleNotify toggle_notify;
   gpointer toggle_data;
   GObjectNotifyQueue *nqueue;
-  gboolean do_retry;
   GType obj_gtype;
 
   g_return_if_fail (G_IS_OBJECT (object));
@@ -4330,18 +4368,8 @@ retry_beginning:
        *
        * We need to take a lock, to avoid races. */
 
-      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-
-      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
-
-      if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                   old_ref, old_ref - 1, &old_ref))
-        {
-          object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-          goto retry_beginning;
-        }
-
-      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
+      if (!toggle_refs_check_and_ref_or_deref (object, FALSE, &old_ref, &toggle_notify, &toggle_data))
+        goto retry_beginning;
 
       /* Beware: object might be a dangling pointer. */
       TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
@@ -4374,6 +4402,10 @@ retry_beginning:
    * notifications. If the instance gets through to finalize(), the
    * notification queue gets automatically drained when g_object_finalize() is
    * reached and the qdata is cleared.
+   *
+   * Important: Note that g_object_notify_queue_freeze() takes a object_bit_lock(),
+   * which happens to be the same lock that is also taken by toggle_refs_check_and_ref(),
+   * that is very important. See also the code comment in toggle_refs_check_and_ref().
    */
   nqueue = g_object_notify_queue_freeze (object);
 
@@ -4425,14 +4457,7 @@ retry_decrement:
        * notification. Take a lock and check for that.
        *
        * In that case, we need a lock to get the toggle notification. */
-      object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
-      do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
-                                                          old_ref, old_ref - 1,
-                                                          &old_ref);
-      object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-
-      if (do_retry)
+      if (!toggle_refs_check_and_ref_or_deref (object, FALSE, &old_ref, &toggle_notify, &toggle_data))
         goto retry_decrement;
 
       /* Beware: object might be a dangling pointer. */
