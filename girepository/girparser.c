@@ -468,16 +468,16 @@ G_STATIC_ASSERT (signedness (int) == 1);
 G_STATIC_ASSERT (signedness (unsigned int) == 0);
 
 static IntegerAliasInfo integer_aliases[] = {
-  { "gchar",    SIZEOF_CHAR,      1 },
-  { "guchar",   SIZEOF_CHAR,      0 },
-  { "gshort",   SIZEOF_SHORT,     1 },
-  { "gushort",  SIZEOF_SHORT,     0 },
-  { "gint",     SIZEOF_INT,       1 },
-  { "guint",    SIZEOF_INT,       0 },
-  { "glong",    SIZEOF_LONG,      1 },
-  { "gulong",   SIZEOF_LONG,      0 },
-  { "gssize",   GLIB_SIZEOF_SIZE_T,    1 },
-  { "gsize",    GLIB_SIZEOF_SIZE_T,    0 },
+  { "gchar",    sizeof (gchar),   1 },
+  { "guchar",   sizeof (guchar),  0 },
+  { "gshort",   sizeof (gshort),  1 },
+  { "gushort",  sizeof (gushort), 0 },
+  { "gint",     sizeof (gint),    1 },
+  { "guint",    sizeof (guint),   0 },
+  { "glong",    sizeof (glong),   1 },
+  { "gulong",   sizeof (gulong),  0 },
+  { "gssize",   sizeof (gssize),  1 },
+  { "gsize",    sizeof (gsize),   0 },
   { "gintptr",  sizeof (gintptr),      1 },
   { "guintptr", sizeof (guintptr),     0 },
 #define INTEGER_ALIAS(T) { #T, sizeof (T), signedness (T) }
