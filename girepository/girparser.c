@@ -454,16 +454,13 @@ typedef struct {
   unsigned int is_signed : 1;
 } IntegerAliasInfo;
 
-/* Ignore warnings from use of signedness() */
-#if G_GNUC_CHECK_VERSION(4, 6)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wtype-limits"
-#elif defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wtype-limits"
-#endif
-
-#define signedness(T) (((T) -1) < 0)
+/*
+ * signedness:
+ * @T: a numeric type
+ *
+ * Returns: 1 if @T is signed, 0 if it is unsigned
+ */
+#define signedness(T) (((T) -1) <= 0)
 G_STATIC_ASSERT (signedness (int) == 1);
 G_STATIC_ASSERT (signedness (unsigned int) == 0);
 
@@ -492,12 +489,6 @@ static IntegerAliasInfo integer_aliases[] = {
 #endif
 #undef INTEGER_ALIAS
 };
-
-#if G_GNUC_CHECK_VERSION(4, 6)
-#pragma GCC diagnostic pop
-#elif defined(__clang__)
-#pragma clang diagnostic pop
-#endif
 
 typedef struct {
   const char *str;
