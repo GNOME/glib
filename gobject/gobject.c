@@ -4152,9 +4152,10 @@ retry:
 
       /* With ref count 1, check whether we need to emit a toggle notification. */
       object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
       do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                           old_ref, old_ref + 1, &old_ref);
+      if (!do_retry)
+        toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
       object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
       if (do_retry)
         goto retry;
@@ -4332,8 +4333,6 @@ retry_beginning:
 
       object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
-      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
-
       if (!g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                    old_ref, old_ref - 1, &old_ref))
         {
@@ -4341,6 +4340,7 @@ retry_beginning:
           goto retry_beginning;
         }
 
+      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
       object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
       /* Beware: object might be a dangling pointer. */
@@ -4426,10 +4426,11 @@ retry_decrement:
        *
        * In that case, we need a lock to get the toggle notification. */
       object_bit_lock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
-      toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
       do_retry = !g_atomic_int_compare_and_exchange_full ((int *) &object->ref_count,
                                                           old_ref, old_ref - 1,
                                                           &old_ref);
+      if (!do_retry)
+        toggle_notify = toggle_refs_get_notify_unlocked (object, &toggle_data);
       object_bit_unlock (object, OPTIONAL_BIT_LOCK_TOGGLE_REFS);
 
       if (do_retry)
