@@ -454,6 +454,12 @@ typedef struct {
   unsigned int is_signed : 1;
 } IntegerAliasInfo;
 
+/*
+ * signedness:
+ * @T: a numeric type
+ *
+ * Returns: 1 if @T is signed, 0 if it is unsigned
+ */
 #define signedness(T) (((T) -1) <= 0)
 G_STATIC_ASSERT (signedness (int) == 1);
 G_STATIC_ASSERT (signedness (unsigned int) == 0);
