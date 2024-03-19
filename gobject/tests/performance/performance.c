@@ -69,6 +69,43 @@ struct _PerformanceTest {
 			double time);
 };
 
+static struct
+{
+  gboolean initialized;
+  GHashTable *config;
+  const char *config_name;
+} factor_from_file_data = {
+  .initialized = FALSE,
+}
+
+static gboolean
+factor_from_file (const char *test_name, double *out_factor)
+{
+  double *factor;
+
+  if (G_UNLIKELY (!factor_from_file_data.initialized))
+    {
+      factor_from_file_data.initialized = TRUE;
+      factor_from_file_data.config_name = g_getenv ("GLIB_PERFORMANCE_FACTOR_FILE");
+      if (factor_from_file_data.config_name)
+        {
+        }
+    }
+
+  if (!config)
+    return FALSE;
+
+  factor = g_hash_table_lookup (config, test_name);
+
+  if (!factor)
+    {
+      g_error ("GLIB_PERFORMANCE_FACTOR_FILE (\"%s\") does not contain an entry for test \"%s\"", file, test_name);
+    }
+
+  *out_factor = *factor;
+  return TRUE;
+}
+
 static void
 run_test (PerformanceTest *test)
 {
