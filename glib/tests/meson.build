@@ -141,9 +141,13 @@ glib_tests = {
   'spawn-singlethread' : {
     'dependencies' : [winsock2],
     'extra_programs' : ['test-spawn-echo'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system == 'gnu',
   },
   'spawn-test' : {
     'extra_programs' : host_machine.system() == 'windows' ? ['spawn-test-win32-gui'] : [],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system == 'gnu',
   },
   'strfuncs' : {},
   'string' : {
