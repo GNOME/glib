@@ -63,17 +63,17 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
 
 /**
  * GActionInterface:
- * @get_name: the virtual function pointer for g_action_get_name()
- * @get_parameter_type: the virtual function pointer for g_action_get_parameter_type()
- * @get_state_type: the virtual function pointer for g_action_get_state_type()
- * @get_state_hint: the virtual function pointer for g_action_get_state_hint()
- * @get_enabled: the virtual function pointer for g_action_get_enabled()
- * @get_state: the virtual function pointer for g_action_get_state()
- * @change_state: the virtual function pointer for g_action_change_state()
- * @activate: the virtual function pointer for g_action_activate().  Note that #GAction does not have an
+ * @get_name: the virtual function pointer for [method@Gio.Action.get_name]
+ * @get_parameter_type: the virtual function pointer for [method@Gio.Action.get_parameter_type]
+ * @get_state_type: the virtual function pointer for [method@Gio.Action.get_state_type]
+ * @get_state_hint: the virtual function pointer for [method@Gio.Action.get_state_hint]
+ * @get_enabled: the virtual function pointer for [method@Gio.Action.get_enabled]
+ * @get_state: the virtual function pointer for [method@Gio.Action.get_state]
+ * @change_state: the virtual function pointer for [method@Gio.Action.change_state]
+ * @activate: the virtual function pointer for [method@Gio.Action.activate].  Note that [type@Gio.Action] does not have an
  *            'activate' signal but that implementations of it may have one.
  *
- * The virtual function table for #GAction.
+ * The virtual function table for [type@Gio.Action].
  *
  * Since: 2.28
  */
@@ -85,7 +85,7 @@ g_action_default_init (GActionInterface *iface)
    * GAction:name:
    *
    * The name of the action.  This is mostly meaningful for identifying
-   * the action once it has been added to a #GActionGroup. It is immutable.
+   * the action once it has been added to a [type@Gio.ActionGroup]. It is immutable.
    *
    * Since: 2.28
    **/
@@ -99,7 +99,7 @@ g_action_default_init (GActionInterface *iface)
    * GAction:parameter-type:
    *
    * The type of the parameter that must be given when activating the
-   * action. This is immutable, and may be %NULL if no parameter is needed when
+   * action. This is immutable, and may be `NULL` if no parameter is needed when
    * activating the action.
    *
    * Since: 2.28
@@ -115,8 +115,8 @@ g_action_default_init (GActionInterface *iface)
    *
    * If @action is currently enabled.
    *
-   * If the action is disabled then calls to g_action_activate() and
-   * g_action_change_state() have no effect.
+   * If the action is disabled then calls to [method@Gio.Action.activate] and
+   * [method@Gio.Action.change_state] have no effect.
    *
    * Since: 2.28
    **/
@@ -129,7 +129,7 @@ g_action_default_init (GActionInterface *iface)
   /**
    * GAction:state-type:
    *
-   * The #GVariantType of the state that the action has, or %NULL if the
+   * The [type@GLib.VariantType] of the state that the action has, or `NULL` if the
    * action is stateless. This is immutable.
    *
    * Since: 2.28
