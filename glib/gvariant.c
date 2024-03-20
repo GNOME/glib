@@ -3978,7 +3978,11 @@ g_variant_dict_new (GVariant *from_asv)
 {
   GVariantDict *dict;
 
-  dict = g_slice_alloc (sizeof (struct heap_dict));
+  /* We actually want to treat the allocation as a `struct heap_dict`, but the
+   * compiler will warn if it’s not at least as big as `struct GVariantDict`. */
+  G_STATIC_ASSERT (sizeof (GVariantDict) >= sizeof (struct heap_dict));
+
+  dict = g_malloc (sizeof (GVariantDict));
   g_variant_dict_init (dict, from_asv);
   GVHD(dict)->magic = GVHD_MAGIC;
   GVHD(dict)->ref_count = 1;
@@ -4331,7 +4335,7 @@ g_variant_dict_unref (GVariantDict *dict)
   if (--GVHD(dict)->ref_count == 0)
     {
       g_variant_dict_clear (dict);
-      g_slice_free (struct heap_dict, (struct heap_dict *) dict);
+      g_free_sized (dict, sizeof (GVariantDict));
     }
 }
 
