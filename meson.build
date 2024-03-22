@@ -1008,6 +1008,19 @@ if cc.links('''#include <sys/eventfd.h>
   glib_conf.set('HAVE_EVENTFD', 1)
 endif
 
+# Check for ppoll(2)
+if cc.links('''#define _GNU_SOURCE
+               #include <poll.h>
+               #include <stddef.h>
+               int main (int argc, char ** argv) {
+                 struct pollfd fds[1] = {{0}};
+                 struct timespec ts = {0};
+                 ppoll (fds, 1, NULL, NULL);
+                 return 0;
+               }''', name : 'ppoll(2) system call')
+  glib_conf.set('HAVE_PPOLL', 1)
+endif
+
 # Check for pidfd_open(2)
 if cc.links('''#include <sys/syscall.h>
                #include <sys/wait.h>
