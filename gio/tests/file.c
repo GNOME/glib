@@ -2606,6 +2606,119 @@ test_copy_progress (void)
   g_clear_object (&dest_tmpfile);
 }
 
+typedef struct
+{
+  GError *error;
+  gboolean done;
+  gboolean res;
+} CopyAsyncData;
+
+static void
+test_copy_async_cb (GObject *object,
+                    GAsyncResult *result,
+                    void *user_data)
+{
+  GFile *file = G_FILE (object);
+  CopyAsyncData *data = user_data;
+  GError *error = NULL;
+
+  data->res = g_file_move_finish (file, result, &error);
+  data->error = g_steal_pointer (&error);
+  data->done = TRUE;
+}
+
+typedef struct
+{
+  goffset total_num_bytes;
+} CopyAsyncProgressData;
+
+static void
+test_copy_async_progress_cb (goffset current_num_bytes,
+                             goffset total_num_bytes,
+                             void *user_data)
+{
+  CopyAsyncProgressData *data = user_data;
+  data->total_num_bytes = total_num_bytes;
+}
+
+/* Exercise copy_async_with_closures() */
+static void
+test_copy_async_with_closures (void)
+{
+  CopyAsyncData data = { 0 };
+  CopyAsyncProgressData progress_data = { 0 };
+  GFile *source;
+  GFileIOStream *iostream;
+  GOutputStream *ostream;
+  GFile *destination;
+  gchar *destination_path;
+  GError *error = NULL;
+  gboolean res;
+  const guint8 buffer[] = { 1, 2, 3, 4, 5 };
+  GClosure *progress_closure;
+  GClosure *ready_closure;
+
+  source = g_file_new_tmp ("g_file_copy_async_with_closures_XXXXXX", &iostream, NULL);
+
+  destination_path = g_build_path (G_DIR_SEPARATOR_S, g_get_tmp_dir (), "g_file_copy_async_with_closures_target", NULL);
+  destination = g_file_new_for_path (destination_path);
+
+  g_assert_nonnull (source);
+  g_assert_nonnull (iostream);
+
+  res = g_file_query_exists (source, NULL);
+  g_assert_true (res);
+  res = g_file_query_exists (destination, NULL);
+  g_assert_false (res);
+
+  /* Write a known number of bytes to the file, so we can test the progress
+   * callback against it */
+  ostream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+  g_output_stream_write (ostream, buffer, sizeof (buffer), NULL, &error);
+  g_assert_no_error (error);
+
+  progress_closure = g_cclosure_new (G_CALLBACK (test_copy_async_progress_cb), &progress_data, NULL);
+  ready_closure = g_cclosure_new (G_CALLBACK (test_copy_async_cb), &data, NULL);
+
+  g_file_copy_async_with_closures (source,
+                                   destination,
+                                   G_FILE_COPY_NONE,
+                                   0,
+                                   NULL,
+                                   progress_closure,
+                                   ready_closure);
+
+  while (!data.done)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_no_error (data.error);
+  g_assert_true (data.res);
+  g_assert_cmpuint (progress_data.total_num_bytes, ==, sizeof (buffer));
+
+  res = g_file_query_exists (source, NULL);
+  g_assert_true (res);
+  res = g_file_query_exists (destination, NULL);
+  g_assert_true (res);
+
+  res = g_io_stream_close (G_IO_STREAM (iostream), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+  g_object_unref (iostream);
+
+  res = g_file_delete (source, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+
+  res = g_file_delete (destination, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+
+  g_object_unref (source);
+  g_object_unref (destination);
+
+  g_free (destination_path);
+}
+
 static void
 test_measure (void)
 {
@@ -3577,6 +3690,80 @@ test_move_async (void)
   g_free (destination_path);
 }
 
+/* Same test as for move_async(), but for move_async_with_closures() */
+static void
+test_move_async_with_closures (void)
+{
+  MoveAsyncData data = { 0 };
+  MoveAsyncProgressData progress_data = { 0 };
+  GFile *source;
+  GFileIOStream *iostream;
+  GOutputStream *ostream;
+  GFile *destination;
+  gchar *destination_path;
+  GError *error = NULL;
+  gboolean res;
+  const guint8 buffer[] = { 1, 2, 3, 4, 5 };
+  GClosure *progress_closure;
+  GClosure *ready_closure;
+
+  source = g_file_new_tmp ("g_file_move_async_with_closures_XXXXXX", &iostream, NULL);
+
+  destination_path = g_build_path (G_DIR_SEPARATOR_S, g_get_tmp_dir (), "g_file_move_async_with_closures_target", NULL);
+  destination = g_file_new_for_path (destination_path);
+
+  g_assert_nonnull (source);
+  g_assert_nonnull (iostream);
+
+  res = g_file_query_exists (source, NULL);
+  g_assert_true (res);
+  res = g_file_query_exists (destination, NULL);
+  g_assert_false (res);
+
+  /* Write a known number of bytes to the file, so we can test the progress
+   * callback against it */
+  ostream = g_io_stream_get_output_stream (G_IO_STREAM (iostream));
+  g_output_stream_write (ostream, buffer, sizeof (buffer), NULL, &error);
+  g_assert_no_error (error);
+
+  progress_closure = g_cclosure_new (G_CALLBACK (test_move_async_progress_cb), &progress_data, NULL);
+  ready_closure = g_cclosure_new (G_CALLBACK (test_move_async_cb), &data, NULL);
+
+  g_file_move_async_with_closures (source,
+                                   destination,
+                                   G_FILE_COPY_NONE,
+                                   0,
+                                   NULL,
+                                   progress_closure,
+                                   ready_closure);
+
+  while (!data.done)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_no_error (data.error);
+  g_assert_true (data.res);
+  g_assert_cmpuint (progress_data.total_num_bytes, ==, sizeof (buffer));
+
+  res = g_file_query_exists (source, NULL);
+  g_assert_false (res);
+  res = g_file_query_exists (destination, NULL);
+  g_assert_true (res);
+
+  res = g_io_stream_close (G_IO_STREAM (iostream), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+  g_object_unref (iostream);
+
+  res = g_file_delete (destination, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (res);
+
+  g_object_unref (source);
+  g_object_unref (destination);
+
+  g_free (destination_path);
+}
+
 static GAppInfo *
 create_command_line_app_info (const char *name,
                               const char *command_line,
@@ -4028,6 +4215,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/async-make-symlink", test_async_make_symlink);
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
   g_test_add_func ("/file/copy/progress", test_copy_progress);
+  g_test_add_func ("/file/copy-async-with-closurse", test_copy_async_with_closures);
   g_test_add_func ("/file/measure", test_measure);
   g_test_add_func ("/file/measure-async", test_measure_async);
   g_test_add_func ("/file/load-bytes", test_load_bytes);
@@ -4045,6 +4233,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/writev/async_all-cancellation", test_writev_async_all_cancellation);
   g_test_add_func ("/file/build-attribute-list-for-copy", test_build_attribute_list_for_copy);
   g_test_add_func ("/file/move_async", test_move_async);
+  g_test_add_func ("/file/move-async-with-closures", test_move_async_with_closures);
   g_test_add_func ("/file/query-zero-length-content-type", test_query_zero_length_content_type);
   g_test_add_func ("/file/query-default-handler-file", test_query_default_handler_file);
   g_test_add_func ("/file/query-default-handler-file-async", test_query_default_handler_file_async);

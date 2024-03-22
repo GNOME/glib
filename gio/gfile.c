@@ -3818,6 +3818,123 @@ g_file_copy_async (GFile                  *source,
                          user_data);
 }
 
+typedef struct _CopyAsyncClosuresData
+{
+  GClosure *progress_callback_closure;
+  GClosure *ready_callback_closure;
+} CopyAsyncClosuresData;
+
+static CopyAsyncClosuresData *
+copy_async_closures_data_new (GClosure *progress_callback_closure,
+                              GClosure *ready_callback_closure)
+{
+  CopyAsyncClosuresData *data;
+
+  data = g_new0 (CopyAsyncClosuresData, 1);
+
+  if (progress_callback_closure != NULL)
+    {
+      data->progress_callback_closure = g_closure_ref (progress_callback_closure);
+      g_closure_sink (progress_callback_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (progress_callback_closure))
+        g_closure_set_marshal (progress_callback_closure, g_cclosure_marshal_generic);
+    }
+
+  data->ready_callback_closure = g_closure_ref (ready_callback_closure);
+  g_closure_sink (ready_callback_closure);
+  if (G_CLOSURE_NEEDS_MARSHAL (ready_callback_closure))
+    g_closure_set_marshal (ready_callback_closure, g_cclosure_marshal_generic);
+
+  return data;
+}
+
+static void
+copy_async_closures_data_free (CopyAsyncClosuresData *data)
+{
+  if (data->progress_callback_closure != NULL)
+    g_closure_unref (data->progress_callback_closure);
+
+  g_closure_unref (data->ready_callback_closure);
+
+  g_free (data);
+}
+
+static void
+copy_async_invoke_progress (goffset current_num_bytes,
+                            goffset total_num_bytes,
+                            void *user_data)
+{
+  CopyAsyncClosuresData *data = (CopyAsyncClosuresData *) user_data;
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
+
+  /* goffset is 64-bits even on 32-bits platforms */
+  g_value_init (&params[0], G_TYPE_INT64);
+  g_value_set_int64 (&params[0], current_num_bytes);
+  g_value_init (&params[1], G_TYPE_INT64);
+  g_value_set_int64 (&params[1], total_num_bytes);
+
+  g_closure_invoke (data->progress_callback_closure, /* result = */ NULL, 2, params, /* hint = */ NULL);
+
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+}
+
+static void
+copy_async_invoke_ready (GObject *file,
+                         GAsyncResult *result,
+                         void *user_data)
+{
+  CopyAsyncClosuresData *data = (CopyAsyncClosuresData *) user_data;
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
+
+  g_value_init (&params[0], G_TYPE_FILE);
+  g_value_set_object (&params[0], file);
+  g_value_init (&params[1], G_TYPE_ASYNC_RESULT);
+  g_value_set_object (&params[1], result);
+
+  g_closure_invoke (data->ready_callback_closure, /* result = */ NULL, 2, params, /* hint = */ NULL);
+
+  copy_async_closures_data_free (data);
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+}
+
+/**
+ * g_file_copy_async_with_closures: (rename-to g_file_copy_async) (finish-func g_file_copy_finish):
+ * @source: input [type@Gio.File]
+ * @destination: destination [type@Gio.File]
+ * @flags: set of [flags@Gio.FileCopyFlags]
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
+ * @cancellable: (nullable): optional [class@Gio.Cancellable] object,
+ *   `NULL` to ignore
+ * @progress_callback_closure: (nullable): [type@GObject.Closure] to invoke with progress
+ *   information, or `NULL` if progress information is not needed
+ * @ready_callback_closure: (not nullable): [type@GObject.Closure] to invoke when the request is satisfied
+ *
+ * Version of [method@Gio.File.copy_async] using closures instead of callbacks for
+ * easier binding in other languages.
+ *
+ * Since: 2.82
+ */
+void
+g_file_copy_async_with_closures (GFile *source,
+                                 GFile *destination,
+                                 GFileCopyFlags flags,
+                                 int io_priority,
+                                 GCancellable *cancellable,
+                                 GClosure *progress_callback_closure,
+                                 GClosure *ready_callback_closure)
+{
+  CopyAsyncClosuresData *data;
+
+  /* freed in copy_async_invoke_ready */
+  data = copy_async_closures_data_new (progress_callback_closure, ready_callback_closure);
+
+  g_file_copy_async (source, destination, flags, io_priority, cancellable,
+                     progress_callback_closure == NULL ? NULL : copy_async_invoke_progress, data,
+                     copy_async_invoke_ready, data);
+}
+
 /**
  * g_file_copy_finish:
  * @file: input #GFile
@@ -4033,6 +4150,42 @@ g_file_move_async (GFile                *source,
                          progress_callback_data,
                          callback,
                          user_data);
+}
+
+/**
+ * g_file_move_async_with_closures: (rename-to g_file_move_async) (finish-func g_file_move_finish):
+ * @source: input [type@Gio.File]
+ * @destination: destination [type@Gio.File]
+ * @flags: set of [flags@Gio.FileCopyFlags]
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
+ * @cancellable: (nullable): optional [class@Gio.Cancellable] object,
+ *   `NULL` to ignore
+ * @progress_callback_closure: (nullable): [type@GObject.Closure] to invoke with progress
+ *   information, or `NULL` if progress information is not needed
+ * @ready_callback_closure: (not nullable): [type@GObject.Closure] to invoke when the request is satisfied
+ *
+ * Version of [method@Gio.File.move_async] using closures instead of callbacks for
+ * easier binding in other languages.
+ *
+ * Since: 2.82
+ */
+void
+g_file_move_async_with_closures (GFile *source,
+                                 GFile *destination,
+                                 GFileCopyFlags flags,
+                                 int io_priority,
+                                 GCancellable *cancellable,
+                                 GClosure *progress_callback_closure,
+                                 GClosure *ready_callback_closure)
+{
+  CopyAsyncClosuresData *data;
+
+  /* freed in copy_async_invoke_ready */
+  data = copy_async_closures_data_new (progress_callback_closure, ready_callback_closure);
+
+  g_file_move_async (source, destination, flags, io_priority, cancellable,
+                     progress_callback_closure == NULL ? NULL : copy_async_invoke_progress, data,
+                     copy_async_invoke_ready, data);
 }
 
 /**
