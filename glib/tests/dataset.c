@@ -12,14 +12,14 @@ test_quark_basic (void)
   const gchar *str;
 
   quark = g_quark_try_string ("no-such-quark");
-  g_assert (quark == 0);
+  g_assert_cmpuint (quark, ==, 0);
 
   copy = g_strdup (orig);
   quark = g_quark_from_static_string (orig);
-  g_assert (quark != 0);
-  g_assert (g_quark_from_string (orig) == quark);
-  g_assert (g_quark_from_string (copy) == quark);
-  g_assert (g_quark_try_string (orig) == quark);
+  g_assert_cmpuint (quark, !=, 0);
+  g_assert_cmpuint (g_quark_from_string (orig), ==, quark);
+  g_assert_cmpuint (g_quark_from_string (copy), ==, quark);
+  g_assert_cmpuint (g_quark_try_string (orig), ==, quark);
 
   str = g_quark_to_string (quark);
   g_assert_cmpstr (str, ==, orig);
@@ -39,8 +39,10 @@ test_quark_string (void)
 
   str1 = g_intern_static_string (orig);
   str2 = g_intern_string (copy);
-  g_assert (str1 == str2);
-  g_assert (str1 == orig);
+  g_assert_cmpstr (str1, ==, str2);
+  g_assert_true (str1 == str2);  /* also compare pointers */
+  g_assert_cmpstr (str1, ==, orig);
+  g_assert_true (str1 == orig);
 
   g_free (copy);
 }
@@ -56,27 +58,27 @@ test_dataset_basic (void)
   g_dataset_set_data (location, "test1", data);
 
   ret = g_dataset_get_data (location, "test1");
-  g_assert (ret == data);
+  g_assert_true (ret == data);
 
   ret = g_dataset_get_data (location, "test2");
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   ret = g_dataset_get_data (other, "test1");
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   g_dataset_set_data (location, "test1", "new-value");
   ret = g_dataset_get_data (location, "test1");
-  g_assert (ret != data);
+  g_assert_true (ret != data);
 
   g_dataset_remove_data (location, "test1");
   ret = g_dataset_get_data (location, "test1");
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   ret = g_dataset_get_data (location, NULL);
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 }
 
-static gint destroy_count;
+static guint destroy_count;
 
 static void
 notify (gpointer data)
@@ -93,19 +95,19 @@ test_dataset_full (void)
 
   destroy_count = 0;
   g_dataset_set_data (location, "test1", NULL);
-  g_assert (destroy_count == 1);
+  g_assert_cmpuint (destroy_count, ==, 1);
 
   g_dataset_set_data_full (location, "test1", "test1", notify);
 
   destroy_count = 0;
   g_dataset_remove_data (location, "test1");
-  g_assert (destroy_count == 1);
+  g_assert_cmpuint (destroy_count, ==, 1);
 
   g_dataset_set_data_full (location, "test1", "test1", notify);
 
   destroy_count = 0;
   g_dataset_remove_no_notify (location, "test1");
-  g_assert (destroy_count == 0);
+  g_assert_cmpuint (destroy_count, ==, 0);
 }
 
 static void
@@ -113,7 +115,7 @@ foreach (GQuark   id,
          gpointer data,
          gpointer user_data)
 {
-  gint *counter = user_data;
+  guint *counter = user_data;
 
   *counter += 1;
 }
@@ -122,14 +124,14 @@ static void
 test_dataset_foreach (void)
 {
   gpointer location = (gpointer)test_dataset_foreach;
-  gint my_count;
+  guint my_count;
 
   my_count = 0;
   g_dataset_set_data_full (location, "test1", "test1", notify);
   g_dataset_set_data_full (location, "test2", "test2", notify);
   g_dataset_set_data_full (location, "test3", "test3", notify);
   g_dataset_foreach (location, foreach, &my_count);
-  g_assert (my_count == 3);
+  g_assert_cmpuint (my_count, ==, 3);
 
   g_dataset_destroy (location);
 }
@@ -144,7 +146,7 @@ test_dataset_destroy (void)
   g_dataset_set_data_full (location, "test2", "test2", notify);
   g_dataset_set_data_full (location, "test3", "test3", notify);
   g_dataset_destroy (location);
-  g_assert (destroy_count == 3);
+  g_assert_cmpuint (destroy_count, ==, 3);
 }
 
 static void
@@ -161,24 +163,24 @@ test_dataset_id (void)
   g_dataset_id_set_data (location, quark, data);
 
   ret = g_dataset_id_get_data (location, quark);
-  g_assert (ret == data);
+  g_assert_true (ret == data);
 
   ret = g_dataset_id_get_data (location, g_quark_from_string ("test2"));
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   ret = g_dataset_id_get_data (other, quark);
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   g_dataset_id_set_data (location, quark, "new-value");
   ret = g_dataset_id_get_data (location, quark);
-  g_assert (ret != data);
+  g_assert_true (ret != data);
 
   g_dataset_id_remove_data (location, quark);
   ret = g_dataset_id_get_data (location, quark);
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   ret = g_dataset_id_get_data (location, 0);
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 }
 
 static GData *global_list;
@@ -197,7 +199,7 @@ test_datalist_clear (void)
   g_datalist_set_data_full (&global_list, "one", GINT_TO_POINTER (1), free_one);
   g_datalist_set_data_full (&global_list, "two", GINT_TO_POINTER (2), NULL);
   g_datalist_clear (&global_list);
-  g_assert (global_list == NULL);
+  g_assert_null (global_list);
 }
 
 static void
@@ -211,13 +213,13 @@ test_datalist_basic (void)
   data = "one";
   g_datalist_set_data (&list, "one", data);
   ret = g_datalist_get_data (&list, "one");
-  g_assert (ret == data);
+  g_assert_true (ret == data);
 
   ret = g_datalist_get_data (&list, "two");
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   ret = g_datalist_get_data (&list, NULL);
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   g_datalist_clear (&list);
 }
@@ -233,13 +235,13 @@ test_datalist_id (void)
   data = "one";
   g_datalist_id_set_data (&list, g_quark_from_string ("one"), data);
   ret = g_datalist_id_get_data (&list, g_quark_from_string ("one"));
-  g_assert (ret == data);
+  g_assert_true (ret == data);
 
   ret = g_datalist_id_get_data (&list, g_quark_from_string ("two"));
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   ret = g_datalist_id_get_data (&list, 0);
-  g_assert (ret == NULL);
+  g_assert_null (ret);
 
   g_datalist_clear (&list);
 }
@@ -268,13 +270,13 @@ test_datalist_id_remove_multiple (void)
 
   destroy_count = 0;
   g_datalist_foreach (&list, (GDataForeachFunc) notify, NULL);
-  g_assert_cmpint (destroy_count, ==, 3);
+  g_assert_cmpuint (destroy_count, ==, 3);
 
   g_datalist_id_remove_multiple (&list, keys, G_N_ELEMENTS (keys));
 
   destroy_count = 0;
   g_datalist_foreach (&list, (GDataForeachFunc) notify, NULL);
-  g_assert_cmpint (destroy_count, ==, 0);
+  g_assert_cmpuint (destroy_count, ==, 0);
 }
 
 static void
@@ -358,7 +360,7 @@ static void
 destroy_func (gpointer data)
 {
   destroy_count++;
-  g_assert_cmpint (GPOINTER_TO_INT (data), ==, destroy_count);
+  g_assert_cmpuint (GPOINTER_TO_UINT (data), ==, destroy_count);
 }
 
 static void
@@ -380,14 +382,14 @@ test_datalist_id_remove_multiple_destroy_order (void)
 
   g_datalist_init (&list);
 
-  g_datalist_id_set_data_full (&list, two, GINT_TO_POINTER (2), destroy_func);
-  g_datalist_id_set_data_full (&list, three, GINT_TO_POINTER (3), destroy_func);
-  g_datalist_id_set_data_full (&list, one, GINT_TO_POINTER (1), destroy_func);
+  g_datalist_id_set_data_full (&list, two, GUINT_TO_POINTER (2), destroy_func);
+  g_datalist_id_set_data_full (&list, three, GUINT_TO_POINTER (3), destroy_func);
+  g_datalist_id_set_data_full (&list, one, GUINT_TO_POINTER (1), destroy_func);
 
   destroy_count = 0;
   g_datalist_id_remove_multiple (&list, keys, G_N_ELEMENTS (keys));
   /* This verifies that destroy_func() was called three times: */
-  g_assert_cmpint (destroy_count, ==, 3);
+  g_assert_cmpuint (destroy_count, ==, 3);
 }
 
 static gpointer
