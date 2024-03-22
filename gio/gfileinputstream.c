@@ -172,7 +172,7 @@ async_ready_callback_wrapper (GObject      *source_object,
  * g_file_input_stream_query_info_async:
  * @stream: a #GFileInputStream.
  * @attributes: a file attribute query string.
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore. 
  * @callback: (scope async): a #GAsyncReadyCallback
  *   to call when the request is satisfied

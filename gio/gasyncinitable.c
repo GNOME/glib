@@ -160,7 +160,7 @@ g_async_initable_default_init (GAsyncInitableInterface *iface)
 /**
  * g_async_initable_init_async:
  * @initable: a #GAsyncInitable.
- * @io_priority: the [I/O priority][io-priority] of the operation
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: the data to pass to callback function
@@ -313,7 +313,7 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
 /**
  * g_async_initable_new_async:
  * @object_type: a #GType supporting #GAsyncInitable.
- * @io_priority: the [I/O priority][io-priority] of the operation
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the initialization is
  *     finished
@@ -356,7 +356,7 @@ g_async_initable_new_async (GType                object_type,
  * @object_type: a #GType supporting #GAsyncInitable.
  * @n_parameters: the number of parameters in @parameters
  * @parameters: the parameters to use to construct the object
- * @io_priority: the [I/O priority][io-priority] of the operation
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the initialization is
  *     finished
@@ -402,7 +402,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * @first_property_name: the name of the first property, followed by
  * the value, and other property value pairs, and ended by %NULL.
  * @var_args: The var args list generated from @first_property_name.
- * @io_priority: the [I/O priority][io-priority] of the operation
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the operation
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback to call when the initialization is
  *     finished

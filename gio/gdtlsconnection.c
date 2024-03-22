@@ -755,7 +755,7 @@ g_dtls_connection_handshake (GDtlsConnection  *conn,
 /**
  * g_dtls_connection_handshake_async:
  * @conn: a #GDtlsConnection
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the handshake is complete
  * @user_data: the data to pass to the callback function
@@ -863,7 +863,7 @@ g_dtls_connection_shutdown (GDtlsConnection  *conn,
  * @conn: a #GDtlsConnection
  * @shutdown_read: %TRUE to stop reception of incoming datagrams
  * @shutdown_write: %TRUE to stop sending outgoing datagrams
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the shutdown operation is complete
  * @user_data: the data to pass to the callback function
@@ -971,7 +971,7 @@ g_dtls_connection_close (GDtlsConnection  *conn,
 /**
  * g_dtls_connection_close_async:
  * @conn: a #GDtlsConnection
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the close operation is complete
  * @user_data: the data to pass to the callback function

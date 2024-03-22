@@ -455,7 +455,7 @@ async_fill_callback_wrapper (GObject      *source_object,
  * g_buffered_input_stream_fill_async:
  * @stream: a #GBufferedInputStream
  * @count: the number of bytes that will be read from the stream
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
  * @user_data: a #gpointer
