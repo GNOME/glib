@@ -1115,7 +1115,7 @@ g_file_enumerate_children (GFile                *file,
  * @file: input #GFile
  * @attributes: an attribute query string
  * @flags: a set of #GFileQueryInfoFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -1352,7 +1352,7 @@ g_file_query_info (GFile                *file,
  * @file: input #GFile
  * @attributes: an attribute query string
  * @flags: a set of #GFileQueryInfoFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -1489,7 +1489,7 @@ g_file_query_filesystem_info (GFile         *file,
  * g_file_query_filesystem_info_async:
  * @file: input #GFile
  * @attributes: an attribute query string
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -1611,7 +1611,7 @@ g_file_find_enclosing_mount (GFile         *file,
 /**
  * g_file_find_enclosing_mount_async:
  * @file: a #GFile
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -2098,7 +2098,7 @@ g_file_replace_readwrite (GFile             *file,
 /**
  * g_file_read_async:
  * @file: input #GFile
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -2166,7 +2166,7 @@ g_file_read_finish (GFile         *file,
  * g_file_append_to_async:
  * @file: input #GFile
  * @flags: a set of #GFileCreateFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -2237,7 +2237,7 @@ g_file_append_to_finish (GFile         *file,
  * g_file_create_async:
  * @file: input #GFile
  * @flags: a set of #GFileCreateFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -2311,7 +2311,7 @@ g_file_create_finish (GFile         *file,
  *   or %NULL to ignore
  * @make_backup: %TRUE if a backup should be created
  * @flags: a set of #GFileCreateFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -2385,7 +2385,7 @@ g_file_replace_finish (GFile         *file,
 /**
  * g_file_open_readwrite_async
  * @file: input #GFile
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -2457,7 +2457,7 @@ g_file_open_readwrite_finish (GFile         *file,
  * g_file_create_readwrite_async:
  * @file: input #GFile
  * @flags: a set of #GFileCreateFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -2535,7 +2535,7 @@ g_file_create_readwrite_finish (GFile         *file,
  *   or %NULL to ignore
  * @make_backup: %TRUE if a backup should be created
  * @flags: a set of #GFileCreateFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -3768,7 +3768,7 @@ g_file_copy (GFile                  *source,
  * @source: input #GFile
  * @destination: destination #GFile
  * @flags: set of #GFileCopyFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @progress_callback: (nullable) (scope notified) (closure progress_callback_data):
@@ -3984,7 +3984,7 @@ g_file_move (GFile                  *source,
  * @source: #GFile pointing to the source location
  * @destination: #GFile pointing to the destination location
  * @flags: set of #GFileCopyFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @progress_callback: (nullable) (scope call) (closure progress_callback_data):
@@ -4115,7 +4115,7 @@ g_file_make_directory (GFile         *file,
 /**
  * g_file_make_directory_async: (virtual make_directory_async)
  * @file: input #GFile
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: a #GAsyncReadyCallback to call
@@ -4389,7 +4389,7 @@ g_file_real_make_symbolic_link_async (GFile               *file,
  * @file: a #GFile with the name of the symlink to create
  * @symlink_value: (type filename): a string with the path for the target
  *   of the new symlink
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: a #GAsyncReadyCallback to call
@@ -4522,7 +4522,7 @@ g_file_delete (GFile         *file,
 /**
  * g_file_delete_async: (virtual delete_file_async)
  * @file: input #GFile
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: a #GAsyncReadyCallback to call
@@ -4630,7 +4630,7 @@ g_file_trash (GFile         *file,
 /**
  * g_file_trash_async: (virtual trash_async)
  * @file: input #GFile
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: a #GAsyncReadyCallback to call
@@ -4746,7 +4746,7 @@ g_file_set_display_name (GFile         *file,
  * g_file_set_display_name_async:
  * @file: input #GFile
  * @display_name: a string
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -5080,7 +5080,7 @@ g_file_real_set_attributes_from_info (GFile                *file,
  * @file: input #GFile
  * @info: a #GFileInfo
  * @flags: a #GFileQueryInfoFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
@@ -7176,7 +7176,7 @@ new_tmp_async_thread (GTask         *task,
  * g_file_new_tmp_async:
  * @tmpl: (type filename) (nullable): Template for the file
  *   name, as in g_file_open_tmp(), or %NULL for a default template
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: optional #GCancellable object, %NULL to ignore
  * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
  * @user_data: (nullable): data to pass to @callback
@@ -7299,7 +7299,7 @@ new_tmp_dir_async_thread (GTask         *task,
  * g_file_new_tmp_dir_async:
  * @tmpl: (type filename) (nullable): Template for the file
  *   name, as in g_dir_make_tmp(), or %NULL for a default template
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: optional #GCancellable object, %NULL to ignore
  * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
  * @user_data: (nullable): data to pass to @callback
@@ -7829,7 +7829,7 @@ on_query_default_handler_for_uri_cb (GObject      *object,
 /**
  * g_file_query_default_handler_async:
  * @file: a #GFile to open
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: optional #GCancellable object, %NULL to ignore
  * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
  * @user_data: (nullable): data to pass to @callback
@@ -8895,7 +8895,7 @@ g_file_measure_disk_usage (GFile                         *file,
  * g_file_measure_disk_usage_async:
  * @file: a #GFile
  * @flags: #GFileMeasureFlags
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable
  * @progress_callback: (nullable): a #GFileMeasureProgressCallback
  * @progress_data: user_data for @progress_callback

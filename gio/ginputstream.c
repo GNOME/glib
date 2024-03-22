@@ -586,7 +586,7 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * @buffer: (array length=count) (element-type guint8) (out caller-allocates):
  *     a buffer to read data into (which should be at least count bytes long).
  * @count: (in): the number of bytes that will be read from the stream
- * @io_priority: the [I/O priority][io-priority]
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority)
  * of the request. 
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback
@@ -779,7 +779,7 @@ read_all_async_thread (GTask        *task,
  * @buffer: (array length=count) (element-type guint8) (out caller-allocates):
  *     a buffer to read data into (which should be at least count bytes long)
  * @count: (in): the number of bytes that will be read from the stream
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
  * @callback: (scope async): a #GAsyncReadyCallback
  *   to call when the request is satisfied
@@ -915,7 +915,7 @@ read_bytes_callback (GObject      *stream,
  * g_input_stream_read_bytes_async:
  * @stream: A #GInputStream.
  * @count: the number of bytes that will be read from the stream
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback
  *   to call when the request is satisfied
@@ -994,7 +994,7 @@ g_input_stream_read_bytes_finish (GInputStream  *stream,
  * g_input_stream_skip_async:
  * @stream: A #GInputStream.
  * @count: the number of bytes that will be skipped from the stream
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback
  *   to call when the request is satisfied
@@ -1106,7 +1106,7 @@ g_input_stream_skip_finish (GInputStream  *stream,
 /**
  * g_input_stream_close_async:
  * @stream: A #GInputStream.
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional cancellable object
  * @callback: (scope async): a #GAsyncReadyCallback
  *   to call when the request is satisfied

@@ -980,7 +980,7 @@ g_tls_connection_handshake (GTlsConnection   *conn,
 /**
  * g_tls_connection_handshake_async:
  * @conn: a #GTlsConnection
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the handshake is complete
  * @user_data: the data to pass to the callback function

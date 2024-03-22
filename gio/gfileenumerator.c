@@ -314,7 +314,7 @@ next_async_callback_wrapper (GObject      *source_object,
  * g_file_enumerator_next_files_async:
  * @enumerator: a #GFileEnumerator.
  * @num_files: the number of file info objects to request
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
  *   to call when the request is satisfied
@@ -486,7 +486,7 @@ close_async_callback_wrapper (GObject      *source_object,
 /**
  * g_file_enumerator_close_async:
  * @enumerator: a #GFileEnumerator.
- * @io_priority: the [I/O priority][io-priority] of the request
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
  *   to call when the request is satisfied

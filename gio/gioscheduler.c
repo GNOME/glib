@@ -85,7 +85,7 @@ io_job_thread (GTask         *task,
  * @job_func: a #GIOSchedulerJobFunc.
  * @user_data: data to pass to @job_func
  * @notify: (nullable): a #GDestroyNotify for @user_data, or %NULL
- * @io_priority: the [I/O priority][io-priority]
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority)
  * of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  *
