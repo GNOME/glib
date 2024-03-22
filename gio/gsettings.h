@@ -322,6 +322,14 @@ void                    g_settings_bind_with_mapping                    (GSettin
                                                                          GSettingsBindSetMapping  set_mapping,
                                                                          gpointer                 user_data,
                                                                          GDestroyNotify           destroy);
+GIO_AVAILABLE_IN_2_82
+void g_settings_bind_with_mapping_closures (GSettings *settings,
+                                            const char *key,
+                                            GObject *object,
+                                            const char *property,
+                                            GSettingsBindFlags flags,
+                                            GClosure *get_mapping,
+                                            GClosure *set_mapping);
 GIO_AVAILABLE_IN_ALL
 void                    g_settings_bind_writable                        (GSettings               *settings,
                                                                          const gchar             *key,
