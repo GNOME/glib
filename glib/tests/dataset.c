@@ -193,19 +193,11 @@ free_one (gpointer data)
 static void
 test_datalist_clear (void)
 {
-  /* Need to use a subprocess because it will deadlock if it fails */
-  if (g_test_subprocess ())
-    {
-      g_datalist_init (&global_list);
-      g_datalist_set_data_full (&global_list, "one", GINT_TO_POINTER (1), free_one);
-      g_datalist_set_data_full (&global_list, "two", GINT_TO_POINTER (2), NULL);
-      g_datalist_clear (&global_list);
-      g_assert (global_list == NULL);
-      return;
-    }
-
-  g_test_trap_subprocess (NULL, 500000, G_TEST_SUBPROCESS_DEFAULT);
-  g_test_trap_assert_passed ();
+  g_datalist_init (&global_list);
+  g_datalist_set_data_full (&global_list, "one", GINT_TO_POINTER (1), free_one);
+  g_datalist_set_data_full (&global_list, "two", GINT_TO_POINTER (2), NULL);
+  g_datalist_clear (&global_list);
+  g_assert (global_list == NULL);
 }
 
 static void
