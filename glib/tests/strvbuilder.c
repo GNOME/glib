@@ -122,6 +122,30 @@ test_strvbuilder_ref (void)
   g_strv_builder_unref (builder);
 }
 
+static void
+test_strvbuilder_unref_to_strv (void)
+{
+  GStrvBuilder *builder = g_strv_builder_new ();
+  GStrv result;
+
+  g_strv_builder_add_many (builder, "hello", "world", NULL);
+  result = g_strv_builder_unref_to_strv (builder);
+
+  g_assert_true (g_strv_equal ((const char * const *) result,
+                               (const char *[]) {
+                                 "hello",
+                                 "world",
+                                 NULL,
+                               }));
+
+  g_strfreev (result);
+
+  builder = g_strv_builder_new ();
+  result = g_strv_builder_unref_to_strv (builder);
+  g_assert_null (result[0]);
+  g_strfreev (result);
+}
+
 int
 main (int argc,
       char *argv[])
@@ -134,6 +158,7 @@ main (int argc,
   g_test_add_func ("/strvbuilder/add_many", test_strvbuilder_add_many);
   g_test_add_func ("/strvbuilder/take", test_strvbuilder_take);
   g_test_add_func ("/strvbuilder/ref", test_strvbuilder_ref);
+  g_test_add_func ("/strvbuilder/unref_to_strv", test_strvbuilder_unref_to_strv);
 
   return g_test_run ();
 }

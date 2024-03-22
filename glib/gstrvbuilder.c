@@ -37,7 +37,10 @@
  *   g_autoptr(GStrvBuilder) builder = g_strv_builder_new ();
  *   g_strv_builder_add (builder, "hello");
  *   g_strv_builder_add (builder, "world");
+ *
  *   g_auto(GStrv) array = g_strv_builder_end (builder);
+ *
+ *   g_assert_true (g_strv_equal (array, (const char *[]) { "hello", "world", NULL }));
  * ```
  *
  * Since: 2.68
@@ -79,6 +82,43 @@ void
 g_strv_builder_unref (GStrvBuilder *builder)
 {
   g_ptr_array_unref (&builder->array);
+}
+
+/**
+ * g_strv_builder_unref_to_strv:
+ * @builder: (transfer full): a #GStrvBuilder
+ *
+ * Decreases the reference count on the string vector builder, and returns
+ * its contents as a `NULL`-terminated string array.
+ *
+ * This function is especially useful for cases where it's not possible
+ * to use `g_autoptr()`.
+ *
+ * ```c
+ * GStrvBuilder *builder = g_strv_builder_new ();
+ * g_strv_builder_add (builder, "hello");
+ * g_strv_builder_add (builder, "world");
+ *
+ * GStrv array = g_strv_builder_unref_to_strv (builder);
+ *
+ * g_assert_true (g_strv_equal (array, (const char *[]) { "hello", "world", NULL }));
+ *
+ * g_strfreev (array);
+ * ```
+ *
+ * Returns: (transfer full) (array zero-terminated=1): the constructed string
+ *   array
+ *
+ * Since: 2.82
+ */
+GStrv
+g_strv_builder_unref_to_strv (GStrvBuilder *builder)
+{
+  GStrv res = g_strv_builder_end (builder);
+
+  g_strv_builder_unref (builder);
+
+  return res;
 }
 
 /**
