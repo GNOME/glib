@@ -1,4 +1,4 @@
-#!/usr/bin/env @PYTHON@
+#!@PYTHON@
 
 # If the code below looks horrible and unpythonic, do not panic.
 #

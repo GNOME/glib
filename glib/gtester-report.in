@@ -1,4 +1,4 @@
-#! /usr/bin/env @PYTHON@
+#!@PYTHON@
 # GLib Testing Framework Utility			-*- Mode: python; -*-
 # Copyright (C) 2007 Imendio AB
 # Authors: Tim Janik
