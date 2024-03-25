@@ -1092,7 +1092,6 @@ g_get_num_processors (void)
     return count;
 #elif defined(_SC_NPROCESSORS_ONLN) && defined(THREADS_POSIX) && defined(HAVE_PTHREAD_GETAFFINITY_NP)
   {
-    int idx;
     int ncores = MIN (sysconf (_SC_NPROCESSORS_ONLN), CPU_SETSIZE);
     cpu_set_t cpu_mask;
     CPU_ZERO (&cpu_mask);
@@ -1100,8 +1099,7 @@ g_get_num_processors (void)
     int af_count = 0;
     int err = pthread_getaffinity_np (pthread_self (), sizeof (cpu_mask), &cpu_mask);
     if (!err)
-      for (idx = 0; idx < ncores && idx < CPU_SETSIZE; ++idx)
-        af_count += CPU_ISSET (idx, &cpu_mask);
+      af_count = CPU_COUNT (&cpu_mask);
 
     int count = (af_count > 0) ? af_count : ncores;
     return count;
