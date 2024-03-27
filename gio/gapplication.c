@@ -709,8 +709,8 @@ add_packed_option (GApplication *application,
  * was to send all of the commandline arguments (options and all) to the
  * primary instance for handling.  #GApplication ignored them completely
  * on the local side.  Calling this function "opts in" to the new
- * behaviour, and in particular, means that unrecognised options will be
- * treated as errors.  Unrecognised options have never been ignored when
+ * behaviour, and in particular, means that unrecognized options will be
+ * treated as errors.  Unrecognized options have never been ignored when
  * %G_APPLICATION_HANDLES_COMMAND_LINE is unset.
  *
  * If #GApplication::handle-local-options needs to see the list of
@@ -851,7 +851,7 @@ g_application_add_main_option (GApplication *application,
  *
  * Calling this function will cause the options in the supplied option
  * group to be parsed, but it does not cause you to be "opted in" to the
- * new functionality whereby unrecognised options are rejected even if
+ * new functionality whereby unrecognized options are rejected even if
  * %G_APPLICATION_HANDLES_COMMAND_LINE was given.
  *
  * Since: 2.40

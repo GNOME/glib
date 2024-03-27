@@ -112,7 +112,7 @@ main (int argc, char **argv)
         progress = report_progress;
       else
         {
-          g_printerr ("unrecognised flag %s\n", argv[i]);
+          g_printerr ("unrecognized flag %s\n", argv[i]);
         }
     }
 
