@@ -1722,7 +1722,7 @@ If you want to connect to a signal with a closure, you have three possibilities:
   system-wide operation. i.e.: the class closure will be invoked during each
   emission of a given signal on any of the instances of the type which
   supports that signal
-- tou can use `g_signal_override_class_closure()` which overrides the class
+- you can use `g_signal_override_class_closure()` which overrides the class
   closure of a given type. It is possible to call this function only on a
   derived type of the type on which the signal was registered. This function
   is of use only to language bindings
