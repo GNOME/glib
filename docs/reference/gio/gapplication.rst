@@ -177,7 +177,7 @@ Here is a simplified example, as may be installed in ``/usr/bin/fooview``::
        ;;
 
      -*)
-       echo "unrecognised commandline argument"
+       echo "unrecognized commandline argument"
        exit 1
        ;;
 

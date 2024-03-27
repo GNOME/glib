@@ -470,7 +470,7 @@ main (int argc, char **argv)
   if (g_str_equal (argv[1], "list-actions"))
     return app_list_actions (argv + 2);
 
-  g_printerr (_("unrecognised command: %s\n\n"), argv[1]);
+  g_printerr (_("unrecognized command: %s\n\n"), argv[1]);
 
   return app_help (FALSE, NULL);
 }
