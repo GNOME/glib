@@ -14,6 +14,34 @@ if get_option('b_sanitize') != ''
     'ASAN_OPTIONS', 'verify_asan_link_order=0', separator: ',')
 endif
 
+if host_system == 'windows'
+  build_root = meson.project_build_root()
+  gi_scanner_dll_paths = [
+      build_root / 'glib',
+      build_root / 'gobject',
+      build_root / 'gio',
+      build_root / 'gmodule'
+    ]
+
+  # Check whether ZLib, libffi and proxy-intl and PCRE are indeed built as subprojects, else os.add_dll_directory()
+  # will complain
+  # Keep in sync with GLib's subprojects settings
+  sub_build_root = build_root / 'subprojects'
+  foreach dep: ['proxy-intl', 'libffi', 'zlib-1.2.11', 'pcre2-10.42']
+    dep_dir = sub_build_root / dep
+    if fs.exists(dep_dir) and fs.is_dir(dep_dir)
+      gi_scanner_dll_paths += [dep_dir]
+    endif
+  endforeach
+
+  # Also assume the installation bindir to be considered for DLLs
+  message('Ensure that all of GLib\'s dependent non-system DLLs that are not built')
+  message('alongside with GLib can be found in \'@0@\''.format(get_option('prefix') / get_option('bindir')))
+  message('Check this if building .gir files fail due to \'ImportError: DLL load failed while importing _giscanner\'')
+  gi_scanner_dll_paths += get_option('prefix') / get_option('bindir')
+  gi_gen_env_variables.set('GI_EXTRA_BASE_DLL_DIRS', gi_scanner_dll_paths)
+endif
+
 # GLib
 glib_gir_sources = [
   gi_gen_shared_sources,
@@ -304,6 +332,12 @@ libgirepository_gir_args = [
   '--identifier-prefix=GI',
 ]
 
+gi_libgirepository_gen_env_variables = environment()
+
+if host_system == 'windows'
+  gi_libgirepository_gen_env_variables.set('GI_EXTRA_BASE_DLL_DIRS', gi_scanner_dll_paths)
+endif
+
 girepository_gir = gnome.generate_gir(libgirepository,
   sources: libgirepository_gir_sources,
   namespace: 'GIRepository',
@@ -316,5 +350,6 @@ girepository_gir = gnome.generate_gir(libgirepository,
   install: true,
   dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
   extra_args: gir_args + libgirepository_gir_args,
+  env: gi_libgirepository_gen_env_variables,
 )
 
