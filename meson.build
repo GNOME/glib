@@ -236,8 +236,16 @@ if host_system == 'qnx'
   add_project_arguments('-D_QNX_SOURCE', language: 'c')
 endif
 
+# dummy/empty dependency() object to declare fallbacks and simpler dependencies
+not_found = dependency('', required: false)
+
+get_dll_paths_script = not_found
+
 if host_system == 'windows'
   add_project_arguments(['-DUNICODE', '-D_UNICODE'], language: 'c')
+
+  # Script to obtain paths where the DLLs that we will reside for g-ir-scanner
+  get_dll_paths_script = find_program('tools/grab-gio-dll-paths.py', native: true)
 endif
 
 # Disable strict aliasing;
@@ -245,9 +253,6 @@ endif
 if cc.has_argument('-fno-strict-aliasing')
   add_project_arguments('-fno-strict-aliasing', language: 'c')
 endif
-
-# dummy/empty dependency() object to declare fallbacks and simpler dependencies
-not_found = dependency('', required: false)
 
 ########################
 # Configuration begins #

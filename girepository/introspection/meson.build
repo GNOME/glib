@@ -14,6 +14,30 @@ if 'address' in glib_sanitizers
     'ASAN_OPTIONS', 'verify_asan_link_order=0', separator: ',')
 endif
 
+if host_system == 'windows'
+  # Use gio-2.0-uninstalled.pc to find the paths where the GLib DLLs (and their dependent non-system
+  # DLLs that are built as subprojects) are located
+  check_built_dll_paths_cmd = [get_dll_paths_script, '--build-path=@0@'.format(meson.project_build_root())]
+  meson_pkgconfig_paths = get_option('pkg_config_path')
+  if meson_pkgconfig_paths.length() > 0
+    check_built_dll_paths_cmd += '--pkg-config-path=@0@'.format(''.join(meson_pkgconfig_paths))
+  endif
+  check_built_dll_paths = run_command(
+    check_built_dll_paths_cmd,
+	capture: true,
+    check: true,
+  )
+  # hmm, no os.pathsep in Meson to make this more portable, if needed?
+  gi_scanner_dll_paths = check_built_dll_paths.stdout().strip().split(';')
+
+  # Also assume the existing paths in %PATH% to be considered for DLLs
+  message('Ensure that all of GLib\'s dependent non-system DLLs that are not built')
+  message('alongside with GLib can be found in paths in %PATH%')
+  message('Check this if building .gir files fail due to \'ImportError: DLL load failed while importing _giscanner\'')
+
+  gi_gen_env_variables.set('GI_EXTRA_BASE_DLL_DIRS', gi_scanner_dll_paths)
+endif
+
 # GLib
 glib_gir_sources = [
   gi_gen_shared_sources,
@@ -314,6 +338,12 @@ libgirepository_gir_args = [
   '--identifier-prefix=GI',
 ]
 
+gi_libgirepository_gen_env_variables = environment()
+
+if host_system == 'windows'
+  gi_libgirepository_gen_env_variables.set('GI_EXTRA_BASE_DLL_DIRS', gi_scanner_dll_paths)
+endif
+
 girepository_gir = gnome.generate_gir(libgirepository,
   sources: libgirepository_gir_sources,
   namespace: 'GIRepository',
@@ -327,5 +357,6 @@ girepository_gir = gnome.generate_gir(libgirepository,
   install_dir_gir: glib_girdir,
   dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
   extra_args: gir_args + libgirepository_gir_args,
+  env: gi_libgirepository_gen_env_variables,
 )
 
