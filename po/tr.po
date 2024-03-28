@@ -18,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-03-01 12:22+0000\n"
-"PO-Revision-Date: 2024-03-03 08:00+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2024-03-19 13:17+0000\n"
+"PO-Revision-Date: 2024-03-25 16:56+0300\n"
+"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -5712,7 +5712,7 @@ msgstr "iç hata"
 
 #: glib/gregex.c:505
 msgid "the pattern contains items not supported for partial matching"
-msgstr "doku (pattern), kısmi eşleme için desteklenmeyen ögeler içeriyor"
+msgstr "örüntü (pattern), kısmi eşleme için desteklenmeyen ögeler içeriyor"
 
 #: glib/gregex.c:507
 msgid "back references as conditions are not supported for partial matching"
@@ -5741,11 +5741,11 @@ msgstr "bilinmeyen hata"
 
 #: glib/gregex.c:562
 msgid "\\ at end of pattern"
-msgstr "\\ desenin sonunda"
+msgstr "\\ örüntünün sonunda"
 
 #: glib/gregex.c:566
 msgid "\\c at end of pattern"
-msgstr "\\c desenin sonunda"
+msgstr "\\c örüntünün sonunda"
 
 #: glib/gregex.c:571
 msgid "unrecognized character following \\"
@@ -5793,7 +5793,7 @@ msgstr "eksik sonlandıran )"
 
 #: glib/gregex.c:618
 msgid "reference to non-existent subpattern"
-msgstr "var olmayan alt desene referans"
+msgstr "var olmayan alt örüntüye referans"
 
 #: glib/gregex.c:622
 msgid "missing ) after comment"
@@ -5837,11 +5837,11 @@ msgstr "\\C geriye bakma iddiası içerisinde izin verilmiyor"
 
 #: glib/gregex.c:663
 msgid "missing terminator in subpattern name"
-msgstr "alt desen adı içerisinde eksik sonlandırıcı"
+msgstr "alt örüntü adı içerisinde eksik sonlandırıcı"
 
 #: glib/gregex.c:667
 msgid "two named subpatterns have the same name"
-msgstr "iki adlı alt desenler aynı ada sahip"
+msgstr "iki adlı alt örüntüler aynı ada sahip"
 
 #: glib/gregex.c:671
 msgid "malformed \\P or \\p sequence"
@@ -5853,11 +5853,11 @@ msgstr "\\P ya da \\p sonrası bilinmeyen özellik adı"
 
 #: glib/gregex.c:679
 msgid "subpattern name is too long (maximum 32 characters)"
-msgstr "alt desen adı çok uzun (en çok 32 karakter)"
+msgstr "alt örüntü adı çok uzun (en çok 32 karakter)"
 
 #: glib/gregex.c:683
 msgid "too many named subpatterns (maximum 10,000)"
-msgstr "çok fazla adlandırılmış alt desen (en çok 10.000)"
+msgstr "çok fazla adlandırılmış alt örüntü (en çok 10.000)"
 
 #: glib/gregex.c:687
 msgid "octal value is greater than \\377"
@@ -5893,11 +5893,11 @@ msgstr "sayı çok büyük"
 
 #: glib/gregex.c:716
 msgid "missing subpattern name after (?&"
-msgstr "(?& den sonra eksik alt desen adı"
+msgstr "(?& den sonra eksik alt örüntü adı"
 
 #: glib/gregex.c:720
 msgid "different names for subpatterns of the same number are not allowed"
-msgstr "aynı sayıya izin verilmeyen alt desenler için farklı adlar"
+msgstr "aynı sayıya izin verilmeyen alt örüntüler için farklı adlar"
 
 #: glib/gregex.c:724
 msgid "(*MARK) must have an argument"
@@ -5935,7 +5935,7 @@ msgstr "derleme çalışma alanı kaplandı"
 
 #: glib/gregex.c:756
 msgid "previously-checked referenced subpattern not found"
-msgstr "önceden denetlenmiş referanslı alt desen bulunamadı"
+msgstr "önceden denetlenmiş referanslı alt örüntü bulunamadı"
 
 #: glib/gregex.c:879 glib/gregex.c:1153 glib/gregex.c:2475
 #, c-format
