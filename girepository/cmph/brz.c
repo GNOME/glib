@@ -983,7 +983,7 @@ static cmph_uint32 brz_fch_search_packed(cmph_uint32 *packed_mphf, const char *k
  *  \brief Use the packed mphf to do a search. 
  *  \param  packed_mphf pointer to the packed mphf
  *  \param key key to be hashed
- *  \param keylen key legth in bytes
+ *  \param keylen key length in bytes
  *  \return The mphf value
  */
 cmph_uint32 brz_search_packed(void *packed_mphf, const char *key, cmph_uint32 keylen)

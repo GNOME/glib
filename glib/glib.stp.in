@@ -676,7 +676,7 @@ probe glib.variant_type_info_free = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2
  * Indicates that a @value has started the process of serialising
  * itself.  This involves dropping references on the child elements of
  * @value, so when mixed with the end_serialise probe, it is possible to
- * see the context in which the unrefs are occuring.
+ * see the context in which the unrefs are occurring.
  **/
 probe glib.variant_start_serialise = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("variant__start_serialise")
 {
@@ -836,7 +836,7 @@ probe glib.variant_take_ref = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.
  *
  * Reports that a #GVariant has been created as a result of calling
  * g_variant_get_child_value() on a serialised #GVariant (ie:
- * deserialisation has occured).
+ * deserialisation has occurred).
  **/
 probe glib.variant_from_parent = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("variant__from_parent")
 {

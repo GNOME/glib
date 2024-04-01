@@ -34,7 +34,7 @@ cmph_uint32 chm_packed_size(cmph_t *mphf);
  *  \brief Use the packed mphf to do a search. 
  *  \param  packed_mphf pointer to the packed mphf
  *  \param key key to be hashed
- *  \param keylen key legth in bytes
+ *  \param keylen key length in bytes
  *  \return The mphf value
  */
 cmph_uint32 chm_search_packed(void *packed_mphf, const char *key, cmph_uint32 keylen);

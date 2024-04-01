@@ -42,11 +42,11 @@ G_BEGIN_DECLS
  * GVfsFileLookupFunc:
  * @vfs: a #GVfs
  * @identifier: the identifier to look up a #GFile for. This can either
- *     be an URI or a parse name as returned by g_file_get_parse_name()
+ *     be a URI or a parse name as returned by g_file_get_parse_name()
  * @user_data: user data passed to the function
  *
  * This function type is used by g_vfs_register_uri_scheme() to make it
- * possible for a client to associate an URI scheme to a different #GFile
+ * possible for a client to associate a URI scheme to a different #GFile
  * implementation.
  *
  * The client should return a reference to the new file that has been

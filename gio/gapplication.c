@@ -160,7 +160,7 @@
  *
  * To parse commandline arguments you may handle the
  * [signal@Gio.Application::command-line] signal or override the
- * [vfunc@Gio.Application.local_command_line] virtual funcion, to parse them in
+ * [vfunc@Gio.Application.local_command_line] virtual function, to parse them in
  * either the primary instance or the local instance, respectively.
  *
  * For an example of opening files with a `GApplication`, see

@@ -217,63 +217,63 @@ side-effects.
 : Converts a `size_t` value from host byte order to little-endian.
 
 `GUINT16_FROM_BE(value)`
-: Converts an `uint16_t` value from big-endian to host byte order.
+: Converts a `uint16_t` value from big-endian to host byte order.
 
 `GUINT16_FROM_LE(value)`
-: Converts an `uint16_t` value from little-endian to host byte order.
+: Converts a `uint16_t` value from little-endian to host byte order.
 
 `GUINT16_TO_BE(value)`
-: Converts an `uint16_t` value from host byte order to big-endian.
+: Converts a `uint16_t` value from host byte order to big-endian.
 
 `GUINT16_TO_LE(value)`
-: Converts an `uint16_t` value from host byte order to little-endian.
+: Converts a `uint16_t` value from host byte order to little-endian.
 
 `GUINT32_FROM_BE(value)`
-: Converts an `uint32_t` value from big-endian to host byte order.
+: Converts a `uint32_t` value from big-endian to host byte order.
 
 `GUINT32_FROM_LE(value)`
-: Converts an `uint32_t` value from little-endian to host byte order.
+: Converts a `uint32_t` value from little-endian to host byte order.
 
 `GUINT32_TO_BE(value)`
-: Converts an `uint32_t` value from host byte order to big-endian.
+: Converts a `uint32_t` value from host byte order to big-endian.
 
 `GUINT32_TO_LE(value)`
-: Converts an `uint32_t` value from host byte order to little-endian.
+: Converts a `uint32_t` value from host byte order to little-endian.
 
 `GUINT64_FROM_BE(value)`
-: Converts an `uint64_t` value from big-endian to host byte order.
+: Converts a `uint64_t` value from big-endian to host byte order.
 
 `GUINT64_FROM_LE(value)`
-: Converts an `uint64_t` value from little-endian to host byte order.
+: Converts a `uint64_t` value from little-endian to host byte order.
 
 `GUINT64_TO_BE(value)`
-: Converts an `uint64_t` value from host byte order to big-endian.
+: Converts a `uint64_t` value from host byte order to big-endian.
 
 `GUINT64_TO_LE(value)`
-: Converts an `uint64_t` value from host byte order to little-endian.
+: Converts a `uint64_t` value from host byte order to little-endian.
 
 `GUINT16_SWAP_BE_PDP(value)`
-: Converts an `uint16_t` value between big-endian and pdp-endian byte order.
+: Converts a `uint16_t` value between big-endian and pdp-endian byte order.
   The conversion is symmetric so it can be used both ways.
 
 `GUINT16_SWAP_LE_BE(value)`
-: Converts an `uint16_t` value between little-endian and big-endian byte order.
+: Converts a `uint16_t` value between little-endian and big-endian byte order.
   The conversion is symmetric so it can be used both ways.
 
 `GUINT16_SWAP_LE_PDP(value)`
-: Converts an `uint16_t` value between little-endian and pdp-endian byte order.
+: Converts a `uint16_t` value between little-endian and pdp-endian byte order.
   The conversion is symmetric so it can be used both ways.
 
 `GUINT32_SWAP_BE_PDP(value)`
-: Converts an `uint32_t` value between big-endian and pdp-endian byte order.
+: Converts a `uint32_t` value between big-endian and pdp-endian byte order.
   The conversion is symmetric so it can be used both ways.
 
 `GUINT32_SWAP_LE_BE(value)`
-: Converts an `uint32_t` value between little-endian and big-endian byte order.
+: Converts a `uint32_t` value between little-endian and big-endian byte order.
   The conversion is symmetric so it can be used both ways.
 
 `GUINT32_SWAP_LE_PDP(value)`
-: Converts an `uint32_t` value between little-endian and pdp-endian byte order.
+: Converts a `uint32_t` value between little-endian and pdp-endian byte order.
   The conversion is symmetric so it can be used both ways.
 
 `GUINT64_SWAP_LE_BE(value)`

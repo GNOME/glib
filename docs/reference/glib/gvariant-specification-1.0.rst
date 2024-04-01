@@ -73,7 +73,7 @@ Some of these changes are under consideration for inclusion into D-Bus [#f2]_.
          special value outside of that range, called ``NULL``, ``Nothing``, ``None`` or similar. In most languages with reference
          or pointer types, these types are nullable. Some languages have the ability to have nullable versions of
          any type (for example, “``Maybe Int``” in Haskell and “``int? i;``” in C#).
-.. [#f2] Considerable discussion has been made in face-to-face meetings and some discussion has also occured
+.. [#f2] Considerable discussion has been made in face-to-face meetings and some discussion has also occurred
          on the D-Bus mailing list: http://lists.freedesktop.org/archives/dbus/2007-August/008290.html
 
 Enumeration of Types

@@ -86,7 +86,7 @@ win_network_monitor_get_ip_info (const IP_ADDRESS_PREFIX  *prefix,
   switch (prefix->Prefix.si_family)
     {
       case AF_UNSPEC:
-        /* Fall-through: AF_UNSPEC deliveres both IPV4 and IPV6 infos, let`s stick with IPV4 here */
+        /* Fall-through: AF_UNSPEC delivers both IPV4 and IPV6 infos, let`s stick with IPV4 here */
       case AF_INET:
         *family = G_SOCKET_FAMILY_IPV4;
         *dest = (guint8 *) &(prefix->Prefix.Ipv4.sin_addr);

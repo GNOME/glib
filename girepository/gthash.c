@@ -40,7 +40,7 @@
  * quality, well documented, and easy to embed.
  *
  * CMPH provides a number of algorithms; I chose BDZ, because while CHD
- * appears to be the "best", the simplicitly of BDZ appealed, and really,
+ * appears to be the "best", the simplicity of BDZ appealed, and really,
  * we're only talking about thousands of strings here, not millions, so
  * a few microseconds is no big deal.
  *

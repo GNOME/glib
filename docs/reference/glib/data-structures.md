@@ -12,7 +12,7 @@ SPDX-FileCopyrightText: 2020 Endless OS Foundation, LLC
 
 # Data Structures
 
-GLib includes a number of basic data sructures, such as arrays, linked lists, hash tables,
+GLib includes a number of basic data structures, such as arrays, linked lists, hash tables,
 queues, trees, etc.
 
 ## Arrays
@@ -506,7 +506,7 @@ person_details_from_data (const char *data)
 In the example above, we have multiple functions taking the same strings for different uses; with typical
 C strings, we'd have to copy the strings every time the life time rules of the data differ from the
 life-time of the string parsed from the original buffer. With reference counted strings, each caller can
-ake a reference on the data, and keep it as long as it needs to own the string.
+take a reference on the data, and keep it as long as it needs to own the string.
 
 Reference-counted strings can also be "interned" inside a global table owned by GLib; while an interned
 string has at least a reference, creating a new interned reference-counted string with the same contents

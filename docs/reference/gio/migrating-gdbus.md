@@ -144,7 +144,7 @@ on_name_acquired (GDBusConnection *connection,
 ```
 
 Note that `g_bus_own_name()` works asynchronously and requires you to enter
-your mainloop to await the `on_name_aquired()` callback. Also note that in
+your mainloop to await the `on_name_acquired()` callback. Also note that in
 order to avoid race conditions (e.g. when your service is activated by a
 method call), you have to export your manager object before acquiring the
 name. The `on_bus_acquired()` callback is the right place to do such
