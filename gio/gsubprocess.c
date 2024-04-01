@@ -77,6 +77,12 @@
  * checked using functions such as [method@Gio.Subprocess.get_if_exited] (which
  * are similar to the familiar `WIFEXITED`-style POSIX macros).
  *
+ * Note that as of GLib 2.82, creating a `GSubprocess` causes the signal
+ * `SIGPIPE` to be ignored for the remainder of the program. If you are writing
+ * a command-line utility that uses `GSubprocess`, you may need to take into
+ * account the fact that your program will not automatically be killed
+ * if it tries to write to `stdout` after it has been closed.
+ *
  * Since: 2.40
  **/
 
@@ -492,6 +498,23 @@ static void
 g_subprocess_class_init (GSubprocessClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+
+#ifdef SIGPIPE
+  /* There is no portable, thread-safe way to avoid having the process
+   * be killed by SIGPIPE when calling write() on a pipe to a subprocess, so we
+   * are forced to simply ignore the signal process-wide.
+   *
+   * This can happen if `G_SUBPROCESS_FLAGS_STDIN_PIPE` is used and the
+   * subprocess calls close() on its stdin FD while the parent process is
+   * running g_subprocess_communicate().
+   *
+   * Even if we ignore it though, gdb will still stop if the app
+   * receives a SIGPIPE, which can be confusing and annoying. In `gsocket.c`,
+   * we can handily also set `MSG_NO_SIGNAL` / `SO_NOSIGPIPE`, but unfortunately
+   * there isn’t an equivalent of those for `pipe2`() FDs.
+   */
+  signal (SIGPIPE, SIG_IGN);
+#endif
 
   gobject_class->finalize = g_subprocess_finalize;
   gobject_class->set_property = g_subprocess_set_property;
