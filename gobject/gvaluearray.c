@@ -71,7 +71,7 @@
  * @value_array: #GValueArray to get a value from
  * @index_: index of the value of interest
  *
- * Return a pointer to the value at @index_ containd in @value_array.
+ * Return a pointer to the value at @index_ contained in @value_array.
  *
  * Returns: (transfer none): pointer to a value at @index_ in @value_array
  *

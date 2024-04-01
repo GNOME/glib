@@ -449,7 +449,7 @@ typedef union _SimpleTypeBlob SimpleTypeBlob;
  * @out: The parameter is used to return an output of the function. Parameters
  *   can be both in and out. Out parameters implicitly add another level of
  *   indirection to the parameter type. Ie if the type is uint32 in an out
- *   parameter, the function actually takes an uint32*.
+ *   parameter, the function actually takes a uint32*.
  * @caller_allocates: The parameter is a pointer to a struct or object that
  *   will receive an output of the function.
  * @nullable: Only meaningful for types which are passed as pointers. For an
@@ -478,7 +478,7 @@ typedef union _SimpleTypeBlob SimpleTypeBlob;
  * @reserved: Reserved for future use.
  * @closure: Index of the closure (user_data) parameter associated with the
  *   callback, or -1.
- * @destroy: Index of the destroy notfication callback parameter associated
+ * @destroy: Index of the destroy notification callback parameter associated
  *   with the callback, or -1.
  * @padding: TODO
  * @arg_type: Describes the type of the parameter. See details below.
@@ -1360,7 +1360,7 @@ gboolean  gi_typelib_matches_gtype_name_prefix (GITypelib   *typelib,
  * @GI_TYPELIB_ERROR_INVALID_ENTRY: a typelib entry is invalid
  * @GI_TYPELIB_ERROR_INVALID_BLOB: a typelib blob is invalid
  *
- * A error set while validating the #GITypelib
+ * An error set while validating the #GITypelib
  *
  * Since: 2.80
  */

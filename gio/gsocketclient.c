@@ -1025,7 +1025,7 @@ g_socket_client_emit_event (GSocketClient       *client,
 		 event, connectable, connection);
 }
 
-/* Originally, GSocketClient returned whatever error occured last. Turns
+/* Originally, GSocketClient returned whatever error occurred last. Turns
  * out this doesn't work well in practice. Consider the following case:
  * DNS returns an IPv4 and IPv6 address. First we'll connect() to the
  * IPv4 address, and say that succeeds, but TLS is enabled and the TLS

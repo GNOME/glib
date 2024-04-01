@@ -1095,7 +1095,7 @@ typedef enum    /*< skip >*/
  * @base_finalize: Location of the base finalization function (optional)
  * @class_init: Location of the class initialization function for
  *  classed and instantiatable types. Location of the default vtable 
- *  inititalization function for interface types. (optional) This function 
+ *  initialization function for interface types. (optional) This function
  *  is used both to fill in virtual functions in the class or default vtable, 
  *  and to do type-specific setup such as registering signals and object
  *  properties.

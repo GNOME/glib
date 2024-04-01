@@ -1337,8 +1337,8 @@ pool_depth_list (gpointer key,
  * the prerequisite class, not from the interface that
  * prerequires it.
  * 
- * also 'depth' isn't a meaningful concept for interface
- * prerequites.
+ * Also 'depth' isn't a meaningful concept for interface
+ * prerequisites.
  */
 static void
 pool_depth_list_for_interface (gpointer key,

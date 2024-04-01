@@ -65,7 +65,7 @@ cmph_t *cmph_new(cmph_config_t *mph);
  *  \brief Computes the mphf value. 
  *  \param mphf pointer to the resulting function
  *  \param key is the key to be hashed
- *  \param keylen is the key legth in bytes
+ *  \param keylen is the key length in bytes
  *  \return The mphf value
  */
 cmph_uint32 cmph_search(cmph_t *mphf, const char *key, cmph_uint32 keylen);
@@ -96,7 +96,7 @@ cmph_uint32 cmph_packed_size(cmph_t *mphf);
  *  \brief Use the packed mphf to do a search. 
  *  \param  packed_mphf pointer to the packed mphf
  *  \param key key to be hashed
- *  \param keylen key legth in bytes
+ *  \param keylen key length in bytes
  *  \return The mphf value
  */
 cmph_uint32 cmph_search_packed(void *packed_mphf, const char *key, cmph_uint32 keylen);

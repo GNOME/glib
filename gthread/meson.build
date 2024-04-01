@@ -1,4 +1,4 @@
-# Just a skeleton lib for backwards compatibility since all the functionaliy
+# Just a skeleton lib for backwards compatibility since all the functionality
 # has been moved into glib now
 
 gthread_sources = ['gthread-impl.c']

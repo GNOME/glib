@@ -60,7 +60,7 @@ void usage_long(const char *prg)
 	fprintf(stderr, "  -t\t set the number of keys per bin for a t-perfect hashing function. A t-perfect\n");	
 	fprintf(stderr, "    \t hash function allows at most t collisions in a given bin. This parameter applies\n");
 	fprintf(stderr, "    \t only to the CHD and CHD_PH algorithms. Its value should be an integer in the\n");
-	fprintf(stderr, "    \t range [1,128]. Defaul is 1\n");
+	fprintf(stderr, "    \t range [1,128]. Default is 1\n");
 	fprintf(stderr, "  keysfile\t line separated file with keys\n");
 }
 

@@ -6,7 +6,7 @@
 struct _compressed_seq_t
 {
 	cmph_uint32 n; // number of values stored in store_table
-	// The length in bits of each value is decomposed into two compnents: the lg(n) MSBs are stored in rank_select data structure
+	// The length in bits of each value is decomposed into two components: the lg(n) MSBs are stored in rank_select data structure
 	// the remaining LSBs are stored in a table of n cells, each one of rem_r bits.
 	cmph_uint32 rem_r;
 	cmph_uint32 total_length; // total length in bits of stored_table
@@ -32,7 +32,7 @@ void compressed_seq_destroy(compressed_seq_t * cs);
 /** \fn void compressed_seq_generate(compressed_seq_t * cs, cmph_uint32 * vals_table, cmph_uint32 n);
  *  \brief Generate a compressed sequence from an input array with n values.
  *  \param cs points to the compressed sequence structure
- *  \param vals_table poiter to the array given as input
+ *  \param vals_table pointer to the array given as input
  *  \param n number of values in @see vals_table
  */
 void compressed_seq_generate(compressed_seq_t * cs, cmph_uint32 * vals_table, cmph_uint32 n);

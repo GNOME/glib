@@ -7,7 +7,7 @@ struct _compressed_rank_t
 {
 	cmph_uint32 max_val;
 	cmph_uint32 n; // number of values stored in vals_rems
-	// The length in bits of each value is decomposed into two compnents: the lg(n) MSBs are stored in rank_select data structure
+	// The length in bits of each value is decomposed into two components: the lg(n) MSBs are stored in rank_select data structure
 	// the remaining LSBs are stored in a table of n cells, each one of rem_r bits.
 	cmph_uint32 rem_r;
 	select_t sel;

@@ -79,7 +79,7 @@ struct _GDBusArgInfo
  * @out_args: (array zero-terminated=1): A pointer to a %NULL-terminated array of pointers to #GDBusArgInfo structures or %NULL if there are no out arguments.
  * @annotations: (array zero-terminated=1): A pointer to a %NULL-terminated array of pointers to #GDBusAnnotationInfo structures or %NULL if there are no annotations.
  *
- * Information about a method on an D-Bus interface.
+ * Information about a method on a D-Bus interface.
  *
  * Since: 2.26
  */

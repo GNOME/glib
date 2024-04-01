@@ -131,7 +131,7 @@ need assistance in some cases.
 
 Running `gsettings-schema-convert --gconf --xml --schema-id
 "org.gnome.font-rendering" --output org.gnome.font-rendering.gschema.xml
-destop_gnome_font_rendering.schemas` on the following
+desktop_gnome_font_rendering.schemas` on the following
 `desktop_gnome_font_rendering.schemas` file:
 
 ```xml

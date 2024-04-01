@@ -1649,7 +1649,7 @@ process_uwp_verbs (GList                    *verbs,
           acid_len > sizeof (gunichar2))
         {
           /* TODO: default value of a shell subkey, if not empty,
-           * migh contain something like @{Some.Identifier_1234.456.678.789_some_words?ms-resource://Arbitrary.Path/Pointing/Somewhere}
+           * might contain something like @{Some.Identifier_1234.456.678.789_some_words?ms-resource://Arbitrary.Path/Pointing/Somewhere}
            * and it might be possible to turn it into a nice displayname.
            */
           uwp_handler_add_verb (handler_rec,
