@@ -5,7 +5,7 @@
 ####################################################################################################
 
 __gsettings() {
-  local choices coffset schemadir
+  local choices coffset schemadir=""
 
   if [ ${COMP_CWORD} -gt 2 ]; then
       if [ ${COMP_WORDS[1]} = --schemadir ]; then
