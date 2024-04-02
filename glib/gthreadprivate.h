@@ -74,7 +74,7 @@ struct  _GRealThread
  * in size between the two syscall variants!
  */
 #if defined(HAVE_FUTEX) && defined(HAVE_FUTEX_TIME64)
-#if defined(__BIONIC__)
+#if defined(__ANDROID__)
 #define g_futex_simple(uaddr, futex_op, ...)                                     \
   G_STMT_START                                                                   \
   {                                                                              \
@@ -115,7 +115,7 @@ struct  _GRealThread
       }                                                                          \
   }                                                                              \
   G_STMT_END
-#endif /* defined(__BIONIC__) */
+#endif /* defined(__ANDROID__) */
 #elif defined(HAVE_FUTEX_TIME64)
 #define g_futex_simple(uaddr, futex_op, ...)                                     \
   G_STMT_START                                                                   \
