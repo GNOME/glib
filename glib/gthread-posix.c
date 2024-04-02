@@ -1625,7 +1625,7 @@ g_cond_wait_until (GCond  *cond,
   g_mutex_unlock (mutex);
 
 #if defined(HAVE_FUTEX_TIME64)
-#if defined(__BIONIC__)
+#if defined(__ANDROID__)
   if (__builtin_available (android 30, *)) {
 #else
   {

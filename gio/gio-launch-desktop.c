@@ -37,7 +37,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#if defined(__linux__) && !defined(__BIONIC__)
+#if defined(__linux__) && !defined(__ANDROID__)
 #include <alloca.h>
 #include <errno.h>
 #include <stddef.h>
@@ -252,7 +252,7 @@ main (int argc, char *argv[])
 
   putenv (buf);
 
-#if defined(__linux__) && !defined(__BIONIC__)
+#if defined(__linux__) && !defined(__ANDROID__)
   set_up_journal (argv[1]);
 #endif
 

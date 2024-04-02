@@ -22,7 +22,7 @@
 
 #include "gjournal-private.h"
 
-#if defined(__linux__) && !defined(__BIONIC__)
+#if defined(__linux__) && !defined(__ANDROID__)
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/un.h>
