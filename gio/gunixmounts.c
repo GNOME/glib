@@ -46,7 +46,7 @@
 #include <gstdio.h>
 #include <dirent.h>
 
-#if defined(__BIONIC__) && (__ANDROID_API__ < 26)
+#if defined(__ANDROID__) && (__ANDROID_API__ < 26)
 #include <mntent.h>
 /* the shared object of recent bionic libc's have hasmntopt symbol, but
    some a possible common build environment for android, termux ends
