@@ -3281,7 +3281,7 @@ g_check_setuid (void)
   if (errsv)
     g_error ("getauxval () failed: %s", g_strerror (errsv));
   return value;
-#elif defined(HAVE_ISSETUGID) && !defined(__BIONIC__)
+#elif defined(HAVE_ISSETUGID) && !defined(__ANDROID__)
   /* BSD: http://www.freebsd.org/cgi/man.cgi?query=issetugid&sektion=2 */
 
   /* Android had it in older versions but the new 64 bit ABI does not
