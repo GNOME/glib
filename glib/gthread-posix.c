@@ -1605,12 +1605,16 @@ g_cond_wait_until (GCond  *cond,
    * To get around this problem we
    *   a) check if `futex_time64` is available, which only exists on 32-bit
    *      platforms and always uses 64-bit `time_t`.
-   *   b) otherwise (or if that returns `ENOSYS`), we call the normal `futex`
+   *   b) if `futex_time64` is available, but the Android runtime's API level
+   *      is < 30, `futex_time64` is blocked by seccomp and using it will cause
+   *      the app to be terminated. Skip to c).
+   *         https://android-review.googlesource.com/c/platform/bionic/+/1094758
+   *   c) otherwise (or if that returns `ENOSYS`), we call the normal `futex`
    *      syscall with the `struct timespec` used by the kernel. By default, we
    *      use `__kernel_long_t` for both its fields, which is equivalent to
    *      `__kernel_old_time_t` and is available in the kernel headers for a
    *      longer time.
-   *   c) With very old headers (~2.6.x), `__kernel_long_t` is not available, and
+   *   d) With very old headers (~2.6.x), `__kernel_long_t` is not available, and
    *      we use an older definition that uses `__kernel_time_t` and `long`.
    *
    * Also some 32-bit systems do not define `__NR_futex` at all and only
@@ -1621,7 +1625,11 @@ g_cond_wait_until (GCond  *cond,
   g_mutex_unlock (mutex);
 
 #ifdef __NR_futex_time64
+#if defined(__BIONIC__)
+  if (__builtin_available (android 30, *)) {
+#else
   {
+#endif
     struct
     {
       gint64 tv_sec;
