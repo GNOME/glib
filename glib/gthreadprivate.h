@@ -78,6 +78,7 @@ struct  _GRealThread
 #define g_futex_simple(uaddr, futex_op, ...)                                     \
   G_STMT_START                                                                   \
   {                                                                              \
+    int saved_errno = errno;                                                     \
     int res = 0;                                                                 \
     if (__builtin_available (android 30, *))                                     \
       {                                                                          \
