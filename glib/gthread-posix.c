@@ -1624,7 +1624,7 @@ g_cond_wait_until (GCond  *cond,
   sampled = cond->i[0];
   g_mutex_unlock (mutex);
 
-#ifdef __NR_futex_time64
+#if defined(HAVE_FUTEX_TIME64)
 #if defined(__BIONIC__)
   if (__builtin_available (android 30, *)) {
 #else
@@ -1645,9 +1645,9 @@ g_cond_wait_until (GCond  *cond,
      * normal `futex` syscall. This can happen if newer kernel headers are
      * used than the kernel that is actually running.
      */
-#  ifdef __NR_futex
+#  if defined(HAVE_FUTEX)
     if (res >= 0 || errno != ENOSYS)
-#  endif /* defined(__NR_futex) */
+#  endif /* defined(HAVE_FUTEX) */
       {
         success = (res < 0 && errno == ETIMEDOUT) ? FALSE : TRUE;
         g_mutex_lock (mutex);
@@ -1657,7 +1657,7 @@ g_cond_wait_until (GCond  *cond,
   }
 #endif
 
-#ifdef __NR_futex
+#if defined(HAVE_FUTEX)
   {
 #  ifdef __kernel_long_t
 #    define KERNEL_SPAN_SEC_TYPE __kernel_long_t
@@ -1689,7 +1689,7 @@ g_cond_wait_until (GCond  *cond,
     return success;
   }
 #  undef KERNEL_SPAN_SEC_TYPE
-#endif /* defined(__NR_futex) */
+#endif /* defined(HAVE_FUTEX) */
 
   /* We can't end up here because of the checks above */
   g_assert_not_reached ();

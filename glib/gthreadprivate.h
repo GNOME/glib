@@ -73,7 +73,7 @@ struct  _GRealThread
  * This must not be called with a timeout parameter as that differs
  * in size between the two syscall variants!
  */
-#if defined(__NR_futex) && defined(__NR_futex_time64)
+#if defined(HAVE_FUTEX) && defined(HAVE_FUTEX_TIME64)
 #if defined(__BIONIC__)
 #define g_futex_simple(uaddr, futex_op, ...)                                     \
   G_STMT_START                                                                   \
@@ -116,7 +116,7 @@ struct  _GRealThread
   }                                                                              \
   G_STMT_END
 #endif /* defined(__BIONIC__) */
-#elif defined(__NR_futex_time64)
+#elif defined(HAVE_FUTEX_TIME64)
 #define g_futex_simple(uaddr, futex_op, ...)                                     \
   G_STMT_START                                                                   \
   {                                                                              \
@@ -128,7 +128,7 @@ struct  _GRealThread
       }                                                                          \
   }                                                                              \
   G_STMT_END
-#elif defined(__NR_futex)
+#elif defined(HAVE_FUTEX)
 #define g_futex_simple(uaddr, futex_op, ...)                              \
   G_STMT_START                                                            \
   {                                                                       \
@@ -140,9 +140,9 @@ struct  _GRealThread
       }                                                                   \
   }                                                                       \
   G_STMT_END
-#else /* !defined(__NR_futex) && !defined(__NR_futex_time64) */
+#else /* !defined(HAVE_FUTEX) && !defined(HAVE_FUTEX_TIME64) */
 #error "Neither __NR_futex nor __NR_futex_time64 are available"
-#endif /* defined(__NR_futex) && defined(__NR_futex_time64) */
+#endif /* defined(HAVE_FUTEX) && defined(HAVE_FUTEX_TIME64) */
 
 #endif
 
