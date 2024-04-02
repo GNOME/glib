@@ -8,51 +8,53 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-80\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-03-27 18:59+0000\n"
-"PO-Revision-Date: 2024-03-29 13:40+0100\n"
-"Last-Translator: ButterflyOfFire <ButterflyOfFire@protonmail.com>\n"
+"POT-Creation-Date: 2024-03-29 12:42+0000\n"
+"PO-Revision-Date: 2024-04-01 05:21+0200\n"
+"Last-Translator: sa\n"
 "Language-Team: Kabyle <>\n"
 "Language: kab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n>1\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
 "X-DL-Team: kab\n"
 "X-DL-Module: glib\n"
 "X-DL-Branch: glib-2-80\n"
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
-"X-Generator: Gtranslator 41.0\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
-msgstr ""
+msgstr "Asbadu n yisnasen s wudem amezwer mazal ur yettusefrak ara"
 
 #: gio/gappinfo.c:372
 msgid "Setting application as last used for type not supported yet"
 msgstr ""
+"Asbadu n usnas ama uneggaru i yettwasqedcen i wanaw mazal ur yettusefrak ara"
 
 #: gio/gappinfo.c:814
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
-msgstr ""
+msgstr "Ur teddi ara tifin n usnas amezwer i wanaw n ugbur '%s’"
 
 #: gio/gappinfo.c:874
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
-msgstr ""
+msgstr "Ur teddi ara tifin n usnas amezwer i uzenziɣ n URI ‘%s’"
 
 #: gio/gapplication.c:507
 msgid "GApplication Options:"
-msgstr ""
+msgstr "Tixtiṛiyin n GApplication:"
 
 #: gio/gapplication.c:507
 msgid "Show GApplication options"
-msgstr ""
+msgstr "Sken tixtiṛiyin n GApplication"
 
 #: gio/gapplication.c:552
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
+"Sekcem askar n uqeddac n GApplication (seqdec seg yifuyla n useqdac D-Bus)"
 
 #: gio/gapplication.c:564
 msgid "Override the application’s ID"
@@ -60,32 +62,32 @@ msgstr ""
 
 #: gio/gapplication.c:575
 msgid "Print the application version"
-msgstr ""
+msgstr "Siggez lqem n usnas"
 
 #: gio/gapplication.c:587
 msgid "Replace the running instance"
-msgstr ""
+msgstr "Semselsi tummant yettwaselkaman"
 
 #: gio/gapplication-tool.c:47 gio/gapplication-tool.c:48 gio/gio-tool.c:230
 #: gio/gresource-tool.c:497 gio/gsettings-tool.c:586
 msgid "Print help"
-msgstr ""
+msgstr "Siggez tallelt"
 
 #: gio/gapplication-tool.c:49 gio/gresource-tool.c:498 gio/gresource-tool.c:566
 msgid "[COMMAND]"
-msgstr ""
+msgstr "[TALADNA]"
 
 #: gio/gapplication-tool.c:51 gio/gio-tool.c:231
 msgid "Print version"
-msgstr ""
+msgstr "Sken lqem"
 
 #: gio/gapplication-tool.c:52 gio/gsettings-tool.c:592
 msgid "Print version information and exit"
-msgstr ""
+msgstr "Siggez talɣut n lqem syen ffeɣ"
 
 #: gio/gapplication-tool.c:55
 msgid "List applications"
-msgstr ""
+msgstr "Tabdart n yisnasen"
 
 #: gio/gapplication-tool.c:56
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
@@ -101,11 +103,11 @@ msgstr ""
 
 #: gio/gapplication-tool.c:61
 msgid "APPID [FILE…]"
-msgstr ""
+msgstr "APPID [AFAYLU…]"
 
 #: gio/gapplication-tool.c:63
 msgid "Activate an action"
-msgstr ""
+msgstr "Rmed tigawt"
 
 #: gio/gapplication-tool.c:64
 msgid "Invoke an action on the application"
@@ -125,12 +127,12 @@ msgstr ""
 
 #: gio/gapplication-tool.c:69 gio/gapplication-tool.c:75
 msgid "APPID"
-msgstr ""
+msgstr "APPID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
 #: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: gio/gapplication-tool.c:74
 msgid "The command to print detailed help for"
@@ -148,7 +150,7 @@ msgstr ""
 #: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
 #: girepository/decompiler/decompiler.c:65
 msgid "FILE"
-msgstr ""
+msgstr "AFAYLU"
 
 #: gio/gapplication-tool.c:76
 msgid "Optional relative or absolute filenames, or URIs to open"
@@ -156,7 +158,7 @@ msgstr ""
 
 #: gio/gapplication-tool.c:77
 msgid "ACTION"
-msgstr ""
+msgstr "TIGAWT"
 
 #: gio/gapplication-tool.c:77
 msgid "The action name to invoke"
@@ -164,7 +166,7 @@ msgstr ""
 
 #: gio/gapplication-tool.c:78
 msgid "PARAMETER"
-msgstr ""
+msgstr "AΓEWWAR"
 
 #: gio/gapplication-tool.c:78
 msgid "Optional parameter to the action invocation, in GVariant format"
@@ -185,16 +187,16 @@ msgstr "Aseqdec:\n"
 #: gio/gapplication-tool.c:118 gio/gresource-tool.c:560
 #: gio/gsettings-tool.c:713
 msgid "Arguments:\n"
-msgstr ""
+msgstr "Ifukal\n"
 
 #: gio/gapplication-tool.c:137 gio/gio-tool.c:259
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[ARGS…]"
 
 #: gio/gapplication-tool.c:138
 #, c-format
 msgid "Commands:\n"
-msgstr ""
+msgstr "Tiludna:\n"
 
 #. Translators: do not translate 'help', but please translate 'COMMAND'.
 #: gio/gapplication-tool.c:150
@@ -223,6 +225,8 @@ msgid ""
 "“%s” takes no arguments\n"
 "\n"
 msgstr ""
+"\"%s\" ur iteṭṭef ulad yiwen ufakul\n"
+"\n"
 
 #: gio/gapplication-tool.c:270
 #, c-format
@@ -300,11 +304,11 @@ msgstr ""
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
-msgstr ""
+msgstr "Tamhelt tettwasefsex"
 
 #: gio/gcharsetconverter.c:272
 msgid "Invalid object, not initialized"
-msgstr ""
+msgstr "Taɣawsa d tarameɣtut, ur ittwannez ara"
 
 #: gio/gcharsetconverter.c:293 gio/gcharsetconverter.c:321
 msgid "Incomplete multibyte sequence in input"
@@ -319,13 +323,13 @@ msgstr ""
 #: glib/giochannel.c:1565 glib/giochannel.c:1607 glib/giochannel.c:2467
 #: glib/gutf8.c:958 glib/gutf8.c:1412
 msgid "Invalid byte sequence in conversion input"
-msgstr ""
+msgstr "Tigezmi n yibiten d tarameɣtut deg unekcum n udiwenni"
 
 #: gio/gcharsetconverter.c:359 glib/gconvert.c:368 glib/gconvert.c:706
 #: glib/giochannel.c:1572 glib/giochannel.c:2482
 #, c-format
 msgid "Error during conversion: %s"
-msgstr ""
+msgstr "Tella-d tuccḍa deg  udiwenni: %s"
 
 #: gio/gcharsetconverter.c:457 gio/gsocket.c:1217
 msgid "Cancellable initialization not supported"
@@ -344,20 +348,20 @@ msgstr ""
 #: gio/gcontenttype.c:470
 #, c-format
 msgid "%s type"
-msgstr ""
+msgstr "%s wanaw"
 
 #: gio/gcontenttype-win32.c:198
 msgid "Unknown type"
-msgstr ""
+msgstr "Anaw arussin"
 
 #: gio/gcontenttype-win32.c:200
 #, c-format
 msgid "%s filetype"
-msgstr ""
+msgstr "%s wanaw n ufaylu"
 
 #: gio/gcredentials.c:327
 msgid "GCredentials contains invalid data"
-msgstr ""
+msgstr "GCcredentilas ulac deg-s isefka irimeɣta"
 
 #: gio/gcredentials.c:387 gio/gcredentials.c:678
 msgid "GCredentials is not implemented on this OS"
@@ -466,17 +470,17 @@ msgstr ""
 #: gio/gdbusaddress.c:724
 #, c-format
 msgid "Error opening nonce file “%s”: %s"
-msgstr ""
+msgstr "Tuccḍa deg ulday n ufaylu nonce \"%s\": %s"
 
 #: gio/gdbusaddress.c:743
 #, c-format
 msgid "Error reading from nonce file “%s”: %s"
-msgstr ""
+msgstr "Tuccḍa deg tɣuri n ufaylu nonce \"%s\": %s"
 
 #: gio/gdbusaddress.c:752
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
-msgstr ""
+msgstr "Tuccḍa deg tɣuri n ufaylu \"%s\"; 16 ibiten ttwarǧan, yewwi-d %d"
 
 #: gio/gdbusaddress.c:770
 #, c-format
@@ -485,7 +489,7 @@ msgstr ""
 
 #: gio/gdbusaddress.c:985
 msgid "The given address is empty"
-msgstr ""
+msgstr "Tansa i d-yettwamudden d tilemt"
 
 #: gio/gdbusaddress.c:1098
 #, c-format
@@ -527,7 +531,7 @@ msgstr ""
 #: gio/gdbusaddress.c:1396
 #, c-format
 msgid "Unknown bus type %d"
-msgstr ""
+msgstr "Anaw n uzrug %d d arussin"
 
 #: gio/gdbusauth.c:292
 msgid "Unexpected lack of content trying to read a line"
@@ -569,7 +573,7 @@ msgstr ""
 #: gio/gdbusauthmechanismsha1.c:355 gio/gdbusauthmechanismsha1.c:366
 #, c-format
 msgid "Error creating directory “%s”: %s"
-msgstr ""
+msgstr "Tuccḍa deg tɣri n ukaram \"%s\": %s"
 
 #: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1105 gio/gfile.c:1343
 #: gio/gfile.c:1481 gio/gfile.c:1718 gio/gfile.c:1773 gio/gfile.c:1831
@@ -579,12 +583,12 @@ msgstr ""
 #: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9004 gio/gfile.c:9094
 #: gio/gfile.c:9178 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
-msgstr ""
+msgstr "Tamhelt ur tettusefrak ara"
 
 #: gio/gdbusauthmechanismsha1.c:411
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
-msgstr ""
+msgstr "Tuccḍa deg ulday n keyring \"%s\" i tɣuri: "
 
 #: gio/gdbusauthmechanismsha1.c:434 gio/gdbusauthmechanismsha1.c:775
 #, c-format
@@ -611,7 +615,7 @@ msgstr ""
 #: gio/gdbusauthmechanismsha1.c:543
 #, c-format
 msgid "Error creating lock file “%s”: %s"
-msgstr ""
+msgstr "Tecceḍ tmerna n ufaylu n usekkeṛ \"%s\": %s"
 
 #: gio/gdbusauthmechanismsha1.c:616
 #, c-format
@@ -640,11 +644,11 @@ msgstr ""
 
 #: gio/gdbusconnection.c:585 gio/gdbusconnection.c:2392
 msgid "The connection is closed"
-msgstr ""
+msgstr "Tuqqna temdel"
 
 #: gio/gdbusconnection.c:1876
 msgid "Timeout was reached"
-msgstr ""
+msgstr "Yewweḍ wakud"
 
 #: gio/gdbusconnection.c:2515
 msgid ""
@@ -660,7 +664,7 @@ msgstr ""
 #: gio/gdbusconnection.c:4422
 #, c-format
 msgid "No such property “%s”"
-msgstr ""
+msgstr "Ulad yiwen warra seg wanaw \"%s\""
 
 #: gio/gdbusconnection.c:4434
 #, c-format
@@ -681,7 +685,7 @@ msgstr ""
 #: gio/gdbusconnection.c:6762
 #, c-format
 msgid "No such interface “%s”"
-msgstr ""
+msgstr "Ulad yiwen ugrudem seg wanaw \"%s\""
 
 #: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
 #, c-format
@@ -691,7 +695,7 @@ msgstr ""
 #: gio/gdbusconnection.c:5102
 #, c-format
 msgid "No such method “%s”"
-msgstr ""
+msgstr "Ulad tiwen tarrayt seg wanaw \"%s\""
 
 #: gio/gdbusconnection.c:5133
 #, c-format
@@ -711,7 +715,7 @@ msgstr ""
 #: gio/gdbusconnection.c:5619
 #, c-format
 msgid "Unable to set property %s.%s"
-msgstr ""
+msgstr "D awezɣi usbadu n warra %s, %s"
 
 #: gio/gdbusconnection.c:5798
 #, c-format
@@ -731,7 +735,7 @@ msgstr ""
 #: gio/gdbusconnection.c:7287
 #, c-format
 msgid "Object does not exist at path “%s”"
-msgstr ""
+msgstr "Taɣawsa ulac-itt deg ubrid \"%s\""
 
 #: gio/gdbusmessage.c:1351
 #, c-format
@@ -780,7 +784,7 @@ msgstr ""
 
 #: gio/gdbusmessage.c:1511
 msgid "type is INVALID"
-msgstr ""
+msgstr "anaw d ARAMEΓTU"
 
 #: gio/gdbusmessage.c:1581 gio/gdbusmessage.c:1641
 #, c-format
@@ -923,7 +927,7 @@ msgstr ""
 
 #: gio/gdbusmessage.c:3681
 msgid "Error return with empty body"
-msgstr ""
+msgstr "Tettuɣal-d tuccḍa s tfekka tilemt"
 
 #: gio/gdbusprivate.c:2201
 #, c-format
@@ -944,7 +948,7 @@ msgstr ""
 #: gio/gdbusprivate.c:2466
 #, c-format
 msgid "Unable to load %s or %s: "
-msgstr ""
+msgstr "D awezɣi asali n %s neɣ %s: "
 
 #: gio/gdbusproxy.c:1552
 #, c-format
@@ -1005,7 +1009,7 @@ msgstr ""
 #: gio/gdbus-tool.c:1733
 #, c-format
 msgid "Error: %s\n"
-msgstr ""
+msgstr "Tuccḍa: %s\n"
 
 #: gio/gdbus-tool.c:215 gio/gdbus-tool.c:289 gio/gdbus-tool.c:1749
 #, c-format
@@ -1015,29 +1019,29 @@ msgstr ""
 #: gio/gdbus-tool.c:253
 #, c-format
 msgid "Error: %s is not a valid name\n"
-msgstr ""
+msgstr "Tuccḍa: %s mačči d isem ameɣtu\n"
 
 #: gio/gdbus-tool.c:258 gio/gdbus-tool.c:747 gio/gdbus-tool.c:1065
 #: gio/gdbus-tool.c:1899 gio/gdbus-tool.c:2139
 #, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr ""
+msgstr "Tuccḍa: %s mačči d abrid n tɣawsa ameɣtu\n"
 
 #: gio/gdbus-tool.c:405
 msgid "Connect to the system bus"
-msgstr ""
+msgstr "Qqen ɣer uzrug n unagraw"
 
 #: gio/gdbus-tool.c:406
 msgid "Connect to the session bus"
-msgstr ""
+msgstr "Qqen ɣer uzrug n tɣimit"
 
 #: gio/gdbus-tool.c:407
 msgid "Connect to given D-Bus address"
-msgstr ""
+msgstr "Qqen ɣer tansa D-Bus i d-yettwamudden"
 
 #: gio/gdbus-tool.c:407
 msgid "ADDRESS"
-msgstr ""
+msgstr "TANSA"
 
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
@@ -1090,16 +1094,16 @@ msgstr ""
 #: gio/gdbus-tool.c:2068 gio/gdbus-tool.c:2288
 #, c-format
 msgid "Error connecting: %s\n"
-msgstr ""
+msgstr "Tuccḍa n tuqqna: %s\n"
 
 #: gio/gdbus-tool.c:705
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
-msgstr ""
+msgstr "Tuccḍa: %s mačči d isem n uzrug asuf ameɣtu.\n"
 
 #: gio/gdbus-tool.c:724 gio/gdbus-tool.c:1045 gio/gdbus-tool.c:1879
 msgid "Error: Object path is not specified\n"
-msgstr ""
+msgstr "Tuccḍa: Abrid n tɣawsa ur yettwafren ara\n"
 
 #: gio/gdbus-tool.c:767
 msgid "Error: Signal name is not specified\n"
@@ -1209,11 +1213,11 @@ msgstr ""
 
 #: gio/gdbus-tool.c:1994
 msgid "Destination name to monitor"
-msgstr ""
+msgstr "Isem n tnila ɣer usefrak"
 
 #: gio/gdbus-tool.c:1995
 msgid "Object path to monitor"
-msgstr ""
+msgstr "Abrid n tɣawsa ɣer usefrak"
 
 #: gio/gdbus-tool.c:2020
 msgid "Monitor a remote object."
@@ -1251,7 +1255,7 @@ msgstr ""
 
 #: gio/gdbus-tool.c:2340
 msgid "Error: Too many arguments.\n"
-msgstr ""
+msgstr "Tuccḍa: Aṭas n yifukal.\n"
 
 #: gio/gdbus-tool.c:2348 gio/gdbus-tool.c:2355
 #, c-format
@@ -1266,7 +1270,7 @@ msgstr ""
 #: gio/gdesktopappinfo.c:2235 gio/gdesktopappinfo.c:5219
 #: gio/gwin32appinfo.c:4256
 msgid "Unnamed"
-msgstr ""
+msgstr "Warisem"
 
 #: gio/gdesktopappinfo.c:2645
 msgid "Desktop file didn’t specify Exec field"
@@ -1279,7 +1283,7 @@ msgstr ""
 #: gio/gdesktopappinfo.c:2995
 #, c-format
 msgid "Program ‘%s’ not found in $PATH"
-msgstr ""
+msgstr "Ahil '%s' ur yettwaf ara deg UBRID"
 
 #: gio/gdesktopappinfo.c:3731
 #, c-format
@@ -1498,7 +1502,7 @@ msgstr ""
 #: gio/ghttpproxy.c:93 gio/gresolver.c:529 gio/gresolver.c:682
 #: glib/gconvert.c:1752
 msgid "Invalid hostname"
-msgstr ""
+msgstr "Isem asenneftaɣ d arameɣtu"
 
 #: gio/ghttpproxy.c:145
 msgid "Bad HTTP proxy reply"
@@ -1565,7 +1569,7 @@ msgstr ""
 
 #: gio/ginetaddressmask.c:192
 msgid "No address specified"
-msgstr ""
+msgstr "Ulac tansa i yettwafernen"
 
 #: gio/ginetaddressmask.c:200
 #, c-format
@@ -1606,7 +1610,7 @@ msgstr ""
 
 #: gio/gio-tool.c:162
 msgid "Copy with file"
-msgstr ""
+msgstr "Nɣel s ufaylu"
 
 #: gio/gio-tool.c:166
 msgid "Keep with file when moved"
@@ -1618,7 +1622,7 @@ msgstr ""
 
 #: gio/gio-tool.c:209 gio/gio-tool.c:258 glib/goption.c:712
 msgid "Usage:"
-msgstr ""
+msgstr "Aseqdec:"
 
 #: gio/gio-tool.c:212
 msgid "Print version information and exit."
@@ -1650,7 +1654,7 @@ msgstr ""
 
 #: gio/gio-tool.c:238
 msgid "Create directories"
-msgstr ""
+msgstr "Rnu ikaramen"
 
 #: gio/gio-tool.c:239
 msgid "Monitor files and directories for changes"
@@ -1662,7 +1666,7 @@ msgstr ""
 
 #: gio/gio-tool.c:241
 msgid "Move one or more files"
-msgstr ""
+msgstr "Senkez yiwen neɣ ugar n yifuyla"
 
 #: gio/gio-tool.c:242
 msgid "Open files with the default application"
@@ -1670,11 +1674,11 @@ msgstr ""
 
 #: gio/gio-tool.c:243
 msgid "Rename a file"
-msgstr ""
+msgstr "Ales isem n ufaylu"
 
 #: gio/gio-tool.c:244
 msgid "Delete one or more files"
-msgstr ""
+msgstr "Kkes yiwen neɣ ugar n yifuyla"
 
 #: gio/gio-tool.c:245
 msgid "Read from standard input and save"
@@ -1682,7 +1686,7 @@ msgstr ""
 
 #: gio/gio-tool.c:246
 msgid "Set a file attribute"
-msgstr ""
+msgstr "Sbadu amyerr n ufaylu"
 
 #: gio/gio-tool.c:247
 msgid "Move files or directories to the trash"
@@ -1713,7 +1717,7 @@ msgstr ""
 #: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
 #: gio/gio-tool-trash.c:222 gio/gio-tool-tree.c:246
 msgid "LOCATION"
-msgstr ""
+msgstr "ADIG"
 
 #: gio/gio-tool-cat.c:140
 msgid "Concatenate files and print to standard output."
@@ -1738,7 +1742,7 @@ msgstr ""
 
 #: gio/gio-tool-copy.c:47 gio/gio-tool-move.c:41
 msgid "Show progress"
-msgstr ""
+msgstr "Sken akala"
 
 #: gio/gio-tool-copy.c:48 gio/gio-tool-move.c:42
 msgid "Prompt before overwrite"
@@ -1772,12 +1776,12 @@ msgstr ""
 #. Translators: commandline placeholder
 #: gio/gio-tool-copy.c:104 gio/gio-tool-move.c:96
 msgid "SOURCE"
-msgstr ""
+msgstr "AΓBALU"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-copy.c:104 gio/gio-tool-move.c:96 gio/gio-tool-save.c:162
 msgid "DESTINATION"
-msgstr ""
+msgstr "TANILA"
 
 #: gio/gio-tool-copy.c:109
 msgid "Copy one or more files from SOURCE to DESTINATION."
@@ -1806,35 +1810,35 @@ msgstr ""
 
 #: gio/gio-tool-info.c:40
 msgid "Get file system info"
-msgstr ""
+msgstr "Awi talɣut n unagraw n ufaylu"
 
 #: gio/gio-tool-info.c:41 gio/gio-tool-list.c:37
 msgid "The attributes to get"
-msgstr ""
+msgstr "Imyarren ara tawiḍ"
 
 #: gio/gio-tool-info.c:41 gio/gio-tool-list.c:37
 msgid "ATTRIBUTES"
-msgstr ""
+msgstr "IMYARREN"
 
 #: gio/gio-tool-info.c:42 gio/gio-tool-list.c:40 gio/gio-tool-set.c:37
 msgid "Don’t follow symbolic links"
-msgstr ""
+msgstr "Ur ṭṭfar ara iseɣwan izamalen"
 
 #: gio/gio-tool-info.c:105
 msgid "attributes:\n"
-msgstr ""
+msgstr "imyarren:\n"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: gio/gio-tool-info.c:166
 #, c-format
 msgid "display name: %s\n"
-msgstr ""
+msgstr "sken isem:%s\n"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: gio/gio-tool-info.c:176
 #, c-format
 msgid "edit name: %s\n"
-msgstr ""
+msgstr "ẓreg isem:%s\n"
 
 #: gio/gio-tool-info.c:185
 #, c-format
@@ -1852,7 +1856,7 @@ msgstr "teɣzi: "
 
 #: gio/gio-tool-info.c:204
 msgid "hidden\n"
-msgstr ""
+msgstr "yeffer\n"
 
 #: gio/gio-tool-info.c:207
 #, c-format
@@ -1926,7 +1930,7 @@ msgstr ""
 
 #: gio/gio-tool-list.c:38 gio/gio-tool-tree.c:34
 msgid "Show hidden files"
-msgstr ""
+msgstr "Sken ifuyla yeffren"
 
 #: gio/gio-tool-list.c:39
 msgid "Use a long listing format"
@@ -2018,7 +2022,7 @@ msgstr ""
 
 #: gio/gio-tool-mkdir.c:54
 msgid "Create directories."
-msgstr ""
+msgstr "Rnu ikaramen."
 
 #: gio/gio-tool-mkdir.c:56
 msgid ""
@@ -2065,7 +2069,7 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:66
 msgid "ID"
-msgstr ""
+msgstr "Asulay"
 
 #: gio/gio-tool-mount.c:67
 msgid "Unmount"
@@ -2089,7 +2093,7 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:70
 msgid "SCHEME"
-msgstr ""
+msgstr "AZENZIΓ"
 
 #: gio/gio-tool-mount.c:71
 msgid "Ignore outstanding file operations when unmounting or ejecting"
@@ -2106,11 +2110,11 @@ msgstr "Tabdart"
 
 #: gio/gio-tool-mount.c:75
 msgid "Monitor events"
-msgstr ""
+msgstr "Tidyanin n usefrak"
 
 #: gio/gio-tool-mount.c:76
 msgid "Show extra information"
-msgstr ""
+msgstr "Sken talɣut tafellayt"
 
 #: gio/gio-tool-mount.c:77
 msgid "The numeric PIM when unlocking a VeraCrypt volume"
@@ -2118,7 +2122,7 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:77
 msgid "PIM"
-msgstr ""
+msgstr "PIM"
 
 #: gio/gio-tool-mount.c:78
 msgid "Mount a TCRYPT hidden volume"
@@ -2134,11 +2138,11 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:559
 msgid "No drive for device file"
-msgstr ""
+msgstr "Ulac anuḍaf i ufaylu n yibenk"
 
 #: gio/gio-tool-mount.c:1051
 msgid "No volume for given ID"
-msgstr ""
+msgstr "Ulac ableɣ i usulay i d-yettwamudden"
 
 #: gio/gio-tool-mount.c:1240
 msgid "Mount or unmount the locations."
@@ -2176,11 +2180,11 @@ msgstr ""
 
 #: gio/gio-tool-remove.c:54
 msgid "Delete the given files."
-msgstr ""
+msgstr "Kkes ifuyla i d-yettwamudden."
 
 #: gio/gio-tool-rename.c:47
 msgid "NAME"
-msgstr ""
+msgstr "ISEM"
 
 #: gio/gio-tool-rename.c:52
 msgid "Rename a file."
@@ -2244,35 +2248,35 @@ msgstr ""
 
 #: gio/gio-tool-save.c:185
 msgid "No destination given"
-msgstr ""
+msgstr "Ulac tanila i d-yettwamudden"
 
 #: gio/gio-tool-set.c:36
 msgid "Type of the attribute"
-msgstr ""
+msgstr "Anaw n umyerr"
 
 #: gio/gio-tool-set.c:36
 msgid "TYPE"
-msgstr ""
+msgstr "ANAW"
 
 #: gio/gio-tool-set.c:38
 msgid "Unset given attribute"
-msgstr ""
+msgstr "Kkes asbadu n umyerr i d-yettwamudden"
 
 #: gio/gio-tool-set.c:95
 msgid "ATTRIBUTE"
-msgstr ""
+msgstr "IMYERR"
 
 #: gio/gio-tool-set.c:95
 msgid "VALUE"
-msgstr ""
+msgstr "AZAL"
 
 #: gio/gio-tool-set.c:99
 msgid "Set a file attribute of LOCATION."
-msgstr ""
+msgstr "Sbadu imyerr n ufaylu n WADIG."
 
 #: gio/gio-tool-set.c:119
 msgid "Location not specified"
-msgstr ""
+msgstr "Adig ur yettwafran ara"
 
 #: gio/gio-tool-set.c:126
 msgid "Attribute not specified"
@@ -2289,7 +2293,7 @@ msgstr ""
 
 #: gio/gio-tool-trash.c:36
 msgid "Empty the trash"
-msgstr ""
+msgstr "Silem taqecwalt"
 
 #: gio/gio-tool-trash.c:37
 msgid "List files in the trash with their original locations"
@@ -2408,7 +2412,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
 #: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
-msgstr ""
+msgstr "AKARAM"
 
 #: gio/glib-compile-resources.c:824
 msgid ""
@@ -3247,7 +3251,7 @@ msgstr ""
 
 #: gio/gmemoryinputstream.c:483
 msgid "Invalid seek request"
-msgstr ""
+msgstr "Assuter n unadi d arameɣtu"
 
 #: gio/gmemoryinputstream.c:507
 msgid "Cannot truncate GMemoryInputStream"
@@ -3727,7 +3731,7 @@ msgstr ""
 #: gio/gsocket.c:465 gio/gsocket.c:3291 gio/gsocket.c:4664 gio/gsocket.c:4722
 #: gio/gthreadedresolver.c:1454
 msgid "Socket I/O timed out"
-msgstr ""
+msgstr "Tanzagt Anekcum/Tuffɣa tfukk"
 
 #: gio/gsocket.c:602
 #, c-format
@@ -4235,20 +4239,20 @@ msgstr ""
 
 #: gio/gzlibcompressor.c:399 gio/gzlibdecompressor.c:345
 msgid "Not enough memory"
-msgstr ""
+msgstr "Txuṣṣ tkatut"
 
 #: gio/gzlibcompressor.c:406 gio/gzlibdecompressor.c:352
 #, c-format
 msgid "Internal error: %s"
-msgstr ""
+msgstr "Tuccḍa tagensant: %s"
 
 #: gio/gzlibcompressor.c:419 gio/gzlibdecompressor.c:366
 msgid "Need more input"
-msgstr ""
+msgstr "Yesra ugar n yinekcumen"
 
 #: gio/gzlibdecompressor.c:338
 msgid "Invalid compressed data"
-msgstr ""
+msgstr "Isefka ussiden d arameɣtuyen"
 
 #: gio/tests/gdbus-daemon.c:18
 msgid "Address to listen on"
@@ -4260,7 +4264,7 @@ msgstr ""
 
 #: gio/tests/gdbus-daemon.c:20
 msgid "Print address"
-msgstr ""
+msgstr "Siggez tansa"
 
 #: gio/tests/gdbus-daemon.c:21
 msgid "Print address in shell mode"
@@ -4277,7 +4281,7 @@ msgstr ""
 #: girepository/compiler/compiler.c:93
 #, c-format
 msgid "Failed to open ‘%s’: %s"
-msgstr ""
+msgstr "YEcceḍ ulday n '%s': %s"
 
 #: girepository/compiler/compiler.c:103
 #, c-format
@@ -4295,7 +4299,7 @@ msgstr ""
 
 #: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
 msgid "Output file"
-msgstr ""
+msgstr "Afaylu n tuffɣa"
 
 #: girepository/compiler/compiler.c:149
 msgid "Shared library"
@@ -4303,7 +4307,7 @@ msgstr ""
 
 #: girepository/compiler/compiler.c:150
 msgid "Show debug messages"
-msgstr ""
+msgstr "Sken-d iznan n useɣti"
 
 #: girepository/compiler/compiler.c:151
 msgid "Show verbose messages"
@@ -4517,7 +4521,7 @@ msgstr ""
 #: glib/gconvert.c:1638
 #, c-format
 msgid "The URI “%s” is invalid"
-msgstr ""
+msgstr "URI \"%s\" d arameɣtu"
 
 #: glib/gconvert.c:1651
 #, c-format
@@ -4538,25 +4542,25 @@ msgstr ""
 #: glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr ""
+msgstr "%a %b %e %H:%M:%S %Y"
 
 #. Translators: this is the preferred format for expressing the date
 #: glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr ""
+msgstr "%m/%d/%y"
 
 #. Translators: this is the preferred format for expressing the time
 #: glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr ""
+msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: glib/gdatetime.c:208
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr ""
+msgstr "%I:%M:%S %p"
 
 #. Translators: Some languages (Baltic, Slavic, Greek, and some more)
 #. * need different grammatical forms of month names depending on whether
@@ -4963,17 +4967,17 @@ msgstr ""
 #: glib/gfileutils.c:738
 #, c-format
 msgid "Error reading file “%s”: %s"
-msgstr ""
+msgstr "Tuccḍa deg tvuṛi n ufaylu \"%s\": %s"
 
 #: glib/gfileutils.c:774 glib/gfileutils.c:808
 #, c-format
 msgid "File “%s” is too large"
-msgstr ""
+msgstr "Afaylu \"%s\" meqqer aṭas"
 
 #: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
-msgstr ""
+msgstr "Tecceḍ tɣuri seg ufaylu \"%s\": %s"
 
 #: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
@@ -5360,23 +5364,23 @@ msgstr ""
 
 #: glib/goption.c:832
 msgid "Help Options:"
-msgstr ""
+msgstr "Tixtiṛiyin n tallalt:"
 
 #: glib/goption.c:833
 msgid "Show help options"
-msgstr ""
+msgstr "Sken tinefrunin n talallt"
 
 #: glib/goption.c:839
 msgid "Show all help options"
-msgstr ""
+msgstr "Sken akk tixtiṛiyin n tallalt"
 
 #: glib/goption.c:902
 msgid "Application Options:"
-msgstr ""
+msgstr "Tixtiṛiyin n usnas:"
 
 #: glib/goption.c:904
 msgid "Options:"
-msgstr ""
+msgstr "Tixtiṛiyin:"
 
 #: glib/goption.c:968 glib/goption.c:1038
 #, c-format
@@ -5411,7 +5415,7 @@ msgstr ""
 #: glib/goption.c:2024
 #, c-format
 msgid "Unknown option %s"
-msgstr ""
+msgstr "Taxtiṛt tarussint %s"
 
 #: glib/gregex.c:486
 msgid "corrupted object"
@@ -5452,7 +5456,7 @@ msgstr ""
 
 #: glib/gregex.c:541 glib/gregex.c:1869
 msgid "unknown error"
-msgstr ""
+msgstr "tuccḍa tarussint"
 
 #: glib/gregex.c:562
 msgid "\\ at end of pattern"
@@ -5668,44 +5672,44 @@ msgstr ""
 
 #: glib/gregex.c:2918
 msgid "hexadecimal digit or “}” expected"
-msgstr ""
+msgstr "azwil asḍisamrawan neɣ “}” yetturaǧu"
 
 #: glib/gregex.c:2934
 msgid "hexadecimal digit expected"
-msgstr ""
+msgstr "azwil asḍisamrawan neɣ yetturaǧu"
 
 #: glib/gregex.c:2974
 msgid "missing “<” in symbolic reference"
-msgstr ""
+msgstr "ixuṣṣ “<” deg temselɣut tazamalt"
 
 #: glib/gregex.c:2983
 msgid "unfinished symbolic reference"
-msgstr ""
+msgstr "tamselɣut tazamalt tarummidt"
 
 #: glib/gregex.c:2990
 msgid "zero-length symbolic reference"
-msgstr ""
+msgstr "tamselɣut tazamalt m teɣzi tilemt"
 
 #: glib/gregex.c:3001
 msgid "digit expected"
-msgstr ""
+msgstr "azwil yetturaǧun"
 
 #: glib/gregex.c:3019
 msgid "illegal symbolic reference"
-msgstr ""
+msgstr "tamselɣut tazamalt arulgin"
 
 #: glib/gregex.c:3082
 msgid "stray final “\\”"
-msgstr ""
+msgstr "tamaneft taneggarut “\\”"
 
 #: glib/gregex.c:3086
 msgid "unknown escape sequence"
-msgstr ""
+msgstr "tagzemt n usenser tarussint"
 
 #: glib/gregex.c:3096
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
-msgstr ""
+msgstr "Tuccḍa lawan n uslaḍn n usemsesi n uḍris \"%s\" deg usekkil %lu: %s"
 
 #: glib/gshell.c:84
 msgid "Quoted text doesn’t begin with a quotation mark"
@@ -5767,7 +5771,7 @@ msgstr ""
 #: glib/gspawn.c:1622 glib/gspawn-win32.c:472 glib/gspawn-win32.c:480
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr ""
+msgstr "Tecceḍ tɣuri seg tegmamt taqrurt (%s)"
 
 #: glib/gspawn.c:2001
 #, c-format
@@ -5964,134 +5968,134 @@ msgstr ""
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kB"
 #: glib/gutils.c:2966
 msgid "kB"
-msgstr ""
+msgstr "kAṬ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MB"
 #: glib/gutils.c:2968
 msgid "MB"
-msgstr ""
+msgstr "MAṬ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GB"
 #: glib/gutils.c:2970
 msgid "GB"
-msgstr ""
+msgstr "GAṬ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TB"
 #: glib/gutils.c:2972
 msgid "TB"
-msgstr ""
+msgstr "TAṬ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PB"
 #: glib/gutils.c:2974
 msgid "PB"
-msgstr ""
+msgstr "PB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EB"
 #: glib/gutils.c:2976
 msgid "EB"
-msgstr ""
+msgstr "EB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 KiB"
 #: glib/gutils.c:2980
 msgid "KiB"
-msgstr ""
+msgstr "KiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MiB"
 #: glib/gutils.c:2982
 msgid "MiB"
-msgstr ""
+msgstr "MiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
 #: glib/gutils.c:2984
 msgid "GiB"
-msgstr ""
+msgstr "GiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
 #: glib/gutils.c:2986
 msgid "TiB"
-msgstr ""
+msgstr "TiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PiB"
 #: glib/gutils.c:2988
 msgid "PiB"
-msgstr ""
+msgstr "PiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EiB"
 #: glib/gutils.c:2990
 msgid "EiB"
-msgstr ""
+msgstr "EiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kbit"
 #: glib/gutils.c:2994
 msgid "kbit"
-msgstr ""
+msgstr "kbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mbit"
 #: glib/gutils.c:2996
 msgid "Mbit"
-msgstr ""
+msgstr "Mbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gbit"
 #: glib/gutils.c:2998
 msgid "Gbit"
-msgstr ""
+msgstr "Gbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tbit"
 #: glib/gutils.c:3000
 msgid "Tbit"
-msgstr ""
+msgstr "Tbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pbit"
 #: glib/gutils.c:3002
 msgid "Pbit"
-msgstr ""
+msgstr "Pbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Ebit"
 #: glib/gutils.c:3004
 msgid "Ebit"
-msgstr ""
+msgstr "Ebit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Kibit"
 #: glib/gutils.c:3008
 msgid "Kibit"
-msgstr ""
+msgstr "Kibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mibit"
 #: glib/gutils.c:3010
 msgid "Mibit"
-msgstr ""
+msgstr "Mibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gibit"
 #: glib/gutils.c:3012
 msgid "Gibit"
-msgstr ""
+msgstr "Gibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tibit"
 #: glib/gutils.c:3014
 msgid "Tibit"
-msgstr ""
+msgstr "Tibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pibit"
 #: glib/gutils.c:3016
 msgid "Pibit"
-msgstr ""
+msgstr "Pibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Eibit"
 #: glib/gutils.c:3018
 msgid "Eibit"
-msgstr ""
+msgstr "Eibit"
 
 #: glib/gutils.c:3056
 msgid "byte"
 msgid_plural "bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "ibit"
+msgstr[1] "ibiten"
 
 #: glib/gutils.c:3060
 msgid "bit"
 msgid_plural "bits"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "bit"
+msgstr[1] "bits"
 
 #. Translators: The "%u" is replaced with the size value, like "13"; it could
 #. * be part of "13 bytes", but only the number is requested this time.
@@ -6099,7 +6103,7 @@ msgstr[1] ""
 #, c-format
 msgctxt "format-size"
 msgid "%u"
-msgstr ""
+msgstr "%u"
 
 #. Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1u". An example: "13 bytes"
@@ -6107,7 +6111,7 @@ msgstr ""
 #, c-format
 msgctxt "format-size"
 msgid "%u %s"
-msgstr ""
+msgstr "%u %s"
 
 #. Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
 #. * be part of "13.0 MB", but only the number is requested this time.
@@ -6115,7 +6119,7 @@ msgstr ""
 #, c-format
 msgctxt "format-size"
 msgid "%.1f"
-msgstr ""
+msgstr "%.1f"
 
 #. Translators: The first "%.1f" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1.1f". Keep the no-break space between the value and
@@ -6124,30 +6128,30 @@ msgstr ""
 #, c-format
 msgctxt "format-size"
 msgid "%.1f %s"
-msgstr ""
+msgstr "%.1f %s"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
 #: glib/gutils.c:3155
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s yibit"
+msgstr[1] "%s yibiten"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
 #: glib/gutils.c:3160
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s yibit"
+msgstr[1] "%s yibiten"
 
 #: glib/gutils.c:3201
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u yibit"
+msgstr[1] "%u yibiten"
 
 #. Translators: this is from the deprecated function g_format_size_for_display() which uses 'KB' to
 #. * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been preserved for reasons of
@@ -6157,29 +6161,29 @@ msgstr[1] ""
 #: glib/gutils.c:3214
 #, c-format
 msgid "%.1f KB"
-msgstr ""
+msgstr "%.1f KAṬ"
 
 #: glib/gutils.c:3219
 #, c-format
 msgid "%.1f MB"
-msgstr ""
+msgstr "%.1f MAṬ"
 
 #: glib/gutils.c:3224
 #, c-format
 msgid "%.1f GB"
-msgstr ""
+msgstr "%.1f GAṬ"
 
 #: glib/gutils.c:3229
 #, c-format
 msgid "%.1f TB"
-msgstr ""
+msgstr "%.1f TAṬ"
 
 #: glib/gutils.c:3234
 #, c-format
 msgid "%.1f PB"
-msgstr ""
+msgstr "%.1f PB"
 
 #: glib/gutils.c:3239
 #, c-format
 msgid "%.1f EB"
-msgstr ""
+msgstr "%.1f EB"
