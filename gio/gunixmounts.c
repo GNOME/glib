@@ -50,7 +50,7 @@
 #include <mntent.h>
 /* the shared object of recent bionic libc's have hasmntopt symbol, but
    some a possible common build environment for android, termux ends
-   up with inssuficient __ANDROID_API__ value for building.
+   up with insufficient __ANDROID_API__ value for building.
 */
 extern char* hasmntopt(const struct mntent* mnt, const char* opt);
 #endif
