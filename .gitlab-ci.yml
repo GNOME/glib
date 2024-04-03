@@ -725,6 +725,16 @@ scan-build:
   image: $FEDORA_IMAGE
   stage: analysis
   needs: []
+  variables:
+    # FIXME: Eventually we want static analysis on the tests, for code quality,
+    # but for the moment it’s just busywork.
+    SCAN_BUILD_FLAGS: >-
+      --exclude gio/tests/
+      --exclude girepository/tests/
+      --exclude glib/tests/
+      --exclude gmodule/tests/
+      --exclude gobject/tests/
+      --exclude gthread/tests/
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -737,7 +747,7 @@ scan-build:
             -Dinstalled_tests=true
             -Dintrospection=enabled
             _scan_build
-    - ninja -C _scan_build scan-build
+    - SCANBUILD="$(pwd)/.gitlab-ci/scan-build.sh" ninja -C _scan_build scan-build
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
