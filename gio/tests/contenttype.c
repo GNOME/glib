@@ -13,6 +13,20 @@
                                   __s1, " == ", __s2); 		\
   } while (0)
 
+static gboolean
+skip_missing_shared_mime_info (void)
+{
+  gchar *path = g_find_program_in_path ("update-mime-database");
+
+  if (path == NULL)
+    {
+      g_test_skip ("shared-mime-info is required to run this test");
+      return TRUE;
+    }
+  g_free (path);
+  return FALSE;
+}
+
 static void
 test_guess (void)
 {
@@ -25,6 +39,9 @@ test_guess (void)
     "Type=Application\n"
     "Name=appinfo-test\n"
     "Exec=./appinfo-test --option\n";
+
+  if (skip_missing_shared_mime_info ())
+    return;
 
 #ifdef G_OS_WIN32
   existing_directory = (gchar *) g_getenv ("SYSTEMROOT");
@@ -150,6 +167,9 @@ test_subtype (void)
   gchar *plain;
   gchar *xml;
 
+  if (skip_missing_shared_mime_info ())
+    return;
+
   plain = g_content_type_from_mime_type ("text/plain");
   xml = g_content_type_from_mime_type ("application/xml");
 
@@ -174,6 +194,9 @@ test_list (void)
   GList *types;
   gchar *plain;
   gchar *xml;
+
+  if (skip_missing_shared_mime_info ())
+    return;
 
 #ifdef __APPLE__
   g_test_skip ("The OSX backend does not implement g_content_types_get_registered()");
@@ -202,6 +225,9 @@ test_executable (void)
 {
   gchar *type;
 
+  if (skip_missing_shared_mime_info ())
+    return;
+
 #ifdef G_OS_WIN32
   type = g_content_type_from_mime_type ("application/vnd.microsoft.portable-executable");
   /* FIXME: the MIME is not in the default `MIME\Database\Content Type` registry.
@@ -228,6 +254,9 @@ test_description (void)
   gchar *type;
   gchar *desc;
 
+  if (skip_missing_shared_mime_info ())
+    return;
+
   type = g_content_type_from_mime_type ("text/plain");
   desc = g_content_type_get_description (type);
   g_assert_nonnull (desc);
@@ -241,6 +270,9 @@ test_icon (void)
 {
   gchar *type;
   GIcon *icon;
+
+  if (skip_missing_shared_mime_info ())
+    return;
 
   type = g_content_type_from_mime_type ("text/plain");
   icon = g_content_type_get_icon (type);
@@ -289,6 +321,9 @@ test_symbolic_icon (void)
 #ifndef G_OS_WIN32
   gchar *type;
   GIcon *icon;
+
+  if (skip_missing_shared_mime_info ())
+    return;
 
   type = g_content_type_from_mime_type ("text/plain");
   icon = g_content_type_get_symbolic_icon (type);
@@ -343,6 +378,9 @@ test_tree (void)
   GFile *file;
   gchar **types;
   gsize i;
+
+  if (skip_missing_shared_mime_info ())
+    return;
 
 #if defined(__APPLE__) || defined(G_OS_WIN32)
   g_test_skip ("The OSX & Windows backends do not implement g_content_type_guess_for_tree()");
@@ -437,8 +475,13 @@ test_guess_svg_from_data (void)
 </svg>\n";
 
   gboolean uncertain = TRUE;
-  gchar *res = g_content_type_guess (NULL, (guchar *)svgfilecontent,
-                                     sizeof (svgfilecontent) - 1, &uncertain);
+  gchar *res;
+
+  if (skip_missing_shared_mime_info ())
+    return;
+
+  res = g_content_type_guess (NULL, (guchar *)svgfilecontent,
+                              sizeof (svgfilecontent) - 1, &uncertain);
 #ifdef __APPLE__
   g_assert_cmpstr (res, ==, "public.svg-image");
 #elif defined(G_OS_WIN32)
