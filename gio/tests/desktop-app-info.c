@@ -125,6 +125,20 @@ create_app_info (const char *name)
   return info;
 }
 
+static gboolean
+skip_missing_update_desktop_database (void)
+{
+  gchar *path = g_find_program_in_path ("update-desktop-database");
+
+  if (path == NULL)
+    {
+      g_test_skip ("update-desktop-database is required to run this test");
+      return TRUE;
+    }
+  g_free (path);
+  return FALSE;
+}
+
 static void
 test_delete (void)
 {
@@ -133,6 +147,9 @@ test_delete (void)
   const char *id;
   char *filename;
   gboolean res;
+
+  if (skip_missing_update_desktop_database ())
+    return;
 
   info = create_app_info ("Blah");
  
@@ -176,6 +193,9 @@ test_default (void)
   GAppInfo *info, *info1, *info2, *info3;
   GList *list;
   GError *error = NULL;  
+
+if (skip_missing_update_desktop_database ())
+    return;
 
   info1 = create_app_info ("Blah1");
   info2 = create_app_info ("Blah2");
@@ -316,6 +336,9 @@ test_default_async (void)
   GList *list;
   GError *error = NULL;
 
+  if (skip_missing_update_desktop_database ())
+    return;
+
   data.loop = g_main_loop_new (NULL, TRUE);
 
   info1 = create_app_info ("Blah1");
@@ -418,6 +441,9 @@ test_fallback (void)
   GError *error = NULL;
   gint old_length;
 
+  if (skip_missing_update_desktop_database ())
+    return;
+
   info1 = create_app_info ("Test1");
   info2 = create_app_info ("Test2");
 
@@ -491,6 +517,9 @@ test_last_used (void)
   GList *applications;
   GAppInfo *info1, *info2, *default_app;
   GError *error = NULL;
+
+  if (skip_missing_update_desktop_database ())
+    return;
 
   info1 = create_app_info ("Test1");
   info2 = create_app_info ("Test2");
@@ -1222,6 +1251,9 @@ test_default_uri_handler (void)
   gchar *file_path = NULL;
   GAppInfo *info;
 
+  if (skip_missing_update_desktop_database ())
+    return;
+
   info = create_app_info_toucher ("Touch Handled", "handled",
                                   "x-scheme-handler/glib-touch",
                                   &file_path);
@@ -1297,6 +1329,9 @@ test_default_uri_handler_async (void)
   GMainLoop *loop;
   gboolean called = FALSE;
   gint64 start_time, touch_time;
+
+  if (skip_missing_update_desktop_database ())
+    return;
 
   loop = g_main_loop_new (NULL, FALSE);
   info = create_app_info_toucher ("Touch Handled", "handled-async",
