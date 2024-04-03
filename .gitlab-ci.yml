@@ -728,6 +728,8 @@ scan-build:
   variables:
     # FIXME: Eventually we want static analysis on the tests, for code quality,
     # but for the moment it’s just busywork.
+    # FIXME: Disable the dead code checkers for now because they create a lot of
+    # noise and don’t indicate high severity problems.
     SCAN_BUILD_FLAGS: >-
       --exclude gio/tests/
       --exclude girepository/tests/
@@ -735,6 +737,7 @@ scan-build:
       --exclude gmodule/tests/
       --exclude gobject/tests/
       --exclude gthread/tests/
+      -disable-checker deadcode.DeadStores
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
