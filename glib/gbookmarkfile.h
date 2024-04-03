@@ -81,7 +81,7 @@ GQuark g_bookmark_file_error_quark (void);
  * pointed by the URI like its MIME type, the application that is registering
  * the bookmark and the icon that should be used to represent the bookmark.
  * The data is stored using the
- * [Desktop Bookmark Specification](http://www.gnome.org/~ebassi/bookmark-spec).
+ * [Desktop Bookmark Specification](https://www.freedesktop.org/wiki/Specifications/desktop-bookmark-spec/).
  *
  * The syntax of the bookmark files is described in detail inside the
  * Desktop Bookmark Specification, here is a quick summary: bookmark
