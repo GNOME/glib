@@ -593,6 +593,19 @@ wait_for_file (const gchar *want_this,
   unlink (or_this);
 }
 
+static gboolean
+skip_missing_dbus_daemon (void)
+{
+  gchar *path = g_find_program_in_path ("dbus-daemon");
+  if (path == NULL)
+    {
+      g_test_skip ("dbus-daemon is required to run this test");
+      return TRUE;
+    }
+  g_free (path);
+  return FALSE;
+}
+
 static void
 test_actions (void)
 {
@@ -605,6 +618,9 @@ test_actions (void)
   gchar *frob_path;
   gchar *tweak_path;
   gchar *twiddle_path;
+
+  if (skip_missing_dbus_daemon ())
+    return;
 
   /* Set up a test session bus to keep D-Bus traffic off the real session bus. */
   bus = g_test_dbus_new (G_TEST_DBUS_NONE);
@@ -1832,6 +1848,9 @@ test_launch_fail_dbus (void)
   GAppLaunchContext *context = NULL;
   GAsyncResult *result = NULL;
   GError *error = NULL;
+
+  if (skip_missing_dbus_daemon ())
+    return;
 
   /* Set up a test session bus to ensure that launching the app happens using
    * D-Bus rather than spawning. */
