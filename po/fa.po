@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-03-01 17:06+0000\n"
-"PO-Revision-Date: 2024-03-07 01:06+0330\n"
+"POT-Creation-Date: 2024-03-27 18:59+0000\n"
+"PO-Revision-Date: 2024-04-05 17:26+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -2610,7 +2610,7 @@ msgstr "شکست در تجزیهٔ مقدار <default>گونهٔ «%s»: "
 
 #: gio/glib-compile-schemas.c:494
 msgid "<choices> cannot be specified for keys tagged as having an enumerated type"
-msgstr ""
+msgstr "<choices> را نمی توان برای کلیدهایی که گونهٔ شمارشی دارند مشخص کرد"
 
 #: gio/glib-compile-schemas.c:503
 msgid "<choices> already specified for this key"
@@ -2619,7 +2619,7 @@ msgstr "<choices> از پیش برای این کلید مشخّص شده"
 #: gio/glib-compile-schemas.c:515
 #, c-format
 msgid "<choices> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<choices> برای کلیدهایی از گونهٔ «%s» مجاز نیست."
 
 #: gio/glib-compile-schemas.c:531
 #, c-format
@@ -2629,7 +2629,7 @@ msgstr "<choice value='%s'/> از پیش داده شده"
 #: gio/glib-compile-schemas.c:546
 #, c-format
 msgid "<choices> must contain at least one <choice>"
-msgstr ""
+msgstr "<choices> باید کمینه یک <choice> داشته باشد"
 
 #: gio/glib-compile-schemas.c:560
 msgid "<aliases> already specified for this key"
@@ -2640,17 +2640,19 @@ msgid ""
 "<aliases> can only be specified for keys with enumerated or flags types or after "
 "<choices>"
 msgstr ""
+"<aliases> را تنها می‌توان برای کلیدهایی با انواع شمارشی یا گونه‌های پرچم‌ یا بعد از "
+"<choices> مشخص کرد."
 
 #: gio/glib-compile-schemas.c:583
 #, c-format
 msgid ""
 "<alias value='%s'/> given when “%s” is already a member of the enumerated type"
-msgstr ""
+msgstr "<alias value='%s'/> داده شده ولی «%s» عضوی از گونهٔ شمارشی است"
 
 #: gio/glib-compile-schemas.c:589
 #, c-format
 msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
-msgstr ""
+msgstr "<alias value='%s'/> داده شده ولی <choice value='%s'/> از پیش داده شده بود"
 
 #: gio/glib-compile-schemas.c:597
 #, c-format
@@ -2660,7 +2662,7 @@ msgstr "<alias value='%s'/> از پیش مشخّص شده"
 #: gio/glib-compile-schemas.c:607
 #, c-format
 msgid "alias target “%s” is not in enumerated type"
-msgstr ""
+msgstr "هدف مستعار \"%s\" در گونهٔ شمارشی نیست"
 
 #: gio/glib-compile-schemas.c:608
 #, c-format
@@ -2670,7 +2672,7 @@ msgstr "مقصد جایگزینی «%s» در <choices> نیست"
 #: gio/glib-compile-schemas.c:623
 #, c-format
 msgid "<aliases> must contain at least one <alias>"
-msgstr ""
+msgstr "<aliases> باید کمینه یک <alias> داشته باشد"
 
 #: gio/glib-compile-schemas.c:797
 msgid "Empty names are not permitted"
@@ -2679,7 +2681,7 @@ msgstr "نام‌های خالی مجاز نیستند"
 #: gio/glib-compile-schemas.c:807
 #, c-format
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
-msgstr ""
+msgstr "نام نامعتبر «%s»: نام‌ها باید با حرفی کوچک آغاز شوند"
 
 #: gio/glib-compile-schemas.c:819
 #, c-format
@@ -2687,21 +2689,23 @@ msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers and "
 "hyphen (“-”) are permitted"
 msgstr ""
+"نام نامعتبر «%s»: نویسه نامعتبر \"%c\"؛ فقط حروف کوچک، اعداد و خط فاصله («-») "
+"مجازند"
 
 #: gio/glib-compile-schemas.c:828
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
-msgstr ""
+msgstr "نام نامعتبر «%s»: دو خط فاصله متوالی («--») مجاز نیست"
 
 #: gio/glib-compile-schemas.c:837
 #, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
-msgstr ""
+msgstr "نام نامعتبر «%s»: آخرین نویسه نباید خط فاصله («-») باشد"
 
 #: gio/glib-compile-schemas.c:845
 #, c-format
 msgid "Invalid name “%s”: maximum length is 1024"
-msgstr ""
+msgstr "نام نامعتبر «%s»: بیشینهٔ درازا ۱۰۲۴ است"
 
 #: gio/glib-compile-schemas.c:917
 #, c-format
@@ -2723,13 +2727,15 @@ msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to "
 "modify value"
 msgstr ""
+"<key name='%s'> روی <key name='%s'> در <schema id='%s'> سایه می‌اندازد. برای "
+"تغییر مقدار از <override> استفاده کنید"
 
 #: gio/glib-compile-schemas.c:983
 #, c-format
 msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute to "
 "<key>"
-msgstr ""
+msgstr "فقط یکی از «type»، «enum» یا «flags» باید به عنوان ویژگی <key> مشخّص شود"
 
 #: gio/glib-compile-schemas.c:1002
 #, c-format
@@ -2743,7 +2749,7 @@ msgstr "رشتهٔ گونهٔ GVariant نامعتبر «%s»"
 
 #: gio/glib-compile-schemas.c:1047
 msgid "<override> given but schema isn’t extending anything"
-msgstr ""
+msgstr "<override> داده شده ولی طرحواره چیزی را گسترش نمی دهد"
 
 #: gio/glib-compile-schemas.c:1060
 #, c-format
@@ -2763,12 +2769,12 @@ msgstr "<schema id='%s'> از پیش مشخّص شده"
 #: gio/glib-compile-schemas.c:1153
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
-msgstr ""
+msgstr "<schema id='%s'> طرحوارهٔ «%s» را که هنوز وجود ندارد کسترش می‌دهد"
 
 #: gio/glib-compile-schemas.c:1169
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
-msgstr ""
+msgstr "<schema id='%s'> سیاهه‌ای از طرحوارهٔ «%s» است که هنوز وجود ندارد"
 
 #: gio/glib-compile-schemas.c:1177
 #, c-format
@@ -2784,6 +2790,7 @@ msgstr "نمی‌تواند طرحواره‌ای را با یک مسیر گست
 #, c-format
 msgid "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
+"<schema id='%s'> سیاهه‌ای است که طرحوارهٔ «%s» را که هنوز وجود ندارد گسترش می‌دهد"
 
 #: gio/glib-compile-schemas.c:1207
 #, c-format
@@ -2791,6 +2798,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
 "does not extend “%s”"
 msgstr ""
+"<schema id='%s' list-of='%s'> ‏<schema id='%s' list-of='%s'> را گسترش داده ولی "
+"«%s» ‏«%s» را گسترش نمی‌دهد"
 
 #: gio/glib-compile-schemas.c:1224
 #, c-format
@@ -2808,6 +2817,8 @@ msgid ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/desktop/” "
 "or “/system/” are deprecated."
 msgstr ""
+"هشدار: طرحوارهٔ «%s» مسیر «%s» دارد.  مسیرهای آغاز شده با /apps/،‏ /desktop/ یا /"
+"system/ منسوخ شده‌اند."
 
 #: gio/glib-compile-schemas.c:1270
 #, c-format
@@ -2836,7 +2847,7 @@ msgstr "متن ممکن است درون «%s» نمایان نشود"
 #: gio/glib-compile-schemas.c:1694
 #, c-format
 msgid "Warning: undefined reference to <schema id='%s'/>"
-msgstr ""
+msgstr "هشدار: ارجاع تعریف نشده به <schema id='%s'/>"
 
 #. Translators: Do not translate "--strict".
 #: gio/glib-compile-schemas.c:1833 gio/glib-compile-schemas.c:1912
@@ -2857,6 +2868,8 @@ msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
 "override for this key."
 msgstr ""
+"کلید «%s» در طرحوارهٔ «%s» آنگونه که در پروندهٔ پوششی «%s» مشخّص شده وجود ندارد. "
+"چشم‌پوشی کردن از پوشش‌ها برای این کلید."
 
 #: gio/glib-compile-schemas.c:1971
 #, c-format
@@ -2864,20 +2877,26 @@ msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --strict "
 "was specified; exiting."
 msgstr ""
+"کلید «%s» در طرحوارهٔ «%s» آنگونه که در پروندهٔ پوششی «%s» مشخّص شده وجود نداشته و "
+"‪--strict‬ داده شده. خروج."
 
 #: gio/glib-compile-schemas.c:1993
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localized key “%s” in schema "
-"“%s” (override file “%s”); ignoring override for this key."
+"Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
+"(override file “%s”); ignoring override for this key."
 msgstr ""
+"نمی‌توان پوشش‌های به ازای میزکار را برای ملید بومی شدهٔ «%s» در طرحوارهٔ «%s» فراهم "
+"کرد (پوشش پروندهٔ «%s»). چشم‌پوشی کردن از پوشش برای این کلید."
 
 #: gio/glib-compile-schemas.c:2002
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localized key “%s” in schema "
-"“%s” (override file “%s”) and --strict was specified; exiting."
+"Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
+"(override file “%s”) and --strict was specified; exiting."
 msgstr ""
+"نمی‌توان پوشش‌های به ازای میزکار را برای ملید بومی شدهٔ «%s» در طرحوارهٔ «%s» فراهم "
+"کرد (پوشش پروندهٔ «%s») و ‪--strict‬ داده شده. خروج."
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
@@ -2885,6 +2904,8 @@ msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: %s. "
 "Ignoring override for this key."
 msgstr ""
+"خطای تجزیهٔ کلید «%s» در طرحوارهٔ «%s» که در پروندهٔ پوشش «%s» مشخّص شده: %s. "
+"چشم‌پوشی کردن از پوشش برای این کلید."
 
 #: gio/glib-compile-schemas.c:2038
 #, c-format
@@ -2892,6 +2913,8 @@ msgid ""
 "Error parsing key “%s” in schema “%s” as specified in override file “%s”: %s. --"
 "strict was specified; exiting."
 msgstr ""
+"خطای تجزیهٔ کلید «%s» در طرحوارهٔ «%s» که در پروندهٔ پوشش «%s» مشخّص شده: %s. ‏strict "
+"داده شده. خروچ."
 
 #: gio/glib-compile-schemas.c:2065
 #, c-format
@@ -2899,6 +2922,8 @@ msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the range "
 "given in the schema; ignoring override for this key."
 msgstr ""
+"پوشش برای کلید «%s»‌ در طرحوارهٔ «%s» در پروندهٔ پوشش «%s» خارج از بازهٔ داده شده در "
+"طرحواره است. چشم‌پوشی کردن از پوشش برای این کلید."
 
 #: gio/glib-compile-schemas.c:2075
 #, c-format
@@ -2906,6 +2931,8 @@ msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is outside the range "
 "given in the schema and --strict was specified; exiting."
 msgstr ""
+"پوشش برای کلید «%s»‌ در طرحوارهٔ «%s» در پروندهٔ پوشش «%s» خارج از بازهٔ داده شده در "
+"طرحواره بوده و ‪--strict‬ داده شده. خروج."
 
 #: gio/glib-compile-schemas.c:2101
 #, c-format
@@ -2913,6 +2940,8 @@ msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the list of "
 "valid choices; ignoring override for this key."
 msgstr ""
+"پوشش برای کلید «%s»‌ در طرحوارهٔ «%s» در پروندهٔ پوشش «%s» در سیاههٔ گزینه‌های معتبر "
+"نیست. چشم‌پوشی کردن از پوشش برای این کلید."
 
 #: gio/glib-compile-schemas.c:2111
 #, c-format
@@ -2920,6 +2949,8 @@ msgid ""
 "Override for key “%s” in schema “%s” in override file “%s” is not in the list of "
 "valid choices and --strict was specified; exiting."
 msgstr ""
+"پوشش برای کلید «%s»‌ در طرحوارهٔ «%s» در پروندهٔ پوشش «%s» در سیاههٔ گزینه‌های معتبر "
+"نبوده و ‪--strict‬ داده شده. خروج."
 
 #: gio/glib-compile-schemas.c:2173
 msgid "Where to store the gschemas.compiled file"
@@ -3169,32 +3200,32 @@ msgstr "خطا در تنظیم پیوند نمادین: پرونده یک پیو
 #: gio/glocalfileinfo.c:2603
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
-msgstr ""
+msgstr "نانوثانیه‌های اضافی %Id برای مهر برچسب زمانی %Illd یونیکس منفی است"
 
 #: gio/glocalfileinfo.c:2612
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
-msgstr ""
+msgstr "نانوثانیه‌های اضافی %Id برای مهر برچسب زمانی %Illd یونیکس به ۱ ثانیه رسیده"
 
 #: gio/glocalfileinfo.c:2622
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
-msgstr ""
+msgstr "برچسب زمانی %Illd یونیکس در ۶۴ بیت نمی‌گنجد"
 
 #: gio/glocalfileinfo.c:2633
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
-msgstr ""
+msgstr "برچسب زمانی %Illd یونیکس خارج از بازهٔ پشتیبانی شده به دست ویندوز است"
 
 #: gio/glocalfileinfo.c:2765
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
-msgstr ""
+msgstr "نام پروندهٔ «%s» نمی‌تواند به UTF-16 تبدیل شود"
 
 #: gio/glocalfileinfo.c:2784
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
-msgstr ""
+msgstr "پروندهٔ «%s» نمی‌ةواند گشوده شود:‌خطای ویندوز %Ilu"
 
 #: gio/glocalfileinfo.c:2797
 #, c-format
@@ -3243,7 +3274,7 @@ msgstr "خطا در هنگام جستجو در پرونده: %s"
 
 #: gio/glocalfilemonitor.c:882
 msgid "Unable to find default local file monitor type"
-msgstr ""
+msgstr "ناتوان در یافتن گونهٔ واپایش پروندهٔ محلّی"
 
 #: gio/glocalfileoutputstream.c:222 gio/glocalfileoutputstream.c:300
 #: gio/glocalfileoutputstream.c:336 gio/glocalfileoutputstream.c:824
@@ -3304,7 +3335,7 @@ msgstr "درخواست جستجو نامعتبر"
 
 #: gio/gmemoryinputstream.c:507
 msgid "Cannot truncate GMemoryInputStream"
-msgstr ""
+msgstr "نمی‌توان GMemoryInputStream را کوتاه کرد"
 
 #: gio/gmemoryoutputstream.c:557
 msgid "Memory output stream not resizable"
@@ -3318,15 +3349,15 @@ msgstr "شکست در تغییر اندازهٔ جریان خروجی حافظه
 msgid ""
 "Amount of memory required to process the write is larger than available address "
 "space"
-msgstr ""
+msgstr "مقدار حافظهٔ لازم برای پردازش نوشتن بیش از فضای نشانی موجود است"
 
 #: gio/gmemoryoutputstream.c:761
 msgid "Requested seek before the beginning of the stream"
-msgstr ""
+msgstr "جویش درخواستی پیش از آغاز جریان"
 
 #: gio/gmemoryoutputstream.c:776
 msgid "Requested seek beyond the end of the stream"
-msgstr ""
+msgstr "جویش درخواستی پس از پایان جریان"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -3368,14 +3399,14 @@ msgstr "سوار کردن remount را پیاده نساخته"
 #. * don't implement content type guessing.
 #: gio/gmount.c:809
 msgid "mount doesn’t implement content type guessing"
-msgstr ""
+msgstr "شی سوار شده حدس گونهٔ محتوا را پیاده نمی‌کند"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: gio/gmount.c:896
 msgid "mount doesn’t implement synchronous content type guessing"
-msgstr ""
+msgstr "شی سوار شده حدس همزمان گونهٔ محتوا را پیاده نمی‌کند"
 
 #: gio/gnetworkaddress.c:424
 #, c-format
@@ -3486,6 +3517,9 @@ msgid ""
 "If SECTION is given, only list resources in this section\n"
 "If PATH is given, only list matching resources"
 msgstr ""
+"سیاهه کردن منابع\n"
+"اگر SECTION داده شد تنها سیاهه کردن منابع در این بخش\n"
+"اگر PATH داده شد تنها سیاهه کردن منابع مطابق"
 
 #: gio/gresource-tool.c:512 gio/gresource-tool.c:522
 msgid "FILE [PATH]"
@@ -3502,6 +3536,10 @@ msgid ""
 "If PATH is given, only list matching resources\n"
 "Details include the section, size and compression"
 msgstr ""
+"سیاهه کردن منابع با جزییات\n"
+"اگر SECTION داده شد تنها سیاهه کردن منابع در این بخش\n"
+"اگر PATH داده شد تنها سیاهه کردن منابع مطابق\n"
+"جزییات شامل بخش، اندازه و فشرده‌سازی"
 
 #: gio/gresource-tool.c:528
 msgid "Extract a resource file to stdout"
@@ -3526,6 +3564,18 @@ msgid ""
 "Use “gresource help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
+"استفاده:\n"
+" gresource [--section SECTION] COMMAND [ARGS…]\n"
+"\n"
+"فرمان‌ها:\n"
+"  help                      نمایش این اطّلاعات\n"
+"  sections                  سیاهه کردن بخش‌های منبع\n"
+"  list                      سیاهه کردن منابع\n"
+"  details                   سیاهه کردن منابع با جزییات\n"
+"  extract                   استخراج منبع\n"
+"\n"
+"برای گرفتن راهنمای با جزییات از ‪gresource help COMMAND‬ استفاده کنید.\n"
+"\n"
 
 #: gio/gresource-tool.c:557
 #, c-format
@@ -5709,6 +5759,7 @@ msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, or "
 "by a plain number"
 msgstr ""
+"پس از ‪\\g‬ نام یا عددی با پرانتز، گیومه یا نقل قول یا یک عدد ساده وجود ندارد"
 
 #: glib/gregex.c:704
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
@@ -5740,7 +5791,7 @@ msgstr "باید ‪\\‬c‪‬ با نویسه‌ای اسکی همراه شو
 
 #: glib/gregex.c:732
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
-msgstr ""
+msgstr "پس از ‪\\k‬ نامی با پرانتز، گیومه یا نقل قول وجود ندارد"
 
 #: glib/gregex.c:736
 msgid "\\N is not supported in a class"
@@ -5966,7 +6017,7 @@ msgstr "نام برنامهٔ نامعتبر: %s"
 #: glib/gspawn-win32.c:600 glib/gspawn-win32.c:940
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
-msgstr "رشتهٔ نامعتبر در بردار آرگومان درآیهٔ %Id: %s"
+msgstr "رشتهٔ نامعتبر در بردار آرگومان در %Id: %s"
 
 #: glib/gspawn-win32.c:611 glib/gspawn-win32.c:956
 #, c-format
