@@ -567,6 +567,17 @@ g_closure_ref (GClosure *closure)
   return closure;
 }
 
+static void
+closure_invalidate_internal (GClosure *closure)
+{
+  gboolean was_invalid;
+
+  SWAP (closure, is_invalid, TRUE, &was_invalid);
+  /* invalidate only once */
+  if (!was_invalid)
+    closure_invoke_notifiers (closure, INOTIFY);
+}
+
 /**
  * g_closure_invalidate:
  * @closure: #GClosure to invalidate
@@ -594,12 +605,8 @@ g_closure_invalidate (GClosure *closure)
 
   if (!closure->is_invalid)
     {
-      gboolean was_invalid;
       g_closure_ref (closure);           /* preserve floating flag */
-      SWAP (closure, is_invalid, TRUE, &was_invalid);
-      /* invalidate only once */
-      if (!was_invalid)
-        closure_invoke_notifiers (closure, INOTIFY);
+      closure_invalidate_internal (closure);
       g_closure_unref (closure);
     }
 }
@@ -622,8 +629,9 @@ g_closure_unref (GClosure *closure)
   g_return_if_fail (closure != NULL);
   g_return_if_fail (closure->ref_count > 0);
 
-  if (closure->ref_count == 1)	/* last unref, invalidate first */
-    g_closure_invalidate (closure);
+  /* last unref, invalidate first */
+  if (closure->ref_count == 1 && !closure->is_invalid)
+    closure_invalidate_internal (closure);
 
   DEC_ASSIGN (closure, ref_count, &new_ref_count);
 
