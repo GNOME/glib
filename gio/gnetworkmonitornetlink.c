@@ -310,7 +310,6 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
   struct sockaddr_nl source_sockaddr;
   gsize attrlen;
   guint8 *dest, *gateway, *oif;
-  gboolean retval = TRUE;
 
   iv.buffer = NULL;
   iv.size = 0;
@@ -319,26 +318,17 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
   len = g_socket_receive_message (nl->priv->sock, NULL, &iv, 1,
                                   NULL, NULL, &flags, NULL, &local_error);
   if (len < 0)
-    {
-      retval = FALSE;
-      goto done;
-    }
+    goto done;
 
   iv.buffer = g_malloc (len);
   iv.size = len;
   len = g_socket_receive_message (nl->priv->sock, &addr, &iv, 1,
                                   NULL, NULL, NULL, NULL, &local_error);
   if (len < 0)
-    {
-      retval = FALSE;
-      goto done;
-    }
+    goto done;
 
   if (!g_socket_address_to_native (addr, &source_sockaddr, sizeof (source_sockaddr), &local_error))
-    {
-      retval = FALSE;
-      goto done;
-    }
+    goto done;
 
   /* If the sender port id is 0 (not fakeable) then the message is from the kernel */
   if (source_sockaddr.nl_pid != 0)
@@ -353,7 +343,6 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
                                G_IO_ERROR,
                                G_IO_ERROR_PARTIAL_INPUT,
                                "netlink message was truncated; shouldn't happen...");
-          retval = FALSE;
           goto done;
         }
 
@@ -419,7 +408,6 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
                          "netlink error: %s",
                          g_strerror (-e->error));
           }
-          retval = FALSE;
           goto done;
 
         default:
@@ -428,7 +416,6 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
                        G_IO_ERROR_INVALID_DATA,
                        "unexpected netlink message %d",
                        msg->nlmsg_type);
-          retval = FALSE;
           goto done;
         }
     }
@@ -437,13 +424,18 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
   g_free (iv.buffer);
   g_clear_object (&addr);
 
-  if (!retval && nl->priv->dump_networks)
+  if (local_error != NULL && nl->priv->dump_networks)
     finish_dump (nl);
 
-  if (local_error)
-    g_propagate_prefixed_error (error, local_error, "Error on netlink socket: ");
-
-  return retval;
+  if (local_error != NULL)
+    {
+      g_propagate_prefixed_error (error, local_error, "Error on netlink socket: ");
+      return FALSE;
+    }
+  else
+    {
+      return TRUE;
+    }
 }
 
 static void
