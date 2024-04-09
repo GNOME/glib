@@ -285,6 +285,7 @@ g_srv_target_list_sort (GList *targets)
           val = g_random_int_range (0, sum + 1);
           for (t = targets; ; t = t->next)
             {
+              g_assert (t != NULL && t->data != NULL);
               weight = ((GSrvTarget *)t->data)->weight;
               if (weight >= val)
                 break;
