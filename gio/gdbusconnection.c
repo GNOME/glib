@@ -5364,6 +5364,9 @@ g_dbus_connection_register_object (GDBusConnection             *connection,
  out:
   CONNECTION_UNLOCK (connection);
 
+  if (ret == 0 && user_data_free_func != NULL)
+    user_data_free_func (user_data);
+
   return ret;
 }
 
@@ -7019,6 +7022,9 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
 
  out:
   CONNECTION_UNLOCK (connection);
+
+  if (ret == 0 && user_data_free_func != NULL)
+    user_data_free_func (user_data);
 
   return ret;
 }
