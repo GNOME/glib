@@ -2687,7 +2687,7 @@ prepend_terminal_to_vector (int          *argc,
   size_t term_argc;
   char *found_terminal;
   char **the_argv;
-  const char *term_arg;
+  const char *term_arg = NULL;
   static const struct {
     const char *exec;
     const char *exec_arg;
