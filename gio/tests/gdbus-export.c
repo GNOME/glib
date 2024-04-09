@@ -1003,12 +1003,14 @@ test_object_registration (void)
   guint non_subtree_object_path_bar_reg_id;
   guint dyna_subtree_registration_id;
   guint num_successful_registrations;
+  guint num_failed_registrations;
 
   data.num_unregistered_calls = 0;
   data.num_unregistered_subtree_calls = 0;
   data.num_subtree_nodes = 0;
 
   num_successful_registrations = 0;
+  num_failed_registrations = 0;
 
   error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
@@ -1100,7 +1102,8 @@ test_object_registration (void)
   intern2_bar_reg_id = registration_id;
   num_successful_registrations++;
 
-  /* register at the same path/interface - this should fail */
+  /* register at the same path/interface - this should fail and result in an
+   * immediate unregistration (so the user_data isn’t leaked) */
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/interns/intern2",
                                                        (GDBusInterfaceInfo *) &bar_interface_info,
@@ -1113,6 +1116,8 @@ test_object_registration (void)
   g_error_free (error);
   error = NULL;
   g_assert (registration_id == 0);
+  g_assert_cmpint (data.num_unregistered_calls, ==, 1);
+  num_failed_registrations++;
 
   /* register at different interface - shouldn't fail */
   registration_id = g_dbus_connection_register_object (c,
@@ -1130,7 +1135,7 @@ test_object_registration (void)
   /* unregister it via the id */
   g_assert (g_dbus_connection_unregister_object (c, registration_id));
   g_main_context_iteration (NULL, FALSE);
-  g_assert_cmpint (data.num_unregistered_calls, ==, 1);
+  g_assert_cmpint (data.num_unregistered_calls, ==, 2);
   intern2_foo_reg_id = 0;
 
   /* register it back */
@@ -1181,12 +1186,12 @@ test_object_registration (void)
   g_error_free (error);
   error = NULL;
   g_assert (registration_id == 0);
+  g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 1);
 
   /* unregister it, then register it again */
-  g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 0);
   g_assert (g_dbus_connection_unregister_subtree (c, subtree_registration_id));
   g_main_context_iteration (NULL, FALSE);
-  g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 1);
+  g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 2);
   subtree_registration_id = g_dbus_connection_register_subtree (c,
                                                                 "/foo/boss/executives",
                                                                 &subtree_vtable,
@@ -1382,10 +1387,10 @@ test_object_registration (void)
 #endif
 
   /* check that unregistering the subtree handler works */
-  g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 1);
+  g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 2);
   g_assert (g_dbus_connection_unregister_subtree (c, subtree_registration_id));
   g_main_context_iteration (NULL, FALSE);
-  g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 2);
+  g_assert_cmpint (data.num_unregistered_subtree_calls, ==, 3);
   nodes = get_nodes_at (c, "/foo/boss/executives");
   g_assert (nodes != NULL);
   g_assert_cmpint (g_strv_length (nodes), ==, 1);
@@ -1405,7 +1410,7 @@ test_object_registration (void)
   g_assert (g_dbus_connection_unregister_object (c, non_subtree_object_path_foo_reg_id));
 
   g_main_context_iteration (NULL, FALSE);
-  g_assert_cmpint (data.num_unregistered_calls, ==, num_successful_registrations);
+  g_assert_cmpint (data.num_unregistered_calls, ==, num_successful_registrations + num_failed_registrations);
 
   /* check that we no longer export any objects - TODO: it looks like there's a bug in
    * libdbus-1 here: libdbus still reports the '/foo' object; so disable the test for now
