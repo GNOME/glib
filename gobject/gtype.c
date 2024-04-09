@@ -1197,12 +1197,12 @@ type_data_make_W (TypeNode              *node,
       if (value_table->lcopy_format)
 	strcat  (p, value_table->lcopy_format);
     }
+
   node->data->common.value_table = vtable;
+  g_assert (node->data->common.value_table != NULL); /* paranoid */
   node->mutatable_check_cache = (node->data->common.value_table->value_init != NULL &&
 				 !((G_TYPE_FLAG_VALUE_ABSTRACT | G_TYPE_FLAG_ABSTRACT) &
 				   GPOINTER_TO_UINT (type_get_qdata_L (node, static_quark_type_flags))));
-  
-  g_assert (node->data->common.value_table != NULL); /* paranoid */
 
   g_atomic_int_set ((int *) &node->ref_count, 1);
 }
