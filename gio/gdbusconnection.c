@@ -5668,7 +5668,7 @@ g_dbus_connection_register_object_with_closures (GDBusConnection     *connection
                                             object_path,
                                             interface_info,
                                             &vtable,
-                                            data,
+                                            g_steal_pointer (&data),
                                             register_object_free_func,
                                             error);
 }
