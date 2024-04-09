@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-03-19 13:17+0000\n"
-"PO-Revision-Date: 2024-03-25 16:56+0300\n"
+"POT-Creation-Date: 2024-04-05 13:57+0000\n"
+"PO-Revision-Date: 2024-04-09 02:42+0300\n"
 "Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -284,7 +284,7 @@ msgstr "%s uygulaması için masaüstü dosyası bulunamıyor\n"
 #: gio/gapplication-tool.c:473
 #, c-format
 msgid ""
-"unrecognised command: %s\n"
+"unrecognized command: %s\n"
 "\n"
 msgstr ""
 "bilinmeyen komut: %s\n"
@@ -615,10 +615,10 @@ msgstr "“%s” dizini oluşturulurken hata: %s"
 #: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1105 gio/gfile.c:1343
 #: gio/gfile.c:1481 gio/gfile.c:1718 gio/gfile.c:1773 gio/gfile.c:1831
 #: gio/gfile.c:1915 gio/gfile.c:1972 gio/gfile.c:2036 gio/gfile.c:2091
-#: gio/gfile.c:3969 gio/gfile.c:4108 gio/gfile.c:4515 gio/gfile.c:4980
-#: gio/gfile.c:5392 gio/gfile.c:5477 gio/gfile.c:5567 gio/gfile.c:5664
-#: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9004 gio/gfile.c:9094
-#: gio/gfile.c:9178 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:4086 gio/gfile.c:4261 gio/gfile.c:4668 gio/gfile.c:5133
+#: gio/gfile.c:5545 gio/gfile.c:5630 gio/gfile.c:5720 gio/gfile.c:5817
+#: gio/gfile.c:5904 gio/gfile.c:6003 gio/gfile.c:9157 gio/gfile.c:9247
+#: gio/gfile.c:9331 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "İşlem desteklenmiyor"
 
@@ -1498,33 +1498,33 @@ msgstr "%s özniteliği alınamıyor"
 msgid "Can’t copy special file"
 msgstr "Özel dosya kopyalanamıyor"
 
-#: gio/gfile.c:4332
+#: gio/gfile.c:4485
 msgid "Invalid symlink value given"
 msgstr "Geçersiz simgesel bağ değeri verildi"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2409
+#: gio/gfile.c:4495 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Simgesel bağlar desteklenmiyor"
 
-#: gio/gfile.c:4623
+#: gio/gfile.c:4776
 msgid "Trash not supported"
 msgstr "Çöp desteklenmiyor"
 
-#: gio/gfile.c:4733
+#: gio/gfile.c:4886
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Dosya adları “%c” içeremez"
 
-#: gio/gfile.c:7159 gio/gfile.c:7285
+#: gio/gfile.c:7312 gio/gfile.c:7438
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "“%s” şablonu için geçici dizin oluşturulamadı: %s"
 
-#: gio/gfile.c:7603 gio/gvolume.c:362
+#: gio/gfile.c:7756 gio/gvolume.c:362
 msgid "volume doesn’t implement mount"
 msgstr "bölüm, bağlamayı yerine getirmiyor"
 
-#: gio/gfile.c:7717 gio/gfile.c:7794
+#: gio/gfile.c:7870 gio/gfile.c:7947
 msgid "No application is registered as handling this file"
 msgstr "Bu dosyayı işleme amacıyla kayıtlı uygulama yok"
 
@@ -6161,21 +6161,21 @@ msgstr ""
 "Alt süreçten bilgi okurken g_io_channel_win32_poll() işleminde beklenmeyen "
 "hata"
 
-#: glib/gstrfuncs.c:3339 glib/gstrfuncs.c:3441
+#: glib/gstrfuncs.c:3351 glib/gstrfuncs.c:3453
 msgid "Empty string is not a number"
 msgstr "Boş dizge bir sayı değildir"
 
-#: glib/gstrfuncs.c:3363
+#: glib/gstrfuncs.c:3375
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "“%s” işaretli bir sayı değil"
 
-#: glib/gstrfuncs.c:3373 glib/gstrfuncs.c:3477
+#: glib/gstrfuncs.c:3385 glib/gstrfuncs.c:3489
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "“%s” sayısı sınırların dışındadır [%s, %s]"
 
-#: glib/gstrfuncs.c:3467
+#: glib/gstrfuncs.c:3479
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "“%s” işaretsiz bir sayı değil"
