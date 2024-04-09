@@ -339,7 +339,7 @@ gi_function_invoker_new_for_address (void               *addr,
 
   return ffi_prep_cif (&(invoker->cif), FFI_DEFAULT_ABI, n_args,
                        gi_callable_info_get_ffi_return_type (info),
-                       atypes) == FFI_OK;
+                       g_steal_pointer (&atypes)) == FFI_OK;
 }
 
 /**
@@ -409,6 +409,11 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
   status = ffi_prep_cif (cif, FFI_DEFAULT_ABI, n_args,
                          gi_callable_info_get_ffi_return_type (callable_info),
                          atypes);
+
+  /* Explicitly store atypes to satisfy static analysers, which can’t see inside
+   * ffi_prep_cif(), and hence assume that it’s leaked. */
+  cif->arg_types = g_steal_pointer (&atypes);
+
   if (status != FFI_OK)
     {
       g_warning ("ffi_prep_cif failed: %d", status);
