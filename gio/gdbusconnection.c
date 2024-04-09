@@ -1897,6 +1897,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
 
   if (out_serial == NULL)
     out_serial = &serial;
+  *out_serial = 0;
 
   if (timeout_msec == -1)
     timeout_msec = 25 * 1000;
