@@ -245,10 +245,15 @@ cache_magic_compare_to_data (XdgMimeCache *cache,
 			     size_t        len, 
 			     int          *prio)
 {
-  xdg_uint32_t priority = GET_UINT32 (cache->buffer, offset);
-  xdg_uint32_t mimetype_offset = GET_UINT32 (cache->buffer, offset + 4);
-  xdg_uint32_t n_matchlets = GET_UINT32 (cache->buffer, offset + 8);
-  xdg_uint32_t matchlet_offset = GET_UINT32 (cache->buffer, offset + 12);
+  xdg_uint32_t priority, mimetype_offset, n_matchlets, matchlet_offset;
+
+  assert (cache->buffer != NULL);
+
+  priority = GET_UINT32 (cache->buffer, offset);
+  mimetype_offset = GET_UINT32 (cache->buffer, offset + 4);
+  n_matchlets = GET_UINT32 (cache->buffer, offset + 8);
+  matchlet_offset = GET_UINT32 (cache->buffer, offset + 12);
+
   if (OUT_OF_BOUNDS (matchlet_offset, n_matchlets, 32, cache->size))
     return NULL;
 
@@ -279,6 +284,8 @@ cache_magic_lookup_data (XdgMimeCache *cache,
   xdg_uint32_t offset;
 
   xdg_uint32_t j;
+
+  assert (cache->buffer != NULL);
 
   *prio = 0;
 
