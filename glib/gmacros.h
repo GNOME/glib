@@ -39,6 +39,9 @@
  */
 #include <stddef.h>
 
+/* We include stdbool.h to get the system's definition of true and false */
+#include <stdbool.h>
+
 /*
  * Note: Clang (but not clang-cl) defines __GNUC__ and __GNUC_MINOR__.
  * Both Clang 11.1 on current Arch Linux and Apple's Clang 12.0 define
@@ -922,11 +925,11 @@
 #endif
 
 #ifndef	FALSE
-#define	FALSE	(0)
+#define	FALSE	false
 #endif
 
 #ifndef	TRUE
-#define	TRUE	(!FALSE)
+#define	TRUE	true
 #endif
 
 #undef	MAX
