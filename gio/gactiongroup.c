@@ -282,7 +282,6 @@ g_action_group_default_init (GActionGroupInterface *iface)
                   G_TYPE_NONE, 1,
                   G_TYPE_STRING);
 
-
   /**
    * GActionGroup::action-enabled-changed:
    * @action_group: the [type@Gio.ActionGroup] that changed
