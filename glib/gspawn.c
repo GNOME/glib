@@ -1812,6 +1812,8 @@ do_posix_spawn (const gchar * const *argv,
 
   duped_source_fds = g_new (gint, n_fds);
   for (i = 0; i < n_fds; i++)
+    duped_source_fds[i] = -1;  /* initialise in case dupfd_cloexec() fails below */
+  for (i = 0; i < n_fds; i++)
     {
       duped_source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
       if (duped_source_fds[i] < 0)
