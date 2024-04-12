@@ -4639,7 +4639,9 @@ g_variant_format_string_scan_type (const gchar  *string,
     }
   new[i++] = '\0';
 
-  return (GVariantType *) G_VARIANT_TYPE (new);
+  g_assert (g_variant_type_string_is_valid (new));
+
+  return (GVariantType *) new;
 }
 
 static gboolean
