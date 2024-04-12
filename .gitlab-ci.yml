@@ -748,6 +748,7 @@ scan-build:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
+            -Dglib_debug=enabled
             -Dsystemtap=true
             -Ddtrace=true
             -Dinstalled_tests=true
