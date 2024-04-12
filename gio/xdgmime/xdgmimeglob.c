@@ -98,7 +98,7 @@ _xdg_glob_list_free (XdgGlobList *glob_list)
 
 static XdgGlobList *
 _xdg_glob_list_append (XdgGlobList *glob_list,
-		       void        *data,
+		       const char  *data,
 		       const char  *mime_type,
 		       int          weight,
 		       int          case_sensitive)
@@ -117,8 +117,8 @@ _xdg_glob_list_append (XdgGlobList *glob_list,
     }
 
   new_element = _xdg_glob_list_new ();
-  new_element->data = data;
-  new_element->mime_type = mime_type;
+  new_element->data = strdup (data);
+  new_element->mime_type = strdup (mime_type);
   new_element->weight = weight;
   new_element->case_sensitive = case_sensitive;
   if (glob_list == NULL)
@@ -576,13 +576,13 @@ _xdg_glob_hash_append_glob (XdgGlobHash *glob_hash,
   switch (type)
     {
     case XDG_GLOB_LITERAL:
-      glob_hash->literal_list = _xdg_glob_list_append (glob_hash->literal_list, strdup (glob), strdup (mime_type), weight, case_sensitive);
+      glob_hash->literal_list = _xdg_glob_list_append (glob_hash->literal_list, glob, mime_type, weight, case_sensitive);
       break;
     case XDG_GLOB_SIMPLE:
       glob_hash->simple_node = _xdg_glob_hash_insert_text (glob_hash->simple_node, glob + 1, mime_type, weight, case_sensitive);
       break;
     case XDG_GLOB_FULL:
-      glob_hash->full_list = _xdg_glob_list_append (glob_hash->full_list, strdup (glob), strdup (mime_type), weight, case_sensitive);
+      glob_hash->full_list = _xdg_glob_list_append (glob_hash->full_list, glob, mime_type, weight, case_sensitive);
       break;
     }
 }
