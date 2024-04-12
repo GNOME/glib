@@ -344,8 +344,8 @@ g_action_group_default_init (GActionGroupInterface *iface)
  * The caller is responsible for freeing the list with [func@GLib.strfreev] when
  * it is no longer required.
  *
- * Returns: (transfer full): a `NULL`-terminated array of the names of the
- * actions in the group
+ * Returns: (transfer full) (array zero-terminated=1): a `NULL`-terminated array
+ *   of the names of the actions in the group
  *
  * Since: 2.28
  **/
