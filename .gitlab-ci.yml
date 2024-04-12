@@ -741,6 +741,7 @@ scan-build:
       --exclude glib/libcharset/
       --exclude gio/xdgmime/
       -disable-checker deadcode.DeadStores
+      --status-bugs
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
