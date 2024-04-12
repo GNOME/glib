@@ -1018,7 +1018,7 @@ param_value_array_validate (GParamSpec *pspec,
   guint changed = 0;
 
   if (!value->data[0].v_pointer && aspec->fixed_n_elements)
-    value->data[0].v_pointer = g_value_array_new (aspec->fixed_n_elements);
+    value_array = value->data[0].v_pointer = g_value_array_new (aspec->fixed_n_elements);
 
   if (value->data[0].v_pointer)
     {
