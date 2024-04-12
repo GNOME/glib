@@ -417,7 +417,7 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
   if (status != FFI_OK)
     {
       g_warning ("ffi_prep_cif failed: %d", status);
-      ffi_closure_free (closure);
+      gi_callable_info_destroy_closure (callable_info, &closure->ffi_closure);
       return NULL;
     }
 
@@ -425,7 +425,7 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
   if (status != FFI_OK)
     {
       g_warning ("ffi_prep_closure failed: %d", status);
-      ffi_closure_free (closure);
+      gi_callable_info_destroy_closure (callable_info, &closure->ffi_closure);
       return NULL;
     }
 
