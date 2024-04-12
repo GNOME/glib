@@ -48,7 +48,7 @@
  * set the state by calling [method@Gio.ActionGroup.change_action_state].
  *
  * As typical example, consider a text editing application which has an
- * option to change the current font to 'bold'. A good way to represent
+ * option to change the current font to ‘bold’. A good way to represent
  * this would be a stateful action, with a boolean state. Activating the
  * action would toggle the state.
  *
@@ -56,13 +56,13 @@
  * method calls, except [method@Gio.ActionGroup.list_actions] take the name of
  * an action as an argument.
  *
- * The `GActionGroup` API is meant to be the 'public' API to the action
- * group. The calls here are exactly the interaction that 'external
- * forces' (eg: UI, incoming D-Bus messages, etc.) are supposed to have
- * with actions. 'Internal' APIs (ie: ones meant only to be accessed by
+ * The `GActionGroup` API is meant to be the ‘public’ API to the action
+ * group. The calls here are exactly the interaction that ‘external
+ * forces’ (eg: UI, incoming D-Bus messages, etc.) are supposed to have
+ * with actions. ‘Internal’ APIs (ie: ones meant only to be accessed by
  * the action group implementation) are found on subclasses. This is
- * why you will find - for example - [method@Gio.ActionGroup.get_action_enabled]
- * but not an equivalent set() call.
+ * why you will find – for example – [method@Gio.ActionGroup.get_action_enabled]
+ * but not an equivalent `set_action_enabled()` method.
  *
  * Signals are emitted on the action group in response to state changes
  * on individual actions.
@@ -70,7 +70,7 @@
  * Implementations of `GActionGroup` should provide implementations for
  * the virtual functions [method@Gio.ActionGroup.list_actions] and
  * [method@Gio.ActionGroup.query_action]. The other virtual functions should
- * not be implemented - their "wrappers" are actually implemented with
+ * not be implemented — their ‘wrappers’ are actually implemented with
  * calls to [method@Gio.ActionGroup.query_action].
  */
 
@@ -200,8 +200,8 @@ g_action_group_real_query_action (GActionGroup        *action_group,
                  iface->get_action_state_hint == g_action_group_real_get_action_state_hint ||
                  iface->get_action_state == g_action_group_real_get_action_state)
     {
-      g_critical ("Class '%s' implements GActionGroup interface without overriding "
-                  "query_action() method -- bailing out to avoid infinite recursion.",
+      g_critical ("Class ‘%s’ implements GActionGroup interface without overriding "
+                  "query_action() method. Bailing out to avoid infinite recursion.",
                   G_OBJECT_TYPE_NAME (action_group));
       return FALSE;
     }
@@ -286,7 +286,7 @@ g_action_group_default_init (GActionGroupInterface *iface)
    * GActionGroup::action-enabled-changed:
    * @action_group: the [type@Gio.ActionGroup] that changed
    * @action_name: the name of the action in @action_group
-   * @enabled: whether the action is enabled or not
+   * @enabled: whether the action is enabled
    *
    * Signals that the enabled status of the named action has changed.
    *
@@ -496,7 +496,7 @@ g_action_group_get_action_state_hint (GActionGroup *action_group,
  * An action must be enabled in order to be activated or in order to
  * have its state changed from outside callers.
  *
- * Returns: whether or not the action is currently enabled
+ * Returns: whether the action is currently enabled
  *
  * Since: 2.28
  **/
@@ -594,19 +594,19 @@ g_action_group_change_action_state (GActionGroup *action_group,
  * have been activated.
  *
  * The following code which runs in a remote app instance, shows an
- * example of a "quit" action being activated on the primary app
+ * example of a ‘quit’ action being activated on the primary app
  * instance over D-Bus. Here [method@Gio.DBusConnection.flush] is called
- * before `exit()`. Without `g_dbus_connection_flush()`, the "quit" action
+ * before `exit()`. Without `g_dbus_connection_flush()`, the ‘quit’ action
  * may fail to be activated on the primary instance.
  *
  * ```c
- * // call "quit" action on primary instance
+ * // call ‘quit’ action on primary instance
  * g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
  *
  * // make sure the action is activated now
- * g_dbus_connection_flush (...);
+ * g_dbus_connection_flush (…);
  *
- * g_debug ("application has been terminated. exiting.");
+ * g_debug ("Application has been terminated. Exiting.");
  *
  * exit (0);
  * ```
@@ -677,7 +677,7 @@ g_action_group_action_removed (GActionGroup *action_group,
  * g_action_group_action_enabled_changed:
  * @action_group: a [type@Gio.ActionGroup]
  * @action_name: the name of an action in the group
- * @enabled: whether or not the action is now enabled
+ * @enabled: whether the action is now enabled
  *
  * Emits the [signal@Gio.ActionGroup::action-enabled-changed] signal on @action_group.
  *
@@ -764,7 +764,7 @@ g_action_group_action_state_changed (GActionGroup *action_group,
  *
  * If the action exists, `TRUE` is returned and any of the requested
  * fields (as indicated by having a non-`NULL` reference passed in) are
- * filled.  If the action doesn't exist, `FALSE` is returned and the
+ * filled.  If the action doesn’t exist, `FALSE` is returned and the
  * fields may or may not have been modified.
  *
  * Returns: `TRUE` if the action exists, else `FALSE`
