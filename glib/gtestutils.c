@@ -4308,7 +4308,9 @@ g_test_log_dump (GTestLogMsg *msg,
   gstring_append_int (gstring, 0);      /* reserved */
   for (ui = 0; ui < msg->n_strings; ui++)
     {
-      guint l = strlen (msg->strings[ui]);
+      guint l;
+      g_assert (msg->strings[ui] != NULL);
+      l = strlen (msg->strings[ui]);
       gstring_append_int (gstring, l);
       g_string_append_len (gstring, msg->strings[ui], l);
     }
