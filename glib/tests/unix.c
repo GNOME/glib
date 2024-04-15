@@ -593,7 +593,14 @@ test_signal_alternate_stack (int signal)
    */
   g_assert_cmpint (memcmp (stack_memory, zero_mem, MINSIGSTKSZ), !=, 0);
 
-  g_assert_no_errno (sigaltstack (&old_stack, NULL));
+  memset (stack_memory, 0, MINSIGSTKSZ);
+  g_assert_cmpmem (stack_memory, MINSIGSTKSZ, zero_mem, MINSIGSTKSZ);
+
+  stack.ss_flags = SS_DISABLE;
+  g_assert_no_errno (sigaltstack (&stack, &old_stack));
+
+  test_signal (signal);
+  g_assert_cmpmem (stack_memory, MINSIGSTKSZ, zero_mem, MINSIGSTKSZ);
 #endif
 }
 
