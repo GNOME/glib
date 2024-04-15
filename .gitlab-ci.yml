@@ -725,6 +725,22 @@ scan-build:
   image: $FEDORA_IMAGE
   stage: analysis
   needs: []
+  variables:
+    # FIXME: Eventually we want static analysis on the tests and copylibs, for
+    # code quality, but for the moment it’s just busywork.
+    # FIXME: Disable the dead code checkers for now because they create a lot of
+    # noise and don’t indicate high severity problems.
+    SCAN_BUILD_FLAGS: >-
+      --exclude gio/tests/
+      --exclude girepository/tests/
+      --exclude glib/tests/
+      --exclude gmodule/tests/
+      --exclude gobject/tests/
+      --exclude gthread/tests/
+      --exclude girepository/cmph/
+      --exclude glib/libcharset/
+      --exclude gio/xdgmime/
+      -disable-checker deadcode.DeadStores
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -732,12 +748,13 @@ scan-build:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
+            -Dglib_debug=enabled
             -Dsystemtap=true
             -Ddtrace=true
             -Dinstalled_tests=true
             -Dintrospection=enabled
             _scan_build
-    - ninja -C _scan_build scan-build
+    - SCANBUILD="$(pwd)/.gitlab-ci/scan-build.sh" ninja -C _scan_build scan-build
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always

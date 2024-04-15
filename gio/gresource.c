@@ -1029,14 +1029,16 @@ g_resources_register_unlocked (GResource *resource)
 static void
 g_resources_unregister_unlocked (GResource *resource)
 {
-  if (g_list_find (registered_resources, resource) == NULL)
+  GList *resource_link = g_list_find (registered_resources, resource);
+
+  if (resource_link == NULL)
     {
       g_warning ("Tried to remove not registered resource");
     }
   else
     {
-      registered_resources = g_list_remove (registered_resources, resource);
-      g_resource_unref (resource);
+      g_resource_unref (resource_link->data);
+      registered_resources = g_list_delete_link (registered_resources, resource_link);
     }
 }
 

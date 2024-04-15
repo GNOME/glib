@@ -549,6 +549,7 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Wmisleading-indentation',
     '-Wmissing-field-initializers',
     '-Wnonnull',
+    '-Wnull-dereference',
     '-Wunused',
     # Due to maintained deprecated code, we do not want to see unused parameters
     '-Wno-unused-parameter',
