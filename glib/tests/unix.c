@@ -520,7 +520,9 @@ test_signal (int signum)
 
   g_assert_no_errno (sigaction (signum, NULL, &action));
 
-  g_assert_true (action.sa_flags & SA_NOCLDSTOP);
+  if (signum == SIGCHLD)
+    g_assert_true (action.sa_flags & SA_NOCLDSTOP);
+
 #ifdef SA_RESTART
   g_assert_true (action.sa_flags & SA_RESTART);
 #endif
