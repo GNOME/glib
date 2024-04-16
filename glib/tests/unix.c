@@ -593,6 +593,10 @@ test_signal_alternate_stack (int signal)
    */
   g_assert_cmpint (memcmp (stack_memory, zero_mem, MINSIGSTKSZ), !=, 0);
 
+  /* We need to memset again zero_mem since compiler may have optimized it out
+   * as we've seen in freebsd CI.
+   */
+  memset (zero_mem, 0, MINSIGSTKSZ);
   memset (stack_memory, 0, MINSIGSTKSZ);
   g_assert_cmpmem (stack_memory, MINSIGSTKSZ, zero_mem, MINSIGSTKSZ);
 
