@@ -68,7 +68,7 @@ __gsettings() {
           range=($(gsettings "$schemadir" range "${COMP_WORDS[$((coffset+2))]}" "${COMP_WORDS[$((coffset+3))]}" 2> /dev/null))
           case "${range[0]}" in
             enum)
-              unset range[0]
+              unset 'range[0]'
              ;;
             *)
               unset range
