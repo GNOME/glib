@@ -14,6 +14,7 @@ __gdbus() {
 
     local suggestions
     suggestions="$(gdbus complete "${COMP_LINE}" "${COMP_POINT}")"
+    # shellcheck disable=SC2207
     COMPREPLY=($(compgen -W "$suggestions" -- "$cur"))
 
     # Remove colon-word prefix from COMPREPLY items

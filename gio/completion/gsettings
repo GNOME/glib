@@ -29,6 +29,7 @@ __gsettings() {
     2)
       case "${COMP_WORDS[$((coffset+1))]}" in
 	--schemadir)
+          # shellcheck disable=SC2207
 	  COMPREPLY=($(compgen -o dirnames -- "${COMP_WORDS[${COMP_CWORD}]}"))
 	  return 0
 	  ;;
@@ -40,6 +41,7 @@ __gsettings() {
           choices="$(gsettings "$schemadir" list-schemas 2> /dev/null)"$'\n'"$(gsettings "$schemadir" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
           ;;
         list-schemas)
+          # shellcheck disable=SC2207
           COMPREPLY=($(compgen -W "--print-paths" -- "${COMP_WORDS[${COMP_CWORD}]}"))
           return 0
           ;;
@@ -65,6 +67,7 @@ __gsettings() {
     4)
       case "${COMP_WORDS[$((coffset+2))]}" in
         set)
+          # shellcheck disable=SC2207
           range=($(gsettings "$schemadir" range "${COMP_WORDS[$((coffset+2))]}" "${COMP_WORDS[$((coffset+3))]}" 2> /dev/null))
           case "${range[0]}" in
             enum)
@@ -82,6 +85,7 @@ __gsettings() {
   esac
 
   local IFS=$'\n'
+  # shellcheck disable=SC2207
   COMPREPLY=($(compgen -W "${choices}" -- "${COMP_WORDS[${COMP_CWORD}]}"))
 }
 

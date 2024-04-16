@@ -35,6 +35,7 @@ __gresource() {
           ;;
 
         sections|list|details|extract)
+          # shellcheck disable=SC2207
           COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
           return 0
           ;;
@@ -51,6 +52,7 @@ __gresource() {
   esac
 
   local IFS=$'\n'
+  # shellcheck disable=SC2207
   COMPREPLY=($(compgen -W "${choices}" -- "${COMP_WORDS[${COMP_CWORD}]}"))
 }
 
