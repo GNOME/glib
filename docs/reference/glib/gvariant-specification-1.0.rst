@@ -22,6 +22,9 @@ and diffs, see the `commit log <https://gitlab.gnome.org/GNOME/glib/-/blob/main/
 **Version 1.0.1, 2022-11-02**
    - Formatting improvements
    - No semantic changes
+**Version 1.0.2, 2024-04-16**
+   - Add missing references to ``h`` type string
+   - Add missing reference to ``d`` type string to type string grammar
 
 *****
 Types
@@ -171,7 +174,7 @@ that is used by the recursive structure of the language itself.
 Type strings can be described by a non-ambiguous context free grammar.
 
  * *type* ⇒ *base_type* | *container_type*
- * *base_type* ⇒ **b** | **y** | **n** | **q** | **i** | **u** | **x** | **t** | **s** | **o** | **g**
+ * *base_type* ⇒ **b** | **y** | **n** | **q** | **i** | **u** | **x** | **t** | **h** | **d** | **s** | **o** | **g**
  * *container_type* ⇒ **v** | **m** *type* | **a** *type* | **(** *types* **)** | **{** *base_type* *type* **}**
  * *types* ⇒ ε | *type* *types*
 
@@ -198,6 +201,8 @@ term containing a terminal is specified below:
    This derivation corresponds to the signed 64-bit integer type.
 **t**
    This derivation corresponds to the unsigned 64-bit integer type.
+**h**
+   This derivation corresponds to the signed 32-bit integer type, representing a handle.
 **d**
    This derivation corresponds to the double precision floating point number type.
 **s**
