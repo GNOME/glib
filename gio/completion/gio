@@ -53,7 +53,7 @@ __gio_location() {
     # List volumes and mounts
     local mounts=( )
     local mount
-    while IFS=$'\n' read mount; do
+    while IFS=$'\n' read -r mount; do
         # Do not care about local mounts
         [[ "$mount" =~ ^"file:" ]] && continue
 
@@ -69,7 +69,7 @@ __gio_location() {
     local files=()
     local names=()
     local name size type
-    while IFS=$'\t' read name size type; do
+    while IFS=$'\t' read -r name size type; do
         # Escape name properly
         local escaped_name
         escaped_name="$(printf "%q" "$name")"
