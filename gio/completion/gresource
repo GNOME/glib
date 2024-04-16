@@ -20,13 +20,13 @@ __gresource() {
       coffset=0
   fi
 
-  case "$((${COMP_CWORD}-$coffset))" in
+  case "$((COMP_CWORD-coffset))" in
     1)
       choices=$'--section \nhelp \nsections \nlist \ndetails \nextract '
       ;;
 
     2)
-      case "${COMP_WORDS[$(($coffset+1))]}" in
+      case "${COMP_WORDS[$((coffset+1))]}" in
         --section)
           return 0
           ;;
@@ -43,9 +43,9 @@ __gresource() {
       ;;
 
     3)
-      case "${COMP_WORDS[$(($coffset+1))]}" in
+      case "${COMP_WORDS[$((coffset+1))]}" in
         list|details|extract)
-          choices="$(gresource list "${COMP_WORDS[$(($coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
+          choices="$(gresource list "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
           ;;
       esac
       ;;
