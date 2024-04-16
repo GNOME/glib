@@ -16,7 +16,7 @@ __app() {
     2)
       case "${COMP_WORDS[1]}" in
         launch|action|list-actions)
-          COMPREPLY=($(compgen -W "`gapplication list-apps`" -- "${COMP_WORDS[2]}"))
+          COMPREPLY=($(compgen -W "$(gapplication list-apps)" -- "${COMP_WORDS[2]}"))
           return 0
           ;;
 
@@ -33,7 +33,7 @@ __app() {
     action)
       # Word 3 is the action name.  This is the only one we can help with.
       if [ "${COMP_CWORD}" == 3 ]; then
-        COMPREPLY=($(compgen -W "`gapplication list-actions "${COMP_WORDS[2]}"`" -- "${COMP_WORDS[3]}"))
+        COMPREPLY=($(compgen -W "$(gapplication list-actions "${COMP_WORDS[2]}")" -- "${COMP_WORDS[3]}"))
         return 0
       else
         COMPREPLY=()
