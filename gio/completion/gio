@@ -71,7 +71,8 @@ __gio_location() {
     local name size type
     while IFS=$'\t' read name size type; do
         # Escape name properly
-        local escaped_name="$(printf "%q" "$name")"
+        local escaped_name
+        escaped_name="$(printf "%q" "$name")"
 
         # Append slash for directories and space for files
         if [[ "$type" == "(directory)" ]]; then

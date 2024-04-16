@@ -9,9 +9,11 @@
 
 __gdbus() {
     local IFS=$'\n'
-    local cur="$(_get_cword :)"
+    local cur
+    cur="$(_get_cword :)"
 
-    local suggestions="$(gdbus complete "${COMP_LINE}" "${COMP_POINT}")"
+    local suggestions
+    suggestions="$(gdbus complete "${COMP_LINE}" "${COMP_POINT}")"
     COMPREPLY=($(compgen -W "$suggestions" -- "$cur"))
 
     # Remove colon-word prefix from COMPREPLY items
