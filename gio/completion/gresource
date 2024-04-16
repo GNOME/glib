@@ -9,8 +9,8 @@
 __gresource() {
   local choices coffset section
 
-  if [ ${COMP_CWORD} -gt 2 ]; then
-      if [ ${COMP_WORDS[1]} = --section ]; then
+  if [ "${COMP_CWORD}" -gt 2 ]; then
+      if [ "${COMP_WORDS[1]}" = --section ]; then
           section=${COMP_WORDS[2]}
           coffset=2
       else
@@ -36,7 +36,7 @@ __gresource() {
           ;;
 
         sections|list|details|extract)
-          COMPREPLY=($(compgen -f -- ${COMP_WORDS[${COMP_CWORD}]}))
+          COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
           return 0
           ;;
       esac
@@ -45,7 +45,7 @@ __gresource() {
     3)
       case "${COMP_WORDS[$(($coffset+1))]}" in
         list|details|extract)
-          choices="$(gresource list ${COMP_WORDS[$(($coffset+2))]} 2> /dev/null | sed -e 's.$. .')"
+          choices="$(gresource list "${COMP_WORDS[$(($coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
           ;;
       esac
       ;;
