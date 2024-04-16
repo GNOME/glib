@@ -7,11 +7,10 @@
 ####################################################################################################
 
 __gresource() {
-  local choices coffset section
+  local choices coffset
 
   if [ "${COMP_CWORD}" -gt 2 ]; then
       if [ "${COMP_WORDS[1]}" = --section ]; then
-          section=${COMP_WORDS[2]}
           coffset=2
       else
           coffset=0

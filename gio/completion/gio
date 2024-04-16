@@ -68,8 +68,8 @@ __gio_location() {
     # List files
     local files=()
     local names=()
-    local name size type
-    while IFS=$'\t' read -r name size type; do
+    local name type
+    while IFS=$'\t' read -r name _ type; do
         # Escape name properly
         local escaped_name
         escaped_name="$(printf "%q" "$name")"
