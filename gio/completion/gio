@@ -47,7 +47,7 @@ __gio_location() {
         dir="$cur"
     elif [[ $cur =~ "/" ]]; then
         # Subtract basename because dirname cmd doesn't work well with schemes
-        dir=${cur%$(basename "$cur")}
+        dir=${cur%"$(basename "$cur")"}
     fi
 
     # List volumes and mounts
