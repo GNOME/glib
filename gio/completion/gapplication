@@ -1,4 +1,6 @@
 
+# shellcheck shell=bash
+
 # Check for bash
 [ -z "$BASH_VERSION" ] && return
 
