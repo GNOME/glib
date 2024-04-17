@@ -8,12 +8,15 @@
 
 
 __gdbus() {
+    local gdbus_binary
+    gdbus_binary="$1"
+
     local IFS=$'\n'
     local cur
     cur="$(_get_cword :)"
 
     local suggestions
-    suggestions="$(gdbus complete "${COMP_LINE}" "${COMP_POINT}")"
+    suggestions="$("$gdbus_binary" complete "${COMP_LINE}" "${COMP_POINT}")"
     # shellcheck disable=SC2207
     COMPREPLY=($(compgen -W "$suggestions" -- "$cur"))
 

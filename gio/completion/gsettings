@@ -7,7 +7,8 @@
 ####################################################################################################
 
 __gsettings() {
-  local choices coffset schemadir=""
+  local choices coffset schemadir="" gsettings_binary
+  gsettings_binary="$1"
 
   if [ "${COMP_CWORD}" -gt 2 ]; then
       if [ "${COMP_WORDS[1]}" = --schemadir ]; then
@@ -38,7 +39,7 @@ __gsettings() {
           choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nlist-recursively\nget\nrange\nset\nreset\nreset-recursively\nwritable\nmonitor'
           ;;
         list-keys|list-children|list-recursively|reset-recursively)
-          choices="$(gsettings "$schemadir" list-schemas 2> /dev/null)"$'\n'"$(gsettings "$schemadir" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
+          choices="$("$gsettings_binary" "$schemadir" list-schemas 2> /dev/null)"$'\n'"$("$gsettings_binary" "$schemadir" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
           ;;
         list-schemas)
           # shellcheck disable=SC2207
@@ -47,7 +48,7 @@ __gsettings() {
           ;;
 
         get|range|set|reset|writable|monitor|describe)
-          choices="$(gsettings "$schemadir" list-schemas 2> /dev/null | sed -e 's.$. .')"$'\n'"$(gsettings "$schemadir" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
+          choices="$("$gsettings_binary" "$schemadir" list-schemas 2> /dev/null | sed -e 's.$. .')"$'\n'"$("$gsettings_binary" "$schemadir" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
           ;;
       esac
       ;;
@@ -55,11 +56,11 @@ __gsettings() {
     3)
       case "${COMP_WORDS[$((coffset+1))]}" in
         set)
-          choices="$(gsettings "$schemadir" list-keys "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
+          choices="$("$gsettings_binary" "$schemadir" list-keys "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
           ;;
 
         get|range|reset|writable|monitor|describe)
-          choices="$(gsettings "$schemadir" list-keys "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null)"
+          choices="$("$gsettings_binary" "$schemadir" list-keys "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null)"
           ;;
       esac
       ;;
@@ -68,7 +69,7 @@ __gsettings() {
       case "${COMP_WORDS[$((coffset+2))]}" in
         set)
           # shellcheck disable=SC2207
-          range=($(gsettings "$schemadir" range "${COMP_WORDS[$((coffset+2))]}" "${COMP_WORDS[$((coffset+3))]}" 2> /dev/null))
+          range=($("$gsettings_binary" "$schemadir" range "${COMP_WORDS[$((coffset+2))]}" "${COMP_WORDS[$((coffset+3))]}" 2> /dev/null))
           case "${range[0]}" in
             enum)
               unset 'range[0]'

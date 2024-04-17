@@ -7,6 +7,9 @@
 ####################################################################################################
 
 __app() {
+  local gapplication_binary
+  gapplication_binary="$1"
+
   case "${COMP_CWORD}" in
     1)
       # shellcheck disable=SC2207
@@ -18,7 +21,7 @@ __app() {
       case "${COMP_WORDS[1]}" in
         launch|action|list-actions)
           # shellcheck disable=SC2207
-          COMPREPLY=($(compgen -W "$(gapplication list-apps)" -- "${COMP_WORDS[2]}"))
+          COMPREPLY=($(compgen -W "$("$gapplication_binary" list-apps)" -- "${COMP_WORDS[2]}"))
           return 0
           ;;
 
@@ -36,7 +39,7 @@ __app() {
       # Word 3 is the action name.  This is the only one we can help with.
       if [ "${COMP_CWORD}" == 3 ]; then
         # shellcheck disable=SC2207
-        COMPREPLY=($(compgen -W "$(gapplication list-actions "${COMP_WORDS[2]}")" -- "${COMP_WORDS[3]}"))
+        COMPREPLY=($(compgen -W "$("$gapplication_binary" list-actions "${COMP_WORDS[2]}")" -- "${COMP_WORDS[3]}"))
         return 0
       else
         COMPREPLY=()

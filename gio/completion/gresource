@@ -7,7 +7,8 @@
 ####################################################################################################
 
 __gresource() {
-  local choices coffset
+  local choices coffset gresource_binary
+  gresource_binary="$1"
 
   if [ "${COMP_CWORD}" -gt 2 ]; then
       if [ "${COMP_WORDS[1]}" = --section ]; then
@@ -45,7 +46,7 @@ __gresource() {
     3)
       case "${COMP_WORDS[$((coffset+1))]}" in
         list|details|extract)
-          choices="$(gresource list "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
+          choices="$("$gresource_binary" list "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
           ;;
       esac
       ;;
