@@ -21,6 +21,13 @@ Files:
 Copyright: See individual files
 License: CC0-1.0
 
+# .gitignore files are too simple to be copyrightable
+Files:
+ .gitignore
+ **/.gitignore
+Copyright: See individual files
+License: CC0-1.0
+
 # Translation files are explicitly contributed under the license of the project,
 # but by multiple authors
 Files: po/*.po
