@@ -1,3 +1,22 @@
+#
+# Copyright 2010, 2012 Red Hat, Inc.
+# Copyright 2010 Allison Karlitskaya
+# Copyright 2011 Giovanni Campagna
+#
+# This library is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as
+# published by the Free Software Foundation; either version 2.1 of the
+# licence, or (at your option) any later version.
+#
+# This is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+# License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this library; if not, see <http://www.gnu.org/licenses/>.
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # shellcheck shell=bash
 
@@ -7,12 +26,16 @@
 ####################################################################################################
 
 __gsettings() {
-  local choices coffset schemadir=""
+  local choices coffset schemadir=() gsettings_binary
+  gsettings_binary="$1"
 
   if [ "${COMP_CWORD}" -gt 2 ]; then
       if [ "${COMP_WORDS[1]}" = --schemadir ]; then
-	  # this complexity is needed to perform correct tilde expansion
-	  schemadir=$(eval "echo --schemadir ${COMP_WORDS[2]}")
+          # The eval complexity is needed to perform correct tilde expansion
+          # The array is needed to ensure we can keep it expanding to either zero
+          # or one option in the commands below, while keeping quoting correct.
+          # See https://www.shellcheck.net/wiki/SC2086
+          schemadir=("--schemadir" "$(eval "echo ${COMP_WORDS[2]}")")
 	  coffset=2
       else
 	  coffset=0
@@ -38,7 +61,7 @@ __gsettings() {
           choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nlist-recursively\nget\nrange\nset\nreset\nreset-recursively\nwritable\nmonitor'
           ;;
         list-keys|list-children|list-recursively|reset-recursively)
-          choices="$(gsettings "$schemadir" list-schemas 2> /dev/null)"$'\n'"$(gsettings "$schemadir" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
+          choices="$("$gsettings_binary" "${schemadir[@]}" list-schemas 2> /dev/null)"$'\n'"$("$gsettings_binary" "${schemadir[@]}" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
           ;;
         list-schemas)
           # shellcheck disable=SC2207
@@ -47,7 +70,7 @@ __gsettings() {
           ;;
 
         get|range|set|reset|writable|monitor|describe)
-          choices="$(gsettings "$schemadir" list-schemas 2> /dev/null | sed -e 's.$. .')"$'\n'"$(gsettings "$schemadir" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
+          choices="$("$gsettings_binary" "${schemadir[@]}" list-schemas 2> /dev/null | sed -e 's.$. .')"$'\n'"$("$gsettings_binary" "${schemadir[@]}" list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
           ;;
       esac
       ;;
@@ -55,11 +78,11 @@ __gsettings() {
     3)
       case "${COMP_WORDS[$((coffset+1))]}" in
         set)
-          choices="$(gsettings "$schemadir" list-keys "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
+          choices="$("$gsettings_binary" "${schemadir[@]}" list-keys "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
           ;;
 
         get|range|reset|writable|monitor|describe)
-          choices="$(gsettings "$schemadir" list-keys "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null)"
+          choices="$("$gsettings_binary" "${schemadir[@]}" list-keys "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null)"
           ;;
       esac
       ;;
@@ -68,7 +91,7 @@ __gsettings() {
       case "${COMP_WORDS[$((coffset+2))]}" in
         set)
           # shellcheck disable=SC2207
-          range=($(gsettings "$schemadir" range "${COMP_WORDS[$((coffset+2))]}" "${COMP_WORDS[$((coffset+3))]}" 2> /dev/null))
+          range=($("$gsettings_binary" "${schemadir[@]}" range "${COMP_WORDS[$((coffset+2))]}" "${COMP_WORDS[$((coffset+3))]}" 2> /dev/null))
           case "${range[0]}" in
             enum)
               unset 'range[0]'

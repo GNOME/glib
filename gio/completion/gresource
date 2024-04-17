@@ -1,3 +1,20 @@
+#
+# Copyright 2012 Red Hat, Inc.
+#
+# This library is free software; you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as
+# published by the Free Software Foundation; either version 2.1 of the
+# licence, or (at your option) any later version.
+#
+# This is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+# License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this library; if not, see <http://www.gnu.org/licenses/>.
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # shellcheck shell=bash
 
@@ -7,7 +24,8 @@
 ####################################################################################################
 
 __gresource() {
-  local choices coffset
+  local choices coffset gresource_binary
+  gresource_binary="$1"
 
   if [ "${COMP_CWORD}" -gt 2 ]; then
       if [ "${COMP_WORDS[1]}" = --section ]; then
@@ -45,7 +63,7 @@ __gresource() {
     3)
       case "${COMP_WORDS[$((coffset+1))]}" in
         list|details|extract)
-          choices="$(gresource list "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
+          choices="$("$gresource_binary" list "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
           ;;
       esac
       ;;
