@@ -1,15 +1,16 @@
 
+# shellcheck shell=bash
+
 # Check for bash
 [ -z "$BASH_VERSION" ] && return
 
 ####################################################################################################
 
 __gresource() {
-  local choices coffset section
+  local choices coffset
 
-  if [ ${COMP_CWORD} -gt 2 ]; then
-      if [ ${COMP_WORDS[1]} = --section ]; then
-          section=${COMP_WORDS[2]}
+  if [ "${COMP_CWORD}" -gt 2 ]; then
+      if [ "${COMP_WORDS[1]}" = --section ]; then
           coffset=2
       else
           coffset=0
@@ -18,13 +19,13 @@ __gresource() {
       coffset=0
   fi
 
-  case "$((${COMP_CWORD}-$coffset))" in
+  case "$((COMP_CWORD-coffset))" in
     1)
       choices=$'--section \nhelp \nsections \nlist \ndetails \nextract '
       ;;
 
     2)
-      case "${COMP_WORDS[$(($coffset+1))]}" in
+      case "${COMP_WORDS[$((coffset+1))]}" in
         --section)
           return 0
           ;;
@@ -34,22 +35,24 @@ __gresource() {
           ;;
 
         sections|list|details|extract)
-          COMPREPLY=($(compgen -f -- ${COMP_WORDS[${COMP_CWORD}]}))
+          # shellcheck disable=SC2207
+          COMPREPLY=($(compgen -f -- "${COMP_WORDS[${COMP_CWORD}]}"))
           return 0
           ;;
       esac
       ;;
 
     3)
-      case "${COMP_WORDS[$(($coffset+1))]}" in
+      case "${COMP_WORDS[$((coffset+1))]}" in
         list|details|extract)
-          choices="$(gresource list ${COMP_WORDS[$(($coffset+2))]} 2> /dev/null | sed -e 's.$. .')"
+          choices="$(gresource list "${COMP_WORDS[$((coffset+2))]}" 2> /dev/null | sed -e 's.$. .')"
           ;;
       esac
       ;;
   esac
 
   local IFS=$'\n'
+  # shellcheck disable=SC2207
   COMPREPLY=($(compgen -W "${choices}" -- "${COMP_WORDS[${COMP_CWORD}]}"))
 }
 

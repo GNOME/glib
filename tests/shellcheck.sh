@@ -16,7 +16,7 @@ export TEST_REQUIRES_TOOLS="git shellcheck"
 run_lint () {
     # Ignoring third-party directories that we don't want to parse
     # shellcheck disable=SC2046
-    shellcheck $(git ls-files '*.sh' | grep -Ev "glib/libcharset|glib/dirent")
+    shellcheck $(git ls-files '*.sh' 'gio/completion/' | grep -Ev "glib/libcharset|glib/dirent|gitignore")
 }
 
 # shellcheck source=tests/lint-common.sh

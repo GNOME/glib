@@ -15,6 +15,8 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 #
 
+# shellcheck shell=bash
+
 # Check for bash
 [ -z "$BASH_VERSION" ] && return
 
@@ -45,13 +47,13 @@ __gio_location() {
         dir="$cur"
     elif [[ $cur =~ "/" ]]; then
         # Subtract basename because dirname cmd doesn't work well with schemes
-        dir=${cur%$(basename "$cur")}
+        dir=${cur%"$(basename "$cur")"}
     fi
 
     # List volumes and mounts
     local mounts=( )
     local mount
-    while IFS=$'\n' read mount; do
+    while IFS=$'\n' read -r mount; do
         # Do not care about local mounts
         [[ "$mount" =~ ^"file:" ]] && continue
 
@@ -66,10 +68,11 @@ __gio_location() {
     # List files
     local files=()
     local names=()
-    local name size type
-    while IFS=$'\t' read name size type; do
+    local name type
+    while IFS=$'\t' read -r name _ type; do
         # Escape name properly
-        local escaped_name="$(printf "%q" "$name")"
+        local escaped_name
+        escaped_name="$(printf "%q" "$name")"
 
         # Append slash for directories and space for files
         if [[ "$type" == "(directory)" ]]; then
@@ -107,7 +110,8 @@ __gio_location() {
 
 __gio() {
     # Complete subcommands
-    if (( ${COMP_CWORD} == 1 )); then
+    if (( COMP_CWORD == 1 )); then
+        # shellcheck disable=SC2207
         COMPREPLY=($(compgen -W "help version cat copy info launch list mime mkdir monitor mount move open rename remove save set trash tree" -- "${COMP_WORDS[1]}"))
         compopt +o nospace
         return 0
