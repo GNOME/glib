@@ -2073,6 +2073,24 @@ typedef enum {
 } GNotificationPriority;
 
 /**
+ * GNotificationDisplayHintFlags:
+ * @G_NOTIFICATION_DISPLAY_HINT_TRANSIENT: for notifications that do not require
+ *
+ * Display hints for #GNotifications.
+ *
+ * Since: 2.82
+ */
+typedef enum {
+  G_NOTIFICATION_DISPLAY_HINT_NONE                         = 0,
+  G_NOTIFICATION_DISPLAY_HINT_TRANSIENT                    = (1 << 0),
+  G_NOTIFICATION_DISPLAY_HINT_TRAY                         = (1 << 1),
+  G_NOTIFICATION_DISPLAY_HINT_PERSISTENT                   = (1 << 2),
+  G_NOTIFICATION_DISPLAY_HINT_HIDE_ON_LOCKSCREEN           = (1 << 3),
+  G_NOTIFICATION_DISPLAY_HINT_HIDE_CONTENT_ON_LOCKSCREEN   = (1 << 4),
+  G_NOTIFICATION_DISPLAY_HINT_UPDATE                       = (1 << 5),
+} GNotificationDisplayHintFlags;
+
+/**
  * GNetworkConnectivity:
  * @G_NETWORK_CONNECTIVITY_LOCAL: The host is not configured with a
  *   route to the Internet; it may or may not be connected to a local
