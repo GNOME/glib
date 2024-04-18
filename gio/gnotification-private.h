@@ -39,6 +39,8 @@ GNotificationSound *    g_notification_get_sound                        (GNotifi
 
 GNotificationPriority   g_notification_get_priority                     (GNotification *notification);
 
+GNotificationDisplayHintFlags g_notification_get_display_hint_flags     (GNotification *notification);
+
 guint                   g_notification_get_n_buttons                    (GNotification *notification);
 
 void                    g_notification_get_button                       (GNotification  *notification,

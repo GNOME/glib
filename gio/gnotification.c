@@ -91,6 +91,7 @@ struct _GNotification
   GNotificationSound *sound;
   GNotificationPriority priority;
   gchar *category;
+  GNotificationDisplayHintFlags display_hint;
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;  /* (nullable) (owned), not floating */
@@ -426,6 +427,38 @@ g_notification_set_category (GNotification *notification,
   g_free (notification->category);
 
   notification->category = g_strdup (category);
+}
+
+/*< private >
+ * g_notification_get_display_hint_flags:
+ * @notification: a [class@Gio.Notification]
+ *
+ * Returns: the display hint flags of @notification
+ *
+ * Since: 2.85
+ */
+GNotificationDisplayHintFlags
+g_notification_get_display_hint_flags (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), G_NOTIFICATION_DISPLAY_HINT_NONE);
+
+  return notification->display_hint;
+}
+
+/**
+ * g_notification_set_display_hint_flags:
+ * @notification: a [class@Gio.Notification]
+ * @flags: the display hint flags for @notification
+ *
+ * Since: 2.85
+ */
+void
+g_notification_set_display_hint_flags (GNotification                 *notification,
+                                       GNotificationDisplayHintFlags  flags)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+
+  notification->display_hint = flags;
 }
 
 /**

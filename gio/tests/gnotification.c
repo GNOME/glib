@@ -173,6 +173,7 @@ struct _GNotification
   GNotificationSound *sound;
   GNotificationPriority priority;
   gchar *category;
+  GNotificationDisplayHintFlags display_hint;
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
@@ -230,6 +231,7 @@ test_properties (void)
   g_object_unref (icon);
   g_notification_set_priority (n, G_NOTIFICATION_PRIORITY_HIGH);
   g_notification_set_category (n, "cate.gory");
+  g_notification_set_display_hint_flags (n, G_NOTIFICATION_DISPLAY_HINT_TRANSIENT);
   g_notification_add_button (n, "label1", "app.action1::target1");
   g_notification_set_default_action (n, "app.action2::target2");
 
@@ -244,6 +246,7 @@ test_properties (void)
   g_assert_null (names[2]);
   g_assert_cmpint (rn->priority, ==, G_NOTIFICATION_PRIORITY_HIGH);
   g_assert_cmpstr (rn->category, ==, "cate.gory");
+  g_assert_true (rn->display_hint == G_NOTIFICATION_DISPLAY_HINT_TRANSIENT);
 
   g_assert_cmpint (rn->buttons->len, ==, 1);
   b = (Button*)rn->buttons->pdata[0];

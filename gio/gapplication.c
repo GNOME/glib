@@ -3074,7 +3074,13 @@ g_application_get_is_busy (GApplication *application)
  *
  * If a previous notification was sent with the same @id, it will be
  * replaced with @notification and shown again as if it was a new
- * notification. This works even for notifications sent from a previous
+ * notification. If the flag [flags@Gio.NotificationDisplayHintFlags.UPDATE] is set
+ * on @notification via g_notification_set_display_hint() the
+ * notification will be updated instead of replaced
+ * if a notification with the same ID exists already
+ * otherwise a new one is created. When updating a notification
+ * no sound is played and the banner isn't shown again.
+ * This works even for notifications sent from a previous
  * execution of the application, as long as @id is the same string.
  *
  * @id may be `NULL`, but it is impossible to replace or withdraw

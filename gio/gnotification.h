@@ -65,6 +65,10 @@ GIO_AVAILABLE_IN_2_42
 void                    g_notification_set_priority                     (GNotification         *notification,
                                                                          GNotificationPriority  priority);
 
+GIO_AVAILABLE_IN_2_85
+void                    g_notification_set_display_hint_flags           (GNotification                 *notification,
+                                                                         GNotificationDisplayHintFlags  flags);
+
 GIO_AVAILABLE_IN_2_70
 void                    g_notification_set_category                     (GNotification *notification,
                                                                          const gchar   *category);

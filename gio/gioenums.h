@@ -2084,6 +2084,32 @@ typedef enum {
 } GNotificationPriority;
 
 /**
+ * GNotificationDisplayHintFlags:
+ * @G_NOTIFICATION_DISPLAY_HINT_NONE: No flags.
+ * @G_NOTIFICATION_DISPLAY_HINT_TRANSIENT: The notification is displayed only as a banner and won’t be kept by the server in a tray.
+ * @G_NOTIFICATION_DISPLAY_HINT_TRAY: No banner for the notification will be displayed and the notification is placed in the tray.
+ * @G_NOTIFICATION_DISPLAY_HINT_PERSISTENT: Make the notification persistent in the notification tray.
+ * @G_NOTIFICATION_DISPLAY_HIDE_ON_LOCKSCREEN: Hide the notification on the lockscreen.
+ * @G_NOTIFICATION_DISPLAY_HIDE_CONTENT_ON_LOCKSCREEN: All content other then the title of the notification will be hidden on the lockscreen.
+ * @G_NOTIFICATION_DISPLAY_HIDE_UPDATE: If a notification with the same ID exists already, it will be updated instead of replaced.
+ *
+ * Display hints for a [class@Gio.Notification].
+ *
+ * Depending on the platform or additional policies the hints may behave different or be fully ignored.
+ *
+ * Since: 2.85
+ */
+typedef enum {
+  G_NOTIFICATION_DISPLAY_HINT_NONE                         = 0,
+  G_NOTIFICATION_DISPLAY_HINT_TRANSIENT                    = (1 << 0),
+  G_NOTIFICATION_DISPLAY_HINT_TRAY                         = (1 << 1),
+  G_NOTIFICATION_DISPLAY_HINT_PERSISTENT                   = (1 << 2),
+  G_NOTIFICATION_DISPLAY_HINT_HIDE_ON_LOCKSCREEN           = (1 << 3),
+  G_NOTIFICATION_DISPLAY_HINT_HIDE_CONTENT_ON_LOCKSCREEN   = (1 << 4),
+  G_NOTIFICATION_DISPLAY_HINT_UPDATE                       = (1 << 5),
+} GNotificationDisplayHintFlags;
+
+/**
  * GNetworkConnectivity:
  * @G_NETWORK_CONNECTIVITY_LOCAL: The host is not configured with a
  *   route to the Internet; it may or may not be connected to a local
