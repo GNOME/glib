@@ -87,6 +87,7 @@ struct _GNotification
 
   gchar *title;
   gchar *body;
+  gchar *markup_body;
   GIcon *icon;
   GNotificationSound *sound;
   GNotificationPriority priority;
@@ -137,6 +138,7 @@ g_notification_finalize (GObject *object)
 
   g_free (notification->title);
   g_free (notification->body);
+  g_free (notification->markup_body);
   g_free (notification->category);
   g_free (notification->default_action);
   if (notification->default_action_target)
@@ -160,6 +162,26 @@ g_notification_init (GNotification *notification)
 {
   notification->buttons = g_ptr_array_new_full (2, button_free);
 }
+
+static void
+markup_parser_text (GMarkupParseContext  *context,
+                    const gchar          *text,
+                    gsize                 text_len,
+                    gpointer              user_data,
+                    GError              **error)
+{
+  GString *composed = user_data;
+
+  g_string_append_len (composed, text, text_len);
+}
+
+static const GMarkupParser markup_parser = {
+  NULL,
+  NULL,
+  markup_parser_text,
+  NULL,
+  NULL,
+};
 
 /**
  * g_notification_new:
@@ -243,15 +265,45 @@ g_notification_get_body (GNotification *notification)
 {
   g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
 
+  if (notification->body == NULL && notification->markup_body != NULL)
+    {
+      GMarkupParseContext *context = NULL;
+      GString *composed = NULL;
+      GError *error = NULL;
+
+      composed = g_string_sized_new (strlen (notification->markup_body));
+      context = g_markup_parse_context_new (&markup_parser, 0, composed, NULL);
+
+      /* The markup parser expects the markup to start with an element, therefore add one */
+      if (g_markup_parse_context_parse (context, "<markup>", -1, &error) &&
+          g_markup_parse_context_parse (context, notification->markup_body, -1, &error) &&
+          g_markup_parse_context_parse (context, "</markup>", -1, &error) &&
+          g_markup_parse_context_end_parse (context, &error))
+        {
+          return g_string_free_and_steal (composed);
+        }
+      else
+        {
+          g_warning ("Failed to parse markup body: %s", error->message);
+          g_clear_pointer (&error, g_error_free);
+        }
+    }
+
   return notification->body;
 }
 
 /**
  * g_notification_set_body:
- * @notification: a #GNotification
+ * @notification: a [class@Gio.Notification]
  * @body: (nullable): the new body for @notification, or %NULL
  *
  * Sets the body of @notification to @body.
+ *
+ * If a body was set via [method@Gio.Notification.set_body_with_markup] then @body is
+ * only used for platforms that don't support markup.
+ *
+ * There is no need to set @body as a fallback when using
+ * [method@Gio.Notification.set_body_with_markup] since markup will be stripped as fallback.
  *
  * Since: 2.40
  */
@@ -265,6 +317,52 @@ g_notification_set_body (GNotification *notification,
   g_free (notification->body);
 
   notification->body = g_strdup (body);
+}
+
+/*< private >
+ * g_notification_get_body_with_markup:
+ * @notification: a [class@Gio.Notification]
+ *
+ * Gets the current markup body of @notification.
+ *
+ * Returns: (nullable): the markup body of @notification
+ *
+ * Since: 2.85
+ */
+const gchar *
+g_notification_get_body_with_markup (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->markup_body;
+}
+
+/**
+ * g_notification_set_body_with_markup:
+ * @notification: a [class@Gio.Notification]
+ * @markup_body: (nullable): the new body using markup for @notification, or %NULL
+ *
+ * If markup is supported by the platform @markup_body will be used as
+ * body for @notification, else the body set via [method@Gio.Notification.set_body]
+ * is used. If no body is set via [method@Gio.Notification.set_body] @markup_body
+ * is used as fallback by stripping the markup.
+ *
+ * This currently supports the following markup:
+ *
+ * - `<b>...</b>` for bold text
+ * - `<i>...</i>` for italic text
+ * - `<a href="...">...</a>` for links
+ *
+ * Since: 2.85
+ */
+void
+g_notification_set_body_with_markup (GNotification *notification,
+                                     const gchar   *markup_body)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (markup_body == NULL || *markup_body != '\0');
+
+  g_set_str (&notification->markup_body, markup_body);
 }
 
 /*< private >
@@ -509,6 +607,7 @@ g_notification_add_button (GNotification *notification,
   if (!g_action_parse_detailed_name (detailed_action, &action, &target, &error))
     {
       g_warning ("%s: %s", G_STRFUNC, error->message);
+
       g_error_free (error);
       return;
     }
