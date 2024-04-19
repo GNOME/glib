@@ -169,6 +169,7 @@ struct _GNotification
 
   gchar *title;
   gchar *body;
+  gchar *markup_body;
   GIcon *icon;
   GNotificationSound *sound;
   GNotificationPriority priority;
@@ -210,6 +211,7 @@ test_properties (void)
 
   g_notification_set_title (n, "title");
   g_notification_set_body (n, "body");
+  g_notification_set_markup_body (n, "markup-body");
   g_notification_set_category (n, "cate.gory");
   icon = g_themed_icon_new ("i-c-o-n");
   g_notification_set_icon (n, icon);
@@ -224,6 +226,7 @@ test_properties (void)
 
   g_assert_cmpstr (rn->title, ==, "title");
   g_assert_cmpstr (rn->body, ==, "body");
+  g_assert_cmpstr (rn->markup_body, ==, "markup-body");
   g_assert_true (G_IS_THEMED_ICON (rn->icon));
   names = g_themed_icon_get_names (G_THEMED_ICON (rn->icon));
   g_assert_cmpstr (names[0], ==, "i-c-o-n");

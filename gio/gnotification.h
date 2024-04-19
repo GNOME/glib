@@ -49,6 +49,10 @@ GIO_AVAILABLE_IN_2_40
 void                    g_notification_set_body                         (GNotification *notification,
                                                                          const gchar   *body);
 
+GIO_AVAILABLE_IN_2_82
+void                    g_notification_set_markup_body                  (GNotification *notification,
+                                                                         const gchar   *markup_body);
+
 GIO_AVAILABLE_IN_2_40
 void                    g_notification_set_icon                         (GNotification *notification,
                                                                          GIcon         *icon);
