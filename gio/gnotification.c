@@ -87,6 +87,7 @@ struct _GNotification
 
   gchar *title;
   gchar *body;
+  gchar *markup_body;
   GIcon *icon;
   GNotificationSound *sound;
   GNotificationPriority priority;
@@ -137,6 +138,7 @@ g_notification_finalize (GObject *object)
 
   g_free (notification->title);
   g_free (notification->body);
+  g_free (notification->markup_body);
   g_free (notification->category);
   g_free (notification->default_action);
   if (notification->default_action_target)
@@ -265,6 +267,51 @@ g_notification_set_body (GNotification *notification,
   g_free (notification->body);
 
   notification->body = g_strdup (body);
+}
+
+/*< private >
+ * g_notification_get_markup_body:
+ * @notification: a #GNotification
+ *
+ * Gets the current markup body of @notification.
+ *
+ * Returns: (nullable): the markup body of @notification
+ *
+ * Since: 2.82
+ */
+const gchar *
+g_notification_get_markup_body (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->markup_body;
+}
+
+/**
+ * g_notification_set_markup_body:
+ * @notification: a #GNotification
+ * @markup_body: (nullable): the new body using markup for @notification, or %NULL
+ *
+ * Sets the markup body of @notification to @markup_body.
+ *
+ * This currently supports the following markup:
+ *
+ * - `<b>...</b>` for bold text
+ * - `<i>...</i>` for italic text
+ * - `<a href="...">...</a>` for links
+ *
+ * Since: 2.82
+ */
+void
+g_notification_set_markup_body (GNotification *notification,
+                                const gchar   *markup_body)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (markup_body == NULL || *markup_body != '\0');
+
+  g_free (notification->markup_body);
+
+  notification->markup_body = g_strdup (markup_body);
 }
 
 /*< private >
