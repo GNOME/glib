@@ -174,7 +174,9 @@ The synchronous versions of functions can be used early in application
 startup when there is no main loop to block, for example to load initial
 configuration files. They can also be used for I/O on files which are
 guaranteed to be small and on the local disk. Note that the user’s home
-directory is not guaranteed to be on the local disk.  Security
+directory is not guaranteed to be on the local disk.
+
+### Security
 
 When your program needs to carry out some privileged operation (say, create
 a new user account), there are various ways in which you can go about this:
