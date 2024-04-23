@@ -339,19 +339,19 @@ typedef struct
 {
   gchar *rule;
   gchar *sender;
-  gchar *sender_unique_name; /* if sender is unique or org.freedesktop.DBus, then that name... otherwise blank */
   gchar *interface_name;
   gchar *member;
   gchar *object_path;
   gchar *arg0;
   GDBusSignalFlags flags;
   GPtrArray *subscribers;  /* (owned) (element-type SignalSubscriber) */
+  gboolean sender_is_its_own_owner;
 } SignalData;
 
 static SignalData *
 signal_data_new_take (gchar *rule,
                       gchar *sender,
-                      gchar *sender_unique_name,
+                      gboolean sender_is_its_own_owner,
                       gchar *interface_name,
                       gchar *member,
                       gchar *object_path,
@@ -362,7 +362,7 @@ signal_data_new_take (gchar *rule,
 
   signal_data->rule = rule;
   signal_data->sender = sender;
-  signal_data->sender_unique_name = sender_unique_name;
+  signal_data->sender_is_its_own_owner = sender_is_its_own_owner;
   signal_data->interface_name = interface_name;
   signal_data->member = member;
   signal_data->object_path = object_path;
@@ -377,7 +377,6 @@ signal_data_free (SignalData *signal_data)
 {
   g_free (signal_data->rule);
   g_free (signal_data->sender);
-  g_free (signal_data->sender_unique_name);
   g_free (signal_data->interface_name);
   g_free (signal_data->member);
   g_free (signal_data->object_path);
@@ -3453,7 +3452,7 @@ remove_match_rule (GDBusConnection *connection,
 static gboolean
 is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
 {
-  return g_strcmp0 (signal_data->sender_unique_name, "org.freedesktop.DBus") == 0 &&
+  return g_strcmp0 (signal_data->sender, "org.freedesktop.DBus") == 0 &&
          g_strcmp0 (signal_data->interface_name, "org.freedesktop.DBus") == 0 &&
          g_strcmp0 (signal_data->object_path, "/org/freedesktop/DBus") == 0 &&
          (g_strcmp0 (signal_data->member, "NameLost") == 0 ||
@@ -3465,7 +3464,8 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
 /* called in any thread, connection lock is held */
 static void
 add_signal_data (GDBusConnection *connection,
-                 SignalData      *signal_data)
+                 SignalData      *signal_data,
+                 const char      *sender_unique_name)
 {
   GPtrArray *signal_data_array;
 
@@ -3485,12 +3485,12 @@ add_signal_data (GDBusConnection *connection,
     }
 
   signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
-                                           signal_data->sender_unique_name);
+                                           sender_unique_name);
   if (signal_data_array == NULL)
     {
       signal_data_array = g_ptr_array_new ();
       g_hash_table_insert (connection->map_sender_unique_name_to_signal_data_array,
-                           g_strdup (signal_data->sender_unique_name),
+                           g_strdup (sender_unique_name),
                            signal_data_array);
     }
   g_ptr_array_add (signal_data_array, signal_data);
@@ -3587,6 +3587,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   gchar *rule;
   SignalData *signal_data;
   SignalSubscriber *subscriber;
+  gboolean sender_is_its_own_owner;
   const gchar *sender_unique_name;
 
   /* Right now we abort if AddMatch() fails since it can only fail with the bus being in
@@ -3622,6 +3623,11 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   rule = args_to_rule (sender, interface_name, member, object_path, arg0, flags);
 
   if (sender != NULL && (g_dbus_is_unique_name (sender) || g_strcmp0 (sender, "org.freedesktop.DBus") == 0))
+    sender_is_its_own_owner = TRUE;
+  else
+    sender_is_its_own_owner = FALSE;
+
+  if (sender_is_its_own_owner)
     sender_unique_name = sender;
   else
     sender_unique_name = "";
@@ -3645,14 +3651,14 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
   signal_data = signal_data_new_take (g_steal_pointer (&rule),
                                       g_strdup (sender),
-                                      g_strdup (sender_unique_name),
+                                      sender_is_its_own_owner,
                                       g_strdup (interface_name),
                                       g_strdup (member),
                                       g_strdup (object_path),
                                       g_strdup (arg0),
                                       flags);
   g_ptr_array_add (signal_data->subscribers, subscriber);
-  add_signal_data (connection, signal_data);
+  add_signal_data (connection, signal_data, sender_unique_name);
 
  out:
   g_hash_table_insert (connection->map_id_to_signal_data,
@@ -3676,22 +3682,28 @@ static void
 remove_signal_data_if_unused (GDBusConnection *connection,
                               SignalData *signal_data)
 {
+  const gchar *sender_unique_name;
   GPtrArray *signal_data_array;
 
   if (signal_data->subscribers->len != 0)
     return;
 
+  if (signal_data->sender_is_its_own_owner)
+    sender_unique_name = signal_data->sender;
+  else
+    sender_unique_name = "";
+
   g_warn_if_fail (g_hash_table_remove (connection->map_rule_to_signal_data, signal_data->rule));
 
   signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
-                                           signal_data->sender_unique_name);
+                                           sender_unique_name);
   g_warn_if_fail (signal_data_array != NULL);
   g_warn_if_fail (g_ptr_array_remove (signal_data_array, signal_data));
 
   if (signal_data_array->len == 0)
     {
       g_warn_if_fail (g_hash_table_remove (connection->map_sender_unique_name_to_signal_data_array,
-                                           signal_data->sender_unique_name));
+                                           sender_unique_name));
     }
 
   /* remove the match rule from the bus unless NameLost or NameAcquired (see subscribe()) */
