@@ -29,8 +29,8 @@
  * implements methods for getting information that all files should
  * contain, and allows for manipulation of extended attributes.
  *
- * See [file-attributes.html](file attributes) for more information on how GIO
- * handles file attributes.
+ * See the [file attributes](file-attributes.html) document for more
+ * information on how GIO handles file attributes.
  *
  * To obtain a `GFileInfo` for a [iface@Gio.File], use
  * [method@Gio.File.query_info] (or its async variant). To obtain a `GFileInfo`
