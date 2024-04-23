@@ -116,6 +116,7 @@ typedef struct
   const char *member;
   const char *arg0;
   GDBusSignalFlags flags;
+  gboolean unsubscribe_immediately;
 } TestSubscribe;
 
 typedef struct
@@ -141,6 +142,7 @@ typedef struct
     TestEmitSignal signal;
     TestSubscribe subscribe;
     TestOwnName own_name;
+    guint unsubscribe_undo_step;
   } u;
 } TestStep;
 
@@ -505,6 +507,43 @@ static const TestPlan plan_limit_by_well_known_name =
   },
 };
 
+static const TestPlan plan_unsubscribe_immediately =
+{
+  .description = "Unsubscribing before GetNameOwner can return doesn't result in a crash",
+  .steps = {
+    {
+      /* Service already owns one name */
+      .action = TEST_ACTION_OWN_NAME,
+      .u.own_name = {
+        .name = ALREADY_OWNED_NAME,
+        .owner = TEST_CONN_SERVICE
+      },
+    },
+    {
+      .action = TEST_ACTION_SUBSCRIBE,
+      .u.subscribe = {
+        .string_sender = ALREADY_OWNED_NAME,
+        .path = EXAMPLE_PATH,
+        .iface = EXAMPLE_INTERFACE,
+        .unsubscribe_immediately = TRUE
+      },
+    },
+    {
+      .action = TEST_ACTION_EMIT_SIGNAL,
+      .u.signal = {
+        .sender = TEST_CONN_SERVICE,
+        .path = EXAMPLE_PATH,
+        .iface = EXAMPLE_INTERFACE,
+        .member = FOO_SIGNAL,
+        .received_by_conn = 0,
+        /* The proxy can't unsubscribe, except by destroying the proxy
+         * completely, which we don't currently implement in this test */
+        .received_by_proxy = 1
+      },
+    },
+  },
+};
+
 static const TestPlan plan_limit_to_message_bus =
 {
   .description = "A subscription to the message bus only accepts messages "
@@ -855,8 +894,18 @@ fixture_subscribe (Fixture             *f,
                                                subscribe->flags,
                                                subscribed_signal_cb,
                                                f, NULL);
+
       g_assert_cmpuint (id, !=, 0);
-      f->subscriptions[step_number] = id;
+
+      if (subscribe->unsubscribe_immediately)
+        {
+          g_test_message ("\tImmediately unsubscribing");
+          g_dbus_connection_signal_unsubscribe (subscriber, id);
+        }
+      else
+        {
+          f->subscriptions[step_number] = id;
+        }
     }
 
   if (f->mode != SUBSCRIPTION_MODE_CONN)
@@ -1287,6 +1336,7 @@ main (int   argc,
   ADD_SUBSCRIBE_TEST (nonexistent_unique_name);
   ADD_SUBSCRIBE_TEST (limit_by_well_known_name);
   ADD_SUBSCRIBE_TEST (limit_to_message_bus);
+  ADD_SUBSCRIBE_TEST (unsubscribe_immediately);
 
   return g_test_run();
 }
