@@ -155,7 +155,7 @@ G_LOCK_DEFINE_STATIC (proc_mounts_source);
 
 /* Protected by proc_mounts_source lock */
 static guint64 mount_poller_time = 0;
-static GSource *proc_mounts_watch_source;
+static GSource *proc_mounts_watch_source = NULL;
 
 #ifdef HAVE_SYS_MNTTAB_H
 #define MNTOPT_RO	"ro"
@@ -1921,11 +1921,10 @@ proc_mounts_changed (GIOChannel   *channel,
         }
       G_UNLOCK (proc_mounts_source);
     }
+#endif
 
-#else
   if (cond & G_IO_ERR)
     has_changed = TRUE;
-#endif
 
   if (has_changed)
     {
@@ -2066,14 +2065,20 @@ mount_monitor_start (void)
             }
           else
             {
-              g_set_error_literal (&error, G_IO_ERROR, g_io_error_from_errno (-ret),
-                                   g_strerror (-ret));
+              g_debug ("mnt_monitor_get_fd failed: %s", g_strerror (-ret));
+              g_clear_pointer (&proc_mounts_monitor, mnt_unref_monitor);
+
+              /* The mnt_monitor_get_fd function failed e.g. inotify limits are
+               * exceeded. Let's try to silently fallback to the old behavior.
+               * See: https://gitlab.gnome.org/GNOME/tracker-miners/-/issues/315
+               */
             }
 
           G_UNLOCK (proc_mounts_source);
-#else
-          proc_mounts_channel = g_io_channel_new_file (mtab_path, "r", &error);
 #endif
+          if (proc_mounts_channel == NULL)
+            proc_mounts_channel = g_io_channel_new_file (mtab_path, "r", &error);
+
           if (proc_mounts_channel == NULL)
             {
               g_warning ("Error creating IO channel for %s: %s (%s, %d)", mtab_path,
@@ -2085,10 +2090,12 @@ mount_monitor_start (void)
               G_LOCK (proc_mounts_source);
 
 #ifdef HAVE_LIBMOUNT
-              proc_mounts_watch_source = g_io_create_watch (proc_mounts_channel, G_IO_IN);
-#else
-              proc_mounts_watch_source = g_io_create_watch (proc_mounts_channel, G_IO_ERR);
+              if (proc_mounts_monitor != NULL)
+                proc_mounts_watch_source = g_io_create_watch (proc_mounts_channel, G_IO_IN);
 #endif
+              if (proc_mounts_watch_source == NULL)
+                proc_mounts_watch_source = g_io_create_watch (proc_mounts_channel, G_IO_ERR);
+
               mount_poller_time = (guint64) g_get_monotonic_time ();
               g_source_set_callback (proc_mounts_watch_source,
                                      (GSourceFunc) proc_mounts_changed,
