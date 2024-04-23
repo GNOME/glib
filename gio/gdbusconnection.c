@@ -3462,6 +3462,42 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* called in any thread, connection lock is held */
+static void
+add_signal_data (GDBusConnection *connection,
+                 SignalData      *signal_data)
+{
+  GPtrArray *signal_data_array;
+
+  g_hash_table_insert (connection->map_rule_to_signal_data,
+                       signal_data->rule,
+                       signal_data);
+
+  /* Add the match rule to the bus...
+   *
+   * Avoid adding match rules for NameLost and NameAcquired messages - the bus will
+   * always send such messages to us.
+   */
+  if (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
+    {
+      if (!is_signal_data_for_name_lost_or_acquired (signal_data))
+        add_match_rule (connection, signal_data->rule);
+    }
+
+  signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
+                                           signal_data->sender_unique_name);
+  if (signal_data_array == NULL)
+    {
+      signal_data_array = g_ptr_array_new ();
+      g_hash_table_insert (connection->map_sender_unique_name_to_signal_data_array,
+                           g_strdup (signal_data->sender_unique_name),
+                           signal_data_array);
+    }
+  g_ptr_array_add (signal_data_array, signal_data);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 /**
  * g_dbus_connection_signal_subscribe:
  * @connection: a #GDBusConnection
@@ -3551,7 +3587,6 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   gchar *rule;
   SignalData *signal_data;
   SignalSubscriber *subscriber;
-  GPtrArray *signal_data_array;
   const gchar *sender_unique_name;
 
   /* Right now we abort if AddMatch() fails since it can only fail with the bus being in
@@ -3617,32 +3652,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
                                       g_strdup (arg0),
                                       flags);
   g_ptr_array_add (signal_data->subscribers, subscriber);
-
-  g_hash_table_insert (connection->map_rule_to_signal_data,
-                       signal_data->rule,
-                       signal_data);
-
-  /* Add the match rule to the bus...
-   *
-   * Avoid adding match rules for NameLost and NameAcquired messages - the bus will
-   * always send such messages to us.
-   */
-  if (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
-    {
-      if (!is_signal_data_for_name_lost_or_acquired (signal_data))
-        add_match_rule (connection, signal_data->rule);
-    }
-
-  signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
-                                           signal_data->sender_unique_name);
-  if (signal_data_array == NULL)
-    {
-      signal_data_array = g_ptr_array_new ();
-      g_hash_table_insert (connection->map_sender_unique_name_to_signal_data_array,
-                           g_strdup (signal_data->sender_unique_name),
-                           signal_data_array);
-    }
-  g_ptr_array_add (signal_data_array, signal_data);
+  add_signal_data (connection, signal_data);
 
  out:
   g_hash_table_insert (connection->map_id_to_signal_data,
