@@ -169,7 +169,9 @@ glib_tests = {
   'tree' : {},
   'types' : {},
   'utf8-performance' : {},
-  'utf8-pointer' : {},
+  'utf8-pointer' : {
+    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=cast-qual'] : [],
+  },
   'utf8-validate' : {},
   'utf8-misc' : {},
   'utils' : {
