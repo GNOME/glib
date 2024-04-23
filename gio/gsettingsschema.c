@@ -1055,7 +1055,16 @@ gboolean
 g_settings_schema_has_key (GSettingsSchema *schema,
                            const gchar     *key)
 {
-  return gvdb_table_has_value (schema->table, key);
+  GSettingsSchema *s;
+
+  if(gvdb_table_has_value (schema->table, key))
+    return TRUE;
+
+  for (s = schema; s; s = s->extends)
+    if(gvdb_table_has_value (s->table, key))
+      return TRUE;
+
+  return FALSE;
 }
 
 /**
