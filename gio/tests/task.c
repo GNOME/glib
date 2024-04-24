@@ -1470,7 +1470,7 @@ test_run_in_thread_overflow (void)
   GCancellable *cancellable;
   GTask *task;
   gchar buf[NUM_OVERFLOW_TASKS + 1];
-  gint i;
+  size_t i;
 
   /* Queue way too many tasks and then sleep for a bit. The first 10
    * tasks will be dispatched to threads and will then block on
@@ -1516,13 +1516,13 @@ test_run_in_thread_overflow (void)
    * plausibly get (and we hope that if gtask is actually broken then
    * it will exceed those limits).
    */
-  g_assert_cmpint (i, >=, 10);
+  g_assert_cmpuint (i, >=, 10);
   if (g_test_slow ())
-    g_assert_cmpint (i, <, 50);
+    g_assert_cmpuint (i, <, 50);
   else
-    g_assert_cmpint (i, <, 20);
+    g_assert_cmpuint (i, <, 20);
 
-  g_assert_cmpint (i + strspn (buf + i, "X"), ==, NUM_OVERFLOW_TASKS);
+  g_assert_cmpuint (i + strspn (buf + i, "X"), ==, NUM_OVERFLOW_TASKS);
 }
 
 /* test_return_on_cancel */

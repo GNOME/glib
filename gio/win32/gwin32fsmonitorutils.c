@@ -160,8 +160,8 @@ g_win32_fs_monitor_callback (DWORD        error,
 
           if (monitor->isfile)
             {
-              gint long_filename_length = wcslen (monitor->wfilename_long);
-              gint short_filename_length = wcslen (monitor->wfilename_short);
+              size_t long_filename_length = wcslen (monitor->wfilename_long);
+              size_t short_filename_length = wcslen (monitor->wfilename_short);
               enum GWin32FileMonitorFileAlias alias_state;
 
               /* If monitoring a file, check that the changed file

@@ -113,7 +113,7 @@ is_valid_name (const gchar *start,
 gboolean
 g_dbus_is_name (const gchar *string)
 {
-  guint len;
+  size_t len;
   gboolean ret;
   const gchar *s;
 

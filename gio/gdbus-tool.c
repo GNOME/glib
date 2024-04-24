@@ -1373,7 +1373,7 @@ dump_method (const GDBusMethodInfo *o,
 {
   guint n;
   guint m;
-  guint name_len;
+  size_t name_len;
   guint total_num_args;
 
   for (n = 0; o->annotations != NULL && o->annotations[n] != NULL; n++)

@@ -318,7 +318,7 @@ static const char *
 match_prefix (const char *path,
               const char *prefix)
 {
-  int prefix_len;
+  size_t prefix_len;
 
   prefix_len = strlen (prefix);
   if (strncmp (path, prefix, prefix_len) != 0)

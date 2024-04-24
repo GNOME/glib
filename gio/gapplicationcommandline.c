@@ -666,8 +666,8 @@ const gchar *
 g_application_command_line_getenv (GApplicationCommandLine *cmdline,
                                    const gchar             *name)
 {
-  gint length = strlen (name);
-  gint i;
+  size_t length = strlen (name);
+  size_t i;
 
   /* TODO: expand on windows */
   if (cmdline->priv->environ)
