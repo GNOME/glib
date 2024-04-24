@@ -327,10 +327,10 @@ static gboolean
 token_stream_peek_string (TokenStream *stream,
                           const gchar *token)
 {
-  gint length = strlen (token);
+  size_t length = strlen (token);
 
   return token_stream_prepare (stream) &&
-         stream->stream - stream->this == length &&
+         (size_t) (stream->stream - stream->this) == length &&
          memcmp (stream->this, token, length) == 0;
 }
 

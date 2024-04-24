@@ -133,7 +133,7 @@ array_new_zero_terminated (void)
   garray = g_array_new (TRUE, FALSE, sizeof (gchar));
   g_assert_cmpuint (garray->len, ==, 0);
 
-  g_array_append_vals (garray, "hello", strlen ("hello"));
+  g_array_append_vals (garray, "hello", (guint) strlen ("hello"));
   g_assert_cmpuint (garray->len, ==, 5);
   g_assert_cmpstr (garray->data, ==, "hello");
 

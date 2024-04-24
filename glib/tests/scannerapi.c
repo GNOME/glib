@@ -111,7 +111,7 @@ test_scanner_tokens (ScannerFixture *fix,
                      gconstpointer   test_data)
 {
   gchar buf[] = "(\t\n\r\\){}";
-  const gint buflen = strlen (buf);
+  const size_t buflen = strlen (buf);
   gchar tokbuf[] = "(\\){}";
   const gsize tokbuflen = strlen (tokbuf);
   gsize i;

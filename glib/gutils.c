@@ -196,7 +196,7 @@ g_find_program_in_path (const gchar *program)
       strchr (last_dot, '\\') != NULL ||
       strchr (last_dot, '/') != NULL)
     {
-      const gint program_length = strlen (program);
+      const size_t program_length = strlen (program);
       gchar *pathext = g_build_path (";",
 				     ".exe;.cmd;.bat;.com",
 				     g_getenv ("PATHEXT"),

@@ -3268,7 +3268,7 @@ g_date_time_format_utf8 (GDateTime   *datetime,
 			 GString     *outstr,
 			 gboolean     locale_is_utf8)
 {
-  guint     len;
+  size_t len;
   guint     colons;
   gunichar  c;
   gboolean  alt_digits = FALSE;

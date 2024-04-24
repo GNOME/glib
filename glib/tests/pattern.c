@@ -37,9 +37,9 @@ typedef enum
 struct _GPatternSpec
 {
   GMatchType match_type;
-  guint      pattern_length;
-  guint      min_length;
-  guint      max_length;
+  size_t     pattern_length;
+  size_t     min_length;
+  size_t     max_length;
   gchar     *pattern;
 };
 
@@ -50,7 +50,7 @@ struct _CompileTest
   const gchar *src;
   GMatchType match_type;
   gchar *pattern;
-  guint min;
+  size_t min;
 };
 
 static CompileTest compile_tests[] = {
@@ -80,8 +80,8 @@ test_compilation (gconstpointer d)
 
   g_assert_cmpint (spec->match_type, ==, test->match_type);
   g_assert_cmpstr (spec->pattern, ==, test->pattern);
-  g_assert_cmpint (spec->pattern_length, ==, strlen (spec->pattern));
-  g_assert_cmpint (spec->min_length, ==, test->min);
+  g_assert_cmpuint (spec->pattern_length, ==, strlen (spec->pattern));
+  g_assert_cmpuint (spec->min_length, ==, test->min);
 
   g_pattern_spec_free (spec);
 }
@@ -97,8 +97,8 @@ test_copy (gconstpointer d)
 
   g_assert_cmpint (p2->match_type, ==, test->match_type);
   g_assert_cmpstr (p2->pattern, ==, test->pattern);
-  g_assert_cmpint (p2->pattern_length, ==, strlen (p1->pattern));
-  g_assert_cmpint (p2->min_length, ==, test->min);
+  g_assert_cmpuint (p2->pattern_length, ==, strlen (p1->pattern));
+  g_assert_cmpuint (p2->min_length, ==, test->min);
 
   g_pattern_spec_free (p1);
   g_pattern_spec_free (p2);
@@ -186,7 +186,8 @@ test_match (gconstpointer d)
   r = g_utf8_strreverse (test->string, -1);
   g_assert_cmpint (g_pattern_spec_match (p, strlen (test->string), test->string, r), ==, test->match);
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  g_assert_cmpint (g_pattern_match (p, strlen (test->string), test->string, r), ==, test->match);
+  g_assert_cmpuint (strlen (test->string), <=, G_MAXUINT);
+  g_assert_cmpint (g_pattern_match (p, (guint) strlen (test->string), test->string, r), ==, test->match);
   G_GNUC_END_IGNORE_DEPRECATIONS
   g_free (r);
 

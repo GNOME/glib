@@ -1461,7 +1461,7 @@ parse_long_option (GOptionContext *context,
         }
       else
         {
-          gint len = strlen (group->entries[j].long_name);
+          size_t len = strlen (group->entries[j].long_name);
 
           if (strncmp (arg, group->entries[j].long_name, len) == 0 &&
               (arg[len] == '=' || arg[len] == 0))

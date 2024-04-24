@@ -455,7 +455,7 @@ test_tree_insert (void)
 {
   GTree *tree;
   gchar *p;
-  gint i;
+  size_t i;
   gchar *scrambled;
 
   tree = g_tree_new (my_compare);
@@ -468,8 +468,8 @@ test_tree_insert (void)
   g_tree_unref (tree);
   tree = g_tree_new (my_compare);
 
-  for (i = strlen (chars) - 1; i >= 0; i--)
-    g_tree_insert (tree, &chars[i], &chars[i]);
+  for (i = strlen (chars); i > 0; i--)
+    g_tree_insert (tree, &chars[i - 1], &chars[i - 1]);
   p = chars;
   g_tree_foreach (tree, check_order, &p);
 
