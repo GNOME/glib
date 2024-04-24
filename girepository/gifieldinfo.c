@@ -190,7 +190,7 @@ gi_field_info_get_field (GIFieldInfo *field_info,
                          void        *mem,
                          GIArgument  *value)
 {
-  int offset;
+  size_t offset;
   GITypeInfo *type_info;
   gboolean result = FALSE;
 
@@ -385,7 +385,7 @@ gi_field_info_set_field (GIFieldInfo      *field_info,
                          void             *mem,
                          const GIArgument *value)
 {
-  int offset;
+  size_t offset;
   GITypeInfo *type_info;
   gboolean result = FALSE;
 

@@ -1338,7 +1338,8 @@ gi_ir_writer_write (GIRepository *repository,
                     gboolean    show_all)
 {
   FILE *ofile;
-  size_t i, j;
+  size_t i;
+  unsigned int j;
   char **dependencies;
   Xml *xml;
 
