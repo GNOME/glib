@@ -930,7 +930,7 @@ g_ascii_formatd (gchar       *buffer,
   const char *decimal_point;
   gsize decimal_point_len;
   gchar *p;
-  int rest_len;
+  size_t rest_len;
   gchar format_char;
 
   g_return_val_if_fail (buffer != NULL, NULL);

@@ -651,7 +651,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
   GITypeInfo *rinfo;
   GITypeTag rtag;
   GIArgInfo *ainfo;
-  size_t n_args, n_invoke_args, in_pos, out_pos, i;
+  unsigned int n_args, n_invoke_args, in_pos, out_pos, i;
   void **args;
   gboolean success = FALSE;
   GError *local_error = NULL;

@@ -65,9 +65,9 @@ typedef enum
 struct _GPatternSpec
 {
   GMatchType match_type;
-  guint      pattern_length;
-  guint      min_length;
-  guint      max_length;
+  size_t     pattern_length;
+  size_t     min_length;
+  size_t     max_length;
   gchar     *pattern;
 };
 

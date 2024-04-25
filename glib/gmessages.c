@@ -1420,9 +1420,9 @@ win32_is_pipe_tty (int fd)
   gboolean result = FALSE;
   HANDLE h_fd;
   FILE_NAME_INFO *info = NULL;
-  gint info_size = sizeof (FILE_NAME_INFO) + sizeof (WCHAR) * MAX_PATH;
+  size_t info_size = sizeof (FILE_NAME_INFO) + sizeof (WCHAR) * MAX_PATH;
   wchar_t *name = NULL;
-  gint length;
+  size_t length;
 
   h_fd = (HANDLE) _get_osfhandle (fd);
 

@@ -680,7 +680,7 @@ key_state_serialise (KeyState *state)
 
               if (state->l10n_context)
                 {
-                  gint len;
+                  size_t len;
 
                   /* Contextified messages are supported by prepending
                    * the context, followed by '\004' to the start of the

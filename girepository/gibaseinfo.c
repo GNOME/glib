@@ -223,12 +223,14 @@ gi_base_info_type_register_static (const char     *type_name,
 {
   GTypeInfo info;
 
+  g_assert (instance_size <= G_MAXUINT16);
+
   info.class_size = sizeof (GIBaseInfoClass);
   info.base_init = NULL;
   info.base_finalize = NULL;
   info.class_init = class_init;
   info.class_finalize = NULL;
-  info.instance_size = instance_size;
+  info.instance_size = (guint16) instance_size;
   info.n_preallocs = 0;
   info.instance_init = NULL;
   info.value_table = NULL;

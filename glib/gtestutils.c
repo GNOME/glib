@@ -3035,7 +3035,7 @@ static gboolean
 path_has_prefix (const char *path,
                  const char *prefix)
 {
-  int prefix_len = strlen (prefix);
+  size_t prefix_len = strlen (prefix);
 
   return (strncmp (path, prefix, prefix_len) == 0 &&
           (path[prefix_len] == '\0' ||

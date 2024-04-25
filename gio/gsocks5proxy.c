@@ -114,10 +114,10 @@ g_socks5_proxy_init (GSocks5Proxy *proxy)
  * +----+----------+----------+
  */
 #define SOCKS5_NEGO_MSG_LEN	  4
-static gint
+static size_t
 set_nego_msg (guint8 *msg, gboolean has_auth)
 {
-  gint len = 3;
+  size_t len = 3;
 
   msg[0] = SOCKS5_VERSION;
   msg[1] = 0x01; /* number of methods supported */
@@ -200,15 +200,20 @@ parse_nego_reply (const guint8 *data,
 }
 
 #define SOCKS5_AUTH_MSG_LEN       515
-static gint
-set_auth_msg (guint8	  *msg,
-	      const gchar *username,
-	      const gchar *password,
-	      GError **error)
+static gboolean
+set_auth_msg (guint8       *msg,
+              const gchar  *username,
+              const gchar  *password,
+              size_t       *out_len,
+              GError      **error)
 {
-  gint len = 0;
-  gint ulen = 0; /* username length */
-  gint plen = 0; /* Password length */
+  size_t len = 0;
+  size_t ulen = 0; /* username length */
+  size_t plen = 0; /* Password length */
+
+  /* Clear output first */
+  if (out_len != NULL)
+    *out_len = 0;
 
   if (username)
     ulen = strlen (username);
@@ -221,7 +226,7 @@ set_auth_msg (guint8	  *msg,
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
 			   _("Username or password is too long for SOCKSv5 "
 			     "protocol."));
-      return -1;
+      return FALSE;
     }
 
   msg[len++] = SOCKS5_AUTH_VERSION;
@@ -238,7 +243,10 @@ set_auth_msg (guint8	  *msg,
 
   len += plen;
 
-  return len;
+  if (out_len != NULL)
+    *out_len = len;
+
+  return TRUE;
 }
 
 
@@ -266,13 +274,18 @@ check_auth_status (const guint8 *data, GError **error)
  * longer then 256 bytes.
  */
 #define SOCKS5_CONN_MSG_LEN	  262
-static gint
+static gboolean
 set_connect_msg (guint8       *msg,
-		 const gchar *hostname,
-		 guint16      port,
-		 GError     **error)
+                 const gchar  *hostname,
+                 guint16       port,
+                 size_t       *out_len,
+                 GError      **error)
 {
-  guint len = 0;
+  size_t len = 0;
+
+  /* Clear output first */
+  if (out_len != NULL)
+    *out_len = 0;
 
   msg[len++] = SOCKS5_VERSION;
   msg[len++] = SOCKS5_CMD_CONNECT;
@@ -301,7 +314,7 @@ set_connect_msg (guint8       *msg,
 	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
 		       _("Hostname “%s” is too long for SOCKSv5 protocol"),
 		       hostname);
-	  return -1;
+	  return FALSE;
 	}
 
       msg[len++] = SOCKS5_ATYP_DOMAINNAME;
@@ -316,7 +329,10 @@ set_connect_msg (guint8       *msg,
       len += 2;
     }
 
-  return len;
+  if (out_len != NULL)
+    *out_len = len;
+
+  return TRUE;
 }
 
 /*
@@ -447,7 +463,7 @@ g_socks5_proxy_connect (GProxy            *proxy,
   /* Send SOCKS5 handshake */
     {
       guint8 msg[SOCKS5_NEGO_MSG_LEN];
-      gint len;
+      size_t len;
 
       len = set_nego_msg (msg, has_auth);
 
@@ -471,12 +487,10 @@ g_socks5_proxy_connect (GProxy            *proxy,
       if (must_auth)
 	{
 	  guint8 msg[SOCKS5_AUTH_MSG_LEN];
-	  gint len;
+	  size_t len;
 
-	  len = set_auth_msg (msg, username, password, error);
-
-	  if (len < 0)
-	    goto error;
+	  if (!set_auth_msg (msg, username, password, &len, error))
+            goto error;
 	  
 	  if (!g_output_stream_write_all (out, msg, len, NULL,
 					  cancellable, error))
@@ -494,12 +508,10 @@ g_socks5_proxy_connect (GProxy            *proxy,
   /* Send SOCKS5 connection request */
     {
       guint8 msg[SOCKS5_CONN_MSG_LEN];
-      gint len;
+      size_t len;
       
-      len = set_connect_msg (msg, hostname, port, error);
-
-      if (len < 0)
-	goto error;
+      if (!set_connect_msg (msg, hostname, port, &len, error))
+        goto error;
 
       if (!g_output_stream_write_all (out, msg, len, NULL,
 				      cancellable, error))
@@ -561,8 +573,8 @@ typedef struct
   gchar *username;
   gchar *password;
   guint8 *buffer;
-  gssize length;
-  gssize offset;
+  size_t length;
+  size_t offset;
 } ConnectAsyncData;
 
 static void nego_msg_write_cb	      (GObject          *source,
@@ -751,13 +763,13 @@ nego_reply_read_cb (GObject      *source,
 	  g_free (data->buffer);
 
 	  data->buffer = g_malloc0 (SOCKS5_AUTH_MSG_LEN);
-	  data->length = set_auth_msg (data->buffer,
-				       data->username,
-				       data->password,
-				       &error);
-	  data->offset = 0;
+          data->offset = 0;
 
-	  if (data->length < 0)
+          if (!set_auth_msg (data->buffer,
+                             data->username,
+                             data->password,
+                             &data->length,
+                             &error))
 	    {
 	      g_task_return_error (task, error);
 	      g_object_unref (task);
@@ -873,13 +885,13 @@ send_connect_msg (GTask *task)
   g_free (data->buffer);
 
   data->buffer = g_malloc0 (SOCKS5_CONN_MSG_LEN);
-  data->length = set_connect_msg (data->buffer,
-				  data->hostname,
-				  data->port,
-				  &error);
   data->offset = 0;
-  
-  if (data->length < 0)
+
+  if (!set_connect_msg (data->buffer,
+                        data->hostname,
+                        data->port,
+                        &data->length,
+                        &error))
     {
       g_task_return_error (task, error);
       g_object_unref (task);

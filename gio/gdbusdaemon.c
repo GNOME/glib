@@ -543,7 +543,8 @@ match_matches (GDBusDaemon *daemon,
 {
   MatchElement *element;
   Name *name;
-  int i, len, len2;
+  int i;
+  size_t len, len2;
   const char *value;
   int check_type;
 

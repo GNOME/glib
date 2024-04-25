@@ -2852,7 +2852,7 @@ append_value_to_blob (GVariant            *value,
               const gchar *signature;
               child = g_variant_get_child_value (value, 0);
               signature = g_variant_get_type_string (child);
-              g_memory_buffer_put_byte (mbuf, strlen (signature));
+              g_memory_buffer_put_byte (mbuf, (guint8) strlen (signature));  /* signature is already validated to be this short */
               g_memory_buffer_put_string (mbuf, signature);
               g_memory_buffer_put_byte (mbuf, '\0');
               if (!append_value_to_blob (child,

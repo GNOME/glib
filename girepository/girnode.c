@@ -571,7 +571,7 @@ gi_ir_node_get_size (GIIrNode *node)
 
   g_assert (size <= G_MAXUINT32);
 
-  return size;
+  return (guint32) size;
 }
 
 static void

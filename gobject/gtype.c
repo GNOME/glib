@@ -1073,7 +1073,7 @@ type_data_make_W (TypeNode              *node,
 {
   TypeData *data;
   GTypeValueTable *vtable = NULL;
-  guint vtable_size = 0;
+  size_t vtable_size = 0;
   
   g_assert (node->data == NULL && info != NULL);
   

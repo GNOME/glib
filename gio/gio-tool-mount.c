@@ -89,7 +89,7 @@ prompt_for (const char *prompt, const char *default_value, gboolean echo)
   gboolean restore_flags;
 #endif
   char data[256];
-  int len;
+  size_t len;
 
   if (default_value && *default_value != 0)
     g_print ("%s [%s]: ", prompt, default_value);

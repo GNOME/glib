@@ -313,7 +313,7 @@ invalid_mutation (const gchar *type_string)
 
   /* else, perform a random mutation at a random point */
   {
-    gint length, n;
+    size_t length, n;
     gchar *new;
     gchar p;
 
