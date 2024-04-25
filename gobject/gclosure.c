@@ -130,15 +130,6 @@ G_STMT_START {                                                                  
 #define ATOMIC_DEC(_closure, _field)                   ATOMIC_CHANGE_FIELD (_closure, _field, -=,     1, TRUE,     (void),     (void) )
 #define ATOMIC_DEC_ASSIGN(_closure, _field, _newv)     ATOMIC_CHANGE_FIELD (_closure, _field, -=,     1, TRUE,     (void), *(_newv) = )
 
-#if 0   /* for non-thread-safe closures */
-#define ATOMIC_SWAP(cl,f,v,o)     (void) (*(o) = cl->f, cl->f = v)
-#define ATOMIC_SET(cl,f,v)        (void) (cl->f = v)
-#define ATOMIC_INC(cl,f)          (void) (cl->f += 1)
-#define ATOMIC_INC_ASSIGN(cl,f,n) (void) (cl->f += 1, *(n) = cl->f)
-#define ATOMIC_DEC(cl,f)          (void) (cl->f -= 1)
-#define ATOMIC_DEC_ASSIGN(cl,f,n) (void) (cl->f -= 1, *(n) = cl->f)
-#endif
-
 enum {
   FNOTIFY,
   INOTIFY,
