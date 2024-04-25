@@ -4620,7 +4620,7 @@ g_variant_format_string_scan_type (const gchar  *string,
                                    const gchar **endptr)
 {
   const gchar *my_end;
-  gchar *dest;
+  gsize i;
   gchar *new;
 
   if (endptr == NULL)
@@ -4629,16 +4629,19 @@ g_variant_format_string_scan_type (const gchar  *string,
   if (!g_variant_format_string_scan (string, limit, endptr))
     return NULL;
 
-  dest = new = g_malloc (*endptr - string + 1);
+  new = g_malloc (*endptr - string + 1);
+  i = 0;
   while (string != *endptr)
     {
       if (*string != '@' && *string != '&' && *string != '^')
-        *dest++ = *string;
+        new[i++] = *string;
       string++;
     }
-  *dest = '\0';
+  new[i++] = '\0';
 
-  return (GVariantType *) G_VARIANT_TYPE (new);
+  g_assert (g_variant_type_string_is_valid (new));
+
+  return (GVariantType *) new;
 }
 
 static gboolean

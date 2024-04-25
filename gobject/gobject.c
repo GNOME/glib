@@ -5606,6 +5606,7 @@ _weak_ref_set (GWeakRef *weak_ref,
   if (new_object)
     {
 #if G_ENABLE_DEBUG
+      g_assert (new_wrdata != NULL);
       g_assert (weak_ref_data_list_find (new_wrdata, weak_ref) < 0);
 #endif
       if (g_atomic_int_get (&new_object->ref_count) < 1)

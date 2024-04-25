@@ -199,6 +199,16 @@ name_ref (Name *name)
 static void
 name_unref (Name *name)
 {
+  /* scan-build with clang-17 can’t follow the refcounting of `Name` structs
+   * throughout this file. Probably because there are structures like `NameOwner`
+   * which cause a ref to be added to a `Name` while they exist, but which don’t
+   * actually have a pointer to the `Name`, so the unref of the `Name` when they
+   * are freed looks like a double-unref.
+   *
+   * So, until the static analysis improves, or we find some way to restructure
+   * the code, squash the false positive use-after-free or double-unref warnings
+   * by making this function a no-op to the static analyser. */
+#ifndef G_ANALYZER_ANALYZING
   g_assert (name->refcount > 0);
   if (--name->refcount == 0)
     {
@@ -206,6 +216,7 @@ name_unref (Name *name)
       g_free (name->name);
       g_free (name);
     }
+#endif
 }
 
 static Name *

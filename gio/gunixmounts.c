@@ -2079,7 +2079,7 @@ mount_monitor_start (void)
           if (proc_mounts_channel == NULL)
             proc_mounts_channel = g_io_channel_new_file (mtab_path, "r", &error);
 
-          if (proc_mounts_channel == NULL)
+          if (error != NULL)
             {
               g_warning ("Error creating IO channel for %s: %s (%s, %d)", mtab_path,
                          error->message, g_quark_to_string (error->domain), error->code);

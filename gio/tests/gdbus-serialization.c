@@ -543,7 +543,7 @@ get_and_check_serialization (GVariant *value)
   /* First check that the serialization to the D-Bus wire format is correct - do this for both byte orders */
   for (n = 0; n < 2; n++)
     {
-      GDBusMessageByteOrder byte_order;
+      GDBusMessageByteOrder byte_order = G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN;
       switch (n)
         {
         case 0:

@@ -670,6 +670,9 @@ parse_type_internal (GIIrModule   *module,
       type->is_pointer = TRUE;
       str += strlen ("Error");
 
+      /* Silence a scan-build false positive */
+      g_assert (str != NULL);
+
       if (*str == '<')
         {
           char *tmp, *end;
