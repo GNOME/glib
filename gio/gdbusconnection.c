@@ -1897,6 +1897,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
 
   if (out_serial == NULL)
     out_serial = &serial;
+  *out_serial = 0;
 
   if (timeout_msec == -1)
     timeout_msec = 25 * 1000;
@@ -5363,6 +5364,9 @@ g_dbus_connection_register_object (GDBusConnection             *connection,
  out:
   CONNECTION_UNLOCK (connection);
 
+  if (ret == 0 && user_data_free_func != NULL)
+    user_data_free_func (user_data);
+
   return ret;
 }
 
@@ -7018,6 +7022,9 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
 
  out:
   CONNECTION_UNLOCK (connection);
+
+  if (ret == 0 && user_data_free_func != NULL)
+    user_data_free_func (user_data);
 
   return ret;
 }
