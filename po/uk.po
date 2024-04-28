@@ -10,17 +10,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-29 10:40+0000\n"
-"PO-Revision-Date: 2024-02-29 20:20+0200\n"
+"POT-Creation-Date: 2024-03-27 18:32+0000\n"
+"PO-Revision-Date: 2024-04-28 09:01+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"Language-Team: Ukrainian\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 23.04.1\n"
+"X-Generator: Lokalize 23.04.3\n"
 
 #: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
@@ -281,8 +281,11 @@ msgstr "не вдалося знайти desktop-файл для програм�
 
 #: gio/gapplication-tool.c:473
 #, c-format
+#| msgid ""
+#| "unrecognised command: %s\n"
+#| "\n"
 msgid ""
-"unrecognised command: %s\n"
+"unrecognized command: %s\n"
 "\n"
 msgstr ""
 "нерозпізнана команда %s\n"
@@ -620,10 +623,10 @@ msgstr "Сталася помилка при створенні каталогу
 #: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1105 gio/gfile.c:1343
 #: gio/gfile.c:1481 gio/gfile.c:1718 gio/gfile.c:1773 gio/gfile.c:1831
 #: gio/gfile.c:1915 gio/gfile.c:1972 gio/gfile.c:2036 gio/gfile.c:2091
-#: gio/gfile.c:3969 gio/gfile.c:4108 gio/gfile.c:4515 gio/gfile.c:4980
-#: gio/gfile.c:5392 gio/gfile.c:5477 gio/gfile.c:5567 gio/gfile.c:5664
-#: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9004 gio/gfile.c:9094
-#: gio/gfile.c:9178 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:4086 gio/gfile.c:4261 gio/gfile.c:4668 gio/gfile.c:5133
+#: gio/gfile.c:5545 gio/gfile.c:5630 gio/gfile.c:5720 gio/gfile.c:5817
+#: gio/gfile.c:5904 gio/gfile.c:6003 gio/gfile.c:9157 gio/gfile.c:9247
+#: gio/gfile.c:9331 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Операція не підтримується"
 
@@ -1546,33 +1549,33 @@ msgstr "Не вдалося отримати атрибут %s"
 msgid "Can’t copy special file"
 msgstr "Не вдалося скопіювати спеціальний файл"
 
-#: gio/gfile.c:4332
+#: gio/gfile.c:4485
 msgid "Invalid symlink value given"
 msgstr "Неправильне значення символьного посилання"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2404
+#: gio/gfile.c:4495 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "Символічні посилання не підтримуються"
 
-#: gio/gfile.c:4623
+#: gio/gfile.c:4776
 msgid "Trash not supported"
 msgstr "Смітник не підтримується"
 
-#: gio/gfile.c:4733
+#: gio/gfile.c:4886
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Назви файлів не можуть містити символу «%c»"
 
-#: gio/gfile.c:7159 gio/gfile.c:7285
+#: gio/gfile.c:7312 gio/gfile.c:7438
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Не вдалося створити тимчасовий каталог для шаблону «%s»: %s"
 
-#: gio/gfile.c:7603 gio/gvolume.c:362
+#: gio/gfile.c:7756 gio/gvolume.c:362
 msgid "volume doesn’t implement mount"
 msgstr "для тому не реалізовано операцію монтування"
 
-#: gio/gfile.c:7717 gio/gfile.c:7794
+#: gio/gfile.c:7870 gio/gfile.c:7947
 msgid "No application is registered as handling this file"
 msgstr "Програм для обробки таких файлів не зареєстровано"
 
@@ -5287,7 +5290,7 @@ msgstr "Помилка відкривання каталогу «%s»: %s"
 #. Translators: the first %s contains the file size
 #. * (already formatted with units), and the second %s
 #. * contains the file name
-#: glib/gfileutils.c:720
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
 #, c-format
 msgid "Could not allocate %s to read file “%s”"
 msgstr "Не вдалося розмістити у пам'яті %s для читання файла «%s»"
@@ -5302,74 +5305,67 @@ msgstr "Помилка при читанні файла «%s»: %s"
 msgid "File “%s” is too large"
 msgstr "Файл «%s» занадто великий"
 
-#: glib/gfileutils.c:825
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "Не вдалося розмістити %"
-msgstr[1] "Не вдалося розмістити %"
-msgstr[2] "Не вдалося розмістити %"
-
-#: glib/gfileutils.c:850
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Помилка зчитування з файла «%s»: %s"
 
-#: glib/gfileutils.c:900 glib/gfileutils.c:975 glib/gfileutils.c:1482
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Не вдалося відкрити файл «%s»: %s"
 
-#: glib/gfileutils.c:913
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Помилка отримання атрибутів файла «%s»: помилка fstat(): %s"
 
-#: glib/gfileutils.c:944
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Помилка відкривання файла «%s»: помилка fdopen(): %s"
 
-#: glib/gfileutils.c:1045
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Помилка перейменування файла «%s» на «%s»: помилка g_rename(): %s"
 
-#: glib/gfileutils.c:1144
+#: glib/gfileutils.c:1149
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Не вдалося записати файл «%s»: збій у функції ftruncate(): %s"
 
-#: glib/gfileutils.c:1189
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Не вдалося записати файл «%s»: збій у функції write(): %s"
 
-#: glib/gfileutils.c:1210
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Помилка запису у файл «%s»: помилка fsync(): %s"
 
-#: glib/gfileutils.c:1371 glib/gfileutils.c:1788
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Помилка створення файла «%s»: %s"
 
-#: glib/gfileutils.c:1416
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Не вдалося вилучити наявний файл «%s»: помилка g_unlink(): %s"
 
-#: glib/gfileutils.c:1753
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Шаблон «%s» неправильний, бо не може містити «%s»"
 
-#: glib/gfileutils.c:1766
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Шаблон «%s» не містить XXXXXX"
 
-#: glib/gfileutils.c:2360 glib/gfileutils.c:2389
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Помилка читання символічного посилання «%s»: %s"
@@ -6266,21 +6262,21 @@ msgstr ""
 "Неочікувана помилка в зчитуванні даних з дочірнього процесу через "
 "g_io_channel_win32_poll() "
 
-#: glib/gstrfuncs.c:3339 glib/gstrfuncs.c:3441
+#: glib/gstrfuncs.c:3351 glib/gstrfuncs.c:3453
 msgid "Empty string is not a number"
 msgstr "Порожній рядок не є числом"
 
-#: glib/gstrfuncs.c:3363
+#: glib/gstrfuncs.c:3375
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "«%s» не є числом зі знаком"
 
-#: glib/gstrfuncs.c:3373 glib/gstrfuncs.c:3477
+#: glib/gstrfuncs.c:3385 glib/gstrfuncs.c:3489
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Число «%s» не належить до діапазону [%s, %s]"
 
-#: glib/gstrfuncs.c:3467
+#: glib/gstrfuncs.c:3479
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» не є числом без знаку"
@@ -6585,6 +6581,12 @@ msgstr "%.1f ПБ"
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЕБ"
+
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "Не вдалося розмістити %"
+#~ msgstr[1] "Не вдалося розмістити %"
+#~ msgstr[2] "Не вдалося розмістити %"
 
 #~ msgid ""
 #~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
