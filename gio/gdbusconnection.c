@@ -3929,7 +3929,7 @@ schedule_callbacks (GDBusConnection *connection,
                   (arg0_path == NULL || !path_rule_matches (signal_data->arg0, arg0_path)))
                 continue;
             }
-          else if (!g_str_equal (signal_data->arg0, arg0))
+          else if (arg0 == NULL || !g_str_equal (signal_data->arg0, arg0))
             continue;
         }
 
