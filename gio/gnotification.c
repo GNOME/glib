@@ -260,7 +260,7 @@ g_notification_set_body (GNotification *notification,
                          const gchar   *body)
 {
   g_return_if_fail (G_IS_NOTIFICATION (notification));
-  g_return_if_fail (body != NULL);
+  g_return_if_fail (body == NULL || *body != '\0');
 
   g_free (notification->body);
 
