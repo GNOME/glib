@@ -291,8 +291,6 @@ g_application_impl_method_call (GDBusConnection       *connection,
       /* Only on the freedesktop interface */
 
       g_variant_get (parameters, "(&sav@a{sv})", &name, &iter, &platform_data);
-      g_variant_iter_next (iter, "v", &parameter);
-      g_variant_iter_free (iter);
 
       /* Check the action exists and the parameter type matches. */
       if (!g_action_group_query_action (impl->exported_actions,
@@ -305,6 +303,28 @@ g_application_impl_method_call (GDBusConnection       *connection,
           g_variant_unref (platform_data);
           return;
         }
+
+      /* Accept multiple parameters as a tuple with the exact number of parameters */
+      if (g_variant_iter_n_children (iter) > 1)
+        {
+          GVariant *value = NULL;
+          GVariantBuilder builder;
+
+          g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+
+          while (g_variant_iter_loop (iter, "v", &value))
+            {
+              g_variant_builder_add_value (&builder, value);
+            }
+
+          parameter = g_variant_ref_sink (g_variant_builder_end (&builder));
+        }
+      else
+        {
+          g_variant_iter_next (iter, "v", &parameter);
+        }
+
+      g_variant_iter_free (iter);
 
       if (!((parameter_type == NULL && parameter == NULL) ||
             (parameter_type != NULL && parameter != NULL && g_variant_is_of_type (parameter, parameter_type))))
