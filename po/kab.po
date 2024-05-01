@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib glib-2-80\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-03-29 12:42+0000\n"
-"PO-Revision-Date: 2024-04-01 05:21+0200\n"
+"POT-Creation-Date: 2024-04-02 00:18+0000\n"
+"PO-Revision-Date: 2024-04-30 22:43+0200\n"
 "Last-Translator: sa\n"
 "Language-Team: Kabyle <>\n"
 "Language: kab\n"
@@ -1387,7 +1387,7 @@ msgstr ""
 
 #: gio/gfile.c:2718
 msgid "Target file exists"
-msgstr ""
+msgstr "Afaylu asaḍas yella"
 
 #: gio/gfile.c:2737
 msgid "Can’t recursively copy directory"
@@ -1489,7 +1489,7 @@ msgstr ""
 #: gio/gfileinputstream.c:325 gio/gfileiostream.c:380
 #: gio/gfileoutputstream.c:371
 msgid "Seek not supported on stream"
-msgstr ""
+msgstr "Anadi ur yetttwasefrak ara ɣef usuddem"
 
 #: gio/gfileinputstream.c:369
 msgid "Truncate not allowed on input stream"
@@ -1497,7 +1497,7 @@ msgstr ""
 
 #: gio/gfileiostream.c:456 gio/gfileoutputstream.c:447
 msgid "Truncate not supported on stream"
-msgstr ""
+msgstr "Anegzum ur yettwasefrak ara ɣef usuddem"
 
 #: gio/ghttpproxy.c:93 gio/gresolver.c:529 gio/gresolver.c:682
 #: glib/gconvert.c:1752
@@ -1618,7 +1618,7 @@ msgstr ""
 
 #: gio/gio-tool.c:207
 msgid "“version” takes no arguments"
-msgstr ""
+msgstr "\"lqem\" ur yeṭṭif ara ifukal"
 
 #: gio/gio-tool.c:209 gio/gio-tool.c:258 glib/goption.c:712
 msgid "Usage:"
@@ -1626,7 +1626,7 @@ msgstr "Aseqdec:"
 
 #: gio/gio-tool.c:212
 msgid "Print version information and exit."
-msgstr ""
+msgstr "Siggez talɣut n lqem syen ffeɣ."
 
 #: gio/gio-tool.c:232
 msgid "Concatenate files to standard output"
@@ -2307,7 +2307,7 @@ msgstr ""
 
 #: gio/gio-tool-trash.c:108
 msgid "Unable to find original path"
-msgstr ""
+msgstr "D awezɣi ad d-yaf abrid ameẓlu"
 
 #: gio/gio-tool-trash.c:125
 msgid "Unable to recreate original location: "
@@ -2329,7 +2329,7 @@ msgstr ""
 
 #: gio/gio-tool-trash.c:260
 msgid "Location given doesn't start with trash:///"
-msgstr ""
+msgstr "Adig i d-yettwamudden ur yebdi ara s tqecwalt: ///"
 
 #: gio/gio-tool-tree.c:35
 msgid "Follow symbolic links, mounts and shortcuts"
@@ -2342,7 +2342,7 @@ msgstr ""
 #: gio/glib-compile-resources.c:142 gio/glib-compile-schemas.c:1514
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
-msgstr ""
+msgstr "Aferdis <%s> ur yettwasireg ara daxel n <%s>"
 
 #: gio/glib-compile-resources.c:146
 #, c-format
@@ -2357,12 +2357,12 @@ msgstr ""
 #: gio/glib-compile-resources.c:247
 #, c-format
 msgid "Failed to locate “%s” in any source directory"
-msgstr ""
+msgstr "Yecceḍ usideg n \"%s\" deg meṛṛa ikaramen iɣbula"
 
 #: gio/glib-compile-resources.c:258
 #, c-format
 msgid "Failed to locate “%s” in current directory"
-msgstr ""
+msgstr "Yecceḍ usideg n \"%s\" deg ukaram-a"
 
 #: gio/glib-compile-resources.c:292
 #, c-format
@@ -2382,25 +2382,25 @@ msgstr ""
 #: gio/glib-compile-resources.c:459
 #, c-format
 msgid "Error reading file %s: %s"
-msgstr ""
+msgstr "Tuccḍa deg tɣuṛi n ufaylu %s: %s"
 
 #: gio/glib-compile-resources.c:479
 #, c-format
 msgid "Error compressing file %s"
-msgstr ""
+msgstr "Tuccḍa deg uskussem n ufaylu %s"
 
 #: gio/glib-compile-resources.c:543
 #, c-format
 msgid "text may not appear inside <%s>"
-msgstr ""
+msgstr "ur ilaq ara ad d-iban uḍris daxel <%s>"
 
 #: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
-msgstr ""
+msgstr "Sken lqem n wahil syen ffeɣ"
 
 #: gio/glib-compile-resources.c:822
 msgid "Name of the output file"
-msgstr ""
+msgstr "Isem n ufaylu n unekcum"
 
 #: gio/glib-compile-resources.c:823
 msgid ""
@@ -2474,7 +2474,7 @@ msgstr ""
 
 #: gio/glib-compile-resources.c:893
 msgid "You should give exactly one file name\n"
-msgstr ""
+msgstr "Ilaq ad d-tmuddeḍ swaswa yiwen yisem n ufaylu\n"
 
 #: gio/glib-compile-schemas.c:95
 #, c-format
@@ -2484,17 +2484,17 @@ msgstr ""
 #: gio/glib-compile-schemas.c:106
 #, c-format
 msgid "Invalid numeric value"
-msgstr ""
+msgstr "Azal umḍin d arameɣtu"
 
 #: gio/glib-compile-schemas.c:114
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr ""
+msgstr "<value nick='%s'/> ur yettwamudd ara yakan"
 
 #: gio/glib-compile-schemas.c:122
 #, c-format
 msgid "value='%s' already specified"
-msgstr ""
+msgstr "azal='%s' ur yettwamudd ara yakan"
 
 #: gio/glib-compile-schemas.c:136
 #, c-format
@@ -2784,7 +2784,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1626
 #, c-format
 msgid "Text may not appear inside <%s>"
-msgstr ""
+msgstr "Aḍris yezmer ad d-iban deg <%s>"
 
 #: gio/glib-compile-schemas.c:1694
 #, c-format
@@ -2912,7 +2912,7 @@ msgstr ""
 #: gio/glocalfile.c:570 gio/win32/gwinhttpfile.c:436
 #, c-format
 msgid "Invalid filename %s"
-msgstr ""
+msgstr "Isem n ufaylu %s d arameɣtu"
 
 #: gio/glocalfile.c:1012
 #, c-format
@@ -2939,12 +2939,12 @@ msgstr ""
 
 #: gio/glocalfile.c:1198
 msgid "Can’t rename file, filename already exists"
-msgstr ""
+msgstr "Ur yezmir ara ad isenfel isem n ufaylu, isem n ufaylu yella yakan"
 
 #: gio/glocalfile.c:1211 gio/glocalfile.c:2414 gio/glocalfile.c:2442
 #: gio/glocalfile.c:2581 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
-msgstr ""
+msgstr "Isem n ufaylu d arameɣtu"
 
 #: gio/glocalfile.c:1379 gio/glocalfile.c:1390
 #, c-format
@@ -3034,7 +3034,7 @@ msgstr ""
 #: gio/glocalfile.c:2560
 #, c-format
 msgid "Error removing target file: %s"
-msgstr ""
+msgstr "Tuccḍa deg tukksa n ufaylu asaḍas: %s"
 
 #: gio/glocalfile.c:2574
 msgid "Move between mounts not supported"
@@ -3064,7 +3064,7 @@ msgstr ""
 
 #: gio/glocalfileinfo.c:1789 gio/win32/gwinhttpfile.c:191
 msgid " (invalid encoding)"
-msgstr ""
+msgstr " (astengel arameɣtu)"
 
 #: gio/glocalfileinfo.c:1948 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
@@ -3335,7 +3335,7 @@ msgstr ""
 
 #: gio/gnetworkmonitorbase.c:221 gio/gnetworkmonitorbase.c:326
 msgid "Network unreachable"
-msgstr ""
+msgstr "Ulac aduf ɣer uẓeṭṭa-agi"
 
 #: gio/gnetworkmonitorbase.c:259 gio/gnetworkmonitorbase.c:290
 msgid "Host unreachable"
@@ -4982,7 +4982,7 @@ msgstr "Tecceḍ tɣuri seg ufaylu \"%s\": %s"
 #: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
-msgstr ""
+msgstr "Yecceḍ ulday n ufaylu \"%s\": %s"
 
 #: glib/gfileutils.c:918
 #, c-format
@@ -5066,7 +5066,7 @@ msgstr ""
 
 #: glib/gkeyfile.c:828
 msgid "Not a regular file"
-msgstr ""
+msgstr "Mačči d afaylu i yezgan"
 
 #: glib/gkeyfile.c:1286
 #, c-format
