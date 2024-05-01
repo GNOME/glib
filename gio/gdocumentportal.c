@@ -101,6 +101,15 @@ opening_ro_might_succeed (int saved_errno)
     {
     case EACCES:
     case EISDIR:
+#ifdef EPERM
+    case EPERM:
+#endif
+#ifdef EROFS
+    case EROFS:
+#endif
+#ifdef ETXTBSY
+    case ETXTBSY:
+#endif
       return TRUE;
 
     default:
