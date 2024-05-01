@@ -90,6 +90,24 @@ enum {
   XDP_ADD_FLAGS_FLAGS_ALL                  = ((1 << 3) - 1)
 };
 
+/*
+ * Assume that opening a file read/write failed with @saved_errno,
+ * and return TRUE if opening the same file read-only might succeed.
+ */
+static gboolean
+opening_ro_might_succeed (int saved_errno)
+{
+  switch (saved_errno)
+    {
+    case EACCES:
+    case EISDIR:
+      return TRUE;
+
+    default:
+      return FALSE;
+    }
+}
+
 GList *
 g_document_portal_add_documents (GList       *uris,
                                  const char  *app_id,
@@ -131,7 +149,7 @@ g_document_portal_add_documents (GList       *uris,
           int fd;
 
           fd = g_open (path, O_CLOEXEC | O_RDWR);
-          if (fd == -1 && (errno == EACCES || errno == EISDIR))
+          if (fd == -1 && opening_ro_might_succeed (errno))
             {
               /* If we don't have write access, fall back to read-only,
                * and stop requesting the write permission */
