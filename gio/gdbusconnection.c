@@ -95,6 +95,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "glib-private.h"
 #include "gdbusauth.h"
 #include "gdbusutils.h"
 #include "gdbusaddress.h"

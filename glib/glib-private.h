@@ -161,4 +161,22 @@ GLibPrivateVTable *glib__private__ (void);
 # define GLIB_DEFAULT_LOCALE ""
 #endif
 
+/* Backported from GLib 2.78.x, where it is public API in gstrfuncs.h */
+static inline gboolean
+g_set_str (char       **str_pointer,
+           const char  *new_str)
+{
+  char *copy;
+
+  if (*str_pointer == new_str ||
+      (*str_pointer && new_str && strcmp (*str_pointer, new_str) == 0))
+    return FALSE;
+
+  copy = g_strdup (new_str);
+  g_free (*str_pointer);
+  *str_pointer = copy;
+
+  return TRUE;
+}
+
 #endif /* __GLIB_PRIVATE_H__ */
