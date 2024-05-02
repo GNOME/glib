@@ -761,6 +761,44 @@ serialize_priority (GNotification *notification)
   return nick;
 }
 
+static GVariant *
+serialize_display_hint (GNotification *notification)
+{
+  GFlagsClass *flags_class = NULL;
+  GFlagsValue *flags_value;
+  GVariantBuilder builder;
+  GNotificationDisplayHintFlags display_hint;
+  gboolean should_show_as_new = TRUE;
+
+  display_hint = g_notification_get_display_hint_flags (notification);
+
+  /* If the only flag is to update the notification we don't need to set any display hints */
+  if (display_hint == G_NOTIFICATION_DISPLAY_HINT_UPDATE)
+    return NULL;
+
+  flags_class = g_type_class_ref (G_TYPE_NOTIFICATION_DISPLAY_HINT_FLAGS);
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+
+  while (display_hint != G_NOTIFICATION_DISPLAY_HINT_NONE &&
+         (flags_value = g_flags_get_first_value (flags_class, display_hint)) != NULL)
+     {
+      /* The display-hint 'update' needs to be serialized as 'show-as-new'
+       * because we have the opposite default than the portal */
+      if (flags_value->value == G_NOTIFICATION_DISPLAY_HINT_UPDATE)
+        should_show_as_new = FALSE;
+       else
+        g_variant_builder_add (&builder, "s", flags_value->value_nick);
+      display_hint &= ~flags_value->value;
+    }
+
+  if (should_show_as_new)
+    g_variant_builder_add (&builder, "s", "show-as-new");
+
+  g_type_class_unref (flags_class);
+  return g_variant_builder_end (&builder);
+}
+
 static void
 serialize_notification (const char          *id,
                         GNotification       *notification,
@@ -772,6 +810,7 @@ serialize_notification (const char          *id,
   GTask *task;
   const gchar *body;
   GIcon *icon;
+  GVariant *display_hint = NULL;
   gchar *default_action = NULL;
   GVariant *default_action_target = NULL;
   GVariant *buttons = NULL;
@@ -818,6 +857,9 @@ serialize_notification (const char          *id,
     }
 
   g_variant_builder_add (data->builder, "{sv}", "priority", serialize_priority (notification));
+
+  if ((display_hint = serialize_display_hint (notification)))
+    g_variant_builder_add (data->builder, "{sv}", "display-hint", display_hint);
 
   if (g_notification_get_default_action (notification, &default_action, &default_action_target))
     {
