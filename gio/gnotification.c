@@ -506,12 +506,25 @@ g_notification_get_category (GNotification *notification)
  * @notification: a #GNotification
  * @category: (nullable): the category for @notification, or %NULL for no category
  *
- * Sets the type of @notification to @category. Categories have a main
- * type like `email`, `im` or `device` and can have a detail separated
- * by a `.`, e.g. `im.received` or `email.arrived`. Setting the category
- * helps the notification server to select proper feedback to the user.
+ * The notification server may use @category to present the @notification
+ * specially.
  *
- * Standard categories are [listed in the specification](https://specifications.freedesktop.org/notification-spec/latest/ar01s06.html).
+ * Standardized categories are:
+ *
+ * - [const@Gio.NOTIFICATION_CATEGORY_IM_RECEIVED]
+ * - [const@Gio.NOTIFICATION_CATEGORY_ALARM_RINGING]
+ * - [const@Gio.NOTIFICATION_CATEGORY_CALL_INCOMING]
+ * - [const@Gio.NOTIFICATION_CATEGORY_CALL_OUTGOING]
+ * - [const@Gio.NOTIFICATION_CATEGORY_CALL_UNANSWERED]
+ * - [const@Gio.NOTIFICATION_CATEGORY_WEATHER_WARNING_EXTREME]
+ * - [const@Gio.NOTIFICATION_CATEGORY_CELLBROADCAST_DANGER_SEVERE]
+ * - [const@Gio.NOTIFICATION_CATEGORY_CELLBROADCAST_AMBER_ALERT]
+ * - [const@Gio.NOTIFICATION_CATEGORY_CELLBROADCAST_TEST]
+ * - [const@Gio.NOTIFICATION_CATEGORY_OS_BATTERY_LOW]
+ * - [const@Gio.NOTIFICATION_CATEGORY_BROWSER_WEB_NOTIFICATION]
+ *
+ * It's possible to specify custom categories but they should use `x-vendor.`
+ * as prefix, where vendor is the platform implementing the category.
  *
  * Since: 2.70
  */

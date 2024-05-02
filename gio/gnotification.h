@@ -110,6 +110,106 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
                                                                          const gchar   *action,
                                                                          GVariant      *target);
 
+/**
+ * G_NOTIFICATION_CATEGORY_IM_RECEIVED:
+ *
+ * Intended for instant messaging apps displaying notifications for received messages.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_IM_RECEIVED                 "im.received"
+
+/**
+ * G_NOTIFICATION_CATEGORY_ALARM_RINGING:
+ *
+ * Intended for alarm clock apps when an alarm is ringing.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_ALARM_RINGING               "alarm.ringing"
+
+/**
+ * G_NOTIFICATION_CATEGORY_CALL_INCOMING:
+ *
+ * Intended for call apps to notify the user about an incoming call.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_CALL_INCOMING               "call.incoming"
+
+/**
+ * G_NOTIFICATION_CATEGORY_CALL_OUTGOING:
+ *
+ * Intended for call apps to notify the user about an ongoing call.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_CALL_OUTGOING               "call.ongoing"
+
+/**
+ * G_NOTIFICATION_CATEGORY_CALL_MISSED:
+ *
+ * Intended for call apps to notify the user about a missed call.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_CALL_UNANSWERED             "call.unanswered"
+
+/**
+ * G_NOTIFICATION_CATEGORY_WEATHER_WARNING_EXTREME:
+ *
+ * Intended to be used to notify the user about extreme weather conditions.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_WEATHER_WARNING_EXTREME     "weather.warning.extreme"
+
+/**
+ * G_NOTIFICATION_CATEGORY_CELLBROADCAST_DANGER_SEVERE:
+ *
+ * Intended to be used to notify users about severe danger warnings broadcasted by the cell network.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_CELLBROADCAST_DANGER_SEVERE "cellbroadcast.danger.extreme"
+
+/**
+ * G_NOTIFICATION_CATEGORY_CELLBROADCAST_AMBER_ALERT:
+ *
+ * Intended to be used to notify users about amber alerts broadcasted by the cell network.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_CELLBROADCAST_AMBER_ALERT   "cellbroadcast.amber-alert"
+
+/**
+ * G_NOTIFICATION_CATEGORY_CELLBROADCAST_TEST:
+ *
+ * Intended to be used to notify users about tests broadcasted by the cell network.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_CELLBROADCAST_TEST          "cellbroadcast.test"
+
+/**
+ * G_NOTIFICATION_CATEGORY_OS_BATTERY_LOW:
+ *
+ * Intended to be used to indicate that the system is low on battery.
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_OS_BATTERY_LOW              "os.battery.low"
+
+/**
+ * G_NOTIFICATION_CATEGORY_BROWSER_WEB_NOTIFICATION:
+ *
+ * Intended to be used by browsers to mark notifications sent by websites via
+ * the [Notifications API](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API).
+ *
+ * Since: 2.84
+ */
+#define G_NOTIFICATION_CATEGORY_BROWSER_WEB_NOTIFICATION    "browser.web-notification"
+
 G_END_DECLS
 
 #endif
