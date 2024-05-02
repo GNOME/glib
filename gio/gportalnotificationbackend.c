@@ -719,6 +719,16 @@ serialize_buttons (GNotification *notification)
   GVariantBuilder builder;
   guint n_buttons;
   guint i;
+  const char *supported_purposes[] = {
+    G_NOTIFICATION_BUTTON_PURPOSE_SYSTEM_CUSTOM_ALERT,
+    G_NOTIFICATION_BUTTON_PURPOSE_IM_REPLY_WITH_TEXT,
+    G_NOTIFICATION_BUTTON_PURPOSE_CALL_ACCEPT,
+    G_NOTIFICATION_BUTTON_PURPOSE_CALL_DECLINE,
+    G_NOTIFICATION_BUTTON_PURPOSE_CALL_HANG_UP,
+    G_NOTIFICATION_BUTTON_PURPOSE_CALL_ENABLE_SPEAKERPHONE,
+    G_NOTIFICATION_BUTTON_PURPOSE_CALL_DISABLE_SPEAKERPHONE,
+    NULL
+  };
 
   n_buttons = g_notification_get_n_buttons (notification);
 
@@ -730,15 +740,19 @@ serialize_buttons (GNotification *notification)
   for (i = 0; i < n_buttons; i++)
     {
       gchar *label;
+      gchar *purpose;
       gchar *action_name;
       GVariant *target = NULL;
 
-      g_notification_get_button (notification, i, &label, &action_name, &target);
+      g_notification_get_button (notification, i, &label, &purpose, &action_name, &target);
 
       g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
 
       g_variant_builder_add (&builder, "{sv}", "label", g_variant_new_take_string (label));
       g_variant_builder_add (&builder, "{sv}", "action", g_variant_new_take_string (action_name));
+
+      if (purpose && (g_strv_contains (supported_purposes, purpose) || g_str_has_prefix (purpose, "x-")))
+        g_variant_builder_add (&builder, "{sv}", "purpose", g_variant_new_take_string (purpose));
 
       if (target)
         {
