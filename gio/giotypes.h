@@ -64,6 +64,7 @@ typedef struct _GPermission                   GPermission;
 
 typedef struct _GMenuModel                    GMenuModel;
 typedef struct _GNotification                 GNotification;
+typedef struct _GNotificationSound            GNotificationSound;
 
 typedef struct _GDrive                        GDrive; /* Dummy typedef */
 typedef struct _GFileEnumerator               GFileEnumerator;
