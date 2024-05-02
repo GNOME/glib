@@ -1232,13 +1232,16 @@ gi_repository_get_object_gtype_interfaces (GIRepository      *repository,
 }
 
 static void
-collect_namespaces (gpointer key,
-                    gpointer value,
-                    gpointer data)
+collect_namespaces (GPtrArray  *ordered_typelibs,
+                    char      **names,
+                    size_t     *inout_i)
 {
-  GList **list = data;
-
-  *list = g_list_append (*list, key);
+  for (guint j = 0; j < ordered_typelibs->len; j++)
+    {
+      GITypelib *typelib = g_ptr_array_index (ordered_typelibs, j);
+      const char *namespace = gi_typelib_get_namespace (typelib);
+      names[(*inout_i)++] = g_strdup (namespace);
+    }
 }
 
 /**
@@ -1260,20 +1263,18 @@ char **
 gi_repository_get_loaded_namespaces (GIRepository *repository,
                                      size_t       *n_namespaces_out)
 {
-  GList *l, *list = NULL;
   char **names;
   size_t i;
+  size_t n_typelibs;
 
   g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
 
-  g_hash_table_foreach (repository->typelibs, collect_namespaces, &list);
-  g_hash_table_foreach (repository->lazy_typelibs, collect_namespaces, &list);
-
-  names = g_malloc0 (sizeof (char *) * (g_list_length (list) + 1));
+  n_typelibs = repository->ordered_typelibs->len + repository->ordered_lazy_typelibs->len;
+  names = g_malloc0 (sizeof (char *) * (n_typelibs + 1));
   i = 0;
-  for (l = list; l; l = l->next)
-    names[i++] = g_strdup (l->data);
-  g_list_free (list);
+
+  collect_namespaces (repository->ordered_typelibs, names, &i);
+  collect_namespaces (repository->ordered_lazy_typelibs, names, &i);
 
   if (n_namespaces_out != NULL)
     *n_namespaces_out = i;
