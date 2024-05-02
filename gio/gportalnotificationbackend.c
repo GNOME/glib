@@ -726,7 +726,7 @@ serialize_buttons (GNotification *notification)
       gchar *action_name;
       GVariant *target = NULL;
 
-      g_notification_get_button (notification, i, &label, &action_name, &target);
+      g_notification_get_button (notification, i, &label, NULL, &action_name, &target);
 
       g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
 

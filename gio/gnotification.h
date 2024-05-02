@@ -95,6 +95,13 @@ void                    g_notification_add_button_with_target_value     (GNotifi
                                                                          const gchar   *action,
                                                                          GVariant      *target);
 
+GIO_AVAILABLE_IN_2_85
+void                    g_notification_add_button_with_purpose_and_target_value (GNotification *notification,
+                                                                                 const gchar   *label,
+                                                                                 const gchar   *purpose,
+                                                                                 const gchar   *action,
+                                                                                 GVariant      *target);
+
 GIO_AVAILABLE_IN_2_40
 void                    g_notification_set_default_action               (GNotification *notification,
                                                                          const gchar   *detailed_action);
@@ -115,7 +122,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended for instant messaging apps displaying notifications for received messages.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_IM_RECEIVED                 "im.received"
 
@@ -124,7 +131,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended for alarm clock apps when an alarm is ringing.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_ALARM_RINGING               "alarm.ringing"
 
@@ -133,7 +140,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended for call apps to notify the user about an incoming call.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_CALL_INCOMING               "call.incoming"
 
@@ -142,7 +149,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended for call apps to notify the user about an ongoing call.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_CALL_OUTGOING               "call.ongoing"
 
@@ -151,7 +158,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended for call apps to notify the user about a missed call.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_CALL_UNANSWERED             "call.unanswered"
 
@@ -160,7 +167,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended to be used to notify the user about extreme weather conditions.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_WEATHER_WARNING_EXTREME     "weather.warning.extreme"
 
@@ -169,7 +176,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended to be used to notify users about severe danger warnings broadcasted by the cell network.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_CELLBROADCAST_DANGER_SEVERE "cellbroadcast.danger.extreme"
 
@@ -178,7 +185,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended to be used to notify users about amber alerts broadcasted by the cell network.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_CELLBROADCAST_AMBER_ALERT   "cellbroadcast.amber-alert"
 
@@ -187,7 +194,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended to be used to notify users about tests broadcasted by the cell network.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_CELLBROADCAST_TEST          "cellbroadcast.test"
 
@@ -196,7 +203,7 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  *
  * Intended to be used to indicate that the system is low on battery.
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_OS_BATTERY_LOW              "os.battery.low"
 
@@ -206,9 +213,54 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  * Intended to be used by browsers to mark notifications sent by websites via
  * the [Notifications API](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API).
  *
- * Since: 2.84
+ * Since: 2.85
  */
 #define G_NOTIFICATION_CATEGORY_BROWSER_WEB_NOTIFICATION    "browser.web-notification"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_ACCEPT:
+ *
+ * Purpose for a button that accepts an incoming call.
+ *
+ * Since: 2.85
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_ACCEPT    "call.accept"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_DECLINE:
+ *
+ * Purpose for a button that declines an incoming call.
+ *
+ * Since: 2.85
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_DECLINE    "call.decline"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_HANG_UP:
+ *
+ * Purpose for a button that hangs up an ongoing call.
+ *
+ * Since: 2.85
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_HANG_UP    "call.hang-up"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_ENABLE_SPEAKERPHONE:
+ *
+ * Purpose for a button that enables the speakerphone for an ongoing call.
+ *
+ * Since: 2.85
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_ENABLE_SPEAKERPHONE    "call.enable-speakerphone"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_DISABLE_SPEAKERPHONE:
+ *
+ * Purpose for a button that disables the speakerphone for an ongoing call.
+ *
+ * Since: 2.85
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_DISABLE_SPEAKERPHONE    "call.disable-speakerphone"
 
 G_END_DECLS
 

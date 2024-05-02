@@ -183,6 +183,7 @@ struct _GNotification
 typedef struct
 {
   gchar *label;
+  gchar *purpose;
   gchar *action_name;
   GVariant *target;
 } Button;
@@ -235,6 +236,11 @@ test_properties (void)
   g_notification_set_category (n, "cate.gory");
   g_notification_set_display_hint_flags (n, G_NOTIFICATION_DISPLAY_HINT_TRANSIENT);
   g_notification_add_button (n, "label1", "app.action1::target1");
+  g_notification_add_button_with_purpose_and_target_value (n,
+                                                           "label",
+                                                           "x-gnome.purpose",
+                                                           "app.action2",
+                                                           g_variant_new_string("bla"));
   g_notification_set_default_action (n, "app.action2::target2");
 
   rn = (struct _GNotification *)n;
@@ -251,11 +257,17 @@ test_properties (void)
   g_assert_cmpstr (rn->category, ==, "cate.gory");
   g_assert_true (rn->display_hint == G_NOTIFICATION_DISPLAY_HINT_TRANSIENT);
 
-  g_assert_cmpint (rn->buttons->len, ==, 1);
+  g_assert_cmpint (rn->buttons->len, ==, 2);
   b = (Button*)rn->buttons->pdata[0];
   g_assert_cmpstr (b->label, ==, "label1");
   g_assert_cmpstr (b->action_name, ==, "app.action1");
   g_assert_cmpstr (g_variant_get_string (b->target, NULL), ==, "target1");
+
+  b = (Button*)rn->buttons->pdata[1];
+  g_assert_cmpstr (b->label, ==, "label");
+  g_assert_cmpstr (b->purpose, ==, "x-gnome.purpose");
+  g_assert_cmpstr (b->action_name, ==, "app.action2");
+  g_assert_cmpstr (g_variant_get_string (b->target, NULL), ==, "bla");
 
   g_assert_cmpstr (rn->default_action, ==, "app.action2");
   g_assert_cmpstr (g_variant_get_string (rn->default_action_target, NULL), ==, "target2");

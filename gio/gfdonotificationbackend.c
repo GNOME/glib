@@ -307,7 +307,7 @@ call_notify (GDBusConnection     *con,
       GVariant *target;
       gchar *detailed_name;
 
-      g_notification_get_button (notification, i, &label, &action, &target);
+      g_notification_get_button (notification, i, &label, NULL, &action, &target);
       detailed_name = g_action_print_detailed_name (action, target);
 
       /* Actions named 'default' collide with libnotify's naming of the

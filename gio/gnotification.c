@@ -101,6 +101,7 @@ struct _GNotification
 typedef struct
 {
   gchar *label;
+  gchar *purpose;
   gchar *action_name;
   GVariant *target;
 } Button;
@@ -112,10 +113,10 @@ button_free (gpointer data)
 {
   Button *button = data;
 
-  g_free (button->label);
-  g_free (button->action_name);
-  if (button->target)
-    g_variant_unref (button->target);
+  g_clear_pointer (&button->label, g_free);
+  g_clear_pointer (&button->action_name, g_free);
+  g_clear_pointer (&button->purpose, g_free);
+  g_clear_pointer (&button->target, g_variant_unref);
 
   g_slice_free (Button, button);
 }
@@ -620,12 +621,11 @@ g_notification_add_button (GNotification *notification,
   if (!g_action_parse_detailed_name (detailed_action, &action, &target, &error))
     {
       g_warning ("%s: %s", G_STRFUNC, error->message);
-
       g_error_free (error);
       return;
     }
 
-  g_notification_add_button_with_target_value (notification, label, action, target);
+  g_notification_add_button_with_purpose_and_target_value (notification, label, NULL, action, target);
 
   g_free (action);
   if (target)
@@ -667,7 +667,7 @@ g_notification_add_button_with_target (GNotification *notification,
       va_end (args);
     }
 
-  g_notification_add_button_with_target_value (notification, label, action, target);
+  g_notification_add_button_with_purpose_and_target_value (notification, label, NULL, action, target);
 }
 
 /**
@@ -691,10 +691,47 @@ g_notification_add_button_with_target_value (GNotification *notification,
                                              const gchar   *action,
                                              GVariant      *target)
 {
+  g_notification_add_button_with_purpose_and_target_value (notification, label, NULL, action, target);
+}
+
+/**
+ * g_notification_add_button_with_purpose_and_target_value: (rename-to g_notification_add_button_with_purpose_and_target)
+ * @notification: a [class@Gio.Notification]
+ * @label: (nullable): label of the button
+ * @purpose: (nullable): purpose of the button
+ * @action: an action name
+ * @target: (nullable): a [type@GLib.Variant] to use as @action's parameter, or %NULL
+ *
+ * Adds a button to @notification that activates @action when clicked.
+ * @action must be an application-wide action (it must start with `app.`).
+ *
+ * If @target is non-%NULL, @action will be activated with @target as
+ * its parameter.
+ *
+ * Standardized purposes are:
+ *
+ * - [const@Gio.NOTIFICATION_BUTTON_PURPOSE_CALL_ACCEPT]
+ * - [const@Gio.NOTIFICATION_BUTTON_PURPOSE_CALL_DECLINE]
+ * - [const@Gio.NOTIFICATION_BUTTON_PURPOSE_CALL_HANG_UP]
+ * - [const@Gio.NOTIFICATION_BUTTON_PURPOSE_CALL_ENABLE_SPEAKERPHONE]
+ * - [const@Gio.NOTIFICATION_BUTTON_PURPOSE_CALL_DISABLE_SPEAKERPHONE]
+ *
+ * It's possible to specify custom purposes but they should use `x-vendor.`
+ * as prefix, where vendor is the platform implementing the purpose.
+ *
+ * Since: 2.85
+ */
+void
+g_notification_add_button_with_purpose_and_target_value (GNotification *notification,
+                                                         const gchar   *label,
+                                                         const gchar   *purpose,
+                                                         const gchar   *action,
+                                                         GVariant      *target)
+{
   Button *button;
 
   g_return_if_fail (G_IS_NOTIFICATION (notification));
-  g_return_if_fail (label != NULL);
+  g_return_if_fail (label != NULL || purpose != NULL);
   g_return_if_fail (action != NULL && g_action_name_is_valid (action));
 
   if (!g_str_has_prefix (action, "app."))
@@ -704,7 +741,12 @@ g_notification_add_button_with_target_value (GNotification *notification,
     }
 
   button =  g_slice_new0 (Button);
-  button->label = g_strdup (label);
+  if (label)
+    button->label = g_strdup (label);
+
+  if (purpose)
+    button->purpose = g_strdup (purpose);
+
   button->action_name = g_strdup (action);
 
   if (target)
@@ -730,6 +772,7 @@ g_notification_get_n_buttons (GNotification *notification)
  * @notification: a #GNotification
  * @index: index of the button
  * @label: (): return location for the button's label
+ * @purpose: (): return location for the button's purpose
  * @action: (): return location for the button's associated action
  * @target: (): return location for the target @action should be
  * activated with
@@ -744,6 +787,7 @@ void
 g_notification_get_button (GNotification  *notification,
                            gint            index,
                            gchar         **label,
+                           gchar         **purpose,
                            gchar         **action,
                            GVariant      **target)
 {
@@ -753,6 +797,9 @@ g_notification_get_button (GNotification  *notification,
 
   if (label)
     *label = g_strdup (button->label);
+
+  if (purpose)
+    *purpose = g_strdup (button->purpose);
 
   if (action)
     *action = g_strdup (button->action_name);
