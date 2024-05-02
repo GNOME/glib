@@ -1078,28 +1078,27 @@ gi_repository_find_by_name (GIRepository *repository,
                            NULL, typelib, entry->offset);
 }
 
-typedef struct {
-  GIRepository *repository;
-  GQuark domain;
-
-  GITypelib *result_typelib;
-  DirEntry *result;
-} FindByErrorDomainData;
-
-static void
-find_by_error_domain_foreach (gpointer key,
-                              gpointer value,
-                              gpointer datap)
+static DirEntry *
+find_by_error_domain (GPtrArray  *ordered_typelibs,
+                      GQuark      target_domain,
+                      GITypelib **out_typelib)
 {
-  GITypelib *typelib = (GITypelib*)value;
-  FindByErrorDomainData *data = datap;
+  /* Search in reverse order as the longest namespaces will be listed last, and
+   * those are the ones we want to search first. */
+  for (guint i = ordered_typelibs->len; i > 0; i--)
+    {
+      GITypelib *typelib = g_ptr_array_index (ordered_typelibs, i - 1);
+      DirEntry *entry;
 
-  if (data->result != NULL)
-    return;
+      entry = gi_typelib_get_dir_entry_by_error_domain (typelib, target_domain);
+      if (entry != NULL)
+        {
+          *out_typelib = typelib;
+          return entry;
+        }
+    }
 
-  data->result = gi_typelib_get_dir_entry_by_error_domain (typelib, data->domain);
-  if (data->result)
-    data->result_typelib = typelib;
+  return NULL;
 }
 
 /**
@@ -1122,8 +1121,9 @@ GIEnumInfo *
 gi_repository_find_by_error_domain (GIRepository *repository,
                                     GQuark        domain)
 {
-  FindByErrorDomainData data;
   GIEnumInfo *cached;
+  DirEntry *result = NULL;
+  GITypelib *result_typelib = NULL;
 
   g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
 
@@ -1133,20 +1133,15 @@ gi_repository_find_by_error_domain (GIRepository *repository,
   if (cached != NULL)
     return (GIEnumInfo *) gi_base_info_ref ((GIBaseInfo *)cached);
 
-  data.repository = repository;
-  data.domain = domain;
-  data.result_typelib = NULL;
-  data.result = NULL;
+  result = find_by_error_domain (repository->ordered_typelibs, domain, &result_typelib);
+  if (result == NULL)
+    result = find_by_error_domain (repository->ordered_lazy_typelibs, domain, &result_typelib);
 
-  g_hash_table_foreach (repository->typelibs, find_by_error_domain_foreach, &data);
-  if (data.result == NULL)
-    g_hash_table_foreach (repository->lazy_typelibs, find_by_error_domain_foreach, &data);
-
-  if (data.result != NULL)
+  if (result != NULL)
     {
-      cached = (GIEnumInfo *) gi_info_new_full (gi_typelib_blob_type_to_info_type (data.result->blob_type),
+      cached = (GIEnumInfo *) gi_info_new_full (gi_typelib_blob_type_to_info_type (result->blob_type),
                                                 repository,
-                                                NULL, data.result_typelib, data.result->offset);
+                                                NULL, result_typelib, result->offset);
 
       g_hash_table_insert (repository->info_by_error_domain,
                            GUINT_TO_POINTER (domain),
