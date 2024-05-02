@@ -816,6 +816,7 @@ serialize_notification (const char          *id,
   ParserData *data;
   GTask *task;
   const gchar *body;
+  const gchar *markup_body;
   GIcon *icon;
   GNotificationSound *sound = NULL;
   GVariant *display_hint = NULL;
@@ -836,6 +837,9 @@ serialize_notification (const char          *id,
 
   if ((body = g_notification_get_body (notification)))
     g_variant_builder_add (data->builder, "{sv}", "body", g_variant_new_string (body));
+
+  if ((markup_body = g_notification_get_markup_body (notification)))
+    g_variant_builder_add (data->builder, "{sv}", "markup-body", g_variant_new_string (markup_body));
 
   if ((icon = g_notification_get_icon (notification)))
     {
