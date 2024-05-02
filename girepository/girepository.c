@@ -1015,7 +1015,7 @@ gi_repository_find_by_gtype (GIRepository *repository,
   if (entry == NULL)
     entry = find_by_gtype (repository->lazy_typelibs, &data, TRUE);
 
-  /* Not ever class library necessarily specifies a correct c_prefix,
+  /* Not every class library necessarily specifies a correct c_prefix,
    * so take a second pass. This time we will try a global lookup,
    * ignoring prefixes.
    * See http://bugzilla.gnome.org/show_bug.cgi?id=564016
