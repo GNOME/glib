@@ -809,6 +809,7 @@ serialize_notification (const char          *id,
   ParserData *data;
   GTask *task;
   const gchar *body;
+  const gchar *markup_body;
   GIcon *icon;
   GVariant *display_hint = NULL;
   gchar *default_action = NULL;
@@ -827,7 +828,10 @@ serialize_notification (const char          *id,
 
   g_variant_builder_add (data->builder, "{sv}", "title", g_variant_new_string (g_notification_get_title (notification)));
 
-  if ((body = g_notification_get_body (notification)))
+  /* Prefer the body with markup over the body */
+  if (version > 1 && (markup_body = g_notification_get_body_with_markup (notification)))
+    g_variant_builder_add (data->builder, "{sv}", "markup-body", g_variant_new_string (markup_body));
+  else if ((body = g_notification_get_body (notification)))
     g_variant_builder_add (data->builder, "{sv}", "body", g_variant_new_string (body));
 
   if ((icon = g_notification_get_icon (notification)))
