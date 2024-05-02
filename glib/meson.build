@@ -419,6 +419,7 @@ libglib = library('glib-2.0',
   include_directories : configinc,
   link_with: [charset_lib, gnulib_lib],
   dependencies : [
+    atomic_dep,
     gnulib_libm_dependency,
     libiconv,
     libintl_deps,
