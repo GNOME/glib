@@ -931,32 +931,29 @@ gi_repository_get_info (GIRepository *repository,
                            NULL, typelib, entry->offset);
 }
 
-typedef struct {
-  const char *gtype_name;
-  GITypelib *result_typelib;
-} FindByGTypeData;
-
 static DirEntry *
-find_by_gtype (GHashTable *table, FindByGTypeData *data, gboolean check_prefix)
+find_by_gtype (GPtrArray   *ordered_table,
+               const char  *gtype_name,
+               gboolean     check_prefix,
+               GITypelib  **out_result_typelib)
 {
-  GHashTableIter iter;
-  gpointer key, value;
-  DirEntry *ret;
-
-  g_hash_table_iter_init (&iter, table);
-  while (g_hash_table_iter_next (&iter, &key, &value))
+  /* Search in reverse order as the longest namespaces will be listed last, and
+   * those are the ones we want to search first. */
+  for (guint i = ordered_table->len; i > 0; i--)
     {
-      GITypelib *typelib = (GITypelib*)value;
+      GITypelib *typelib = g_ptr_array_index (ordered_table, i - 1);
+      DirEntry *ret;
+
       if (check_prefix)
         {
-          if (!gi_typelib_matches_gtype_name_prefix (typelib, data->gtype_name))
+          if (!gi_typelib_matches_gtype_name_prefix (typelib, gtype_name))
             continue;
         }
 
-      ret = gi_typelib_get_dir_entry_by_gtype_name (typelib, data->gtype_name);
+      ret = gi_typelib_get_dir_entry_by_gtype_name (typelib, gtype_name);
       if (ret)
         {
-          data->result_typelib = typelib;
+          *out_result_typelib = typelib;
           return ret;
         }
     }
@@ -985,7 +982,8 @@ GIBaseInfo *
 gi_repository_find_by_gtype (GIRepository *repository,
                              GType         gtype)
 {
-  FindByGTypeData data;
+  const char *gtype_name;
+  GITypelib *result_typelib = NULL;
   GIBaseInfo *cached;
   DirEntry *entry;
 
@@ -1001,8 +999,7 @@ gi_repository_find_by_gtype (GIRepository *repository,
   if (g_hash_table_contains (repository->unknown_gtypes, (gpointer)gtype))
     return NULL;
 
-  data.gtype_name = g_type_name (gtype);
-  data.result_typelib = NULL;
+  gtype_name = g_type_name (gtype);
 
   /* Inside each typelib, we include the "C prefix" which acts as
    * a namespace mechanism.  For GtkTreeView, the C prefix is Gtk.
@@ -1011,9 +1008,9 @@ gi_repository_find_by_gtype (GIRepository *repository,
    * target type does not have this typelib's C prefix. Use this
    * assumption as our first attempt at locating the DirEntry.
    */
-  entry = find_by_gtype (repository->typelibs, &data, TRUE);
+  entry = find_by_gtype (repository->ordered_typelibs, gtype_name, TRUE, &result_typelib);
   if (entry == NULL)
-    entry = find_by_gtype (repository->lazy_typelibs, &data, TRUE);
+    entry = find_by_gtype (repository->ordered_lazy_typelibs, gtype_name, TRUE, &result_typelib);
 
   /* Not every class library necessarily specifies a correct c_prefix,
    * so take a second pass. This time we will try a global lookup,
@@ -1021,15 +1018,15 @@ gi_repository_find_by_gtype (GIRepository *repository,
    * See http://bugzilla.gnome.org/show_bug.cgi?id=564016
    */
   if (entry == NULL)
-    entry = find_by_gtype (repository->typelibs, &data, FALSE);
+    entry = find_by_gtype (repository->ordered_typelibs, gtype_name, FALSE, &result_typelib);
   if (entry == NULL)
-    entry = find_by_gtype (repository->lazy_typelibs, &data, FALSE);
+    entry = find_by_gtype (repository->ordered_lazy_typelibs, gtype_name, FALSE, &result_typelib);
 
   if (entry != NULL)
     {
       cached = gi_info_new_full (gi_typelib_blob_type_to_info_type (entry->blob_type),
                                  repository,
-                                 NULL, data.result_typelib, entry->offset);
+                                 NULL, result_typelib, entry->offset);
 
       g_hash_table_insert (repository->info_by_gtype,
                            (gpointer) gtype,
