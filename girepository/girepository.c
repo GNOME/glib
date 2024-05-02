@@ -65,6 +65,23 @@
  * The environment variable takes precedence over the default search path
  * and the [method@GIRepository.Repository.prepend_search_path] calls.
  *
+ * ### Namespace ordering
+ *
+ * In situations where namespaces may be searched in order, or returned in a
+ * list, the namespaces will be returned in alphabetical order, with all fully
+ * loaded namespaces being returned before any lazily loaded ones (those loaded
+ * with `GI_REPOSITORY_LOAD_FLAG_LAZY`). This allows for deterministic and
+ * reproducible results.
+ *
+ * Similarly, if a symbol (such as a `GType` or error domain) is being searched
+ * for in the set of loaded namespaces, the namespaces will be searched in that
+ * order. In particular, this means that a symbol which exists in two namespaces
+ * will always be returned from the alphabetically-higher namespace. This should
+ * only happen in the case of `Gio` and `GioUnix`/`GioWin32`, which all refer to
+ * the same `.so` file and expose overlapping sets of symbols. Symbols should
+ * always end up being resolved to `GioUnix` or `GioWin32` if they are platform
+ * dependent, rather than `Gio` itself.
+ *
  * Since: 2.80
  */
 
@@ -98,8 +115,14 @@ struct _GIRepository
   GPtrArray *typelib_search_path;  /* (element-type filename) (owned) */
   GPtrArray *library_paths;  /* (element-type filename) (owned) */
 
+  /* Certain operations require iterating over the typelibs and the iteration
+   * order may affect the results. So keep an ordered list of the typelibs,
+   * alongside the hash table which keep the canonical strong reference to them. */
   GHashTable *typelibs; /* (string) namespace -> GITypelib */
+  GPtrArray *ordered_typelibs;  /* (element-type unowned GITypelib) (owned) (not nullable) */
   GHashTable *lazy_typelibs; /* (string) namespace-version -> GITypelib */
+  GPtrArray *ordered_lazy_typelibs;  /* (element-type unowned GITypelib) (owned) (not nullable) */
+
   GHashTable *info_by_gtype; /* GType -> GIBaseInfo */
   GHashTable *info_by_error_domain; /* GQuark -> GIBaseInfo */
   GHashTable *interfaces_for_gtype; /* GType -> GTypeInterfaceCache */
@@ -187,10 +210,13 @@ gi_repository_init (GIRepository *repository)
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
                              (GDestroyNotify) gi_typelib_unref);
+  repository->ordered_typelibs = g_ptr_array_new_with_free_func (NULL);
   repository->lazy_typelibs
     = g_hash_table_new_full (g_str_hash, g_str_equal,
                              (GDestroyNotify) g_free,
                              (GDestroyNotify) gi_typelib_unref);
+  repository->ordered_lazy_typelibs = g_ptr_array_new_with_free_func (NULL);
+
   repository->info_by_gtype
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
@@ -212,7 +238,10 @@ gi_repository_finalize (GObject *object)
   GIRepository *repository = GI_REPOSITORY (object);
 
   g_hash_table_destroy (repository->typelibs);
+  g_ptr_array_unref (repository->ordered_typelibs);
   g_hash_table_destroy (repository->lazy_typelibs);
+  g_ptr_array_unref (repository->ordered_lazy_typelibs);
+
   g_hash_table_destroy (repository->info_by_gtype);
   g_hash_table_destroy (repository->info_by_error_domain);
   g_hash_table_destroy (repository->interfaces_for_gtype);
@@ -497,6 +526,29 @@ load_dependencies_recurse (GIRepository *repository,
   return TRUE;
 }
 
+/* Sort typelibs by namespace. The main requirement here is just to make iteration
+ * deterministic, otherwise results can change as a lot of the code here would
+ * just iterate over a `GHashTable`.
+ *
+ * A sub-requirement of this is that namespaces are sorted such that if a GType
+ * or symbol is found in multiple namespaces where one is a prefix of the other,
+ * the longest namespace wins. In practice, this only happens in
+ * Gio/GioUnix/GioWin32, as all three of those namespaces refer to the same
+ * `.so` file and overlapping sets of the same symbols, but we want the platform
+ * specific namespace to be returned in preference to anything else (even though
+ * either namespace is valid).
+ * See https://gitlab.gnome.org/GNOME/glib/-/issues/3303 */
+static int
+sort_typelibs_cb (const void *a,
+                  const void *b)
+{
+  GITypelib *typelib_a = *(GITypelib **) a;
+  GITypelib *typelib_b = *(GITypelib **) b;
+
+  return strcmp (gi_typelib_get_namespace (typelib_a),
+                 gi_typelib_get_namespace (typelib_b));
+}
+
 static const char *
 register_internal (GIRepository *repository,
                    const char   *source,
@@ -521,6 +573,8 @@ register_internal (GIRepository *repository,
                                       namespace));
       g_hash_table_insert (repository->lazy_typelibs,
                            build_typelib_key (namespace, source), gi_typelib_ref (typelib));
+      g_ptr_array_add (repository->ordered_lazy_typelibs, typelib);
+      g_ptr_array_sort (repository->ordered_lazy_typelibs, sort_typelibs_cb);
     }
   else
     {
@@ -535,13 +589,20 @@ register_internal (GIRepository *repository,
       if (g_hash_table_lookup_extended (repository->lazy_typelibs,
                                         namespace,
                                         (gpointer)&key, &value))
-        g_hash_table_remove (repository->lazy_typelibs, key);
+        {
+          g_hash_table_remove (repository->lazy_typelibs, key);
+          g_ptr_array_remove (repository->ordered_lazy_typelibs, typelib);
+        }
       else
-        key = build_typelib_key (namespace, source);
+        {
+          key = build_typelib_key (namespace, source);
+        }
 
       g_hash_table_insert (repository->typelibs,
                            g_steal_pointer (&key),
                            gi_typelib_ref (typelib));
+      g_ptr_array_add (repository->ordered_typelibs, typelib);
+      g_ptr_array_sort (repository->ordered_typelibs, sort_typelibs_cb);
     }
 
   /* These types might be resolved now, clear the cache */
