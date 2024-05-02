@@ -175,7 +175,7 @@ add_actions_to_notification (NSUserNotification   *userNotification,
 
   if (n_buttons)
     {
-      g_notification_get_button (notification, 0, &label, &action, &target);
+      g_notification_get_button (notification, 0, &label, NULL, &action, &target);
       if (label)
         {
           NSString *str_label = nsstring_from_cstr (label);

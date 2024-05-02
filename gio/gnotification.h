@@ -95,6 +95,27 @@ void                    g_notification_add_button_with_target_value     (GNotifi
                                                                          const gchar   *action,
                                                                          GVariant      *target);
 
+GIO_AVAILABLE_IN_2_82
+void                    g_notification_add_button_with_purpose           (GNotification *notification,
+                                                                         const gchar   *label,
+                                                                         const gchar   *purpose,
+                                                                         const gchar   *detailed_action);
+
+GIO_AVAILABLE_IN_2_82
+void                    g_notification_add_button_with_purpose_and_target (GNotification *notification,
+                                                                           const gchar   *label,
+                                                                           const gchar   *purpose,
+                                                                           const gchar   *action,
+                                                                           const gchar   *target_format,
+                                                                           ...);
+
+GIO_AVAILABLE_IN_2_82
+void                    g_notification_add_button_with_purpose_and_target_value (GNotification *notification,
+                                                                                 const gchar   *label,
+                                                                                 const gchar   *purpose,
+                                                                                 const gchar   *action,
+                                                                                 GVariant      *target);
+
 GIO_AVAILABLE_IN_2_40
 void                    g_notification_set_default_action               (GNotification *notification,
                                                                          const gchar   *detailed_action);
@@ -209,6 +230,87 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
  * Since: 2.82
  */
 #define G_NOTIFICATION_CATEGORY_BROWSER_WEB_NOTIFICATION    "browser.web-notification"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_SYSTEM_CUSTOM_ALERT:
+ *
+ *
+ * Not a button in a strict sense. This action may be called,
+ * depending on system policies, automatically by the notification
+ * server whenever the notification is shown.
+ *
+ * This allows apps to use custom methods for notifying the user,
+ * for example, to play audio from a special
+ * source like a streaming service or a radio station.
+ *
+ * A button with this purpose will never display the label property, therefore
+ * it should be omitted.
+ *
+ * Since: 2.82
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_SYSTEM_CUSTOM_ALERT    "system.custom-alert"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_IM_REPLY_WITH_TEXT:
+ *
+ *
+ * Inline replies for instant messaging.
+ *
+ * If this purpose is used the exported action for the button needs to use a tuple
+ * in form of `(vs)` as parameter, where the first item is the target and the
+ * second the response of the user.
+ *
+ * A button with this purpose will never display the label property, therefore
+ * it should be omitted.
+ *
+ * Since: 2.82
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_IM_REPLY_WITH_TEXT    "im.reply-with-text"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_ACCEPT:
+ *
+ * Purpose for a button that accepts an incoming call.
+ *
+ * Since: 2.82
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_ACCEPT    "call.accept"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_DECLINE:
+ *
+ * Purpose for a button that declines an incoming call.
+ *
+ * Since: 2.82
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_DECLINE    "call.decline"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_HANG_UP:
+ *
+ * Purpose for a button that hangs up an ongoing call.
+ *
+ * Since: 2.82
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_HANG_UP    "call.hang-up"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_ENABLE_SPEAKERPHONE:
+ *
+ * Purpose for a button that enables the speakerphone for an ongoing call.
+ *
+ * Since: 2.82
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_ENABLE_SPEAKERPHONE    "call.enable-speakerphone"
+
+/**
+ * G_NOTIFICATION_BUTTON_PURPOSE_CALL_DISABLE_SPEAKERPHONE:
+ *
+ * Purpose for a button that disables the speakerphone for an ongoing call.
+ *
+ * Since: 2.82
+ */
+#define G_NOTIFICATION_BUTTON_PURPOSE_CALL_DISABLE_SPEAKERPHONE    "call.disable-speakerphone"
 
 G_END_DECLS
 
