@@ -513,12 +513,31 @@ test_repository_error_quark (RepositoryFixture *fx,
 
   g_test_summary ("Test finding an error quark by error domain");
 
+  /* Find a simple error domain. */
   error_info = gi_repository_find_by_error_domain (fx->repository, G_RESOLVER_ERROR);
   g_assert_nonnull (error_info);
   g_assert_true (GI_IS_ENUM_INFO (error_info));
   g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (error_info)), ==, "ResolverError");
 
   g_clear_pointer (&error_info, gi_base_info_unref);
+
+  /* Find again to check the caching. */
+  error_info = gi_repository_find_by_error_domain (fx->repository, G_RESOLVER_ERROR);
+  g_assert_nonnull (error_info);
+  g_assert_true (GI_IS_ENUM_INFO (error_info));
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (error_info)), ==, "ResolverError");
+
+  g_clear_pointer (&error_info, gi_base_info_unref);
+
+  /* Try and find an unknown error domain. */
+  g_assert_null (gi_repository_find_by_error_domain (fx->repository, GI_REPOSITORY_ERROR));
+
+  /* And check caching for unknown error domains. */
+  g_assert_null (gi_repository_find_by_error_domain (fx->repository, GI_REPOSITORY_ERROR));
+
+  /* It would be good to try and find one which will resolve in both Gio and
+   * GioUnix/GioWin32, but neither of the platform-specific GIRs actually define
+   * any error domains at the moment. */
 }
 
 static void
@@ -861,7 +880,7 @@ main (int   argc,
   ADD_REPOSITORY_TEST ("/repository/constructor-return-type", test_repository_constructor_return_type, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/enum-info-c-identifier", test_repository_enum_info_c_identifier, &typelib_load_spec_glib);
   ADD_REPOSITORY_TEST ("/repository/enum-info-static-methods", test_repository_enum_info_static_methods, &typelib_load_spec_glib);
-  ADD_REPOSITORY_TEST ("/repository/error-quark", test_repository_error_quark, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/error-quark", test_repository_error_quark, &typelib_load_spec_gio_platform);
   ADD_REPOSITORY_TEST ("/repository/flags-info-c-identifier", test_repository_flags_info_c_identifier, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/fundamental-ref-func", test_repository_fundamental_ref_func, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/instance-method-ownership-transfer", test_repository_instance_method_ownership_transfer, &typelib_load_spec_gio);
