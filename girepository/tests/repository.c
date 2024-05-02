@@ -863,6 +863,35 @@ test_repository_find_by_gtype (RepositoryFixture *fx,
   }
 }
 
+static void
+test_repository_loaded_namespaces (RepositoryFixture *fx,
+                                   const void        *unused)
+{
+  char **namespaces;
+  size_t n_namespaces;
+
+  /* These should be in alphabetical order */
+#if defined(G_OS_UNIX)
+  const char *expected_namespaces[] = { "GLib", "GModule", "GObject", "Gio", "GioUnix", NULL };
+#elif defined(G_OS_WIN32)
+  const char *expected_namespaces[] = { "GLib", "GModule", "GObject", "Gio", "GioWin32", NULL };
+#else
+  const char *expected_namespaces[] = { "GLib", "GModule", "GObject", "Gio", NULL };
+#endif
+
+  g_test_summary ("Test listing loaded namespaces");
+
+  namespaces = gi_repository_get_loaded_namespaces (fx->repository, &n_namespaces);
+  g_assert_cmpstrv (namespaces, expected_namespaces);
+  g_assert_cmpuint (n_namespaces, ==, g_strv_length ((char **) expected_namespaces));
+  g_strfreev (namespaces);
+
+  /* Test again but without passing `n_namespaces`. */
+  namespaces = gi_repository_get_loaded_namespaces (fx->repository, NULL);
+  g_assert_cmpstrv (namespaces, expected_namespaces);
+  g_strfreev (namespaces);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -891,6 +920,7 @@ main (int   argc,
   ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-invoker-on-interface", test_repository_vfunc_info_with_invoker_on_interface, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-invoker-on-object", test_repository_vfunc_info_with_invoker_on_object, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/repository/find-by-gtype", test_repository_find_by_gtype, &typelib_load_spec_gio_platform);
+  ADD_REPOSITORY_TEST ("/repository/loaded-namespaces", test_repository_loaded_namespaces, &typelib_load_spec_gio_platform);
 
   return g_test_run ();
 }
