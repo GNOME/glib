@@ -2233,6 +2233,15 @@ libffi_dep = dependency('libffi', version : '>= 3.0.0')
 
 libz_dep = dependency('zlib')
 
+libatomic_test_code = '''
+  int main (int argc, char ** argv) {
+    return 0;
+  }'''
+atomic_dep = []
+if cc.links(libatomic_test_code, args : '-latomic', name : 'check for -latomic')
+  atomic_dep = cc.find_library('atomic')
+endif
+
 # First check in libc, fallback to libintl, and as last chance build
 # proxy-libintl subproject.
 # FIXME: glib-gettext.m4 has much more checks to detect broken/uncompatible
