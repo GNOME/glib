@@ -36,8 +36,6 @@
 #include <gio/gapplicationcommandline.h>
 #include <gio/gasyncinitable.h>
 #include <gio/gasyncresult.h>
-#include <gio/gbase64decoder.h>
-#include <gio/gbase64encoder.h>
 #include <gio/gbufferedinputstream.h>
 #include <gio/gbufferedoutputstream.h>
 #include <gio/gbytesicon.h>
