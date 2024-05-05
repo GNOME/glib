@@ -35,6 +35,8 @@ typedef struct _GAppLaunchContext             GAppLaunchContext;
 typedef struct _GAppInfo                      GAppInfo; /* Dummy typedef */
 typedef struct _GAsyncResult                  GAsyncResult; /* Dummy typedef */
 typedef struct _GAsyncInitable                GAsyncInitable;
+typedef struct _GBase64Decoder                GBase64Decoder;
+typedef struct _GBase64Encoder                GBase64Encoder;
 typedef struct _GBufferedInputStream          GBufferedInputStream;
 typedef struct _GBufferedOutputStream         GBufferedOutputStream;
 typedef struct _GCancellable                  GCancellable;
