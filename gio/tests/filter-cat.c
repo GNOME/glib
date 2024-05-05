@@ -47,6 +47,9 @@ static gboolean decompress = FALSE;
 static gboolean compress = FALSE;
 static gboolean gzip = FALSE;
 static gboolean fallback = FALSE;
+static gboolean base64_decode = FALSE;
+static gboolean base64_encode = FALSE;
+static gboolean base64_break_lines = FALSE;
 
 static GOptionEntry entries[] = {
   {"decompress", 0, 0, G_OPTION_ARG_NONE, &decompress, "decompress", NULL},
@@ -55,14 +58,17 @@ static GOptionEntry entries[] = {
   {"from-charset", 0, 0, G_OPTION_ARG_STRING, &from_charset, "from charset", NULL},
   {"to-charset", 0, 0, G_OPTION_ARG_STRING, &to_charset, "to charset", NULL},
   {"fallback", 0, 0, G_OPTION_ARG_NONE, &fallback, "use fallback", NULL},
+  {"from-base64", 0, 0, G_OPTION_ARG_NONE, &base64_decode, "decode from Base-64", NULL},
+  {"to-base64", 0, 0, G_OPTION_ARG_NONE, &base64_encode, "encode to Base-64", NULL},
+  {"break-lines", 0, 0, G_OPTION_ARG_NONE, &base64_break_lines, "break lines in Base-64", NULL},
   {G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &locations, "locations", NULL},
   G_OPTION_ENTRY_NULL
 };
 
 static void
 decompressor_file_info_notify_cb (GZlibDecompressor *decompressor,
-                                  GParamSpec *pspec,
-                                  gpointer data)
+                                  GParamSpec        *pspec,
+                                  gpointer           data)
 {
   GFileInfo *file_info;
   const gchar *filename;
@@ -100,10 +106,22 @@ cat (GFile * file)
       return;
     }
 
+  if (base64_decode)
+    {
+      GInputStream *old;
+      conv = (GConverter *) g_base64_decoder_new ();
+      old = in;
+      in = (GInputStream *) g_converter_input_stream_new (in, conv);
+      g_object_unref (conv);
+      g_object_unref (old);
+    }
+
   if (decompress)
     {
       GInputStream *old;
-      conv = (GConverter *)g_zlib_decompressor_new (gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_ZLIB);
+      conv = (GConverter *) g_zlib_decompressor_new (gzip
+                                                       ? G_ZLIB_COMPRESSOR_FORMAT_GZIP
+                                                       : G_ZLIB_COMPRESSOR_FORMAT_ZLIB);
       old = in;
       in = (GInputStream *) g_converter_input_stream_new (in, conv);
       g_signal_connect (conv, "notify::file-info", G_CALLBACK (decompressor_file_info_notify_cb), NULL);
@@ -152,13 +170,26 @@ cat (GFile * file)
           return;
         }
 
-      conv = (GConverter *)g_zlib_compressor_new(gzip?G_ZLIB_COMPRESSOR_FORMAT_GZIP:G_ZLIB_COMPRESSOR_FORMAT_ZLIB, -1);
+      conv = (GConverter *) g_zlib_compressor_new (gzip
+                                                     ? G_ZLIB_COMPRESSOR_FORMAT_GZIP
+                                                     : G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
+                                                   -1);
       g_zlib_compressor_set_file_info (G_ZLIB_COMPRESSOR (conv), in_file_info);
       old = in;
       in = (GInputStream *) g_converter_input_stream_new (in, conv);
       g_object_unref (conv);
       g_object_unref (old);
       g_object_unref (in_file_info);
+    }
+
+  if (base64_encode)
+    {
+      GInputStream *old;
+      conv = (GConverter *) g_base64_encoder_new (base64_break_lines);
+      old = in;
+      in = (GInputStream *) g_converter_input_stream_new (in, conv);
+      g_object_unref (conv);
+      g_object_unref (old);
     }
 
   while (1)

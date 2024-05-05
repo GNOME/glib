@@ -480,6 +480,8 @@ gio_base_sources = files(
   'gasynchelper.c',
   'gasyncinitable.c',
   'gasyncresult.c',
+  'gbase64decoder.c',
+  'gbase64encoder.c',
   'gbufferedinputstream.c',
   'gbufferedoutputstream.c',
   'gbytesicon.c',

@@ -1189,6 +1189,70 @@ test_converter_basics (void)
   g_object_unref (converter);
 }
 
+static void
+test_converter_base64 (void)
+{
+  guchar data[8192];
+  gchar *encoded;
+  GInputStream *input;
+  GOutputStream *output;
+  GOutputStream *converter;
+  GInputStream *converter2;
+  GConverter *conv;
+  GOutputStreamSpliceFlags flags;
+  gssize size;
+  GError *error = NULL;
+  char *result;
+
+  for (gsize i = 0; i < sizeof (data); i++)
+    data[i] = g_test_rand_int_range (0, 255);
+
+  encoded = g_base64_encode (data, sizeof (data));
+
+  conv = g_base64_encoder_new (FALSE);
+
+  input = g_memory_input_stream_new_from_data (data, sizeof (data), NULL);
+  output = g_memory_output_stream_new_resizable ();
+  converter = g_converter_output_stream_new (output, conv);
+
+  flags = G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET;
+  size = g_output_stream_splice (converter, input, flags, NULL, &error);
+  g_assert_true (size != -1);
+  g_assert_no_error (error);
+
+  result = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (output));
+  g_assert_cmpstr (encoded, ==, result);
+
+  g_object_unref (converter);
+  g_object_unref (output);
+  g_object_unref (input);
+  g_object_unref (conv);
+  g_free (result);
+
+  conv = g_base64_decoder_new ();
+
+  input = g_memory_input_stream_new_from_data (encoded, strlen (encoded), NULL);
+  converter2 = g_converter_input_stream_new (input, conv);
+  output = g_memory_output_stream_new_resizable ();
+
+  flags = G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET;
+  size = g_output_stream_splice (output, converter2, flags, NULL, &error);
+  g_assert_true (size != -1);
+  g_assert_no_error (error);
+
+  result = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (output));
+
+  g_assert_true (memcmp (data, result, sizeof (data)) == 0);
+
+  g_object_unref (converter2);
+  g_object_unref (output);
+  g_object_unref (input);
+  g_object_unref (conv);
+  g_free (result);
+
+  g_free (encoded);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1231,6 +1295,8 @@ main (int   argc,
 
   g_test_add_func ("/converter-stream/pollable", test_converter_pollable);
   g_test_add_func ("/converter-stream/leftover", test_converter_leftover);
+
+  g_test_add_func ("/converter-stream/base64", test_converter_base64);
 
   return g_test_run();
 }
