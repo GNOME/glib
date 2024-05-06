@@ -219,7 +219,7 @@ g_converter_reset (GConverter *converter)
  *
  * Applies @converter to the data in @bytes.
  *
- * Returns: (nullable) (transfer full): A newly-allocated
+ * Returns: (transfer full): A newly-allocated
  *   `GBytes` with the converted data, or `NULL` if an error
  *   occurred
  *
@@ -233,8 +233,8 @@ g_converter_convert_bytes (GConverter  *converter,
   GInputStream *input;
   GOutputStream *output;
   GOutputStream *conv;
-  GBytes *result = NULL;
   GOutputStreamSpliceFlags flags;
+  GBytes *result = NULL;
 
   g_converter_reset (converter);
 
