@@ -3603,13 +3603,14 @@ args_to_rule (const gchar      *sender,
               const gchar      *member,
               const gchar      *object_path,
               const gchar      *arg0,
+              const gchar       header_tag,
               GDBusSignalFlags  flags)
 {
   GString *rule;
 
   rule = g_string_new ("type='signal'");
-  if (flags & G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE)
-    g_string_prepend_c (rule, '-');
+  if (header_tag != '\0')
+    g_string_prepend_c (rule, header_tag);
   if (sender != NULL)
     g_string_append_printf (rule, ",sender='%s'", sender);
   if (interface_name != NULL)
@@ -3646,6 +3647,9 @@ add_match_rule (GDBusConnection *connection,
   GError *error;
   GDBusMessage *message;
 
+  if (match_rule[0] == '*')
+    match_rule++;
+
   if (match_rule[0] == '-')
     return;
 
@@ -3676,6 +3680,9 @@ remove_match_rule (GDBusConnection *connection,
 {
   GError *error;
   GDBusMessage *message;
+
+  if (match_rule[0] == '*')
+    match_rule++;
 
   if (match_rule[0] == '-')
     return;
@@ -3840,6 +3847,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
                                     gpointer             user_data,
                                     GDestroyNotify       user_data_free_func)
 {
+  gchar header_tag = '\0';
   gchar *rule;
   SignalData *signal_data;
   SignalData *name_watcher = NULL;
@@ -3877,7 +3885,9 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
    * the usual way, but the '-' prevents the match rule from ever
    * actually being send to the bus (either for add or remove).
    */
-  rule = args_to_rule (sender, interface_name, member, object_path, arg0, flags);
+  if (flags & G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE)
+    header_tag = '-';
+  rule = args_to_rule (sender, interface_name, member, object_path, arg0, header_tag, flags);
 
   if (sender != NULL && (g_dbus_is_unique_name (sender) || g_strcmp0 (sender, "org.freedesktop.DBus") == 0))
     sender_is_its_own_owner = TRUE;
@@ -3926,11 +3936,15 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
       /* We already checked that sender != NULL implies MESSAGE_BUS_CONNECTION */
       g_assert (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION);
 
+      /* We pass a prefix of "*" to mean it's an internal match rule and shouldn't gain
+       * subscribers
+       */
       name_owner_rule = args_to_rule (DBUS_SERVICE_DBUS,
                                       DBUS_INTERFACE_DBUS,
                                       "NameOwnerChanged",
                                       DBUS_PATH_DBUS,
                                       sender,
+                                      '*',
                                       G_DBUS_SIGNAL_FLAGS_NONE);
       name_watcher = g_hash_table_lookup (connection->map_rule_to_signal_data, name_owner_rule);
 
