@@ -70,6 +70,7 @@ gio_tests = {
     # "LC_COLLATE support for collation orders other than simple codepoint order"
     'can_fail' : linux_libc == 'musl',
   },
+  'converter' : {},
   'credentials' : {},
   'data-input-stream' : {},
   'data-output-stream' : {},
