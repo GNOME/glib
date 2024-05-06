@@ -148,7 +148,7 @@ basic (void)
 
   loop = g_main_loop_new (NULL, FALSE);
 
-  server = g_notification_server_new ();
+  server = g_notification_server_new ("gtk", 1);
   g_signal_connect (server, "notification-received", G_CALLBACK (notification_received), &received_count);
   g_signal_connect (server, "notification-removed", G_CALLBACK (notification_removed), &removed_count);
   g_signal_connect (server, "notify::is-running", G_CALLBACK (server_notify_is_running), loop);

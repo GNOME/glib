@@ -23,6 +23,7 @@
 #define __G_NOTIFICATION_SERVER_H__
 
 #include <glib-object.h>
+#include <gio/gunixfdlist.h>
 
 #define G_TYPE_NOTIFICATION_SERVER  (g_notification_server_get_type ())
 #define G_NOTIFICATION_SERVER(o)    (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_NOTIFICATION_SERVER, GNotificationServer))
@@ -32,12 +33,15 @@ typedef struct _GNotificationServer GNotificationServer;
 
 GType                   g_notification_server_get_type                  (void);
 
-GNotificationServer *   g_notification_server_new                       (void);
+GNotificationServer *   g_notification_server_new                       (const gchar *backend_name,
+                                                                         guint        backend_version);
 
 void                    g_notification_server_stop                      (GNotificationServer *server);
 
 gboolean                g_notification_server_get_is_running            (GNotificationServer *server);
 
+GUnixFDList *           g_notification_server_get_unix_fd_list_for_notification (GNotificationServer *server,
+                                                                                 GVariant            *notification);
 gchar **                g_notification_server_list_applications         (GNotificationServer *server);
 
 gchar **                g_notification_server_list_notifications        (GNotificationServer *server,

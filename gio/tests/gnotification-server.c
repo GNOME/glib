@@ -22,6 +22,7 @@
 #include "gnotification-server.h"
 
 #include <gio/gio.h>
+#include <glib/gstdio.h>
 
 typedef GObjectClass GNotificationServerClass;
 
@@ -33,10 +34,16 @@ struct _GNotificationServer
   guint name_owner_id;
   guint object_id;
 
+  gchar *backend_name;
+  guint backend_version;
+
   guint is_running;
 
   /* app_ids -> hashtables of notification ids -> a{sv} */
   GHashTable *applications;
+
+  /* notification -> unix_fd_list */
+  GHashTable *unix_fd_lists;
 };
 
 G_DEFINE_TYPE (GNotificationServer, g_notification_server, G_TYPE_OBJECT)
@@ -44,8 +51,26 @@ G_DEFINE_TYPE (GNotificationServer, g_notification_server, G_TYPE_OBJECT)
 enum
 {
   PROP_0,
-  PROP_IS_RUNNING
+  PROP_IS_RUNNING,
+  PROP_BACKEND_NAME,
+  PROP_BACKEND_VERSION
 };
+
+static const gchar *
+get_bus_name (GNotificationServer *server) {
+  if (g_strcmp0 (server->backend_name, "portal") == 0)
+    return "org.freedesktop.portal.Desktop";
+
+  return "org.gtk.Notifications";
+}
+
+static const gchar *
+get_object_path (GNotificationServer *server) {
+  if (g_strcmp0 (server->backend_name, "portal") == 0)
+    return "/org/freedesktop/portal/desktop";
+
+  return "/org/gtk/Notifications";
+}
 
 static GDBusInterfaceInfo *
 org_gtk_Notifications_get_interface (void)
@@ -85,6 +110,52 @@ org_gtk_Notifications_get_interface (void)
   return iface_info;
 }
 
+static GDBusInterfaceInfo *
+org_freedesktop_portal_notification_get_interface (void)
+{
+  static GDBusInterfaceInfo *iface_info;
+
+  if (iface_info == NULL)
+    {
+      GDBusNodeInfo *info;
+      GError *error = NULL;
+
+      info = g_dbus_node_info_new_for_xml (
+        "<node>"
+        "  <interface name='org.freedesktop.portal.Notification'>"
+        "    <method name='AddNotification'>"
+        "      <arg type='s' direction='in' />"
+        "      <arg type='a{sv}' direction='in' />"
+        "    </method>"
+        "    <method name='RemoveNotification'>"
+        "      <arg type='s' direction='in' />"
+        "    </method>"
+        "    <property name='version' type='u' access='read'/>"
+        "  </interface>"
+        "</node>", &error);
+
+      if (info == NULL)
+        g_error ("%s", error->message);
+
+      iface_info = g_dbus_node_info_lookup_interface (info, "org.freedesktop.portal.Notification");
+      g_assert (iface_info);
+
+      g_dbus_interface_info_ref (iface_info);
+      g_dbus_node_info_unref (info);
+    }
+
+  return iface_info;
+}
+
+static GDBusInterfaceInfo *
+get_interface (GNotificationServer *server)
+{
+  if (g_strcmp0 (server->backend_name, "portal") == 0)
+    return org_freedesktop_portal_notification_get_interface ();
+
+  return org_gtk_Notifications_get_interface ();
+}
+
 static void
 g_notification_server_notification_added (GNotificationServer *server,
                                           const gchar         *app_id,
@@ -116,6 +187,8 @@ g_notification_server_notification_removed (GNotificationServer *server,
   notifications = g_hash_table_lookup (server->applications, app_id);
   if (notifications)
     {
+      g_hash_table_remove (server->unix_fd_lists,
+                           g_hash_table_lookup (notifications, notification_id));
       g_hash_table_remove (notifications, notification_id);
       if (g_hash_table_size (notifications) == 0)
         g_hash_table_remove (server->applications, app_id);
@@ -164,56 +237,74 @@ org_gtk_Notifications_method_call (GDBusConnection       *connection,
 }
 
 static void
-g_notification_server_dispose (GObject *object)
+org_freedesktop_portal_notification_method_call (GDBusConnection       *connection,
+                                                 const gchar           *sender,
+                                                 const gchar           *object_path,
+                                                 const gchar           *interface_name,
+                                                 const gchar           *method_name,
+                                                 GVariant              *parameters,
+                                                 GDBusMethodInvocation *invocation,
+                                                 gpointer               user_data)
 {
-  GNotificationServer *server = G_NOTIFICATION_SERVER (object);
+  GNotificationServer *server = user_data;
 
-  g_notification_server_stop (server);
-
-  g_clear_pointer (&server->applications, g_hash_table_unref);
-  g_clear_object (&server->connection);
-
-  G_OBJECT_CLASS (g_notification_server_parent_class)->dispose (object);
-}
-
-static void
-g_notification_server_get_property (GObject    *object,
-                                    guint       property_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
-{
-  GNotificationServer *server = G_NOTIFICATION_SERVER (object);
-
-  switch (property_id)
+  if (g_str_equal (method_name, "AddNotification"))
     {
-    case PROP_IS_RUNNING:
-      g_value_set_boolean (value, server->is_running);
-      break;
+      const gchar *notification_id;
+      g_autoptr(GVariant) notification = NULL;
+      GUnixFDList* fd_list;
 
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+      fd_list = g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation));
+
+      g_variant_get (parameters, "(&s@a{sv})", &notification_id, &notification);
+
+      if (fd_list)
+        g_hash_table_replace (server->unix_fd_lists, g_variant_ref (notification), g_object_ref (fd_list));
+
+      g_notification_server_notification_added (server, "", notification_id, notification);
+      g_dbus_method_invocation_return_value (invocation, NULL);
+    }
+  else if (g_str_equal (method_name, "RemoveNotification"))
+    {
+      const gchar *notification_id;
+
+      g_variant_get (parameters, "(&s)", &notification_id);
+      g_notification_server_notification_removed (server, "", notification_id);
+      g_dbus_method_invocation_return_value (invocation, NULL);
+    }
+  else
+    {
+      g_dbus_method_invocation_return_dbus_error (invocation, "UnknownMethod", "No such method");
     }
 }
-
-static void
-g_notification_server_class_init (GNotificationServerClass *class)
+static GVariant *
+org_freedesktop_portal_notification_get_property (GDBusConnection  *connection,
+                                                  const gchar      *sender,
+                                                  const gchar      *object_path,
+                                                  const gchar      *interface_name,
+                                                  const gchar      *property_name,
+                                                  GError          **error,
+                                                  gpointer          user_data)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  GNotificationServer *server = user_data;
 
-  object_class->get_property = g_notification_server_get_property;
-  object_class->dispose = g_notification_server_dispose;
+  if (g_strcmp0 (property_name, "version") == 0)
+    return g_variant_new_uint32 (server->backend_version);
 
-  g_object_class_install_property (object_class, PROP_IS_RUNNING,
-                                   g_param_spec_boolean ("is-running", "", "", FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  return NULL;
+}
 
-  g_signal_new ("notification-received", G_TYPE_NOTIFICATION_SERVER, G_SIGNAL_RUN_FIRST,
-                0, NULL, NULL, g_cclosure_marshal_generic, G_TYPE_NONE, 3,
-                G_TYPE_STRING, G_TYPE_STRING, G_TYPE_VARIANT);
 
-  g_signal_new ("notification-removed", G_TYPE_NOTIFICATION_SERVER, G_SIGNAL_RUN_FIRST,
-                0, NULL, NULL, g_cclosure_marshal_generic, G_TYPE_NONE, 2,
-                G_TYPE_STRING, G_TYPE_STRING);
+static GDBusInterfaceVTable
+get_vtable (GNotificationServer *server)
+{
+  const GDBusInterfaceVTable vtable = {
+    (g_strcmp0 (server->backend_name, "portal") == 0) ? org_freedesktop_portal_notification_method_call : org_gtk_Notifications_method_call,
+    (g_strcmp0 (server->backend_name, "portal") == 0) ? org_freedesktop_portal_notification_get_property : NULL,
+    NULL, { 0 }
+  };
+
+  return vtable;
 }
 
 static void
@@ -221,13 +312,11 @@ g_notification_server_bus_acquired (GDBusConnection *connection,
                                     const gchar     *name,
                                     gpointer         user_data)
 {
-  const GDBusInterfaceVTable vtable = {
-    org_gtk_Notifications_method_call, NULL, NULL, { 0 }
-  };
   GNotificationServer *server = user_data;
+  const GDBusInterfaceVTable vtable = get_vtable (server);
 
-  server->object_id = g_dbus_connection_register_object (connection, "/org/gtk/Notifications",
-                                                         org_gtk_Notifications_get_interface (),
+  server->object_id = g_dbus_connection_register_object (connection, get_object_path (server),
+                                                         get_interface (server),
                                                          &vtable, server, NULL, NULL);
 
   /* register_object only fails if the same object is exported more than once */
@@ -261,13 +350,15 @@ g_notification_server_name_lost (GDBusConnection *connection,
 }
 
 static void
-g_notification_server_init (GNotificationServer *server)
+g_notification_server_constructed (GObject *object)
 {
-  server->applications = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                g_free, (GDestroyNotify) g_hash_table_unref);
+
+  GNotificationServer *server = G_NOTIFICATION_SERVER (object);
+
+  G_OBJECT_CLASS (g_notification_server_parent_class)->constructed (object);
 
   server->name_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
-                                          "org.gtk.Notifications",
+                                          get_bus_name (server),
                                           G_BUS_NAME_OWNER_FLAGS_NONE,
                                           g_notification_server_bus_acquired,
                                           g_notification_server_name_acquired,
@@ -275,10 +366,119 @@ g_notification_server_init (GNotificationServer *server)
                                           server, NULL);
 }
 
-GNotificationServer *
-g_notification_server_new (void)
+static void
+g_notification_server_dispose (GObject *object)
 {
-  return g_object_new (G_TYPE_NOTIFICATION_SERVER, NULL);
+  GNotificationServer *server = G_NOTIFICATION_SERVER (object);
+
+  g_notification_server_stop (server);
+
+  g_clear_pointer (&server->applications, g_hash_table_unref);
+  g_clear_pointer (&server->unix_fd_lists, g_hash_table_unref);
+  g_clear_object (&server->connection);
+  g_clear_pointer (&server->backend_name, g_free);
+
+  G_OBJECT_CLASS (g_notification_server_parent_class)->dispose (object);
+}
+
+static void
+g_notification_server_set_property (GObject      *object,
+                                    guint         property_id,
+                                    const GValue *value,
+                                    GParamSpec   *pspec)
+{
+  GNotificationServer *server = G_NOTIFICATION_SERVER (object);
+
+  switch (property_id)
+    {
+    case PROP_BACKEND_NAME:
+      server->backend_name = g_value_dup_string (value);
+      break;
+    case PROP_BACKEND_VERSION:
+      server->backend_version = g_value_get_uint (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
+g_notification_server_get_property (GObject    *object,
+                                    guint       property_id,
+                                    GValue     *value,
+                                    GParamSpec *pspec)
+{
+  GNotificationServer *server = G_NOTIFICATION_SERVER (object);
+
+  switch (property_id)
+    {
+    case PROP_IS_RUNNING:
+      g_value_set_boolean (value, server->is_running);
+      break;
+    case PROP_BACKEND_NAME:
+      g_value_set_string (value, server->backend_name);
+      break;
+    case PROP_BACKEND_VERSION:
+      g_value_set_uint (value, server->backend_version);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
+g_notification_server_class_init (GNotificationServerClass *class)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  object_class->set_property = g_notification_server_set_property;
+  object_class->get_property = g_notification_server_get_property;
+  object_class->constructed = g_notification_server_constructed;
+  object_class->dispose = g_notification_server_dispose;
+
+  g_object_class_install_property (object_class, PROP_IS_RUNNING,
+                                   g_param_spec_boolean ("is-running", "", "", FALSE,
+                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class, PROP_BACKEND_NAME,
+                                   g_param_spec_string ("backend-name", "", "", NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class, PROP_BACKEND_VERSION,
+                                   g_param_spec_uint ("backend-version", "", "", 0, G_MAXUINT32, 0,
+                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+
+  g_signal_new ("notification-received", G_TYPE_NOTIFICATION_SERVER, G_SIGNAL_RUN_FIRST,
+                0, NULL, NULL, g_cclosure_marshal_generic, G_TYPE_NONE, 3,
+                G_TYPE_STRING, G_TYPE_STRING, G_TYPE_VARIANT);
+
+  g_signal_new ("notification-removed", G_TYPE_NOTIFICATION_SERVER, G_SIGNAL_RUN_FIRST,
+                0, NULL, NULL, g_cclosure_marshal_generic, G_TYPE_NONE, 2,
+                G_TYPE_STRING, G_TYPE_STRING);
+}
+
+static void
+g_notification_server_init (GNotificationServer *server)
+{
+  server->applications = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                g_free, (GDestroyNotify) g_hash_table_unref);
+
+  server->unix_fd_lists = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                                (GDestroyNotify) g_variant_unref,
+                                                (GDestroyNotify) g_object_unref);
+  server->backend_version = 0;
+}
+
+GNotificationServer *
+g_notification_server_new (const gchar *backend_name,
+                           guint        backend_version)
+{
+  return g_object_new (G_TYPE_NOTIFICATION_SERVER,
+                       "backend-name", backend_name,
+                       "backend-version", backend_version,
+                       NULL);
 }
 
 void
@@ -319,6 +519,16 @@ g_notification_server_list_applications (GNotificationServer *server)
   g_return_val_if_fail (G_IS_NOTIFICATION_SERVER (server), NULL);
 
   return (gchar **) g_hash_table_get_keys_as_array (server->applications, NULL);
+}
+
+GUnixFDList *
+g_notification_server_get_unix_fd_list_for_notification (GNotificationServer *server,
+                                                         GVariant            *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION_SERVER (server), NULL);
+  g_return_val_if_fail (notification != NULL, NULL);
+
+  return g_hash_table_lookup (server->unix_fd_lists, notification);
 }
 
 gchar **

@@ -528,6 +528,9 @@ if host_machine.system() != 'windows'
       'gnotification' : {
         'extra_sources' : [extra_sources, 'gnotification-server.c'],
       },
+      'portal-notification-backend' : {
+        'extra_sources' : [extra_sources, 'gnotification-server.c'],
+      },
       'gdbus-test-codegen-old' : {
         'source' : 'gdbus-test-codegen.c',
         'extra_sources' : [extra_sources, gdbus_test_codegen_generated, gdbus_test_codegen_generated_interface_info],
