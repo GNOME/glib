@@ -778,6 +778,12 @@ kill_test_service (GDBusConnection *connection)
   while (!name_disappeared)
     g_main_context_iteration (NULL, TRUE);
 
+  /* GDBusConnection doesn't guarantee that different subscriptions to the
+   * same signal will get their callbacks scheduled in any particular order,
+   * so make sure they have all happened */
+  while (g_main_context_iteration (NULL, FALSE))
+    continue;
+
   g_bus_unwatch_name (watch_id);
 #else
   g_warning ("Can't kill com.example.TestService");
