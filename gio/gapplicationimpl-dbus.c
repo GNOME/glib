@@ -299,7 +299,7 @@ g_application_impl_method_call (GDBusConnection       *connection,
         {
           g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
                                                  "Unknown action ‘%s’", name);
-          g_clear_pointer (&parameter, g_variant_unref);
+          g_variant_iter_free (iter);
           g_variant_unref (platform_data);
           return;
         }
