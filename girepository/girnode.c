@@ -223,6 +223,9 @@ gi_ir_node_free (GIIrNode *node)
         g_free (node->name);
         g_free (function->symbol);
         g_free (function->property);
+        g_free (function->async_func);
+        g_free (function->sync_func);
+        g_free (function->finish_func);
         gi_ir_node_free ((GIIrNode *)function->result);
         for (l = function->parameters; l; l = l->next)
           gi_ir_node_free ((GIIrNode *)l->data);
@@ -281,6 +284,9 @@ gi_ir_node_free (GIIrNode *node)
         GIIrNodeVFunc *vfunc = (GIIrNodeVFunc *)node;
 
         g_free (node->name);
+        g_free (vfunc->async_func);
+        g_free (vfunc->sync_func);
+        g_free (vfunc->finish_func);
         g_free (vfunc->invoker);
         for (l = vfunc->parameters; l; l = l->next)
           gi_ir_node_free ((GIIrNode *)l->data);
@@ -1218,6 +1224,25 @@ get_index_of_member_type (GIIrNodeInterface *node,
   return index;
 }
 
+static int
+get_index_for_function (GIIrTypelibBuild * build,
+                        GIIrNode *parent,
+                        const char        *name)
+{
+  if (parent == NULL)
+    {
+      uint16_t index = find_entry(build, name);
+      if (index == 0) return -1;
+
+      return index;      
+    }
+
+  int index = get_index_of_member_type((GIIrNodeInterface *) parent, GI_IR_NODE_FUNCTION, name);
+  if (index != -1) return index;
+
+  return -1;
+}
+
 static void
 serialize_type (GIIrTypelibBuild *build,
                 GIIrNodeType     *node,
@@ -1706,6 +1731,61 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         blob->name = gi_ir_write_string (node->name, strings, data, offset2);
         blob->symbol = gi_ir_write_string (function->symbol, strings, data, offset2);
         blob->signature = signature;
+        blob->finish = ASYNC_SENTINEL;
+        blob->sync_or_async = ASYNC_SENTINEL;
+        blob->is_async = function->is_async;
+
+        if (function->is_async)
+          {
+            if (function->sync_func != NULL)
+              {
+                int sync_index =
+                    get_index_for_function (build,
+                                            parent,
+                                            function->sync_func);
+
+                if (sync_index == -1)
+                  {
+                    g_error ("Unknown sync function %s:%s",
+                             parent->name, function->sync_func);
+                  }
+
+                blob->sync_or_async = (uint16_t) sync_index;
+              }
+
+            if (function->finish_func != NULL)
+              {
+                int finish_index =
+                    get_index_for_function (build,
+                                            parent,
+                                            function->finish_func);
+
+                if (finish_index == -1)
+                  {
+                    g_error ("Unknown finish function %s:%s", parent->name, function->finish_func);
+                  }
+
+                blob->finish = (uint16_t) finish_index;
+              }
+          }
+        else
+          {
+            if (function->async_func != NULL)
+              {
+                int async_index =
+                    get_index_for_function (build,
+                                            parent,
+                                            function->async_func);
+
+                if (async_index == -1)
+                  {
+                    g_error ("Unknown async function %s:%s", parent->name, function->async_func);
+                  }
+
+                blob->sync_or_async = (uint16_t) async_index;
+              }
+          }
+
 
         if (function->is_setter || function->is_getter)
           {
@@ -1876,6 +1956,9 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         blob->class_closure = 0; /* FIXME */
         blob->throws = vfunc->throws; /* Deprecated. Also stored in SignatureBlob. */
         blob->reserved = 0;
+        blob->is_async = vfunc->is_async;
+        blob->finish = ASYNC_SENTINEL;
+        blob->sync_or_async = ASYNC_SENTINEL;
 
         if (vfunc->invoker)
           {
@@ -1888,6 +1971,58 @@ gi_ir_node_build_typelib (GIIrNode         *node,
           }
         else
           blob->invoker = 0x3ff; /* max of 10 bits */
+
+        if (vfunc->is_async)
+          {
+            if (vfunc->sync_func != NULL)
+              {
+                int sync_index =
+                    get_index_of_member_type ((GIIrNodeInterface *) parent,
+                                              GI_IR_NODE_VFUNC,
+                                              vfunc->sync_func);
+
+                if (sync_index == -1)
+                  {
+                    g_error ("Unknown sync vfunc %s:%s for accessor %s",
+                             parent->name, vfunc->sync_func, vfunc->invoker);
+                  }
+
+                blob->sync_or_async = (uint16_t) sync_index;
+              }
+
+            if (vfunc->finish_func != NULL)
+              {
+                int finish_index =
+                    get_index_of_member_type ((GIIrNodeInterface *) parent,
+                                              GI_IR_NODE_VFUNC,
+                                              vfunc->finish_func);
+
+                if (finish_index == -1)
+                  {
+                    g_error ("Unknown finish vfunc %s:%s for function %s",
+                             parent->name, vfunc->finish_func, vfunc->invoker);
+                  }
+
+                blob->finish = (uint16_t) finish_index;
+              }
+          }
+        else
+          {
+            if (vfunc->async_func != NULL)
+              {
+                int async_index =
+                    get_index_of_member_type ((GIIrNodeInterface *) parent,
+                                              GI_IR_NODE_VFUNC,
+                                              vfunc->async_func);
+                if (async_index == -1)
+                  {
+                    g_error ("Unknown async vfunc %s:%s for accessor %s",
+                             parent->name, vfunc->async_func, vfunc->invoker);
+                  }
+
+                blob->sync_or_async = (uint16_t) async_index;
+              }
+          }
 
         blob->struct_offset = vfunc->offset;
         blob->reserved2 = 0;

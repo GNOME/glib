@@ -598,7 +598,11 @@ typedef struct {
  *   return value type.
  * @is_static: The function is a "static method"; in other words it's a pure
  *   function whose name is conceptually scoped to the object.
+ * @is_async: Whether the function is asynchronous
+ * @sync_or_async: The index of the synchronous version of the function if is_async is TRUE,
+ *   otherwise, the index of the asynchronous version.
  * @reserved: Reserved for future use.
+ * @finish: The index of the finish function if is_async is TRUE, otherwise ASYNC_SENTINEL
  * @reserved2: Reserved for future use.
  *
  * TODO
@@ -614,7 +618,7 @@ typedef struct {
   uint16_t constructor : 1;
   uint16_t wraps_vfunc : 1;
   uint16_t throws      : 1;
-  uint16_t index       :10;
+  uint16_t index       : 10;
   /* Note the bits above need to match CommonBlob
    * and are thus exhausted, extend things using
    * the reserved block below. */
@@ -623,9 +627,13 @@ typedef struct {
   uint32_t symbol;
   uint32_t signature;
 
-  uint16_t is_static   : 1;
-  uint16_t reserved    : 15;
-  uint16_t reserved2   : 16;
+  uint16_t is_static     : 1;
+  uint16_t is_async      : 1;
+  uint16_t sync_or_async : 10;
+  uint16_t reserved      : 4;
+
+  uint16_t finish        : 10;
+  uint16_t reserved2     : 6;
 } FunctionBlob;
 
 /**
@@ -993,6 +1001,7 @@ typedef struct {
 } EnumBlob;
 
 #define ACCESSOR_SENTINEL       0x3ff
+#define ASYNC_SENTINEL          0x3ff
 
 /**
  * PropertyBlob:
@@ -1098,7 +1107,9 @@ typedef struct {
  * @class_closure: Set if this virtual function is the class closure of a
  *   signal.
  * @throws: This is now additionally stored in the #SignatureBlob. (deprecated)
- * @reserved: Reserved for future use.
+ * @is_async: Whether the virtual function is asynchronous
+ * @sync_or_async: The index of the synchronous version of the virtual function if is_async is TRUE,
+ *   otherwise, the index of the asynchronous version.
  * @signal: The index of the signal in the list of signals of the object or
  *   interface to which this virtual function belongs.
  * @struct_offset: The offset of the function pointer in the class struct.
@@ -1106,6 +1117,8 @@ typedef struct {
  * @invoker: If a method invoker for this virtual exists, this is the offset
  *   in the class structure of the method. If no method is known, this value
  *   will be 0x3ff.
+ * @reserved: Reserved for future use.
+ * @finish: The index of the finish function if is_async is TRUE, otherwise ASYNC_SENTINEL
  * @reserved2: Reserved for future use.
  * @reserved3: Reserved for future use.
  * @signature: Offset of the SignatureBlob describing the parameter types and
@@ -1123,14 +1136,18 @@ typedef struct {
   uint16_t must_not_be_implemented : 1;
   uint16_t class_closure           : 1;
   uint16_t throws                  : 1;
-  uint16_t reserved                :11;
+  uint16_t is_async                : 1;
+  uint16_t sync_or_async           : 10;
   uint16_t signal;
 
   uint16_t struct_offset;
-  uint16_t invoker : 10; /* Number of bits matches @index in FunctionBlob */
-  uint16_t reserved2 : 6;
+  uint16_t invoker  : 10; /* Number of bits matches @index in FunctionBlob */
+  uint16_t reserved : 6;
 
-  uint32_t reserved3;
+  uint16_t finish                  : 10;
+  uint16_t reserved2               : 6;
+  uint16_t reserved3               : 16;
+
   uint32_t signature;
 } VFuncBlob;
 
