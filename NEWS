@@ -1,3 +1,66 @@
+Overview of changes in GLib 2.80.1, 2024-05-07
+==============================================
+
+* Fix CVE-2024-34397: GDBus signal subscriptions for well-known names are
+  vulnerable to unicast spoofing (#3268, work by Simon McVittie, reported by
+  Alicia Boya García)
+
+* Bugs fixed:
+  - GNOME/tracker-miners#315 3.7.0 - GLib-GIO-WARNING **: 09:27:12.186: Error
+    creating IO channel for /proc/self/mountinfo: Invalid argument (g-io-error-
+    quark, 13) (Ondrej Holy)
+  - #3268 CVE-2024-34397: GDBus signal subscriptions for well-known names are
+    vulnerable to unicast spoofing (Simon McVittie)
+  - #3287 Devhelp does not show indexes for GLib, GIO, or GObject (Philip
+    Withnall)
+  - #3289 readlink -f fails in CI on macOS (Simon McVittie)
+  - #3342 Crash in gdbus schedule_callbacks() due to missing NULL check before
+    g_str_equal() (Philip Withnall)
+  - !3954 [th/performance] add script for combining performance results
+  - !3959 [th/gobject-toggle-refs-check] Fix critical warning for toggle
+    notifications in g_object_ref()/g_object_unref()
+  - !3962 meson: Fix a needless recompilation of some gdbus tests
+  - !3966 girparser: Don't assume sizeof(size_t) == sizeof(void *)
+  - !3967 girparser: Allow time_t, off_t, etc. to appear in GIR XML
+  - !3969 Ported the first few documentation comments in `gio/gaction.c` to gi-
+    docgen
+  - !3970 girparser: Make sizes in integer_aliases more obviously correct
+  - !3972 girparser: Adjust signedness() macro
+  - !3973 glib/gvariant: fix compile error with GCC 14.0.1
+  - !3974 tests: Mark several additional tests as can_fail on GNU Hurd
+  - !3981 Backport !3979 "Use CPU_COUNT to get the number of set CPUs" to
+    glib-2-80
+  - !3992 Backport !3989 “completion: make gsettings work in nounset mode” to
+    glib-2-80
+  - !4004 Backport "Remove unused cmph files" for glib-2-80
+  - !4021 Backport !4019 “gunixmounts: Use fallback if libmount monitoring
+    fails” to glib-2-80
+  - !4025 Backport !4005 “Fix various bugs found by scan-build“ to glib-2-80
+  - !4029 Backport !4028 “gdbusconnection: Fix a crash on arg0 matching” to
+    glib-2-80
+  - !4032 Backport !4031 “gdocumentportal: Handle EROFS and similar errors more
+    gracefully” to glib-2-80
+  - !4039 Backport !4038 “gdbusconnection: Don't deliver signals if the sender
+    doesn't match” to glib-2-80
+
+* Translation updates:
+  - Czech (Daniel Rusek)
+  - Danish (Ask Hjorth Larsen)
+  - French (Vincent Chatelain)
+  - Galician (Fran Dieguez)
+  - Georgian (Ekaterine Papava)
+  - German (Christian Kirbach)
+  - Indonesian (Andika Triwidada)
+  - Italian (Milo Casagrande)
+  - Kabyle (Athmane MOKRAOUI, Rachida SACI)
+  - Korean (Changwoo Ryu)
+  - Latvian (Rūdolfs Mazurs)
+  - Persian (Danial Behzadi)
+  - Polish (Piotr Drąg)
+  - Portuguese (Hugo Carvalho)
+  - Portuguese (Brazil) (Leônidas Araújo, Juliano de Souza Camargo)
+
+
 Overview of changes in GLib 2.80.0, 2024-03-07
 ==============================================
 
