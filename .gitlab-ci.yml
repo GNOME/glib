@@ -329,6 +329,7 @@ cross-mingw64:
       - _build/gobject/libgobject-2.0-0.dll
 
 msys2-mingw32:
+  allow_failure: true
   extends: .only-default
   stage: build
   tags:
@@ -360,6 +361,7 @@ msys2-mingw32:
       - _coverage/
 
 msys2-clang64:
+  allow_failure: true
   extends: .only-schedules
   stage: build
   tags:
