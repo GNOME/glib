@@ -21,8 +21,8 @@
 /**
  * GBase64Decoder:
  *
- * `GBase64Decoder` is an implementation of `GConverter` that
- * converts data from base64 encoding.
+ * `GBase64Decoder` is an implementation of [iface@Gio.Converter]
+ * that converts data from base64 encoding.
  *
  * Since: 2.82
  */
@@ -104,7 +104,7 @@ g_base64_decoder_class_init (GBase64DecoderClass *klass)
  *
  * Creates a new `GBase64Decoder`.
  *
- * Returns: a new `GBase64Decoder`
+ * Returns: (transfer full): a new `GBase64Decoder`
  *
  * Since: 2.82
  */

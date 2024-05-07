@@ -640,6 +640,8 @@ gio_headers = files(
   'gappinfo.h',
   'gasyncinitable.h',
   'gasyncresult.h',
+  'gbase64decoder.h',
+  'gbase64encoder.h',
   'gbufferedinputstream.h',
   'gbufferedoutputstream.h',
   'gbytesicon.h',

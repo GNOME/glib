@@ -20,14 +20,15 @@
 #include "glibintl.h"
 
 
+/* See g_base64_encode_step docs in ../glib/gbase64.c */
 #define BASE64_ENCODING_OUTPUT_SIZE(len, break_lines) \
   (((len) / 3 + 1) * 4 + 4 + ((break_lines) ? ((((len) / 3 + 1) * 4 + 4) / 72 + 1) : 0))
 
 /**
  * GBase64Encoder:
  *
- * GBase64Encoder is an implementation of `GConverter` that
- * converts data to base64 encoding.
+ * `GBase64Encoder` is an implementation of [iface@Gio.Converter]
+ * that converts data to base64 encoding.
  *
  * Since: 2.82
  */
@@ -40,11 +41,10 @@ struct _GBase64Encoder
   int state[2];
 };
 
-enum
+typedef enum
 {
-  PROP_0,
-  PROP_BREAK_LINES
-};
+  PROP_BREAK_LINES = 1,
+} GBase64EncoderProperty;
 
 static void
 g_base64_encoder_reset (GConverter *converter)
@@ -134,7 +134,7 @@ g_base64_encoder_set_property (GObject      *object,
 {
   GBase64Encoder *encoder = G_BASE64_ENCODER (object);
 
-  switch (prop_id)
+  switch ((GBase64EncoderProperty) prop_id)
     {
     case PROP_BREAK_LINES:
       encoder->break_lines = g_value_get_boolean (value);
@@ -154,7 +154,7 @@ g_base64_encoder_get_property (GObject    *object,
 {
   GBase64Encoder *encoder = G_BASE64_ENCODER (object);
 
-  switch (prop_id)
+  switch ((GBase64EncoderProperty) prop_id)
     {
     case PROP_BREAK_LINES:
       g_value_set_boolean (value, encoder->break_lines);
@@ -182,6 +182,8 @@ g_base64_encoder_class_init (GBase64EncoderClass *klass)
    * This is typically used when putting base64-encoded data in emails.
    * It breaks the lines at 72 columns instead of putting all of the text on
    * the same line. This avoids problems with long lines in the email system.
+   *
+   * Since: 2.82
    */
   g_object_class_install_property (gobject_class,
                                    PROP_BREAK_LINES,
@@ -203,7 +205,7 @@ g_base64_encoder_class_init (GBase64EncoderClass *klass)
  * instead of putting all of the text on the same line. This avoids
  * problems with long lines in the email system.
  *
- * Returns: a new `GBase64Encoder`
+ * Returns: (transfer full): a new `GBase64Encoder`
  *
  * Since: 2.82
  */

@@ -1217,8 +1217,8 @@ test_converter_base64 (void)
 
   flags = G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET;
   size = g_output_stream_splice (converter, input, flags, NULL, &error);
-  g_assert_true (size != -1);
   g_assert_no_error (error);
+  g_assert_cmpint (size, !=, -1);
 
   result = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (output));
   g_assert_cmpstr (encoded, ==, result);
@@ -1237,8 +1237,8 @@ test_converter_base64 (void)
 
   flags = G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET;
   size = g_output_stream_splice (output, converter2, flags, NULL, &error);
-  g_assert_true (size != -1);
   g_assert_no_error (error);
+  g_assert_cmpint (size, !=, -1);
 
   result = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (output));
 
