@@ -116,4 +116,16 @@ gboolean               gi_callable_info_invoke          (GICallableInfo    *info
 GI_AVAILABLE_IN_ALL
 GITransfer             gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info);
 
+GI_AVAILABLE_IN_ALL
+GICallableInfo *       gi_callable_info_get_async_function (GICallableInfo *info);
+
+GI_AVAILABLE_IN_ALL
+GICallableInfo *       gi_callable_info_get_sync_function (GICallableInfo *info);
+
+GI_AVAILABLE_IN_ALL
+GICallableInfo *       gi_callable_info_get_finish_function (GICallableInfo *info);
+
+GI_AVAILABLE_IN_ALL
+gboolean               gi_callable_info_is_async (GICallableInfo *info);
+
 G_END_DECLS

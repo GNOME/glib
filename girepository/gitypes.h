@@ -416,6 +416,7 @@ typedef enum
   GI_FUNCTION_IS_GETTER      = 1 << 2,
   GI_FUNCTION_IS_SETTER      = 1 << 3,
   GI_FUNCTION_WRAPS_VFUNC    = 1 << 4,
+  GI_FUNCTION_IS_ASYNC       = 1 << 8,
 } GIFunctionInfoFlags;
 
 G_END_DECLS

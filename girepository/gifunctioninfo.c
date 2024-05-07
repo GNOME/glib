@@ -140,6 +140,9 @@ gi_function_info_get_flags (GIFunctionInfo *info)
   if (blob->wraps_vfunc)
     flags = flags | GI_FUNCTION_WRAPS_VFUNC;
 
+  if (blob->is_async)
+    flags = flags | GI_FUNCTION_IS_ASYNC;
+
   return flags;
 }
 
