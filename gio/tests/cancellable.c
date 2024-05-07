@@ -25,6 +25,7 @@
 #include <gio/gio.h>
 
 #include "glib/glib-private.h"
+#include "glib/gvalgrind.h"
 
 /* How long to wait in ms for each iteration */
 #define WAIT_ITERATION (10)
@@ -275,6 +276,11 @@ test_cancellable_source_threaded_dispose (void)
                   "(in one thread) and cancelling the GCancellable it refers "
                   "to (in another thread)");
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1841");
+
+#ifdef ENABLE_VALGRIND
+  if (RUNNING_ON_VALGRIND)
+    g_test_incomplete ("FIXME: Leaks lots of GCancellableSource objects, see glib#2309");
+#endif
 
   /* Create a new thread and wait until it’s ready to execute. Each iteration of
    * the test will pass it a new #GCancellableSource. */
