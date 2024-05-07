@@ -580,6 +580,15 @@ print_entry (GOptionGroup       *group,
   g_string_append_printf (string, "%s%*s %s\n", str->str,
                           (int) (max_length + 4 - _g_utf8_strwidth (str->str)), "",
                           entry->description ? TRANSLATE (group, entry->description) : "");
+
+  if (entry->flags & G_OPTION_FLAG_DEPRECATED)
+    {
+      const char *deprecated = _("This option is deprecated, and should not be used.");
+      g_string_append_printf (string, "%*s %s\n",
+                              (int) (max_length + 4), "",
+                              deprecated);
+    }
+
   g_string_free (str, TRUE);
 }
 
