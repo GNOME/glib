@@ -1,3 +1,27 @@
+Overview of changes in GLib 2.78.5, 2024-05-07
+==============================================
+
+* Fix CVE-2024-34397: GDBus signal subscriptions for well-known names are
+  vulnerable to unicast spoofing (#3268, work by Simon McVittie, reported by
+  Alicia Boya García)
+
+* Bugs fixed:
+  - #3168 gvfs-udisks2-volume-monitor SIGSEGV in g_content_type_guess_for_tree()
+    due to filename with bad encoding (Ondrej Holy)
+  - #3268 CVE-2024-34397: GDBus signal subscriptions for well-known names are
+    vulnerable to unicast spoofing (Simon McVittie)
+  - !3825 glib-2-78: ci: Drop FreeBSD 12 CI runner as it’s EOL
+  - !3960 gcontenttype: Make filename valid utf-8 string before processing
+  - !4040 Backport !4038 “gdbusconnection: Don't deliver signals if the sender
+    doesn't match” to glib-2-78
+  - !4043 CI: Ignore MSYS2 CI failures for this older stable-branch
+
+* Translation updates:
+  - English (United Kingdom) (Andi Chandler)
+  - Georgian (Ekaterine Papava)
+  - Portuguese (Brazil) (Juliano de Souza Camargo)
+
+
 Overview of changes in GLib 2.78.4, 2024-01-21
 ==============================================
 
