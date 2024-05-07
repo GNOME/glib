@@ -536,7 +536,12 @@ test_connection_signal_handler (GDBusConnection  *connection,
            interface_name,
            signal_name);*/
 
-  g_main_loop_quit (loop);
+  /* We defer quitting to a G_PRIORITY_DEFAULT_IDLE function so other queued signal
+   * callbacks have a chance to run first. They get dispatched with a higher priority
+   * of G_PIORITY_DEFAULT, so as long as the queue is non-empty g_main_loop_quit won't
+   * run
+   */
+  g_idle_add_once ((GSourceOnceFunc) g_main_loop_quit, loop);
 }
 
 static void
@@ -627,7 +632,7 @@ test_connection_signals (void)
                                            "org.gtk.GDBus.ExampleInterface",  /* interface */
                                            "FooArg0",  /* member */
                                            "/org/gtk/GDBus/ExampleInterface",  /* path */
-                                           "some-arg0",
+                                           NULL,
                                            G_DBUS_SIGNAL_FLAGS_NONE,
                                            test_connection_signal_handler,
                                            &count_s4,
@@ -637,7 +642,7 @@ test_connection_signals (void)
                                            "org.gtk.GDBus.ExampleInterface",  /* interface */
                                            "FooArg0",  /* member */
                                            "/org/gtk/GDBus/ExampleInterface",  /* path */
-                                           NULL,
+                                           "some-arg0",
                                            G_DBUS_SIGNAL_FLAGS_NONE,
                                            test_connection_signal_handler,
                                            &count_s5,
@@ -741,8 +746,8 @@ test_connection_signals (void)
   g_assert_cmpint (count_s2, ==, 2);
 
   /* Emit another signal on c2 with and without arg0 set, to check matching on that.
-   * Matching should fail on s4 when the signal is not emitted with an arg0. It
-   * should succeed on s5 both times, as that doesn’t require an arg0 match. */
+   * Matching should fail on s5 when the signal is not emitted with an arg0. It
+   * should succeed on s4 both times, as that doesn’t require an arg0 match. */
   ret = g_dbus_connection_emit_signal (c2,
                                        NULL, /* destination bus name */
                                        "/org/gtk/GDBus/ExampleInterface",
@@ -753,9 +758,9 @@ test_connection_signals (void)
   g_assert_no_error (error);
   g_assert_true (ret);
 
-  while (count_s5 < 1)
+  while (count_s4 < 1)
     g_main_loop_run (loop);
-  g_assert_cmpint (count_s5, ==, 1);
+  g_assert_cmpint (count_s4, ==, 1);
 
   ret = g_dbus_connection_emit_signal (c2,
                                        NULL, /* destination bus name */
@@ -767,10 +772,10 @@ test_connection_signals (void)
   g_assert_no_error (error);
   g_assert_true (ret);
 
-  while (count_s4 < 1)
+  while (count_s5 < 1)
     g_main_loop_run (loop);
-  g_assert_cmpint (count_s4, ==, 1);
-  g_assert_cmpint (count_s5, ==, 2);
+  g_assert_cmpint (count_s4, ==, 2);
+  g_assert_cmpint (count_s5, ==, 1);
 
   /*
    * Also to check the total amount of NameOwnerChanged signals - use a 5 second ceiling
@@ -784,8 +789,8 @@ test_connection_signals (void)
   g_assert_cmpint (count_s1, ==, 1);
   g_assert_cmpint (count_s2, ==, 2);
   g_assert_cmpint (count_name_owner_changed, ==, 2);
-  g_assert_cmpint (count_s4, ==, 1);
-  g_assert_cmpint (count_s5, ==, 2);
+  g_assert_cmpint (count_s4, ==, 2);
+  g_assert_cmpint (count_s5, ==, 1);
 
   g_dbus_connection_signal_unsubscribe (c1, s1);
   g_dbus_connection_signal_unsubscribe (c1, s2);
