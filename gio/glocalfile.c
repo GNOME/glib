@@ -2284,6 +2284,7 @@ g_local_file_trash (GFile         *file,
   data = g_strdup_printf ("[Trash Info]\nPath=%s\nDeletionDate=%s\n",
 			  original_name_escaped, delete_time);
   g_free (delete_time);
+  g_clear_pointer (&original_name_escaped, g_free);
 
   if (!g_file_set_contents_full (infofile, data, -1,
                             G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING,
@@ -2291,12 +2292,15 @@ g_local_file_trash (GFile         *file,
     {
       g_unlink (infofile);
 
+      g_free (data);
       g_free (filesdir);
       g_free (trashname);
       g_free (infofile);
 
       return FALSE;
     }
+
+  g_clear_pointer (&data, g_free);
 
   /* TODO: Maybe we should verify that you can delete the file from the trash
    * before moving it? OTOH, that is hard, as it needs a recursive scan
@@ -2341,9 +2345,6 @@ g_local_file_trash (GFile         *file,
   /* TODO: Do we need to update mtime/atime here after the move? */
 
   g_free (infofile);
-  g_free (data);
-  
-  g_free (original_name_escaped);
   g_free (trashname);
   
   return TRUE;
