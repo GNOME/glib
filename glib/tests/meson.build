@@ -489,6 +489,7 @@ python_tests = {
   'assert-msg-test.py' : {
     'can_fail' : host_system == 'windows',
     'extra_programs': ['assert-msg-test'],
+    'env': {'_GLIB_TEST_SANITIZERS': ','.join(glib_sanitizers)},
   },
 }
 
