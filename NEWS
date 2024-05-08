@@ -1,3 +1,23 @@
+Overview of changes in GLib 2.80.2, 2024-05-08
+==============================================
+
+* Fix a regression with IBus caused by the fix for CVE-2024-34397 (#3353,
+  work by Simon McVittie)
+
+* Fix installation directory of the GVariant specification (#3351, work by
+  Michael Catanzaro)
+
+* Bugs fixed:
+  - #3351 GVariant specification installed in wrong directory (Michael
+    Catanzaro)
+  - #3353 Fixing CVE-2024-34397 caused regressions for ibus (Simon McVittie)
+  - !4052 Backport "gdbusconnection: Fix test signal subscription ordering" to
+    glib-2-80
+  - !4054 Backport !4049 “Correct installation directory of GVariant
+    specification” to glib-2-80
+  - !4055 Backport !4053 “gdbusconnection: Allow name owners to have the syntax
+    of a well-known name” to glib-2-80
+
 Overview of changes in GLib 2.80.1, 2024-05-07
 ==============================================
 
