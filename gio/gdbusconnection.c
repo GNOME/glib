@@ -2406,7 +2406,10 @@ name_watcher_deliver_name_owner_changed_unlocked (SignalData *name_watcher,
       /* Our caller already checked this */
       g_assert (g_strcmp0 (name_watcher->arg0, name) == 0);
 
-      if (G_LIKELY (new_owner[0] == '\0' || g_dbus_is_unique_name (new_owner)))
+      /* FIXME: This should be validating that `new_owner` is a unique name,
+       * but IBus’ implementation of a message bus is not compliant with the spec.
+       * See https://gitlab.gnome.org/GNOME/glib/-/issues/3353 */
+      if (G_LIKELY (new_owner[0] == '\0' || g_dbus_is_name (new_owner)))
         name_watcher_set_name_owner_unlocked (name_watcher, new_owner);
       else
         g_warning ("Received NameOwnerChanged signal with invalid owner \"%s\" for \"%s\"",
@@ -2458,7 +2461,10 @@ name_watcher_deliver_get_name_owner_reply_unlocked (SignalData *name_watcher,
 
       g_variant_get (body, "(&s)", &new_owner);
 
-      if (G_LIKELY (g_dbus_is_unique_name (new_owner)))
+      /* FIXME: This should be validating that `new_owner` is a unique name,
+       * but IBus’ implementation of a message bus is not compliant with the spec.
+       * See https://gitlab.gnome.org/GNOME/glib/-/issues/3353 */
+      if (G_LIKELY (g_dbus_is_name (new_owner)))
         name_watcher_set_name_owner_unlocked (name_watcher, new_owner);
       else
         g_warning ("Received GetNameOwner reply with invalid owner \"%s\" for \"%s\"",
