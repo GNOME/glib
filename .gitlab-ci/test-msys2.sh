@@ -33,10 +33,10 @@ export PATH CFLAGS
 if [[ "$MSYSTEM" == "CLANG64" ]]; then
     # FIXME: fix the clang build warnings
     # shellcheck disable=SC2086
-    meson setup ${MESON_COMMON_OPTIONS} _build
+    meson setup --buildtype debug --wrap-mode=nodownload _build
 else
     # shellcheck disable=SC2086
-    meson setup ${MESON_COMMON_OPTIONS} --werror _build
+    meson setup --buildtype debug --wrap-mode=nodownload --werror _build
 fi
 
 meson compile -C _build
