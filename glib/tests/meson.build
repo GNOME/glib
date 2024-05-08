@@ -186,6 +186,8 @@ glib_tests = {
   '1bit-emufutex' : {
     'source' : '1bit-mutex.c',
     'c_args' : ['-DTEST_EMULATED_FUTEX'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3359
+    'can_fail': 'undefined' in glib_sanitizers,
     'install' : false,
     'suite' : ['slow'],
   },
