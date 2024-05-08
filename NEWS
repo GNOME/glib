@@ -1,3 +1,14 @@
+Overview of changes in GLib 2.78.6, 2024-05-08
+==============================================
+
+* Fix a regression with IBus caused by the fix for CVE-2024-34397 (#3353,
+  work by Simon McVittie)
+
+* Bugs fixed:
+  - #3353 Fixing CVE-2024-34397 caused regressions for ibus (Simon McVittie)
+  - !4056 Backport !4053 “gdbusconnection: Allow name owners to have the syntax
+    of a well-known name” to glib-2-78
+
 Overview of changes in GLib 2.78.5, 2024-05-07
 ==============================================
 
