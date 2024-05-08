@@ -1,3 +1,4 @@
+#include "glib-private.h"
 #include <gio/gio.h>
 #include <string.h>
 
@@ -2073,6 +2074,8 @@ trace_children (pid_t main_child)
 static void
 test_exit_status_trapped (void)
 {
+#ifndef _GLIB_ADDRESS_SANITIZER
+
 #ifdef __linux__
   GPtrArray *args = NULL;
   pid_t test_child;
@@ -2103,6 +2106,13 @@ test_exit_status_trapped (void)
 #else
   g_test_skip ("ptrace() support for this test is only tested on Linux");
 #endif
+
+#else /* if defined (_GLIB_ADDRESS_SANITIZER) */
+
+g_test_skip ("LeakSanitizer does not work under ptrace");
+(void) trace_children;
+
+#endif /* _GLIB_ADDRESS_SANITIZER */
 }
 
 #endif  /* G_OS_UNIX */
