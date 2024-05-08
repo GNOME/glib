@@ -924,6 +924,8 @@ test_l10n_time (void)
   g_assert_true (original_locale != (locale_t) 0);
   new_locale = duplocale (original_locale);
   g_assert_true (new_locale != (locale_t) 0);
+  g_clear_pointer (&new_locale, freelocale);
+
   new_locale = newlocale (LC_TIME_MASK, "C", new_locale);
   g_assert_true (new_locale != (locale_t) 0);
   result = uselocale (new_locale);
@@ -936,6 +938,7 @@ test_l10n_time (void)
 
   g_assert_cmpstr (str, ==, "12:00 AM");
   g_free (str);
+  g_clear_pointer (&new_locale, freelocale);
   str = NULL;
 
   new_locale = newlocale (LC_TIME_MASK, "de_DE.UTF-8", new_locale);
@@ -964,7 +967,7 @@ test_l10n_time (void)
 
   result = uselocale (original_locale);
   g_assert_true (result == new_locale);
-  freelocale (new_locale);
+  g_clear_pointer (&new_locale, freelocale);
 
   g_object_unref (settings);
 #endif
