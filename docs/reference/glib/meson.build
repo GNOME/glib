@@ -23,7 +23,7 @@ if get_option('documentation')
   rst2html5 = find_program('rst2html5', 'rst2html5.py', required: false)
 
   if rst2html5.found()
-    spec_path = docs_dir
+    spec_path = docs_dir / 'glib-2.0'
 
     figures = files(
       'gvariant-byte-boundaries.svg',
