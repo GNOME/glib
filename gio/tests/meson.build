@@ -310,7 +310,7 @@ if host_machine.system() != 'windows'
   }
 
   # LD_PRELOAD modules don't work so well with AddressSanitizer
-  if have_rtld_next and glib_build_shared and get_option('b_sanitize') == 'none'
+  if have_rtld_next and glib_build_shared and glib_sanitizers.length() == 0
     gio_tests += {
       'gsocketclient-slow' : {
         'depends' : [
