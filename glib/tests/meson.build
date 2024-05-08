@@ -263,15 +263,20 @@ else
       var_preload = 'DYLD_INSERT_LIBRARIES'
     endif
 
+    asan_env = {}
+    if 'address' in glib_sanitizers
+      asan_env = {'ASAN_OPTIONS': 'verify_asan_link_order=0'}
+    endif
+
     glib_tests += {
       'gutils-user-database' : {
         'depends' : getpwuid_preload,
         'env' : {
           var_preload: getpwuid_preload.full_path()
-        },
+        } + asan_env,
         'installed_tests_env' : {
           var_preload: installed_tests_execdir / fs.name(getpwuid_preload.full_path())
-        },
+        } + asan_env,
       },
     }
   endif
