@@ -26,6 +26,8 @@ CCACHE_BASEDIR="$(pwd)"
 CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
 export CCACHE_BASEDIR CCACHE_DIR
 
+pip3 install --upgrade --user meson==1.0.0
+
 PATH="$(cygpath "$USERPROFILE")/.local/bin:$HOME/.local/bin:$PATH"
 DIR="$(pwd)"
 export PATH CFLAGS
