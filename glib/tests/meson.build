@@ -350,6 +350,7 @@ if host_machine.system() == 'windows' or have_dlopen_dlsym
                  '-DBUILD_TEST_EXECUTABLE',
                  '-DPREFIX=app'],
       'dependencies' : libdl_dep,
+      'depends': constructor_lib,
       'link_with': [constructor_helper]
     }
   }
