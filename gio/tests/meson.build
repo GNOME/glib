@@ -328,11 +328,11 @@ if host_machine.system() != 'windows'
       'gsocketclient-slow' : {
         'depends' : slow_connect_preload_lib,
         'env' : {
-          'LD_PRELOAD': slow_connect_preload_lib.full_path(),
+          glib_exec_var_preload: slow_connect_preload_lib.full_path(),
         } + asan_env,
         'installed_tests_env' : {
         } + asan_env,
-          'LD_PRELOAD': installed_tests_execdir /
+          glib_exec_var_preload: installed_tests_execdir /
             fs.name(slow_connect_preload_lib.full_path()),
       },
     }

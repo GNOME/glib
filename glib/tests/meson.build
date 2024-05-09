@@ -259,12 +259,6 @@ else
                                       install_tag : 'tests',
                                       install: installed_tests_enabled)
 
-    if host_system not in ['ios', 'darwin']
-      var_preload = 'LD_PRELOAD'
-    else
-      var_preload = 'DYLD_INSERT_LIBRARIES'
-    endif
-
     asan_env = {}
     if 'address' in glib_sanitizers
       asan_env = {'ASAN_OPTIONS': 'verify_asan_link_order=0'}
@@ -274,10 +268,10 @@ else
       'gutils-user-database' : {
         'depends' : getpwuid_preload,
         'env' : {
-          var_preload: getpwuid_preload.full_path()
+          glib_exec_var_preload: getpwuid_preload.full_path()
         } + asan_env,
         'installed_tests_env' : {
-          var_preload: installed_tests_execdir / fs.name(getpwuid_preload.full_path())
+          glib_exec_var_preload: installed_tests_execdir / fs.name(getpwuid_preload.full_path())
         } + asan_env,
       },
     }
