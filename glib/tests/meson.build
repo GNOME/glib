@@ -488,12 +488,21 @@ foreach test_name, extra_args : glib_tests
   # FIXME: Ideally meson should handle this for us.
   # https://github.com/mesonbuild/meson/issues/16126
   if local_test_env_args.has_key(glib_exec_var_preload)
-    local_test_env_args += {
-      'ASAN_OPTIONS': ','.join([
-        glib_exec_asan_option_ignore_preload,
-        local_test_env_args.get('ASAN_OPTIONS', ''),
-      ]),
-    }
+    if glib_exec_preloaded_env.has_key(glib_exec_var_preload)
+      local_test_env_args += {
+        glib_exec_var_preload: glib_exec_var_preload_separator.join([
+          glib_exec_preloaded_env.get(glib_exec_var_preload),
+          local_test_env_args.get(glib_exec_var_preload),
+        ])
+      }
+    else
+      local_test_env_args += {
+        'ASAN_OPTIONS': ','.join([
+          glib_exec_asan_option_ignore_preload,
+          local_test_env_args.get('ASAN_OPTIONS', ''),
+        ]),
+      }
+    endif
   endif
 
   foreach var, value : local_test_env_args
@@ -555,12 +564,21 @@ foreach test_name, extra_args : python_tests
   # FIXME: Ideally meson should handle this for us.
   # https://github.com/mesonbuild/meson/issues/16126
   if local_test_env_args.has_key(glib_exec_var_preload)
-    local_test_env_args += {
-      'ASAN_OPTIONS': ','.join([
-        glib_exec_asan_option_ignore_preload,
-        local_test_env_args.get('ASAN_OPTIONS', ''),
-      ]),
-    }
+    if glib_exec_preloaded_env.has_key(glib_exec_var_preload)
+      local_test_env_args += {
+        glib_exec_var_preload: glib_exec_var_preload_separator.join([
+          glib_exec_preloaded_env.get(glib_exec_var_preload),
+          local_test_env_args.get(glib_exec_var_preload),
+        ])
+      }
+    else
+      local_test_env_args += {
+        'ASAN_OPTIONS': ','.join([
+          glib_exec_asan_option_ignore_preload,
+          local_test_env_args.get('ASAN_OPTIONS', ''),
+        ]),
+      }
+    endif
   endif
 
   foreach var, value : local_test_env_args
