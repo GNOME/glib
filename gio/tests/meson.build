@@ -86,7 +86,7 @@ gio_tests = {
   'g-file-info' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3070
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
-    'can_fail' : host_system in ['darwin', 'gnu'] or host_system == 'windows' and cc.get_id() != 'gcc',
+    'can_fail' : host_system in ['darwin', 'gnu'] or host_system == 'windows' and not glib_gnu_cc_compiler,
   },
   'g-icon' : {},
   'gdbus-addresses' : {},
@@ -1047,7 +1047,7 @@ if not meson.is_cross_build()
                                   '-nostdlib', '@INPUT@', '-o','@OUTPUT@'])
 
     # Rename symbol to match the one in the C file
-    if cc.get_id() == 'gcc' and host_system == 'windows'
+    if glib_gnu_cc_compiler and host_system == 'windows'
       underscore = '_'
     else
       underscore = ''
