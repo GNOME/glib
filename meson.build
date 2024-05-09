@@ -575,7 +575,7 @@ foreach m : struct_members
 endforeach
 
 # Compiler flags
-if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+if cc.get_argument_syntax() == 'gcc'
   warning_common_args = [
     '-Wduplicated-branches',
     '-Wfloat-conversion',
@@ -1808,7 +1808,7 @@ g_sizet_compatibility = {
 # Do separate checks for gcc/clang (and ignore other compilers for now), since
 # we need to explicitly pass -Werror to the compilers.
 # FIXME: https://github.com/mesonbuild/meson/issues/5399
-if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+if cc.get_argument_syntax() == 'gcc'
   foreach type_name, size_compatibility : g_sizet_compatibility
     g_sizet_compatibility += { type_name: size_compatibility and
       cc.compiles(
@@ -2106,7 +2106,7 @@ if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl' or cc.links(atomictest, na
     glib_conf.set('__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4', true)
   endif
 
-  if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+  if cc.get_argument_syntax() == 'gcc'
     sync_swap_test = '''
       int main() {
         int atomic = 2;
