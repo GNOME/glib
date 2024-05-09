@@ -21,7 +21,7 @@ gi_gen_env_variables = environment()
 
 if 'address' in glib_sanitizers
   gi_gen_env_variables.append(
-    'ASAN_OPTIONS', 'verify_asan_link_order=0', separator: ',')
+    'ASAN_OPTIONS', glib_exec_asan_option_ignore_preload, separator: ',')
 endif
 
 if host_system == 'windows'

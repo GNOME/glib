@@ -266,20 +266,15 @@ else
                                       install_tag : 'tests',
                                       install: installed_tests_enabled)
 
-    asan_env = {}
-    if 'address' in glib_sanitizers
-      asan_env = {'ASAN_OPTIONS': 'verify_asan_link_order=0'}
-    endif
-
     glib_tests += {
       'gutils-user-database' : {
         'depends' : getpwuid_preload,
         'env' : {
-          glib_exec_var_preload: getpwuid_preload.full_path()
-        } + asan_env,
+          glib_exec_var_preload: getpwuid_preload.full_path(),
+        },
         'installed_tests_env' : {
           glib_exec_var_preload: installed_tests_execdir / fs.name(getpwuid_preload.full_path())
-        } + asan_env,
+        },
       },
     }
   endif
@@ -426,6 +421,15 @@ foreach test_name, extra_args : glib_tests
     test_conf.set('program', test_name)
     test_env_override = ''
     if installed_tests_env != {}
+      if installed_tests_env.has_key(glib_exec_var_preload)
+        installed_tests_env += {
+          'ASAN_OPTIONS': ','.join([
+            glib_exec_asan_option_ignore_preload,
+            installed_tests_env.get('ASAN_OPTIONS', ''),
+         ]),
+        }
+      endif
+
       envs = []
       foreach var, value : installed_tests_env
         envs += '@0@=\'@1@\''.format(var, value)
@@ -467,10 +471,20 @@ foreach test_name, extra_args : glib_tests
   endforeach
 
   local_test_env = test_env
-  foreach var, value : extra_args.get('env', {})
+  local_test_env_args = extra_args.get('env', {})
+  if local_test_env_args.has_key(glib_exec_var_preload)
+    local_test_env_args += {
+      'ASAN_OPTIONS': ','.join([
+        glib_exec_asan_option_ignore_preload,
+        local_test_env_args.get('ASAN_OPTIONS', ''),
+      ]),
+    }
+  endif
+
+  foreach var, value : local_test_env_args
     local_test_env.append(var, value)
   endforeach
-  
+
   test(test_name, exe,
     args: extra_args.get('args', []),
     protocol : extra_args.get('protocol', test_protocol),
@@ -515,7 +529,17 @@ foreach test_name, extra_args : python_tests
   endif
 
   local_test_env = test_env
-  foreach var, value : extra_args.get('env', {})
+  local_test_env_args = extra_args.get('env', {})
+  if local_test_env_args.has_key(glib_exec_var_preload)
+    local_test_env_args += {
+      'ASAN_OPTIONS': ','.join([
+        glib_exec_asan_option_ignore_preload,
+        local_test_env_args.get('ASAN_OPTIONS', ''),
+      ]),
+    }
+  endif
+
+  foreach var, value : local_test_env_args
     local_test_env.append(var, value)
   endforeach
 
