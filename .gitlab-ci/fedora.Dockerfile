@@ -40,10 +40,12 @@ RUN dnf -y update \
     gtk-doc \
     itstool \
     lcov \
+    libasan \
     libattr-devel \
     libffi-devel \
     libmount-devel \
     libselinux-devel \
+    libubsan \
     libxslt \
     ncurses-compat-libs \
     ninja-build \
