@@ -508,6 +508,11 @@ foreach test_name, extra_args : python_tests
     suite += 'failing'
   endif
 
+  local_test_env = test_env
+  foreach var, value : extra_args.get('env', {})
+    local_test_env.append(var, value)
+  endforeach
+
   foreach program : extra_args.get('extra_programs', [])
     depends += test_extra_programs_targets[program]
   endforeach
@@ -518,7 +523,7 @@ foreach test_name, extra_args : python_tests
     protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
-    env: test_env,
+    env: local_test_env,
     suite: suite,
   )
 
