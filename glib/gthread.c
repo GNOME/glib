@@ -40,6 +40,7 @@
 
 #include "config.h"
 
+#include "glib-private.h"
 #include "gthread.h"
 #include "gthreadprivate.h"
 
@@ -506,10 +507,10 @@ static GPrivate     g_thread_specific_private = G_PRIVATE_INIT (g_thread_cleanup
  * Sets the thread local variable @key to have a newly-allocated and zero-filled
  * value of given @size, and returns a pointer to that memory. Allocations made
  * using this API will be suppressed in valgrind (when the GLib default
- * suppression file, `glib.supp`, is used): it is intended to be used for
- * one-time allocations which are known to be leaked, such as those for
- * per-thread initialisation data. Otherwise, this function behaves the same as
- * g_private_set().
+ * suppression file, `glib.supp`, is used) and leak sanitizer: it is intended to
+ * be used for one-time allocations which are known to be leaked, such as those
+ * for per-thread initialisation data. Otherwise, this function behaves the same
+ * as g_private_set().
  *
  * Returns: (transfer full): new thread-local heap allocation of size @size
  * Since: 2.60
@@ -521,6 +522,7 @@ g_private_set_alloc0 (GPrivate *key,
 {
   gpointer allocated = g_malloc0 (size);
 
+  g_ignore_leak (allocated);
   g_private_set (key, allocated);
 
   return g_steal_pointer (&allocated);
