@@ -1155,10 +1155,12 @@ g_dbus_message_set_body (GDBusMessage  *message,
 
   if (message->body != NULL)
     g_variant_unref (message->body);
+
+  g_clear_pointer (&message->arg0_cache, g_variant_unref);
+
   if (body == NULL)
     {
       message->body = NULL;
-      message->arg0_cache = NULL;
       g_dbus_message_set_signature (message, NULL);
     }
   else
@@ -1172,8 +1174,6 @@ g_dbus_message_set_body (GDBusMessage  *message,
       if (g_variant_is_of_type (message->body, G_VARIANT_TYPE_TUPLE) &&
           g_variant_n_children (message->body) > 0)
         message->arg0_cache = g_variant_get_child_value (message->body, 0);
-      else
-        message->arg0_cache = NULL;
 
       type_string = g_variant_get_type_string (body);
       type_string_len = strlen (type_string);
