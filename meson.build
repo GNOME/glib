@@ -2725,6 +2725,14 @@ if gobject_introspection.version().version_compare('>=1.83.2')
   ]
 endif
 
+if host_system in ['ios', 'darwin']
+  glib_exec_var_preload = 'DYLD_INSERT_LIBRARIES'
+  glib_exec_var_preload_separator = ':'
+else
+  glib_exec_var_preload = 'LD_PRELOAD'
+  glib_exec_var_preload_separator = ' '
+endif
+
 pkg = import('pkgconfig')
 windows = import('windows')
 gnome = import('gnome')
