@@ -23,6 +23,9 @@
 #include "config.h"
 #include "gconverter.h"
 #include "glibintl.h"
+#include "gmemoryinputstream.h"
+#include "gmemoryoutputstream.h"
+#include "gconverteroutputstream.h"
 
 
 /**
@@ -206,4 +209,49 @@ g_converter_reset (GConverter *converter)
   iface = G_CONVERTER_GET_IFACE (converter);
 
   (* iface->reset) (converter);
+}
+
+/**
+ * g_converter_convert_bytes:
+ * @converter: the `GConverter` to use
+ * @bytes: the data to convert
+ * @error: location to store the error occurring
+ *
+ * Applies @converter to the data in @bytes.
+ *
+ * Returns: (transfer full): A newly-allocated
+ *   `GBytes` with the converted data, or `NULL` if an error
+ *   occurred
+ *
+ * Since: 2.82
+ */
+GBytes *
+g_converter_convert_bytes (GConverter  *converter,
+                           GBytes      *bytes,
+                           GError     **error)
+{
+  GInputStream *input;
+  GOutputStream *output;
+  GOutputStream *conv;
+  GOutputStreamSpliceFlags flags;
+  GBytes *result = NULL;
+
+  g_converter_reset (converter);
+
+  input = g_memory_input_stream_new_from_bytes (bytes);
+  output = g_memory_output_stream_new_resizable ();
+  conv = g_converter_output_stream_new (output, converter);
+
+  flags = G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET;
+
+  if (g_output_stream_splice (conv, input, flags, NULL, error) != -1)
+    {
+      result = g_memory_output_stream_steal_as_bytes (G_MEMORY_OUTPUT_STREAM (output));
+    }
+
+  g_object_unref (conv);
+  g_object_unref (output);
+  g_object_unref (input);
+
+  return result;
 }
