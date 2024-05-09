@@ -29,6 +29,7 @@
 #include "glib-private.h"
 #include "glib-unix.h"
 #include "gstdio.h"
+#include "gvalgrind.h"
 
 #include <signal.h>
 #include <string.h>
@@ -587,6 +588,29 @@ test_signal_alternate_stack (int signal)
   g_assert_no_errno (sigaltstack (&stack, &old_stack));
 
   test_signal (signal);
+
+#if defined (ENABLE_VALGRIND)
+  if (RUNNING_ON_VALGRIND)
+    {
+      /* When running under valgrind, checking for memory differences does
+       * not work with a weird read error happening way before than the
+       * stack memory size, it's unclear why but it may be related to how
+       * valgrind internally implements it.
+       * However, the point of the test is to make sure that even using an
+       * alternative stack (that we blindly trust is used), the signals are
+       * properly delivered, and this can be still tested properly.
+       *
+       * See:
+       *  - https://gitlab.gnome.org/GNOME/glib/-/issues/3337
+       *  - https://bugs.kde.org/show_bug.cgi?id=486812
+       */
+      g_test_message ("Running a limited test version under valgrind");
+
+      stack.ss_flags = SS_DISABLE;
+      g_assert_no_errno (sigaltstack (&stack, &old_stack));
+      return;
+    }
+#endif
 
   /* Very stupid check to ensure that the alternate stack is used instead of
    * the default one. This test would fail if SA_ONSTACK wouldn't be set.
