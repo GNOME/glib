@@ -2,7 +2,7 @@ glib_tests = {
   'array-test' : {},
   'asyncqueue' : {},
   'atomic' : {
-    'c_args' : cc.get_id() == 'gcc' ? ['-Wstrict-aliasing=2'] : [],
+    'c_args' : glib_gnu_cc_compiler ? ['-Wstrict-aliasing=2'] : [],
     'c_standards': c_standards.keys(),
   },
   'base64' : {},
@@ -151,13 +151,13 @@ glib_tests = {
   },
   'strfuncs' : {},
   'string' : {
-    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=sign-conversion'] : [],
+    'c_args' : glib_gnu_cc_compiler ? ['-Werror=sign-conversion'] : [],
   },
   'strvbuilder' : {},
   'testing' : {
     'args': [ '--verbose' ],
     'extra_programs' : ['testing-helper'],
-    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=sign-conversion'] : [],
+    'c_args' : glib_gnu_cc_compiler ? ['-Werror=sign-conversion'] : [],
   },
   'test-printf' : {},
   'thread' : {},
@@ -170,7 +170,7 @@ glib_tests = {
   'types' : {},
   'utf8-performance' : {},
   'utf8-pointer' : {
-    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=cast-qual'] : [],
+    'c_args' : glib_gnu_cc_compiler ? ['-Werror=cast-qual'] : [],
   },
   'utf8-validate' : {},
   'utf8-misc' : {},
