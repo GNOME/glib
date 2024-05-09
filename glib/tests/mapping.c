@@ -125,6 +125,7 @@ child_main (void)
   g_free (childname);
   g_free (global_filename);
   g_free (dir);
+  g_mapped_file_unref (map);
 
   signal_parent (NULL);
 }
