@@ -265,7 +265,7 @@ else
 
     glib_tests += {
       'gutils-user-database' : {
-        'depends' : [],
+        'depends' : getpwuid_preload,
         'env' : {
           var_preload: getpwuid_preload.full_path()
         },
