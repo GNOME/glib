@@ -11,7 +11,7 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v27"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v28"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v19"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v3"
@@ -435,6 +435,43 @@ valgrind:
   artifacts:
     reports:
       junit: "_build/meson-logs/testlog-valgrind.junit.xml"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    expire_in: 1 week
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+
+address-sanitizer:
+  extends:
+    - .build-linux
+    - .only-schedules-or-manual
+    - .with-git
+  image: $FEDORA_IMAGE
+  stage: analysis
+  tags: [asan]
+  needs: []
+  variables:
+    MESON_TEST_TIMEOUT_MULTIPLIER: 5
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
+  script:
+    - meson setup ${MESON_COMMON_OPTIONS}
+            --werror
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
+            -Dinstalled_tests=true
+            -Dintrospection=enabled
+            -Db_sanitize=address,undefined
+            _build
+    # Do not run ninja, let meson handle the build dependencies!
+    # This tests that all tests have the right build dependencies specified.
+    - bash -x ./.gitlab-ci/run-tests.sh
+  artifacts:
+    reports:
+      junit: "_build/meson-logs/testlog.junit.xml"
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
