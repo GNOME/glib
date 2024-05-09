@@ -2669,6 +2669,9 @@ gir_args = [
   '--quiet',
 ]
 
+glib_exec_preloaded_libs = []
+glib_exec_preloaded_env = {}
+
 if host_system in ['ios', 'darwin']
   glib_exec_var_preload = 'DYLD_INSERT_LIBRARIES'
   glib_exec_var_preload_separator = ':'
@@ -2683,6 +2686,57 @@ if 'address' in glib_sanitizers
   # guarantee that, so we have to disable its link order checking when using
   # LD_PRELOAD in tests.
   glib_exec_asan_option_ignore_preload = 'verify_asan_link_order=false'
+endif
+
+if glib_gnu_cc_compiler and host_system != 'windows'
+  test_preloaded_libs = []
+
+  if 'address' in glib_sanitizers
+    # ASAN has to be the first in list
+    test_preloaded_libs += 'asan'
+  endif
+
+  if 'undefined' in glib_sanitizers
+    test_preloaded_libs += 'ubsan'
+  endif
+
+  if 'leak' in glib_sanitizers
+    test_preloaded_libs += 'lsan'
+  endif
+
+  if 'thread' in glib_sanitizers
+    test_preloaded_libs += 'tsan'
+  endif
+
+  # FIXME: Ideally meson should handle this for us
+  # https://github.com/mesonbuild/meson/issues/13249
+  foreach libname: test_preloaded_libs
+    lib = run_command(cc,
+      '-print-file-name=lib@0@.so'.format(libname),
+      check: true,
+    ).stdout().strip()
+
+    # Support linker script files
+    if run_command('grep', '-qI', '^INPUT', lib, check: false).returncode() == 0
+      out = run_command('cat', lib, check: true).stdout()
+      lib = out.split('(')[1].split(')')[0].strip()
+    endif
+
+    if lib != '' and lib[0] == '/'
+      message('Found @0@ library as @1@'.format(libname, lib))
+      glib_exec_preloaded_libs += '@0@'.format(files(lib)[0].full_path())
+    else
+      warning('No library found for ' + libname + ', sanitizers [' +
+        ', '.join(glib_sanitizers) + '] executions may fail')
+    endif
+  endforeach
+
+  if glib_exec_preloaded_libs.length() > 0
+    glib_exec_preloaded_env = {
+      glib_exec_var_preload: glib_exec_var_preload_separator.join(
+        glib_exec_preloaded_libs),
+    }
+  endif
 endif
 
 pkg = import('pkgconfig')
