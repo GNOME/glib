@@ -45,6 +45,7 @@ RUN dnf -y update \
     libffi-devel \
     libmount-devel \
     libselinux-devel \
+    libtsan \
     libubsan \
     libxslt \
     ncurses-compat-libs \
