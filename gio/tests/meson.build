@@ -339,11 +339,6 @@ if host_machine.system() != 'windows'
   }
 
   if have_rtld_next and glib_build_shared
-    asan_env = {}
-    if 'address' in glib_sanitizers
-      asan_env = {'ASAN_OPTIONS': 'verify_asan_link_order=0'}
-    endif
-
     slow_connect_preload_lib = shared_library('slow-connect-preload',
       'slow-connect-preload.c',
       name_prefix : '',
@@ -358,11 +353,11 @@ if host_machine.system() != 'windows'
         'depends' : slow_connect_preload_lib,
         'env' : {
           glib_exec_var_preload: slow_connect_preload_lib.full_path(),
-        } + asan_env,
+        },
         'installed_tests_env' : {
-        } + asan_env,
           glib_exec_var_preload: installed_tests_execdir /
             fs.name(slow_connect_preload_lib.full_path()),
+        },
       },
     }
   endif
@@ -1155,6 +1150,15 @@ foreach test_name, extra_args : gio_tests
     test_conf.set('program', test_name)
     test_env_override = ''
     if installed_tests_env != {}
+      if installed_tests_env.has_key(glib_exec_var_preload)
+        installed_tests_env += {
+          'ASAN_OPTIONS': ','.join([
+            glib_exec_asan_option_ignore_preload,
+            installed_tests_env.get('ASAN_OPTIONS', ''),
+         ]),
+        }
+      endif
+
       envs = []
       foreach var, value : installed_tests_env
         envs += '@0@=\'@1@\''.format(var, value)
@@ -1190,7 +1194,17 @@ foreach test_name, extra_args : gio_tests
     depends += test_extra_programs_targets[program]
   endforeach
 
-  foreach var, value : extra_args.get('env', {})
+  local_test_env_args = extra_args.get('env', {})
+  if local_test_env_args.has_key(glib_exec_var_preload)
+    local_test_env_args += {
+      'ASAN_OPTIONS': ','.join([
+        glib_exec_asan_option_ignore_preload,
+        local_test_env_args.get('ASAN_OPTIONS', ''),
+      ]),
+    }
+  endif
+
+  foreach var, value : local_test_env_args
     local_test_env.append(var, value)
   endforeach
 
@@ -1230,7 +1244,36 @@ foreach test_name, extra_args : python_tests
   endforeach
 
   local_test_env = python_test_env
-  foreach var, value : extra_args.get('env', {})
+  local_test_env_args = extra_args.get('env', {})
+  if (glib_exec_preloaded_env.has_key(glib_exec_var_preload) and
+      not local_test_env_args.has_key(glib_exec_var_preload))
+    local_test_env_args += {
+      glib_exec_var_preload: glib_exec_preloaded_env.get(glib_exec_var_preload),
+    }
+  endif
+
+  if local_test_env_args.has_key(glib_exec_var_preload)
+    if glib_exec_preloaded_env.has_key(glib_exec_var_preload)
+      test_preload = local_test_env_args.get(glib_exec_var_preload)
+      if test_preload != glib_exec_preloaded_env.get(glib_exec_var_preload)
+        local_test_env_args += {
+          glib_exec_var_preload: glib_exec_var_preload_separator.join([
+            glib_exec_preloaded_env.get(glib_exec_var_preload),
+            test_preload,
+          ])
+        }
+      endif
+    else
+      local_test_env_args += {
+        'ASAN_OPTIONS': ','.join([
+          glib_exec_asan_option_ignore_preload,
+          local_test_env_args.get('ASAN_OPTIONS', ''),
+        ]),
+      }
+    endif
+  endif
+
+  foreach var, value : local_test_env_args
     local_test_env.append(var, value)
   endforeach
 
