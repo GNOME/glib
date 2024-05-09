@@ -12,32 +12,54 @@ girepository_tests = {
 
 # Some tests require GIR files to have been generated
 if enable_gir
+  glib_gir_testing_dep = glib_gir
+  gobject_gir_testing_dep = [
+    glib_gir_testing_dep,
+    gobject_gir,
+  ]
+
+  gmodule_gir_testing_dep = [
+    glib_gir_testing_dep,
+    gmodule_gir,
+  ]
+
+  gio_gir_testing_dep = [
+    gobject_gir_testing_dep,
+    gmodule_gir_testing_dep,
+    gio_gir,
+  ]
+
+  girepository_gir_testing_dep = [
+    gio_gir_testing_dep,
+    girepository_gir,
+  ]
+
   girepository_tests += {
     'function-info' : {
       'dependencies': [libffi_dep],
-      'depends': [glib_gir],
+      'depends': glib_gir_testing_dep,
     },
     'object-info' : {
-      'depends': [gio_gir],
+      'depends': gio_gir_testing_dep,
     },
     'registered-type-info' : {
-      'depends': [gobject_gir],
+      'depends': gobject_gir_testing_dep,
     },
     'repository' : {
-      'depends': [glib_gir, gio_gir, gobject_gir],
+      'depends': gio_gir_testing_dep,
     },
     'repository-search-paths' : {
       'c_args': '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
-      'depends': [glib_gir],
+      'depends': glib_gir_testing_dep,
     },
     'struct-info' : {
-      'depends': [gobject_gir],
+      'depends': gobject_gir_testing_dep,
     },
     'throws' : {
-      'depends': [glib_gir, gio_gir],
+      'depends': gio_gir_testing_dep,
     },
     'union-info' : {
-      'depends': [glib_gir],
+      'depends': glib_gir_testing_dep,
     },
   }
 
@@ -45,7 +67,7 @@ if enable_gir
     girepository_tests += {
       'autoptr-girepository' : {
         'source' : 'autoptr.c',
-        'depends': [glib_gir, gio_gir],
+        'depends': gio_gir_testing_dep,
       },
     }
   endif
