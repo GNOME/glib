@@ -3775,6 +3775,7 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
 {
   ParseContext ctx = { 0 };
   GMarkupParseContext *context;
+  GIIrModule *module = NULL;
 
   ctx.parser = parser;
   ctx.state = STATE_START;
@@ -3806,12 +3807,15 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
   if (!g_markup_parse_context_end_parse (context, error))
     goto out;
 
-  parser->parsed_modules = g_list_concat (g_list_copy (ctx.modules),
+  if (ctx.modules)
+    module = ctx.modules->data;
+
+  parser->parsed_modules = g_list_concat (g_steal_pointer (&ctx.modules),
                                           parser->parsed_modules);
 
  out:
 
-  if (ctx.modules == NULL)
+  if (module == NULL)
     {
       /* An error occurred before we created a module, so we haven't
        * transferred ownership of these hash tables to the module.
@@ -3827,13 +3831,8 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
   g_clear_list (&ctx.dependencies, g_free);
   g_markup_parse_context_free (context);
 
-  if (ctx.modules)
-    {
-      GIIrModule *module = ctx.modules->data;
-
-      g_clear_list (&ctx.modules, NULL);
-      return module;
-    }
+  if (module)
+    return module;
 
   if (error && *error == NULL)
     g_set_error (error,
