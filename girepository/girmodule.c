@@ -75,6 +75,9 @@ gi_ir_module_free (GIIrModule *module)
   GList *e;
 
   g_free (module->name);
+  g_free (module->version);
+  g_free (module->shared_library);
+  g_free (module->c_prefix);
 
   for (e = module->entries; e; e = e->next)
     gi_ir_node_free ((GIIrNode *)e->data);
