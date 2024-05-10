@@ -3740,6 +3740,8 @@ cleanup (GMarkupParseContext *context,
   ParseContext *ctx = user_data;
   GList *m;
 
+  g_clear_slist (&ctx->node_stack, NULL);
+
   for (m = ctx->modules; m; m = m->next)
     gi_ir_module_free (m->data);
   g_list_free (ctx->modules);
@@ -3821,6 +3823,7 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
       g_list_free (ctx.include_modules);
     }
 
+  g_clear_slist (&ctx.node_stack, NULL);
   g_markup_parse_context_free (context);
 
   if (ctx.modules)
