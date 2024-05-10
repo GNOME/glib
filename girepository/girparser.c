@@ -3194,7 +3194,9 @@ start_element_handler (GMarkupParseContext  *context,
               ctx->include_modules = NULL;
 
               ctx->modules = g_list_append (ctx->modules, ctx->current_module);
-              ctx->current_module->dependencies = ctx->dependencies;
+              g_clear_list (&ctx->current_module->dependencies, g_free);
+              ctx->current_module->dependencies =
+                g_list_copy_deep (ctx->dependencies, (GCopyFunc) g_strdup, NULL);
 
               state_switch (ctx, STATE_NAMESPACE);
               goto out;
@@ -3824,6 +3826,7 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
     }
 
   g_clear_slist (&ctx.node_stack, NULL);
+  g_clear_list (&ctx.dependencies, g_free);
   g_markup_parse_context_free (context);
 
   if (ctx.modules)

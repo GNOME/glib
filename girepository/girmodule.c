@@ -83,7 +83,7 @@ gi_ir_module_free (GIIrModule *module)
     gi_ir_node_free ((GIIrNode *)e->data);
 
   g_list_free (module->entries);
-  /* Don't free dependencies, we inherit that from the parser */
+  g_clear_list (&module->dependencies, g_free);
 
   g_list_free (module->include_modules);
 
