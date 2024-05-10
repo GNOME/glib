@@ -240,6 +240,8 @@ pkg.generate(libgirepository,
   libraries: [libglib_dep, libgobject_dep],
 )
 
+subdir('compiler')
+
 if enable_gir
   subdir('introspection')
 endif
@@ -248,6 +250,5 @@ if build_tests
   subdir('tests')
 endif
 
-subdir('compiler')
 subdir('decompiler')
 subdir('inspector')
