@@ -57,7 +57,8 @@ struct _GIBaseInfo
   GITypelib *typelib;
   uint32_t offset;
 
-  uint32_t type_is_embedded : 1; /* Used by GITypeInfo */
+  unsigned int type_is_embedded : 1;  /* Used by GITypeInfo */
+  unsigned int padding_bitfield : 31; /* For future expansion */
 
   /* A copy of GIBaseInfo is exposed publicly for stack-allocated derivatives
    * such as GITypeInfo, so its size is now ABI. */
