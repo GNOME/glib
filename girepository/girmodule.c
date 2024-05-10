@@ -481,7 +481,6 @@ gi_ir_module_build_typelib (GIIrModule *module)
 
   for (e = module->entries, i = 0; e; e = e->next, i++)
     {
-      GIIrTypelibBuild build;
       GIIrNode *node = e->data;
 
       if (strchr (node->name, '.'))
@@ -524,6 +523,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
         }
       else
         {
+          GIIrTypelibBuild build = {0};
           old_offset = offset;
           offset2 = offset + gi_ir_node_get_size (node);
 
@@ -532,7 +532,6 @@ gi_ir_module_build_typelib (GIIrModule *module)
           entry->offset = offset;
           entry->name = gi_ir_write_string (node->name, strings, data, &offset2);
 
-          memset (&build, 0, sizeof (build));
           build.module = module;
           build.strings = strings;
           build.types = types;
