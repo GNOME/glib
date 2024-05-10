@@ -1353,8 +1353,6 @@ start_parameter (GMarkupParseContext  *context,
   param->closure = closure ? atoi (closure) : -1;
   param->destroy = destroy ? atoi (destroy) : -1;
 
-  ((GIIrNode *)param)->name = g_strdup (name);
-
   switch (CURRENT_NODE (ctx)->type)
     {
     case GI_IR_NODE_FUNCTION:
