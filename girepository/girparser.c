@@ -3376,13 +3376,19 @@ state_switch_end_struct_or_union (GMarkupParseContext  *context,
                                   const char           *element_name,
                                   GError              **error)
 {
-  pop_node (ctx);
+  GIIrNode *node = pop_node (ctx);
+
   if (ctx->node_stack == NULL)
     {
       state_switch (ctx, STATE_NAMESPACE);
     }
   else
     {
+      /* In this case the node was not tracked by any other node, so we need
+       * to free the node, or we'd leak.
+       */
+      g_clear_pointer (&node, gi_ir_node_free);
+
       if (CURRENT_NODE (ctx)->type == GI_IR_NODE_STRUCT)
         state_switch (ctx, STATE_STRUCT);
       else if (CURRENT_NODE (ctx)->type == GI_IR_NODE_UNION)
