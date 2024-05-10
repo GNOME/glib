@@ -540,6 +540,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
           build.n_attributes = header->n_attributes;
           build.data = data;
           gi_ir_node_build_typelib (node, NULL, &build, &offset, &offset2, NULL);
+          g_clear_list (&build.stack, NULL);
 
           nodes_with_attributes = build.nodes_with_attributes;
           header->n_attributes = build.n_attributes;
