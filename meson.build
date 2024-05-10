@@ -2673,9 +2673,11 @@ glib_exec_preloaded_libs = []
 glib_exec_preloaded_env = {}
 
 if host_system in ['ios', 'darwin']
+  glib_exec_var_library_path = 'DYLD_LIBRARY_PATH'
   glib_exec_var_preload = 'DYLD_INSERT_LIBRARIES'
   glib_exec_var_preload_separator = ':'
 else
+  glib_exec_var_library_path = 'LD_LIBRARY_PATH'
   glib_exec_var_preload = 'LD_PRELOAD'
   glib_exec_var_preload_separator = ' '
 endif
