@@ -480,6 +480,43 @@ address-sanitizer:
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
 
+thread-sanitizer:
+  extends:
+    - .build-linux
+    - .only-schedules-or-manual
+    - .with-git
+  image: $FEDORA_IMAGE
+  stage: analysis
+  tags: [asan]
+  needs: []
+  variables:
+    MESON_TEST_TIMEOUT_MULTIPLIER: 10
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
+  script:
+    - meson setup ${MESON_COMMON_OPTIONS}
+            --werror
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
+            -Dinstalled_tests=true
+            -Dintrospection=enabled
+            -Db_sanitize=thread
+            _build
+    # Do not run ninja, let meson handle the build dependencies!
+    # This tests that all tests have the right build dependencies specified.
+    - bash -x ./.gitlab-ci/run-tests.sh --no-suite=no-tsan
+  artifacts:
+    reports:
+      junit: "_build/meson-logs/testlog.junit.xml"
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    expire_in: 1 week
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+
 .cross-build-linux:
   extends: .build-linux
   stage: build
