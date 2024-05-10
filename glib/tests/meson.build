@@ -81,9 +81,15 @@ glib_tests = {
     'link_args' : cc.get_id() == 'gcc' and cc.version().version_compare('> 6')
       ? ['-Wno-alloc-size-larger-than'] : [],
   },
-  'mutex' : {},
+  'mutex' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'node' : {},
-  'once' : {},
+  'once' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'onceinit' : {},
   'option-context' : {
     # musl: /option/arg/repetition/locale should be skipped but it's not. The
@@ -103,7 +109,10 @@ glib_tests = {
   'queue' : {},
   'rand' : {},
   'rcbox' : {},
-  'rec-mutex' : {},
+  'rec-mutex' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'refcount' : {},
   'refcount-macro' : {
     'source' : 'refcount.c',
@@ -126,7 +135,9 @@ glib_tests = {
   'slist' : {},
   'sort' : {},
   'spawn-multithreaded' : {
-    'can_fail': glib_build_static and host_system == 'windows',
+    'can_fail': glib_build_static and host_system == 'windows' or
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'thread' in glib_sanitizers,
     'suite': host_system == 'windows' ? ['flaky'] : [],
     'extra_programs' : ['test-spawn-echo'] + (
       host_machine.system() == 'windows' ? ['test-spawn-sleep'] : []),
@@ -162,9 +173,15 @@ glib_tests = {
   'testing-nonfatal' : {
     'protocol' : 'exitcode'
   },
-  'test-printf' : {},
+  'test-printf' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'thread' : {},
-  'thread-deprecated' : {},
+  'thread-deprecated' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'thread-pool' : {},
   'thread-pool-slow' : {'suite' : ['slow']},
   'timeout' : {},
@@ -185,12 +202,17 @@ glib_tests = {
   'unicode-encoding' : {},
   'unicode-normalize': {},
   'uri' : {},
-  '1bit-mutex' : {},
+  '1bit-mutex' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   '1bit-emufutex' : {
     'source' : '1bit-mutex.c',
     'c_args' : ['-DTEST_EMULATED_FUTEX'],
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3359
-    'can_fail': 'undefined' in glib_sanitizers,
+    'can_fail': 'undefined' in glib_sanitizers or
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'thread' in glib_sanitizers,
     'install' : false,
     'suite' : ['slow'],
   },
@@ -525,6 +547,8 @@ if 'messages-low-memory' in test_extra_programs
   python_tests += {
     'messages-low-memory.py' : {
       'extra_programs': ['messages-low-memory'],
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
     },
   }
 endif

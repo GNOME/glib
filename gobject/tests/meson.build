@@ -57,7 +57,10 @@ gobject_tests = {
   'custom-dispatch' : {
     'extra_objs' : extra_custom_dispatch_objs,
   },
-  'qdata' : {},
+  'qdata' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'accumulator' : {
     'source' : ['accumulator.c', marshalers_h, marshalers_c],
   },
@@ -78,15 +81,29 @@ gobject_tests = {
   'references' : {},
   'basic-signals' : {},
   'singleton' : {},
-  'threadtests' : {},
-  'dynamictests' : {},
-  'binding' : {},
+  'threadtests' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
+  'dynamictests' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
+  'binding' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'bindinggroup' : {},
   'properties' : {},
-  'properties-introspection' : {},
+  'properties-introspection' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'reference' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
-    'can_fail' : host_system == 'gnu',
+    'can_fail' : host_system == 'gnu' or
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'thread' in glib_sanitizers,
   },
   'flags' : {},
   'value' : {},
@@ -95,7 +112,11 @@ gobject_tests = {
     'source' : 'private.c',
   },
   'closure' : {},
-  'closure-refcount' : { 'suite': ['slow'] },
+  'closure-refcount' : {
+    'suite': ['slow'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'object' : {},
   'signal-handler' : {},
   'ifaceproperties' : {},
@@ -113,17 +134,28 @@ gobject_tests = {
     ]),
   },
   'objects-refcount2' : {'suite' : ['slow']},
-  'properties-refcount1' : {},
+  'properties-refcount1' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'properties-refcount2' : {'suite' : ['slow']},
-  'properties-refcount3' : {'suite' : ['slow']},
+  'properties-refcount3' : {
+    'suite' : ['slow'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'properties-refcount4' : {},
   'signals-refcount1' : {
     'source' : 'signals-refcount.c',
     'c_args' : ['-DTESTNUM=1'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
   },
   'signals-refcount2' : {
     'source' : 'signals-refcount.c',
     'c_args' : ['-DTESTNUM=2'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
   },
   'signals-refcount3' : {
     'source' : 'signals-refcount.c',
@@ -132,6 +164,8 @@ gobject_tests = {
   'signals-refcount4' : {
     'source' : 'signals-refcount.c',
     'c_args' : ['-DTESTNUM=4'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
   },
 }
 
