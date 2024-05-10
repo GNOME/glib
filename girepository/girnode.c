@@ -1460,24 +1460,22 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         else
           {
             GString *str;
-            char *s;
             gpointer value;
 
             str = g_string_new (0);
             serialize_type (build, type, str);
-            s = g_string_free (str, FALSE);
 
             types_count += 1;
-            value = g_hash_table_lookup (types, s);
+            value = g_hash_table_lookup (types, str->str);
             if (value)
               {
                 blob->offset = GPOINTER_TO_UINT (value);
-                g_free (s);
+                g_string_free (g_steal_pointer (&str), TRUE);
               }
             else
               {
                 unique_types_count += 1;
-                g_hash_table_insert (types, g_steal_pointer (&s),
+                g_hash_table_insert (types, g_string_free_and_steal (g_steal_pointer (&str)),
                                      GUINT_TO_POINTER(*offset2));
 
                 blob->offset = *offset2;
