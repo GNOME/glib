@@ -592,6 +592,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
   g_hash_table_destroy (strings);
   g_hash_table_destroy (types);
   g_list_free (nodes_with_attributes);
+  g_free (dependencies);
 
   return typelib;
 }
