@@ -3819,6 +3819,7 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
       g_clear_pointer (&ctx.aliases, g_hash_table_unref);
       g_clear_pointer (&ctx.disguised_structures, g_hash_table_unref);
       g_clear_pointer (&ctx.pointer_structures, g_hash_table_unref);
+      g_clear_list (&ctx.modules, (GDestroyNotify) gi_ir_module_free);
       g_list_free (ctx.include_modules);
     }
 
@@ -3827,7 +3828,12 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
   g_markup_parse_context_free (context);
 
   if (ctx.modules)
-    return ctx.modules->data;
+    {
+      GIIrModule *module = ctx.modules->data;
+
+      g_clear_list (&ctx.modules, NULL);
+      return module;
+    }
 
   if (error && *error == NULL)
     g_set_error (error,
