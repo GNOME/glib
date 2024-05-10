@@ -374,7 +374,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
  restart:
   gi_ir_node_init_stats ();
   strings = g_hash_table_new (g_str_hash, g_str_equal);
-  types = g_hash_table_new (g_str_hash, g_str_equal);
+  types = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   nodes_with_attributes = NULL;
   n_entries = g_list_length (module->entries);
 

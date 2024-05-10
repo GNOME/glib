@@ -1477,7 +1477,8 @@ gi_ir_node_build_typelib (GIIrNode         *node,
             else
               {
                 unique_types_count += 1;
-                g_hash_table_insert (types, s, GUINT_TO_POINTER(*offset2));
+                g_hash_table_insert (types, g_steal_pointer (&s),
+                                     GUINT_TO_POINTER(*offset2));
 
                 blob->offset = *offset2;
                 switch (type->tag)
