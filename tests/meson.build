@@ -28,6 +28,6 @@ test(
   python,
   args : ['-B', files('check-missing-install-tag.py')],
   env : test_env,
-  suite : ['lint', 'no-valgrind'],
+  suite : ['lint', 'no-valgrind', 'no-tsan'],
   protocol : 'tap',
 )
