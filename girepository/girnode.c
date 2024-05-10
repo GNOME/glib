@@ -415,10 +415,8 @@ gi_ir_node_free (GIIrNode *node)
         g_free (union_->free_func);
 
         gi_ir_node_free ((GIIrNode *)union_->discriminator_type);
-        for (l = union_->members; l; l = l->next)
-          gi_ir_node_free ((GIIrNode *)l->data);
-        for (l = union_->discriminators; l; l = l->next)
-          gi_ir_node_free ((GIIrNode *)l->data);
+        g_clear_list (&union_->members, (GDestroyNotify) gi_ir_node_free);
+        g_clear_list (&union_->discriminators, (GDestroyNotify) gi_ir_node_free);
       }
       break;
 
