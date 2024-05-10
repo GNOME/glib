@@ -289,8 +289,8 @@ call_destroy_notify (GMainContext  *context,
 
 typedef struct
 {
-  /* All fields are immutable after construction. */
   gatomicrefcount ref_count;
+  /* All remaining fields are immutable after construction. */
   GDBusSignalCallback callback;
   gpointer user_data;
   GDestroyNotify user_data_free_func;
