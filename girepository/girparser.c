@@ -120,7 +120,7 @@ struct _ParseContext
 
   GList *modules;
   GList *include_modules;
-  GList *dependencies;
+  GPtrArray *dependencies;
   GHashTable *aliases;
   GHashTable *disguised_structures;
   GHashTable *pointer_structures;
@@ -3101,9 +3101,8 @@ start_element_handler (GMarkupParseContext  *context,
               return;
             }
 
-          ctx->dependencies = g_list_prepend (ctx->dependencies,
-                                              g_strdup_printf ("%s-%s", name, version));
-
+          g_ptr_array_insert (ctx->dependencies, 0,
+                              g_strdup_printf ("%s-%s", name, version));
 
           state_switch (ctx, STATE_INCLUDE);
           goto out;
@@ -3191,9 +3190,12 @@ start_element_handler (GMarkupParseContext  *context,
               ctx->include_modules = NULL;
 
               ctx->modules = g_list_append (ctx->modules, ctx->current_module);
-              g_clear_list (&ctx->current_module->dependencies, g_free);
-              ctx->current_module->dependencies =
-                g_list_copy_deep (ctx->dependencies, (GCopyFunc) g_strdup, NULL);
+
+              if (ctx->current_module->dependencies != ctx->dependencies)
+                {
+                  g_clear_pointer (&ctx->current_module->dependencies, g_ptr_array_unref);
+                  ctx->current_module->dependencies = g_ptr_array_ref (ctx->dependencies);
+                }
 
               state_switch (ctx, STATE_NAMESPACE);
               goto out;
@@ -3786,7 +3788,7 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
   ctx.disguised_structures = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   ctx.pointer_structures = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   ctx.type_depth = 0;
-  ctx.dependencies = NULL;
+  ctx.dependencies = g_ptr_array_new_with_free_func (g_free);
   ctx.current_module = NULL;
 
   context = g_markup_parse_context_new (&firstpass_parser, 0, &ctx, NULL);
@@ -3828,7 +3830,7 @@ gi_ir_parser_parse_string (GIIrParser   *parser,
     }
 
   g_clear_slist (&ctx.node_stack, NULL);
-  g_clear_list (&ctx.dependencies, g_free);
+  g_clear_pointer (&ctx.dependencies, g_ptr_array_unref);
   g_markup_parse_context_free (context);
 
   if (module)

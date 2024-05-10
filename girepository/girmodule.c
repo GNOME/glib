@@ -83,7 +83,7 @@ gi_ir_module_free (GIIrModule *module)
     gi_ir_node_free ((GIIrNode *)e->data);
 
   g_list_free (module->entries);
-  g_clear_list (&module->dependencies, g_free);
+  g_clear_pointer (&module->dependencies, g_ptr_array_unref);
 
   g_list_free (module->include_modules);
 
@@ -351,25 +351,29 @@ gi_ir_module_build_typelib (GIIrModule *module)
 
   /* Serialize dependencies into one string; this is convenient
    * and not a major change to the typelib format. */
-  {
-    GString *dependencies_str = g_string_new ("");
-    GList *link;
-    for (link = module->dependencies; link; link = link->next)
-      {
-        const char *dependency = link->data;
-        if (!strcmp (dependency, module->name))
-          continue;
-        g_string_append (dependencies_str, dependency);
-        if (link->next)
-          g_string_append_c (dependencies_str, '|');
-      }
-    dependencies = g_string_free (dependencies_str, FALSE);
-    if (!dependencies[0])
-      {
-        g_free (dependencies);
-        dependencies = NULL;
-      }
-  }
+  if (module->dependencies->len)
+    {
+      GString *dependencies_str = g_string_new (NULL);
+      for (guint i = module->dependencies->len; i > 0; --i)
+        {
+          const char *dependency = g_ptr_array_index (module->dependencies, i-1);
+          if (!strcmp (dependency, module->name))
+            continue;
+          g_string_append (dependencies_str, dependency);
+          if (i > 1)
+            g_string_append_c (dependencies_str, '|');
+        }
+      dependencies = g_string_free (dependencies_str, FALSE);
+      if (dependencies && !dependencies[0])
+        {
+          g_free (dependencies);
+          dependencies = NULL;
+        }
+    }
+  else
+    {
+      dependencies = NULL;
+    }
 
  restart:
   gi_ir_node_init_stats ();
@@ -378,8 +382,8 @@ gi_ir_module_build_typelib (GIIrModule *module)
   nodes_with_attributes = NULL;
   n_entries = g_list_length (module->entries);
 
-  g_message ("%d entries (%d local), %d dependencies", n_entries, n_local_entries,
-             g_list_length (module->dependencies));
+  g_message ("%d entries (%d local), %u dependencies", n_entries, n_local_entries,
+             module->dependencies ? module->dependencies->len : 0);
 
   dir_size = n_entries * sizeof (DirEntry);
   size = header_size + dir_size;
