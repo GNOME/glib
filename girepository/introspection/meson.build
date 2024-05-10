@@ -19,6 +19,12 @@ gi_gen_shared_dependencies = [
 
 gi_gen_env_variables = environment()
 
+# Use currently built libraries to run g-ir-scanner and the various tools
+# this may not happen if we don't set the library paths.
+gi_gen_env_variables.prepend(glib_exec_var_library_path,
+  fs.parent(libglib.full_path()), fs.parent(libgobject.full_path()),
+  fs.parent(libgmodule.full_path()), fs.parent(libgio.full_path()))
+
 if 'address' in glib_sanitizers
   gi_gen_env_variables.append(
     'ASAN_OPTIONS', glib_exec_asan_option_ignore_preload, separator: ',')
