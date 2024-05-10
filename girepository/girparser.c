@@ -212,13 +212,10 @@ gi_ir_parser_set_debug (GIIrParser     *parser,
 void
 gi_ir_parser_free (GIIrParser *parser)
 {
-  GList *l;
-
   g_strfreev (parser->includes);
   g_strfreev (parser->gi_gir_path);
 
-  for (l = parser->parsed_modules; l; l = l->next)
-    gi_ir_module_free (l->data);
+  g_clear_list (&parser->parsed_modules, (GDestroyNotify) gi_ir_module_free);
 
   g_slice_free (GIIrParser, parser);
 }
