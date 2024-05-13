@@ -216,7 +216,7 @@ test_connection_life_cycle (void)
                                       "org.freedesktop.DBus", /* bus name */
                                       "org.freedesktop.DBus", /* interface */
                                       "NameOwnerChanged",     /* member */
-                                      "/org/freesktop/DBus",  /* path */
+                                      "/org/freedesktop/DBus",  /* path */
                                       NULL,                   /* arg0 */
                                       G_DBUS_SIGNAL_FLAGS_NONE,
                                       on_name_owner_changed,
