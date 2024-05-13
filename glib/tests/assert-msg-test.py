@@ -143,6 +143,10 @@ class TestAssertMessage(unittest.TestCase):
         """Test running g_assert() within gdb and fail the program."""
         if self.__gdb is None:
             self.skipTest("GDB is not installed, skipping this test!")
+        if {"thread", "address"} & set(
+            os.getenv("_GLIB_TEST_SANITIZERS", "").split(",")
+        ):
+            self.skipTest("GDB can't run under sanitizers")
 
         with tempfile.NamedTemporaryFile(
             prefix="assert-msg-test-", suffix=".gdb", mode="w", delete=False

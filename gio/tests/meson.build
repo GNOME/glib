@@ -309,8 +309,12 @@ if host_machine.system() != 'windows'
     },
   }
 
-  # LD_PRELOAD modules don't work so well with AddressSanitizer
-  if have_rtld_next and glib_build_shared and get_option('b_sanitize') == 'none'
+  if have_rtld_next and glib_build_shared
+    asan_env = {}
+    if 'address' in glib_sanitizers
+      asan_env = {'ASAN_OPTIONS': 'verify_asan_link_order=0'}
+    endif
+
     gio_tests += {
       'gsocketclient-slow' : {
         'depends' : [
@@ -325,10 +329,10 @@ if host_machine.system() != 'windows'
         ],
         'env' : {
           'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(meson.current_build_dir())
-        },
+        } + asan_env,
         'installed_tests_env' : {
           'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(installed_tests_execdir),
-        },
+        } + asan_env,
       },
     }
   endif

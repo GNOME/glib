@@ -22,6 +22,7 @@
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
+#include <sys/wait.h>
 #endif
 #ifdef G_OS_WIN32
 #include <process.h>
@@ -124,6 +125,7 @@ child_main (void)
   g_free (childname);
   g_free (global_filename);
   g_free (dir);
+  g_mapped_file_unref (map);
 
   signal_parent (NULL);
 }
@@ -201,8 +203,10 @@ test_child_private (void)
   gsize len;
   gchar *child_argv[4];
   GPid  child_pid;
+  GSpawnFlags spawn_flags = G_SPAWN_DEFAULT;
 #ifndef G_OS_WIN32
   GMainLoop *loop;
+  int wait_status;
 #endif
   gchar pid[100];
   gchar *dir, *global_filename, *childname;
@@ -221,6 +225,7 @@ test_child_private (void)
 
 #ifndef G_OS_WIN32
   signal (SIGUSR1, handle_usr1);
+  spawn_flags |= G_SPAWN_DO_NOT_REAP_CHILD;
 #endif
 
   g_snprintf (pid, sizeof(pid), "%d", getpid ());
@@ -230,7 +235,7 @@ test_child_private (void)
   child_argv[3] = NULL;
 
   result = g_spawn_async (dir, child_argv, NULL,
-                          0, NULL, NULL, &child_pid, &error);
+                          spawn_flags, NULL, NULL, &child_pid, &error);
   g_assert_no_error (error);
   g_assert_true (result);
   g_test_message ("test_child_private: child spawned");
@@ -261,6 +266,10 @@ test_child_private (void)
 #ifndef G_OS_WIN32
   g_idle_add (check_stop, loop);
   g_main_loop_run (loop);
+  waitpid (child_pid, &wait_status, 0);
+  g_test_message ("Child exited with status %d", wait_status);
+  g_spawn_check_wait_status (wait_status, &error);
+  g_assert_no_error (error);
 #else
   g_usleep (2000000);
 #endif
