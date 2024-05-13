@@ -344,9 +344,9 @@ on_name_owner_changed (GDBusConnection *connection,
   if (!client->initialized)
     goto out;
 
-  if (g_strcmp0 (object_path, "/org/freedesktop/DBus") != 0 ||
-      g_strcmp0 (interface_name, "org.freedesktop.DBus") != 0 ||
-      g_strcmp0 (sender_name, "org.freedesktop.DBus") != 0)
+  if (g_strcmp0 (object_path, DBUS_PATH_DBUS) != 0 ||
+      g_strcmp0 (interface_name, DBUS_INTERFACE_DBUS) != 0 ||
+      g_strcmp0 (sender_name, DBUS_SERVICE_DBUS) != 0)
     goto out;
 
   g_variant_get (parameters,

@@ -258,9 +258,9 @@ on_name_lost_or_acquired (GDBusConnection  *connection,
   Client *client = user_data;
   const gchar *name;
 
-  if (g_strcmp0 (object_path, "/org/freedesktop/DBus") != 0 ||
-      g_strcmp0 (interface_name, "org.freedesktop.DBus") != 0 ||
-      g_strcmp0 (sender_name, "org.freedesktop.DBus") != 0)
+  if (g_strcmp0 (object_path, DBUS_PATH_DBUS) != 0 ||
+      g_strcmp0 (interface_name, DBUS_INTERFACE_DBUS) != 0 ||
+      g_strcmp0 (sender_name, DBUS_SERVICE_DBUS) != 0)
     goto out;
 
   if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(s)")))

@@ -1052,7 +1052,7 @@ test_connection_filter (void)
                                       DBUS_PATH_DBUS,
                                       DBUS_INTERFACE_DBUS,
                                       "GetNameOwner");
-  g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
+  g_dbus_message_set_body (m, g_variant_new ("(s)", DBUS_SERVICE_DBUS));
   error = NULL;
   g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &serial_temp, &error);
   g_assert_no_error (error);
@@ -1202,7 +1202,7 @@ send_bogus_message (GDBusConnection *c, guint32 *out_serial)
                                       DBUS_PATH_DBUS,
                                       DBUS_INTERFACE_DBUS,
                                       "GetNameOwner");
-  g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
+  g_dbus_message_set_body (m, g_variant_new ("(s)", DBUS_SERVICE_DBUS));
   error = NULL;
   g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, out_serial, &error);
   g_assert_no_error (error);

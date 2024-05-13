@@ -3714,9 +3714,9 @@ remove_match_rule (GDBusConnection *connection,
 static gboolean
 is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
 {
-  return g_strcmp0 (signal_data->sender, "org.freedesktop.DBus") == 0 &&
-         g_strcmp0 (signal_data->interface_name, "org.freedesktop.DBus") == 0 &&
-         g_strcmp0 (signal_data->object_path, "/org/freedesktop/DBus") == 0 &&
+  return g_strcmp0 (signal_data->sender, DBUS_SERVICE_DBUS) == 0 &&
+         g_strcmp0 (signal_data->interface_name, DBUS_INTERFACE_DBUS) == 0 &&
+         g_strcmp0 (signal_data->object_path, DBUS_PATH_DBUS) == 0 &&
          (g_strcmp0 (signal_data->member, "NameLost") == 0 ||
           g_strcmp0 (signal_data->member, "NameAcquired") == 0);
 }
@@ -3885,7 +3885,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
    */
   rule = args_to_rule (sender, interface_name, member, object_path, arg0, flags);
 
-  if (sender != NULL && (g_dbus_is_unique_name (sender) || g_strcmp0 (sender, "org.freedesktop.DBus") == 0))
+  if (sender != NULL && (g_dbus_is_unique_name (sender) || g_strcmp0 (sender, DBUS_SERVICE_DBUS) == 0))
     sender_is_its_own_owner = TRUE;
   else
     sender_is_its_own_owner = FALSE;
