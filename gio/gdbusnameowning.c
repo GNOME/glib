@@ -419,10 +419,10 @@ has_connection (Client *client)
    * ensure that the user callbacks get called an appropriate number of times. */
   client->name_lost_subscription_id =
     g_dbus_connection_signal_subscribe (client->connection,
-                                        "org.freedesktop.DBus",
-                                        "org.freedesktop.DBus",
+                                        DBUS_SERVICE_DBUS,
+                                        DBUS_INTERFACE_DBUS,
                                         "NameLost",
-                                        "/org/freedesktop/DBus",
+                                        DBUS_PATH_DBUS,
                                         client->name,
                                         G_DBUS_SIGNAL_FLAGS_NONE,
                                         on_name_lost_or_acquired,
@@ -430,10 +430,10 @@ has_connection (Client *client)
                                         (GDestroyNotify) client_unref);
   client->name_acquired_subscription_id =
     g_dbus_connection_signal_subscribe (client->connection,
-                                        "org.freedesktop.DBus",
-                                        "org.freedesktop.DBus",
+                                        DBUS_SERVICE_DBUS,
+                                        DBUS_INTERFACE_DBUS,
                                         "NameAcquired",
-                                        "/org/freedesktop/DBus",
+                                        DBUS_PATH_DBUS,
                                         client->name,
                                         G_DBUS_SIGNAL_FLAGS_NONE,
                                         on_name_lost_or_acquired,

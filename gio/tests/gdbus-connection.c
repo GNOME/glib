@@ -214,10 +214,10 @@ test_connection_life_cycle (void)
   /* signal registration */
   g_atomic_int_set (&on_signal_registration_freed_called, FALSE);
   g_dbus_connection_signal_subscribe (c2,
-                                      "org.freedesktop.DBus", /* bus name */
-                                      "org.freedesktop.DBus", /* interface */
+                                      DBUS_SERVICE_DBUS,
+                                      DBUS_INTERFACE_DBUS,
                                       "NameOwnerChanged",     /* member */
-                                      "/org/freedesktop/DBus",  /* path */
+                                      DBUS_PATH_DBUS,
                                       NULL,                   /* arg0 */
                                       G_DBUS_SIGNAL_FLAGS_NONE,
                                       on_name_owner_changed,
@@ -619,10 +619,10 @@ test_connection_signals (void)
                                            &count_s2,
                                            NULL);
   s3 = g_dbus_connection_signal_subscribe (c1,
-                                           "org.freedesktop.DBus",  /* sender */
-                                           "org.freedesktop.DBus",  /* interface */
+                                           DBUS_SERVICE_DBUS,
+                                           DBUS_INTERFACE_DBUS,
                                            "NameOwnerChanged",      /* member */
-                                           "/org/freedesktop/DBus", /* path */
+                                           DBUS_PATH_DBUS,
                                            NULL,
                                            G_DBUS_SIGNAL_FLAGS_NONE,
                                            test_connection_signal_handler,
@@ -1115,10 +1115,10 @@ test_connection_filter (void)
 
   /* wait for service to be available */
   signal_handler_id = g_dbus_connection_signal_subscribe (c,
-                                                          "org.freedesktop.DBus", /* sender */
-                                                          "org.freedesktop.DBus",
+                                                          DBUS_SERVICE_DBUS,
+                                                          DBUS_INTERFACE_DBUS,
                                                           "NameOwnerChanged",
-                                                          "/org/freedesktop/DBus",
+                                                          DBUS_PATH_DBUS,
                                                           NULL, /* arg0 */
                                                           G_DBUS_SIGNAL_FLAGS_NONE,
                                                           test_connection_filter_name_owner_changed_signal_handler,

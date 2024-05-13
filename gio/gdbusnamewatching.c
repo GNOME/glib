@@ -504,10 +504,10 @@ has_connection (Client *client)
 
   /* start listening to NameOwnerChanged messages immediately */
   client->name_owner_changed_subscription_id = g_dbus_connection_signal_subscribe (client->connection,
-                                                                                   "org.freedesktop.DBus",  /* name */
-                                                                                   "org.freedesktop.DBus",  /* if */
+                                                                                   DBUS_SERVICE_DBUS,
+                                                                                   DBUS_INTERFACE_DBUS,
                                                                                    "NameOwnerChanged",      /* signal */
-                                                                                   "/org/freedesktop/DBus", /* path */
+                                                                                   DBUS_PATH_DBUS,
                                                                                    client->name,
                                                                                    G_DBUS_SIGNAL_FLAGS_NONE,
                                                                                    on_name_owner_changed,

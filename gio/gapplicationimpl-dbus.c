@@ -511,10 +511,10 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   if (app_flags & G_APPLICATION_ALLOW_REPLACEMENT)
     {
       impl->name_lost_signal = g_dbus_connection_signal_subscribe (impl->session_bus,
-                                                                   "org.freedesktop.DBus",
-                                                                   "org.freedesktop.DBus",
+                                                                   DBUS_SERVICE_DBUS,
+                                                                   DBUS_INTERFACE_DBUS,
                                                                    "NameLost",
-                                                                   "/org/freedesktop/DBus",
+                                                                   DBUS_PATH_DBUS,
                                                                    impl->bus_name,
                                                                    G_DBUS_SIGNAL_FLAGS_NONE,
                                                                    name_lost,

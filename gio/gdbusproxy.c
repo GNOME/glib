@@ -1719,10 +1719,10 @@ async_initable_init_first (GAsyncInitable *initable)
     {
       proxy->priv->name_owner_changed_subscription_id =
         g_dbus_connection_signal_subscribe (proxy->priv->connection,
-                                            "org.freedesktop.DBus",  /* name */
-                                            "org.freedesktop.DBus",  /* interface */
+                                            DBUS_SERVICE_DBUS,
+                                            DBUS_INTERFACE_DBUS,
                                             "NameOwnerChanged",      /* signal name */
-                                            "/org/freedesktop/DBus", /* path */
+                                            DBUS_PATH_DBUS,
                                             proxy->priv->name,       /* arg0 */
                                             signal_flags,
                                             on_name_owner_changed,
