@@ -32,6 +32,10 @@ G_BEGIN_DECLS
 #define DBUS_INTERFACE_DBUS DBUS_SERVICE_DBUS
 #define DBUS_PATH_DBUS "/org/freedesktop/DBus"
 
+/* Reserved by the specification for locally-generated messages */
+#define DBUS_INTERFACE_LOCAL "org.freedesktop.DBus.Local"
+#define DBUS_PATH_LOCAL "/org/freedesktop/DBus/Local"
+
 /* Owner flags */
 #define DBUS_NAME_FLAG_ALLOW_REPLACEMENT 0x1 /**< Allow another service to become the primary owner if requested */
 #define DBUS_NAME_FLAG_REPLACE_EXISTING  0x2 /**< Request to replace the current primary owner */
