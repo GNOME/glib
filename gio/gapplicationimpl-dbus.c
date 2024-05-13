@@ -32,6 +32,7 @@
 #include "gdbusconnection.h"
 #include "gdbusintrospection.h"
 #include "gdbuserror.h"
+#include "gdbusprivate.h"
 #include "glib/gstdio.h"
 
 #include <string.h>
@@ -526,9 +527,9 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
     name_owner_flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
 
   reply = g_dbus_connection_call_sync (impl->session_bus,
-                                       "org.freedesktop.DBus",
-                                       "/org/freedesktop/DBus",
-                                       "org.freedesktop.DBus",
+                                       DBUS_SERVICE_DBUS,
+                                       DBUS_PATH_DBUS,
+                                       DBUS_INTERFACE_DBUS,
                                        "RequestName",
                                        g_variant_new ("(su)", impl->bus_name, name_owner_flags),
                                        G_VARIANT_TYPE ("(u)"),
@@ -599,8 +600,8 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
 
   if (impl->primary && impl->bus_name)
     {
-      g_dbus_connection_call (impl->session_bus, "org.freedesktop.DBus",
-                              "/org/freedesktop/DBus", "org.freedesktop.DBus",
+      g_dbus_connection_call (impl->session_bus, DBUS_SERVICE_DBUS,
+                              DBUS_PATH_DBUS, DBUS_INTERFACE_DBUS,
                               "ReleaseName", g_variant_new ("(s)", impl->bus_name),
                               NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
       impl->primary = FALSE;

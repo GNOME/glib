@@ -37,8 +37,9 @@
 
 #ifdef G_OS_WIN32
 #include "glib/glib-private.h"
-#include "gdbusprivate.h"
 #endif
+
+#include "gdbusprivate.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -332,9 +333,9 @@ print_names (GDBusConnection *c,
 
   error = NULL;
   result = g_dbus_connection_call_sync (c,
-                                        "org.freedesktop.DBus",
-                                        "/org/freedesktop/DBus",
-                                        "org.freedesktop.DBus",
+                                        DBUS_SERVICE_DBUS,
+                                        DBUS_PATH_DBUS,
+                                        DBUS_INTERFACE_DBUS,
                                         "ListNames",
                                         NULL,
                                         G_VARIANT_TYPE ("(as)"),
@@ -356,9 +357,9 @@ print_names (GDBusConnection *c,
 
   error = NULL;
   result = g_dbus_connection_call_sync (c,
-                                        "org.freedesktop.DBus",
-                                        "/org/freedesktop/DBus",
-                                        "org.freedesktop.DBus",
+                                        DBUS_SERVICE_DBUS,
+                                        DBUS_PATH_DBUS,
+                                        DBUS_INTERFACE_DBUS,
                                         "ListActivatableNames",
                                         NULL,
                                         G_VARIANT_TYPE ("(as)"),

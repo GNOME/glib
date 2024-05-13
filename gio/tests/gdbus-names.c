@@ -25,6 +25,7 @@
 #include <gio/gio.h>
 #include <unistd.h>
 
+#include "gdbusprivate.h"
 #include "gdbus-tests.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -181,9 +182,9 @@ test_bus_own_name (void)
   g_assert (c != NULL);
   g_assert (!g_dbus_connection_is_closed (c));
   result = g_dbus_connection_call_sync (c,
-                                        "org.freedesktop.DBus",  /* bus name */
-                                        "/org/freedesktop/DBus", /* object path */
-                                        "org.freedesktop.DBus",  /* interface name */
+                                        DBUS_SERVICE_DBUS,
+                                        DBUS_PATH_DBUS,
+                                        DBUS_INTERFACE_DBUS,
                                         "NameHasOwner",          /* method name */
                                         g_variant_new ("(s)", name),
                                         G_VARIANT_TYPE ("(b)"),
@@ -209,9 +210,9 @@ test_bus_own_name (void)
    * Check that the name was actually released.
    */
   result = g_dbus_connection_call_sync (c,
-                                        "org.freedesktop.DBus",  /* bus name */
-                                        "/org/freedesktop/DBus", /* object path */
-                                        "org.freedesktop.DBus",  /* interface name */
+                                        DBUS_SERVICE_DBUS,
+                                        DBUS_PATH_DBUS,
+                                        DBUS_INTERFACE_DBUS,
                                         "NameHasOwner",          /* method name */
                                         g_variant_new ("(s)", name),
                                         G_VARIANT_TYPE ("(b)"),

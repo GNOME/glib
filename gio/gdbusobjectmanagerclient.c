@@ -1145,9 +1145,9 @@ subscribe_signals (GDBusObjectManagerClient *manager,
       /* The bus daemon may not implement path_namespace so gracefully
        * handle this by using a fallback triggered if @error is set. */
       ret = g_dbus_connection_call_sync (manager->priv->connection,
-                                         "org.freedesktop.DBus",
-                                         "/org/freedesktop/DBus",
-                                         "org.freedesktop.DBus",
+                                         DBUS_SERVICE_DBUS,
+                                         DBUS_PATH_DBUS,
+                                         DBUS_INTERFACE_DBUS,
                                          "AddMatch",
                                          g_variant_new ("(s)",
                                                         manager->priv->match_rule),
@@ -1230,9 +1230,9 @@ maybe_unsubscribe_signals (GDBusObjectManagerClient *manager)
        * fail - therefore, don't bother checking the return value
        */
       g_dbus_connection_call (manager->priv->connection,
-                              "org.freedesktop.DBus",
-                              "/org/freedesktop/DBus",
-                              "org.freedesktop.DBus",
+                              DBUS_SERVICE_DBUS,
+                              DBUS_PATH_DBUS,
+                              DBUS_INTERFACE_DBUS,
                               "RemoveMatch",
                               g_variant_new ("(s)",
                                              manager->priv->match_rule),

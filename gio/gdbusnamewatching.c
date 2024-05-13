@@ -424,9 +424,9 @@ static void
 invoke_get_name_owner (Client *client)
 {
   g_dbus_connection_call (client->connection,
-                          "org.freedesktop.DBus",  /* bus name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface name */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "GetNameOwner",          /* method name */
                           g_variant_new ("(s)", client->name),
                           G_VARIANT_TYPE ("(s)"),
@@ -517,9 +517,9 @@ has_connection (Client *client)
   if (client->flags & G_BUS_NAME_WATCHER_FLAGS_AUTO_START)
     {
       g_dbus_connection_call (client->connection,
-                              "org.freedesktop.DBus",  /* bus name */
-                              "/org/freedesktop/DBus", /* object path */
-                              "org.freedesktop.DBus",  /* interface name */
+                              DBUS_SERVICE_DBUS,
+                              DBUS_PATH_DBUS,
+                              DBUS_INTERFACE_DBUS,
                               "StartServiceByName",    /* method name */
                               g_variant_new ("(su)", client->name, 0),
                               G_VARIANT_TYPE ("(u)"),

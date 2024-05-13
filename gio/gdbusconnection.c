@@ -2972,9 +2972,9 @@ initable_init (GInitable     *initable,
         }
 
       hello_result = g_dbus_connection_call_sync (connection,
-                                                  "org.freedesktop.DBus", /* name */
-                                                  "/org/freedesktop/DBus", /* path */
-                                                  "org.freedesktop.DBus", /* interface */
+                                                  DBUS_SERVICE_DBUS,
+                                                  DBUS_PATH_DBUS,
+                                                  DBUS_INTERFACE_DBUS,
                                                   "Hello",
                                                   NULL, /* parameters */
                                                   G_VARIANT_TYPE ("(s)"),
@@ -3655,9 +3655,9 @@ add_match_rule (GDBusConnection *connection,
   if (match_rule[0] == '-')
     return;
 
-  message = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
-                                            "/org/freedesktop/DBus", /* path */
-                                            "org.freedesktop.DBus", /* interface */
+  message = g_dbus_message_new_method_call (DBUS_SERVICE_DBUS,
+                                            DBUS_PATH_DBUS,
+                                            DBUS_INTERFACE_DBUS,
                                             "AddMatch");
   g_dbus_message_set_body (message, g_variant_new ("(s)", match_rule));
   error = NULL;
@@ -3686,9 +3686,9 @@ remove_match_rule (GDBusConnection *connection,
   if (match_rule[0] == '-')
     return;
 
-  message = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
-                                            "/org/freedesktop/DBus", /* path */
-                                            "org.freedesktop.DBus", /* interface */
+  message = g_dbus_message_new_method_call (DBUS_SERVICE_DBUS,
+                                            DBUS_PATH_DBUS,
+                                            DBUS_INTERFACE_DBUS,
                                             "RemoveMatch");
   g_dbus_message_set_body (message, g_variant_new ("(s)", match_rule));
 

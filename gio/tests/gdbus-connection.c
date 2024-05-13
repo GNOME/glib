@@ -26,6 +26,7 @@
 
 #include <sys/types.h>
 
+#include "gdbusprivate.h"
 #include "gdbus-tests.h"
 
 /* all tests rely on a shared mainloop */
@@ -424,9 +425,9 @@ test_connection_send (void)
   ca = g_cancellable_new ();
   g_cancellable_cancel (ca);
   g_dbus_connection_call (c,
-                          "org.freedesktop.DBus",  /* bus_name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface name */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "GetId",                 /* method name */
                           NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
@@ -441,9 +442,9 @@ test_connection_send (void)
    * Check that we get a reply to the GetId() method call.
    */
   g_dbus_connection_call (c,
-                          "org.freedesktop.DBus",  /* bus_name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface name */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "GetId",                 /* method name */
                           NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
@@ -457,9 +458,9 @@ test_connection_send (void)
    * Check that we get an error reply to the NonExistantMethod() method call.
    */
   g_dbus_connection_call (c,
-                          "org.freedesktop.DBus",  /* bus_name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface name */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "NonExistantMethod",     /* method name */
                           NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
@@ -474,9 +475,9 @@ test_connection_send (void)
    */
   ca = g_cancellable_new ();
   g_dbus_connection_call (c,
-                          "org.freedesktop.DBus",  /* bus_name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface name */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "GetId",                 /* method name */
                           NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
@@ -497,9 +498,9 @@ test_connection_send (void)
   g_assert_true (g_dbus_connection_is_closed (c));
 
   g_dbus_connection_call (c,
-                          "org.freedesktop.DBus",  /* bus_name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface name */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "GetId",                 /* method name */
                           NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
@@ -687,9 +688,9 @@ test_connection_signals (void)
    * To ensure this is not the case, do a synchronous call on c1.
    */
   result = g_dbus_connection_call_sync (c1,
-                                        "org.freedesktop.DBus",  /* bus name */
-                                        "/org/freedesktop/DBus", /* object path */
-                                        "org.freedesktop.DBus",  /* interface name */
+                                        DBUS_SERVICE_DBUS,
+                                        DBUS_PATH_DBUS,
+                                        DBUS_INTERFACE_DBUS,
                                         "GetId",                 /* method name */
                                         NULL,                    /* parameters */
                                         NULL,                    /* return type */
@@ -1047,9 +1048,9 @@ test_connection_filter (void)
                                             &data,
                                             NULL);
 
-  m = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
-                                      "/org/freedesktop/DBus", /* path */
-                                      "org.freedesktop.DBus", /* interface */
+  m = g_dbus_message_new_method_call (DBUS_SERVICE_DBUS,
+                                      DBUS_PATH_DBUS,
+                                      DBUS_INTERFACE_DBUS,
                                       "GetNameOwner");
   g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
   error = NULL;
@@ -1197,9 +1198,9 @@ send_bogus_message (GDBusConnection *c, guint32 *out_serial)
   GDBusMessage *m;
   GError *error;
 
-  m = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
-                                      "/org/freedesktop/DBus", /* path */
-                                      "org.freedesktop.DBus", /* interface */
+  m = g_dbus_message_new_method_call (DBUS_SERVICE_DBUS,
+                                      DBUS_PATH_DBUS,
+                                      DBUS_INTERFACE_DBUS,
                                       "GetNameOwner");
   g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
   error = NULL;

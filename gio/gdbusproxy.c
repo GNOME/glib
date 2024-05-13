@@ -1485,9 +1485,9 @@ async_init_call_get_name_owner (GTask *task)
   GDBusProxy *proxy = g_task_get_source_object (task);
 
   g_dbus_connection_call (proxy->priv->connection,
-                          "org.freedesktop.DBus",  /* name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "GetNameOwner",
                           g_variant_new ("(s)",
                                          proxy->priv->name),
@@ -1594,9 +1594,9 @@ async_init_call_start_service_by_name (GTask *task)
   GDBusProxy *proxy = g_task_get_source_object (task);
 
   g_dbus_connection_call (proxy->priv->connection,
-                          "org.freedesktop.DBus",  /* name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "StartServiceByName",
                           g_variant_new ("(su)",
                                          proxy->priv->name,

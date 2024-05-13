@@ -443,9 +443,9 @@ has_connection (Client *client)
   /* attempt to acquire the name */
   client->needs_release = TRUE;
   g_dbus_connection_call (client->connection,
-                          "org.freedesktop.DBus",  /* bus name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface name */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "RequestName",           /* method name */
                           g_variant_new ("(su)",
                                          client->name,
@@ -936,9 +936,9 @@ g_bus_unown_name (guint owner_id)
            */
           error = NULL;
           result = g_dbus_connection_call_sync (client->connection,
-                                                "org.freedesktop.DBus",  /* bus name */
-                                                "/org/freedesktop/DBus", /* object path */
-                                                "org.freedesktop.DBus",  /* interface name */
+                                                DBUS_SERVICE_DBUS,
+                                                DBUS_PATH_DBUS,
+                                                DBUS_INTERFACE_DBUS,
                                                 "ReleaseName",           /* method name */
                                                 g_variant_new ("(s)", client->name),
                                                 G_VARIANT_TYPE ("(u)"),
