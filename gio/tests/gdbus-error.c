@@ -24,6 +24,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "gdbusprivate.h"
+
 /* ---------------------------------------------------------------------------------------------------- */
 /* Test that registered errors are properly mapped */
 /* ---------------------------------------------------------------------------------------------------- */
@@ -66,13 +68,13 @@ test_registered_errors (void)
    *
    * We just check a couple of well-known errors.
    */
-  check_registered_error ("org.freedesktop.DBus.Error.Failed",
+  check_registered_error (DBUS_ERROR_FAILED,
                           G_DBUS_ERROR,
                           G_DBUS_ERROR_FAILED);
   check_registered_error ("org.freedesktop.DBus.Error.AddressInUse",
                           G_DBUS_ERROR,
                           G_DBUS_ERROR_ADDRESS_IN_USE);
-  check_registered_error ("org.freedesktop.DBus.Error.UnknownMethod",
+  check_registered_error (DBUS_ERROR_UNKNOWN_METHOD,
                           G_DBUS_ERROR,
                           G_DBUS_ERROR_UNKNOWN_METHOD);
   check_registered_error ("org.freedesktop.DBus.Error.UnknownObject",

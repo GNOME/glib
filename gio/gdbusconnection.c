@@ -2418,7 +2418,7 @@ name_watcher_deliver_get_name_owner_reply_unlocked (SignalData *name_watcher,
   if (type == G_DBUS_MESSAGE_TYPE_ERROR)
     {
       if (g_strcmp0 (g_dbus_message_get_error_name (message),
-                     "org.freedesktop.DBus.Error.NameHasNoOwner"))
+                     DBUS_ERROR_NAME_HAS_NO_OWNER))
         name_watcher_set_name_owner_unlocked (name_watcher, NULL);
       /* else it's something like NoReply or AccessDenied, which tells
        * us nothing - leave the owner set to whatever we most recently
@@ -4715,7 +4715,7 @@ invoke_get_property_in_idle_cb (gpointer _data)
                                     &es))
     {
       reply = g_dbus_message_new_method_error (data->message,
-                                               "org.freedesktop.DBus.Error.UnknownMethod",
+                                               DBUS_ERROR_UNKNOWN_METHOD,
                                                _("No such interface “org.freedesktop.DBus.Properties” on object at path %s"),
                                                g_dbus_message_get_path (data->message));
       g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -4851,7 +4851,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
   if (vtable == NULL)
     goto out;
 
-  /* Check that the property exists - if not fail with org.freedesktop.DBus.Error.InvalidArgs
+  /* Check that the property exists - if not fail with DBUS_ERROR_INVALID_ARGS
    */
   property_info = NULL;
 
@@ -4860,7 +4860,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
   if (property_info == NULL)
     {
       reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.InvalidArgs",
+                                               DBUS_ERROR_INVALID_ARGS,
                                                _("No such property “%s”"),
                                                property_name);
       g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -4872,7 +4872,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
   if (is_get && !(property_info->flags & G_DBUS_PROPERTY_INFO_FLAGS_READABLE))
     {
       reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.InvalidArgs",
+                                               DBUS_ERROR_INVALID_ARGS,
                                                _("Property “%s” is not readable"),
                                                property_name);
       g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -4883,7 +4883,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
   else if (!is_get && !(property_info->flags & G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE))
     {
       reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.InvalidArgs",
+                                               DBUS_ERROR_INVALID_ARGS,
                                                _("Property “%s” is not writable"),
                                                property_name);
       g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -4896,14 +4896,14 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
     {
       GVariant *value;
 
-      /* Fail with org.freedesktop.DBus.Error.InvalidArgs if the type
+      /* Fail with DBUS_ERROR_INVALID_ARGS if the type
        * of the given value is wrong
        */
       g_variant_get_child (g_dbus_message_get_body (message), 2, "v", &value);
       if (g_strcmp0 (g_variant_get_type_string (value), property_info->signature) != 0)
         {
           reply = g_dbus_message_new_method_error (message,
-                                                   "org.freedesktop.DBus.Error.InvalidArgs",
+                                                   DBUS_ERROR_INVALID_ARGS,
                                                    _("Error setting property “%s”: Expected type “%s” but got “%s”"),
                                                    property_name, property_info->signature,
                                                    g_variant_get_type_string (value));
@@ -5000,7 +5000,7 @@ handle_getset_property (GDBusConnection *connection,
                    &property_name,
                    NULL);
 
-  /* Fail with org.freedesktop.DBus.Error.InvalidArgs if there is
+  /* Fail with DBUS_ERROR_INVALID_ARGS if there is
    * no such interface registered
    */
   ei = g_hash_table_lookup (eo->map_if_name_to_ei, interface_name);
@@ -5008,7 +5008,7 @@ handle_getset_property (GDBusConnection *connection,
     {
       GDBusMessage *reply;
       reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.InvalidArgs",
+                                               DBUS_ERROR_INVALID_ARGS,
                                                _("No such interface “%s”"),
                                                interface_name);
       g_dbus_connection_send_message_unlocked (eo->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -5069,7 +5069,7 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
                                     &es))
     {
       reply = g_dbus_message_new_method_error (data->message,
-                                               "org.freedesktop.DBus.Error.UnknownMethod",
+                                               DBUS_ERROR_UNKNOWN_METHOD,
                                                _("No such interface “org.freedesktop.DBus.Properties” on object at path %s"),
                                                g_dbus_message_get_path (data->message));
       g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -5215,7 +5215,7 @@ handle_get_all_properties (GDBusConnection *connection,
                  "(&s)",
                  &interface_name);
 
-  /* Fail with org.freedesktop.DBus.Error.InvalidArgs if there is
+  /* Fail with DBUS_ERROR_INVALID_ARGS if there is
    * no such interface registered
    */
   ei = g_hash_table_lookup (eo->map_if_name_to_ei, interface_name);
@@ -5223,7 +5223,7 @@ handle_get_all_properties (GDBusConnection *connection,
     {
       GDBusMessage *reply;
       reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.InvalidArgs",
+                                               DBUS_ERROR_INVALID_ARGS,
                                                _("No such interface “%s”"),
                                                interface_name);
       g_dbus_connection_send_message_unlocked (eo->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -5439,7 +5439,7 @@ call_in_idle_cb (gpointer user_data)
     {
       GDBusMessage *reply;
       reply = g_dbus_message_new_method_error (g_dbus_method_invocation_get_message (invocation),
-                                               "org.freedesktop.DBus.Error.UnknownMethod",
+                                               DBUS_ERROR_UNKNOWN_METHOD,
                                                _("No such interface “%s” on object at path %s"),
                                                g_dbus_method_invocation_get_interface_name (invocation),
                                                g_dbus_method_invocation_get_object_path (invocation));
@@ -5534,13 +5534,13 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
   /* TODO: the cost of this is O(n) - it might be worth caching the result */
   method_info = g_dbus_interface_info_lookup_method (interface_info, g_dbus_message_get_member (message));
 
-  /* if the method doesn't exist, return the org.freedesktop.DBus.Error.UnknownMethod
+  /* if the method doesn't exist, return the DBUS_ERROR_UNKNOWN_METHOD
    * error to the caller
    */
   if (method_info == NULL)
     {
       reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.UnknownMethod",
+                                               DBUS_ERROR_UNKNOWN_METHOD,
                                                _("No such method “%s”"),
                                                g_dbus_message_get_member (message));
       g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -5561,7 +5561,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
     }
 
   /* Check that the incoming args are of the right type - if they are not, return
-   * the org.freedesktop.DBus.Error.InvalidArgs error to the caller
+   * the DBUS_ERROR_INVALID_ARGS error to the caller
    */
   in_type = _g_dbus_compute_complete_signature (method_info->in_args);
   if (!g_variant_is_of_type (parameters, in_type))
@@ -5571,7 +5571,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
       type_string = g_variant_type_dup_string (in_type);
 
       reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.InvalidArgs",
+                                               DBUS_ERROR_INVALID_ARGS,
                                                _("Type of message, “%s”, does not match expected type “%s”"),
                                                g_variant_get_type_string (parameters),
                                                type_string);
@@ -7196,14 +7196,14 @@ handle_subtree_method_invocation (GDBusConnection *connection,
             interface_info = interfaces[n];
         }
 
-      /* Fail with org.freedesktop.DBus.Error.InvalidArgs if the user-code
+      /* Fail with DBUS_ERROR_INVALID_ARGS if the user-code
        * claims it won't support the interface
        */
       if (interface_info == NULL)
         {
           GDBusMessage *reply;
           reply = g_dbus_message_new_method_error (message,
-                                                   "org.freedesktop.DBus.Error.InvalidArgs",
+                                                   DBUS_ERROR_INVALID_ARGS,
                                                    _("No such interface “%s”"),
                                                    interface_name);
           g_dbus_connection_send_message (es->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -7315,7 +7315,7 @@ process_subtree_vtable_message_in_idle_cb (gpointer _data)
     {
       GDBusMessage *reply;
       reply = g_dbus_message_new_method_error (data->message,
-                                               "org.freedesktop.DBus.Error.UnknownMethod",
+                                               DBUS_ERROR_UNKNOWN_METHOD,
                                                _("Method “%s” on interface “%s” with signature “%s” does not exist"),
                                                g_dbus_message_get_member (data->message),
                                                g_dbus_message_get_interface (data->message),
@@ -7546,7 +7546,7 @@ handle_generic_get_machine_id_unlocked (GDBusConnection *connection,
       if (connection->machine_id == NULL)
         {
           reply = g_dbus_message_new_method_error_literal (message,
-                                                           "org.freedesktop.DBus.Error.Failed",
+                                                           DBUS_ERROR_FAILED,
                                                            error->message);
           g_error_free (error);
         }
@@ -7723,7 +7723,7 @@ distribute_method_call (GDBusConnection *connection,
   if (object_found == TRUE)
     {
       reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.UnknownMethod",
+                                               DBUS_ERROR_UNKNOWN_METHOD,
                                                _("No such interface “%s” on object at path %s"),
                                                interface_name,
                                                path);
@@ -7731,7 +7731,7 @@ distribute_method_call (GDBusConnection *connection,
   else
     {
       reply = g_dbus_message_new_method_error (message,
-                                           "org.freedesktop.DBus.Error.UnknownMethod",
+                                           DBUS_ERROR_UNKNOWN_METHOD,
                                            _("Object does not exist at path “%s”"),
                                            path);
     }

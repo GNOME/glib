@@ -42,6 +42,12 @@ G_BEGIN_DECLS
 #define DBUS_INTERFACE_PEER "org.freedesktop.DBus.Peer"
 #define DBUS_INTERFACE_PROPERTIES "org.freedesktop.DBus.Properties"
 
+/* Frequently-used D-Bus error names */
+#define DBUS_ERROR_FAILED "org.freedesktop.DBus.Error.Failed"
+#define DBUS_ERROR_INVALID_ARGS "org.freedesktop.DBus.Error.InvalidArgs"
+#define DBUS_ERROR_NAME_HAS_NO_OWNER "org.freedesktop.DBus.Error.NameHasNoOwner"
+#define DBUS_ERROR_UNKNOWN_METHOD "org.freedesktop.DBus.Error.UnknownMethod"
+
 /* Owner flags */
 #define DBUS_NAME_FLAG_ALLOW_REPLACEMENT 0x1 /**< Allow another service to become the primary owner if requested */
 #define DBUS_NAME_FLAG_REPLACE_EXISTING  0x2 /**< Request to replace the current primary owner */
