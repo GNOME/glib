@@ -28,17 +28,8 @@
 
 #include <gio/gio.h>
 
+#include "gdbusprivate.h"
 #include "gdbus-tests.h"
-
-#ifdef HAVE_DBUS1
-# include <dbus/dbus-shared.h>
-#else
-# define DBUS_INTERFACE_DBUS "org.freedesktop.DBus"
-# define DBUS_PATH_DBUS "/org/freedesktop/DBus"
-# define DBUS_SERVICE_DBUS "org.freedesktop.DBus"
-# define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
-# define DBUS_RELEASE_NAME_REPLY_RELEASED 1
-#endif
 
 #define MY_NAME "com.example.Test.Myself"
 /* This many threads create and destroy GDBusProxy instances, in addition

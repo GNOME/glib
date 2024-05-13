@@ -1563,8 +1563,8 @@ async_init_start_service_by_name_cb (GDBusConnection *connection,
                      "(u)",
                      &start_service_result);
       g_variant_unref (result);
-      if (start_service_result == 1 ||  /* DBUS_START_REPLY_SUCCESS */
-          start_service_result == 2)    /* DBUS_START_REPLY_ALREADY_RUNNING */
+      if (start_service_result == DBUS_START_REPLY_SUCCESS ||
+          start_service_result == DBUS_START_REPLY_ALREADY_RUNNING)
         {
           /* continue to invoke GetNameOwner() */
         }

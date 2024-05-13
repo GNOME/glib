@@ -457,11 +457,11 @@ start_service_by_name_cb (GObject      *source_object,
       guint32 start_service_result;
       g_variant_get (result, "(u)", &start_service_result);
 
-      if (start_service_result == 1) /* DBUS_START_REPLY_SUCCESS */
+      if (start_service_result == DBUS_START_REPLY_SUCCESS)
         {
           invoke_get_name_owner (client);
         }
-      else if (start_service_result == 2) /* DBUS_START_REPLY_ALREADY_RUNNING */
+      else if (start_service_result == DBUS_START_REPLY_ALREADY_RUNNING)
         {
           invoke_get_name_owner (client);
         }

@@ -541,8 +541,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   g_variant_get (reply, "(u)", &rval);
   g_variant_unref (reply);
 
-  /* DBUS_REQUEST_NAME_REPLY_EXISTS: 3 */
-  impl->primary = (rval != 3);
+  impl->primary = (rval != DBUS_REQUEST_NAME_REPLY_EXISTS);
 
   if (!impl->primary && impl->name_lost_signal)
     {
