@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "gdbus-tests.h"
+#include "gdbusprivate.h"
 
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
@@ -377,7 +378,7 @@ get_nodes_at (GDBusConnection  *c,
                                  NULL,
                                  g_dbus_connection_get_unique_name (c),
                                  object_path,
-                                 "org.freedesktop.DBus.Introspectable",
+                                 DBUS_INTERFACE_INTROSPECTABLE,
                                  NULL,
                                  &error);
   g_assert_no_error (error);
@@ -436,7 +437,7 @@ has_interface (GDBusConnection *c,
                                  NULL,
                                  g_dbus_connection_get_unique_name (c),
                                  object_path,
-                                 "org.freedesktop.DBus.Introspectable",
+                                 DBUS_INTERFACE_INTROSPECTABLE,
                                  NULL,
                                  &error);
   g_assert_no_error (error);
@@ -485,7 +486,7 @@ count_interfaces (GDBusConnection *c,
                                  NULL,
                                  g_dbus_connection_get_unique_name (c),
                                  object_path,
-                                 "org.freedesktop.DBus.Introspectable",
+                                 DBUS_INTERFACE_INTROSPECTABLE,
                                  NULL,
                                  &error);
   g_assert_no_error (error);
@@ -778,7 +779,7 @@ test_dispatch_thread_func (gpointer user_data)
   /* generic interfaces */
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,
-                                  "org.freedesktop.DBus.Peer.Ping",
+                                  DBUS_INTERFACE_PEER ".Ping",
                                   NULL,
                                   G_DBUS_CALL_FLAGS_NONE,
                                   -1,
@@ -858,7 +859,7 @@ test_dispatch_thread_func (gpointer user_data)
   /* user properties */
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,
-                                  "org.freedesktop.DBus.Properties.Get",
+                                  DBUS_INTERFACE_PROPERTIES ".Get",
                                   g_variant_new ("(ss)",
                                                  "org.example.Foo",
                                                  "PropertyUno"),
@@ -877,7 +878,7 @@ test_dispatch_thread_func (gpointer user_data)
 
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,
-                                  "org.freedesktop.DBus.Properties.Get",
+                                  DBUS_INTERFACE_PROPERTIES ".Get",
                                   g_variant_new ("(ss)",
                                                  "org.example.Foo",
                                                  "ThisDoesntExist"),
@@ -892,7 +893,7 @@ test_dispatch_thread_func (gpointer user_data)
 
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,
-                                  "org.freedesktop.DBus.Properties.Get",
+                                  DBUS_INTERFACE_PROPERTIES ".Get",
                                   g_variant_new ("(ss)",
                                                  "org.example.Foo",
                                                  "NotReadable"),
@@ -907,7 +908,7 @@ test_dispatch_thread_func (gpointer user_data)
 
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,
-                                  "org.freedesktop.DBus.Properties.Set",
+                                  DBUS_INTERFACE_PROPERTIES ".Set",
                                   g_variant_new ("(ssv)",
                                                  "org.example.Foo",
                                                  "NotReadable",
@@ -928,7 +929,7 @@ test_dispatch_thread_func (gpointer user_data)
 
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,
-                                  "org.freedesktop.DBus.Properties.Set",
+                                  DBUS_INTERFACE_PROPERTIES ".Set",
                                   g_variant_new ("(ssv)",
                                                  "org.example.Foo",
                                                  "NotWritable",
@@ -944,7 +945,7 @@ test_dispatch_thread_func (gpointer user_data)
 
   error = NULL;
   value = g_dbus_proxy_call_sync (foo_proxy,
-                                  "org.freedesktop.DBus.Properties.GetAll",
+                                  DBUS_INTERFACE_PROPERTIES ".GetAll",
                                   g_variant_new ("(s)",
                                                  "org.example.Foo"),
                                   G_DBUS_CALL_FLAGS_NONE,
@@ -1466,7 +1467,7 @@ static const GDBusInterfaceInfo test_interface_info1 =
 static const GDBusInterfaceInfo test_interface_info2 =
 {
   -1,
-  "org.freedesktop.DBus.Properties",
+  DBUS_INTERFACE_PROPERTIES,
   (GDBusMethodInfo **) NULL,
   (GDBusSignalInfo **) NULL,
   (GDBusPropertyInfo **) NULL,
@@ -1491,7 +1492,7 @@ check_interfaces (GDBusConnection  *c,
                                  NULL,
                                  g_dbus_connection_get_unique_name (c),
                                  object_path,
-                                 "org.freedesktop.DBus.Introspectable",
+                                 DBUS_INTERFACE_INTROSPECTABLE,
                                  NULL,
                                  &error);
   g_assert_no_error (error);
@@ -1555,8 +1556,8 @@ test_registered_interfaces (void)
   guint id1, id2;
   const gchar *interfaces[] = {
     "org.example.Foo",
-    "org.freedesktop.DBus.Properties",
-    "org.freedesktop.DBus.Introspectable",
+    DBUS_INTERFACE_PROPERTIES,
+    DBUS_INTERFACE_INTROSPECTABLE,
     NULL,
   };
 
@@ -1607,10 +1608,10 @@ test_async_method_call (GDBusConnection       *connection,
   const GDBusPropertyInfo *property;
 
   /* Strictly speaking, this function should also expect to receive
-   * method calls not on the org.freedesktop.DBus.Properties interface,
+   * method calls not on the DBUS_INTERFACE_PROPERTIES interface,
    * but we don't do any during this testcase, so assert that.
    */
-  g_assert_cmpstr (interface_name, ==, "org.freedesktop.DBus.Properties");
+  g_assert_cmpstr (interface_name, ==, DBUS_INTERFACE_PROPERTIES);
   g_assert_null (g_dbus_method_invocation_get_method_info (invocation));
 
   property = g_dbus_method_invocation_get_property_info (invocation);
@@ -1714,7 +1715,7 @@ test_async_case (GDBusConnection *connection,
   va_start (ap, format_string);
 
   g_dbus_connection_call (connection, g_dbus_connection_get_unique_name (connection), "/foo",
-                          "org.freedesktop.DBus.Properties", method, g_variant_new_va (format_string, NULL, &ap),
+                          DBUS_INTERFACE_PROPERTIES, method, g_variant_new_va (format_string, NULL, &ap),
                           NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, ensure_result_cb, (gpointer) expected_reply);
 
   va_end (ap);

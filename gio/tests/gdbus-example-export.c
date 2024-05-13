@@ -1,6 +1,8 @@
 #include <gio/gio.h>
 #include <stdlib.h>
 
+#define DBUS_INTERFACE_PROPERTIES "org.freedesktop.DBus.Properties"
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* The object we want to export */
@@ -253,7 +255,7 @@ send_property_change (GObject         *obj,
   g_dbus_connection_emit_signal (connection,
                                  NULL,
                                  "/org/myorg/MyObject",
-                                 "org.freedesktop.DBus.Properties",
+                                 DBUS_INTERFACE_PROPERTIES,
                                  "PropertiesChanged",
                                  g_variant_new ("(sa{sv}as)",
                                                 "org.myorg.MyObject",

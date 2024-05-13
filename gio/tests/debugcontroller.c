@@ -24,6 +24,7 @@
 #include <gio/gio.h>
 #include <locale.h>
 
+#include "gdbusprivate.h"
 
 static void
 test_dbus_basic (void)
@@ -218,7 +219,7 @@ test_dbus_properties (void)
 
   properties_changed_id = g_dbus_connection_signal_subscribe (remote_connection,
                                                               g_dbus_connection_get_unique_name (controller_connection),
-                                                              "org.freedesktop.DBus.Properties",
+                                                              DBUS_INTERFACE_PROPERTIES,
                                                               "PropertiesChanged",
                                                               "/org/gtk/Debugging",
                                                               NULL,
@@ -231,7 +232,7 @@ test_dbus_properties (void)
   g_dbus_connection_call (remote_connection,
                           g_dbus_connection_get_unique_name (controller_connection),
                           "/org/gtk/Debugging",
-                          "org.freedesktop.DBus.Properties",
+                          DBUS_INTERFACE_PROPERTIES,
                           "Get",
                           g_variant_new ("(ss)", "org.gtk.Debugging", "DebugEnabled"),
                           G_VARIANT_TYPE ("(v)"),

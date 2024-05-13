@@ -482,7 +482,7 @@ struct _GDBusConnection
   GMutex init_lock;
 
   /* Set (by loading the contents of /var/lib/dbus/machine-id) the first time
-   * someone calls org.freedesktop.DBus.Peer.GetMachineId(). Protected by @lock.
+   * someone calls DBUS_INTERFACE_PEER.GetMachineId(). Protected by @lock.
    */
   gchar *machine_id;
 
@@ -5256,7 +5256,7 @@ static const gchar introspect_tail[] =
   "</node>\n";
 
 static const gchar introspect_properties_interface[] =
-  "  <interface name=\"org.freedesktop.DBus.Properties\">\n"
+  "  <interface name=\"" DBUS_INTERFACE_PROPERTIES "\">\n"
   "    <method name=\"Get\">\n"
   "      <arg type=\"s\" name=\"interface_name\" direction=\"in\"/>\n"
   "      <arg type=\"s\" name=\"property_name\" direction=\"in\"/>\n"
@@ -5279,12 +5279,12 @@ static const gchar introspect_properties_interface[] =
   "  </interface>\n";
 
 static const gchar introspect_introspectable_interface[] =
-  "  <interface name=\"org.freedesktop.DBus.Introspectable\">\n"
+  "  <interface name=\"" DBUS_INTERFACE_INTROSPECTABLE "\">\n"
   "    <method name=\"Introspect\">\n"
   "      <arg type=\"s\" name=\"xml_data\" direction=\"out\"/>\n"
   "    </method>\n"
   "  </interface>\n"
-  "  <interface name=\"org.freedesktop.DBus.Peer\">\n"
+  "  <interface name=\"" DBUS_INTERFACE_PEER "\">\n"
   "    <method name=\"Ping\"/>\n"
   "    <method name=\"GetMachineId\">\n"
   "      <arg type=\"s\" name=\"machine_uuid\" direction=\"out\"/>\n"
@@ -5389,11 +5389,11 @@ handle_introspect (GDBusConnection *connection,
                           sizeof (introspect_tail));
   introspect_append_header (s);
   if (!g_hash_table_lookup (eo->map_if_name_to_ei,
-                            "org.freedesktop.DBus.Properties"))
+                            DBUS_INTERFACE_PROPERTIES))
     g_string_append (s, introspect_properties_interface);
 
   if (!g_hash_table_lookup (eo->map_if_name_to_ei,
-                            "org.freedesktop.DBus.Introspectable"))
+                            DBUS_INTERFACE_INTROSPECTABLE))
     g_string_append (s, introspect_introspectable_interface);
 
   /* then include the registered interfaces */
@@ -5645,28 +5645,28 @@ obj_message_func (GDBusConnection *connection,
         }
     }
 
-  if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Introspectable") == 0 &&
+  if (g_strcmp0 (interface_name, DBUS_INTERFACE_INTROSPECTABLE) == 0 &&
       g_strcmp0 (member, "Introspect") == 0 &&
       g_strcmp0 (signature, "") == 0)
     {
       handled = handle_introspect (connection, eo, message);
       goto out;
     }
-  else if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Properties") == 0 &&
+  else if (g_strcmp0 (interface_name, DBUS_INTERFACE_PROPERTIES) == 0 &&
            g_strcmp0 (member, "Get") == 0 &&
            g_strcmp0 (signature, "ss") == 0)
     {
       handled = handle_getset_property (connection, eo, message, TRUE);
       goto out;
     }
-  else if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Properties") == 0 &&
+  else if (g_strcmp0 (interface_name, DBUS_INTERFACE_PROPERTIES) == 0 &&
            g_strcmp0 (member, "Set") == 0 &&
            g_strcmp0 (signature, "ssv") == 0)
     {
       handled = handle_getset_property (connection, eo, message, FALSE);
       goto out;
     }
-  else if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Properties") == 0 &&
+  else if (g_strcmp0 (interface_name, DBUS_INTERFACE_PROPERTIES) == 0 &&
            g_strcmp0 (member, "GetAll") == 0 &&
            g_strcmp0 (signature, "s") == 0)
     {
@@ -7011,9 +7011,9 @@ handle_subtree_introspect (GDBusConnection *connection,
 
       for (n = 0; interfaces[n] != NULL; n++)
         {
-          if (strcmp (interfaces[n]->name, "org.freedesktop.DBus.Properties") == 0)
+          if (strcmp (interfaces[n]->name, DBUS_INTERFACE_PROPERTIES) == 0)
             has_properties_interface = TRUE;
-          else if (strcmp (interfaces[n]->name, "org.freedesktop.DBus.Introspectable") == 0)
+          else if (strcmp (interfaces[n]->name, DBUS_INTERFACE_INTROSPECTABLE) == 0)
             has_introspectable_interface = TRUE;
         }
       if (!has_properties_interface)
@@ -7095,7 +7095,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
   is_property_get = FALSE;
   is_property_set = FALSE;
   is_property_get_all = FALSE;
-  if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Properties") == 0)
+  if (g_strcmp0 (interface_name, DBUS_INTERFACE_PROPERTIES) == 0)
     {
       if (g_strcmp0 (member, "Get") == 0 && g_strcmp0 (signature, "ss") == 0)
         is_property_get = TRUE;
@@ -7177,7 +7177,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                                          interface_user_data);
       CONNECTION_UNLOCK (connection);
     }
-  /* handle org.freedesktop.DBus.Properties interface if not explicitly handled */
+  /* handle DBUS_INTERFACE_PROPERTIES if not explicitly handled */
   else if (is_property_get || is_property_set || is_property_get_all)
     {
       if (is_property_get)
@@ -7292,7 +7292,7 @@ process_subtree_vtable_message_in_idle_cb (gpointer _data)
 
   handled = FALSE;
 
-  if (g_strcmp0 (g_dbus_message_get_interface (data->message), "org.freedesktop.DBus.Introspectable") == 0 &&
+  if (g_strcmp0 (g_dbus_message_get_interface (data->message), DBUS_INTERFACE_INTROSPECTABLE) == 0 &&
       g_strcmp0 (g_dbus_message_get_member (data->message), "Introspect") == 0 &&
       g_strcmp0 (g_dbus_message_get_signature (data->message), "") == 0)
     handled = handle_subtree_introspect (data->es->connection,
@@ -7609,21 +7609,21 @@ handle_generic_unlocked (GDBusConnection *connection,
   signature = g_dbus_message_get_signature (message);
   path = g_dbus_message_get_path (message);
 
-  if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Introspectable") == 0 &&
+  if (g_strcmp0 (interface_name, DBUS_INTERFACE_INTROSPECTABLE) == 0 &&
       g_strcmp0 (member, "Introspect") == 0 &&
       g_strcmp0 (signature, "") == 0)
     {
       handle_generic_introspect_unlocked (connection, path, message);
       handled = TRUE;
     }
-  else if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Peer") == 0 &&
+  else if (g_strcmp0 (interface_name, DBUS_INTERFACE_PEER) == 0 &&
            g_strcmp0 (member, "Ping") == 0 &&
            g_strcmp0 (signature, "") == 0)
     {
       handle_generic_ping_unlocked (connection, path, message);
       handled = TRUE;
     }
-  else if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Peer") == 0 &&
+  else if (g_strcmp0 (interface_name, DBUS_INTERFACE_PEER) == 0 &&
            g_strcmp0 (member, "GetMachineId") == 0 &&
            g_strcmp0 (signature, "") == 0)
     {

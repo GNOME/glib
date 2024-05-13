@@ -464,7 +464,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
       else
         g_assert_not_reached ();
     }
-  else if (g_str_equal (invocation->interface_name, "org.freedesktop.DBus.Properties") &&
+  else if (g_str_equal (invocation->interface_name, DBUS_INTERFACE_PROPERTIES) &&
            g_str_equal (invocation->method_name, "GetAll"))
     {
       if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(a{sv})")))

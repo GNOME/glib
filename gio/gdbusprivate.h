@@ -36,6 +36,12 @@ G_BEGIN_DECLS
 #define DBUS_INTERFACE_LOCAL "org.freedesktop.DBus.Local"
 #define DBUS_PATH_LOCAL "/org/freedesktop/DBus/Local"
 
+/* Other well-known D-Bus interfaces from the specification */
+#define DBUS_INTERFACE_INTROSPECTABLE "org.freedesktop.DBus.Introspectable"
+#define DBUS_INTERFACE_OBJECT_MANAGER "org.freedesktop.DBus.ObjectManager"
+#define DBUS_INTERFACE_PEER "org.freedesktop.DBus.Peer"
+#define DBUS_INTERFACE_PROPERTIES "org.freedesktop.DBus.Properties"
+
 /* Owner flags */
 #define DBUS_NAME_FLAG_ALLOW_REPLACEMENT 0x1 /**< Allow another service to become the primary owner if requested */
 #define DBUS_NAME_FLAG_REPLACE_EXISTING  0x2 /**< Request to replace the current primary owner */

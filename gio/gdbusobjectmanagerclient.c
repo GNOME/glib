@@ -1026,7 +1026,7 @@ signal_cb (GDBusConnection *connection,
   //g_debug ("yay, signal_cb %s %s: %s\n", signal_name, object_path, g_variant_print (parameters, TRUE));
 
   g_object_ref (manager);
-  if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Properties") == 0)
+  if (g_strcmp0 (interface_name, DBUS_INTERFACE_PROPERTIES) == 0)
     {
       if (g_strcmp0 (signal_name, "PropertiesChanged") == 0)
         {
@@ -1419,7 +1419,7 @@ initable_init (GInitable     *initable,
                                                         NULL, /* GDBusInterfaceInfo* */
                                                         manager->priv->name,
                                                         manager->priv->object_path,
-                                                        "org.freedesktop.DBus.ObjectManager",
+                                                        DBUS_INTERFACE_OBJECT_MANAGER,
                                                         cancellable,
                                                         error);
   if (manager->priv->control_proxy == NULL)

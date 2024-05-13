@@ -48,6 +48,7 @@
 #include <gio/giowin32-afunix.h>
 #endif
 
+#include "gdbusprivate.h"
 #include "gdbus-tests.h"
 
 #include "gdbus-object-manager-example/objectmanager-gen.h"
@@ -2156,7 +2157,7 @@ codegen_test_peer (void)
 
   /* Poke server and make sure animal is updated */
   value = g_dbus_proxy_call_sync (G_DBUS_PROXY (animal1),
-                                  "org.freedesktop.DBus.Peer.Ping",
+                                  DBUS_INTERFACE_PEER ".Ping",
                                   NULL, G_DBUS_CALL_FLAGS_NONE, -1,
                                   NULL, &error);
   g_assert_no_error (error);
@@ -2177,7 +2178,7 @@ codegen_test_peer (void)
 
   /* Some random unrelated call, just to get some test coverage */
   value = g_dbus_proxy_call_sync (G_DBUS_PROXY (animal2),
-                                  "org.freedesktop.DBus.Peer.GetMachineId",
+                                  DBUS_INTERFACE_PEER ".GetMachineId",
                                   NULL, G_DBUS_CALL_FLAGS_NONE, -1,
                                   NULL, &error);
   g_assert_no_error (error);
@@ -2191,7 +2192,7 @@ codegen_test_peer (void)
   
   /* Poke server and make sure animal is updated */
   value = g_dbus_proxy_call_sync (G_DBUS_PROXY (animal2),
-                                  "org.freedesktop.DBus.Peer.Ping",
+                                  DBUS_INTERFACE_PEER ".Ping",
                                   NULL, G_DBUS_CALL_FLAGS_NONE, -1,
                                   NULL, &error);
   g_assert_no_error (error);

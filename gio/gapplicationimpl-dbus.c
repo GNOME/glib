@@ -164,7 +164,7 @@ send_property_change (GApplicationImpl *impl)
   g_dbus_connection_emit_signal (impl->session_bus,
                                  NULL,
                                  impl->object_path,
-                                 "org.freedesktop.DBus.Properties",
+                                 DBUS_INTERFACE_PROPERTIES,
                                  "PropertiesChanged",
                                  g_variant_new ("(sa{sv}as)",
                                                 "org.gtk.Application",
