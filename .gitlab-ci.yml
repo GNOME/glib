@@ -492,6 +492,21 @@ cross-mingw64:
       - _build/gthread/libgthread-2.0-0.dll
       - _build/gobject/libgobject-2.0-0.dll
 
+# A note about msys2: it’s a rolling release distribution, running Windows under
+# Docker isn’t really supported, and the win32-ps CI runner is shared. All that
+# adds up to mean that we have to run CI against the latest msys2 packages, and
+# that this occasionally causes build failures in GLib due to changes in msys2.
+# In order to avoid that pre-empting other GLib development, the policy in such
+# cases is to:
+#  1. Immediately and without hesitation make the msys2-* CI jobs non-fatal
+#     (add `allow_failure: true` below).
+#  2. File an issue about fixing the GLib msys2 build and re-enabling failure
+#     on the CI job
+#  3. Set the milestone for that issue to be the next GLib release, so it’s done
+#     in a timely manner; and tag it as ~win32 so the GLib Windows maintainers
+#     are notified and can work on it.
+#  4. Rebase any pending broken MRs on top of the commit which makes the CI job
+#     non-fatal, so that development on `main` is unblocked.
 msys2-mingw32:
   extends: .only-default-and-merges
   stage: build
@@ -520,6 +535,7 @@ msys2-mingw32:
       - _coverage/
       - _reference/
 
+# See the note about msys2 CI job failure policy above.
 msys2-clang64:
   extends: .only-schedules-or-manual
   stage: build
