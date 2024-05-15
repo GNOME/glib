@@ -18,7 +18,7 @@ Note that the functions [func@GLib.printf], [func@GLib.fprintf],
 explicitly include `<glib/gprintf.h>` in order to use the GLib
 `printf()` functions.
 
-## String precision pitfalls # {#string-precision}
+## String precision pitfalls
 
 While you may use the `printf()` functions to format UTF-8 strings,
 notice that the precision of a `%Ns` parameter is interpreted
