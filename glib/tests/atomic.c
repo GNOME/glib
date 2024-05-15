@@ -136,6 +136,7 @@ test_types (void)
    * to make sure that we don’t warn when built against older third party code. */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+#pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
   g_atomic_pointer_set (&vp_str_vol, NULL);
   g_atomic_pointer_set (&vp_str, str);
   res = g_atomic_pointer_compare_and_exchange (&vp_str_vol, NULL, str);
