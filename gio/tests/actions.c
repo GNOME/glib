@@ -1125,6 +1125,46 @@ test_dbus_export (void)
   session_bus_down ();
 }
 
+static void
+test_dbus_export_error_handling (void)
+{
+  GDBusConnection *bus = NULL;
+  GSimpleActionGroup *group = NULL;
+  GError *local_error = NULL;
+  guint id1, id2;
+
+  g_test_summary ("Test that error handling of action group export failure works");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3366");
+
+  session_bus_up ();
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  group = g_simple_action_group_new ();
+  g_simple_action_group_add_entries (group,
+                                     exported_entries,
+                                     G_N_ELEMENTS (exported_entries),
+                                     NULL);
+
+  id1 = g_dbus_connection_export_action_group (bus, "/", G_ACTION_GROUP (group), &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpuint (id1, !=, 0);
+
+  /* Trigger a failure by trying to export on a path which is already in use */
+  id2 = g_dbus_connection_export_action_group (bus, "/", G_ACTION_GROUP (group), &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS);
+  g_assert_cmpuint (id2, ==, 0);
+  g_clear_error (&local_error);
+
+  g_dbus_connection_unexport_action_group (bus, id1);
+
+  while (g_main_context_iteration (NULL, FALSE));
+
+  g_object_unref (group);
+  g_object_unref (bus);
+
+  session_bus_down ();
+}
+
 static gpointer
 do_export (gpointer data)
 {
@@ -1448,6 +1488,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/entries", test_entries);
   g_test_add_func ("/actions/parse-detailed", test_parse_detailed);
   g_test_add_func ("/actions/dbus/export", test_dbus_export);
+  g_test_add_func ("/actions/dbus/export/error-handling", test_dbus_export_error_handling);
   g_test_add_func ("/actions/dbus/threaded", test_dbus_threaded);
   g_test_add_func ("/actions/dbus/bug679509", test_bug679509);
   g_test_add_func ("/actions/property", test_property_actions);
