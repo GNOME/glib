@@ -41,7 +41,7 @@ GLib is regularly built on at least the following systems:
    - Fedora (34, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/fedora.Dockerfile)
    - Debian (Bullseye, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/debian-stable.Dockerfile)
    - Windows (MinGW64)
-   - Windows (msys2-mingw32)
+   - Windows (msys2-mingw32 and msys2-clang64; msys2 is a rolling release distribution)
    - Windows (Visual Studio 2017, and a static linking version)
    - Android (NDK r23b, API 31, arm64, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/android-ndk.sh)
    - FreeBSD (12 and 13)
