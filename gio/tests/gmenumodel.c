@@ -1159,6 +1159,42 @@ test_dbus_peer_subscriptions (void)
 #endif
 }
 
+static void
+test_dbus_export_error_handling (void)
+{
+  GRand *rand = NULL;
+  RandomMenu *menu = NULL;
+  GDBusConnection *bus;
+  GError *local_error = NULL;
+  guint id1, id2;
+
+  g_test_summary ("Test that error handling of menu model export failure works");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3366");
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  rand = g_rand_new_with_seed (g_test_rand_int ());
+  menu = random_menu_new (rand, 2);
+
+  id1 = g_dbus_connection_export_menu_model (bus, "/", G_MENU_MODEL (menu), &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpuint (id1, !=, 0);
+
+  /* Trigger a failure by trying to export on a path which is already in use */
+  id2 = g_dbus_connection_export_menu_model (bus, "/", G_MENU_MODEL (menu), &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_EXISTS);
+  g_assert_cmpuint (id2, ==, 0);
+  g_clear_error (&local_error);
+
+  g_dbus_connection_unexport_menu_model (bus, id1);
+
+  while (g_main_context_iteration (NULL, FALSE));
+
+  g_clear_object (&menu);
+  g_rand_free (rand);
+  g_clear_object (&bus);
+}
+
 static gpointer
 do_modify (gpointer data)
 {
@@ -1658,6 +1694,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/dbus/threaded", test_dbus_threaded);
   g_test_add_func ("/gmenu/dbus/peer/roundtrip", test_dbus_peer_roundtrip);
   g_test_add_func ("/gmenu/dbus/peer/subscriptions", test_dbus_peer_subscriptions);
+  g_test_add_func ("/gmenu/dbus/export/error-handling", test_dbus_export_error_handling);
   g_test_add_func ("/gmenu/attributes", test_attributes);
   g_test_add_func ("/gmenu/attributes/iterate", test_attribute_iter);
   g_test_add_func ("/gmenu/links", test_links);
