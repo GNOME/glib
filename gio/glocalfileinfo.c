@@ -103,12 +103,6 @@
 #include "glibintl.h"
 
 
-struct ThumbMD5Context {
-	guint32 buf[4];
-	guint32 bits[2];
-	unsigned char in[64];
-};
-
 #ifndef G_OS_WIN32
 
 typedef struct {
