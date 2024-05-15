@@ -462,19 +462,23 @@ G_STATIC_ASSERT (signedness (int) == 1);
 G_STATIC_ASSERT (signedness (unsigned int) == 0);
 
 static IntegerAliasInfo integer_aliases[] = {
-  { "gchar",    sizeof (gchar),   1 },
-  { "guchar",   sizeof (guchar),  0 },
-  { "gshort",   sizeof (gshort),  1 },
-  { "gushort",  sizeof (gushort), 0 },
-  { "gint",     sizeof (gint),    1 },
-  { "guint",    sizeof (guint),   0 },
-  { "glong",    sizeof (glong),   1 },
-  { "gulong",   sizeof (gulong),  0 },
-  { "gssize",   sizeof (gssize),  1 },
-  { "gsize",    sizeof (gsize),   0 },
-  { "gintptr",  sizeof (gintptr),      1 },
-  { "guintptr", sizeof (guintptr),     0 },
+  /* It is platform-dependent whether gchar is signed or unsigned, but
+   * GObject-Introspection has traditionally treated it as signed,
+   * so continue to hard-code that instead of using INTEGER_ALIAS */
+  { "gchar", sizeof (gchar), 1 },
+
 #define INTEGER_ALIAS(T) { #T, sizeof (T), signedness (T) }
+  INTEGER_ALIAS (guchar),
+  INTEGER_ALIAS (gshort),
+  INTEGER_ALIAS (gushort),
+  INTEGER_ALIAS (gint),
+  INTEGER_ALIAS (guint),
+  INTEGER_ALIAS (glong),
+  INTEGER_ALIAS (gulong),
+  INTEGER_ALIAS (gssize),
+  INTEGER_ALIAS (gsize),
+  INTEGER_ALIAS (gintptr),
+  INTEGER_ALIAS (guintptr),
   INTEGER_ALIAS (off_t),
   INTEGER_ALIAS (time_t),
 #ifdef G_OS_UNIX
