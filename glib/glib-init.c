@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include "glib-init.h"
+#include "glib-private.h"
 #include "gmacros.h"
 #include "gtypes.h"
 #include "gutils.h"     /* for GDebugKey */
@@ -41,6 +42,10 @@
 
 /* This seems as good a place as any to make static assertions about platform
  * assumptions we make throughout GLib. */
+
+/* Test that private macro G_SIGNEDNESS_OF() works as intended */
+G_STATIC_ASSERT (G_SIGNEDNESS_OF (int) == 1);
+G_STATIC_ASSERT (G_SIGNEDNESS_OF (unsigned int) == 0);
 
 /* We do not support 36-bit bytes or other historical curiosities. */
 G_STATIC_ASSERT (CHAR_BIT == 8);

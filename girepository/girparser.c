@@ -28,6 +28,7 @@
 
 #include "girnode-private.h"
 #include "gitypelib-internal.h"
+#include "glib-private.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -451,23 +452,13 @@ typedef struct {
   unsigned int is_signed : 1;
 } IntegerAliasInfo;
 
-/*
- * signedness:
- * @T: a numeric type
- *
- * Returns: 1 if @T is signed, 0 if it is unsigned
- */
-#define signedness(T) (((T) -1) <= 0)
-G_STATIC_ASSERT (signedness (int) == 1);
-G_STATIC_ASSERT (signedness (unsigned int) == 0);
-
 static IntegerAliasInfo integer_aliases[] = {
   /* It is platform-dependent whether gchar is signed or unsigned, but
    * GObject-Introspection has traditionally treated it as signed,
    * so continue to hard-code that instead of using INTEGER_ALIAS */
   { "gchar", sizeof (gchar), 1 },
 
-#define INTEGER_ALIAS(T) { #T, sizeof (T), signedness (T) }
+#define INTEGER_ALIAS(T) { #T, sizeof (T), G_SIGNEDNESS_OF (T) }
   INTEGER_ALIAS (guchar),
   INTEGER_ALIAS (gshort),
   INTEGER_ALIAS (gushort),
