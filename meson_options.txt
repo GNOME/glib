@@ -50,8 +50,9 @@ option('man-pages',
        deprecated : { 'true': 'enabled', 'false': 'disabled' })
 
 option('dtrace',
-       type : 'boolean',
-       value : false,
+       type : 'feature',
+       value : 'auto',
+       deprecated : { 'true': 'enabled', 'false': 'disabled' },
        description : 'include tracing support for dtrace')
 
 option('systemtap',
