@@ -1203,6 +1203,8 @@ test_converter_base64 (void)
   gssize size;
   GError *error = NULL;
   char *result;
+  char small_data[22];
+  gboolean break_lines;
 
   for (gsize i = 0; i < sizeof (data); i++)
     data[i] = g_test_rand_int_range (0, 255);
@@ -1226,8 +1228,27 @@ test_converter_base64 (void)
   g_object_unref (converter);
   g_object_unref (output);
   g_object_unref (input);
-  g_object_unref (conv);
   g_free (result);
+
+  g_converter_reset (conv);
+
+  g_object_get (conv, "break-lines", &break_lines, NULL);
+  g_assert_false (break_lines);
+
+  input = g_memory_input_stream_new_from_data (data, sizeof (data), NULL);
+  output = g_memory_output_stream_new (small_data, sizeof (small_data), NULL, NULL);
+  converter = g_converter_output_stream_new (output, conv);
+
+  flags = G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET;
+  size = g_output_stream_splice (converter, input, flags, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE);
+  g_assert_cmpint (size, ==, -1);
+  g_clear_error (&error);
+
+  g_object_unref (converter);
+  g_object_unref (output);
+  g_object_unref (input);
+  g_object_unref (conv);
 
   conv = g_base64_decoder_new ();
 
@@ -1247,6 +1268,19 @@ test_converter_base64 (void)
   g_object_unref (converter2);
   g_object_unref (output);
   g_object_unref (input);
+
+  g_converter_reset (conv);
+
+  input = g_memory_input_stream_new_from_data (encoded, strlen (encoded), NULL);
+  converter2 = g_converter_input_stream_new (input, conv);
+  output = g_memory_output_stream_new (small_data, sizeof (small_data), NULL, NULL);
+
+  flags = G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE | G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET;
+  size = g_output_stream_splice (output, converter2, flags, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE);
+  g_assert_cmpint (size, ==, -1);
+  g_clear_error (&error);
+
   g_object_unref (conv);
   g_free (result);
 
