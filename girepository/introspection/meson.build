@@ -9,7 +9,7 @@ gi_gen_shared_sources = [
 
 gi_gen_env_variables = environment()
 
-if get_option('b_sanitize') != ''
+if get_option('b_sanitize') != 'none'
   gi_gen_env_variables.append(
     'ASAN_OPTIONS', 'verify_asan_link_order=0', separator: ',')
 endif

@@ -525,6 +525,7 @@ test_turkish_strupdown (void)
   if (oldlocale == NULL)
     {
       g_test_skip ("locale tr_TR not available");
+      g_free (old_lang);
       return;
     }
 
