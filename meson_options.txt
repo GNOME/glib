@@ -56,8 +56,9 @@ option('dtrace',
        description : 'include tracing support for dtrace')
 
 option('systemtap',
-       type : 'boolean',
-       value : false,
+       type : 'feature',
+       value : 'auto',
+       deprecated : { 'true': 'enabled', 'false': 'disabled' },
        description : 'include tracing support for systemtap')
 
 option('tapset_install_dir',

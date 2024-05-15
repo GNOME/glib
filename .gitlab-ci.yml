@@ -185,7 +185,7 @@ fedora-x86_64:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=true
+            -Dsystemtap=enabled
             -Ddtrace=enabled
             -Dinstalled_tests=true
             -Ddocumentation=true
@@ -240,7 +240,7 @@ debian-stable-x86_64:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=true
+            -Dsystemtap=enabled
             -Ddtrace=enabled
             _build
     - meson compile -C _build
@@ -312,7 +312,7 @@ muslc-alpine-x86_64:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=true
+            -Dsystemtap=enabled
             _build
     - meson compile -C _build
     - .gitlab-ci/run-tests.sh
@@ -383,7 +383,7 @@ G_DISABLE_ASSERT:
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
-            -Dsystemtap=true
+            -Dsystemtap=enabled
             -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dglib_assert=false
@@ -421,7 +421,7 @@ valgrind:
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
-            -Dsystemtap=true
+            -Dsystemtap=enabled
             -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dintrospection=enabled
@@ -766,7 +766,7 @@ scan-build:
             --localstatedir=/var
             --libdir=lib
             -Dglib_debug=enabled
-            -Dsystemtap=true
+            -Dsystemtap=enabled
             -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dintrospection=enabled
@@ -796,7 +796,7 @@ scan-build:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=true
+            -Dsystemtap=enabled
             -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dintrospection=enabled
