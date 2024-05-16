@@ -1416,7 +1416,7 @@ validate_headers (GDBusMessage  *message,
         case G_DBUS_MESSAGE_HEADER_FIELD_PATH:
           if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_OBJECT_PATH, error))
             goto out;
-          if (g_strcmp0 (g_variant_get_string (header_value, NULL), "/org/freedesktop/DBus/Local") == 0)
+          if (g_strcmp0 (g_variant_get_string (header_value, NULL), DBUS_PATH_LOCAL) == 0)
             {
               g_set_error (error,
                            G_IO_ERROR,
@@ -1438,7 +1438,7 @@ validate_headers (GDBusMessage  *message,
                            message_type_to_string (message->type));
               goto out;
             }
-          if (g_strcmp0 (g_variant_get_string (header_value, NULL), "org.freedesktop.DBus.Local") == 0)
+          if (g_strcmp0 (g_variant_get_string (header_value, NULL), DBUS_INTERFACE_LOCAL) == 0)
             {
               g_set_error (error,
                            G_IO_ERROR,

@@ -1058,7 +1058,7 @@ on_properties_changed (GDBusConnection *connection,
               g_dbus_connection_call (proxy->priv->connection,
                                       proxy->priv->name_owner,
                                       proxy->priv->object_path,
-                                      "org.freedesktop.DBus.Properties",
+                                      DBUS_INTERFACE_PROPERTIES,
                                       "Get",
                                       g_variant_new ("(ss)", proxy->priv->interface_name, data->prop_name),
                                       G_VARIANT_TYPE ("(v)"),
@@ -1330,7 +1330,7 @@ on_name_owner_changed (GDBusConnection *connection,
           g_dbus_connection_call (proxy->priv->connection,
                                   data->name_owner,
                                   proxy->priv->object_path,
-                                  "org.freedesktop.DBus.Properties",
+                                  DBUS_INTERFACE_PROPERTIES,
                                   "GetAll",
                                   g_variant_new ("(s)", proxy->priv->interface_name),
                                   G_VARIANT_TYPE ("(a{sv})"),
@@ -1424,7 +1424,7 @@ async_init_data_set_name_owner (GTask       *task,
       g_dbus_connection_call (proxy->priv->connection,
                               name_owner,
                               proxy->priv->object_path,
-                              "org.freedesktop.DBus.Properties",
+                              DBUS_INTERFACE_PROPERTIES,
                               "GetAll",
                               g_variant_new ("(s)", proxy->priv->interface_name),
                               G_VARIANT_TYPE ("(a{sv})"),
@@ -1485,9 +1485,9 @@ async_init_call_get_name_owner (GTask *task)
   GDBusProxy *proxy = g_task_get_source_object (task);
 
   g_dbus_connection_call (proxy->priv->connection,
-                          "org.freedesktop.DBus",  /* name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "GetNameOwner",
                           g_variant_new ("(s)",
                                          proxy->priv->name),
@@ -1563,8 +1563,8 @@ async_init_start_service_by_name_cb (GDBusConnection *connection,
                      "(u)",
                      &start_service_result);
       g_variant_unref (result);
-      if (start_service_result == 1 ||  /* DBUS_START_REPLY_SUCCESS */
-          start_service_result == 2)    /* DBUS_START_REPLY_ALREADY_RUNNING */
+      if (start_service_result == DBUS_START_REPLY_SUCCESS ||
+          start_service_result == DBUS_START_REPLY_ALREADY_RUNNING)
         {
           /* continue to invoke GetNameOwner() */
         }
@@ -1594,9 +1594,9 @@ async_init_call_start_service_by_name (GTask *task)
   GDBusProxy *proxy = g_task_get_source_object (task);
 
   g_dbus_connection_call (proxy->priv->connection,
-                          "org.freedesktop.DBus",  /* name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface */
+                          DBUS_SERVICE_DBUS,
+                          DBUS_PATH_DBUS,
+                          DBUS_INTERFACE_DBUS,
                           "StartServiceByName",
                           g_variant_new ("(su)",
                                          proxy->priv->name,
@@ -1688,7 +1688,7 @@ async_initable_init_first (GAsyncInitable *initable)
       proxy->priv->properties_changed_subscription_id =
         g_dbus_connection_signal_subscribe (proxy->priv->connection,
                                             proxy->priv->name,
-                                            "org.freedesktop.DBus.Properties",
+                                            DBUS_INTERFACE_PROPERTIES,
                                             "PropertiesChanged",
                                             proxy->priv->object_path,
                                             proxy->priv->interface_name,
@@ -1719,10 +1719,10 @@ async_initable_init_first (GAsyncInitable *initable)
     {
       proxy->priv->name_owner_changed_subscription_id =
         g_dbus_connection_signal_subscribe (proxy->priv->connection,
-                                            "org.freedesktop.DBus",  /* name */
-                                            "org.freedesktop.DBus",  /* interface */
+                                            DBUS_SERVICE_DBUS,
+                                            DBUS_INTERFACE_DBUS,
                                             "NameOwnerChanged",      /* signal name */
-                                            "/org/freedesktop/DBus", /* path */
+                                            DBUS_PATH_DBUS,
                                             proxy->priv->name,       /* arg0 */
                                             signal_flags,
                                             on_name_owner_changed,

@@ -34,6 +34,8 @@
 
 #include "gioerror.h"
 
+#include "gdbusprivate.h"
+
 #include "glibintl.h"
 
 /**
@@ -841,7 +843,7 @@ static const GDBusMethodInfo * const manager_method_info_pointers[] =
 static const GDBusInterfaceInfo manager_interface_info =
 {
   -1,
-  "org.freedesktop.DBus.ObjectManager",
+  DBUS_INTERFACE_OBJECT_MANAGER,
   (GDBusMethodInfo **) manager_method_info_pointers,
   (GDBusSignalInfo **) manager_signal_info_pointers,
   (GDBusPropertyInfo **) NULL,

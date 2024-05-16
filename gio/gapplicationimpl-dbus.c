@@ -32,6 +32,7 @@
 #include "gdbusconnection.h"
 #include "gdbusintrospection.h"
 #include "gdbuserror.h"
+#include "gdbusprivate.h"
 #include "glib/gstdio.h"
 
 #include <string.h>
@@ -163,7 +164,7 @@ send_property_change (GApplicationImpl *impl)
   g_dbus_connection_emit_signal (impl->session_bus,
                                  NULL,
                                  impl->object_path,
-                                 "org.freedesktop.DBus.Properties",
+                                 DBUS_INTERFACE_PROPERTIES,
                                  "PropertiesChanged",
                                  g_variant_new ("(sa{sv}as)",
                                                 "org.gtk.Application",
@@ -510,10 +511,10 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   if (app_flags & G_APPLICATION_ALLOW_REPLACEMENT)
     {
       impl->name_lost_signal = g_dbus_connection_signal_subscribe (impl->session_bus,
-                                                                   "org.freedesktop.DBus",
-                                                                   "org.freedesktop.DBus",
+                                                                   DBUS_SERVICE_DBUS,
+                                                                   DBUS_INTERFACE_DBUS,
                                                                    "NameLost",
-                                                                   "/org/freedesktop/DBus",
+                                                                   DBUS_PATH_DBUS,
                                                                    impl->bus_name,
                                                                    G_DBUS_SIGNAL_FLAGS_NONE,
                                                                    name_lost,
@@ -526,9 +527,9 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
     name_owner_flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
 
   reply = g_dbus_connection_call_sync (impl->session_bus,
-                                       "org.freedesktop.DBus",
-                                       "/org/freedesktop/DBus",
-                                       "org.freedesktop.DBus",
+                                       DBUS_SERVICE_DBUS,
+                                       DBUS_PATH_DBUS,
+                                       DBUS_INTERFACE_DBUS,
                                        "RequestName",
                                        g_variant_new ("(su)", impl->bus_name, name_owner_flags),
                                        G_VARIANT_TYPE ("(u)"),
@@ -540,8 +541,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   g_variant_get (reply, "(u)", &rval);
   g_variant_unref (reply);
 
-  /* DBUS_REQUEST_NAME_REPLY_EXISTS: 3 */
-  impl->primary = (rval != 3);
+  impl->primary = (rval != DBUS_REQUEST_NAME_REPLY_EXISTS);
 
   if (!impl->primary && impl->name_lost_signal)
     {
@@ -599,8 +599,8 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
 
   if (impl->primary && impl->bus_name)
     {
-      g_dbus_connection_call (impl->session_bus, "org.freedesktop.DBus",
-                              "/org/freedesktop/DBus", "org.freedesktop.DBus",
+      g_dbus_connection_call (impl->session_bus, DBUS_SERVICE_DBUS,
+                              DBUS_PATH_DBUS, DBUS_INTERFACE_DBUS,
                               "ReleaseName", g_variant_new ("(s)", impl->bus_name),
                               NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
       impl->primary = FALSE;

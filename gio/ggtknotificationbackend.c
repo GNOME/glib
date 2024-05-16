@@ -22,6 +22,7 @@
 
 #include "giomodule-priv.h"
 #include "gdbusconnection.h"
+#include "gdbusprivate.h"
 #include "gapplication.h"
 #include "gnotification-private.h"
 
@@ -58,8 +59,8 @@ g_gtk_notification_backend_is_supported (void)
   if (session_bus == NULL)
     return FALSE;
 
-  reply = g_dbus_connection_call_sync (session_bus, "org.freedesktop.DBus", "/org/freedesktop/DBus",
-                                       "org.freedesktop.DBus",
+  reply = g_dbus_connection_call_sync (session_bus, DBUS_SERVICE_DBUS, DBUS_PATH_DBUS,
+                                       DBUS_INTERFACE_DBUS,
                                        "GetNameOwner", g_variant_new ("(s)", "org.gtk.Notifications"),
                                        G_VARIANT_TYPE ("(s)"), G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL);
 

@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "gdbusprivate.h"
 #include "gdbus-tests.h"
 
 /* all tests rely on a shared mainloop */
@@ -137,9 +138,9 @@ test_exit_on_close_subprocess (gconstpointer test_data)
       GVariant *v;
       GError *error = NULL;
 
-      v = g_dbus_connection_call_sync (c, "org.freedesktop.DBus",
-                                       "/org/freedesktop/DBus",
-                                       "org.freedesktop.DBus",
+      v = g_dbus_connection_call_sync (c, DBUS_SERVICE_DBUS,
+                                       DBUS_PATH_DBUS,
+                                       DBUS_INTERFACE_DBUS,
                                        "ListNames",
                                        NULL,
                                        G_VARIANT_TYPE ("(as)"),

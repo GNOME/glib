@@ -5,14 +5,9 @@
 
 #include <gio/gio.h>
 
+#include "gdbusprivate.h"
 #include "gdbus-tests.h"
 
-/* From the D-Bus Specification */
-#define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
-
-#define DBUS_SERVICE_DBUS "org.freedesktop.DBus"
-#define DBUS_PATH_DBUS "/org/freedesktop/DBus"
-#define DBUS_INTERFACE_DBUS DBUS_SERVICE_DBUS
 #define NAME_OWNER_CHANGED "NameOwnerChanged"
 
 /* A signal that each connection emits to indicate that it has finished

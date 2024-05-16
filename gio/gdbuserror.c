@@ -35,10 +35,10 @@
 
 static const GDBusErrorEntry g_dbus_error_entries[] =
 {
-  {G_DBUS_ERROR_FAILED,                           "org.freedesktop.DBus.Error.Failed"},
+  {G_DBUS_ERROR_FAILED,                           DBUS_ERROR_FAILED},
   {G_DBUS_ERROR_NO_MEMORY,                        "org.freedesktop.DBus.Error.NoMemory"},
   {G_DBUS_ERROR_SERVICE_UNKNOWN,                  "org.freedesktop.DBus.Error.ServiceUnknown"},
-  {G_DBUS_ERROR_NAME_HAS_NO_OWNER,                "org.freedesktop.DBus.Error.NameHasNoOwner"},
+  {G_DBUS_ERROR_NAME_HAS_NO_OWNER,                DBUS_ERROR_NAME_HAS_NO_OWNER},
   {G_DBUS_ERROR_NO_REPLY,                         "org.freedesktop.DBus.Error.NoReply"},
   {G_DBUS_ERROR_IO_ERROR,                         "org.freedesktop.DBus.Error.IOError"},
   {G_DBUS_ERROR_BAD_ADDRESS,                      "org.freedesktop.DBus.Error.BadAddress"},
@@ -51,10 +51,10 @@ static const GDBusErrorEntry g_dbus_error_entries[] =
   {G_DBUS_ERROR_NO_NETWORK,                       "org.freedesktop.DBus.Error.NoNetwork"},
   {G_DBUS_ERROR_ADDRESS_IN_USE,                   "org.freedesktop.DBus.Error.AddressInUse"},
   {G_DBUS_ERROR_DISCONNECTED,                     "org.freedesktop.DBus.Error.Disconnected"},
-  {G_DBUS_ERROR_INVALID_ARGS,                     "org.freedesktop.DBus.Error.InvalidArgs"},
+  {G_DBUS_ERROR_INVALID_ARGS,                     DBUS_ERROR_INVALID_ARGS},
   {G_DBUS_ERROR_FILE_NOT_FOUND,                   "org.freedesktop.DBus.Error.FileNotFound"},
   {G_DBUS_ERROR_FILE_EXISTS,                      "org.freedesktop.DBus.Error.FileExists"},
-  {G_DBUS_ERROR_UNKNOWN_METHOD,                   "org.freedesktop.DBus.Error.UnknownMethod"},
+  {G_DBUS_ERROR_UNKNOWN_METHOD,                   DBUS_ERROR_UNKNOWN_METHOD},
   {G_DBUS_ERROR_TIMED_OUT,                        "org.freedesktop.DBus.Error.TimedOut"},
   {G_DBUS_ERROR_MATCH_RULE_NOT_FOUND,             "org.freedesktop.DBus.Error.MatchRuleNotFound"},
   {G_DBUS_ERROR_MATCH_RULE_INVALID,               "org.freedesktop.DBus.Error.MatchRuleInvalid"},

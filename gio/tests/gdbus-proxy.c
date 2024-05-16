@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "gdbusprivate.h"
 #include "gdbus-tests.h"
 
 /* all tests rely on a shared mainloop */
@@ -757,9 +758,9 @@ kill_test_service (GDBusConnection *connection)
   gboolean name_disappeared = FALSE;
 
   ret = g_dbus_connection_call_sync (connection,
-                                     "org.freedesktop.DBus",
-                                     "/org/freedesktop/DBus",
-                                     "org.freedesktop.DBus",
+                                     DBUS_SERVICE_DBUS,
+                                     DBUS_PATH_DBUS,
+                                     DBUS_INTERFACE_DBUS,
                                      "GetConnectionUnixProcessID",
                                      g_variant_new ("(s)", name),
                                      NULL,
@@ -977,9 +978,9 @@ add_or_remove_match_rule (GDBusConnection *connection,
   GDBusMessage *message = NULL;
   GError *error = NULL;
 
-  message = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
-                                            "/org/freedesktop/DBus", /* path */
-                                            "org.freedesktop.DBus", /* interface */
+  message = g_dbus_message_new_method_call (DBUS_SERVICE_DBUS,
+                                            DBUS_PATH_DBUS,
+                                            DBUS_INTERFACE_DBUS,
                                             (add_or_remove == ADD_MATCH) ? "AddMatch" : "RemoveMatch");
   g_dbus_message_set_body (message, match_rule);
   g_dbus_connection_send_message (connection,

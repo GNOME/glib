@@ -32,6 +32,42 @@ G_BEGIN_DECLS
 #define DBUS_INTERFACE_DBUS DBUS_SERVICE_DBUS
 #define DBUS_PATH_DBUS "/org/freedesktop/DBus"
 
+/* Reserved by the specification for locally-generated messages */
+#define DBUS_INTERFACE_LOCAL "org.freedesktop.DBus.Local"
+#define DBUS_PATH_LOCAL "/org/freedesktop/DBus/Local"
+
+/* Other well-known D-Bus interfaces from the specification */
+#define DBUS_INTERFACE_INTROSPECTABLE "org.freedesktop.DBus.Introspectable"
+#define DBUS_INTERFACE_OBJECT_MANAGER "org.freedesktop.DBus.ObjectManager"
+#define DBUS_INTERFACE_PEER "org.freedesktop.DBus.Peer"
+#define DBUS_INTERFACE_PROPERTIES "org.freedesktop.DBus.Properties"
+
+/* Frequently-used D-Bus error names */
+#define DBUS_ERROR_FAILED "org.freedesktop.DBus.Error.Failed"
+#define DBUS_ERROR_INVALID_ARGS "org.freedesktop.DBus.Error.InvalidArgs"
+#define DBUS_ERROR_NAME_HAS_NO_OWNER "org.freedesktop.DBus.Error.NameHasNoOwner"
+#define DBUS_ERROR_UNKNOWN_METHOD "org.freedesktop.DBus.Error.UnknownMethod"
+
+/* Owner flags */
+#define DBUS_NAME_FLAG_ALLOW_REPLACEMENT 0x1 /**< Allow another service to become the primary owner if requested */
+#define DBUS_NAME_FLAG_REPLACE_EXISTING  0x2 /**< Request to replace the current primary owner */
+#define DBUS_NAME_FLAG_DO_NOT_QUEUE      0x4 /**< If we can not become the primary owner do not place us in the queue */
+
+/* Replies to request for a name */
+#define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER  1 /**< Service has become the primary owner of the requested name */
+#define DBUS_REQUEST_NAME_REPLY_IN_QUEUE       2 /**< Service could not become the primary owner and has been placed in the queue */
+#define DBUS_REQUEST_NAME_REPLY_EXISTS         3 /**< Service is already in the queue */
+#define DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER  4 /**< Service is already the primary owner */
+
+/* Replies to releasing a name */
+#define DBUS_RELEASE_NAME_REPLY_RELEASED        1 /**< Service was released from the given name */
+#define DBUS_RELEASE_NAME_REPLY_NON_EXISTENT    2 /**< The given name does not exist on the bus */
+#define DBUS_RELEASE_NAME_REPLY_NOT_OWNER       3 /**< Service is not an owner of the given name */
+
+/* Replies to service starts */
+#define DBUS_START_REPLY_SUCCESS         1 /**< Service was auto started */
+#define DBUS_START_REPLY_ALREADY_RUNNING 2 /**< Service was already running */
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 typedef struct GDBusWorker GDBusWorker;

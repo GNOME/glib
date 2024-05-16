@@ -1,6 +1,8 @@
 #include <gio/gio.h>
 #include <stdlib.h>
 
+#include "gdbusprivate.h"
+
 static GDBusNodeInfo *introspection_data = NULL;
 static GMainLoop *loop = NULL;
 static GHashTable *properties = NULL;
@@ -688,7 +690,7 @@ handle_method_call (GDBusConnection       *connection,
       g_dbus_connection_emit_signal (connection,
                                      NULL,
                                      "/com/example/TestObject",
-                                     "org.freedesktop.DBus.Properties",
+                                     DBUS_INTERFACE_PROPERTIES,
                                      "PropertiesChanged",
                                      g_variant_new_parsed ("('com.example.Frob', [{%s, %v}], @as [])", name, value),
                                      NULL);
@@ -703,7 +705,7 @@ handle_method_call (GDBusConnection       *connection,
       g_dbus_connection_emit_signal (connection,
                                      NULL,
                                      "/com/example/TestObject",
-                                     "org.freedesktop.DBus.Properties",
+                                     DBUS_INTERFACE_PROPERTIES,
                                      "PropertiesChanged",
                                      g_variant_new_parsed ("('com.example.Frob', @a{sv} [], ['PropertyThatWillBeInvalidated'])"),
                                      NULL);
