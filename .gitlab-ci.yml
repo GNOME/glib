@@ -618,7 +618,7 @@ vs2017-x64-static:
       - _build/meson-logs
 
 freebsd-13-x86_64:
-  extends: .only-origin-or-manual
+  extends: .only-schedules-or-manual
   stage: build
   tags:
     - freebsd-13
