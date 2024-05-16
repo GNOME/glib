@@ -47,7 +47,7 @@ struct _GIIrModule
   char  *version;
   char  *shared_library;
   char  *c_prefix;
-  GList *dependencies;
+  GPtrArray *dependencies; /* (owned) */
   GList *entries;
 
   /* All modules that are included directly or indirectly */

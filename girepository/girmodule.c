@@ -75,12 +75,15 @@ gi_ir_module_free (GIIrModule *module)
   GList *e;
 
   g_free (module->name);
+  g_free (module->version);
+  g_free (module->shared_library);
+  g_free (module->c_prefix);
 
   for (e = module->entries; e; e = e->next)
     gi_ir_node_free ((GIIrNode *)e->data);
 
   g_list_free (module->entries);
-  /* Don't free dependencies, we inherit that from the parser */
+  g_clear_pointer (&module->dependencies, g_ptr_array_unref);
 
   g_list_free (module->include_modules);
 
@@ -348,35 +351,39 @@ gi_ir_module_build_typelib (GIIrModule *module)
 
   /* Serialize dependencies into one string; this is convenient
    * and not a major change to the typelib format. */
-  {
-    GString *dependencies_str = g_string_new ("");
-    GList *link;
-    for (link = module->dependencies; link; link = link->next)
-      {
-        const char *dependency = link->data;
-        if (!strcmp (dependency, module->name))
-          continue;
-        g_string_append (dependencies_str, dependency);
-        if (link->next)
-          g_string_append_c (dependencies_str, '|');
-      }
-    dependencies = g_string_free (dependencies_str, FALSE);
-    if (!dependencies[0])
-      {
-        g_free (dependencies);
-        dependencies = NULL;
-      }
-  }
+  if (module->dependencies->len)
+    {
+      GString *dependencies_str = g_string_new (NULL);
+      for (guint i = module->dependencies->len; i > 0; --i)
+        {
+          const char *dependency = g_ptr_array_index (module->dependencies, i-1);
+          if (!strcmp (dependency, module->name))
+            continue;
+          g_string_append (dependencies_str, dependency);
+          if (i > 1)
+            g_string_append_c (dependencies_str, '|');
+        }
+      dependencies = g_string_free (dependencies_str, FALSE);
+      if (dependencies && !dependencies[0])
+        {
+          g_free (dependencies);
+          dependencies = NULL;
+        }
+    }
+  else
+    {
+      dependencies = NULL;
+    }
 
  restart:
   gi_ir_node_init_stats ();
   strings = g_hash_table_new (g_str_hash, g_str_equal);
-  types = g_hash_table_new (g_str_hash, g_str_equal);
+  types = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
   nodes_with_attributes = NULL;
   n_entries = g_list_length (module->entries);
 
-  g_message ("%d entries (%d local), %d dependencies", n_entries, n_local_entries,
-             g_list_length (module->dependencies));
+  g_message ("%d entries (%d local), %u dependencies", n_entries, n_local_entries,
+             module->dependencies ? module->dependencies->len : 0);
 
   dir_size = n_entries * sizeof (DirEntry);
   size = header_size + dir_size;
@@ -478,7 +485,6 @@ gi_ir_module_build_typelib (GIIrModule *module)
 
   for (e = module->entries, i = 0; e; e = e->next, i++)
     {
-      GIIrTypelibBuild build;
       GIIrNode *node = e->data;
 
       if (strchr (node->name, '.'))
@@ -521,6 +527,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
         }
       else
         {
+          GIIrTypelibBuild build = {0};
           old_offset = offset;
           offset2 = offset + gi_ir_node_get_size (node);
 
@@ -529,7 +536,6 @@ gi_ir_module_build_typelib (GIIrModule *module)
           entry->offset = offset;
           entry->name = gi_ir_write_string (node->name, strings, data, &offset2);
 
-          memset (&build, 0, sizeof (build));
           build.module = module;
           build.strings = strings;
           build.types = types;
@@ -537,6 +543,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
           build.n_attributes = header->n_attributes;
           build.data = data;
           gi_ir_node_build_typelib (node, NULL, &build, &offset, &offset2, NULL);
+          g_clear_list (&build.stack, NULL);
 
           nodes_with_attributes = build.nodes_with_attributes;
           header->n_attributes = build.n_attributes;
@@ -589,6 +596,7 @@ gi_ir_module_build_typelib (GIIrModule *module)
   g_hash_table_destroy (strings);
   g_hash_table_destroy (types);
   g_list_free (nodes_with_attributes);
+  g_free (dependencies);
 
   return typelib;
 }
