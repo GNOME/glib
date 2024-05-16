@@ -36,6 +36,11 @@ typedef struct
 static const TypelibLoadSpec typelib_load_spec_glib = { "GLib", "2.0" };
 static const TypelibLoadSpec typelib_load_spec_gobject = { "GObject", "2.0" };
 static const TypelibLoadSpec typelib_load_spec_gio = { "Gio", "2.0" };
+#if defined(G_OS_UNIX)
+static const TypelibLoadSpec typelib_load_spec_gio_platform = { "GioUnix", "2.0" };
+#elif defined(G_OS_WIN32)
+static const TypelibLoadSpec typelib_load_spec_gio_platform = { "GioWin32", "2.0" };
+#endif
 
 void repository_init (int *argc,
                       char **argv[]);

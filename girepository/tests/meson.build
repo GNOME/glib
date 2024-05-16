@@ -29,6 +29,11 @@ if enable_gir
     gio_gir,
   ]
 
+  gio_platform_gir_testing_dep = [
+    gio_gir_testing_dep,
+    gio_platform_gir,
+  ]
+
   girepository_gir_testing_dep = [
     gio_gir_testing_dep,
     girepository_gir,
@@ -46,7 +51,8 @@ if enable_gir
       'depends': gobject_gir_testing_dep,
     },
     'repository' : {
-      'depends': gio_gir_testing_dep,
+      'depends': [gio_gir_testing_dep, gio_platform_gir_testing_dep],
+      'dependencies': [libgio_dep],
     },
     'repository-search-paths' : {
       'c_args': '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
