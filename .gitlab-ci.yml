@@ -185,8 +185,8 @@ fedora-x86_64:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=true
-            -Ddtrace=true
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
             -Dinstalled_tests=true
             -Ddocumentation=true
             -Dintrospection=enabled
@@ -240,8 +240,8 @@ debian-stable-x86_64:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=true
-            -Ddtrace=true
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
             _build
     - meson compile -C _build
     - .gitlab-ci/run-tests.sh
@@ -312,7 +312,7 @@ muslc-alpine-x86_64:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=true
+            -Dsystemtap=enabled
             _build
     - meson compile -C _build
     - .gitlab-ci/run-tests.sh
@@ -343,7 +343,7 @@ installed-tests:
             --prefix=/usr --libdir=/usr/lib64
             -Dinstalled_tests=true
             -Ddefault_library=both
-            -Ddtrace=false
+            -Ddtrace=disabled
             _build
     - meson compile -C _build
     - sudo meson install -C _build
@@ -383,8 +383,8 @@ G_DISABLE_ASSERT:
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
-            -Dsystemtap=true
-            -Ddtrace=true
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dglib_assert=false
             -Dintrospection=enabled
@@ -421,8 +421,8 @@ valgrind:
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
-            -Dsystemtap=true
-            -Ddtrace=true
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dintrospection=enabled
             _build
@@ -766,8 +766,8 @@ scan-build:
             --localstatedir=/var
             --libdir=lib
             -Dglib_debug=enabled
-            -Dsystemtap=true
-            -Ddtrace=true
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dintrospection=enabled
             _scan_build
@@ -796,8 +796,8 @@ scan-build:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=true
-            -Ddtrace=true
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dintrospection=enabled
             _coverity_build

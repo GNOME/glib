@@ -2519,19 +2519,35 @@ elif host_system == 'cygwin'
 endif
 
 # Tracing: dtrace
-want_dtrace = get_option('dtrace')
-enable_dtrace = false
+dtrace_option = get_option('dtrace')
+enable_dtrace = dtrace_option.allowed()
 
-# Since dtrace support is opt-in we just error out if it was requested but
-# is not available. We don't bother with autodetection yet.
-if want_dtrace
-  if glib_have_carbon
+if glib_have_carbon
+  if dtrace_option.enabled()
     error('GLib dtrace support not yet compatible with macOS dtrace')
+  else
+    enable_dtrace = false
   endif
-  dtrace = find_program('dtrace', required : true) # error out if not found
+endif
+
+if enable_dtrace
+  dtrace = find_program('dtrace', required : dtrace_option)
+  if not dtrace.found()
+    enable_dtrace = false
+  endif
+endif
+
+if enable_dtrace
   if not cc.has_header('sys/sdt.h')
-    error('dtrace support needs sys/sdt.h header')
+    if dtrace_option.enabled()
+      error('dtrace support needs sys/sdt.h header')
+    else
+      enable_dtrace = false
+    endif
   endif
+endif
+
+if enable_dtrace
   # FIXME: autotools build also passes -fPIC -DPIC but is it needed in this case?
   dtrace_obj_gen = generator(dtrace,
     output : '@BASENAME@.o',
@@ -2552,7 +2568,6 @@ with open(output, "w") as f:
   f.write(contents)
 ''', dtrace.full_path(), '-h', '-s', '@INPUT@', '-o', '@OUTPUT@'])
   glib_conf.set('HAVE_DTRACE', 1)
-  enable_dtrace = true
 endif
 
 if cc.has_header_symbol('sys/ptrace.h', 'PTRACE_O_EXITKILL')
@@ -2560,10 +2575,10 @@ if cc.has_header_symbol('sys/ptrace.h', 'PTRACE_O_EXITKILL')
 endif
 
 # systemtap
-want_systemtap = get_option('systemtap')
-enable_systemtap = false
+systemtap = get_option('systemtap').require(enable_dtrace, error_message: 'Cannot enable systemtap because dtrace feature is disabled')
+enable_systemtap = systemtap.allowed()
 
-if want_systemtap and enable_dtrace
+if enable_systemtap
   tapset_install_dir = get_option('tapset_install_dir')
   if tapset_install_dir == ''
     tapset_install_dir = join_paths(get_option('datadir'), 'systemtap/tapset', host_machine.cpu_family())
@@ -2572,7 +2587,6 @@ if want_systemtap and enable_dtrace
   stp_cdata.set('ABS_GLIB_RUNTIME_LIBDIR', glib_libdir)
   stp_cdata.set('LT_CURRENT', minor_version * 100)
   stp_cdata.set('LT_REVISION', micro_version)
-  enable_systemtap = true
 endif
 
 # introspection
@@ -2696,7 +2710,7 @@ endif
 summary({
   'xattr' : xattr_dep.length() > 0,
   'man-pages' : get_option('man-pages'),
-  'dtrace' : get_option('dtrace'),
+  'dtrace' : enable_dtrace,
   'systemtap' : enable_systemtap,
   'sysprof' : libsysprof_capture_dep.found(),
   'documentation' : get_option('documentation'),

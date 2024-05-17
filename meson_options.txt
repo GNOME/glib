@@ -50,13 +50,15 @@ option('man-pages',
        deprecated : { 'true': 'enabled', 'false': 'disabled' })
 
 option('dtrace',
-       type : 'boolean',
-       value : false,
+       type : 'feature',
+       value : 'auto',
+       deprecated : { 'true': 'enabled', 'false': 'disabled' },
        description : 'include tracing support for dtrace')
 
 option('systemtap',
-       type : 'boolean',
-       value : false,
+       type : 'feature',
+       value : 'auto',
+       deprecated : { 'true': 'enabled', 'false': 'disabled' },
        description : 'include tracing support for systemtap')
 
 option('tapset_install_dir',
@@ -66,7 +68,7 @@ option('tapset_install_dir',
 
 option('sysprof',
        type : 'feature',
-       value : 'disabled',
+       value : 'auto',
        description : 'include tracing support for sysprof')
 
 option('documentation',
