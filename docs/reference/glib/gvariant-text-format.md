@@ -85,12 +85,12 @@ won't work and you'll end up with the individual characters corresponding to
 each byte.
 
 Unicode escapes of the form `\uxxxx` and `\Uxxxxxxxx` are supported, in
-hexadecimal. The usual control sequence escapes `\a`, `\b`, `\f`, `\n`,
-`\r`, `\t` and `\v` are supported. Additionally, a `\` before a newline
-character causes the newline to be ignored. Finally, any other character
-following `\` is copied literally (for example, `\"` or `\\`) but for
-forwards compatibility with future additions you should only use this
-feature when necessary for escaping backslashes or quotes.
+hexadecimal. The [usual control sequence escapes][C escape sequences]
+`\a`, `\b`, `\f`, `\n`, `\r`, `\t` and `\v` are supported.
+Additionally, a `\` before a newline character causes the newline to be ignored.
+Finally, any other character following `\` is copied literally
+(for example, `\"` or `\\`) but for forwards compatibility with future additions
+you should only use this feature when necessary for escaping backslashes or quotes.
 
 The usual octal and hexadecimal escapes `\nnn` and `\xnn` are not supported
 here. Those escapes are used to encode byte values and `GVariant` strings
@@ -344,3 +344,5 @@ string to be parsed. Format strings that collect multiple arguments are
 permitted, so you may require more varargs parameters than the number of `%`
 signs that appear. You can also give format strings that collect no
 arguments, but there's no good reason to do so.
+
+[C escape sequences]: https://en.wikipedia.org/wiki/Escape_sequences_in_C#Escape_sequences
