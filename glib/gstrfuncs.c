@@ -2188,11 +2188,22 @@ out:
  * @source: a string to escape
  * @exceptions: (nullable): a string of characters not to escape in @source
  *
- * Escapes the special characters `\b`, `\f`, `\n`, `\r`, `\t`, `\v`, `\`
- * and `"` in the string @source by inserting a `\` before
- * them. Additionally all characters in the range 0x01-0x1F (everything
+ * It replaces the following special characters in the string @source
+ * with their corresponding C escape sequence:
+ *
+ *  Symbol | Escape
+ * ---|---
+ *  [U+0008 Backspace](https://en.wikipedia.org/wiki/Backspace) | `\b`
+ *  [U+000C Form Feed](https://en.wikipedia.org/wiki/Form_feed) | `\f`
+ *  [U+000A Line Feed](https://en.wikipedia.org/wiki/Newline) | `\n`
+ *  [U+000D Carriage Return](https://en.wikipedia.org/wiki/Carriage_return) | `\r`
+ *  [U+0009 Horizontal Tabulation](https://en.wikipedia.org/wiki/Tab_character) | `\t`
+ *  [U+000B Vertical Tabulation](https://en.wikipedia.org/wiki/Vertical_Tab) | `\v`
+ *
+ * It also inserts a backslash (`\`) before any backslash or a double quote (`"`).
+ * Additionally all characters in the range 0x01-0x1F (everything
  * below SPACE) and in the range 0x7F-0xFF (all non-ASCII chars) are
- * replaced with a `\` followed by their octal representation.
+ * replaced with a backslash followed by their octal representation.
  * Characters supplied in @exceptions are not escaped.
  *
  * [func@GLib.strcompress] does the reverse conversion.
