@@ -92,7 +92,7 @@ following `\` is copied literally (for example, `\"` or `\\`) but for
 forwards compatibility with future additions you should only use this
 feature when necessary for escaping backslashes or quotes.
 
-The usual octal and hexadecimal escapes `\0nnn` and `\xnn` are not supported
+The usual octal and hexadecimal escapes `\nnn` and `\xnn` are not supported
 here. Those escapes are used to encode byte values and `GVariant` strings
 are Unicode.
 
@@ -306,7 +306,7 @@ is no fundamental difference between the two different types of quotes.
 Bytestrings support the full range of escapes that you would expect (ie:
 those supported by [`func@GLib.strcompress`]. This includes the normal control
 sequence escapes (as mentioned in the section on strings) as well as octal
-and hexadecimal escapes of the forms `\0nnn` and `\xnn`.
+and hexadecimal escapes of the forms `\nnn` and `\xnn`.
 
 `b'abc'` is equivalent to `[byte 0x61, 0x62, 0x63, 0]`.
 
