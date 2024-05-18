@@ -303,10 +303,15 @@ end with a `NUL` byte.
 Bytestrings are specified with either `b""` or `b''`. As with strings, there
 is no fundamental difference between the two different types of quotes.
 
-Bytestrings support the full range of escapes that you would expect (ie:
-those supported by [`func@GLib.strcompress`]. This includes the normal control
-sequence escapes (as mentioned in the section on strings) as well as octal
-and hexadecimal escapes of the forms `\nnn` and `\xnn`.
+Like in strings, the [C-style control sequence escapes][C escape sequences]
+`\a`, `\b`, `\f`, `\n`, `\r`, `\t` and `\v` are supported. Similarly,
+a `\` before a newline character causes the newline to be ignored.
+Unlike in strings, you can use octal and hexadecimal escapes
+of the forms `\nnn` and `\xnn`. Finally, any other character following `\`
+is copied literally (for example, `\"` or `\\`) but for forwards compatibility
+with future additions you should only use this feature when necessary
+for escaping backslashes or quotes. Unlike in strings, Unicode escapes
+are not supported.
 
 `b'abc'` is equivalent to `[byte 0x61, 0x62, 0x63, 0]`.
 
