@@ -2109,9 +2109,20 @@ g_strcanon (gchar       *string,
  * g_strcompress:
  * @source: a string to compress
  *
- * Replaces all escaped characters with their one byte equivalent.
+ * Makes a copy of a string replacing C string-style escape
+ * sequences with their one byte equivalent:
  *
- * This function does the reverse conversion of [func@GLib.strescape].
+ * - `\b` → [U+0008 Backspace](https://en.wikipedia.org/wiki/Backspace)
+ * - `\f` → [U+000C Form Feed](https://en.wikipedia.org/wiki/Form_feed)
+ * - `\n` → [U+000A Line Feed](https://en.wikipedia.org/wiki/Newline)
+ * - `\r` → [U+000D Carriage Return](https://en.wikipedia.org/wiki/Carriage_return)
+ * - `\t` → [U+0009 Horizontal Tabulation](https://en.wikipedia.org/wiki/Tab_character)
+ * - `\v` → [U+000B Vertical Tabulation](https://en.wikipedia.org/wiki/Vertical_Tab)
+ * - `\` followed by one to three octal digits → the numeric value (mod 255)
+ * - `\` followed by any other character → the character as is.
+ *   For example, `\\` will turn into a backslash (`\`) and `\"` into a double quote (`"`).
+ *
+ * [func@GLib.strescape] does the reverse conversion.
  *
  * Returns: a newly-allocated copy of @source with all escaped
  *   character compressed
