@@ -306,9 +306,9 @@ is no fundamental difference between the two different types of quotes.
 Like in strings, the [C-style control sequence escapes][C escape sequences]
 `\a`, `\b`, `\f`, `\n`, `\r`, `\t` and `\v` are supported. Similarly,
 a `\` before a newline character causes the newline to be ignored.
-Unlike in strings, you can use octal and hexadecimal escapes
-of the forms `\nnn` and `\xnn`. Finally, any other character following `\`
-is copied literally (for example, `\"` or `\\`) but for forwards compatibility
+Unlike in strings, you can use octal escapes of the form `\nnn`.
+Finally, any other character following `\` is copied literally
+(for example, `\"` or `\\`) but for forwards compatibility
 with future additions you should only use this feature when necessary
 for escaping backslashes or quotes. Unlike in strings, Unicode escapes
 are not supported.
