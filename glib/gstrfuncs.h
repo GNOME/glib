@@ -330,14 +330,6 @@ g_strdup_inline (const char *str)
 GLIB_AVAILABLE_IN_ALL
 gchar*                g_strcompress    (const gchar *source) G_GNUC_MALLOC;
 
-/* Copy a string escaping nonprintable characters like in C strings.
- * Inverse of g_strcompress. The exceptions parameter, if non-NULL, points
- * to a string containing characters that are not to be escaped.
- *
- * Deprecated API: gchar* g_strescape (const gchar *source);
- * Luckily this function wasn't used much, using NULL as second parameter
- * provides mostly identical semantics.
- */
 GLIB_AVAILABLE_IN_ALL
 gchar*                g_strescape      (const gchar *source,
 					const gchar *exceptions) G_GNUC_MALLOC;
