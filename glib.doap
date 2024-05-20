@@ -14,7 +14,7 @@
 
   <homepage rdf:resource="http://www.gtk.org" />
   <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
-  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/glib/issues/new"/>
+  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/glib/-/issues"/>
   <download-page rdf:resource="http://download.gnome.org/sources/glib/" />
   <developer-forum rdf:resource="https://discourse.gnome.org/tags/glib/" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
