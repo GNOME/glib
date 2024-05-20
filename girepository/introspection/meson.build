@@ -27,6 +27,7 @@ glib_gir_sources = [
   glib_types_h,
   glib_deprecated_sources,
   glib_sources,
+  files('../../glib/docs.c'),
 ]
 
 # For API compatibility reasons, GLib-2.0.gir needs to contain the platform
