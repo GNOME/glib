@@ -443,7 +443,7 @@ The following D-Bus annotations are supported by ``gdbus-codegen``:
 
 As an easier alternative to using the ``org.gtk.GDBus.DocString`` annotation,
 note that parser used by ``gdbus-codegen`` parses XML comments in a way similar
-to `gtk-doc <https://developer-old.gnome.org/gtk-doc-manual/stable/>`_::
+to `gtk-doc <https://gitlab.gnome.org/GNOME/gtk-doc/>`_::
 
    <!--
      net.Corp.Bar:
@@ -797,7 +797,7 @@ only if, each added method, property signal is annotated with the
 versions.
 
 The generated C code currently happens to be annotated with
-`gtk-doc <https://developer-old.gnome.org/gtk-doc-manual/stable/>`_ and
+`gtk-doc <https://gitlab.gnome.org/GNOME/gtk-doc/>`_ and
 `GObject Introspection <https://gi.readthedocs.io/en/latest/>`_ comments and
 annotations. The layout and contents might change in the future so no guarantees
 about e.g. ``SECTION`` usage etc. are given.
