@@ -2109,9 +2109,20 @@ g_strcanon (gchar       *string,
  * g_strcompress:
  * @source: a string to compress
  *
- * Replaces all escaped characters with their one byte equivalent.
+ * Makes a copy of a string replacing C string-style escape
+ * sequences with their one byte equivalent:
  *
- * This function does the reverse conversion of [func@GLib.strescape].
+ * - `\b` → [U+0008 Backspace](https://en.wikipedia.org/wiki/Backspace)
+ * - `\f` → [U+000C Form Feed](https://en.wikipedia.org/wiki/Form_feed)
+ * - `\n` → [U+000A Line Feed](https://en.wikipedia.org/wiki/Newline)
+ * - `\r` → [U+000D Carriage Return](https://en.wikipedia.org/wiki/Carriage_return)
+ * - `\t` → [U+0009 Horizontal Tabulation](https://en.wikipedia.org/wiki/Tab_character)
+ * - `\v` → [U+000B Vertical Tabulation](https://en.wikipedia.org/wiki/Vertical_Tab)
+ * - `\` followed by one to three octal digits → the numeric value (mod 255)
+ * - `\` followed by any other character → the character as is.
+ *   For example, `\\` will turn into a backslash (`\`) and `\"` into a double quote (`"`).
+ *
+ * [func@GLib.strescape] does the reverse conversion.
  *
  * Returns: a newly-allocated copy of @source with all escaped
  *   character compressed
@@ -2188,11 +2199,22 @@ out:
  * @source: a string to escape
  * @exceptions: (nullable): a string of characters not to escape in @source
  *
- * Escapes the special characters '\b', '\f', '\n', '\r', '\t', '\v', '\'
- * and '"' in the string @source by inserting a '\' before
- * them. Additionally all characters in the range 0x01-0x1F (everything
+ * It replaces the following special characters in the string @source
+ * with their corresponding C escape sequence:
+ *
+ *  Symbol | Escape
+ * ---|---
+ *  [U+0008 Backspace](https://en.wikipedia.org/wiki/Backspace) | `\b`
+ *  [U+000C Form Feed](https://en.wikipedia.org/wiki/Form_feed) | `\f`
+ *  [U+000A Line Feed](https://en.wikipedia.org/wiki/Newline) | `\n`
+ *  [U+000D Carriage Return](https://en.wikipedia.org/wiki/Carriage_return) | `\r`
+ *  [U+0009 Horizontal Tabulation](https://en.wikipedia.org/wiki/Tab_character) | `\t`
+ *  [U+000B Vertical Tabulation](https://en.wikipedia.org/wiki/Vertical_Tab) | `\v`
+ *
+ * It also inserts a backslash (`\`) before any backslash or a double quote (`"`).
+ * Additionally all characters in the range 0x01-0x1F (everything
  * below SPACE) and in the range 0x7F-0xFF (all non-ASCII chars) are
- * replaced with a '\' followed by their octal representation.
+ * replaced with a backslash followed by their octal representation.
  * Characters supplied in @exceptions are not escaped.
  *
  * [func@GLib.strcompress] does the reverse conversion.
