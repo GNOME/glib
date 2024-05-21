@@ -312,7 +312,6 @@ muslc-alpine-x86_64:
             --prefix=$HOME/glib-installed
             --localstatedir=/var
             --libdir=lib
-            -Dsystemtap=enabled
             _build
     - meson compile -C _build
     - .gitlab-ci/run-tests.sh
