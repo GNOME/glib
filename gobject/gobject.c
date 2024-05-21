@@ -1020,7 +1020,7 @@ g_object_do_class_init (GObjectClass *class)
    * ]|
    *
    * It is important to note that you must use
-   * [canonical parameter names][canonical-parameter-names] as
+   * [canonical parameter names][class@GObject.ParamSpec#parameter-names] as
    * detail strings for the notify signal.
    */
   gobject_signals[NOTIFY] =
