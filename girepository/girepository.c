@@ -30,6 +30,7 @@
 #include <stdlib.h>
 
 #include <glib.h>
+#include <glib-private.h>
 #include <glib/gprintf.h>
 #include <gmodule.h>
 #include "gibaseinfo-private.h"
@@ -135,7 +136,6 @@ struct _GIRepository
 G_DEFINE_TYPE (GIRepository, gi_repository, G_TYPE_OBJECT);
 
 #ifdef G_PLATFORM_WIN32
-
 #include <windows.h>
 
 static HMODULE girepository_dll = NULL;
@@ -155,19 +155,117 @@ DllMain (HINSTANCE hinstDLL,
   return TRUE;
 }
 
+#endif /* DLL_EXPORT */
+#endif /* G_PLATFORM_WIN32 */
+
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+
+/* This function returns the file path of the loaded libgirepository1.0.dylib.
+ * It iterates over all the loaded images to find the one with the
+ * gi_repository_init symbol and returns its file path.
+  */
+static const char *
+gi_repository_get_library_path_macos (void)
+{
+  /*
+   * Relevant documentation:
+   * https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/MachOTopics/0-Introduction/introduction.html
+   * https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/dyld.3.html
+   * https://opensource.apple.com/source/xnu/xnu-2050.18.24/EXTERNAL_HEADERS/mach-o/loader.h
+  */
+  const void *ptr = gi_repository_init;
+  const struct mach_header *header;
+  intptr_t offset;
+  uint32_t i, count;
+
+  /* Iterate over all the loaded images */
+  count = _dyld_image_count ();
+  for (i = 0; i < count; i++)
+    {
+      header = _dyld_get_image_header (i);
+      offset = _dyld_get_image_vmaddr_slide (i);
+
+      /* Locate the first `load` command */
+      struct load_command *cmd = (struct load_command *) ((char *) header + sizeof (struct mach_header));
+      if (header->magic == MH_MAGIC_64)
+        cmd = (struct load_command *) ((char *) header + sizeof (struct mach_header_64));
+
+      /* Find the first `segment` command iterating over all the `load` commands.
+       * Then, check if the gi_repository_init symbol is in this image by checking
+       * if the pointer is in the segment's memory address range.
+       */
+      uint32_t j = 0;
+      while (j < header->ncmds)
+        {
+          if (cmd->cmd == LC_SEGMENT)
+            {
+              struct segment_command *seg = (struct segment_command *) cmd;
+              if (((intptr_t) ptr >= (seg->vmaddr + offset)) && ((intptr_t) ptr < (seg->vmaddr + offset + seg->vmsize)))
+                return _dyld_get_image_name (i);
+           }
+          if (cmd->cmd == LC_SEGMENT_64)
+            {
+              struct segment_command_64 *seg = (struct segment_command_64 *) cmd;
+              if (((uintptr_t ) ptr >= (seg->vmaddr + offset)) && ((uintptr_t ) ptr < (seg->vmaddr + offset + seg->vmsize)))
+                return _dyld_get_image_name (i);
+            }
+          /* Jump to the next command */
+          j++;
+          cmd = (struct load_command *) ((char *) cmd + cmd->cmdsize);
+        }
+    }
+  return NULL;
+}
+#endif /* __APPLE__ */
+
+/*
+ * gi_repository_get_libdir:
+ *
+ * Returns the directory where the typelib files are installed.
+ *
+ * In platforms without relocation support, this functions returns the
+ * `GOBJECT_INTROSPECTION_LIBDIR` directory defined at build time .
+ *
+ * On Windows and macOS this function returns the directory
+ * relative to the installation directory detected at runtime.
+ *
+ * On macOS, if the library is installed in
+ * `/Applications/MyApp.app/Contents/Home/lib/libgirepository-1.0.dylib`, it returns
+ * `/Applications/MyApp.app/Contents/Home/lib/girepository-1.0`
+ *
+ * On Windows, if the application is installed in
+ * `C:/Program Files/MyApp/bin/MyApp.exe`, it returns
+ * `C:/Program Files/MyApp/lib/girepository-1.0`
+*/
+static const gchar *
+gi_repository_get_libdir (void)
+{
+  static gchar *static_libdir;
+
+  if (g_once_init_enter_pointer (&static_libdir))
+    {
+      gchar *libdir;
+#if defined(G_PLATFORM_WIN32)
+      const char *toplevel = g_win32_get_package_installation_directory_of_module (girepository_dll);
+      libdir = g_build_filename (toplevel, GOBJECT_INTROSPECTION_RELATIVE_LIBDIR, NULL);
+      g_ignore_leak (libdir);
+#elif defined(__APPLE__)
+      const char *libpath = gi_repository_get_library_path_macos ();
+      if (libpath != NULL)
+        {
+          libdir = g_path_get_dirname (libpath);
+          g_ignore_leak (libdir);
+        } else {
+          libdir = GOBJECT_INTROSPECTION_LIBDIR;
+        }
+#else /* !G_PLATFORM_WIN32 && !__APPLE__ */
+        libdir = GOBJECT_INTROSPECTION_LIBDIR;
 #endif
-
-#undef GOBJECT_INTROSPECTION_LIBDIR
-
-/* GOBJECT_INTROSPECTION_LIBDIR is used only in code called just once,
- * so no problem leaking this
- */
-#define GOBJECT_INTROSPECTION_LIBDIR \
-  g_build_filename (g_win32_get_package_installation_directory_of_module (girepository_dll), \
-                    "lib", \
-                    NULL)
-
-#endif
+      g_once_init_leave_pointer (&static_libdir, libdir);
+    }
+  return static_libdir;
+}
 
 static void
 gi_repository_init (GIRepository *repository)
@@ -197,7 +295,7 @@ gi_repository_init (GIRepository *repository)
           repository->typelib_search_path = g_ptr_array_new_null_terminated (1, g_free, TRUE);
         }
 
-      libdir = GOBJECT_INTROSPECTION_LIBDIR;
+      libdir = gi_repository_get_libdir ();
 
       typelib_dir = g_build_filename (libdir, "girepository-1.0", NULL);
 
