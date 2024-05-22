@@ -2647,8 +2647,10 @@ if rst2man.found()
   rst2man_flags = [
     '--syntax-highlight=none',
   ]
-  man1_dir = join_paths(glib_prefix, get_option('mandir'), 'man1')
+  man1_dir = glib_prefix / get_option('mandir') / 'man1'
 endif
+
+rst2html5 = find_program('rst2html5', 'rst2html5.py', required: get_option('documentation'))
 
 gnome = import('gnome')
 subdir('docs/reference')

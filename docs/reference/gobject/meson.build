@@ -1,6 +1,7 @@
+gobject_manpages = ['glib-mkenums', 'glib-genmarshal', 'gobject-query']
+
 if get_option('man-pages').enabled()
-  manpages = ['glib-mkenums', 'glib-genmarshal', 'gobject-query']
-  foreach page : manpages
+  foreach page: gobject_manpages
     custom_target(page + '-man',
       input: page + '.rst',
       output: page + '.1',
@@ -50,4 +51,23 @@ if get_option('documentation') and enable_gir
     install_dir: docs_dir,
     install_tag: 'doc',
   )
+
+  if rst2html5.found()
+    man_html_path = docs_dir / 'gobject-2.0'
+
+    foreach page: gobject_manpages
+      custom_target(
+        input: page + '.rst',
+        output: page + '.html',
+        command: [
+          rst2html5,
+          '@INPUT@',
+        ],
+        capture: true,
+        install: true,
+        install_dir: man_html_path,
+        install_tag: 'doc',
+      )
+    endforeach
+  endif
 endif

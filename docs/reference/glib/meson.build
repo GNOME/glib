@@ -1,7 +1,7 @@
+glib_manpages = ['glib-gettextize', 'gtester', 'gtester-report']
 
 if get_option('man-pages').enabled()
-  manpages = ['glib-gettextize', 'gtester', 'gtester-report']
-  foreach page : manpages
+  foreach page: glib_manpages
     custom_target(page + '-man',
       input: page + '.rst',
       output: page + '.1',
@@ -20,10 +20,9 @@ endif
 
 if get_option('documentation')
   # GVariant specification is currently standalone
-  rst2html5 = find_program('rst2html5', 'rst2html5.py', required: false)
-
   if rst2html5.found()
     spec_path = docs_dir / 'glib-2.0'
+    man_html_path = docs_dir / 'glib-2.0'
 
     figures = files(
       'gvariant-byte-boundaries.svg',
@@ -47,9 +46,24 @@ if get_option('documentation')
     )
 
     install_data(figures,
-      install_dir : spec_path,
-      install_tag : 'doc',
+      install_dir: spec_path,
+      install_tag: 'doc',
     )
+
+    foreach page: glib_manpages
+      custom_target(
+        input: page + '.rst',
+        output: page + '.html',
+        command: [
+          rst2html5,
+          '@INPUT@',
+        ],
+        capture: true,
+        install: true,
+        install_dir: man_html_path,
+        install_tag: 'doc',
+      )
+    endforeach
   endif
 endif
 
