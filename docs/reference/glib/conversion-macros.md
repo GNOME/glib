@@ -65,6 +65,17 @@ of a 32-bit integer will be mangled.
 
 :   Stuffs a `size_t` into a pointer type, and vice versa.
 
+`GTYPE_TO_POINTER(value)`, `GPOINTER_TO_TYPE(value)`
+
+:   Stuffs a [`GType`](../gobject/alias.Type.html) into a pointer type, and
+    vice versa.
+
+    These macros should be used instead of `GSIZE_TO_POINTER()`,
+    `GPOINTER_TO_SIZE()` to ensure portability, since `GType` is not
+    guaranteed to be the same as `size_t`.
+
+    Since: 2.80
+
 ## Byte Order Conversion
 
 These macros provide a portable way to determine the host byte order and to
