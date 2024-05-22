@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include <glib/glib.h>
+#include <glib/gstdio.h>
 
 /* Test that all of the well-known directories returned by GLib
  * are returned as children of test_tmpdir when running with
@@ -90,6 +91,41 @@ test_user_runtime_dir (void)
   g_assert_true (g_str_has_prefix (g_get_user_runtime_dir (), test_tmpdir));
 }
 
+static void
+test_cleanup_handles_errors (void)
+{
+  const gchar *runtime_dir = g_get_user_runtime_dir ();
+  gchar *subdir = g_build_filename (runtime_dir, "b", NULL);
+
+  if (g_test_subprocess ())
+    {
+
+      g_assert_no_errno (g_mkdir_with_parents (subdir, 0755));
+      g_assert_no_errno (g_chmod (runtime_dir, 0));
+
+      g_clear_pointer (&subdir, g_free);
+      /* Now let the harness clean up. Not being able to delete part of the
+       * test's isolated temporary directory should not cause the test to
+       * fail.
+       */
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDERR);
+  g_test_trap_assert_passed ();
+  /* No assertion about the test logging anything to stderr: we don't
+   * guarantee this, and one of the cleanup implementations doesn't log
+   * anything.
+   */
+
+  /* Now that we have verified that a failure to delete part of the isolated
+   * temporary directory hierarchy does not cause the test to fail, clean up
+   * after ourselves.
+   */
+  g_assert_no_errno (g_chmod (runtime_dir, 0755));
+
+  g_free (subdir);
+}
 
 int
 main (int   argc,
@@ -110,5 +146,6 @@ main (int   argc,
   g_test_add_func ("/utils-isolated/user-data-dir", test_user_data_dir);
   g_test_add_func ("/utils-isolated/user-state-dir", test_user_state_dir);
   g_test_add_func ("/utils-isolated/user-runtime-dir", test_user_runtime_dir);
+  g_test_add_func ("/utils-isolated/cleanup/handles-errors", test_cleanup_handles_errors);
   return g_test_run ();
 }
