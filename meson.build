@@ -385,6 +385,7 @@ headers = [
   'dirent.h', # MSC does not come with this by default
   'float.h',
   'fstab.h',
+  'ftw.h',
   'grp.h',
   'inttypes.h',
   'libproc.h',

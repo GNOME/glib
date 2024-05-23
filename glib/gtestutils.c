@@ -30,6 +30,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 #endif
+#ifdef HAVE_FTW_H
+#include <ftw.h>
+#endif
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -1407,6 +1410,61 @@ parse_args (gint    *argc_p,
   *argc_p = e;
 }
 
+#ifdef HAVE_FTW_H
+static int
+rm_rf_nftw_visitor (const char *fpath,
+                    const struct stat *sb,
+                    int typeflag,
+                    struct FTW *ftwbuf)
+{
+  switch (typeflag)
+    {
+    case FTW_DP:
+    case FTW_D:
+    case FTW_DNR:
+      if (g_rmdir (fpath) != 0)
+        {
+          int errsv = errno;
+          g_printerr ("Unable to clean up temporary directory %s: %s\n",
+                      fpath,
+                      g_strerror (errsv));
+        }
+      break;
+
+    default:
+      if (g_remove (fpath) != 0)
+        {
+          int errsv = errno;
+          g_printerr ("Unable to clean up temporary file %s: %s\n",
+                      fpath,
+                      g_strerror (errsv));
+        }
+      break;
+    }
+
+  return 0;
+}
+
+static void
+rm_rf (const gchar *path)
+{
+  /* nopenfd specifies the maximum number of directories that [n]ftw() will
+   * hold open simultaneously. Rather than attempt to determine how many file
+   * descriptors are available, we assume that 5 are available when tearing
+   * down a test case; if that assumption is invalid, the only harm is leaving
+   * a temporary directory on disk.
+   */
+  const int nopenfd = 5;
+  int ret = nftw (path, rm_rf_nftw_visitor, nopenfd, FTW_DEPTH | FTW_MOUNT | FTW_PHYS);
+  if (ret != 0)
+    {
+      int errsv = errno;
+      g_printerr ("Unable to clean up temporary directory %s: %s\n",
+                  path,
+                  g_strerror (errsv));
+    }
+}
+#else
 /* A fairly naive `rm -rf` implementation to clean up after unit tests. */
 static void
 rm_rf (const gchar *path)
@@ -1433,6 +1491,7 @@ rm_rf (const gchar *path)
 
   g_rmdir (path);
 }
+#endif
 
 /* Implement the %G_TEST_OPTION_ISOLATE_DIRS option, iff it’s enabled. Create
  * a temporary directory for this unit test (disambiguated using @test_run_name)
