@@ -127,6 +127,61 @@ test_cleanup_handles_errors (void)
   g_free (subdir);
 }
 
+static void
+test_cleanup_doesnt_follow_symlinks (void)
+{
+#ifdef G_OS_WIN32
+  g_test_skip ("Symlinks not generally available on Windows");
+#else
+  const gchar *test_tmpdir = g_getenv ("G_TEST_TMPDIR");
+  const gchar *runtime_dir = g_get_user_runtime_dir ();
+  g_assert_cmpstr (test_tmpdir, !=, runtime_dir);
+  g_assert_true (g_str_has_prefix (runtime_dir, test_tmpdir));
+  gchar *symlink_path = g_build_filename (runtime_dir, "symlink", NULL);
+  gchar *target_path = g_build_filename (test_tmpdir, "target", NULL);
+  gchar *file_within_target = g_build_filename (target_path, "precious-data", NULL);
+
+  if (g_test_subprocess ())
+    {
+      g_assert_no_errno (g_mkdir_with_parents (runtime_dir, 0755));
+      g_assert_no_errno (symlink (target_path, symlink_path));
+
+      g_free (symlink_path);
+      g_free (target_path);
+      g_free (file_within_target);
+
+      return;
+    }
+  else
+    {
+      GError *error = NULL;
+
+      g_assert_no_errno (g_mkdir_with_parents (target_path, 0755));
+      g_file_set_contents (file_within_target, "Precious Data", -1, &error);
+      g_assert_no_error (error);
+
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_STDERR);
+      g_test_trap_assert_passed ();
+
+      /* There was a symbolic link in the test's isolated directory which
+       * pointed to a directory outside it. That directory and its contents
+       * should not have been deleted: the symbolic link should not have been
+       * followed.
+       */
+      g_assert_true (g_file_test (file_within_target, G_FILE_TEST_EXISTS));
+      g_assert_true (g_file_test (target_path, G_FILE_TEST_IS_DIR));
+
+      /* The symlink itself should have been deleted. */
+      g_assert_false (g_file_test (symlink_path, G_FILE_TEST_EXISTS));
+      g_assert_false (g_file_test (symlink_path, G_FILE_TEST_IS_SYMLINK));
+
+      g_free (symlink_path);
+      g_free (target_path);
+      g_free (file_within_target);
+    }
+#endif
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -147,5 +202,6 @@ main (int   argc,
   g_test_add_func ("/utils-isolated/user-state-dir", test_user_state_dir);
   g_test_add_func ("/utils-isolated/user-runtime-dir", test_user_runtime_dir);
   g_test_add_func ("/utils-isolated/cleanup/handles-errors", test_cleanup_handles_errors);
+  g_test_add_func ("/utils-isolated/cleanup/doesnt-follow-symlinks", test_cleanup_doesnt_follow_symlinks);
   return g_test_run ();
 }
