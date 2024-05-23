@@ -230,6 +230,7 @@ gi_base_info_type_register_static (const char     *type_name,
   info.base_finalize = NULL;
   info.class_init = class_init;
   info.class_finalize = NULL;
+  info.class_data = NULL;
   info.instance_size = (guint16) instance_size;
   info.n_preallocs = 0;
   info.instance_init = NULL;
