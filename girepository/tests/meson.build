@@ -161,3 +161,80 @@ foreach test_name, extra_args : girepository_tests
     should_fail: extra_args.get('should_fail', false),
   )
 endforeach
+
+python_tests = {}
+
+if enable_gir
+  python_tests += {
+    'gi-compile-repository.py': {
+      'depends': [gicompilerepository, glib_gir[0]],
+      'env': {
+        '_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gicompilerepository.full_path()),
+        '_G_TEST_GI_COMPILE_REPOSITORY_GLIB_GIR': glib_gir[0].full_path(),
+      },
+      'installed_tests_env': {
+        '_G_TEST_GI_COMPILE_REPOSITORY_GLIB_GIR': glib_girdir / fs.name(glib_gir[0].full_path()),
+      },
+      'suite': ['compiler'],
+    },
+  }
+endif
+
+python_test_env = test_env
+python_test_env.prepend('PYTHONPATH', python_test_libraries_path)
+
+foreach test_name, extra_args : python_tests
+  depends = [extra_args.get('depends', [])]
+  suite = ['girepository', 'no-valgrind'] + extra_args.get('suite', [])
+
+  if extra_args.get('can_fail', false)
+    suite += 'failing'
+  endif
+
+  local_test_env = python_test_env
+  foreach var, value : extra_args.get('env', {})
+    local_test_env.append(var, value)
+  endforeach
+
+  test(
+    test_name,
+    python,
+    protocol : extra_args.get('protocol', test_protocol),
+    depends: depends,
+    args: ['-B', files(test_name)],
+    env: local_test_env,
+    suite: suite,
+  )
+
+  if installed_tests_enabled
+    install_data(
+      files(test_name),
+      install_dir: installed_tests_execdir,
+      install_tag: 'tests',
+      install_mode: 'rwxr-xr-x',
+    )
+
+    test_conf = configuration_data()
+    test_conf.set('installed_tests_dir', installed_tests_execdir)
+    test_conf.set('program', test_name)
+
+    test_env_override = ''
+    installed_tests_env = extra_args.get('installed_tests_env', {})
+    if installed_tests_env != {}
+      envs = []
+      foreach var, value : installed_tests_env
+         envs += '@0@="@1@"'.format(var, value)
+      endforeach
+      test_env_override = '@0@ @1@ '.format(env_program.full_path(), ' '.join(envs))
+    endif
+    test_conf.set('env', test_env_override)
+
+    configure_file(
+      input: installed_tests_template_tap,
+      output: test_name + '.test',
+      install_dir: installed_tests_metadir,
+      install_tag: 'tests',
+      configuration: test_conf,
+    )
+  endif
+endforeach
