@@ -26,8 +26,9 @@ gi_gen_env_variables.prepend(glib_exec_var_library_path,
   fs.parent(libgmodule.full_path()), fs.parent(libgio.full_path()))
 
 if 'address' in glib_sanitizers
-  gi_gen_env_variables.append(
-    'ASAN_OPTIONS', glib_exec_asan_option_ignore_preload, separator: ',')
+  gi_gen_env_variables.append('ASAN_OPTIONS',
+    glib_exec_asan_options_disable,
+    separator: ',')
 endif
 
 if host_system == 'windows'
