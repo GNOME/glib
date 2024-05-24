@@ -207,3 +207,33 @@ if enable_gir
     suite: ['girepository', 'compiler'],
   )
 endif
+
+# When sanitizers are enabled we want to test the compiler memory is properly handled
+if enable_gir and glib_sanitizers.length() > 0
+  gir_files = {
+    'glib': glib_gir,
+    'gobject': gobject_gir,
+    'gmodule': gmodule_gir,
+    'gio': gio_gir,
+  }
+
+  if host_system != 'windows'
+    gir_files += {'glib-unix': glib_unix_gir}
+    gir_files += {'gio-unix': gio_unix_gir}
+  else
+    gir_files += {'glib-win32': glib_win32_gir}
+    gir_files += {'gio-win32': gio_win32_gir}
+  endif
+
+  foreach name, g: gir_files
+    gir = g[0]
+    test('gir-compiler-' + name, gicompilerepository,
+      args: [
+        gir,
+        '--output', meson.current_build_dir() / name + '.typelib',
+      ],
+      depends: gir,
+      suite: ['girepository', 'compiler'],
+    )
+  endforeach
+endif
