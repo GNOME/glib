@@ -172,6 +172,12 @@ if enable_gir
       'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gicompilerepository.full_path())},
       'suite': ['compiler'],
     },
+    'gi-inspect-typelib.py': {
+      'depends': [giinspecttypelib],
+      'args': ['TestGIInspectTypelibCommandLine'],
+      'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(giinspecttypelib.full_path())},
+      'suite': ['inspector'],
+    },
   }
 endif
 
@@ -193,6 +199,11 @@ if enable_gir
 
   foreach name, g: gir_files
     gir = g[0]
+    typelib = g[1]
+    typelib_name = fs.stem(typelib.full_path())
+    typelib_namespace = typelib_name.split('-')[0]
+    typelib_version = typelib_name.split('-')[-1]
+
     python_tests += {
       'gi-compile-repository-@0@.py'.format(name): {
         'depends': [gicompilerepository, gir],
@@ -211,6 +222,22 @@ if enable_gir
           '_G_TEST_GI_COMPILE_REPOSITORY_INCLUDE_DIR': name == 'glib' ? '' : glib_girdir,
         },
         'suite': ['compiler'],
+      },
+      'gi-inspect-typelib-@0@.py'.format(name): {
+        'depends': [giinspecttypelib, typelib],
+        'test_file': 'gi-inspect-typelib.py',
+        'args': ['TestGICompileRepositoryForTypelib'],
+        'env': {
+          '_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(giinspecttypelib.full_path()),
+          '_G_TEST_GI_INSPECT_TYPELIB_NAMESPACE': typelib_namespace,
+          '_G_TEST_GI_INSPECT_TYPELIB_VERSION': typelib_version,
+          'GI_TYPELIB_PATH': fs.parent(typelib.full_path()),
+        },
+        'installed_tests_env': {
+          '_G_TEST_GI_INSPECT_TYPELIB_NAMESPACE': typelib_namespace,
+          '_G_TEST_GI_INSPECT_TYPELIB_VERSION': typelib_version,
+        },
+        'suite': ['inspector'],
       },
     }
   endforeach
