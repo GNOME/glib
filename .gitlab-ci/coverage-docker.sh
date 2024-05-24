@@ -27,7 +27,6 @@ for path in _coverage/*.lcov; do
 done
 
 genhtml \
-    --ignore-errors=source \
     --config-file .lcovrc \
     _coverage/*.lcov \
     -o _coverage/coverage

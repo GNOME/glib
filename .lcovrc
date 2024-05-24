@@ -14,3 +14,6 @@ lcov_excl_br_line = LCOV_EXCL_BR_LINE|g_return_if_fail|g_return_val_if_fail|g_as
 
 # Similarly for unreachable assertions.
 lcov_excl_line = LCOV_EXCL_LINE|g_return_if_reached|g_return_val_if_reached|g_assert_not_reached
+
+# When using dtrace some temporary files may be leaked as source files
+ignore_errors = source
