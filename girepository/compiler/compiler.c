@@ -229,6 +229,7 @@ main (int argc, char **argv)
 
   {
     GITypelib *typelib = NULL;
+    int write_successful;
 
     if (shlibs)
       {
@@ -246,10 +247,14 @@ main (int argc, char **argv)
       g_error (_("Invalid typelib for module ‘%s’: %s"),
                module->name, error->message);
 
-    if (!write_out_typelib (NULL, typelib))
-      return 1;
-
+    write_successful = write_out_typelib (NULL, typelib);
     g_clear_pointer (&typelib, gi_typelib_unref);
+
+    if (!write_successful)
+      {
+        gi_ir_parser_free (parser);
+        return 1;
+      }
   }
 
   g_debug ("[building] done");
