@@ -2736,12 +2736,18 @@ else
   glib_exec_var_preload_separator = ' '
 endif
 
+glib_exec_asan_options_disable = []
 glib_exec_asan_option_ignore_preload = ''
 if 'address' in glib_sanitizers
   # libasan needs to be the first in the preload list, and that we can’t
   # guarantee that, so we have to disable its link order checking when using
   # LD_PRELOAD in tests.
   glib_exec_asan_option_ignore_preload = 'verify_asan_link_order=false'
+  glib_exec_asan_options_disable = [
+    glib_exec_asan_option_ignore_preload,
+    'start_deactivated=true',
+    'detect_leaks=false',
+  ]
 endif
 
 if cc.get_argument_syntax() == 'gcc'
