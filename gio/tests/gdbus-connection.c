@@ -539,7 +539,7 @@ test_connection_signal_handler (GDBusConnection  *connection,
 
   /* We defer quitting to a G_PRIORITY_DEFAULT_IDLE function so other queued signal
    * callbacks have a chance to run first. They get dispatched with a higher priority
-   * of G_PIORITY_DEFAULT, so as long as the queue is non-empty g_main_loop_quit won't
+   * of G_PRIORITY_DEFAULT, so as long as the queue is non-empty g_main_loop_quit won't
    * run
    */
   g_idle_add_once ((GSourceOnceFunc) g_main_loop_quit, loop);
