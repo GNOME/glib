@@ -219,6 +219,7 @@ main (int argc, char **argv)
       g_fprintf (stderr, "%s\n", message);
       g_free (message);
       gi_ir_parser_free (parser);
+      g_error_free (error);
 
       return 1;
     }
