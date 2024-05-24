@@ -167,17 +167,53 @@ python_tests = {}
 if enable_gir
   python_tests += {
     'gi-compile-repository.py': {
-      'depends': [gicompilerepository, glib_gir[0]],
-      'env': {
-        '_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gicompilerepository.full_path()),
-        '_G_TEST_GI_COMPILE_REPOSITORY_GLIB_GIR': glib_gir[0].full_path(),
-      },
-      'installed_tests_env': {
-        '_G_TEST_GI_COMPILE_REPOSITORY_GLIB_GIR': glib_girdir / fs.name(glib_gir[0].full_path()),
-      },
+      'depends': [gicompilerepository],
+      'args': ['TestGICompileRepository'],
+      'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gicompilerepository.full_path())},
       'suite': ['compiler'],
     },
   }
+endif
+
+if enable_gir
+  gir_files = {
+    'glib': glib_gir,
+    'gobject': gobject_gir,
+    'gmodule': gmodule_gir,
+    'gio': gio_gir,
+  }
+
+  if host_system != 'windows'
+    gir_files += {'glib-unix': glib_unix_gir}
+    gir_files += {'gio-unix': gio_unix_gir}
+  else
+    gir_files += {'glib-win32': glib_win32_gir}
+    gir_files += {'gio-win32': gio_win32_gir}
+  endif
+
+  foreach name, g: gir_files
+    gir = g[0]
+    python_tests += {
+      'gi-compile-repository-@0@.py'.format(name): {
+        'depends': [gicompilerepository, gir],
+        'test_file': 'gi-compile-repository.py',
+        'args': ['TestGICompileRepositoryForGir'],
+        'env': {
+          '_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gicompilerepository.full_path()),
+          '_G_TEST_GI_COMPILE_REPOSITORY_GIR': gir.full_path(),
+          '_G_TEST_GI_COMPILE_REPOSITORY_INCLUDE_DIR': name == 'glib' ?
+            '' : fs.parent(gir.full_path()),
+        },
+        'installed_tests_env': {
+          '_G_TEST_GI_COMPILE_REPOSITORY_GIR': glib_girdir / fs.name(gir.full_path()),
+          # This is not fully needed for installed tests, but we pass it to ensure
+          # expliciltly use the gir files from this installation prefix.
+          '_G_TEST_GI_COMPILE_REPOSITORY_INCLUDE_DIR': name == 'glib' ? '' : glib_girdir,
+        },
+        'suite': ['compiler'],
+      },
+    }
+  endforeach
 endif
 
 python_test_env = test_env
@@ -196,19 +232,24 @@ foreach test_name, extra_args : python_tests
     local_test_env.append(var, value)
   endforeach
 
+  test_file = files(extra_args.get('test_file', test_name))
+  test_args = extra_args.get('args', [])
+
   test(
     test_name,
     python,
     protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
-    args: ['-B', files(test_name)],
+    args: ['-B', test_file, test_args],
     env: local_test_env,
     suite: suite,
   )
 
   if installed_tests_enabled
+    installed_tests_env = extra_args.get('installed_tests_env', {})
+
     install_data(
-      files(test_name),
+      test_file,
       install_dir: installed_tests_execdir,
       install_tag: 'tests',
       install_mode: 'rwxr-xr-x',
@@ -216,7 +257,7 @@ foreach test_name, extra_args : python_tests
 
     test_conf = configuration_data()
     test_conf.set('installed_tests_dir', installed_tests_execdir)
-    test_conf.set('program', test_name)
+    test_conf.set('program', ' '.join([fs.name(test_file), test_args]))
 
     test_env_override = ''
     installed_tests_env = extra_args.get('installed_tests_env', {})

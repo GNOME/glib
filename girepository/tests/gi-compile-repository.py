@@ -26,12 +26,19 @@ import unittest
 import taptestrunner
 import testprogramrunner
 
+GIR_ENV_VARIABLE = "_G_TEST_GI_COMPILE_REPOSITORY_GIR"
+GIR_INCLUDE_DIR_ENV_VARIABLE = "_G_TEST_GI_COMPILE_REPOSITORY_INCLUDE_DIR"
+
 
 class TestGICompileRepositoryBase(testprogramrunner.TestProgramRunner):
-    """Integration test for checking gi-compile-repository behavior"""
+    """Integration test base class for checking gi-compile-repository behavior"""
 
     PROGRAM_NAME = "gi-compile-repository"
     PROGRAM_TYPE = testprogramrunner.ProgramType.NATIVE
+
+
+class TestGICompileRepository(TestGICompileRepositoryBase):
+    """Integration test for checking gi-compile-repository behavior"""
 
     def test_open_failure(self):
         gir_path = "this-is/not/a-file.gir"
@@ -43,16 +50,49 @@ class TestGICompileRepositoryBase(testprogramrunner.TestProgramRunner):
         self.assertEqual(result.info.returncode, 1)
         self.assertIn(f"Error parsing file ‘{gir_path}’", result.err)
 
+
+class TestGICompileRepositoryForGir(TestGICompileRepositoryBase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls._gir_path = os.getenv(GIR_ENV_VARIABLE)
+        cls._include_dir = os.getenv(GIR_INCLUDE_DIR_ENV_VARIABLE)
+
+    def setUp(self):
+        if not self._gir_path:
+            self.skipTest(f"The test is only valid when {GIR_ENV_VARIABLE} is set")
+
+        super().setUp()
+
+    def runTestProgram(self, *args, **kwargs):
+        argv = [self._gir_path]
+        argv.extend(*args)
+
+        if self._include_dir:
+            argv.extend(["--includedir", self._include_dir])
+
+        return super().runTestProgram(argv, **kwargs)
+
     def test_write_failure(self):
         typelib_path = "this-is/not/a-good-output/invalid.typelib"
-        glib_gir = os.environ["_G_TEST_GI_COMPILE_REPOSITORY_GLIB_GIR"]
-        result = self.runTestProgram(
-            [glib_gir, "--output", typelib_path],
-            should_fail=True,
-        )
+        argv = ["--output", typelib_path]
+
+        result = self.runTestProgram(argv, should_fail=True)
 
         self.assertEqual(result.info.returncode, 1)
         self.assertIn(f"Failed to open ‘{typelib_path}.tmp’", result.err)
+
+    def test_compile(self):
+        typelib_name = os.path.splitext(os.path.basename(self._gir_path))[0]
+        typelib_path = os.path.join(self.tmpdir.name, f"{typelib_name}.typelib")
+        argv = ["--output", typelib_path]
+
+        result = self.runTestProgram(argv)
+
+        self.assertFalse(result.out)
+        self.assertFalse(result.err)
+        self.assertTrue(os.path.exists(typelib_path))
 
 
 if __name__ == "__main__":
