@@ -821,7 +821,7 @@
 {
 	g_set_user_dirs_str
 	Memcheck:Leak
-	match-leak-kinds:definite,reachable
+	match-leak-kinds:definite,reachable,possible
 	fun:malloc
 	...
 	fun:set_str_if_different
@@ -833,7 +833,7 @@
 {
 	g_set_user_dirs_strv
 	Memcheck:Leak
-	match-leak-kinds:definite,reachable
+	match-leak-kinds:definite,reachable,possible
 	fun:malloc
 	...
 	fun:set_strv_if_different
