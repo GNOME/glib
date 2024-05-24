@@ -23,6 +23,10 @@
 #include <glib/glib.h>
 #include <glib/gstdio.h>
 
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
+
 /* Test that all of the well-known directories returned by GLib
  * are returned as children of test_tmpdir when running with
  * %G_TEST_OPTION_ISOLATE_DIRS. This ensures that tests should
