@@ -186,3 +186,24 @@ foreach test_name, extra_args : girepository_tests
     should_fail: extra_args.get('should_fail', false),
   )
 endforeach
+
+if enable_gir
+  test('gir-compiler-glib-open-failure', gicompilerepository,
+    args: [
+    'this-is' / 'not' / 'a-file.gir',
+      '--output', meson.current_build_dir() / 'invalid.typelib',
+    ],
+    should_fail: true,
+    suite: ['girepository', 'compiler'],
+  )
+
+  test('gir-compiler-glib-write-failure', gicompilerepository,
+    args: [
+      glib_gir[0],
+      '--output', 'this-is' / 'not' / 'a-good-output' / 'invalid.typelib',
+    ],
+    depends: glib_gir[0],
+    should_fail: true,
+    suite: ['girepository', 'compiler'],
+  )
+endif
