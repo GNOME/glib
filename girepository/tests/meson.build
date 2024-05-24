@@ -235,5 +235,34 @@ if enable_gir and glib_sanitizers.length() > 0
       depends: gir,
       suite: ['girepository', 'compiler'],
     )
+
+    typelib = g[1]
+    typelib_name = fs.stem(typelib.full_path())
+    test('gi-inspect-typelib-' + name, giinspecttypelib,
+      args: [
+        '--print-typelibs',
+        '--print-shlibs',
+        typelib_name.split('-')[0],
+        '--typelib-version='+typelib_name.split('-')[-1],
+      ],
+      env: {
+        'GI_TYPELIB_PATH': fs.parent(typelib.full_path()),
+      },
+      depends: typelib,
+      suite: ['girepository', 'inspector'],
+    )
   endforeach
 endif
+
+test('gi-inspect-typelib-not-found', giinspecttypelib,
+  args: [
+    '--print-typelibs',
+    '--print-shlibs',
+    'AnInvalidNameSpace'
+  ],
+  env: {
+    'GI_TYPELIB_PATH': meson.current_build_dir(),
+  },
+  should_fail: true,
+  suite: ['girepository', 'inspector'],
+)
