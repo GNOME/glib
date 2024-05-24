@@ -20,3 +20,6 @@ ignore_errors = source
 
 # Sometimes we may have negative counting despite using atomic profile update
 ignore_errors = negative
+
+# gnulib paths may not be used
+ignore_errors = unused
