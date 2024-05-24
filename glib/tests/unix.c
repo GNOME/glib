@@ -103,14 +103,18 @@ test_closefrom (void)
 
           if (flags == -1)
             {
+              int exit_code = 100 + fds[i];
               async_signal_safe_message ("fd should not have been closed");
-              _exit (100 + fds[i]);
+              g_free (fds);
+              _exit (exit_code);
             }
 
           if (flags & FD_CLOEXEC)
             {
+              int exit_code = 100 + fds[i];
               async_signal_safe_message ("fd should not have been close-on-exec yet");
-              _exit (100 + fds[i]);
+              g_free (fds);
+              _exit (exit_code);
             }
         }
 
@@ -122,14 +126,18 @@ test_closefrom (void)
 
           if (flags == -1)
             {
+              int exit_code = 100 + fds[i];
               async_signal_safe_message ("fd should not have been closed");
-              _exit (100 + fds[i]);
+              g_free (fds);
+              _exit (exit_code);
             }
 
           if (!(flags & FD_CLOEXEC))
             {
+              int exit_code = 100 + fds[i];
               async_signal_safe_message ("fd should have been close-on-exec");
-              _exit (100 + fds[i]);
+              g_free (fds);
+              _exit (exit_code);
             }
         }
 
@@ -142,12 +150,14 @@ test_closefrom (void)
           if (flags == -1)
             {
               async_signal_safe_message ("fd should not have been closed");
+              g_free (fds);
               _exit (100 + fd);
             }
 
           if (flags & FD_CLOEXEC)
             {
               async_signal_safe_message ("fd should not have been close-on-exec");
+              g_free (fds);
               _exit (100 + fd);
             }
         }
@@ -157,10 +167,12 @@ test_closefrom (void)
           if (fcntl (fds[i], F_GETFD) != -1 || errno != EBADF)
             {
               async_signal_safe_message ("fd should have been closed");
+              g_free (fds);
               _exit (100 + fds[i]);
             }
         }
 
+      g_free (fds);
       _exit (0);
     }
 
