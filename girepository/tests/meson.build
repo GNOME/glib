@@ -173,6 +173,11 @@ if enable_gir
       },
       'suite': ['compiler'],
     },
+    'gi-inspect-typelib.py': {
+      'depends': [giinspecttypelib, glib_gir[1], gobject_gir[1], gio_gir[1]],
+      'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(giinspecttypelib.full_path())},
+      'suite': ['inspector'],
+    },
   }
 endif
 
