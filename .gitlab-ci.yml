@@ -174,7 +174,7 @@ fedora-x86_64:
   stage: build
   needs: []
   variables:
-    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
+    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs -fprofile-update=atomic"
   before_script:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]

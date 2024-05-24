@@ -17,3 +17,6 @@ lcov_excl_line = LCOV_EXCL_LINE|g_return_if_reached|g_return_val_if_reached|g_as
 
 # When using dtrace some temporary files may be leaked as source files
 ignore_errors = source
+
+# Sometimes we may have negative counting despite using atomic profile update
+ignore_errors = negative
