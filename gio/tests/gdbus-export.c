@@ -1928,6 +1928,17 @@ test_threaded_unregistration_iteration (gboolean subtree)
   g_clear_object (&call_result);
   g_clear_object (&data.connection);
 
+  /* We defer quitting to a G_PRIORITY_DEFAULT_IDLE function so other queued
+   * signal callbacks have a chance to run first.
+   * In particular we want to ensure that all calls to on_object_unregistered()
+   * are delivered here before we end this function, so that there won't be any
+   * invalid stack access.
+   * They get dispatched with a higher priority (G_PRIORITY_DEFAULT), so as
+   * long as the queue is non-empty g_main_loop_quit won't run
+   */
+  g_idle_add_once ((GSourceOnceFunc) g_main_loop_quit, loop);
+  g_main_loop_run (loop);
+
   return unregistration_was_first;
 }
 
