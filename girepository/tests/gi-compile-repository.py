@@ -30,7 +30,7 @@ import testprogramrunner
 
 
 class TestGICompileRepositoryBase(testprogramrunner.TestProgramRunner):
-    """Integration test for checking gi-compile-repository behavior"""
+    """Integration test base class for checking gi-compile-repository behavior"""
 
     PROGRAM_NAME = "gi-compile-repository"
     PROGRAM_TYPE = testprogramrunner.ProgramType.NATIVE
@@ -54,6 +54,10 @@ class TestGICompileRepositoryBase(testprogramrunner.TestProgramRunner):
             )
         print(f"gir path set to {cls._gir_path}")
 
+
+class TestGICompileRepository(TestGICompileRepositoryBase):
+    """Integration test for checking gi-compile-repository behavior"""
+
     def test_open_failure(self):
         gir_path = "this-is/not/a-file.gir"
         result = self.runTestProgram(
@@ -64,17 +68,49 @@ class TestGICompileRepositoryBase(testprogramrunner.TestProgramRunner):
         self.assertEqual(result.info.returncode, 1)
         self.assertIn(f"Error parsing file ‘{gir_path}’", result.err)
 
+
+class TestGICompileRepositoryForGLib(TestGICompileRepositoryBase):
+    GIR_NAME = "GLib-2.0"
+
+    def runTestProgram(self, *args, **kwargs):
+        gir_file = os.path.join(self._gir_path, f"{self.GIR_NAME}.gir")
+        self.assertTrue(os.path.exists(gir_file))
+        argv = [gir_file]
+        argv.extend(*args)
+
+        if self.GIR_NAME != "GLib-2.0":
+            argv.extend(["--includedir", self._gir_path])
+
+        return super().runTestProgram(argv, **kwargs)
+
     def test_write_failure(self):
         typelib_path = "this-is/not/a-good-output/invalid.typelib"
-        glib_gir = os.path.join(self._gir_path, "GLib-2.0.gir")
-        self.assertTrue(os.path.exists(glib_gir))
         result = self.runTestProgram(
-            [glib_gir, "--output", typelib_path],
+            ["--output", typelib_path],
             should_fail=True,
         )
 
         self.assertEqual(result.info.returncode, 1)
         self.assertIn(f"Failed to open ‘{typelib_path}.tmp’", result.err)
+
+    def test_compile(self):
+        typelib_name = os.path.splitext(self.GIR_NAME)[0]
+        typelib_path = os.path.join(self.tmpdir.name, f"{typelib_name}.typelib")
+        argv = ["--output", typelib_path]
+
+        result = self.runTestProgram(argv)
+
+        self.assertFalse(result.out)
+        self.assertFalse(result.err)
+        self.assertTrue(os.path.exists(typelib_path))
+
+
+class TestGICompileRepositoryForGObject(TestGICompileRepositoryForGLib):
+    GIR_NAME = "GObject-2.0"
+
+
+class TestGICompileRepositoryForGio(TestGICompileRepositoryForGLib):
+    GIR_NAME = "Gio-2.0"
 
 
 if __name__ == "__main__":

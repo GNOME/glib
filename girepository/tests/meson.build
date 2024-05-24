@@ -167,7 +167,7 @@ python_tests = {}
 if enable_gir
   python_tests += {
     'gi-compile-repository.py': {
-      'depends': [gicompilerepository, glib_gir[0]],
+      'depends': [gicompilerepository, glib_gir[0], gobject_gir[0], gio_gir[0]],
       'env': {
         '_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gicompilerepository.full_path()),
       },
@@ -203,6 +203,8 @@ foreach test_name, extra_args : python_tests
   )
 
   if installed_tests_enabled
+    installed_tests_env = extra_args.get('installed_tests_env', {})
+
     install_data(
       files(test_name),
       install_dir: installed_tests_execdir,
