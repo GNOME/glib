@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-02-14 09:23+0000\n"
-"PO-Revision-Date: 2024-02-19 11:48+0100\n"
+"POT-Creation-Date: 2024-05-15 11:20+0000\n"
+"PO-Revision-Date: 2024-05-26 00:17+0200\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Project-Style: gnome\n"
 
 #: gio/gappinfo.c:339
@@ -78,8 +78,7 @@ msgstr "Reemplaça la instància en execució"
 msgid "Print help"
 msgstr "Mostra l'ajuda"
 
-#: gio/gapplication-tool.c:49 gio/gresource-tool.c:498
-#: gio/gresource-tool.c:566
+#: gio/gapplication-tool.c:49 gio/gresource-tool.c:498 gio/gresource-tool.c:566
 msgid "[COMMAND]"
 msgstr "[ORDRE]"
 
@@ -138,7 +137,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:108
-#: gio/gio-tool.c:259
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
 msgid "COMMAND"
 msgstr "ORDRE"
 
@@ -151,16 +150,19 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 "Identificador de l'aplicació en format D-Bus (p. ex.: org.example.viewer)"
 
+#. Translators: commandline placeholder
 #: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
 #: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
+#: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
+#: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "FITXER"
 
 #: gio/gapplication-tool.c:76
 msgid "Optional relative or absolute filenames, or URIs to open"
-msgstr ""
-"Noms de fitxers relatius opcionals o relatius, o URI que s'han d'obrir"
+msgstr "Noms de fitxers relatius opcionals o relatius, o URI que s'han d'obrir"
 
 #: gio/gapplication-tool.c:77
 msgid "ACTION"
@@ -320,7 +322,7 @@ msgstr "Ja està tancat el flux"
 msgid "Truncate not supported on base stream"
 msgstr "No es permet truncar en els fluxos base"
 
-#: gio/gcancellable.c:326 gio/gdbusconnection.c:1844 gio/gdbusprivate.c:1434
+#: gio/gcancellable.c:326 gio/gdbusconnection.c:1994 gio/gdbusprivate.c:1434
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -421,8 +423,8 @@ msgid ""
 "Address “%s” is invalid (need exactly one of path, dir, tmpdir, or abstract "
 "keys)"
 msgstr ""
-"L'adreça «%s» no és vàlida (ha de ser, o bé un camí, o bé un tmpdir "
-"-directori temporal-, o bé unes claus abstractes)"
+"L'adreça «%s» no és vàlida (ha de ser, o bé un camí, o bé un tmpdir -"
+"directori temporal-, o bé unes claus abstractes)"
 
 #: gio/gdbusaddress.c:252 gio/gdbusaddress.c:263 gio/gdbusaddress.c:278
 #: gio/gdbusaddress.c:339 gio/gdbusaddress.c:350
@@ -466,11 +468,11 @@ msgstr ""
 #: gio/gdbusaddress.c:519
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, “%s”, in address element"
-" “%s”"
+"Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
+"“%s”"
 msgstr ""
-"S'ha produït un error en suprimir l'escapament d'una clau o d'un valor en la"
-" parella clau/valor %d, «%s», de l'element d'adreça «%s»"
+"S'ha produït un error en suprimir l'escapament d'una clau o d'un valor en la "
+"parella clau/valor %d, «%s», de l'element d'adreça «%s»"
 
 #: gio/gdbusaddress.c:587
 #, c-format
@@ -497,8 +499,7 @@ msgstr ""
 
 #: gio/gdbusaddress.c:650
 #, c-format
-msgid ""
-"Error in address “%s” — the noncefile attribute is missing or malformed"
+msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: l'atribut noncefile no existeix o està mal "
 "formatat"
@@ -562,16 +563,16 @@ msgstr ""
 "No s'ha pogut determinar l'adreça del bus de sessió (no està implementat en "
 "aquest sistema operatiu)"
 
-#: gio/gdbusaddress.c:1377 gio/gdbusconnection.c:7339
+#: gio/gdbusaddress.c:1377 gio/gdbusconnection.c:7787
 #, c-format
 msgid ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable"
-" — unknown value “%s”"
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
+"— unknown value “%s”"
 msgstr ""
 "No es pot determinar l'adreça del bus a través de la variable d'entorn "
 "«DBUS_STARTER_BUS_TYPE»: conté un valor desconegut «%s»"
 
-#: gio/gdbusaddress.c:1386 gio/gdbusconnection.c:7348
+#: gio/gdbusaddress.c:1386 gio/gdbusconnection.c:7796
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -597,11 +598,10 @@ msgstr ""
 #: gio/gdbusauth.c:480
 #, c-format
 msgid ""
-"Exhausted all available authentication mechanisms (tried: %s) (available: "
-"%s)"
+"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
-"S'han exhaurit tots els mecanismes d'autenticació disponibles (s'han provat:"
-" %s) (hi ha disponibles: %s)"
+"S'han exhaurit tots els mecanismes d'autenticació disponibles (s'han provat: "
+"%s) (hi ha disponibles: %s)"
 
 #: gio/gdbusauth.c:1043
 msgid "Unexpected lack of content trying to read a byte"
@@ -648,8 +648,7 @@ msgstr "L'operació no està implementada"
 #: gio/gdbusauthmechanismsha1.c:411
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
-msgstr ""
-"S'ha produït un error en obrir l'anell de claus «%s» per a llegir-lo: "
+msgstr "S'ha produït un error en obrir l'anell de claus «%s» per a llegir-lo: "
 
 #: gio/gdbusauthmechanismsha1.c:434 gio/gdbusauthmechanismsha1.c:775
 #, c-format
@@ -669,8 +668,7 @@ msgstr ""
 #: gio/gdbusauthmechanismsha1.c:462 gio/gdbusauthmechanismsha1.c:803
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at “%s” with content “%s” is "
-"malformed"
+"Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "El segon testimoni de la línia %d de l'anell de claus a «%s» amb el "
 "contingut «%s» no està ben formatat"
@@ -714,22 +712,22 @@ msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr ""
 "(A més a més, l'alliberació del blocatge per a «%s» també ha fallat: %s) "
 
-#: gio/gdbusconnection.c:585 gio/gdbusconnection.c:2392
+#: gio/gdbusconnection.c:733 gio/gdbusconnection.c:2748
 msgid "The connection is closed"
 msgstr "La connexió està tancada"
 
-#: gio/gdbusconnection.c:1876
+#: gio/gdbusconnection.c:2026
 msgid "Timeout was reached"
 msgstr "S'ha esgotat el temps d'espera"
 
-#: gio/gdbusconnection.c:2515
+#: gio/gdbusconnection.c:2871
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "S'han trobat senyaladors no implementats en construir-se la part de la "
 "connexió del client"
 
-#: gio/gdbusconnection.c:4277 gio/gdbusconnection.c:4631
+#: gio/gdbusconnection.c:4719 gio/gdbusconnection.c:5073
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
@@ -737,80 +735,80 @@ msgstr ""
 "No existeix la interfície «org.freedesktop.DBus.Properties» en l'objecte al "
 "camí %s"
 
-#: gio/gdbusconnection.c:4422
+#: gio/gdbusconnection.c:4864
 #, c-format
 msgid "No such property “%s”"
 msgstr "No existeix la propietat «%s»"
 
-#: gio/gdbusconnection.c:4434
+#: gio/gdbusconnection.c:4876
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "La propietat «%s» no és de lectura"
 
-#: gio/gdbusconnection.c:4445
+#: gio/gdbusconnection.c:4887
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "La propietat «%s» no és d'escriptura"
 
-#: gio/gdbusconnection.c:4465
+#: gio/gdbusconnection.c:4907
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "S'ha produït un error en establir la propietat «%s»: s'esperava el tipus "
 "«%s», però s'ha obtingut el «%s»"
 
-#: gio/gdbusconnection.c:4570 gio/gdbusconnection.c:4785
-#: gio/gdbusconnection.c:6762
+#: gio/gdbusconnection.c:5012 gio/gdbusconnection.c:5227
+#: gio/gdbusconnection.c:7207
 #, c-format
 msgid "No such interface “%s”"
 msgstr "No existeix la interfície «%s»"
 
-#: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
+#: gio/gdbusconnection.c:5443 gio/gdbusconnection.c:7727
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "No existeix la interfície «%s» en l'objecte al camí %s"
 
-#: gio/gdbusconnection.c:5102
+#: gio/gdbusconnection.c:5544
 #, c-format
 msgid "No such method “%s”"
 msgstr "No existeix el mètode «%s»"
 
-#: gio/gdbusconnection.c:5133
+#: gio/gdbusconnection.c:5575
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "El tipus de missatge «%s» no correspon al tipus «%s» que s'esperava"
 
-#: gio/gdbusconnection.c:5336
+#: gio/gdbusconnection.c:5778
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Ja hi ha un objecte exportat per a la interfície %s a %s"
 
-#: gio/gdbusconnection.c:5563
+#: gio/gdbusconnection.c:6008
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "No s'ha pogut recuperar la propietat %s.%s"
 
-#: gio/gdbusconnection.c:5619
+#: gio/gdbusconnection.c:6064
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "No s'ha pogut establir la propietat %s.%s"
 
-#: gio/gdbusconnection.c:5798
+#: gio/gdbusconnection.c:6243
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "El mètode «%s» ha retornat un tipus «%s», però s'esperava «%s»"
 
-#: gio/gdbusconnection.c:6874
+#: gio/gdbusconnection.c:7319
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "No existeix el mètode «%s» a la interfície «%s» amb la signatura «%s»"
 
-#: gio/gdbusconnection.c:6995
+#: gio/gdbusconnection.c:7440
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ja està exportat un subarbre per a %s"
 
-#: gio/gdbusconnection.c:7287
+#: gio/gdbusconnection.c:7735
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "L'objecte no existeix al camí «%s»"
@@ -835,11 +833,11 @@ msgstr "Missatge %s: s'ha subministrat un camp de capçalera NO VÀLID"
 #: gio/gdbusmessage.c:1424
 #, c-format
 msgid ""
-"%s message: PATH header field is using the reserved value "
-"/org/freedesktop/DBus/Local"
+"%s message: PATH header field is using the reserved value /org/freedesktop/"
+"DBus/Local"
 msgstr ""
-"Missatge %s: el camp de capçalera PATH està utilitzant el valor reservat "
-"/org/freedesktop/DBus/Local"
+"Missatge %s: el camp de capçalera PATH està utilitzant el valor reservat /"
+"org/freedesktop/DBus/Local"
 
 #: gio/gdbusmessage.c:1437
 #, c-format
@@ -852,8 +850,8 @@ msgstr ""
 #: gio/gdbusmessage.c:1446
 #, c-format
 msgid ""
-"%s message: INTERFACE header field is using the reserved value "
-"org.freedesktop.DBus.Local"
+"%s message: INTERFACE header field is using the reserved value org."
+"freedesktop.DBus.Local"
 msgstr ""
 "Missatge %s: el camp de capçalera de la INTERFÍCIE està utilitzant el valor "
 "reservat org.freedesktop.DBus.Local"
@@ -866,8 +864,7 @@ msgstr ""
 
 #: gio/gdbusmessage.c:1472
 #, c-format
-msgid ""
-"%s message: ERROR_NAME header field does not contain a valid error name"
+msgid "%s message: ERROR_NAME header field does not contain a valid error name"
 msgstr ""
 "Missatge %s: el camp de la capçalera ERRORNAME no conté un nom d'error vàlid"
 
@@ -893,8 +890,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was "
-"“%s”"
+"(length of string is %d). The valid UTF-8 string up until that point was “%s”"
 msgstr ""
 "S'esperava una cadena UTF-8 vàlida però s'han trobat bytes no vàlids a "
 "l'òfset %d (la llargada de la cadena és %d). La cadena UTF-8 vàlida fins "
@@ -919,8 +915,7 @@ msgstr "El valor analitzat «%s» no és una signatura D-Bus vàlida"
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
-"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 "
-"MiB)."
+"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
 "S'ha trobat una matriu de llargada %u byte. La llargada màxima és de 2<<26 "
 "bytes (64 MiB)."
@@ -949,8 +944,7 @@ msgstr "El valor analitzat «%s» per variant no és una signatura D-Bus vàlida
 #: gio/gdbusmessage.c:2190
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string “%s” from the D-Bus wire "
-"format"
+"Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
 "S'ha produït un error en convertir a estructura de dades la GVariant amb el "
 "tipus de cadena «%s» del format de cable D-Bus"
@@ -1005,8 +999,8 @@ msgstr "No s'ha pogut tornar a convertir el missatge a estructura de dades: "
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr ""
-"No s'ha pogut convertir a seqüència de bits la GVariant de tipus cadena «%s»"
-" al format de cable D-Bus"
+"No s'ha pogut convertir a seqüència de bits la GVariant de tipus cadena «%s» "
+"al format de cable D-Bus"
 
 #: gio/gdbusmessage.c:3012
 #, c-format
@@ -1061,8 +1055,8 @@ msgstr "(Premeu qualsevol tecla per a tancar aquesta finestra)\n"
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
-"El bus de sessió (D-Bus) no està en funcionament i l'arrencada automàtica no"
-" ha funcionat"
+"El bus de sessió (D-Bus) no està en funcionament i l'arrencada automàtica no "
+"ha funcionat"
 
 #: gio/gdbusprivate.c:2410
 #, c-format
@@ -1141,7 +1135,8 @@ msgstr ""
 "  emit         Emet un senyal\n"
 "  wait         Espera que aparegui un nom de bus\n"
 "\n"
-"Utilitzeu «%s ORDRE --help» per a veure l'ajuda de cada ordre en particular.\n"
+"Utilitzeu «%s ORDRE --help» per a veure l'ajuda de cada ordre en "
+"particular.\n"
 
 #: gio/gdbus-tool.c:204 gio/gdbus-tool.c:276 gio/gdbus-tool.c:347
 #: gio/gdbus-tool.c:371 gio/gdbus-tool.c:861 gio/gdbus-tool.c:1246
@@ -1177,6 +1172,10 @@ msgstr "Connecta al bus de la sessió"
 #: gio/gdbus-tool.c:407
 msgid "Connect to given D-Bus address"
 msgstr "Connecta a l'adreça de D-Bus donada"
+
+#: gio/gdbus-tool.c:407
+msgid "ADDRESS"
+msgstr "ADREÇA"
 
 #: gio/gdbus-tool.c:417
 msgid "Connection Endpoint Options:"
@@ -1318,7 +1317,8 @@ msgstr "Error: el nom del mètode «%s» no és vàlid\n"
 #: gio/gdbus-tool.c:1169
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
-msgstr "S'ha produït un error en analitzar el paràmetre %d del tipus «%s»: %s\n"
+msgstr ""
+"S'ha produït un error en analitzar el paràmetre %d del tipus «%s»: %s\n"
 
 #: gio/gdbus-tool.c:1195
 #, c-format
@@ -1373,8 +1373,8 @@ msgstr "Servei a activar abans d'esperar l'altre (nom conegut)"
 
 #: gio/gdbus-tool.c:2205
 msgid ""
-"Timeout to wait for before exiting with an error (seconds); 0 for no timeout"
-" (default)"
+"Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
+"(default)"
 msgstr ""
 "Temps d'espera abans de sortir amb un error (segons); 0 si no voleu temps "
 "d'espera (predeterminat)"
@@ -1521,6 +1521,7 @@ msgstr "S'esperava un GEmblem per a un GEmblemedIcon"
 #. Translators: This is an error message when
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
+#.
 #: gio/gfile.c:1604
 msgid "Containing mount does not exist"
 msgstr "No existeix el punt de muntatge contenidor"
@@ -1562,8 +1563,7 @@ msgstr ""
 
 #: gio/gfile.c:3331
 msgid "Copy (reflink/clone) is not supported or invalid"
-msgstr ""
-"No està implementada o no és vàlida la còpia (referències, clonacions)"
+msgstr "No està implementada o no és vàlida la còpia (referències, clonacions)"
 
 #: gio/gfile.c:3336
 msgid "Copy (reflink/clone) is not supported or didn’t work"
@@ -1583,7 +1583,7 @@ msgstr "No es pot copiar el fitxer especial"
 msgid "Invalid symlink value given"
 msgstr "El valor donat per a l'enllaç simbòlic no és vàlid"
 
-#: gio/gfile.c:4342 glib/gfileutils.c:2399
+#: gio/gfile.c:4342 glib/gfileutils.c:2409
 msgid "Symbolic links not supported"
 msgstr "No es poden utilitzar els enllaços simbòlics"
 
@@ -1911,8 +1911,7 @@ msgstr "Conserva tots els atributs"
 #: gio/gio-tool-copy.c:50 gio/gio-tool-move.c:43 gio/gio-tool-save.c:51
 msgid "Backup existing destination files"
 msgstr ""
-"Crea una còpia de seguretat dels fitxers existents al directori de "
-"destinació"
+"Crea una còpia de seguretat dels fitxers existents al directori de destinació"
 
 #: gio/gio-tool-copy.c:51
 msgid "Never follow symbolic links"
@@ -2058,8 +2057,10 @@ msgid ""
 msgstr ""
 "gio info és similar a l'eina tradicional ls, però usant ubicacions GIO\n"
 "en comptes de fitxers locals: per exemple, podeu usar quelcom com ara\n"
-"smb://servidor/recurs/fitxer.txt com a ubicació. Els atributs de fitxer poden\n"
-"especificar-se amb el seu nom GIO. Per exemple, standard::icon o usant només el\n"
+"smb://servidor/recurs/fitxer.txt com a ubicació. Els atributs de fitxer "
+"poden\n"
+"especificar-se amb el seu nom GIO. Per exemple, standard::icon o usant només "
+"el\n"
 "nom d'espais, p. ex. unix, o usant «*», que coincideix amb tots els atributs"
 
 #. Translators: commandline placeholder
@@ -2127,7 +2128,8 @@ msgid ""
 msgstr ""
 "gio list és similar a l'eina tradicional ls, però usant ubicacions GIO\n"
 "en comptes de fitxers locals: per exemple, podeu usar quelcom com ara\n"
-"smb://servidor/recurs/fitxer.txt com a ubicació. Els atributs de fitxer poden\n"
+"smb://servidor/recurs/fitxer.txt com a ubicació. Els atributs de fitxer "
+"poden\n"
 "especificar-se amb el seu nom GIO. Per exemple, standard::icon"
 
 #. Translators: commandline placeholder
@@ -2192,8 +2194,7 @@ msgstr "No s'ha pogut carregar la informació del gestor «%s»"
 #, c-format
 msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
 msgstr ""
-"S'ha produït un error en establir «%s» com a gestor per defecte de «%s»: "
-"%s\n"
+"S'ha produït un error en establir «%s» com a gestor per defecte de «%s»: %s\n"
 
 #: gio/gio-tool-mkdir.c:33
 msgid "Create parent directories"
@@ -2410,14 +2411,12 @@ msgstr "En crear un fitxer, limita'n l'accés a només l'usuari actual"
 msgid "When replacing, replace as if the destination did not exist"
 msgstr "Quan es reemplaci, fes com si el destí no existís"
 
-#. Translators: The "etag" is a token allowing to verify whether a file has
-#. been modified
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:57
 msgid "Print new etag at end"
 msgstr "Mostra la nova etag al final"
 
-#. Translators: The "etag" is a token allowing to verify whether a file has
-#. been modified
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:59
 msgid "The etag of the file being overwritten"
 msgstr "L'etag del fitxer que s'està sobreescrivint"
@@ -2430,8 +2429,7 @@ msgstr "ETAG"
 msgid "Error reading from standard input"
 msgstr "S'ha produït un error en llegir de l'entrada estàndard"
 
-#. Translators: The "etag" is a token allowing to verify whether a file has
-#. been modified
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:141
 msgid "Etag not available\n"
 msgstr "L'etag no està disponible\n"
@@ -2498,8 +2496,8 @@ msgid ""
 "Restore a file from trash to its original location (possibly recreating the "
 "directory)"
 msgstr ""
-"Restaura un fitxer de la paperera a la ubicació original (i torna a crear el"
-" directori si cal)"
+"Restaura un fitxer de la paperera a la ubicació original (i torna a crear el "
+"directori si cal)"
 
 #: gio/gio-tool-trash.c:108
 msgid "Unable to find original path"
@@ -2570,6 +2568,7 @@ msgstr "Es desconeix l'opció de processament «%s»"
 #. Translators: the first %s is a gresource XML attribute,
 #. * the second %s is an environment variable, and the third
 #. * %s is a command line tool
+#.
 #: gio/glib-compile-resources.c:312 gio/glib-compile-resources.c:369
 #: gio/glib-compile-resources.c:426
 #, c-format
@@ -2610,7 +2609,8 @@ msgstr ""
 "directori actual)"
 
 #: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
-#: gio/glib-compile-schemas.c:2203
+#: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
+#: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "DIRECTORI"
 
@@ -2663,6 +2663,10 @@ msgstr ""
 msgid "C identifier name used for the generated source code"
 msgstr ""
 "El nom de l'identificador de C que s'utilitzarà en el codi font generat"
+
+#: gio/glib-compile-resources.c:833
+msgid "IDENTIFIER"
+msgstr "IDENTIFICADOR"
 
 #: gio/glib-compile-resources.c:834
 msgid "The target C compiler (default: the CC environment variable)"
@@ -2861,8 +2865,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:828
 #, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
-msgstr ""
-"El nom «%s» no és vàlid: no es poden posar dos guionets seguits («--»)"
+msgstr "El nom «%s» no és vàlid: no es poden posar dos guionets seguits («--»)"
 
 #: gio/glib-compile-schemas.c:837
 #, c-format
@@ -2960,14 +2963,14 @@ msgstr "No es pot ampliar un esquema amb un camí"
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
-"El <schema id='%s'> és una llista i amplia el <schema id='%s'> que no és una"
-" llista"
+"El <schema id='%s'> és una llista i amplia el <schema id='%s'> que no és una "
+"llista"
 
 #: gio/glib-compile-schemas.c:1207
 #, c-format
 msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s”"
-" does not extend “%s”"
+"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
+"does not extend “%s”"
 msgstr ""
 "El <schema id='%s' list-of='%s'> amplia el <schema id='%s' list-of='%s'> "
 "però «%s» no amplia «%s»"
@@ -2985,11 +2988,11 @@ msgstr "El camí d'una llista ha d'acabar amb «:/»"
 #: gio/glib-compile-schemas.c:1240
 #, c-format
 msgid ""
-"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, "
-"“/desktop/” or “/system/” are deprecated."
+"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
+"desktop/” or “/system/” are deprecated."
 msgstr ""
-"Avís: l'esquema «%s» conté el camí «%s». Els camins que comencen amb "
-"«/apps/», «/desktop/» o «/system/» estan obsolets."
+"Avís: l'esquema «%s» conté el camí «%s». Els camins que comencen amb «/"
+"apps/», «/desktop/» o «/system/» estan obsolets."
 
 #: gio/glib-compile-schemas.c:1270
 #, c-format
@@ -3036,8 +3039,8 @@ msgstr "S'està ignorant aquest fitxer."
 #: gio/glib-compile-schemas.c:1963
 #, c-format
 msgid ""
-"No such key “%s” in schema “%s” as specified in override file “%s”; ignoring"
-" override for this key."
+"No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
+"override for this key."
 msgstr ""
 "No existeix la clau «%s» en l'esquema «%s» tal com especifica el fitxer de "
 "sobreescriptura «%s»; s'ignora la sobreescriptura d'aquesta clau."
@@ -3046,8 +3049,8 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1971
 #, c-format
 msgid ""
-"No such key “%s” in schema “%s” as specified in override file “%s” and "
-"--strict was specified; exiting."
+"No such key “%s” in schema “%s” as specified in override file “%s” and --"
+"strict was specified; exiting."
 msgstr ""
 "No existeix la clau «%s» en l'esquema «%s» tal com especifica el fitxer de "
 "sobreescriptura «%s» i s'ha especificat --strict; se surt."
@@ -3055,22 +3058,22 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1993
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
-"(override file “%s”); ignoring override for this key."
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
+"“%s” (override file “%s”); ignoring override for this key."
 msgstr ""
-"No es pot proveir la sobreescriptura per escriptori de la clau traduïda «%s»"
-" a l'esquema «%s» (fitxer de sobreescriptura «%s»); s'ignora la "
+"No es pot proveir la sobreescriptura per escriptori de la clau traduïda «%s» "
+"a l'esquema «%s» (fitxer de sobreescriptura «%s»); s'ignora la "
 "sobreescriptura d'aquesta clau."
 
 #: gio/glib-compile-schemas.c:2002
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
-"(override file “%s”) and --strict was specified; exiting."
+"Cannot provide per-desktop overrides for localized key “%s” in schema "
+"“%s” (override file “%s”) and --strict was specified; exiting."
 msgstr ""
-"No es pot proveir la sobreescriptura per escriptori de la clau traduïda «%s»"
-" a l'esquema «%s» (fitxer de sobreescriptura «%s») i s'ha especificat "
-"--strict; se surt."
+"No es pot proveir la sobreescriptura per escriptori de la clau traduïda «%s» "
+"a l'esquema «%s» (fitxer de sobreescriptura «%s») i s'ha especificat --"
+"strict; se surt."
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
@@ -3089,8 +3092,8 @@ msgid ""
 "%s. --strict was specified; exiting."
 msgstr ""
 "S'ha produït un error en analitzar la clau «%s» en l'esquema «%s» tal com "
-"especifica el fitxer de sobreescriptura «%s»: %s. S'ha especificat --strict;"
-" se surt."
+"especifica el fitxer de sobreescriptura «%s»: %s. S'ha especificat --strict; "
+"se surt."
 
 #: gio/glib-compile-schemas.c:2065
 #, c-format
@@ -3129,8 +3132,8 @@ msgid ""
 "list of valid choices and --strict was specified; exiting."
 msgstr ""
 "La sobreescriptura de la clau «%s» de l'esquema «%s» en el fitxer de "
-"sobreescriptura «%s» no és a la llista de valors vàlids i s'ha especificat "
-"--strict; se surt."
+"sobreescriptura «%s» no és a la llista de valors vàlids i s'ha especificat --"
+"strict; se surt."
 
 #: gio/glib-compile-schemas.c:2173
 msgid "Where to store the gschemas.compiled file"
@@ -3186,6 +3189,7 @@ msgstr ""
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
+#.
 #: gio/glocalfile.c:1150
 #, c-format
 msgid "Containing mount for file %s not found"
@@ -3989,7 +3993,8 @@ msgstr ""
 "Ordres:\n"
 "  help                      Mostra aquesta informació\n"
 "  list-schemas              Llista els esquemes instal·lats\n"
-"  list-relocatable-schemas  Llista els esquemes que es poden canviar de lloc\n"
+"  list-relocatable-schemas  Llista els esquemes que es poden canviar de "
+"lloc\n"
 "  list-keys                 Llista les claus d'un esquema\n"
 "  list-children             Llista els fills d'un esquema\n"
 "  list-recursively          Llista les claus i els valors recursivament\n"
@@ -4021,7 +4026,8 @@ msgstr ""
 
 #: gio/gsettings-tool.c:716
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
-msgstr "  DIRECTORI_D'ESQUEMES Un directori on cercar-hi esquemes addicionals\n"
+msgstr ""
+"  DIRECTORI_D'ESQUEMES Un directori on cercar-hi esquemes addicionals\n"
 
 #: gio/gsettings-tool.c:724
 msgid ""
@@ -4309,8 +4315,8 @@ msgstr "El servidor intermediari SOCKSv5 requereix autenticació."
 
 #: gio/gsocks5proxy.c:193
 msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by"
-" GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
 msgstr ""
 "El servidor intermediari SOCKSv5 requereix un mètode d'autenticació que "
 "encara no està implementat a la GLib."
@@ -4534,8 +4540,7 @@ msgstr "S'ha produït un error en habilitar «SO_PASSCRED»: %s"
 
 #: gio/gunixconnection.c:576
 msgid ""
-"Expecting to read a single byte for receiving credentials but read zero "
-"bytes"
+"Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "S'esperava llegir un sol byte per a rebre les credencials però s'han llegit "
 "zero bytes"
@@ -4561,7 +4566,7 @@ msgstr "S'ha produït un error en llegir del descriptor de fitxer: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "S'ha produït un error en tancar el descriptor de fitxer: %s"
 
-#: gio/gunixmounts.c:2890 gio/gunixmounts.c:2943
+#: gio/gunixmounts.c:2897 gio/gunixmounts.c:2950
 msgid "Filesystem root"
 msgstr "Arrel del sistema de fitxers"
 
@@ -4655,6 +4660,148 @@ msgstr "Executa un servei de D-Bus"
 msgid "Wrong args\n"
 msgstr "Els arguments no són vàlids\n"
 
+#: girepository/compiler/compiler.c:93
+#, c-format
+msgid "Failed to open ‘%s’: %s"
+msgstr "No s'ha pogut obrir «%s»: %s"
+
+#: girepository/compiler/compiler.c:103
+#, c-format
+msgid "Error: Could not write the whole output: %s"
+msgstr "Error: No s'ha pogut escriure la sortida completa: %s"
+
+#: girepository/compiler/compiler.c:115
+#, c-format
+msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
+msgstr "Error: No s'ha pogut canviar el nom de «%s» per «%s»: %s"
+
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
+msgid "Include directories in GIR search path"
+msgstr ""
+
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
+msgid "Output file"
+msgstr "Fitxer de sortida"
+
+#: girepository/compiler/compiler.c:149
+msgid "Shared library"
+msgstr "Biblioteca compartida"
+
+#: girepository/compiler/compiler.c:150
+msgid "Show debug messages"
+msgstr "Mostra els missatges de depuració"
+
+#: girepository/compiler/compiler.c:151
+msgid "Show verbose messages"
+msgstr "Mostra missatges detallats"
+
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
+msgid "Show program’s version number and exit"
+msgstr "Mostra el número de versió del programa i surt"
+
+#: girepository/compiler/compiler.c:175
+#, c-format
+msgid "Error parsing arguments: %s"
+msgstr "S'ha produït un error en analitzar els paràmetres: %s"
+
+#: girepository/compiler/compiler.c:202
+msgid "Please specify exactly one input file"
+msgstr "Especifiqueu exactament un únic fitxer d'entrada"
+
+#: girepository/compiler/compiler.c:218
+#, c-format
+msgid "Error parsing file ‘%s’: %s"
+msgstr "S'ha produït un error en analitzar el fitxer «%s»: %s"
+
+#: girepository/compiler/compiler.c:243
+#, fuzzy, c-format
+#| msgid "Failed to load info for handler “%s”"
+msgid "Failed to build typelib for module ‘%s’"
+msgstr "No s'ha pogut carregar la informació del gestor «%s»"
+
+#: girepository/compiler/compiler.c:245
+#, fuzzy, c-format
+#| msgid "Unable to load ‘%s‘: %s"
+msgid "Invalid typelib for module ‘%s’: %s"
+msgstr "No s'ha pogut carregar «%s»: %s"
+
+#: girepository/decompiler/decompiler.c:54
+msgid "Show all available information"
+msgstr "Mostra tota la informació disponible"
+
+#: girepository/decompiler/decompiler.c:71
+#, c-format
+msgid "Failed to parse: %s"
+msgstr "No s'ha pogut analitzar: %s"
+
+#: girepository/decompiler/decompiler.c:87
+msgid "No input files"
+msgstr "No hi ha cap fitxer d'entrada"
+
+#: girepository/decompiler/decompiler.c:113
+#, c-format
+msgid "Failed to read ‘%s’: %s"
+msgstr "No s'ha pogut llegir «%s»: %s"
+
+#: girepository/decompiler/decompiler.c:125
+#, fuzzy, c-format
+#| msgid "Failed to create file “%s”: %s"
+msgid "Failed to create typelib ‘%s’: %s"
+msgstr "No s'ha pogut crear el fitxer «%s»: %s"
+
+#: girepository/decompiler/decompiler.c:129
+#: girepository/inspector/inspector.c:113
+#, fuzzy, c-format
+#| msgid "Failed to allocate memory"
+msgid "Failed to load typelib: %s"
+msgstr "No s'ha pogut ubicar memòria"
+
+#: girepository/decompiler/decompiler.c:136
+#, c-format
+msgid "Warning: %u modules omitted"
+msgstr "Compte: s'han omès %u mòduls"
+
+#: girepository/inspector/inspector.c:72
+msgid "Typelib version to inspect"
+msgstr "Versió de «typelib» per inspeccionar"
+
+#: girepository/inspector/inspector.c:72
+msgid "VERSION"
+msgstr "VERSIÓ"
+
+#: girepository/inspector/inspector.c:73
+msgid "List the shared libraries the typelib requires"
+msgstr "Llista les biblioteques compartides que requereix «typelib»"
+
+#: girepository/inspector/inspector.c:74
+msgid "List other typelibs the inspected typelib requires"
+msgstr "Llista altres «typelibs» requerides per la «typelib» inspeccionada"
+
+#: girepository/inspector/inspector.c:75
+msgid "The typelib to inspect"
+msgstr "La «typelib» per inspeccionar"
+
+#: girepository/inspector/inspector.c:75
+msgid "NAMESPACE"
+msgstr "ESPAI DE NOMS"
+
+#: girepository/inspector/inspector.c:82
+msgid "- Inspect GI typelib"
+msgstr ""
+
+#: girepository/inspector/inspector.c:86
+#, c-format
+msgid "Failed to parse command line options: %s"
+msgstr "No s'han pogut analitzar les opcions de la línia d'ordres: %s"
+
+#: girepository/inspector/inspector.c:96
+msgid "Please specify exactly one namespace"
+msgstr "Especifiqueu un únic espai de noms"
+
+#: girepository/inspector/inspector.c:105
+msgid "Please specify --print-shlibs, --print-typelibs or both"
+msgstr ""
+
 #: glib/gbookmarkfile.c:816
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
@@ -4726,8 +4873,8 @@ msgstr "No hi ha cap grup establert a l'adreça d'interès per a l'URI «%s»"
 #, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
 msgstr ""
-"No hi ha cap aplicació amb el nom «%s» que hagi registrat l'adreça d'interès"
-" «%s»"
+"No hi ha cap aplicació amb el nom «%s» que hagi registrat l'adreça d'interès "
+"«%s»"
 
 #: glib/gbookmarkfile.c:3818
 #, c-format
@@ -4782,8 +4929,7 @@ msgstr "L'URI «%s» conté caràcters d'escapada no vàlids"
 msgid "The pathname “%s” is not an absolute path"
 msgstr "El nom de camí «%s» no és un camí absolut"
 
-#. Translators: this is the preferred format for expressing the date and the
-#. time
+#. Translators: this is the preferred format for expressing the date and the time
 #: glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
@@ -4822,6 +4968,7 @@ msgstr "%I:%M:%S %p"
 #. * paste here.  Note that in most of the languages (western European,
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
+#.
 #: glib/gdatetime.c:247
 msgctxt "full month name"
 msgid "January"
@@ -4898,6 +5045,7 @@ msgstr "desembre"
 #. * and paste here.  Note that this feature is not yet supported by any
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
+#.
 #: glib/gdatetime.c:301
 msgctxt "abbreviated month name"
 msgid "Jan"
@@ -4906,7 +5054,7 @@ msgstr "gen."
 #: glib/gdatetime.c:303
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr "febr."
+msgstr "feb."
 
 #: glib/gdatetime.c:305
 msgctxt "abbreviated month name"
@@ -5044,6 +5192,7 @@ msgstr "dg."
 #. * incorrect in some languages.  Note that in most of the languages
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
+#.
 #: glib/gdatetime.c:441
 msgctxt "full month name with day"
 msgid "January"
@@ -5120,6 +5269,7 @@ msgstr "de desembre"
 #. * `locale abmon' in your native locale produces a complete list of
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
+#.
 #: glib/gdatetime.c:528
 msgctxt "abbreviated month name with day"
 msgid "Jan"
@@ -5128,7 +5278,7 @@ msgstr "de gen."
 #: glib/gdatetime.c:530
 msgctxt "abbreviated month name with day"
 msgid "Feb"
-msgstr "de febr."
+msgstr "de feb."
 
 #: glib/gdatetime.c:532
 msgctxt "abbreviated month name with day"
@@ -5197,92 +5347,91 @@ msgstr "p. m."
 msgid "Error opening directory “%s”: %s"
 msgstr "S'ha produït un error en obrir el directori «%s»: %s"
 
-#: glib/gfileutils.c:716 glib/gfileutils.c:820
-#
-msgid "Could not allocate %"
-msgid_plural "Could not allocate %"
-msgstr[0] "No s'ha pogut assignar %"
-msgstr[1] "No s'han pogut assignar %"
+#. Translators: the first %s contains the file size
+#. * (already formatted with units), and the second %s
+#. * contains the file name
+#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#, c-format
+msgid "Could not allocate %s to read file “%s”"
+msgstr "No s'han pogut reservar %s per a llegir el fitxer «%s»"
 
-#: glib/gfileutils.c:733
+#: glib/gfileutils.c:738
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "S'ha produït un error en llegir el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:769 glib/gfileutils.c:803
+#: glib/gfileutils.c:774 glib/gfileutils.c:808
 #, c-format
 msgid "File “%s” is too large"
 msgstr "El fitxer «%s» és massa gran"
 
-#: glib/gfileutils.c:845
+#: glib/gfileutils.c:855
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "No s'ha pogut llegir del fitxer «%s»: %s"
 
-#: glib/gfileutils.c:895 glib/gfileutils.c:970 glib/gfileutils.c:1477
+#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1487
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:908
+#: glib/gfileutils.c:918
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr ""
 "No s'han pogut obtenir els atributs del fitxer «%s»: ha fallat la funció "
 "fstat(): %s"
 
-#: glib/gfileutils.c:939
+#: glib/gfileutils.c:949
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "No s'ha pogut obrir el fitxer «%s»: ha fallat la funció fdopen(): %s"
 
-#: glib/gfileutils.c:1040
+#: glib/gfileutils.c:1050
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "No s'ha pogut canviar el nom del fitxer «%s» a «%s»: ha fallat la funció "
 "g_rename(): %s"
 
-#: glib/gfileutils.c:1139
+#: glib/gfileutils.c:1149
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "No s'ha pogut escriure el fitxer «%s»: ha fallat ftruncate(): %s"
 
-#: glib/gfileutils.c:1184
+#: glib/gfileutils.c:1194
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
-msgstr ""
-"No s'ha pogut escriure el fitxer «%s»: ha fallat la funció write(): %s"
+msgstr "No s'ha pogut escriure el fitxer «%s»: ha fallat la funció write(): %s"
 
-#: glib/gfileutils.c:1205
+#: glib/gfileutils.c:1215
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
-msgstr ""
-"No s'ha pogut escriure el fitxer «%s»: ha fallat la funció fsync(): %s"
+msgstr "No s'ha pogut escriure el fitxer «%s»: ha fallat la funció fsync(): %s"
 
-#: glib/gfileutils.c:1366 glib/gfileutils.c:1783
+#: glib/gfileutils.c:1376 glib/gfileutils.c:1793
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "No s'ha pogut crear el fitxer «%s»: %s"
 
-#: glib/gfileutils.c:1411
+#: glib/gfileutils.c:1421
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "No s'ha pogut suprimir el fitxer existent «%s»: ha fallat la funció "
 "g_unlink(): %s"
 
-#: glib/gfileutils.c:1748
+#: glib/gfileutils.c:1758
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "La plantilla «%s» no és vàlida, no hauria de tenir cap «%s»"
 
-#: glib/gfileutils.c:1761
+#: glib/gfileutils.c:1771
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "La plantilla «%s» no conté XXXXXX"
 
-#: glib/gfileutils.c:2355 glib/gfileutils.c:2384
+#: glib/gfileutils.c:2365 glib/gfileutils.c:2394
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "No s'ha pogut llegir l'enllaç simbòlic «%s»: %s"
@@ -5298,8 +5447,7 @@ msgstr "No es pot fer una lectura bàsica a g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1797 glib/giochannel.c:2055 glib/giochannel.c:2142
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
-"A la memòria intermèdia de lectura hi ha dades sobrants no convertides"
+msgstr "A la memòria intermèdia de lectura hi ha dades sobrants no convertides"
 
 #: glib/giochannel.c:1878 glib/giochannel.c:1955
 msgid "Channel terminates in a partial character"
@@ -5311,8 +5459,7 @@ msgstr "No es pot fer una lectura bàsica a g_io_channel_read_to_end"
 
 #: glib/gkeyfile.c:791
 msgid "Valid key file could not be found in search dirs"
-msgstr ""
-"No s'ha pogut trobar cap fitxer de claus vàlid als directoris de cerca"
+msgstr "No s'ha pogut trobar cap fitxer de claus vàlid als directoris de cerca"
 
 #: glib/gkeyfile.c:828
 msgid "Not a regular file"
@@ -5486,8 +5633,8 @@ msgstr "El caràcter de referència «%-.*s» no codifica un caràcter permès"
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"S'ha detectat una entitat buida «&;». Les entitats vàlides són: &amp; &quot;"
-" &lt; &gt; &apos;"
+"S'ha detectat una entitat buida «&;». Les entitats vàlides són: &amp; &quot; "
+"&lt; &gt; &apos;"
 
 #: glib/gmarkup.c:720
 #, c-format
@@ -5510,8 +5657,8 @@ msgstr "El document ha de començar amb un element (p. ex. <book>)"
 #: glib/gmarkup.c:1179
 #, c-format
 msgid ""
-"“%s” is not a valid character following a “<” character; it may not begin an"
-" element name"
+"“%s” is not a valid character following a “<” character; it may not begin an "
+"element name"
 msgstr ""
 "«%s» no és un caràcter vàlid després d'un caràcter «<»: no pot començar un "
 "nom d'element"
@@ -5573,8 +5720,8 @@ msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
 "allowed character is “>”"
 msgstr ""
-"«%s» no és un caràcter vàlid després del nom d'element de tancament «%s». El"
-" caràcter permès és «>»"
+"«%s» no és un caràcter vàlid després del nom d'element de tancament «%s». El "
+"caràcter permès és «>»"
 
 #: glib/gmarkup.c:1583
 #, c-format
@@ -5979,8 +6126,7 @@ msgstr "La biblioteca PCRE ha estat compilada amb opcions incompatibles"
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr ""
-"S'ha produït un error en compilar l'expressió regular «%s» al caràcter %s: "
-"%s"
+"S'ha produït un error en compilar l'expressió regular «%s» al caràcter %s: %s"
 
 #: glib/gregex.c:2918
 msgid "hexadecimal digit or “}” expected"
@@ -6022,8 +6168,8 @@ msgstr "no es reconeix la seqüència d'escapament"
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
-"S'ha produït un error en analitzar el text de reemplaçament «%s» al caràcter"
-" %lu: %s"
+"S'ha produït un error en analitzar el text de reemplaçament «%s» al caràcter "
+"%lu: %s"
 
 #: glib/gshell.c:84
 msgid "Quoted text doesn’t begin with a quotation mark"
@@ -6032,8 +6178,8 @@ msgstr "El text citat no comença amb cometes"
 #: glib/gshell.c:174
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
-"S'han trobat unes cometes desaparellades en una línia d'ordres o en un altre"
-" text entre cometes"
+"S'han trobat unes cometes desaparellades en una línia d'ordres o en un altre "
+"text entre cometes"
 
 #: glib/gshell.c:580
 #, c-format
@@ -6092,55 +6238,55 @@ msgstr "El procés fill ha sortit inesperadament"
 msgid "Failed to read from child pipe (%s)"
 msgstr "No s'ha pogut llegir des del conducte fill (%s)"
 
-#: glib/gspawn.c:2001
+#: glib/gspawn.c:2003
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "No s'ha pogut engendrar el procés fill «%s» (%s)"
 
-#: glib/gspawn.c:2125
+#: glib/gspawn.c:2127
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "No s'ha pogut bifurcar (%s)"
 
-#: glib/gspawn.c:2286 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2288 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "No s'ha pogut canviar al directori «%s» (%s)"
 
-#: glib/gspawn.c:2296
+#: glib/gspawn.c:2298
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "No s'ha pogut executar el procés fill «%s» (%s)"
 
-#: glib/gspawn.c:2306
+#: glib/gspawn.c:2308
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
 "No s'ha pogut obrir el fitxer per a tornar a assignar el descriptor de "
 "fitxers (%s)"
 
-#: glib/gspawn.c:2314
+#: glib/gspawn.c:2316
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr ""
 "No s'ha pogut duplicar el descriptor de fitxers per al procés fill (%s)"
 
-#: glib/gspawn.c:2323
+#: glib/gspawn.c:2325
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "No s'ha pogut bifurcar el procés fill (%s)"
 
-#: glib/gspawn.c:2331
+#: glib/gspawn.c:2333
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "No s'ha pogut tancar el descriptor de fitxers per al procés fill (%s)"
 
-#: glib/gspawn.c:2339
+#: glib/gspawn.c:2341
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "S'ha produït un error desconegut en executar el procés fill «%s»"
 
-#: glib/gspawn.c:2363
+#: glib/gspawn.c:2365
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -6291,146 +6437,122 @@ msgstr "Seqüència no vàlida a l'entrada de la conversió"
 msgid "Character out of range for UTF-16"
 msgstr "El caràcter és fora de l'interval d'UTF-16"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. kB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 kB"
 #: glib/gutils.c:2966
 msgid "kB"
 msgstr "kB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. MB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 MB"
 #: glib/gutils.c:2968
 msgid "MB"
 msgstr "MB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. GB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 GB"
 #: glib/gutils.c:2970
 msgid "GB"
 msgstr "GB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. TB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 TB"
 #: glib/gutils.c:2972
 msgid "TB"
 msgstr "TB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. PB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 PB"
 #: glib/gutils.c:2974
 msgid "PB"
 msgstr "PB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. EB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 EB"
 #: glib/gutils.c:2976
 msgid "EB"
 msgstr "EB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. KiB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 KiB"
 #: glib/gutils.c:2980
 msgid "KiB"
 msgstr "KiB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. MiB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 MiB"
 #: glib/gutils.c:2982
 msgid "MiB"
 msgstr "MiB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. GiB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
 #: glib/gutils.c:2984
 msgid "GiB"
 msgstr "GiB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. TiB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
 #: glib/gutils.c:2986
 msgid "TiB"
 msgstr "TiB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. PiB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 PiB"
 #: glib/gutils.c:2988
 msgid "PiB"
 msgstr "PiB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. EiB"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 EiB"
 #: glib/gutils.c:2990
 msgid "EiB"
 msgstr "EiB"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. kbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 kbit"
 #: glib/gutils.c:2994
 msgid "kbit"
 msgstr "kbit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Mbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mbit"
 #: glib/gutils.c:2996
 msgid "Mbit"
 msgstr "Mbit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Gbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gbit"
 #: glib/gutils.c:2998
 msgid "Gbit"
 msgstr "Gbit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Tbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tbit"
 #: glib/gutils.c:3000
 msgid "Tbit"
 msgstr "Tbit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Pbit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pbit"
 #: glib/gutils.c:3002
 msgid "Pbit"
 msgstr "Pbit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Ebit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Ebit"
 #: glib/gutils.c:3004
 msgid "Ebit"
 msgstr "Ebit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Kibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Kibit"
 #: glib/gutils.c:3008
 msgid "Kibit"
 msgstr "Kibit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Mibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Mibit"
 #: glib/gutils.c:3010
 msgid "Mibit"
 msgstr "Mibit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Gibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Gibit"
 #: glib/gutils.c:3012
 msgid "Gibit"
 msgstr "Gibit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Tibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Tibit"
 #: glib/gutils.c:3014
 msgid "Tibit"
 msgstr "Tibit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Pibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Pibit"
 #: glib/gutils.c:3016
 msgid "Pibit"
 msgstr "Pibit"
 
-#. Translators: A unit symbol for size formatting, showing for example: "13.0
-#. Eibit"
+#. Translators: A unit symbol for size formatting, showing for example: "13.0 Eibit"
 #: glib/gutils.c:3018
 msgid "Eibit"
 msgstr "Eibit"
@@ -6455,8 +6577,7 @@ msgctxt "format-size"
 msgid "%u"
 msgstr "%u"
 
-#. Translators: The first "%u" is replaced with the value, the "%s" with a
-#. unit of the value.
+#. Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1u". An example: "13 bytes"
 #: glib/gutils.c:3073
 #, c-format
@@ -6464,8 +6585,7 @@ msgctxt "format-size"
 msgid "%u %s"
 msgstr "%u %s"
 
-#. Translators: The "%.1f" is replaced with the size value, like "13.0"; it
-#. could
+#. Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
 #. * be part of "13.0 MB", but only the number is requested this time.
 #: glib/gutils.c:3109
 #, c-format
@@ -6473,10 +6593,8 @@ msgctxt "format-size"
 msgid "%.1f"
 msgstr "%.1f"
 
-#. Translators: The first "%.1f" is replaced with the value, the "%s" with a
-#. unit of the value.
-#. * The order can be changed with "%$2s %$1.1f". Keep the no-break space
-#. between the value and
+#. Translators: The first "%.1f" is replaced with the value, the "%s" with a unit of the value.
+#. * The order can be changed with "%$2s %$1.1f". Keep the no-break space between the value and
 #. * the unit symbol. An example: "13.0 MB"
 #: glib/gutils.c:3115
 #, c-format
@@ -6507,13 +6625,11 @@ msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#. Translators: this is from the deprecated function
-#. g_format_size_for_display() which uses 'KB' to
-#. * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been
-#. preserved for reasons of
-#. * compatibility.  Users will not see this string unless a program is using
-#. this deprecated function.
+#. Translators: this is from the deprecated function g_format_size_for_display() which uses 'KB' to
+#. * mean 1024 bytes.  I am aware that 'KB' is not correct, but it has been preserved for reasons of
+#. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
+#.
 #: glib/gutils.c:3214
 #, c-format
 msgid "%.1f KB"
@@ -6544,16 +6660,17 @@ msgstr "%.1f PB"
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#~ msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
+#
+#~ msgid "Could not allocate %"
+#~ msgid_plural "Could not allocate %"
+#~ msgstr[0] "No s'ha pogut assignar %"
+#~ msgstr[1] "No s'han pogut assignar %"
+
+#~ msgid ""
+#~ "METHOD_RETURN message: REPLY_SERIAL header field is missing or invalid"
 #~ msgstr ""
 #~ "Missatge «METHOD_RETURN»: el camp de capçalera «REPLY_SERIAL» manca o és "
 #~ "invàlid"
-
-#, c-format
-#~ msgid "Could not allocate %lu byte to read file “%s”"
-#~ msgid_plural "Could not allocate %lu bytes to read file “%s”"
-#~ msgstr[0] "No s'han pogut assignar %lu byte per a llegir el fitxer «%s»"
-#~ msgstr[1] "No s'han pogut assignar %lu bytes per a llegir el fitxer «%s»"
 
 #~ msgid "kb"
 #~ msgstr "kb"
@@ -6629,7 +6746,9 @@ msgstr "%.1f EB"
 #~ msgstr "condició «(?(0)» no vàlida"
 
 #~ msgid "escapes \\L, \\l, \\N{name}, \\U, and \\u are not supported"
-#~ msgstr "no s'admeten els caràcters d'escapada «\\L», «\\l», «\\N{nom}», «\\U» i «\\u»"
+#~ msgstr ""
+#~ "no s'admeten els caràcters d'escapada «\\L», «\\l», «\\N{nom}», «\\U» i "
+#~ "«\\u»"
 
 #~ msgid "recursive call could loop indefinitely"
 #~ msgstr "la crida recursiva podria entrar en bucle indefinidament"
@@ -6639,8 +6758,8 @@ msgstr "%.1f EB"
 
 #~ msgid "] is an invalid data character in JavaScript compatibility mode"
 #~ msgstr ""
-#~ "el caràcter«]» no és un caràcter de dades vàlid en el mode de compatibilitat"
-#~ " amb JavaScript"
+#~ "el caràcter«]» no és un caràcter de dades vàlid en el mode de "
+#~ "compatibilitat amb JavaScript"
 
 #~ msgid "too many forward references"
 #~ msgstr "hi ha massa referències cap endavant"
@@ -6650,7 +6769,8 @@ msgstr "%.1f EB"
 
 #~ msgid "PCRE library is compiled without UTF8 properties support"
 #~ msgstr ""
-#~ "La biblioteca PCRE no està compilada per a interpretar les propietats UTF-8"
+#~ "La biblioteca PCRE no està compilada per a interpretar les propietats "
+#~ "UTF-8"
 
 #, c-format
 #~ msgid "Error while optimizing regular expression %s: %s"
