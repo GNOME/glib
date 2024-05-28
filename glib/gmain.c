@@ -1718,7 +1718,7 @@ g_source_set_callback_indirect (GSource              *source,
  * parameter. Cast @func with G_SOURCE_FUNC() to avoid warnings about
  * incompatible function types.
  *
- * See [memory management of sources][mainloop-memory-management] for details
+ * See [mainloop memory management](main-loop.html#memory-management-of-sources) for details
  * on how to handle memory management of @data.
  * 
  * Typically, you won't use this function. Instead use functions specific
@@ -5181,7 +5181,7 @@ timeout_add_full (gint           priority,
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
  *
- * See [memory management of sources][mainloop-memory-management] for details
+ * See [mainloop memory management](main-loop.html#memory-management-of-sources) for details
  * on how to handle the return value and memory management of @data.
  *
  * This internally creates a main loop source using g_timeout_source_new()
@@ -5226,7 +5226,7 @@ g_timeout_add_full (gint           priority,
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
  *
- * See [memory management of sources][mainloop-memory-management] for details
+ * See [mainloop memory management](main-loop.html#memory-management-of-sources) for details
  * on how to handle the return value and memory management of @data.
  *
  * If you want to have a timer in the "seconds" range and do not care
@@ -5311,7 +5311,7 @@ g_timeout_add_once (guint32         interval,
  * After each call to the timeout function, the time of the next
  * timeout is recalculated based on the current time and the given @interval
  *
- * See [memory management of sources][mainloop-memory-management] for details
+ * See [mainloop memory management](main-loop.html#memory-management-of-sources) for details
  * on how to handle the return value and memory management of @data.
  *
  * If you want timing more precise than whole seconds, use g_timeout_add()
@@ -5370,7 +5370,7 @@ g_timeout_add_seconds_full (gint           priority,
  * of one second. If you need finer precision and have such a timeout,
  * you may want to use g_timeout_add() instead.
  *
- * See [memory management of sources][mainloop-memory-management] for details
+ * See [mainloop memory management](main-loop.html#memory-management-of-sources) for details
  * on how to handle the return value and memory management of @data.
  *
  * The interval given is in terms of monotonic time, not wall clock
@@ -6305,7 +6305,7 @@ idle_add_full (gint           priority,
  * If the function returns %G_SOURCE_REMOVE or %FALSE it is automatically
  * removed from the list of event sources and will not be called again.
  *
- * See [memory management of sources][mainloop-memory-management] for details
+ * See [mainloop memory management](main-loop.html#memory-management-of-sources) for details
  * on how to handle the return value and memory management of @data.
  * 
  * This internally creates a main loop source using g_idle_source_new()
@@ -6336,7 +6336,7 @@ g_idle_add_full (gint           priority,
  * returns %FALSE it is automatically removed from the list of event
  * sources and will not be called again.
  *
- * See [memory management of sources][mainloop-memory-management] for details
+ * See [mainloop memory management](main-loop.html#memory-management-of-sources) for details
  * on how to handle the return value and memory management of @data.
  * 
  * This internally creates a main loop source using g_idle_source_new()
