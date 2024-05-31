@@ -4486,17 +4486,18 @@ g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
 
 /**
  * g_app_info_get_recommended_for_type:
- * @content_type: the content type to find a #GAppInfo for
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
  *
- * Gets a list of recommended #GAppInfos for a given content type, i.e.
- * those applications which claim to support the given content type exactly,
- * and not by MIME type subclassing.
+ * Gets a list of recommended [iface@Gio.AppInfo]s for a given content type,
+ * i.e. those applications which claim to support the given content type
+ * exactly, and not by MIME type subclassing.
+ *
  * Note that the first application of the list is the last used one, i.e.
- * the last one for which g_app_info_set_as_last_used_for_type() has been
- * called.
+ * the last one for which [method@Gio.AppInfo.set_as_last_used_for_type] has
+ * been called.
  *
- * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfos
- *     for given @content_type or %NULL on error.
+ * Returns: (element-type GAppInfo) (transfer full): list of
+ *   [iface@Gio.AppInfo]s for given @content_type or `NULL` on error.
  *
  * Since: 2.28
  **/
@@ -4528,14 +4529,14 @@ g_app_info_get_recommended_for_type (const gchar *content_type)
 
 /**
  * g_app_info_get_fallback_for_type:
- * @content_type: the content type to find a #GAppInfo for
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
  *
- * Gets a list of fallback #GAppInfos for a given content type, i.e.
- * those applications which claim to support the given content type
- * by MIME type subclassing and not directly.
+ * Gets a list of fallback [iface@Gio.AppInfo]s for a given content type, i.e.
+ * those applications which claim to support the given content type by MIME
+ * type subclassing and not directly.
  *
- * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfos
- *     for given @content_type or %NULL on error.
+ * Returns: (element-type GAppInfo) (transfer full): list of [iface@Gio.AppInfo]s
+ *     for given @content_type or `NULL` on error.
  *
  * Since: 2.28
  **/
@@ -4580,15 +4581,15 @@ g_app_info_get_fallback_for_type (const gchar *content_type)
 
 /**
  * g_app_info_get_all_for_type:
- * @content_type: the content type to find a #GAppInfo for
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
  *
- * Gets a list of all #GAppInfos for a given content type,
- * including the recommended and fallback #GAppInfos. See
- * g_app_info_get_recommended_for_type() and
- * g_app_info_get_fallback_for_type().
+ * Gets a list of all [iface@Gio.AppInfo]s for a given content type,
+ * including the recommended and fallback [iface@Gio.AppInfo]s. See
+ * [func@Gio.AppInfo.get_recommended_for_type] and
+ * [func@Gio.AppInfo.get_fallback_for_type].
  *
- * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfos
- *     for given @content_type or %NULL on error.
+ * Returns: (element-type GAppInfo) (transfer full): list of
+ *   [iface@Gio.AppInfo]s for given @content_type.
  **/
 GList *
 g_app_info_get_all_for_type (const char *content_type)
@@ -4621,10 +4622,10 @@ g_app_info_get_all_for_type (const char *content_type)
  * @content_type: a content type
  *
  * Removes all changes to the type associations done by
- * g_app_info_set_as_default_for_type(),
- * g_app_info_set_as_default_for_extension(),
- * g_app_info_add_supports_type() or
- * g_app_info_remove_supports_type().
+ * [method@Gio.AppInfo.set_as_default_for_type],
+ * [method@Gio.AppInfo.set_as_default_for_extension],
+ * [method@Gio.AppInfo.add_supports_type] or
+ * [method@Gio.AppInfo.remove_supports_type].
  *
  * Since: 2.20
  */
@@ -4638,14 +4639,14 @@ g_app_info_reset_type_associations (const char *content_type)
 
 /**
  * g_app_info_get_default_for_type:
- * @content_type: the content type to find a #GAppInfo for
- * @must_support_uris: if %TRUE, the #GAppInfo is expected to
- *     support URIs
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
+ * @must_support_uris: if `TRUE`, the [iface@Gio.AppInfo] is expected to
+ *   support URIs
  *
- * Gets the default #GAppInfo for a given content type.
+ * Gets the default [iface@Gio.AppInfo] for a given content type.
  *
- * Returns: (transfer full) (nullable): #GAppInfo for given @content_type or
- *     %NULL on error.
+ * Returns: (transfer full) (nullable): [iface@Gio.AppInfo] for given
+ *   @content_type or `NULL` on error.
  */
 GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
@@ -4899,11 +4900,12 @@ g_desktop_app_info_search (const gchar *search_string)
  *
  * For desktop files, this includes applications that have
  * `NoDisplay=true` set or are excluded from display by means
- * of `OnlyShowIn` or `NotShowIn`. See g_app_info_should_show().
+ * of `OnlyShowIn` or `NotShowIn`. See [method@Gio.AppInfo.should_show].
  * The returned list does not include applications which have
  * the `Hidden` key set.
  *
- * Returns: (element-type GAppInfo) (transfer full): a newly allocated #GList of references to #GAppInfos.
+ * Returns: (element-type GAppInfo) (transfer full): a newly allocated
+ *   list of references to [iface@Gio.AppInfo]s.
  **/
 GList *
 g_app_info_get_all (void)

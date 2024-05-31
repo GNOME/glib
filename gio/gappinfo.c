@@ -56,15 +56,19 @@
  * As of GLib 2.20, URIs will always be converted to POSIX paths
  * (using [method@Gio.File.get_path]) when using [method@Gio.AppInfo.launch]
  * even if the application requested an URI and not a POSIX path. For example
- * for a desktop-file based application with Exec key `totem
- * %U` and a single URI, `sftp://foo/file.avi`, then
- * `/home/user/.gvfs/sftp on foo/file.avi` will be passed. This will
- * only work if a set of suitable GIO extensions (such as GVfs 2.26
- * compiled with FUSE support), is available and operational; if this
- * is not the case, the URI will be passed unmodified to the application.
- * Some URIs, such as `mailto:`, of course cannot be mapped to a POSIX
- * path (in GVfs there's no FUSE mount for it); such URIs will be
- * passed unmodified to the application.
+ * for a desktop-file based application with the following Exec key:
+ *
+ * ```
+ * Exec=totem %U
+ * ```
+ *
+ * and a single URI, `sftp://foo/file.avi`, then
+ * `/home/user/.gvfs/sftp on foo/file.avi` will be passed. This will only work
+ * if a set of suitable GIO extensions (such as GVfs 2.26 compiled with FUSE
+ * support), is available and operational; if this is not the case, the URI
+ * will be passed unmodified to the application. Some URIs, such as `mailto:`,
+ * of course cannot be mapped to a POSIX path (in GVfs there’s no FUSE mount
+ * for it); such URIs will be passed unmodified to the application.
  *
  * Specifically for GVfs 2.26 and later, the POSIX URI will be mapped
  * back to the GIO URI in the [iface@Gio.File] constructors (since GVfs
@@ -94,7 +98,7 @@
  *
  * This code will work when both `cdda://sr0/Track 1.wav` and
  * `/home/user/.gvfs/cdda on sr0/Track 1.wav` is passed to the
- * application. It should be noted that it's generally not safe
+ * application. It should be noted that it’s generally not safe
  * for applications to rely on the format of a particular URIs.
  * Different launcher applications (e.g. file managers) may have
  * different ideas of what a given URI means.
@@ -115,9 +119,9 @@ g_app_info_default_init (GAppInfoInterface *iface)
 
 /**
  * g_app_info_dup:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * 
- * Creates a duplicate of a #GAppInfo.
+ * Creates a duplicate of a [iface@Gio.AppInfo].
  *
  * Returns: (transfer full): a duplicate of @appinfo.
  **/
@@ -135,16 +139,16 @@ g_app_info_dup (GAppInfo *appinfo)
 
 /**
  * g_app_info_equal:
- * @appinfo1: the first #GAppInfo.
- * @appinfo2: the second #GAppInfo.
+ * @appinfo1: the first [iface@Gio.AppInfo].
+ * @appinfo2: the second [iface@Gio.AppInfo].
  *
- * Checks if two #GAppInfos are equal.
+ * Checks if two [iface@Gio.AppInfo]s are equal.
  *
- * Note that the check *may not* compare each individual
- * field, and only does an identity check. In case detecting changes in the 
- * contents is needed, program code must additionally compare relevant fields.
+ * Note that the check *may not* compare each individual field, and only does
+ * an identity check. In case detecting changes in the contents is needed,
+ * program code must additionally compare relevant fields.
  *
- * Returns: %TRUE if @appinfo1 is equal to @appinfo2. %FALSE otherwise.
+ * Returns: `TRUE` if @appinfo1 is equal to @appinfo2. `FALSE` otherwise.
  **/
 gboolean
 g_app_info_equal (GAppInfo *appinfo1,
@@ -165,17 +169,16 @@ g_app_info_equal (GAppInfo *appinfo1,
 
 /**
  * g_app_info_get_id:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * 
- * Gets the ID of an application. An id is a string that
- * identifies the application. The exact format of the id is
- * platform dependent. For instance, on Unix this is the
- * desktop file id from the xdg menu specification.
+ * Gets the ID of an application. An id is a string that identifies the
+ * application. The exact format of the id is platform dependent. For instance,
+ * on Unix this is the desktop file id from the xdg menu specification.
  *
- * Note that the returned ID may be %NULL, depending on how
- * the @appinfo has been constructed.
+ * Note that the returned ID may be `NULL`, depending on how the @appinfo has
+ * been constructed.
  *
- * Returns: (nullable): a string containing the application's ID.
+ * Returns: (nullable): a string containing the application’s ID.
  **/
 const char *
 g_app_info_get_id (GAppInfo *appinfo)
@@ -191,7 +194,7 @@ g_app_info_get_id (GAppInfo *appinfo)
 
 /**
  * g_app_info_get_name:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * 
  * Gets the installed name of the application. 
  *
@@ -211,7 +214,7 @@ g_app_info_get_name (GAppInfo *appinfo)
 
 /**
  * g_app_info_get_display_name:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  *
  * Gets the display name of the application. The display name is often more
  * descriptive to the user than the name itself.
@@ -238,12 +241,12 @@ g_app_info_get_display_name (GAppInfo *appinfo)
 
 /**
  * g_app_info_get_description:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * 
  * Gets a human-readable description of an installed application.
  *
  * Returns: (nullable): a string containing a description of the 
- * application @appinfo, or %NULL if none. 
+ * application @appinfo, or `NULL` if none.
  **/
 const char *
 g_app_info_get_description (GAppInfo *appinfo)
@@ -259,15 +262,15 @@ g_app_info_get_description (GAppInfo *appinfo)
 
 /**
  * g_app_info_get_executable: (virtual get_executable)
- * @appinfo: a #GAppInfo
+ * @appinfo: the app info
  * 
- * Gets the executable's name for the installed application.
+ * Gets the executable’s name for the installed application.
  *
  * This is intended to be used for debugging or labelling what program is going
- * to be run. To launch the executable, use g_app_info_launch() and related
+ * to be run. To launch the executable, use [method@Gio.AppInfo.launch] and related
  * functions, rather than spawning the return value from this function.
  *
- * Returns: (type filename): a string containing the @appinfo's application
+ * Returns: (type filename): a string containing the @appinfo’s application
  * binaries name
  **/
 const char *
@@ -285,13 +288,13 @@ g_app_info_get_executable (GAppInfo *appinfo)
 
 /**
  * g_app_info_get_commandline: (virtual get_commandline)
- * @appinfo: a #GAppInfo
+ * @appinfo: the app info
  * 
  * Gets the commandline with which the application will be
  * started.  
  *
- * Returns: (nullable) (type filename): a string containing the @appinfo's commandline,
- *     or %NULL if this information is not available
+ * Returns: (nullable) (type filename): a string containing the @appinfo’s
+ *   commandline, or `NULL` if this information is not available
  *
  * Since: 2.20
  **/
@@ -312,13 +315,12 @@ g_app_info_get_commandline (GAppInfo *appinfo)
 
 /**
  * g_app_info_set_as_default_for_type:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * @content_type: the content type.
- * @error: a #GError.
  * 
  * Sets the application as the default handler for a given type.
  *
- * Returns: %TRUE on success, %FALSE on error.
+ * Returns: `TRUE` on success, `FALSE` on error.
  **/
 gboolean
 g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
@@ -342,16 +344,15 @@ g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
 
 /**
  * g_app_info_set_as_last_used_for_type:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * @content_type: the content type.
- * @error: a #GError.
  *
- * Sets the application as the last used application for a given type.
- * This will make the application appear as first in the list returned
- * by g_app_info_get_recommended_for_type(), regardless of the default
+ * Sets the application as the last used application for a given type. This
+ * will make the application appear as first in the list returned by
+ * [func@Gio.AppInfo.get_recommended_for_type], regardless of the default
  * application for that content type.
  *
- * Returns: %TRUE on success, %FALSE on error.
+ * Returns: `TRUE` on success, `FALSE` on error.
  **/
 gboolean
 g_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
@@ -375,14 +376,13 @@ g_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
 
 /**
  * g_app_info_set_as_default_for_extension:
- * @appinfo: a #GAppInfo.
- * @extension: (type filename): a string containing the file extension
- *     (without the dot).
- * @error: a #GError.
+ * @appinfo: the app info
+ * @extension: (type filename): a string containing the file extension (without
+ *   the dot).
  * 
  * Sets the application as the default handler for the given file extension.
  *
- * Returns: %TRUE on success, %FALSE on error.
+ * Returns: `TRUE` on success, `FALSE` on error.
  **/
 gboolean
 g_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
@@ -407,14 +407,13 @@ g_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
 
 /**
  * g_app_info_add_supports_type:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * @content_type: a string.
- * @error: a #GError.
  * 
  * Adds a content type to the application information to indicate the 
  * application is capable of opening files with the given content type.
  *
- * Returns: %TRUE on success, %FALSE on error.
+ * Returns: `TRUE` on success, `FALSE` on error.
  **/
 gboolean
 g_app_info_add_supports_type (GAppInfo    *appinfo,
@@ -441,12 +440,12 @@ g_app_info_add_supports_type (GAppInfo    *appinfo,
 
 /**
  * g_app_info_can_remove_supports_type:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * 
  * Checks if a supported content type can be removed from an application.
  *
- * Returns: %TRUE if it is possible to remove supported 
- *     content types from a given @appinfo, %FALSE if not.
+ * Returns: `TRUE` if it is possible to remove supported content types from a
+ *   given @appinfo, `FALSE` if not.
  **/
 gboolean
 g_app_info_can_remove_supports_type (GAppInfo *appinfo)
@@ -466,13 +465,12 @@ g_app_info_can_remove_supports_type (GAppInfo *appinfo)
 
 /**
  * g_app_info_remove_supports_type:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * @content_type: a string.
- * @error: a #GError.
  *
  * Removes a supported type from an application, if possible.
  * 
- * Returns: %TRUE on success, %FALSE on error.
+ * Returns: `TRUE` on success, `FALSE` on error.
  **/
 gboolean
 g_app_info_remove_supports_type (GAppInfo    *appinfo,
@@ -498,17 +496,18 @@ g_app_info_remove_supports_type (GAppInfo    *appinfo,
 
 /**
  * g_app_info_get_supported_types:
- * @appinfo: a #GAppInfo that can handle files
+ * @appinfo: an app info that can handle files
  *
  * Retrieves the list of content types that @app_info claims to support.
  * If this information is not provided by the environment, this function
- * will return %NULL.
+ * will return `NULL`.
+ *
  * This function does not take in consideration associations added with
- * g_app_info_add_supports_type(), but only those exported directly by
+ * [method@Gio.AppInfo.add_supports_type], but only those exported directly by
  * the application.
  *
  * Returns: (transfer none) (array zero-terminated=1) (element-type utf8):
- *    a list of content types.
+ *   a list of content types.
  *
  * Since: 2.34
  */
@@ -530,12 +529,12 @@ g_app_info_get_supported_types (GAppInfo *appinfo)
 
 /**
  * g_app_info_get_icon:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * 
  * Gets the icon for the application.
  *
- * Returns: (nullable) (transfer none): the default #GIcon for @appinfo or %NULL
- * if there is no default icon.
+ * Returns: (nullable) (transfer none): the default [iface@Gio.Icon] for
+ *   @appinfo or `NULL` if there is no default icon.
  **/
 GIcon *
 g_app_info_get_icon (GAppInfo *appinfo)
@@ -552,17 +551,16 @@ g_app_info_get_icon (GAppInfo *appinfo)
 
 /**
  * g_app_info_launch:
- * @appinfo: a #GAppInfo
- * @files: (nullable) (element-type GFile): a #GList of #GFile objects
- * @context: (nullable): a #GAppLaunchContext or %NULL
- * @error: a #GError
+ * @appinfo: the app info
+ * @files: (nullable) (element-type GFile): a list of [iface@Gio.File] objects
+ * @context: (nullable): the launch context
  * 
  * Launches the application. Passes @files to the launched application
  * as arguments, using the optional @context to get information
  * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
  *
- * To launch the application without arguments pass a %NULL @files list.
+ * To launch the application without arguments pass a `NULL` @files list.
  *
  * Note that even if the launch is successful the application launched
  * can fail to start if it runs into problems during startup. There is
@@ -571,11 +569,11 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * Some URIs can be changed when passed through a GFile (for instance
  * unsupported URIs with strange formats like mailto:), so if you have
  * a textual URI you want to pass in as argument, consider using
- * g_app_info_launch_uris() instead.
+ * [method@Gio.AppInfo.launch_uris] instead.
  *
  * The launched application inherits the environment of the launching
- * process, but it can be modified with g_app_launch_context_setenv()
- * and g_app_launch_context_unsetenv().
+ * process, but it can be modified with [method@Gio.AppLaunchContext.setenv]
+ * and [method@Gio.AppLaunchContext.unsetenv].
  *
  * On UNIX, this function sets the `GIO_LAUNCHED_DESKTOP_FILE`
  * environment variable with the path of the launched desktop file and
@@ -585,7 +583,7 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * `XDG_ACTIVATION_TOKEN` and `DESKTOP_STARTUP_ID` environment
  * variables are also set, based on information provided in @context.
  *
- * Returns: %TRUE on successful launch, %FALSE otherwise.
+ * Returns: `TRUE` on successful launch, `FALSE` otherwise.
  **/
 gboolean
 g_app_info_launch (GAppInfo           *appinfo,
@@ -605,11 +603,11 @@ g_app_info_launch (GAppInfo           *appinfo,
 
 /**
  * g_app_info_supports_uris:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * 
  * Checks if the application supports reading files and directories from URIs.
  *
- * Returns: %TRUE if the @appinfo supports URIs.
+ * Returns: `TRUE` if the @appinfo supports URIs.
  **/
 gboolean
 g_app_info_supports_uris (GAppInfo *appinfo)
@@ -626,11 +624,11 @@ g_app_info_supports_uris (GAppInfo *appinfo)
 
 /**
  * g_app_info_supports_files:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  * 
  * Checks if the application accepts files as arguments.
  *
- * Returns: %TRUE if the @appinfo supports files.
+ * Returns: `TRUE` if the @appinfo supports files.
  **/
 gboolean
 g_app_info_supports_files (GAppInfo *appinfo)
@@ -647,10 +645,9 @@ g_app_info_supports_files (GAppInfo *appinfo)
 
 /**
  * g_app_info_launch_uris:
- * @appinfo: a #GAppInfo
- * @uris: (nullable) (element-type utf8): a #GList containing URIs to launch.
- * @context: (nullable): a #GAppLaunchContext or %NULL
- * @error: a #GError
+ * @appinfo: the app info
+ * @uris: (nullable) (element-type utf8): a list of URIs to launch.
+ * @context: (nullable): the launch context
  * 
  * Launches the application. This passes the @uris to the launched application
  * as arguments, using the optional @context to get information
@@ -659,13 +656,13 @@ g_app_info_supports_files (GAppInfo *appinfo)
  * one URI per invocation as part of their command-line, multiple instances
  * of the application will be spawned.
  *
- * To launch the application without arguments pass a %NULL @uris list.
+ * To launch the application without arguments pass a `NULL` @uris list.
  *
  * Note that even if the launch is successful the application launched
  * can fail to start if it runs into problems during startup. There is
  * no way to detect this.
  *
- * Returns: %TRUE on successful launch, %FALSE otherwise.
+ * Returns: `TRUE` on successful launch, `FALSE` otherwise.
  **/
 gboolean
 g_app_info_launch_uris (GAppInfo           *appinfo,
@@ -684,19 +681,20 @@ g_app_info_launch_uris (GAppInfo           *appinfo,
 
 /**
  * g_app_info_launch_uris_async:
- * @appinfo: a #GAppInfo
- * @uris: (nullable) (element-type utf8): a #GList containing URIs to launch.
- * @context: (nullable): a #GAppLaunchContext or %NULL
- * @cancellable: (nullable): a #GCancellable
- * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @appinfo: the app info
+ * @uris: (nullable) (element-type utf8): a list of URIs to launch.
+ * @context: (nullable): the launch context
+ * @cancellable: (nullable): a [class@Gio.Cancellable]
+ * @callback: (scope async) (nullable): a [type@Gio.AsyncReadyCallback] to call
+ *   when the request is done
  * @user_data: (nullable): data to pass to @callback
  *
- * Async version of g_app_info_launch_uris().
+ * Async version of [method@Gio.AppInfo.launch_uris].
  *
  * The @callback is invoked immediately after the application launch, but it
  * waits for activation in case of D-Bus–activated applications and also provides
  * extended error information for sandboxed applications, see notes for
- * g_app_info_launch_default_for_uri_async().
+ * [func@Gio.AppInfo.launch_default_for_uri_async].
  *
  * Since: 2.60
  **/
@@ -733,13 +731,12 @@ g_app_info_launch_uris_async (GAppInfo           *appinfo,
 
 /**
  * g_app_info_launch_uris_finish:
- * @appinfo: a #GAppInfo
- * @result: a #GAsyncResult
- * @error: (nullable): a #GError
+ * @appinfo: the app info
+ * @result: the async result
  *
- * Finishes a g_app_info_launch_uris_async() operation.
+ * Finishes a [method@Gio.AppInfo.launch_uris_async] operation.
  *
- * Returns: %TRUE on successful launch, %FALSE otherwise.
+ * Returns: `TRUE` on successful launch, `FALSE` otherwise.
  *
  * Since: 2.60
  */
@@ -765,12 +762,12 @@ g_app_info_launch_uris_finish (GAppInfo     *appinfo,
 
 /**
  * g_app_info_should_show:
- * @appinfo: a #GAppInfo.
+ * @appinfo: the app info
  *
  * Checks if the application info should be shown in menus that 
  * list available applications.
  * 
- * Returns: %TRUE if the @appinfo should be shown, %FALSE otherwise.
+ * Returns: `TRUE` if the @appinfo should be shown, `FALSE` otherwise.
  **/
 gboolean
 g_app_info_should_show (GAppInfo *appinfo)
@@ -821,14 +818,16 @@ get_default_for_type_thread (GTask         *task,
 
 /**
  * g_app_info_get_default_for_type_async:
- * @content_type: the content type to find a #GAppInfo for
- * @must_support_uris: if %TRUE, the #GAppInfo is expected to
- *     support URIs
- * @cancellable: optional #GCancellable object, %NULL to ignore
- * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
+ * @must_support_uris: if `TRUE`, the [iface@Gio.AppInfo] is expected to
+ *   support URIs
+ * @cancellable: (nullable): a [class@Gio.Cancellable]
+ * @callback: (scope async) (nullable): a [type@Gio.AsyncReadyCallback] to call
+ *   when the request is done
  * @user_data: (nullable): data to pass to @callback
  *
- * Asynchronously gets the default #GAppInfo for a given content type.
+ * Asynchronously gets the default [iface@Gio.AppInfo] for a given content
+ * type.
  *
  * Since: 2.74
  */
@@ -882,14 +881,15 @@ get_default_for_scheme_thread (GTask         *task,
 /**
  * g_app_info_get_default_for_uri_scheme_async:
  * @uri_scheme: a string containing a URI scheme.
- * @cancellable: optional #GCancellable object, %NULL to ignore
- * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @cancellable: (nullable): a [class@Gio.Cancellable]
+ * @callback: (scope async) (nullable): a [type@Gio.AsyncReadyCallback] to call
+ *   when the request is done
  * @user_data: (nullable): data to pass to @callback
  *
  * Asynchronously gets the default application for handling URIs with
  * the given URI scheme. A URI scheme is the initial part
- * of the URI, up to but not including the ':', e.g. "http",
- * "ftp" or "sip".
+ * of the URI, up to but not including the `:`, e.g. `http`,
+ * `ftp` or `sip`.
  *
  * Since: 2.74
  */
@@ -914,16 +914,16 @@ g_app_info_get_default_for_uri_scheme_async (const char          *uri_scheme,
 
 /**
  * g_app_info_get_default_for_uri_scheme_finish:
- * @result: a #GAsyncResult
- * @error: (nullable): a #GError
+ * @result: the async result
  *
- * Finishes a default #GAppInfo lookup started by
- * g_app_info_get_default_for_uri_scheme_async().
+ * Finishes a default [iface@Gio.AppInfo] lookup started by
+ * [func@Gio.AppInfo.get_default_for_uri_scheme_async].
  *
- * If no #GAppInfo is found, then @error will be set to %G_IO_ERROR_NOT_FOUND.
+ * If no [iface@Gio.AppInfo] is found, then @error will be set to
+ * [error@Gio.IOErrorEnum.NOT_FOUND].
  *
- * Returns: (transfer full): #GAppInfo for given @uri_scheme or
- *     %NULL on error.
+ * Returns: (transfer full): [iface@Gio.AppInfo] for given @uri_scheme or
+ *   `NULL` on error.
  *
  * Since: 2.74
  */
@@ -941,16 +941,16 @@ g_app_info_get_default_for_uri_scheme_finish (GAsyncResult  *result,
 
 /**
  * g_app_info_get_default_for_type_finish:
- * @result: a #GAsyncResult
- * @error: (nullable): a #GError
+ * @result: the async result
  *
- * Finishes a default #GAppInfo lookup started by
- * g_app_info_get_default_for_type_async().
+ * Finishes a default [iface@Gio.AppInfo] lookup started by
+ * [func@Gio.AppInfo.get_default_for_type_async].
  *
- * If no #GAppInfo is found, then @error will be set to %G_IO_ERROR_NOT_FOUND.
+ * If no #[iface@Gio.AppInfo] is found, then @error will be set to
+ * [error@Gio.IOErrorEnum.NOT_FOUND].
  *
- * Returns: (transfer full): #GAppInfo for given @content_type or
- *     %NULL on error.
+ * Returns: (transfer full): [iface@Gio.AppInfo] for given @content_type or
+ *   `NULL` on error.
  *
  * Since: 2.74
  */
@@ -969,19 +969,17 @@ g_app_info_get_default_for_type_finish (GAsyncResult  *result,
 /**
  * g_app_info_launch_default_for_uri:
  * @uri: the uri to show
- * @context: (nullable): an optional #GAppLaunchContext
- * @error: (nullable): return location for an error, or %NULL
+ * @context: (nullable): optional launch context
  *
- * Utility function that launches the default application
- * registered to handle the specified uri. Synchronous I/O
- * is done on the uri to detect the type of the file if
- * required.
+ * Utility function that launches the default application registered to handle
+ * the specified uri. Synchronous I/O is done on the uri to detect the type of
+ * the file if required.
  *
- * The D-Bus–activated applications don't have to be started if your application
+ * The D-Bus–activated applications don’t have to be started if your application
  * terminates too soon after this function. To prevent this, use
- * g_app_info_launch_default_for_uri_async() instead.
+ * [func@Gio.AppInfo.launch_default_for_uri_async] instead.
  *
- * Returns: %TRUE on success, %FALSE on error.
+ * Returns: `TRUE` on success, `FALSE` on error.
  **/
 gboolean
 g_app_info_launch_default_for_uri (const char         *uri,
@@ -1197,17 +1195,17 @@ launch_default_app_for_uri_cb (GObject      *object,
 /**
  * g_app_info_launch_default_for_uri_async:
  * @uri: the uri to show
- * @context: (nullable): an optional #GAppLaunchContext
- * @cancellable: (nullable): a #GCancellable
- * @callback: (nullable): a #GAsyncReadyCallback to call when the request is done
+ * @context: (nullable): optional launch context
+ * @cancellable: (nullable): a [class@Gio.Cancellable]
+ * @callback: (scope async) (nullable): a [type@Gio.AsyncReadyCallback] to call
+ *   when the request is done
  * @user_data: (nullable): data to pass to @callback
  *
- * Async version of g_app_info_launch_default_for_uri().
+ * Async version of [func@Gio.AppInfo.launch_default_for_uri].
  *
- * This version is useful if you are interested in receiving
- * error information in the case where the application is
- * sandboxed and the portal may present an application chooser
- * dialog to the user.
+ * This version is useful if you are interested in receiving error information
+ * in the case where the application is sandboxed and the portal may present an
+ * application chooser dialog to the user.
  *
  * This is also useful if you want to be sure that the D-Bus–activated
  * applications are really started before termination and if you are interested
@@ -1258,12 +1256,11 @@ g_app_info_launch_default_for_uri_async (const char          *uri,
 
 /**
  * g_app_info_launch_default_for_uri_finish:
- * @result: a #GAsyncResult
- * @error: (nullable): return location for an error, or %NULL
+ * @result: the async result
  *
  * Finishes an asynchronous launch-default-for-uri operation.
  *
- * Returns: %TRUE if the launch was successful, %FALSE if @error is set
+ * Returns: `TRUE` if the launch was successful, `FALSE` if @error is set
  *
  * Since: 2.50
  */
@@ -1278,12 +1275,12 @@ g_app_info_launch_default_for_uri_finish (GAsyncResult  *result,
 
 /**
  * g_app_info_can_delete:
- * @appinfo: a #GAppInfo
+ * @appinfo: the app info
  *
- * Obtains the information whether the #GAppInfo can be deleted.
- * See g_app_info_delete().
+ * Obtains the information whether the [iface@Gio.AppInfo] can be deleted.
+ * See [method@Gio.AppInfo.delete].
  *
- * Returns: %TRUE if @appinfo can be deleted
+ * Returns: `TRUE` if @appinfo can be deleted
  *
  * Since: 2.20
  */
@@ -1305,15 +1302,15 @@ g_app_info_can_delete (GAppInfo *appinfo)
 
 /**
  * g_app_info_delete: (virtual do_delete)
- * @appinfo: a #GAppInfo
+ * @appinfo: the app info
  *
- * Tries to delete a #GAppInfo.
+ * Tries to delete a [iface@Gio.AppInfo].
  *
  * On some platforms, there may be a difference between user-defined
- * #GAppInfos which can be deleted, and system-wide ones which cannot.
- * See g_app_info_can_delete().
+ * [iface@Gio.AppInfo]s which can be deleted, and system-wide ones which cannot.
+ * See [method@Gio.AppInfo.can_delete].
  *
- * Returns: %TRUE if @appinfo has been deleted
+ * Returns: `TRUE` if @appinfo has been deleted
  *
  * Since: 2.20
  */
