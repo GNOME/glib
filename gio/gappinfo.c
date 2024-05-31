@@ -1345,9 +1345,10 @@ G_DEFINE_TYPE_WITH_PRIVATE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJE
  * g_app_launch_context_new:
  * 
  * Creates a new application launch context. This is not normally used,
- * instead you instantiate a subclass of this, such as #GdkAppLaunchContext.
+ * instead you instantiate a subclass of this, such as
+ * [class@Gdk.AppLaunchContext].
  *
- * Returns: a #GAppLaunchContext.
+ * Returns: a launch context.
  **/
 GAppLaunchContext *
 g_app_launch_context_new (void)
@@ -1377,9 +1378,9 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    * @context: the object emitting the signal
    * @startup_notify_id: the startup notification id for the failed launch
    *
-   * The #GAppLaunchContext::launch-failed signal is emitted when a #GAppInfo launch
-   * fails. The startup notification id is provided, so that the launcher
-   * can cancel the startup notification.
+   * The [signal@Gio.AppLaunchContext::launch-failed] signal is emitted when a
+   * [iface@Gio.AppInfo] launch fails. The startup notification id is provided,
+   * so that the launcher can cancel the startup notification.
    *
    * Because a launch operation may involve spawning multiple instances of the
    * target application, you should expect this signal to be emitted multiple
@@ -1397,14 +1398,14 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
   /**
    * GAppLaunchContext::launch-started:
    * @context: the object emitting the signal
-   * @info: the #GAppInfo that is about to be launched
+   * @info: the [iface@Gio.AppInfo] that is about to be launched
    * @platform_data: (nullable): additional platform-specific data for this launch
    *
-   * The #GAppLaunchContext::launch-started signal is emitted when a #GAppInfo is
-   * about to be launched. If non-null the @platform_data is an
-   * GVariant dictionary mapping strings to variants (ie `a{sv}`), which
-   * contains additional, platform-specific data about this launch. On
-   * UNIX, at least the `startup-notification-id` keys will be
+   * The [signal@Gio.AppLaunchContext::launch-started] signal is emitted when a
+   * [iface@Gio.AppInfo] is about to be launched. If non-null the
+   * @platform_data is an GVariant dictionary mapping strings to variants
+   * (ie `a{sv}`), which contains additional, platform-specific data about this
+   * launch. On UNIX, at least the `startup-notification-id` keys will be
    * present.
    *
    * The value of the `startup-notification-id` key (type `s`) is a startup
@@ -1412,8 +1413,9 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    * specification](https://specifications.freedesktop.org/startup-notification-spec/startup-notification-0.1.txt).
    * It allows tracking the progress of the launchee through startup.
    *
-   * It is guaranteed that this signal is followed by either a #GAppLaunchContext::launched or
-   * #GAppLaunchContext::launch-failed signal.
+   * It is guaranteed that this signal is followed by either a
+   * [signal@Gio.AppLaunchContext::launched] or
+   * [signal@Gio.AppLaunchContext::launch-failed] signal.
    *
    * Because a launch operation may involve spawning multiple instances of the
    * target application, you should expect this signal to be emitted multiple
@@ -1436,11 +1438,11 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
   /**
    * GAppLaunchContext::launched:
    * @context: the object emitting the signal
-   * @info: the #GAppInfo that was just launched
+   * @info: the [iface@Gio.AppInfo] that was just launched
    * @platform_data: additional platform-specific data for this launch
    *
-   * The #GAppLaunchContext::launched signal is emitted when a #GAppInfo is successfully
-   * launched.
+   * The [signal@Gio.AppLaunchContext::launched] signal is emitted when a
+   * [iface@Gio.AppInfo] is successfully launched.
    *
    * Because a launch operation may involve spawning multiple instances of the
    * target application, you should expect this signal to be emitted multiple
@@ -1451,14 +1453,15 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    * platform-specific data about this launch. On UNIX, at least the
    * `pid` and `startup-notification-id` keys will be present.
    *
-   * Since 2.72 the `pid` may be 0 if the process id wasn't known (for
+   * Since 2.72 the `pid` may be 0 if the process id wasn’t known (for
    * example if the process was launched via D-Bus). The `pid` may not be
    * set at all in subsequent releases.
    *
    * On Windows, `pid` is guaranteed to be valid only for the duration of the
-   * #GAppLaunchContext::launched signal emission; after the signal is emitted,
-   * GLib will call g_spawn_close_pid(). If you need to keep the #GPid after the
-   * signal has been emitted, then you can duplicate `pid` using `DuplicateHandle()`.
+   * [signal@Gio.AppLaunchContext::launched] signal emission; after the signal
+   * is emitted, GLib will call [func@GLib.spawn_close_pid]. If you need to
+   * keep the [alias@GLib.Pid] after the signal has been emitted, then you can
+   * duplicate `pid` using `DuplicateHandle()`.
    *
    * Since: 2.36
    */
@@ -1483,12 +1486,12 @@ g_app_launch_context_init (GAppLaunchContext *context)
 
 /**
  * g_app_launch_context_setenv:
- * @context: a #GAppLaunchContext
+ * @context: the launch context
  * @variable: (type filename): the environment variable to set
  * @value: (type filename): the value for to set the variable to.
  *
- * Arranges for @variable to be set to @value in the child's
- * environment when @context is used to launch an application.
+ * Arranges for @variable to be set to @value in the child’s environment when
+ * @context is used to launch an application.
  *
  * Since: 2.32
  */
@@ -1510,11 +1513,11 @@ g_app_launch_context_setenv (GAppLaunchContext *context,
 
 /**
  * g_app_launch_context_unsetenv:
- * @context: a #GAppLaunchContext
+ * @context: the launch context
  * @variable: (type filename): the environment variable to remove
  *
- * Arranges for @variable to be unset in the child's environment
- * when @context is used to launch an application.
+ * Arranges for @variable to be unset in the child’s environment when @context
+ * is used to launch an application.
  *
  * Since: 2.32
  */
@@ -1534,15 +1537,15 @@ g_app_launch_context_unsetenv (GAppLaunchContext *context,
 
 /**
  * g_app_launch_context_get_environment:
- * @context: a #GAppLaunchContext
+ * @context: the launch context
  *
  * Gets the complete environment variable list to be passed to
  * the child process when @context is used to launch an application.
- * This is a %NULL-terminated array of strings, where each string has
+ * This is a `NULL`-terminated array of strings, where each string has
  * the form `KEY=VALUE`.
  *
  * Returns: (array zero-terminated=1) (element-type filename) (transfer full):
- *     the child's environment
+ *   the child’s environment
  *
  * Since: 2.32
  */
@@ -1559,9 +1562,9 @@ g_app_launch_context_get_environment (GAppLaunchContext *context)
 
 /**
  * g_app_launch_context_get_display:
- * @context: a #GAppLaunchContext
- * @info: a #GAppInfo
- * @files: (element-type GFile): a #GList of #GFile objects
+ * @context: the launch context
+ * @info: the app info
+ * @files: (element-type GFile): a list of [iface@Gio.File] objects
  *
  * Gets the display string for the @context. This is used to ensure new
  * applications are started on the same display as the launching
@@ -1589,9 +1592,9 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
 
 /**
  * g_app_launch_context_get_startup_notify_id:
- * @context: a #GAppLaunchContext
- * @info: a #GAppInfo
- * @files: (element-type GFile): a #GList of #GFile objects
+ * @context: the launch context
+ * @info: the app info
+ * @files: (element-type GFile): list of [iface@Gio.File] objects
  * 
  * Initiates startup notification for the application and returns the
  * `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,
@@ -1607,8 +1610,8 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  *
  * Support for the XDG Activation Protocol was added in GLib 2.76.
  *
- * Returns: (nullable): a startup notification ID for the application, or %NULL if
- *     not supported.
+ * Returns: (nullable): a startup notification ID for the application, or `NULL` if
+ *   not supported.
  **/
 char *
 g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
@@ -1631,11 +1634,13 @@ g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
 
 /**
  * g_app_launch_context_launch_failed:
- * @context: a #GAppLaunchContext.
- * @startup_notify_id: the startup notification id that was returned by g_app_launch_context_get_startup_notify_id().
+ * @context: the launch context
+ * @startup_notify_id: the startup notification id that was returned by
+ *   [method@Gio.AppLaunchContext.get_startup_notify_id].
  *
  * Called when an application has failed to launch, so that it can cancel
- * the application startup notification started in g_app_launch_context_get_startup_notify_id().
+ * the application startup notification started in
+ * [method@Gio.AppLaunchContext.get_startup_notify_id].
  * 
  **/
 void
@@ -1753,7 +1758,7 @@ g_app_info_monitor_class_init (GAppInfoMonitorClass *class)
  * Gets the #GAppInfoMonitor for the current thread-default main
  * context.
  *
- * The #GAppInfoMonitor will emit a "changed" signal in the
+ * The #GAppInfoMonitor will emit a “changed” signal in the
  * thread-default main context whenever the list of installed
  * applications (as reported by g_app_info_get_all()) may have changed.
  *
