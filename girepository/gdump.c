@@ -448,6 +448,13 @@ dump_boxed_type (GType type, const char *symbol, FILE *out)
 }
 
 static void
+dump_pointer_type (GType type, const char *symbol, FILE *out)
+{
+  escaped_printf (out, "  <pointer name=\"%s\" get-type=\"%s\"/>\n",
+                  g_type_name (type), symbol);
+}
+
+static void
 dump_flags_type (GType type, const char *symbol, FILE *out)
 {
   unsigned int i;
@@ -562,7 +569,7 @@ dump_type (GType type, const char *symbol, FILE *out)
       dump_enum_type (type, symbol, out);
       break;
     case G_TYPE_POINTER:
-      /* GValue, etc.  Just skip them. */
+      dump_pointer_type (type, symbol, out);
       break;
     default:
       dump_fundamental_type (type, symbol, out);
