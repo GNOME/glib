@@ -34,9 +34,9 @@ used by ``GSettings``. The XML schema files must have the filename extension
 ``GSettings`` documentation.
 
 At runtime, GSettings looks for schemas in the ``glib-2.0/schemas``
-subdirectories of all directories specified in the ``XDG_DATA_DIRS`` environment
-variable. The usual location to install schema files is
-``/usr/share/glib-2.0/schemas``.
+subdirectories of all directories specified in the ``XDG_DATA_DIRS`` and
+``XDG_DATA_HOME`` environment variables. The usual location to install schema
+files is ``/usr/share/glib-2.0/schemas``.
 
 In addition to schema files, ``glib-compile-schemas`` reads ‘vendor override’
 files, which are key files that can override default values for keys in
