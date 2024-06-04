@@ -5,6 +5,9 @@ girepository_tests = {
   'cmph-bdz': {
     'dependencies': [cmph_dep],
   },
+  'dump' : {
+    'export_dynamic': true,
+  },
   'gthash' : {
     'dependencies': [girepo_gthash_dep],
   },
@@ -122,6 +125,7 @@ foreach test_name, extra_args : girepository_tests
     override_options: extra_args.get('override_options', []),
     dependencies: test_deps + extra_args.get('dependencies', []),
     link_with: extra_args.get('link_with', []),
+    export_dynamic: extra_args.get('export_dynamic', false),
     install_dir: installed_tests_execdir,
     install_tag: 'tests',
     install: install,
