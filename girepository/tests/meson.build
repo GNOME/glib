@@ -72,6 +72,7 @@ if enable_gir
   if cc.get_id() != 'msvc'
     girepository_tests += {
       'autoptr-girepository' : {
+        'dependencies': [libffi_dep],
         'source' : 'autoptr.c',
         'depends': gio_gir_testing_dep,
       },

@@ -85,6 +85,7 @@ gir_c_args = [
   '-DGIR_DIR="@0@"'.format(glib_girdir),
   '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
   '-DGOBJECT_INTROSPECTION_DATADIR="@0@"'.format(glib_datadir),
+  '-DGOBJECT_INTROSPECTION_RELATIVE_LIBDIR="@0@"'.format(get_option('libdir')),
 ]
 
 custom_c_args = []

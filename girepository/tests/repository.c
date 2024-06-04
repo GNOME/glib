@@ -35,7 +35,7 @@
 #include "glib.h"
 #include "test-common.h"
 
-#if defined(G_OS_UNIX)
+#if defined(G_OS_UNIX) && !defined(__APPLE__)
 #include "gio/gdesktopappinfo.h"
 #elif defined(G_OS_WIN32)
 #include "gio/gwin32inputstream.h"
@@ -837,7 +837,7 @@ test_repository_find_by_gtype (RepositoryFixture *fx,
     GType platform_specific_type;
     const char *expected_name, *expected_namespace;
 
-#if defined(G_OS_UNIX)
+#if defined(G_OS_UNIX) && !(__APPLE__)
     platform_specific_type = G_TYPE_DESKTOP_APP_INFO;
     expected_name = "DesktopAppInfo";
     expected_namespace = "GioUnix";
