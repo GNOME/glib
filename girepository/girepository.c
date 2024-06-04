@@ -657,11 +657,11 @@ register_internal (GIRepository *repository,
   Header *header;
   const char *namespace;
 
-  g_return_val_if_fail (typelib != NULL, FALSE);
+  g_return_val_if_fail (typelib != NULL, NULL);
 
   header = (Header *)typelib->data;
 
-  g_return_val_if_fail (header != NULL, FALSE);
+  g_return_val_if_fail (header != NULL, NULL);
 
   namespace = gi_typelib_get_string (typelib, header->namespace);
 
@@ -1907,7 +1907,7 @@ require_internal (GIRepository           *repository,
   char *tmp_version = NULL;
 
   g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
-  g_return_val_if_fail (namespace != NULL, FALSE);
+  g_return_val_if_fail (namespace != NULL, NULL);
 
   typelib = get_registered_status (repository, namespace, version, allow_lazy,
                                    &is_lazy, &version_conflict);

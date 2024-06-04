@@ -25,6 +25,16 @@
 #include "gstdioprivate.h"
 #include "gdatasetprivate.h"
 
+/*
+ * G_SIGNEDNESS_OF:
+ * @T: a numeric type such as `unsigned int`
+ *
+ * An integer constant expression indicating whether @T is a signed type.
+ *
+ * Returns: 1 if @T is signed, 0 if it is unsigned
+ */
+#define G_SIGNEDNESS_OF(T) (((T) -1) <= 0)
+
 /* gcc defines __SANITIZE_ADDRESS__, clang sets the address_sanitizer
  * feature flag.
  *
