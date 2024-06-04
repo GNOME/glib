@@ -1614,6 +1614,9 @@ g_application_class_init (GApplicationClass *class)
    * The group of actions that the application exports.
    *
    * Since: 2.28
+   * Deprecated: 2.32: Use the [iface@Gio.ActionMap] interface instead.
+   *   Never ever mix use of this API with use of `GActionMap` on the
+   *   same @application or things will go very badly wrong.
    */
   g_object_class_install_property (object_class, PROP_ACTION_GROUP,
     g_param_spec_object ("action-group", NULL, NULL,
