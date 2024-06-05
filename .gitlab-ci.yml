@@ -12,6 +12,7 @@ cache:
 
 variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v27"
+  FEDORA_LATEST_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v27"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v19"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v3"
@@ -171,6 +172,63 @@ fedora-x86_64:
     - .only-default-and-merges
     - .with-git
   image: $FEDORA_IMAGE
+  stage: build
+  needs: []
+  variables:
+    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
+  script:
+    - meson setup ${MESON_COMMON_OPTIONS}
+            --werror
+            --default-library=both
+            --prefix=$HOME/glib-installed
+            --localstatedir=/var
+            --libdir=lib
+            -Dsystemtap=enabled
+            -Ddtrace=enabled
+            -Dinstalled_tests=true
+            -Ddocumentation=true
+            -Dintrospection=enabled
+            -Dman-pages=enabled
+            _build
+    - meson compile -C _build
+    - mkdir -p _coverage
+    - lcov --config-file .lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
+    - .gitlab-ci/run-tests.sh
+    - lcov --config-file .lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
+    # Copy the built documentation to an artifact directory. The build for docs.gtk.org
+    # can then pull it from there — see https://gitlab.gnome.org/GNOME/gtk/-/blob/docs-gtk-org/README.md
+    - mkdir -p _reference/
+    - mv _build/docs/reference/glib/glib-2.0/ _reference/glib/
+    - mv _build/docs/reference/glib/glib-unix-2.0/ _reference/glib-unix/
+    - mv _build/docs/reference/gmodule/gmodule-2.0/ _reference/gmodule/
+    - mv _build/docs/reference/gobject/gobject-2.0/ _reference/gobject/
+    - mv _build/docs/reference/gio/gio-2.0/ _reference/gio/
+    - mv _build/docs/reference/gio/gio-unix-2.0/ _reference/gio-unix/
+    - mv _build/docs/reference/girepository/girepository-2.0/ _reference/girepository/
+  artifacts:
+    reports:
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
+    name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
+    when: always
+    expire_in: 1 week
+    paths:
+      - "_build/config.h"
+      - "_build/glib/glibconfig.h"
+      - "_build/meson-logs"
+      - "_coverage"
+      - "_reference"
+
+fedora-latest-x86_64:
+  extends:
+    - .build-linux
+    - .only-default-and-merges
+    - .with-git
+  image: $FEDORA_LATEST_IMAGE
   stage: build
   needs: []
   variables:
