@@ -35,6 +35,12 @@
 #include "glib.h"
 #include "test-common.h"
 
+#if defined(G_OS_UNIX)
+#include "gio/gdesktopappinfo.h"
+#elif defined(G_OS_WIN32)
+#include "gio/gwin32inputstream.h"
+#endif
+
 static void
 test_repository_basic (RepositoryFixture *fx,
                        const void *unused)
@@ -507,12 +513,31 @@ test_repository_error_quark (RepositoryFixture *fx,
 
   g_test_summary ("Test finding an error quark by error domain");
 
+  /* Find a simple error domain. */
   error_info = gi_repository_find_by_error_domain (fx->repository, G_RESOLVER_ERROR);
   g_assert_nonnull (error_info);
   g_assert_true (GI_IS_ENUM_INFO (error_info));
   g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (error_info)), ==, "ResolverError");
 
   g_clear_pointer (&error_info, gi_base_info_unref);
+
+  /* Find again to check the caching. */
+  error_info = gi_repository_find_by_error_domain (fx->repository, G_RESOLVER_ERROR);
+  g_assert_nonnull (error_info);
+  g_assert_true (GI_IS_ENUM_INFO (error_info));
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (error_info)), ==, "ResolverError");
+
+  g_clear_pointer (&error_info, gi_base_info_unref);
+
+  /* Try and find an unknown error domain. */
+  g_assert_null (gi_repository_find_by_error_domain (fx->repository, GI_REPOSITORY_ERROR));
+
+  /* And check caching for unknown error domains. */
+  g_assert_null (gi_repository_find_by_error_domain (fx->repository, GI_REPOSITORY_ERROR));
+
+  /* It would be good to try and find one which will resolve in both Gio and
+   * GioUnix/GioWin32, but neither of the platform-specific GIRs actually define
+   * any error domains at the moment. */
 }
 
 static void
@@ -777,6 +802,96 @@ test_repository_vfunc_info_with_invoker_on_object (RepositoryFixture *fx,
   g_clear_pointer (&invoker_info, gi_base_info_unref);
 }
 
+static void
+test_repository_find_by_gtype (RepositoryFixture *fx,
+                               const void        *unused)
+{
+  GIObjectInfo *object_info = NULL;
+
+  g_test_summary ("Test finding a GType");
+
+  object_info = (GIObjectInfo *) gi_repository_find_by_gtype (fx->repository, G_TYPE_OBJECT);
+  g_assert_nonnull (object_info);
+  g_assert_true (GI_IS_OBJECT_INFO (object_info));
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (object_info)), ==, "Object");
+
+  g_clear_pointer (&object_info, gi_base_info_unref);
+
+  /* Find it again; this time it should hit the cache. */
+  object_info = (GIObjectInfo *) gi_repository_find_by_gtype (fx->repository, G_TYPE_OBJECT);
+  g_assert_nonnull (object_info);
+  g_assert_true (GI_IS_OBJECT_INFO (object_info));
+  g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (object_info)), ==, "Object");
+
+  g_clear_pointer (&object_info, gi_base_info_unref);
+
+  /* Try and find an unknown GType. */
+  g_assert_null (gi_repository_find_by_gtype (fx->repository, GI_TYPE_BASE_INFO));
+
+  /* And check caching for unknown GTypes. */
+  g_assert_null (gi_repository_find_by_gtype (fx->repository, GI_TYPE_BASE_INFO));
+
+  /* Now try and find one which will resolve in both Gio and GioUnix/GioWin32.
+   * The longest-named typelib should be returned. */
+  {
+    GType platform_specific_type;
+    const char *expected_name, *expected_namespace;
+
+#if defined(G_OS_UNIX)
+    platform_specific_type = G_TYPE_DESKTOP_APP_INFO;
+    expected_name = "DesktopAppInfo";
+    expected_namespace = "GioUnix";
+#elif defined(G_OS_WIN32)
+    platform_specific_type = G_TYPE_WIN32_INPUT_STREAM;
+    expected_name = "InputStream";
+    expected_namespace = "GioWin32";
+#else
+    platform_specific_type = G_TYPE_INVALID;
+    expected_name = NULL;
+    expected_namespace = NULL;
+#endif
+
+    if (expected_name != NULL)
+      {
+        object_info = (GIObjectInfo *) gi_repository_find_by_gtype (fx->repository, platform_specific_type);
+        g_assert_nonnull (object_info);
+        g_assert_true (GI_IS_OBJECT_INFO (object_info));
+        g_assert_cmpstr (gi_base_info_get_name (GI_BASE_INFO (object_info)), ==, expected_name);
+        g_assert_cmpstr (gi_base_info_get_namespace (GI_BASE_INFO (object_info)), ==, expected_namespace);
+        g_clear_pointer (&object_info, gi_base_info_unref);
+      }
+  }
+}
+
+static void
+test_repository_loaded_namespaces (RepositoryFixture *fx,
+                                   const void        *unused)
+{
+  char **namespaces;
+  size_t n_namespaces;
+
+  /* These should be in alphabetical order */
+#if defined(G_OS_UNIX)
+  const char *expected_namespaces[] = { "GLib", "GModule", "GObject", "Gio", "GioUnix", NULL };
+#elif defined(G_OS_WIN32)
+  const char *expected_namespaces[] = { "GLib", "GModule", "GObject", "Gio", "GioWin32", NULL };
+#else
+  const char *expected_namespaces[] = { "GLib", "GModule", "GObject", "Gio", NULL };
+#endif
+
+  g_test_summary ("Test listing loaded namespaces");
+
+  namespaces = gi_repository_get_loaded_namespaces (fx->repository, &n_namespaces);
+  g_assert_cmpstrv (namespaces, expected_namespaces);
+  g_assert_cmpuint (n_namespaces, ==, g_strv_length ((char **) expected_namespaces));
+  g_strfreev (namespaces);
+
+  /* Test again but without passing `n_namespaces`. */
+  namespaces = gi_repository_get_loaded_namespaces (fx->repository, NULL);
+  g_assert_cmpstrv (namespaces, expected_namespaces);
+  g_strfreev (namespaces);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -794,7 +909,7 @@ main (int   argc,
   ADD_REPOSITORY_TEST ("/repository/constructor-return-type", test_repository_constructor_return_type, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/enum-info-c-identifier", test_repository_enum_info_c_identifier, &typelib_load_spec_glib);
   ADD_REPOSITORY_TEST ("/repository/enum-info-static-methods", test_repository_enum_info_static_methods, &typelib_load_spec_glib);
-  ADD_REPOSITORY_TEST ("/repository/error-quark", test_repository_error_quark, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/error-quark", test_repository_error_quark, &typelib_load_spec_gio_platform);
   ADD_REPOSITORY_TEST ("/repository/flags-info-c-identifier", test_repository_flags_info_c_identifier, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/fundamental-ref-func", test_repository_fundamental_ref_func, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/instance-method-ownership-transfer", test_repository_instance_method_ownership_transfer, &typelib_load_spec_gio);
@@ -804,6 +919,8 @@ main (int   argc,
   ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-no-invoker", test_repository_vfunc_info_with_no_invoker, &typelib_load_spec_gobject);
   ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-invoker-on-interface", test_repository_vfunc_info_with_invoker_on_interface, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-invoker-on-object", test_repository_vfunc_info_with_invoker_on_object, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/repository/find-by-gtype", test_repository_find_by_gtype, &typelib_load_spec_gio_platform);
+  ADD_REPOSITORY_TEST ("/repository/loaded-namespaces", test_repository_loaded_namespaces, &typelib_load_spec_gio_platform);
 
   return g_test_run ();
 }
