@@ -1,3 +1,36 @@
+Overview of changes in GLib 2.80.3, 2024-06-10
+==============================================
+
+* Bugs fixed:
+  - #3184 g_socket_client_connect_to_host_async leaks memory when target host
+    doesn't respond to ARP (Philip Withnall)
+  - #3303 gi_repository_find_by_gtype is nondeterministic (Philip Withnall)
+  - #3366 Crash in error path of g_dbus_connection_export_menu_model() (Philip
+    Withnall)
+  - !4060 Backport !4057 “gdbusmessage: Clean the cached arg0 when setting the
+    message body” to glib-2-80
+  - !4061 Backport !4058 “Tests: Build fixes when running `meson test` without
+    previous builds“ to glib-2-80
+  - !4070 Partially backport !4059 “tests: Fix various memory leaks and valgrind
+    / ASAN errors” to glib-2-80
+  - !4072 Backport !4066 “Fix several GCC 14 warnings to please msys2-mingw32
+    CI” to glib-2-80
+  - !4074 Backport !4065 “girepository: Don't assume a bitfield has a fixed
+    size” to glib-2-80
+  - !4077 Backport !4073 “gmenuexporter: Fix a NULL pointer dereference on an
+    error handling path” to glib-2-80
+  - !4079 Backport !4078 “tests: Fix clang compilation failure due to
+    unrecognised option in pragma” to glib-2-80
+  - !4080 Backport !4033 “girepository: Keep an ordered list of the loaded
+    typelibs” to glib-2-80
+  - !4105 Backport !4104 “gsocketclient: Fix a leak of the task data on an error
+    path” to glib-2-80
+
+* Translation updates:
+  - Catalan (Jordi Mas i Hernandez)
+  - Slovak (Jose Riha)
+
+
 Overview of changes in GLib 2.80.2, 2024-05-08
 ==============================================
 
