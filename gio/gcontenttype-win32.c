@@ -224,6 +224,15 @@ g_content_type_get_mime_type (const gchar *type)
 G_LOCK_DEFINE_STATIC (_type_icons);
 static GHashTable *_type_icons = NULL;
 
+/**
+ * g_content_type_get_icon:
+ * @type: a content type string
+ *
+ * Gets the icon for a content type.
+ *
+ * Returns: (transfer full): #GIcon corresponding to the content type. Free the returned
+ *     object with g_object_unref()
+ */
 GIcon *
 g_content_type_get_icon (const gchar *type)
 {
