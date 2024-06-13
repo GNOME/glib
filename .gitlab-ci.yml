@@ -636,7 +636,13 @@ freebsd-13-x86_64:
     # --fatal-meson-warnings. This should be fixed in Meson 1.4. It’s also fine
     # with Meson 1.2.3 (which is what we use on all the other CI runners).
     # See https://github.com/GNOME/glib/commit/71061fdcb33b8c26f5f8467cb3ac10704d65c87d
-    - meson setup --buildtype debug --wrap-mode=nodownload --localstatedir=/var -Db_lundef=false -Dxattr=false _build
+    - meson setup --buildtype debug --wrap-mode=nodownload
+            --localstatedir=/var
+            -Db_lundef=false
+            -Dxattr=false
+            -Dsystemtap=disabled
+            -Ddtrace=disabled
+            _build
     - meson compile -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
   artifacts:
