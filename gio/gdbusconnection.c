@@ -4716,7 +4716,10 @@ invoke_get_property_in_idle_cb (gpointer _data)
     {
       reply = g_dbus_message_new_method_error (data->message,
                                                DBUS_ERROR_UNKNOWN_METHOD,
-                                               _("No such interface “org.freedesktop.DBus.Properties” on object at path %s"),
+                                               /* Translators: The first placeholder is a D-Bus interface,
+                                                * the second is the path of an object. */
+                                               _("No such interface “%s” on object at path %s"),
+                                               DBUS_INTERFACE_PROPERTIES,
                                                g_dbus_message_get_path (data->message));
       g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
@@ -5070,7 +5073,8 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
     {
       reply = g_dbus_message_new_method_error (data->message,
                                                DBUS_ERROR_UNKNOWN_METHOD,
-                                               _("No such interface “org.freedesktop.DBus.Properties” on object at path %s"),
+                                               _("No such interface “%s” on object at path %s"),
+                                               DBUS_INTERFACE_PROPERTIES,
                                                g_dbus_message_get_path (data->message));
       g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
