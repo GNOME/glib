@@ -1421,8 +1421,13 @@ validate_headers (GDBusMessage  *message,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
-                           _("%s message: PATH header field is using the reserved value /org/freedesktop/DBus/Local"),
-                           message_type_to_string (message->type));
+                           /* Translators: The first placeholder is a D-Bus message type,
+                            * the second is the name of a header field and the third is
+                            * a value that is reserved for the given field. */
+                           _("%s message: %s header field is using the reserved value %s"),
+                           message_type_to_string (message->type),
+                           "PATH",
+                           DBUS_PATH_LOCAL);
               goto out;
             }
           break;
@@ -1443,8 +1448,10 @@ validate_headers (GDBusMessage  *message,
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
-                           _("%s message: INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"),
-                           message_type_to_string (message->type));
+                           _("%s message: %s header field is using the reserved value %s"),
+                           message_type_to_string (message->type),
+                           "INTERFACE",
+                           DBUS_INTERFACE_LOCAL);
               goto out;
             }
           break;
