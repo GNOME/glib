@@ -208,6 +208,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef EADDRNOTAVAIL
+    case EADDRNOTAVAIL:
+      return G_IO_ERROR_CONNECTION_REFUSED;
+      break;
+#endif
+
 #ifdef ECONNRESET
     case ECONNRESET:
       return G_IO_ERROR_CONNECTION_CLOSED;
