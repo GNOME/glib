@@ -3900,7 +3900,7 @@ copy_async_invoke_ready (GObject *file,
 }
 
 /**
- * g_file_copy_async_with_closures: (rename-to g_file_copy_async) (finish-func copy_finish):
+ * g_file_copy_async_with_closures: (rename-to g_file_copy_async):
  * @source: input [type@Gio.File]
  * @destination: destination [type@Gio.File]
  * @flags: set of [flags@Gio.FileCopyFlags]
@@ -4153,7 +4153,7 @@ g_file_move_async (GFile                *source,
 }
 
 /**
- * g_file_move_async_with_closures: (rename-to g_file_move_async) (finish-func move_finish):
+ * g_file_move_async_with_closures: (rename-to g_file_move_async):
  * @source: input [type@Gio.File]
  * @destination: destination [type@Gio.File]
  * @flags: set of [flags@Gio.FileCopyFlags]
