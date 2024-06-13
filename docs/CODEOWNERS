@@ -27,7 +27,7 @@
 
 # Build system
 meson.build		@xclaesse @nirbheek @pwithnall
-meson_options.txt	@xclaesse @nirbheek @pwithnall
+meson.options		@xclaesse @nirbheek @pwithnall
 subprojects/		@xclaesse @nirbheek @pwithnall
 
 # CI integration
