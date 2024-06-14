@@ -3784,6 +3784,20 @@ create_command_line_app_info (const char *name,
   return g_steal_pointer (&info);
 }
 
+static gboolean
+skip_missing_update_desktop_database (void)
+{
+  gchar *path = g_find_program_in_path ("update-desktop-database");
+
+  if (path == NULL)
+    {
+      g_test_skip ("update-desktop-database is required to run this test");
+      return TRUE;
+    }
+  g_free (path);
+  return FALSE;
+}
+
 static void
 test_query_default_handler_uri (void)
 {
@@ -3793,10 +3807,8 @@ test_query_default_handler_uri (void)
   GFile *file;
   GFile *invalid_file;
 
-#if defined(G_OS_WIN32) || defined(__APPLE__)
-  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
-  return;
-#endif
+  if (skip_missing_update_desktop_database ())
+    return;
 
   info = create_command_line_app_info ("Gio File Handler", "true",
                                        "x-scheme-handler/gio-file");
@@ -3878,10 +3890,8 @@ test_query_default_handler_file (void)
   const char buffer[] = "Text file!\n";
   const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
 
-#if defined(G_OS_WIN32) || defined(__APPLE__)
-  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
-  return;
-#endif
+  if (skip_missing_update_desktop_database ())
+    return;
 
   text_file = g_file_new_tmp ("query-default-handler-XXXXXX", &iostream, &error);
   g_assert_no_error (error);
@@ -3974,10 +3984,8 @@ test_query_default_handler_file_async (void)
   const guint8 binary_buffer[] = "\xde\xad\xbe\xff";
   GError *error = NULL;
 
-#if defined(G_OS_WIN32) || defined(__APPLE__)
-  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
-  return;
-#endif
+  if (skip_missing_update_desktop_database ())
+    return;
 
   data.loop = g_main_loop_new (NULL, FALSE);
 
@@ -4064,10 +4072,8 @@ test_query_default_handler_uri_async (void)
   GFile *file;
   GFile *invalid_file;
 
-#if defined(G_OS_WIN32) || defined(__APPLE__)
-  g_test_skip ("Default URI handlers are not currently supported on Windows or macOS");
-  return;
-#endif
+  if (skip_missing_update_desktop_database ())
+    return;
 
   info = create_command_line_app_info ("Gio File Handler", "true",
                                        "x-scheme-handler/gio-file");

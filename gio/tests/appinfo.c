@@ -49,12 +49,28 @@ test_launch_for_app_info (GAppInfo *appinfo)
   g_free (uri);
 }
 
+static gboolean
+skip_missing_dbus_daemon (void)
+{
+  gchar *path = g_find_program_in_path ("dbus-daemon");
+  if (path == NULL)
+    {
+      g_test_skip ("dbus-daemon is required to run this test");
+      return TRUE;
+    }
+  g_free (path);
+  return FALSE;
+}
+
 static void
 test_launch (void)
 {
   GTestDBus *bus = NULL;
   GAppInfo *appinfo;
   const gchar *path;
+
+  if (skip_missing_dbus_daemon ())
+    return;
 
   /* Set up a test session bus to keep D-Bus traffic off the real session bus. */
   bus = g_test_dbus_new (G_TEST_DBUS_NONE);
@@ -95,6 +111,9 @@ test_launch_no_app_id (void)
   GTestDBus *bus = NULL;
   gchar *exec_line_variants[2];
   gsize i;
+
+  if (skip_missing_dbus_daemon ())
+    return;
 
   exec_line_variants[0] = g_strdup_printf (
       "Exec=%s/appinfo-test --option %%U %%i --name %%c --filename %%k %%m %%%%",
@@ -355,6 +374,9 @@ test_launch_context_signals (void)
   GError *error = NULL;
   gboolean success;
   gchar *cmdline;
+
+  if (skip_missing_dbus_daemon ())
+    return;
 
   /* Set up a test session bus to keep D-Bus traffic off the real session bus. */
   bus = g_test_dbus_new (G_TEST_DBUS_NONE);
