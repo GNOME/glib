@@ -585,6 +585,10 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Werror=missing-prototypes',
     '-Werror=pointer-sign',
     '-Wno-string-plus-int',
+    # We require a compiler that supports C11 even though it's not yet a
+    # strict requirement, so allow typedef redefinition not to break clang and
+    # older gcc versions.
+    '-Wno-typedef-redefinition',
   ]
   warning_cxx_args = warning_common_args
   warning_objc_args = warning_c_args
