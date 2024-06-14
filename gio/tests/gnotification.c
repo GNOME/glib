@@ -71,7 +71,7 @@ notification_received (GNotificationServer *server,
     {
     case 0:
       g_assert_cmpstr (notification_id, ==, "test1");
-      g_assert (g_variant_lookup (notification, "title", "&s", &title));
+      g_assert_true (g_variant_lookup (notification, "title", "&s", &title));
       g_assert_cmpstr (title, ==, "Test");
       break;
 
@@ -88,7 +88,7 @@ notification_received (GNotificationServer *server,
       break;
 
     case 4:
-      g_assert (g_dbus_is_guid (notification_id));
+      g_assert_true (g_dbus_is_guid (notification_id));
  
       g_notification_server_stop (server);
       break;
@@ -210,12 +210,12 @@ test_properties (void)
 
   g_assert_cmpstr (rn->title, ==, "title");
   g_assert_cmpstr (rn->body, ==, "body");
-  g_assert (G_IS_THEMED_ICON (rn->icon));
+  g_assert_true (G_IS_THEMED_ICON (rn->icon));
   names = g_themed_icon_get_names (G_THEMED_ICON (rn->icon));
   g_assert_cmpstr (names[0], ==, "i-c-o-n");
   g_assert_cmpstr (names[1], ==, "i-c-o-n-symbolic");
   g_assert_null (names[2]);
-  g_assert (rn->priority == G_NOTIFICATION_PRIORITY_HIGH);
+  g_assert_cmpint (rn->priority, ==, G_NOTIFICATION_PRIORITY_HIGH);
   g_assert_cmpstr (rn->category, ==, "cate.gory");
 
   g_assert_cmpint (rn->buttons->len, ==, 1);
