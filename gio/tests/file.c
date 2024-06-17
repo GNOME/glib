@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
+#include <glib/gstdio.h>
 #ifdef G_OS_UNIX
 #include <sys/stat.h>
 #endif
@@ -2855,7 +2856,8 @@ test_load_bytes (void)
   len = strlen ("test_load_bytes");
   ret = write (fd, "test_load_bytes", len);
   g_assert_cmpint (ret, ==, len);
-  close (fd);
+  g_clear_fd (&fd, &error);
+  g_assert_no_error (error);
 
   file = g_file_new_for_path (filename);
   bytes = g_file_load_bytes (file, NULL, NULL, &error);
@@ -2898,6 +2900,7 @@ test_load_bytes_async (void)
 {
   LoadBytesAsyncData data = { 0 };
   gchar filename[] = "g_file_load_bytes_XXXXXX";
+  GError *error = NULL;
   int len;
   int fd;
   int ret;
@@ -2907,7 +2910,8 @@ test_load_bytes_async (void)
   len = strlen ("test_load_bytes_async");
   ret = write (fd, "test_load_bytes_async", len);
   g_assert_cmpint (ret, ==, len);
-  close (fd);
+  g_clear_fd (&fd, &error);
+  g_assert_no_error (error);
 
   data.main_loop = g_main_loop_new (NULL, FALSE);
   data.file = g_file_new_for_path (filename);
@@ -2922,6 +2926,153 @@ test_load_bytes_async (void)
   g_object_unref (data.file);
   g_bytes_unref (data.bytes);
   g_main_loop_unref (data.main_loop);
+}
+
+static const gsize testfile_4gb_size = ((gsize) 1 << 32) + (1 << 16); /* 4GB + a bit */
+
+/* @filename will be modified as per g_mkstemp() */
+static gboolean
+create_testfile_4gb_or_skip (char *filename)
+{
+  GError *error = NULL;
+  int fd;
+  int ret;
+
+  /* Reading each 4GB test file takes about 5s on a fast machine, and another 7s
+   * to compare its contents once it’s been read. That’s too slow for a normal
+   * test run, and there’s no way to speed it up. */
+  if (!g_test_slow ())
+    {
+      g_test_skip ("Skipping slow >4GB file test");
+      return FALSE;
+    }
+
+  fd = g_mkstemp (filename);
+  g_assert_cmpint (fd, !=, -1);
+  ret = ftruncate (fd, testfile_4gb_size);
+  g_clear_fd (&fd, &error);
+  g_assert_no_error (error);
+  if (ret == 1)
+    {
+      g_test_skip ("Could not create testfile >4GB");
+      g_assert_no_errno (g_unlink (filename));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+check_testfile_4gb_contents (const char *data,
+                             gsize       len)
+{
+  gsize i;
+
+  g_assert_nonnull (data);
+  g_assert_cmpuint (testfile_4gb_size, ==, len);
+
+  for (i = 0; i < testfile_4gb_size; i++)
+    {
+      if (data[i] != 0)
+        break;
+    }
+  g_assert_cmpint (i, ==, testfile_4gb_size);
+}
+
+static void
+test_load_contents_4gb (void)
+{
+  char filename[] = "g_file_load_contents_4gb_XXXXXX";
+  GError *error = NULL;
+  gboolean result;
+  char *data;
+  gsize len;
+  GFile *file;
+
+  if (!create_testfile_4gb_or_skip (filename))
+    return;
+
+  file = g_file_new_for_path (filename);
+  result = g_file_load_contents (file, NULL, &data, &len, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (result);
+
+  check_testfile_4gb_contents (data, len);
+
+  g_file_delete (file, NULL, NULL);
+
+  g_free (data);
+  g_object_unref (file);
+}
+
+static void
+load_contents_4gb_cb (GObject      *object,
+                      GAsyncResult *result,
+                      gpointer      user_data)
+{
+  GAsyncResult **result_out = user_data;
+
+  g_assert (*result_out == NULL);
+  *result_out = g_object_ref (result);
+
+  g_main_context_wakeup (NULL);
+}
+
+static void
+test_load_contents_4gb_async (void)
+{
+  char filename[] = "g_file_load_contents_4gb_async_XXXXXX";
+  GFile *file;
+  GAsyncResult *async_result = NULL;
+  GError *error = NULL;
+  char *data;
+  gsize len;
+  gboolean ret;
+
+  if (!create_testfile_4gb_or_skip (filename))
+    return;
+
+  file = g_file_new_for_path (filename);
+  g_file_load_contents_async (file, NULL, load_contents_4gb_cb, &async_result);
+
+  while (async_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  ret = g_file_load_contents_finish (file, async_result, &data, &len, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (ret);
+
+  check_testfile_4gb_contents (data, len);
+
+  g_file_delete (file, NULL, NULL);
+
+  g_free (data);
+  g_object_unref (async_result);
+  g_object_unref (file);
+}
+
+static void
+test_load_bytes_4gb (void)
+{
+  char filename[] = "g_file_load_bytes_4gb_XXXXXX";
+  GError *error = NULL;
+  GBytes *bytes;
+  GFile *file;
+
+  if (!create_testfile_4gb_or_skip (filename))
+    return;
+
+  file = g_file_new_for_path (filename);
+  bytes = g_file_load_bytes (file, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (bytes);
+
+  check_testfile_4gb_contents (g_bytes_get_data (bytes, NULL), g_bytes_get_size (bytes));
+
+  g_file_delete (file, NULL, NULL);
+
+  g_bytes_unref (bytes);
+  g_object_unref (file);
 }
 
 static void
@@ -4221,11 +4372,14 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/async-make-symlink", test_async_make_symlink);
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
   g_test_add_func ("/file/copy/progress", test_copy_progress);
-  g_test_add_func ("/file/copy-async-with-closurse", test_copy_async_with_closures);
+  g_test_add_func ("/file/copy-async-with-closures", test_copy_async_with_closures);
   g_test_add_func ("/file/measure", test_measure);
   g_test_add_func ("/file/measure-async", test_measure_async);
   g_test_add_func ("/file/load-bytes", test_load_bytes);
   g_test_add_func ("/file/load-bytes-async", test_load_bytes_async);
+  g_test_add_func ("/file/load-bytes-4gb", test_load_bytes_4gb);
+  g_test_add_func ("/file/load-contents-4gb", test_load_contents_4gb);
+  g_test_add_func ("/file/load-contents-4gb-async", test_load_contents_4gb_async);
   g_test_add_func ("/file/writev", test_writev);
   g_test_add_func ("/file/writev/no-bytes-written", test_writev_no_bytes_written);
   g_test_add_func ("/file/writev/no-vectors", test_writev_no_vectors);

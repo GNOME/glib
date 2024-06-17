@@ -1068,6 +1068,7 @@ g_array_maybe_expand (GRealArray *array,
   if (want_len > array->elt_capacity)
     {
       gsize want_alloc = g_nearest_pow (g_array_elt_len (array, want_len));
+      g_assert (want_alloc >= g_array_elt_len (array, want_len));
       want_alloc = MAX (want_alloc, MIN_ARRAY_SIZE);
 
       array->data = g_realloc (array->data, want_alloc);
