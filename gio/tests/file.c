@@ -2825,6 +2825,15 @@ create_testfile_4gb_or_skip (char *filename)
   int fd;
   int ret;
 
+  /* Reading each 4GB test file takes about 5s on a fast machine, and another 7s
+   * to compare its contents once it’s been read. That’s too slow for a normal
+   * test run, and there’s no way to speed it up. */
+  if (!g_test_slow ())
+    {
+      g_test_skip ("Skipping slow >4GB file test");
+      return FALSE;
+    }
+
   fd = g_mkstemp (filename);
   g_assert_cmpint (fd, !=, -1);
   ret = ftruncate (fd, testfile_4gb_size);
