@@ -4363,7 +4363,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/async-make-symlink", test_async_make_symlink);
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
   g_test_add_func ("/file/copy/progress", test_copy_progress);
-  g_test_add_func ("/file/copy-async-with-closurse", test_copy_async_with_closures);
+  g_test_add_func ("/file/copy-async-with-closures", test_copy_async_with_closures);
   g_test_add_func ("/file/measure", test_measure);
   g_test_add_func ("/file/measure-async", test_measure_async);
   g_test_add_func ("/file/load-bytes", test_load_bytes);
