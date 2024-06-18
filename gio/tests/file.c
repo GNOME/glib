@@ -2928,7 +2928,12 @@ test_load_bytes_async (void)
   g_main_loop_unref (data.main_loop);
 }
 
+#if GLIB_SIZEOF_SIZE_T > 4
 static const gsize testfile_4gb_size = ((gsize) 1 << 32) + (1 << 16); /* 4GB + a bit */
+#else
+/* Have to make do with something smaller on 32-bit platforms */
+static const gsize testfile_4gb_size = G_MAXSIZE;
+#endif
 
 /* @filename will be modified as per g_mkstemp() */
 static gboolean
