@@ -26,6 +26,7 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gunixmounts.h>
+#include <fcntl.h>
 
 /* Test that g_file_trash() returns G_IO_ERROR_NOT_SUPPORTED for files on system mounts. */
 static void
@@ -188,6 +189,79 @@ test_trash_symlinks (void)
   g_free (target);
 }
 
+/* Test that long filename are handled correctly */
+static void
+test_trash_long_filename (void)
+{
+  const gchar *long_filename = "test_trash_long_filename_aaaaaaaaaaaaaaaaaaaaaaaaa" \
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" \
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" \
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" \
+    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" \
+    "aaaaa"; /* 255 bytes */
+  gchar *filepath;
+  int fd;
+  GFile *file;
+  GError *error = NULL;
+
+  /* The test assumes that test file is located on ext fs. */
+  filepath = g_build_filename (g_get_home_dir (), long_filename, NULL);
+  fd = g_open (filepath, O_CREAT | O_RDONLY, 0666);
+  if (fd == -1)
+    {
+      g_test_skip ("Failed to create test file");
+      g_free (filepath);
+      return;
+    }
+  (void) g_close (fd, NULL);
+  file = g_file_new_for_path (filepath);
+  g_file_trash (file, NULL, &error);
+  g_unlink (filepath);
+  g_assert_no_error (error);
+
+  /* Delete trashed version of test file */
+  {
+    GFileEnumerator *enumerator;
+    GFile *trash;
+
+    trash = g_file_new_for_uri ("trash:///");
+    enumerator = g_file_enumerate_children (trash,
+                                            G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                            G_FILE_ATTRIBUTE_TRASH_ORIG_PATH,
+                                            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                            NULL, NULL);
+
+    if (enumerator)
+      {
+        GFileInfo *info;
+
+        while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL)
+          {
+            const char *origpath = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
+
+            if (strcmp (filepath, origpath) == 0)
+              {
+                GFile *item = g_file_get_child (trash, g_file_info_get_name (info));
+                g_file_delete (item, NULL, NULL);
+                g_object_unref (item);
+                g_object_unref (info);
+                break;
+              }
+
+            g_object_unref (info);
+          }
+
+        g_file_enumerator_close (enumerator, NULL, NULL);
+        g_object_unref (enumerator);
+      }
+    g_object_unref (trash);
+  }
+
+  g_free (filepath);
+  g_object_unref (file);
+  g_clear_error (&error);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -195,6 +269,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/trash/not-supported", test_trash_not_supported);
   g_test_add_func ("/trash/symlinks", test_trash_symlinks);
+  g_test_add_func ("/trash/long-filename", test_trash_long_filename);
 
   return g_test_run ();
 }
