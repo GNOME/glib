@@ -1337,6 +1337,7 @@
 /* these macros are private; note that gstdio.h also uses _GLIB_CLEANUP */
 #define _GLIB_AUTOPTR_FUNC_NAME(TypeName) glib_autoptr_cleanup_##TypeName
 #define _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName) glib_autoptr_clear_##TypeName
+#define _GLIB_AUTOPTR_DESTROY_FUNC_NAME(TypeName) glib_autoptr_destroy_##TypeName
 #define _GLIB_AUTOPTR_TYPENAME(TypeName)  TypeName##_autoptr
 #define _GLIB_AUTOPTR_LIST_FUNC_NAME(TypeName) glib_listautoptr_cleanup_##TypeName
 #define _GLIB_AUTOPTR_LIST_TYPENAME(TypeName)  TypeName##_listautoptr
@@ -1356,12 +1357,14 @@
     { if (_ptr) (cleanup) ((ParentName *) _ptr); }                                                              \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_FUNC_NAME(TypeName) (TypeName **_ptr)                          \
     { _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName) (*_ptr); }                                                        \
+  static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_DESTROY_FUNC_NAME(TypeName) (void *_ptr)                       \
+    { (cleanup) ((ParentName *) _ptr); }                                                                        \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_LIST_FUNC_NAME(TypeName) (GList **_l)                          \
-    { g_list_free_full (*_l, (GDestroyNotify) (void(*)(void)) cleanup); }                                       \
+    { g_list_free_full (*_l, _GLIB_AUTOPTR_DESTROY_FUNC_NAME(TypeName)); }                                      \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_SLIST_FUNC_NAME(TypeName) (GSList **_l)                        \
-    { g_slist_free_full (*_l, (GDestroyNotify) (void(*)(void)) cleanup); }                                      \
+    { g_slist_free_full (*_l, _GLIB_AUTOPTR_DESTROY_FUNC_NAME(TypeName)); }                                     \
   static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_QUEUE_FUNC_NAME(TypeName) (GQueue **_q)                        \
-    { if (*_q) g_queue_free_full (*_q, (GDestroyNotify) (void(*)(void)) cleanup); }                             \
+    { if (*_q) g_queue_free_full (*_q, _GLIB_AUTOPTR_DESTROY_FUNC_NAME(TypeName)); }                            \
   G_GNUC_END_IGNORE_DEPRECATIONS
 #define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName) \
   _GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS(ModuleObjName, ParentName, _GLIB_AUTOPTR_CLEAR_FUNC_NAME(ParentName))
