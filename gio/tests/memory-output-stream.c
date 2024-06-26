@@ -307,6 +307,7 @@ test_write_null (void)
 {
   GOutputStream *mo;
   GError *error = NULL;
+  gssize bytes_written;
 
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2471");
 
@@ -315,6 +316,10 @@ test_write_null (void)
   g_assert_no_error (error);
 
   g_assert_cmpint (0, ==, g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)));
+
+  bytes_written = g_output_stream_write (mo, NULL, 0, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (0, ==, bytes_written);
 
   g_output_stream_close (mo, NULL, &error);
   g_assert_no_error (error);

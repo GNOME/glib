@@ -216,7 +216,7 @@ g_output_stream_write (GOutputStream  *stream,
   gssize res;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), -1);
-  g_return_val_if_fail (buffer != NULL, 0);
+  g_return_val_if_fail (buffer != NULL || count == 0, 0);
 
   if (count == 0)
     return 0;
