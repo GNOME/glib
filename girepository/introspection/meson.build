@@ -7,6 +7,16 @@ gi_gen_shared_sources = [
   gmodule_visibility_h,
 ]
 
+gi_gen_shared_dependencies = [
+  # libgirepository is not needed by most of the modules below, but it is needed
+  # by the g-ir-scanner generated dumper program. If we don’t explicitly include
+  # the local version of it here, Meson will implicitly link against it anyway,
+  # and that might pull in a different version, or try to link against a
+  # half-built local version as the build ordering dependency tree won’t
+  # reflect this relationship.
+  libgirepository_dep,
+]
+
 gi_gen_env_variables = environment()
 
 if get_option('b_sanitize') != 'none'
@@ -50,7 +60,7 @@ glib_gir = gnome.generate_gir(libglib,
   header: 'glib.h',
   install: true,
   install_dir_gir: glib_girdir,
-  dependencies: [
+  dependencies: gi_gen_shared_dependencies + [
     libgobject_dep,
   ],
   env: gi_gen_env_variables,
@@ -78,7 +88,7 @@ if host_system == 'windows'
     includes: [ glib_gir[0] ],
     install: true,
     install_dir_gir: glib_girdir,
-    dependencies: [
+    dependencies: gi_gen_shared_dependencies + [
       libgobject_dep,
     ],
     env: gi_gen_env_variables,
@@ -107,7 +117,7 @@ else
     includes: [ glib_gir[0] ],
     install: true,
     install_dir_gir: glib_girdir,
-    dependencies: [
+    dependencies: gi_gen_shared_dependencies + [
       libgobject_dep,
     ],
     env: gi_gen_env_variables,
@@ -141,6 +151,7 @@ gobject_gir = gnome.generate_gir(libgobject,
   includes: [ glib_gir[0] ],
   install: true,
   install_dir_gir: glib_girdir,
+  dependencies: gi_gen_shared_dependencies,
   env: gi_gen_env_variables,
   extra_args: gir_args + [
       '-DGOBJECT_COMPILATION',
@@ -167,7 +178,7 @@ gmodule_gir = gnome.generate_gir(libgmodule,
   includes: [ glib_gir[0] ],
   install: true,
   install_dir_gir: glib_girdir,
-  dependencies: [
+  dependencies: gi_gen_shared_dependencies + [
     libglib_dep,
   ],
   env: gi_gen_env_variables,
@@ -230,7 +241,7 @@ gio_gir = gnome.generate_gir(libgio,
   includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0] ],
   install: true,
   install_dir_gir: glib_girdir,
-  dependencies: [
+  dependencies: gi_gen_shared_dependencies + [
     libglib_dep,
     libgobject_dep,
     libgmodule_dep,
@@ -256,7 +267,7 @@ if host_system == 'windows'
     includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
     install: true,
     install_dir_gir: glib_girdir,
-    dependencies: [
+    dependencies: gi_gen_shared_dependencies + [
       libglib_dep,
       libgobject_dep,
       libgmodule_dep,
@@ -286,7 +297,7 @@ else
     includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
     install: true,
     install_dir_gir: glib_girdir,
-    dependencies: [
+    dependencies: gi_gen_shared_dependencies + [
       libglib_dep,
       libgobject_dep,
       libgmodule_dep,
@@ -325,7 +336,12 @@ girepository_gir = gnome.generate_gir(libgirepository,
   includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
   install: true,
   install_dir_gir: glib_girdir,
-  dependencies: [ libglib_dep, libgobject_dep, libgmodule_dep, libgio_dep ],
+  dependencies: gi_gen_shared_dependencies + [
+    libglib_dep,
+    libgobject_dep,
+    libgmodule_dep,
+    libgio_dep,
+  ],
   extra_args: gir_args + libgirepository_gir_args,
 )
 
