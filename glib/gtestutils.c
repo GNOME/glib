@@ -2996,7 +2996,6 @@ test_case_run (GTestCase  *tc,
   gchar *old_base = NULL;
   GSList **old_free_list, *filename_free_list = NULL;
   gboolean success = G_TEST_RUN_SUCCESS;
-  gboolean free_test_data = TRUE;
 
   old_base = g_strdup (test_uri_base);
   old_free_list = test_filename_free_list;
@@ -3055,7 +3054,7 @@ test_case_run (GTestCase  *tc,
                 }
               if (tc->fixture_teardown)
                 tc->fixture_teardown (fixture, tc->test_data);
-              free_test_data = FALSE;
+              tc->fixture_teardown = NULL;
               if (tc->fixture_size)
                 g_free (fixture);
               g_timer_stop (test_run_timer);
@@ -3072,13 +3071,6 @@ test_case_run (GTestCase  *tc,
       g_clear_pointer (&test_run_msg, g_free);
       g_timer_destroy (test_run_timer);
     }
-
-  /* In case the test didn’t run (due to being skipped or an error), the test
-   * data may still need to be freed, as the client’s main() function may have
-   * passed ownership of it into g_test_add_data_func_full() with a
-   * #GDestroyNotify. */
-  if (free_test_data && tc->fixture_size == 0 && tc->fixture_teardown != NULL)
-    tc->fixture_teardown (tc->test_data, tc->test_data);
 
   g_slist_free_full (filename_free_list, g_free);
   test_filename_free_list = old_free_list;
@@ -3264,6 +3256,13 @@ g_test_run_suite (GTestSuite *suite)
 void
 g_test_case_free (GTestCase *test_case)
 {
+  /* In case the test didn’t run (due to being skipped or an error), the test
+   * data may still need to be freed, as the client’s main() function may have
+   * passed ownership of it into g_test_add_data_func_full() with a
+   * #GDestroyNotify. */
+  if (test_case->fixture_size == 0 && test_case->fixture_teardown != NULL)
+    test_case->fixture_teardown (test_case->test_data, test_case->test_data);
+
   g_free (test_case->name);
   g_slice_free (GTestCase, test_case);
 }
