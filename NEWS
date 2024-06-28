@@ -1,3 +1,238 @@
+Overview of changes in GLib 2.81.0, 2024-06-28
+==============================================
+
+* Add a strong recommendation to build with a toolchain that supports C11; this
+  will become a hard requirement in future stable release cycles (!4082, work by
+  Emmanuele Bassi)
+
+* Fix CVE-2024-34397: GDBus signal subscriptions for well-known names are
+  vulnerable to unicast spoofing (#3268, work by Simon McVittie, reported by
+  Alicia Boya García)
+
+* Fix a regression with IBus caused by the fix for CVE-2024-34397 (#3353,
+  work by Simon McVittie)
+
+* Fix Devhelp documentation indexes (#3287, work by Philip Withnall)
+
+* Fix installation directory of the GVariant specification (#3351, work by
+  Michael Catanzaro)
+
+* Change `dtrace` and `systemtap` Meson options to auto-enabled features, and
+  change default for `sysprof` from `disabled` to `auto` (#3354, work by Michael
+  Catanzaro)
+
+* Change how Python is found at configure time and in script shebangs
+  (#3301, #3331, work by multiple people)
+
+* Make various libgirepository APIs return reproducible results by defining an
+  order over namespaces (#3303, work by Philip Withnall)
+
+* Ignore `SIGPIPE` for the entire parent process when creating a `GSubprocess`
+  (#3310, work by Philip Withnall)
+
+* Use alternate signal stack to receive signals if the process provides one
+  (!3983, #3314, #3315, #3337, work by Marco Trevisan, Pablo Correa Gomez,
+  Philip Withnall)
+
+* Allow multiple parameters for D-Bus activation of app actions (#3333, work by
+  Philip Withnall, Julian Sparber)
+
+* Fix out-of-bounds access when reading >4GiB files (#3397, work by
+  Benjamin Otte, Philip Withnall)
+
+* Use `ppoll()` rather than `poll()` where possible for more precise timeouts
+  (!3958, work by Christian Hergert)
+
+* Port various parts of the documentation to gi-docgen format (#3250, work by
+  Sudhanshu Tiwari, Philip Withnall)
+
+* Fix `futex_time64()` use on Android ≤ 10 (!3987, work by Amyspark)
+
+* Various improvements to bash completion for GLib utilities (!3989, !4012,
+  !4013, work by Ville Skyttä, Philip Withnall)
+
+* Bugs fixed:
+  - GNOME/tracker-miners#315 3.7.0 - GLib-GIO-WARNING **: 09:27:12.186: Error
+    creating IO channel for /proc/self/mountinfo: Invalid argument (g-io-error-
+    quark, 13) (Ondrej Holy)
+  - GNOME/gobject-introspection#509 Gio Typelib error on method call:
+    'gi.repository.Gio' object has no attribute 'content_type_get_icon'
+    (Biswapriyo Nath)
+  - #564 create introspection-friendly version of g_settings_bind_with_mapping
+    (Philip Chimento)
+  - #1767 Fix scan-build reports and gate CI pipeline success on scan-build
+    success (Philip Withnall)
+  - #2896 Links to docs for glib-compile-resources are broken (Emmanuele Bassi)
+  - #3184 g_socket_client_connect_to_host_async leaks memory when target host
+    doesn't respond to ARP (Philip Withnall)
+  - #3254 Property deprecation warning can be issued in cases when deprecated
+    property isn't used (Philip Withnall)
+  - #3268 CVE-2024-34397: GDBus signal subscriptions for well-known names are
+    vulnerable to unicast spoofing (Simon McVittie)
+  - #3286 g_strrstr, g_strrstr_len, g_strstr_len return ownership note is
+    incorrect (Philip Withnall)
+  - #3287 Devhelp does not show indexes for GLib, GIO, or GObject (Philip
+    Withnall)
+  - #3289 readlink -f fails in CI on macOS (Simon McVittie)
+  - #3290 Cleanup after G_TEST_OPTION_ISOLATE_DIRS follows symlinks (Will
+    Thompson)
+  - #3301 consider glib development binaries usable without external python
+    modules
+  - #3303 gi_repository_find_by_gtype is nondeterministic (Philip Withnall)
+  - #3310 Race condition in `g_subprocess_communicate()` with
+    `G_SUBPROCESS_FLAGS_STDIN_PIPE` (Philip Withnall)
+  - #3313 GBookmarkFile documentation links to non-existant page (Philip
+    Withnall)
+  - #3314 unix test fails on macOS due to alternate signal stack changes
+  - #3317 test failures during glib bootstrap
+  - #3326 Switch TRUE and FALSE to C99 constants (Emmanuele Bassi)
+  - #3333 Gio.Application: Takes only first parameter when activating an action
+    via D-Bus Activation (Julian Sparber)
+  - #3337 unix test fails under valgrind due to alternate stack changes (Marco
+    Trevisan (Treviño))
+  - #3342 Crash in gdbus schedule_callbacks() due to missing NULL check before
+    g_str_equal() (Philip Withnall)
+  - #3351 GVariant specification installed in wrong directory (Michael
+    Catanzaro)
+  - #3353 Fixing CVE-2024-34397 caused regressions for ibus (Simon McVittie)
+  - #3354 Reconsider default values for certain build options
+  - #3355 GIBaseInfo/GIBaseInfoStack bitfield definition doesn't match on
+    16-bit-aligned-pointer systems
+  - #3361 Documentation for i18n is limited, i18n macros not available
+    (Emmanuele Bassi)
+  - #3363 Factor out untranslatable parts of translatable error messages
+  - #3366 Crash in error path of g_dbus_connection_export_menu_model() (Philip
+    Withnall)
+  - #3369 Remove links to dead developer-old.gnome.org (Philip Withnall)
+  - #3372 G_LIKELY doesn’t appear in gi-docgen documentation (Emmanuele Bassi)
+  - #3394 GLib unit tests fail on macOS runner due to localhost being out of
+    addresses (Philip Withnall)
+  - #3397 g_file_load_contents reads large (>4GiB) files past end of array due
+    to gsize to guint truncation
+  - #3401 Random failures to build glib 2.80.3 (Philip Withnall)
+  - #3402 g_output_stream_write fails assertion if buffer is NULL and count is 0
+    (Gary Li)
+  - !3697 GLocalFile: support trashing long file name
+  - !3939 Add g_file_copy_async_with_closures() and
+    g_file_move_async_with_closures()
+  - !3952 Add unref-to-strv to GStrvBuilder
+  - !3954 [th/performance] add script for combining performance results
+  - !3958 Use ppoll() when possible for more precise timeouts
+  - !3959 [th/gobject-toggle-refs-check] Fix critical warning for toggle
+    notifications in g_object_ref()/g_object_unref()
+  - !3962 meson: Fix a needless recompilation of some gdbus tests
+  - !3966 girparser: Don't assume sizeof(size_t) == sizeof(void *)
+  - !3967 girparser: Allow time_t, off_t, etc. to appear in GIR XML
+  - !3969 Ported the first few documentation comments in `gio/gaction.c` to gi-
+    docgen
+  - !3970 girparser: Make sizes in integer_aliases more obviously correct
+  - !3972 girparser: Adjust signedness() macro
+  - !3973 glib/gvariant: fix compile error with GCC 14.0.1
+  - !3974 tests: Mark several additional tests as can_fail on GNU Hurd
+  - !3975 build: Post-release version bump
+  - !3977 tests: Remove unnecessary subprocess from dataset tests
+  - !3978 gio: Fix docs links to description of I/O priority
+  - !3979 Don't assume CPU_ISSET will return 0 or 1
+  - !3983 gmain: Use alternate signal stack if the application provides one
+  - !3984 Fix a typo
+  - !3985 gio: Change ‘unrecognised’ to ‘unrecognized’ in various user-visible
+    places
+  - !3986 Port the remaining documentation comments in `gio/gaction.c` to GI-
+    Docgen
+  - !3987 glib/gthread-posix: Block futex_time64 usage on Android API level < 30
+  - !3988 Introspection: Fix running g-ir-scanner 1.80.x+ on Windows
+  - !3989 completion: make gsettings work in nounset mode
+  - !3990 docs: spelling and grammar fixes
+  - !3993 Convert  __BIONIC__ usages that check for Android to __ANDROID__
+  - !3994 glib/gthread-posix: Fix missing saved_errno variable in Android's
+    g_futex_simple
+  - !3996 docs: Fix g_object_connect()'s docblock
+  - !4000 Revert "gmain: Use alternate signal stack if the application provides
+    one"
+  - !4002 Ports the documentation comments in gio/gactiongroup.c to GI-Docgen
+  - !4003 Remove unused cmph files
+  - !4005 Fix various bugs found by scan-build and refresh scan-build config in
+    CI
+  - !4008 docs: Update Code of Conduct URI
+  - !4011 docs: Minor GVariant fixes
+  - !4012 tests: Enable shellcheck for bash completion scripts
+  - !4013 completion: Invoke the command being completed
+  - !4014 Add a few more missing license and copyright headers to files
+  - !4016 gunicode.h: fix warning with -Wcast-qual for define g_utf8_next_char()
+  - !4017 docs(gio/overview): Restore missing heading
+  - !4020 girepository/introspection: correctly install .gir files into custom
+    locations
+  - !4022 gfileinfo: Fixed broken link to gio/file-attributes.html
+  - !4023 Fix various implicit conversions from size_t to smaller types
+  - !4024 gdatetime: Fix string type used to initialise array
+  - !4031 gdocumentportal: Handle EROFS and similar errors more gracefully
+  - !4034 link with -latomic when needed
+  - !4035 Add g_converter_convert_bytes
+  - !4045 gapplication: Fix a small leak on an error handling path
+  - !4051 gdbusconnection: Fix test signal subscription ordering
+  - !4057 gdbusmessage: Clean the cached arg0 when setting the message body
+  - !4058 Tests: Build fixes when running `meson test` without previous builds
+  - !4059 tests: Fix various memory leaks and valgrind / ASAN errors
+  - !4063 gdbusconnection: Fix a misleading comment
+  - !4064 girepository/build: Actually use our compiler to generate GLib
+    typelibs and fix parser leaks
+  - !4066 Fix several GCC 14 warnings to please msys2-mingw32 CI
+  - !4067 Remove unused struct
+  - !4068 docs: Fix string-utils paragraph heading
+  - !4069 gdbus: Make more use of symbolic constants for various aspects of the
+    D-Bus protocol
+  - !4075 ci: Update Fedora CI image to Fedora 39
+  - !4078 tests: Fix clang compilation failure due to unrecognised option in
+    pragma
+  - !4081 gpattern: Port the docs to gi-docgen syntax
+  - !4082 docs: Update toolchain requirement to C11
+  - !4083 gobject: fix broken links to parameters and signals naming rules
+  - !4084 docs: Improve g_strescape & g_strcompress descriptions
+  - !4087 ci: Disable systemtap on musl CI build
+  - !4088 girepository: add support for relocations
+  - !4089 Revert "Alias TRUE and FALSE to C99's true and false"
+  - !4091 build: Use C89 for the standard version check
+  - !4092 docs: Improve conversion-macros formatting and add
+    GTYPE_TO_POINTER/GPOINTER_TO_TYPE
+  - !4093 gmem.c: Update g_clear_pointer() documentation
+  - !4094 tests: Fix compilation failure on macOS due to missing include
+  - !4095 Improve handling of standard types' signedness
+  - !4097 docs: Fix docs reference to main-loop
+  - !4098 Dump pointer types in the introspection blob
+  - !4099 gfile: Fix finish-func annotations
+  - !4100 docs: Mention XDG_DATA_HOME in glib-compile-schemas manual
+  - !4101 gio/g-i: Mark Application:action-group property as deprecated
+  - !4102 tests: Add basic tests for gdump.c in libgirepository
+  - !4108 build: Rename meson_options.txt to meson.options
+  - !4114 glocalfileinfo: A few fixes on win32
+  - !4115 tests: Use g_assert_*() rather than g_assert() in notification tests
+  - !4117 tests: Improve 4GB file loading test to work on i386
+  - !4120 gtestutils: Free test_data when freeing a test case
+  - !4121 gmacros: Avoid casting functions
+
+* Translation updates:
+  - Catalan (Jordi Mas i Hernandez)
+  - Czech (Daniel Rusek)
+  - Danish (Ask Hjorth Larsen)
+  - French (Vincent Chatelain)
+  - Galician (Fran Dieguez)
+  - Georgian (Ekaterine Papava)
+  - German (Christian Kirbach)
+  - Hungarian (Balázs Úr)
+  - Indonesian (Andika Triwidada)
+  - Italian (Milo Casagrande)
+  - Kabyle (Rachida SACI, Athmane MOKRAOUI)
+  - Korean (Changwoo Ryu)
+  - Latvian (Rūdolfs Mazurs)
+  - Persian (Danial Behzadi)
+  - Polish (Piotr Drąg)
+  - Portuguese (Hugo Carvalho)
+  - Portuguese (Brazil) (Juliano de Souza Camargo, Leônidas Araújo)
+  - Slovenian (Martin)
+  - Turkish (Sabri Ünal)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.80.0, 2024-03-07
 ==============================================
 
