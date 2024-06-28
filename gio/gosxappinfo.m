@@ -28,6 +28,7 @@
 #include "gfile.h"
 #include "gfileicon.h"
 #include "gioerror.h"
+#include "gtask.h"
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <Foundation/Foundation.h>
@@ -513,6 +514,72 @@ g_osx_app_info_launch_uris (GAppInfo           *appinfo,
   return g_osx_app_info_launch_internal (appinfo, uris, FALSE, error);
 }
 
+typedef struct
+{
+  GList *uris;  /* (element-type utf8) (owned) (nullable) */
+  GAppLaunchContext *context;  /* (owned) (nullable) */
+} LaunchUrisData;
+
+static void
+launch_uris_data_free (LaunchUrisData *data)
+{
+  g_clear_object (&data->context);
+  g_list_free_full (data->uris, g_free);
+  g_free (data);
+}
+
+static void
+launch_uris_async_thread (GTask         *task,
+                          gpointer       source_object,
+                          gpointer       task_data,
+                          GCancellable  *cancellable)
+{
+  GAppInfo *appinfo = G_APP_INFO (source_object);
+  LaunchUrisData *data = task_data;
+  GError *local_error = NULL;
+  gboolean succeeded;
+
+  succeeded = g_osx_app_info_launch_internal (appinfo, data->uris, FALSE, &local_error);
+
+  if (local_error != NULL)
+    g_task_return_error (task, g_steal_pointer (&local_error));
+  else
+    g_task_return_boolean (task, succeeded);
+}
+
+static void
+g_osx_app_info_launch_uris_async (GAppInfo           *appinfo,
+                                  GList              *uris,
+                                  GAppLaunchContext  *context,
+                                  GCancellable       *cancellable,
+                                  GAsyncReadyCallback callback,
+                                  gpointer            user_data)
+{
+  GTask *task;
+  LaunchUrisData *data;
+
+  task = g_task_new (appinfo, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_osx_app_info_launch_uris_async);
+
+  data = g_new0 (LaunchUrisData, 1);
+  data->uris = g_list_copy_deep (uris, (GCopyFunc) g_strdup, NULL);
+  g_set_object (&data->context, context);
+  g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) launch_uris_data_free);
+
+  g_task_run_in_thread (task, launch_uris_async_thread);
+  g_object_unref (task);
+}
+
+static gboolean
+g_osx_app_info_launch_uris_finish (GAppInfo     *appinfo,
+                                       GAsyncResult *result,
+                                       GError      **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, appinfo), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
 static gboolean
 g_osx_app_info_should_show (GAppInfo *appinfo)
 {
@@ -570,7 +637,8 @@ g_osx_app_info_iface_init (GAppInfoIface *iface)
 
   iface->launch = g_osx_app_info_launch;
   iface->launch_uris = g_osx_app_info_launch_uris;
-
+  iface->launch_uris_async = g_osx_app_info_launch_uris_async;
+  iface->launch_uris_finish = g_osx_app_info_launch_uris_finish;
   iface->supports_uris = g_osx_app_info_supports_uris;
   iface->supports_files = g_osx_app_info_supports_files;
   iface->should_show = g_osx_app_info_should_show;
