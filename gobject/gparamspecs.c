@@ -691,7 +691,7 @@ param_double_is_valid (GParamSpec   *pspec,
                        const GValue *value)
 {
   GParamSpecDouble *dspec = G_PARAM_SPEC_DOUBLE (pspec);
-  gfloat oval = value->data[0].v_double;
+  gdouble oval = value->data[0].v_double;
   
   return dspec->minimum <= oval && oval <= dspec->maximum;
 }

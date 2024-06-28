@@ -292,6 +292,20 @@ test_param_spec_double (void)
   g_assert_cmpint (g_value_get_double (&value), ==, 20.0);
 
   g_param_spec_unref (pspec);
+
+  /* Test validation with some larger values, which fit in a double but not in a float.
+   * In particular, check there are no double → float conversions in the pipeline,
+   * by using a valid range which is entirely outside the range of numbers
+   * representable in a float. */
+  pspec = g_param_spec_double ("double", NULL, NULL,
+                               1.2e308, 1.3e308, 1.21e308, G_PARAM_READWRITE);
+
+  g_param_value_set_default (pspec, &value);
+  g_assert_true (g_param_value_is_valid (pspec, &value));
+  g_assert_false (g_param_value_validate (pspec, &value));
+  g_assert_cmpfloat (g_value_get_double (&value), ==, 1.21e308);
+
+  g_param_spec_unref (pspec);
 }
 
 static void
