@@ -2371,7 +2371,7 @@ gi_ir_node_build_typelib (GIIrNode         *node,
             break;
           case GI_TYPE_TAG_FLOAT:
             blob->size = sizeof (float);
-            DO_ALIGNED_COPY (&data[blob->offset], parse_float_value (constant->value), float);
+            DO_ALIGNED_COPY (&data[blob->offset], (float) parse_float_value (constant->value), float);
             break;
           case GI_TYPE_TAG_DOUBLE:
             blob->size = sizeof (double);
