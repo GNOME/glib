@@ -505,7 +505,7 @@ complex_object_init (ComplexObject *complex_object)
 
 struct ConstructionTest {
   GObject **objects;
-  int n_objects;
+  unsigned int n_objects;
   GType type;
 };
 
@@ -526,7 +526,7 @@ test_construction_init (PerformanceTest *test,
 			double count_factor)
 {
   struct ConstructionTest *data = _data;
-  int n;
+  unsigned int n;
 
   n = NUM_OBJECT_TO_CONSTRUCT * count_factor;
   if (data->n_objects != n)
@@ -543,10 +543,10 @@ test_construction_run (PerformanceTest *test,
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
   GType type = data->type;
-  int i, n_objects;
+  unsigned int n_objects;
 
   n_objects = data->n_objects;
-  for (i = 0; i < n_objects; i++)
+  for (unsigned int i = 0; i < n_objects; i++)
     objects[i] = g_object_new (type, NULL);
 }
 
@@ -556,10 +556,10 @@ test_construction_run1 (PerformanceTest *test,
 {
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
-  int i, n_objects;
+  unsigned int n_objects;
 
   n_objects = data->n_objects;
-  for (i = 0; i < n_objects; i++)
+  for (unsigned int i = 0; i < n_objects; i++)
     objects[i] = (GObject *) g_slice_new0 (SimpleObject);
 }
 
@@ -570,10 +570,10 @@ test_complex_construction_run (PerformanceTest *test,
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
   GType type = data->type;
-  int i, n_objects;
+  unsigned int n_objects;
 
   n_objects = data->n_objects;
-  for (i = 0; i < n_objects; i++)
+  for (unsigned int i = 0; i < n_objects; i++)
     objects[i] = g_object_new (type, "val1", 5, "val2", "thousand", NULL);
 }
 
@@ -584,10 +584,10 @@ test_complex_construction_run1 (PerformanceTest *test,
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
   GType type = data->type;
-  int i, n_objects;
+  unsigned int n_objects;
 
   n_objects = data->n_objects;
-  for (i = 0; i < n_objects; i++)
+  for (unsigned int i = 0; i < n_objects; i++)
     {
       ComplexObject *object;
       object = (ComplexObject *)g_object_new (type, NULL);
@@ -604,10 +604,10 @@ test_complex_construction_run2 (PerformanceTest *test,
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
   GType type = data->type;
-  int i, n_objects;
+  unsigned int n_objects;
 
   n_objects = data->n_objects;
-  for (i = 0; i < n_objects; i++)
+  for (unsigned int i = 0; i < n_objects; i++)
     {
       objects[i] = g_object_new (type, NULL);
     }
@@ -618,9 +618,8 @@ test_construction_finish (PerformanceTest *test,
 			  gpointer _data)
 {
   struct ConstructionTest *data = _data;
-  int i;
 
-  for (i = 0; i < data->n_objects; i++)
+  for (unsigned int i = 0; i < data->n_objects; i++)
     g_object_unref (data->objects[i]);
 }
 
@@ -629,9 +628,8 @@ test_construction_finish1 (PerformanceTest *test,
 			   gpointer _data)
 {
   struct ConstructionTest *data = _data;
-  int i;
 
-  for (i = 0; i < data->n_objects; i++)
+  for (unsigned int i = 0; i < data->n_objects; i++)
     g_slice_free (SimpleObject, (SimpleObject *)data->objects[i]);
 }
 
@@ -650,7 +648,7 @@ test_finalization_init (PerformanceTest *test,
 			double count_factor)
 {
   struct ConstructionTest *data = _data;
-  int n;
+  unsigned int n;
 
   n = NUM_OBJECT_TO_CONSTRUCT * count_factor;
   if (data->n_objects != n)
@@ -659,7 +657,7 @@ test_finalization_init (PerformanceTest *test,
       data->objects = g_renew (GObject *, data->objects, n);
     }
 
-  for (int i = 0; i <  data->n_objects; i++)
+  for (unsigned int i = 0; i <  data->n_objects; i++)
     {
       data->objects[i] = g_object_new (data->type, NULL);
     }
@@ -671,10 +669,10 @@ test_finalization_run (PerformanceTest *test,
 {
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
-  int i, n_objects;
+  unsigned int n_objects;
 
   n_objects = data->n_objects;
-  for (i = 0; i < n_objects; i++)
+  for (unsigned int i = 0; i < n_objects; i++)
     {
       g_object_unref (objects[i]);
     }
@@ -716,7 +714,7 @@ test_finalization_print_result (PerformanceTest *test,
 
 struct TypeCheckTest {
   GObject *object;
-  int n_checks;
+  unsigned int n_checks;
 };
 
 static gpointer
@@ -753,7 +751,6 @@ test_type_check_run (PerformanceTest *test,
   struct TypeCheckTest *data = _data;
   GObject *object = data->object;
   GType type, types[5];
-  int i, j;
 
   types[0] = test_iface1_get_type ();
   types[1] = test_iface2_get_type ();
@@ -761,10 +758,10 @@ test_type_check_run (PerformanceTest *test,
   types[3] = test_iface4_get_type ();
   types[4] = test_iface5_get_type ();
 
-  for (i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     {
       type = types[i%5];
-      for (j = 0; j < 1000; j++)
+      for (unsigned int j = 0; j < 1000; j++)
 	{
 	  my_type_check_instance_is_a ((GTypeInstance *)object,
 				       type);
@@ -806,8 +803,8 @@ test_type_check_teardown (PerformanceTest *test,
 
 struct EmissionTest {
   GObject *object;
-  int n_checks;
-  int signal_id;
+  unsigned int n_checks;
+  unsigned int signal_id;
 };
 
 static void
@@ -816,9 +813,8 @@ test_emission_run (PerformanceTest *test,
 {
   struct EmissionTest *data = _data;
   GObject *object = data->object;
-  int i;
 
-  for (i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     g_signal_emit (object, data->signal_id, 0);
 }
 
@@ -828,9 +824,8 @@ test_emission_run_args (PerformanceTest *test,
 {
   struct EmissionTest *data = _data;
   GObject *object = data->object;
-  int i;
 
-  for (i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     g_signal_emit (object, data->signal_id, 0, 0, NULL);
 }
 
@@ -845,7 +840,7 @@ test_emission_unhandled_setup (PerformanceTest *test)
 
   data = g_new0 (struct EmissionTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
-  data->signal_id = complex_signals[GPOINTER_TO_INT (test->extra_data)];
+  data->signal_id = complex_signals[GPOINTER_TO_UINT (test->extra_data)];
   return data;
 }
 
@@ -902,7 +897,7 @@ test_emission_handled_setup (PerformanceTest *test)
 
   data = g_new0 (struct EmissionTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
-  data->signal_id = complex_signals[GPOINTER_TO_INT (test->extra_data)];
+  data->signal_id = complex_signals[GPOINTER_TO_UINT (test->extra_data)];
   g_signal_connect (data->object, "signal",
                     G_CALLBACK (test_emission_handled_handler),
                     NULL);
@@ -967,7 +962,7 @@ test_emission_handled_teardown (PerformanceTest *test,
 
 struct NotifyTest {
   GObject *object;
-  unsigned n_checks;
+  unsigned int n_checks;
 };
 
 static void
@@ -977,7 +972,7 @@ test_notify_run (PerformanceTest *test,
   struct NotifyTest *data = _data;
   GObject *object = data->object;
 
-  for (unsigned i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     g_object_notify (object, "val1");
 }
 
@@ -988,7 +983,7 @@ test_notify_by_pspec_run (PerformanceTest *test,
   struct NotifyTest *data = _data;
   GObject *object = data->object;
 
-  for (unsigned i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     g_object_notify_by_pspec (object, pspecs[PROP_VAL1]);
 }
 
@@ -1117,7 +1112,7 @@ test_notify_handled_teardown (PerformanceTest *test,
 
 struct SetTest {
   GObject *object;
-  unsigned n_checks;
+  unsigned int n_checks;
 };
 
 static void
@@ -1127,7 +1122,7 @@ test_set_run (PerformanceTest *test,
   struct SetTest *data = _data;
   GObject *object = data->object;
 
-  for (unsigned i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     g_object_set (object, "val1", i, NULL);
 }
 
@@ -1194,7 +1189,7 @@ test_set_teardown (PerformanceTest *test,
 
 struct GetTest {
   GObject *object;
-  unsigned n_checks;
+  unsigned int n_checks;
 };
 
 static void
@@ -1205,7 +1200,7 @@ test_get_run (PerformanceTest *test,
   GObject *object = data->object;
   int val;
 
-  for (unsigned i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     g_object_get (object, "val1", &val, NULL);
 }
 
@@ -1272,7 +1267,7 @@ test_get_teardown (PerformanceTest *test,
 
 struct RefcountTest {
   GObject *object;
-  int n_checks;
+  unsigned int n_checks;
   gboolean is_toggle_ref;
 };
 
@@ -1317,9 +1312,8 @@ test_refcount_run (PerformanceTest *test,
 {
   struct RefcountTest *data = _data;
   GObject *object = data->object;
-  int i;
 
-  for (i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     {
       g_object_ref (object);
       g_object_ref (object);
@@ -1341,9 +1335,8 @@ test_refcount_1_run (PerformanceTest *test,
 {
   struct RefcountTest *data = _data;
   GObject *object = data->object;
-  int i;
 
-  for (i = 0; i < data->n_checks; i++)
+  for (unsigned int i = 0; i < data->n_checks; i++)
     {
       g_object_ref (object);
       g_object_unref (object);
@@ -1457,7 +1450,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-unhandled",
-    GINT_TO_POINTER (COMPLEX_SIGNAL),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL),
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1467,7 +1460,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-unhandled-empty",
-    GINT_TO_POINTER (COMPLEX_SIGNAL_EMPTY),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL_EMPTY),
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1477,7 +1470,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-unhandled-generic",
-    GINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC),
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1487,7 +1480,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-unhandled-generic-empty",
-    GINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC_EMPTY),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC_EMPTY),
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1497,7 +1490,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-unhandled-args",
-    GINT_TO_POINTER (COMPLEX_SIGNAL_ARGS),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL_ARGS),
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run_args,
@@ -1507,7 +1500,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-handled",
-    GINT_TO_POINTER (COMPLEX_SIGNAL),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL),
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1517,7 +1510,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-handled-empty",
-    GINT_TO_POINTER (COMPLEX_SIGNAL_EMPTY),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL_EMPTY),
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1527,7 +1520,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-handled-generic",
-    GINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC),
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1537,7 +1530,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-handled-generic-empty",
-    GINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC_EMPTY),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC_EMPTY),
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1547,7 +1540,7 @@ static PerformanceTest tests[] = {
   },
   {
     "emit-handled-args",
-    GINT_TO_POINTER (COMPLEX_SIGNAL_ARGS),
+    GUINT_TO_POINTER (COMPLEX_SIGNAL_ARGS),
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run_args,
@@ -1650,8 +1643,7 @@ static PerformanceTest tests[] = {
 static PerformanceTest *
 find_test (const char *name)
 {
-  gsize i;
-  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+  for (size_t i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       if (strcmp (tests[i].name, name) == 0)
 	return &tests[i];
@@ -1666,7 +1658,6 @@ main (int   argc,
   GOptionContext *context;
   GError *error = NULL;
   const char *str;
-  int i;
 
   if ((str = g_getenv ("GLIB_PERFORMANCE_FACTOR")) && str[0])
     {
@@ -1691,7 +1682,7 @@ main (int   argc,
 
   if (argc > 1)
     {
-      for (i = 1; i < argc; i++)
+      for (int i = 1; i < argc; i++)
 	{
 	  test = find_test (argv[i]);
 	  if (test)
@@ -1700,8 +1691,7 @@ main (int   argc,
     }
   else
     {
-      gsize k;
-      for (k = 0; k < G_N_ELEMENTS (tests); k++)
+      for (size_t k = 0; k < G_N_ELEMENTS (tests); k++)
         run_test (&tests[k]);
     }
 
