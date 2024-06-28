@@ -82,15 +82,11 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "gtimezone.h"
+#include "gutilsprivate.h"
 
 #ifndef G_OS_WIN32
 #include <sys/time.h>
 #include <time.h>
-#else
-#if defined (_MSC_VER) && (_MSC_VER < 1800)
-/* fallback implementation for isnan() on VS2012 and earlier */
-#define isnan _isnan
-#endif
 #endif /* !G_OS_WIN32 */
 
 struct _GDateTime
@@ -1645,7 +1641,7 @@ g_date_time_new (GTimeZone *tz,
       day < 1 || day > days_in_months[GREGORIAN_LEAP (year)][month] ||
       hour < 0 || hour > 23 ||
       minute < 0 || minute > 59 ||
-      isnan (seconds) ||
+      g_isnan (seconds) ||
       seconds < 0.0 || seconds >= 60.0)
     return NULL;
 
