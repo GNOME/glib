@@ -169,7 +169,7 @@ run_test (PerformanceTest *test)
     g_print ("Uncorrected round time: %.4f msecs, correction factor %.2f\n", 1000*min_elapsed, factor);
 
   /* Calculate number of rounds needed */
-  num_rounds = (test_length / TARGET_ROUND_TIME) + 1;
+  num_rounds = (guint64) (test_length / TARGET_ROUND_TIME) + 1;
 
   if (verbose)
     g_print ("Running %"G_GINT64_MODIFIER"d rounds\n", num_rounds);
@@ -528,7 +528,7 @@ test_construction_init (PerformanceTest *test,
   struct ConstructionTest *data = _data;
   unsigned int n;
 
-  n = NUM_OBJECT_TO_CONSTRUCT * count_factor;
+  n = (unsigned int) (NUM_OBJECT_TO_CONSTRUCT * count_factor);
   if (data->n_objects != n)
     {
       data->n_objects = n;
@@ -650,7 +650,7 @@ test_finalization_init (PerformanceTest *test,
   struct ConstructionTest *data = _data;
   unsigned int n;
 
-  n = NUM_OBJECT_TO_CONSTRUCT * count_factor;
+  n = (unsigned int) (NUM_OBJECT_TO_CONSTRUCT * count_factor);
   if (data->n_objects != n)
     {
       data->n_objects = n;
@@ -735,7 +735,7 @@ test_type_check_init (PerformanceTest *test,
 {
   struct TypeCheckTest *data = _data;
 
-  data->n_checks = factor * NUM_KILO_CHECKS_PER_ROUND;
+  data->n_checks = (unsigned int) (factor * NUM_KILO_CHECKS_PER_ROUND);
 }
 
 
@@ -851,7 +851,7 @@ test_emission_unhandled_init (PerformanceTest *test,
 {
   struct EmissionTest *data = _data;
 
-  data->n_checks = factor * NUM_EMISSIONS_PER_ROUND;
+  data->n_checks = (unsigned int) (factor * NUM_EMISSIONS_PER_ROUND);
 }
 
 static void
@@ -924,7 +924,7 @@ test_emission_handled_init (PerformanceTest *test,
 {
   struct EmissionTest *data = _data;
 
-  data->n_checks = factor * NUM_EMISSIONS_PER_ROUND;
+  data->n_checks = (unsigned int) (factor * NUM_EMISSIONS_PER_ROUND);
 }
 
 static void
@@ -1008,7 +1008,7 @@ test_notify_unhandled_init (PerformanceTest *test,
 {
   struct NotifyTest *data = _data;
 
-  data->n_checks = factor * NUM_NOTIFY_PER_ROUND;
+  data->n_checks = (unsigned int) (factor * NUM_NOTIFY_PER_ROUND);
 }
 
 static void
@@ -1070,7 +1070,7 @@ test_notify_handled_init (PerformanceTest *test,
 {
   struct NotifyTest *data = _data;
 
-  data->n_checks = factor * NUM_NOTIFY_PER_ROUND;
+  data->n_checks = (unsigned int) (factor * NUM_NOTIFY_PER_ROUND);
 }
 
 static void
@@ -1150,7 +1150,7 @@ test_set_init (PerformanceTest *test,
 {
   struct SetTest *data = _data;
 
-  data->n_checks = factor * NUM_SET_PER_ROUND;
+  data->n_checks = (unsigned int) (factor * NUM_SET_PER_ROUND);
 }
 
 static void
@@ -1228,7 +1228,7 @@ test_get_init (PerformanceTest *test,
 {
   struct GetTest *data = _data;
 
-  data->n_checks = factor * NUM_GET_PER_ROUND;
+  data->n_checks = (unsigned int) (factor * NUM_GET_PER_ROUND);
 }
 
 static void
@@ -1303,7 +1303,7 @@ test_refcount_init (PerformanceTest *test,
 {
   struct RefcountTest *data = _data;
 
-  data->n_checks = factor * NUM_KILO_REFS_PER_ROUND;
+  data->n_checks = (unsigned int) (factor * NUM_KILO_REFS_PER_ROUND);
 }
 
 static void
