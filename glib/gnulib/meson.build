@@ -1,7 +1,10 @@
 # glib enables -Werror=format-nonliteral by default, but the embedded gnulib
 # needs to handle user provided format strings.
 extra_gnulib_args = cc.get_supported_arguments([
-  '-Wno-format-nonliteral', '-Wno-duplicated-branches'])
+  '-Wno-format-nonliteral',
+  '-Wno-float-conversion',
+  '-Wno-duplicated-branches',
+])
 
 if host_system == 'windows' and cc.get_id() == 'clang'
   extra_gnulib_args += cc.get_supported_arguments([
