@@ -46,7 +46,7 @@ typedef struct _GAsyncResultIface    GAsyncResultIface;
  * @get_source_object: Gets the source object that issued the asynchronous operation.
  * @is_tagged: Checks if a result is tagged with a particular source.
  *
- * Interface definition for #GAsyncResult.
+ * Interface definition for [iface@Gio.AsyncResult].
  **/
 struct _GAsyncResultIface
 {
