@@ -37,7 +37,7 @@
 #include "gvaluearray.h"
 
 
-#define	G_FLOAT_EPSILON		(1e-30)
+#define	G_FLOAT_EPSILON		(1e-30f)
 #define	G_DOUBLE_EPSILON	(1e-90)
 
 
