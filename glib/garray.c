@@ -925,11 +925,11 @@ g_array_sort (GArray       *farray,
 
   /* Don't use qsort as we want a guaranteed stable sort */
   if (array->len > 0)
-    g_qsort_with_data (array->data,
-                       array->len,
-                       array->elt_size,
-                       (GCompareDataFunc)compare_func,
-                       NULL);
+    g_sort_array (array->data,
+                  array->len,
+                  array->elt_size,
+                  (GCompareDataFunc) compare_func,
+                  NULL);
 }
 
 /**
@@ -957,11 +957,11 @@ g_array_sort_with_data (GArray           *farray,
   g_return_if_fail (array != NULL);
 
   if (array->len > 0)
-    g_qsort_with_data (array->data,
-                       array->len,
-                       array->elt_size,
-                       compare_func,
-                       user_data);
+    g_sort_array (array->data,
+                  array->len,
+                  array->elt_size,
+                  compare_func,
+                  user_data);
 }
 
 /**
@@ -2413,11 +2413,11 @@ g_ptr_array_sort (GPtrArray    *array,
 
   /* Don't use qsort as we want a guaranteed stable sort */
   if (array->len > 0)
-    g_qsort_with_data (array->pdata,
-                       array->len,
-                       sizeof (gpointer),
-                       (GCompareDataFunc)compare_func,
-                       NULL);
+    g_sort_array (array->pdata,
+                  array->len,
+                  sizeof (gpointer),
+                  (GCompareDataFunc) compare_func,
+                  NULL);
 }
 
 /* Please keep this doc-comment in sync with
@@ -2493,11 +2493,11 @@ g_ptr_array_sort_with_data (GPtrArray        *array,
   g_return_if_fail (array != NULL);
 
   if (array->len > 0)
-    g_qsort_with_data (array->pdata,
-                       array->len,
-                       sizeof (gpointer),
-                       compare_func,
-                       user_data);
+    g_sort_array (array->pdata,
+                  array->len,
+                  sizeof (gpointer),
+                  compare_func,
+                  user_data);
 }
 
 static inline gint
