@@ -2703,7 +2703,7 @@ g_uri_escape_string (const gchar *unescaped,
 
   g_return_val_if_fail (unescaped != NULL, NULL);
 
-  s = g_string_sized_new (strlen (unescaped) * 1.25);
+  s = g_string_sized_new ((size_t) (strlen (unescaped) * 1.25));
 
   g_string_append_uri_escaped (s, unescaped, reserved_chars_allowed, allow_utf8);
 
@@ -2797,7 +2797,7 @@ g_uri_escape_bytes (const guint8 *unescaped,
 
   g_return_val_if_fail (unescaped != NULL, NULL);
 
-  string = g_string_sized_new (length * 1.25);
+  string = g_string_sized_new ((size_t) (length * 1.25));
 
   _uri_encoder (string, unescaped, length,
                reserved_chars_allowed, FALSE);

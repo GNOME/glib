@@ -813,7 +813,7 @@ g_hash_table_resize (GHashTable *hash_table)
    * Immediately after growing, the load factor will be in the range
    * .375 .. .469. After shrinking, it will be exactly .5. */
 
-  g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes * 1.333);
+  g_hash_table_set_shift_from_size (hash_table, (gint) (hash_table->nnodes * 1.333));
 
   if (hash_table->size > old_size)
     {

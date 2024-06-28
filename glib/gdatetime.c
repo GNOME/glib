@@ -1670,7 +1670,7 @@ g_date_time_new (GTimeZone *tz,
    * is 1000000.  This is not a problem with precision, it's just how
    * FP numbers work.
    * See https://bugzilla.gnome.org/show_bug.cgi?id=697715. */
-  usec = seconds * USEC_PER_SECOND;
+  usec = (gint64) (seconds * USEC_PER_SECOND);
   usecd = (usec + 1) * 1e-6;
   if (usecd <= seconds) {
     usec++;
@@ -1973,7 +1973,7 @@ GDateTime*
 g_date_time_add_seconds (GDateTime *datetime,
                          gdouble    seconds)
 {
-  return g_date_time_add (datetime, seconds * USEC_PER_SECOND);
+  return g_date_time_add (datetime, (GTimeSpan) (seconds * USEC_PER_SECOND));
 }
 
 /**
