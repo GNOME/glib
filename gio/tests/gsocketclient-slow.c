@@ -212,6 +212,9 @@ test_connection_failed (void)
   g_assert_no_error (local_error);
 
   /* reserve a port without listening so we know that connecting to it will fail */
+  g_object_unref (address);
+  address = g_socket_get_local_address (socket, &local_error);
+  g_assert_no_error (local_error);
   port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (address));
 
   client = g_socket_client_new ();
