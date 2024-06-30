@@ -564,7 +564,7 @@ g_osx_app_info_launch_uris_async (GAppInfo           *appinfo,
   g_set_object (&data->context, context);
   g_task_set_task_data (task, g_steal_pointer (&data), (GDestroyNotify) launch_uris_data_free);
 
-  g_task_run_in_thread (task, launch_uris_async_thread);
+  g_task_run_in_thread_sync (task, launch_uris_async_thread);
   g_object_unref (task);
 }
 
