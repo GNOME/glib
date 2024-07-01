@@ -69,7 +69,7 @@
  *
  * ## A menu example
  *
- * ![](menu-model.png)
+ * ![](menu-model.svg)
  *
  * Notice that the separators visible in the [example](#an-example-menu)
  * appear nowhere in the [menu model](#a-menu-example). This is because
