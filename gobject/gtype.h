@@ -2278,7 +2278,7 @@ static void     type_name##_class_intern_init (gpointer klass) \
 #endif  /* GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_80 */
 
 /* Added for _G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE */
-#define _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE(TypeName, type_name, TYPE_PARENT) \
+#define _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE(TypeName, type_name) \
 \
 static void     type_name##_init              (TypeName        *self); \
 static void     type_name##_class_init        (TypeName##Class *klass); \
@@ -2334,7 +2334,7 @@ type_name##_get_type_once (void) \
  * to keep it.
  */
 #define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
-  _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE(TypeName, type_name, TYPE_PARENT) \
+  _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE(TypeName, type_name) \
   _G_DEFINE_TYPE_EXTENDED_BEGIN_REGISTER(TypeName, type_name, TYPE_PARENT, flags) \
 
 /* Intentionally using (GTypeFlags) 0 instead of G_TYPE_FLAG_NONE here,
