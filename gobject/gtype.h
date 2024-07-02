@@ -2330,12 +2330,12 @@ type_name##_get_type_once (void) \
   return g_define_type_id; \
 } /* closes type_name##_get_type_once() */
 
-/* This was defined before we had G_DEFINE_TYPE_WITH_CODE_AND_PRELUDE, it's simplest
- * to keep it.
+/* This was defined before we had _G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE in
+ * gtype-private.h, it's simplest to keep it.
  */
 #define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
-  _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE(TypeName, type_name) \
-  _G_DEFINE_TYPE_EXTENDED_BEGIN_REGISTER(TypeName, type_name, TYPE_PARENT, flags) \
+  _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE (TypeName, type_name)                      \
+  _G_DEFINE_TYPE_EXTENDED_BEGIN_REGISTER (TypeName, type_name, TYPE_PARENT, flags)
 
 /* Intentionally using (GTypeFlags) 0 instead of G_TYPE_FLAG_NONE here,
  * to avoid deprecation warnings with older GLIB_VERSION_MAX_ALLOWED */
