@@ -459,9 +459,9 @@ g_osx_app_info_get_icon (GAppInfo *appinfo)
 
 static gboolean
 g_osx_app_info_launch_internal (GAppInfo  *appinfo,
-                                     GList     *uris,
-                                     gboolean   are_files,
-                                     GError   **error)
+                                GList     *uris,
+                                gboolean   are_files,
+                                GError   **error)
 {
   GOsxAppInfo *info = G_OSX_APP_INFO (appinfo);
   LSLaunchURLSpec *urlspec;
@@ -572,8 +572,8 @@ g_osx_app_info_launch_uris_async (GAppInfo           *appinfo,
 
 static gboolean
 g_osx_app_info_launch_uris_finish (GAppInfo     *appinfo,
-                                       GAsyncResult *result,
-                                       GError      **error)
+                                   GAsyncResult *result,
+                                   GError      **error)
 {
   g_return_val_if_fail (g_task_is_valid (result, appinfo), FALSE);
 
