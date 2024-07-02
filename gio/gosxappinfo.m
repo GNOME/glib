@@ -274,8 +274,8 @@ create_url_list_from_glist (GList    *uris,
 
 static LSLaunchURLSpec *
 create_urlspec_for_appinfo (GOsxAppInfo *info,
-                            GList            *uris,
-                            gboolean          are_files)
+                            GList       *uris,
+                            gboolean     are_files)
 {
   LSLaunchURLSpec *urlspec = NULL;
   const gchar *app_cstr;
