@@ -21,9 +21,10 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
-import packaging.version
 import os
 import sys
+
+import packaging.version
 
 
 # pylint: disable=too-few-public-methods

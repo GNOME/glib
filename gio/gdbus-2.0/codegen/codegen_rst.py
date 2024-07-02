@@ -5,7 +5,6 @@
 import os
 import re
 
-from . import utils
 import textwrap
 
 # Disable line length warnings as wrapping the templates would be hard
