@@ -278,16 +278,11 @@ create_urlspec_for_appinfo (GOsxAppInfo *info,
                             gboolean     are_files)
 {
   LSLaunchURLSpec *urlspec = NULL;
-  const gchar *app_cstr;
 
   g_return_val_if_fail (G_IS_OSX_APP_INFO (info), NULL);
 
   urlspec = g_new0 (LSLaunchURLSpec, 1);
-  app_cstr = g_osx_app_info_get_filename (info);
-  g_assert (app_cstr != NULL);
-
-  /* Strip file:// from app url but ensure filesystem url */
-  urlspec->appURL = create_url_from_cstr (app_cstr + strlen ("file://"), TRUE);
+  urlspec->appURL = CFURLCreateWithFileSystemPath (NULL, CFBridgingRetain([info->bundle bundlePath]), kCFURLPOSIXPathStyle, FALSE);
   urlspec->launchFlags = kLSLaunchDefaults;
   urlspec->itemURLs = create_url_list_from_glist (uris, are_files);
 
