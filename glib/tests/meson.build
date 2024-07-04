@@ -453,7 +453,7 @@ foreach test_name, extra_args : glib_tests
     install: install,
   )
 
-  depends = [extra_args.get('depends', [])]
+  depends = [extra_args.get('depends', []), gspawn_helpers]
   suite = ['glib', 'core'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
 
