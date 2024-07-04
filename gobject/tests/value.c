@@ -664,6 +664,52 @@ test_valuearray_basic (void)
   g_value_array_free (a2);
 }
 
+static gint
+cmpint_with_data (gconstpointer a,
+                  gconstpointer b,
+                  gpointer      user_data)
+{
+  const GValue *aa = a;
+  const GValue *bb = b;
+
+  g_assert_cmpuint (GPOINTER_TO_UINT (user_data), ==, 123);
+
+  return g_value_get_int (aa) - g_value_get_int (bb);
+}
+
+static void
+test_value_array_sort_with_data (void)
+{
+  GValueArray *a, *a2;
+  GValue v = G_VALUE_INIT;
+
+  a = g_value_array_new (20);
+
+  /* Try sorting an empty array. */
+  a2 = g_value_array_sort_with_data (a, cmpint_with_data, GUINT_TO_POINTER (456));
+  g_assert_cmpuint (a->n_values, ==, 0);
+  g_assert_true (a2 == a);
+
+  /* Add some values and try sorting them. */
+  g_value_init (&v, G_TYPE_INT);
+  for (unsigned int i = 0; i < 100; i++)
+    {
+      g_value_set_int (&v, 100 - i);
+      g_value_array_append (a, &v);
+    }
+
+  g_assert_cmpint (a->n_values, ==, 100);
+
+  a2 = g_value_array_sort_with_data (a, cmpint_with_data, GUINT_TO_POINTER (123));
+
+  for (unsigned int i = 0; i < a->n_values - 1; i++)
+    g_assert_cmpint (g_value_get_int (&a->values[i]), <=, g_value_get_int (&a->values[i+1]));
+
+  g_assert_true (a2 == a);
+
+  g_value_array_free (a);
+}
+
 /* We create some dummy objects with this relationship:
  *
  *               GObject           TestInterface
@@ -765,6 +811,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/value/basic", test_value_basic);
   g_test_add_func ("/value/array/basic", test_valuearray_basic);
+  g_test_add_func ("/value/array/sort-with-data", test_value_array_sort_with_data);
   g_test_add_func ("/value/collection", test_collection);
   g_test_add_func ("/value/copying", test_copying);
   g_test_add_func ("/value/enum-transformation", test_enum_transformation);
