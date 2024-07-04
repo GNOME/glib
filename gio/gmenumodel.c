@@ -69,7 +69,10 @@
  *
  * ## A menu example
  *
- * ![](menu-model.png)
+ * <picture>
+ *   <source srcset="menu-model-dark.svg" media="(prefers-color-scheme: dark)">
+ *   <img src="menu-model-light.svg" alt="menu model">
+ * </picture>
  *
  * Notice that the separators visible in the [example](#an-example-menu)
  * appear nowhere in the [menu model](#a-menu-example). This is because

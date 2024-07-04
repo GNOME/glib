@@ -67,5 +67,6 @@ content_files = [
 content_images = [
   "gvfs-overview.png",
   "menu-example.png",
-  "menu-model.png",
+  "menu-model-dark.svg",
+  "menu-model-light.svg",
 ]
