@@ -2457,7 +2457,7 @@ endif
 
 glib_conf.set('HAVE_PROC_SELF_CMDLINE', have_proc_self_cmdline)
 
-python = import('python').find_installation(modules: ['packaging'])
+python = import('python').find_installation()
 
 python_version = python.language_version()
 python_version_req = '>=3.7'

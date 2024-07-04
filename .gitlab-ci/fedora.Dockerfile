@@ -50,7 +50,6 @@ RUN dnf -y update \
     pcre2-devel \
     "python3-dbusmock >= 0.18.3-2" \
     python3-docutils \
-    python3-packaging \
     python3-pip \
     python3-pygments \
     python3-wheel \
