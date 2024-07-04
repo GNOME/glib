@@ -23,6 +23,7 @@
 
 import os
 import sys
+import re
 
 import packaging.version
 
@@ -162,11 +163,35 @@ def lookup_brief_docs(annotations):
 def version_cmp_key(key):
     # If the 'since' version is 'UNRELEASED', compare higher than anything else
     # If it is empty put a 0 in its place as this will
-    # allow LooseVersion to work and will always compare lower.
+    # allow _parse_version() to work and will always compare lower.
     if key[0] == "UNRELEASED":
         v = "9999"
     elif key[0]:
         v = str(key[0])
     else:
         v = "0"
-    return (packaging.version.Version(v), key[1])
+    return (_parse_version(v), key[1])
+
+
+def _parse_version(version):
+    """
+    Parse a version string into a list of integers and strings.
+
+    This function takes a version string and breaks it down into its component parts.
+    It separates numeric and non-numeric segments, converting numeric segments to integers.
+
+    Args:
+        version (str): The version string to parse.
+
+    Returns:
+        list: A list where each element is either an integer (for numeric parts)
+              or a string (for non-numeric parts).
+
+    Example:
+        >>> parseversion("1.2.3a")
+        [1, 2, 3, 'a']
+        >>> parseversion("2.0.0-rc1")
+        [2, 0, 0, 'rc1']
+    """
+    blocks = re.findall(r"(\d+|\w+)", version)
+    return [int(b) if b.isdigit() else b for b in blocks]
