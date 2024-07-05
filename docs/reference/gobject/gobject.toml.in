@@ -38,6 +38,9 @@ name = "basic"
 show_index_summary = true
 show_class_hierarchy = true
 
+[source-location]
+base_url = "https://gitlab.gnome.org/GNOME/glib/-/blob/main/"
+
 [extra]
 urlmap_file = "../urlmap.js"
 # The same order will be used when generating the index
