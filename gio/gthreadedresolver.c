@@ -1079,7 +1079,7 @@ g_resolver_records_from_res_query (const gchar      *rrname,
         }
 
       if (record != NULL)
-        records = g_list_prepend (records, record);
+        records = g_list_prepend (records, g_variant_ref_sink (record));
 
       if (parsing_error != NULL)
         break;
