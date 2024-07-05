@@ -177,6 +177,7 @@ assert_query_succeeds (const gchar         *rrname,
   answer_variant = records->data;
   expected_answer_variant = g_variant_new_parsed (expected_answer_variant_str);
   g_assert_cmpvariant (answer_variant, expected_answer_variant);
+  g_assert_true (!g_variant_is_floating (answer_variant));
 
   g_variant_unref (expected_answer_variant);
   g_list_free_full (records, (GDestroyNotify) g_variant_unref);
@@ -221,6 +222,45 @@ test_invalid_header (void)
       g_assert_null (records);
       g_clear_error (&local_error);
     }
+}
+
+static void
+test_record_ownership (void)
+{
+  GByteArray *answer = NULL, *txt_rdata = NULL;
+  GList *records = NULL;
+  GError *local_error = NULL;
+  uint16_t rrtype;
+
+  rrtype = g_resolver_record_type_to_rrtype (G_RESOLVER_RECORD_TXT);
+  answer = dns_header ();
+
+  /* Resource record */
+  dns_builder_add_domain (answer, "example.org");
+  dns_builder_add_uint16 (answer, rrtype);
+  dns_builder_add_uint16 (answer, 1); /* qclass=C_IN */
+  dns_builder_add_uint32 (answer, 0); /* ttl (ignored) */
+
+  /* TXT rdata, https://datatracker.ietf.org/doc/html/rfc1035#section-3.3.14 */
+  txt_rdata = g_byte_array_new ();
+  dns_builder_add_length_prefixed_string (txt_rdata, "some test content");
+  dns_builder_add_answer_data (answer, txt_rdata);
+  g_byte_array_unref (txt_rdata);
+
+  records = g_resolver_records_from_res_query ("example.org",
+                                               rrtype,
+                                               answer->data,
+                                               answer->len,
+                                               0,
+                                               &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (records);
+
+  for (const GList *iter = records; iter != NULL; iter = iter->next)
+    g_assert_true (!g_variant_is_floating (records->data));
+
+  g_list_free_full (records, (GDestroyNotify) g_variant_unref);
+  g_byte_array_free (answer, TRUE);
 }
 
 static void
@@ -858,6 +898,7 @@ main (int   argc,
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/gresolver/invalid-header", test_invalid_header);
+  g_test_add_func ("/gresolver/record-ownership", test_record_ownership);
   g_test_add_func ("/gresolver/unknown-record-type", test_unknown_record_type);
   g_test_add_func ("/gresolver/mx/valid", test_mx_valid);
   g_test_add_func ("/gresolver/mx/invalid", test_mx_invalid);
