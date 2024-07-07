@@ -25,8 +25,6 @@ import os
 import sys
 import re
 
-import packaging.version
-
 
 # pylint: disable=too-few-public-methods
 class Color:
