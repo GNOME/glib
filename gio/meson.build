@@ -399,6 +399,10 @@ if host_system != 'windows'
     if glib_have_os_x_9_or_later
       unix_sources += files('gcocoanotificationbackend.m')
     endif
+    unix_sources += files(
+      'gosxnetworkmonitor.c',
+      'gosxnetworkmonitor.h'
+    )
     application_headers += files('gosxappinfo.h')
   else
     contenttype_sources += files('gcontenttype.c')
