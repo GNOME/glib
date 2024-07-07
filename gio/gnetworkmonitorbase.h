@@ -65,6 +65,8 @@ void g_network_monitor_base_set_networks   (GNetworkMonitorBase  *monitor,
 					    GInetAddressMask    **networks,
 					    gint                  length);
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GNetworkMonitorBase, g_object_unref)
+
 G_END_DECLS
 
 #endif /* __G_NETWORK_MONITOR_BASE_H__ */
