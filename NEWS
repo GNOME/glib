@@ -1,3 +1,20 @@
+Overview of changes in GLib 2.80.4, 2024-07-08
+==============================================
+
+* Bugs fixed:
+  - #3394 GLib unit tests fail on macOS runner due to localhost being out of
+    addresses (Philip Withnall)
+  - #3401 Random failures to build glib 2.80.3 (Philip Withnall)
+  - !4112 Backport !4111 “gioerror: Map EADDRNOTAVAIL to
+    G_IO_ERROR_CONNECTION_REFUSED” to glib-2-80
+  - !4118 Backport !3373 and !4117 “Handle files >4GB in g_file_load_contents()“
+    to glib-2-80
+  - !4124 Backport !4020 and !4122: fixes to GIR install locations and build
+    race fixes
+  - !4141 Backport !4110 “gthreadedresolver: ref-sink returned records in
+    lookup_records()” to glib-2-80
+
+
 Overview of changes in GLib 2.80.3, 2024-06-10
 ==============================================
 
