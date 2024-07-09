@@ -2600,7 +2600,7 @@ if enable_systemtap
 endif
 
 # introspection
-gir_scanner = find_program('g-ir-scanner', required: get_option('introspection'))
+gir_scanner = find_program('g-ir-scanner', required: get_option('introspection'), version: '>= 1.80.0')
 enable_gir = get_option('introspection').allowed() and gir_scanner.found() and meson.can_run_host_binaries()
 
 if get_option('introspection').enabled() and not meson.can_run_host_binaries()
