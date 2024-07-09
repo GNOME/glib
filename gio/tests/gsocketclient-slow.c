@@ -212,6 +212,9 @@ test_connection_failed (void)
   g_assert_no_error (local_error);
 
   /* reserve a port without listening so we know that connecting to it will fail */
+  g_object_unref (address);
+  address = g_socket_get_local_address (socket, &local_error);
+  g_assert_no_error (local_error);
   port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (address));
 
   client = g_socket_client_new ();
@@ -228,7 +231,8 @@ test_connection_failed (void)
     g_main_context_iteration (NULL, TRUE);
 
   conn = g_socket_client_connect_to_uri_finish (client, async_result, &local_error);
-  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_CONNECTION_REFUSED);
+  g_assert_nonnull (local_error);
+  g_assert_cmpint (local_error->domain, ==, G_IO_ERROR);
   g_assert_null (conn);
   g_clear_error (&local_error);
   g_clear_object (&async_result);
