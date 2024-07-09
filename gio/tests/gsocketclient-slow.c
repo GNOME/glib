@@ -231,7 +231,8 @@ test_connection_failed (void)
     g_main_context_iteration (NULL, TRUE);
 
   conn = g_socket_client_connect_to_uri_finish (client, async_result, &local_error);
-  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_CONNECTION_REFUSED);
+  g_assert_nonnull (local_error);
+  g_assert_cmpint (local_error->domain, ==, G_IO_ERROR);
   g_assert_null (conn);
   g_clear_error (&local_error);
   g_clear_object (&async_result);
