@@ -321,6 +321,8 @@ g_qsort_with_data (gconstpointer    pbase,
  * (like [`qsort_r()`](man:qsort_r(3))).
  *
  * Unlike `qsort()`, this is guaranteed to be a stable sort.
+ *
+ * Since: 2.82
  */
 void
 g_sort_array (const void       *array,
