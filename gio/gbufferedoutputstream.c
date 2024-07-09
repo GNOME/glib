@@ -175,7 +175,7 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
 
 /**
  * g_buffered_output_stream_get_buffer_size:
- * @stream: a #GBufferedOutputStream.
+ * @stream: a [class@Gio.BufferedOutputStream].
  * 
  * Gets the size of the buffer in the @stream.
  * 
@@ -191,7 +191,7 @@ g_buffered_output_stream_get_buffer_size (GBufferedOutputStream *stream)
 
 /**
  * g_buffered_output_stream_set_buffer_size:
- * @stream: a #GBufferedOutputStream.
+ * @stream: a [class@Gio.BufferedOutputStream].
  * @size: a #gsize.
  *
  * Sets the size of the internal buffer to @size.
@@ -233,12 +233,12 @@ g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
 
 /**
  * g_buffered_output_stream_get_auto_grow:
- * @stream: a #GBufferedOutputStream.
+ * @stream: a [class@Gio.BufferedOutputStream].
  * 
  * Checks if the buffer automatically grows as data is added.
  * 
- * Returns: %TRUE if the @stream's buffer automatically grows,
- * %FALSE otherwise.
+ * Returns: `TRUE` if the @stream's buffer automatically grows,
+ * `FALSE` otherwise.
  **/  
 gboolean
 g_buffered_output_stream_get_auto_grow (GBufferedOutputStream *stream)
@@ -250,7 +250,7 @@ g_buffered_output_stream_get_auto_grow (GBufferedOutputStream *stream)
 
 /**
  * g_buffered_output_stream_set_auto_grow:
- * @stream: a #GBufferedOutputStream.
+ * @stream: a [class@Gio.BufferedOutputStream].
  * @auto_grow: a #gboolean.
  *
  * Sets whether or not the @stream's buffer should automatically grow.
@@ -361,11 +361,11 @@ g_buffered_output_stream_seekable_iface_init (GSeekableIface *iface)
 
 /**
  * g_buffered_output_stream_new:
- * @base_stream: a #GOutputStream.
+ * @base_stream: a [class@Gio.OutputStream].
  * 
  * Creates a new buffered output stream for a base stream.
  * 
- * Returns: a #GOutputStream for the given @base_stream.
+ * Returns: a [class@Gio.OutputStream] for the given @base_stream.
  **/  
 GOutputStream *
 g_buffered_output_stream_new (GOutputStream *base_stream)
@@ -383,12 +383,12 @@ g_buffered_output_stream_new (GOutputStream *base_stream)
 
 /**
  * g_buffered_output_stream_new_sized:
- * @base_stream: a #GOutputStream.
+ * @base_stream: a [class@Gio.OutputStream].
  * @size: a #gsize.
  * 
  * Creates a new buffered output stream with a given buffer size.
  * 
- * Returns: a #GOutputStream with an internal buffer set to @size.
+ * Returns: a [class@Gio.OutputStream] with an internal buffer set to @size.
  **/  
 GOutputStream *
 g_buffered_output_stream_new_sized (GOutputStream *base_stream,
