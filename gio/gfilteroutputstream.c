@@ -195,11 +195,11 @@ g_filter_output_stream_init (GFilterOutputStream *stream)
 
 /**
  * g_filter_output_stream_get_base_stream:
- * @stream: a #GFilterOutputStream.
+ * @stream: a [class@Gio.FilterOutputStream].
  * 
  * Gets the base stream for the filter stream.
  *
- * Returns: (transfer none): a #GOutputStream.
+ * Returns: (transfer none): a [class@Gio.OutputStream].
  **/
 GOutputStream *
 g_filter_output_stream_get_base_stream (GFilterOutputStream *stream)
@@ -211,12 +211,12 @@ g_filter_output_stream_get_base_stream (GFilterOutputStream *stream)
 
 /**
  * g_filter_output_stream_get_close_base_stream:
- * @stream: a #GFilterOutputStream.
+ * @stream: a [class@Gio.FilterOutputStream].
  *
  * Returns whether the base stream will be closed when @stream is
  * closed.
  *
- * Returns: %TRUE if the base stream will be closed.
+ * Returns: `TRUE` if the base stream will be closed.
  **/
 gboolean
 g_filter_output_stream_get_close_base_stream (GFilterOutputStream *stream)
@@ -232,8 +232,8 @@ g_filter_output_stream_get_close_base_stream (GFilterOutputStream *stream)
 
 /**
  * g_filter_output_stream_set_close_base_stream:
- * @stream: a #GFilterOutputStream.
- * @close_base: %TRUE to close the base stream.
+ * @stream: a [class@Gio.FilterOutputStream].
+ * @close_base: `TRUE` to close the base stream.
  *
  * Sets whether the base stream will be closed when @stream is closed.
  **/
