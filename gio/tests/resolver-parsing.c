@@ -227,6 +227,10 @@ test_invalid_header (void)
 static void
 test_record_ownership (void)
 {
+#ifndef HAVE_DN_COMP
+  g_test_skip ("The dn_comp() function was not available.");
+  return;
+#else
   GByteArray *answer = NULL, *txt_rdata = NULL;
   GList *records = NULL;
   GError *local_error = NULL;
@@ -261,6 +265,7 @@ test_record_ownership (void)
 
   g_list_free_full (records, (GDestroyNotify) g_variant_unref);
   g_byte_array_free (answer, TRUE);
+#endif
 }
 
 static void
