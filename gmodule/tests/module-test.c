@@ -233,6 +233,37 @@ test_module_invalid_libtool_archive (void)
   g_free (la_filename);
 }
 
+static void
+test_local_binding (void)
+{
+  gchar *plugin = NULL;
+  GModule *module_plugin = NULL, *module_self = NULL;
+  GError *error = NULL;
+
+  gboolean found_symbol = FALSE;
+  gpointer symbol = NULL;
+
+  g_test_summary ("Test that binding a library's symbols locally does not add them globally");
+
+  plugin = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a_" MODULE_TYPE, NULL);
+
+  module_plugin = g_module_open_full (plugin, G_MODULE_BIND_LOCAL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (module_plugin);
+
+  module_self = g_module_open_full (NULL, 0, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (module_self);
+
+  found_symbol = g_module_symbol (module_self, "gplugin_say_boo_func", &symbol);
+  g_assert_false (found_symbol);
+  g_assert_null (symbol);
+
+  g_module_close (module_self);
+  g_module_close (module_plugin);
+  g_free (plugin);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -240,6 +271,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/module/basics", test_module_basics);
   g_test_add_func ("/module/invalid-libtool-archive", test_module_invalid_libtool_archive);
+  g_test_add_func ("/module/local-binding", test_local_binding);
 
   return g_test_run ();
 }
