@@ -49,32 +49,47 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
 /**
  * GAppInfoIface:
  * @g_iface: The parent interface.
- * @dup: Copies a #GAppInfo.
- * @equal: Checks two #GAppInfos for equality.
- * @get_id: Gets a string identifier for a #GAppInfo.
- * @get_name: Gets the name of the application for a #GAppInfo.
- * @get_description: Gets a short description for the application described by the #GAppInfo.
- * @get_executable: Gets the executable name for the #GAppInfo.
- * @get_icon: Gets the #GIcon for the #GAppInfo.
- * @launch: Launches an application specified by the #GAppInfo.
- * @supports_uris: Indicates whether the application specified supports launching URIs.
- * @supports_files: Indicates whether the application specified accepts filename arguments.
+ * @dup: Copies a [iface@Gio.AppInfo].
+ * @equal: Checks two [iface@Gio.AppInfo]s for equality.
+ * @get_id: Gets a string identifier for a [iface@Gio.AppInfo].
+ * @get_name: Gets the name of the application for a [iface@Gio.AppInfo].
+ * @get_description: Gets a short description for the application described by
+ *   the [iface@Gio.AppInfo].
+ * @get_executable: Gets the executable name for the [iface@Gio.AppInfo].
+ * @get_icon: Gets the [iface@Gio.Icon] for the [iface@Gio.AppInfo].
+ * @launch: Launches an application specified by the [iface@Gio.AppInfo].
+ * @supports_uris: Indicates whether the application specified supports
+ *   launching URIs.
+ * @supports_files: Indicates whether the application specified accepts
+ *   filename arguments.
  * @launch_uris: Launches an application with a list of URIs.
- * @should_show: Returns whether an application should be shown (e.g. when getting a list of installed applications).
- * [FreeDesktop.Org Startup Notification Specification](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
- * @set_as_default_for_type: Sets an application as default for a given content type.
- * @set_as_default_for_extension: Sets an application as default for a given file extension.
- * @add_supports_type: Adds to the #GAppInfo information about supported file types.
- * @can_remove_supports_type: Checks for support for removing supported file types from a #GAppInfo.
- * @remove_supports_type: Removes a supported application type from a #GAppInfo.
- * @can_delete: Checks if a #GAppInfo can be deleted. Since 2.20
- * @do_delete: Deletes a #GAppInfo. Since 2.20
- * @get_commandline: Gets the commandline for the #GAppInfo. Since 2.20
- * @get_display_name: Gets the display name for the #GAppInfo. Since 2.24
- * @set_as_last_used_for_type: Sets the application as the last used. See g_app_info_set_as_last_used_for_type().
- * @get_supported_types: Retrieves the list of content types that @app_info claims to support.
- * @launch_uris_async: Asynchronously launches an application with a list of URIs. (Since: 2.60)
- * @launch_uris_finish: Finishes an operation started with @launch_uris_async. (Since: 2.60)
+ * @should_show: Returns whether an application should be shown (e.g. when
+ *   getting a list of installed applications).
+ *   [FreeDesktop.Org Startup Notification Specification](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
+ * @set_as_default_for_type: Sets an application as default for a given content
+ *   type.
+ * @set_as_default_for_extension: Sets an application as default for a given
+ *   file extension.
+ * @add_supports_type: Adds to the [iface@Gio.AppInfo] information about
+ *   supported file types.
+ * @can_remove_supports_type: Checks for support for removing supported file
+ *   types from a [iface@Gio.AppInfo].
+ * @remove_supports_type: Removes a supported application type from a
+ *   [iface@Gio.AppInfo].
+ * @can_delete: Checks if a [iface@Gio.AppInfo] can be deleted. (Since 2.20)
+ * @do_delete: Deletes a [iface@Gio.AppInfo]. (Since 2.20)
+ * @get_commandline: Gets the commandline for the [iface@Gio.AppInfo].
+ *   (Since 2.20)
+ * @get_display_name: Gets the display name for the [iface@Gio.AppInfo].
+ *   (Since 2.24)
+ * @set_as_last_used_for_type: Sets the application as the last used. See
+ *   [method@Gio.AppInfo.set_as_last_used_for_type].
+ * @get_supported_types: Retrieves the list of content types that @app_info
+ *   claims to support.
+ * @launch_uris_async: Asynchronously launches an application with a list of
+ *   URIs. (Since: 2.60)
+ * @launch_uris_finish: Finishes an operation started with @launch_uris_async.
+ *   (Since: 2.60)
 
  * Application Information interface, for operating system portability.
  */

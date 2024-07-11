@@ -34,7 +34,7 @@
 /**
  * GActionGroupExporter:
  *
- * These functions support exporting a [class@Gio.ActionGroup] on D-Bus.
+ * These functions support exporting a [iface@Gio.ActionGroup] on D-Bus.
  * The D-Bus interface that is used is a private implementation
  * detail.
  *
@@ -556,10 +556,9 @@ g_action_group_exporter_free (GActionGroupExporter *exporter)
 
 /**
  * g_dbus_connection_export_action_group:
- * @connection: a #GDBusConnection
+ * @connection: the D-Bus connection
  * @object_path: a D-Bus object path
- * @action_group: a #GActionGroup
- * @error: a pointer to a %NULL #GError, or %NULL
+ * @action_group: an action group
  *
  * Exports @action_group on @connection at @object_path.
  *
@@ -571,7 +570,7 @@ g_action_group_exporter_free (GActionGroupExporter *exporter)
  * returned (with @error set accordingly).
  *
  * You can unexport the action group using
- * g_dbus_connection_unexport_action_group() with the return value of
+ * [method@Gio.DBusConnection.unexport_action_group] with the return value of
  * this function.
  *
  * The thread default main context is taken at the time of this call.
@@ -641,15 +640,15 @@ g_dbus_connection_export_action_group (GDBusConnection  *connection,
 
 /**
  * g_dbus_connection_unexport_action_group:
- * @connection: a #GDBusConnection
- * @export_id: the ID from g_dbus_connection_export_action_group()
+ * @connection: the D-Bus connection
+ * @export_id: the ID from [method@Gio.DBusConnection.export_action_group]
  *
  * Reverses the effect of a previous call to
- * g_dbus_connection_export_action_group().
+ * [method@Gio.DBusConnection.export_action_group].
  *
- * It is an error to call this function with an ID that wasn't returned
- * from g_dbus_connection_export_action_group() or to call it with the
- * same ID more than once.
+ * It is an error to call this function with an ID that wasn’t returned from
+ * [method@Gio.DBusConnection.export_action_group] or to call it with the same
+ * ID more than once.
  *
  * Since: 2.32
  **/
