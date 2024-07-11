@@ -136,7 +136,7 @@ _g_module_open (const gchar *file_name,
   
   lock_dlerror ();
   handle = dlopen (file_name,
-		   (bind_local ? 0 : RTLD_GLOBAL) | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
+                   (bind_local ? RTLD_LOCAL : RTLD_GLOBAL) | (bind_lazy ? RTLD_LAZY : RTLD_NOW));
   if (!handle)
     {
       const gchar *message = fetch_dlerror (TRUE);
