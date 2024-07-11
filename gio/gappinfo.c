@@ -1346,7 +1346,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (GAppLaunchContext, g_app_launch_context, G_TYPE_OBJE
  * 
  * Creates a new application launch context. This is not normally used,
  * instead you instantiate a subclass of this, such as
- * [class@Gdk.AppLaunchContext].
+ * [`GdkAppLaunchContext`](https://docs.gtk.org/gdk4/class.AppLaunchContext.html).
  *
  * Returns: a launch context.
  **/
