@@ -245,6 +245,11 @@ test_local_binding (void)
 
   g_test_summary ("Test that binding a library's symbols locally does not add them globally");
 
+#if defined(G_PLATFORM_WIN32)
+  g_test_skip ("G_MODULE_BIND_LOCAL is not supported on Windows.");
+  return;
+#endif
+
   plugin = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a_" MODULE_TYPE, NULL);
 
   module_plugin = g_module_open_full (plugin, G_MODULE_BIND_LOCAL, &error);
