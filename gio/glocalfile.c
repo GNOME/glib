@@ -1778,10 +1778,6 @@ ignore_trash_mount (GUnixMountEntry *mount)
 {
   GUnixMountPoint *mount_point = NULL;
   const gchar *mount_options;
-  gboolean retval = TRUE;
-
-  if (g_unix_mount_is_system_internal (mount))
-    return TRUE;
 
   mount_options = g_unix_mount_get_options (mount);
   if (mount_options == NULL)
@@ -1790,15 +1786,23 @@ ignore_trash_mount (GUnixMountEntry *mount)
                                            NULL);
       if (mount_point != NULL)
         mount_options = g_unix_mount_point_get_options (mount_point);
+
+      g_clear_pointer (&mount_point, g_unix_mount_point_free);
     }
 
-  if (mount_options == NULL ||
-      strstr (mount_options, "x-gvfs-notrash") == NULL)
-    retval = FALSE;
+  if (mount_options != NULL)
+    {
+      if (strstr (mount_options, "x-gvfs-trash") != NULL)
+        return FALSE;
 
-  g_clear_pointer (&mount_point, g_unix_mount_point_free);
+      if (strstr (mount_options, "x-gvfs-notrash") != NULL)
+        return TRUE;
+    }
 
-  return retval;
+  if (g_unix_mount_is_system_internal (mount))
+    return TRUE;
+
+  return FALSE;
 }
 
 static gboolean
