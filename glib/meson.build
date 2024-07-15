@@ -371,7 +371,7 @@ if host_system == 'windows'
     glib_sources += files('dirent/wdirent.c')
   endif
 else
-  glib_sources += files('glib-unix.c', 'gspawn.c', 'giounix.c')
+  glib_sources += files('glib-unix.c', 'gspawn-posix.c', 'giounix.c')
   platform_deps = []
 endif
 
