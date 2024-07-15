@@ -320,6 +320,7 @@ glib_sources += files(
   'gshell.c',
   'gslice.c',
   'gslist.c',
+  'gspawn.c',
   'gstdio.c',
   'gstrfuncs.c',
   'gstring.c',
