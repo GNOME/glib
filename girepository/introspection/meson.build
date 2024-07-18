@@ -244,8 +244,8 @@ if host_system == 'windows'
   foreach h: gio_win32_include_headers
     gio_gir_args += '--c-include=@0@'.format(h)
   endforeach
-  gio_gir_packages += 'gio-win32-2.0'
-  gio_gir_args += '--pkg=gio-win32-2.0'
+  gio_gir_packages += 'gio-windows-2.0'
+  gio_gir_args += '--pkg=gio-windows-2.0'
 else
   gio_gir_sources += [ gio_unix_include_headers, unix_sources ]
   foreach h: gio_unix_include_headers
@@ -287,7 +287,7 @@ if host_system == 'windows'
     nsversion: '2.0',
     identifier_prefix: gi_identifier_prefix,
     symbol_prefix: gi_symbol_prefix,
-    export_packages: [ 'gio-win32-2.0' ],
+    export_packages: [ 'gio-windows-2.0' ],
     header: 'gio/gio.h',
     includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
     install: true,
@@ -299,7 +299,7 @@ if host_system == 'windows'
     ],
     env: gi_gen_env_variables,
     extra_args: gir_args + gio_gir_args + gio_win32_gir_c_includes + [
-      '--pkg=gio-win32-2.0',
+      '--pkg=gio-windows-2.0',
       '--symbol-prefix=g_win32',
       '--identifier-prefix=GWin32'
     ],
