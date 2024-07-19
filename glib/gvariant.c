@@ -36,7 +36,7 @@
 #include <string.h>
 
 /**
- * GVariant:
+ * GVariant: (copy-func g_variant_ref_sink) (free-func g_variant_unref)
  *
  * `GVariant` is a variant datatype; it can contain one or more values
  * along with information about the type of the values.
