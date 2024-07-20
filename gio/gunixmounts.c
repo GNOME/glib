@@ -1752,47 +1752,6 @@ _g_unix_mount_points_get_from_file (const char *table_path,
     *n_points_out = 0;
   return NULL;
 }
-/* Interix {{{2 */
-#elif defined(__INTERIX)
-static GList *
-_g_get_unix_mount_points (void)
-{
-  return _g_get_unix_mounts ();
-}
-
-static GUnixMountPoint **
-_g_unix_mount_points_get_from_file (const char *table_path,
-                                    uint64_t   *time_read_out,
-                                    size_t     *n_points_out)
-{
-  /* Not supported on Interix systems. */
-  if (time_read_out != NULL)
-    *time_read_out = 0;
-  if (n_points_out != NULL)
-    *n_points_out = 0;
-  return NULL;
-}
-
-/* QNX {{{2 */
-#elif defined (HAVE_QNX)
-static GList *
-_g_get_unix_mount_points (void)
-{
-  return _g_get_unix_mounts ();
-}
-
-static GUnixMountPoint **
-_g_unix_mount_points_get_from_file (const char *table_path,
-                                    uint64_t   *time_read_out,
-                                    size_t     *n_points_out)
-{
-  /* Not supported on QNX systems. */
-  if (time_read_out != NULL)
-    *time_read_out = 0;
-  if (n_points_out != NULL)
-    *n_points_out = 0;
-  return NULL;
-}
 
 /* Common code {{{2 */
 #else
