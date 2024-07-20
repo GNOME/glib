@@ -148,7 +148,13 @@ G_DEFINE_BOXED_TYPE (GUnixMountPoint, g_unix_mount_point,
                      g_unix_mount_point_copy, g_unix_mount_point_free)
 
 static GList *_g_get_unix_mounts (void);
+static GUnixMountEntry **_g_unix_mounts_get_from_file (const char *table_path,
+                                                       uint64_t   *time_read_out,
+                                                       size_t     *n_entries_out);
 static GList *_g_get_unix_mount_points (void);
+static GUnixMountPoint **_g_unix_mount_points_get_from_file (const char *table_path,
+                                                             uint64_t   *time_read_out,
+                                                             size_t     *n_points_out);
 static gboolean proc_mounts_watch_is_running (void);
 
 G_LOCK_DEFINE_STATIC (proc_mounts_source);
@@ -206,6 +212,9 @@ static GSource *proc_mounts_watch_source = NULL;
 static struct libmnt_monitor *proc_mounts_monitor = NULL;
 #endif
 
+static guint64 get_mounts_timestamp (void);
+static guint64 get_mount_points_timestamp (void);
+
 static gboolean
 is_in (const char *value, const char *set[])
 {
@@ -216,6 +225,45 @@ is_in (const char *value, const char *set[])
 	return TRUE;
     }
   return FALSE;
+}
+
+/* Marked as unused because these are only used on some platform variants, but
+ * working out the #if sequence for that would be too much for my little brain. */
+static GList *unix_mount_entry_array_free_to_list (GUnixMountEntry **entries,
+                                                   size_t            n_entries) G_GNUC_UNUSED;
+static GList *unix_mount_point_array_free_to_list (GUnixMountPoint **points,
+                                                   size_t            n_points) G_GNUC_UNUSED;
+
+/* Helper to convert to a list for the old API.
+ * Steals ownership of the @entries array. */
+static GList *
+unix_mount_entry_array_free_to_list (GUnixMountEntry **entries,
+                                     size_t            n_entries)
+{
+  GList *l = NULL;
+
+  for (size_t i = 0; i < n_entries; i++)
+    l = g_list_prepend (l, g_steal_pointer (&entries[i]));
+
+  g_free (entries);
+
+  return g_list_reverse (l);
+}
+
+/* Helper to convert to a list for the old API.
+ * Steals ownership of the @entries array. */
+static GList *
+unix_mount_point_array_free_to_list (GUnixMountPoint **points,
+                                     size_t            n_points)
+{
+  GList *l = NULL;
+
+  for (size_t i = 0; i < n_points; i++)
+    l = g_list_prepend (l, g_steal_pointer (&points[i]));
+
+  g_free (points);
+
+  return g_list_reverse (l);
 }
 
 /**
@@ -501,17 +549,23 @@ create_unix_mount_point (const char *device_path,
  */
 #define PROC_MOUNTINFO_PATH "/proc/self/mountinfo"
 
-static GList *
-_g_get_unix_mounts (void)
+static GUnixMountEntry **
+_g_unix_mounts_get_from_file (const char *table_path,
+                              uint64_t   *time_read_out,
+                              size_t     *n_entries_out)
 {
   struct libmnt_table *table = NULL;
   struct libmnt_iter* iter = NULL;
   struct libmnt_fs *fs = NULL;
   GUnixMountEntry *mount_entry = NULL;
-  GList *return_list = NULL;
+  GPtrArray *return_array = NULL;
 
+  if (time_read_out != NULL)
+    *time_read_out = get_mounts_timestamp ();
+
+  return_array = g_ptr_array_new_null_terminated (0, (GDestroyNotify) g_unix_mount_free, TRUE);
   table = mnt_new_table ();
-  if (mnt_table_parse_mtab (table, NULL) < 0)
+  if (mnt_table_parse_mtab (table, table_path) < 0)
     goto out;
 
   iter = mnt_new_iter (MNT_ITER_FORWARD);
@@ -541,14 +595,29 @@ _g_get_unix_mounts (void)
                                              mnt_fs_get_options (fs),
                                              is_read_only);
 
-      return_list = g_list_prepend (return_list, mount_entry);
+      g_ptr_array_add (return_array, g_steal_pointer (&mount_entry));
     }
   mnt_free_iter (iter);
 
  out:
   mnt_free_table (table);
 
-  return g_list_reverse (return_list);
+  if (n_entries_out != NULL)
+    *n_entries_out = return_array->len;
+
+  return (GUnixMountEntry **) g_ptr_array_free (g_steal_pointer (&return_array), FALSE);
+}
+
+static GList *
+_g_get_unix_mounts (void)
+{
+  GUnixMountEntry **entries = NULL;
+  size_t n_entries = 0;
+
+  entries = _g_unix_mounts_get_from_file (NULL  /* default libmount filename */,
+                                          NULL, &n_entries);
+
+  return unix_mount_entry_array_free_to_list (g_steal_pointer (&entries), n_entries);
 }
 
 #else
@@ -571,8 +640,10 @@ get_mtab_read_file (void)
 G_LOCK_DEFINE_STATIC(getmntent);
 #endif
 
-static GList *
-_g_get_unix_mounts (void)
+static GUnixMountEntry **
+_g_unix_mounts_get_from_file (const char *table_path,
+                              uint64_t   *time_read_out,
+                              size_t     *n_entries_out)
 {
 #ifdef HAVE_GETMNTENT_R
   struct mntent ent;
@@ -580,19 +651,18 @@ _g_get_unix_mounts (void)
 #endif
   struct mntent *mntent;
   FILE *file;
-  const char *read_file;
   GUnixMountEntry *mount_entry;
   GHashTable *mounts_hash;
-  GList *return_list;
-  
-  read_file = get_mtab_read_file ();
+  GPtrArray *return_array = NULL;
 
-  file = setmntent (read_file, "re");
+  if (time_read_out != NULL)
+    *time_read_out = get_mounts_timestamp ();
+
+  file = setmntent (table_path, "re");
   if (file == NULL)
     return NULL;
 
-  return_list = NULL;
-  
+  return_array = g_ptr_array_new_null_terminated (0, (GDestroyNotify) g_unix_mount_free, TRUE);
   mounts_hash = g_hash_table_new (g_str_hash, g_str_equal);
   
 #ifdef HAVE_GETMNTENT_R
@@ -641,7 +711,7 @@ _g_get_unix_mounts (void)
 			   mount_entry->device_path,
 			   mount_entry->device_path);
 
-      return_list = g_list_prepend (return_list, mount_entry);
+      g_ptr_array_add (return_array, g_steal_pointer (&mount_entry));
     }
   g_hash_table_destroy (mounts_hash);
   
@@ -651,7 +721,21 @@ _g_get_unix_mounts (void)
   G_UNLOCK (getmntent);
 #endif
   
-  return g_list_reverse (return_list);
+  if (n_entries_out != NULL)
+    *n_entries_out = return_array->len;
+
+  return (GUnixMountEntry **) g_ptr_array_free (g_steal_pointer (&return_array), FALSE);
+}
+
+static GList *
+_g_get_unix_mounts (void)
+{
+  GUnixMountEntry **entries = NULL;
+  size_t n_entries = 0;
+
+  entries = _g_unix_mounts_get_from_file (get_mtab_read_file (), NULL, &n_entries);
+
+  return unix_mount_entry_array_free_to_list (g_steal_pointer (&entries), n_entries);
 }
 
 #endif /* HAVE_LIBMOUNT */
@@ -718,23 +802,26 @@ get_mtab_monitor_file (void)
   return get_mtab_read_file ();
 }
 
-static GList *
-_g_get_unix_mounts (void)
+static GUnixMountEntry **
+_g_unix_mounts_get_from_file (const char *table_path,
+                              uint64_t   *time_read_out,
+                              size_t     *n_entries_out)
 {
   struct mnttab mntent;
   FILE *file;
   const char *read_file;
   GUnixMountEntry *mount_entry;
-  GList *return_list;
-  
-  read_file = get_mtab_read_file ();
-  
+  GPtrArray *return_array = NULL;
+
+  if (time_read_out != NULL)
+    *time_read_out = get_mounts_timestamp ();
+
   file = setmntent (read_file, "re");
   if (file == NULL)
     return NULL;
-  
-  return_list = NULL;
-  
+
+  return_array = g_ptr_array_new_null_terminated (0, (GDestroyNotify) g_unix_mount_free, TRUE);
+
   G_LOCK (getmntent);
   while (! getmntent (file, &mntent))
     {
@@ -752,14 +839,28 @@ _g_get_unix_mounts (void)
                                              mntent.mnt_opts,
                                              is_read_only);
 
-      return_list = g_list_prepend (return_list, mount_entry);
+      g_ptr_array_add (return_array, g_steal_pointer (&mount_entry));
     }
   
   endmntent (file);
   
   G_UNLOCK (getmntent);
-  
-  return g_list_reverse (return_list);
+
+  if (n_entries_out != NULL)
+    *n_entries_out = return_array->len;
+
+  return (GUnixMountEntry **) g_ptr_array_free (g_steal_pointer (&return_array), FALSE);
+}
+
+static GList *
+_g_get_unix_mounts (void)
+{
+  GUnixMountEntry **entries = NULL;
+  size_t n_entries = 0;
+
+  entries = _g_unix_mounts_get_from_file (get_mtab_read_file (), NULL, &n_entries);
+
+  return unix_mount_entry_array_free_to_list (g_steal_pointer (&entries), n_entries);
 }
 
 /* mntctl.h (AIX) {{{2 */
@@ -830,6 +931,20 @@ _g_get_unix_mounts (void)
   g_free (vmount_info);
   
   return g_list_reverse (return_list);
+}
+
+static GUnixMountEntry **
+_g_unix_mounts_get_from_file (const char *table_path,
+                              uint64_t   *time_read_out,
+                              size_t     *n_entries_out)
+{
+  /* Not supported on mntctl() systems. */
+  if (time_read_out != NULL)
+    *time_read_out = 0;
+  if (n_entries_out != NULL)
+    *n_entries_out = 0;
+
+  return NULL;
 }
 
 /* sys/mount.h {{{2 */
@@ -905,6 +1020,20 @@ _g_get_unix_mounts (void)
   return g_list_reverse (return_list);
 }
 
+static GUnixMountEntry **
+_g_unix_mounts_get_from_file (const char *table_path,
+                              uint64_t   *time_read_out,
+                              size_t     *n_entries_out)
+{
+  /* Not supported on getvfsstat()/getfsstat() systems. */
+  if (time_read_out != NULL)
+    *time_read_out = 0;
+  if (n_entries_out != NULL)
+    *n_entries_out = 0;
+
+  return NULL;
+}
+
 /* Interix {{{2 */
 #elif defined(__INTERIX)
 
@@ -962,6 +1091,20 @@ _g_get_unix_mounts (void)
   return return_list;
 }
 
+static GUnixMountEntry **
+_g_unix_mounts_get_from_file (const char *table_path,
+                              uint64_t   *time_read_out,
+                              size_t     *n_entries_out)
+{
+  /* Not supported on Interix systems. */
+  if (time_read_out != NULL)
+    *time_read_out = 0;
+  if (n_entries_out != NULL)
+    *n_entries_out = 0;
+
+  return NULL;
+}
+
 /* QNX {{{2 */
 #elif defined (HAVE_QNX)
 
@@ -969,6 +1112,20 @@ static char *
 get_mtab_monitor_file (void)
 {
   /* TODO: Not implemented */
+  return NULL;
+}
+
+static GUnixMountEntry **
+_g_unix_mounts_get_from_file (const char *table_path,
+                              uint64_t   *time_read_out,
+                              size_t     *n_entries_out)
+{
+  /* Not implemented, as per _g_get_unix_mounts() below */
+  if (time_read_out != NULL)
+    *time_read_out = 0;
+  if (n_entries_out != NULL)
+    *n_entries_out = 0;
+
   return NULL;
 }
 
@@ -1015,17 +1172,23 @@ get_fstab_file (void)
 
 #ifdef HAVE_LIBMOUNT
 
-static GList *
-_g_get_unix_mount_points (void)
+static GUnixMountPoint **
+_g_unix_mount_points_get_from_file (const char *table_path,
+                                    uint64_t   *time_read_out,
+                                    size_t     *n_points_out)
 {
   struct libmnt_table *table = NULL;
   struct libmnt_iter* iter = NULL;
   struct libmnt_fs *fs = NULL;
   GUnixMountPoint *mount_point = NULL;
-  GList *return_list = NULL;
+  GPtrArray *return_array = NULL;
 
+  if (time_read_out != NULL)
+    *time_read_out = get_mount_points_timestamp ();
+
+  return_array = g_ptr_array_new_null_terminated (0, (GDestroyNotify) g_unix_mount_point_free, TRUE);
   table = mnt_new_table ();
-  if (mnt_table_parse_fstab (table, NULL) < 0)
+  if (mnt_table_parse_fstab (table, table_path) < 0)
     goto out;
 
   iter = mnt_new_iter (MNT_ITER_FORWARD);
@@ -1089,20 +1252,37 @@ _g_get_unix_mount_points (void)
       if (mount_options)
         g_free (mount_options);
 
-      return_list = g_list_prepend (return_list, mount_point);
+      g_ptr_array_add (return_array, g_steal_pointer (&mount_point));
     }
   mnt_free_iter (iter);
 
  out:
   mnt_free_table (table);
 
-  return g_list_reverse (return_list);
+  if (n_points_out != NULL)
+    *n_points_out = return_array->len;
+
+  return (GUnixMountPoint **) g_ptr_array_free (g_steal_pointer (&return_array), FALSE);
+}
+
+static GList *
+_g_get_unix_mount_points (void)
+{
+  GUnixMountPoint **points = NULL;
+  size_t n_points = 0;
+
+  points = _g_unix_mount_points_get_from_file (NULL  /* default libmount filename */,
+                                               NULL, &n_points);
+
+  return unix_mount_point_array_free_to_list (g_steal_pointer (&points), n_points);
 }
 
 #else
 
-static GList *
-_g_get_unix_mount_points (void)
+static GUnixMountPoint **
+_g_unix_mount_points_get_from_file (const char *table_path,
+                                    uint64_t   *time_read_out,
+                                    size_t     *n_points_out)
 {
 #ifdef HAVE_GETMNTENT_R
   struct mntent ent;
@@ -1112,16 +1292,21 @@ _g_get_unix_mount_points (void)
   FILE *file;
   char *read_file;
   GUnixMountPoint *mount_point;
-  GList *return_list;
-  
-  read_file = get_fstab_file ();
-  
-  file = setmntent (read_file, "re");
-  if (file == NULL)
-    return NULL;
+  GPtrArray *return_array = NULL;
 
-  return_list = NULL;
-  
+  if (time_read_out != NULL)
+    *time_read_out = get_mount_points_timestamp ();
+
+  file = setmntent (table_path, "re");
+  if (file == NULL)
+    {
+      if (n_points_out != NULL)
+        *n_points_out = 0;
+      return NULL;
+    }
+
+  return_array = g_ptr_array_new_null_terminated (0, (GDestroyNotify) g_unix_mount_point_free, TRUE);
+
 #ifdef HAVE_GETMNTENT_R
   while ((mntent = getmntent_r (file, &ent, buf, sizeof (buf))) != NULL)
 #else
@@ -1177,7 +1362,7 @@ _g_get_unix_mount_points (void)
                                              is_user_mountable,
                                              is_loopback);
 
-      return_list = g_list_prepend (return_list, mount_point);
+      g_ptr_array_add (return_array, g_steal_pointer (&mount_point));
     }
   
   endmntent (file);
@@ -1185,8 +1370,23 @@ _g_get_unix_mount_points (void)
 #ifndef HAVE_GETMNTENT_R
   G_UNLOCK (getmntent);
 #endif
-  
-  return g_list_reverse (return_list);
+
+  if (n_points_out != NULL)
+    *n_points_out = return_array->len;
+
+  return (GUnixMountPoint **) g_ptr_array_free (g_steal_pointer (&return_array), FALSE);
+}
+
+static GList *
+_g_get_unix_mount_points (void)
+{
+  GUnixMountPoint **points = NULL;
+  size_t n_points = 0;
+
+  points = _g_unix_mount_points_get_from_file (get_fstab_file (),
+                                               NULL, &n_points);
+
+  return unix_mount_point_array_free_to_list (g_steal_pointer (&points), n_points);
 }
 
 #endif /* HAVE_LIBMOUNT */
@@ -1194,22 +1394,29 @@ _g_get_unix_mount_points (void)
 /* mnttab.h {{{2 */
 #elif defined (HAVE_SYS_MNTTAB_H)
 
-static GList *
-_g_get_unix_mount_points (void)
+static GUnixMountPoint **
+_g_unix_mount_points_get_from_file (const char *table_path,
+                                    uint64_t   *time_read_out,
+                                    size_t     *n_points_out)
 {
   struct mnttab mntent;
   FILE *file;
   char *read_file;
   GUnixMountPoint *mount_point;
-  GList *return_list;
-  
-  read_file = get_fstab_file ();
-  
-  file = setmntent (read_file, "re");
-  if (file == NULL)
-    return NULL;
+  GPtrArray *return_array = NULL;
 
-  return_list = NULL;
+  if (time_read_out != NULL)
+    *time_read_out = get_mount_points_timestamp ();
+
+  file = setmntent (table_path, "re");
+  if (file == NULL)
+    {
+      if (n_points_out != NULL)
+        *n_points_out = 0;
+      return NULL;
+    }
+
+  return_array = g_ptr_array_new_null_terminated (0, (GDestroyNotify) g_unix_mount_point_free, TRUE);
   
   G_LOCK (getmntent);
   while (! getmntent (file, &mntent))
@@ -1249,13 +1456,28 @@ _g_get_unix_mount_points (void)
                                              is_user_mountable,
                                              is_loopback);
 
-      return_list = g_list_prepend (return_list, mount_point);
+      g_ptr_array_add (return_array, g_steal_pointer (&mount_point));
     }
   
   endmntent (file);
   G_UNLOCK (getmntent);
-  
-  return g_list_reverse (return_list);
+
+  if (n_points_out != NULL)
+    *n_points_out = return_array->len;
+
+  return (GUnixMountPoint **) g_ptr_array_free (g_steal_pointer (&return_array), FALSE);
+}
+
+static GList *
+_g_get_unix_mount_points (void)
+{
+  GUnixMountPoint **points = NULL;
+  size_t n_points = 0;
+
+  points = _g_unix_mount_points_get_from_file (get_fstab_file (),
+                                               NULL, &n_points);
+
+  return unix_mount_point_array_free_to_list (g_steal_pointer (&points), n_points);
 }
 
 /* mntctl.h (AIX) {{{2 */
@@ -1368,24 +1590,31 @@ aix_fs_get (FILE               *fd,
   return 0;
 }
 
-static GList *
-_g_get_unix_mount_points (void)
+static GUnixMountPoint **
+_g_unix_mount_points_get_from_file (const char *table_path,
+                                    uint64_t   *time_read_out,
+                                    size_t     *n_points_out)
 {
   struct mntent *mntent;
   FILE *file;
   char *read_file;
   GUnixMountPoint *mount_point;
   AixMountTableEntry mntent;
-  GList *return_list;
-  
-  read_file = get_fstab_file ();
-  
-  file = setmntent (read_file, "re");
+  GPtrArray *return_array = NULL;
+
+  if (time_read_out != NULL)
+    *time_read_out = get_mount_points_timestamp ();
+
+  file = setmntent (table_path, "re");
   if (file == NULL)
-    return NULL;
-  
-  return_list = NULL;
-  
+    {
+      if (n_points_out != NULL)
+        *n_points_out = 0;
+      return NULL;
+    }
+
+  return_array = g_ptr_array_new_null_terminated (0, (GDestroyNotify) g_unix_mount_point_free, TRUE);
+
   while (!aix_fs_get (file, &mntent))
     {
       if (strcmp ("cdrfs", mntent.mnt_fstype) == 0)
@@ -1398,13 +1627,28 @@ _g_get_unix_mount_points (void)
                                                  TRUE,
                                                  FALSE);
 
-	  return_list = g_list_prepend (return_list, mount_point);
+          g_ptr_array_add (return_array, g_steal_pointer (&mount_point));
 	}
     }
 	
   endmntent (file);
-  
-  return g_list_reverse (return_list);
+
+  if (n_points_out != NULL)
+    *n_points_out = return_array->len;
+
+  return (GUnixMountPoint **) g_ptr_array_free (g_steal_pointer (&return_array), FALSE);
+}
+
+static GList *
+_g_get_unix_mount_points (void)
+{
+  GUnixMountPoint **points = NULL;
+  size_t n_points = 0;
+
+  points = _g_unix_mount_points_get_from_file (get_fstab_file (),
+                                               NULL, &n_points);
+
+  return unix_mount_point_array_free_to_list (g_steal_pointer (&points), n_points);
 }
 
 #elif (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
@@ -1495,6 +1739,19 @@ _g_get_unix_mount_points (void)
 
   return g_list_reverse (return_list);
 }
+
+static GUnixMountPoint **
+_g_unix_mount_points_get_from_file (const char *table_path,
+                                    uint64_t   *time_read_out,
+                                    size_t     *n_points_out)
+{
+  /* Not supported on getfsent() systems. */
+  if (time_read_out != NULL)
+    *time_read_out = 0;
+  if (n_points_out != NULL)
+    *n_points_out = 0;
+  return NULL;
+}
 /* Interix {{{2 */
 #elif defined(__INTERIX)
 static GList *
@@ -1503,12 +1760,38 @@ _g_get_unix_mount_points (void)
   return _g_get_unix_mounts ();
 }
 
+static GUnixMountPoint **
+_g_unix_mount_points_get_from_file (const char *table_path,
+                                    uint64_t   *time_read_out,
+                                    size_t     *n_points_out)
+{
+  /* Not supported on Interix systems. */
+  if (time_read_out != NULL)
+    *time_read_out = 0;
+  if (n_points_out != NULL)
+    *n_points_out = 0;
+  return NULL;
+}
+
 /* QNX {{{2 */
 #elif defined (HAVE_QNX)
 static GList *
 _g_get_unix_mount_points (void)
 {
   return _g_get_unix_mounts ();
+}
+
+static GUnixMountPoint **
+_g_unix_mount_points_get_from_file (const char *table_path,
+                                    uint64_t   *time_read_out,
+                                    size_t     *n_points_out)
+{
+  /* Not supported on QNX systems. */
+  if (time_read_out != NULL)
+    *time_read_out = 0;
+  if (n_points_out != NULL)
+    *n_points_out = 0;
+  return NULL;
 }
 
 /* Common code {{{2 */
@@ -1586,6 +1869,37 @@ g_unix_mounts_get (guint64 *time_read)
     *time_read = get_mounts_timestamp ();
 
   return _g_get_unix_mounts ();
+}
+
+/**
+ * g_unix_mounts_get_from_file:
+ * @table_path: path to the mounts table file (for example `/proc/self/mountinfo`)
+ * @time_read_out: (optional) (out caller-allocates): return location for the
+ *   modification time of @table_path
+ * @n_entries_out: (optional) (out caller-allocates): return location for the
+ *   number of mount entries returned
+ *
+ * Gets an array of [struct@Gio.UnixMountEntry]s containing the Unix mounts
+ * listed in @table_path.
+ *
+ * This is a generalized version of g_unix_mounts_get(), mainly intended for
+ * internal testing use. Note that g_unix_mounts_get() may parse multiple
+ * hierarchical table files, so this function is not a direct superset of its
+ * functionality.
+ *
+ * If there is an error reading or parsing the file, `NULL` will be returned
+ * and both out parameters will be set to `0`.
+ *
+ * Returns: (transfer full) (array length=n_entries_out) (nullable): mount
+ *   entries, or `NULL` if there was an error loading them
+ * Since: 2.82
+ */
+GUnixMountEntry **
+g_unix_mounts_get_from_file (const char *table_path,
+                             uint64_t   *time_read_out,
+                             size_t     *n_entries_out)
+{
+  return _g_unix_mounts_get_from_file (table_path, time_read_out, n_entries_out);
 }
 
 /**
@@ -1722,6 +2036,37 @@ g_unix_mount_points_get (guint64 *time_read)
     *time_read = time_read_now;
 
   return mnt_pts;
+}
+
+/**
+ * g_unix_mount_points_get_from_file:
+ * @table_path: path to the mount points table file (for example `/etc/fstab`)
+ * @time_read_out: (optional) (out caller-allocates): return location for the
+ *   modification time of @table_path
+ * @n_points_out: (optional) (out caller-allocates): return location for the
+ *   number of mount points returned
+ *
+ * Gets an array of [struct@Gio.UnixMountPoint]s containing the Unix mount
+ * points listed in @table_path.
+ *
+ * This is a generalized version of g_unix_mount_points_get(), mainly intended
+ * for internal testing use. Note that g_unix_mount_points_get() may parse
+ * multiple hierarchical table files, so this function is not a direct superset
+ * of its functionality.
+ *
+ * If there is an error reading or parsing the file, `NULL` will be returned
+ * and both out parameters will be set to `0`.
+ *
+ * Returns: (transfer full) (array length=n_points_out) (nullable): mount
+ *   points, or `NULL` if there was an error loading them
+ * Since: 2.82
+ */
+GUnixMountPoint **
+g_unix_mount_points_get_from_file (const char *table_path,
+                                   uint64_t   *time_read_out,
+                                   size_t     *n_points_out)
+{
+  return _g_unix_mount_points_get_from_file (table_path, time_read_out, n_points_out);
 }
 
 /**
