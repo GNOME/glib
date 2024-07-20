@@ -24,6 +24,7 @@
 #define __G_UNIX_MOUNTS_H__
 
 #include <gio/gio.h>
+#include <stdint.h>
 
 G_BEGIN_DECLS
 
@@ -134,11 +135,19 @@ GIcon *        g_unix_mount_point_guess_symbolic_icon (GUnixMountPoint    *mount
 
 GIO_AVAILABLE_IN_ALL
 GList *        g_unix_mount_points_get              (guint64            *time_read);
+GIO_AVAILABLE_IN_2_82
+GUnixMountPoint **g_unix_mount_points_get_from_file (const char         *table_path,
+                                                     uint64_t           *time_read_out,
+                                                     size_t             *n_points_out);
 GIO_AVAILABLE_IN_2_66
 GUnixMountPoint *g_unix_mount_point_at              (const char         *mount_path,
                                                      guint64            *time_read);
 GIO_AVAILABLE_IN_ALL
 GList *        g_unix_mounts_get                    (guint64            *time_read);
+GIO_AVAILABLE_IN_2_82
+GUnixMountEntry **g_unix_mounts_get_from_file      (const char          *table_path,
+                                                    uint64_t            *time_read_out,
+                                                    size_t              *n_entries_out);
 GIO_AVAILABLE_IN_ALL
 GUnixMountEntry *g_unix_mount_at                    (const char         *mount_path,
 						     guint64            *time_read);
