@@ -344,6 +344,16 @@ new types which are to be exported in a header file:
 - Use prefixing to avoid namespace conflicts with other projects. If your
   library (or application) is named `Viewer`, prefix all your function names
   with `viewer_`. For example: `viewer_object_method`.
+- The prefix should be a single term, i.e. should not contain any capital
+  letters after the first letter. For example, `Exampleprefix` rather than
+  `ExamplePrefix`.
+  - This allows the lowercase-with-underscores versions of names
+    to be automatically and unambiguously generated from the camel-case
+    versions. See [Name mangling](#name-mangling).
+  - Multiple-term prefixes can be supported if additional arguments are passed
+    to type and introspection tooling, but it’s best to avoid the need for this.
+- Object/Class names (such as `File` in the examples here) may contain multiple
+  terms. For example, `LocalFile`.
 - Create a macro named `PREFIX_TYPE_OBJECT` which always returns the `GType`
   for the associated object type. For an object of type `File` in the
   `Viewer` namespace, use: `VIEWER_TYPE_FILE`. This macro is implemented
@@ -407,6 +417,31 @@ GType viewer_file_get_type (void)
   return type;
 }
 ```
+
+## Name mangling
+
+GObject tooling, in particular introspection, relies on being able to
+unambiguously convert between type names (in camel-case, such as
+`GNetworkMonitor` or `MyViewerFile`) and function prefixes (in
+lowercase-with-underscores, such as `g_network_monitor` or `my_viewer_file`).
+The latter can then be used to prefix methods such as
+`g_network_monitor_can_reach()` or `my_viewer_file_get_type()`.
+
+The algorithm for converting from camel-case to lowercase-with-underscores is:
+<!-- This algorithm is here:
+     https://gitlab.gnome.org/GNOME/gtk/-/blob/a118cbb3ff552d4258d433e67bdb94e8aef0f439/gtk/gtkbuilderscope.c#L195-229
+     We’ve ignored the case of (split_first_cap == TRUE) to simplify things, and
+     because that functionality is discouraged. -->
+
+ 1. The output is a lower-case version of the input, with zero or more ‘splits’.
+ 2. Wherever the input is ‘split’, insert an underscore in the output.
+ 3. Split the input on:
+    - Each character (after index zero) which is uppercase and the previous
+      character is not uppercase
+    - The second character (index one) if it is uppercase and the first character
+      (index zero) is uppercase
+    - Each character (after index two) which is uppercase and the previous two
+      characters are also uppercase
 
 ## Non-instantiatable non-classed fundamental types
 
