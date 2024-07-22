@@ -1593,8 +1593,8 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
 /**
  * g_app_launch_context_get_startup_notify_id:
  * @context: a #GAppLaunchContext
- * @info: a #GAppInfo
- * @files: (element-type GFile): a #GList of #GFile objects
+ * @info: (nullable): the app info
+ * @files: (nullable) (element-type GFile): a list of [iface@Gio.File] objects
  * 
  * Initiates startup notification for the application and returns the
  * `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,
@@ -1609,6 +1609,7 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * [freedesktop.org Startup Notification Protocol](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
  *
  * Support for the XDG Activation Protocol was added in GLib 2.76.
+ * Since GLib 2.82 @info and @files can be `NULL`, but if it's not supported the returned token may be `NULL`.
  *
  * Returns: (nullable): a startup notification ID for the application, or %NULL if
  *     not supported.
@@ -1621,7 +1622,7 @@ g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
   GAppLaunchContextClass *class;
 
   g_return_val_if_fail (G_IS_APP_LAUNCH_CONTEXT (context), NULL);
-  g_return_val_if_fail (G_IS_APP_INFO (info), NULL);
+  g_return_val_if_fail (info == NULL || G_IS_APP_INFO (info), NULL);
 
   class = G_APP_LAUNCH_CONTEXT_GET_CLASS (context);
 
