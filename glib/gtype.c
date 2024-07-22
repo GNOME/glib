@@ -1999,7 +1999,24 @@ g_type_free_instance (GTypeInstance *instance)
 		  NODE_NAME (node));
       return;
     }
-  
+
+  if (G_IS_TYPE_FINALIZABLE (instance))
+    {
+      GTypeFinalizableInterface *iface = G_TYPE_FINALIZABLE_GET_IFACE (instance);
+      GType parent_type = g_type_parent (class->g_type);
+
+      if (iface->finalize != NULL)
+        iface->finalize ((GTypeFinalizable *) instance);
+
+      iface = g_type_interface_peek_parent (iface);
+      while (iface != NULL)
+        {
+          if (iface->finalize != NULL)
+            iface->finalize ((GTypeFinalizable *) instance);
+          iface = g_type_interface_peek_parent (iface);
+        }
+    }
+
   instance->g_class = NULL;
   private_size = node->data->instance.private_size;
   ivar_size = node->data->instance.instance_size;
@@ -4972,3 +4989,10 @@ g_type_init_internal (void)
   _g_value_transforms_init ();
 
 }
+
+static void
+g_type_finalizable_default_init (GTypeFinalizableInterface *iface)
+{
+}
+
+G_DEFINE_INTERFACE (GTypeFinalizable, g_type_finalizable, G_TYPE_INVALID)

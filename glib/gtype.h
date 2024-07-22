@@ -427,6 +427,8 @@ typedef struct _GInterfaceInfo          GInterfaceInfo;
 typedef struct _GTypeValueTable         GTypeValueTable;
 typedef struct _GTypeQuery		GTypeQuery;
 
+typedef struct _GTypeFinalizable          GTypeFinalizable;
+typedef struct _GTypeFinalizableInterface GTypeFinalizableInterface;
 
 /* Basic Type Structures
  */
@@ -480,6 +482,34 @@ struct _GTypeQuery
   guint		instance_size;
 };
 
+/**
+ * GTypeFinalizable:
+ *
+ * An interface for finalizable types.
+ *
+ * Instance types that allocate data on the instance structure and wish
+ * to free their resources when [func@GObject.type_free_instance] is called,
+ * should implement the [vfunc@GObject.TypeFinalizable.finalize] virtual
+ * function of this interface.
+ */
+
+/**
+ * GTypeFinalizableInterface:
+ *
+ * An interface for finalizable types.
+ */
+struct _GTypeFinalizableInterface
+{
+  GTypeInterface parent_iface;
+
+  /**
+   * GTypeFinalizableInterface::finalize:
+   * @self: the instance to finalize
+   *
+   * Finalizes the instance data.
+   */
+  void (* finalize) (GTypeFinalizable *self);
+};
 
 /* Casts, checks and accessors for structured types
  * usage of these macros is reserved to type implementations only
@@ -2717,5 +2747,23 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
  * Since: 2.80
  */
 #define GTYPE_TO_POINTER(t) ((gpointer) (guintptr) (t)) GLIB_AVAILABLE_MACRO_IN_2_80
+
+GLIB_AVAILABLE_IN_ALL
+GType g_type_finalizable_get_type (void) G_GNUC_CONST;
+
+G_GNUC_UNUSED static inline GTypeFinalizable *
+G_TYPE_FINALIZABLE (gpointer ptr) {
+  return G_TYPE_CHECK_INSTANCE_CAST (ptr, g_type_finalizable_get_type (), GTypeFinalizable);
+}
+
+G_GNUC_UNUSED static inline gboolean
+G_IS_TYPE_FINALIZABLE (gpointer ptr) {
+  return G_TYPE_CHECK_INSTANCE_TYPE (ptr, g_type_finalizable_get_type ());
+}
+
+G_GNUC_UNUSED static inline GTypeFinalizableInterface *
+G_TYPE_FINALIZABLE_GET_IFACE (gpointer ptr) {
+  return G_TYPE_INSTANCE_GET_INTERFACE (ptr, g_type_finalizable_get_type (), GTypeFinalizableInterface);
+}
 
 G_END_DECLS
