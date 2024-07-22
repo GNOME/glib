@@ -338,13 +338,13 @@ There are a number of conventions users are expected to follow when creating
 new types which are to be exported in a header file:
 
 - Type names (including object names) must be at least three characters long
-  and start with "a–z", "A–Z" or "\_".
+  and start with a–z, A–Z or ‘\_’.
 - Use the `object_method` pattern for function names: to invoke the method
-  named save on an instance of object type file, call `file_save`.
+  named ‘save’ on an instance of object type ‘file’, call `file_save`.
 - Use prefixing to avoid namespace conflicts with other projects. If your
   library (or application) is named `Viewer`, prefix all your function names
-  with viewer_. For example: `viewer_object_method`.
-- Create a macro named `PREFIX_TYPE_OBJECT` which always returns the GType
+  with `viewer_`. For example: `viewer_object_method`.
+- Create a macro named `PREFIX_TYPE_OBJECT` which always returns the `GType`
   for the associated object type. For an object of type `File` in the
   `Viewer` namespace, use: `VIEWER_TYPE_FILE`. This macro is implemented
   using a function named `prefix_object_get_type`; for example,
@@ -355,7 +355,7 @@ new types which are to be exported in a header file:
     This macro is used to enforce static type safety by doing explicit casts
     wherever needed. It also enforces dynamic type safety by doing runtime
     checks. It is possible to disable the dynamic type checks in production
-    builds (see "Building GLib" section in the GLib API reference). For
+    builds (see [Building GLib](https://docs.gtk.org/glib/building.html)). For
     example, we would create `VIEWER_FILE (obj)` to keep the previous
     example.
   - `PREFIX_OBJECT_CLASS (klass)`, which is strictly equivalent to the
@@ -363,7 +363,7 @@ new types which are to be exported in a header file:
     checking of class structures. It is expected to return a pointer to a
     class structure of type `PrefixObjectClass`. An example is:
     `VIEWER_FILE_CLASS`.
-  - `PREFIX_IS_OBJECT (obj)`, which returns a gboolean which indicates
+  - `PREFIX_IS_OBJECT (obj)`, which returns a boolean which indicates
     whether the input object instance pointer is non-`NULL` and of type
     `OBJECT`. For example, `VIEWER_IS_FILE`.
   - `PREFIX_IS_OBJECT_CLASS (klass)`, which returns a boolean if the input
