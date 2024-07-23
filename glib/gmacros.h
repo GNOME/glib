@@ -878,7 +878,10 @@
 #endif
 #endif /* G_CXX_STD_CHECK_VERSION (11) */
 #define G_STATIC_ASSERT_EXPR(expr) ((void) sizeof (char[(expr) ? 1 : -1]))
-#endif /* !__GI_SCANNER__ */
+#else /* __GI_SCANNER__ */
+#define G_STATIC_ASSERT(expr) static int G_PASTE (_GStaticAssertGiScannerNoop, __LINE__) G_GNUC_UNUSED
+#define G_STATIC_ASSERT_EXPR(expr) static int G_PASTE (_GStaticAssertGiScannerNoop, __LINE__) G_GNUC_UNUSED
+#endif /* __GI_SCANNER__ */
 
 /* Provide a string identifying the current code position */
 #if defined (__GNUC__) && (__GNUC__ < 3) && !defined (G_CXX_STD_VERSION)
