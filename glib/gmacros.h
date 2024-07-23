@@ -861,9 +861,10 @@
 #define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
 #define	G_STRINGIFY_ARG(contents)	#contents
 
-#ifndef __GI_SCANNER__ /* The static assert macro really confuses the introspection parser */
 #define G_PASTE_ARGS(identifier1,identifier2) identifier1 ## identifier2
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
+
+#ifndef __GI_SCANNER__ /* The static assert macro really confuses the introspection parser */
 #if G_CXX_STD_CHECK_VERSION (11)
 #define G_STATIC_ASSERT(expr) static_assert (expr, "Expression evaluates to false")
 #elif (G_C_STD_CHECK_VERSION (11) || \
