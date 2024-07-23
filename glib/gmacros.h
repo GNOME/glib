@@ -861,9 +861,10 @@
 #define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
 #define	G_STRINGIFY_ARG(contents)	#contents
 
-#ifndef __GI_SCANNER__ /* The static assert macro really confuses the introspection parser */
 #define G_PASTE_ARGS(identifier1,identifier2) identifier1 ## identifier2
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
+
+#ifndef __GI_SCANNER__ /* The static assert macro really confuses the introspection parser */
 #if G_CXX_STD_CHECK_VERSION (11)
 #define G_STATIC_ASSERT(expr) static_assert (expr, "Expression evaluates to false")
 #elif (G_C_STD_CHECK_VERSION (11) || \
@@ -877,7 +878,10 @@
 #endif
 #endif /* G_CXX_STD_CHECK_VERSION (11) */
 #define G_STATIC_ASSERT_EXPR(expr) ((void) sizeof (char[(expr) ? 1 : -1]))
-#endif /* !__GI_SCANNER__ */
+#else /* __GI_SCANNER__ */
+#define G_STATIC_ASSERT(expr) static int G_PASTE (_GStaticAssertGiScannerNoop, __LINE__) G_GNUC_UNUSED
+#define G_STATIC_ASSERT_EXPR(expr) static int G_PASTE (_GStaticAssertGiScannerNoop, __LINE__) G_GNUC_UNUSED
+#endif /* __GI_SCANNER__ */
 
 /* Provide a string identifying the current code position */
 #if defined (__GNUC__) && (__GNUC__ < 3) && !defined (G_CXX_STD_VERSION)
