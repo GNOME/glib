@@ -343,7 +343,7 @@ new types which are to be exported in a header file:
   named ‘save’ on an instance of object type ‘file’, call `file_save`.
 - Use prefixing to avoid namespace conflicts with other projects. If your
   library (or application) is named `Viewer`, prefix all your function names
-  with `viewer_`. For example: `viewer_object_method`.
+  with `viewer_`. For example: `viewer_file_save`.
 - The prefix should be a single term, i.e. should not contain any capital
   letters after the first letter. For example, `Exampleprefix` rather than
   `ExamplePrefix`.
