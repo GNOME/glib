@@ -12,7 +12,7 @@ gio/gbufferedoutputstream.c
 gio/gbytesicon.c
 gio/gcancellable.c
 gio/gcharsetconverter.c
-gio/gcontenttype.c
+gio/gcontenttype-fdo.c
 gio/gcontenttype-win32.c
 gio/gconverter.c
 gio/gconverterinputstream.c

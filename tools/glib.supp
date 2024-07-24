@@ -896,7 +896,7 @@
 	fun:g_get_home_dir
 }
 
-# gcontenttype.c caches a one-time allocation global array of @global_mime_dirs.
+# gcontenttype-fdo.c caches a one-time allocation global array of @global_mime_dirs.
 {
 	content_type_mime_dirs_realloc
 	Memcheck:Leak

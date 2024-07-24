@@ -405,7 +405,7 @@ if host_system != 'windows'
     )
     application_headers += files('gosxappinfo.h')
   else
-    contenttype_sources += files('gcontenttype.c')
+    contenttype_sources += files('gcontenttype-fdo.c')
     unix_sources += files('gdesktopappinfo.c')
     gio_unix_include_headers += files('gdesktopappinfo.h')
     launch_desktop_sources = files('gio-launch-desktop.c')
