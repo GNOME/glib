@@ -338,13 +338,23 @@ There are a number of conventions users are expected to follow when creating
 new types which are to be exported in a header file:
 
 - Type names (including object names) must be at least three characters long
-  and start with "a–z", "A–Z" or "\_".
+  and start with a–z, A–Z or ‘\_’.
 - Use the `object_method` pattern for function names: to invoke the method
-  named save on an instance of object type file, call `file_save`.
+  named ‘save’ on an instance of object type ‘file’, call `file_save`.
 - Use prefixing to avoid namespace conflicts with other projects. If your
   library (or application) is named `Viewer`, prefix all your function names
-  with viewer_. For example: `viewer_object_method`.
-- Create a macro named `PREFIX_TYPE_OBJECT` which always returns the GType
+  with `viewer_`. For example: `viewer_file_save`.
+- The prefix should be a single term, i.e. should not contain any capital
+  letters after the first letter. For example, `Exampleprefix` rather than
+  `ExamplePrefix`.
+  - This allows the lowercase-with-underscores versions of names
+    to be automatically and unambiguously generated from the camel-case
+    versions. See [Name mangling](#name-mangling).
+  - Multiple-term prefixes can be supported if additional arguments are passed
+    to type and introspection tooling, but it’s best to avoid the need for this.
+- Object/Class names (such as `File` in the examples here) may contain multiple
+  terms. For example, `LocalFile`.
+- Create a macro named `PREFIX_TYPE_OBJECT` which always returns the `GType`
   for the associated object type. For an object of type `File` in the
   `Viewer` namespace, use: `VIEWER_TYPE_FILE`. This macro is implemented
   using a function named `prefix_object_get_type`; for example,
@@ -355,7 +365,7 @@ new types which are to be exported in a header file:
     This macro is used to enforce static type safety by doing explicit casts
     wherever needed. It also enforces dynamic type safety by doing runtime
     checks. It is possible to disable the dynamic type checks in production
-    builds (see "Building GLib" section in the GLib API reference). For
+    builds (see [Building GLib](https://docs.gtk.org/glib/building.html)). For
     example, we would create `VIEWER_FILE (obj)` to keep the previous
     example.
   - `PREFIX_OBJECT_CLASS (klass)`, which is strictly equivalent to the
@@ -363,7 +373,7 @@ new types which are to be exported in a header file:
     checking of class structures. It is expected to return a pointer to a
     class structure of type `PrefixObjectClass`. An example is:
     `VIEWER_FILE_CLASS`.
-  - `PREFIX_IS_OBJECT (obj)`, which returns a gboolean which indicates
+  - `PREFIX_IS_OBJECT (obj)`, which returns a boolean which indicates
     whether the input object instance pointer is non-`NULL` and of type
     `OBJECT`. For example, `VIEWER_IS_FILE`.
   - `PREFIX_IS_OBJECT_CLASS (klass)`, which returns a boolean if the input
@@ -407,6 +417,31 @@ GType viewer_file_get_type (void)
   return type;
 }
 ```
+
+## Name mangling
+
+GObject tooling, in particular introspection, relies on being able to
+unambiguously convert between type names (in camel-case, such as
+`GNetworkMonitor` or `MyViewerFile`) and function prefixes (in
+lowercase-with-underscores, such as `g_network_monitor` or `my_viewer_file`).
+The latter can then be used to prefix methods such as
+`g_network_monitor_can_reach()` or `my_viewer_file_get_type()`.
+
+The algorithm for converting from camel-case to lowercase-with-underscores is:
+<!-- This algorithm is here:
+     https://gitlab.gnome.org/GNOME/gtk/-/blob/a118cbb3ff552d4258d433e67bdb94e8aef0f439/gtk/gtkbuilderscope.c#L195-229
+     We’ve ignored the case of (split_first_cap == TRUE) to simplify things, and
+     because that functionality is discouraged. -->
+
+ 1. The output is a lower-case version of the input, with zero or more ‘splits’.
+ 2. Wherever the input is ‘split’, insert an underscore in the output.
+ 3. Split the input on:
+    - Each character (after index zero) which is uppercase and the previous
+      character is not uppercase
+    - The second character (index one) if it is uppercase and the first character
+      (index zero) is uppercase
+    - Each character (after index two) which is uppercase and the previous two
+      characters are also uppercase
 
 ## Non-instantiatable non-classed fundamental types
 
