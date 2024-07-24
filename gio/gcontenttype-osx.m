@@ -20,6 +20,7 @@
 #include "config.h"
 
 #include "gcontenttype.h"
+#include "gcontenttypeprivate.h"
 #include "gicon.h"
 #include "gthemedicon.h"
 
@@ -107,22 +108,22 @@ create_cstr_from_cfstring_with_fallback (CFStringRef  str,
 
 /*< private >*/
 void
-g_content_type_set_mime_dirs (const gchar * const *dirs)
+g_content_type_set_mime_dirs_impl (const gchar * const *dirs)
 {
   /* noop on macOS */
 }
 
 /*< private >*/
 const gchar * const *
-g_content_type_get_mime_dirs (void)
+g_content_type_get_mime_dirs_impl (void)
 {
   const gchar * const *mime_dirs = { NULL };
   return mime_dirs;
 }
 
 gboolean
-g_content_type_equals (const gchar *type1,
-                       const gchar *type2)
+g_content_type_equals_impl (const gchar *type1,
+                            const gchar *type2)
 {
   CFStringRef str1, str2;
   gboolean ret;
@@ -145,8 +146,8 @@ g_content_type_equals (const gchar *type1,
 }
 
 gboolean
-g_content_type_is_a (const gchar *ctype,
-                     const gchar *csupertype)
+g_content_type_is_a_impl (const gchar *ctype,
+                          const gchar *csupertype)
 {
   CFStringRef type, supertype;
   gboolean ret;
@@ -166,8 +167,8 @@ g_content_type_is_a (const gchar *ctype,
 }
 
 gboolean
-g_content_type_is_mime_type (const gchar *type,
-                             const gchar *mime_type)
+g_content_type_is_mime_type_impl (const gchar *type,
+                                  const gchar *mime_type)
 {
   gchar *content_type;
   gboolean ret;
@@ -183,7 +184,7 @@ g_content_type_is_mime_type (const gchar *type,
 }
 
 gboolean
-g_content_type_is_unknown (const gchar *type)
+g_content_type_is_unknown_impl (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
@@ -198,7 +199,7 @@ g_content_type_is_unknown (const gchar *type)
 }
 
 gchar *
-g_content_type_get_description (const gchar *type)
+g_content_type_get_description_impl (const gchar *type)
 {
   CFStringRef str;
   CFStringRef desc_str;
@@ -327,25 +328,25 @@ g_content_type_get_icon_internal (const gchar *uti,
 }
 
 GIcon *
-g_content_type_get_icon (const gchar *type)
+g_content_type_get_icon_impl (const gchar *type)
 {
   return g_content_type_get_icon_internal (type, FALSE);
 }
 
 GIcon *
-g_content_type_get_symbolic_icon (const gchar *type)
+g_content_type_get_symbolic_icon_impl (const gchar *type)
 {
   return g_content_type_get_icon_internal (type, TRUE);
 }
 
 gchar *
-g_content_type_get_generic_icon_name (const gchar *type)
+g_content_type_get_generic_icon_name_impl (const gchar *type)
 {
   return NULL;
 }
 
 gboolean
-g_content_type_can_be_executable (const gchar *type)
+g_content_type_can_be_executable_impl (const gchar *type)
 {
   CFStringRef uti;
   gboolean ret = FALSE;
@@ -369,7 +370,7 @@ g_content_type_can_be_executable (const gchar *type)
 }
 
 gchar *
-g_content_type_from_mime_type (const gchar *mime_type)
+g_content_type_from_mime_type_impl (const gchar *mime_type)
 {
   CFStringRef mime_str;
   CFStringRef uti_str;
@@ -437,7 +438,7 @@ g_content_type_from_mime_type (const gchar *mime_type)
 }
 
 gchar *
-g_content_type_get_mime_type (const gchar *type)
+g_content_type_get_mime_type_impl (const gchar *type)
 {
   CFStringRef uti_str;
   CFStringRef mime_str;
@@ -489,10 +490,10 @@ looks_like_text (const guchar *data,
 }
 
 gchar *
-g_content_type_guess (const gchar  *filename,
-                      const guchar *data,
-                      gsize         data_size,
-                      gboolean     *result_uncertain)
+g_content_type_guess_impl (const gchar  *filename,
+                           const guchar *data,
+                           gsize         data_size,
+                           gboolean     *result_uncertain)
 {
   CFStringRef uti = NULL;
   gchar *cextension;
@@ -595,14 +596,14 @@ g_content_type_guess (const gchar  *filename,
 }
 
 GList *
-g_content_types_get_registered (void)
+g_content_types_get_registered_impl (void)
 {
   /* TODO: UTTypeCreateAllIdentifiersForTag? */
   return NULL;
 }
 
 gchar **
-g_content_type_guess_for_tree (GFile *root)
+g_content_type_guess_for_tree_impl (GFile *root)
 {
   return NULL;
 }

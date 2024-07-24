@@ -489,6 +489,7 @@ gio_base_sources = files(
   'gbytesicon.c',
   'gcancellable.c',
   'gcharsetconverter.c',
+  'gcontenttype.c',
   'gcontextspecificgroup.c',
   'gconverter.c',
   'gconverterinputstream.c',
