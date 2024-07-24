@@ -62,13 +62,23 @@ test_launch_async (void)
   g_clear_object (&app_info);
 }
 
+static void
+test_invalid_uri_scheme (void)
+{
+  GAppInfo *app_info;
+
+  app_info = g_app_info_get_default_for_uri_scheme("thisisnotanurlscheme");
+  g_assert_null (app_info);
+}
+
 int
 main (int   argc,
       char *argv[])
 {
-  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+  g_test_init (&argc, &argv, NULL, NULL);
 
   g_test_add_func ("/osx-app-info/launch-async", test_launch_async);
+  g_test_add_func ("/osx-app-info/invalid-uri-scheme", test_invalid_uri_scheme);
 
   return g_test_run ();
 }
