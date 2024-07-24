@@ -116,6 +116,38 @@ g_app_info_default_init (GAppInfoInterface *iface)
 {
 }
 
+/**
+ * g_app_info_create_from_commandline:
+ * @commandline: (type filename): the command line to use
+ * @application_name: (nullable): the application name, or `NULL` to use @commandline
+ * @flags: flags that can specify details of the created [iface@Gio.AppInfo]
+ * @error: a [type@GLib.Error] location to store the error occurring,
+ *   `NULL` to ignore.
+ *
+ * Creates a new [iface@Gio.AppInfo] from the given information.
+ *
+ * Note that for @commandline, the quoting rules of the `Exec` key of the
+ * [freedesktop.org Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec)
+ * are applied. For example, if the @commandline contains
+ * percent-encoded URIs, the percent-character must be doubled in order to prevent it from
+ * being swallowed by `Exec` key unquoting. See
+ * [the specification](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s07.html)
+ * for exact quoting rules.
+ *
+ * Returns: (transfer full): new [iface@Gio.AppInfo] for given command.
+ **/
+GAppInfo *
+g_app_info_create_from_commandline (const char           *commandline,
+                                    const char           *application_name,
+                                    GAppInfoCreateFlags   flags,
+                                    GError              **error)
+{
+  g_return_val_if_fail (commandline, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  return g_app_info_create_from_commandline_impl (commandline, application_name,
+                                                  flags, error);
+}
 
 /**
  * g_app_info_dup:
@@ -372,6 +404,156 @@ g_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
   g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                        _("Setting application as last used for type not supported yet"));
   return FALSE;
+}
+
+/**
+ * g_app_info_get_all:
+ *
+ * Gets a list of all of the applications currently registered
+ * on this system.
+ *
+ * For desktop files, this includes applications that have
+ * [`NoDisplay=true`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-nodisplay)
+ * set or are excluded from display by means of
+ * [`OnlyShowIn`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-onlyshowin)
+ * or [`NotShowIn`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-notshowin).
+ * See [method@Gio.AppInfo.should_show].
+ *
+ * The returned list does not include applications which have the
+ * [`Hidden` key](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-hidden)
+ * set.
+ *
+ * Returns: (element-type GAppInfo) (transfer full): a newly allocated
+ *   list of references to [iface@Gio.AppInfo]s.
+ **/
+GList *
+g_app_info_get_all (void)
+{
+  return g_app_info_get_all_impl ();
+}
+
+/**
+ * g_app_info_get_recommended_for_type:
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
+ *
+ * Gets a list of recommended [iface@Gio.AppInfo]s for a given content type,
+ * i.e. those applications which claim to support the given content type
+ * exactly, and not by MIME type subclassing.
+ *
+ * Note that the first application of the list is the last used one, i.e.
+ * the last one for which [method@Gio.AppInfo.set_as_last_used_for_type] has
+ * been called.
+ *
+ * Returns: (element-type GAppInfo) (transfer full): list of
+ *   [iface@Gio.AppInfo]s for given @content_type or `NULL` on error.
+ *
+ * Since: 2.28
+ **/
+GList *
+g_app_info_get_recommended_for_type (const gchar *content_type)
+{
+  g_return_val_if_fail (content_type != NULL, NULL);
+
+  return g_app_info_get_recommended_for_type_impl (content_type);
+}
+
+/**
+ * g_app_info_get_fallback_for_type:
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
+ *
+ * Gets a list of fallback [iface@Gio.AppInfo]s for a given content type, i.e.
+ * those applications which claim to support the given content type by MIME
+ * type subclassing and not directly.
+ *
+ * Returns: (element-type GAppInfo) (transfer full): list of [iface@Gio.AppInfo]s
+ *     for given @content_type or `NULL` on error.
+ *
+ * Since: 2.28
+ **/
+GList *
+g_app_info_get_fallback_for_type (const gchar *content_type)
+{
+  g_return_val_if_fail (content_type != NULL, NULL);
+
+  return g_app_info_get_fallback_for_type_impl (content_type);
+}
+
+/**
+ * g_app_info_get_all_for_type:
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
+ *
+ * Gets a list of all [iface@Gio.AppInfo]s for a given content type,
+ * including the recommended and fallback [iface@Gio.AppInfo]s. See
+ * [func@Gio.AppInfo.get_recommended_for_type] and
+ * [func@Gio.AppInfo.get_fallback_for_type].
+ *
+ * Returns: (element-type GAppInfo) (transfer full): list of
+ *   [iface@Gio.AppInfo]s for given @content_type.
+ **/
+GList *
+g_app_info_get_all_for_type (const char *content_type)
+{
+  g_return_val_if_fail (content_type != NULL, NULL);
+
+  return g_app_info_get_all_for_type_impl (content_type);
+}
+
+/**
+ * g_app_info_reset_type_associations:
+ * @content_type: a content type
+ *
+ * Removes all changes to the type associations done by
+ * [method@Gio.AppInfo.set_as_default_for_type],
+ * [method@Gio.AppInfo.set_as_default_for_extension],
+ * [method@Gio.AppInfo.add_supports_type] or
+ * [method@Gio.AppInfo.remove_supports_type].
+ *
+ * Since: 2.20
+ */
+void
+g_app_info_reset_type_associations (const char *content_type)
+{
+  g_app_info_reset_type_associations_impl (content_type);
+}
+
+/**
+ * g_app_info_get_default_for_type:
+ * @content_type: the content type to find a [iface@Gio.AppInfo] for
+ * @must_support_uris: if `TRUE`, the [iface@Gio.AppInfo] is expected to
+ *   support URIs
+ *
+ * Gets the default [iface@Gio.AppInfo] for a given content type.
+ *
+ * Returns: (transfer full) (nullable): [iface@Gio.AppInfo] for given
+ *   @content_type or `NULL` on error.
+ */
+GAppInfo *
+g_app_info_get_default_for_type (const char *content_type,
+                                 gboolean    must_support_uris)
+{
+  g_return_val_if_fail (content_type != NULL, NULL);
+
+  return g_app_info_get_default_for_type_impl (content_type, must_support_uris);
+}
+
+/**
+ * g_app_info_get_default_for_uri_scheme:
+ * @uri_scheme: a string containing a URI scheme.
+ *
+ * Gets the default application for handling URIs with the given URI scheme.
+ *
+ * A URI scheme is the initial part of the URI, up to but not including the `:`.
+ * For example, `http`, `ftp` or `sip`.
+ *
+ * Returns: (transfer full) (nullable): [iface@Gio.AppInfo] for given
+ *   @uri_scheme or `NULL` on error.
+ */
+GAppInfo *
+g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
+{
+  g_return_val_if_fail (uri_scheme != NULL && *uri_scheme != '\0', NULL);
+
+  return g_app_info_get_default_for_uri_scheme_impl (uri_scheme);
 }
 
 /**

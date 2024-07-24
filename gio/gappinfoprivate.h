@@ -25,4 +25,17 @@
 
 void g_app_info_monitor_fire (void);
 
+GAppInfo *g_app_info_create_from_commandline_impl (const char           *commandline,
+                                                   const char           *application_name,
+                                                   GAppInfoCreateFlags   flags,
+                                                   GError              **error);
+GList *g_app_info_get_recommended_for_type_impl (const gchar *content_type);
+GList *g_app_info_get_fallback_for_type_impl (const gchar *content_type);
+GList *g_app_info_get_all_for_type_impl (const char *content_type);
+void g_app_info_reset_type_associations_impl (const char *content_type);
+GAppInfo *g_app_info_get_default_for_type_impl (const char *content_type,
+                                                gboolean    must_support_uris);
+GAppInfo *g_app_info_get_default_for_uri_scheme_impl (const char *uri_scheme);
+GList *g_app_info_get_all_impl (void);
+
 #endif /* __G_APP_INFO_PRIVATE_H__ */
