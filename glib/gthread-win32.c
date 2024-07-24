@@ -79,30 +79,30 @@ g_thread_abort (gint         status,
 
 /* {{{1 GMutex */
 void
-g_mutex_init (GMutex *mutex)
+g_mutex_init_impl (GMutex *mutex)
 {
   InitializeSRWLock ((gpointer) mutex);
 }
 
 void
-g_mutex_clear (GMutex *mutex)
+g_mutex_clear_impl (GMutex *mutex)
 {
 }
 
 void
-g_mutex_lock (GMutex *mutex)
+g_mutex_lock_impl (GMutex *mutex)
 {
   AcquireSRWLockExclusive ((gpointer) mutex);
 }
 
 gboolean
-g_mutex_trylock (GMutex *mutex)
+g_mutex_trylock_impl (GMutex *mutex)
 {
   return TryAcquireSRWLockExclusive ((gpointer) mutex);
 }
 
 void
-g_mutex_unlock (GMutex *mutex)
+g_mutex_unlock_impl (GMutex *mutex)
 {
   ReleaseSRWLockExclusive ((gpointer) mutex);
 }
@@ -144,31 +144,31 @@ g_rec_mutex_get_impl (GRecMutex *mutex)
 }
 
 void
-g_rec_mutex_init (GRecMutex *mutex)
+g_rec_mutex_init_impl (GRecMutex *mutex)
 {
   mutex->p = g_rec_mutex_impl_new ();
 }
 
 void
-g_rec_mutex_clear (GRecMutex *mutex)
+g_rec_mutex_clear_impl (GRecMutex *mutex)
 {
   g_rec_mutex_impl_free (mutex->p);
 }
 
 void
-g_rec_mutex_lock (GRecMutex *mutex)
+g_rec_mutex_lock_impl (GRecMutex *mutex)
 {
   EnterCriticalSection (g_rec_mutex_get_impl (mutex));
 }
 
 void
-g_rec_mutex_unlock (GRecMutex *mutex)
+g_rec_mutex_unlock_impl (GRecMutex *mutex)
 {
   LeaveCriticalSection (mutex->p);
 }
 
 gboolean
-g_rec_mutex_trylock (GRecMutex *mutex)
+g_rec_mutex_trylock_impl (GRecMutex *mutex)
 {
   return TryEnterCriticalSection (g_rec_mutex_get_impl (mutex));
 }
@@ -176,87 +176,87 @@ g_rec_mutex_trylock (GRecMutex *mutex)
 /* {{{1 GRWLock */
 
 void
-g_rw_lock_init (GRWLock *lock)
+g_rw_lock_init_impl (GRWLock *lock)
 {
   InitializeSRWLock ((gpointer) lock);
 }
 
 void
-g_rw_lock_clear (GRWLock *lock)
+g_rw_lock_clear_impl (GRWLock *lock)
 {
 }
 
 void
-g_rw_lock_writer_lock (GRWLock *lock)
+g_rw_lock_writer_lock_impl (GRWLock *lock)
 {
   AcquireSRWLockExclusive ((gpointer) lock);
 }
 
 gboolean
-g_rw_lock_writer_trylock (GRWLock *lock)
+g_rw_lock_writer_trylock_impl (GRWLock *lock)
 {
   return TryAcquireSRWLockExclusive ((gpointer) lock);
 }
 
 void
-g_rw_lock_writer_unlock (GRWLock *lock)
+g_rw_lock_writer_unlock_impl (GRWLock *lock)
 {
   ReleaseSRWLockExclusive ((gpointer) lock);
 }
 
 void
-g_rw_lock_reader_lock (GRWLock *lock)
+g_rw_lock_reader_lock_impl (GRWLock *lock)
 {
   AcquireSRWLockShared ((gpointer) lock);
 }
 
 gboolean
-g_rw_lock_reader_trylock (GRWLock *lock)
+g_rw_lock_reader_trylock_impl (GRWLock *lock)
 {
   return TryAcquireSRWLockShared ((gpointer) lock);
 }
 
 void
-g_rw_lock_reader_unlock (GRWLock *lock)
+g_rw_lock_reader_unlock_impl (GRWLock *lock)
 {
   ReleaseSRWLockShared ((gpointer) lock);
 }
 
 /* {{{1 GCond */
 void
-g_cond_init (GCond *cond)
+g_cond_init_impl (GCond *cond)
 {
   InitializeConditionVariable ((gpointer) cond);
 }
 
 void
-g_cond_clear (GCond *cond)
+g_cond_clear_impl (GCond *cond)
 {
 }
 
 void
-g_cond_signal (GCond *cond)
+g_cond_signal_impl (GCond *cond)
 {
   WakeConditionVariable ((gpointer) cond);
 }
 
 void
-g_cond_broadcast (GCond *cond)
+g_cond_broadcast_impl (GCond *cond)
 {
   WakeAllConditionVariable ((gpointer) cond);
 }
 
 void
-g_cond_wait (GCond  *cond,
-             GMutex *entered_mutex)
+g_cond_wait_impl (GCond  *cond,
+                  GMutex *entered_mutex)
 {
   SleepConditionVariableSRW ((gpointer) cond, (gpointer) entered_mutex, INFINITE, 0);
 }
 
 gboolean
-g_cond_wait_until (GCond  *cond,
-                   GMutex *entered_mutex,
-                   gint64  end_time)
+g_cond_wait_until_impl (GCond  *cond,
+                        GMutex *entered_mutex,
+                        gint64  end_time)
 {
   gint64 span, start_time;
   DWORD span_millis;
@@ -307,7 +307,7 @@ static GPrivateDestructor *g_private_destructors;  /* (atomic) prepend-only */
 static CRITICAL_SECTION g_private_lock;
 
 static DWORD
-g_private_get_impl (GPrivate *key)
+_g_private_get_impl (GPrivate *key)
 {
   DWORD impl = (DWORD) GPOINTER_TO_UINT(key->p);
 
@@ -366,23 +366,23 @@ g_private_get_impl (GPrivate *key)
 }
 
 gpointer
-g_private_get (GPrivate *key)
+g_private_get_impl (GPrivate *key)
 {
-  return TlsGetValue (g_private_get_impl (key));
+  return TlsGetValue (_g_private_get_impl (key));
 }
 
 void
-g_private_set (GPrivate *key,
-               gpointer  value)
+g_private_set_impl (GPrivate *key,
+                    gpointer  value)
 {
-  TlsSetValue (g_private_get_impl (key), value);
+  TlsSetValue (_g_private_get_impl (key), value);
 }
 
 void
-g_private_replace (GPrivate *key,
-                   gpointer  value)
+g_private_replace_impl (GPrivate *key,
+                        gpointer  value)
 {
-  DWORD impl = g_private_get_impl (key);
+  DWORD impl = _g_private_get_impl (key);
   gpointer old;
 
   old = TlsGetValue (impl);
@@ -522,7 +522,7 @@ error:
 }
 
 void
-g_thread_yield (void)
+g_thread_yield_impl (void)
 {
   Sleep(0);
 }
