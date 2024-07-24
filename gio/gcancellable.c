@@ -1,6 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  * 
  * Copyright (C) 2006-2007 Red Hat, Inc.
+ * Copyright (C) 2022-2024 Canonical, Ltd.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -18,6 +19,7 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
  * Author: Alexander Larsson <alexl@redhat.com>
+ * Author: Marco Trevisan <marco.trevisan@canonical.com>
  */
 
 #include "config.h"
@@ -45,14 +47,12 @@ enum {
 
 struct _GCancellablePrivate
 {
-  /* Atomic so that g_cancellable_is_cancelled does not require holding the mutex. */
+  /* Atomic so that we don't require holding global mutexes for independent ops. */
   gboolean cancelled;
-  /* Access to fields below is protected by cancellable_mutex. */
-  guint cancelled_running : 1;
-  guint cancelled_running_waiting : 1;
-  unsigned cancelled_emissions;
-  unsigned cancelled_emissions_waiting : 1;
+  int cancelled_running;
 
+  /* Access to fields below is protected by cancellable's mutex. */
+  GMutex mutex;
   guint fd_refcount;
   GWakeup *wakeup;
 };
@@ -62,7 +62,6 @@ static guint signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE_WITH_PRIVATE (GCancellable, g_cancellable, G_TYPE_OBJECT)
 
 static GPrivate current_cancellable;
-static GMutex cancellable_mutex;
 static GCond cancellable_cond;
 
 static void
@@ -70,8 +69,14 @@ g_cancellable_finalize (GObject *object)
 {
   GCancellable *cancellable = G_CANCELLABLE (object);
 
+  /* We're at finalization phase, so only one thread can be here.
+   * Thus there's no need to lock. In case something is locking us, then we've
+   * a bug, and g_mutex_clear() will make this clear aborting.
+   */
   if (cancellable->priv->wakeup)
     GLIB_PRIVATE_CALL (g_wakeup_free) (cancellable->priv->wakeup);
+
+  g_mutex_clear (&cancellable->priv->mutex);
 
   G_OBJECT_CLASS (g_cancellable_parent_class)->finalize (object);
 }
@@ -154,6 +159,8 @@ static void
 g_cancellable_init (GCancellable *cancellable)
 {
   cancellable->priv = g_cancellable_get_instance_private (cancellable);
+
+  g_mutex_init (&cancellable->priv->mutex);
 }
 
 /**
@@ -265,28 +272,17 @@ g_cancellable_reset (GCancellable *cancellable)
 
   g_return_if_fail (G_IS_CANCELLABLE (cancellable));
 
-  g_mutex_lock (&cancellable_mutex);
-
   priv = cancellable->priv;
 
-  while (priv->cancelled_running || priv->cancelled_emissions > 0)
-    {
-      if (priv->cancelled_running)
-        priv->cancelled_running_waiting = TRUE;
+  g_mutex_lock (&priv->mutex);
 
-      if (priv->cancelled_emissions > 0)
-        priv->cancelled_emissions_waiting = TRUE;
-
-      g_cond_wait (&cancellable_cond, &cancellable_mutex);
-    }
-
-  if (g_atomic_int_exchange (&priv->cancelled, FALSE))
+  if (g_atomic_int_compare_and_exchange (&priv->cancelled, TRUE, FALSE))
     {
       if (priv->wakeup)
         GLIB_PRIVATE_CALL (g_wakeup_acknowledge) (priv->wakeup);
     }
 
-  g_mutex_unlock (&cancellable_mutex);
+  g_mutex_unlock (&priv->mutex);
 }
 
 /**
@@ -404,26 +400,29 @@ g_cancellable_get_fd (GCancellable *cancellable)
 gboolean
 g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 {
+  GCancellablePrivate *priv;
+
   g_return_val_if_fail (pollfd != NULL, FALSE);
   if (cancellable == NULL)
     return FALSE;
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), FALSE);
 
-  g_mutex_lock (&cancellable_mutex);
+  priv = cancellable->priv;
 
-  cancellable->priv->fd_refcount++;
+  g_mutex_lock (&priv->mutex);
 
-  if (cancellable->priv->wakeup == NULL)
+  if ((priv->fd_refcount++) == 0)
     {
-      cancellable->priv->wakeup = GLIB_PRIVATE_CALL (g_wakeup_new) ();
+      priv->wakeup = GLIB_PRIVATE_CALL (g_wakeup_new) ();
 
-      if (g_atomic_int_get (&cancellable->priv->cancelled))
-        GLIB_PRIVATE_CALL (g_wakeup_signal) (cancellable->priv->wakeup);
+      if (g_atomic_int_get (&priv->cancelled))
+        GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
     }
 
-  GLIB_PRIVATE_CALL (g_wakeup_get_pollfd) (cancellable->priv->wakeup, pollfd);
+  g_assert (priv->wakeup);
+  GLIB_PRIVATE_CALL (g_wakeup_get_pollfd) (priv->wakeup, pollfd);
 
-  g_mutex_unlock (&cancellable_mutex);
+  g_mutex_unlock (&priv->mutex);
 
   return TRUE;
 }
@@ -447,26 +446,22 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 void
 g_cancellable_release_fd (GCancellable *cancellable)
 {
-  GCancellablePrivate *priv;
-
   if (cancellable == NULL)
     return;
 
   g_return_if_fail (G_IS_CANCELLABLE (cancellable));
 
-  priv = cancellable->priv;
+  g_mutex_lock (&cancellable->priv->mutex);
 
-  g_mutex_lock (&cancellable_mutex);
-  g_assert (priv->fd_refcount > 0);
+  g_assert (cancellable->priv->fd_refcount > 0);
 
-  priv->fd_refcount--;
-  if (priv->fd_refcount == 0)
+  if ((cancellable->priv->fd_refcount--) == 1)
     {
-      GLIB_PRIVATE_CALL (g_wakeup_free) (priv->wakeup);
-      priv->wakeup = NULL;
+      GLIB_PRIVATE_CALL (g_wakeup_free) (cancellable->priv->wakeup);
+      cancellable->priv->wakeup = NULL;
     }
 
-  g_mutex_unlock (&cancellable_mutex);
+  g_mutex_unlock (&cancellable->priv->mutex);
 }
 
 /**
@@ -495,37 +490,35 @@ g_cancellable_cancel (GCancellable *cancellable)
 {
   GCancellablePrivate *priv;
 
-  if (cancellable == NULL || g_cancellable_is_cancelled (cancellable))
+  if (cancellable == NULL || g_atomic_int_get (&cancellable->priv->cancelled))
     return;
 
   priv = cancellable->priv;
 
-  g_mutex_lock (&cancellable_mutex);
+  /* We add a reference before locking, to avoid that potential toggle
+   * notifications on the object might happen while we're locked.
+   */
+  g_object_ref (cancellable);
+  g_mutex_lock (&priv->mutex);
 
-  if (g_atomic_int_exchange (&priv->cancelled, TRUE))
+  if (!g_atomic_int_compare_and_exchange (&priv->cancelled, FALSE, TRUE))
     {
-      g_mutex_unlock (&cancellable_mutex);
+      g_mutex_unlock (&priv->mutex);
+      g_object_unref (cancellable);
       return;
     }
 
-  priv->cancelled_running = TRUE;
+  g_atomic_int_inc (&priv->cancelled_running);
 
   if (priv->wakeup)
     GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
 
-  g_mutex_unlock (&cancellable_mutex);
-
-  g_object_ref (cancellable);
   g_signal_emit (cancellable, signals[CANCELLED], 0);
 
-  g_mutex_lock (&cancellable_mutex);
-
-  priv->cancelled_running = FALSE;
-  if (priv->cancelled_running_waiting)
+  if (g_atomic_int_dec_and_test (&priv->cancelled_running))
     g_cond_broadcast (&cancellable_cond);
-  priv->cancelled_running_waiting = FALSE;
 
-  g_mutex_unlock (&cancellable_mutex);
+  g_mutex_unlock (&priv->mutex);
 
   g_object_unref (cancellable);
 }
@@ -541,9 +534,11 @@ g_cancellable_cancel (GCancellable *cancellable)
  * signal. Also handles the race condition that may happen
  * if the cancellable is cancelled right before connecting.
  *
- * @callback is called at most once, either directly at the
- * time of the connect if @cancellable is already cancelled,
- * or when @cancellable is cancelled in some thread.
+ * @callback is called exactly once each time @cancellable is cancelled,
+ * either directly at the time of the connect if @cancellable is already
+ * cancelled, or when @cancellable is cancelled in some thread.
+ * In case the cancellable is reset via [method@Gio.Cancellable.reset]
+ * then the callback can be called again if the @cancellable is cancelled.
  *
  * @data_destroy_func will be called when the handler is
  * disconnected, or immediately if the cancellable is already
@@ -571,7 +566,7 @@ g_cancellable_connect (GCancellable   *cancellable,
 
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), 0);
 
-  g_mutex_lock (&cancellable_mutex);
+  g_mutex_lock (&cancellable->priv->mutex);
 
   if (g_atomic_int_get (&cancellable->priv->cancelled))
     {
@@ -581,23 +576,10 @@ g_cancellable_connect (GCancellable   *cancellable,
       _callback = (void *)callback;
       id = 0;
 
-      cancellable->priv->cancelled_emissions++;
-
-      g_mutex_unlock (&cancellable_mutex);
-
       _callback (cancellable, data);
 
       if (data_destroy_func)
         data_destroy_func (data);
-
-      g_mutex_lock (&cancellable_mutex);
-
-      if (cancellable->priv->cancelled_emissions_waiting)
-        g_cond_broadcast (&cancellable_cond);
-
-      cancellable->priv->cancelled_emissions--;
-
-      g_mutex_unlock (&cancellable_mutex);
     }
   else
     {
@@ -605,10 +587,9 @@ g_cancellable_connect (GCancellable   *cancellable,
                                   callback, data,
                                   (GClosureNotify) data_destroy_func,
                                   G_CONNECT_DEFAULT);
-
-      g_mutex_unlock (&cancellable_mutex);
     }
 
+  g_mutex_unlock (&cancellable->priv->mutex);
 
   return id;
 }
@@ -644,33 +625,26 @@ g_cancellable_disconnect (GCancellable  *cancellable,
   if (handler_id == 0 ||  cancellable == NULL)
     return;
 
-  g_mutex_lock (&cancellable_mutex);
-
   priv = cancellable->priv;
 
-  while (priv->cancelled_running || priv->cancelled_emissions)
-    {
-      if (priv->cancelled_running)
-        priv->cancelled_running_waiting = TRUE;
+  g_mutex_lock (&priv->mutex);
 
-      if (priv->cancelled_emissions)
-        priv->cancelled_emissions_waiting = TRUE;
+  while (g_atomic_int_get (&priv->cancelled_running) != 0)
+    g_cond_wait (&cancellable_cond, &priv->mutex);
 
-      g_cond_wait (&cancellable_cond, &cancellable_mutex);
-    }
+  g_mutex_unlock (&priv->mutex);
 
   g_signal_handler_disconnect (cancellable, handler_id);
-
-  g_mutex_unlock (&cancellable_mutex);
 }
 
 typedef struct {
   GSource       source;
 
+  /* Atomic: */
   GCancellable *cancellable;
   gulong        cancelled_handler;
-  /* Protected by cancellable_mutex: */
-  gboolean      resurrected_during_cancellation;
+  /* Atomic: */
+  gboolean      cancelled_callback_called;
 } GCancellableSource;
 
 /*
@@ -690,25 +664,33 @@ cancellable_source_cancelled (GCancellable *cancellable,
 {
   GSource *source = user_data;
   GCancellableSource *cancellable_source = (GCancellableSource *) source;
-
-  g_mutex_lock (&cancellable_mutex);
-
-  /* Drop the reference added in cancellable_source_dispose(); see the comment there.
-   * The reference must be dropped after unlocking @cancellable_mutex since
-   * it could be the final reference, and the dispose function takes
-   * @cancellable_mutex. */
-  if (cancellable_source->resurrected_during_cancellation)
-    {
-      cancellable_source->resurrected_during_cancellation = FALSE;
-      g_mutex_unlock (&cancellable_mutex);
-      g_source_unref (source);
-      return;
-    }
+  gboolean callback_was_not_called;
 
   g_source_ref (source);
-  g_mutex_unlock (&cancellable_mutex);
   g_source_set_ready_time (source, 0);
+
+  callback_was_not_called = g_atomic_int_compare_and_exchange (
+    &cancellable_source->cancelled_callback_called, FALSE, TRUE);
+  g_assert (callback_was_not_called);
+
   g_source_unref (source);
+}
+
+static gboolean
+cancellable_source_prepare (GSource *source,
+                            gint    *timeout)
+{
+  GCancellableSource *cancellable_source = (GCancellableSource *) source;
+  GCancellable *cancellable;
+
+  if (timeout)
+    *timeout = -1;
+
+  cancellable = g_atomic_pointer_get (&cancellable_source->cancellable);
+  if (cancellable && !g_atomic_int_get (&cancellable->priv->cancelled_running))
+    g_atomic_int_set (&cancellable_source->cancelled_callback_called, FALSE);
+
+  return FALSE;
 }
 
 static gboolean
@@ -727,12 +709,13 @@ static void
 cancellable_source_dispose (GSource *source)
 {
   GCancellableSource *cancellable_source = (GCancellableSource *)source;
+  GCancellable *cancellable;
 
-  g_mutex_lock (&cancellable_mutex);
+  cancellable = g_atomic_pointer_exchange (&cancellable_source->cancellable, NULL);
 
-  if (cancellable_source->cancellable)
+  if (cancellable)
     {
-      if (cancellable_source->cancellable->priv->cancelled_running)
+      if (g_atomic_int_get (&cancellable->priv->cancelled_running))
         {
           /* There can be a race here: if thread A has called
            * g_cancellable_cancel() and has got as far as committing to call
@@ -744,21 +727,21 @@ cancellable_source_dispose (GSource *source)
            * will then be left in a state where it’s committed to using a
            * dangling GCancellableSource pointer.
            *
-           * Eliminate that race by resurrecting the #GSource temporarily, and
-           * then dropping that reference in cancellable_source_cancelled(),
-           * which should be guaranteed to fire because we’re inside a
-           * @cancelled_running block.
+           * Eliminate that race by waiting to ensure that our cancelled
+           * callback has been called, keeping a temporary ref, so that
+           * there's no risk that we're unreffing something that is still
+           * going to be used.
            */
+
           g_source_ref (source);
-          cancellable_source->resurrected_during_cancellation = TRUE;
+          while (!g_atomic_int_get (&cancellable_source->cancelled_callback_called))
+            ;
+          g_source_unref (source);
         }
 
-      g_clear_signal_handler (&cancellable_source->cancelled_handler,
-                              cancellable_source->cancellable);
-      g_clear_object (&cancellable_source->cancellable);
+      g_clear_signal_handler (&cancellable_source->cancelled_handler, cancellable);
+      g_object_unref (cancellable);
     }
-
-  g_mutex_unlock (&cancellable_mutex);
 }
 
 static gboolean
@@ -787,7 +770,7 @@ cancellable_source_closure_callback (GCancellable *cancellable,
 
 static GSourceFuncs cancellable_source_funcs =
 {
-  NULL,
+  cancellable_source_prepare,
   NULL,
   cancellable_source_dispatch,
   NULL,
