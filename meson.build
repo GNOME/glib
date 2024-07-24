@@ -2738,4 +2738,5 @@ summary({
   'libelf' : get_option('libelf'),
   'multiarch' : get_option('multiarch'),
   'introspection' : enable_gir,
+  'file_monitor_backend' : get_option('file_monitor_backend'),
 }, section: 'Options')
