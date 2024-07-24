@@ -272,25 +272,19 @@ create_url_list_from_glist (GList    *uris,
   return (CFArrayRef)array;
 }
 
-static LSLaunchURLSpec *
-create_urlspec_for_appinfo (GOsxAppInfo *info,
-                            GList       *uris,
-                            gboolean     are_files)
+static void
+fill_urlspec_for_appinfo (LSLaunchURLSpec *urlspec,
+                          GOsxAppInfo     *info,
+                          GList           *uris,
+                          gboolean         are_files)
 {
-  LSLaunchURLSpec *urlspec = NULL;
-
-  g_return_val_if_fail (G_IS_OSX_APP_INFO (info), NULL);
-
-  urlspec = g_new0 (LSLaunchURLSpec, 1);
-  urlspec->appURL = CFURLCreateWithFileSystemPath (NULL, CFBridgingRetain([info->bundle bundlePath]), kCFURLPOSIXPathStyle, FALSE);
-  urlspec->launchFlags = kLSLaunchDefaults;
+  urlspec->appURL = (CFURLRef) [NSURL fileURLWithPath: [info->bundle bundlePath]];
   urlspec->itemURLs = create_url_list_from_glist (uris, are_files);
-
-  return urlspec;
+  urlspec->launchFlags = kLSLaunchDefaults;
 }
 
 static void
-free_urlspec (LSLaunchURLSpec *urlspec)
+clear_urlspec (LSLaunchURLSpec *urlspec)
 {
   if (urlspec->itemURLs)
     {
@@ -298,7 +292,6 @@ free_urlspec (LSLaunchURLSpec *urlspec)
       CFRelease (urlspec->itemURLs);
     }
   CFRelease (urlspec->appURL);
-  g_free (urlspec);
 }
 
 static NSBundle *
@@ -459,15 +452,16 @@ g_osx_app_info_launch_internal (GAppInfo  *appinfo,
                                 GError   **error)
 {
   GOsxAppInfo *info = G_OSX_APP_INFO (appinfo);
-  LSLaunchURLSpec *urlspec;
+  LSLaunchURLSpec urlspec = {0};
   gint ret, success = TRUE;
 
   g_return_val_if_fail (G_IS_OSX_APP_INFO (appinfo), FALSE);
+  g_return_val_if_fail (uris == NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  urlspec = create_urlspec_for_appinfo (info, uris, are_files);
+  fill_urlspec_for_appinfo (&urlspec, info, uris, are_files);
 
-  if ((ret = LSOpenFromURLSpec (urlspec, NULL)))
+  if ((ret = LSOpenFromURLSpec (&urlspec, NULL)))
     {
       /* TODO: Better error codes */
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
@@ -475,7 +469,7 @@ g_osx_app_info_launch_internal (GAppInfo  *appinfo,
       success = FALSE;
     }
 
-  free_urlspec (urlspec);
+  clear_urlspec (&urlspec);
   return success;
 }
 
