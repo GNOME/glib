@@ -884,7 +884,7 @@ get_callable_info_for_index (GIBaseInfo   *rinfo,
  *
  * Returns: (transfer full) (nullable): a [class@GIRepository.CallableInfo] for the
  *   async function or `NULL` if not defined.
- * Since: 2.80
+ * Since: 2.84
  */
 GICallableInfo *
 gi_callable_info_get_async_function (GICallableInfo *info)
@@ -925,7 +925,7 @@ gi_callable_info_get_async_function (GICallableInfo *info)
  *
  * Returns: (transfer full) (nullable): a [class@GIRepository.CallableInfo] for the
  *   sync function or `NULL` if not defined.
- * Since: 2.80
+ * Since: 2.84
  */
 GICallableInfo *
 gi_callable_info_get_sync_function (GICallableInfo *info)
@@ -966,7 +966,7 @@ gi_callable_info_get_sync_function (GICallableInfo *info)
  *
  * Returns: (transfer full) (nullable): a [class@GIRepository.CallableInfo] for the
  *   finish function or `NULL` if not defined.
- * Since: 2.80
+ * Since: 2.84
  */
 GICallableInfo *
 gi_callable_info_get_finish_function (GICallableInfo *info)
@@ -1007,7 +1007,7 @@ gi_callable_info_get_finish_function (GICallableInfo *info)
  * [type@Gio.AsyncReadyCallback] parameter and user data.
  *
  * Returns: true if the callable is async
- * Since: 2.80
+ * Since: 2.84
  */
 gboolean
 gi_callable_info_is_async (GICallableInfo *callable_info)
