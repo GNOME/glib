@@ -116,11 +116,15 @@ static const gchar DONT_CARE[] = "";
 static Environment
 get_environment (GFileMonitor *monitor)
 {
-  if (g_str_equal (G_OBJECT_TYPE_NAME (monitor), "GInotifyFileMonitor"))
+#if defined(FILE_MONITOR_BACKEND_INOTIFY)
     return INOTIFY;
-  if (g_str_equal (G_OBJECT_TYPE_NAME (monitor), "GKqueueFileMonitor"))
+#elif defined(FILE_MONITOR_BACKEND_KQUEUE)
     return KQUEUE;
+#elif defined(FILE_MONITOR_BACKEND_LIBINOTIFY_KQUEUE)
+    return INOTIFY | KQUEUE;
+#else
   return NONE;
+#endif
 }
 
 static void
