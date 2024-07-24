@@ -1225,20 +1225,22 @@ get_index_of_member_type (GIIrNodeInterface *node,
 }
 
 static int
-get_index_for_function (GIIrTypelibBuild * build,
-                        GIIrNode *parent,
+get_index_for_function (GIIrTypelibBuild *build,
+                        GIIrNode         *parent,
                         const char        *name)
 {
   if (parent == NULL)
     {
-      uint16_t index = find_entry(build, name);
-      if (index == 0) return -1;
+      uint16_t index = find_entry (build, name);
+      if (index == 0)
+        return -1;
 
       return index;      
     }
 
-  int index = get_index_of_member_type((GIIrNodeInterface *) parent, GI_IR_NODE_FUNCTION, name);
-  if (index != -1) return index;
+  int index = get_index_of_member_type ((GIIrNodeInterface *) parent, GI_IR_NODE_FUNCTION, name);
+  if (index != -1)
+    return index;
 
   return -1;
 }
