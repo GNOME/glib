@@ -77,133 +77,146 @@ static SimpleFunc plugin_clash_func = NULL;
 static void
 test_module_basics (void)
 {
-  GModule *module_self, *module_a, *module_b;
-  gchar *plugin_a, *plugin_b;
-  SimpleFunc f_a, f_b, f_self;
-  GModuleFunc gmod_f;
-  GError *error = NULL;
-
   if (!g_module_supported ())
-    g_error ("dynamic modules not supported");
+    {
+      g_test_skip ("dynamic modules not supported");
+      return;
+    }
 
-  plugin_a = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a_" MODULE_TYPE, NULL);
-  plugin_b = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_b_" MODULE_TYPE, NULL);
+  /* Run the actual test in a subprocess to avoid symbol table changes from
+   * previous tests potentially affecting it. */
+  if (g_test_subprocess ())
+    {
+      GModule *module_self, *module_a, *module_b;
+      gchar *plugin_a, *plugin_b;
+      SimpleFunc f_a, f_b, f_self;
+      GModuleFunc gmod_f;
+      GError *error = NULL;
 
-  /* module handles */
+      plugin_a = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a_" MODULE_TYPE, NULL);
+      plugin_b = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_b_" MODULE_TYPE, NULL);
 
-  module_self = g_module_open_full (NULL, G_MODULE_BIND_LAZY, &error);
-  g_assert_no_error (error);
-  if (!module_self)
-    g_error ("error: %s", g_module_error ());
+      /* module handles */
 
-    /* On Windows static compilation mode, glib API symbols are not
-     * exported dynamically by definition. */
+      module_self = g_module_open_full (NULL, G_MODULE_BIND_LAZY, &error);
+      g_assert_no_error (error);
+      if (!module_self)
+        g_error ("error: %s", g_module_error ());
+
+      /* On Windows static compilation mode, glib API symbols are not
+       * exported dynamically by definition. */
 #if !defined(G_PLATFORM_WIN32) || !defined(GLIB_STATIC_COMPILATION)
-  if (!g_module_symbol (module_self, "g_module_close", (gpointer *) &f_self))
-    g_error ("error: %s", g_module_error ());
+      if (!g_module_symbol (module_self, "g_module_close", (gpointer *) &f_self))
+        g_error ("error: %s", g_module_error ());
 #endif
 
-  module_a = g_module_open_full (plugin_a, G_MODULE_BIND_LAZY, &error);
-  g_assert_no_error (error);
-  if (!module_a)
-    g_error ("error: %s", g_module_error ());
+      module_a = g_module_open_full (plugin_a, G_MODULE_BIND_LAZY, &error);
+      g_assert_no_error (error);
+      if (!module_a)
+        g_error ("error: %s", g_module_error ());
 
-  module_b = g_module_open_full (plugin_b, G_MODULE_BIND_LAZY, &error);
-  g_assert_no_error (error);
-  if (!module_b)
-    g_error ("error: %s", g_module_error ());
+      module_b = g_module_open_full (plugin_b, G_MODULE_BIND_LAZY, &error);
+      g_assert_no_error (error);
+      if (!module_b)
+        g_error ("error: %s", g_module_error ());
 
-  /* get plugin state vars */
+      /* get plugin state vars */
 
-  if (!g_module_symbol (module_a, "gplugin_a_state",
-                        (gpointer *) &gplugin_a_state))
-    g_error ("error: %s", g_module_error ());
+      if (!g_module_symbol (module_a, "gplugin_a_state",
+                            (gpointer *) &gplugin_a_state))
+        g_error ("error: %s", g_module_error ());
 
-  if (!g_module_symbol (module_b, "gplugin_b_state",
-                        (gpointer *) &gplugin_b_state))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, "check-init");
+      if (!g_module_symbol (module_b, "gplugin_b_state",
+                            (gpointer *) &gplugin_b_state))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, "check-init");
 
-  /* get plugin specific symbols and call them */
+      /* get plugin specific symbols and call them */
 
-  if (!g_module_symbol (module_a, "gplugin_a_func", (gpointer *) &f_a))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, NULL);
+      if (!g_module_symbol (module_a, "gplugin_a_func", (gpointer *) &f_a))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, NULL);
 
-  if (!g_module_symbol (module_b, "gplugin_b_func", (gpointer *) &f_b))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, NULL);
+      if (!g_module_symbol (module_b, "gplugin_b_func", (gpointer *) &f_b))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, NULL);
 
-  f_a ();
-  test_states (NULL, "Hello world", NULL);
+      f_a ();
+      test_states (NULL, "Hello world", NULL);
 
-  f_b ();
-  test_states (NULL, NULL, "Hello world");
+      f_b ();
+      test_states (NULL, NULL, "Hello world");
 
-  /* get and call globally clashing functions */
+      /* get and call globally clashing functions */
 
-  if (!g_module_symbol (module_self, "g_clash_func", (gpointer *) &f_self))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, NULL);
+      if (!g_module_symbol (module_self, "g_clash_func", (gpointer *) &f_self))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, NULL);
 
-  if (!g_module_symbol (module_a, "g_clash_func", (gpointer *) &f_a))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, NULL);
+      if (!g_module_symbol (module_a, "g_clash_func", (gpointer *) &f_a))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, NULL);
 
-  if (!g_module_symbol (module_b, "g_clash_func", (gpointer *) &f_b))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, NULL);
+      if (!g_module_symbol (module_b, "g_clash_func", (gpointer *) &f_b))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, NULL);
 
-  f_self ();
-  test_states ("global clash", NULL, NULL);
+      f_self ();
+      test_states ("global clash", NULL, NULL);
 
-  f_a ();
-  test_states (NULL, "global clash", NULL);
+      f_a ();
+      test_states (NULL, "global clash", NULL);
 
-  f_b ();
-  test_states (NULL, NULL, "global clash");
+      f_b ();
+      test_states (NULL, NULL, "global clash");
 
-  /* get and call clashing plugin functions  */
+      /* get and call clashing plugin functions  */
 
-  if (!g_module_symbol (module_a, "gplugin_clash_func", (gpointer *) &f_a))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, NULL);
+      if (!g_module_symbol (module_a, "gplugin_clash_func", (gpointer *) &f_a))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, NULL);
 
-  if (!g_module_symbol (module_b, "gplugin_clash_func", (gpointer *) &f_b))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, NULL);
+      if (!g_module_symbol (module_b, "gplugin_clash_func", (gpointer *) &f_b))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, NULL);
 
-  plugin_clash_func = f_a;
-  plugin_clash_func ();
-  test_states (NULL, "plugin clash", NULL);
+      plugin_clash_func = f_a;
+      plugin_clash_func ();
+      test_states (NULL, "plugin clash", NULL);
 
-  plugin_clash_func = f_b;
-  plugin_clash_func ();
-  test_states (NULL, NULL, "plugin clash");
+      plugin_clash_func = f_b;
+      plugin_clash_func ();
+      test_states (NULL, NULL, "plugin clash");
 
-  /* call gmodule function from A  */
+      /* call gmodule function from A  */
 
-  if (!g_module_symbol (module_a, "gplugin_a_module_func", (gpointer *) &gmod_f))
-    g_error ("error: %s", g_module_error ());
-  test_states (NULL, NULL, NULL);
+      if (!g_module_symbol (module_a, "gplugin_a_module_func", (gpointer *) &gmod_f))
+        g_error ("error: %s", g_module_error ());
+      test_states (NULL, NULL, NULL);
 
-  gmod_f (module_b);
-  test_states (NULL, NULL, "BOOH");
+      gmod_f (module_b);
+      test_states (NULL, NULL, "BOOH");
 
-  gmod_f (module_a);
-  test_states (NULL, "BOOH", NULL);
+      gmod_f (module_a);
+      test_states (NULL, "BOOH", NULL);
 
-  /* unload plugins  */
+      /* unload plugins  */
 
-  if (!g_module_close (module_a))
-    g_error ("error: %s", g_module_error ());
+      if (!g_module_close (module_a))
+        g_error ("error: %s", g_module_error ());
 
-  if (!g_module_close (module_b))
-    g_error ("error: %s", g_module_error ());
+      if (!g_module_close (module_b))
+        g_error ("error: %s", g_module_error ());
 
-  g_free (plugin_a);
-  g_free (plugin_b);
-  g_module_close (module_self);
+      g_free (plugin_a);
+      g_free (plugin_b);
+      g_module_close (module_self);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_passed ();
+    }
 }
 
 static void
@@ -236,13 +249,6 @@ test_module_invalid_libtool_archive (void)
 static void
 test_local_binding (void)
 {
-  gchar *plugin = NULL;
-  GModule *module_plugin = NULL, *module_self = NULL;
-  GError *error = NULL;
-
-  gboolean found_symbol = FALSE;
-  gpointer symbol = NULL;
-
   g_test_summary ("Test that binding a library's symbols locally does not add them globally");
 
 #if defined(G_PLATFORM_WIN32)
@@ -250,23 +256,40 @@ test_local_binding (void)
   return;
 #endif
 
-  plugin = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a_" MODULE_TYPE, NULL);
+  /* Run the actual test in a subprocess to avoid symbol table changes from
+   * previous tests potentially affecting it. */
+  if (g_test_subprocess ())
+    {
+      gchar *plugin = NULL;
+      GModule *module_plugin = NULL, *module_self = NULL;
+      GError *error = NULL;
 
-  module_plugin = g_module_open_full (plugin, G_MODULE_BIND_LOCAL, &error);
-  g_assert_no_error (error);
-  g_assert_nonnull (module_plugin);
+      gboolean found_symbol = FALSE;
+      gpointer symbol = NULL;
 
-  module_self = g_module_open_full (NULL, 0, &error);
-  g_assert_no_error (error);
-  g_assert_nonnull (module_self);
+      plugin = g_test_build_filename (G_TEST_BUILT, MODULE_FILENAME_PREFIX "moduletestplugin_a_" MODULE_TYPE, NULL);
 
-  found_symbol = g_module_symbol (module_self, "gplugin_say_boo_func", &symbol);
-  g_assert_false (found_symbol);
-  g_assert_null (symbol);
+      module_plugin = g_module_open_full (plugin, G_MODULE_BIND_LOCAL, &error);
+      g_assert_no_error (error);
+      g_assert_nonnull (module_plugin);
 
-  g_module_close (module_self);
-  g_module_close (module_plugin);
-  g_free (plugin);
+      module_self = g_module_open_full (NULL, 0, &error);
+      g_assert_no_error (error);
+      g_assert_nonnull (module_self);
+
+      found_symbol = g_module_symbol (module_self, "gplugin_say_boo_func", &symbol);
+      g_assert_false (found_symbol);
+      g_assert_null (symbol);
+
+      g_module_close (module_self);
+      g_module_close (module_plugin);
+      g_free (plugin);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_passed ();
+    }
 }
 
 int
