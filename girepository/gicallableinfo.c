@@ -843,7 +843,8 @@ gi_callable_info_class_init (gpointer g_class,
 }
 
 static GICallableInfo *
-get_method_callable_info_for_index (GIBaseInfo *rinfo, unsigned int index)
+get_method_callable_info_for_index (GIBaseInfo   *rinfo,
+                                    unsigned int  index)
 {
   GIBaseInfo *container = rinfo->container;
 
