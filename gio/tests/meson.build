@@ -153,6 +153,12 @@ gio_tests = {
   'win32-appinfo' : {},
 }
 
+if glib_have_cocoa
+  gio_tests += {
+    'osx-appinfo' : {}
+  }
+endif
+
 if have_cxx
   gio_tests += {
     'cxx' : {
