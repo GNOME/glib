@@ -2250,8 +2250,9 @@ g_desktop_app_info_get_display_name (GAppInfo *appinfo)
  * g_desktop_app_info_get_is_hidden:
  * @info: a [class@Gio.DesktopAppInfo].
  *
- * A desktop file is hidden if the `Hidden` key in it is
- * set to `True`.
+ * A desktop file is hidden if the
+ * [`Hidden` key](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-hidden)
+ * in it is set to `True`.
  *
  * Returns: `TRUE` if hidden, `FALSE` otherwise.
  **/
@@ -2317,7 +2318,9 @@ g_desktop_app_info_get_icon (GAppInfo *appinfo)
  *
  * Gets the categories from the desktop file.
  *
- * Returns: (nullable): The unparsed `Categories` key from the desktop file;
+ * Returns: (nullable): The unparsed
+ *   [`Categories` key](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-categories)
+ *   from the desktop file;
  *   i.e. no attempt is made to split it by `;` or validate it.
  */
 const char *
@@ -2332,7 +2335,8 @@ g_desktop_app_info_get_categories (GDesktopAppInfo *info)
  *
  * Gets the keywords from the desktop file.
  *
- * Returns: (transfer none): The value of the `Keywords` key
+ * Returns: (transfer none): The value of the
+ *   [`Keywords` key](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-keywords)
  *
  * Since: 2.32
  */
@@ -2348,7 +2352,8 @@ g_desktop_app_info_get_keywords (GDesktopAppInfo *info)
  *
  * Gets the generic name from the desktop file.
  *
- * Returns: (nullable): The value of the `GenericName` key
+ * Returns: (nullable): The value of the
+ *   [`GenericName` key](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-genericname)
  */
 const char *
 g_desktop_app_info_get_generic_name (GDesktopAppInfo *info)
@@ -2360,8 +2365,9 @@ g_desktop_app_info_get_generic_name (GDesktopAppInfo *info)
  * g_desktop_app_info_get_nodisplay:
  * @info: a [class@Gio.DesktopAppInfo]
  *
- * Gets the value of the `NoDisplay` key, which helps determine if the
- * application info should be shown in menus. See
+ * Gets the value of the
+ * [`NoDisplay` key](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-nodisplay)
+ *  which helps determine if the application info should be shown in menus. See
  * `G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY` and [method@Gio.AppInfo.should_show].
  *
  * Returns: The value of the `NoDisplay` key
@@ -2381,7 +2387,9 @@ g_desktop_app_info_get_nodisplay (GDesktopAppInfo *info)
  *
  * Checks if the application info should be shown in menus that list available
  * applications for a specific name of the desktop, based on the
- * `OnlyShowIn` and `NotShowIn` keys.
+ * [`OnlyShowIn`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-onlyshowin)
+ * and [`NotShowIn`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-notshowin)
+ * keys.
  *
  * @desktop_env should typically be given as `NULL`, in which case the
  * `XDG_CURRENT_DESKTOP` environment variable is consulted.  If you want
@@ -3661,7 +3669,9 @@ g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
  *
  * This is used by [method@Gio.AppInfo.should_show] and
  * [method@Gio.DesktopAppInfo.get_show_in] to evaluate the
- * `OnlyShowIn` and `NotShowIn` desktop entry fields.
+ * [`OnlyShowIn`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-onlyshowin)
+ * and [`NotShowIn`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-notshowin)
+ * keys.
  *
  * Should be called only once; subsequent calls are ignored.
  *
@@ -4328,7 +4338,9 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
  * [freedesktop.org Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec)
  * are applied. For example, if the @commandline contains
  * percent-encoded URIs, the percent-character must be doubled in order to prevent it from
- * being swallowed by `Exec` key unquoting. See the specification for exact quoting rules.
+ * being swallowed by `Exec` key unquoting. See
+ * [the specification](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s07.html)
+ * for exact quoting rules.
  *
  * Returns: (transfer full): new [iface@Gio.AppInfo] for given command.
  **/
@@ -4900,10 +4912,15 @@ g_desktop_app_info_search (const gchar *search_string)
  * on this system.
  *
  * For desktop files, this includes applications that have
- * `NoDisplay=true` set or are excluded from display by means
- * of `OnlyShowIn` or `NotShowIn`. See [method@Gio.AppInfo.should_show].
- * The returned list does not include applications which have
- * the `Hidden` key set.
+ * [`NoDisplay=true`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-nodisplay)
+ * set or are excluded from display by means of
+ * [`OnlyShowIn`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-onlyshowin)
+ * or [`NotShowIn`](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-notshowin).
+ * See [method@Gio.AppInfo.should_show].
+ *
+ * The returned list does not include applications which have the
+ * [`Hidden` key](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-hidden)
+ * set.
  *
  * Returns: (element-type GAppInfo) (transfer full): a newly allocated
  *   list of references to [iface@Gio.AppInfo]s.
@@ -5152,8 +5169,9 @@ g_desktop_app_info_has_key (GDesktopAppInfo *info,
  * g_desktop_app_info_list_actions:
  * @info: a [class@Gio.DesktopAppInfo]
  *
- * Returns the list of ‘additional application actions’ supported on the
- * desktop file, as per the desktop file specification.
+ * Returns the list of
+ * [‘additional application actions’](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s11.html)
+ * supported on the desktop file, as per the desktop file specification.
  *
  * As per the specification, this is the list of actions that are
  * explicitly listed in the `Actions` key of the `Desktop Entry` group.
@@ -5190,8 +5208,9 @@ app_info_has_action (GDesktopAppInfo *info,
  * @action_name: the name of the action as from
  *   [method@Gio.DesktopAppInfo.list_actions]
  *
- * Gets the user-visible display name of the ‘additional application
- * action’ specified by @action_name.
+ * Gets the user-visible display name of the
+ * [‘additional application actions’](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s11.html)
+ * specified by @action_name.
  *
  * This corresponds to the `Name` key within the keyfile group for the
  * action.
@@ -5244,7 +5263,8 @@ g_desktop_app_info_get_action_name (GDesktopAppInfo *info,
  * action (and as such, invocation of the action on the receiving side
  * must signal the end of startup notification when it is completed).
  * This is the expected behaviour of applications declaring additional
- * actions, as per the desktop file specification.
+ * actions, as per the
+ * [desktop file specification](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s11.html).
  *
  * As with [method@Gio.AppInfo.launch] there is no way to detect failures that
  * occur while using this function.
