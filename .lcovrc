@@ -4,6 +4,10 @@
 # Always enable branch coverage
 lcov_branch_coverage = 1
 
+# Disable exception branch for C++:
+# https://github.com/linux-test-project/lcov/issues/209
+no_exception_branch = 1
+
 # Exclude precondition assertions, as we can never reasonably get full branch
 # coverage of them, as they should never normally fail.
 # Similarly exclude g_clear_*() functions (such as g_clear_object(),
