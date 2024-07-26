@@ -507,6 +507,7 @@ cross-mingw64:
 #  4. Rebase any pending broken MRs on top of the commit which makes the CI job
 #     non-fatal, so that development on `main` is unblocked.
 msys2-mingw32:
+  allow_failure: true
   extends: .only-default-and-merges
   stage: build
   tags:
