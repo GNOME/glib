@@ -299,6 +299,10 @@ get_C_locale (void)
       g_once_init_leave (&initialized, TRUE);
     }
 
+  /* Callers of this function assume that if errno != 0, it indicates
+   * a failure by the function to which the locale_t is passed, for
+   * example strtoull_l(); so we need to make sure to clear errno. */
+  errno = 0;
   return C_locale;
 }
 #endif
