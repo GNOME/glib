@@ -1761,7 +1761,11 @@ check_uint64 (const gchar *str,
 
   g_assert_true (actual == result);
   g_assert_cmpstr (end, ==, endptr);
-  g_assert_true (err == error);
+
+  if (actual == G_MAXUINT64 || *endptr != '\0')
+    g_assert_true (err == error);
+  /* ... else strtoull() succeeded, therefore errno is unspecified and may
+   * have been clobbered */
 }
 
 static void
@@ -1781,7 +1785,10 @@ check_int64 (const gchar *str,
 
   g_assert_true (actual == result);
   g_assert_cmpstr (end, ==, endptr);
-  g_assert_true (err == error);
+  if (actual == G_MININT64 || actual == G_MAXINT64 || *endptr != '\0')
+    g_assert_true (err == error);
+  /* ... else strtoll() succeeded, therefore errno is unspecified and may
+   * have been clobbered */
 }
 
 static void

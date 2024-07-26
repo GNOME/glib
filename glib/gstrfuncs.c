@@ -3388,7 +3388,6 @@ g_ascii_string_to_signed (const gchar  *str,
        */
       (base == 16 &&
        (str_has_sign (str) ? str_has_hex_prefix (str + 1) : str_has_hex_prefix (str))) ||
-      (saved_errno != 0 && saved_errno != ERANGE) ||
       end_ptr == NULL ||
       *end_ptr != '\0')
     {
@@ -3397,7 +3396,9 @@ g_ascii_string_to_signed (const gchar  *str,
                    _("“%s” is not a signed number"), str);
       return FALSE;
     }
-  if (saved_errno == ERANGE || number < min || number > max)
+  if (number < min ||
+      number > max ||
+      ((number == G_MININT64 || number == G_MAXINT64) && saved_errno == ERANGE))
     {
       gchar *min_str = g_strdup_printf ("%" G_GINT64_FORMAT, min);
       gchar *max_str = g_strdup_printf ("%" G_GINT64_FORMAT, max);
@@ -3492,7 +3493,6 @@ g_ascii_string_to_unsigned (const gchar  *str,
        * 0X.
        */
       (base == 16 && str_has_hex_prefix (str)) ||
-      (saved_errno != 0 && saved_errno != ERANGE) ||
       end_ptr == NULL ||
       *end_ptr != '\0')
     {
@@ -3501,7 +3501,9 @@ g_ascii_string_to_unsigned (const gchar  *str,
                    _("“%s” is not an unsigned number"), str);
       return FALSE;
     }
-  if (saved_errno == ERANGE || number < min || number > max)
+  if (number < min ||
+      number > max ||
+      (number == G_MAXUINT64 && saved_errno == ERANGE))
     {
       gchar *min_str = g_strdup_printf ("%" G_GUINT64_FORMAT, min);
       gchar *max_str = g_strdup_printf ("%" G_GUINT64_FORMAT, max);

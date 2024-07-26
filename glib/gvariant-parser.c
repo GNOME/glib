@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
@@ -1947,7 +1948,7 @@ number_get_value (AST                 *ast,
 
       errno = 0;
       dbl_val = g_ascii_strtod (token, &end);
-      if (dbl_val != 0.0 && errno == ERANGE)
+      if ((dbl_val >= HUGE_VAL || dbl_val <= -HUGE_VAL) && errno == ERANGE)
         {
           ast_set_error (ast, error, NULL,
                          G_VARIANT_PARSE_ERROR_NUMBER_TOO_BIG,

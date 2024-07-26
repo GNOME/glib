@@ -1039,7 +1039,7 @@ parse_int64 (const gchar *arg_name,
                    arg, arg_name);
       return FALSE;
     }
-  if (errno == ERANGE)
+  if ((tmp == G_MININT64 || tmp == G_MAXINT64) && errno == ERANGE)
     {
       g_set_error (error,
                    G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
