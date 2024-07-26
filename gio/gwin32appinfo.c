@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "gcontenttype.h"
+#include "gappinfoprivate.h"
 #include "gwin32appinfo.h"
 #include "gappinfo.h"
 #include "gioerror.h"
@@ -5671,10 +5672,10 @@ g_win32_app_info_get_supported_types (GAppInfo *appinfo)
 }
 
 GAppInfo *
-g_app_info_create_from_commandline (const char           *commandline,
-                                    const char           *application_name,
-                                    GAppInfoCreateFlags   flags,
-                                    GError              **error)
+g_app_info_create_from_commandline_impl (const char           *commandline,
+                                         const char           *application_name,
+                                         GAppInfoCreateFlags   flags,
+                                         GError              **error)
 {
   GWin32AppInfo *info;
   GWin32AppInfoApplication *app;
@@ -5754,7 +5755,7 @@ g_win32_app_info_iface_init (GAppInfoIface *iface)
 }
 
 GAppInfo *
-g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
+g_app_info_get_default_for_uri_scheme_impl (const char *uri_scheme)
 {
   GWin32AppInfoURLSchema *scheme = NULL;
   char *scheme_down;
@@ -5796,8 +5797,8 @@ g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
 }
 
 GAppInfo *
-g_app_info_get_default_for_type (const char *content_type,
-                                 gboolean    must_support_uris)
+g_app_info_get_default_for_type_impl (const char *content_type,
+                                      gboolean    must_support_uris)
 {
   GWin32AppInfoFileExtension *ext = NULL;
   char *ext_down;
@@ -5858,7 +5859,7 @@ g_app_info_get_default_for_type (const char *content_type,
 }
 
 GList *
-g_app_info_get_all (void)
+g_app_info_get_all_impl (void)
 {
   GHashTableIter iter;
   gpointer value;
@@ -5887,7 +5888,7 @@ g_app_info_get_all (void)
 }
 
 GList *
-g_app_info_get_all_for_type (const char *content_type)
+g_app_info_get_all_for_type_impl (const char *content_type)
 {
   GWin32AppInfoFileExtension *ext = NULL;
   char *ext_down;
@@ -5957,21 +5958,21 @@ g_app_info_get_all_for_type (const char *content_type)
 }
 
 GList *
-g_app_info_get_fallback_for_type (const gchar *content_type)
+g_app_info_get_fallback_for_type_impl (const gchar *content_type)
 {
   /* TODO: fix this once gcontenttype support is improved */
   return g_app_info_get_all_for_type (content_type);
 }
 
 GList *
-g_app_info_get_recommended_for_type (const gchar *content_type)
+g_app_info_get_recommended_for_type_impl (const gchar *content_type)
 {
   /* TODO: fix this once gcontenttype support is improved */
   return g_app_info_get_all_for_type (content_type);
 }
 
 void
-g_app_info_reset_type_associations (const char *content_type)
+g_app_info_reset_type_associations_impl (const char *content_type)
 {
   /* nothing to do */
 }

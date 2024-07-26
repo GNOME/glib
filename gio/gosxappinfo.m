@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include "gappinfo.h"
+#include "gappinfoprivate.h"
 #include "gosxappinfo.h"
 #include "gcontenttype.h"
 #include "gfile.h"
@@ -577,10 +578,10 @@ g_osx_app_info_iface_init (GAppInfoIface *iface)
 }
 
 GAppInfo *
-g_app_info_create_from_commandline (const char           *commandline,
-                                    const char           *application_name,
-                                    GAppInfoCreateFlags   flags,
-                                    GError              **error)
+g_app_info_create_from_commandline_impl (const char           *commandline,
+                                         const char           *application_name,
+                                         GAppInfoCreateFlags   flags,
+                                         GError              **error)
 {
   g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                        "Creating an app info from a command line not currently supported");
@@ -622,7 +623,7 @@ g_osx_app_info_get_all_for_scheme (const char *cscheme)
 }
 
 GList *
-g_app_info_get_all_for_type (const char *content_type)
+g_app_info_get_all_for_type_impl (const char *content_type)
 {
   gchar *mime_type;
   CFArrayRef bundle_list;
@@ -667,20 +668,20 @@ g_app_info_get_all_for_type (const char *content_type)
 }
 
 GList *
-g_app_info_get_recommended_for_type (const char *content_type)
+g_app_info_get_recommended_for_type_impl (const char *content_type)
 {
   return g_app_info_get_all_for_type (content_type);
 }
 
 GList *
-g_app_info_get_fallback_for_type (const char *content_type)
+g_app_info_get_fallback_for_type_impl (const char *content_type)
 {
   return g_app_info_get_all_for_type (content_type);
 }
 
 GAppInfo *
-g_app_info_get_default_for_type (const char *content_type,
-                                 gboolean    must_support_uris)
+g_app_info_get_default_for_type_impl (const char *content_type,
+                                      gboolean    must_support_uris)
 {
   gchar *mime_type;
   CFStringRef type;
@@ -731,7 +732,7 @@ g_app_info_get_default_for_type (const char *content_type,
 }
 
 GAppInfo *
-g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
+g_app_info_get_default_for_uri_scheme_impl (const char *uri_scheme)
 {
   CFStringRef scheme, bundle_id;
   NSBundle *bundle;
@@ -756,7 +757,7 @@ g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
 }
 
 GList *
-g_app_info_get_all (void)
+g_app_info_get_all_impl (void)
 {
   /* There is no API for this afaict
    * could manually do it...
@@ -765,6 +766,6 @@ g_app_info_get_all (void)
 }
 
 void
-g_app_info_reset_type_associations (const char *content_type)
+g_app_info_reset_type_associations_impl (const char *content_type)
 {
 }
