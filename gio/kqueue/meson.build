@@ -11,6 +11,7 @@ kqueue_lib = static_library('kqueue',
   dependencies : [
     gioenumtypes_dep,
     libglib_dep,
+    libgobject_dep,
     gmodule_inc_dep,
   ],
   gnu_symbol_visibility : 'hidden',
