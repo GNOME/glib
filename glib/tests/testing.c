@@ -35,8 +35,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TAP_VERSION G_STRINGIFY (13)
-#define TAP_SUBTEST_PREFIX "#    "
+#define TAP_VERSION G_STRINGIFY (14)
+#define TAP_SUBTEST_PREFIX "    "
 
 /* test assertion variants */
 static void
