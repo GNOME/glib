@@ -13,6 +13,7 @@ def main(argv):
         print("cov-fixup:", path)
         text = io.open(path, "r", encoding="utf-8").read()
         text = text.replace("\\\\", "/")
+        text = text.replace("\\", "/")
         old_root = re.search(":(.*?)/glib/.*?$", text, re.MULTILINE).group(1)
         new_root = os.path.dirname(os.getcwd())
         if old_root != new_root:
