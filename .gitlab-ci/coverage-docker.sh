@@ -13,7 +13,7 @@ for path in _coverage/*.lcov; do
     # Remove coverage from the fuzz tests, since they are run on a separate CI system
     lcov --config-file .lcovrc -r "${path}" "*/fuzzing/*" -o "$(pwd)/${path}"
     # Remove coverage from copylibs and subprojects
-    for lib in xdgmime libcharset gnulib; do
+    for lib in xdgmime libcharset gnulib subprojects; do
         lcov --config-file .lcovrc -r "${path}" "*/${lib}/*" -o "$(pwd)/${path}"
     done
 
