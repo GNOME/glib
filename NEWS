@@ -1,3 +1,71 @@
+Overview of changes in GLib 2.81.1, 2024-08-02
+==============================================
+
+* Add g_sort_array() and deprecate g_qsort_with_data(), to ensure that
+  it can be used with GArray without truncating the data set.
+
+* Continue the port of the documentation over from gtk-doc to gi-docgen.
+
+* Add network monitor implementation for macOS.
+
+* Use per-instance locking in GCancellable, and fix races when disposing
+  of a GCancellable.
+
+* Ensure that errno is appropriately set when using g_ascii_strtoull()
+  and similar functions.
+
+* Bugs fixed:
+  - #774 g_cancellable_connect() doesn't work like its docs claim, has race
+    condition (Marco Trevisan (Treviño))
+  - #1326 Network monitor support for macOS
+  - #2309 cancellable test leaks many GCancellableSource objects (Marco Trevisan
+    (Treviño))
+  - #2313 gmenumodel test leaks GCancellableSource objects (Marco Trevisan
+    (Treviño))
+  - #2765 Descriptions for GSourceFuncs structure's members do not appear in
+    generated docs (Gary Li)
+  - #3370 Fails to build with Clang on Windows with ninja 1.12
+  - #3393 Crash with Gio.Resolver
+  - #3399 GContentType, GAppInfo, GSpawn, GThread introspection annotations
+    missing on Windows
+  - #3415 module-test-library and module-test-plugin tests fail on FreeBSD and
+    muslc (Philip Withnall)
+  - #3418 g_ascii_string_to_unsigned() can fail when it should succeed if
+    get_C_locale() clobbers errno (Simon McVittie)
+  - #3419 Could not build latest commit in macos sonoma 14.5 (Roshan-R)
+  - !4113 Port some GIO files to gi-docgen
+  - !4127 gqsort: Add g_sort_array() and deprecate g_qsort_with_data()
+  - !4128 gasyncresult: Port all doc comments to gi-docgen
+  - !4130 Fix gsocketclient-slow test on FreeBSD
+  - !4131 GAsyncQueue: Add copy-func and free-func annotations
+  - !4133 replace package.version.Version by internal code
+  - !4136 gobject: Remove unused variable from macro
+  - !4137 codegen: resolve pylint import issues
+  - !4138 gobject: Fix macro name in comment; improve style
+  - !4140 Docs: Replace Gio.MenuModel diagram with SVG
+  - !4142 docs: Add source location URL
+  - !4143 codegen: Drop unused import
+  - !4144 gi: Add missing Since annotation
+  - !4145 gfilteroutputstream.c: Port all doc comments to gi-docgen
+  - !4146 gbufferedinputstream: Port all doc comments to gi-docgen
+  - !4148 gbufferedoutputstream.c: Port doc comments to gi-docgen
+  - !4149 tests: Make an error check less specific in gsocketclient-slow
+  - !4150 glib-private: fix build under Cygwin
+  - !4152 tests: Fix compilation of resolver-parsing test on FreeBSD
+  - !4154 gmodule-dl: fix G_MODULE_BIND_LOCAL on Darwin
+  - !4155 gfile: Add support for x-gvfs-trash mount option
+  - !4157 docs(GNode): Traversal diagrams, color & dark-mode
+  - !4158 gspawn: Move docs/annotations to be platform independent
+  - !4159 introspection: Correct GIO-Windows pkg-config name
+  - !4164 docs: Clarify that G_GNUC_UNUSED can’t be used on definitions
+  - !4165 docs: Clarify conventions about type naming and name mangling in
+    GObject
+  - !4166 gmacros: Define G_STATIC_ASSERT for GI Scanner
+  - !4167 gappinfo and gcontenttype: Make introspection annotations available on
+    all platforms
+  - !4173 CI: Mark msys2-mingw32 as allowing failures
+  - !4174 meson: Fix another kqueue build race on macOS
+
 Overview of changes in GLib 2.81.0, 2024-06-28
 ==============================================
 
