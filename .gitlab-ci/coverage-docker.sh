@@ -27,6 +27,7 @@ for path in _coverage/*.lcov; do
 done
 
 genhtml \
+    --prefix "$PWD" \
     --config-file .lcovrc \
     _coverage/*.lcov \
     -o _coverage/coverage
