@@ -3074,11 +3074,11 @@ g_application_get_is_busy (GApplication *application)
  * notification. This works even for notifications sent from a previous
  * execution of the application, as long as @id is the same string.
  *
- * @id may be %NULL, but it is impossible to replace or withdraw
+ * @id may be `NULL`, but it is impossible to replace or withdraw
  * notifications without an id.
  *
  * If @notification is no longer relevant, it can be withdrawn with
- * g_application_withdraw_notification().
+ * [method@Gio.Application.withdraw_notification].
  *
  * It is an error to call this function if @application has no
  * application ID.
