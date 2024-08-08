@@ -820,6 +820,36 @@ test_weak_ref_many (void)
   g_free (weak_refs);
 }
 
+static void
+second_weak_notify (gpointer  data,
+                    GObject  *object)
+{
+  /* Empty */
+}
+
+static void
+first_weak_notify (gpointer  data,
+                   GObject  *object)
+{
+  g_object_weak_unref (object, second_weak_notify, NULL);
+}
+
+static void
+test_weak_ref_unref_during_another_unref ()
+{
+  GObject *obj;
+  GWeakRef weak1 = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+  GWeakRef weak2 = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3434");
+  g_test_summary ("Test that a weak unref during a weak ref notify callback does not cause a critical warning");
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+  g_object_weak_ref (obj, first_weak_notify, NULL);
+  g_object_weak_ref (obj, second_weak_notify, NULL);
+  g_object_unref (obj);
+}
+
 /*****************************************************************************/
 
 #define CONCURRENT_N_OBJS 5
@@ -1638,6 +1668,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
   g_test_add_func ("/object/weak-ref/in-toggle-notify", test_weak_ref_in_toggle_notify);
   g_test_add_func ("/object/weak-ref/many", test_weak_ref_many);
+  g_test_add_func ("/object/weak-ref/unref-during-another-unref", test_weak_ref_unref_during_another_unref);
   g_test_add_data_func ("/object/weak-ref/concurrent/0", GINT_TO_POINTER (0), test_weak_ref_concurrent);
   g_test_add_data_func ("/object/weak-ref/concurrent/1", GINT_TO_POINTER (1), test_weak_ref_concurrent);
   g_test_add_func ("/object/toggle-ref", test_toggle_ref);

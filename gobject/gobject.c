@@ -109,6 +109,7 @@ enum {
 #define OPTIONAL_FLAG_HAS_NOTIFY_HANDLER (1 << 2) /* Same, specifically for "notify" */
 #define OPTIONAL_FLAG_LOCK               (1 << 3) /* _OPTIONAL_BIT_LOCK */
 #define OPTIONAL_FLAG_EVER_HAD_WEAK_REF  (1 << 4) /* whether on the object ever g_weak_ref_set() was called. */
+#define OPTIONAL_FLAG_IN_WEAK_NOTIFIES   (1 << 5) /* whether the object is currently processing weak notifies in dispose */
 
 /* We use g_bit_lock(), which only supports one lock per integer.
  *
@@ -3644,8 +3645,27 @@ weak_refs_notify (gpointer data)
   WeakRefStack *wstack = data;
   guint i;
 
+  /* The lock here guarantees we do not begin processing notifies while a weak
+   * unref is in progress on another thread, to avoid a race with the call to
+   * object_processing_weak_notifies() in g_object_weak_unref(). 
+   */
+  object_bit_lock (wstack->object, OPTIONAL_BIT_LOCK_WEAK_REFS);
+  object_set_optional_flags (wstack->object, OPTIONAL_FLAG_IN_WEAK_NOTIFIES);
+  object_bit_unlock (wstack->object, OPTIONAL_BIT_LOCK_WEAK_REFS);
+
   for (i = 0; i < wstack->n_weak_refs; i++)
     wstack->weak_refs[i].notify (wstack->weak_refs[i].data, wstack->object);
+
+  /* The locking here is optional and added for completeness rather than
+   * necessity. It could be removed because it's OK for this to race with the
+   * call to object_processing_weak_notifies() in g_object_weak_unref(), because
+   * if we race we'd at worst fail to print the critical warning about an
+   * invalid weak unref, and that is fine.
+   */
+  object_bit_lock (wstack->object, OPTIONAL_BIT_LOCK_WEAK_REFS);
+  object_unset_optional_flags (wstack->object, OPTIONAL_FLAG_IN_WEAK_NOTIFIES);
+  object_bit_unlock (wstack->object, OPTIONAL_BIT_LOCK_WEAK_REFS);
+
   g_free (wstack);
 }
 
@@ -3698,6 +3718,12 @@ g_object_weak_ref (GObject    *object,
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
 }
 
+static inline gboolean
+object_processing_weak_notifies (GObject *object)
+{
+  return (object_get_optional_flags (object) & OPTIONAL_FLAG_IN_WEAK_NOTIFIES) != 0;
+}
+
 /**
  * g_object_weak_unref: (skip)
  * @object: #GObject to remove a weak reference from
@@ -3713,6 +3739,7 @@ g_object_weak_unref (GObject    *object,
 {
   WeakRefStack *wstack;
   gboolean found_one = FALSE;
+  gboolean should_warn = FALSE;
 
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
@@ -3735,8 +3762,9 @@ g_object_weak_unref (GObject    *object,
 	    break;
 	  }
     }
+  should_warn = !found_one && !object_processing_weak_notifies (object);
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
-  if (!found_one)
+  if (should_warn)
     g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
 }
 
