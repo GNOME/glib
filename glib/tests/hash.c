@@ -1271,6 +1271,52 @@ test_steal_extended (void)
   g_assert_cmpuint (g_hash_table_size (hash), ==, 5);
 
   g_hash_table_unref (hash);
+
+  hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+  g_hash_table_add (hash, g_strdup ("a"));
+  g_hash_table_add (hash, g_strdup ("b"));
+  g_hash_table_add (hash, g_strdup ("c"));
+  g_hash_table_add (hash, g_strdup ("d"));
+  g_hash_table_add (hash, g_strdup ("e"));
+
+  g_assert_true (g_hash_table_steal_extended (hash, "a", (gpointer *) &stolen_key,
+                                              (gpointer *) &stolen_value));
+  g_assert_cmpstr (stolen_key, ==, "a");
+  g_assert_cmpstr (stolen_value, ==, "a");
+  g_clear_pointer (&stolen_key, g_free);
+  stolen_value = NULL;
+
+  g_assert_true (g_hash_table_steal_extended (hash, "b", (gpointer *) &stolen_key,
+                                              NULL));
+  g_assert_cmpstr (stolen_key, ==, "b");
+  g_clear_pointer (&stolen_key, g_free);
+
+  g_assert_true (g_hash_table_steal_extended (hash, "c", NULL,
+                                              (gpointer *) &stolen_value));
+  g_assert_cmpstr (stolen_value, ==, "c");
+  g_clear_pointer (&stolen_value, g_free);
+
+  g_assert_true (g_hash_table_steal_extended (hash, "d", (gpointer *) &stolen_key,
+                                              (gpointer *) &stolen_value));
+  g_assert_cmpstr (stolen_key, ==, "d");
+  g_assert_cmpstr (stolen_value, ==, "d");
+  g_clear_pointer (&stolen_key, g_free);
+  stolen_value = NULL;
+
+  /* So far, the GHashTable was used like a set (g_hash_table_add()), where all key/values were
+   * identical. Adding one entry where key/value differs, blows the internal representation
+   * up, and the hash table tracks two separate key/value arrays. */
+  g_hash_table_replace (hash, g_strdup ("x"), NULL);
+
+  g_assert_true (g_hash_table_steal_extended (hash, "e", (gpointer *) &stolen_key,
+                                              (gpointer *) &stolen_value));
+  g_assert_cmpstr (stolen_key, ==, "e");
+  g_assert_cmpstr (stolen_value, ==, "e");
+  g_clear_pointer (&stolen_key, g_free);
+  stolen_value = NULL;
+
+  g_hash_table_unref (hash);
 }
 
 /* Test that passing %NULL to the optional g_hash_table_steal_extended()
