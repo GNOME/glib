@@ -120,7 +120,7 @@ g_osx_app_info_dup (GAppInfo *appinfo)
 
 static gboolean
 g_osx_app_info_equal (GAppInfo *appinfo1,
-                           GAppInfo *appinfo2)
+                      GAppInfo *appinfo2)
 {
   const gchar *str1, *str2;
 
@@ -278,7 +278,7 @@ fill_urlspec_for_appinfo (LSLaunchURLSpec *urlspec,
                           GList           *uris,
                           gboolean         are_files)
 {
-  urlspec->appURL = (CFURLRef) [NSURL fileURLWithPath: [info->bundle bundlePath]];
+  urlspec->appURL = (CFURLRef) [NSURL fileURLWithPath:[info->bundle bundlePath]];
   urlspec->itemURLs = create_url_list_from_glist (uris, are_files);
   urlspec->launchFlags = kLSLaunchDefaults;
 }
@@ -288,7 +288,7 @@ clear_urlspec (LSLaunchURLSpec *urlspec)
 {
   if (urlspec->itemURLs)
     {
-      CFArrayRemoveAllValues ((CFMutableArrayRef)urlspec->itemURLs);
+      CFArrayRemoveAllValues ((CFMutableArrayRef) urlspec->itemURLs);
       CFRelease (urlspec->itemURLs);
     }
   CFRelease (urlspec->appURL);
@@ -452,7 +452,7 @@ g_osx_app_info_launch_internal (GAppInfo  *appinfo,
                                 GError   **error)
 {
   GOsxAppInfo *info = G_OSX_APP_INFO (appinfo);
-  LSLaunchURLSpec urlspec = {0};
+  LSLaunchURLSpec urlspec = { 0 };
   gint ret, success = TRUE;
 
   g_return_val_if_fail (G_IS_OSX_APP_INFO (appinfo), FALSE);
@@ -487,18 +487,18 @@ g_osx_app_info_supports_files (GAppInfo *appinfo)
 
 static gboolean
 g_osx_app_info_launch (GAppInfo           *appinfo,
-                            GList              *files,
-                            GAppLaunchContext  *launch_context,
-                            GError            **error)
+                       GList              *files,
+                       GAppLaunchContext  *launch_context,
+                       GError            **error)
 {
   return g_osx_app_info_launch_internal (appinfo, files, TRUE, error);
 }
 
 static gboolean
 g_osx_app_info_launch_uris (GAppInfo           *appinfo,
-                                 GList              *uris,
-                                 GAppLaunchContext  *launch_context,
-                                 GError            **error)
+                            GList              *uris,
+                            GAppLaunchContext  *launch_context,
+                            GError            **error)
 {
   return g_osx_app_info_launch_internal (appinfo, uris, FALSE, error);
 }
@@ -578,8 +578,8 @@ g_osx_app_info_should_show (GAppInfo *appinfo)
 
 static gboolean
 g_osx_app_info_set_as_default_for_type (GAppInfo    *appinfo,
-                                             const char  *content_type,
-                                             GError     **error)
+                                        const char  *content_type,
+                                        GError     **error)
 {
   return FALSE;
 }
@@ -593,8 +593,8 @@ g_osx_app_info_get_supported_types (GAppInfo *appinfo)
 
 static gboolean
 g_osx_app_info_set_as_last_used_for_type (GAppInfo   *appinfo,
-                                               const char  *content_type,
-                                               GError     **error)
+                                          const char  *content_type,
+                                          GError     **error)
 {
   /* Not supported. */
   return FALSE;

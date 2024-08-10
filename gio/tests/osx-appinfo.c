@@ -42,7 +42,7 @@ test_launch_async (void)
   GAsyncResult *result = NULL;
   GError *error = NULL;
 
-  app_info = g_app_info_get_default_for_uri_scheme("file");
+  app_info = g_app_info_get_default_for_uri_scheme ("file");
   g_assert_nonnull (app_info);
   g_assert_true (G_IS_OSX_APP_INFO (app_info));
 
@@ -70,7 +70,7 @@ test_invalid_uri_scheme (void)
 {
   GAppInfo *app_info;
 
-  app_info = g_app_info_get_default_for_uri_scheme("thisisnotanurlscheme");
+  app_info = g_app_info_get_default_for_uri_scheme ("thisisnotanurlscheme");
   g_assert_null (app_info);
 }
 
