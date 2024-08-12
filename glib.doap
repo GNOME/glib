@@ -112,14 +112,6 @@
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Antoine Jacoutot</foaf:name>
-      <foaf:mbox rdf:resource="mailto:ajacoutot@gnome.org"/>
-<!--      <gnome:userid>ajacoutot</gnome:userid> -->
-    </foaf:Person>
-  </maintainer>
-
-  <maintainer>
-    <foaf:Person>
       <foaf:name>Ting-Wei Lan</foaf:name>
       <foaf:mbox rdf:resource="mailto:lantw@src.gnome.org"/>
       <gnome:userid>lantw</gnome:userid>
