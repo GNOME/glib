@@ -158,15 +158,17 @@ gboolean         g_threads_got_initialized = TRUE;
  * Since version 2.32, GLib does not support custom thread implementations
  * anymore and the @vtable parameter is ignored and you should pass %NULL.
  *
- * <note><para>g_thread_init() must not be called directly or indirectly
- * in a callback from GLib. Also no mutexes may be currently locked while
- * calling g_thread_init().</para></note>
+ * ::: note
+ *     g_thread_init() must not be called directly or indirectly in a
+ *     callback from GLib. Also no mutexes may be currently locked
+ *     while calling g_thread_init().
  *
- * <note><para>To use g_thread_init() in your program, you have to link
- * with the libraries that the command <command>pkg-config --libs
- * gthread-2.0</command> outputs. This is not the case for all the
- * other thread-related functions of GLib. Those can be used without
- * having to link with the thread libraries.</para></note>
+ * ::: note
+ *     To use g_thread_init() in your program, you have to link with
+ *     the libraries that the command `pkg-config --libs gthread-2.0`
+ *     outputs. This is not the case for all the other thread-related
+ *     functions of GLib. Those can be used without having to link
+ *     with the thread libraries.
  *
  * Deprecated:2.32: This function is no longer necessary. The GLib
  *     threading system is automatically initialized at the start
