@@ -6427,7 +6427,7 @@ g_socket_get_credentials (GSocket   *socket,
  * getsockopt(). (If you need to fetch a  non-integer-valued option,
  * you will need to call getsockopt() directly.)
  *
- * The [<gio/gnetworking.h>][gio-gnetworking.h]
+ * The [`<gio/gnetworking.h>`][gio-gnetworking.h]
  * header pulls in system headers that will define most of the
  * standard/portable socket options. For unusual socket protocols or
  * platform-dependent options, you may need to include additional
@@ -6499,7 +6499,7 @@ g_socket_get_option (GSocket  *socket,
  * setsockopt(). (If you need to set a non-integer-valued option,
  * you will need to call setsockopt() directly.)
  *
- * The [<gio/gnetworking.h>][gio-gnetworking.h]
+ * The [`<gio/gnetworking.h>`][gio-gnetworking.h]
  * header pulls in system headers that will define most of the
  * standard/portable socket options. For unusual socket protocols or
  * platform-dependent options, you may need to include additional
