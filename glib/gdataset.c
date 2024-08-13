@@ -1097,7 +1097,6 @@ g_datalist_id_update_atomic (GData **datalist,
   gpointer result;
   GDestroyNotify new_destroy;
   guint32 idx;
-  gboolean to_unlock = TRUE;
 
   d = g_datalist_lock_and_get (datalist);
 
@@ -1116,49 +1115,59 @@ g_datalist_id_update_atomic (GData **datalist,
 
   result = callback (&new_data, &new_destroy, user_data);
 
-  if (data && !new_data)
+  if (G_LIKELY (data))
     {
-      GData *d_to_free;
-
-      /* Remove. The callback indicates to drop the entry.
-       *
-       * The old data->data was stolen by callback(). */
-      datalist_remove (d, idx);
-      if (datalist_shrink (&d, &d_to_free))
+      if (G_LIKELY (data->data == new_data && data->destroy == new_destroy))
         {
-          g_datalist_unlock_and_set (datalist, d);
-          if (G_UNLIKELY (d_to_free))
-            g_free (d_to_free);
-          to_unlock = FALSE;
+          /* No change. */
         }
-    }
-  else if (data)
-    {
-      /* Update. The callback may have provided new pointers to an existing
-       * entry.
-       *
-       * The old data was stolen by callback(). We only update the pointers and
-       * are done. */
-      data->data = new_data;
-      data->destroy = new_destroy;
-    }
-  else if (!data && !new_data)
-    {
-      /* Absent. No change. The entry didn't exist and still does not. */
+      else if (!new_data)
+        {
+          GData *d_to_free;
+
+          /* Remove. The callback indicates to drop the entry.
+           *
+           * The old data->data was stolen by callback(). */
+          datalist_remove (d, idx);
+          if (datalist_shrink (&d, &d_to_free))
+            {
+              g_datalist_unlock_and_set (datalist, d);
+              if (G_UNLIKELY (d_to_free))
+                g_free (d_to_free);
+              goto return_without_unlock;
+            }
+        }
+      else
+        {
+          /* Update. The callback may have provided new pointers to an existing
+           * entry.
+           *
+           * The old data was stolen by callback(). We only update the pointers and
+           * are done. */
+          data->data = new_data;
+          data->destroy = new_destroy;
+        }
     }
   else
     {
-      /* Add. Add a new entry that didn't exist previously. */
-      if (datalist_append (&d, key_id, new_data, new_destroy))
+      if (G_LIKELY (!new_data))
         {
-          g_datalist_unlock_and_set (datalist, d);
-          to_unlock = FALSE;
+          /* No change. The entry didn't exist and still does not. */
+        }
+      else
+        {
+          /* Add. Add a new entry that didn't exist previously. */
+          if (datalist_append (&d, key_id, new_data, new_destroy))
+            {
+              g_datalist_unlock_and_set (datalist, d);
+              goto return_without_unlock;
+            }
         }
     }
 
-  if (to_unlock)
-    g_datalist_unlock (datalist);
+  g_datalist_unlock (datalist);
 
+return_without_unlock:
   return result;
 }
 
