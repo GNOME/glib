@@ -140,7 +140,7 @@ g_object_notify_queue_thaw (GObject            *object,
 }
 
 static inline void
-g_object_notify_queue_clear (GObject            *object,
+g_object_notify_queue_clear (GObject            *object G_GNUC_UNUSED,
 			     GObjectNotifyQueue *nqueue)
 {
   g_return_if_fail (nqueue->freeze_count > 0);
@@ -155,7 +155,7 @@ g_object_notify_queue_clear (GObject            *object,
 }
 
 static inline void
-g_object_notify_queue_add (GObject            *object,
+g_object_notify_queue_add (GObject            *object G_GNUC_UNUSED,
 			   GObjectNotifyQueue *nqueue,
 			   GParamSpec	      *pspec)
 {
