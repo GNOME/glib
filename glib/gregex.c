@@ -2357,7 +2357,7 @@ g_regex_match_all (const GRegex      *regex,
  * This function uses a different algorithm (called DFA, i.e. deterministic
  * finite automaton), so it can retrieve all the possible matches, all
  * starting at the same point in the string. For instance matching
- * `"<a> <b> <c>"` against the pattern `"<.*>;"`
+ * `"<a> <b> <c>"` against the pattern `"<.*>"`
  * you would obtain three matches: `"<a> <b> <c>"`,
  * `"<a> <b>"` and `"<a>"`.
  *
