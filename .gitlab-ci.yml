@@ -11,11 +11,11 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v27"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v39.1"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v19"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v3"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v16"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v39.1"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
@@ -174,7 +174,8 @@ fedora-x86_64:
   stage: build
   needs: []
   variables:
-    CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
+    CFLAGS: "--coverage -ftest-coverage -fprofile-arcs -fprofile-update=atomic"
+    CXXFLAGS: "--coverage -ftest-coverage -fprofile-arcs -fprofile-update=atomic"
   before_script:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
@@ -194,9 +195,11 @@ fedora-x86_64:
             _build
     - meson compile -C _build
     - mkdir -p _coverage
-    - lcov --config-file .lcovrc --directory _build --capture --initial --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
+    - lcov --config-file .lcovrc --directory _build --capture --initial
+      --output-file "_coverage/${CI_JOB_NAME}-baseline.lcov"
     - .gitlab-ci/run-tests.sh
-    - lcov --config-file .lcovrc --directory _build --capture --output-file "_coverage/${CI_JOB_NAME}.lcov"
+    - lcov --config-file .lcovrc --directory _build --capture
+      --output-file "_coverage/${CI_JOB_NAME}.lcov"
     # Copy the built documentation to an artifact directory. The build for docs.gtk.org
     # can then pull it from there — see https://gitlab.gnome.org/GNOME/gtk/-/blob/docs-gtk-org/README.md
     - mkdir -p _reference/

@@ -13,7 +13,7 @@ for path in _coverage/*.lcov; do
     # Remove coverage from the fuzz tests, since they are run on a separate CI system
     lcov --config-file .lcovrc -r "${path}" "*/fuzzing/*" -o "$(pwd)/${path}"
     # Remove coverage from copylibs and subprojects
-    for lib in xdgmime libcharset gnulib; do
+    for lib in xdgmime libcharset gnulib subprojects; do
         lcov --config-file .lcovrc -r "${path}" "*/${lib}/*" -o "$(pwd)/${path}"
     done
 
@@ -27,7 +27,7 @@ for path in _coverage/*.lcov; do
 done
 
 genhtml \
-    --ignore-errors=source \
+    --prefix "$PWD" \
     --config-file .lcovrc \
     _coverage/*.lcov \
     -o _coverage/coverage
@@ -46,4 +46,4 @@ cat >index.html <<EOL
 EOL
 
 # Print a handy link to the coverage report
-echo "Coverage report at: https://${CI_PROJECT_NAMESPACE}.pages.gitlab.gnome.org/-/${CI_PROJECT_NAME}/-/jobs/${CI_BUILD_ID}/artifacts/_coverage/coverage/index.html"
+echo "Coverage report at: https://${CI_PROJECT_NAMESPACE}.pages.gitlab.gnome.org/-/${CI_PROJECT_NAME}/-/jobs/${CI_JOB_ID}/artifacts/_coverage/coverage/index.html"

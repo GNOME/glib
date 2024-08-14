@@ -664,7 +664,7 @@ cancellable_source_cancelled (GCancellable *cancellable,
 {
   GSource *source = user_data;
   GCancellableSource *cancellable_source = (GCancellableSource *) source;
-  gboolean callback_was_not_called;
+  gboolean callback_was_not_called G_GNUC_UNUSED;
 
   g_source_ref (source);
   g_source_set_ready_time (source, 0);
