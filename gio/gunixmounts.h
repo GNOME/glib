@@ -30,7 +30,7 @@ G_BEGIN_DECLS
 /**
  * GUnixMountEntry:
  *
- * Defines a Unix mount entry (e.g. <filename>/media/cdrom</filename>).
+ * Defines a Unix mount entry (e.g. `/media/cdrom`).
  * This corresponds roughly to a mtab entry.
  **/
 typedef struct _GUnixMountEntry GUnixMountEntry;
@@ -42,7 +42,7 @@ GType g_unix_mount_entry_get_type (void) G_GNUC_CONST;
 /**
  * GUnixMountPoint:
  *
- * Defines a Unix mount point (e.g. <filename>/dev</filename>).
+ * Defines a Unix mount point (e.g. `/dev`).
  * This corresponds roughly to a fstab entry.
  **/
 typedef struct _GUnixMountPoint GUnixMountPoint;

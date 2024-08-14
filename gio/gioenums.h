@@ -290,8 +290,8 @@ typedef enum /*< flags >*/ {
  *    assemble/disassemble a virtual drive from several physical
  *    drives.
  * @G_DRIVE_START_STOP_TYPE_PASSWORD: The start/stop methods will
- *    unlock/lock the disk (for example using the ATA <quote>SECURITY
- *    UNLOCK DEVICE</quote> command)
+ *    unlock/lock the disk (for example using the ATA `SECURITY UNLOCK
+ *    DEVICE` command)
  *
  * Enumeration describing how a drive can be started/stopped.
  *
