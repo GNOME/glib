@@ -516,7 +516,8 @@ cross-mingw64:
 # A note about msys2: it’s a rolling release distribution, running Windows under
 # Docker isn’t really supported, and the win32-ps CI runner is shared. All that
 # adds up to mean that we have to run CI against the latest msys2 packages, and
-# that this occasionally causes build failures in GLib due to changes in msys2.
+# that this occasionally causes deterministic build failures in GLib due to
+# changes in msys2.
 # In order to avoid that pre-empting other GLib development, the policy in such
 # cases is to:
 #  1. Immediately and without hesitation make the msys2-* CI jobs non-fatal
@@ -528,6 +529,9 @@ cross-mingw64:
 #     are notified and can work on it.
 #  4. Rebase any pending broken MRs on top of the commit which makes the CI job
 #     non-fatal, so that development on `main` is unblocked.
+#
+# This policy doesn’t apply to intermittent flaky test failures, only to
+# consistent build failures caused by changed dependencies or build environment.
 msys2-mingw32:
   extends: .only-default-and-merges
   stage: build
