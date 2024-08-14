@@ -25,6 +25,7 @@
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "gcontextspecificgroup.h"
+#include "gdesktopappinfo.h"
 #include "gtask.h"
 #include "gcancellable.h"
 
@@ -1203,15 +1204,34 @@ g_app_info_launch_default_for_uri (const char         *uri,
 #ifdef G_OS_UNIX
   if (!res && glib_should_use_portal ())
     {
+      GFile *file = NULL;
       const char *parent_window = NULL;
+      char *startup_id = NULL;
 
       /* Reset any error previously set by launch_default_for_uri */
       g_clear_error (error);
 
-      if (launch_context && launch_context->priv->envp)
-        parent_window = g_environ_getenv (launch_context->priv->envp, "PARENT_WINDOW_ID");
+      file = g_file_new_for_uri (uri);
 
-      return g_openuri_portal_open_uri (uri, parent_window, error);
+      if (launch_context)
+        {
+          GList *file_list;
+
+          if (launch_context->priv->envp)
+            parent_window = g_environ_getenv (launch_context->priv->envp, "PARENT_WINDOW_ID");
+
+          file_list = g_list_prepend (NULL, file);
+
+          startup_id = g_app_launch_context_get_startup_notify_id (launch_context,
+                                                                   NULL,
+                                                                   file_list);
+          g_list_free (file_list);
+        }
+
+      res = g_openuri_portal_open_file (file, parent_window, startup_id, error);
+
+      g_object_unref (file);
+      g_free (startup_id);
     }
 #endif
 
@@ -1241,7 +1261,7 @@ launch_default_for_uri_portal_open_uri_cb (GObject      *object,
   GTask *task = G_TASK (user_data);
   GError *error = NULL;
 
-  if (g_openuri_portal_open_uri_finish (result, &error))
+  if (g_openuri_portal_open_file_finish (result, &error))
     g_task_return_boolean (task, TRUE);
   else
     g_task_return_error (task, g_steal_pointer (&error));
@@ -1258,20 +1278,40 @@ launch_default_for_uri_portal_open_uri (GTask *task, GError *error)
 
   if (glib_should_use_portal ())
     {
+      GFile *file;
       const char *parent_window = NULL;
+      char *startup_id = NULL;
 
       /* Reset any error previously set by launch_default_for_uri */
       g_error_free (error);
 
-      if (data->context && data->context->priv->envp)
-        parent_window = g_environ_getenv (data->context->priv->envp,
-                                          "PARENT_WINDOW_ID");
+      file = g_file_new_for_uri (data->uri);
 
-      g_openuri_portal_open_uri_async (data->uri,
-                                       parent_window,
-                                       cancellable,
-                                       launch_default_for_uri_portal_open_uri_cb,
-                                       g_steal_pointer (&task));
+      if (data->context)
+        {
+          GList *file_list;
+
+          if (data->context->priv->envp)
+            parent_window = g_environ_getenv (data->context->priv->envp,
+                                              "PARENT_WINDOW_ID");
+
+          file_list = g_list_prepend (NULL, file);
+
+          startup_id = g_app_launch_context_get_startup_notify_id (data->context,
+                                                                   NULL,
+                                                                   file_list);
+          g_list_free (file_list);
+        }
+
+      g_openuri_portal_open_file_async (file,
+                                        parent_window,
+                                        startup_id,
+                                        cancellable,
+                                        launch_default_for_uri_portal_open_uri_cb,
+                                        g_steal_pointer (&task));
+      g_object_unref (file);
+      g_free (startup_id);
+
       return;
     }
 #endif
@@ -1775,8 +1815,8 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
 /**
  * g_app_launch_context_get_startup_notify_id:
  * @context: the launch context
- * @info: the app info
- * @files: (element-type GFile): list of [iface@Gio.File] objects
+ * @info: (nullable): the app info
+ * @files: (nullable) (element-type GFile): a list of [iface@Gio.File] objects
  * 
  * Initiates startup notification for the application and returns the
  * `XDG_ACTIVATION_TOKEN` or `DESKTOP_STARTUP_ID` for the launched operation,
@@ -1791,6 +1831,8 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * [freedesktop.org Startup Notification Protocol](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
  *
  * Support for the XDG Activation Protocol was added in GLib 2.76.
+ * Since GLib 2.82 @info and @files can be `NULL`. If that’s not supported by the backend,
+ * the returned token will be `NULL`.
  *
  * Returns: (nullable): a startup notification ID for the application, or `NULL` if
  *   not supported.
@@ -1803,7 +1845,7 @@ g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
   GAppLaunchContextClass *class;
 
   g_return_val_if_fail (G_IS_APP_LAUNCH_CONTEXT (context), NULL);
-  g_return_val_if_fail (G_IS_APP_INFO (info), NULL);
+  g_return_val_if_fail (info == NULL || G_IS_APP_INFO (info), NULL);
 
   class = G_APP_LAUNCH_CONTEXT_GET_CLASS (context);
 
