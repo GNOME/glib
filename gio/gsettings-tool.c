@@ -324,10 +324,15 @@ gsettings_list_recursively (void)
       for (i = 0; schemas[i]; i++)
         {
           GSettings *settings;
+          GSettingsSchema *schema;
 
-          settings = g_settings_new (schemas[i]);
+          schema = g_settings_schema_source_lookup (global_schema_source, schemas[i], FALSE);
+          if (!schema)
+            continue;
+          settings = g_settings_new_full (schema, NULL, NULL);
           list_recursively (settings);
           g_object_unref (settings);
+          g_settings_schema_unref (schema);
         }
 
       g_strfreev (schemas);
