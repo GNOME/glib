@@ -124,16 +124,21 @@
  * GHRFunc:
  * @key: a key
  * @value: the value associated with the key
- * @user_data: user data passed to g_hash_table_remove()
+ * @user_data: user data passed to the calling function
  *
  * Specifies the type of the function passed to
- * g_hash_table_foreach_remove(). It is called with each key/value
- * pair, together with the @user_data parameter passed to
- * g_hash_table_foreach_remove(). It should return %TRUE if the
- * key/value pair should be removed from the #GHashTable.
+ * [func@GLib.HashTable.find], [func@GLib.HashTable.foreach_remove], and
+ * [func@GLib.HashTable.foreach_steal].
+ * 
+ * The function is called with each key/value pair, together with
+ * the @user_data parameter passed to the calling function.
+ * 
+ * The function should return true if the key/value pair should be
+ * selected, meaning it has been found or it should be removed from the
+ * [struct@GLib.HashTable], depending on the calling function.
  *
- * Returns: %TRUE if the key/value pair should be removed from the
- *     #GHashTable
+ * Returns: true if the key/value pair should be selected, and
+ *   false otherwise
  */
 
 /**
