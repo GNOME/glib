@@ -35,8 +35,11 @@
  * GVolume:
  * 
  * The `GVolume` interface represents user-visible objects that can be
- * mounted. Note, when [porting from GnomeVFS](migrating-gnome-vfs.html),
- * `GVolume` is the moral equivalent of `GnomeVFSDrive`.
+ * mounted. For example, a file system partition on a USB flash drive, or an
+ * optical disc inserted into a disc drive.
+ *
+ * If a `GVolume` is currently mounted, the corresponding [iface@Gio.Mount] can
+ * be retrieved using [method@Gio.Volume.get_mount].
  *
  * Mounting a `GVolume` instance is an asynchronous operation. For more
  * information about asynchronous operations, see [iface@Gio.AsyncResult] and
@@ -57,6 +60,9 @@
  * successfully.  If a [type@GLib.Error] is present when
  * [method@Gio.Volume.mount_finish] is called, then it will be filled with any
  * error information.
+ *
+ * Note, when [porting from GnomeVFS](migrating-gnome-vfs.html),
+ * `GVolume` is the moral equivalent of `GnomeVFSDrive`.
  *
  * ## Volume Identifiers
  *

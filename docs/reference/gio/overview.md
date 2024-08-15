@@ -33,10 +33,10 @@ base classes for I/O and files:
 : list files in directories
 
 [iface@Gio.Drive]
-: represents a drive
+: represents a drive, which may contain zero or more volumes
 
 [iface@Gio.Volume]
-: represents a file system in an abstract way
+: represents a file system, which may have a mount
 
 [iface@Gio.Mount]
 : represents a mounted file system

@@ -39,14 +39,15 @@
 /**
  * GMount:
  *
- * The `GMount` interface represents user-visible mounts. Note, when
- * [porting from GnomeVFS](migrating-gnome-vfs.html), `GMount` is the moral
- * equivalent of `GnomeVFSVolume`.
+ * The `GMount` interface represents a user-visible mount, such as a mounted
+ * file system.
  *
  * `GMount` is a ‘mounted’ filesystem that you can access. Mounted is in
  * quotes because it’s not the same as a UNIX mount, it might be a GVFS
- * mount, but you can still access the files on it if you use GIO. Might or
- * might not be related to a volume object.
+ * mount, but you can still access the files on it if you use GIO.
+ *
+ * A `GMount` might be associated with a [iface@Gio.Volume] (such as a USB flash
+ * drive) which hosts it.
  * 
  * Unmounting a `GMount` instance is an asynchronous operation. For
  * more information about asynchronous operations, see [iface@Gio.AsyncResult]
@@ -60,6 +61,9 @@
  * operation was completed successfully.  If an `error` is present when
  * [method@Gio.Mount.unmount_with_operation_finish] is called, then it will be
  * filled with any error information.
+ *
+ * Note, when [porting from GnomeVFS](migrating-gnome-vfs.html), `GMount` is the
+ * moral equivalent of `GnomeVFSVolume`.
  **/
 
 typedef GMountIface GMountInterface;
