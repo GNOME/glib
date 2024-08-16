@@ -588,14 +588,27 @@ test_signal_alternate_stack (int signal)
 #ifndef SA_ONSTACK
   g_test_skip ("alternate stack is not supported");
 #else
-  guint8 stack_memory[MINSIGSTKSZ];
-  guint8 zero_mem[MINSIGSTKSZ];
-  stack_t stack = { .ss_sp = stack_memory, .ss_size = MINSIGSTKSZ };
+  size_t minsigstksz = MINSIGSTKSZ;
+  guint8 *stack_memory = NULL;
+  guint8 *zero_mem = NULL;
+  stack_t stack = { 0 };
   stack_t old_stack = { 0 };
 
-  memset (stack_memory, 0, MINSIGSTKSZ);
-  memset (zero_mem, 0, MINSIGSTKSZ);
-  g_assert_cmpmem (stack_memory, MINSIGSTKSZ, zero_mem, MINSIGSTKSZ);
+#ifdef _SC_MINSIGSTKSZ
+  /* Use the kernel-provided minimum stack size, if available. Otherwise default
+   * to MINSIGSTKSZ. Unfortunately that might not be big enough for huge
+   * register files for big CPU instruction set extensions. */
+  minsigstksz = sysconf (_SC_MINSIGSTKSZ);
+  if (minsigstksz == (size_t) -1 || minsigstksz < (size_t) MINSIGSTKSZ)
+    minsigstksz = MINSIGSTKSZ;
+#endif
+
+  stack_memory = g_malloc0 (minsigstksz);
+  zero_mem = g_malloc0 (minsigstksz);
+  g_assert_cmpmem (stack_memory, minsigstksz, zero_mem, minsigstksz);
+
+  stack.ss_sp = stack_memory;
+  stack.ss_size = minsigstksz;
 
   g_assert_no_errno (sigaltstack (&stack, &old_stack));
 
@@ -620,6 +633,10 @@ test_signal_alternate_stack (int signal)
 
       stack.ss_flags = SS_DISABLE;
       g_assert_no_errno (sigaltstack (&stack, &old_stack));
+
+      g_free (zero_mem);
+      g_free (stack_memory);
+
       return;
     }
 #endif
@@ -627,20 +644,23 @@ test_signal_alternate_stack (int signal)
   /* Very stupid check to ensure that the alternate stack is used instead of
    * the default one. This test would fail if SA_ONSTACK wouldn't be set.
    */
-  g_assert_cmpint (memcmp (stack_memory, zero_mem, MINSIGSTKSZ), !=, 0);
+  g_assert_cmpint (memcmp (stack_memory, zero_mem, minsigstksz), !=, 0);
 
   /* We need to memset again zero_mem since compiler may have optimized it out
    * as we've seen in freebsd CI.
    */
-  memset (zero_mem, 0, MINSIGSTKSZ);
-  memset (stack_memory, 0, MINSIGSTKSZ);
-  g_assert_cmpmem (stack_memory, MINSIGSTKSZ, zero_mem, MINSIGSTKSZ);
+  memset (zero_mem, 0, minsigstksz);
+  memset (stack_memory, 0, minsigstksz);
+  g_assert_cmpmem (stack_memory, minsigstksz, zero_mem, minsigstksz);
 
   stack.ss_flags = SS_DISABLE;
   g_assert_no_errno (sigaltstack (&stack, &old_stack));
 
   test_signal (signal);
-  g_assert_cmpmem (stack_memory, MINSIGSTKSZ, zero_mem, MINSIGSTKSZ);
+  g_assert_cmpmem (stack_memory, minsigstksz, zero_mem, minsigstksz);
+
+  g_free (zero_mem);
+  g_free (stack_memory);
 #endif
 }
 
