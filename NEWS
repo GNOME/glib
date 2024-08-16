@@ -1,3 +1,36 @@
+Overview of changes in GLib 2.81.2, 2024-08-16
+==============================================
+
+* Various introspection annotation changes (!4161, !4162, !4180, work by
+  multiple people)
+
+* Bugs fixed:
+  - #2868 g_openuri_portal_open_uri_async: Does not accept a xdg-activation
+    token (Julian Sparber)
+  - #2885 Use TAP protocol 14 with newer meson (Marco Trevisan (Treviño))
+  - #3315 unix test crashes intermittently on musl with alternate stack code
+    (Philip Withnall)
+  - #3381 Actually use Fedora 39 on CI (Marco Trevisan (Treviño))
+  - #3403 GOsxAppInfo missing async launch implementation
+  - #3429 gsettings list-recursively with --schemadir crashes with trace trap
+    (core dumped) if no other schemas are installed on the system
+  - !2980 ghash: fix g_hash_table_steal_extended() when requesting key and value
+    of a set
+  - !4161 GVariant: Add copy-func and free-func annotations
+  - !4162 GBytes: Add copy-func and free-func annotations
+  - !4163 gunixmounts: Add mount point/entry getters from files and add tests
+    based on them
+  - !4177 gmain: Adapt to gi-docgen comments
+  - !4179 2.81.1
+  - !4180 glib/mappedfile: g_mapped_file_get_contents() does not transfer
+  - !4181 docs: Linkify a function
+  - !4182 gstring: fix unused-result warning with g_string_free() in C++
+  - !4186 doap: Remove invalid maintainer entry
+  - !4187 docs: Fix mistakes from the GTK-Doc to GI-DocGen conversion
+  - !4188 gobjectnotifyqueue: add G_GNUC_UNUSED in unused parameters
+  - !4192 ghash: Fix the documentation of GHRFunc
+  - !4193 docs: Clarify distinction between GDrive, GVolume and GMount
+
 Overview of changes in GLib 2.81.1, 2024-08-02
 ==============================================
 
