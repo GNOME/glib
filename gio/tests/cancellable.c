@@ -536,6 +536,17 @@ test_cancellable_disconnect_on_cancelled_callback_hangs (void)
       return;
     }
 
+  /* Run the test in a subprocess. While we can get away with deadlocking a
+   * specific thread on Linux, the glibc on FreeBSD manages to detect the
+   * deadlock and aborts the whole test process. */
+  if (!g_test_subprocess ())
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      if (!g_test_trap_has_passed ())
+        g_test_trap_assert_stderr ("*Unexpected error from C library during 'pthread_mutex_lock': Resource deadlock avoided.  Aborting.*");
+      return;
+    }
+
   cancellable = g_cancellable_new ();
   thread_data.cancellable = cancellable;
   thread_data.callback = G_CALLBACK (on_cancellable_connect_disconnect);
@@ -552,10 +563,9 @@ test_cancellable_disconnect_on_cancelled_callback_hangs (void)
   thread_loop = thread_data.loop;
   g_assert_cmpuint ((gulong) (guintptr) g_atomic_pointer_get (&thread_data.handler_id), !=, 0);
 
-  /* FIXME: This thread will hang (at least that's what this test wants to
-   *        ensure), but we can't stop it from the caller, unless we'll expose
-   *        pthread_cancel (and similar) to GLib.
-   *        So it will keep hanging till the test process is alive.
+  /* This thread will hang (at least that's what this test wants to ensure), but
+   * we can't stop it from the caller, unless we'll expose pthread_cancel() (and
+   * similar) to GLib. So it will keep hanging until the test subprocess exits.
    */
   cancelling_thread = g_thread_new ("/cancellable/disconnect-on-cancelled-callback-hangs",
                                     (GThreadFunc) g_cancellable_cancel,
@@ -621,6 +631,17 @@ test_cancellable_reset_on_cancelled_callback_hangs (void)
       return;
     }
 
+  /* Run the test in a subprocess. While we can get away with deadlocking a
+   * specific thread on Linux, the glibc on FreeBSD manages to detect the
+   * deadlock and aborts the whole test process. */
+  if (!g_test_subprocess ())
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      if (!g_test_trap_has_passed ())
+        g_test_trap_assert_stderr ("*Unexpected error from C library during 'pthread_mutex_lock': Resource deadlock avoided.  Aborting.*");
+      return;
+    }
+
   cancellable = g_cancellable_new ();
   thread_data.cancellable = cancellable;
   thread_data.callback = G_CALLBACK (on_cancelled_reset);
@@ -637,10 +658,9 @@ test_cancellable_reset_on_cancelled_callback_hangs (void)
   thread_loop = thread_data.loop;
   g_assert_cmpuint ((gulong) (guintptr) g_atomic_pointer_get (&thread_data.handler_id), !=, 0);
 
-  /* FIXME: This thread will hang (at least that's what this test wants to
-   *        ensure), but we can't stop it from the caller, unless we'll expose
-   *        pthread_cancel (and similar) to GLib.
-   *        So it will keep hanging till the test process is alive.
+  /* This thread will hang (at least that's what this test wants to ensure), but
+   * we can't stop it from the caller, unless we'll expose pthread_cancel() (and
+   * similar) to GLib. So it will keep hanging until the test subprocess exits.
    */
   cancelling_thread = g_thread_new ("/cancellable/reset-on-cancelled-callback-hangs",
                                     (GThreadFunc) g_cancellable_cancel,
