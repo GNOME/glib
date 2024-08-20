@@ -809,14 +809,13 @@ _g_unix_mounts_get_from_file (const char *table_path,
 {
   struct mnttab mntent;
   FILE *file;
-  const char *read_file;
   GUnixMountEntry *mount_entry;
   GPtrArray *return_array = NULL;
 
   if (time_read_out != NULL)
     *time_read_out = get_mounts_timestamp ();
 
-  file = setmntent (read_file, "re");
+  file = setmntent (table_path, "re");
   if (file == NULL)
     return NULL;
 
@@ -1290,7 +1289,6 @@ _g_unix_mount_points_get_from_file (const char *table_path,
 #endif
   struct mntent *mntent;
   FILE *file;
-  char *read_file;
   GUnixMountPoint *mount_point;
   GPtrArray *return_array = NULL;
 
@@ -1401,7 +1399,6 @@ _g_unix_mount_points_get_from_file (const char *table_path,
 {
   struct mnttab mntent;
   FILE *file;
-  char *read_file;
   GUnixMountPoint *mount_point;
   GPtrArray *return_array = NULL;
 
@@ -1597,7 +1594,6 @@ _g_unix_mount_points_get_from_file (const char *table_path,
 {
   struct mntent *mntent;
   FILE *file;
-  char *read_file;
   GUnixMountPoint *mount_point;
   AixMountTableEntry mntent;
   GPtrArray *return_array = NULL;
