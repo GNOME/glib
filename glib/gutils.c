@@ -1940,6 +1940,7 @@ g_build_user_config_dir (void)
   if (!config_dir || !config_dir[0])
     {
       gchar *home_dir = g_build_home_dir ();
+      g_free (config_dir);
       config_dir = g_build_filename (home_dir, ".config", NULL);
       g_free (home_dir);
     }
@@ -2003,6 +2004,7 @@ g_build_user_cache_dir (void)
   if (!cache_dir || !cache_dir[0])
     {
       gchar *home_dir = g_build_home_dir ();
+      g_free (cache_dir);
       cache_dir = g_build_filename (home_dir, ".cache", NULL);
       g_free (home_dir);
     }
@@ -2065,6 +2067,7 @@ g_build_user_state_dir (void)
   if (!state_dir || !state_dir[0])
     {
       gchar *home_dir = g_build_home_dir ();
+      g_free (state_dir);
       state_dir = g_build_filename (home_dir, ".local/state", NULL);
       g_free (home_dir);
     }
