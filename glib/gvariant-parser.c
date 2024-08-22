@@ -1618,7 +1618,11 @@ string_free (AST *ast)
 }
 
 /* Accepts exactly @length hexadecimal digits. No leading sign or `0x`/`0X` prefix allowed.
- * No leading/trailing space allowed. */
+ * No leading/trailing space allowed.
+ *
+ * It's OK to pass a length greater than the actual length of the src buffer,
+ * provided src must be null-terminated.
+ */
 static gboolean
 unicode_unescape (const gchar  *src,
                   gint         *src_ofs,
@@ -1692,6 +1696,9 @@ string_parse (TokenStream  *stream,
   length = strlen (token);
   quote = token[0];
 
+  /* The output will always be at least one byte smaller than the input,
+   * because we skip over the initial quote character.
+   */
   str = g_malloc (length);
   g_assert (quote == '"' || quote == '\'');
   j = 0;
@@ -1823,6 +1830,9 @@ bytestring_parse (TokenStream  *stream,
   length = strlen (token);
   quote = token[1];
 
+  /* The output will always be smaller than the input, because we skip over the
+   * initial b and the quote character.
+   */
   str = g_malloc (length);
   g_assert (quote == '"' || quote == '\'');
   j = 0;
