@@ -641,6 +641,8 @@ typedef struct {
   GSource       source;
 
   /* Atomic: */
+  GSource     **self_ptr;
+  /* Atomic: */
   GCancellable *cancellable;
   gulong        cancelled_handler;
   /* Atomic: */
@@ -662,9 +664,15 @@ static void
 cancellable_source_cancelled (GCancellable *cancellable,
 			      gpointer      user_data)
 {
-  GSource *source = user_data;
-  GCancellableSource *cancellable_source = (GCancellableSource *) source;
+  GSource *source = g_atomic_pointer_exchange ((GSource **) user_data, NULL);
+  GCancellableSource *cancellable_source;
   gboolean callback_was_not_called G_GNUC_UNUSED;
+
+  /* The source is being disposed, so don't bother marking it as ready */
+  if (source == NULL)
+    return;
+
+  cancellable_source = (GCancellableSource *) source;
 
   g_source_ref (source);
   g_source_set_ready_time (source, 0);
@@ -688,7 +696,10 @@ cancellable_source_prepare (GSource *source,
 
   cancellable = g_atomic_pointer_get (&cancellable_source->cancellable);
   if (cancellable && !g_atomic_int_get (&cancellable->priv->cancelled_running))
-    g_atomic_int_set (&cancellable_source->cancelled_callback_called, FALSE);
+    {
+      g_atomic_int_set (&cancellable_source->cancelled_callback_called, FALSE);
+      g_atomic_pointer_set (cancellable_source->self_ptr, source);
+    }
 
   return FALSE;
 }
@@ -715,7 +726,10 @@ cancellable_source_dispose (GSource *source)
 
   if (cancellable)
     {
-      if (g_atomic_int_get (&cancellable->priv->cancelled_running))
+      GSource *self_ptr =
+        g_atomic_pointer_exchange (cancellable_source->self_ptr, NULL);
+
+      if (self_ptr == NULL)
         {
           /* There can be a race here: if thread A has called
            * g_cancellable_cancel() and has got as far as committing to call
@@ -810,14 +824,17 @@ g_cancellable_source_new (GCancellable *cancellable)
   if (cancellable)
     {
       cancellable_source->cancellable = g_object_ref (cancellable);
+      cancellable_source->self_ptr = g_new (GSource *, 1);
+      g_atomic_pointer_set (cancellable_source->self_ptr, source);
 
       /* We intentionally don't use g_cancellable_connect() here,
        * because we don't want the "at most once" behavior.
        */
       cancellable_source->cancelled_handler =
-        g_signal_connect (cancellable, "cancelled",
-                          G_CALLBACK (cancellable_source_cancelled),
-                          source);
+        g_signal_connect_data (cancellable, "cancelled",
+                               G_CALLBACK (cancellable_source_cancelled),
+                               cancellable_source->self_ptr,
+                               (GClosureNotify) g_free, G_CONNECT_DEFAULT);
       if (g_cancellable_is_cancelled (cancellable))
         g_source_set_ready_time (source, 0);
     }
