@@ -1435,7 +1435,7 @@ g_source_get_context (GSource *source)
  *
  * Using this API forces the linear scanning of event sources on each
  * main loop iteration.  Newly-written event sources should try to use
- * [method@GLib.Source.add_unix_fd] instead of this API.
+ * `g_source_add_unix_fd` instead of this API.
  **/
 void
 g_source_add_poll (GSource *source,
@@ -4668,7 +4668,7 @@ g_main_context_poll_unlocked (GMainContext *context,
  *
  * Adds a file descriptor to the set of file descriptors polled for
  * this context. This will very seldom be used directly. Instead
- * a typical event source will use [method@GLib.Source.add_unix_fd] instead.
+ * a typical event source will use `g_source_add_unix_fd` instead.
  **/
 void
 g_main_context_add_poll (GMainContext *context,

@@ -21,7 +21,8 @@ pacman --noconfirm -S --needed \
     "${MINGW_PACKAGE_PREFIX}"-python-pip \
     "${MINGW_PACKAGE_PREFIX}"-toolchain \
     "${MINGW_PACKAGE_PREFIX}"-zlib \
-    "${MINGW_PACKAGE_PREFIX}"-libelf
+    "${MINGW_PACKAGE_PREFIX}"-libelf \
+    "${MINGW_PACKAGE_PREFIX}"-gdb
 
 mkdir -p _coverage
 mkdir -p _ccache
