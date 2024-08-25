@@ -677,7 +677,7 @@ functions = [
   'copy_file_range',
   'endmntent',
   'endservent',
-  'epoll_create',
+  'epoll_create1',
   'fallocate',
   'fchmod',
   'fchown',
