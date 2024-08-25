@@ -391,8 +391,6 @@ if glib_have_carbon
   platform_deps += [framework_dep]
 endif
 
-glib_sources += files('gthread-@0@.c'.format(threads_implementation))
-
 if enable_dtrace
   glib_dtrace_obj = dtrace_obj_gen.process('glib_probes.d')
   glib_dtrace_hdr = dtrace_hdr_gen.process('glib_probes.d')

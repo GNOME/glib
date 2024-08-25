@@ -66,6 +66,63 @@
 #include "glib_trace.h"
 #include "gtrace-private.h"
 
+/* In order that the API can be defined in one place (this file), the platform
+ * specific code is moved out into separate files so this one doesn’t turn into
+ * a massive #ifdef tangle.
+ *
+ * To avoid the functions in this file becoming tiny trampolines (`jmp` to the
+ * relevant `_impl` function only), which would be a performance hit on some
+ * hot paths, #include the platform specific implementations. They are marked as
+ * `inline` so should be inlined correctly by the compiler without the need for
+ * link time optimisation or any fancy tricks.
+ */
+static inline void g_mutex_init_impl (GMutex *mutex);
+static inline void g_mutex_clear_impl (GMutex *mutex);
+static inline void g_mutex_lock_impl (GMutex *mutex);
+static inline void g_mutex_unlock_impl (GMutex *mutex);
+static inline gboolean g_mutex_trylock_impl (GMutex *mutex);
+
+static inline void g_rec_mutex_init_impl (GRecMutex *rec_mutex);
+static inline void g_rec_mutex_clear_impl (GRecMutex *rec_mutex);
+static inline void g_rec_mutex_lock_impl (GRecMutex *mutex);
+static inline void g_rec_mutex_unlock_impl (GRecMutex *rec_mutex);
+static inline gboolean g_rec_mutex_trylock_impl (GRecMutex *rec_mutex);
+
+static inline void g_rw_lock_init_impl (GRWLock *rw_lock);
+static inline void g_rw_lock_clear_impl (GRWLock *rw_lock);
+static inline void g_rw_lock_writer_lock_impl (GRWLock *rw_lock);
+static inline gboolean g_rw_lock_writer_trylock_impl (GRWLock *rw_lock);
+static inline void g_rw_lock_writer_unlock_impl (GRWLock *rw_lock);
+static inline void g_rw_lock_reader_lock_impl (GRWLock *rw_lock);
+static inline gboolean g_rw_lock_reader_trylock_impl (GRWLock *rw_lock);
+static inline void g_rw_lock_reader_unlock_impl (GRWLock *rw_lock);
+
+static inline void g_cond_init_impl (GCond *cond);
+static inline void g_cond_clear_impl (GCond *cond);
+static inline void g_cond_wait_impl (GCond  *cond,
+                                     GMutex *mutex);
+static inline void g_cond_signal_impl (GCond *cond);
+static inline void g_cond_broadcast_impl (GCond *cond);
+static inline gboolean g_cond_wait_until_impl (GCond  *cond,
+                                               GMutex *mutex,
+                                               gint64  end_time);
+
+static inline gpointer g_private_get_impl (GPrivate *key);
+static inline void g_private_set_impl (GPrivate *key,
+                                       gpointer  value);
+static inline void g_private_replace_impl (GPrivate *key,
+                                           gpointer  value);
+
+static inline void g_thread_yield_impl (void);
+
+#if defined(THREADS_POSIX)
+#include "gthread-posix.c"
+#elif defined(THREADS_WIN32)
+#include "gthread-win32.c"
+#else
+#error "No threads implementation"
+#endif
+
 /* G_LOCK Documentation {{{1 ---------------------------------------------- */
 
 /**
