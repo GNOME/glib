@@ -541,11 +541,9 @@ g_cancellable_cancel (GCancellable *cancellable)
  * signal. Also handles the race condition that may happen
  * if the cancellable is cancelled right before connecting.
  *
- * @callback is called exactly once each time @cancellable is cancelled,
- * either directly at the time of the connect if @cancellable is already
- * cancelled, or when @cancellable is cancelled in some thread.
- * In case the cancellable is reset via [method@Gio.Cancellable.reset]
- * then the callback can be called again if the @cancellable is cancelled.
+ * @callback is called at most once, either directly at the
+ * time of the connect if @cancellable is already cancelled,
+ * or when @cancellable is cancelled in some thread.
  *
  * @data_destroy_func will be called when the handler is
  * disconnected, or immediately if the cancellable is already
