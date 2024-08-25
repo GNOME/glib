@@ -50,6 +50,8 @@
  *
  * ![](menu-example.png)
  *
+ * While this kind of deeply nested menu is no longer considered good UI
+ * practice, it serves as a good example of the concepts in `GMenuModel`.
  * There are 8 ‘menus’ visible in the screenshot: one menubar, two
  * submenus and 5 sections:
  *
