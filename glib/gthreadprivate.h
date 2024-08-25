@@ -175,43 +175,4 @@ guint           g_thread_n_created              (void);
 gpointer        g_private_set_alloc0            (GPrivate       *key,
                                                  gsize           size);
 
-void g_mutex_init_impl (GMutex *mutex);
-void g_mutex_clear_impl (GMutex *mutex);
-void g_mutex_lock_impl (GMutex *mutex);
-void g_mutex_unlock_impl (GMutex *mutex);
-gboolean g_mutex_trylock_impl (GMutex *mutex);
-
-void g_rec_mutex_init_impl (GRecMutex *rec_mutex);
-void g_rec_mutex_clear_impl (GRecMutex *rec_mutex);
-void g_rec_mutex_lock_impl (GRecMutex *mutex);
-void g_rec_mutex_unlock_impl (GRecMutex *rec_mutex);
-gboolean g_rec_mutex_trylock_impl (GRecMutex *rec_mutex);
-
-void g_rw_lock_init_impl (GRWLock *rw_lock);
-void g_rw_lock_clear_impl (GRWLock *rw_lock);
-void g_rw_lock_writer_lock_impl (GRWLock *rw_lock);
-gboolean g_rw_lock_writer_trylock_impl (GRWLock *rw_lock);
-void g_rw_lock_writer_unlock_impl (GRWLock *rw_lock);
-void g_rw_lock_reader_lock_impl (GRWLock *rw_lock);
-gboolean g_rw_lock_reader_trylock_impl (GRWLock *rw_lock);
-void g_rw_lock_reader_unlock_impl (GRWLock *rw_lock);
-
-void g_cond_init_impl (GCond *cond);
-void g_cond_clear_impl (GCond *cond);
-void g_cond_wait_impl (GCond  *cond,
-                       GMutex *mutex);
-void g_cond_signal_impl (GCond *cond);
-void g_cond_broadcast_impl (GCond *cond);
-gboolean g_cond_wait_until_impl (GCond  *cond,
-                                 GMutex *mutex,
-                                 gint64  end_time);
-
-gpointer g_private_get_impl (GPrivate *key);
-void g_private_set_impl (GPrivate *key,
-                         gpointer  value);
-void g_private_replace_impl (GPrivate *key,
-                             gpointer  value);
-
-void g_thread_yield_impl (void);
-
 #endif /* __G_THREADPRIVATE_H__ */
