@@ -115,21 +115,21 @@ option('oss_fuzz',
 
 option('glib_debug',
        type : 'feature',
-       value : 'auto',
+       value : 'enabled',
        yield : true,
-       description : 'Enable GLib debug infrastructure (see docs/macros.txt)')
+       description : 'Enable GLib debug infrastructure (distros typically want this disabled in production; see docs/macros.md)')
 
 option('glib_assert',
        type : 'boolean',
        value : true,
        yield : true,
-       description : 'Enable GLib assertion (see docs/macros.txt)')
+       description : 'Enable GLib assertion (see docs/macros.md)')
 
 option('glib_checks',
        type : 'boolean',
        value : true,
        yield : true,
-       description : 'Enable GLib checks such as API guards (see docs/macros.txt)')
+       description : 'Enable GLib checks such as API guards (see docs/macros.md)')
 
 option('libelf',
        type : 'feature',

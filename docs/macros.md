@@ -61,6 +61,10 @@ Quite a bit of additional debugging code is compiled into GLib when this
 macro is defined, and since it is a globally visible define, third-party code
 may be affected by it similarly to `G_DISABLE_ASSERT`.
 
+Some of these checks can be relatively expensive at runtime, as they affect
+every GObject type cast. Distributions are recommended to disable
+`G_ENABLE_DEBUG` in stable release builds.
+
 The additional code executed/compiled for this macro currently includes the
 following, but this is not an exhaustive list:
  - extra validity checks for `GDate`
