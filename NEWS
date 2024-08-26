@@ -1,3 +1,21 @@
+Overview of changes in GLib 2.80.5, 2024-08-26
+==============================================
+
+* Bugs fixed:
+  - !4134 Backport !4130 “Fix gsocketclient-slow test on FreeBSD” to glib-2-80
+  - !4151 Backport !4150 “glib-private: fix build under Cygwin” to glib-2-80
+  - !4153 Backport !4152 “tests: Fix compilation of resolver-parsing test on
+    FreeBSD” to glib-2-80
+  - !4160 Backport !4159 “introspection: Correct GIO-Windows pkg-config name” to
+    glib-2-80
+  - !4191 po: Updated Romanian Translation for the glib-2-80 branch
+  - !4201 Updated translations for Hindi for glib 2.80 branch.
+
+* Translation updates:
+  - Hindi (Karunakar Guntupalli)
+  - Romanian (Daniel Șerbănescu)
+
+
 Overview of changes in GLib 2.80.4, 2024-07-08
 ==============================================
 
