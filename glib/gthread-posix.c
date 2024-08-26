@@ -146,19 +146,19 @@ g_mutex_get_impl (GMutex *mutex)
 }
 
 
-void
+G_ALWAYS_INLINE static inline void
 g_mutex_init_impl (GMutex *mutex)
 {
   mutex->p = g_mutex_impl_new ();
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_mutex_clear_impl (GMutex *mutex)
 {
   g_mutex_impl_free (mutex->p);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_mutex_lock_impl (GMutex *mutex)
 {
   gint status;
@@ -167,7 +167,7 @@ g_mutex_lock_impl (GMutex *mutex)
     g_thread_abort (status, "pthread_mutex_lock");
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_mutex_unlock_impl (GMutex *mutex)
 {
   gint status;
@@ -176,7 +176,7 @@ g_mutex_unlock_impl (GMutex *mutex)
     g_thread_abort (status, "pthread_mutex_unlock");
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_mutex_trylock_impl (GMutex *mutex)
 {
   gint status;
@@ -235,31 +235,31 @@ g_rec_mutex_get_impl (GRecMutex *rec_mutex)
   return impl;
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rec_mutex_init_impl (GRecMutex *rec_mutex)
 {
   rec_mutex->p = g_rec_mutex_impl_new ();
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rec_mutex_clear_impl (GRecMutex *rec_mutex)
 {
   g_rec_mutex_impl_free (rec_mutex->p);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rec_mutex_lock_impl (GRecMutex *mutex)
 {
   pthread_mutex_lock (g_rec_mutex_get_impl (mutex));
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rec_mutex_unlock_impl (GRecMutex *rec_mutex)
 {
   pthread_mutex_unlock (rec_mutex->p);
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_rec_mutex_trylock_impl (GRecMutex *rec_mutex)
 {
   if (pthread_mutex_trylock (g_rec_mutex_get_impl (rec_mutex)) != 0)
@@ -309,19 +309,19 @@ g_rw_lock_get_impl (GRWLock *lock)
   return impl;
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_init_impl (GRWLock *rw_lock)
 {
   rw_lock->p = g_rw_lock_impl_new ();
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_clear_impl (GRWLock *rw_lock)
 {
   g_rw_lock_impl_free (rw_lock->p);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_writer_lock_impl (GRWLock *rw_lock)
 {
   int retval = pthread_rwlock_wrlock (g_rw_lock_get_impl (rw_lock));
@@ -330,7 +330,7 @@ g_rw_lock_writer_lock_impl (GRWLock *rw_lock)
     g_critical ("Failed to get RW lock %p: %s", rw_lock, g_strerror (retval));
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_rw_lock_writer_trylock_impl (GRWLock *rw_lock)
 {
   if (pthread_rwlock_trywrlock (g_rw_lock_get_impl (rw_lock)) != 0)
@@ -339,13 +339,13 @@ g_rw_lock_writer_trylock_impl (GRWLock *rw_lock)
   return TRUE;
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_writer_unlock_impl (GRWLock *rw_lock)
 {
   pthread_rwlock_unlock (g_rw_lock_get_impl (rw_lock));
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_reader_lock_impl (GRWLock *rw_lock)
 {
   int retval = pthread_rwlock_rdlock (g_rw_lock_get_impl (rw_lock));
@@ -354,7 +354,7 @@ g_rw_lock_reader_lock_impl (GRWLock *rw_lock)
     g_critical ("Failed to get RW lock %p: %s", rw_lock, g_strerror (retval));
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_rw_lock_reader_trylock_impl (GRWLock *rw_lock)
 {
   if (pthread_rwlock_tryrdlock (g_rw_lock_get_impl (rw_lock)) != 0)
@@ -363,7 +363,7 @@ g_rw_lock_reader_trylock_impl (GRWLock *rw_lock)
   return TRUE;
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_reader_unlock_impl (GRWLock *rw_lock)
 {
   pthread_rwlock_unlock (g_rw_lock_get_impl (rw_lock));
@@ -425,19 +425,19 @@ g_cond_get_impl (GCond *cond)
   return impl;
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_init_impl (GCond *cond)
 {
   cond->p = g_cond_impl_new ();
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_clear_impl (GCond *cond)
 {
   g_cond_impl_free (cond->p);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_wait_impl (GCond  *cond,
                   GMutex *mutex)
 {
@@ -447,7 +447,7 @@ g_cond_wait_impl (GCond  *cond,
     g_thread_abort (status, "pthread_cond_wait");
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_signal_impl (GCond *cond)
 {
   gint status;
@@ -456,7 +456,7 @@ g_cond_signal_impl (GCond *cond)
     g_thread_abort (status, "pthread_cond_signal");
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_broadcast_impl (GCond *cond)
 {
   gint status;
@@ -465,7 +465,7 @@ g_cond_broadcast_impl (GCond *cond)
     g_thread_abort (status, "pthread_cond_broadcast");
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_cond_wait_until_impl (GCond  *cond,
                         GMutex *mutex,
                         gint64  end_time)
@@ -642,14 +642,14 @@ _g_private_get_impl (GPrivate *key)
     }
 }
 
-gpointer
+G_ALWAYS_INLINE static inline gpointer
 g_private_get_impl (GPrivate *key)
 {
   /* quote POSIX: No errors are returned from pthread_getspecific(). */
   return pthread_getspecific (_g_private_get_impl (key));
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_private_set_impl (GPrivate *key,
                     gpointer  value)
 {
@@ -659,7 +659,7 @@ g_private_set_impl (GPrivate *key,
     g_thread_abort (status, "pthread_setspecific");
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_private_replace_impl (GPrivate *key,
                         gpointer  value)
 {
@@ -778,7 +778,7 @@ g_system_thread_new (GThreadFunc proxy,
   return (GRealThread *) thread;
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_thread_yield_impl (void)
 {
   sched_yield ();
@@ -939,7 +939,7 @@ g_mutex_unlock_slowpath (GMutex *mutex,
   g_futex_simple (&mutex->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);
 }
 
-void
+inline void
 g_mutex_lock_impl (GMutex *mutex)
 {
   /* empty -> owned and we're done.  Anything else, and we need to wait... */
