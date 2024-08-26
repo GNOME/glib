@@ -16,6 +16,7 @@ variables:
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v19"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v3"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v39.1"
+  GOBJECT_INTROSPECTION_TAG: "1.80.1"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
@@ -105,6 +106,17 @@ variables:
       when: manual
       allow_failure: true
 
+.build-gobject-introspection:
+  before_script:
+    - mkdir -p gobject-introspection
+    - git clone --branch $GOBJECT_INTROSPECTION_TAG https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
+    - meson gobject-introspection gobject-introspection/build --prefix=/usr
+    - sudo meson install -C gobject-introspection/build
+  artifacts:
+    expire_in: 3 days
+    paths:
+      - gobject-introspection
+
 .build-linux:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
@@ -167,6 +179,7 @@ style-check-mandatory:
 
 fedora-x86_64:
   extends:
+    - .build-gobject-introspection
     - .build-linux
     - .only-default-and-merges
     - .with-git
@@ -179,6 +192,7 @@ fedora-x86_64:
   before_script:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
+    - !reference [".build-gobject-introspection", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -374,6 +388,7 @@ G_DISABLE_ASSERT:
     - .build-linux
     - .only-schedules-or-manual
     - .with-git
+    - .build-gobject-introspection
   image: $FEDORA_IMAGE
   stage: build
   needs: []
@@ -382,6 +397,7 @@ G_DISABLE_ASSERT:
   before_script:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
+    - !reference [".build-gobject-introspection", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -412,6 +428,7 @@ valgrind:
     - .build-linux
     - .only-schedules-or-manual
     - .with-git
+    - .build-gobject-introspection
   image: $FEDORA_IMAGE
   stage: analysis
   needs: []
@@ -420,6 +437,7 @@ valgrind:
   before_script:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
+    - !reference [".build-gobject-introspection", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -748,6 +766,7 @@ scan-build:
   extends:
     - .build-linux
     - .only-schedules-or-manual
+    - .build-gobject-introspection
   image: $FEDORA_IMAGE
   stage: analysis
   needs: []
@@ -768,6 +787,8 @@ scan-build:
       --exclude gio/xdgmime/
       -disable-checker deadcode.DeadStores
       --status-bugs
+  before_script:
+    - !reference [".build-gobject-introspection", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -793,12 +814,15 @@ scan-build:
   extends:
     - .build-linux
     - .only-schedules-or-manual-in-default-branch
+    - .build-gobject-introspection
   image: $COVERITY_IMAGE
   stage: analysis
   needs: []
   variables:
     # cov-build doesn’t like GLIB_DEPRECATED_ENUMERATOR
     CFLAGS: '-DGLIB_DISABLE_DEPRECATION_WARNINGS'
+  before_script:
+    - !reference [".build-gobject-introspection", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror

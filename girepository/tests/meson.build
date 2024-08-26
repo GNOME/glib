@@ -43,6 +43,9 @@ if enable_gir
   ]
 
   girepository_tests += {
+    'callable-info' : {
+      'depends': gio_gir_testing_dep,
+    },
     'function-info' : {
       'dependencies': [libffi_dep],
       'depends': glib_gir_testing_dep,
