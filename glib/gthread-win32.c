@@ -78,30 +78,30 @@ g_thread_abort (gint         status,
  */
 
 /* {{{1 GMutex */
-void
+G_ALWAYS_INLINE static inline void
 g_mutex_init_impl (GMutex *mutex)
 {
   InitializeSRWLock ((gpointer) mutex);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_mutex_clear_impl (GMutex *mutex)
 {
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_mutex_lock_impl (GMutex *mutex)
 {
   AcquireSRWLockExclusive ((gpointer) mutex);
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_mutex_trylock_impl (GMutex *mutex)
 {
   return TryAcquireSRWLockExclusive ((gpointer) mutex);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_mutex_unlock_impl (GMutex *mutex)
 {
   ReleaseSRWLockExclusive ((gpointer) mutex);
@@ -143,31 +143,31 @@ g_rec_mutex_get_impl (GRecMutex *mutex)
   return impl;
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rec_mutex_init_impl (GRecMutex *mutex)
 {
   mutex->p = g_rec_mutex_impl_new ();
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rec_mutex_clear_impl (GRecMutex *mutex)
 {
   g_rec_mutex_impl_free (mutex->p);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rec_mutex_lock_impl (GRecMutex *mutex)
 {
   EnterCriticalSection (g_rec_mutex_get_impl (mutex));
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rec_mutex_unlock_impl (GRecMutex *mutex)
 {
   LeaveCriticalSection (mutex->p);
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_rec_mutex_trylock_impl (GRecMutex *mutex)
 {
   return TryEnterCriticalSection (g_rec_mutex_get_impl (mutex));
@@ -175,85 +175,85 @@ g_rec_mutex_trylock_impl (GRecMutex *mutex)
 
 /* {{{1 GRWLock */
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_init_impl (GRWLock *lock)
 {
   InitializeSRWLock ((gpointer) lock);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_clear_impl (GRWLock *lock)
 {
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_writer_lock_impl (GRWLock *lock)
 {
   AcquireSRWLockExclusive ((gpointer) lock);
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_rw_lock_writer_trylock_impl (GRWLock *lock)
 {
   return TryAcquireSRWLockExclusive ((gpointer) lock);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_writer_unlock_impl (GRWLock *lock)
 {
   ReleaseSRWLockExclusive ((gpointer) lock);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_reader_lock_impl (GRWLock *lock)
 {
   AcquireSRWLockShared ((gpointer) lock);
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_rw_lock_reader_trylock_impl (GRWLock *lock)
 {
   return TryAcquireSRWLockShared ((gpointer) lock);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_rw_lock_reader_unlock_impl (GRWLock *lock)
 {
   ReleaseSRWLockShared ((gpointer) lock);
 }
 
 /* {{{1 GCond */
-void
+G_ALWAYS_INLINE static inline void
 g_cond_init_impl (GCond *cond)
 {
   InitializeConditionVariable ((gpointer) cond);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_clear_impl (GCond *cond)
 {
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_signal_impl (GCond *cond)
 {
   WakeConditionVariable ((gpointer) cond);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_broadcast_impl (GCond *cond)
 {
   WakeAllConditionVariable ((gpointer) cond);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_cond_wait_impl (GCond  *cond,
                   GMutex *entered_mutex)
 {
   SleepConditionVariableSRW ((gpointer) cond, (gpointer) entered_mutex, INFINITE, 0);
 }
 
-gboolean
+G_ALWAYS_INLINE static inline gboolean
 g_cond_wait_until_impl (GCond  *cond,
                         GMutex *entered_mutex,
                         gint64  end_time)
@@ -365,20 +365,20 @@ _g_private_get_impl (GPrivate *key)
   return impl;
 }
 
-gpointer
+G_ALWAYS_INLINE static inline gpointer
 g_private_get_impl (GPrivate *key)
 {
   return TlsGetValue (_g_private_get_impl (key));
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_private_set_impl (GPrivate *key,
                     gpointer  value)
 {
   TlsSetValue (_g_private_get_impl (key), value);
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_private_replace_impl (GPrivate *key,
                         gpointer  value)
 {
@@ -521,7 +521,7 @@ error:
   }
 }
 
-void
+G_ALWAYS_INLINE static inline void
 g_thread_yield_impl (void)
 {
   Sleep(0);
