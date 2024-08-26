@@ -716,12 +716,12 @@ g_io_channel_get_buffer_condition (GIOChannel *channel)
 
   if (channel->encoding)
     {
-      if (channel->encoded_read_buf && (channel->encoded_read_buf->len > 0))
+      if (!channel->encoded_read_buf || channel->encoded_read_buf->len > 0)
         condition |= G_IO_IN; /* Only return if we have full characters */
     }
   else
     {
-      if (channel->read_buf && (channel->read_buf->len > 0))
+      if (!channel->read_buf || channel->read_buf->len > 0)
         condition |= G_IO_IN;
     }
 

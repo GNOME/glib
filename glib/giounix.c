@@ -101,8 +101,6 @@ static GIOStatus	g_io_unix_set_flags	(GIOChannel   *channel,
 						 GError      **err);
 static GIOFlags 	g_io_unix_get_flags	(GIOChannel   *channel);
 
-static gboolean g_io_unix_prepare  (GSource     *source,
-				    gint        *timeout);
 static gboolean g_io_unix_check    (GSource     *source);
 static gboolean g_io_unix_dispatch (GSource     *source,
 				    GSourceFunc  callback,
@@ -110,7 +108,7 @@ static gboolean g_io_unix_dispatch (GSource     *source,
 static void     g_io_unix_finalize (GSource     *source);
 
 GSourceFuncs g_io_watch_funcs = {
-  g_io_unix_prepare,
+  NULL,
   g_io_unix_check,
   g_io_unix_dispatch,
   g_io_unix_finalize,
@@ -129,25 +127,13 @@ static GIOFuncs unix_channel_funcs = {
 };
 
 static gboolean 
-g_io_unix_prepare (GSource  *source,
-		   gint     *timeout)
-{
-  GIOUnixWatch *watch = (GIOUnixWatch *)source;
-  GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
-
-  /* Only return TRUE here if _all_ bits in watch->condition will be set
-   */
-  return ((watch->condition & buffer_condition) == watch->condition);
-}
-
-static gboolean 
 g_io_unix_check (GSource  *source)
 {
   GIOUnixWatch *watch = (GIOUnixWatch *)source;
   GIOCondition buffer_condition = g_io_channel_get_buffer_condition (watch->channel);
   GIOCondition poll_condition = watch->pollfd.revents;
 
-  return ((poll_condition | buffer_condition) & watch->condition);
+  return (poll_condition & watch->condition) && (buffer_condition & watch->condition);
 }
 
 static gboolean
