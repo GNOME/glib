@@ -1,3 +1,39 @@
+Overview of changes in GLib 2.82.0, 2024-08-26
+==============================================
+
+* Change the default value of -Dglib_debug from `auto` to `enabled` for
+  developers — distributions will almost certainly want to override it to
+  `-Dglib_debug=disabled` for package release builds though; see #3421
+
+* Revert per-instance locking changes in `GCancellable` as they introduced new
+  races (#3448)
+
+* Bugs fixed:
+  - #3417 Investigate trampoline performance implications in g_mutex_lock_impl()
+    changes (Philip Withnall)
+  - #3421 Default value for glib_debug meson option (Philip Withnall)
+  - #3428 wrong comment in gmessage.c:escape_string
+  - #3450 Should check for epoll_create1 rather than epoll_create (Philip
+    Withnall)
+  - #3451 Gio.MenuModel docs have an outdated UI example (Philip Withnall)
+  - !4195 Replace hi.po with updated translations.
+  - !4197 gunixmounts: Fix use of uninitialised variable
+  - !4198 tests: Run expected-to-hang cancellable tests in subprocesses
+  - !4205 CI/msys2-mingw32: Set the G_DEBUGGER environment variable
+  - !4207 Update Chinese translation
+  - !4208 Update Swedish translation
+  - !4211 Revert !2765 “GCancellable: Use per-instance mutex logic instead of
+    global critical sections” for glib-2-82
+  - !4213 Various small backports to glib-2-82
+  - !4215 Backport !4214 “gthread: Move thread _impl functions to static inlines
+    for speed” to glib-2-82
+
+* Translation updates:
+  - Chinese (China) (lumingzh)
+  - Hindi (Karunakar Guntupalli)
+  - Swedish (Anders Jonsson)
+
+
 Overview of changes in GLib 2.81.2, 2024-08-16
 ==============================================
 
