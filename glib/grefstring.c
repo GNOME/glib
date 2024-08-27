@@ -234,3 +234,29 @@ g_ref_string_length (char *str)
 
   return g_atomic_rc_box_get_size (str) - 1;
 }
+
+/**
+ * g_ref_string_equal:
+ * @str1: a reference counted string
+ * @str2: a reference counted string
+ *
+ * Compares two ref-counted strings for byte-by-byte equality.
+ *
+ * It can be passed to [func@GLib.HashTable.new] as the key equality function,
+ * and behaves exactly the same as [func@GLib.str_equal] (or `strcmp()`), but
+ * can return slightly faster as it can check the string lengths before checking
+ * all the bytes.
+ *
+ * Returns: `TRUE` if the strings are equal, otherwise `FALSE`
+ *
+ * Since: 2.84
+ */
+gboolean
+g_ref_string_equal (const char *str1,
+                    const char *str2)
+{
+  if (g_atomic_rc_box_get_size ((char *) str1) != g_atomic_rc_box_get_size ((char *) str2))
+    return FALSE;
+
+  return strcmp (str1, str2) == 0;
+}
