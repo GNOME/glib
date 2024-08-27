@@ -254,17 +254,28 @@ test_get_mount_entries (void)
   int fd = -1;
   char *tmp_file = NULL;
   gboolean res;
+#ifdef HAVE_LIBMOUNT
+  /* This is an edited /proc/self/mountinfo file, used because that’s what
+   * libmount parses by default, and it allows for the representation of root_path. */
   const char *fake_mtab = "# Some comment\n"
     "67 1 253:1 / / rw,relatime shared:1 - ext4 /dev/mapper/fedora-root rw,seclabel\n"
     "35 67 0:6 / /dev rw,nosuid shared:2 - devtmpfs devtmpfs rw,seclabel,size=4096k,nr_inodes=1995515,mode=755,inode64\n"
     "1537 1080 253:1 /usr/share/fonts /run/host/fonts ro,nosuid,nodev,relatime master:1 - ext4 /dev/mapper/fedora-root rw,seclabel\n";
+#else
+  /* This is an edited /proc/mounts, used because that’s what getmntent() parses
+   * (and it can’t parse mountinfo files). Unfortunately this means that
+   * non-NULL root_path values are not representable. */
+  const char *fake_mtab = "# Some comment\n"
+    "/dev/mapper/fedora-root / ext4 rw,relatime,seclabel 0 0\n"
+    "devtmpfs /dev devtmpfs rw,nosuid,seclabel,size=4096k,nr_inodes=1995515,mode=755,inode64 0 0\n";
+#endif
   const struct
     {
       const char *device_path;
       const char *fs_type;
       const char *mount_path;
       const char *options;
-      const char *root_path;
+      const char *root_path;  /* if supported */
     }
   expected_entries[] =
     {
@@ -282,6 +293,7 @@ test_get_mount_entries (void)
         .options = "rw,nosuid,seclabel,size=4096k,nr_inodes=1995515,mode=755,inode64",
         .root_path = "/",
       },
+#ifdef HAVE_LIBMOUNT
       {
         .device_path = "/dev/mapper/fedora-root",
         .fs_type = "ext4",
@@ -289,6 +301,7 @@ test_get_mount_entries (void)
         .options = "ro,nosuid,nodev,relatime,seclabel",
         .root_path = "/usr/share/fonts",
       },
+#endif
     };
 
   g_test_summary ("Basic test of g_unix_mounts_get_from_file()");
@@ -322,7 +335,13 @@ test_get_mount_entries (void)
       g_assert_cmpstr (g_unix_mount_get_fs_type (entries[i]), ==, expected_entries[i].fs_type);
       g_assert_cmpstr (g_unix_mount_get_mount_path (entries[i]), ==, expected_entries[i].mount_path);
       g_assert_cmpstr (g_unix_mount_get_options (entries[i]), ==, expected_entries[i].options);
+
+      /* root_path is only supported by libmount */
+#ifdef HAVE_LIBMOUNT
       g_assert_cmpstr (g_unix_mount_get_root_path (entries[i]), ==, expected_entries[i].root_path);
+#else
+      g_assert_null (g_unix_mount_get_root_path (entries[i]));
+#endif
     }
 
   for (size_t i = 0; i < n_entries; i++)
