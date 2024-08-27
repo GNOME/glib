@@ -15,7 +15,9 @@ lint_scripts = [
 if have_bash
   foreach test_name : lint_scripts
     test(
-      test_name, files(test_name),
+      test_name,
+      bash,
+      args : [files(test_name)],
       env : test_env,
       suite : ['lint', 'no-valgrind'],
       protocol : 'tap',
