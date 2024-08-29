@@ -73,7 +73,8 @@ Please follow the [contribution guide](./CONTRIBUTING.md) to know how to
 start contributing to GLib.
 
 Patches should be [submitted as merge requests](https://gitlab.gnome.org/GNOME/glib/-/merge_requests/new)
-to gitlab.gnome.org. If the patch fixes an existing issue, please refer to the
+to gitlab.gnome.org. Note that you will need to be logged in to the site to use
+this page. If the patch fixes an existing issue, please refer to the
 issue in your commit message with the following notation (for issue 123):
 ```
 Closes: #123
