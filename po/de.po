@@ -11,7 +11,7 @@
 # Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>, 2012.
 # Bernd Homuth <dev@hmt.im>, 2015.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2011, 2015-2016.
-# Tim Sabsch <tim@sabsch.com>, 2019-2023.
+# Tim Sabsch <tim@sabsch.com>, 2019-2024.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2010-2013, 2015-2018, 2020-2021.
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2021-2023.
 # Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024.
@@ -19,17 +19,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/issues/new\n"
-"POT-Creation-Date: 2024-04-01 14:35+0000\n"
-"PO-Revision-Date: 2024-04-10 22:18+0200\n"
-"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
+"POT-Creation-Date: 2024-08-26 10:31+0000\n"
+"PO-Revision-Date: 2024-08-30 18:26+0200\n"
+"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: gio/gappinfo.c:339
 msgid "Setting default applications not supported yet"
@@ -321,7 +321,7 @@ msgstr "Datenstrom ist bereits geschlossen"
 msgid "Truncate not supported on base stream"
 msgstr "Abschneiden wird vom Basis-Datenstrom nicht unterstützt"
 
-#: gio/gcancellable.c:326 gio/gdbusconnection.c:1844 gio/gdbusprivate.c:1434
+#: gio/gcancellable.c:326 gio/gdbusconnection.c:1994 gio/gdbusprivate.c:1434
 #: gio/gsimpleasyncresult.c:871 gio/gsimpleasyncresult.c:897
 #, c-format
 msgid "Operation was cancelled"
@@ -557,7 +557,7 @@ msgstr ""
 "Adresse des Sitzungsbus konnte nicht ermittelt werden (für dieses "
 "Betriebssystem nicht implementiert)"
 
-#: gio/gdbusaddress.c:1377 gio/gdbusconnection.c:7339
+#: gio/gdbusaddress.c:1377 gio/gdbusconnection.c:7787
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -566,7 +566,7 @@ msgstr ""
 "Bus-Adresse konnte nicht über die Umgebungsvariable DBUS_STARTER_BUS_TYPE "
 "ermittelt werden – unbekannter Wert »%s«"
 
-#: gio/gdbusaddress.c:1386 gio/gdbusconnection.c:7348
+#: gio/gdbusaddress.c:1386 gio/gdbusconnection.c:7796
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -631,8 +631,8 @@ msgstr "Fehler beim Erstellen des Ordners »%s«: %s"
 #: gio/gfile.c:1915 gio/gfile.c:1972 gio/gfile.c:2036 gio/gfile.c:2091
 #: gio/gfile.c:3969 gio/gfile.c:4108 gio/gfile.c:4515 gio/gfile.c:4980
 #: gio/gfile.c:5392 gio/gfile.c:5477 gio/gfile.c:5567 gio/gfile.c:5664
-#: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9004 gio/gfile.c:9094
-#: gio/gfile.c:9178 gio/win32/gwinhttpfile.c:453
+#: gio/gfile.c:5751 gio/gfile.c:5850 gio/gfile.c:9027 gio/gfile.c:9117
+#: gio/gfile.c:9201 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Vorgang wird nicht unterstützt"
 
@@ -698,22 +698,22 @@ msgstr "Fehler beim Öffnen des Schlüsselbundes »%s« zum Schreiben: "
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Außerdem schlug das Entsperren von »%s« ebenso fehl: %s) "
 
-#: gio/gdbusconnection.c:585 gio/gdbusconnection.c:2392
+#: gio/gdbusconnection.c:733 gio/gdbusconnection.c:2748
 msgid "The connection is closed"
 msgstr "Verbindung ist geschlossen"
 
-#: gio/gdbusconnection.c:1876
+#: gio/gdbusconnection.c:2026
 msgid "Timeout was reached"
 msgstr "Zeitüberschreitung wurde erreicht"
 
-#: gio/gdbusconnection.c:2515
+#: gio/gdbusconnection.c:2871
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Beim Erstellen einer client-seitigen Verbindung wurden nicht unterstützte "
 "Flags entdeckt"
 
-#: gio/gdbusconnection.c:4277 gio/gdbusconnection.c:4631
+#: gio/gdbusconnection.c:4719 gio/gdbusconnection.c:5073
 #, c-format
 msgid ""
 "No such interface “org.freedesktop.DBus.Properties” on object at path %s"
@@ -721,80 +721,80 @@ msgstr ""
 "Keine derartige Schnittstelle »org.freedesktop.DBus.Properties« des Objekts "
 "im Pfad %s"
 
-#: gio/gdbusconnection.c:4422
+#: gio/gdbusconnection.c:4864
 #, c-format
 msgid "No such property “%s”"
 msgstr "Keine derartige Eigenschaft »%s«"
 
-#: gio/gdbusconnection.c:4434
+#: gio/gdbusconnection.c:4876
 #, c-format
 msgid "Property “%s” is not readable"
 msgstr "Eigenschaft »%s« ist nicht lesbar"
 
-#: gio/gdbusconnection.c:4445
+#: gio/gdbusconnection.c:4887
 #, c-format
 msgid "Property “%s” is not writable"
 msgstr "Eigenschaft »%s« ist nicht schreibbar"
 
-#: gio/gdbusconnection.c:4465
+#: gio/gdbusconnection.c:4907
 #, c-format
 msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
 msgstr ""
 "Fehler beim Setzen der Eigenschaft »%s«: Erwarteter Typ war »%s«, aber »%s« "
 "wurde erhalten"
 
-#: gio/gdbusconnection.c:4570 gio/gdbusconnection.c:4785
-#: gio/gdbusconnection.c:6762
+#: gio/gdbusconnection.c:5012 gio/gdbusconnection.c:5227
+#: gio/gdbusconnection.c:7207
 #, c-format
 msgid "No such interface “%s”"
 msgstr "Keine derartige Schnittstelle »%s«"
 
-#: gio/gdbusconnection.c:5001 gio/gdbusconnection.c:7279
+#: gio/gdbusconnection.c:5443 gio/gdbusconnection.c:7727
 #, c-format
 msgid "No such interface “%s” on object at path %s"
 msgstr "Keine derartige Schnittstelle »%s« des Objekts im Pfad %s"
 
-#: gio/gdbusconnection.c:5102
+#: gio/gdbusconnection.c:5544
 #, c-format
 msgid "No such method “%s”"
 msgstr "Keine derartige Methode »%s«"
 
-#: gio/gdbusconnection.c:5133
+#: gio/gdbusconnection.c:5575
 #, c-format
 msgid "Type of message, “%s”, does not match expected type “%s”"
 msgstr "Der Nachrichtentyp »%s« entspricht nicht dem erwarteten Typ »%s«"
 
-#: gio/gdbusconnection.c:5336
+#: gio/gdbusconnection.c:5778
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Für die Schnittstelle %s auf %s wurde bereits ein Objekt exportiert"
 
-#: gio/gdbusconnection.c:5563
+#: gio/gdbusconnection.c:6008
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Eigenschaft kann nicht abgefragt werden: %s.%s"
 
-#: gio/gdbusconnection.c:5619
+#: gio/gdbusconnection.c:6064
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Eigenschaft kann nicht gesetzt werden: %s.%s"
 
-#: gio/gdbusconnection.c:5798
+#: gio/gdbusconnection.c:6243
 #, c-format
 msgid "Method “%s” returned type “%s”, but expected “%s”"
 msgstr "Methode »%s« gab Typ »%s« zurück, aber »%s« wurde erwartet"
 
-#: gio/gdbusconnection.c:6874
+#: gio/gdbusconnection.c:7319
 #, c-format
 msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
 msgstr "Methode »%s« in Schnittstelle »%s« mit Signatur »%s« existiert nicht"
 
-#: gio/gdbusconnection.c:6995
+#: gio/gdbusconnection.c:7440
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ein Unterbaum wurde bereits für %s exportiert"
 
-#: gio/gdbusconnection.c:7287
+#: gio/gdbusconnection.c:7735
 #, c-format
 msgid "Object does not exist at path “%s”"
 msgstr "Das Objekt existiert nicht am Pfad »%s«"
@@ -1506,7 +1506,7 @@ msgstr "Es wurde ein GEmblem für GEmblemedIcon erwartet"
 msgid "Containing mount does not exist"
 msgstr "Enthaltender Einhängepunkt existiert nicht"
 
-#: gio/gfile.c:2650 gio/glocalfile.c:2520
+#: gio/gfile.c:2650 gio/glocalfile.c:2521
 msgid "Can’t copy over directory"
 msgstr "Es kann nicht über den Ordner kopiert werden"
 
@@ -3044,8 +3044,8 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1993
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localized key “%s” in schema "
-"“%s” (override file “%s”); ignoring override for this key."
+"Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
+"(override file “%s”); ignoring override for this key."
 msgstr ""
 "Desktop-bezogenes Überschreiben kann für lokalisierten Schlüssel »%s« im "
 "Schema »%s« (überschreibende Datei »%s«) nicht bereitgestellt werden. Die "
@@ -3055,8 +3055,8 @@ msgstr ""
 #: gio/glib-compile-schemas.c:2002
 #, c-format
 msgid ""
-"Cannot provide per-desktop overrides for localized key “%s” in schema "
-"“%s” (override file “%s”) and --strict was specified; exiting."
+"Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
+"(override file “%s”) and --strict was specified; exiting."
 msgstr ""
 "Desktop-bezogenes Überschreiben kann für lokalisierten Schlüssel »%s« im "
 "Schema »%s« (überschreibende Datei »%s«) nicht bereitgestellt werden, und »--"
@@ -3191,8 +3191,8 @@ msgstr "Fehler beim Umbenennen der Datei %s: %s"
 msgid "Can’t rename file, filename already exists"
 msgstr "Datei kann nicht umbenannt werden, da der Dateiname bereits existiert"
 
-#: gio/glocalfile.c:1211 gio/glocalfile.c:2414 gio/glocalfile.c:2442
-#: gio/glocalfile.c:2581 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1211 gio/glocalfile.c:2415 gio/glocalfile.c:2443
+#: gio/glocalfile.c:2582 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "Ungültiger Dateiname"
 
@@ -3240,63 +3240,63 @@ msgstr "Papierkorb-Ordner %s konnte für %s nicht gefunden oder angelegt werden"
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Löschprotokoll-Datei für %s konnte nicht angelegt werden: %s"
 
-#: gio/glocalfile.c:2325
+#: gio/glocalfile.c:2329
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr ""
 "Datei %s kann nicht über Dateisystemgrenzen hinweg in den Papierkorb "
 "verschoben werden"
 
-#: gio/glocalfile.c:2329 gio/glocalfile.c:2385
+#: gio/glocalfile.c:2333 gio/glocalfile.c:2386
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Datei %s kann nicht in den Papierkorb verschoben werden: %s"
 
-#: gio/glocalfile.c:2391
+#: gio/glocalfile.c:2392
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Datei %s kann nicht in den Papierkorb verschoben werden"
 
-#: gio/glocalfile.c:2417
+#: gio/glocalfile.c:2418
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Fehler beim Erstellen des Ordners »%s«: %s"
 
-#: gio/glocalfile.c:2446
+#: gio/glocalfile.c:2447
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Das Dateisystem unterstützt keine symbolische Verknüpfungen"
 
-#: gio/glocalfile.c:2449
+#: gio/glocalfile.c:2450
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Fehler beim Erstellen der symbolischen Verknüpfung %s: %s"
 
-#: gio/glocalfile.c:2492 gio/glocalfile.c:2527 gio/glocalfile.c:2584
+#: gio/glocalfile.c:2493 gio/glocalfile.c:2528 gio/glocalfile.c:2585
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Fehler beim Verschieben der Datei %s: %s"
 
-#: gio/glocalfile.c:2515
+#: gio/glocalfile.c:2516
 msgid "Can’t move directory over directory"
 msgstr "Ordner kann nicht über Ordner verschoben werden"
 
-#: gio/glocalfile.c:2541 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2542 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
 #: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1170
 msgid "Backup file creation failed"
 msgstr "Erstellen der Sicherungsdatei gescheitert"
 
-#: gio/glocalfile.c:2560
+#: gio/glocalfile.c:2561
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Fehler beim Entfernen der Zieldatei: %s"
 
-#: gio/glocalfile.c:2574
+#: gio/glocalfile.c:2575
 msgid "Move between mounts not supported"
 msgstr "Verschieben zwischen Einhängepunkten nicht unterstützt"
 
-#: gio/glocalfile.c:2750
+#: gio/glocalfile.c:2751
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Konnte die Festplattenbelegung von %s nicht bestimmen: %s"
@@ -4537,7 +4537,7 @@ msgstr "Fehler beim Lesen aus dem Dateideskriptor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Fehler beim Schließen des Dateideskriptors: %s"
 
-#: gio/gunixmounts.c:2890 gio/gunixmounts.c:2943
+#: gio/gunixmounts.c:2897 gio/gunixmounts.c:2950
 msgid "Filesystem root"
 msgstr "Wurzelordner des Dateisystems"
 
@@ -4565,16 +4565,19 @@ msgstr "Datenträger unterstützt Auswerfen nicht"
 msgid "volume doesn’t implement eject or eject_with_operation"
 msgstr "Datenträger unterstützt weder Auswerfen noch »eject_with_operation«"
 
+# https://learn.microsoft.com/de-de/windows/win32/shell/fa-verbs
 #: gio/gwin32appinfo.c:5216
 #, c-format
 msgid "The app ‘%s’ in the application object has no verbs"
-msgstr ""
+msgstr "Die Anwendung »%s« im Anwendungsobjekt hat keine Verben"
 
 #: gio/gwin32appinfo.c:5220
 #, c-format
 msgid ""
 "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
 msgstr ""
+"Die Anwendung »%s« und der Handler »%s« im Anwendungsobjekt haben keine "
+"Verben"
 
 #: gio/gwin32inputstream.c:184
 #, c-format
@@ -5667,9 +5670,9 @@ msgid ""
 "element “%s”, or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Seltsames Zeichen »%s«, es wurde entweder ein Attribut oder aber »>« oder "
-"»/« erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht "
-"haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
+"Seltsames Zeichen »%s«, es wurde entweder ein Attribut oder aber »>« "
+"oder »/« erwartet, um das Start-Tag des Elements »%s« abzuschließen; "
+"vielleicht haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
 #: glib/gmarkup.c:1399
 #, c-format
@@ -6215,56 +6218,56 @@ msgstr "Der Kindprozess wurde gewaltsam beendet"
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lesen aus Weiterleitung zum Kind (%s) gescheitert"
 
-#: glib/gspawn.c:2001
+#: glib/gspawn.c:2003
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Abspalten des Kindprozesses »%s« gescheitert (%s)"
 
-#: glib/gspawn.c:2125
+#: glib/gspawn.c:2127
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Abspalten gescheitert (%s)"
 
-#: glib/gspawn.c:2286 glib/gspawn-win32.c:503
+#: glib/gspawn.c:2288 glib/gspawn-win32.c:503
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "In Ordner »%s« (%s) konnte nicht gewechselt werden"
 
-#: glib/gspawn.c:2296
+#: glib/gspawn.c:2298
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Kindprozess »%s« konnte nicht ausgeführt werden (%s)"
 
-#: glib/gspawn.c:2306
+#: glib/gspawn.c:2308
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
 "Öffnen der Datei zur Neuzuweisung des Datei-Deskriptors ist fehlgeschlagen "
 "(%s)"
 
-#: glib/gspawn.c:2314
+#: glib/gspawn.c:2316
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr ""
 "Duplizieren des Datei-Deskriptors für Kindprozess ist fehlgeschlagen (%s)"
 
-#: glib/gspawn.c:2323
+#: glib/gspawn.c:2325
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Abspalten des Kindprozesses gescheitert (%s)"
 
-#: glib/gspawn.c:2331
+#: glib/gspawn.c:2333
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr ""
 "Schließen des Datei-Deskriptors des Kindprozesses ist fehlgeschlagen (%s)"
 
-#: glib/gspawn.c:2339
+#: glib/gspawn.c:2341
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Unbekannter Fehler beim Ausführen des Kindprozesses »%s«"
 
-#: glib/gspawn.c:2363
+#: glib/gspawn.c:2365
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
