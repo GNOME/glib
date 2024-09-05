@@ -804,6 +804,14 @@ g_resource_open_stream (GResource             *resource,
   return stream;
 }
 
+static GBytes *resource_to_bytes (GResource   *resource,
+                                  const char  *path,
+                                  size_t       size,
+                                  const void  *data,
+                                  size_t       data_size,
+                                  guint32      flags,
+                                  GError     **error);
+
 /**
  * g_resource_lookup_data:
  * @resource: A #GResource
@@ -845,6 +853,18 @@ g_resource_lookup_data (GResource             *resource,
   if (!do_lookup (resource, path, lookup_flags, &size, &flags, &data, &data_size, error))
     return NULL;
 
+  return resource_to_bytes (resource, path, size, data, data_size, flags, error);
+}
+
+static GBytes *
+resource_to_bytes (GResource   *resource,
+                   const char  *path,
+                   size_t       size,
+                   const void  *data,
+                   size_t       data_size,
+                   guint32      flags,
+                   GError     **error)
+{
   if (size == 0)
     return g_bytes_new_with_free_func ("", 0, (GDestroyNotify) g_resource_unref, g_resource_ref (resource));
   else if (flags & G_RESOURCE_FLAGS_COMPRESSED)
