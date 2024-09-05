@@ -242,14 +242,14 @@ gio_gir_args = [
 if host_system == 'windows'
   gio_gir_sources += [ gio_win32_include_headers, win32_sources ]
   foreach h: gio_win32_include_headers
-    gio_gir_args += '--c-include=@0@'.format(h)
+    gio_gir_args += '--c-include=' + h.full_path()
   endforeach
   gio_gir_packages += 'gio-windows-2.0'
   gio_gir_args += '--pkg=gio-windows-2.0'
 else
   gio_gir_sources += [ gio_unix_include_headers, unix_sources ]
   foreach h: gio_unix_include_headers
-    gio_gir_args += '--c-include=@0@'.format(h)
+    gio_gir_args += '--c-include=' + h.full_path()
   endforeach
   gio_gir_packages += 'gio-unix-2.0'
   gio_gir_args += '--pkg=gio-unix-2.0'
@@ -278,7 +278,7 @@ gio_gir = gnome.generate_gir(libgio,
 if host_system == 'windows'
   gio_win32_gir_c_includes = []
   foreach h: gio_win32_include_headers
-    gio_win32_gir_c_includes += '--c-include=@0@'.format(h)
+    gio_win32_gir_c_includes += '--c-include=' + h.full_path()
   endforeach
 
   gio_win32_gir = gnome.generate_gir(libgio,
@@ -308,7 +308,7 @@ if host_system == 'windows'
 else
   gio_unix_gir_c_includes = []
   foreach h: gio_unix_include_headers
-    gio_unix_gir_c_includes += '--c-include=@0@'.format(h)
+    gio_unix_gir_c_includes += '--c-include=' + h.full_path()
   endforeach
 
   gio_unix_gir = gnome.generate_gir(libgio,
