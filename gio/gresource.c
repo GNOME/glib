@@ -834,6 +834,10 @@ static GBytes *resource_to_bytes (GResource   *resource,
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
+ * This can return error %G_RESOURCE_ERROR_NOT_FOUND if @path was not found in
+ * @resource, or %G_RESOURCE_ERROR_INTERNAL if decompression of a compressed
+ * resource failed.
+ *
  * Returns: (transfer full): #GBytes or %NULL on error.
  *     Free the returned object with g_bytes_unref()
  *
@@ -1195,7 +1199,6 @@ g_resources_lookup_data (const gchar           *path,
 {
   GBytes *res = NULL;
   GList *l;
-  GBytes *data;
 
   if (g_resource_find_overlay (path, get_overlay_bytes, &res))
     return res;
@@ -1207,19 +1210,16 @@ g_resources_lookup_data (const gchar           *path,
   for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
-      GError *my_error = NULL;
+      const void *data;
+      guint32 flags;
+      gsize data_size;
+      gsize size;
 
-      data = g_resource_lookup_data (r, path, lookup_flags, &my_error);
-      if (data == NULL &&
-          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+      /* This is essentially g_resource_lookup_data(), but split up so we can
+       * avoid allocating a #GError if the resource is not found. */
+      if (do_lookup (r, path, lookup_flags, &size, &flags, &data, &data_size, NULL))
         {
-          g_clear_error (&my_error);
-        }
-      else
-        {
-          if (data == NULL)
-            g_propagate_error (error, my_error);
-          res = data;
+          res = resource_to_bytes (r, path, size, data, data_size, flags, error);
           break;
         }
     }
