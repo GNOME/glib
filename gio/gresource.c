@@ -919,6 +919,9 @@ g_resource_lookup_data (GResource             *resource,
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
+ * The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND, if @path was
+ * not found in @resource.
+ *
  * Returns: %TRUE if the file was found. %FALSE if there were errors
  *
  * Since: 2.32
@@ -1314,7 +1317,6 @@ g_resources_get_info (const gchar           *path,
 {
   gboolean res = FALSE;
   GList *l;
-  gboolean r_res;
   InfoData info;
 
   if (g_resource_find_overlay (path, get_overlay_info, &info))
@@ -1334,19 +1336,10 @@ g_resources_get_info (const gchar           *path,
   for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
-      GError *my_error = NULL;
 
-      r_res = g_resource_get_info (r, path, lookup_flags, size, flags, &my_error);
-      if (!r_res &&
-          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+      if (g_resource_get_info (r, path, lookup_flags, size, flags, NULL))
         {
-          g_clear_error (&my_error);
-        }
-      else
-        {
-          if (!r_res)
-            g_propagate_error (error, my_error);
-          res = r_res;
+          res = TRUE;
           break;
         }
     }
