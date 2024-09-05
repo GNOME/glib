@@ -218,7 +218,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
 /**
  * GStaticResource:
  *
- * #GStaticResource is an opaque data structure and can only be accessed
+ * `GStaticResource` is an opaque data structure and can only be accessed
  * using the following functions.
  **/
 typedef gboolean (* CheckCandidate) (const gchar *candidate, gpointer user_data);
@@ -509,9 +509,9 @@ g_resource_find_overlay (const gchar    *path,
 /**
  * g_resource_error_quark:
  *
- * Gets the #GResource Error Quark.
+ * Gets the [struct@Gio.Resource] Error Quark.
  *
- * Returns: a #GQuark
+ * Returns: a [type@GLib.Quark]
  *
  * Since: 2.32
  */
@@ -519,12 +519,13 @@ G_DEFINE_QUARK (g-resource-error-quark, g_resource_error)
 
 /**
  * g_resource_ref:
- * @resource: A #GResource
+ * @resource: A [struct@Gio.Resource]
  *
- * Atomically increments the reference count of @resource by one. This
- * function is MT-safe and may be called from any thread.
+ * Atomically increments the reference count of @resource by one.
  *
- * Returns: The passed in #GResource
+ * This function is threadsafe and may be called from any thread.
+ *
+ * Returns: The passed in [struct@Gio.Resource]
  *
  * Since: 2.32
  **/
@@ -537,11 +538,12 @@ g_resource_ref (GResource *resource)
 
 /**
  * g_resource_unref:
- * @resource: A #GResource
+ * @resource: A [struct@Gio.Resource]
  *
- * Atomically decrements the reference count of @resource by one. If the
- * reference count drops to 0, all memory allocated by the resource is
- * released. This function is MT-safe and may be called from any
+ * Atomically decrements the reference count of @resource by one.
+ *
+ * If the reference count drops to 0, all memory allocated by the resource is
+ * released. This function is threadsafe and may be called from any
  * thread.
  *
  * Since: 2.32
@@ -589,15 +591,16 @@ g_resource_error_from_gvdb_table_error (GError **g_resource_error,
 
 /**
  * g_resource_new_from_data:
- * @data: A #GBytes
- * @error: return location for a #GError, or %NULL
+ * @data: A [struct@GLib.Bytes]
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
- * Creates a GResource from a reference to the binary resource bundle.
+ * Creates a [struct@Gio.Resource] from a reference to the binary resource bundle.
+ *
  * This will keep a reference to @data while the resource lives, so
  * the data should not be modified or freed.
  *
  * If you want to use this resource in the global resource namespace you need
- * to register it with g_resources_register().
+ * to register it with [func@Gio.resources_register].
  *
  * Note: @data must be backed by memory that is at least pointer aligned.
  * Otherwise this function will internally create a copy of the memory since
@@ -605,7 +608,7 @@ g_resource_error_from_gvdb_table_error (GError **g_resource_error,
  *
  * If @data is empty or corrupt, %G_RESOURCE_ERROR_INTERNAL will be returned.
  *
- * Returns: (transfer full): a new #GResource, or %NULL on error
+ * Returns: (transfer full): a new [struct@Gio.Resource], or `NULL` on error
  *
  * Since: 2.32
  **/
@@ -641,20 +644,20 @@ g_resource_new_from_data (GBytes  *data,
 /**
  * g_resource_load:
  * @filename: (type filename): the path of a filename to load, in the GLib filename encoding
- * @error: return location for a #GError, or %NULL
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
- * Loads a binary resource bundle and creates a #GResource representation of it, allowing
- * you to query it for data.
+ * Loads a binary resource bundle and creates a [struct@Gio.Resource]
+ * representation of it, allowing you to query it for data.
  *
  * If you want to use this resource in the global resource namespace you need
- * to register it with g_resources_register().
+ * to register it with [func@Gio.resources_register].
  *
  * If @filename is empty or the data in it is corrupt,
  * %G_RESOURCE_ERROR_INTERNAL will be returned. If @filename doesn’t exist, or
- * there is an error in reading it, an error from g_mapped_file_new() will be
- * returned.
+ * there is an error in reading it, an error from [ctor@GLib.MappedFile.new]
+ * will be returned.
  *
- * Returns: (transfer full): a new #GResource, or %NULL on error
+ * Returns: (transfer full): a new [struct@Gio.Resource], or `NULL` on error
  *
  * Since: 2.32
  **/
@@ -755,21 +758,20 @@ do_lookup (GResource             *resource,
 
 /**
  * g_resource_open_stream:
- * @resource: A #GResource
- * @path: A pathname inside the resource
- * @lookup_flags: A #GResourceLookupFlags
- * @error: return location for a #GError, or %NULL
+ * @resource: A [struct@Gio.Resource]
+ * @path: A path name inside the resource
+ * @lookup_flags: A [flags@Gio.ResourceLookupFlags]
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Looks for a file at the specified @path in the resource and
- * returns a #GInputStream that lets you read the data.
+ * returns a [class@Gio.InputStream] that lets you read the data.
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
  * The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND, if @path was
  * not found in @resource.
  *
- * Returns: (transfer full): #GInputStream or %NULL on error.
- *     Free the returned object with g_object_unref()
+ * Returns: (transfer full): [class@Gio.InputStream] or `NULL` on error
  *
  * Since: 2.32
  **/
@@ -816,23 +818,23 @@ static GBytes *resource_to_bytes (GResource   *resource,
 
 /**
  * g_resource_lookup_data:
- * @resource: A #GResource
- * @path: A pathname inside the resource
- * @lookup_flags: A #GResourceLookupFlags
- * @error: return location for a #GError, or %NULL
+ * @resource: A [struct@Gio.Resource]
+ * @path: A path name inside the resource
+ * @lookup_flags: A [flags@Gio.ResourceLookupFlags]
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Looks for a file at the specified @path in the resource and
- * returns a #GBytes that lets you directly access the data in
+ * returns a [struct@GLib.Bytes] that lets you directly access the data in
  * memory.
  *
  * The data is always followed by a zero byte, so you
  * can safely use the data as a C string. However, that byte
- * is not included in the size of the GBytes.
+ * is not included in the size of the [struct@GLib.Bytes].
  *
  * For uncompressed resource files this is a pointer directly into
- * the resource bundle, which is typically in some readonly data section
- * in the program binary. For compressed files we allocate memory on
- * the heap and automatically uncompress the data.
+ * the resource bundle, which is typically in some read-only data section
+ * in the program binary. For compressed files, memory is allocated on
+ * the heap and the data is automatically uncompressed.
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
@@ -840,8 +842,7 @@ static GBytes *resource_to_bytes (GResource   *resource,
  * @resource, or %G_RESOURCE_ERROR_INTERNAL if decompression of a compressed
  * resource failed.
  *
- * Returns: (transfer full): #GBytes or %NULL on error.
- *     Free the returned object with g_bytes_unref()
+ * Returns: (transfer full): [struct@GLib.Bytes] or `NULL` on error
  *
  * Since: 2.32
  **/
@@ -931,14 +932,14 @@ resource_to_bytes (GResource   *resource,
 
 /**
  * g_resource_get_info:
- * @resource: A #GResource
- * @path: A pathname inside the resource
- * @lookup_flags: A #GResourceLookupFlags
+ * @resource: A [struct@Gio.Resource]
+ * @path: A path name inside the resource
+ * @lookup_flags: A [flags@Gio.ResourceLookupFlags]
  * @size:  (out) (optional): a location to place the length of the contents of the file,
- *    or %NULL if the length is not needed
+ *    or `NULL` if the length is not needed
  * @flags:  (out) (optional): a location to place the flags about the file,
- *    or %NULL if the length is not needed
- * @error: return location for a #GError, or %NULL
+ *    or `NULL` if the length is not needed
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Looks for a file at the specified @path in the resource and
  * if found returns information about it.
@@ -948,7 +949,7 @@ resource_to_bytes (GResource   *resource,
  * The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND, if @path was
  * not found in @resource.
  *
- * Returns: %TRUE if the file was found. %FALSE if there were errors
+ * Returns: `TRUE` if the file was found, `FALSE` if there were errors
  *
  * Since: 2.32
  **/
@@ -1003,16 +1004,17 @@ ensure_slash_suffix (const char  *path,
 
 /**
  * g_resource_enumerate_children:
- * @resource: A #GResource
- * @path: A pathname inside the resource
- * @lookup_flags: A #GResourceLookupFlags
- * @error: return location for a #GError, or %NULL
+ * @resource: A [struct@Gio.Resource]
+ * @path: A path name inside the resource
+ * @lookup_flags: A [flags@Gio.ResourceLookupFlags]
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Returns all the names of children at the specified @path in the resource.
- * The return result is a %NULL terminated list of strings which should
- * be released with g_strfreev().
  *
- * If @path is invalid or does not exist in the #GResource,
+ * The return result is a `NULL` terminated list of strings which should
+ * be released with [func@GLib.strfreev].
+ *
+ * If @path is invalid or does not exist in the [struct@Gio.Resource],
  * %G_RESOURCE_ERROR_NOT_FOUND will be returned.
  *
  * @lookup_flags controls the behaviour of the lookup.
@@ -1125,11 +1127,13 @@ g_resources_unregister_unlocked (GResource *resource)
 
 /**
  * g_resources_register:
- * @resource: A #GResource
+ * @resource: A [struct@Gio.Resource]
  *
  * Registers the resource with the process-global set of resources.
+ *
  * Once a resource is registered the files in it can be accessed
- * with the global resource lookup functions like g_resources_lookup_data().
+ * with the global resource lookup functions like
+ * [func@Gio.resources_lookup_data].
  *
  * Since: 2.32
  **/
@@ -1143,7 +1147,7 @@ g_resources_register (GResource *resource)
 
 /**
  * g_resources_unregister:
- * @resource: A #GResource
+ * @resource: A [struct@Gio.Resource]
  *
  * Unregisters the resource from the process-global set of resources.
  *
@@ -1159,18 +1163,17 @@ g_resources_unregister (GResource *resource)
 
 /**
  * g_resources_open_stream:
- * @path: A pathname inside the resource
- * @lookup_flags: A #GResourceLookupFlags
- * @error: return location for a #GError, or %NULL
+ * @path: A path name inside the resource
+ * @lookup_flags: A [flags@Gio.ResourceLookupFlags]
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Looks for a file at the specified @path in the set of
- * globally registered resources and returns a #GInputStream
+ * globally registered resources and returns a [class@Gio.InputStream]
  * that lets you read the data.
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
- * Returns: (transfer full): #GInputStream or %NULL on error.
- *     Free the returned object with g_object_unref()
+ * Returns: (transfer full): [class@Gio.InputStream] or `NULL` on error
  *
  * Since: 2.32
  **/
@@ -1217,27 +1220,26 @@ g_resources_open_stream (const gchar           *path,
 
 /**
  * g_resources_lookup_data:
- * @path: A pathname inside the resource
- * @lookup_flags: A #GResourceLookupFlags
- * @error: return location for a #GError, or %NULL
+ * @path: A path name inside the resource
+ * @lookup_flags: A [flags@Gio.ResourceLookupFlags]
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Looks for a file at the specified @path in the set of
- * globally registered resources and returns a #GBytes that
+ * globally registered resources and returns a [struct@GLib.Bytes] that
  * lets you directly access the data in memory.
  *
  * The data is always followed by a zero byte, so you
  * can safely use the data as a C string. However, that byte
- * is not included in the size of the GBytes.
+ * is not included in the size of the [struct@GLib.Bytes].
  *
  * For uncompressed resource files this is a pointer directly into
- * the resource bundle, which is typically in some readonly data section
+ * the resource bundle, which is typically in some read-only data section
  * in the program binary. For compressed files we allocate memory on
  * the heap and automatically uncompress the data.
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
- * Returns: (transfer full): #GBytes or %NULL on error.
- *     Free the returned object with g_bytes_unref()
+ * Returns: (transfer full): [struct@GLib.Bytes] or `NULL` on error
  *
  * Since: 2.32
  **/
@@ -1283,14 +1285,15 @@ g_resources_lookup_data (const gchar           *path,
 
 /**
  * g_resources_enumerate_children:
- * @path: A pathname inside the resource
- * @lookup_flags: A #GResourceLookupFlags
- * @error: return location for a #GError, or %NULL
+ * @path: A path name inside the resource
+ * @lookup_flags: A [flags@Gio.ResourceLookupFlags]
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Returns all the names of children at the specified @path in the set of
  * globally registered resources.
- * The return result is a %NULL terminated list of strings which should
- * be released with g_strfreev().
+ *
+ * The return result is a `NULL` terminated list of strings which should
+ * be released with [func@GLib.strfreev].
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
@@ -1393,20 +1396,20 @@ g_resources_has_children (const char *path)
 
 /**
  * g_resources_get_info:
- * @path: A pathname inside the resource
- * @lookup_flags: A #GResourceLookupFlags
+ * @path: A path name inside the resource
+ * @lookup_flags: A [flags@Gio.ResourceLookupFlags]
  * @size:  (out) (optional): a location to place the length of the contents of the file,
- *    or %NULL if the length is not needed
- * @flags:  (out) (optional): a location to place the #GResourceFlags about the file,
- *    or %NULL if the flags are not needed
- * @error: return location for a #GError, or %NULL
+ *    or `NULL` if the length is not needed
+ * @flags:  (out) (optional): a location to place the [flags@Gio.ResourceFlags] about the file,
+ *    or `NULL` if the flags are not needed
+ * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Looks for a file at the specified @path in the set of
  * globally registered resources and if found returns information about it.
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
- * Returns: %TRUE if the file was found. %FALSE if there were errors
+ * Returns: `TRUE` if the file was found, `FALSE` if there were errors
  *
  * Since: 2.32
  **/
@@ -1510,13 +1513,13 @@ register_lazy_static_resources (void)
 
 /**
  * g_static_resource_init:
- * @static_resource: pointer to a static #GStaticResource
+ * @static_resource: pointer to a static [struct@Gio.StaticResource]
  *
- * Initializes a GResource from static data using a
- * GStaticResource.
+ * Initializes a [struct@Gio.Resource] from static data using a
+ * [struct@Gio.StaticResource].
  *
  * This is normally used by code generated by
- * [glib-compile-resources][glib-compile-resources]
+ * [`glib-compile-resources`](glib-compile-resources.html)
  * and is not typically used by other code.
  *
  * Since: 2.32
@@ -1536,12 +1539,13 @@ g_static_resource_init (GStaticResource *static_resource)
 
 /**
  * g_static_resource_fini:
- * @static_resource: pointer to a static #GStaticResource
+ * @static_resource: pointer to a static [struct@Gio.StaticResource]
  *
- * Finalized a GResource initialized by g_static_resource_init().
+ * Finalizes a [struct@Gio.Resource] initialized by
+ * [method@Gio.StaticResource.init].
  *
  * This is normally used by code generated by
- * [glib-compile-resources][glib-compile-resources]
+ * [`glib-compile-resources`](glib-compile-resources.html)
  * and is not typically used by other code.
  *
  * Since: 2.32
@@ -1571,15 +1575,16 @@ g_static_resource_fini (GStaticResource *static_resource)
 
 /**
  * g_static_resource_get_resource:
- * @static_resource: pointer to a static #GStaticResource
+ * @static_resource: pointer to a static [struct@Gio.StaticResource]
  *
- * Gets the GResource that was registered by a call to g_static_resource_init().
+ * Gets the [struct@Gio.Resource] that was registered by a call to
+ * [method@Gio.StaticResource.init].
  *
  * This is normally used by code generated by
- * [glib-compile-resources][glib-compile-resources]
+ * [`glib-compile-resources`](glib-compile-resources.html)
  * and is not typically used by other code.
  *
- * Returns:  (transfer none): a #GResource
+ * Returns:  (transfer none): a [struct@Gio.Resource]
  *
  * Since: 2.32
  **/
