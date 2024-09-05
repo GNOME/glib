@@ -763,6 +763,9 @@ do_lookup (GResource             *resource,
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
+ * The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND, if @path was
+ * not found in @resource.
+ *
  * Returns: (transfer full): #GInputStream or %NULL on error.
  *     Free the returned object with g_object_unref()
  *
@@ -1114,18 +1117,15 @@ g_resources_open_stream (const gchar           *path,
   for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
-      GError *my_error = NULL;
 
-      stream = g_resource_open_stream (r, path, lookup_flags, &my_error);
-      if (stream == NULL &&
-          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+      stream = g_resource_open_stream (r, path, lookup_flags, NULL);
+      if (stream == NULL)
         {
-          g_clear_error (&my_error);
+          /* g_resource_open_stream() guarantees it only fails with
+           * %G_RESOURCE_ERROR_NOT_FOUND */
         }
       else
         {
-          if (stream == NULL)
-            g_propagate_error (error, my_error);
           res = stream;
           break;
         }
