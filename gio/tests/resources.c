@@ -1046,6 +1046,29 @@ test_overlay (void)
   g_test_trap_assert_passed ();
 }
 
+static void
+test_resource_has_children (void)
+{
+  GResource *resource;
+  GError *error = NULL;
+
+  g_assert_true (g_resources_has_children ("/auto_loaded"));
+  g_assert_true (g_resources_has_children ("/auto_loaded/"));
+  g_assert_false (g_resources_has_children ("/auto_loaded/test1.txt"));
+  g_assert_false (g_resources_has_children ("/no/such/prefix"));
+
+  resource = g_resource_load (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL), &error);
+  g_assert_nonnull (resource);
+  g_assert_no_error (error);
+
+  g_assert_true (g_resource_has_children (resource, "/a_prefix"));
+  g_assert_true (g_resource_has_children (resource, "/a_prefix/"));
+  g_assert_false (g_resource_has_children (resource, "/a_prefix/test2.txt"));
+  g_assert_false (g_resource_has_children (resource, "/no/such/prefix"));
+
+  g_resource_unref (resource);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1075,6 +1098,7 @@ main (int   argc,
   g_test_add_func ("/resource/64k", test_resource_64k);
   g_test_add_func ("/resource/overlay", test_overlay);
   g_test_add_func ("/resource/digits", test_resource_digits);
+  g_test_add_func ("/resource/has-children", test_resource_has_children);
 
   return g_test_run();
 }

@@ -119,6 +119,12 @@ gboolean      g_resources_get_info           (const char            *path,
 					      guint32               *flags,
 					      GError               **error);
 
+GIO_AVAILABLE_IN_2_84
+gboolean      g_resource_has_children        (GResource             *resource,
+                                              const char            *path);
+GIO_AVAILABLE_IN_2_84
+gboolean      g_resources_has_children       (const char            *path);
+
 
 GIO_AVAILABLE_IN_2_32
 void          g_static_resource_init          (GStaticResource *static_resource);

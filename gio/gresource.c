@@ -1023,6 +1023,43 @@ g_resource_enumerate_children (GResource             *resource,
   return children;
 }
 
+/**
+ * g_resource_has_children:
+ * @resource: A #GResource
+ * @path: A pathname inside the resource
+ *
+ * Returns whether the specified @path in the resource
+ * has children.
+ *
+ * Returns: %TRUE if @path has children
+ *
+ * Since: 2.84
+ */
+gboolean
+g_resource_has_children (GResource  *resource,
+                         const char *path)
+{
+  /* Size of 256 is arbitrarily chosen based on being large enough
+   * for pretty much everything we come across, but not cumbersome
+   * on the stack. It also matches common cacheline sizes.
+   */
+  char local_str[256];
+  const char *path_with_slash;
+  guint n;
+  char *freeme = NULL;
+
+  if (*path == 0)
+    return FALSE;
+
+  path_with_slash = ensure_slash_suffix (path, local_str, sizeof (local_str), &freeme);
+
+  n = gvdb_table_n_children (resource->table, path_with_slash);
+
+  g_free (freeme);
+
+  return n > 0;
+}
+
 static GRWLock resources_lock;
 static GList *registered_resources;
 
@@ -1299,6 +1336,39 @@ g_resources_enumerate_children (const gchar           *path,
 
       return children;
     }
+}
+
+/**
+ * g_resources_has_children:
+ * @path: A pathname
+ *
+ * Returns whether the specified @path in the set of
+ * globally registered resources has children.
+ *
+ * Returns: %TRUE if @patch has children
+ *
+ * Since: 2.84
+ */
+gboolean
+g_resources_has_children (const char *path)
+{
+  register_lazy_static_resources ();
+
+  g_rw_lock_reader_lock (&resources_lock);
+
+  for (GList *l = registered_resources; l != NULL; l = l->next)
+    {
+      GResource *r = l->data;
+
+      if (g_resource_has_children (r, path))
+        {
+          g_rw_lock_reader_unlock (&resources_lock);
+          return TRUE;
+        }
+    }
+
+  g_rw_lock_reader_unlock (&resources_lock);
+  return FALSE;
 }
 
 /**
