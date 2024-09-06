@@ -512,6 +512,9 @@ enum
 
 G_DEFINE_TYPE (GDBusMessage, g_dbus_message, G_TYPE_OBJECT)
 
+#undef G_TYPE_DBUS_MESSAGE
+#define G_TYPE_DBUS_MESSAGE GDBusMessage_type_id
+
 static void
 g_dbus_message_finalize (GObject *object)
 {
@@ -610,7 +613,7 @@ g_dbus_message_init (GDBusMessage *message)
 GDBusMessage *
 g_dbus_message_new (void)
 {
-  return g_object_new (G_TYPE_DBUS_MESSAGE, NULL);
+  return g_object_new (g_dbus_message_get_type (), NULL);
 }
 
 /**
