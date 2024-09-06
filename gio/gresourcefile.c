@@ -455,21 +455,14 @@ g_resource_file_query_info (GFile                *file,
   gboolean res;
   gsize size = 0;
   guint32 resource_flags = 0;
-  char **children;
   gboolean is_dir;
   char *base;
-
-  is_dir = FALSE;
-  children = g_resources_enumerate_children (resource->path, 0, NULL);
-  if (children != NULL)
-    {
-      g_strfreev (children);
-      is_dir = TRUE;
-    }
 
   /* root is always there */
   if (strcmp ("/", resource->path) == 0)
     is_dir = TRUE;
+  else
+    is_dir = g_resources_has_children (resource->path);
 
   if (!is_dir)
     {
