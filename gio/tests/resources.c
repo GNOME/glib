@@ -602,6 +602,20 @@ test_resource_registered (void)
   g_assert_false (found);
   g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
   g_clear_error (&error);
+
+  data = g_resources_lookup_data ("/test1.txt",
+                                  G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                  &error);
+  g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+  g_assert_null (data);
+  g_clear_error (&error);
+
+  in = g_resources_open_stream ("/test1.txt",
+				G_RESOURCE_LOOKUP_FLAGS_NONE,
+				&error);
+  g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+  g_assert_null (in);
+  g_clear_error (&error);
 }
 
 static void
