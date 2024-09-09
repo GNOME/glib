@@ -859,6 +859,21 @@ if not meson.is_cross_build()
     install_tag : 'tests',
     install : installed_tests_enabled)
 
+  test6_gresource = custom_target('test6.gresource',
+    input : 'test6.gresource.xml',
+    depends : [gspawn_helpers],
+    output : 'test6.gresource',
+    command : [glib_compile_resources,
+               compiler_type,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--sourcedir=' + meson.current_build_dir(),
+               '--internal',
+               '@INPUT@'],
+    install_dir : installed_tests_execdir,
+    install_tag : 'tests',
+    install : installed_tests_enabled)
+
   test_resources2_c = custom_target('test_resources2.c',
     input : 'test3.gresource.xml',
     depends : [gspawn_helpers],
@@ -930,6 +945,7 @@ if not meson.is_cross_build()
 
   resources_extra_sources = [
     test_gresource,
+    test6_gresource,
     test_resources_c,
     test_resources2_c,
     test_resources2_h,

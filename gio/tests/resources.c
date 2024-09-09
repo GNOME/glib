@@ -402,6 +402,55 @@ test_resource_data_empty (void)
 }
 
 static void
+test_resource_data_corrupt_compression (void)
+{
+  GFile *resource_file = NULL;
+  GBytes *resource_bytes = NULL, *corrupt_bytes = NULL, *data_bytes = NULL;
+  guint8 *corrupt_data = NULL;
+  GResource *resource = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test error handling for corrupt GResource files (specifically, corrupt zlib compression).");
+
+  resource_file = g_file_new_for_path (g_test_get_filename (G_TEST_BUILT, "test6.gresource", NULL));
+  resource_bytes = g_file_load_bytes (resource_file, NULL, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_clear_object (&resource_file);
+
+  /* Test loading the resource normally, to check it works. */
+  resource = g_resource_new_from_data (resource_bytes, &local_error);
+  g_assert_no_error (local_error);
+
+  data_bytes = g_resource_lookup_data (resource, "/test-corrupt-compression.txt",
+                                       G_RESOURCE_LOOKUP_FLAGS_NONE, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (data_bytes);
+  g_clear_pointer (&data_bytes, g_bytes_unref);
+
+  g_clear_pointer (&resource, g_resource_unref);
+
+  /* Modify the data to zero out bytes 0x90 to 0x100. These are comfortably
+   * within the compressed file data, so should break that while not breaking
+   * the GVDB header. */
+  corrupt_data = g_memdup2 (g_bytes_get_data (resource_bytes, NULL), g_bytes_get_size (resource_bytes));
+  memset (corrupt_data + 0x90, 0, 0x10);
+  corrupt_bytes = g_bytes_new_take (g_steal_pointer (&corrupt_data), g_bytes_get_size (resource_bytes));
+
+  resource = g_resource_new_from_data (corrupt_bytes, &local_error);
+  g_assert_no_error (local_error);
+  g_bytes_unref (corrupt_bytes);
+
+  data_bytes = g_resource_lookup_data (resource, "/test-corrupt-compression.txt",
+                                       G_RESOURCE_LOOKUP_FLAGS_NONE, &local_error);
+  g_assert_error (local_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_INTERNAL);
+  g_assert_null (data_bytes);
+  g_clear_error (&local_error);
+
+  g_clear_pointer (&resource_bytes, g_bytes_unref);
+  g_clear_pointer (&resource, g_resource_unref);
+}
+
+static void
 test_resource_registered (void)
 {
   GResource *resource;
@@ -1060,6 +1109,7 @@ main (int   argc,
   g_test_add_func ("/resource/data", test_resource_data);
   g_test_add_func ("/resource/data_unaligned", test_resource_data_unaligned);
   g_test_add_func ("/resource/data-corrupt", test_resource_data_corrupt);
+  g_test_add_func ("/resource/data-corrupt-compression", test_resource_data_corrupt_compression);
   g_test_add_func ("/resource/data-empty", test_resource_data_empty);
   g_test_add_func ("/resource/registered", test_resource_registered);
   g_test_add_func ("/resource/manual", test_resource_manual);
