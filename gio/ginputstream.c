@@ -130,7 +130,7 @@ g_input_stream_init (GInputStream *stream)
  * g_input_stream_read:
  * @stream: a #GInputStream.
  * @buffer: (array length=count) (element-type guint8) (out caller-allocates):
- *     a buffer to read data into (which should be at least count bytes long).
+ *   a buffer to read data into (which should be at least count bytes long).
  * @count: (in): the number of bytes that will be read from the stream
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -211,7 +211,7 @@ g_input_stream_read  (GInputStream  *stream,
  * g_input_stream_read_all:
  * @stream: a #GInputStream.
  * @buffer: (array length=count) (element-type guint8) (out caller-allocates):
- *     a buffer to read data into (which should be at least count bytes long).
+ *   a buffer to read data into (which should be at least count bytes long).
  * @count: (in): the number of bytes that will be read from the stream
  * @bytes_read: (out): location to store the number of bytes that was read from the stream
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
@@ -584,7 +584,7 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * g_input_stream_read_async:
  * @stream: A #GInputStream.
  * @buffer: (array length=count) (element-type guint8) (out caller-allocates):
- *     a buffer to read data into (which should be at least count bytes long).
+ *   a buffer to read data into (which should be at least count bytes long).
  * @count: (in): the number of bytes that will be read from the stream
  * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority)
  * of the request. 
@@ -777,7 +777,7 @@ read_all_async_thread (GTask        *task,
  * g_input_stream_read_all_async:
  * @stream: A #GInputStream
  * @buffer: (array length=count) (element-type guint8) (out caller-allocates):
- *     a buffer to read data into (which should be at least count bytes long)
+ *   a buffer to read data into (which should be at least count bytes long)
  * @count: (in): the number of bytes that will be read from the stream
  * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
@@ -788,9 +788,9 @@ read_all_async_thread (GTask        *task,
  * Request an asynchronous read of @count bytes from the stream into the
  * buffer starting at @buffer.
  *
- * This is the asynchronous equivalent of g_input_stream_read_all().
+ * This is the asynchronous equivalent of [method@InputStream.read_all].
  *
- * Call g_input_stream_read_all_finish() to collect the result.
+ * Call [method@InputStream.read_all_finish] to collect the result.
  *
  * Any outstanding I/O request with higher priority (lower numerical
  * value) will be executed before an outstanding request with lower
@@ -843,7 +843,7 @@ g_input_stream_read_all_async (GInputStream        *stream,
  * @error: a #GError location to store the error occurring, or %NULL to ignore
  *
  * Finishes an asynchronous stream read operation started with
- * g_input_stream_read_all_async().
+ * [method@InputStream.read_all_async].
  *
  * As a special exception to the normal conventions for functions that
  * use #GError, if this function returns %FALSE (and sets @error) then
