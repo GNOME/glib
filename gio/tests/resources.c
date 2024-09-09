@@ -1089,19 +1089,58 @@ test_overlay (void)
       gsize size;
       char *overlay;
       char *path;
+      GInputStream *in = NULL;
+      char buffer[128];
+      GBytes *data = NULL;
+      char *expected_overlay_data = NULL;
+      size_t expected_overlay_size = 0;
 
       path = g_test_build_filename (G_TEST_DIST, "test1.overlay", NULL);
-      overlay = g_strconcat ("/auto_loaded/test1.txt=", path, NULL);
+      res = g_file_get_contents (path, &expected_overlay_data, &expected_overlay_size, NULL);
+      g_assert (res);
 
+      overlay = g_strconcat ("/auto_loaded/test1.txt=", path, NULL);
       g_setenv ("G_RESOURCE_OVERLAYS", overlay, TRUE);
+
+      /* Test getting its info. */
       res = g_resources_get_info ("/auto_loaded/test1.txt", 0, &size, NULL, &error);
       g_assert_true (res);
       g_assert_no_error (error);
       /* test1.txt is 6 bytes, test1.overlay is 23 */
-      g_assert_cmpint (size, ==, 23);
+      g_assert_cmpuint (size, ==, expected_overlay_size);
+
+      /* Test it as a stream too. */
+      in = g_resources_open_stream ("/auto_loaded/test1.txt",
+                                    G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                    &error);
+      g_assert_no_error (error);
+      g_assert_nonnull (in);
+
+      res = g_input_stream_read_all (in, buffer, sizeof (buffer) - 1,
+                                     &size,
+                                     NULL, &error);
+      g_assert_no_error (error);
+      g_assert_true (res);
+      g_assert_cmpuint (size, ==, expected_overlay_size);
+
+      g_input_stream_close (in, NULL, &error);
+      g_assert_no_error (error);
+      g_clear_object (&in);
+
+      /* Test data lookup. */
+      data = g_resources_lookup_data ("/auto_loaded/test1.txt",
+                                      G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                      &error);
+      g_assert_nonnull (data);
+      g_assert_no_error (error);
+      size = g_bytes_get_size (data);
+      g_assert_cmpuint (size, ==, expected_overlay_size);
+      g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, expected_overlay_data);
+      g_bytes_unref (data);
 
       g_free (overlay);
       g_free (path);
+      g_free (expected_overlay_data);
 
       return;
     }
