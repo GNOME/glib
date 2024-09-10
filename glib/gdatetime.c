@@ -3603,7 +3603,7 @@ g_date_time_format_utf8 (GDateTime   *datetime,
           if (mod_case && g_strcmp0 (mod, "#") == 0)
             tz = tmp = g_utf8_strdown (tz, -1);
           g_string_append (outstr, tz);
-          g_free (tmp);
+          g_clear_pointer (&tmp, g_free);
 	  break;
 	case '%':
 	  g_string_append_c (outstr, '%');

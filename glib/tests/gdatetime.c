@@ -1636,6 +1636,7 @@ test_GDateTime_printf (void)
   TEST_PRINTF ("%9", NULL);
 #ifdef G_OS_UNIX
   TEST_PRINTF ("%Z", "UTC");
+  TEST_PRINTF ("%#Z %Z", "utc UTC");
 #elif defined G_OS_WIN32
   g_assert (GetDynamicTimeZoneInformation (&dtz_info) != TIME_ZONE_ID_INVALID);
   if (wcscmp (dtz_info.StandardName, L"") != 0)
