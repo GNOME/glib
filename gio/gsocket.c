@@ -4107,9 +4107,8 @@ update_condition_unlocked (GSocket *socket)
   GIOCondition condition;
 
   if (!socket->priv->closed &&
-      WSAEnumNetworkEvents (socket->priv->fd,
-			    socket->priv->event,
-			    &events) == 0)
+      (WSAWaitForMultipleEvents (1, &socket->priv->event, FALSE, 0, FALSE) == WSA_WAIT_EVENT_0) &&
+      (WSAEnumNetworkEvents (socket->priv->fd, socket->priv->event, &events) == 0))
     {
       socket->priv->current_events |= events.lNetworkEvents;
       if (events.lNetworkEvents & FD_WRITE &&
