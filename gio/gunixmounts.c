@@ -613,8 +613,10 @@ _g_get_unix_mounts (void)
 {
   GUnixMountEntry **entries = NULL;
   size_t n_entries = 0;
+  const gchar *table_path;
 
-  entries = _g_unix_mounts_get_from_file (NULL  /* default libmount filename */,
+  table_path = g_getenv ("LIBMOUNT_MTAB");
+  entries = _g_unix_mounts_get_from_file (table_path,
                                           NULL, &n_entries);
 
   return unix_mount_entry_array_free_to_list (g_steal_pointer (&entries), n_entries);

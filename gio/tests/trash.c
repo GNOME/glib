@@ -17,6 +17,8 @@
  * along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <glib.h>
 
 #ifndef G_OS_UNIX
@@ -96,6 +98,39 @@ test_trash_not_supported (void)
   g_free (parent_dirname);
   g_object_unref (info);
   g_object_unref (stream);
+
+#ifdef HAVE_LIBMOUNT
+  /* Test that g_file_trash() succeeds on system mounts when x-gvfs-trash is used. */
+
+  int fd = -1;
+  char *tmp_file = NULL;
+  gboolean res;
+
+  const char *fake_mtab = "709 1891 0:42 / /tmp rw,nosuid,nodev,x-gvfs-trash master:92 - tmpfs tmpfs rw,seclabel,nr_inodes=1048576,inode64\n";
+
+  fd = g_file_open_tmp ("test-trashXXXXXX", &tmp_file, NULL);
+  g_assert (fd != -1);
+  close (fd);
+
+  res = g_file_set_contents (tmp_file, fake_mtab, -1, NULL);
+  g_assert (res);
+
+  g_setenv ("LIBMOUNT_MTAB", tmp_file, TRUE);
+
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH,
+                            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                            NULL,
+                            &error);
+  g_assert_no_error (error);
+
+  g_assert_true (g_file_info_get_attribute_boolean (info,
+                                                    G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH));
+
+  g_object_unref (info);
+  g_free (tmp_file);
+#endif
+
   g_object_unref (file);
 }
 
