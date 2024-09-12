@@ -106,6 +106,11 @@ activate_detailed_action (const char * action)
     }
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+/* first deprecated in macOS 11.0 - All NSUserNotifications API should be
+ * replaced with UserNotifications.frameworks API
+ */
+
 @interface GNotificationCenterDelegate : NSObject<NSUserNotificationCenterDelegate> @end
 @implementation GNotificationCenterDelegate
 
@@ -262,6 +267,8 @@ g_cocoa_notification_backend_withdraw_notification (GNotificationBackend *backen
 
   [str_id release];
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 g_cocoa_notification_backend_init (GCocoaNotificationBackend *backend)
