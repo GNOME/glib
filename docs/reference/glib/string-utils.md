@@ -110,7 +110,7 @@ string and handle copying the new value and freeing the old one.
  * [func@GLib.ascii_strup]
  * [func@GLib.ascii_strdown]
  * [func@GLib.ascii_tolower]
- * [func@GLib.ascii_toupper
+ * [func@GLib.ascii_toupper]
 
 ## ASCII String Manipulation
 
