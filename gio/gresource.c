@@ -679,9 +679,11 @@ static void
 set_error_not_found (GError     **error,
                      const char  *path)
 {
-  g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-               _("The resource at “%s” does not exist"),
-               path);
+  /* Avoid looking up the translation if it’s not going to be used. This is a hot path. */
+  if (error != NULL)
+    g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
+                 _("The resource at “%s” does not exist"),
+                 path);
 }
 
 /* The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND. */
