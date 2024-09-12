@@ -787,6 +787,7 @@ scan-build:
       --exclude girepository/cmph/
       --exclude glib/libcharset/
       --exclude gio/xdgmime/
+      --exclude meson-private/
       -disable-checker deadcode.DeadStores
       --status-bugs
   before_script:
