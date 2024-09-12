@@ -571,6 +571,8 @@ vs2017-x64:
     - win32-ps
   needs: []
   variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    GIT_SUBMODULE_DEPTH: 1
     PYTHONUTF8: "1"
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
@@ -602,6 +604,8 @@ vs2017-x64-static:
     - win32-ps
   needs: []
   variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    GIT_SUBMODULE_DEPTH: 1
     PYTHONUTF8: "1"
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
