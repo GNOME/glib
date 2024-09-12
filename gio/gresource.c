@@ -923,6 +923,44 @@ g_resource_get_info (GResource             *resource,
   return do_lookup (resource, path, lookup_flags, size, flags, NULL, NULL, error);
 }
 
+static inline const char *
+ensure_slash_suffix (const char  *path,
+                     char        *local_str,
+                     gsize        len,
+                     char       **free_path)
+{
+  gsize path_len;
+
+  path_len = strlen (path);
+
+  if G_UNLIKELY (path[path_len-1] != '/')
+    {
+      if (path_len < len - 2)
+        {
+          /*
+           * We got a path that does not have a trailing /. It is not the
+           * ideal use of this API as we require trailing / for our lookup
+           * into gvdb. Some degenerate application configurations can hit
+           * this code path quite a bit, so we try to avoid using the
+           * g_strconcat()/g_free().
+           */
+          memcpy (local_str, path, path_len);
+          local_str[path_len] = '/';
+          local_str[path_len+1] = 0;
+          return local_str;
+        }
+      else
+        {
+          *free_path = g_strconcat (path, "/", NULL);
+          return *free_path;
+        }
+    }
+  else
+    {
+      return path;
+    }
+}
+
 /**
  * g_resource_enumerate_children:
  * @resource: A #GResource
@@ -949,17 +987,14 @@ g_resource_enumerate_children (GResource             *resource,
                                GResourceLookupFlags   lookup_flags,
                                GError               **error)
 {
-  gchar local_str[256];
-  const gchar *path_with_slash;
-  gchar **children;
-  gchar *free_path = NULL;
-  gsize path_len;
-
-  /*
-   * Size of 256 is arbitrarily chosen based on being large enough
+  /* Size of 256 is arbitrarily chosen based on being large enough
    * for pretty much everything we come across, but not cumbersome
    * on the stack. It also matches common cacheline sizes.
    */
+  gchar local_str[256];
+  const char *path_with_slash;
+  char *free_path = NULL;
+  gchar **children;
 
   if (*path == 0)
     {
@@ -970,35 +1005,10 @@ g_resource_enumerate_children (GResource             *resource,
       return NULL;
     }
 
-  path_len = strlen (path);
-
-  if G_UNLIKELY (path[path_len-1] != '/')
-    {
-      if (path_len < sizeof (local_str) - 2)
-        {
-          /*
-           * We got a path that does not have a trailing /. It is not the
-           * ideal use of this API as we require trailing / for our lookup
-           * into gvdb. Some degenerate application configurations can hit
-           * this code path quite a bit, so we try to avoid using the
-           * g_strconcat()/g_free().
-           */
-          memcpy (local_str, path, path_len);
-          local_str[path_len] = '/';
-          local_str[path_len+1] = 0;
-          path_with_slash = local_str;
-        }
-      else
-        {
-          path_with_slash = free_path = g_strconcat (path, "/", NULL);
-        }
-    }
-  else
-    {
-      path_with_slash = path;
-    }
+  path_with_slash = ensure_slash_suffix (path, local_str, sizeof (local_str), &free_path);
 
   children = gvdb_table_list (resource->table, path_with_slash);
+
   g_free (free_path);
 
   if (children == NULL)
@@ -1011,6 +1021,43 @@ g_resource_enumerate_children (GResource             *resource,
     }
 
   return children;
+}
+
+/**
+ * g_resource_has_children:
+ * @resource: A #GResource
+ * @path: A pathname inside the resource
+ *
+ * Returns whether the specified @path in the resource
+ * has children.
+ *
+ * Returns: %TRUE if @path has children
+ *
+ * Since: 2.84
+ */
+gboolean
+g_resource_has_children (GResource  *resource,
+                         const char *path)
+{
+  /* Size of 256 is arbitrarily chosen based on being large enough
+   * for pretty much everything we come across, but not cumbersome
+   * on the stack. It also matches common cacheline sizes.
+   */
+  char local_str[256];
+  const char *path_with_slash;
+  guint n;
+  char *freeme = NULL;
+
+  if (*path == 0)
+    return FALSE;
+
+  path_with_slash = ensure_slash_suffix (path, local_str, sizeof (local_str), &freeme);
+
+  n = gvdb_table_n_children (resource->table, path_with_slash);
+
+  g_free (freeme);
+
+  return n > 0;
 }
 
 static GRWLock resources_lock;
@@ -1289,6 +1336,39 @@ g_resources_enumerate_children (const gchar           *path,
 
       return children;
     }
+}
+
+/**
+ * g_resources_has_children:
+ * @path: A pathname
+ *
+ * Returns whether the specified @path in the set of
+ * globally registered resources has children.
+ *
+ * Returns: %TRUE if @patch has children
+ *
+ * Since: 2.84
+ */
+gboolean
+g_resources_has_children (const char *path)
+{
+  register_lazy_static_resources ();
+
+  g_rw_lock_reader_lock (&resources_lock);
+
+  for (GList *l = registered_resources; l != NULL; l = l->next)
+    {
+      GResource *r = l->data;
+
+      if (g_resource_has_children (r, path))
+        {
+          g_rw_lock_reader_unlock (&resources_lock);
+          return TRUE;
+        }
+    }
+
+  g_rw_lock_reader_unlock (&resources_lock);
+  return FALSE;
 }
 
 /**
