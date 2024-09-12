@@ -790,6 +790,7 @@ scan-build:
       -disable-checker deadcode.DeadStores
       --status-bugs
   before_script:
+    - !reference [".build-linux", "before_script"]
     - !reference [".build-gobject-introspection", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
@@ -824,6 +825,7 @@ scan-build:
     # cov-build doesn’t like GLIB_DEPRECATED_ENUMERATOR
     CFLAGS: '-DGLIB_DISABLE_DEPRECATION_WARNINGS'
   before_script:
+    - !reference [".build-linux", "before_script"]
     - !reference [".build-gobject-introspection", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
