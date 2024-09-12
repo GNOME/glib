@@ -1056,6 +1056,7 @@ test_resource_has_children (void)
   g_assert_true (g_resources_has_children ("/auto_loaded/"));
   g_assert_false (g_resources_has_children ("/auto_loaded/test1.txt"));
   g_assert_false (g_resources_has_children ("/no/such/prefix"));
+  g_assert_false (g_resources_has_children (""));
 
   resource = g_resource_load (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL), &error);
   g_assert_nonnull (resource);
@@ -1065,6 +1066,7 @@ test_resource_has_children (void)
   g_assert_true (g_resource_has_children (resource, "/a_prefix/"));
   g_assert_false (g_resource_has_children (resource, "/a_prefix/test2.txt"));
   g_assert_false (g_resource_has_children (resource, "/no/such/prefix"));
+  g_assert_false (g_resource_has_children (resource, ""));
 
   g_resource_unref (resource);
 }
