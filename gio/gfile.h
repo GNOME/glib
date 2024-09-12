@@ -148,6 +148,7 @@ typedef struct _GFileIface    		GFileIface;
  * @measure_disk_usage: Recursively measures the disk usage of @file. Since 2.38
  * @measure_disk_usage_async: Asynchronously recursively measures the disk usage of @file. Since 2.38
  * @measure_disk_usage_finish: Finishes an asynchronous recursive measurement of the disk usage of @file. Since 2.38
+ * @query_exists: Queries whether a file exists. Since 2.84
  *
  * An interface for writing VFS file handles.
  **/
@@ -598,6 +599,9 @@ struct _GFileIface
                                                        guint64                       *num_dirs,
                                                        guint64                       *num_files,
                                                        GError                       **error);
+
+  gboolean            (* query_exists)                (GFile                         *file,
+                                                       GCancellable                  *cancellable);
 };
 
 GIO_AVAILABLE_IN_ALL
