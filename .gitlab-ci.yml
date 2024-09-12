@@ -701,7 +701,9 @@ macos-arm64:
     - pip3 install meson==1.2.3 ninja==1.11.1.1 packaging==23.2
   script:
     # FIXME: These should use --wrap-mode=nodownload but the macOS CI machine
-    # isn't currently set up for that.
+    # isn't currently set up for that. See:
+    #  - https://gitlab.gnome.org/GNOME/glib/merge_requests/388
+    #  - https://gitlab.gnome.org/Infrastructure/Infrastructure/issues/225
     - meson setup ${MESON_COMMON_OPTIONS}
             --wrap-mode=default
             --werror
