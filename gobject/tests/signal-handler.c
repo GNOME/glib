@@ -45,7 +45,11 @@ nop (void)
 {
 }
 
-static guint n_handlers = 0;
+static guint
+choose_n_handlers (void)
+{
+  return g_test_perf () ? 500000 : 1;
+}
 
 static void
 test_connect_many (void)
@@ -53,6 +57,7 @@ test_connect_many (void)
   MyObj *o;
   gdouble time_elapsed;
   guint i;
+  const guint n_handlers = choose_n_handlers ();
 
   o = g_object_new (my_obj_get_type (), NULL);
 
@@ -75,6 +80,7 @@ test_disconnect_many_ordered (void)
   gulong *handlers;
   gdouble time_elapsed;
   guint i;
+  const guint n_handlers = choose_n_handlers ();
 
   handlers = g_malloc_n (n_handlers, sizeof (*handlers));
   o = g_object_new (my_obj_get_type (), NULL);
@@ -102,6 +108,7 @@ test_disconnect_many_inverse (void)
   gulong *handlers;
   gdouble time_elapsed;
   guint i;
+  const guint n_handlers = choose_n_handlers ();
 
   handlers = g_malloc_n (n_handlers, sizeof (*handlers));
   o = g_object_new (my_obj_get_type (), NULL);
@@ -130,6 +137,7 @@ test_disconnect_many_random (void)
   gulong id;
   gdouble time_elapsed;
   guint i, j;
+  const guint n_handlers = choose_n_handlers ();
 
   handlers = g_malloc_n (n_handlers, sizeof (*handlers));
   o = g_object_new (my_obj_get_type (), NULL);
@@ -166,6 +174,7 @@ test_disconnect_2_signals (void)
   gulong id;
   gdouble time_elapsed;
   guint i, j;
+  const guint n_handlers = choose_n_handlers ();
 
   handlers = g_malloc_n (n_handlers, sizeof (*handlers));
   o = g_object_new (my_obj_get_type (), NULL);
@@ -208,6 +217,7 @@ test_disconnect_2_objects (void)
   gulong id;
   gdouble time_elapsed;
   guint i, j;
+  const guint n_handlers = choose_n_handlers ();
 
   handlers = g_malloc_n (n_handlers, sizeof (*handlers));
   objects = g_malloc_n (n_handlers, sizeof (*objects));
@@ -262,6 +272,7 @@ test_block_many (void)
   gulong id;
   gdouble time_elapsed;
   guint i, j;
+  const guint n_handlers = choose_n_handlers ();
 
   handlers = g_malloc_n (n_handlers, sizeof (*handlers));
   o = g_object_new (my_obj_get_type (), NULL);
@@ -297,8 +308,6 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
-
-  n_handlers = g_test_perf () ? 500000 : 1;
 
   g_test_add_func ("/signal/handler/connect-many", test_connect_many);
   g_test_add_func ("/signal/handler/disconnect-many-ordered", test_disconnect_many_ordered);
