@@ -837,7 +837,7 @@ cancellable_thread_cb (gpointer data)
 {
   GCancellable *cancellable = data;
 
-  g_usleep (0.1 * G_USEC_PER_SEC);
+  g_usleep ((guint64) (0.1 * G_USEC_PER_SEC));
   g_cancellable_cancel (cancellable);
   g_object_unref (cancellable);
 
