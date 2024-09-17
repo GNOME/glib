@@ -675,6 +675,18 @@ g_resource_load (const gchar  *filename,
   return g_resource_new_from_table (table);
 }
 
+static void
+set_error_not_found (GError     **error,
+                     const char  *path)
+{
+  /* Avoid looking up the translation if it’s not going to be used. This is a hot path. */
+  if (error != NULL)
+    g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
+                 _("The resource at “%s” does not exist"),
+                 path);
+}
+
+/* The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND. */
 static gboolean
 do_lookup (GResource             *resource,
            const gchar           *path,
@@ -702,9 +714,7 @@ do_lookup (GResource             *resource,
 
   if (value == NULL)
     {
-      g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                   _("The resource at “%s” does not exist"),
-                   path);
+      set_error_not_found (error, path);
     }
   else
     {
@@ -755,6 +765,9 @@ do_lookup (GResource             *resource,
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
+ * The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND, if @path was
+ * not found in @resource.
+ *
  * Returns: (transfer full): #GInputStream or %NULL on error.
  *     Free the returned object with g_object_unref()
  *
@@ -793,6 +806,14 @@ g_resource_open_stream (GResource             *resource,
   return stream;
 }
 
+static GBytes *resource_to_bytes (GResource   *resource,
+                                  const char  *path,
+                                  size_t       size,
+                                  const void  *data,
+                                  size_t       data_size,
+                                  guint32      flags,
+                                  GError     **error);
+
 /**
  * g_resource_lookup_data:
  * @resource: A #GResource
@@ -815,6 +836,10 @@ g_resource_open_stream (GResource             *resource,
  *
  * @lookup_flags controls the behaviour of the lookup.
  *
+ * This can return error %G_RESOURCE_ERROR_NOT_FOUND if @path was not found in
+ * @resource, or %G_RESOURCE_ERROR_INTERNAL if decompression of a compressed
+ * resource failed.
+ *
  * Returns: (transfer full): #GBytes or %NULL on error.
  *     Free the returned object with g_bytes_unref()
  *
@@ -834,6 +859,18 @@ g_resource_lookup_data (GResource             *resource,
   if (!do_lookup (resource, path, lookup_flags, &size, &flags, &data, &data_size, error))
     return NULL;
 
+  return resource_to_bytes (resource, path, size, data, data_size, flags, error);
+}
+
+static GBytes *
+resource_to_bytes (GResource   *resource,
+                   const char  *path,
+                   size_t       size,
+                   const void  *data,
+                   size_t       data_size,
+                   guint32      flags,
+                   GError     **error)
+{
   if (size == 0)
     return g_bytes_new_with_free_func ("", 0, (GDestroyNotify) g_resource_unref, g_resource_ref (resource));
   else if (flags & G_RESOURCE_FLAGS_COMPRESSED)
@@ -907,6 +944,9 @@ g_resource_lookup_data (GResource             *resource,
  * if found returns information about it.
  *
  * @lookup_flags controls the behaviour of the lookup.
+ *
+ * The only error this can return is %G_RESOURCE_ERROR_NOT_FOUND, if @path was
+ * not found in @resource.
  *
  * Returns: %TRUE if the file was found. %FALSE if there were errors
  *
@@ -998,10 +1038,7 @@ g_resource_enumerate_children (GResource             *resource,
 
   if (*path == 0)
     {
-      if (error)
-        g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                     _("The resource at “%s” does not exist"),
-                     path);
+      set_error_not_found (error, path);
       return NULL;
     }
 
@@ -1013,10 +1050,7 @@ g_resource_enumerate_children (GResource             *resource,
 
   if (children == NULL)
     {
-      if (error)
-        g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                     _("The resource at “%s” does not exist"),
-                     path);
+      set_error_not_found (error, path);
       return NULL;
     }
 
@@ -1159,27 +1193,22 @@ g_resources_open_stream (const gchar           *path,
   for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
-      GError *my_error = NULL;
 
-      stream = g_resource_open_stream (r, path, lookup_flags, &my_error);
-      if (stream == NULL &&
-          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+      stream = g_resource_open_stream (r, path, lookup_flags, NULL);
+      if (stream == NULL)
         {
-          g_clear_error (&my_error);
+          /* g_resource_open_stream() guarantees it only fails with
+           * %G_RESOURCE_ERROR_NOT_FOUND */
         }
       else
         {
-          if (stream == NULL)
-            g_propagate_error (error, my_error);
           res = stream;
           break;
         }
     }
 
   if (l == NULL)
-    g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                 _("The resource at “%s” does not exist"),
-                 path);
+    set_error_not_found (error, path);
 
   g_rw_lock_reader_unlock (&resources_lock);
 
@@ -1219,7 +1248,6 @@ g_resources_lookup_data (const gchar           *path,
 {
   GBytes *res = NULL;
   GList *l;
-  GBytes *data;
 
   if (g_resource_find_overlay (path, get_overlay_bytes, &res))
     return res;
@@ -1231,27 +1259,22 @@ g_resources_lookup_data (const gchar           *path,
   for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
-      GError *my_error = NULL;
+      const void *data;
+      guint32 flags;
+      gsize data_size;
+      gsize size;
 
-      data = g_resource_lookup_data (r, path, lookup_flags, &my_error);
-      if (data == NULL &&
-          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+      /* This is essentially g_resource_lookup_data(), but split up so we can
+       * avoid allocating a #GError if the resource is not found. */
+      if (do_lookup (r, path, lookup_flags, &size, &flags, &data, &data_size, NULL))
         {
-          g_clear_error (&my_error);
-        }
-      else
-        {
-          if (data == NULL)
-            g_propagate_error (error, my_error);
-          res = data;
+          res = resource_to_bytes (r, path, size, data, data_size, flags, error);
           break;
         }
     }
 
   if (l == NULL)
-    g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                 _("The resource at “%s” does not exist"),
-                 path);
+    set_error_not_found (error, path);
 
   g_rw_lock_reader_unlock (&resources_lock);
 
@@ -1322,10 +1345,7 @@ g_resources_enumerate_children (const gchar           *path,
 
   if (hash == NULL)
     {
-      if (error)
-        g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                     _("The resource at “%s” does not exist"),
-                     path);
+      set_error_not_found (error, path);
       return NULL;
     }
   else
@@ -1399,7 +1419,6 @@ g_resources_get_info (const gchar           *path,
 {
   gboolean res = FALSE;
   GList *l;
-  gboolean r_res;
   InfoData info;
 
   if (g_resource_find_overlay (path, get_overlay_info, &info))
@@ -1419,27 +1438,16 @@ g_resources_get_info (const gchar           *path,
   for (l = registered_resources; l != NULL; l = l->next)
     {
       GResource *r = l->data;
-      GError *my_error = NULL;
 
-      r_res = g_resource_get_info (r, path, lookup_flags, size, flags, &my_error);
-      if (!r_res &&
-          g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+      if (g_resource_get_info (r, path, lookup_flags, size, flags, NULL))
         {
-          g_clear_error (&my_error);
-        }
-      else
-        {
-          if (!r_res)
-            g_propagate_error (error, my_error);
-          res = r_res;
+          res = TRUE;
           break;
         }
     }
 
   if (l == NULL)
-    g_set_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND,
-                 _("The resource at “%s” does not exist"),
-                 path);
+    set_error_not_found (error, path);
 
   g_rw_lock_reader_unlock (&resources_lock);
 
