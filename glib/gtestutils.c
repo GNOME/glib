@@ -745,9 +745,9 @@ static GPrintFunc g_default_print_func = NULL;
 
 enum
 {
-  G_TEST_CASE_LARGS_RESULT = 0,
-  G_TEST_CASE_LARGS_RUN_FORKS = 1,
-  G_TEST_CASE_LARGS_EXECUTION_TIME = 2,
+  G_TEST_CASE_LARGS_RESULT = 0,  /* a GTestResult */
+  G_TEST_CASE_LARGS_RUN_FORKS = 1,  /* a gint */
+  G_TEST_CASE_LARGS_EXECUTION_TIME = 2,  /* a gdouble */
 
   G_TEST_CASE_LARGS_MAX
 };
@@ -972,7 +972,7 @@ g_test_log (GTestLogType lbit,
       break;
     case G_TEST_LOG_STOP_CASE:
       result = largs[G_TEST_CASE_LARGS_RESULT];
-      timing = largs[G_TEST_CASE_LARGS_EXECUTION_TIME];
+      timing = (gdouble) largs[G_TEST_CASE_LARGS_EXECUTION_TIME];
       fail = result == G_TEST_RUN_FAILURE;
       if (test_tap_log)
         {
@@ -4371,7 +4371,7 @@ g_test_log_dump (GTestLogMsg *msg,
       g_string_append_len (gstring, msg->strings[ui], l);
     }
   for (ui = 0; ui < msg->n_nums; ui++)
-    gstring_append_double (gstring, msg->nums[ui]);
+    gstring_append_double (gstring, (gdouble) msg->nums[ui]);
   *len = gstring->len;
   gstring_overwrite_int (gstring, 0, *len);     /* message length */
   return (guint8*) g_string_free (gstring, FALSE);

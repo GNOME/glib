@@ -34,11 +34,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "glib.h"
+#include "gutilsprivate.h"
 
 #if defined (_MSC_VER) && (_MSC_VER <= 1800)
-#define isnan(x) _isnan(x)
-
 #ifndef NAN
 static const unsigned long __nan[2] = {0xffffffff, 0x7fffffff};
 #define NAN (*(const float *) __nan)
@@ -1625,7 +1625,7 @@ check_strtod_string (gchar    *number,
 
       setlocale (LC_NUMERIC, locales[l]);
       d = g_ascii_strtod (number, &end);
-      g_assert_true (isnan (res) ? isnan (d) : (d == res));
+      g_assert_true (g_isnan (res) ? g_isnan (d) : (d == res));
       g_assert_true ((gsize) (end - number) ==
                      (check_end ? correct_len : strlen (number)));
     }
@@ -1660,7 +1660,7 @@ test_ascii_strtod (void)
   /* Do this before any call to setlocale.  */
   our_nan = atof ("NaN");
 #endif
-  g_assert_true (isnan (our_nan));
+  g_assert_true (g_isnan (our_nan));
 
 #ifdef INFINITY
   our_inf = INFINITY;

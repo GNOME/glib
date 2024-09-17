@@ -82,15 +82,11 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "gtimezone.h"
+#include "gutilsprivate.h"
 
 #ifndef G_OS_WIN32
 #include <sys/time.h>
 #include <time.h>
-#else
-#if defined (_MSC_VER) && (_MSC_VER < 1800)
-/* fallback implementation for isnan() on VS2012 and earlier */
-#define isnan _isnan
-#endif
 #endif /* !G_OS_WIN32 */
 
 struct _GDateTime
@@ -1645,7 +1641,7 @@ g_date_time_new (GTimeZone *tz,
       day < 1 || day > days_in_months[GREGORIAN_LEAP (year)][month] ||
       hour < 0 || hour > 23 ||
       minute < 0 || minute > 59 ||
-      isnan (seconds) ||
+      g_isnan (seconds) ||
       seconds < 0.0 || seconds >= 60.0)
     return NULL;
 
@@ -1670,7 +1666,7 @@ g_date_time_new (GTimeZone *tz,
    * is 1000000.  This is not a problem with precision, it's just how
    * FP numbers work.
    * See https://bugzilla.gnome.org/show_bug.cgi?id=697715. */
-  usec = seconds * USEC_PER_SECOND;
+  usec = (gint64) (seconds * USEC_PER_SECOND);
   usecd = (usec + 1) * 1e-6;
   if (usecd <= seconds) {
     usec++;
@@ -1973,7 +1969,7 @@ GDateTime*
 g_date_time_add_seconds (GDateTime *datetime,
                          gdouble    seconds)
 {
-  return g_date_time_add (datetime, seconds * USEC_PER_SECOND);
+  return g_date_time_add (datetime, (GTimeSpan) (seconds * USEC_PER_SECOND));
 }
 
 /**

@@ -1537,7 +1537,7 @@ g_task_thread_setup (void)
   if (tasks_running == G_TASK_POOL_SIZE)
     task_wait_time = G_TASK_WAIT_TIME_BASE;
   else if (tasks_running > G_TASK_POOL_SIZE && tasks_running < G_TASK_WAIT_TIME_MAX_POOL_SIZE)
-    task_wait_time *= G_TASK_WAIT_TIME_MULTIPLIER;
+    task_wait_time = (guint64) (task_wait_time * G_TASK_WAIT_TIME_MULTIPLIER);
 
   if (tasks_running >= G_TASK_POOL_SIZE)
     g_source_set_ready_time (task_pool_manager, g_get_monotonic_time () + task_wait_time);
@@ -1562,7 +1562,7 @@ g_task_thread_cleanup (void)
     g_source_set_ready_time (task_pool_manager, -1);
 
   if (tasks_running > G_TASK_POOL_SIZE && tasks_running < G_TASK_WAIT_TIME_MAX_POOL_SIZE)
-    task_wait_time /= G_TASK_WAIT_TIME_MULTIPLIER;
+    task_wait_time = (guint64) (task_wait_time / G_TASK_WAIT_TIME_MULTIPLIER);
 
   tasks_running--;
 

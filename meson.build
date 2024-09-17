@@ -550,6 +550,7 @@ endforeach
 if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   warning_common_args = [
     '-Wduplicated-branches',
+    '-Wfloat-conversion',
     '-Wimplicit-fallthrough',
     '-Wmisleading-indentation',
     '-Wmissing-field-initializers',

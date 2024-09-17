@@ -1409,7 +1409,7 @@ test_GDateTime_new_from_unix_utc (void)
   g_assert (dt == NULL);
 #endif
 
-  t = t / 1e6;  /* oops, this was microseconds */
+  t = t / G_USEC_PER_SEC;  /* oops, this was microseconds */
 
   dt = g_date_time_new_from_unix_utc (t);
   g_assert (dt != NULL);
