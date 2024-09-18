@@ -387,8 +387,8 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
   else
     {
       /* Send the Unix uid or Windows SID as an initial response.
-       * This is the only thing that is interoperable with GDBus 2.73.3
-       * servers. */
+       * This is the only thing that is interoperable with GDBus < 2.73.3
+       * servers (RHEL ≤ 9, Debian ≤ 11, Ubuntu ≤ 22.04, SUSE ≤ 15.5). */
 #if defined(G_OS_UNIX)
       GCredentials *credentials;
 
