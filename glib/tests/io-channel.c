@@ -178,6 +178,8 @@ test_read_line_embedded_nuls (void)
   GError *local_error = NULL;
   gchar *line = NULL;
   gsize line_length, terminator_pos;
+  const gchar *line_term;
+  gint line_term_length;
   GIOStatus status;
 
   g_test_summary ("Test that reading a line containing embedded nuls works "
@@ -200,6 +202,11 @@ test_read_line_embedded_nuls (void)
    * Use length -1 here to exercise glib#2323; the case where length > 0
    * is covered in glib/tests/protocol.c. */
   g_io_channel_set_line_term (channel, "\n", -1);
+
+  line_term = g_io_channel_get_line_term (channel, &line_term_length);
+  g_assert_cmpstr (line_term, ==, "\n");
+  g_assert_cmpint (line_term_length, ==, 1);
+
   g_io_channel_set_encoding (channel, NULL, &local_error);
   g_assert_no_error (local_error);
 
