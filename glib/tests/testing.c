@@ -330,7 +330,7 @@ static void
 test_fork_timeout (void)
 {
   /* allow child to run for only a fraction of a second */
-  if (g_test_trap_fork (0.11 * 1000000, G_TEST_TRAP_DEFAULT))
+  if (g_test_trap_fork ((guint64) (0.11 * G_USEC_PER_SEC), G_TEST_TRAP_DEFAULT))
     {
       /* loop and sleep forever */
       while (TRUE)
@@ -399,7 +399,7 @@ test_subprocess_timeout (void)
       return;
     }
   /* allow child to run for only a fraction of a second */
-  g_test_trap_subprocess (NULL, 0.05 * G_USEC_PER_SEC, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_subprocess (NULL, (guint64) (0.05 * G_USEC_PER_SEC), G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_failed ();
   g_assert_true (g_test_trap_reached_timeout ());
 }
