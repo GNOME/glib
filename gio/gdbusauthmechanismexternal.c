@@ -382,7 +382,6 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
        * no way to express an empty authorization identity this way.
        * Instead, we'll reply to the server's first (empty) challenge
        * with an empty authorization identity in our first response.  */
-      g_debug ("Using cross-namespace EXTERNAL authentication (this will deadlock if server is GDBus < 2.73.3)");
     }
   else
     {
