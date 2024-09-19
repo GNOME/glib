@@ -434,6 +434,7 @@ pattern_coalesce (const gchar *left,
   gchar *result;
   gchar *out;
   size_t buflen;
+  size_t left_len = strlen (left), right_len = strlen (right);
 
   /* the length of the output is loosely bound by the sum of the input
    * lengths, not simply the greater of the two lengths.
@@ -445,7 +446,8 @@ pattern_coalesce (const gchar *left,
    * This can be proven by the fact that `out` is never incremented by more
    * bytes than are consumed from `left` or `right` in each iteration.
    */
-  buflen = strlen (left) + strlen (right) + 1;
+  g_assert (left_len < G_MAXSIZE - right_len);
+  buflen = left_len + right_len + 1;
   out = result = g_malloc (buflen);
 
   while (*left && *right)
