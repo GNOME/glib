@@ -431,6 +431,7 @@ pattern_coalesce (const gchar *left,
 {
   gchar *result;
   gchar *out;
+  size_t buflen;
 
   /* the length of the output is loosely bound by the sum of the input
    * lengths, not simply the greater of the two lengths.
@@ -439,7 +440,8 @@ pattern_coalesce (const gchar *left,
    *
    *      8     +    8    =  12
    */
-  out = result = g_malloc (strlen (left) + strlen (right));
+  buflen = strlen (left) + strlen (right);
+  out = result = g_malloc (buflen);
 
   while (*left && *right)
     {
@@ -492,6 +494,9 @@ pattern_coalesce (const gchar *left,
             break;
         }
     }
+
+  /* Need at least one byte remaining for trailing nul. */
+  g_assert (out < result + buflen);
 
   if (*left || *right)
     {
