@@ -445,7 +445,7 @@ pattern_coalesce (const gchar *left,
    * This can be proven by the fact that `out` is never incremented by more
    * bytes than are consumed from `left` or `right` in each iteration.
    */
-  buflen = strlen (left) + strlen (right);
+  buflen = strlen (left) + strlen (right) + 1;
   out = result = g_malloc (buflen);
 
   while (*left && *right)
