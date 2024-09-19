@@ -4014,7 +4014,7 @@ test_parses (void)
     g_free (printed);
   }
 
-  /* pattern coalese of `MN` and `*` is `MN` */
+  /* pattern coalesce of `MN` and `*` is `MN` */
   {
     GVariant *value = NULL;
     GError *error = NULL;
@@ -4022,6 +4022,29 @@ test_parses (void)
     value = g_variant_parse (NULL, "[[0], [], [nothing]]", NULL, NULL, &error);
     g_assert_no_error (error);
     g_assert_cmpstr (g_variant_get_type_string (value), ==, "aami");
+    g_variant_unref (value);
+  }
+
+  /* pattern coalesce of `u` and `u` is `u`; this operates close to the string
+   * length bounds in pattern_coalesce() */
+  {
+    GVariant *value = NULL;
+    GError *error = NULL;
+
+    value = g_variant_parse (NULL, "[@u 5, @u 15]", NULL, NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpstr (g_variant_get_type_string (value), ==, "au");
+    g_variant_unref (value);
+  }
+
+  /* pattern coalesce of `(Ma*Ma(iii))` and `(Ma(iii)Ma*)` is `(Ma(iii)Ma(iii))` */
+  {
+    GVariant *value = NULL;
+    GError *error = NULL;
+
+    value = g_variant_parse (NULL, "[([], [(1,2,3)]), ([(1,2,3)], [])]", NULL, NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpstr (g_variant_get_type_string (value), ==, "a(a(iii)a(iii))");
     g_variant_unref (value);
   }
 
