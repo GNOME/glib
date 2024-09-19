@@ -290,6 +290,11 @@ test_dbus_appinfo (void)
   g_object_unref (app);
 }
 
+static GType test_flatpak_application_get_type (void);
+typedef GApplication TestFlatpakApplication;
+typedef GApplicationClass TestFlatpakApplicationClass;
+G_DEFINE_TYPE (TestFlatpakApplication, test_flatpak_application, G_TYPE_APPLICATION)
+
 static void
 on_flatpak_launch_uris_finish (GObject *object,
                                GAsyncResult *result,
@@ -300,6 +305,8 @@ on_flatpak_launch_uris_finish (GObject *object,
 
   g_app_info_launch_uris_finish (G_APP_INFO (object), result, &error);
   g_assert_no_error (error);
+  g_assert_true (requested_startup_id);
+  g_assert_true (saw_startup_id);
 
   g_application_release (app);
 }
@@ -308,6 +315,7 @@ static void
 on_flatpak_activate (GApplication *app,
                      gpointer user_data)
 {
+  GAppLaunchContext *ctx;
   GDesktopAppInfo *flatpak_appinfo = user_data;
   char *uri;
   GList *uris;
@@ -318,8 +326,12 @@ on_flatpak_activate (GApplication *app,
   uri = g_filename_to_uri (g_desktop_app_info_get_filename (flatpak_appinfo), NULL, NULL);
   g_assert_nonnull (uri);
   uris = g_list_prepend (NULL, uri);
-  g_app_info_launch_uris_async (G_APP_INFO (flatpak_appinfo), uris, NULL,
+  ctx = g_object_new (test_app_launch_context_get_type (), NULL);
+  requested_startup_id = FALSE;
+  saw_startup_id = FALSE;
+  g_app_info_launch_uris_async (G_APP_INFO (flatpak_appinfo), uris, ctx,
                                 NULL, on_flatpak_launch_uris_finish, app);
+  g_object_unref (ctx);
   g_list_free (uris);
   g_free (uri);
 }
@@ -339,6 +351,17 @@ on_flatpak_open (GApplication  *app,
   f = g_file_new_for_uri ("file:///document-portal/document-id/org.gtk.test.dbusappinfo.flatpak.desktop");
   g_assert_true (g_file_equal (files[0], f));
   g_object_unref (f);
+}
+
+static void
+test_flatpak_application_init (TestApplication *app)
+{
+}
+
+static void
+test_flatpak_application_class_init (GApplicationClass *class)
+{
+  class->before_emit = test_application_before_emit;
 }
 
 static void
@@ -364,8 +387,10 @@ test_flatpak_doc_export (void)
   g_assert_nonnull (flatpak_appinfo);
   g_free (desktop_file);
 
-  app = g_application_new ("org.gtk.test.dbusappinfo.flatpak",
-                           G_APPLICATION_HANDLES_OPEN);
+  app = g_object_new (test_flatpak_application_get_type (),
+                      "application-id", "org.gtk.test.dbusappinfo.flatpak",
+                      "flags", G_APPLICATION_HANDLES_OPEN,
+                      NULL);
   g_signal_connect (app, "activate", G_CALLBACK (on_flatpak_activate),
                     flatpak_appinfo);
   g_signal_connect (app, "open", G_CALLBACK (on_flatpak_open), NULL);
@@ -389,6 +414,8 @@ on_flatpak_launch_invalid_uri_finish (GObject *object,
 
   g_app_info_launch_uris_finish (G_APP_INFO (object), result, &error);
   g_assert_no_error (error);
+  g_assert_true (requested_startup_id);
+  g_assert_true (saw_startup_id);
 
   g_application_release (app);
 }
@@ -397,6 +424,7 @@ static void
 on_flatpak_activate_invalid_uri (GApplication *app,
                                  gpointer user_data)
 {
+  GAppLaunchContext *ctx;
   GDesktopAppInfo *flatpak_appinfo = user_data;
   GList *uris;
 
@@ -404,8 +432,12 @@ on_flatpak_activate_invalid_uri (GApplication *app,
   g_application_hold (app);
 
   uris = g_list_prepend (NULL, "file:///hopefully/an/invalid/path.desktop");
-  g_app_info_launch_uris_async (G_APP_INFO (flatpak_appinfo), uris, NULL,
+  ctx = g_object_new (test_app_launch_context_get_type (), NULL);
+  requested_startup_id = FALSE;
+  saw_startup_id = FALSE;
+  g_app_info_launch_uris_async (G_APP_INFO (flatpak_appinfo), uris, ctx,
                                 NULL, on_flatpak_launch_invalid_uri_finish, app);
+  g_object_unref (ctx);
   g_list_free (uris);
 }
 
@@ -448,8 +480,10 @@ test_flatpak_missing_doc_export (void)
   flatpak_appinfo = g_desktop_app_info_new_from_filename (desktop_file);
   g_assert_nonnull (flatpak_appinfo);
 
-  app = g_application_new ("org.gtk.test.dbusappinfo.flatpak",
-                           G_APPLICATION_HANDLES_OPEN);
+  app = g_object_new (test_flatpak_application_get_type (),
+                      "application-id", "org.gtk.test.dbusappinfo.flatpak",
+                      "flags", G_APPLICATION_HANDLES_OPEN,
+                      NULL);
   g_signal_connect (app, "activate", G_CALLBACK (on_flatpak_activate_invalid_uri),
                     flatpak_appinfo);
   g_signal_connect (app, "open", G_CALLBACK (on_flatpak_open_invalid_uri), NULL);
