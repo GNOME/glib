@@ -4014,7 +4014,7 @@ test_parses (void)
     g_free (printed);
   }
 
-  /* pattern coalese of `MN` and `*` is `MN` */
+  /* pattern coalesce of `MN` and `*` is `MN` */
   {
     GVariant *value = NULL;
     GError *error = NULL;
