@@ -401,6 +401,8 @@ token_stream_end_ref (TokenStream *stream,
   ref->end = stream->stream - stream->start;
 }
 
+/* This is guaranteed to write exactly as many bytes to `out` as it consumes
+ * from `in`. i.e. The `out` buffer doesn’t need to be any longer than `in`. */
 static void
 pattern_copy (gchar       **out,
               const gchar **in)
@@ -436,9 +438,12 @@ pattern_coalesce (const gchar *left,
   /* the length of the output is loosely bound by the sum of the input
    * lengths, not simply the greater of the two lengths.
    *
-   *   (*(iii)) + ((iii)*) ((iii)(iii))
+   *   (*(iii)) + ((iii)*) = ((iii)(iii))
    *
-   *      8     +    8    =  12
+   *      8     +    8     = 12
+   *
+   * This can be proven by the fact that `out` is never incremented by more
+   * bytes than are consumed from `left` or `right` in each iteration.
    */
   buflen = strlen (left) + strlen (right);
   out = result = g_malloc (buflen);
