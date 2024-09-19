@@ -1,3 +1,56 @@
+Overview of changes in GLib 2.82.1, 2024-09-19
+==============================================
+
+* Fix a potential buffer overflow in `GSocks4aProxy` (#3461, work by
+  Michael Catanzaro)
+
+* Bugs fixed:
+  - #3456 Test /unix-mounts/get-mount-entries fails unless libmount is enabled
+    (Philip Withnall)
+  - #3461 Buffer overflow in set_connect_msg() (Michael Catanzaro)
+  - !4220 Backport !4217 “tests: Test against a sample mtab file in unix-mounts
+    for getmntent()” to glib-2-82
+  - !4221 Backport !4219 “tests: Run lint tests with detected bash” to glib-2-82
+  - !4229 Update Polish translation for glib-2-82
+  - !4230 Update Czech translation [glib-2-82]
+  - !4231 Update Portuguese translation
+  - !4233 Update fa.po
+  - !4234 Update Brazilian Portuguese translation
+  - !4238 Backport !4237 “Update french translation” to glib-2-82
+  - !4240 Update Galician translations for glib-2-82
+  - !4241 Update German translation
+  - !4251 Update Bulgarian translation
+  - !4255 Update British English translation
+  - !4258 Update Hungarian translation
+  - !4259 Update Indonesian translation
+  - !4263 Updated Lithuanian translation
+  - !4265 Update Danish translation (2-82)
+  - !4270 Update Russian translation for 2-82
+  - !4271 Backport !4269 “docs(glib): Fix link in string-utils ref” to glib-2-82
+  - !4274 Update Georgian translation (glib-2-82)
+  - !4276 Backport !3965 “Move to Apple Silicon based runner” to glib-2-82
+  - !4282 Backport !4281 “gsocks4aproxy: Fix a single byte buffer overflow in
+    connect messages” to glib-2-82
+
+* Translation updates:
+  - Bulgarian (twlvnn kraftwerk)
+  - Czech (AsciiWolf)
+  - Danish (Ask Hjorth Larsen)
+  - English (United Kingdom) (Bruce Cowan)
+  - French (Vincent Chatelain)
+  - Galician (Fran Diéguez)
+  - Georgian (NorwayFun)
+  - German (Tim Sabsch)
+  - Hungarian (Balázs Úr)
+  - Indonesian (Andika Triwidada)
+  - Lithuanian (Aurimas Černius)
+  - Persian (Danial Behzadi)
+  - Polish (Piotr Drąg)
+  - Portuguese (Hugo Carvalho)
+  - Portuguese (Brazil) (Rafael Fontenelle)
+  - Russian (jtux270)
+
+
 Overview of changes in GLib 2.82.0, 2024-08-26
 ==============================================
 
