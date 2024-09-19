@@ -275,12 +275,10 @@ ik_source_dispatch (GSource     *source,
             {
               ik_event_t *pair;
 
-              pair = g_hash_table_lookup (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
-              if (pair != NULL)
+              if (g_hash_table_steal_extended (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie), NULL, (gpointer*)&pair))
                 {
                   g_assert (!pair->pair);
 
-                  g_hash_table_remove (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
                   event->is_second_in_pair = TRUE;
                   event->pair = pair;
                   pair->pair = event;
@@ -344,12 +342,10 @@ ik_source_dispatch (GSource     *source,
                 {
                   ik_event_t *pair;
 
-                  pair = g_hash_table_lookup (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
-                  if (pair != NULL)
+                  if (g_hash_table_steal_extended (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie), NULL, (gpointer*)&pair))
                     {
                       g_assert (!pair->pair);
 
-                      g_hash_table_remove (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
                       event->is_second_in_pair = TRUE;
                       event->pair = pair;
                       pair->pair = event;
