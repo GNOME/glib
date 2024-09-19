@@ -789,19 +789,41 @@ gioenumtypes_c = custom_target('gioenumtypes_c',
 
 gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h, glib_enumtypes_h, gio_visibility_h])
 
+file_monitor_backend = get_option('file_monitor_backend')
+if file_monitor_backend == 'auto'
+  if glib_conf.has('HAVE_SYS_INOTIFY_H') and have_func_inotify_init1
+    file_monitor_backend = 'inotify'
+  elif have_func_kqueue and have_func_kevent
+    file_monitor_backend = 'kqueue'
+  elif host_system == 'windows'
+    file_monitor_backend = 'win32'
+  endif
+endif
+
 # inotify
-if glib_conf.has('HAVE_SYS_INOTIFY_H') and have_func_inotify_init1
+if file_monitor_backend == 'inotify'
+  glib_conf.set('FILE_MONITOR_BACKEND_INOTIFY', 1)
+  subdir('inotify')
+  internal_deps += [ inotify_lib ]
+endif
+
+# libinotify-kqueue
+# uses the same code as inotify, but changes some functions behavior via #ifdef's
+if file_monitor_backend == 'libinotify-kqueue'
+  glib_conf.set('FILE_MONITOR_BACKEND_LIBINOTIFY_KQUEUE', 1)
   subdir('inotify')
   internal_deps += [ inotify_lib ]
 endif
 
 # kevent
-if have_func_kqueue and have_func_kevent
+if file_monitor_backend == 'kqueue'
+  glib_conf.set('FILE_MONITOR_BACKEND_KQUEUE', 1)
   subdir('kqueue')
   internal_deps += [ kqueue_lib ]
 endif
 
-if host_system == 'windows'
+if file_monitor_backend == 'win32'
+  glib_conf.set('FILE_MONITOR_BACKEND_WIN32', 1)
   subdir('win32')
   internal_deps += [ giowin32_lib ]
 endif

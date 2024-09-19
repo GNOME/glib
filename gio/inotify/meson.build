@@ -28,6 +28,9 @@ inotify_sources = [
   'ginotifyfilemonitor.c',
 ]
 
+# necessary for the libinotify-kqueue backend
+libinotify_kqueue_dep = dependency('libinotify', required: file_monitor_backend == 'libinotify-kqueue')
+
 inotify_lib = static_library('inotify',
   sources : [inotify_sources],
   include_directories : [configinc, glibinc],
@@ -36,6 +39,7 @@ inotify_lib = static_library('inotify',
     libglib_dep,
     libgobject_dep,
     gmodule_inc_dep,
+    libinotify_kqueue_dep,
   ],
   gnu_symbol_visibility : 'hidden',
   pic : true,
