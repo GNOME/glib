@@ -777,20 +777,9 @@ g_variant_type_is_variant (const GVariantType *type)
 guint
 g_variant_type_hash (gconstpointer type)
 {
-  const gchar *type_string;
-  guint value = 0;
-  gsize length;
-  gsize i;
-
   g_return_val_if_fail (g_variant_type_check (type), 0);
 
-  type_string = g_variant_type_peek_string (type);
-  length = g_variant_type_get_string_length (type);
-
-  for (i = 0; i < length; i++)
-    value = (value << 5) - value + type_string[i];
-
-  return value;
+  return _g_variant_type_hash (type);
 }
 
 /**

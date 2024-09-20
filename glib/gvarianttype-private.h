@@ -64,4 +64,36 @@ _g_variant_type_equal (const GVariantType *type1,
   return TRUE;
 }
 
+static inline guint
+_g_variant_type_hash (gconstpointer type)
+{
+  const gchar *type_string = type;
+  guint value = 0;
+  gsize index = 0;
+  int brackets = 0;
+
+  do
+    {
+      value = (value << 5) - value + type_string[index];
+
+      while (type_string[index] == 'a' || type_string[index] == 'm')
+        {
+          index++;
+
+          value = (value << 5) - value + type_string[index];
+        }
+
+      if (type_string[index] == '(' || type_string[index] == '{')
+        brackets++;
+
+      else if (type_string[index] == ')' || type_string[index] == '}')
+        brackets--;
+
+      index++;
+    }
+  while (brackets);
+
+  return value;
+}
+
 G_END_DECLS
