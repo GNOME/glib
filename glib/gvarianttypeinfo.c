@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include "gvarianttype-private.h"
 #include "gvarianttypeinfo.h"
 
 #include <glib/gtestutils.h>
@@ -756,9 +757,8 @@ static GHashTable *g_variant_type_info_table;
 GVariantTypeInfo *
 g_variant_type_info_get (const GVariantType *type)
 {
-  char type_char;
-
-  type_char = g_variant_type_peek_string (type)[0];
+  const gchar *type_string = g_variant_type_peek_string (type);
+  const char type_char = type_string[0];
 
   if (type_char == G_VARIANT_TYPE_INFO_CHAR_MAYBE ||
       type_char == G_VARIANT_TYPE_INFO_CHAR_ARRAY ||
@@ -766,15 +766,12 @@ g_variant_type_info_get (const GVariantType *type)
       type_char == G_VARIANT_TYPE_INFO_CHAR_DICT_ENTRY)
     {
       GVariantTypeInfo *info;
-      gchar *type_string;
-
-      type_string = g_variant_type_dup_string (type);
 
       g_rec_mutex_lock (&g_variant_type_info_lock);
 
       if (g_variant_type_info_table == NULL)
-        g_variant_type_info_table = g_hash_table_new (g_str_hash,
-                                                      g_str_equal);
+        g_variant_type_info_table = g_hash_table_new ((GHashFunc)_g_variant_type_hash,
+                                                      (GEqualFunc)_g_variant_type_equal);
       info = g_hash_table_lookup (g_variant_type_info_table, type_string);
 
       if (info == NULL)
@@ -792,20 +789,19 @@ g_variant_type_info_get (const GVariantType *type)
             }
 
           info = (GVariantTypeInfo *) container;
-          container->type_string = type_string;
+          container->type_string = g_variant_type_dup_string (type);
           g_atomic_ref_count_init (&container->ref_count);
 
           TRACE(GLIB_VARIANT_TYPE_INFO_NEW(info, container->type_string));
 
-          g_hash_table_insert (g_variant_type_info_table, type_string, info);
-          type_string = NULL;
+          g_hash_table_replace (g_variant_type_info_table,
+                                container->type_string, info);
         }
       else
         g_variant_type_info_ref (info);
 
       g_rec_mutex_unlock (&g_variant_type_info_lock);
       g_variant_type_info_check (info, 0);
-      g_free (type_string);
 
       return info;
     }
