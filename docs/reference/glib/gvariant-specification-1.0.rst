@@ -677,7 +677,7 @@ represents when deserialised with the given type.
    With type ``'a(si)'``::
 
       'h 'i \0 --   fe ff ff ff   03 ## ## ##   'b 'y 'e \0
-      ff ff ff ff   04 09
+      ff ff ff ff   04 09 15
 
    has a value of ``[('hi', -2), ('bye', -1)]``.
 
