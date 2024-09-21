@@ -867,6 +867,24 @@ g_variant_type_is_subtype_of (const GVariantType *type,
   supertype_string = g_variant_type_peek_string (supertype);
   type_string = g_variant_type_peek_string (type);
 
+  /* fast path for the basic determinate types */
+  if (type_string[0] == supertype_string[0])
+    {
+      switch (type_string[0])
+        {
+        case 'b': case 'y':
+        case 'n': case 'q':
+        case 'i': case 'h': case 'u':
+        case 't': case 'x':
+        case 's': case 'o': case 'g':
+        case 'd':
+          return TRUE;
+
+        default:
+          break;
+        }
+    }
+
   supertype_end = supertype_string +
                   g_variant_type_get_string_length (supertype);
 
