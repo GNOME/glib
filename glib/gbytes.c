@@ -28,13 +28,18 @@
 #include <glib/garray.h>
 #include <glib/gstrfuncs.h>
 #include <glib/gatomic.h>
-#include <glib/gslice.h>
 #include <glib/gtestutils.h>
 #include <glib/gmem.h>
 #include <glib/gmessages.h>
 #include <glib/grefcount.h>
 
 #include <string.h>
+
+#if GLIB_SIZEOF_VOID_P == 8
+# define G_BYTES_MAX_INLINE (128 - sizeof(GBytesInline))
+#else
+# define G_BYTES_MAX_INLINE (64 - sizeof(GBytesInline))
+#endif
 
 /**
  * GBytes: (copy-func g_bytes_ref) (free-func g_bytes_unref)
@@ -77,6 +82,21 @@ struct _GBytes
   gpointer user_data;
 };
 
+typedef struct
+{
+  GBytes bytes;
+  /* Despite no guarantee about alignment in GBytes, it is nice to
+   * provide that to ensure that any code which predates support
+   * for inline data continues to work without disruption. malloc()
+   * on GLibc systems would guarantee 2*sizeof(void*) aligned
+   * allocations and this matches that.
+   */
+  gsize padding;
+  guint8 inline_data[];
+} GBytesInline;
+
+G_STATIC_ASSERT (G_STRUCT_OFFSET (GBytesInline, inline_data) == (6 * GLIB_SIZEOF_VOID_P));
+
 /**
  * g_bytes_new:
  * @data: (transfer none) (array length=size) (element-type guint8) (nullable):
@@ -87,6 +107,9 @@ struct _GBytes
  *
  * @data is copied. If @size is 0, @data may be %NULL.
  *
+ * As an optimization, g_bytes_new() may avoid an extra allocation by copying
+ * the data within the resulting bytes structure if sufficiently small.
+ *
  * Returns: (transfer full): a new #GBytes
  *
  * Since: 2.32
@@ -96,6 +119,22 @@ g_bytes_new (gconstpointer data,
              gsize         size)
 {
   g_return_val_if_fail (data != NULL || size == 0, NULL);
+
+  if (size <= G_BYTES_MAX_INLINE)
+    {
+      GBytesInline *bytes;
+
+      bytes = g_malloc (sizeof *bytes + size);
+      bytes->bytes.data = bytes->inline_data;
+      bytes->bytes.size = size;
+      bytes->bytes.free_func = NULL;
+      bytes->bytes.user_data = NULL;
+      g_atomic_ref_count_init (&bytes->bytes.ref_count);
+
+      memcpy (bytes->inline_data, data, size);
+
+      return (GBytes *)bytes;
+    }
 
   return g_bytes_new_take (g_memdup2 (data, size), size);
 }
@@ -183,7 +222,7 @@ g_bytes_new_with_free_func (gconstpointer  data,
 
   g_return_val_if_fail (data != NULL || size == 0, NULL);
 
-  bytes = g_slice_new (GBytes);
+  bytes = g_new (GBytes, 1);
   bytes->data = data;
   bytes->size = size;
   bytes->free_func = free_func;
@@ -335,7 +374,7 @@ g_bytes_unref (GBytes *bytes)
     {
       if (bytes->free_func != NULL)
         bytes->free_func (bytes->user_data);
-      g_slice_free (GBytes, bytes);
+      g_free (bytes);
     }
 }
 
@@ -451,7 +490,7 @@ try_steal_and_unref (GBytes         *bytes,
     {
       *size = bytes->size;
       result = (gpointer)bytes->data;
-      g_slice_free (GBytes, bytes);
+      g_free (bytes);
       return result;
     }
 
@@ -469,8 +508,9 @@ try_steal_and_unref (GBytes         *bytes,
  *
  * As an optimization, the byte data is returned without copying if this was
  * the last reference to bytes and bytes was created with g_bytes_new(),
- * g_bytes_new_take() or g_byte_array_free_to_bytes(). In all other cases the
- * data is copied.
+ * g_bytes_new_take() or g_byte_array_free_to_bytes() and the buffer was larger
+ * than the size #GBytes may internalize within its allocation. In all other
+ * cases the data is copied.
  *
  * Returns: (transfer full) (array length=size) (element-type guint8)
  *          (not nullable): a pointer to the same byte data, which should be
@@ -516,8 +556,9 @@ g_bytes_unref_to_data (GBytes *bytes,
  *
  * As an optimization, the byte data is transferred to the array without copying
  * if this was the last reference to bytes and bytes was created with
- * g_bytes_new(), g_bytes_new_take() or g_byte_array_free_to_bytes(). In all
- * other cases the data is copied.
+ * g_bytes_new(), g_bytes_new_take() or g_byte_array_free_to_bytes() and the
+ * buffer was larger than the size #GBytes may internalize within its allocation.
+ * In all other cases the data is copied.
  *
  * Do not use it if @bytes contains more than %G_MAXUINT
  * bytes. #GByteArray stores the length of its data in #guint, which
