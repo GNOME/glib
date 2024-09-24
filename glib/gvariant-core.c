@@ -75,7 +75,14 @@ struct _GVariant
   gint state;
   gatomicrefcount ref_count;
   gsize depth;
+
+  guint8 suffix[];
 };
+
+/* Ensure our suffix data aligns to largest guaranteed offset
+ * within GVariant, of 8 bytes.
+ */
+G_STATIC_ASSERT (G_STRUCT_OFFSET (GVariant, suffix) % 8 == 0);
 
 /* struct GVariant:
  *
@@ -543,21 +550,31 @@ g_variant_ensure_serialised (GVariant *value)
  * @type: the type of the new instance
  * @serialised: if the instance will be in serialised form
  * @trusted: if the instance will be trusted
+ * @suffix_size: amount of extra bytes to add to allocation
  *
  * Allocates a #GVariant instance and does some common work (such as
  * looking up and filling in the type info), setting the state field,
  * and setting the ref_count to 1.
+ *
+ * Use @suffix_size when you want to store data inside of the GVariant
+ * without having to add an additional GBytes allocation.
  *
  * Returns: a new #GVariant with a floating reference
  */
 static GVariant *
 g_variant_alloc (const GVariantType *type,
                  gboolean            serialised,
-                 gboolean            trusted)
+                 gboolean            trusted,
+                 gsize               suffix_size)
 {
+  G_GNUC_UNUSED gboolean size_check;
   GVariant *value;
+  gsize size;
 
-  value = g_slice_new (GVariant);
+  size_check = g_size_checked_add (&size, sizeof *value, suffix_size);
+  g_assert (size_check);
+
+  value = g_malloc (size);
   value->type_info = g_variant_type_info_get (type);
   value->state = (serialised ? STATE_SERIALISED : 0) |
                  (trusted ? STATE_TRUSTED : 0) |
@@ -600,6 +617,54 @@ g_variant_new_from_bytes (const GVariantType *type,
 /* -- internal -- */
 
 /* < internal >
+ * g_variant_new_preallocated_trusted:
+ * @data: data to copy
+ * @size: the size of data
+ *
+ * Creates a new #GVariant for simple types such as int32, double, or
+ * bytes.
+ *
+ * Instead of allocating a GBytes, the data will be stored at the tail of
+ * the GVariant structures allocation. This can save considerable malloc
+ * overhead.
+ *
+ * The data is always aligned to the maximum alignment GVariant provides
+ * which is 8 bytes and therefore does not need to verify alignment based
+ * on the the @type provided.
+ *
+ * This should only be used for creating GVariant with trusted data.
+ *
+ * Returns: a new #GVariant with a floating reference
+ */
+GVariant *
+g_variant_new_preallocated_trusted (const GVariantType *type,
+                                    gconstpointer       data,
+                                    gsize               size)
+{
+  GVariant *value;
+  gsize expected_size;
+  guint alignment;
+
+  value = g_variant_alloc (type, TRUE, TRUE, size);
+
+  g_variant_type_info_query (value->type_info, &alignment, &expected_size);
+
+  g_assert (expected_size == 0 || size == expected_size);
+
+  value->contents.serialised.ordered_offsets_up_to = G_MAXSIZE;
+  value->contents.serialised.checked_offsets_up_to = G_MAXSIZE;
+  value->contents.serialised.bytes = NULL;
+  value->contents.serialised.data = value->suffix;
+  value->size = size;
+
+  memcpy (value->suffix, data, size);
+
+  TRACE(GLIB_VARIANT_FROM_BUFFER(value, value->type_info, value->ref_count, value->state));
+
+  return value;
+}
+
+/* < internal >
  * g_variant_new_take_bytes:
  * @bytes: (transfer full): a #GBytes
  * @trusted: if the contents of @bytes are trusted
@@ -620,7 +685,7 @@ g_variant_new_take_bytes (const GVariantType *type,
   GBytes *owned_bytes = NULL;
   GVariantSerialised serialised;
 
-  value = g_variant_alloc (type, TRUE, trusted);
+  value = g_variant_alloc (type, TRUE, trusted, 0);
 
   g_variant_type_info_query (value->type_info,
                              &alignment, &size);
@@ -728,7 +793,7 @@ g_variant_new_from_children (const GVariantType  *type,
 {
   GVariant *value;
 
-  value = g_variant_alloc (type, FALSE, trusted);
+  value = g_variant_alloc (type, FALSE, trusted, 0);
   value->contents.tree.children = children;
   value->contents.tree.n_children = n_children;
   TRACE(GLIB_VARIANT_FROM_CHILDREN(value, value->type_info, value->ref_count, value->state));
@@ -823,7 +888,7 @@ g_variant_unref (GVariant *value)
         g_variant_release_children (value);
 
       memset (value, 0, sizeof (GVariant));
-      g_slice_free (GVariant, value);
+      g_free (value);
     }
 }
 
@@ -1068,20 +1133,24 @@ g_variant_get_data (GVariant *value)
  * Returns: (transfer full): A new #GBytes representing the variant data
  *
  * Since: 2.36
- */ 
+ */
 GBytes *
 g_variant_get_data_as_bytes (GVariant *value)
 {
   const gchar *bytes_data;
   const gchar *data;
-  gsize bytes_size;
+  gsize bytes_size = 0;
   gsize size;
 
   g_variant_lock (value);
   g_variant_ensure_serialised (value);
   g_variant_unlock (value);
 
-  bytes_data = g_bytes_get_data (value->contents.serialised.bytes, &bytes_size);
+  if (value->contents.serialised.bytes != NULL)
+    bytes_data = g_bytes_get_data (value->contents.serialised.bytes, &bytes_size);
+  else
+    bytes_data = NULL;
+
   data = value->contents.serialised.data;
   size = value->size;
 
@@ -1091,11 +1160,13 @@ g_variant_get_data_as_bytes (GVariant *value)
       data = bytes_data;
     }
 
-  if (data == bytes_data && size == bytes_size)
+  if (bytes_data != NULL && data == bytes_data && size == bytes_size)
     return g_bytes_ref (value->contents.serialised.bytes);
-  else
+  else if (bytes_data != NULL)
     return g_bytes_new_from_bytes (value->contents.serialised.bytes,
                                    data - bytes_data, size);
+  else
+    return g_bytes_new (value->contents.serialised.data, size);
 }
 
 
@@ -1226,7 +1297,7 @@ g_variant_get_child_value (GVariant *value,
       }
 
     /* create a new serialized instance out of it */
-    child = g_slice_new (GVariant);
+    child = g_new (GVariant, 1);
     child->type_info = s_child.type_info;
     child->state = (value->state & STATE_TRUSTED) |
                    STATE_SERIALISED;
