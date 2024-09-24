@@ -1,5 +1,6 @@
 /*
  * Copyright © 2013 Canonical Limited
+ * Copyright © 2024 GNOME Foundation Inc.
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -17,12 +18,14 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
  * Authors: Ryan Lortie <desrt@desrt.ca>
+ *          Julian Sparber <jsparber@gnome.org>
  */
 
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
 #include "gdbus-sessionbus.h"
+#include "fake-desktop-portal.h"
 #include "fake-document-portal.h"
 
 static GDesktopAppInfo *appinfo;
@@ -498,14 +501,191 @@ test_flatpak_missing_doc_export (void)
   g_clear_object (&thread);
 }
 
+static void
+check_portal_openuri_call (const char               *expected_uri,
+                           GFakeDesktopPortalThread *thread)
+{
+  const char *activation_token = NULL;
+  GFile *expected_file = NULL;
+  GFile *file = NULL;
+  const char *uri = NULL;
+
+  activation_token = g_fake_desktop_portal_thread_get_last_request_activation_token (thread);
+  uri = g_fake_desktop_portal_thread_get_last_request_uri (thread);
+
+  g_assert_cmpstr (activation_token, ==, "expected startup id");
+  g_assert_nonnull (uri);
+
+  expected_file = g_file_new_for_uri (expected_uri);
+  file = g_file_new_for_uri (uri);
+  g_assert_true (g_file_equal (expected_file, file));
+
+  g_object_unref (file);
+  g_object_unref (expected_file);
+}
+
+static void
+test_portal_open_file (void)
+{
+  GAppLaunchContext *ctx;
+  GError *error = NULL;
+  char *uri;
+  GFakeDesktopPortalThread *thread = NULL;
+
+  /* Run a fake-desktop-portal */
+  thread = g_fake_desktop_portal_thread_new (session_bus_get_address ());
+  g_fake_desktop_portal_thread_run (thread);
+
+  uri = g_filename_to_uri (g_test_get_filename (G_TEST_DIST,
+                                                "org.gtk.test.dbusappinfo.flatpak.desktop",
+                                                NULL),
+                           NULL,
+                           NULL);
+
+  ctx = g_object_new (test_app_launch_context_get_type (), NULL);
+
+  requested_startup_id = FALSE;
+
+  g_app_info_launch_default_for_uri (uri, ctx, &error);
+
+  g_assert_no_error (error);
+  g_assert_true (requested_startup_id);
+
+  g_fake_desktop_portal_thread_stop (thread);
+  check_portal_openuri_call (uri, thread);
+
+  g_clear_object (&ctx);
+  g_clear_object (&thread);
+  g_clear_pointer (&uri, g_free);
+}
+
+static void
+test_portal_open_uri (void)
+{
+  GAppLaunchContext *ctx;
+  GError *error = NULL;
+  const char *uri = "http://example.com";
+  GFakeDesktopPortalThread *thread = NULL;
+
+  /* Run a fake-desktop-portal */
+  thread = g_fake_desktop_portal_thread_new (session_bus_get_address ());
+  g_fake_desktop_portal_thread_run (thread);
+
+  ctx = g_object_new (test_app_launch_context_get_type (), NULL);
+
+  requested_startup_id = FALSE;
+
+  g_app_info_launch_default_for_uri (uri, ctx, &error);
+
+  g_assert_no_error (error);
+  g_assert_true (requested_startup_id);
+
+  g_fake_desktop_portal_thread_stop (thread);
+  check_portal_openuri_call (uri, thread);
+
+  g_clear_object (&ctx);
+  g_clear_object (&thread);
+}
+
+static void
+on_launch_default_for_uri_finished (GObject      *object,
+                                    GAsyncResult *result,
+                                    gpointer      user_data)
+{
+  GError *error = NULL;
+  gboolean *called = user_data;
+
+  g_app_info_launch_default_for_uri_finish (result, &error);
+  g_assert_no_error (error);
+
+  *called = TRUE;
+
+  g_main_context_wakeup (NULL);
+}
+
+static void
+test_portal_open_file_async (void)
+{
+  GAppLaunchContext *ctx;
+  gboolean called = FALSE;
+  char *uri;
+  GFakeDesktopPortalThread *thread = NULL;
+
+  /* Run a fake-desktop-portal */
+  thread = g_fake_desktop_portal_thread_new (session_bus_get_address ());
+  g_fake_desktop_portal_thread_run (thread);
+
+  uri = g_filename_to_uri (g_test_get_filename (G_TEST_DIST,
+                                                "org.gtk.test.dbusappinfo.flatpak.desktop",
+                                                NULL),
+                           NULL,
+                           NULL);
+
+  ctx = g_object_new (test_app_launch_context_get_type (), NULL);
+
+  requested_startup_id = FALSE;
+
+  g_app_info_launch_default_for_uri_async (uri, ctx,
+                                           NULL, on_launch_default_for_uri_finished, &called);
+
+  while (!called)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_true (requested_startup_id);
+
+  g_fake_desktop_portal_thread_stop (thread);
+  check_portal_openuri_call (uri, thread);
+
+  g_clear_pointer (&uri, g_free);
+  g_clear_object (&ctx);
+  g_clear_object (&thread);
+}
+
+static void
+test_portal_open_uri_async (void)
+{
+  GAppLaunchContext *ctx;
+  gboolean called = FALSE;
+  const char *uri = "http://example.com";
+  GFakeDesktopPortalThread *thread = NULL;
+
+  /* Run a fake-desktop-portal */
+  thread = g_fake_desktop_portal_thread_new (session_bus_get_address ());
+  g_fake_desktop_portal_thread_run (thread);
+
+  ctx = g_object_new (test_app_launch_context_get_type (), NULL);
+
+  requested_startup_id = FALSE;
+
+  g_app_info_launch_default_for_uri_async (uri, ctx,
+                                           NULL, on_launch_default_for_uri_finished, &called);
+
+  while (!called)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_true (requested_startup_id);
+
+  g_fake_desktop_portal_thread_stop (thread);
+  check_portal_openuri_call (uri, thread);
+
+  g_clear_object (&ctx);
+  g_clear_object (&thread);
+}
+
 int
 main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
+  g_setenv ("GIO_USE_PORTALS", "1", TRUE);
+
   g_test_add_func ("/appinfo/dbusappinfo", test_dbus_appinfo);
   g_test_add_func ("/appinfo/flatpak-doc-export", test_flatpak_doc_export);
   g_test_add_func ("/appinfo/flatpak-missing-doc-export", test_flatpak_missing_doc_export);
+  g_test_add_func ("/appinfo/portal-open-file", test_portal_open_file);
+  g_test_add_func ("/appinfo/portal-open-uri", test_portal_open_uri);
+  g_test_add_func ("/appinfo/portal-open-file-async", test_portal_open_file_async);
+  g_test_add_func ("/appinfo/portal-open-uri-async", test_portal_open_uri_async);
 
   return session_bus_run ();
 }
