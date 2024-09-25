@@ -1267,11 +1267,17 @@ g_variant_new_fixed_array (const GVariantType  *element_type,
 GVariant *
 g_variant_new_string (const gchar *string)
 {
-  g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (g_utf8_validate (string, -1, NULL), NULL);
+  const char *endptr = NULL;
 
-  return g_variant_new_from_trusted (G_VARIANT_TYPE_STRING,
-                                     string, strlen (string) + 1);
+  g_return_val_if_fail (string != NULL, NULL);
+
+  if G_LIKELY (g_utf8_validate (string, -1, &endptr))
+    return g_variant_new_from_trusted (G_VARIANT_TYPE_STRING,
+                                       string, endptr - string + 1);
+
+  g_critical ("g_variant_new_string(): requires valid UTF-8");
+
+  return NULL;
 }
 
 /**
@@ -1299,17 +1305,25 @@ g_variant_new_string (const gchar *string)
 GVariant *
 g_variant_new_take_string (gchar *string)
 {
-  GVariant *value;
-  GBytes *bytes;
+  const char *end = NULL;
 
   g_return_val_if_fail (string != NULL, NULL);
-  g_return_val_if_fail (g_utf8_validate (string, -1, NULL), NULL);
 
-  bytes = g_bytes_new_take (string, strlen (string) + 1);
-  value = g_variant_new_from_bytes (G_VARIANT_TYPE_STRING, bytes, TRUE);
-  g_bytes_unref (bytes);
+  if G_LIKELY (g_utf8_validate (string, -1, &end))
+    {
+      GVariant *value;
+      GBytes *bytes;
 
-  return value;
+      bytes = g_bytes_new_take (string, end - string + 1);
+      value = g_variant_new_from_bytes (G_VARIANT_TYPE_STRING, bytes, TRUE);
+      g_bytes_unref (bytes);
+
+      return value;
+    }
+
+  g_critical ("g_variant_new_take_string(): requires valid UTF-8");
+
+  return NULL;
 }
 
 /**
