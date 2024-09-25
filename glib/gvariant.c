@@ -3760,6 +3760,7 @@ g_variant_builder_end (GVariantBuilder *builder)
 {
   GVariantType *my_type;
   GVariant *value;
+  GVariant **children;
 
   return_val_if_invalid_builder (builder, NULL);
   g_return_val_if_fail (GVSB(builder)->offset >= GVSB(builder)->min_items,
@@ -3788,10 +3789,14 @@ g_variant_builder_end (GVariantBuilder *builder)
   else
     g_assert_not_reached ();
 
+  children = GVSB(builder)->children;
+
+  /* shrink allocation to release extra space to allocator */
+  if G_UNLIKELY (GVSB(builder)->offset < GVSB(builder)->allocated_children)
+    children = g_renew (GVariant *, children, GVSB(builder)->offset);
+
   value = g_variant_new_from_children (my_type,
-                                       g_renew (GVariant *,
-                                                GVSB(builder)->children,
-                                                GVSB(builder)->offset),
+                                       children,
                                        GVSB(builder)->offset,
                                        GVSB(builder)->trusted);
   GVSB(builder)->children = NULL;
