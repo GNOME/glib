@@ -4671,6 +4671,15 @@ valid_format_string (const gchar *format_string,
   const gchar *endptr;
   GVariantType *type;
 
+  /* An extremely common use-case is checking the format string without
+   * caring about the value specifically. Provide a fast-path for this to
+   * avoid the malloc/free overhead.
+   */
+  if G_LIKELY (value == NULL &&
+               g_variant_format_string_scan (format_string, NULL, &endptr) &&
+               (single || *endptr == '\0'))
+    return TRUE;
+
   type = g_variant_format_string_scan_type (format_string, NULL, &endptr);
 
   if G_UNLIKELY (type == NULL || (single && *endptr != '\0'))
