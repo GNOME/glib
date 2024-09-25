@@ -594,6 +594,26 @@ g_variant_new_from_bytes (const GVariantType *type,
                           GBytes             *bytes,
                           gboolean            trusted)
 {
+  return g_variant_new_take_bytes (type, g_bytes_ref (bytes), trusted);
+}
+
+/* -- internal -- */
+
+/* < internal >
+ * g_variant_new_take_bytes:
+ * @bytes: (transfer full): a #GBytes
+ * @trusted: if the contents of @bytes are trusted
+ *
+ * The same as g_variant_new_from_bytes() but takes ownership
+ * of @bytes.
+ *
+ * Returns: a new #GVariant with a floating reference
+ */
+GVariant *
+g_variant_new_take_bytes (const GVariantType *type,
+                          GBytes             *bytes,
+                          gboolean            trusted)
+{
   GVariant *value;
   guint alignment;
   gsize size;
@@ -639,21 +659,23 @@ g_variant_new_from_bytes (const GVariantType *type,
       if (aligned_size != 0)
         memcpy (aligned_data, g_bytes_get_data (bytes, NULL), aligned_size);
 
-      bytes = owned_bytes = g_bytes_new_with_free_func (aligned_data,
-                                                        aligned_size,
-                                                        free, aligned_data);
+      owned_bytes = bytes;
+      bytes = g_bytes_new_with_free_func (aligned_data,
+                                          aligned_size,
+                                          free, aligned_data);
       aligned_data = NULL;
 #else
       /* NOTE: there may be platforms that lack posix_memalign() and also
        * have malloc() that returns non-8-aligned.  if so, we need to try
        * harder here.
        */
-      bytes = owned_bytes = g_bytes_new (g_bytes_get_data (bytes, NULL),
-                                         g_bytes_get_size (bytes));
+      owned_bytes = bytes;
+      bytes = g_bytes_new (g_bytes_get_data (bytes, NULL),
+                           g_bytes_get_size (bytes));
 #endif
     }
 
-  value->contents.serialised.bytes = g_bytes_ref (bytes);
+  value->contents.serialised.bytes = bytes;
 
   if (size && g_bytes_get_size (bytes) != size)
     {
@@ -681,8 +703,6 @@ g_variant_new_from_bytes (const GVariantType *type,
 
   return value;
 }
-
-/* -- internal -- */
 
 /* < internal >
  * g_variant_new_from_children:

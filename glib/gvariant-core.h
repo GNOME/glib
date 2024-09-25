@@ -27,6 +27,9 @@
 
 /* gvariant-core.c */
 
+GVariant *              g_variant_new_take_bytes                        (const GVariantType  *type,
+                                                                         GBytes              *bytes,
+                                                                         gboolean             trusted);
 GVariant *              g_variant_new_from_children                     (const GVariantType  *type,
                                                                          GVariant           **children,
                                                                          gsize                n_children,

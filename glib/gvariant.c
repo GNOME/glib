@@ -321,14 +321,7 @@ g_variant_new_from_trusted (const GVariantType *type,
                             gconstpointer       data,
                             gsize               size)
 {
-  GVariant *value;
-  GBytes *bytes;
-
-  bytes = g_bytes_new (data, size);
-  value = g_variant_new_from_bytes (type, bytes, TRUE);
-  g_bytes_unref (bytes);
-
-  return value;
+  return g_variant_new_take_bytes (type, g_bytes_new (data, size), TRUE);
 }
 
 /**
@@ -1311,14 +1304,8 @@ g_variant_new_take_string (gchar *string)
 
   if G_LIKELY (g_utf8_validate (string, -1, &end))
     {
-      GVariant *value;
-      GBytes *bytes;
-
-      bytes = g_bytes_new_take (string, end - string + 1);
-      value = g_variant_new_from_bytes (G_VARIANT_TYPE_STRING, bytes, TRUE);
-      g_bytes_unref (bytes);
-
-      return value;
+      GBytes *bytes = g_bytes_new_take (string, end - string + 1);
+      return g_variant_new_take_bytes (G_VARIANT_TYPE_STRING, g_steal_pointer (&bytes), TRUE);
     }
 
   g_critical ("g_variant_new_take_string(): requires valid UTF-8");
@@ -1358,8 +1345,7 @@ g_variant_new_printf (const gchar *format_string,
   va_end (ap);
 
   bytes = g_bytes_new_take (string, strlen (string) + 1);
-  value = g_variant_new_from_bytes (G_VARIANT_TYPE_STRING, bytes, TRUE);
-  g_bytes_unref (bytes);
+  value = g_variant_new_take_bytes (G_VARIANT_TYPE_STRING, g_steal_pointer (&bytes), TRUE);
 
   return value;
 }
@@ -6181,8 +6167,7 @@ g_variant_byteswap (GVariant *value)
       g_variant_serialised_byteswap (serialised);
 
       bytes = g_bytes_new_take (serialised.data, serialised.size);
-      new = g_variant_ref_sink (g_variant_new_from_bytes (g_variant_get_type (value), bytes, TRUE));
-      g_bytes_unref (bytes);
+      new = g_variant_ref_sink (g_variant_new_take_bytes (g_variant_get_type (value), g_steal_pointer (&bytes), TRUE));
     }
   else if (alignment)
     /* (potentially) contains multi-byte numeric data */
@@ -6247,7 +6232,6 @@ g_variant_new_from_data (const GVariantType *type,
                          GDestroyNotify      notify,
                          gpointer            user_data)
 {
-  GVariant *value;
   GBytes *bytes;
 
   g_return_val_if_fail (g_variant_type_is_definite (type), NULL);
@@ -6258,10 +6242,7 @@ g_variant_new_from_data (const GVariantType *type,
   else
     bytes = g_bytes_new_static (data, size);
 
-  value = g_variant_new_from_bytes (type, bytes, trusted);
-  g_bytes_unref (bytes);
-
-  return value;
+  return g_variant_new_take_bytes (type, g_steal_pointer (&bytes), trusted);
 }
 
 /* Epilogue {{{1 */
