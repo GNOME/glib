@@ -5084,6 +5084,28 @@ test_stack_builder_init (void)
   g_variant_unref (variant);
 }
 
+static void
+test_stack_builder_init_static (void)
+{
+  GVariantBuilder builder;
+  GVariant *variant;
+
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_BYTESTRING);
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('g'));
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('l'));
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('i'));
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('b'));
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('\0'));
+
+  variant = g_variant_ref_sink (g_variant_builder_end (&builder));
+  g_assert_nonnull (variant);
+  g_assert_true (g_variant_type_equal (g_variant_get_type (variant),
+                                       G_VARIANT_TYPE_BYTESTRING));
+  g_assert_cmpuint (g_variant_n_children (variant), ==, 5);
+  g_assert_cmpstr (g_variant_get_bytestring (variant), ==, "glib");
+  g_variant_unref (variant);
+}
+
 static GVariant *
 get_asv (void)
 {
@@ -5932,6 +5954,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/error-quark", test_error_quark);
 
   g_test_add_func ("/gvariant/stack-builder-init", test_stack_builder_init);
+  g_test_add_func ("/gvariant/stack-builder-init-static", test_stack_builder_init_static);
   g_test_add_func ("/gvariant/stack-dict-init", test_stack_dict_init);
 
   g_test_add_func ("/gvariant/normal-checking/tuples",
