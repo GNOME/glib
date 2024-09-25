@@ -5,7 +5,11 @@ project('glib', 'c',
   default_options : [
     'buildtype=debugoptimized',
     'warning_level=3',
-    'c_std=gnu99,c99'
+    # FIXME: After https://github.com/mesonbuild/meson/issues/13639 is
+    # fixed, change this to
+    # meson.version().version_compare('>=FIXED_MESON_VERSION') ? 'c_std=gnu99,c99' : 'c_std=gnu99'
+    # to avoid a warning on MSVC.
+    'c_std=gnu99'
   ]
 )
 

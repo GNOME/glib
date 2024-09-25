@@ -11,7 +11,6 @@ for %%x in (%*) do (
 )
 set args=%args:~1%
 
-:: FIXME: make warnings fatal
 pip3 install --upgrade --user meson==1.4.2 || goto :error
 meson setup %args% _build || goto :error
 meson compile -C _build || goto :error

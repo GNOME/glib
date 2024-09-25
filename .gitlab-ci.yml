@@ -590,7 +590,9 @@ vs2017-x64:
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
     # aren’t currently set up for that.
-    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS}
+    # FIXME: Use --meson-fatal-warnings once we've enabled c_std=gnu99,c99
+    # for the runner's Meson version.
+    - .gitlab-ci/test-msvc.bat --buildtype debug
                                --wrap-mode=default
                                --python.platlibdir=C:\Python37\site-packages
                                --python.purelibdir=C:\Python37\site-packages
@@ -623,7 +625,9 @@ vs2017-x64-static:
   script:
     # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
     # aren’t currently set up for that.
-    - .gitlab-ci/test-msvc.bat ${MESON_COMMON_OPTIONS}
+    # FIXME: Use --meson-fatal-warnings once we've enabled c_std=gnu99,c99
+    # for the runner's Meson version.
+    - .gitlab-ci/test-msvc.bat --buildtype debug
                                --wrap-mode=default
                                --default-library=static
                                --python.platlibdir=C:\Python37\site-packages
@@ -721,12 +725,8 @@ macos-arm64:
     # isn't currently set up for that. See:
     #  - https://gitlab.gnome.org/GNOME/glib/merge_requests/388
     #  - https://gitlab.gnome.org/Infrastructure/Infrastructure/issues/225
-
-    # FIXME: Override c_std to not be a list, until
-    # https://github.com/mesonbuild/meson/issues/13639 is fixed.
     - meson setup ${MESON_COMMON_OPTIONS}
             --wrap-mode=default
-            -Dc_std=gnu99
             --werror
             _build
     - meson compile -C _build
