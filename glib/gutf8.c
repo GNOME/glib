@@ -1747,9 +1747,10 @@ fast_validate_len (const char *str,
  * @str is the text to validate; if @str is nul-terminated, then @max_len can be
  * `-1`, otherwise @max_len should be the number of bytes to validate.
  *
- * If @end is non-`NULL`, then the end of the valid range will be stored there
- * (i.e. the start of the first invalid  character if some bytes were invalid,
- * or the end of the text being validated otherwise).
+ * If @end is non-`NULL`, then the end of the valid range will be stored there.
+ * This is the first byte of the first invalid character if some bytes were
+ * invalid, or the end of the text being validated otherwise — either the
+ * trailing nul byte, or the first byte beyond @max_len (if it’s positive).
  *
  * Note that `g_utf8_validate()` returns `FALSE` if @max_len is  positive and
  * any of the @max_len bytes are nul.
