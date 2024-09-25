@@ -88,7 +88,7 @@ typedef struct
   /* Despite no guarantee about alignment in GBytes, it is nice to
    * provide that to ensure that any code which predates support
    * for inline data continues to work without disruption. malloc()
-   * on GLibc systems would guarantee 2*sizeof(void*) aligned
+   * on glibc systems would guarantee 2*sizeof(void*) aligned
    * allocations and this matches that.
    */
   gsize padding;
@@ -108,7 +108,7 @@ G_STATIC_ASSERT (G_STRUCT_OFFSET (GBytesInline, inline_data) == (6 * GLIB_SIZEOF
  * @data is copied. If @size is 0, @data may be %NULL.
  *
  * As an optimization, g_bytes_new() may avoid an extra allocation by copying
- * the data within the resulting bytes structure if sufficiently small.
+ * the data within the resulting bytes structure if sufficiently small (since GLib 2.84).
  *
  * Returns: (transfer full): a new #GBytes
  *
