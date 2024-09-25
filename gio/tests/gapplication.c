@@ -1368,7 +1368,7 @@ test_dbus_activate (void)
   g_ptr_array_add (messages, g_steal_pointer (&message));
 
   /* With some platform data */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));
   g_variant_builder_add (&builder, "{sv}", "cwd", g_variant_new_bytestring ("/home/henry"));
 
   message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Activate",
@@ -1446,7 +1446,7 @@ test_dbus_open (void)
   messages = g_ptr_array_new_with_free_func (g_object_unref);
 
   /* Via org.gtk.Application */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("as"));
   g_variant_builder_add (&builder, "s", "file:///home/henry/test");
 
   message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Open",
@@ -1457,7 +1457,7 @@ test_dbus_open (void)
   g_ptr_array_add (messages, g_steal_pointer (&message));
 
   /* Via org.freedesktop.Application (which has no hint parameter) */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("as"));
   g_variant_builder_add (&builder, "s", "file:///home/henry/test");
 
   message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Open",
@@ -1468,11 +1468,11 @@ test_dbus_open (void)
   g_ptr_array_add (messages, g_steal_pointer (&message));
 
   /* With some platform data and more than one file */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("as"));
   g_variant_builder_add (&builder, "s", "file:///home/henry/test");
   g_variant_builder_add (&builder, "s", "file:///home/henry/test2");
 
-  g_variant_builder_init (&builder2, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&builder2, G_VARIANT_TYPE ("a{sv}"));
   g_variant_builder_add (&builder2, "{sv}", "cwd", g_variant_new_bytestring ("/home/henry"));
 
   message = g_dbus_message_new_method_call ("org.gtk.TestApplication.Open",
@@ -1550,7 +1550,7 @@ test_dbus_command_line (void)
   messages = g_ptr_array_new_with_free_func (g_object_unref);
 
   /* Via org.gtk.Application */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("aay"));
   g_variant_builder_add (&builder, "^ay", "test-program");
   g_variant_builder_add (&builder, "^ay", "--open");
   g_variant_builder_add (&builder, "^ay", "/path/to/something");
@@ -1565,12 +1565,12 @@ test_dbus_command_line (void)
   g_ptr_array_add (messages, g_steal_pointer (&message));
 
   /* With platform data */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("aay"));
   g_variant_builder_add (&builder, "^ay", "test-program");
   g_variant_builder_add (&builder, "^ay", "--open");
   g_variant_builder_add (&builder, "^ay", "/path/to/something");
 
-  g_variant_builder_init (&builder2, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&builder2, G_VARIANT_TYPE ("a{sv}"));
   g_variant_builder_add (&builder2, "{sv}", "cwd", g_variant_new_bytestring ("/home"));
   g_variant_builder_add_parsed (&builder2, "{'environ', <@aay [ b'HOME=/home/bloop', b'PATH=/blah']>}");
   g_variant_builder_add_parsed (&builder2, "{'options', <{'a': <@u 32>, 'b': <'bloop'>}>}");
@@ -1585,12 +1585,12 @@ test_dbus_command_line (void)
   g_ptr_array_add (messages, g_steal_pointer (&message));
 
   /* With invalid typed platform data */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("aay"));
   g_variant_builder_add (&builder, "^ay", "test-program");
   g_variant_builder_add (&builder, "^ay", "--open");
   g_variant_builder_add (&builder, "^ay", "/path/to/something");
 
-  g_variant_builder_init (&builder2, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&builder2, G_VARIANT_TYPE ("a{sv}"));
   g_variant_builder_add (&builder2, "{sv}", "cwd", g_variant_new_string ("/home should be a bytestring"));
   g_variant_builder_add_parsed (&builder2, "{'environ', <['HOME=should be a bytestring', 'PATH=this also']>}");
   g_variant_builder_add_parsed (&builder2, "{'options', <['should be a', 'dict']>}");
@@ -1673,7 +1673,7 @@ test_dbus_command_line_done (void)
 
   g_test_summary ("Test that GDBusCommandLine.done() works");
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("aay"));
   g_variant_builder_add (&builder, "^ay", "test-program");
   g_variant_builder_add (&builder, "^ay", "/path/to/something");
 
@@ -1748,7 +1748,7 @@ test_dbus_activate_action (void)
   messages[0].n_expected_activations = 1;
 
   /* Action with parameter */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new_string ("spanish"));
 
   messages[1].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
@@ -1759,7 +1759,7 @@ test_dbus_activate_action (void)
   messages[1].n_expected_activations = 1;
 
   /* Action with unexpected parameter */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new_string ("should not be passed"));
 
   messages[2].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
@@ -1778,7 +1778,7 @@ test_dbus_activate_action (void)
   messages[3].n_expected_activations = 0;
 
   /* Action with wrong parameter type */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new_uint32 (42));
 
   messages[4].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
@@ -1797,7 +1797,7 @@ test_dbus_activate_action (void)
   messages[5].n_expected_activations = 0;
 
   /* Action with tuple as parameter given as two items to the interface */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new_string ("first"));
   g_variant_builder_add (&builder, "v", g_variant_new_string ("second"));
 
@@ -1810,7 +1810,7 @@ test_dbus_activate_action (void)
   messages[6].n_expected_activations = 1;
 
   /* Action with tuple as parameter given as two items to the interface but with a wrong type */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new_string ("first"));
   g_variant_builder_add (&builder, "v", g_variant_new_uint32 (42));
 
@@ -1822,7 +1822,7 @@ test_dbus_activate_action (void)
   messages[7].n_expected_activations = 0;
 
   /* Action with tuple as parameter given as a single item to the interface */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new ("(ss)", "first", "second"));
 
   messages[8].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
@@ -1833,7 +1833,7 @@ test_dbus_activate_action (void)
   messages[8].n_expected_activations = 1;
 
   /* Action with tuple as parameter given as a single item to the interface but with additional items */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new ("(ss)", "first", "second"));
   g_variant_builder_add (&builder, "v", g_variant_new_uint32 (42));
   g_variant_builder_add (&builder, "v", g_variant_new_uint32 (42));
@@ -1846,7 +1846,7 @@ test_dbus_activate_action (void)
   messages[9].n_expected_activations = 0;
 
   /* Action with tuple with single item as parameter */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new ("(s)", "first"));
 
   messages[10].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
@@ -1857,7 +1857,7 @@ test_dbus_activate_action (void)
   messages[10].n_expected_activations = 1;
 
   /* Action with tuple with single item as parameter with additional items */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_add (&builder, "v", g_variant_new ("(s)", "first"));
   g_variant_builder_add (&builder, "v", g_variant_new_uint32 (42));
   g_variant_builder_add (&builder, "v", g_variant_new_uint32 (43));

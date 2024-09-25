@@ -143,7 +143,7 @@ g_document_portal_add_documents (GList       *uris,
   length = g_list_length (uris);
   as_is = g_new0 (gboolean, length);
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("ah"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("ah"));
 
   fd_list = g_unix_fd_list_new ();
   for (l = uris, i = 0; l; l = l->next, i++)

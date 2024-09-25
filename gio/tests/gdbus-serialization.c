@@ -1262,7 +1262,7 @@ test_message_serialize_double_array (void)
 
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=732754");
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("ad"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("ad"));
   g_variant_builder_add (&builder, "d", (gdouble)0.0);
   g_variant_builder_add (&builder, "d", (gdouble)8.0);
   g_variant_builder_add (&builder, "d", (gdouble)22.0);
@@ -1639,7 +1639,7 @@ test_message_parse_truncated (void)
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2528");
 
   message = g_dbus_message_new ();
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(asbynqiuxtd)"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(asbynqiuxtd)"));
   g_variant_builder_open (&builder, G_VARIANT_TYPE ("as"));
   g_variant_builder_add (&builder, "s", "fourtytwo");
   g_variant_builder_close (&builder);
@@ -1747,7 +1747,7 @@ test_message_serialize_empty_structure (void)
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/2557");
 
   message = g_dbus_message_new ();
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(a())"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(a())"));
   g_variant_builder_open (&builder, G_VARIANT_TYPE ("a()"));
   g_variant_builder_add (&builder, "()");
   g_variant_builder_close (&builder);

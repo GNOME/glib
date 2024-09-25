@@ -410,7 +410,7 @@ g_settings_set_mapping (const GValue       *value,
       fclass = g_type_class_peek (G_VALUE_TYPE (value));
       flags = g_value_get_flags (value);
 
-      g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+      g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("as"));
       while (flags)
         {
           flagsval = g_flags_get_first_value (fclass, flags);

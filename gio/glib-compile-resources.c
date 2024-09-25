@@ -606,7 +606,7 @@ parse_resource_file (const gchar *filename,
 
 	  g_free (mykey);
 
-	  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(uuay)"));
+	  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(uuay)"));
 
 	  g_variant_builder_add (&builder, "u", data->size); /* Size */
 	  g_variant_builder_add (&builder, "u", data->flags); /* Flags */

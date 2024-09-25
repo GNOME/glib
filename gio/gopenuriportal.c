@@ -95,7 +95,7 @@ g_openuri_portal_open_file (GFile       *file,
       return FALSE;
     }
 
-  g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+  g_variant_builder_init_static (&opt_builder, G_VARIANT_TYPE_VARDICT);
 
   if (startup_id)
     g_variant_builder_add (&opt_builder, "{sv}",
@@ -306,7 +306,7 @@ g_openuri_portal_open_file_async (GFile               *file,
                                                       NULL);
       g_object_set_data (G_OBJECT (task), "signal-id", GINT_TO_POINTER (signal_id));
 
-      g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+      g_variant_builder_init_static (&opt_builder, G_VARIANT_TYPE_VARDICT);
       g_variant_builder_add (&opt_builder, "{sv}", "handle_token", g_variant_new_string (token));
       g_free (token);
 

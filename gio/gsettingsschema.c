@@ -1381,7 +1381,7 @@ g_settings_schema_key_range_fixup (GSettingsSchemaKey *key,
       GVariant *child;
 
       g_variant_iter_init (&iter, value);
-      g_variant_builder_init (&builder, g_variant_get_type (value));
+      g_variant_builder_init_static (&builder, g_variant_get_type (value));
 
       while ((child = g_variant_iter_next_value (&iter)))
         {
@@ -1574,7 +1574,7 @@ g_settings_schema_key_from_flags (GSettingsSchemaKey *key,
   GVariantBuilder builder;
   gint i;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("as"));
 
   for (i = 0; i < 32; i++)
     if (value & (1u << i))

@@ -424,7 +424,7 @@ g_emblemed_icon_serialize (GIcon *icon)
   if (!icon_data)
     return NULL;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(va(va{sv}))"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(va(va{sv}))"));
 
   g_variant_builder_add (&builder, "v", icon_data);
   g_variant_unref (icon_data);

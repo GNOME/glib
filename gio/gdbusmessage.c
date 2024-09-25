@@ -1982,7 +1982,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
               goffset offset;
               goffset target;
 
-              g_variant_builder_init (&builder, type);
+              g_variant_builder_init_static (&builder, type);
 
               if (array_len == 0)
                 {
@@ -2091,7 +2091,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
               const GVariantType *element_type;
               GVariantBuilder builder;
 
-              g_variant_builder_init (&builder, type);
+              g_variant_builder_init_static (&builder, type);
               element_type = g_variant_type_first (type);
               if (!element_type)
                 {
@@ -3028,7 +3028,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
       goto out;
     }
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{yv}"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{yv}"));
   g_hash_table_iter_init (&hash_iter, message->headers);
   while (g_hash_table_iter_next (&hash_iter, &key, (gpointer) &header_value))
     {
