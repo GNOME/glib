@@ -39,59 +39,28 @@
 #define HAVE_O_CLOEXEC 1
 #endif
 
-
-static GXdpOpenURI *openuri;
-
-static gboolean
-init_openuri_portal (void)
-{
-  static gsize openuri_inited = 0;
-
-  if (g_once_init_enter (&openuri_inited))
-    {
-      GError *error = NULL;
-      GDBusConnection *connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-
-      if (connection != NULL)
-        {
-          openuri = gxdp_open_uri_proxy_new_sync (connection, 0,
-                                                  "org.freedesktop.portal.Desktop",
-                                                  "/org/freedesktop/portal/desktop",
-                                                  NULL, &error);
-          if (openuri == NULL)
-            {
-              g_warning ("Cannot create document portal proxy: %s", error->message);
-              g_error_free (error);
-            }
-
-          g_object_unref (connection);
-        }
-      else
-        {
-          g_warning ("Cannot connect to session bus when initializing document portal: %s",
-                     error->message);
-          g_error_free (error);
-        }
-
-      g_once_init_leave (&openuri_inited, 1);
-    }
-
-  return openuri != NULL;
-}
-
 gboolean
 g_openuri_portal_open_file (GFile       *file,
                             const char  *parent_window,
                             const char  *startup_id,
                             GError     **error)
 {
+  GXdpOpenURI *openuri;
   GVariantBuilder opt_builder;
   gboolean res;
 
-  if (!init_openuri_portal ())
+  openuri = gxdp_open_uri_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS |
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
+                                                  "org.freedesktop.portal.Desktop",
+                                                  "/org/freedesktop/portal/desktop",
+                                                  NULL,
+                                                  error);
+
+  if (openuri == NULL)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
-                   "OpenURI portal is not available");
+      g_prefix_error (error, "Failed to create OpenURI proxy: ");
       return FALSE;
     }
 
@@ -156,6 +125,8 @@ g_openuri_portal_open_file (GFile       *file,
       g_free (uri);
     }
 
+  g_clear_object (&openuri);
+
   return res;
 }
 
@@ -167,6 +138,7 @@ enum {
 
 typedef struct
 {
+  GXdpOpenURI *proxy;
   char *response_handle;
   unsigned int response_signal_id;
   gboolean open_file;
@@ -184,6 +156,7 @@ call_data_free (gpointer data)
   CallData *call = data;
 
   g_assert (call->response_signal_id == 0);
+  g_clear_object (&call->proxy);
   g_clear_pointer (&call->response_handle, g_free);
   g_free_sized (data, sizeof (CallData));
 }
@@ -287,17 +260,27 @@ g_openuri_portal_open_file_async (GFile               *file,
                                   gpointer             user_data)
 {
   CallData *call_data;
+  GError *error = NULL;
   GDBusConnection *connection;
+  GXdpOpenURI *openuri;
   GTask *task;
   GVariant *opts = NULL;
   int i;
   guint signal_id;
 
-  if (!init_openuri_portal ())
+  openuri = gxdp_open_uri_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS |
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
+                                                  "org.freedesktop.portal.Desktop",
+                                                  "/org/freedesktop/portal/desktop",
+                                                  NULL,
+                                                  &error);
+
+  if (openuri == NULL)
     {
-      g_task_report_new_error (NULL, callback, user_data, NULL,
-                               G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
-                               "OpenURI portal is not available");
+      g_prefix_error (&error, "Failed to create OpenURI proxy: ");
+      g_task_report_error (NULL, callback, user_data, NULL, error);
       return;
     }
 
@@ -344,6 +327,7 @@ g_openuri_portal_open_file_async (GFile               *file,
       opts = g_variant_builder_end (&opt_builder);
 
       call_data = call_data_new ();
+      call_data->proxy = g_object_ref (openuri);
       call_data->response_handle = g_steal_pointer (&handle);
       call_data->response_signal_id = signal_id;
       g_task_set_task_data (task, call_data, call_data_free);
@@ -372,6 +356,7 @@ g_openuri_portal_open_file_async (GFile               *file,
           g_task_report_new_error (NULL, callback, user_data, NULL,
                                    G_IO_ERROR, g_io_error_from_errno (errsv),
                                    "OpenURI portal is not available");
+          g_clear_object (&openuri);
           return;
         }
 
@@ -408,6 +393,8 @@ g_openuri_portal_open_file_async (GFile               *file,
                                    task);
       g_free (uri);
     }
+
+  g_clear_object (&openuri);
 }
 
 gboolean
