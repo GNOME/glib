@@ -165,6 +165,29 @@ enum {
   XDG_DESKTOP_PORTAL_FAILED    = 2
 };
 
+typedef struct
+{
+  char *response_handle;
+  unsigned int response_signal_id;
+  gboolean open_file;
+} CallData;
+
+static CallData *
+call_data_new (void)
+{
+  return g_new0 (CallData, 1);
+}
+
+static void
+call_data_free (gpointer data)
+{
+  CallData *call = data;
+
+  g_assert (call->response_signal_id == 0);
+  g_clear_pointer (&call->response_handle, g_free);
+  g_free_sized (data, sizeof (CallData));
+}
+
 static void
 response_received (GDBusConnection *connection,
                    const char      *sender_name,
@@ -175,11 +198,12 @@ response_received (GDBusConnection *connection,
                    gpointer         user_data)
 {
   GTask *task = user_data;
+  CallData *call_data;
   guint32 response;
-  guint signal_id;
 
-  signal_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (task), "signal-id"));
-  g_dbus_connection_signal_unsubscribe (connection, signal_id);
+  call_data = g_task_get_task_data (task);
+  g_dbus_connection_signal_unsubscribe (connection, call_data->response_signal_id);
+  call_data->response_signal_id = 0;
 
   g_variant_get (parameters, "(u@a{sv})", &response, NULL);
 
@@ -208,17 +232,15 @@ open_call_done (GObject      *source,
   GXdpOpenURI *openuri = GXDP_OPEN_URI (source);
   GDBusConnection *connection;
   GTask *task = user_data;
+  CallData *call_data;
   GError *error = NULL;
-  gboolean open_file;
   gboolean res;
   char *path = NULL;
-  const char *handle;
-  guint signal_id;
 
+  call_data = g_task_get_task_data (task);
   connection = g_dbus_proxy_get_connection (G_DBUS_PROXY (openuri));
-  open_file = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (task), "open-file"));
 
-  if (open_file)
+  if (call_data->open_file)
     res = gxdp_open_uri_call_open_file_finish (openuri, &path, NULL, result, &error);
   else
     res = gxdp_open_uri_call_open_uri_finish (openuri, &path, result, &error);
@@ -231,11 +253,12 @@ open_call_done (GObject      *source,
       return;
     }
 
-  handle = (const char *)g_object_get_data (G_OBJECT (task), "handle");
-  if (g_strcmp0 (handle, path) != 0)
+  if (g_strcmp0 (call_data->response_handle, path) != 0)
     {
-      signal_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (task), "signal-id"));
-      g_dbus_connection_signal_unsubscribe (connection, signal_id);
+      guint signal_id;
+
+      g_dbus_connection_signal_unsubscribe (connection, call_data->response_signal_id);
+      call_data->response_signal_id = 0;
 
       signal_id = g_dbus_connection_signal_subscribe (connection,
                                                       "org.freedesktop.portal.Desktop",
@@ -247,7 +270,9 @@ open_call_done (GObject      *source,
                                                       response_received,
                                                       task,
                                                       NULL);
-      g_object_set_data (G_OBJECT (task), "signal-id", GINT_TO_POINTER (signal_id));
+      g_clear_pointer (&call_data->response_handle, g_free);
+      call_data->response_signal_id = signal_id;
+      call_data->response_handle = g_steal_pointer (&path);
     }
 
   g_free (path);
@@ -261,6 +286,7 @@ g_openuri_portal_open_file_async (GFile               *file,
                                   GAsyncReadyCallback  callback,
                                   gpointer             user_data)
 {
+  CallData *call_data;
   GDBusConnection *connection;
   GTask *task;
   GVariant *opts = NULL;
@@ -293,7 +319,6 @@ g_openuri_portal_open_file_async (GFile               *file,
           sender[i] = '_';
 
       handle = g_strdup_printf ("/org/freedesktop/portal/desktop/request/%s/%s", sender, token);
-      g_object_set_data_full (G_OBJECT (task), "handle", handle, g_free);
       g_free (sender);
 
       signal_id = g_dbus_connection_signal_subscribe (connection,
@@ -306,7 +331,6 @@ g_openuri_portal_open_file_async (GFile               *file,
                                                       response_received,
                                                       task,
                                                       NULL);
-      g_object_set_data (G_OBJECT (task), "signal-id", GINT_TO_POINTER (signal_id));
 
       g_variant_builder_init_static (&opt_builder, G_VARIANT_TYPE_VARDICT);
       g_variant_builder_add (&opt_builder, "{sv}", "handle_token", g_variant_new_string (token));
@@ -318,9 +342,17 @@ g_openuri_portal_open_file_async (GFile               *file,
                                g_variant_new_string (startup_id));
 
       opts = g_variant_builder_end (&opt_builder);
+
+      call_data = call_data_new ();
+      call_data->response_handle = g_steal_pointer (&handle);
+      call_data->response_signal_id = signal_id;
+      g_task_set_task_data (task, call_data, call_data_free);
     }
   else
-    task = NULL;
+    {
+      call_data = NULL;
+      task = NULL;
+    }
 
   if (g_file_is_native (file))
     {
@@ -328,8 +360,8 @@ g_openuri_portal_open_file_async (GFile               *file,
       GUnixFDList *fd_list = NULL;
       int fd, fd_id, errsv;
 
-      if (task)
-        g_object_set_data (G_OBJECT (task), "open-file", GINT_TO_POINTER (TRUE));
+      if (call_data)
+        call_data->open_file = TRUE;
 
       path = g_file_get_path (file);
       fd = g_open (path, O_RDONLY | O_CLOEXEC);
