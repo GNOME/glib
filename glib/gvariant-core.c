@@ -863,19 +863,24 @@ g_variant_ref (GVariant *value)
 GVariant *
 g_variant_ref_sink (GVariant *value)
 {
+  int old_state;
+
   g_return_val_if_fail (value != NULL, NULL);
   g_return_val_if_fail (!g_atomic_ref_count_compare (&value->ref_count, 0), NULL);
 
-  g_variant_lock (value);
-
   TRACE(GLIB_VARIANT_REF_SINK(value, value->type_info, value->ref_count, value->state, value->state & STATE_FLOATING));
 
-  if (~value->state & STATE_FLOATING)
-    g_variant_ref (value);
-  else
-    value->state &= ~STATE_FLOATING;
+  old_state = value->state;
 
-  g_variant_unlock (value);
+  while (old_state & STATE_FLOATING)
+    {
+      int new_state = old_state & ~STATE_FLOATING;
+
+      if (g_atomic_int_compare_and_exchange_full (&value->state, old_state, new_state, &old_state))
+        return value;
+    }
+
+  g_atomic_ref_count_inc (&value->ref_count);
 
   return value;
 }
