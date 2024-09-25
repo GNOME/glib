@@ -198,7 +198,7 @@ typedef enum {
 #if defined (G_CAN_INLINE) && defined (G_ALWAYS_INLINE)
 
 G_ALWAYS_INLINE
-inline gboolean
+static inline gboolean
 _blob_is_registered_type (GITypelibBlobType blob_type)
 {
   switch (blob_type)
