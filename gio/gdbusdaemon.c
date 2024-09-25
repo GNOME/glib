@@ -187,7 +187,7 @@ name_unref (Name *name)
    * So, until the static analysis improves, or we find some way to restructure
    * the code, squash the false positive use-after-free or double-unref warnings
    * by making this function a no-op to the static analyser. */
-#ifndef G_ANALYZER_ANALYZING
+#if !G_ANALYZER_ANALYZING
   g_assert (name->refcount > 0);
   if (--name->refcount == 0)
     {
