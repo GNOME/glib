@@ -278,7 +278,7 @@ typedef struct _GVariantType GVariantType;
  *
  * Since 2.24
  **/
-#ifndef G_DISABLE_CHECKS
+#ifndef G_DISABLE_CAST_CHECKS
 # define G_VARIANT_TYPE(type_string)            (g_variant_type_checked_ ((type_string)))
 #else
 # define G_VARIANT_TYPE(type_string)            ((const GVariantType *) (type_string))
