@@ -249,6 +249,8 @@ open_call_done (GObject      *source,
                                                       NULL);
       g_object_set_data (G_OBJECT (task), "signal-id", GINT_TO_POINTER (signal_id));
     }
+
+  g_free (path);
 }
 
 void
@@ -334,6 +336,7 @@ g_openuri_portal_open_file_async (GFile               *file,
       errsv = errno;
       if (fd == -1)
         {
+          g_clear_object (&task);
           g_task_report_new_error (NULL, callback, user_data, NULL,
                                    G_IO_ERROR, g_io_error_from_errno (errsv),
                                    "OpenURI portal is not available");
