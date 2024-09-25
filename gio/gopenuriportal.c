@@ -84,7 +84,7 @@ g_openuri_portal_open_file (GFile       *file,
       if (fd == -1)
         {
           g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-                       "Failed to open '%s'", path);
+                       "Failed to open ‘%s’: %s", path, g_strerror (errsv));
           g_free (path);
           g_variant_builder_clear (&opt_builder);
           return FALSE;
@@ -124,6 +124,8 @@ g_openuri_portal_open_file (GFile       *file,
                                               error);
       g_free (uri);
     }
+
+  g_prefix_error (error, "Failed to call OpenURI portal: ");
 
   g_clear_object (&openuri);
 
@@ -355,7 +357,7 @@ g_openuri_portal_open_file_async (GFile               *file,
           g_clear_object (&task);
           g_task_report_new_error (NULL, callback, user_data, NULL,
                                    G_IO_ERROR, g_io_error_from_errno (errsv),
-                                   "OpenURI portal is not available");
+                                   "Failed to open ‘%s’: %s", path, g_strerror (errsv));
           g_clear_object (&openuri);
           return;
         }
