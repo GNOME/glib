@@ -272,7 +272,7 @@ strinfo_enumerate (const guint32 *strinfo,
 
   ptr += 4;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_STRING_ARRAY);
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_STRING_ARRAY);
 
   while (ptr < end)
     {

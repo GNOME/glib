@@ -1007,7 +1007,7 @@ array_get_value (AST                 *ast,
   if (!g_variant_type_is_array (type))
     return ast_type_error (ast, type, error);
 
-  g_variant_builder_init (&builder, type);
+  g_variant_builder_init_static (&builder, type);
   childtype = g_variant_type_element (type);
 
   for (i = 0; i < array->n_children; i++)
@@ -1133,7 +1133,7 @@ tuple_get_value (AST                 *ast,
   if (!g_variant_type_is_tuple (type))
     return ast_type_error (ast, type, error);
 
-  g_variant_builder_init (&builder, type);
+  g_variant_builder_init_static (&builder, type);
   childtype = g_variant_type_first (type);
 
   for (i = 0; i < tuple->n_children; i++)
@@ -1391,7 +1391,7 @@ dictionary_get_value (AST                 *ast,
       if (!g_variant_type_is_dict_entry (type))
         return ast_type_error (ast, type, error);
 
-      g_variant_builder_init (&builder, type);
+      g_variant_builder_init_static (&builder, type);
 
       subtype = g_variant_type_key (type);
       if (!(subvalue = ast_get_value (dict->keys[0], subtype, error)))
@@ -1424,7 +1424,7 @@ dictionary_get_value (AST                 *ast,
       key = g_variant_type_key (entry);
       val = g_variant_type_value (entry);
 
-      g_variant_builder_init (&builder, type);
+      g_variant_builder_init_static (&builder, type);
 
       for (i = 0; i < dict->n_children; i++)
         {
@@ -2732,7 +2732,7 @@ g_variant_new_parsed (const gchar *format,
  *   GVariantBuilder builder;
  *   int i;
  *
- *   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+ *   g_variant_builder_init_static (&builder, G_VARIANT_TYPE_ARRAY);
  *   g_variant_builder_add_parsed (&builder, "{'width', <%i>}", 600);
  *   g_variant_builder_add_parsed (&builder, "{'title', <%s>}", "foo");
  *   g_variant_builder_add_parsed (&builder, "{'transparency', <0.5>}");

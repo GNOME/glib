@@ -382,6 +382,9 @@ GVariantBuilder *               g_variant_builder_ref                   (GVarian
 GLIB_AVAILABLE_IN_ALL
 void                            g_variant_builder_init                  (GVariantBuilder      *builder,
                                                                          const GVariantType   *type);
+GLIB_AVAILABLE_IN_2_84
+void                            g_variant_builder_init_static           (GVariantBuilder      *builder,
+                                                                         const GVariantType   *type);
 GLIB_AVAILABLE_IN_ALL
 GVariant *                      g_variant_builder_end                   (GVariantBuilder      *builder);
 GLIB_AVAILABLE_IN_ALL

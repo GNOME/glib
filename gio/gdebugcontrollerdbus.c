@@ -235,7 +235,7 @@ set_debug_enabled (GDebugControllerDBus *self,
       /* Notify internally and externally of the property change. */
       g_object_notify (G_OBJECT (self), "debug-enabled");
 
-      g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+      g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));
       g_variant_builder_add (&builder, "{sv}", "DebugEnabled", g_variant_new_boolean (priv->debug_enabled));
 
       g_dbus_connection_emit_signal (priv->connection,

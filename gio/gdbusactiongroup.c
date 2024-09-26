@@ -376,7 +376,7 @@ g_dbus_action_group_activate_action_full (GRemoteActionGroup *remote,
   GDBusActionGroup *group = G_DBUS_ACTION_GROUP (remote);
   GVariantBuilder builder;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
 
   if (parameter)
     g_variant_builder_add (&builder, "v", parameter);

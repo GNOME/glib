@@ -156,7 +156,7 @@ send_property_change (GApplicationImpl *impl)
 {
   GVariantBuilder builder;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_ARRAY);
   g_variant_builder_add (&builder,
                          "{sv}",
                          "Busy", g_variant_new_boolean (impl->busy));
@@ -311,7 +311,7 @@ g_application_impl_method_call (GDBusConnection       *connection,
           GVariant *value = NULL;
           GVariantBuilder builder;
 
-          g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+          g_variant_builder_init_static (&builder, G_VARIANT_TYPE_TUPLE);
 
           while (g_variant_iter_loop (iter, "v", &value))
             {
@@ -736,7 +736,7 @@ g_application_impl_open (GApplicationImpl  *impl,
   GVariantBuilder builder;
   gint i;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(assa{sv})"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(assa{sv})"));
   g_variant_builder_open (&builder, G_VARIANT_TYPE_STRING_ARRAY);
   for (i = 0; i < n_files; i++)
     {

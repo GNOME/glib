@@ -3201,6 +3201,9 @@ struct stack_builder
    */
   guint trusted : 1;
 
+  /* If @type was copied when constructing the builder */
+  guint type_owned : 1;
+
   gsize magic;
 };
 
@@ -3243,7 +3246,7 @@ ensure_valid_builder (GVariantBuilder *builder)
       if (memcmp (cleared_builder.u.s.y, builder->u.s.y, sizeof cleared_builder.u.s.y))
         return FALSE;
 
-      g_variant_builder_init (builder, builder->u.s.type);
+      g_variant_builder_init_static (builder, builder->u.s.type);
     }
   return is_valid_builder (builder);
 }
@@ -3278,7 +3281,7 @@ ensure_valid_builder (GVariantBuilder *builder)
  *
  * In most cases it is easier to place a #GVariantBuilder directly on
  * the stack of the calling function and initialise it with
- * g_variant_builder_init().
+ * g_variant_builder_init_static().
  *
  * Returns: (transfer full): a #GVariantBuilder
  *
@@ -3380,7 +3383,8 @@ g_variant_builder_clear (GVariantBuilder *builder)
 
   return_if_invalid_builder (builder);
 
-  g_variant_type_free (GVSB(builder)->type);
+  if (GVSB(builder)->type_owned)
+    g_variant_type_free (GVSB(builder)->type);
 
   for (i = 0; i < GVSB(builder)->offset; i++)
     g_variant_unref (GVSB(builder)->children[i]);
@@ -3396,55 +3400,20 @@ g_variant_builder_clear (GVariantBuilder *builder)
   memset (builder, 0, sizeof (GVariantBuilder));
 }
 
-/**
- * g_variant_builder_init: (skip)
- * @builder: a #GVariantBuilder
- * @type: a container type
- *
- * Initialises a #GVariantBuilder structure.
- *
- * @type must be non-%NULL.  It specifies the type of container to
- * construct.  It can be an indefinite type such as
- * %G_VARIANT_TYPE_ARRAY or a definite type such as "as" or "(ii)".
- * Maybe, array, tuple, dictionary entry and variant-typed values may be
- * constructed.
- *
- * After the builder is initialised, values are added using
- * g_variant_builder_add_value() or g_variant_builder_add().
- *
- * After all the child values are added, g_variant_builder_end() frees
- * the memory associated with the builder and returns the #GVariant that
- * was created.
- *
- * This function completely ignores the previous contents of @builder.
- * On one hand this means that it is valid to pass in completely
- * uninitialised memory.  On the other hand, this means that if you are
- * initialising over top of an existing #GVariantBuilder you need to
- * first call g_variant_builder_clear() in order to avoid leaking
- * memory.
- *
- * You must not call g_variant_builder_ref() or
- * g_variant_builder_unref() on a #GVariantBuilder that was initialised
- * with this function.  If you ever pass a reference to a
- * #GVariantBuilder outside of the control of your own code then you
- * should assume that the person receiving that reference may try to use
- * reference counting; you should use g_variant_builder_new() instead of
- * this function.
- *
- * Since: 2.24
- **/
-void
-g_variant_builder_init (GVariantBuilder    *builder,
-                        const GVariantType *type)
+static void
+_g_variant_builder_init (GVariantBuilder    *builder,
+                         const GVariantType *type,
+                         gboolean            type_owned)
 {
   g_return_if_fail (type != NULL);
   g_return_if_fail (g_variant_type_is_container (type));
 
   memset (builder, 0, sizeof (GVariantBuilder));
 
-  GVSB(builder)->type = g_variant_type_copy (type);
+  GVSB(builder)->type = (GVariantType *)type;
   GVSB(builder)->magic = GVSB_MAGIC;
   GVSB(builder)->trusted = TRUE;
+  GVSB(builder)->type_owned = type_owned;
 
   switch (*(const gchar *) type)
     {
@@ -3517,6 +3486,75 @@ g_variant_builder_init (GVariantBuilder    *builder,
   GVSB(builder)->children = g_new (GVariant *,
                                    GVSB(builder)->allocated_children);
 #endif
+}
+
+/**
+ * g_variant_builder_init: (skip)
+ * @builder: a #GVariantBuilder
+ * @type: a container type
+ *
+ * Initialises a #GVariantBuilder structure.
+ *
+ * @type must be non-%NULL.  It specifies the type of container to
+ * construct.  It can be an indefinite type such as
+ * %G_VARIANT_TYPE_ARRAY or a definite type such as "as" or "(ii)".
+ * Maybe, array, tuple, dictionary entry and variant-typed values may be
+ * constructed.
+ *
+ * If using a static type such as one of the `G_VARIANT_TYPE_*` constants
+ * or a `G_VARIANT_TYPE ("(ii)")` macro, it is more performant to use
+ * g_variant_builder_init_static() rather than g_variant_builder_init().
+ *
+ * After the builder is initialised, values are added using
+ * g_variant_builder_add_value() or g_variant_builder_add().
+ *
+ * After all the child values are added, g_variant_builder_end() frees
+ * the memory associated with the builder and returns the #GVariant that
+ * was created.
+ *
+ * This function completely ignores the previous contents of @builder.
+ * On one hand this means that it is valid to pass in completely
+ * uninitialised memory.  On the other hand, this means that if you are
+ * initialising over top of an existing #GVariantBuilder you need to
+ * first call g_variant_builder_clear() in order to avoid leaking
+ * memory.
+ *
+ * You must not call g_variant_builder_ref() or
+ * g_variant_builder_unref() on a #GVariantBuilder that was initialised
+ * with this function.  If you ever pass a reference to a
+ * #GVariantBuilder outside of the control of your own code then you
+ * should assume that the person receiving that reference may try to use
+ * reference counting; you should use g_variant_builder_new() instead of
+ * this function.
+ *
+ * Since: 2.24
+ **/
+void
+g_variant_builder_init (GVariantBuilder    *builder,
+                        const GVariantType *type)
+{
+  _g_variant_builder_init (builder, g_variant_type_copy (type), TRUE);
+}
+
+/**
+ * g_variant_builder_init_static: (skip)
+ * @builder: a #GVariantBuilder
+ * @type: a container type
+ *
+ * Initialises a #GVariantBuilder structure.
+ *
+ * This function works exactly like g_variant_builder_init() but does
+ * not make a copy of @type. Therefore, @type must remain valid for the
+ * lifetime of @builder. This is always true of type constants like
+ * `G_VARIANT_TYPE_*` or `G_VARIANT_TYPE ("(ii)")`.
+ *
+ * Since: 2.84
+ **/
+void
+g_variant_builder_init_static (GVariantBuilder    *builder,
+                               const GVariantType *type)
+{
+  _g_variant_builder_init (builder, type, FALSE);
 }
 
 static void
@@ -3744,7 +3782,8 @@ g_variant_make_array_type (GVariant *element)
 GVariant *
 g_variant_builder_end (GVariantBuilder *builder)
 {
-  GVariantType *my_type;
+  const GVariantType *type;
+  GVariantType *new_type = NULL;
   GVariant *value;
   GVariant **children;
 
@@ -3757,21 +3796,21 @@ g_variant_builder_end (GVariantBuilder *builder)
                         NULL);
 
   if (g_variant_type_is_definite (GVSB(builder)->type))
-    my_type = g_variant_type_copy (GVSB(builder)->type);
+    type = GVSB(builder)->type;
 
   else if (g_variant_type_is_maybe (GVSB(builder)->type))
-    my_type = g_variant_make_maybe_type (GVSB(builder)->children[0]);
+    type = new_type = g_variant_make_maybe_type (GVSB(builder)->children[0]);
 
   else if (g_variant_type_is_array (GVSB(builder)->type))
-    my_type = g_variant_make_array_type (GVSB(builder)->children[0]);
+    type = new_type = g_variant_make_array_type (GVSB(builder)->children[0]);
 
   else if (g_variant_type_is_tuple (GVSB(builder)->type))
-    my_type = g_variant_make_tuple_type (GVSB(builder)->children,
-                                         GVSB(builder)->offset);
+    type = new_type = g_variant_make_tuple_type (GVSB(builder)->children,
+                                                 GVSB(builder)->offset);
 
   else if (g_variant_type_is_dict_entry (GVSB(builder)->type))
-    my_type = g_variant_make_dict_entry_type (GVSB(builder)->children[0],
-                                              GVSB(builder)->children[1]);
+    type = new_type = g_variant_make_dict_entry_type (GVSB(builder)->children[0],
+                                                      GVSB(builder)->children[1]);
   else
     g_assert_not_reached ();
 
@@ -3781,7 +3820,7 @@ g_variant_builder_end (GVariantBuilder *builder)
   if G_UNLIKELY (GVSB(builder)->offset < GVSB(builder)->allocated_children)
     children = g_renew (GVariant *, children, GVSB(builder)->offset);
 
-  value = g_variant_new_from_children (my_type,
+  value = g_variant_new_from_children (type,
                                        children,
                                        GVSB(builder)->offset,
                                        GVSB(builder)->trusted);
@@ -3789,7 +3828,9 @@ g_variant_builder_end (GVariantBuilder *builder)
   GVSB(builder)->offset = 0;
 
   g_variant_builder_clear (builder);
-  g_variant_type_free (my_type);
+
+  if (new_type != NULL)
+    g_variant_type_free (new_type);
 
   return value;
 }
@@ -4284,7 +4325,7 @@ g_variant_dict_end (GVariantDict *dict)
 
   return_val_if_invalid_dict (dict, NULL);
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_VARDICT);
 
   g_hash_table_iter_init (&iter, GVSD(dict)->values);
   while (g_hash_table_iter_next (&iter, &key, &value))
@@ -5313,11 +5354,11 @@ g_variant_valist_new (const gchar **str,
       GVariantBuilder b;
 
       if (**str == '(')
-        g_variant_builder_init (&b, G_VARIANT_TYPE_TUPLE);
+        g_variant_builder_init_static (&b, G_VARIANT_TYPE_TUPLE);
       else
         {
           g_assert (**str == '{');
-          g_variant_builder_init (&b, G_VARIANT_TYPE_DICT_ENTRY);
+          g_variant_builder_init_static (&b, G_VARIANT_TYPE_DICT_ENTRY);
         }
 
       (*str)++; /* '(' */
@@ -5631,7 +5672,7 @@ g_variant_get_va (GVariant     *value,
  *   GVariantBuilder builder;
  *   int i;
  *
- *   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+ *   g_variant_builder_init_static (&builder, G_VARIANT_TYPE_ARRAY);
  *   for (i = 0; i < 16; i++)
  *     {
  *       gchar buf[3];
@@ -5908,7 +5949,7 @@ g_variant_deep_copy (GVariant *value,
         GVariantBuilder builder;
         gsize i, n_children;
 
-        g_variant_builder_init (&builder, g_variant_get_type (value));
+        g_variant_builder_init_static (&builder, g_variant_get_type (value));
 
         for (i = 0, n_children = g_variant_n_children (value); i < n_children; i++)
           {
@@ -5949,7 +5990,7 @@ g_variant_deep_copy (GVariant *value,
          *
          * See https://gitlab.gnome.org/GNOME/glib/-/issues/2540 */
 
-        g_variant_builder_init (&builder, g_variant_get_type (value));
+        g_variant_builder_init_static (&builder, g_variant_get_type (value));
 
         for (i = 0, n_children = g_variant_n_children (value); i < n_children; i++)
           {

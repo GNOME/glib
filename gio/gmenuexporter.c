@@ -197,7 +197,7 @@ g_menu_exporter_menu_describe_item (GMenuExporterMenu *menu,
   const char *name;
   GVariant *value;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_VARDICT);
 
   attr_iter = g_menu_model_iterate_item_attributes (menu->model, position);
   while (g_menu_attribute_iter_get_next (attr_iter, &name, &value))
@@ -221,7 +221,7 @@ g_menu_exporter_menu_list (GMenuExporterMenu *menu)
   GVariantBuilder builder;
   gint i, n;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aa{sv}"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("aa{sv}"));
 
   n = g_sequence_get_length (menu->item_links);
   for (i = 0; i < n; i++)
@@ -266,7 +266,7 @@ g_menu_exporter_menu_items_changed (GMenuModel *model,
     {
       GVariantBuilder builder;
 
-      g_variant_builder_init (&builder, G_VARIANT_TYPE ("(uuuuaa{sv})"));
+      g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(uuuuaa{sv})"));
       g_variant_builder_add (&builder, "u", g_menu_exporter_group_get_id (menu->group));
       g_variant_builder_add (&builder, "u", menu->id);
       g_variant_builder_add (&builder, "u", position);
@@ -607,7 +607,7 @@ g_menu_exporter_subscribe (GMenuExporter *exporter,
           g_menu_exporter_remote_new (exporter, 0);
     }
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(a(uuaa{sv}))"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(a(uuaa{sv}))"));
 
   g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(uuaa{sv})"));
 
@@ -656,7 +656,7 @@ g_menu_exporter_report (GMenuExporter *exporter,
 {
   GVariantBuilder builder;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_TUPLE);
   g_variant_builder_open (&builder, G_VARIANT_TYPE_ARRAY);
   g_variant_builder_add_value (&builder, report);
   g_variant_builder_close (&builder);

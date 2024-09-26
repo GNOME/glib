@@ -954,7 +954,7 @@ invalidated_property_get_cb (GDBusConnection *connection,
   g_variant_get (value, "(v)", &unpacked_value);
 
   /* synthesize the a{sv} in the PropertiesChanged signal */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));
   g_variant_builder_add (&builder, "{sv}", data->prop_name, unpacked_value);
 
   G_LOCK (properties_lock);
@@ -1264,7 +1264,7 @@ on_name_owner_changed (GDBusConnection *connection,
           const gchar *key;
 
           /* Build changed_properties (always empty) and invalidated_properties ... */
-          g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+          g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));
 
           invalidated_properties = g_ptr_array_new_with_free_func (g_free);
           g_hash_table_iter_init (&iter, proxy->priv->properties);

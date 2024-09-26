@@ -869,7 +869,7 @@ manager_method_call (GDBusConnection       *connection,
 
   if (g_strcmp0 (method_name, "GetManagedObjects") == 0)
     {
-      g_variant_builder_init (&array_builder, G_VARIANT_TYPE ("a{oa{sa{sv}}}"));
+      g_variant_builder_init_static (&array_builder, G_VARIANT_TYPE ("a{oa{sa{sv}}}"));
       g_hash_table_iter_init (&object_iter, manager->priv->map_object_path_to_data);
       while (g_hash_table_iter_next (&object_iter, NULL, (gpointer) &data))
         {
@@ -878,7 +878,7 @@ manager_method_call (GDBusConnection       *connection,
           GDBusInterfaceSkeleton *iface;
           const gchar *iter_object_path;
 
-          g_variant_builder_init (&interfaces_builder, G_VARIANT_TYPE ("a{sa{sv}}"));
+          g_variant_builder_init_static (&interfaces_builder, G_VARIANT_TYPE ("a{sa{sv}}"));
           g_hash_table_iter_init (&interface_iter, data->map_iface_name_to_iface);
           while (g_hash_table_iter_next (&interface_iter, NULL, (gpointer) &iface))
             {
@@ -945,7 +945,7 @@ g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *ma
   if (data->manager->priv->connection == NULL)
     goto out;
 
-  g_variant_builder_init (&array_builder, G_VARIANT_TYPE ("a{sa{sv}}"));
+  g_variant_builder_init_static (&array_builder, G_VARIANT_TYPE ("a{sa{sv}}"));
   for (n = 0; interfaces[n] != NULL; n++)
     {
       GDBusInterfaceSkeleton *iface;
@@ -991,7 +991,7 @@ g_dbus_object_manager_server_emit_interfaces_removed (GDBusObjectManagerServer *
   if (data->manager->priv->connection == NULL)
     goto out;
 
-  g_variant_builder_init (&array_builder, G_VARIANT_TYPE ("as"));
+  g_variant_builder_init_static (&array_builder, G_VARIANT_TYPE ("as"));
   for (n = 0; interfaces[n] != NULL; n++)
     g_variant_builder_add (&array_builder, "s", interfaces[n]);
 

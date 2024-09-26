@@ -2809,11 +2809,11 @@ notify_desktop_launch (GDBusConnection  *session_bus,
   if (session_bus == NULL)
     return;
 
-  g_variant_builder_init (&uri_variant, G_VARIANT_TYPE ("as"));
+  g_variant_builder_init_static (&uri_variant, G_VARIANT_TYPE ("as"));
   for (iter = uris; iter; iter = iter->next)
     g_variant_builder_add (&uri_variant, "s", iter->data);
 
-  g_variant_builder_init (&extras_variant, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&extras_variant, G_VARIANT_TYPE ("a{sv}"));
   if (sn_id != NULL && g_utf8_validate (sn_id, -1, NULL))
     g_variant_builder_add (&extras_variant, "{sv}",
                            "startup-id",
@@ -2866,7 +2866,7 @@ emit_launch_started (GAppLaunchContext *context,
 
   if (startup_id)
     {
-      g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+      g_variant_builder_init_static (&builder, G_VARIANT_TYPE_ARRAY);
       g_variant_builder_add (&builder, "{sv}",
                              "startup-notification-id",
                              g_variant_new_string (startup_id));
@@ -3070,7 +3070,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           GVariantBuilder builder;
           GVariant *platform_data;
 
-          g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+          g_variant_builder_init_static (&builder, G_VARIANT_TYPE_ARRAY);
           g_variant_builder_add (&builder, "{sv}", "pid", g_variant_new_int32 (pid));
           if (sn_id)
             g_variant_builder_add (&builder, "{sv}", "startup-notification-id", g_variant_new_string (sn_id));
@@ -3128,7 +3128,7 @@ g_desktop_app_info_make_platform_data (GDesktopAppInfo   *info,
 {
   GVariantBuilder builder;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_VARDICT);
 
   if (launch_context)
     {
@@ -3190,7 +3190,7 @@ launch_uris_with_dbus_signal_cb (GObject      *object,
         {
           GVariant *platform_data;
 
-          g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+          g_variant_builder_init_static (&builder, G_VARIANT_TYPE_ARRAY);
           /* the docs guarantee `pid` will be set, but we can’t
            * easily know it for a D-Bus process, so set it to zero */
           g_variant_builder_add (&builder, "{sv}", "pid", g_variant_new_int32 (0));
@@ -3231,7 +3231,7 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
   gchar *object_path;
   LaunchUrisWithDBusData *data;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_TUPLE);
 
   if (uris)
     {

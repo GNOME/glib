@@ -292,7 +292,7 @@ call_notify (GDBusConnection     *con,
   const gchar *body;
   guchar urgency;
 
-  g_variant_builder_init (&action_builder, G_VARIANT_TYPE_STRING_ARRAY);
+  g_variant_builder_init_static (&action_builder, G_VARIANT_TYPE_STRING_ARRAY);
   if (g_notification_get_default_action (notification, NULL, NULL))
     {
       g_variant_builder_add (&action_builder, "s", "default");
@@ -329,7 +329,7 @@ call_notify (GDBusConnection     *con,
         g_variant_unref (target);
     }
 
-  g_variant_builder_init (&hints_builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&hints_builder, G_VARIANT_TYPE ("a{sv}"));
   g_variant_builder_add (&hints_builder, "{sv}", "desktop-entry",
                          g_variant_new_string (g_application_get_application_id (app)));
   urgency = urgency_from_priority (g_notification_get_priority (notification));

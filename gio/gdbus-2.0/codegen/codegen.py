@@ -3975,7 +3975,11 @@ class CodeGenerator:
             "\n"
             "  GVariantBuilder builder;\n"
             "  guint n;\n"
-            '  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));\n'
+            "#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_84\n"
+            '  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));\n'
+            "#else\n"
+            '  g_variant_builder_init(&builder, G_VARIANT_TYPE ("a{sv}"));\n'
+            "#endif\n"
             "  if (_%s_interface_info.parent_struct.properties == NULL)\n"
             "    goto out;\n"
             "  for (n = 0; _%s_interface_info.parent_struct.properties[n] != NULL; n++)\n"
@@ -4184,8 +4188,13 @@ class CodeGenerator:
                 "  guint num_changes;\n"
                 "\n"
                 "  g_mutex_lock (&skeleton->priv->lock);\n"
+                "#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_84\n"
+                '  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));\n'
+                '  g_variant_builder_init_static (&invalidated_builder, G_VARIANT_TYPE ("as"));\n'
+                "#else\n"
                 '  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));\n'
                 '  g_variant_builder_init (&invalidated_builder, G_VARIANT_TYPE ("as"));\n'
+                "#endif\n"
                 "  for (l = skeleton->priv->changed_properties, num_changes = 0; l != NULL; l = l->next)\n"
                 "    {\n"
                 "      ChangedProperty *cp = l->data;\n"

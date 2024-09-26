@@ -51,7 +51,7 @@ g_action_group_describe_action (GActionGroup *action_group,
   gboolean enabled;
   GVariant *state;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(bgav)"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(bgav)"));
 
   enabled = g_action_group_get_action_enabled (action_group, name);
   g_variant_builder_add (&builder, "b", enabled);
@@ -146,10 +146,10 @@ g_action_group_exporter_dispatch_events (gpointer user_data)
   gpointer value;
   gpointer key;
 
-  g_variant_builder_init (&removes, G_VARIANT_TYPE_STRING_ARRAY);
-  g_variant_builder_init (&enabled_changes, G_VARIANT_TYPE ("a{sb}"));
-  g_variant_builder_init (&state_changes, G_VARIANT_TYPE ("a{sv}"));
-  g_variant_builder_init (&adds, G_VARIANT_TYPE ("a{s(bgav)}"));
+  g_variant_builder_init_static (&removes, G_VARIANT_TYPE_STRING_ARRAY);
+  g_variant_builder_init_static (&enabled_changes, G_VARIANT_TYPE ("a{sb}"));
+  g_variant_builder_init_static (&state_changes, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&adds, G_VARIANT_TYPE ("a{s(bgav)}"));
 
   g_hash_table_iter_init (&iter, exporter->pending_changes);
   while (g_hash_table_iter_next (&iter, &key, &value))
@@ -410,7 +410,7 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
       gint i;
 
       list = g_action_group_list_actions (exporter->action_group);
-      g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{s(bgav)}"));
+      g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{s(bgav)}"));
       for (i = 0; list[i]; i++)
         {
           const gchar *name = list[i];

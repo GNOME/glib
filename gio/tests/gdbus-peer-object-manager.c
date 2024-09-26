@@ -129,7 +129,7 @@ mock_interface_get_properties (GDBusInterfaceSkeleton *interface)
   info = g_dbus_interface_skeleton_get_info (interface);
   vtable = g_dbus_interface_skeleton_get_vtable (interface);
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));
   for (n = 0; info->properties[n] != NULL; n++)
     {
       if (info->properties[n]->flags & G_DBUS_PROPERTY_INFO_FLAGS_READABLE)

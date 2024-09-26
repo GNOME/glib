@@ -767,7 +767,7 @@ g_notification_serialize_button (Button *button)
 {
   GVariantBuilder builder;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));
 
   g_variant_builder_add (&builder, "{sv}", "label", g_variant_new_string (button->label));
   g_variant_builder_add (&builder, "{sv}", "action", g_variant_new_string (button->action_name));
@@ -806,7 +806,7 @@ g_notification_serialize (GNotification *notification)
 {
   GVariantBuilder builder;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));
 
   if (notification->title)
     g_variant_builder_add (&builder, "{sv}", "title", g_variant_new_string (notification->title));
@@ -842,7 +842,7 @@ g_notification_serialize (GNotification *notification)
       GVariantBuilder actions_builder;
       guint i;
 
-      g_variant_builder_init (&actions_builder, G_VARIANT_TYPE ("aa{sv}"));
+      g_variant_builder_init_static (&actions_builder, G_VARIANT_TYPE ("aa{sv}"));
 
       for (i = 0; i < notification->buttons->len; i++)
         {

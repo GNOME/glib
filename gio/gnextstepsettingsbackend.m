@@ -343,7 +343,7 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
 
           value_type = g_variant_type_value (g_variant_type_element (type));
 
-          g_variant_builder_init (&builder, type);
+          g_variant_builder_init_static (&builder, type);
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
           for(key in object)
@@ -384,7 +384,7 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
           id value;
 
           value_type = g_variant_type_element (type);
-          g_variant_builder_init (&builder, type);
+          g_variant_builder_init_static (&builder, type);
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
           for(value in object)

@@ -4790,7 +4790,7 @@ make_platform_data (GPid pid)
 {
   GVariantBuilder builder;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_ARRAY);
   /* pid handles are never bigger than 2^24 as per
    * https://docs.microsoft.com/en-us/windows/win32/sysinfo/kernel-objects,
    * so truncating to `int32` is valid.
