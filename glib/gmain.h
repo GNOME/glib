@@ -866,6 +866,51 @@ void    g_clear_handle_id (guint           *tag_ptr,
   } G_STMT_END                                             \
   GLIB_AVAILABLE_MACRO_IN_2_56
 
+/**
+ * g_steal_handle_id:
+ * @handle_pointer: (inout) (not optional): a pointer to a handle ID
+ *
+ * Sets @handle_pointer to `0`, returning the value that was there before.
+ *
+ * Conceptually, this transfers the ownership of the handle ID from the
+ * referenced variable to the ‘caller’ of the macro (ie: ‘steals’ the
+ * handle ID).
+ *
+ * This can be very useful to make ownership transfer explicit, or to prevent
+ * a handle from being released multiple times. For example:
+ *
+ * ```c
+ * void
+ * maybe_unsubscribe_signal (ContextStruct *data)
+ * {
+ *   if (some_complex_logic (data))
+ *     {
+ *       g_dbus_connection_signal_unsubscribe (data->connection,
+ *                                             g_steal_handle_id (&data->subscription_id));
+ *       // now data->subscription_id isn’t a dangling handle
+ *     }
+ * }
+ * ```
+ *
+ * While [func@GLib.clear_handle_id] can be used in many of the same situations
+ * as `g_steal_handle_id()`, this is one situation where it cannot be used, as
+ * there is no way to pass the `GDBusConnection` to a
+ * [type@GLib.ClearHandleFunc].
+ *
+ * Since: 2.84
+ */
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_84
+static inline unsigned int
+g_steal_handle_id (unsigned int *handle_pointer)
+{
+  unsigned int handle;
+
+  handle = *handle_pointer;
+  *handle_pointer = 0;
+
+  return handle;
+}
+
 /* Idles, child watchers and timeouts */
 GLIB_AVAILABLE_IN_ALL
 guint    g_timeout_add_full         (gint            priority,
