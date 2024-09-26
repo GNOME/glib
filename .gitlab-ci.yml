@@ -744,7 +744,7 @@ freebsd-13-x86_64:
   extends: .only-schedules-or-manual
   stage: build
   tags:
-    - freebsd-13
+    - freebsd-14
   needs: []
   variables:
     CPPFLAGS: -I/usr/local/include
