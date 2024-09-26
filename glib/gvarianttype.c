@@ -22,7 +22,7 @@
 
 #include "config.h"
 
-#include "gvarianttype.h"
+#include "gvarianttype-private.h"
 
 #include <glib/gtestutils.h>
 #include <glib/gstrfuncs.h>
@@ -777,20 +777,9 @@ g_variant_type_is_variant (const GVariantType *type)
 guint
 g_variant_type_hash (gconstpointer type)
 {
-  const gchar *type_string;
-  guint value = 0;
-  gsize length;
-  gsize i;
-
   g_return_val_if_fail (g_variant_type_check (type), 0);
 
-  type_string = g_variant_type_peek_string (type);
-  length = g_variant_type_get_string_length (type);
-
-  for (i = 0; i < length; i++)
-    value = (value << 5) - value + type_string[i];
-
-  return value;
+  return _g_variant_type_hash (type);
 }
 
 /**
@@ -817,25 +806,10 @@ gboolean
 g_variant_type_equal (gconstpointer type1,
                       gconstpointer type2)
 {
-  const gchar *string1, *string2;
-  gsize size1, size2;
-
   g_return_val_if_fail (g_variant_type_check (type1), FALSE);
   g_return_val_if_fail (g_variant_type_check (type2), FALSE);
 
-  if (type1 == type2)
-    return TRUE;
-
-  size1 = g_variant_type_get_string_length (type1);
-  size2 = g_variant_type_get_string_length (type2);
-
-  if (size1 != size2)
-    return FALSE;
-
-  string1 = g_variant_type_peek_string (type1);
-  string2 = g_variant_type_peek_string (type2);
-
-  return memcmp (string1, string2, size1) == 0;
+  return _g_variant_type_equal (type1, type2);
 }
 
 /**

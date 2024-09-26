@@ -5859,6 +5859,24 @@ test_unaligned_construction (void)
     }
 }
 
+static void
+test_g_variant_type_hash (void)
+{
+  char mas[4] = {'m', 'a', 's', 0};
+
+  g_assert_cmpint (g_variant_type_hash (G_VARIANT_TYPE ("a(ay)")),
+                   !=,
+                   g_variant_type_hash (G_VARIANT_TYPE ("aay")));
+
+  g_assert_cmpint (g_variant_type_hash (G_VARIANT_TYPE ("a{sv}")),
+                   !=,
+                   g_variant_type_hash (G_VARIANT_TYPE ("a(sv)")));
+
+  g_assert_cmpint (g_variant_type_hash (G_VARIANT_TYPE ("mas")),
+                   ==,
+                   g_variant_type_hash ((const GVariantType *)mas));
+}
+
 int
 main (int argc, char **argv)
 {
@@ -5966,6 +5984,9 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gvariant/unaligned-construction",
                    test_unaligned_construction);
+
+  g_test_add_func ("/gvarianttype/hash",
+                   test_g_variant_type_hash);
 
   return g_test_run ();
 }
