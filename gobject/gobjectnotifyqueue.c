@@ -46,7 +46,7 @@ struct _GObjectNotifyContext
 {
   GQuark                       quark_notify_queue;
   GObjectNotifyQueueDispatcher dispatcher;
-  GTrashStack                 *_nqueue_trash; /* unused */
+  void                        *_nqueue_trash; /* unused */
 };
 struct _GObjectNotifyQueue
 {
