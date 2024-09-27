@@ -531,7 +531,7 @@ test_cancellable_disconnect_on_cancelled_callback_hangs (void)
     }
 
   /* Run the test in a subprocess. While we can get away with deadlocking a
-   * specific thread on Linux, the glibc on FreeBSD manages to detect the
+   * specific thread on Linux, the libc on FreeBSD manages to detect the
    * deadlock and aborts the whole test process. */
   if (!g_test_subprocess ())
     {
@@ -626,7 +626,7 @@ test_cancellable_reset_on_cancelled_callback_hangs (void)
     }
 
   /* Run the test in a subprocess. While we can get away with deadlocking a
-   * specific thread on Linux, the glibc on FreeBSD manages to detect the
+   * specific thread on Linux, the libc on FreeBSD manages to detect the
    * deadlock and aborts the whole test process. */
   if (!g_test_subprocess ())
     {
