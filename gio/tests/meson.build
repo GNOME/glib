@@ -544,15 +544,6 @@ if host_machine.system() != 'windows'
       },
     }
 
-    if not glib_have_cocoa
-      gio_tests += {
-        'dbus-appinfo' : {
-          'extra_sources' : extra_sources,
-          'extra_programs' : ['fake-document-portal'],
-        },
-      }
-    endif
-
     fake_document_portal_generated = custom_target('fake-document-portal-generated',
         input :   ['../org.freedesktop.portal.Documents.xml'],
         output :  ['fake-document-portal-generated.h',
@@ -566,10 +557,15 @@ if host_machine.system() != 'windows'
                    '--c-namespace', 'Fake',
                    '@INPUT@'])
 
+    if not glib_have_cocoa
+      gio_tests += {
+        'dbus-appinfo' : {
+          'extra_sources' : [extra_sources, 'fake-document-portal.c', fake_document_portal_generated],
+        },
+      }
+    endif
+
     test_extra_programs += {
-      'fake-document-portal' : {
-        'extra_sources': fake_document_portal_generated,
-      },
       'fake-service-name' : {}
     }
   endif # have_dbus_daemon

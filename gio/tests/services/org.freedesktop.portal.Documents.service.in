@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=org.freedesktop.portal.Documents
-Exec=@installed_tests_dir@/fake-document-portal

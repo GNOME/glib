@@ -23,6 +23,7 @@
 #include <gio/gdesktopappinfo.h>
 
 #include "gdbus-sessionbus.h"
+#include "fake-document-portal.h"
 
 static GDesktopAppInfo *appinfo;
 static int current_state;
@@ -348,8 +349,13 @@ test_flatpak_doc_export (void)
   GDesktopAppInfo *flatpak_appinfo;
   GApplication *app;
   int status;
+  GFakeDocumentPortalThread *thread = NULL;
 
   g_test_summary ("Test that files launched via Flatpak apps are made available via the document portal.");
+
+  /* Run a fake-document-portal */
+  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  g_fake_document_portal_thread_run (thread);
 
   desktop_file = g_test_build_filename (G_TEST_DIST,
                                         "org.gtk.test.dbusappinfo.flatpak.desktop",
@@ -369,6 +375,8 @@ test_flatpak_doc_export (void)
 
   g_object_unref (app);
   g_object_unref (flatpak_appinfo);
+  g_fake_document_portal_thread_stop (thread);
+  g_clear_object (&thread);
 }
 
 static void
@@ -426,8 +434,13 @@ test_flatpak_missing_doc_export (void)
   GDesktopAppInfo *flatpak_appinfo;
   GApplication *app;
   int status;
+  GFakeDocumentPortalThread *thread = NULL;
 
   g_test_summary ("Test that files launched via Flatpak apps are made available via the document portal.");
+
+  /* Run a fake-document-portal */
+  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  g_fake_document_portal_thread_run (thread);
 
   desktop_file = g_test_build_filename (G_TEST_DIST,
                                         "org.gtk.test.dbusappinfo.flatpak.desktop",
@@ -447,6 +460,8 @@ test_flatpak_missing_doc_export (void)
   g_object_unref (app);
   g_object_unref (flatpak_appinfo);
   g_free (desktop_file);
+  g_fake_document_portal_thread_stop (thread);
+  g_clear_object (&thread);
 }
 
 int
