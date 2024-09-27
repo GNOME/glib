@@ -321,7 +321,10 @@ g_variant_new_from_trusted (const GVariantType *type,
                             gconstpointer       data,
                             gsize               size)
 {
-  return g_variant_new_take_bytes (type, g_bytes_new (data, size), TRUE);
+  if (size <= G_VARIANT_MAX_PREALLOCATED)
+    return g_variant_new_preallocated_trusted (type, data, size);
+  else
+    return g_variant_new_take_bytes (type, g_bytes_new (data, size), TRUE);
 }
 
 /**
