@@ -71,3 +71,10 @@ session_bus_run (void)
 
   return ret;
 }
+
+const char *
+session_bus_get_address (void)
+{
+  g_assert (singleton != NULL);
+  return g_test_dbus_get_bus_address (singleton);
+}
