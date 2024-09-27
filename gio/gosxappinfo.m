@@ -456,8 +456,6 @@ g_osx_app_info_launch_internal (GAppInfo  *appinfo,
   gint ret, success = TRUE;
 
   g_return_val_if_fail (G_IS_OSX_APP_INFO (appinfo), FALSE);
-  g_return_val_if_fail (uris == NULL, FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   fill_urlspec_for_appinfo (&urlspec, info, uris, are_files);
 
