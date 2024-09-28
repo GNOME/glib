@@ -35,7 +35,7 @@ async_result_cb (GObject      *source_object,
 }
 
 static void
-test_launch_async (void)
+test_launch_async (GList *uris)
 {
   GAppInfo *app_info;
   GAppLaunchContext *context;
@@ -48,7 +48,7 @@ test_launch_async (void)
 
   context = g_app_launch_context_new ();
 
-  g_app_info_launch_uris_async (G_APP_INFO (app_info), NULL, context, NULL, async_result_cb, &result);
+  g_app_info_launch_uris_async (G_APP_INFO (app_info), uris, context, NULL, async_result_cb, &result);
 
   while (result == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -63,6 +63,24 @@ test_launch_async (void)
   g_clear_object (&result);
   g_clear_object (&context);
   g_clear_object (&app_info);
+}
+
+
+static void
+test_launch_async_with_uris (void)
+{
+  GList *uris;
+  uris = g_list_prepend (NULL, "file:///hopefully/an/invalid/path.txt");
+
+  test_launch_async (uris);
+
+  g_list_free (uris);
+}
+
+static void
+test_launch_async_without_uris (void)
+{
+  test_launch_async (NULL);
 }
 
 static void
@@ -80,7 +98,8 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL, NULL);
 
-  g_test_add_func ("/osx-app-info/launch-async", test_launch_async);
+  g_test_add_func ("/osx-app-info/launch-async-with-uris", test_launch_async_with_uris);
+  g_test_add_func ("/osx-app-info/launch-async-without-uris", test_launch_async_without_uris);
   g_test_add_func ("/osx-app-info/invalid-uri-scheme", test_invalid_uri_scheme);
 
   return g_test_run ();
