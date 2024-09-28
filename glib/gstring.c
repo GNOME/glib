@@ -1023,37 +1023,111 @@ g_string_replace (GString     *string,
                   const gchar *replace,
                   guint        limit)
 {
-  gsize f_len, r_len, pos;
-  gchar *cur, *next;
-  guint n = 0;
+  GString *new_string = NULL;
+  gsize f_len, r_len, new_len;
+  gchar *cur, *next, *first, *dst;
+  guint n;
 
   g_return_val_if_fail (string != NULL, 0);
   g_return_val_if_fail (find != NULL, 0);
   g_return_val_if_fail (replace != NULL, 0);
 
+  first = strstr (string->str, find);
+
+  if (first == NULL)
+    return 0;
+
+  new_len = string->len;
   f_len = strlen (find);
   r_len = strlen (replace);
-  cur = string->str;
 
-  while ((next = strstr (cur, find)) != NULL)
+  /* Potentially do two passes: the first to calculate the length of the new string,
+   * new_len, if it’s going to be longer than the original string; and the second to
+   * do the replacements. The first pass is skipped if the new string is going to be
+   * no longer than the original. */
+  do
     {
-      pos = next - string->str;
-      g_string_erase (string, pos, f_len);
-      g_string_insert (string, pos, replace);
-      cur = string->str + pos + r_len;
-      n++;
-      /* Only match the empty string once at any given position, to
-       * avoid infinite loops */
-      if (f_len == 0)
+      dst = first;
+      cur = first;
+      n = 0;
+      while ((next = strstr (cur, find)) != NULL)
         {
-          if (cur[0] == '\0')
-            break;
+          n++;
+          if G_UNLIKELY (f_len == 0)
+            {
+              g_string_insert_len (string, next - string->str, replace, r_len);
+              cur = next + r_len;
+              /* Only match the empty string once at any given position, to
+               * avoid infinite loops */
+              if (cur[0] == '\0')
+                break;
+              else
+                cur++;
+            }
           else
-            cur++;
+            {
+              if (r_len <= f_len)
+                {
+                  memmove (dst, cur, next - cur);
+                  dst += next - cur;
+                  memcpy (dst, replace, r_len);
+                  dst += r_len;
+                }
+              else
+                {
+                  if (new_string == NULL)
+                    {
+                      new_len += r_len - f_len;
+                    }
+                  else
+                    {
+                      g_string_append_len (new_string, cur, next - cur);
+                      g_string_append_len (new_string, replace, r_len);
+                    }
+                }
+              cur = next + f_len;
+            }
+          if (n == limit)
+            break;
         }
-      if (n == limit)
+
+      /* @find is an empty string. */
+      if (f_len == 0)
         break;
+
+      /* Append the trailing characters from after the final instance of @find
+       * in the input string. */
+      if (r_len <= f_len)
+        {
+          /* First pass skipped. */
+          gchar *end = string->str + string->len;
+          memmove (dst, cur, end - cur);
+          end = dst + (end - cur);
+          *end = 0;
+          string->len = end - string->str;
+          break;
+        }
+      else
+        {
+          if (new_string == NULL)
+            {
+              /* First pass. */
+              new_string = g_string_sized_new (new_len);
+              g_string_append_len (new_string, string->str, first - string->str);
+            }
+          else
+            {
+              /* Second pass. */
+              g_string_append_len (new_string, cur, (string->str + string->len) - cur);
+              g_free (string->str);
+              string->allocated_len = new_string->allocated_len;
+              string->len = new_string->len;
+              string->str = g_string_free_and_steal (g_steal_pointer (&new_string));
+              break;
+            }
+        }
     }
+  while (1);
 
   return n;
 }
