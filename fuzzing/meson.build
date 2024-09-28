@@ -30,6 +30,7 @@ fuzz_targets = [
   'fuzz_network_address_parse_uri',
   'fuzz_paths',
   'fuzz_resolver',
+  'fuzz_string',
   'fuzz_uri_escape',
   'fuzz_uri_parse',
   'fuzz_uri_parse_params',
