@@ -76,7 +76,11 @@ struct _GVariant
   gatomicrefcount ref_count;
   gsize depth;
 
+#if g_macro__has_attribute(aligned)
+  guint8 suffix[] __attribute__((aligned(8)));
+#else
   guint8 suffix[];
+#endif
 };
 
 /* Ensure our suffix data aligns to largest guaranteed offset
