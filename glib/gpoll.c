@@ -449,7 +449,6 @@ g_poll (GPollFD *fds,
   for (i = 0; i < nthreads; i++)
     {
       guint thread_fds;
-      guint ignore;
 
       if (i == (nthreads - 1) && threads_remain > 0)
         thread_fds = threads_remain;

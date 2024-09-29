@@ -34,10 +34,15 @@ PATH="$(cygpath "$USERPROFILE")/.local/bin:$HOME/.local/bin:$PATH"
 DIR="$(pwd)"
 export PATH CFLAGS
 
-mkdir -p gobject-introspection
-git clone --branch "${GOBJECT_INTROSPECTION_TAG}" https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
-meson gobject-introspection gobject-introspection/build --prefix "/c/msys64/${MSYSTEM}/usr"
-meson install -C gobject-introspection/build
+# If msys2 doesn’t provide a new enough gobject-introspection package, build it
+# ourselves.
+# See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3746#note_2161354
+if [[ $(vercmp "$(pacman -Qi "${MINGW_PACKAGE_PREFIX}"-gobject-introspection | grep -Po '^Version\s*: \K.+')" "${GOBJECT_INTROSPECTION_TAG}") -lt 0 ]]; then
+    mkdir -p gobject-introspection
+    git clone --branch "${GOBJECT_INTROSPECTION_TAG}" https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
+    meson gobject-introspection gobject-introspection/build --prefix "/c/msys64/${MSYSTEM}/usr"
+    meson install -C gobject-introspection/build
+fi
 
 # FIXME: We can’t use ${MESON_COMMON_OPTIONS} here because this script installs
 # Meson 1.3. See the comment in .gitlab-ci.yml about the same problem on

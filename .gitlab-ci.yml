@@ -108,10 +108,16 @@ variables:
 
 .build-gobject-introspection:
   before_script:
-    - mkdir -p gobject-introspection
-    - git clone --branch $GOBJECT_INTROSPECTION_TAG https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
-    - meson gobject-introspection gobject-introspection/build --prefix=/usr
-    - sudo meson install -C gobject-introspection/build
+    # If the CI image doesn’t provide a new enough gobject-introspection
+    # package, build it ourselves.
+    # See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3746#note_2161354
+    - >
+      if ! pkg-config --atleast-version "${GOBJECT_INTROSPECTION_TAG}" gobject-introspection-1.0; then
+        mkdir -p gobject-introspection
+        git clone --branch $GOBJECT_INTROSPECTION_TAG https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
+        meson gobject-introspection gobject-introspection/build --prefix=/usr
+        sudo meson install -C gobject-introspection/build
+      fi
   artifacts:
     expire_in: 3 days
     paths:
