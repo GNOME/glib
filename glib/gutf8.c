@@ -1,7 +1,8 @@
 /* gutf8.c - Operations on UTF-8 strings.
  *
  * Copyright (C) 1999 Tom Tromey
- * Copyright (C) 2000 Red Hat, Inc.
+ * Copyright (C) 2000, 2015-2022 Red Hat, Inc.
+ * Copyright (C) 2022-2023 David Rheinsberg
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -1565,166 +1566,255 @@ g_ucs4_to_utf16 (const gunichar  *str,
   return result;
 }
 
-#define VALIDATE_BYTE(mask, expect)                      \
-  G_STMT_START {                                         \
-    if (G_UNLIKELY((*(guchar *)p & (mask)) != (expect))) \
-      goto error;                                        \
-  } G_STMT_END
+/* SIMD-based UTF-8 validation originates in the c-utf8 project from
+ * https://github.com/c-util/c-utf8/ from the following authors:
+ *
+ *   David Rheinsberg <david@readahead.eu>
+ *   Evgeny Vereshchagin <evvers@ya.ru>
+ *   Jan Engelhardt <jengelh@inai.de>
+ *   Tom Gundersen <teg@jklm.no>
+ *
+ * It has been adapted for portability and integration.
+ * The original code is dual-licensed Apache-2.0 or LGPLv2.1+
+ */
 
-/* see IETF RFC 3629 Section 4 */
+#define align_to(_val, _to) (((_val) + (_to) - 1) & ~((_to) - 1))
 
-static const gchar *
-fast_validate (const char *str)
-
+static inline guint8
+load_u8 (gconstpointer memory,
+         gsize         offset)
 {
-  const gchar *p;
-
-  for (p = str; *p; p++)
-    {
-      if (*(guchar *)p < 128)
-	/* done */;
-      else 
-	{
-	  const gchar *last;
-
-	  last = p;
-	  if (*(guchar *)p < 0xe0) /* 110xxxxx */
-	    {
-	      if (G_UNLIKELY (*(guchar *)p < 0xc2))
-		goto error;
-	    }
-	  else
-	    {
-	      if (*(guchar *)p < 0xf0) /* 1110xxxx */
-		{
-		  switch (*(guchar *)p++ & 0x0f)
-		    {
-		    case 0:
-		      VALIDATE_BYTE(0xe0, 0xa0); /* 0xa0 ... 0xbf */
-		      break;
-		    case 0x0d:
-		      VALIDATE_BYTE(0xe0, 0x80); /* 0x80 ... 0x9f */
-		      break;
-		    default:
-		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-		    }
-		}
-	      else if (*(guchar *)p < 0xf5) /* 11110xxx excluding out-of-range */
-		{
-		  switch (*(guchar *)p++ & 0x07)
-		    {
-		    case 0:
-		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-		      if (G_UNLIKELY((*(guchar *)p & 0x30) == 0))
-			goto error;
-		      break;
-		    case 4:
-		      VALIDATE_BYTE(0xf0, 0x80); /* 0x80 ... 0x8f */
-		      break;
-		    default:
-		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-		    }
-		  p++;
-		  VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-		}
-	      else
-		goto error;
-	    }
-
-	  p++;
-	  VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-
-	  continue;
-
-	error:
-	  return last;
-	}
-    }
-
-  return p;
+  return ((const guint8 *)memory)[offset];
 }
 
-static const gchar *
-fast_validate_len (const char *str,
-		   gssize      max_len)
+#if G_GNUC_CHECK_VERSION(4,8) || defined(__clang__)
+# define _attribute_aligned(n) __attribute__((aligned(n)))
+#elif defined(_MSC_VER)
+# define _attribute_aligned(n) __declspec(align(n))
+#else
+# define _attribute_aligned(n)
+#endif
 
+static inline gsize
+load_word (gconstpointer memory,
+           gsize         offset)
 {
-  const gchar *p;
+#if GLIB_SIZEOF_VOID_P == 8
+  _attribute_aligned(8) const guint8 *m = ((const guint8 *)memory) + offset;
 
-  g_assert (max_len >= 0);
+  return ((guint64)m[0] <<  0) | ((guint64)m[1] <<  8) |
+         ((guint64)m[2] << 16) | ((guint64)m[3] << 24) |
+         ((guint64)m[4] << 32) | ((guint64)m[5] << 40) |
+         ((guint64)m[6] << 48) | ((guint64)m[7] << 56);
+#else
+  _attribute_aligned(4) const guint8 *m = ((const guint8 *)memory) + offset;
 
-  for (p = str; ((p - str) < max_len) && *p; p++)
+  return ((guint)m[0] <<  0) | ((guint)m[1] <<  8) |
+         ((guint)m[2] << 16) | ((guint)m[3] << 24);
+#endif
+}
+
+/* The following constants are truncated on 32-bit machines */
+#define UTF8_ASCII_MASK ((gsize)0x8080808080808080L)
+#define UTF8_ASCII_SUB  ((gsize)0x0101010101010101L)
+
+static inline int
+utf8_word_is_ascii (gsize word)
+{
+  /* True unless any byte is NULL or has the MSB set. */
+  return ((((word - UTF8_ASCII_SUB) | word) & UTF8_ASCII_MASK) == 0);
+}
+
+static void
+utf8_verify_ascii (const char **strp,
+                   gsize       *lenp)
+{
+  const char *str = *strp;
+  gsize len = lenp ? *lenp : (gsize)-1;
+
+  while (len > 0 && load_u8 (str, 0) < 128)
     {
-      if (*(guchar *)p < 128)
-	/* done */;
-      else 
-	{
-	  const gchar *last;
+      if ((gpointer) align_to ((guintptr) str, sizeof (gsize)) == str)
+        {
+          while (len >= 2 * sizeof (gsize))
+            {
+              if (!utf8_word_is_ascii (load_word (str, 0)) ||
+                  !utf8_word_is_ascii (load_word (str, sizeof (gsize))))
+                break;
 
-	  last = p;
-	  if (*(guchar *)p < 0xe0) /* 110xxxxx */
-	    {
-	      if (G_UNLIKELY (max_len - (p - str) < 2))
-		goto error;
-	      
-	      if (G_UNLIKELY (*(guchar *)p < 0xc2))
-		goto error;
-	    }
-	  else
-	    {
-	      if (*(guchar *)p < 0xf0) /* 1110xxxx */
-		{
-		  if (G_UNLIKELY (max_len - (p - str) < 3))
-		    goto error;
+              str += 2 * sizeof(gsize);
+              len -= 2 * sizeof(gsize);
+            }
 
-		  switch (*(guchar *)p++ & 0x0f)
-		    {
-		    case 0:
-		      VALIDATE_BYTE(0xe0, 0xa0); /* 0xa0 ... 0xbf */
-		      break;
-		    case 0x0d:
-		      VALIDATE_BYTE(0xe0, 0x80); /* 0x80 ... 0x9f */
-		      break;
-		    default:
-		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-		    }
-		}
-	      else if (*(guchar *)p < 0xf5) /* 11110xxx excluding out-of-range */
-		{
-		  if (G_UNLIKELY (max_len - (p - str) < 4))
-		    goto error;
+          while (len > 0 && load_u8 (str, 0) < 128)
+            {
+              if G_UNLIKELY (load_u8 (str, 0) == 0x00)
+                goto out;
 
-		  switch (*(guchar *)p++ & 0x07)
-		    {
-		    case 0:
-		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-		      if (G_UNLIKELY((*(guchar *)p & 0x30) == 0))
-			goto error;
-		      break;
-		    case 4:
-		      VALIDATE_BYTE(0xf0, 0x80); /* 0x80 ... 0x8f */
-		      break;
-		    default:
-		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-		    }
-		  p++;
-		  VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-		}
-	      else
-		goto error;
-	    }
+              ++str;
+              --len;
+            }
+        }
+      else
+        {
+          if G_UNLIKELY (load_u8 (str, 0) == 0x00)
+            goto out;
 
-	  p++;
-	  VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
-
-	  continue;
-
-	error:
-	  return last;
-	}
+          ++str;
+          --len;
+        }
     }
 
-  return p;
+out:
+  *strp = str;
+
+  if (lenp)
+    *lenp = len;
+}
+
+#define UTF8_CHAR_IS_TAIL(_x) (((_x) & 0xC0) == 0x80)
+
+static void
+utf8_verify (const char **strp,
+             gsize       *lenp)
+{
+  const char *str = *strp;
+  gsize len = lenp ? *lenp : (gsize)-1;
+
+  /* See Unicode 10.0.0, Chapter 3, Section D92 */
+
+  while (len > 0)
+    {
+      guint8 b = load_u8 (str, 0);
+
+      if (b == 0x00)
+        goto out;
+
+      else if (b >= 0x01 && b <= 0x7F)
+        {
+          /*
+           * Special-case and optimize the ASCII case.
+           */
+          utf8_verify_ascii ((const char **)&str, &len);
+        }
+
+      else if (b >= 0xC2 && b <= 0xDF)
+        {
+          if G_UNLIKELY (len < 2)
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 1)))
+            goto out;
+
+          str += 2;
+          len -= 2;
+
+        }
+
+      else if (b == 0xE0)
+        {
+          if G_UNLIKELY (len < 3)
+            goto out;
+          if G_UNLIKELY (load_u8 (str, 1) < 0xA0 || load_u8 (str, 1) > 0xBF)
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 2)))
+            goto out;
+
+          str += 3;
+          len -= 3;
+        }
+
+      else if (b >= 0xE1 && b <= 0xEC)
+        {
+          if G_UNLIKELY (len < 3)
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 1)))
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 2)))
+            goto out;
+
+          str += 3;
+          len -= 3;
+        }
+
+      else if (b == 0xED)
+        {
+          if G_UNLIKELY (len < 3)
+            goto out;
+          if G_UNLIKELY (load_u8 (str, 1) < 0x80 || load_u8 (str, 1) > 0x9F)
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 2)))
+            goto out;
+
+          str += 3;
+          len -= 3;
+        }
+
+      else if (b >= 0xEE && b <= 0xEF)
+        {
+          if G_UNLIKELY (len < 3)
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 1)))
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 2)))
+            goto out;
+
+          str += 3;
+          len -= 3;
+        }
+
+      else if (b == 0xF0)
+        {
+          if G_UNLIKELY (len < 4)
+            goto out;
+          if G_UNLIKELY (load_u8 (str, 1) < 0x90 || load_u8 (str, 1) > 0xBF)
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 2)))
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 3)))
+            goto out;
+
+          str += 4;
+          len -= 4;
+        }
+
+      else if (b >= 0xF1 && b <= 0xF3)
+        {
+          if G_UNLIKELY (len < 4)
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 1)))
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 2)))
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 3)))
+            goto out;
+
+          str += 4;
+          len -= 4;
+        }
+
+      else if (b == 0xF4)
+        {
+          if G_UNLIKELY (len < 4)
+            goto out;
+          if G_UNLIKELY (load_u8 (str, 1) < 0x80 || load_u8 (str, 1) > 0x8F)
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 2)))
+            goto out;
+          if G_UNLIKELY (!UTF8_CHAR_IS_TAIL (load_u8 (str, 3)))
+            goto out;
+
+          str += 4;
+          len -= 4;
+        }
+
+      else goto out;
+    }
+
+out:
+  *strp = str;
+
+  if (lenp)
+    *lenp = len;
 }
 
 /**
@@ -1757,20 +1847,15 @@ g_utf8_validate (const char   *str,
 		 const gchar **end)
 
 {
-  const gchar *p;
-
   if (max_len >= 0)
     return g_utf8_validate_len (str, max_len, end);
 
-  p = fast_validate (str);
+  utf8_verify (&str, NULL);
 
-  if (end)
-    *end = p;
+  if (end != NULL)
+    *end = str;
 
-  if (*p != '\0')
-    return FALSE;
-  else
-    return TRUE;
+  return *str == 0;
 }
 
 /**
@@ -1793,17 +1878,12 @@ g_utf8_validate_len (const char   *str,
                      const gchar **end)
 
 {
-  const gchar *p;
+  utf8_verify (&str, &max_len);
 
-  p = fast_validate_len (str, max_len);
+  if (end != NULL)
+    *end = str;
 
-  if (end)
-    *end = p;
-
-  if (p != str + max_len)
-    return FALSE;
-  else
-    return TRUE;
+  return max_len == 0;
 }
 
 /**
