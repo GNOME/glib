@@ -586,7 +586,7 @@ msys2-clang64:
     paths:
       - _build/meson-logs
 
-vs2017-x64:
+vs2019-x64:
   extends: .only-default
   stage: build
   tags:
@@ -605,6 +605,7 @@ vs2017-x64:
                                --wrap-mode=default
                                --python.platlibdir=C:\Python37\site-packages
                                --python.purelibdir=C:\Python37\site-packages
+                               --plat=x64
   artifacts:
     reports:
       junit:
@@ -621,7 +622,7 @@ vs2017-x64:
       - _build/gthread/libgthread-2.0-0.dll
       - _build/gobject/libgobject-2.0-0.dll
 
-vs2017-x64-static:
+vs2019-x64-static:
   extends: .only-default
   stage: build
   tags:
@@ -641,6 +642,7 @@ vs2017-x64-static:
                                --default-library=static
                                --python.platlibdir=C:\Python37\site-packages
                                --python.purelibdir=C:\Python37\site-packages
+                               --plat=x64
   artifacts:
     reports:
       junit:
