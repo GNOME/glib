@@ -40,7 +40,7 @@ export PATH CFLAGS
 if [[ $(vercmp "$(pacman -Qi "${MINGW_PACKAGE_PREFIX}"-gobject-introspection | grep -Po '^Version\s*: \K.+')" "${GOBJECT_INTROSPECTION_TAG}") -lt 0 ]]; then
     mkdir -p gobject-introspection
     git clone --branch "${GOBJECT_INTROSPECTION_TAG}" https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
-    meson gobject-introspection gobject-introspection/build --prefix "/c/msys64/${MSYSTEM}/usr"
+    meson setup gobject-introspection gobject-introspection/build --prefix "${MINGW_PREFIX}"
     meson install -C gobject-introspection/build
 fi
 
