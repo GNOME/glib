@@ -1887,6 +1887,25 @@ g_utf8_validate_len (const char   *str,
 }
 
 /**
+ * g_str_is_ascii:
+ * @str: a string
+ *
+ * Determines if a string is pure ASCII. A string is pure ASCII if it
+ * contains no bytes with the high bit set.
+ *
+ * Returns: true if @str is ASCII
+ *
+ * Since: 2.40
+ */
+gboolean
+g_str_is_ascii (const gchar *str)
+{
+  utf8_verify_ascii (&str, NULL);
+
+  return *str == 0;
+}
+
+/**
  * g_unichar_validate:
  * @ch: a Unicode character
  * 
