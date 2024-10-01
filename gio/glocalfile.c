@@ -1259,6 +1259,17 @@ g_local_file_query_info (GFile                *file,
   return info;
 }
 
+#ifdef HAVE_FACCESSAT
+static gboolean
+g_local_file_query_exists (GFile        *file,
+                           GCancellable *cancellable)
+{
+  GLocalFile *local = G_LOCAL_FILE (file);
+
+  return faccessat (0, local->filename, F_OK, AT_EACCESS | AT_SYMLINK_NOFOLLOW) == 0;
+}
+#endif
+
 static GFileAttributeInfoList *
 g_local_file_query_settable_attributes (GFile         *file,
 					GCancellable  *cancellable,
@@ -3142,6 +3153,9 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->monitor_dir = g_local_file_monitor_dir;
   iface->monitor_file = g_local_file_monitor_file;
   iface->measure_disk_usage = g_local_file_measure_disk_usage;
+#ifdef HAVE_FACCESSAT
+  iface->query_exists = g_local_file_query_exists;
+#endif
 
   iface->supports_thread_contexts = TRUE;
 }

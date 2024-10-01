@@ -1192,8 +1192,11 @@ g_file_enumerate_children_finish (GFile         *file,
  * @cancellable: (nullable): optional #GCancellable object,
  *   %NULL to ignore
  *
- * Utility function to check if a particular file exists. This is
- * implemented using g_file_query_info() and as such does blocking I/O.
+ * Utility function to check if a particular file exists.
+ *
+ * The fallback implementation of this API is using [method@Gio.File.query_info]
+ * and therefore may do blocking I/O. To asynchronously query the existence
+ * of a file, use [method@Gio.File.query_info_async].
  *
  * Note that in many cases it is [racy to first check for file existence](https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use)
  * and then execute something based on the outcome of that, because the
@@ -1222,9 +1225,15 @@ gboolean
 g_file_query_exists (GFile        *file,
                      GCancellable *cancellable)
 {
+  GFileIface *iface;
   GFileInfo *info;
 
-  g_return_val_if_fail (G_IS_FILE(file), FALSE);
+  g_return_val_if_fail (G_IS_FILE (file), FALSE);
+
+  iface = G_FILE_GET_IFACE (file);
+
+  if (iface->query_exists)
+    return iface->query_exists (file, cancellable);
 
   info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_TYPE,
                             G_FILE_QUERY_INFO_NONE, cancellable, NULL);

@@ -683,6 +683,7 @@ functions = [
   'endmntent',
   'endservent',
   'epoll_create1',
+  'faccessat',
   'fallocate',
   'fchmod',
   'fchown',

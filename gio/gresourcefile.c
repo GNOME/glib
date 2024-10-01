@@ -657,6 +657,15 @@ g_resource_file_set_display_name (GFile         *file,
   return NULL;
 }
 
+static gboolean
+g_resource_file_query_exists (GFile        *file,
+                              GCancellable *cancellable)
+{
+  GResourceFile *resource = G_RESOURCE_FILE (file);
+
+  return g_resources_get_info (resource->path, 0, NULL, NULL, NULL);
+}
+
 static void
 g_resource_file_file_iface_init (GFileIface *iface)
 {
@@ -683,6 +692,7 @@ g_resource_file_file_iface_init (GFileIface *iface)
   iface->query_writable_namespaces = g_resource_file_query_writable_namespaces;
   iface->read_fn = g_resource_file_read;
   iface->monitor_file = g_resource_file_monitor_file;
+  iface->query_exists = g_resource_file_query_exists;
 
   iface->supports_thread_contexts = TRUE;
 }
