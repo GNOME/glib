@@ -1328,14 +1328,17 @@ test_unix_fd (void)
   /* Assuming the kernel isn't internally 'laggy' then there will always
    * be either data to read or room in which to write.  That will keep
    * the loop running until all data has been read and written.
+   *
+   * We can’t rely on the data being available in exactly one `GMainContext`
+   * iteration, though, as it may be potentially deferred in favour of higher
+   * priority sources.
    */
-  while (TRUE)
+  while (to_write > 0 || to_read > 0)
     {
       gssize to_write_was = to_write;
       gssize to_read_was = to_read;
 
-      if (!g_main_context_iteration (NULL, FALSE))
-        break;
+      g_main_context_iteration (NULL, TRUE);
 
       /* Since the sources are at different priority, only one of them
        * should possibly have run.
