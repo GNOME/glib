@@ -490,6 +490,7 @@ try_steal_and_unref (GBytes         *bytes,
     {
       *size = bytes->size;
       result = (gpointer)bytes->data;
+      g_assert (result != NULL);  /* otherwise the case of @bytes being freed can’t be distinguished */
       g_free (bytes);
       return result;
     }
