@@ -1,6 +1,5 @@
-/* GLib testing framework examples and tests
- *
- * Copyright (C) 2012 Collabora Ltd. <http://www.collabora.co.uk/>
+/*
+ * Copyright 2024 GNOME Foundation
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  *
@@ -16,23 +15,23 @@
  *
  * You should have received a copy of the GNU Lesser General
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
- *
- * Author: Xavier Claessens <xavier.claessens@collabora.co.uk>
  */
 
-#ifndef __SESSION_BUS_H__
-#define __SESSION_BUS_H__
+#ifndef __FAKE_DOCUMENT_PORTAL_H__
+#define __FAKE_DOCUMENT_PORTAL_H__
 
-#include <gio/gio.h>
+#include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
-void session_bus_up   (void);
-void session_bus_stop (void);
-void session_bus_down (void);
-gint session_bus_run (void);
-const char *session_bus_get_address (void);
+#define G_TYPE_FAKE_DOCUMENT_PORTAL_THREAD (g_fake_document_portal_thread_get_type ())
+G_DECLARE_FINAL_TYPE (GFakeDocumentPortalThread, g_fake_document_portal_thread, G, FAKE_DOCUMENT_PORTAL_THREAD, GObject)
+
+GFakeDocumentPortalThread *g_fake_document_portal_thread_new (const char *address);
+void g_fake_document_portal_thread_run (GFakeDocumentPortalThread *self);
+void g_fake_document_portal_thread_stop (GFakeDocumentPortalThread *self);
 
 G_END_DECLS
 
-#endif /* __SESSION_BUS_H__ */
+#endif /* __FAKE_DOCUMENT_PORTAL_H__ */
