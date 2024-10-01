@@ -557,10 +557,41 @@ if host_machine.system() != 'windows'
                    '--c-namespace', 'Fake',
                    '@INPUT@'])
 
+    fake_openuri_portal_generated = custom_target('fake-openuri-portal-generated',
+        input :   ['../org.freedesktop.portal.OpenURI.xml'],
+        output :  ['fake-openuri-portal-generated.h',
+                   'fake-openuri-portal-generated.c'],
+        depend_files : gdbus_codegen_built_files,
+        depends : gdbus_codegen_built_targets,
+        command : [python, gdbus_codegen,
+                   '--interface-prefix', 'org.freedesktop.portal.',
+                   '--output-directory', '@OUTDIR@',
+                   '--generate-c-code', 'fake-openuri-portal-generated',
+                   '--c-namespace', 'Fake',
+                   '@INPUT@'])
+
+    fake_request_portal_generated = custom_target('fake-request-portal-generated',
+        input :   ['../org.freedesktop.portal.Request.xml'],
+        output :  ['fake-request-portal-generated.h',
+                   'fake-request-portal-generated.c'],
+        depend_files : gdbus_codegen_built_files,
+        depends : gdbus_codegen_built_targets,
+        command : [python, gdbus_codegen,
+                   '--interface-prefix', 'org.freedesktop.portal.',
+                   '--output-directory', '@OUTDIR@',
+                   '--generate-c-code', 'fake-request-portal-generated',
+                   '--c-namespace', 'Fake',
+                   '@INPUT@'])
+
     if not glib_have_cocoa
       gio_tests += {
         'dbus-appinfo' : {
-          'extra_sources' : [extra_sources, 'fake-document-portal.c', fake_document_portal_generated],
+          'extra_sources' : [extra_sources,
+                             'fake-document-portal.c',
+                             fake_document_portal_generated,
+                             'fake-desktop-portal.c',
+                             fake_openuri_portal_generated,
+                             fake_request_portal_generated],
         },
       }
     endif
