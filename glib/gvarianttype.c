@@ -950,8 +950,8 @@ g_variant_type_element (const GVariantType *type)
  * This call, together with g_variant_type_next() provides an iterator
  * interface over tuple and dictionary entry types.
  *
- * Returns: (transfer none): the first item type of @type, or %NULL
- *
+ * Returns: (transfer none) (nullable): the first item type of @type, or %NULL
+ *   if the type has no item types
  * Since 2.24
  **/
 const GVariantType *
@@ -986,7 +986,8 @@ g_variant_type_first (const GVariantType *type)
  *
  * For tuples, %NULL is returned when @type is the last item in a tuple.
  *
- * Returns: (transfer none): the next #GVariantType after @type, or %NULL
+ * Returns: (transfer none) (nullable): the next type after @type, or %NULL if
+ *   there are no further types
  *
  * Since 2.24
  **/
