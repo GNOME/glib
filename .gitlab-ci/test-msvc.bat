@@ -8,7 +8,7 @@ set stash_plat=0
 for %%x in (%*) do (
   if "%%x" == "--plat" set stash_plat=1
   if "!stash_plat!" == "0" set args=!args! %%~x
-  if "!stash_plat!" == "1" if /i not "%%x" == "--plat" set plat=%%x & set stash_plat=0
+  if "!stash_plat!" == "1" if /i not "%%x" == "--plat" (set plat=%%x) & (set stash_plat=0)
 )
 set args=%args:~1%
 if "!plat!" == "" set plat=x64
