@@ -1322,6 +1322,20 @@ test_clear_slist (void)
     g_assert_null (slist);
 }
 
+static void
+test_steal_handle_id (void)
+{
+  unsigned int handle_id = 0;
+
+  g_assert_cmpuint (g_steal_handle_id (&handle_id), ==, 0);
+  g_assert_cmpuint (handle_id, ==, 0);
+
+  handle_id = 5;  /* pretend this is a meaningful handle */
+
+  g_assert_cmpuint (g_steal_handle_id (&handle_id), ==, 5);
+  g_assert_cmpuint (handle_id, ==, 0);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1382,6 +1396,7 @@ main (int   argc,
   g_test_add_func ("/utils/int-limits", test_int_limits);
   g_test_add_func ("/utils/clear-list", test_clear_list);
   g_test_add_func ("/utils/clear-slist", test_clear_slist);
+  g_test_add_func ("/utils/steal-handle-id", test_steal_handle_id);
 
   return g_test_run ();
 }
