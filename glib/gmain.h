@@ -635,6 +635,9 @@ typedef void GMainContextPusher GLIB_AVAILABLE_TYPE_IN_2_64;
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_64
+static inline GMainContextPusher *g_main_context_pusher_new (GMainContext *main_context);
+
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_64
 static inline GMainContextPusher *
 g_main_context_pusher_new (GMainContext *main_context)
 {
@@ -656,6 +659,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  * Since: 2.64
  */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_64
+static inline void g_main_context_pusher_free (GMainContextPusher *pusher);
+
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_64
 static inline void
 g_main_context_pusher_free (GMainContextPusher *pusher)
@@ -900,6 +906,9 @@ void    g_clear_handle_id (guint           *tag_ptr,
  * Since: 2.84
  */
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_84
+static inline unsigned int g_steal_handle_id (unsigned int *handle_pointer);
+
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_84
 static inline unsigned int
 g_steal_handle_id (unsigned int *handle_pointer)
 {
@@ -974,6 +983,9 @@ GLIB_AVAILABLE_IN_ALL
 void     g_main_context_invoke      (GMainContext   *context,
                                      GSourceFunc     function,
                                      gpointer        data);
+
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_70
+static inline int g_steal_fd (int *fd_ptr);
 
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_70
 static inline int

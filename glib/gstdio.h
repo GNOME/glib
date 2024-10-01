@@ -180,6 +180,10 @@ gboolean g_close (gint       fd,
                   GError   **error);
 
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_76
+static inline gboolean g_clear_fd (int     *fd_ptr,
+                                   GError **error);
+
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_76
 static inline gboolean
 g_clear_fd (int     *fd_ptr,
             GError **error)
