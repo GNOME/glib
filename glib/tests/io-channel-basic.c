@@ -36,7 +36,6 @@
   #include <io.h>
   #include <fcntl.h>
   #include <process.h>
-  #define STRICT
   #include <windows.h>
   #define pipe(fds) _pipe(fds, 4096, _O_BINARY)
 #endif

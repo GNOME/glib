@@ -96,9 +96,8 @@
 #endif  /* HAVE_PIDFD */
 
 #ifdef G_OS_WIN32
-#define STRICT
 #include <windows.h>
-#endif /* G_OS_WIN32 */
+#endif
 
 #ifdef HAVE_MACH_MACH_TIME_H
 #include <mach/mach_time.h>

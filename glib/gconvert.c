@@ -32,13 +32,8 @@
 #include <stdlib.h>
 
 #ifdef G_OS_WIN32
-#include "win_iconv.c"
-#endif
-
-#ifdef G_PLATFORM_WIN32
-#define STRICT
 #include <windows.h>
-#undef STRICT
+#include "win_iconv.c"
 #endif
 
 #include "gconvert.h"
