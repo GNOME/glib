@@ -170,6 +170,8 @@ static void                             type_iface_vtable_iface_init_Wm (TypeNod
                                                                          TypeNode               *node);
 static gboolean				type_node_is_a_L		(TypeNode		*node,
 									 TypeNode		*iface_node);
+static gpointer                         type_class_ref_with_node        (GType                   type,
+                                                                         TypeNode               *node);
 
 
 /* --- enumeration --- */
@@ -207,6 +209,9 @@ struct _TypeNode
   guint        is_final : 1;
   guint        mutatable_check_cache : 1;	/* combines some common path checks */
 
+  /* up-pointer to parent */
+  struct _TypeNode *pnode;
+
   GType       *children; /* writable with lock */
   TypeData    *data;
   GQuark       qname;
@@ -226,6 +231,7 @@ struct _TypeNode
 #define	MAX_N_PREREQUISITES			(511)
 #define NODE_TYPE(node)				(node->supers[0])
 #define NODE_PARENT_TYPE(node)			(node->supers[1])
+#define NODE_PARENT(node)			(node->pnode)
 #define NODE_FUNDAMENTAL_TYPE(node)		(node->supers[node->n_supers])
 #define NODE_NAME(node)				(g_quark_to_string (node->qname))
 #define NODE_REFCOUNT(node)                     ((guint) g_atomic_int_get ((int *) &(node)->ref_count))
@@ -492,6 +498,7 @@ type_node_any_new_W (TypeNode             *pnode,
   node->plugin = plugin;
   node->n_children = 0;
   node->children = NULL;
+  node->pnode = pnode;
   node->data = NULL;
   node->qname = g_quark_from_string (name);
   node->global_gdata = NULL;
@@ -1892,7 +1899,7 @@ g_type_create_instance (GType type)
       maybe_issue_deprecation_warning (type);
     }
 
-  class = g_type_class_ref (type);
+  class = type_class_ref_with_node (type, node);
 
   /* We allocate the 'private' areas before the normal instance data, in
    * reverse order.  This allows the private area of a particular class
@@ -2976,28 +2983,15 @@ g_type_add_interface_dynamic (GType        instance_type,
 }
 
 
-/* --- public API functions --- */
-/**
- * g_type_class_ref:
- * @type: type ID of a classed type
- *
- * Increments the reference count of the class structure belonging to
- * @type. This function will demand-create the class if it doesn't
- * exist already.
- *
- * Returns: (type GObject.TypeClass) (transfer none): the #GTypeClass
- *     structure for the given type ID
- */
-gpointer
-g_type_class_ref (GType type)
+static gpointer
+type_class_ref_with_node (GType     type,
+                          TypeNode *node)
 {
-  TypeNode *node;
   GType ptype;
   gboolean holds_ref;
   GTypeClass *pclass;
 
   /* optimize for common code path */
-  node = lookup_type_node_I (type);
   if (!node || !node->is_classed)
     {
       g_critical ("cannot retrieve class for invalid (unclassed) type '%s'",
@@ -3013,7 +3007,7 @@ g_type_class_ref (GType type)
     }
   else
     holds_ref = FALSE;
-  
+
   /* here, we either have node->data->class.class == NULL, or a recursive
    * call to g_type_class_ref() with a partly initialized class, or
    * node->data->class.init_state == INITIALIZED, because any
@@ -3023,7 +3017,7 @@ g_type_class_ref (GType type)
 
   /* we need an initialized parent class for initializing derived classes */
   ptype = NODE_PARENT_TYPE (node);
-  pclass = ptype ? g_type_class_ref (ptype) : NULL;
+  pclass = ptype ? type_class_ref_with_node (ptype, NODE_PARENT (node)) : NULL;
 
   G_WRITE_LOCK (&type_rw_lock);
 
@@ -3041,6 +3035,24 @@ g_type_class_ref (GType type)
   g_rec_mutex_unlock (&class_init_rec_mutex);
 
   return node->data->class.class;
+}
+
+/* --- public API functions --- */
+/**
+ * g_type_class_ref:
+ * @type: type ID of a classed type
+ *
+ * Increments the reference count of the class structure belonging to
+ * @type. This function will demand-create the class if it doesn't
+ * exist already.
+ *
+ * Returns: (type GObject.TypeClass) (transfer none): the #GTypeClass
+ *     structure for the given type ID
+ */
+gpointer
+g_type_class_ref (GType type)
+{
+  return type_class_ref_with_node (type, lookup_type_node_I (type));
 }
 
 /**
@@ -4055,8 +4067,8 @@ g_type_interface_get_plugin (GType instance_type,
   TypeNode *iface;
   
   g_return_val_if_fail (G_TYPE_IS_INTERFACE (interface_type), NULL);	/* G_TYPE_IS_INTERFACE() is an external call: _U */
-  
-  node = lookup_type_node_I (instance_type);  
+
+  node = lookup_type_node_I (instance_type);
   iface = lookup_type_node_I (interface_type);
   if (node && iface)
     {
