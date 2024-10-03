@@ -1740,7 +1740,7 @@ glibconfig_conf.set('guint64_constant', guint64_constant)
 if host_system == 'windows'
   glibconfig_conf.set('g_pid_type', 'void*')
   glibconfig_conf.set_quoted('g_pid_format', 'p')
-  if host_machine.cpu_family() == 'x86_64'
+  if host_machine.cpu_family() in ['x86_64', 'aarch64']
     glibconfig_conf.set_quoted('g_pollfd_format', '%#' + int64_m + 'x')
   else
     glibconfig_conf.set_quoted('g_pollfd_format', '%#x')
