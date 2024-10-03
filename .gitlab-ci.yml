@@ -665,14 +665,7 @@ freebsd-13-x86_64:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
   script:
-    # FIXME: We can’t use ${MESON_COMMON_OPTIONS} here because the FreeBSD 13
-    # runner has Meson 1.3 installed. This has an API hole where previous
-    # methods of getting paths from files() objects are rejected as deprecated,
-    # but no replacements are available. Hence, we can’t build with
-    # --fatal-meson-warnings. This should be fixed in Meson 1.4. It’s also fine
-    # with Meson 1.2.3 (which is what we use on all the other CI runners).
-    # See https://github.com/GNOME/glib/commit/71061fdcb33b8c26f5f8467cb3ac10704d65c87d
-    - meson setup --buildtype debug --wrap-mode=nodownload
+    - meson setup ${MESON_COMMON_OPTIONS}
             --localstatedir=/var
             -Db_lundef=false
             -Dxattr=false
