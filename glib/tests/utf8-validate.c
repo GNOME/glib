@@ -81,8 +81,9 @@ static Test global_test[] = {
   { "\xed\x9f\xbf", -1, 3, TRUE },
   { "\xee\x80\x80", -1, 3, TRUE },
   { "\xef\xbf\xbd", -1, 3, TRUE },
+  { "\xf1\x80\x80\x80", -1, 4, TRUE },
   { "\xf4\x8f\xbf\xbf", -1, 4, TRUE },
-  { "\xf4\x90\x80\x80", -1, 0, FALSE },
+  { "\xf4\x90\x80\x80", -1, 0, FALSE }, /* bigger than U+10FFFF */
   /* malformed sequences */
   /* continuation bytes */
   { "\x80", -1, 0, FALSE },
@@ -94,6 +95,18 @@ static Test global_test[] = {
   { "\x80\xbf\x80\xbf\x80", -1, 0, FALSE },
   { "\x80\xbf\x80\xbf\x80\xbf", -1, 0, FALSE },
   { "\x80\xbf\x80\xbf\x80\xbf\x80", -1, 0, FALSE },
+  { "\xe0\xa0\x20", -1, 0, FALSE },
+  { "\xe1\x80\x20", -1, 0, FALSE },
+  { "\xed\x80\x20", -1, 0, FALSE },
+  { "\xf0\xc0\x80\x80", -1, 0, FALSE },
+  { "\xf0\x90\x20\x80", -1, 0, FALSE },
+  { "\xf0\x90\x80\x20", -1, 0, FALSE },
+  { "\xf1\x20\x80\x80", -1, 0, FALSE },
+  { "\xf1\x80\x20\x80", -1, 0, FALSE },
+  { "\xf1\x80\x80\x20", -1, 0, FALSE },
+  { "\xf4\x7f\x80\x80", -1, 0, FALSE },
+  { "\xf4\x80\x20\x80", -1, 0, FALSE },
+  { "\xf4\x80\x80\x20", -1, 0, FALSE },
 
   /* all possible continuation byte */
   { "\x80", -1, 0, FALSE },
@@ -253,6 +266,9 @@ static Test global_test[] = {
   { "\x20\xf0\x80\x80\x80\x20", -1, 1, FALSE },
   { "\x20\xf8\x80\x80\x80\x80\x20", -1, 1, FALSE },
   { "\x20\xfc\x80\x80\x80\x80\x80\x20", -1, 1, FALSE },
+  { "\xe0\x9f\x80", -1, 0, FALSE },
+  { "\xe0\xc0\x80", -1, 0, FALSE },
+  { "\xf0\x8f\x80\x80", -1, 0, FALSE },
   /* illegal code positions */
   { "\x20\xed\xa0\x80\x20", -1, 1, FALSE },
   { "\x20\xed\xad\xbf\x20", -1, 1, FALSE },
@@ -269,6 +285,14 @@ static Test global_test[] = {
   { "\x20\xed\xae\x80\xed\xbf\xbf\x20", -1, 1, FALSE },
   { "\x20\xed\xaf\xbf\xed\xb0\x80\x20", -1, 1, FALSE },
   { "\x20\xed\xaf\xbf\xed\xbf\xbf\x20", -1, 1, FALSE },
+
+  /* ASCII boundaries */
+  { "\x00", 1, 0, FALSE },
+  { "\x01", -1, 1, TRUE },
+  { "\x02", -1, 1, TRUE },
+  { "\x7d", -1, 1, TRUE },
+  { "\x7e", -1, 1, TRUE },
+  { "\x7f", -1, 1, TRUE },
 
   { NULL, 0, 0, 0 }
 };
