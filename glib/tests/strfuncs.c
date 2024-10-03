@@ -2719,6 +2719,27 @@ test_set_str (void)
   g_free (str);
 }
 
+static void
+test_str_is_ascii (void)
+{
+  const char *ascii_strings[] = {
+    "",
+    "hello",
+    "is it me you're looking for",
+  };
+  const char *non_ascii_strings[] = {
+    "is it me you’re looking for",
+    "áccents",
+    "☺️",
+  };
+
+  for (size_t i = 0; i < G_N_ELEMENTS (ascii_strings); i++)
+    g_assert_true (g_str_is_ascii (ascii_strings[i]));
+
+  for (size_t i = 0; i < G_N_ELEMENTS (non_ascii_strings); i++)
+    g_assert_false (g_str_is_ascii (non_ascii_strings[i]));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2775,6 +2796,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/test-is-to-digit", test_is_to_digit);
   g_test_add_func ("/strfuncs/transliteration", test_transliteration);
   g_test_add_func ("/strfuncs/str-equal", test_str_equal);
+  g_test_add_func ("/strfuncs/str-is-ascii", test_str_is_ascii);
 
   return g_test_run();
 }
