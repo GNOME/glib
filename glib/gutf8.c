@@ -1690,7 +1690,7 @@ utf8_verify (const char **strp,
       if (b == 0x00)
         goto out;
 
-      else if (b >= 0x01 && b <= 0x7F)
+      else if (b <= 0x7F)
         {
           /*
            * Special-case and optimize the ASCII case.
