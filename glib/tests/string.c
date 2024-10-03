@@ -664,10 +664,25 @@ test_string_replace (void)
       "bba", 1 },
     { "foo", "", "bar", 0,
       "barfbarobarobar", 4 },
+    { "foo", "", "bar", 1,
+      "barfoo", 1 },
+    { "foo", "", "bar", 2,
+      "barfbaroo", 2 },
+    { "foo", "", "bar", 3,
+      "barfbarobaro", 3 },
+    { "foo", "", "bar", 4,
+      "barfbarobarobar", 4 },
+    { "foo", "", "bar", 5,
+      "barfbarobarobar", 4 },
     { "", "", "x", 0,
       "x", 1 },
     { "", "", "", 0,
       "", 1 },
+    /* use find and replace strings long enough to trigger a reallocation in
+     * the result string */
+    { "bbbbbbbbb", "", "aaaaaaaaaaaa", 0,
+      "aaaaaaaaaaaabaaaaaaaaaaaabaaaaaaaaaaaabaaaaaaaaaaaabaaaaaaaaaaaab"
+      "aaaaaaaaaaaabaaaaaaaaaaaabaaaaaaaaaaaabaaaaaaaaaaaabaaaaaaaaaaaa", 10 },
   };
   gsize i;
 
