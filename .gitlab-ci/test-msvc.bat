@@ -16,9 +16,36 @@ if "!plat!" == "" set plat=x64
 :: specified build architecture
 call "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" !plat!
 
+:: Setup and write a cross-compilation file for ARM64 builds
+if not "!plat!" == "x64_arm64" goto :continue_build
+set cross_file=vs2019-arm64.txt
+echo [host_machine]>!cross_file!
+echo system = 'windows'>>!cross_file!
+echo cpu_family = 'aarch64'>>!cross_file!
+echo cpu = 'arm64'>>!cross_file!
+echo endian = 'little'>>!cross_file!
+echo.>>!cross_file!
+echo [binaries]>>!cross_file!
+echo c = 'cl'>>!cross_file!
+echo cpp = 'cl'>>!cross_file!
+echo c_ld = 'link'>>!cross_file!
+echo cpp_ld = 'link'>>!cross_file!
+echo ar = 'lib'>>!cross_file!
+echo windres = 'rc'>>!cross_file!
+
+echo.>>!cross_file!
+echo [properties]>>!cross_file!
+echo skip_sanity_check = true>>!cross_file!
+
+set args=%args% --cross-file=!cross_file!
+
+:continue_build
 pip3 install --upgrade --user meson==1.4.2 || goto :error
 meson setup %args% _build || goto :error
 meson compile -C _build || goto :error
+
+:: Skip running tests if building for ARM64
+if "!plat!" == "x64_arm64" goto :cleanup_cross_file
 
 :: FIXME: Skip PCRE2 tests for now for 32-bit x86 builds, until we pull in pcre2-10.45 (or so)
 :: from our subprojects, as 32-bit Windows Visual Studio tests are fixed upstream
@@ -30,6 +57,8 @@ if not "!plat!" == "x64_x86" meson test -v -C _build --timeout-multiplier %MESON
 meson test -v -C _build --timeout-multiplier %MESON_TEST_TIMEOUT_MULTIPLIER% --setup=unstable_tests --suite=failing --suite=flaky
 
 :: FIXME: can we get code coverage support?
+:cleanup_cross_file
+if not "!cross_file!" == "" if exist !cross_file! del /f/q !cross_file!
 
 goto :EOF
 :error
