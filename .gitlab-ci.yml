@@ -655,7 +655,7 @@ vs2019-x64-static:
       - _build/meson-logs
 
 vs2019-x86:
-  extends: .only-default
+  extends: .only-schedules-or-manual
   stage: build
   tags:
     - win32-ps
