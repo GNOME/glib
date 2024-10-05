@@ -40,6 +40,20 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
   find = (n_args > 1) ? args[1] : "";
   replace = (n_args > 2) ? args[2] : "";
 
+  /* Limit the input size. With a short @find, and a long @init and @replace
+   * it’s quite possible to hit OOM. We’re not interested in testing that — it’s
+   * up to the caller of g_string_replace() to handle that. 1KB on each of the
+   * inputs should be plenty to find any string parsing or pointer arithmetic
+   * bugs in g_string_replace(). */
+  if (strlen (init) > 1000 ||
+      strlen (find) > 1000 ||
+      strlen (replace) > 1000)
+    {
+      g_strfreev (args);
+      g_free (nul_terminated_data);
+      return 0;
+    }
+
   /* Test g_string_replace() and see if it crashes. */
   string = g_string_new (init);
   g_string_replace (string, find, replace, 0);
