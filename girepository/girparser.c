@@ -3160,7 +3160,8 @@ start_element_handler (GMarkupParseContext  *context,
       break;
 
     case 'f':
-      if (strcmp ("function-macro", element_name) == 0)
+      if (strcmp ("function-macro", element_name) == 0 ||
+          strcmp ("function-inline", element_name) == 0)
         {
           state_switch (ctx, STATE_PASSTHROUGH);
           goto out;
@@ -3244,7 +3245,12 @@ start_element_handler (GMarkupParseContext  *context,
       break;
 
     case 'm':
-      if (start_function (context, element_name,
+      if (strcmp (element_name, "method-inline") == 0)
+        {
+          state_switch (ctx, STATE_PASSTHROUGH);
+          goto out;
+        }
+      else if (start_function (context, element_name,
                           attribute_names, attribute_values,
                           ctx, error))
         goto out;
