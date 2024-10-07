@@ -40,12 +40,13 @@ GLib is regularly built on at least the following systems:
  * CI runners, https://gitlab.gnome.org/GNOME/glib/blob/main/.gitlab-ci.yml:
    - Fedora (39, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/fedora.Dockerfile)
    - Debian (Bookworm, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/debian-stable.Dockerfile)
+   - Alpine Linux (3.19 using muslc, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/alpine.Dockerfile)
    - Windows (MinGW64)
    - Windows (msys2-mingw32 and msys2-clang64; msys2 is a rolling release distribution)
-   - Windows (Visual Studio 2017, and a static linking version)
+   - Windows (Visual Studio 2019 x64, a static linking version on x64, and an x86 version)
    - Android (NDK r23b, API 31, arm64, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/android-ndk.sh)
-   - FreeBSD (12 and 13)
-   - macOS
+   - FreeBSD (13)
+   - macOS (arm64, SDK 11.3)
 
 If other platforms are to be supported, we need to set up regular CI testing for
 them. Please contact us if you want to help.
