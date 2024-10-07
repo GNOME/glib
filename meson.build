@@ -2605,9 +2605,18 @@ if enable_systemtap
   stp_cdata.set('LT_REVISION', micro_version)
 endif
 
-# introspection
-gir_scanner = find_program('g-ir-scanner', required: get_option('introspection'), version: '>= 1.80.0')
-enable_gir = get_option('introspection').allowed() and gir_scanner.found() and meson.can_run_host_binaries()
+# Introspection
+#
+# We depend on g-ir-scanner from gobject-introspection-1.0 to scan our source
+# to build GIR files. We then use gi-compile-repository from the local build
+# tree to build the typelibs (rather than using g-ir-compiler from
+# gobject-introspection). However, we use Meson’s gnome.generate_gir() function,
+# which adds a hard dependency on gobject-introspection-1.0, so we’d better
+# check for that here.
+gobject_introspection_required_version = '>= 1.80.0'
+gir_scanner = find_program('g-ir-scanner', required: get_option('introspection'), version: gobject_introspection_required_version)
+gobject_introspection = dependency('gobject-introspection-1.0', required: get_option('introspection'), version: gobject_introspection_required_version)
+enable_gir = get_option('introspection').allowed() and gir_scanner.found() and gobject_introspection.found() and meson.can_run_host_binaries()
 
 if get_option('introspection').enabled() and not meson.can_run_host_binaries()
   error('Running binaries on the build host needs to be supported to build with -Dintrospection=enabled')
