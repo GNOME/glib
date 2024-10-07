@@ -2402,6 +2402,42 @@ g_socket_w32_get_adapter_ipv4_addr (const gchar *name_or_ip)
 
   return ip_result;
 }
+#elif defined(HAVE_SIOCGIFADDR)
+static gulong
+g_socket_get_adapter_ipv4_addr (GSocket     *socket,
+                                const char  *iface,
+                                GError     **error)
+{
+  int ret;
+  struct ifreq ifr;
+  struct sockaddr_in *iface_addr;
+  size_t if_name_len = strlen (iface);
+
+  memset (&ifr, 0, sizeof (ifr));
+
+  if (if_name_len >= sizeof (ifr.ifr_name))
+    {
+      g_set_error (error, G_IO_ERROR,  G_IO_ERROR_FILENAME_TOO_LONG,
+                   _("Interface name too long"));
+      return ULONG_MAX;
+    }
+
+  memcpy (ifr.ifr_name, iface, if_name_len);
+
+  /* Get the IPv4 address of the given network interface name. */
+  ret = ioctl (socket->priv->fd, SIOCGIFADDR, &ifr);
+  if (ret < 0)
+    {
+      int errsv = errno;
+
+      g_set_error (error, G_IO_ERROR,  g_io_error_from_errno (errsv),
+                   _("Interface not found: %s"), g_strerror (errsv));
+      return ULONG_MAX;
+    }
+
+  iface_addr = (struct sockaddr_in *) &ifr.ifr_addr;
+  return iface_addr->sin_addr.s_addr;
+}
 #endif
 
 static gboolean
@@ -2418,6 +2454,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
   g_return_val_if_fail (socket->priv->type == G_SOCKET_TYPE_DATAGRAM, FALSE);
   g_return_val_if_fail (G_IS_INET_ADDRESS (group), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if (!check_socket (socket, error))
     return FALSE;
@@ -2425,7 +2462,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
   native_addr = g_inet_address_to_bytes (group);
   if (g_inet_address_get_family (group) == G_SOCKET_FAMILY_IPV4)
     {
-#ifdef HAVE_IP_MREQN
+#if defined(HAVE_IP_MREQN) && !defined(__APPLE__)
       struct ip_mreqn mc_req;
 #else
       struct ip_mreq mc_req;
@@ -2434,7 +2471,11 @@ g_socket_multicast_group_operation (GSocket       *socket,
       memset (&mc_req, 0, sizeof (mc_req));
       memcpy (&mc_req.imr_multiaddr, native_addr, sizeof (struct in_addr));
 
-#ifdef HAVE_IP_MREQN
+      /* mc_req.imr_ifindex is not used correctly by the XNU kernel, and
+       * causes us to bind to the default interface; so fallback to ip_mreq
+       * and set the iface source address (not SSM).
+       * See: https://gitlab.gnome.org/GNOME/glib/-/issues/3489 */
+#if defined(HAVE_IP_MREQN) && !defined(__APPLE__)
       if (iface)
         mc_req.imr_ifindex = if_nametoindex (iface);
       else
@@ -2444,6 +2485,22 @@ g_socket_multicast_group_operation (GSocket       *socket,
         mc_req.imr_interface.s_addr = g_socket_w32_get_adapter_ipv4_addr (iface);
       else
         mc_req.imr_interface.s_addr = g_htonl (INADDR_ANY);
+#elif defined(HAVE_SIOCGIFADDR)
+      if (iface)
+        {
+          GError *local_error = NULL;
+
+          mc_req.imr_interface.s_addr = g_socket_get_adapter_ipv4_addr (socket, iface, &local_error);
+          if (local_error != NULL)
+            {
+              g_propagate_error (error, g_steal_pointer (&local_error));
+              return FALSE;
+            }
+        }
+      else
+        {
+          mc_req.imr_interface.s_addr = g_htonl (INADDR_ANY);
+        }
 #else
       mc_req.imr_interface.s_addr = g_htonl (INADDR_ANY);
 #endif
@@ -2642,36 +2699,15 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
           {
 #if defined(G_OS_WIN32)
             S_ADDR_FIELD(mc_req_src) = g_socket_w32_get_adapter_ipv4_addr (iface);
-#elif defined (HAVE_SIOCGIFADDR)
-            int ret;
-            struct ifreq ifr;
-            struct sockaddr_in *iface_addr;
-            size_t if_name_len = strlen (iface);
+#elif defined(HAVE_SIOCGIFADDR)
+            GError *local_error = NULL;
 
-            memset (&ifr, 0, sizeof (ifr));
-
-            if (if_name_len >= sizeof (ifr.ifr_name))
+            S_ADDR_FIELD(mc_req_src) = g_socket_get_adapter_ipv4_addr (socket, iface, &local_error);
+            if (local_error != NULL)
               {
-                g_set_error (error, G_IO_ERROR,  G_IO_ERROR_FILENAME_TOO_LONG,
-                             _("Interface name too long"));
+                g_propagate_error (error, g_steal_pointer (&local_error));
                 return FALSE;
               }
-
-            memcpy (ifr.ifr_name, iface, if_name_len);
-
-            /* Get the IPv4 address of the given network interface name. */
-            ret = ioctl (socket->priv->fd, SIOCGIFADDR, &ifr);
-            if (ret < 0)
-              {
-                int errsv = errno;
-
-                g_set_error (error, G_IO_ERROR,  g_io_error_from_errno (errsv),
-                             _("Interface not found: %s"), g_strerror (errsv));
-                return FALSE;
-              }
-
-            iface_addr = (struct sockaddr_in *) &ifr.ifr_addr;
-            S_ADDR_FIELD(mc_req_src) = iface_addr->sin_addr.s_addr;
 #endif  /* defined(G_OS_WIN32) && defined (HAVE_IF_NAMETOINDEX) */
           }
 
