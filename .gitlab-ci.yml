@@ -586,7 +586,7 @@ msys2-clang64:
     paths:
       - _build/meson-logs
 
-vs2017-x64:
+vs2019-x64:
   extends: .only-default
   stage: build
   tags:
@@ -605,6 +605,7 @@ vs2017-x64:
                                --wrap-mode=default
                                --python.platlibdir=C:\Python37\site-packages
                                --python.purelibdir=C:\Python37\site-packages
+                               --plat=x64
   artifacts:
     reports:
       junit:
@@ -621,7 +622,7 @@ vs2017-x64:
       - _build/gthread/libgthread-2.0-0.dll
       - _build/gobject/libgobject-2.0-0.dll
 
-vs2017-x64-static:
+vs2019-x64-static:
   extends: .only-default
   stage: build
   tags:
@@ -641,6 +642,7 @@ vs2017-x64-static:
                                --default-library=static
                                --python.platlibdir=C:\Python37\site-packages
                                --python.purelibdir=C:\Python37\site-packages
+                               --plat=x64
   artifacts:
     reports:
       junit:
@@ -651,6 +653,42 @@ vs2017-x64-static:
     expire_in: 1 week
     paths:
       - _build/meson-logs
+
+vs2019-x86:
+  extends: .only-schedules-or-manual
+  stage: build
+  tags:
+    - win32-ps
+  needs: []
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    GIT_SUBMODULE_DEPTH: 1
+    PYTHONUTF8: "1"
+  script:
+    # FIXME: These should use --wrap-mode=nodownload but the Windows CI machines
+    # aren’t currently set up for that.
+    # FIXME: Use --meson-fatal-warnings once we've enabled c_std=gnu99,c99
+    # for the runner's Meson version.
+    - .gitlab-ci/test-msvc.bat --buildtype debug
+                               --wrap-mode=default
+                               --python.platlibdir=C:\Python37\site-packages
+                               --python.purelibdir=C:\Python37\site-packages
+                               --plat=x64_x86
+  artifacts:
+    reports:
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
+    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
+    when: always
+    expire_in: 1 week
+    paths:
+      - _build/meson-logs
+      - _build/glib/libglib-2.0-0.dll
+      - _build/gio/libgio-2.0-0.dll
+      - _build/gmodule/libgmodule-2.0-0.dll
+      - _build/gthread/libgthread-2.0-0.dll
+      - _build/gobject/libgobject-2.0-0.dll
 
 freebsd-13-x86_64:
   extends: .only-schedules-or-manual
