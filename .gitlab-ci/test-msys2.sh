@@ -2,8 +2,6 @@
 
 set -ex
 
-export PATH="/c/msys64/$MSYSTEM/bin:$PATH"
-
 pacman --noconfirm -Suy
 
 pacman --noconfirm -S --needed \
