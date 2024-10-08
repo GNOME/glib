@@ -544,10 +544,7 @@ g_application_impl_attempt_primary (GApplicationImpl  *impl,
   impl->primary = (rval != DBUS_REQUEST_NAME_REPLY_EXISTS);
 
   if (!impl->primary && impl->name_lost_signal)
-    {
-      g_dbus_connection_signal_unsubscribe (impl->session_bus, impl->name_lost_signal);
-      impl->name_lost_signal = 0;
-    }
+    g_dbus_connection_signal_unsubscribe (impl->session_bus, g_steal_handle_id (&impl->name_lost_signal));
 
   return TRUE;
 }
@@ -592,10 +589,7 @@ g_application_impl_stop_primary (GApplicationImpl *impl)
     }
 
   if (impl->name_lost_signal)
-    {
-      g_dbus_connection_signal_unsubscribe (impl->session_bus, impl->name_lost_signal);
-      impl->name_lost_signal = 0;
-    }
+    g_dbus_connection_signal_unsubscribe (impl->session_bus, g_steal_handle_id (&impl->name_lost_signal));
 
   if (impl->primary && impl->bus_name)
     {

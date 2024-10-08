@@ -306,8 +306,7 @@ test_delivery_in_thread_func (gpointer _data)
 
   g_assert_cmpuint (data.signal_count, ==, 1);
 
-  g_dbus_connection_signal_unsubscribe (c, subscription_id);
-  subscription_id = 0;
+  g_dbus_connection_signal_unsubscribe (c, g_steal_handle_id (&subscription_id));
 
   while (!data.unsubscribe_complete)
     g_main_context_iteration (thread_context, TRUE);

@@ -1984,10 +1984,7 @@ monitor_on_name_vanished (GDBusConnection *connection,
   g_print ("The name %s does not have an owner\n", name);
 
   if (monitor_filter_id != 0)
-    {
-      g_dbus_connection_signal_unsubscribe (connection, monitor_filter_id);
-      monitor_filter_id = 0;
-    }
+    g_dbus_connection_signal_unsubscribe (connection, g_steal_handle_id (&monitor_filter_id));
 }
 
 static const GOptionEntry monitor_entries[] =

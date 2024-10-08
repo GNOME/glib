@@ -177,8 +177,7 @@ response_received (GDBusConnection *connection,
   guint32 response;
 
   call_data = g_task_get_task_data (task);
-  g_dbus_connection_signal_unsubscribe (connection, call_data->response_signal_id);
-  call_data->response_signal_id = 0;
+  g_dbus_connection_signal_unsubscribe (connection, g_steal_handle_id (&call_data->response_signal_id));
 
   g_variant_get (parameters, "(u@a{sv})", &response, NULL);
 
@@ -232,8 +231,7 @@ open_call_done (GObject      *source,
     {
       guint signal_id;
 
-      g_dbus_connection_signal_unsubscribe (connection, call_data->response_signal_id);
-      call_data->response_signal_id = 0;
+      g_dbus_connection_signal_unsubscribe (connection, g_steal_handle_id (&call_data->response_signal_id));
 
       signal_id = g_dbus_connection_signal_subscribe (connection,
                                                       "org.freedesktop.portal.Desktop",

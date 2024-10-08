@@ -113,7 +113,7 @@ test_connection_flush (void)
       g_source_remove (timeout_mainloop_id);
     }
 
-  g_dbus_connection_signal_unsubscribe (connection, signal_handler_id);
+  g_dbus_connection_signal_unsubscribe (connection, g_steal_handle_id (&signal_handler_id));
   g_object_unref (connection);
 
   session_bus_down ();

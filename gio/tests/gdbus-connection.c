@@ -793,12 +793,12 @@ test_connection_signals (void)
   g_assert_cmpint (count_s4, ==, 2);
   g_assert_cmpint (count_s5, ==, 1);
 
-  g_dbus_connection_signal_unsubscribe (c1, s1);
-  g_dbus_connection_signal_unsubscribe (c1, s2);
-  g_dbus_connection_signal_unsubscribe (c1, s3);
-  g_dbus_connection_signal_unsubscribe (c1, s1b);
-  g_dbus_connection_signal_unsubscribe (c1, s4);
-  g_dbus_connection_signal_unsubscribe (c1, s5);
+  g_dbus_connection_signal_unsubscribe (c1, g_steal_handle_id (&s1));
+  g_dbus_connection_signal_unsubscribe (c1, g_steal_handle_id (&s2));
+  g_dbus_connection_signal_unsubscribe (c1, g_steal_handle_id (&s3));
+  g_dbus_connection_signal_unsubscribe (c1, g_steal_handle_id (&s1b));
+  g_dbus_connection_signal_unsubscribe (c1, g_steal_handle_id (&s4));
+  g_dbus_connection_signal_unsubscribe (c1, g_steal_handle_id (&s5));
 
   g_object_unref (c1);
   g_object_unref (c2);
@@ -852,8 +852,8 @@ test_match_rule (GDBusConnection  *connection,
   g_assert_cmpint (emissions, ==, 1);
   g_assert_cmpint (matches, ==, should_match ? 1 : 0);
 
-  g_dbus_connection_signal_unsubscribe (connection, subscription_ids[0]);
-  g_dbus_connection_signal_unsubscribe (connection, subscription_ids[1]);
+  g_dbus_connection_signal_unsubscribe (connection, g_steal_handle_id (&subscription_ids[0]));
+  g_dbus_connection_signal_unsubscribe (connection, g_steal_handle_id (&subscription_ids[1]));
 }
 
 static void
@@ -1132,7 +1132,7 @@ test_connection_filter (void)
   timeout_mainloop_id = g_timeout_add (30000, test_connection_filter_on_timeout, NULL);
   g_main_loop_run (loop);
   g_source_remove (timeout_mainloop_id);
-  g_dbus_connection_signal_unsubscribe (c, signal_handler_id);
+  g_dbus_connection_signal_unsubscribe (c, g_steal_handle_id (&signal_handler_id));
 
   /* now test some combinations... */
   filter_id = g_dbus_connection_add_filter (c,

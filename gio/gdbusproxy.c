@@ -198,15 +198,15 @@ g_dbus_proxy_finalize (GObject *object)
 
   if (proxy->priv->name_owner_changed_subscription_id > 0)
     g_dbus_connection_signal_unsubscribe (proxy->priv->connection,
-                                          proxy->priv->name_owner_changed_subscription_id);
+                                          g_steal_handle_id (&proxy->priv->name_owner_changed_subscription_id));
 
   if (proxy->priv->properties_changed_subscription_id > 0)
     g_dbus_connection_signal_unsubscribe (proxy->priv->connection,
-                                          proxy->priv->properties_changed_subscription_id);
+                                          g_steal_handle_id (&proxy->priv->properties_changed_subscription_id));
 
   if (proxy->priv->signals_subscription_id > 0)
     g_dbus_connection_signal_unsubscribe (proxy->priv->connection,
-                                          proxy->priv->signals_subscription_id);
+                                          g_steal_handle_id (&proxy->priv->signals_subscription_id));
 
   if (proxy->priv->connection != NULL)
     g_object_unref (proxy->priv->connection);

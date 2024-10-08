@@ -895,7 +895,7 @@ fixture_subscribe (Fixture             *f,
       if (subscribe->unsubscribe_immediately)
         {
           g_test_message ("\tImmediately unsubscribing");
-          g_dbus_connection_signal_unsubscribe (subscriber, id);
+          g_dbus_connection_signal_unsubscribe (subscriber, g_steal_handle_id (&id));
         }
       else
         {
@@ -1285,12 +1285,12 @@ teardown (Fixture *f,
   g_ptr_array_unref (f->proxies);
 
   if (f->finished_subscription != 0)
-    g_dbus_connection_signal_unsubscribe (subscriber, f->finished_subscription);
+    g_dbus_connection_signal_unsubscribe (subscriber, g_steal_handle_id (&f->finished_subscription));
 
   for (i = 0; i < G_N_ELEMENTS (f->subscriptions); i++)
     {
       if (f->subscriptions[i] != 0)
-        g_dbus_connection_signal_unsubscribe (subscriber, f->subscriptions[i]);
+        g_dbus_connection_signal_unsubscribe (subscriber, g_steal_handle_id (&f->subscriptions[i]));
     }
 
   g_ptr_array_unref (f->received);
