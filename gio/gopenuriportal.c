@@ -244,7 +244,7 @@ open_call_done (GObject      *source,
                                                       task,
                                                       NULL);
       g_clear_pointer (&call_data->response_handle, g_free);
-      call_data->response_signal_id = signal_id;
+      call_data->response_signal_id = g_steal_handle_id (&signal_id);
       call_data->response_handle = g_steal_pointer (&path);
     }
 
@@ -329,7 +329,7 @@ g_openuri_portal_open_file_async (GFile               *file,
       call_data = call_data_new ();
       call_data->proxy = g_object_ref (openuri);
       call_data->response_handle = g_steal_pointer (&handle);
-      call_data->response_signal_id = signal_id;
+      call_data->response_signal_id = g_steal_handle_id (&signal_id);
       g_task_set_task_data (task, call_data, call_data_free);
     }
   else
