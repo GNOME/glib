@@ -306,7 +306,7 @@ static void
 g_dbus_menu_path_deactivate (GDBusMenuPath *path)
 {
   if (--path->active == 0)
-    g_dbus_connection_signal_unsubscribe (path->id->connection, path->watch_id);
+    g_dbus_connection_signal_unsubscribe (path->id->connection, g_steal_handle_id (&path->watch_id));
 }
 
 static GDBusMenuPath *

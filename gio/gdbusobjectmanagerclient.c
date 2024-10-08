@@ -1218,11 +1218,8 @@ maybe_unsubscribe_signals (GDBusObjectManagerClient *manager)
   g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_CLIENT (manager));
 
   if (manager->priv->signal_subscription_id > 0)
-    {
-      g_dbus_connection_signal_unsubscribe (manager->priv->connection,
-                                            manager->priv->signal_subscription_id);
-      manager->priv->signal_subscription_id = 0;
-    }
+    g_dbus_connection_signal_unsubscribe (manager->priv->connection,
+                                          g_steal_handle_id (&manager->priv->signal_subscription_id));
 
   if (manager->priv->match_rule != NULL)
     {

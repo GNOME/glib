@@ -371,8 +371,7 @@ test_dbus_properties (void)
   g_signal_handler_disconnect (controller, notify_id);
   notify_id = 0;
 
-  g_dbus_connection_signal_unsubscribe (remote_connection, properties_changed_id);
-  properties_changed_id = 0;
+  g_dbus_connection_signal_unsubscribe (remote_connection, g_steal_handle_id (&properties_changed_id));
 
   g_debug_controller_dbus_stop (controller);
   while (g_main_context_iteration (NULL, FALSE));

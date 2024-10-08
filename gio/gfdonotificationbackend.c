@@ -437,8 +437,7 @@ g_fdo_notification_backend_dispose (GObject *object)
       GDBusConnection *session_bus;
 
       session_bus = G_NOTIFICATION_BACKEND (backend)->dbus_connection;
-      g_dbus_connection_signal_unsubscribe (session_bus, backend->notify_subscription);
-      backend->notify_subscription = 0;
+      g_dbus_connection_signal_unsubscribe (session_bus, g_steal_handle_id (&backend->notify_subscription));
     }
 
   if (backend->notifications)

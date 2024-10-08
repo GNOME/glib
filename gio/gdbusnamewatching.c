@@ -95,7 +95,7 @@ client_unref (Client *client)
       if (client->connection != NULL)
         {
           if (client->name_owner_changed_subscription_id > 0)
-            g_dbus_connection_signal_unsubscribe (client->connection, client->name_owner_changed_subscription_id);
+            g_dbus_connection_signal_unsubscribe (client->connection, g_steal_handle_id (&client->name_owner_changed_subscription_id));
           if (client->disconnected_signal_handler_id > 0)
             g_signal_handler_disconnect (client->connection, client->disconnected_signal_handler_id);
           g_object_unref (client->connection);
@@ -306,12 +306,11 @@ on_connection_disconnected (GDBusConnection *connection,
     return;
 
   if (client->name_owner_changed_subscription_id > 0)
-    g_dbus_connection_signal_unsubscribe (client->connection, client->name_owner_changed_subscription_id);
+    g_dbus_connection_signal_unsubscribe (client->connection, g_steal_handle_id (&client->name_owner_changed_subscription_id));
   if (client->disconnected_signal_handler_id > 0)
     g_signal_handler_disconnect (client->connection, client->disconnected_signal_handler_id);
   g_object_unref (client->connection);
   client->disconnected_signal_handler_id = 0;
-  client->name_owner_changed_subscription_id = 0;
   client->connection = NULL;
 
   call_vanished_handler (client);

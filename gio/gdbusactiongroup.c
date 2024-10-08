@@ -423,7 +423,7 @@ g_dbus_action_group_finalize (GObject *object)
   GDBusActionGroup *group = G_DBUS_ACTION_GROUP (object);
 
   if (group->subscription_id)
-    g_dbus_connection_signal_unsubscribe (group->connection, group->subscription_id);
+    g_dbus_connection_signal_unsubscribe (group->connection, g_steal_handle_id (&group->subscription_id));
 
   if (group->actions)
     g_hash_table_unref (group->actions);
