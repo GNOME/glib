@@ -72,7 +72,6 @@
 #include <errno.h>
 
 #ifdef G_OS_WIN32
-#define STRICT
 #include <windows.h>
 #include <process.h>
 #endif /* G_OS_WIN32 */

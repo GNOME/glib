@@ -30,9 +30,7 @@
 
 #ifdef G_PLATFORM_WIN32
 #include <stdio.h>
-#define STRICT
 #include <windows.h>
-#undef STRICT
 #endif
 
 #include "gconvert.h"

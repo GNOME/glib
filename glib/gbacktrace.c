@@ -57,12 +57,9 @@
 #include <string.h>
 
 #ifdef G_OS_WIN32
-#  define STRICT                /* Strict typing, please */
-#  define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
-#  include <windows.h>
-#  undef STRICT
+#include <windows.h>
 #else
-#  include <fcntl.h>
+#include <fcntl.h>
 #endif
 
 #include "gbacktrace.h"
