@@ -15,7 +15,7 @@ Windows meaning they use the Win32 API and Microsoft C runtime library
 only. No POSIX (Unix) emulation layer like Cygwin is involved.
 
 To build GLib on Win32, you can use either GCC ("MinGW") or the Microsoft
-Visual Studio toolchain. For the latter, Visual Studio 2015 and later are
+Visual Studio toolchain. For the latter, Visual Studio 2019 and later are
 recommended. For older Visual Studio versions, see below.
 
 You can also cross-compile GLib for Windows from Linux using the
