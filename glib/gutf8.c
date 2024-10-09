@@ -40,6 +40,7 @@
 #include "gtypes.h"
 #include "gthread.h"
 #include "glibintl.h"
+#include "gvalgrind.h"
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \
@@ -1824,6 +1825,43 @@ out:
     *lenp = len;
 }
 
+static gboolean
+g_utf8_validate_native (const char  *str,
+                        gssize       max_len,
+                        const char **end)
+{
+  if (max_len >= 0)
+    return g_utf8_validate_len (str, max_len, end);
+
+  utf8_verify (&str, NULL);
+
+  if (end != NULL)
+    *end = str;
+
+  return *str == 0;
+}
+
+#if g_macro__has_attribute(ifunc) && !defined(G_OS_WIN32)
+static gboolean
+g_utf8_validate_valgrind (const char  *str,
+                          gssize       max_len,
+                          const char **end)
+{
+  if (max_len < 0)
+    max_len = strlen (str);
+
+  return g_utf8_validate_len (str, max_len, end);
+}
+
+static gboolean (*resolve_g_utf8_validate (void)) (const char *, gssize, const char **)
+{
+  if (RUNNING_ON_VALGRIND)
+    return g_utf8_validate_valgrind;
+  else
+    return g_utf8_validate_native;
+}
+#endif
+
 /**
  * g_utf8_validate:
  * @str: (array length=max_len) (element-type guint8): a pointer to character data
@@ -1850,22 +1888,20 @@ out:
  * 
  * Returns: `TRUE` if the text was valid UTF-8
  */
+#if g_macro__has_attribute(no_sanitize_address)
+  __attribute__((no_sanitize_address))
+#endif
 gboolean
 g_utf8_validate (const char   *str,
-		 gssize        max_len,    
-		 const gchar **end)
-
+                 gssize        max_len,
+                 const gchar **end)
+#if g_macro__has_attribute(ifunc) && !defined(G_OS_WIN32)
+  __attribute__((ifunc ("resolve_g_utf8_validate")));
+#else
 {
-  if (max_len >= 0)
-    return g_utf8_validate_len (str, max_len, end);
-
-  utf8_verify (&str, NULL);
-
-  if (end != NULL)
-    *end = str;
-
-  return *str == 0;
+  return g_utf8_validate_native (str, max_len, end);
 }
+#endif
 
 /**
  * g_utf8_validate_len:
