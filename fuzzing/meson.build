@@ -19,6 +19,9 @@
 fuzz_targets = [
   'fuzz_bookmark',
   'fuzz_canonicalize_filename',
+  'fuzz_data_input_stream_read_line',
+  'fuzz_data_input_stream_read_line_utf8',
+  'fuzz_data_input_stream_read_upto',
   'fuzz_date_parse',
   'fuzz_date_time_new_from_iso8601',
   'fuzz_dbus_message',
