@@ -2643,7 +2643,7 @@ win32_strftime_helper (const GDate     *d,
  * make the \%F provided by the C99 strftime() work on Windows
  * where the C library only complies to C89.
  *
- * Returns: number of characters written to the buffer, or 0 the buffer was too small
+ * Returns: number of characters written to the buffer, or `0` if the buffer was too small
  */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"
