@@ -31,6 +31,7 @@
 #include <glib/ghash.h>
 #include <glib/grefcount.h>
 
+#include "glib-private.h"
 #include "glib_trace.h"
 
 /* < private >
@@ -800,8 +801,11 @@ g_variant_type_info_get (const GVariantType *type)
       g_rec_mutex_lock (&g_variant_type_info_lock);
 
       if (g_variant_type_info_table == NULL)
-        g_variant_type_info_table = g_hash_table_new ((GHashFunc)_g_variant_type_hash,
-                                                      (GEqualFunc)_g_variant_type_equal);
+        {
+          g_variant_type_info_table = g_hash_table_new ((GHashFunc)_g_variant_type_hash,
+                                                        (GEqualFunc)_g_variant_type_equal);
+          g_ignore_leak (g_variant_type_info_table);
+        }
       info = g_hash_table_lookup (g_variant_type_info_table, type_string);
 
       if (info == NULL)
@@ -895,7 +899,10 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
       if (g_atomic_ref_count_dec (&container->ref_count))
         {
           if (g_variant_type_info_gc == NULL)
-            g_variant_type_info_gc = g_ptr_array_new ();
+            {
+              g_variant_type_info_gc = g_ptr_array_new ();
+              g_ignore_leak (g_variant_type_info_gc);
+            }
 
           /* Steal this instance and place it onto the GC queue.
            * We may bring it back to life before the next GC.
