@@ -277,6 +277,70 @@
  *
  * ## Build system integration
  *
+ * ### Meson
+ *
+ * GSettings is natively supported by Meson's [GNOME module](https://mesonbuild.com/Gnome-module.html).
+ *
+ * You can install the schemas as any other data file:
+ *
+ * ```
+ * install_data(
+ *   'org.foo.MyApp.gschema.xml',
+ *   install_dir: get_option('datadir') / 'glib-2.0/schemas',
+ * )
+ * ```
+ *
+ * You can use `gnome.post_install()` function to compile the schemas on
+ * installation:
+ *
+ * ```
+ * gnome = import('gnome')
+ * gnome.post_install(
+ *   glib_compile_schemas: true,
+ * )
+ * ```
+ *
+ * If an enumerated type defined in a C header file is to be used in a GSettings
+ * schema, it can either be defined manually using an `<enum>` element in the
+ * schema XML, or it can be extracted automatically from the C header. This
+ * approach is preferred, as it ensures the two representations are always
+ * synchronised. To do so, you will need to use the `gnome.mkenums()` function
+ * with the following templates:
+ *
+ * ```
+ * schemas_enums = gnome.mkenums('org.foo.MyApp.enums.xml',
+ *   comments: '<!-- @comment@ -->',
+ *   fhead: '<schemalist>',
+ *   vhead: '  <@type@ id="org.foo.MyApp.@EnumName@">',
+ *   vprod: '    <value nick="@valuenick@" value="@valuenum@"/>',
+ *   vtail: '  </@type@>',
+ *   ftail: '</schemalist>',
+ *   sources: enum_sources,
+ *   install_header: true,
+ *   install_dir: get_option('datadir') / 'glib-2.0/schemas',
+ * )
+ * ```
+ *
+ * It is recommended to validate your schemas as part of the test suite for
+ * your application:
+ *
+ * ```
+ * test('validate-schema',
+ *   find_program('glib-compile-schemas'),
+ *   args: ['--strict', '--dry-run', meson.current_source_dir()],
+ * )
+ * ```
+ *
+ * If your application allows running uninstalled, you should also use the
+ * `gnome.compile_schemas()` function to compile the schemas in the current
+ * build directory:
+ *
+ * ```
+ * gnome.compile_schemas()
+ * ```
+ *
+ * ### Autotools
+ *
  * GSettings comes with autotools integration to simplify compiling and
  * installing schemas. To add GSettings support to an application, add the
  * following to your `configure.ac`:
@@ -292,25 +356,6 @@
  *
  * @GSETTINGS_RULES@
  * ```
- *
- * No changes are needed to the build system to mark a schema XML file for
- * translation. Assuming it sets the `gettext-domain` attribute, a schema may
- * be marked for translation by adding it to `POTFILES.in`, assuming gettext
- * 0.19 is in use (the preferred method for translation):
- * ```
- * data/org.foo.MyApp.gschema.xml
- * ```
- *
- * Alternatively, if intltool 0.50.1 is in use:
- * ```
- * [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
- * ```
- *
- * GSettings will use gettext to look up translations for the `<summary>` and
- * `<description>` elements, and also any `<default>` elements which have a
- * `l10n` attribute set. Translations must not be included in the `.gschema.xml`
- * file by the build system, for example by using intltool XML rules with a
- * `.gschema.xml.in` template.
  *
  * If an enumerated type defined in a C header file is to be used in a GSettings
  * schema, it can either be defined manually using an `<enum>` element in the
@@ -328,6 +373,28 @@
  * automatically included in the schema compilation, install and uninstall
  * rules. It should not be committed to version control or included in
  * `EXTRA_DIST`.
+ *
+ * ## Localization
+ *
+ * No changes are needed to the build system to mark a schema XML file for
+ * translation. Assuming it sets the `gettext-domain` attribute, a schema may
+ * be marked for translation by adding it to `POTFILES.in`, assuming gettext
+ * 0.19 or newer is in use (the preferred method for translation):
+ * ```
+ * data/org.foo.MyApp.gschema.xml
+ * ```
+ *
+ * Alternatively, if intltool 0.50.1 is in use:
+ * ```
+ * [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
+ * ```
+ *
+ * GSettings will use gettext to look up translations for the `<summary>` and
+ * `<description>` elements, and also any `<default>` elements which have a
+ * `l10n` attribute set.
+ *
+ * Translations **must not** be included in the `.gschema.xml` file by the build
+ * system, for example by using a rule to generate the XML file from a template.
  */
 
 struct _GSettingsPrivate
