@@ -840,7 +840,11 @@ g_data_input_stream_read_line_utf8 (GDataInputStream  *stream,
       g_set_error_literal (error, G_CONVERT_ERROR,
 			   G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
 			   _("Invalid byte sequence in conversion input"));
+
+      if (length != NULL)
+        *length = 0;
       g_free (res);
+
       return NULL;
     }
   return res;
