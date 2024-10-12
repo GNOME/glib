@@ -174,8 +174,17 @@ test_read_lines_LF_valid_utf8 (void)
       gsize length = -1;
       line = g_data_input_stream_read_line_utf8 (G_DATA_INPUT_STREAM (stream), &length, NULL, &error);
       g_assert_no_error (error);
+
       if (line == NULL)
-	break;
+        {
+          g_assert_cmpuint (length, ==, 0);
+          break;
+        }
+      else
+        {
+          g_assert_cmpuint (length, >, 0);
+        }
+
       n_lines++;
       g_free (line);
     }
@@ -207,11 +216,16 @@ test_read_lines_LF_invalid_utf8 (void)
       gsize length = -1;
       line = g_data_input_stream_read_line_utf8 (G_DATA_INPUT_STREAM (stream), &length, NULL, &error);
       if (n_lines == 0)
-	g_assert_no_error (error);
+        {
+          /* First line is valid UTF-8 */
+          g_assert_no_error (error);
+          g_assert_cmpuint (length, ==, 3);
+        }
       else
 	{
           g_assert_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE);
 	  g_clear_error (&error);
+          g_assert_cmpuint (length, ==, 0);
 	  g_free (line);
 	  break;
 	}
