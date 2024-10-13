@@ -237,6 +237,8 @@ add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
 if host_system == 'qnx'
   add_project_arguments('-D_QNX_SOURCE', language: 'c')
+elif host_system == 'sunos'
+  add_project_arguments('-D__EXTENSIONS__', language: 'c')
 endif
 
 # dummy/empty dependency() object to declare fallbacks and simpler dependencies
