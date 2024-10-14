@@ -2625,6 +2625,7 @@ log_is_old_api (const GLogField *fields,
 {
   return (n_fields >= 1 &&
           g_strcmp0 (fields[0].key, "GLIB_OLD_LOG_API") == 0 &&
+          fields[0].length < 0 &&
           g_strcmp0 (fields[0].value, "1") == 0);
 }
 
