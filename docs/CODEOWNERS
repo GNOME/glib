@@ -3,7 +3,7 @@
 # the list of reviewers
 
 # The syntax of this file is defined by GitLab:
-#   https://docs.gitlab.com/ee/user/project/code_owners.html
+#   https://docs.gitlab.com/ee/user/project/codeowners/reference.html
 # Which, in turn, is similar to the .gitignore and .gitattributes files:
 #
 #  - comments start with `#`
