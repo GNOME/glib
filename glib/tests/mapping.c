@@ -228,7 +228,7 @@ test_child_private (void)
   spawn_flags |= G_SPAWN_DO_NOT_REAP_CHILD;
 #endif
 
-  g_snprintf (pid, sizeof(pid), "%d", getpid ());
+  g_snprintf (pid, sizeof (pid), "%d", (int) getpid ());
   child_argv[0] = local_argv[0];
   child_argv[1] = "mapchild";
   child_argv[2] = pid;

@@ -2469,7 +2469,7 @@ test_copy_preserve_mode (void)
   /* Reset the umask after querying it above. There’s no way to query it without
    * changing it. */
   umask (current_umask);
-  g_test_message ("Current umask: %u", current_umask);
+  g_test_message ("Current umask: %u", (unsigned int) current_umask);
 
   for (i = 0; i < G_N_ELEMENTS (vectors); i++)
     {
