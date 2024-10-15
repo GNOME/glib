@@ -314,7 +314,7 @@ test_read_upto (void)
     const char *data_sep;
     size_t data_sep_len;
   } vectors[] = {
-    { 10, " part1 # part2 $ part3 \0 part4 ", 32, 7, "#$\0^", 4 },
+    { 10, " part1 # part2 $ part3 \0 part4 \0", 32, 7, "#$\0^", 4 },
     { 20, "{\"key\": \"value\"}\0", 17, 16, "\0", 1 },
   };
 
