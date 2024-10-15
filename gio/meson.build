@@ -969,6 +969,9 @@ else
   have_libelf = have_libelf and cc.has_function('elf_getshdrstrndx', dependencies : libelf)
   have_libelf = have_libelf and cc.has_function('elf_getshdrnum', dependencies : libelf)
   have_libelf = have_libelf and cc.has_header('libelf.h')
+  # This check is necessary for Solaris & illumos, where 32-bit libelf
+  # is incompatible with large-file mode, which meson forces to be enabled
+  have_libelf = have_libelf and cc.compiles('#include <libelf.h>', name: 'libelf.h')
 endif
 
 if have_libelf
