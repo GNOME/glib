@@ -2483,10 +2483,23 @@ have_pkg_config = find_program('pkg-config', required: false).found()
 # Some installed tests require a custom environment
 env_program = find_program('env', required: installed_tests_enabled)
 
-# FIXME: How to detect Solaris? https://github.com/mesonbuild/meson/issues/1578
+# illumos & Solaris may need extra definitions to expose some SUS/POSIX
+# interfaces in headers that conflict with previous Solaris headers.
+# But if we define them to request an older version of the standards,
+# we may hide things introduced in newer versions.  We only check the
+# versions that are supported on systems new enough that meson runs on them.
 if host_system == 'sunos'
-  glib_conf.set('_XOPEN_SOURCE_EXTENDED', 1)
-  glib_conf.set('_XOPEN_SOURCE', 2)
+  xopen_test_code = '''#include <unistd.h>
+  #if _XOPEN_VERSION != _XOPEN_SOURCE
+  #error "XOPEN_SOURCE of _XOPEN_SOURCE not supported"
+  #endif'''
+  foreach std : ['800', '700', '600']
+    if cc.compiles(xopen_test_code, args: '-D_XOPEN_SOURCE=' + std, name: 'building with _XOPEN_SOURCE=' + std)
+      xopen_version = std
+      break
+    endif
+  endforeach
+  glib_conf.set('_XOPEN_SOURCE', xopen_version)
   glib_conf.set('__EXTENSIONS__',1)
 endif
 
