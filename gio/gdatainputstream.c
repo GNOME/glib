@@ -861,11 +861,8 @@ scan_for_chars (GDataInputStream *stream,
   gsize start, end, peeked;
   gsize i;
   gsize available, checked;
-  const char *stop_char;
-  const char *stop_end;
 
   bstream = G_BUFFERED_INPUT_STREAM (stream);
-  stop_end = stop_chars + stop_chars_len;
 
   checked = *checked_out;
 
@@ -874,8 +871,8 @@ scan_for_chars (GDataInputStream *stream,
   end = available;
   peeked = end - start;
 
-  /* For single-char case such as \0, defer to memchr which can
-   * take advantage of simd/etc.
+  /* For single-char case such as \0, defer the entire operation to memchr which
+   * can take advantage of simd/etc.
    */
   if (stop_chars_len == 1)
     {
@@ -888,11 +885,13 @@ scan_for_chars (GDataInputStream *stream,
     {
       for (i = 0; checked < available && i < peeked; i++)
         {
-          for (stop_char = stop_chars; stop_char != stop_end; stop_char++)
-            {
-              if (buffer[i] == *stop_char)
-                return (start + i);
-            }
+          /* We can use memchr() the other way round. Less fast than the
+           * single-char case above, but still faster than doing our own inner
+           * loop. */
+          const char *p = memchr (stop_chars, buffer[i], stop_chars_len);
+
+          if (p != NULL)
+            return (start + i);
         }
     }
 
