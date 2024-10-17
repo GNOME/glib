@@ -1,3 +1,25 @@
+Overview of changes in GLib 2.82.2, 2024-10-17
+==============================================
+
+* Bugs fixed:
+  - #3480 glib/gvariant: incorrect use of G_ANALYZER_ANALYZING (Christian
+    Hergert)
+  - #3489 Multicast cannot be joined on Mac OS on non-default interface
+    (Nirbheek Chauhan)
+  - !4285 Update Catalan translation
+  - !4306 Backport !4291 “glib/gvariant: Fix check for G_ANALYZER_ANALYZING” to
+    glib-2-82
+  - !4314 Backport !4312 “macos: Fix URL launcher” to glib-2-82
+  - !4325 Backport !4176 “gopenuriportal: Fix two memory leaks” to glib-2-82
+  - !4336 Backport !4333 “gio: Fix multicast iface selection on macOS” to
+    glib-2-82
+  - !4349 Backport !4348 “gdatainputstream: Fix length return value on UTF-8
+    validation failure“ to glib-2-82
+
+* Translation updates:
+  - Catalan (Jordi Mas)
+
+
 Overview of changes in GLib 2.82.1, 2024-09-19
 ==============================================
 
