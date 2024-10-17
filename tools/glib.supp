@@ -390,12 +390,12 @@
 {
 	g-io-module-default-singleton-calloc
 	Memcheck:Leak
-	match-leak-kinds:reachable
+	match-leak-kinds:reachable,definite
 	fun:calloc
 	...
 	fun:g_type_create_instance
 	...
-	fun:_g_io_module_get_default
+	fun:_g_io_module_get_default*
 }
 
 # This one seems to show up sometimes with g_type_create_instance() at the top
