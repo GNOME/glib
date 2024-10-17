@@ -1842,6 +1842,35 @@ g_utf8_validate_native (const char  *str,
 }
 
 #if g_macro__has_attribute(ifunc) && !defined(G_OS_WIN32)
+/* The fast implementation of UTF-8 validation in `utf8_verify()` technically
+ * uses undefined behaviour when the string length is not provided (i.e. when
+ * it’s looking for a trailing nul terminator): when doing word-sized reads of
+ * the string, it can read up to the word size (minus one byte) beyond the end
+ * of the string in order to find the nul terminator.
+ *
+ * While this is guaranteed to not cause a page fault (at worst, the nul
+ * terminator could be in the final word of the page, and the code won’t read
+ * any further than that), it is still technically undefined behaviour in C,
+ * because we’re reading off the end of an array.
+ *
+ * We don’t *think* this can cause any bugs due to compiler optimisations,
+ * because glibc does exactly the same thing in its string handling code, and
+ * that code has been extensively tested. For example:
+ * https://github.com/bminor/glibc/blob/2c1903cbbac0022153a67776f474c221250ad6ed/string/strchrnul.c
+ *
+ * However, both valgrind and asan warn about the read beyond the end of the
+ * array (a ‘heap buffer overflow read’). They’re right to do this (they can’t
+ * know the read is bounded to the word size minus one, and guaranteed to not
+ * cross a page boundary), but it’s annoying for any application which calls
+ * `g_utf8_validate()`.
+ *
+ * Use an [indirect function (`ifunc`)](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-ifunc-function-attribute)
+ * to use a fallback implementation of `g_utf8_validate()` when running under
+ * valgrind. This is resolved at load time using `resolve_g_utf8_validate()`.
+ *
+ * Similarly, mark the real implementation so that it’s not instrumented by asan
+ * using `no_sanitize_address`.
+ */
 static gboolean
 g_utf8_validate_valgrind (const char  *str,
                           gssize       max_len,
