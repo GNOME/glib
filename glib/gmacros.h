@@ -190,6 +190,8 @@
 #define g_macro__has_attribute_fallthrough G_GNUC_CHECK_VERSION (6, 0)
 #define g_macro__has_attribute_may_alias G_GNUC_CHECK_VERSION (3, 3)
 #define g_macro__has_attribute_warn_unused_result G_GNUC_CHECK_VERSION (3, 4)
+#define g_macro__has_attribute_no_sanitize_address 0
+#define g_macro__has_attribute_ifunc 0
 
 #endif
 
