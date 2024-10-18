@@ -88,7 +88,25 @@ a fallback to a POSIX-specified approach, if possible, or to simply replace a
 given functionality with a no-op, but even this may not be possible in cases of
 critical functionality.
 
-Specific notes
+32-bit support
+---
+
+GLib will support 32-bit systems as long as they are supported by any of the
+tested platforms above. This means we are guaranteed to be able to test our
+32-bit build in CI.
+
+In particular, Debian
+[continues to support 32-bit installations on x86](https://lists.debian.org/debian-devel-announce/2023/12/msg00003.html)
+as containers or chroots, though it doesn’t support running on 32-bit physical
+x86 hardware. It also supports a 32-bit armhf kernel and userspace.
+
+As of 2024, other known significant consumers of 32-bit GLib are:
+ * [GStreamer on 32-bit Windows](https://gitlab.gnome.org/GNOME/glib/-/issues/3477#note_2235483)
+ * [GStreamer on 32-bit armv7](https://gitlab.gnome.org/GNOME/glib/-/issues/3477#note_2236548)
+ * [Wine](https://gitlab.gnome.org/GNOME/glib/-/issues/3477#note_2235484)
+ * [Steam](https://gitlab.gnome.org/GNOME/glib/-/issues/3477#note_2238744)
+
+Notes on specific features
 ---
 
 Note that we currently depend on a number of features specified in POSIX, but
