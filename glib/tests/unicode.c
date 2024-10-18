@@ -364,6 +364,13 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_VITHKUQI,               0x10570 },
     { G_UNICODE_SCRIPT_KAWI,                   0x11F00 },
     { G_UNICODE_SCRIPT_NAG_MUNDARI,            0x1E4D0 },
+    { G_UNICODE_SCRIPT_TODHRI,                 0x105C8 },
+    { G_UNICODE_SCRIPT_GARAY,                  0x10D40 },
+    { G_UNICODE_SCRIPT_TULU_TIGALARI,          0x11387 },
+    { G_UNICODE_SCRIPT_SUNUWAR,                0x11BC0 },
+    { G_UNICODE_SCRIPT_GURUNG_KHEMA,           0x16139 },
+    { G_UNICODE_SCRIPT_KIRAT_RAI,              0x16D40 },
+    { G_UNICODE_SCRIPT_OL_ONAL,                0x1E5D0 },
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     g_assert_cmpint (g_unichar_get_script (examples[i].c), ==, examples[i].script);
@@ -1875,6 +1882,15 @@ test_iso15924 (void)
     /* Unicode 15.0 additions */
     { G_UNICODE_SCRIPT_KAWI,                   "Kawi" },
     { G_UNICODE_SCRIPT_NAG_MUNDARI,            "Nagm" },
+
+    /* Unicode 16.0 additions */
+    { G_UNICODE_SCRIPT_TODHRI,                 "Todr" },
+    { G_UNICODE_SCRIPT_GARAY,                  "Gara" },
+    { G_UNICODE_SCRIPT_TULU_TIGALARI,          "Tutg" },
+    { G_UNICODE_SCRIPT_SUNUWAR,                "Sunu" },
+    { G_UNICODE_SCRIPT_GURUNG_KHEMA,           "Gukh" },
+    { G_UNICODE_SCRIPT_KIRAT_RAI,              "Krai" },
+    { G_UNICODE_SCRIPT_OL_ONAL,                "Onao" },
   };
   guint i;
 
