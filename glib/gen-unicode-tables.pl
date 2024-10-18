@@ -1352,7 +1352,7 @@ sub output_composition_table
     # Output array of composition pairs
 
     print OUT <<EOT;
-static const guint16 compose_array[$n_first][$n_second] = {
+static const gunichar compose_array[$n_first][$n_second] = {
 EOT
 			
     for (my $i = 0; $i < $n_first; $i++) {
@@ -1361,12 +1361,9 @@ EOT
 	for (my $j = 0; $j < $n_second; $j++) {
 	    print OUT ", " if $j;
 	    if (exists $reverse{"$i|$j"}) {
-                if ($reverse{"$i|$j"} > 0xFFFF) {
-                    die "time to switch compose_array to gunichar" ;
-                }
-		printf OUT "0x%04x", $reverse{"$i|$j"};
+		printf OUT "0x%06x", $reverse{"$i|$j"};
 	    } else {
-		print OUT "     0";
+		print OUT "       0";
             }
 	}
 	print OUT " }";
@@ -1377,7 +1374,7 @@ EOT
 };
 EOT
 
-    $bytes_out += $n_first * $n_second * 2;
+    $bytes_out += $n_first * $n_second * 4;
     
     printf STDERR "Generated %d bytes in compose tables\n", $bytes_out;
 }
