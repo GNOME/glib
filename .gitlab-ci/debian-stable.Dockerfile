@@ -1,4 +1,5 @@
-FROM debian:bookworm
+ARG ARCHITECTURE_PREFIX=
+FROM ${ARCHITECTURE_PREFIX}debian:bookworm
 
 RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     bindfs \
