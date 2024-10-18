@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+#
+# Copyright 2022 Canonical Limited
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+# Original author: Marco Trevisan
 
 if [ ! -d "$1" ]; then
     echo "Usage $(basename "$0") UCD-directory [version]"
