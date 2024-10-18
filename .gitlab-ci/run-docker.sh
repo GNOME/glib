@@ -67,6 +67,11 @@ if [ $print_help == 1 ]; then
         echo "  list                    - List available images"
         echo "  help                    - This help message"
         echo ""
+        echo "Options"
+        echo ""
+        echo "  --base-version NUM      - Image is version NUM"
+        echo "  --no-login              - Don't log in to registry"
+        echo ""
         exit 0
 fi
 
