@@ -36,3 +36,4 @@ glib/tests/gen-casefold-txt.py "$version" \
 glib/tests/gen-casemap-txt.py "$version" \
     "$ucd"/UnicodeData*.txt \
     "$ucd"/SpecialCasing*.txt > glib/tests/casemap.txt
+cp "$ucd"/NormalizationTest.txt glib/tests/
