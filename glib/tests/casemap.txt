@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 15.1.0 data
+# Test cases generated from Unicode 16.0.0 data
 # by gen-casemap-txt.py. Do not edit.
 #
 # Some special hand crafted tests
@@ -315,7 +315,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	Ƙ	ƙ		Ƙ	#  198
 	ƙ	ƙ	Ƙ	Ƙ	#  199
 	ƚ	ƚ	Ƚ	Ƚ	#  19A
-	ƛ	ƛ			#  19B
+	ƛ	ƛ	Ƛ	Ƛ	#  19B
 	Ɯ	ɯ		Ɯ	#  19C
 	Ɲ	ɲ		Ɲ	#  19D
 	ƞ	ƞ	Ƞ	Ƞ	#  19E
@@ -511,7 +511,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ɡ	ɡ	Ɡ	Ɡ	#  261
 	ɢ	ɢ			#  262
 	ɣ	ɣ	Ɣ	Ɣ	#  263
-	ɤ	ɤ			#  264
+	ɤ	ɤ	Ɤ	Ɤ	#  264
 	ɥ	ɥ	Ɥ	Ɥ	#  265
 	ɦ	ɦ	Ɦ	Ɦ	#  266
 	ɧ	ɧ			#  267
@@ -1274,6 +1274,8 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ᲆ	ᲆ	Ъ	Ъ	# 1C86
 	ᲇ	ᲇ	Ѣ	Ѣ	# 1C87
 	ᲈ	ᲈ	Ꙋ	Ꙋ	# 1C88
+	Ᲊ	ᲊ		Ᲊ	# 1C89
+	ᲊ	ᲊ	Ᲊ	Ᲊ	# 1C8A
 	Ა	ა		Ა	# 1C90
 	Ბ	ბ		Ბ	# 1C91
 	Გ	გ		Გ	# 1C92
@@ -2440,6 +2442,9 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꟈ	ꟈ	Ꟈ	Ꟈ	# A7C8
 	Ꟊ	ꟊ		Ꟊ	# A7C9
 	ꟊ	ꟊ	Ꟊ	Ꟊ	# A7CA
+	Ɤ	ɤ		Ɤ	# A7CB
+	Ꟍ	ꟍ		Ꟍ	# A7CC
+	ꟍ	ꟍ	Ꟍ	Ꟍ	# A7CD
 	Ꟑ	ꟑ		Ꟑ	# A7D0
 	ꟑ	ꟑ	Ꟑ	Ꟑ	# A7D1
 	ꟓ	ꟓ			# A7D3
@@ -2448,6 +2453,9 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꟗ	ꟗ	Ꟗ	Ꟗ	# A7D7
 	Ꟙ	ꟙ		Ꟙ	# A7D8
 	ꟙ	ꟙ	Ꟙ	Ꟙ	# A7D9
+	Ꟛ	ꟛ		Ꟛ	# A7DA
+	ꟛ	ꟛ	Ꟛ	Ꟛ	# A7DB
+	Ƛ	ƛ		Ƛ	# A7DC
 	Ꟶ	ꟶ		Ꟶ	# A7F5
 	ꟶ	ꟶ	Ꟶ	Ꟶ	# A7F6
 	ꟺ	ꟺ			# A7FA
@@ -2971,6 +2979,50 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	𐳰	𐳰	𐲰	𐲰	# 10CF0
 	𐳱	𐳱	𐲱	𐲱	# 10CF1
 	𐳲	𐳲	𐲲	𐲲	# 10CF2
+	𐵐	𐵰		𐵐	# 10D50
+	𐵑	𐵱		𐵑	# 10D51
+	𐵒	𐵲		𐵒	# 10D52
+	𐵓	𐵳		𐵓	# 10D53
+	𐵔	𐵴		𐵔	# 10D54
+	𐵕	𐵵		𐵕	# 10D55
+	𐵖	𐵶		𐵖	# 10D56
+	𐵗	𐵷		𐵗	# 10D57
+	𐵘	𐵸		𐵘	# 10D58
+	𐵙	𐵹		𐵙	# 10D59
+	𐵚	𐵺		𐵚	# 10D5A
+	𐵛	𐵻		𐵛	# 10D5B
+	𐵜	𐵼		𐵜	# 10D5C
+	𐵝	𐵽		𐵝	# 10D5D
+	𐵞	𐵾		𐵞	# 10D5E
+	𐵟	𐵿		𐵟	# 10D5F
+	𐵠	𐶀		𐵠	# 10D60
+	𐵡	𐶁		𐵡	# 10D61
+	𐵢	𐶂		𐵢	# 10D62
+	𐵣	𐶃		𐵣	# 10D63
+	𐵤	𐶄		𐵤	# 10D64
+	𐵥	𐶅		𐵥	# 10D65
+	𐵰	𐵰	𐵐	𐵐	# 10D70
+	𐵱	𐵱	𐵑	𐵑	# 10D71
+	𐵲	𐵲	𐵒	𐵒	# 10D72
+	𐵳	𐵳	𐵓	𐵓	# 10D73
+	𐵴	𐵴	𐵔	𐵔	# 10D74
+	𐵵	𐵵	𐵕	𐵕	# 10D75
+	𐵶	𐵶	𐵖	𐵖	# 10D76
+	𐵷	𐵷	𐵗	𐵗	# 10D77
+	𐵸	𐵸	𐵘	𐵘	# 10D78
+	𐵹	𐵹	𐵙	𐵙	# 10D79
+	𐵺	𐵺	𐵚	𐵚	# 10D7A
+	𐵻	𐵻	𐵛	𐵛	# 10D7B
+	𐵼	𐵼	𐵜	𐵜	# 10D7C
+	𐵽	𐵽	𐵝	𐵝	# 10D7D
+	𐵾	𐵾	𐵞	𐵞	# 10D7E
+	𐵿	𐵿	𐵟	𐵟	# 10D7F
+	𐶀	𐶀	𐵠	𐵠	# 10D80
+	𐶁	𐶁	𐵡	𐵡	# 10D81
+	𐶂	𐶂	𐵢	𐵢	# 10D82
+	𐶃	𐶃	𐵣	𐵣	# 10D83
+	𐶄	𐶄	𐵤	𐵤	# 10D84
+	𐶅	𐶅	𐵥	𐵥	# 10D85
 	𑢠	𑣀		𑢠	# 118A0
 	𑢡	𑣁		𑢡	# 118A1
 	𑢢	𑣂		𑢢	# 118A2
