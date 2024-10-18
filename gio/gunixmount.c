@@ -115,18 +115,18 @@ _g_unix_mount_new (GVolumeMonitor  *volume_monitor,
   GUnixMount *mount;
   
   /* No volume for mount: Ignore internal things */
-  if (volume == NULL && !g_unix_mount_guess_should_display (mount_entry))
+  if (volume == NULL && !g_unix_mount_entry_guess_should_display (mount_entry))
     return NULL;
 
   mount = g_object_new (G_TYPE_UNIX_MOUNT, NULL);
   mount->volume_monitor = volume_monitor != NULL ? g_object_ref (volume_monitor) : NULL;
-  mount->device_path = g_strdup (g_unix_mount_get_device_path (mount_entry));
-  mount->mount_path = g_strdup (g_unix_mount_get_mount_path (mount_entry));
-  mount->can_eject = g_unix_mount_guess_can_eject (mount_entry);
+  mount->device_path = g_strdup (g_unix_mount_entry_get_device_path (mount_entry));
+  mount->mount_path = g_strdup (g_unix_mount_entry_get_mount_path (mount_entry));
+  mount->can_eject = g_unix_mount_entry_guess_can_eject (mount_entry);
 
-  mount->name = g_unix_mount_guess_name (mount_entry);
-  mount->icon = g_unix_mount_guess_icon (mount_entry);
-  mount->symbolic_icon = g_unix_mount_guess_symbolic_icon (mount_entry);
+  mount->name = g_unix_mount_entry_guess_name (mount_entry);
+  mount->icon = g_unix_mount_entry_guess_icon (mount_entry);
+  mount->symbolic_icon = g_unix_mount_entry_guess_symbolic_icon (mount_entry);
 
   /* need to do this last */
   mount->volume = volume;

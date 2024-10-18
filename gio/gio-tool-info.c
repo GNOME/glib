@@ -215,9 +215,9 @@ show_info (GFile *file, GFileInfo *info)
       free (flatten);
 
 #ifdef G_OS_UNIX
-      entry = g_unix_mount_at (path, NULL);
+      entry = g_unix_mount_entry_at (path, NULL);
       if (entry == NULL)
-        entry = g_unix_mount_for (path, NULL);
+        entry = g_unix_mount_entry_for (path, NULL);
       if (entry != NULL)
         {
           gchar *device;
@@ -228,18 +228,18 @@ show_info (GFile *file, GFileInfo *info)
           const gchar *options;
           gchar *options_string = NULL;
 
-          device = g_strescape (g_unix_mount_get_device_path (entry), NULL);
-          root = g_unix_mount_get_root_path (entry);
+          device = g_strescape (g_unix_mount_entry_get_device_path (entry), NULL);
+          root = g_unix_mount_entry_get_root_path (entry);
           if (root != NULL && g_strcmp0 (root, "/") != 0)
             {
               escaped = g_strescape (root, NULL);
               root_string = g_strconcat ("[", escaped, "]", NULL);
               g_free (escaped);
             }
-          mount = g_strescape (g_unix_mount_get_mount_path (entry), NULL);
-          fs = g_strescape (g_unix_mount_get_fs_type (entry), NULL);
+          mount = g_strescape (g_unix_mount_entry_get_mount_path (entry), NULL);
+          fs = g_strescape (g_unix_mount_entry_get_fs_type (entry), NULL);
 
-          options = g_unix_mount_get_options (entry);
+          options = g_unix_mount_entry_get_options (entry);
           if (options != NULL)
             {
               options_string = g_strescape (options, NULL);
@@ -255,7 +255,7 @@ show_info (GFile *file, GFileInfo *info)
           g_free (fs);
           g_free (options_string);
 
-          g_unix_mount_free (entry);
+          g_unix_mount_entry_free (entry);
         }
 #endif
     }

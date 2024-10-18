@@ -753,12 +753,12 @@ g_local_file_monitor_mounts_changed (GUnixMountMonitor *mount_monitor,
   GFile *file;
 
   /* Emulate unmount detection */
-  mount = g_unix_mount_at (local_monitor->source->dirname, NULL);
+  mount = g_unix_mount_entry_at (local_monitor->source->dirname, NULL);
 
   is_mounted = mount != NULL;
 
   if (mount)
-    g_unix_mount_free (mount);
+    g_unix_mount_entry_free (mount);
 
   if (local_monitor->was_mounted != is_mounted)
     {
@@ -800,12 +800,12 @@ g_local_file_monitor_start (GLocalFileMonitor *local_monitor,
 
       /* Emulate unmount detection */
 
-      mount = g_unix_mount_at (local_monitor->source->dirname, NULL);
+      mount = g_unix_mount_entry_at (local_monitor->source->dirname, NULL);
 
       local_monitor->was_mounted = mount != NULL;
 
       if (mount)
-        g_unix_mount_free (mount);
+        g_unix_mount_entry_free (mount);
 
       local_monitor->mount_monitor = g_unix_mount_monitor_get ();
       g_signal_connect_object (local_monitor->mount_monitor, "mounts-changed",
