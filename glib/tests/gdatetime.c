@@ -2499,19 +2499,16 @@ test_posix_parse (void)
 
 /* This fails rules_from_identifier on Unix (though not on Windows)
  * but passes anyway because PST8PDT is a zone name.
- *
- * Intervals i1 and i2 (rather than 0 and 1) are needed because in
- * recent tzdata, PST8PDT may be an alias for America/Los_Angeles,
- * and hence be aware that DST has not always existed.
- * https://bugs.debian.org/1084190
  */
   tz = g_time_zone_new_identifier ("PST8PDT");
   g_assert_nonnull (tz);
   g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8PDT");
   /* a date in winter = non-DST */
-  i1 = g_time_zone_find_interval (tz, G_TIME_TYPE_STANDARD, 0);
-  /* approximately 6 months in seconds, i.e. a date in summer = DST */
-  i2 = g_time_zone_find_interval (tz, G_TIME_TYPE_DAYLIGHT, 15000000);
+  gdt1 = g_date_time_new (tz, 2024, 1, 1, 0, 0, 0);
+  i1 = g_time_zone_find_interval (tz, G_TIME_TYPE_STANDARD, g_date_time_to_unix (gdt1));
+  /* a date in summer = DST */
+  gdt2 = g_date_time_new (tz, 2024, 7, 1, 0, 0, 0);
+  i2 = g_time_zone_find_interval (tz, G_TIME_TYPE_DAYLIGHT, g_date_time_to_unix (gdt2));
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, i1), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, i1), ==, - 8 * 3600);
   g_assert (!g_time_zone_is_dst (tz, i1));
@@ -2519,6 +2516,8 @@ test_posix_parse (void)
   g_assert_cmpint (g_time_zone_get_offset (tz, i2), ==,- 7 * 3600);
   g_assert (g_time_zone_is_dst (tz, i2));
   g_time_zone_unref (tz);
+  g_date_time_unref (gdt1);
+  g_date_time_unref (gdt2);
 
   tz = g_time_zone_new_identifier ("PST8PDT6:32:15");
 #ifdef G_OS_WIN32
