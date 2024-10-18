@@ -2476,6 +2476,7 @@ test_posix_parse (void)
   GTimeZone *tz;
   GDateTime *gdt1, *gdt2;
   gint i1, i2;
+  const char *expect_id;
 
   /* Check that an unknown zone name falls back to UTC. */
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -2498,11 +2499,25 @@ test_posix_parse (void)
   g_time_zone_unref (tz);
 
 /* This fails rules_from_identifier on Unix (though not on Windows)
- * but passes anyway because PST8PDT is a zone name.
+ * but can pass anyway because PST8PDT is a legacy System V zone name.
  */
   tz = g_time_zone_new_identifier ("PST8PDT");
+  expect_id = "PST8PDT";
+
+#ifndef G_OS_WIN32
+  /* PST8PDT is in tzdata's "backward" set, packaged as tzdata-legacy and
+   * not always present in some OSs; fall back to the equivalent geographical
+   * name if the "backward" time zones are absent. */
+  if (tz == NULL)
+    {
+      g_test_message ("Legacy PST8PDT time zone not available, falling back");
+      tz = g_time_zone_new_identifier ("America/Los_Angeles");
+      expect_id = "America/Los_Angeles";
+    }
+#endif
+
   g_assert_nonnull (tz);
-  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8PDT");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, expect_id);
   /* a date in winter = non-DST */
   gdt1 = g_date_time_new (tz, 2024, 1, 1, 0, 0, 0);
   i1 = g_time_zone_find_interval (tz, G_TIME_TYPE_STANDARD, g_date_time_to_unix (gdt1));
