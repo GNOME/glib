@@ -44,30 +44,33 @@
 /**
  * GBytes: (copy-func g_bytes_ref) (free-func g_bytes_unref)
  *
- * A simple refcounted data type representing an immutable sequence of zero or
- * more bytes from an unspecified origin.
+ * A simple reference counted data type representing an immutable sequence of
+ * zero or more bytes from an unspecified origin.
  *
- * The purpose of a #GBytes is to keep the memory region that it holds
+ * The purpose of a `GBytes` is to keep the memory region that it holds
  * alive for as long as anyone holds a reference to the bytes.  When
  * the last reference count is dropped, the memory is released. Multiple
- * unrelated callers can use byte data in the #GBytes without coordinating
+ * unrelated callers can use byte data in the `GBytes` without coordinating
  * their activities, resting assured that the byte data will not change or
  * move while they hold a reference.
  *
- * A #GBytes can come from many different origins that may have
+ * A `GBytes` can come from many different origins that may have
  * different procedures for freeing the memory region.  Examples are
- * memory from g_malloc(), from memory slices, from a #GMappedFile or
- * memory from other allocators.
+ * memory from [func@GLib.malloc], from memory slices, from a
+ * [struct@GLib.MappedFile] or memory from other allocators.
  *
- * #GBytes work well as keys in #GHashTable. Use g_bytes_equal() and
- * g_bytes_hash() as parameters to g_hash_table_new() or g_hash_table_new_full().
- * #GBytes can also be used as keys in a #GTree by passing the g_bytes_compare()
- * function to g_tree_new().
+ * `GBytes` work well as keys in [struct@GLib.HashTable]. Use
+ * [method@GLib.Bytes.equal] and [method@GLib.Bytes.hash] as parameters to
+ * [func@GLib.HashTable.new] or [func@GLib.HashTable.new_full].
+ * `GBytes` can also be used as keys in a [struct@GLib.Tree] by passing the
+ * [method@GLib.Bytes.compare] function to [ctor@GLib.Tree.new].
  *
  * The data pointed to by this bytes must not be modified. For a mutable
- * array of bytes see #GByteArray. Use g_bytes_unref_to_array() to create a
- * mutable array for a #GBytes sequence. To create an immutable #GBytes from
- * a mutable #GByteArray, use the g_byte_array_free_to_bytes() function.
+ * array of bytes see [struct@GLib.ByteArray]. Use
+ * [method@GLib.Bytes.unref_to_array] to create a mutable array for a `GBytes`
+ * sequence. To create an immutable `GBytes` from a mutable
+ * [struct@GLib.ByteArray], use the [func@GLib.ByteArray.free_to_bytes]
+ * function.
  *
  * Since: 2.32
  **/
@@ -100,18 +103,18 @@ G_STATIC_ASSERT (G_STRUCT_OFFSET (GBytesInline, inline_data) == (6 * GLIB_SIZEOF
 /**
  * g_bytes_new:
  * @data: (transfer none) (array length=size) (element-type guint8) (nullable):
- *        the data to be used for the bytes
+ *   the data to be used for the bytes
  * @size: the size of @data
  *
- * Creates a new #GBytes from @data.
+ * Creates a new [struct@GLib.Bytes] from @data.
  *
- * @data is copied. If @size is 0, @data may be %NULL.
+ * @data is copied. If @size is 0, @data may be `NULL`.
  *
- * As an optimization, g_bytes_new() may avoid an extra allocation by copying
- * the data within the resulting bytes structure if sufficiently small (since GLib 2.84).
+ * As an optimization, [ctor@GLib.Bytes.new] may avoid an extra allocation by
+ * copying the data within the resulting bytes structure if sufficiently small
+ * (since GLib 2.84).
  *
- * Returns: (transfer full): a new #GBytes
- *
+ * Returns: (transfer full): a new [struct@GLib.Bytes]
  * Since: 2.32
  */
 GBytes *
@@ -142,22 +145,21 @@ g_bytes_new (gconstpointer data,
 /**
  * g_bytes_new_take:
  * @data: (transfer full) (array length=size) (element-type guint8) (nullable):
- *        the data to be used for the bytes
+ *   the data to be used for the bytes
  * @size: the size of @data
  *
- * Creates a new #GBytes from @data.
+ * Creates a new [struct@GLib.Bytes] from @data.
  *
- * After this call, @data belongs to the #GBytes and may no longer be
+ * After this call, @data belongs to the `GBytes` and may no longer be
  * modified by the caller. The memory of @data has to be dynamically
- * allocated and will eventually be freed with g_free().
+ * allocated and will eventually be freed with [func@GLib.free].
  *
- * For creating #GBytes with memory from other allocators, see
- * g_bytes_new_with_free_func().
+ * For creating `GBytes` with memory from other allocators, see
+ * [ctor@GLib.Bytes.new_with_free_func].
  *
- * @data may be %NULL if @size is 0.
+ * @data may be `NULL` if @size is 0.
  *
- * Returns: (transfer full): a new #GBytes
- *
+ * Returns: (transfer full): a new [struct@GLib.Bytes]
  * Since: 2.32
  */
 GBytes *
@@ -171,16 +173,15 @@ g_bytes_new_take (gpointer data,
 /**
  * g_bytes_new_static: (skip)
  * @data: (transfer full) (array length=size) (element-type guint8) (nullable):
- *        the data to be used for the bytes
+ *   the data to be used for the bytes
  * @size: the size of @data
  *
- * Creates a new #GBytes from static data.
+ * Creates a new [struct@GLib.Bytes] from static data.
  *
- * @data must be static (ie: never modified or freed). It may be %NULL if @size
+ * @data must be static (ie: never modified or freed). It may be `NULL` if @size
  * is 0.
  *
- * Returns: (transfer full): a new #GBytes
- *
+ * Returns: (transfer full): a new [struct@GLib.Bytes]
  * Since: 2.32
  */
 GBytes *
@@ -193,12 +194,12 @@ g_bytes_new_static (gconstpointer data,
 /**
  * g_bytes_new_with_free_func: (skip)
  * @data: (array length=size) (element-type guint8) (nullable):
- *        the data to be used for the bytes
+ *   the data to be used for the bytes
  * @size: the size of @data
  * @free_func: the function to call to release the data
  * @user_data: data to pass to @free_func
  *
- * Creates a #GBytes from @data.
+ * Creates a [struct@GLib.Bytes] from @data.
  *
  * When the last reference is dropped, @free_func will be called with the
  * @user_data argument.
@@ -206,10 +207,9 @@ g_bytes_new_static (gconstpointer data,
  * @data must not be modified after this call is made until @free_func has
  * been called to indicate that the bytes is no longer in use.
  *
- * @data may be %NULL if @size is 0.
+ * @data may be `NULL` if @size is 0.
  *
- * Returns: (transfer full): a new #GBytes
- *
+ * Returns: (transfer full): a new [struct@GLib.Bytes]
  * Since: 2.32
  */
 GBytes *
@@ -234,24 +234,24 @@ g_bytes_new_with_free_func (gconstpointer  data,
 
 /**
  * g_bytes_new_from_bytes:
- * @bytes: a #GBytes
+ * @bytes: a [struct@GLib.Bytes]
  * @offset: offset which subsection starts at
  * @length: length of subsection
  *
- * Creates a #GBytes which is a subsection of another #GBytes. The @offset +
- * @length may not be longer than the size of @bytes.
+ * Creates a [struct@GLib.Bytes] which is a subsection of another `GBytes`.
  *
- * A reference to @bytes will be held by the newly created #GBytes until
+ * The @offset + @length may not be longer than the size of @bytes.
+ *
+ * A reference to @bytes will be held by the newly created `GBytes` until
  * the byte data is no longer needed.
  *
  * Since 2.56, if @offset is 0 and @length matches the size of @bytes, then
  * @bytes will be returned with the reference count incremented by 1. If @bytes
- * is a slice of another #GBytes, then the resulting #GBytes will reference
- * the same #GBytes instead of @bytes. This allows consumers to simplify the
- * usage of #GBytes when asynchronously writing to streams.
+ * is a slice of another `GBytes`, then the resulting `GBytes` will reference
+ * the same `GBytes` instead of @bytes. This allows consumers to simplify the
+ * usage of `GBytes` when asynchronously writing to streams.
  *
- * Returns: (transfer full): a new #GBytes
- *
+ * Returns: (transfer full): a new [struct@GLib.Bytes]
  * Since: 2.32
  */
 GBytes *
@@ -289,20 +289,21 @@ g_bytes_new_from_bytes (GBytes  *bytes,
 
 /**
  * g_bytes_get_data:
- * @bytes: a #GBytes
+ * @bytes: a [struct@GLib.Bytes]
  * @size: (out) (optional): location to return size of byte data
  *
- * Get the byte data in the #GBytes. This data should not be modified.
+ * Get the byte data in the [struct@GLib.Bytes].
  *
- * This function will always return the same pointer for a given #GBytes.
+ * This data should not be modified.
  *
- * %NULL may be returned if @size is 0. This is not guaranteed, as the #GBytes
- * may represent an empty string with @data non-%NULL and @size as 0. %NULL will
- * not be returned if @size is non-zero.
+ * This function will always return the same pointer for a given `GBytes`.
+ *
+ * `NULL` may be returned if @size is 0. This is not guaranteed, as the `GBytes`
+ * may represent an empty string with @data non-`NULL` and @size as 0. `NULL`
+ * will not be returned if @size is non-zero.
  *
  * Returns: (transfer none) (array length=size) (element-type guint8) (nullable):
- *          a pointer to the byte data, or %NULL
- *
+ *   a pointer to the byte data
  * Since: 2.32
  */
 gconstpointer
@@ -317,14 +318,13 @@ g_bytes_get_data (GBytes *bytes,
 
 /**
  * g_bytes_get_size:
- * @bytes: a #GBytes
+ * @bytes: a [struct@GLib.Bytes]
  *
- * Get the size of the byte data in the #GBytes.
+ * Get the size of the byte data in the [struct@GLib.Bytes].
  *
- * This function will always return the same value for a given #GBytes.
+ * This function will always return the same value for a given `GBytes`.
  *
  * Returns: the size
- *
  * Since: 2.32
  */
 gsize
@@ -337,12 +337,11 @@ g_bytes_get_size (GBytes *bytes)
 
 /**
  * g_bytes_ref:
- * @bytes: a #GBytes
+ * @bytes: a [struct@GLib.Bytes]
  *
  * Increase the reference count on @bytes.
  *
- * Returns: the #GBytes
- *
+ * Returns: the [struct@GLib.Bytes]
  * Since: 2.32
  */
 GBytes *
@@ -357,10 +356,12 @@ g_bytes_ref (GBytes *bytes)
 
 /**
  * g_bytes_unref:
- * @bytes: (nullable): a #GBytes
+ * @bytes: (nullable): a [struct@GLib.Bytes]
  *
- * Releases a reference on @bytes.  This may result in the bytes being
- * freed. If @bytes is %NULL, it will return immediately.
+ * Releases a reference on @bytes.
+ *
+ * This may result in the bytes being freed. If @bytes is `NULL`, it will
+ * return immediately.
  *
  * Since: 2.32
  */
@@ -380,17 +381,17 @@ g_bytes_unref (GBytes *bytes)
 
 /**
  * g_bytes_equal:
- * @bytes1: (type GLib.Bytes): a pointer to a #GBytes
- * @bytes2: (type GLib.Bytes): a pointer to a #GBytes to compare with @bytes1
+ * @bytes1: (type GLib.Bytes): a pointer to a [struct@GLib.Bytes]
+ * @bytes2: (type GLib.Bytes): a pointer to a [struct@GLib.Bytes] to compare with @bytes1
  *
- * Compares the two #GBytes values being pointed to and returns
- * %TRUE if they are equal.
+ * Compares the two [struct@GLib.Bytes] values being pointed to and returns
+ * `TRUE` if they are equal.
  *
- * This function can be passed to g_hash_table_new() as the @key_equal_func
- * parameter, when using non-%NULL #GBytes pointers as keys in a #GHashTable.
+ * This function can be passed to [func@GLib.HashTable.new] as the
+ * @key_equal_func parameter, when using non-`NULL` `GBytes` pointers as keys in
+ * a [struct@GLib.HashTable].
  *
- * Returns: %TRUE if the two keys match.
- *
+ * Returns: `TRUE` if the two keys match.
  * Since: 2.32
  */
 gboolean
@@ -409,15 +410,15 @@ g_bytes_equal (gconstpointer bytes1,
 
 /**
  * g_bytes_hash:
- * @bytes: (type GLib.Bytes): a pointer to a #GBytes key
+ * @bytes: (type GLib.Bytes): a pointer to a [struct@GLib.Bytes] key
  *
- * Creates an integer hash code for the byte data in the #GBytes.
+ * Creates an integer hash code for the byte data in the [struct@GLib.Bytes].
  *
- * This function can be passed to g_hash_table_new() as the @key_hash_func
- * parameter, when using non-%NULL #GBytes pointers as keys in a #GHashTable.
+ * This function can be passed to [func@GLib.HashTable.new] as the
+ * @key_hash_func parameter, when using non-`NULL` `GBytes` pointers as keys in
+ * a [struct@GLib.HashTable].
  *
  * Returns: a hash value corresponding to the key.
- *
  * Since: 2.32
  */
 guint
@@ -437,12 +438,13 @@ g_bytes_hash (gconstpointer bytes)
 
 /**
  * g_bytes_compare:
- * @bytes1: (type GLib.Bytes): a pointer to a #GBytes
- * @bytes2: (type GLib.Bytes): a pointer to a #GBytes to compare with @bytes1
+ * @bytes1: (type GLib.Bytes): a pointer to a [struct@GLib.Bytes]
+ * @bytes2: (type GLib.Bytes): a pointer to a [struct@GLib.Bytes] to compare with @bytes1
  *
- * Compares the two #GBytes values.
+ * Compares the two [struct@GLib.Bytes] values.
  *
- * This function can be used to sort GBytes instances in lexicographical order.
+ * This function can be used to sort `GBytes` instances in lexicographical
+ * order.
  *
  * If @bytes1 and @bytes2 have different length but the shorter one is a
  * prefix of the longer one then the shorter one is considered to be less than
@@ -451,10 +453,7 @@ g_bytes_hash (gconstpointer bytes)
  * considered less, otherwise greater than @bytes2.
  *
  * Returns: a negative value if @bytes1 is less than @bytes2, a positive value
- *          if @bytes1 is greater than @bytes2, and zero if @bytes1 is equal to
- *          @bytes2
- *
- *
+ *   if @bytes1 is greater than @bytes2, and zero if @bytes1 is equal to @bytes2
  * Since: 2.32
  */
 gint
@@ -501,22 +500,21 @@ try_steal_and_unref (GBytes         *bytes,
 
 /**
  * g_bytes_unref_to_data:
- * @bytes: (transfer full): a #GBytes
+ * @bytes: (transfer full): a [struct@GLib.Bytes]
  * @size: (out): location to place the length of the returned data
  *
  * Unreferences the bytes, and returns a pointer the same byte data
  * contents.
  *
  * As an optimization, the byte data is returned without copying if this was
- * the last reference to bytes and bytes was created with g_bytes_new(),
- * g_bytes_new_take() or g_byte_array_free_to_bytes() and the buffer was larger
- * than the size #GBytes may internalize within its allocation. In all other
- * cases the data is copied.
+ * the last reference to @bytes and @bytes was created with
+ * [ctor@GLib.Bytes.new], [ctor@GLib.Bytes.new_take] or
+ * [func@GLib.ByteArray.free_to_bytes] and the buffer was larger than the size
+ * [struct@GLib.Bytes] may internalize within its allocation. In all other cases
+ * the data is copied.
  *
- * Returns: (transfer full) (array length=size) (element-type guint8)
- *          (not nullable): a pointer to the same byte data, which should be
- *          freed with g_free()
- *
+ * Returns: (transfer full) (array length=size) (element-type guint8) (not nullable):
+ *   a pointer to the same byte data, which should be freed with [func@GLib.free]
  * Since: 2.32
  */
 gpointer
@@ -550,23 +548,24 @@ g_bytes_unref_to_data (GBytes *bytes,
 
 /**
  * g_bytes_unref_to_array:
- * @bytes: (transfer full): a #GBytes
+ * @bytes: (transfer full): a [struct@GLib.Bytes]
  *
- * Unreferences the bytes, and returns a new mutable #GByteArray containing
- * the same byte data.
+ * Unreferences the bytes, and returns a new mutable [struct@GLib.ByteArray]
+ * containing the same byte data.
  *
  * As an optimization, the byte data is transferred to the array without copying
- * if this was the last reference to bytes and bytes was created with
- * g_bytes_new(), g_bytes_new_take() or g_byte_array_free_to_bytes() and the
- * buffer was larger than the size #GBytes may internalize within its allocation.
- * In all other cases the data is copied.
+ * if this was the last reference to @bytes and @bytes was created with
+ * [ctor@GLib.Bytes.new], [ctor@GLib.Bytes.new_take] or
+ * [func@GLib.ByteArray.free_to_bytes] and the buffer was larger than the size
+ * [struct@GLib.Bytes] may internalize within its allocation. In all other cases
+ * the data is copied.
  *
  * Do not use it if @bytes contains more than %G_MAXUINT
- * bytes. #GByteArray stores the length of its data in #guint, which
- * may be shorter than #gsize, that @bytes is using.
+ * bytes. [struct@GLib.ByteArray] stores the length of its data in `guint`,
+ * which may be shorter than `gsize`, that @bytes is using.
  *
- * Returns: (transfer full): a new mutable #GByteArray containing the same byte data
- *
+ * Returns: (transfer full): a new mutable [struct@GLib.ByteArray] containing
+ *   the same byte data
  * Since: 2.32
  */
 GByteArray *
@@ -583,7 +582,7 @@ g_bytes_unref_to_array (GBytes *bytes)
 
 /**
  * g_bytes_get_region:
- * @bytes: a #GBytes
+ * @bytes: a [struct@GLib.Bytes]
  * @element_size: a non-zero element size
  * @offset: an offset to the start of the region within the @bytes
  * @n_elements: the number of elements in the region
@@ -594,23 +593,22 @@ g_bytes_unref_to_array (GBytes *bytes)
  * and contains @n_elements many elements of @element_size size.
  *
  * @n_elements may be zero, but @element_size must always be non-zero.
- * Ideally, @element_size is a static constant (eg: sizeof a struct).
+ * Ideally, @element_size is a static constant (eg: `sizeof` a struct).
  *
  * This function does careful bounds checking (including checking for
- * arithmetic overflows) and returns a non-%NULL pointer if the
+ * arithmetic overflows) and returns a non-`NULL` pointer if the
  * specified region lies entirely within the @bytes. If the region is
- * in some way out of range, or if an overflow has occurred, then %NULL
+ * in some way out of range, or if an overflow has occurred, then `NULL`
  * is returned.
  *
  * Note: it is possible to have a valid zero-size region. In this case,
  * the returned pointer will be equal to the base pointer of the data of
- * @bytes, plus @offset.  This will be non-%NULL except for the case
+ * @bytes, plus @offset.  This will be non-`NULL` except for the case
  * where @bytes itself was a zero-sized region.  Since it is unlikely
  * that you will be using this function to check for a zero-sized region
- * in a zero-sized @bytes, %NULL effectively always means "error".
+ * in a zero-sized @bytes, `NULL` effectively always means ‘error’.
  *
- * Returns: (nullable): the requested region, or %NULL in case of an error
- *
+ * Returns: (nullable): the requested region, or `NULL` in case of an error
  * Since: 2.70
  */
 gconstpointer
