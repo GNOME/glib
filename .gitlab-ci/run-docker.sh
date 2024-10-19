@@ -67,6 +67,11 @@ if [ $print_help == 1 ]; then
         echo "  list                    - List available images"
         echo "  help                    - This help message"
         echo ""
+        echo "Options"
+        echo ""
+        echo "  --base-version NUM      - Image is version NUM"
+        echo "  --no-login              - Don't log in to registry"
+        echo ""
         exit 0
 fi
 
@@ -80,6 +85,8 @@ if [ $list == 1 ]; then
 
                 echo -e "  \\e[1;39m$basename\\e[0m"
         done
+        # Special cases that don't have their own Dockerfile
+        echo -e "  \\e[1;39mdebian-stable-i386\\e[0m"
         exit 0
 fi
 
@@ -89,8 +96,25 @@ if [ -z "${base}" ]; then
         exit 1
 fi
 
-if [ ! -f "$base.Dockerfile" ]; then
-        echo -e "\\e[1;31mERROR\\e[0m: Dockerfile for '$base' not found"
+case "$base" in
+        (debian-stable-i386)
+            dockerfile=debian-stable
+            arch=386
+            if [ "$DOCKER_CMD" = "podman" ]; then
+                arch_prefix=docker.io/i386/
+            else
+                arch_prefix=i386/
+            fi
+            ;;
+        (*)
+            dockerfile="$base"
+            arch=""
+            arch_prefix=""
+            ;;
+esac
+
+if [ ! -f "$dockerfile.Dockerfile" ]; then
+        echo -e "\\e[1;31mERROR\\e[0m: Dockerfile for '$dockerfile' not found"
         exit 1
 fi
 
@@ -108,8 +132,10 @@ if [ $build == 1 ]; then
                 --build-arg HOST_USER_ID="$UID" \
                 --build-arg COVERITY_SCAN_PROJECT_NAME="${COVERITY_SCAN_PROJECT_NAME}" \
                 --build-arg COVERITY_SCAN_TOKEN="${COVERITY_SCAN_TOKEN}" \
+                ${arch_prefix+--build-arg ARCHITECTURE_PREFIX="${arch_prefix}"} \
+                ${arch+--arch="$arch"} \
                 --tag "${TAG}" \
-                --file "${base}.Dockerfile" .
+                --file "${dockerfile}.Dockerfile" .
         exit $?
 fi
 
@@ -127,6 +153,7 @@ fi
 if [ $run == 1 ]; then
         echo -e "\\e[1;32mRUNNING\\e[0m: ${base} as ${TAG}"
         $DOCKER_CMD run \
+                ${arch+--arch="$arch"} \
                 --rm \
                 --volume "$(pwd)/..:/home/user/app" \
                 --workdir "/home/user/app" \

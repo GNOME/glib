@@ -1,4 +1,5 @@
-FROM debian:bookworm
+ARG ARCHITECTURE_PREFIX=
+FROM ${ARCHITECTURE_PREFIX}debian:bookworm
 
 RUN apt-get update -qq && apt-get install --no-install-recommends -qq -y \
     bindfs \
@@ -72,6 +73,24 @@ RUN locale-gen de_DE.UTF-8 \
 ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
 RUN pip3 install --break-system-packages meson==1.4.2
+
+# ninja-build 1.11.1 didn't build with large file support on 32-bit,
+# breaking the i386 image when used with overlayfs.
+# The fix from upstream 1.12.0 was backported to Debian in 1.11.1-2,
+# but too late for Debian 12. https://bugs.debian.org/1041897
+RUN if [ "$(dpkg --print-architecture)" = i386 ]; then \
+    apt-get install --no-install-recommends -qq -y \
+        debhelper \
+        re2c \
+    && mkdir /run/build \
+    && git clone --depth=1 -b debian/1.11.1-2 https://salsa.debian.org/debian/ninja-build.git /run/build/ninja-build \
+    && cd /run/build/ninja-build \
+    && git checkout e39b5f01229311916302300449d951735e4a3e3f \
+    && dpkg-buildpackage -B -Pnodoc \
+    && dpkg -i ../*.deb \
+    && cd / \
+    && rm -fr /run/build; \
+fi
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}

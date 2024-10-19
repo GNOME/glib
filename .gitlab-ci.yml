@@ -14,6 +14,7 @@ variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v39.5"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v23"
+  DEBIAN_I386_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable-i386:v2"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v7"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v39.5"
   GOBJECT_INTROSPECTION_TAG: "1.80.1"
@@ -245,12 +246,10 @@ fedora-x86_64:
       - "_coverage"
       - "_reference"
 
-debian-stable-x86_64:
+.build-debian:
   extends:
     - .build-linux
-    - .only-default
     - .with-git
-  image: $DEBIAN_IMAGE
   stage: build
   needs: []
   before_script:
@@ -280,6 +279,21 @@ debian-stable-x86_64:
       - "_build/config.h"
       - "_build/glib/glibconfig.h"
       - "_build/meson-logs"
+
+debian-stable-x86_64:
+  extends:
+    - .build-debian
+    # We don't need to run this job too often, because the combination of
+    # fedora-x86_64 and debian-stable-i386 should cover more or less
+    # everything that this job does
+    - .only-schedules-or-manual
+  image: $DEBIAN_IMAGE
+
+debian-stable-i386:
+  extends:
+    - .build-debian
+    - .only-default
+  image: $DEBIAN_I386_IMAGE
 
 hurd-i386:
   extends:
