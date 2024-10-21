@@ -307,7 +307,7 @@ combine (gunichar  a,
   
   index_b = COMPOSE_INDEX(b);
 
-  if (index_b >= COMPOSE_SECOND_SINGLE_START)
+  if (index_b >= COMPOSE_SECOND_SINGLE_START && index_b < COMPOSE_EITHER_START)
     {
       if (a == compose_second_single[index_b - COMPOSE_SECOND_SINGLE_START][0])
 	{
@@ -328,6 +328,18 @@ combine (gunichar  a,
 	  *result = res;
 	  return TRUE;
 	}
+    }
+
+  if (index_a >= COMPOSE_EITHER_START &&
+      index_b >= COMPOSE_EITHER_START)
+    {
+      gunichar res = compose_either_array[index_a - COMPOSE_EITHER_START][index_b - COMPOSE_EITHER_START];
+
+      if (res)
+        {
+          *result = res;
+          return TRUE;
+        }
     }
 
   return FALSE;

@@ -1166,11 +1166,12 @@ EOT
 
 sub enumerate_ordered
 {
-    my ($array) = @_;
+    my ($array, $should_filter) = @_;
+    $should_filter = defined $should_filter ? $should_filter : 1;
 
     my $n = 0;
     for my $code (sort { $a <=> $b } keys %$array) {
-	if ($array->{$code} == 1) {
+	if ($should_filter && $array->{$code} == 1) {
 	    delete $array->{$code};
 	    next;
 	}
@@ -1238,6 +1239,20 @@ sub output_composition_table
     # The resulting value is a tuple containing the other expected codepoint in
     # the composition pair, and the composed codepoint.
     #
+    # ‘Either’ codepoints are also separated out into their own array within
+    # this domain. An ‘either’ codepoint is one which appears as the first
+    # codepoint of a composition pair and the second codepoint of a composition
+    # pair (not necessarily different pairs). These have to be separated out as
+    # `COMPOSE_INDEX` does not distinguish between first and second codepoints,
+    # so ‘either’ codepoints necessitate a symmetric array. If the full
+    # `compose_array` were symmetric, it would be huge. Since there are
+    # relatively few ‘either’ codepoints (15 at the time of writing in 2024),
+    # a separate symmetric array suffices for them.
+    #
+    # This means that ‘either’ codepoints have to be a transitive closure: any
+    # codepoint which appears in a first and second position is an ‘either’
+    # codepoint, plus all codepoints which appear with an ‘either’ codepoint.
+    #
     # The main composition table (`compose_array`) is indexed by the first and
     # second codepoints of a composed pair. Because these are both in the same
     # indexing domain, this means a given codepoint can *only* appear as the
@@ -1294,9 +1309,6 @@ sub output_composition_table
 	}
     }
 
-    # Assign integer indices, removing singletons
-    my $n_first = enumerate_ordered (\%first);
-
     # Now record the second character of each (non-singleton) decomposition
     for $code (keys %compositions) {
 	@values = map { hex ($_) } split /\s+/, $compositions{$code};
@@ -1310,21 +1322,64 @@ sub output_composition_table
 	}
     }
 
-    # Assign integer indices, removing duplicate
+    # See if there are any codepoints which occur as the first codepoint in one
+    # decomposition and the second in another. These need to be indexed
+    # separately, and need to be a transitive closure.
+    my $changed = 0;
+    do {
+	$changed = 0;
+
+	for $code (keys %compositions) {
+	    @values = map { hex ($_) } split /\s+/, $compositions{$code};
+
+	    if (exists $first{$values[1]} || exists $second{$values[0]} ||
+	        (exists $either{$values[0]} && !exists $either{$values[1]}) ||
+	        (!exists $either{$values[0]} && exists $either{$values[1]})) {
+		if (exists $either{$values[0]}) {
+		    $either{$values[0]}++;
+		} else {
+		    $either{$values[0]} = 1;
+		}
+		if (exists $either{$values[1]}) {
+		    $either{$values[1]}++;
+		} else {
+		    $either{$values[1]} = 1;
+		}
+
+		delete $first{$values[0]};
+		delete $first{$values[1]};
+		delete $second{$values[0]};
+		delete $second{$values[1]};
+		$changed = 1;
+	    }
+	}
+    } while ($changed);
+
+    # Assign integer indices, removing singletons from the first and second maps,
+    # but not from the either map (as it needs to be a transitive closure).
+    my $n_first = enumerate_ordered (\%first);
     my $n_second = enumerate_ordered (\%second);
+    my $n_either = enumerate_ordered (\%either, 0);
 
     # Build reverse table
-
     my @first_singletons;
     my @second_singletons;
     my %reverse;
+    my %reverse_either;
+
     for $code (keys %compositions) {
 	@values = map { hex ($_) } split /\s+/, $compositions{$code};
 
 	my $first = $first{$values[0]};
 	my $second = $second{$values[1]};
+	my $either0 = $either{$values[0]};
+	my $either1 = $either{$values[1]};
 
-	if (defined $first && defined $second) {
+	if (defined $either0 && defined $either1) {
+	    $reverse_either{"$either0|$either1"} = $code;
+	} elsif ((defined $either0 && !defined $either1) || (!defined $either0 && defined $either1)) {
+	    die "‘either’ map is not a transitive closure for ", $values[0], " or ", $values[1];
+	} elsif (defined $first && defined $second) {
 	    $reverse{"$first|$second"} = $code;
 	} elsif (!defined $first) {
 	    push @first_singletons, [ $values[0], $values[1], $code ];
@@ -1378,6 +1433,15 @@ sub output_composition_table
 		die "redefining $code as second-singleton";
 	}
 	$vals{$code} = $i++ + $total;
+	$last = $code if $code > $last;
+    }
+    $total += @second_singletons;
+    printf OUT "#define COMPOSE_EITHER_START %d\n\n", $total;
+    for $code (keys %either) {
+	if (defined $vals{$code}) {
+		die "redefining $code as either";
+	}
+	$vals{$code} = $either{$code} + $total;
 	$last = $code if $code > $last;
     }
 
@@ -1453,7 +1517,34 @@ EOT
 EOT
 
     $bytes_out += $n_first * $n_second * 4;
-    
+
+    # Output array of ‘either’ codepoints — the codepoints which can appear as
+    # either the first or second in a composition pair.
+    print OUT <<EOT;
+static const gunichar compose_either_array[$n_either][$n_either] = {
+EOT
+
+    for (my $i = 0; $i < $n_either; $i++) {
+	print OUT ",\n" if $i;
+	print OUT " { ";
+	for (my $j = 0; $j < $n_either; $j++) {
+	    print OUT ", " if $j;
+	    if (exists $reverse_either{"$i|$j"}) {
+		printf OUT "0x%06x", $reverse_either{"$i|$j"};
+	    } else {
+		print OUT "       0";
+            }
+	}
+	print OUT " }";
+    }
+    print OUT "\n";
+
+    print OUT <<EOT;
+};
+EOT
+
+    $bytes_out += $n_either * $n_either * 4;
+
     printf STDERR "Generated %d bytes in compose tables\n", $bytes_out;
 }
 
