@@ -1354,12 +1354,18 @@ sub output_composition_table
     printf OUT "#define COMPOSE_FIRST_SINGLE_START %d\n", $total;
     for $record (@first_singletons) {
 	my $code = $record->[0];
+	if (defined $vals{$code}) {
+		die "redefining $code as first-singleton";
+	}
 	$vals{$code} = $i++ + $total;
 	$last = $code if $code > $last;
     }
     $total += @first_singletons;
     printf OUT "#define COMPOSE_SECOND_START %d\n", $total;
     for $code (keys %second) {
+	if (defined $vals{$code}) {
+		die "redefining $code as second";
+	}
 	$vals{$code} = $second{$code} + $total;
 	$last = $code if $code > $last;
     }
@@ -1368,6 +1374,9 @@ sub output_composition_table
     printf OUT "#define COMPOSE_SECOND_SINGLE_START %d\n\n", $total;
     for $record (@second_singletons) {
 	my $code = $record->[0];
+	if (defined $vals{$code}) {
+		die "redefining $code as second-singleton";
+	}
 	$vals{$code} = $i++ + $total;
 	$last = $code if $code > $last;
     }
