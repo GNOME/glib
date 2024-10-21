@@ -1189,6 +1189,75 @@ sub output_composition_table
     my %first;
     my %second;
 
+    # ## Composition table
+    #
+    # The composition table is a way of encoding Unicode compositions.
+    #
+    # A decomposition is where one codepoint (representing a  ‘composed’ glyph,
+    # such as U+00F4 LATIN SMALL LETTER O WITH CIRCUMFLEX) is turned into
+    # exactly two others (representing its components, in this case U+006F LATIN
+    # SMALL LETTER O and U+0302 COMBINING CIRCUMFLEX ACCENT). This process can
+    # be applied recursively to give ‘full decomposition’, but the table only
+    # ever encodes decomposition pairs.
+    #
+    # A composition is the inverse of this process.
+    #
+    # ## Indexing
+    #
+    # The composition table (`compose_array` in the outputted code) is a 2D
+    # table which is conceptually indexed by the first and second codepoints of
+    # the pair being composed. If the dereferenced value is non-zero, that gives
+    # the composed codepoint. In practice, there are relatively few composition
+    # pairs in the entire Unicode codepoint space, so directly indexing them
+    # would create a very sparse table. Various approaches are used to optimise
+    # the space consumed by the table.
+    #
+    # Codepoints are indexed using the `COMPOSE_INDEX` macro, `compose_data` and
+    # `compose_table` arrays. Together these form a minimal perfect hash
+    # function which maps the codepoint domain into the set of integers 1…n,
+    # where `n` is the number of codepoints which form part of a composed
+    # codepoint (currently around 450, as of 2024).
+    #
+    # The most significant 3 bytes of the codepoint are used to look up its
+    # ‘page’ number  (this is a GLib specific concept and does not come from the
+    # Unicode standard) via `compose_table`. Most pages are not used. Each page
+    # which contains at least one codepoint which forms part of a composition
+    # has an entry in `compose_data`, which is indexed by the least significant
+    # 1 byte of the codepoint to give its ‘compose index’.
+    #
+    # The ‘compose index’ of a codepoint is used to look up its composition in
+    # one of several arrays (which together conceptually form the composition
+    # table). All of the arrays are indexed by this one ‘compose index’ domain.
+    #
+    # ‘Singletons’ are separated out into their own arrays within this domain. A
+    # ‘first singleton’ is a codepoint which appears as the first  codepoint in
+    # a composition pair, and which doesn’t appear (in either position) in any
+    # other composition pairs. A ‘second singleton’ is a codepoint which appears
+    # as the second codepoint in a composition pair, similarly. They are looked
+    # up in `compose_first_single` and `compose_second_single`, respectively.
+    # The resulting value is a tuple containing the other expected codepoint in
+    # the composition pair, and the composed codepoint.
+    #
+    # The main composition table (`compose_array`) is indexed by the first and
+    # second codepoints of a composed pair. Because these are both in the same
+    # indexing domain, this means a given codepoint can *only* appear as the
+    # first or the second codepoint in a composed pair, but not as both — and
+    # not as the first codepoint in one pair but the second in another.
+    #
+    # ## Performance
+    #
+    # Because Unicode composition happens very frequently (it’s part of text
+    # normalisation in g_utf8_normalize(), and has to check every codepoint in a
+    # string), it needs to be fast. Almost all codepoints which are checked are
+    # not part of a composition, so need to be flagged as such quickly. Those
+    # which are, can take a slightly slower path (through the multiple levels of
+    # look up tables), but this is still a balance between size of the tables in
+    # memory, their impact on the CPU caches, and lookup speed. In particular,
+    # it is a safe assumption that in normal human text, composed codepoints are
+    # likely to all come from the same Unicode block (which will be represented
+    # by one or more contiguous page numbers in the tables) — so we get better
+    # performance by keeping spatial locality of these lookups.
+
     # First we need to go through and remove decompositions
     # starting with a non-starter, and single-character 
     # decompositions. At the same time, record
