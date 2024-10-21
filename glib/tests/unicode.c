@@ -418,7 +418,15 @@ test_combining_class (void)
     { 233, 0x0362 },
     { 234, 0x0360 },
     { 234, 0x1DCD },
-    { 240, 0x0345 }
+    { 240, 0x0345 },
+    /* These are all (currently) unassigned, but exercise various branches in
+     * the combining class lookup tables: */
+    { 0, 0x323FF },
+    { 0, 0x32400 },
+    { 0, 0xDFFFF },
+    { 0, 0xE0000 },
+    { 0, G_UNICODE_LAST_CHAR },
+    { 0, G_UNICODE_LAST_CHAR + 1 },
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
@@ -1459,6 +1467,15 @@ test_compose (void)
       { 0xCE20, 0x11B8, 0xCE31 },
       { 0x110E, 0x1173, 0xCE20 },
 
+      /* Hangul non-compositions (testing various exit conditions in combine_hangul()) */
+      { 0x1100, 0x1160, 0 },
+      { 0x1100, 0x1177, 0 },
+      { 0xABFF, 0x11B6, 0 },
+      { 0xD7A5, 0x11B6, 0 },
+      { 0xAC01, 0x11B6, 0 },
+      { 0xD4CC, 0x11A6, 0 },
+      { 0xD4CC, 0x11C4, 0 },
+
       /* Primary composite above U+FFFF (a significant boundary value in our implementation) */
       { 0x1611E, 0x1611E, 0x16121 },  /* first and second char equal */
       { 0x1611E, 0x1611F, 0x16123 },
@@ -1480,6 +1497,7 @@ test_compose (void)
       { 0x1E63, 0x0B57, 0 },
       { 0x1E63, 0x0000, 0 },
       { 0x1E63, 0x113C2, 0 },
+      { 0x1F01, 0x113C2, 0 },
       { 0x006E, 0x0302, 0 },
       { 0x1E63, 0x1611F, 0 },
       { 0x1138E, 0x113B8, 0 },
@@ -1542,6 +1560,10 @@ test_decompose (void)
   g_assert_true (g_unichar_decompose (0xD4CC, &a, &b) && a == 0x1111 && b == 0x1171);
   g_assert_true (g_unichar_decompose (0xCE31, &a, &b) && a == 0xCE20 && b == 0x11B8);
   g_assert_true (g_unichar_decompose (0xCE20, &a, &b) && a == 0x110E && b == 0x1173);
+
+  /* Primary composite above U+FFFF (a significant boundary value in our implementation) */
+  g_assert_true (g_unichar_decompose (0x16121, &a, &b) && a == 0x1611E && b == 0x1611E);  /* first and second char equal */
+  g_assert_true (g_unichar_decompose (0x16123, &a, &b) && a == 0x1611E && b == 0x1611F);
 }
 
 /* Test that g_unichar_fully_decompose() returns the correct value for
