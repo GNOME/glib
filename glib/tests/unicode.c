@@ -1549,50 +1549,65 @@ test_decompose (void)
 static void
 test_fully_decompose_canonical (void)
 {
-  gunichar decomp[5];
-  gsize len;
+  const struct
+    {
+      gunichar input;
+      size_t expected_len;
+      gunichar expected_decomposition[4];
+    }
+  vectors[] =
+    {
+#define TEST0(ch)		{ ch, 1, { ch, 0, 0, 0 }}
+#define TEST1(ch, a)		{ ch, 1, { a, 0, 0, 0 }}
+#define TEST2(ch, a, b)		{ ch, 2, { a, b, 0, 0 }}
+#define TEST3(ch, a, b, c)	{ ch, 3, { a, b, c, 0 }}
+#define TEST4(ch, a, b, c, d)	{ ch, 4, { a, b, c, d }}
 
-#define TEST_DECOMP(ch, expected_len, a, b, c, d) \
-  len = g_unichar_fully_decompose (ch, FALSE, decomp, G_N_ELEMENTS (decomp)); \
-  g_assert_cmpint (expected_len, ==, len); \
-  if (expected_len >= 1) g_assert_cmphex (decomp[0], ==, a); \
-  if (expected_len >= 2) g_assert_cmphex (decomp[1], ==, b); \
-  if (expected_len >= 3) g_assert_cmphex (decomp[2], ==, c); \
-  if (expected_len >= 4) g_assert_cmphex (decomp[3], ==, d); \
+      /* Not decomposable */
+      TEST0 (0x0041),
+      TEST0 (0xFB01),
 
-#define TEST0(ch)		TEST_DECOMP (ch, 1, ch, 0, 0, 0)
-#define TEST1(ch, a)		TEST_DECOMP (ch, 1, a, 0, 0, 0)
-#define TEST2(ch, a, b)		TEST_DECOMP (ch, 2, a, b, 0, 0)
-#define TEST3(ch, a, b, c)	TEST_DECOMP (ch, 3, a, b, c, 0)
-#define TEST4(ch, a, b, c, d)	TEST_DECOMP (ch, 4, a, b, c, d)
+      /* Singletons */
+      TEST2 (0x212B, 0x0041, 0x030A),
+      TEST1 (0x2126, 0x03A9),
 
-  /* Not decomposable */
-  TEST0 (0x0041);
-  TEST0 (0xFB01);
+      /* Tricky pairs */
+      TEST2 (0x0344, 0x0308, 0x0301),
+      TEST2 (0x0F73, 0x0F71, 0x0F72),
 
-  /* Singletons */
-  TEST2 (0x212B, 0x0041, 0x030A);
-  TEST1 (0x2126, 0x03A9);
+      /* General */
+      TEST2 (0x00C5, 0x0041, 0x030A),
+      TEST2 (0x00F4, 0x006F, 0x0302),
+      TEST3 (0x1E69, 0x0073, 0x0323, 0x0307),
+      TEST2 (0x1E63, 0x0073, 0x0323),
+      TEST2 (0x1E0B, 0x0064, 0x0307),
+      TEST2 (0x1E0D, 0x0064, 0x0323),
 
-  /* Tricky pairs */
-  TEST2 (0x0344, 0x0308, 0x0301);
-  TEST2 (0x0F73, 0x0F71, 0x0F72);
+      /* Hangul */
+      TEST3 (0xD4DB, 0x1111, 0x1171, 0x11B6),
+      TEST2 (0xD4CC, 0x1111, 0x1171),
+      TEST3 (0xCE31, 0x110E, 0x1173, 0x11B8),
+      TEST2 (0xCE20, 0x110E, 0x1173),
 
-  /* General */
-  TEST2 (0x00C5, 0x0041, 0x030A);
-  TEST2 (0x00F4, 0x006F, 0x0302);
-  TEST3 (0x1E69, 0x0073, 0x0323, 0x0307);
-  TEST2 (0x1E63, 0x0073, 0x0323);
-  TEST2 (0x1E0B, 0x0064, 0x0307);
-  TEST2 (0x1E0D, 0x0064, 0x0323);
+#undef TEST4
+#undef TEST3
+#undef TEST2
+#undef TEST1
+#undef TEST0
+    };
 
-  /* Hangul */
-  TEST3 (0xD4DB, 0x1111, 0x1171, 0x11B6);
-  TEST2 (0xD4CC, 0x1111, 0x1171);
-  TEST3 (0xCE31, 0x110E, 0x1173, 0x11B8);
-  TEST2 (0xCE20, 0x110E, 0x1173);
+  for (size_t i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      gunichar decomp[5];
+      size_t len;
 
-#undef TEST_DECOMP
+      g_test_message ("Fully decomposing U+%06x; expecting %" G_GSIZE_FORMAT " codepoints",
+                      vectors[i].input, vectors[i].expected_len);
+
+      len = g_unichar_fully_decompose (vectors[i].input, FALSE, decomp, G_N_ELEMENTS (decomp));
+      g_assert_cmpmem (decomp, len * sizeof (*decomp),
+                       vectors[i].expected_decomposition, vectors[i].expected_len * sizeof (*vectors[i].expected_decomposition));
+    }
 }
 
 /* Test that g_unicode_canonical_decomposition() returns the correct
