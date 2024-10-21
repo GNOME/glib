@@ -1422,36 +1422,92 @@ test_wide (void)
 static void
 test_compose (void)
 {
-  gunichar ch;
+  const struct
+    {
+      gunichar a;
+      gunichar b;
+      gunichar expected_result;  /* 0 for failure */
+    }
+  vectors[] =
+    {
+      /* Not composable */
+      { 0x0041, 0x0042, 0 },
+      { 0x0041, 0x0000, 0 },
+      { 0x0066, 0x0069, 0 },
 
-  /* Not composable */
-  g_assert_false (g_unichar_compose (0x0041, 0x0042, &ch) && ch == 0);
-  g_assert_false (g_unichar_compose (0x0041, 0, &ch) && ch == 0);
-  g_assert_false (g_unichar_compose (0x0066, 0x0069, &ch) && ch == 0);
+      /* Tricky non-composable */
+      { 0x0308, 0x0301, 0 }, /* !0x0344 */
+      { 0x0F71, 0x0F72, 0 }, /* !0x0F73 */
 
-  /* Tricky non-composable */
-  g_assert_false (g_unichar_compose (0x0308, 0x0301, &ch) && ch == 0); /* !0x0344 */
-  g_assert_false (g_unichar_compose (0x0F71, 0x0F72, &ch) && ch == 0); /* !0x0F73 */
+      /* Singletons should not compose */
+      { 0x212B, 0x0000, 0 },
+      { 0x00C5, 0x0000, 0 },
+      { 0x2126, 0x0000, 0 },
+      { 0x03A9, 0x0000, 0 },
 
-  /* Singletons should not compose */
-  g_assert_false (g_unichar_compose (0x212B, 0, &ch) && ch == 0);
-  g_assert_false (g_unichar_compose (0x00C5, 0, &ch) && ch == 0);
-  g_assert_false (g_unichar_compose (0x2126, 0, &ch) && ch == 0);
-  g_assert_false (g_unichar_compose (0x03A9, 0, &ch) && ch == 0);
+      /* Pairs */
+      { 0x0041, 0x030A, 0x00C5 },
+      { 0x006F, 0x0302, 0x00F4 },
+      { 0x1E63, 0x0307, 0x1E69 },
+      { 0x0073, 0x0323, 0x1E63 },
+      { 0x0064, 0x0307, 0x1E0B },
+      { 0x0064, 0x0323, 0x1E0D },
 
-  /* Pairs */
-  g_assert_true (g_unichar_compose (0x0041, 0x030A, &ch) && ch == 0x00C5);
-  g_assert_true (g_unichar_compose (0x006F, 0x0302, &ch) && ch == 0x00F4);
-  g_assert_true (g_unichar_compose (0x1E63, 0x0307, &ch) && ch == 0x1E69);
-  g_assert_true (g_unichar_compose (0x0073, 0x0323, &ch) && ch == 0x1E63);
-  g_assert_true (g_unichar_compose (0x0064, 0x0307, &ch) && ch == 0x1E0B);
-  g_assert_true (g_unichar_compose (0x0064, 0x0323, &ch) && ch == 0x1E0D);
+       /* Hangul */
+      { 0xD4CC, 0x11B6, 0xD4DB },
+      { 0x1111, 0x1171, 0xD4CC },
+      { 0xCE20, 0x11B8, 0xCE31 },
+      { 0x110E, 0x1173, 0xCE20 },
 
-  /* Hangul */
-  g_assert_true (g_unichar_compose (0xD4CC, 0x11B6, &ch) && ch == 0xD4DB);
-  g_assert_true (g_unichar_compose (0x1111, 0x1171, &ch) && ch == 0xD4CC);
-  g_assert_true (g_unichar_compose (0xCE20, 0x11B8, &ch) && ch == 0xCE31);
-  g_assert_true (g_unichar_compose (0x110E, 0x1173, &ch) && ch == 0xCE20);
+      /* Primary composite above U+FFFF (a significant boundary value in our implementation) */
+      { 0x1611E, 0x1611E, 0x16121 },  /* first and second char equal */
+      { 0x1611E, 0x1611F, 0x16123 },
+
+      /* First singletons */
+      { 0x00F6, 0x0304, 0x022B },
+
+      /* Second singletons */
+      { 0x0B47, 0x0B57, 0x0B4C },
+      { 0x00A0, 0x0B57, 0 },
+
+      /* Very high values (exercising some branches in COMPOSE_INDEX) */
+      { 0x16E00, 0x030A, 0 },
+      { 0x212B, 0x16E00, 0 },
+
+      /* Exercise some failure paths in the lookup tables */
+      { 0x1E63, 0x0306, 0 },
+      { 0x1E63, 0x0304, 0 },
+      { 0x1E63, 0x0B57, 0 },
+      { 0x1E63, 0x0000, 0 },
+      { 0x1E63, 0x113C2, 0 },
+      { 0x006E, 0x0302, 0 },
+      { 0x1E63, 0x1611F, 0 },
+      { 0x1138E, 0x113B8, 0 },
+      { 0x1611E, 0x0000, 0 },
+      { 0x0000, 0x1611F, 0 },
+      { 0x11390, 0x113C2, 0 },
+    };
+
+  for (size_t i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      gunichar ch;
+      gboolean result;
+
+      g_test_message ("Composing U+%06x and U+%06x; expecting U+%06x",
+                      vectors[i].a, vectors[i].b, vectors[i].expected_result);
+
+      result = g_unichar_compose (vectors[i].a, vectors[i].b, &ch);
+      if (vectors[i].expected_result != 0)
+        {
+          g_assert_cmpuint (ch, ==, vectors[i].expected_result);
+          g_assert_true (result);
+        }
+      else
+        {
+          g_assert_cmpuint (ch, ==, 0);
+          g_assert_false (result);
+        }
+    }
 }
 
 /* Test that g_unichar_decompose() returns the correct value for various
