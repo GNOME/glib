@@ -1604,9 +1604,20 @@ test_fully_decompose_canonical (void)
       g_test_message ("Fully decomposing U+%06x; expecting %" G_GSIZE_FORMAT " codepoints",
                       vectors[i].input, vectors[i].expected_len);
 
-      len = g_unichar_fully_decompose (vectors[i].input, FALSE, decomp, G_N_ELEMENTS (decomp));
-      g_assert_cmpmem (decomp, len * sizeof (*decomp),
-                       vectors[i].expected_decomposition, vectors[i].expected_len * sizeof (*vectors[i].expected_decomposition));
+      /* Test with all possible output array sizes, to check that the function
+       * can write partial results OK. */
+      for (size_t j = 0; j <= G_N_ELEMENTS (decomp); j++)
+        {
+          len = g_unichar_fully_decompose (vectors[i].input, FALSE, decomp, G_N_ELEMENTS (decomp) - j);
+          g_assert_cmpuint (len, ==, vectors[i].expected_len);
+          if (len >= j)
+            g_assert_cmpmem (decomp, (len - j) * sizeof (*decomp),
+                             vectors[i].expected_decomposition, (vectors[i].expected_len - j) * sizeof (*vectors[i].expected_decomposition));
+        }
+
+      /* And again with no result array at all, just to get the length. */
+      len = g_unichar_fully_decompose (vectors[i].input, FALSE, NULL, 0);
+      g_assert_cmpuint (len, ==, vectors[i].expected_len);
     }
 }
 
