@@ -359,6 +359,8 @@ _g_utf8_normalize_wc (const gchar    *str,
   gboolean do_compose = (mode == G_NORMALIZE_NFC ||
 			 mode == G_NORMALIZE_NFKC);
 
+  /* Do a first pass to work out the length of the normalised string so we can
+   * allocate a buffer. */
   n_wc = 0;
   p = str;
   while ((max_len < 0 || p < str + max_len) && *p)
@@ -409,8 +411,10 @@ _g_utf8_normalize_wc (const gchar    *str,
       p = next;
     }
 
+  /* Allocate the buffer for the result. */
   wc_buffer = g_new (gunichar, n_wc + 1);
 
+  /* Do another pass to fill the buffer with the normalised string. */
   last_start = 0;
   n_wc = 0;
   p = str;
