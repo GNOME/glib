@@ -808,6 +808,7 @@ main (int argc, char **argv)
   gboolean manual_register = FALSE;
   gboolean internal = FALSE;
   gboolean external_data = FALSE;
+  char *embed_data = NULL;
   gboolean generate_dependencies = FALSE;
   gboolean generate_phony_targets = FALSE;
   char *dependency_file = NULL;
@@ -830,6 +831,7 @@ main (int argc, char **argv)
     { "manual-register", 0, 0, G_OPTION_ARG_NONE, &manual_register, N_("Don’t automatically create and register resource"), NULL },
     { "internal", 0, 0, G_OPTION_ARG_NONE, &internal, N_("Don’t export functions; declare them G_GNUC_INTERNAL"), NULL },
     { "external-data", 0, 0, G_OPTION_ARG_NONE, &external_data, N_("Don’t embed resource data in the C file; assume it's linked externally instead"), NULL },
+    { "embed-data", 0, 0, G_OPTION_ARG_FILENAME, &embed_data, N_("Don't embed resource data in the C fil; use C23 #embed instead"), N_("FILENAME") },
     { "c-name", 0, 0, G_OPTION_ARG_STRING, &c_name, N_("C identifier name used for the generated source code"), N_("IDENTIFIER") },
     { "compiler", 'C', 0, G_OPTION_ARG_STRING, &compiler, N_("The target C compiler (default: the CC environment variable)"), N_("COMMAND") },
     G_OPTION_ENTRY_NULL
@@ -1070,16 +1072,16 @@ main (int argc, char **argv)
     {
       if (generate_source)
 	{
-	  int fd = g_file_open_tmp (NULL, &binary_target, NULL);
-	  if (fd == -1)
-	    {
-	      g_printerr ("Can't open temp file\n");
-	      g_free (c_name);
+          int fd = g_file_open_tmp (NULL, &binary_target, NULL);
+          if (fd == -1)
+            {
+              g_printerr ("Can't open temp file\n");
+              g_free (c_name);
               g_hash_table_unref (files);
-	      return 1;
-	    }
-	  close (fd);
-	}
+              return 1;
+            }
+          close (fd);
+        }
 
       if (c_name == NULL)
 	{
@@ -1210,6 +1212,11 @@ main (int argc, char **argv)
                      "\n",
                      export, data_size, c_name);
         }
+      else if (embed_data)
+        {
+          g_fprintf (file,
+                     "static const union { const double alignment; void * const ptr; const guint8 data[%" G_GSIZE_FORMAT "];} %s_resource_data = { .data = {\n#embed \"%s\"\n}};\n", data_size, c_name, embed_data);
+        }
       else
         {
           if (compiler_type == COMPILER_MSVC || compiler_type == COMPILER_UNKNOWN)
@@ -1259,7 +1266,7 @@ main (int argc, char **argv)
 	       "{\n"
 	       "  return g_static_resource_get_resource (&static_resource);\n"
 	       "}\n",
-	       c_name, c_name, (external_data ? "" : " - 1 /* nul terminator */"),
+	       c_name, c_name, ((external_data || embed_data) ? "" : " - 1 /* nul terminator */"),
 	       export, c_name, c_name);
 
 
