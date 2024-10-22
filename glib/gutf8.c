@@ -42,6 +42,10 @@
 #include "glibintl.h"
 #include "gvalgrind.h"
 
+#if g_macro__has_attribute(ifunc) && !defined(G_OS_WIN32)
+#define HAVE_WORKING_IFUNC_ATTRIBUTE 1
+#endif
+
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \
     {									      \
@@ -1841,7 +1845,7 @@ g_utf8_validate_native (const char  *str,
   return *str == 0;
 }
 
-#if g_macro__has_attribute(ifunc) && !defined(G_OS_WIN32)
+#ifdef HAVE_WORKING_IFUNC_ATTRIBUTE
 /* The fast implementation of UTF-8 validation in `utf8_verify()` technically
  * uses undefined behaviour when the string length is not provided (i.e. when
  * it’s looking for a trailing nul terminator): when doing word-sized reads of
@@ -1889,7 +1893,7 @@ static gboolean (*resolve_g_utf8_validate (void)) (const char *, gssize, const c
   else
     return g_utf8_validate_native;
 }
-#endif
+#endif  /* HAVE_WORKING_IFUNC_ATTRIBUTE */
 
 /**
  * g_utf8_validate:
@@ -1924,7 +1928,7 @@ gboolean
 g_utf8_validate (const char   *str,
                  gssize        max_len,
                  const gchar **end)
-#if g_macro__has_attribute(ifunc) && !defined(G_OS_WIN32)
+#ifdef HAVE_WORKING_IFUNC_ATTRIBUTE
   __attribute__((ifunc ("resolve_g_utf8_validate")));
 #else
 {
