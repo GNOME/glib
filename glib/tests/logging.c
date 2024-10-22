@@ -436,6 +436,32 @@ test_default_handler_0x400 (void)
 }
 
 static void
+test_default_handler_structured_logging_non_nul_terminated_strings (void)
+{
+  g_log_writer_default_set_use_stderr (FALSE);
+  g_log_set_default_handler (g_log_default_handler, NULL);
+  g_setenv ("G_MESSAGES_DEBUG", "foo", TRUE);
+
+  const gchar domain_1[] = {'f', 'o', 'o' };
+  const gchar domain_2[] = { 'b', 'a', 'r' };
+  const gchar message_1[] = { 'b', 'a', 'z' };
+  const gchar message_2[] = { 'b', 'l', 'a' };
+  const GLogField fields[] = {
+    { "GLIB_DOMAIN", domain_1, sizeof (domain_1) },
+    { "MESSAGE", message_1, sizeof (message_1) },
+  };
+  const GLogField other_fields[] = {
+    { "GLIB_DOMAIN", domain_2, sizeof (domain_2) },
+    { "MESSAGE", message_2, sizeof (message_2) },
+  };
+
+  g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
+  g_log_structured_array (G_LOG_LEVEL_DEBUG, other_fields, G_N_ELEMENTS (other_fields));
+
+  exit (0);
+}
+
+static void
 test_default_handler (void)
 {
   g_test_trap_subprocess ("/logging/default-handler/subprocess/error", 0,
@@ -535,6 +561,12 @@ test_default_handler (void)
   g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-robustness", 0,
                           G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/structured-logging-non-null-terminated-strings", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout_unmatched ("*bar*");
+  g_test_trap_assert_stdout_unmatched ("*bla*");
+  g_test_trap_assert_stdout ("*foo-DEBUG*baz*");
 }
 
 static void
@@ -1074,6 +1106,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-env4", test_default_handler_would_drop_env4);
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-env5", test_default_handler_would_drop_env5);
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-robustness", test_default_handler_would_drop_robustness);
+  g_test_add_func ("/logging/default-handler/subprocess/structured-logging-non-null-terminated-strings", test_default_handler_structured_logging_non_nul_terminated_strings);
   g_test_add_func ("/logging/warnings", test_warnings);
   g_test_add_func ("/logging/fatal-log-mask", test_fatal_log_mask);
   g_test_add_func ("/logging/set-handler", test_set_handler);
