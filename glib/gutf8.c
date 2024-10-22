@@ -1969,6 +1969,38 @@ g_utf8_validate_len (const char   *str,
   return max_len == 0;
 }
 
+static gboolean
+g_str_is_ascii_native (const char *str)
+{
+  utf8_verify_ascii (&str, NULL);
+
+  return *str == 0;
+}
+
+#ifdef HAVE_WORKING_IFUNC_ATTRIBUTE
+/* See above comment about `ifunc` use for g_utf8_validate(). */
+static gboolean
+g_str_is_ascii_valgrind (const char *str)
+{
+  size_t len = strlen (str);
+
+  utf8_verify_ascii (&str, &len);
+
+  return *str == 0;
+}
+
+typedef gboolean (*GStrIsAsciiFunc) (const char *str);
+
+static GStrIsAsciiFunc
+resolve_g_str_is_ascii (void)
+{
+  if (RUNNING_ON_VALGRIND)
+    return g_str_is_ascii_valgrind;
+  else
+    return g_str_is_ascii_native;
+}
+#endif  /* HAVE_WORKING_IFUNC_ATTRIBUTE */
+
 /**
  * g_str_is_ascii:
  * @str: a string
@@ -1980,13 +2012,18 @@ g_utf8_validate_len (const char   *str,
  *
  * Since: 2.40
  */
+#if g_macro__has_attribute(no_sanitize_address)
+  __attribute__((no_sanitize_address))
+#endif
 gboolean
 g_str_is_ascii (const gchar *str)
+#ifdef HAVE_WORKING_IFUNC_ATTRIBUTE
+  __attribute__((ifunc ("resolve_g_str_is_ascii")));
+#else
 {
-  utf8_verify_ascii (&str, NULL);
-
-  return *str == 0;
+  return g_str_is_ascii_native (str);
 }
+#endif
 
 /**
  * g_unichar_validate:
