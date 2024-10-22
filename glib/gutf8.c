@@ -1886,7 +1886,12 @@ g_utf8_validate_valgrind (const char  *str,
   return g_utf8_validate_len (str, max_len, end);
 }
 
-static gboolean (*resolve_g_utf8_validate (void)) (const char *, gssize, const char **)
+typedef gboolean (*GUtf8ValidateFunc) (const char  *str,
+                                       gssize       max_len,
+                                       const char **end);
+
+static GUtf8ValidateFunc
+resolve_g_utf8_validate (void)
 {
   if (RUNNING_ON_VALGRIND)
     return g_utf8_validate_valgrind;
