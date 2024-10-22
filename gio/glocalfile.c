@@ -806,7 +806,7 @@ get_mount_info (GFileInfo             *fs_info,
 					     g_free, NULL);
 
 
-  if (g_unix_mounts_changed_since (mount_info_hash_cache_time))
+  if (g_unix_mount_entries_changed_since (mount_info_hash_cache_time))
     g_hash_table_remove_all (mount_info_hash);
   
   got_info = g_hash_table_lookup_extended (mount_info_hash,
@@ -826,15 +826,15 @@ get_mount_info (GFileInfo             *fs_info,
       if (mountpoint == NULL)
 	mountpoint = g_strdup ("/");
 
-      mount = g_unix_mount_at (mountpoint, &cache_time);
+      mount = g_unix_mount_entry_at (mountpoint, &cache_time);
       if (mount)
 	{
-	  if (g_unix_mount_is_readonly (mount))
+	  if (g_unix_mount_entry_is_readonly (mount))
 	    mount_info |= MOUNT_INFO_READONLY;
-          if (is_remote_fs_type (g_unix_mount_get_fs_type (mount)))
+          if (is_remote_fs_type (g_unix_mount_entry_get_fs_type (mount)))
             is_remote = TRUE;
 	  
-	  g_unix_mount_free (mount);
+	  g_unix_mount_entry_free (mount);
 	}
 
       g_free (mountpoint);
@@ -1819,10 +1819,10 @@ ignore_trash_mount (GUnixMountEntry *mount)
   GUnixMountPoint *mount_point = NULL;
   const gchar *mount_options;
 
-  mount_options = g_unix_mount_get_options (mount);
+  mount_options = g_unix_mount_entry_get_options (mount);
   if (mount_options == NULL)
     {
-      mount_point = g_unix_mount_point_at (g_unix_mount_get_mount_path (mount),
+      mount_point = g_unix_mount_point_at (g_unix_mount_entry_get_mount_path (mount),
                                            NULL);
       if (mount_point != NULL)
         mount_options = g_unix_mount_point_get_options (mount_point);
@@ -1839,7 +1839,7 @@ ignore_trash_mount (GUnixMountEntry *mount)
         return TRUE;
     }
 
-  if (g_unix_mount_is_system_internal (mount))
+  if (g_unix_mount_entry_is_system_internal (mount))
     return TRUE;
 
   return FALSE;
@@ -1851,14 +1851,14 @@ ignore_trash_path (const gchar *topdir)
   GUnixMountEntry *mount;
   gboolean retval = TRUE;
 
-  mount = g_unix_mount_at (topdir, NULL);
+  mount = g_unix_mount_entry_at (topdir, NULL);
   if (mount == NULL)
     goto out;
 
   retval = ignore_trash_mount (mount);
 
  out:
-  g_clear_pointer (&mount, g_unix_mount_free);
+  g_clear_pointer (&mount, g_unix_mount_entry_free);
 
   return retval;
 }

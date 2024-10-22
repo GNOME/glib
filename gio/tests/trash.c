@@ -66,10 +66,10 @@ test_trash_not_supported (void)
       return;
     }
 
-  mount = g_unix_mount_for (g_file_peek_path (file), NULL);
-  g_assert_true (mount == NULL || g_unix_mount_is_system_internal (mount));
-  g_test_message ("Mount: %s", (mount != NULL) ? g_unix_mount_get_mount_path (mount) : "(null)");
-  g_clear_pointer (&mount, g_unix_mount_free);
+  mount = g_unix_mount_entry_for (g_file_peek_path (file), NULL);
+  g_assert_true (mount == NULL || g_unix_mount_entry_is_system_internal (mount));
+  g_test_message ("Mount: %s", (mount != NULL) ? g_unix_mount_entry_get_mount_path (mount) : "(null)");
+  g_clear_pointer (&mount, g_unix_mount_entry_free);
 
   /* g_file_trash() shouldn't be supported on system internal mounts,
    * because those are not monitored by gvfsd-trash.
@@ -119,7 +119,7 @@ test_trash_symlinks (void)
       return;
     }
 
-  target_mount = g_unix_mount_for (target, NULL);
+  target_mount = g_unix_mount_entry_for (target, NULL);
 
   if (target_mount == NULL)
     {
@@ -129,32 +129,32 @@ test_trash_symlinks (void)
     }
 
   g_assert_nonnull (target_mount);
-  g_test_message ("Target: %s (mount: %s)", target, g_unix_mount_get_mount_path (target_mount));
+  g_test_message ("Target: %s (mount: %s)", target, g_unix_mount_entry_get_mount_path (target_mount));
 
   tmp = g_dir_make_tmp ("test-trashXXXXXX", &error);
   g_assert_no_error (error);
   g_assert_nonnull (tmp);
-  tmp_mount = g_unix_mount_for (tmp, NULL);
+  tmp_mount = g_unix_mount_entry_for (tmp, NULL);
 
   if (tmp_mount == NULL)
     {
       g_test_skip_printf ("Unable to determine mount point for %s", tmp);
-      g_unix_mount_free (target_mount);
+      g_unix_mount_entry_free (target_mount);
       g_free (target);
       g_free (tmp);
       return;
     }
 
   g_assert_nonnull (tmp_mount);
-  g_test_message ("Tmp: %s (mount: %s)", tmp, g_unix_mount_get_mount_path (tmp_mount));
+  g_test_message ("Tmp: %s (mount: %s)", tmp, g_unix_mount_entry_get_mount_path (tmp_mount));
 
-  if (g_unix_mount_compare (target_mount, tmp_mount) == 0)
+  if (g_unix_mount_entry_compare (target_mount, tmp_mount) == 0)
     {
       g_test_skip ("The tmp has to be on another mount than the home to run this test");
 
-      g_unix_mount_free (tmp_mount);
+      g_unix_mount_entry_free (tmp_mount);
       g_free (tmp);
-      g_unix_mount_free (target_mount);
+      g_unix_mount_entry_free (target_mount);
       g_free (target);
 
       return;
@@ -164,28 +164,28 @@ test_trash_symlinks (void)
   g_file_make_symbolic_link (symlink, g_get_home_dir (), NULL, &error);
   g_assert_no_error (error);
 
-  symlink_mount = g_unix_mount_for (g_file_peek_path (symlink), NULL);
+  symlink_mount = g_unix_mount_entry_for (g_file_peek_path (symlink), NULL);
   g_assert_nonnull (symlink_mount);
-  g_test_message ("Symlink: %s (mount: %s)", g_file_peek_path (symlink), g_unix_mount_get_mount_path (symlink_mount));
+  g_test_message ("Symlink: %s (mount: %s)", g_file_peek_path (symlink), g_unix_mount_entry_get_mount_path (symlink_mount));
 
-  g_assert_cmpint (g_unix_mount_compare (symlink_mount, tmp_mount), ==, 0);
+  g_assert_cmpint (g_unix_mount_entry_compare (symlink_mount, tmp_mount), ==, 0);
 
   target_over_symlink = g_build_filename (g_file_peek_path (symlink),
                                           ".local",
                                           NULL);
-  target_over_symlink_mount = g_unix_mount_for (target_over_symlink, NULL);
+  target_over_symlink_mount = g_unix_mount_entry_for (target_over_symlink, NULL);
   g_assert_nonnull (symlink_mount);
-  g_test_message ("Target over symlink: %s (mount: %s)", target_over_symlink, g_unix_mount_get_mount_path (target_over_symlink_mount));
+  g_test_message ("Target over symlink: %s (mount: %s)", target_over_symlink, g_unix_mount_entry_get_mount_path (target_over_symlink_mount));
 
-  g_assert_cmpint (g_unix_mount_compare (target_over_symlink_mount, target_mount), ==, 0);
+  g_assert_cmpint (g_unix_mount_entry_compare (target_over_symlink_mount, target_mount), ==, 0);
 
-  g_unix_mount_free (target_over_symlink_mount);
-  g_unix_mount_free (symlink_mount);
+  g_unix_mount_entry_free (target_over_symlink_mount);
+  g_unix_mount_entry_free (symlink_mount);
   g_free (target_over_symlink);
   g_object_unref (symlink);
-  g_unix_mount_free (tmp_mount);
+  g_unix_mount_entry_free (tmp_mount);
   g_free (tmp);
-  g_unix_mount_free (target_mount);
+  g_unix_mount_entry_free (target_mount);
   g_free (target);
 }
 

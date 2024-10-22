@@ -77,7 +77,7 @@ g_unix_volume_monitor_finalize (GObject *object)
   g_object_unref (monitor->mount_monitor);
 
   g_list_free_full (monitor->last_mountpoints, (GDestroyNotify) g_unix_mount_point_free);
-  g_list_free_full (monitor->last_mounts, (GDestroyNotify) g_unix_mount_free);
+  g_list_free_full (monitor->last_mounts, (GDestroyNotify) g_unix_mount_entry_free);
 
   g_list_free_full (monitor->volumes, g_object_unref);
   g_list_free_full (monitor->mounts, g_object_unref);
@@ -152,7 +152,7 @@ get_mount_for_mount_path (const char *mount_path,
   GUnixMountEntry *mount_entry;
   GUnixMount *mount;
 
-  mount_entry = g_unix_mount_at (mount_path, NULL);
+  mount_entry = g_unix_mount_entry_at (mount_path, NULL);
 
   if (!mount_entry)
     return NULL;
@@ -160,7 +160,7 @@ get_mount_for_mount_path (const char *mount_path,
   /* TODO: Set mountable volume? */
   mount = _g_unix_mount_new (NULL, mount_entry, NULL);
 
-  g_unix_mount_free (mount_entry);
+  g_unix_mount_entry_free (mount_entry);
 
   return G_MOUNT (mount);
 }
@@ -376,19 +376,19 @@ update_mounts (GUnixVolumeMonitor *monitor)
   GUnixVolume *volume;
   const char *mount_path;
   
-  new_mounts = g_unix_mounts_get (NULL);
+  new_mounts = g_unix_mount_entries_get (NULL);
   
-  new_mounts = g_list_sort (new_mounts, (GCompareFunc) g_unix_mount_compare);
+  new_mounts = g_list_sort (new_mounts, (GCompareFunc) g_unix_mount_entry_compare);
   
   diff_sorted_lists (monitor->last_mounts,
-		     new_mounts, (GCompareFunc) g_unix_mount_compare,
+		     new_mounts, (GCompareFunc) g_unix_mount_entry_compare,
 		     &added, &removed);
   
   for (l = removed; l != NULL; l = l->next)
     {
       GUnixMountEntry *mount_entry = l->data;
       
-      mount = find_mount_by_mountpath (monitor, g_unix_mount_get_mount_path (mount_entry));
+      mount = find_mount_by_mountpath (monitor, g_unix_mount_entry_get_mount_path (mount_entry));
       if (mount)
 	{
 	  _g_unix_mount_unmounted (mount);
@@ -403,7 +403,7 @@ update_mounts (GUnixVolumeMonitor *monitor)
     {
       GUnixMountEntry *mount_entry = l->data;
 
-      mount_path = g_unix_mount_get_mount_path (mount_entry);
+      mount_path = g_unix_mount_entry_get_mount_path (mount_entry);
       
       volume = _g_unix_volume_monitor_lookup_volume_for_mount_path (monitor, mount_path);
       mount = _g_unix_mount_new (G_VOLUME_MONITOR (monitor), mount_entry, volume);
@@ -416,6 +416,6 @@ update_mounts (GUnixVolumeMonitor *monitor)
   
   g_list_free (added);
   g_list_free (removed);
-  g_list_free_full (monitor->last_mounts, (GDestroyNotify) g_unix_mount_free);
+  g_list_free_full (monitor->last_mounts, (GDestroyNotify) g_unix_mount_entry_free);
   monitor->last_mounts = new_mounts;
 }

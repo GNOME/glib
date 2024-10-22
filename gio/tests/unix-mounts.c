@@ -313,7 +313,7 @@ test_get_mount_entries (void)
   res = g_file_set_contents (tmp_file, fake_mtab, -1, NULL);
   g_assert (res);
 
-  entries = g_unix_mounts_get_from_file (tmp_file, &time_read, &n_entries);
+  entries = g_unix_mount_entries_get_from_file (tmp_file, &time_read, &n_entries);
 
   if (entries == NULL)
     {
@@ -331,21 +331,21 @@ test_get_mount_entries (void)
 
   for (size_t i = 0; i < n_entries; i++)
     {
-      g_assert_cmpstr (g_unix_mount_get_device_path (entries[i]), ==, expected_entries[i].device_path);
-      g_assert_cmpstr (g_unix_mount_get_fs_type (entries[i]), ==, expected_entries[i].fs_type);
-      g_assert_cmpstr (g_unix_mount_get_mount_path (entries[i]), ==, expected_entries[i].mount_path);
-      g_assert_cmpstr (g_unix_mount_get_options (entries[i]), ==, expected_entries[i].options);
+      g_assert_cmpstr (g_unix_mount_entry_get_device_path (entries[i]), ==, expected_entries[i].device_path);
+      g_assert_cmpstr (g_unix_mount_entry_get_fs_type (entries[i]), ==, expected_entries[i].fs_type);
+      g_assert_cmpstr (g_unix_mount_entry_get_mount_path (entries[i]), ==, expected_entries[i].mount_path);
+      g_assert_cmpstr (g_unix_mount_entry_get_options (entries[i]), ==, expected_entries[i].options);
 
       /* root_path is only supported by libmount */
 #ifdef HAVE_LIBMOUNT
-      g_assert_cmpstr (g_unix_mount_get_root_path (entries[i]), ==, expected_entries[i].root_path);
+      g_assert_cmpstr (g_unix_mount_entry_get_root_path (entries[i]), ==, expected_entries[i].root_path);
 #else
       g_assert_null (g_unix_mount_get_root_path (entries[i]));
 #endif
     }
 
   for (size_t i = 0; i < n_entries; i++)
-    g_unix_mount_free (entries[i]);
+    g_unix_mount_entry_free (entries[i]);
   g_free (entries);
   g_free (tmp_file);
 }

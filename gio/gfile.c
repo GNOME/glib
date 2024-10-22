@@ -4754,7 +4754,7 @@ g_file_delete_finish (GFile         *file,
  * Sends @file to the "Trashcan", if possible. This is similar to
  * deleting it, but the user can recover it before emptying the trashcan.
  * Trashing is disabled for system mounts by default (see
- * g_unix_mount_is_system_internal()), so this call can return the
+ * g_unix_mount_entry_is_system_internal()), so this call can return the
  * %G_IO_ERROR_NOT_SUPPORTED error. Since GLib 2.66, the `x-gvfs-notrash` unix
  * mount option can be used to disable g_file_trash() support for particular
  * mounts, the %G_IO_ERROR_NOT_SUPPORTED error will be returned in that case.
