@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+#
+# Copyright 2022 Canonical Limited
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
+# Original author: Marco Trevisan
 
 if [ ! -d "$1" ]; then
     echo "Usage $(basename "$0") UCD-directory [version]"
@@ -36,3 +42,4 @@ glib/tests/gen-casefold-txt.py "$version" \
 glib/tests/gen-casemap-txt.py "$version" \
     "$ucd"/UnicodeData*.txt \
     "$ucd"/SpecialCasing*.txt > glib/tests/casemap.txt
+cp "$ucd"/NormalizationTest.txt glib/tests/
