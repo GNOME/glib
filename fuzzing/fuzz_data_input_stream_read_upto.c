@@ -28,7 +28,8 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
   size_t line_length = 0;
   const unsigned char *separator, *first_nul;
   const unsigned char *stop_chars;
-  size_t stop_chars_len;
+  unsigned char *owned_stop_chars = NULL;
+  gssize stop_chars_len;
   const unsigned char *stream_data;
   size_t stream_data_len;
 
@@ -60,6 +61,10 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
       stream_data_len = size - (separator + 1 - data);
     }
 
+  /* If stop_chars_len < 0, we have to guarantee that it’s nul-terminated. */
+  if (stop_chars_len < 0)
+    stop_chars = owned_stop_chars = (unsigned char *) g_strndup ((const char *) stop_chars, separator - data);
+
   /* Build the stream and test read_upto(). */
   base_stream = g_memory_input_stream_new_from_data (stream_data, stream_data_len, NULL);
   input_stream = g_data_input_stream_new (base_stream);
@@ -69,6 +74,7 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
   g_assert (line_length <= size);
   g_free (line);
 
+  g_free (owned_stop_chars);
   g_clear_object (&input_stream);
   g_clear_object (&base_stream);
 
