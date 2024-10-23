@@ -64,7 +64,8 @@
  * as we'd like: https://stackoverflow.com/a/11529277/210151 and
  * https://devblogs.microsoft.com/oldnewthing/20200731-00/?p=104024
  */
-#elif defined (G_OS_UNIX) && !defined (__APPLE__) && !defined(__CYGWIN__) && g_macro__has_attribute (weak)
+#elif defined (G_OS_UNIX) && !defined (__APPLE__) && !defined(__CYGWIN__) && !defined(_AIX) && \
+      g_macro__has_attribute (weak)
 
 #define HAS_DYNAMIC_ASAN_LOADING
 
