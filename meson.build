@@ -707,6 +707,7 @@ functions = [
   'lstat',
   'mbrtowc',
   'memalign',
+  'memmem',
   'mmap',
   'newlocale',
   'pipe2',

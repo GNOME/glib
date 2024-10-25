@@ -1518,7 +1518,8 @@ done_query:
  * `"GLIB_DOMAIN"`) must be passed as nul-terminated UTF-8 strings until GLib
  * version 2.74.1 because the default log handler did not consider the length of
  * the `GLogField`. Starting with GLib 2.74.1 this is fixed and
- * non-nul-terminated UTF-8 strings can be passed with their correct length.
+ * non-nul-terminated UTF-8 strings can be passed with their correct length,
+ * with the exception of `"GLIB_DOMAIN"` which was only fixed with GLib 2.82.3.
  *
  * The @log_domain will be converted into a `GLIB_DOMAIN` field. @log_level will
  * be converted into a
@@ -2624,28 +2625,73 @@ log_is_old_api (const GLogField *fields,
 {
   return (n_fields >= 1 &&
           g_strcmp0 (fields[0].key, "GLIB_OLD_LOG_API") == 0 &&
+          fields[0].length < 0 &&
           g_strcmp0 (fields[0].value, "1") == 0);
+}
+
+#ifndef HAVE_MEMMEM
+// memmem() is a GNU extension so if it's not available we'll need
+// our own implementation here. Thanks C.
+static void *
+my_memmem (const void *haystack,
+           size_t      haystacklen,
+           const void *needle,
+           size_t      needlelen)
+{
+  const guint8 *cur, *end;
+
+  if (needlelen > haystacklen)
+    return NULL;
+  if (needlelen == 0)
+    return (void *) haystack;
+
+  cur = haystack;
+  end = cur + haystacklen - needlelen;
+
+  for (; cur <= end; cur++)
+    {
+      if (memcmp (cur, needle, needlelen) == 0)
+        return (void *) cur;
+    }
+
+  return NULL;
+}
+#else
+#define my_memmem memmem
+#endif
+
+static void *
+memmem_with_end_pointer (const void *haystack,
+                         const void *haystack_end,
+                         const void *needle,
+                         size_t      needle_len)
+{
+  return my_memmem (haystack, (const char *) haystack_end - (const char *) haystack, needle, needle_len);
 }
 
 static gboolean
 domain_found (const gchar *domains,
-              const char  *log_domain)
+              const char  *log_domain,
+              gsize        log_domain_length)
 {
-  guint len;
-  const gchar *found;
+  const gchar *found = domains;
+  gsize domains_length = strlen (domains);
+  const gchar *domains_end = domains + domains_length;
 
-  len = strlen (log_domain);
-
-  for (found = strstr (domains, log_domain); found;
-       found = strstr (found + 1, log_domain))
+  for (found = memmem_with_end_pointer (domains, domains_end, log_domain, log_domain_length); found;
+       found = memmem_with_end_pointer (found + 1, domains_end, log_domain, log_domain_length))
     {
       if ((found == domains || found[-1] == ' ')
-          && (found[len] == 0 || found[len] == ' '))
+          && (found[log_domain_length] == 0 || found[log_domain_length] == ' '))
         return TRUE;
     }
 
   return FALSE;
 }
+
+#ifdef my_memmem
+#undef my_memmem
+#endif
 
 static struct {
   GRWLock lock;
@@ -2697,6 +2743,7 @@ should_drop_message (GLogLevelFlags   log_level,
       !g_log_get_debug_enabled ())
     {
       gsize i;
+      gsize log_domain_length;
 
       g_rw_lock_reader_lock (&g_log_global.lock);
 
@@ -2720,13 +2767,21 @@ should_drop_message (GLogLevelFlags   log_level,
               if (g_strcmp0 (fields[i].key, "GLIB_DOMAIN") == 0)
                 {
                   log_domain = fields[i].value;
+                  if (fields[i].length < 0)
+                    log_domain_length = strlen (fields[i].value);
+                  else
+                    log_domain_length = fields[i].length;
                   break;
                 }
             }
         }
+      else
+        {
+          log_domain_length = strlen (log_domain);
+        }
 
       if (strcmp (g_log_global.domains, "all") != 0 &&
-          (log_domain == NULL || !domain_found (g_log_global.domains, log_domain)))
+          (log_domain == NULL || !domain_found (g_log_global.domains, log_domain, log_domain_length)))
         {
           g_rw_lock_reader_unlock (&g_log_global.lock);
           return TRUE;
