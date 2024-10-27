@@ -102,6 +102,31 @@ test_refstring_intern (void)
   g_ref_string_release (s);
 }
 
+static gpointer
+intern_ref_unref (gpointer data)
+{
+  for (int i = 0; i < 1000000; i++)
+    {
+      char *s = g_ref_string_new_intern ("test!");
+      g_ref_string_release (s);
+    }
+
+  return NULL;
+}
+
+/* test_refstring_intern: Test that interning of GRefString is thread-safe */
+static void
+test_refstring_intern_thread_safety (void)
+{
+  GThread *a, *b;
+
+  a = g_thread_new (NULL, intern_ref_unref, NULL);
+  b = g_thread_new (NULL, intern_ref_unref, NULL);
+
+  g_thread_join (a);
+  g_thread_join (b);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -113,6 +138,7 @@ main (int   argc,
   g_test_add_func ("/refstring/length-auto", test_refstring_length_auto);
   g_test_add_func ("/refstring/length-nuls", test_refstring_length_nuls);
   g_test_add_func ("/refstring/intern", test_refstring_intern);
+  g_test_add_func ("/refstring/intern-thread-safety", test_refstring_intern_thread_safety);
 
   return g_test_run ();
 }
