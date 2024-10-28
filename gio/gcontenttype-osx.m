@@ -400,7 +400,7 @@ g_content_type_from_mime_type_impl (const gchar *mime_type)
       if (g_str_has_suffix (mime_type, "x-tga"))
         return g_strdup ("com.truevision.tga-image");
       if (g_str_has_suffix (mime_type, "x-ico"))
-        return g_strdup ("com.microsoft.ico ");
+        return g_strdup ("com.microsoft.ico");
     }
 
   /* These are also not supported...
