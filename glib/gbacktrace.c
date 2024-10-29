@@ -237,8 +237,8 @@ g_on_error_query (const gchar *prg_name)
 
 /**
  * g_on_error_stack_trace:
- * @prg_name: the program name, needed by gdb for the "[S]tack trace"
- *     option
+ * @prg_name: (nullable): the program name, needed by gdb for the
+ *   "[S]tack trace" option, or `NULL` to use a default string
  *
  * Invokes gdb, which attaches to the current process and shows a
  * stack trace. Called by g_on_error_query() when the "[S]tack trace"
@@ -260,13 +260,17 @@ g_on_error_stack_trace (const gchar *prg_name)
 #if defined(G_OS_UNIX)
   pid_t pid;
   gchar buf[16];
+  gchar buf2[64];
   const gchar *args[5] = { DEBUGGER, NULL, NULL, NULL, NULL };
   int status;
 
   if (!prg_name)
-    return;
+    {
+      _g_snprintf (buf2, sizeof (buf2), "/proc/%u/exe", (guint) getpid ());
+      prg_name = buf2;
+    }
 
-  _g_sprintf (buf, "%u", (guint) getpid ());
+  _g_snprintf (buf, sizeof (buf), "%u", (guint) getpid ());
 
 #ifdef USE_LLDB
   args[1] = prg_name;
