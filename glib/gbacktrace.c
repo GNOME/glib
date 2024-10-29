@@ -157,20 +157,12 @@ g_on_error_query (const gchar *prg_name)
 
  retry:
 
-  if (prg_name)
-    _g_fprintf (stdout,
-                "%s (pid:%u): %s%s%s: ",
-                prg_name,
-                (guint) getpid (),
-                query1,
-                query2,
-                query3);
-  else
-    _g_fprintf (stdout,
-                "(process:%u): %s%s: ",
-                (guint) getpid (),
-                query1,
-                query3);
+  _g_fprintf (stdout,
+              "(process:%u): %s%s%s: ",
+              (guint) getpid (),
+              query1,
+              query2,
+              query3);
   fflush (stdout);
 
   if (isatty(0) && isatty(1))
@@ -189,8 +181,7 @@ g_on_error_query (const gchar *prg_name)
   else if ((buf[0] == 'P' || buf[0] == 'p')
            && buf[1] == '\n')
     return;
-  else if (prg_name
-           && (buf[0] == 'S' || buf[0] == 's')
+  else if ((buf[0] == 'S' || buf[0] == 's')
            && buf[1] == '\n')
     {
       g_on_error_stack_trace (prg_name);
