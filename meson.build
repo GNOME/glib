@@ -400,10 +400,12 @@ headers = [
   'inttypes.h',
   'libproc.h',
   'limits.h',
+  'linux/netlink.h',
   'locale.h',
   'mach/mach_time.h',
   'memory.h',
   'mntent.h',
+  'netlink/netlink.h',
   'poll.h',
   'pwd.h',
   'sched.h',
@@ -461,7 +463,7 @@ if cc.check_header('malloc.h')
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_MALLOC_H 1\n'
 endif
 
-if cc.check_header('linux/netlink.h')
+if glib_conf.has('HAVE_LINUX_NETLINK_H') or glib_conf.has('HAVE_NETLINK_NETLINK_H')
   glib_conf.set('HAVE_NETLINK', 1)
 endif
 

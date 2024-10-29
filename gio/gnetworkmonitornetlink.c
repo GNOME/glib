@@ -38,8 +38,14 @@
 
 /* must come at the end to pick system includes from
  * gnetworkingprivate.h */
+#ifdef HAVE_LINUX_NETLINK_H
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
+#endif
+#ifdef HAVE_NETLINK_NETLINK_H
+#include <netlink/netlink.h>
+#include <netlink/netlink_route.h>
+#endif
 
 static GInitableIface *initable_parent_iface;
 static void g_network_monitor_netlink_iface_init (GNetworkMonitorInterface *iface);
@@ -124,6 +130,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
       return FALSE;
     }
 
+#ifdef SO_PASSCRED
   if (!g_socket_set_option (nl->priv->sock, SOL_SOCKET, SO_PASSCRED,
 			    TRUE, NULL))
     {
@@ -133,6 +140,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
                    g_strerror (errsv));
       return FALSE;
     }
+#endif
 
   /* Request the current state */
   if (!request_dump (nl, error))
