@@ -346,19 +346,19 @@ GQuark                          g_variant_parse_error_quark             (void);
  *
  * A stack-allocated [struct@GLib.VariantBuilder] must be initialized
  * if it is used together with
- * [`g_auto()`](auto-cleanup.html#variable-declaration) to avoid
- * warnings or crashes if function returns before
- * [method@GLib.VariantBuilder.init] is called on the builder.
+ * [`g_auto()`](auto-cleanup.html#variable-declaration). This macro can
+ * be used as initializer when declaring the builder, but it cannot be
+ * assigned to a variable.
  *
- * This macro can be used as initializer instead of an
- * explicit zeroing a variable when declaring it and a following
- * [method@GLib.VariantBuilder.init], but it cannot be assigned to a
- * variable.
+ * The effects of initializing the builder with
+ * `G_VARIANT_BUILDER_INIT` is the same as initializing it with
+ * [func@GLib.VARIANT_BUILDER_INIT_UNSET], followed by a call to
+ * [method@GLib.VariantBuilder.init].
  *
  * The passed @variant_type should be a static [type@GLib.VariantType]
  * to avoid lifetime issues, as copying the @variant_type does not
- * happen in the [func@GLib.VARIANT_BUILDER_INIT] call, but rather in
- * functions that make sure that [struct@GLib.VariantBuilder] is valid.
+ * happen in the `G_VARIANT_BUILDER_INIT` call, but rather in functions
+ * that make sure that [struct@GLib.VariantBuilder] is valid.
  *
  * ```c
  *   g_auto(GVariantBuilder) builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE_BYTESTRING);
@@ -374,6 +374,38 @@ GQuark                          g_variant_parse_error_quark             (void);
       }                                                                               \
     }                                                                                 \
   }
+
+/**
+ * G_VARIANT_BUILDER_INIT_UNSET:
+ *
+ * A stack-allocated [struct@GLib.VariantBuilder] must be initialized
+ * if it is used together with
+ * [`g_auto()`](auto-cleanup.html#variable-declaration). This macro can
+ * be used as initializer when declaring the builder, but it cannot be
+ * assigned to a variable.
+ *
+ * The builder can be initialized to a specific [type@GLib.VariantType]
+ * later with [method@GLib.VariantBuilder.init].
+ *
+ * Use [func@GLib.VARIANT_BUILDER_INIT] to directly initialize the
+ * builder with a specific [type@GLib.VariantType].
+ *
+ * ```c
+ *   g_auto(GVariantBuilder) builder = G_VARIANT_BUILDER_INIT_UNSET ();
+ *
+ *   if (condition)
+ *     return NULL;
+ *
+ *   g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{su}"));
+ *   return g_variant_ref_sink (g_variant_builder_end (&builder));
+ * ```
+ *
+ * Since: 2.84
+ */
+#define G_VARIANT_BUILDER_INIT_UNSET() \
+  {                                    \
+    0,                                 \
+  } GLIB_AVAILABLE_MACRO_IN_2_84
 
 GLIB_AVAILABLE_IN_ALL
 GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);
