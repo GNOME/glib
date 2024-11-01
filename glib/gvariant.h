@@ -344,23 +344,25 @@ GQuark                          g_variant_parse_error_quark             (void);
  * G_VARIANT_BUILDER_INIT:
  * @variant_type: a const GVariantType*
  *
- * A stack-allocated #GVariantBuilder must be initialized if it is
- * used together with g_auto() to avoid warnings or crashes if
- * function returns before g_variant_builder_init() is called on the
- * builder.
+ * A stack-allocated [struct@GLib.VariantBuilder] must be initialized
+ * if it is used together with
+ * [`g_auto()`](auto-cleanup.html#variable-declaration) to avoid
+ * warnings or crashes if function returns before
+ * [method@GLib.VariantBuilder.init] is called on the builder.
  *
  * This macro can be used as initializer instead of an
  * explicit zeroing a variable when declaring it and a following
- * g_variant_builder_init(), but it cannot be assigned to a variable.
+ * [method@GLib.VariantBuilder.init], but it cannot be assigned to a
+ * variable.
  *
- * The passed @variant_type should be a static GVariantType to avoid
- * lifetime issues, as copying the @variant_type does not happen in
- * the G_VARIANT_BUILDER_INIT() call, but rather in functions that
- * make sure that #GVariantBuilder is valid.
+ * The passed @variant_type should be a static [type@GLib.VariantType]
+ * to avoid lifetime issues, as copying the @variant_type does not
+ * happen in the [func@GLib.VARIANT_BUILDER_INIT] call, but rather in
+ * functions that make sure that [struct@GLib.VariantBuilder] is valid.
  *
- * |[<!-- language="C" -->
+ * ```c
  *   g_auto(GVariantBuilder) builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE_BYTESTRING);
- * ]|
+ * ```
  *
  * Since: 2.50
  */
