@@ -106,7 +106,7 @@ do_tree (GFile *f, unsigned int level, guint64 pattern)
 	      info_list = g_list_prepend (info_list, info);
 	    }
 	}
-      g_file_enumerator_close (enumerator, NULL, NULL);
+      g_object_unref (enumerator);
 
       info_list = g_list_sort (info_list, (GCompareFunc) sort_info_by_name);
 
