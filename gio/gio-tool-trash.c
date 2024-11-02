@@ -204,6 +204,8 @@ trash_list (GFile         *file,
       res = FALSE;
     }
 
+  g_object_unref (enumerator);
+
   return res;
 }
 
