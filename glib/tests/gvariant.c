@@ -5106,6 +5106,27 @@ test_stack_builder_init_static (void)
   g_variant_unref (variant);
 }
 
+static void
+test_stack_builder_init_unset (void)
+{
+  GVariantBuilder builder1 = G_VARIANT_BUILDER_INIT_UNSET ();
+  GVariantBuilder builder2 = G_VARIANT_BUILDER_INIT_UNSET ();
+  GVariantBuilder builder3 = G_VARIANT_BUILDER_INIT_UNSET ();
+  GVariant *variant;
+
+  g_variant_builder_clear (&builder1);
+
+  g_variant_builder_init_static (&builder2, G_VARIANT_TYPE_BYTESTRING);
+  g_variant_builder_add_value (&builder2, g_variant_new_byte ('\0'));
+  variant = g_variant_ref_sink (g_variant_builder_end (&builder2));
+  g_assert_nonnull (variant);
+  g_variant_unref (variant);
+  g_variant_builder_clear (&builder2);
+
+  g_variant_builder_init (&builder3, G_VARIANT_TYPE_BYTESTRING);
+  g_variant_builder_clear (&builder3);
+}
+
 static GVariant *
 get_asv (void)
 {
@@ -5973,6 +5994,7 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gvariant/stack-builder-init", test_stack_builder_init);
   g_test_add_func ("/gvariant/stack-builder-init-static", test_stack_builder_init_static);
+  g_test_add_func ("/gvariant/stack-builder-init-unset", test_stack_builder_init_unset);
   g_test_add_func ("/gvariant/stack-dict-init", test_stack_dict_init);
 
   g_test_add_func ("/gvariant/normal-checking/tuples",
