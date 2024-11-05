@@ -29,6 +29,7 @@
 #include "gapplication.h"
 #include "gnotification-private.h"
 #include "gportalsupport.h"
+#include "gtask.h"
 
 #define G_TYPE_PORTAL_NOTIFICATION_BACKEND  (g_portal_notification_backend_get_type ())
 #define G_PORTAL_NOTIFICATION_BACKEND(o)    (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_PORTAL_NOTIFICATION_BACKEND, GPortalNotificationBackend))
@@ -39,6 +40,8 @@ typedef GNotificationBackendClass       GPortalNotificationBackendClass;
 struct _GPortalNotificationBackend
 {
   GNotificationBackend parent;
+
+  guint version;
 };
 
 GType g_portal_notification_backend_get_type (void);
@@ -47,6 +50,108 @@ G_DEFINE_TYPE_WITH_CODE (GPortalNotificationBackend, g_portal_notification_backe
   _g_io_modules_ensure_extension_points_registered ();
   g_io_extension_point_implement (G_NOTIFICATION_BACKEND_EXTENSION_POINT_NAME,
                                  g_define_type_id, "portal", 110))
+
+static void
+get_properties_cb (GObject      *source_object,
+                   GAsyncResult *result,
+                   gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GPortalNotificationBackend *backend = g_task_get_source_object (task);
+  GError *error = NULL;
+  GVariant *ret;
+  GVariant *vardict;
+
+  ret = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object), result, &error);
+  if (!ret)
+    {
+      g_task_return_error (task, g_steal_pointer (&error));
+      g_clear_object (&task);
+      return;
+    }
+
+  g_variant_get (ret, "(@a{sv})", &vardict);
+
+  if (!g_variant_lookup (vardict, "version", "u", &backend->version))
+    backend->version = 1;
+
+  g_task_return_boolean (task, TRUE);
+
+  g_clear_pointer (&ret, g_variant_unref);
+  g_clear_pointer (&vardict, g_variant_unref);
+  g_clear_object (&task);
+}
+
+static void
+get_supported_features (GPortalNotificationBackend *backend,
+                        GAsyncReadyCallback         callback,
+                        gpointer                    user_data)
+{
+  GTask *task;
+
+  task = g_task_new (backend, NULL, callback, user_data);
+  g_task_set_source_tag (task, get_supported_features);
+
+  if (backend->version != 0)
+    {
+      g_task_return_boolean (task, TRUE);
+      g_clear_object (&task);
+      return;
+    }
+
+  g_dbus_connection_call (G_NOTIFICATION_BACKEND (backend)->dbus_connection,
+                          "org.freedesktop.portal.Desktop",
+                          "/org/freedesktop/portal/desktop",
+                          "org.freedesktop.DBus.Properties",
+                          "GetAll",
+                          g_variant_new ("(s)", "org.freedesktop.portal.Notification"),
+                          G_VARIANT_TYPE ("(a{sv})"),
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          g_task_get_cancellable (task),
+                          get_properties_cb,
+                          g_object_ref (task));
+
+  g_clear_object (&task);
+}
+
+static gboolean
+get_supported_features_finish (GPortalNotificationBackend  *backend,
+                               GAsyncResult                *result,
+                               GError                     **error)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION_BACKEND (backend), FALSE);
+  g_return_val_if_fail (g_task_is_valid (result, backend), FALSE);
+  g_return_val_if_fail (g_task_get_source_tag (G_TASK (result)) == get_supported_features, FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
+static void
+get_supported_features_cb (GObject      *source_object,
+                           GAsyncResult *result,
+                           gpointer      user_data)
+{
+  GPortalNotificationBackend *backend = G_PORTAL_NOTIFICATION_BACKEND (source_object);
+  GVariant *notification_serialized = user_data;
+  GError *error = NULL;
+
+  if (!get_supported_features_finish (backend, result, &error))
+    {
+      g_warning ("Failed to get notification portal version: %s", error->message);
+      g_clear_pointer (&error, g_error_free);
+      return;
+    }
+
+  g_dbus_connection_call (G_NOTIFICATION_BACKEND (backend)->dbus_connection,
+                          "org.freedesktop.portal.Desktop",
+                          "/org/freedesktop/portal/desktop",
+                          "org.freedesktop.portal.Notification",
+                          "AddNotification",
+                          notification_serialized,
+                          G_VARIANT_TYPE_UNIT,
+                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+}
 
 static GVariant *
 serialize_buttons (GNotification *notification)
@@ -163,16 +268,15 @@ g_portal_notification_backend_send_notification (GNotificationBackend *backend,
                                                  const gchar          *id,
                                                  GNotification        *notification)
 {
-  g_dbus_connection_call (backend->dbus_connection,
-                          "org.freedesktop.portal.Desktop",
-                          "/org/freedesktop/portal/desktop",
-                          "org.freedesktop.portal.Notification",
-                          "AddNotification",
-                          g_variant_new ("(s@a{sv})",
-                                         id,
-                                         serialize_notification (notification)),
-                          G_VARIANT_TYPE_UNIT,
-                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+  GVariant *notification_serialized;
+
+  notification_serialized = g_variant_new ("(s@a{sv})",
+                                           id,
+                                           serialize_notification (notification));
+
+  get_supported_features (G_PORTAL_NOTIFICATION_BACKEND (backend),
+                          get_supported_features_cb,
+                          notification_serialized);
 }
 
 static void
