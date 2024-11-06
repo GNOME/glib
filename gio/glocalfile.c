@@ -1259,7 +1259,9 @@ g_local_file_query_info (GFile                *file,
   return info;
 }
 
-#ifdef HAVE_FACCESSAT
+/* FIXME: faccessat() is available on FreeBSD but appears to not work correctly
+ * here. This needs diagnosing; https://gitlab.gnome.org/GNOME/glib/-/issues/3495 */
+#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__)
 static gboolean
 g_local_file_query_exists (GFile        *file,
                            GCancellable *cancellable)
@@ -3153,7 +3155,7 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->monitor_dir = g_local_file_monitor_dir;
   iface->monitor_file = g_local_file_monitor_file;
   iface->measure_disk_usage = g_local_file_measure_disk_usage;
-#ifdef HAVE_FACCESSAT
+#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__)
   iface->query_exists = g_local_file_query_exists;
 #endif
 
