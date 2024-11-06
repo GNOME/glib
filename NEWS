@@ -1,3 +1,206 @@
+Overview of changes in GLib 2.83.0, 2024-11-06
+==============================================
+
+* Update to Unicode 16.0.0; there may be bugs in linebreaking support, see #3518
+  (#3460, work by Philip Withnall)
+
+* Optimise UTF-8 validation of strings, including use of ifuncs to prevent
+  spurious warnings from sanitizers and valgrind (#3481, work by Christian
+  Hergert)
+
+* Fix a potential buffer overflow in `GSocks4aProxy` (#3461, work by
+  Michael Catanzaro)
+
+* Change the default value of -Dglib_debug from `auto` to `enabled` for
+  developers — distributions will almost certainly want to override it to
+  `-Dglib_debug=disabled` for package release builds though; see #3421
+
+* Revert per-instance locking changes in `GCancellable` as they introduced new
+  races (#3448)
+
+* Bump Meson dependency to 1.4.0 (!4244, work by Benjamin Gilbert)
+
+* Rename multiple `g_unix_mount_*()` APIs to `g_unix_mount_entry_*()` (#3492,
+  work by Jialu Zhou)
+
+* Add a new `GFileMonitor` backend for macOS and BSD: libinotify-kqueue (!3657,
+  work by Gleb Popov)
+
+* Add APIs for sync, async and finish function annotations to libgirepository
+  (!3746, work by Evan Welsh)
+
+* Bugs fixed:
+  - #3289 readlink -f fails in CI on macOS
+  - #3415 module-test-library and module-test-plugin tests fail on FreeBSD and
+    muslc (Philip Withnall)
+  - #3417 Investigate trampoline performance implications in g_mutex_lock_impl()
+    changes (Philip Withnall)
+  - #3421 Default value for glib_debug meson option (Philip Withnall)
+  - #3444 deprecation warnings when using gobjectnotifyqueue.c
+  - #3450 Should check for epoll_create1 rather than epoll_create (Philip
+    Withnall)
+  - #3451 Gio.MenuModel docs have an outdated UI example (Philip Withnall)
+  - #3456 Test /unix-mounts/get-mount-entries fails unless libmount is enabled
+    (Philip Withnall)
+  - #3458 scan-build CI job fails due to gvdb subproject not having meson.build
+    (Philip Withnall)
+  - #3460 "404: Page not found" Error on "submitted as merge requests" Link
+    (Philip Withnall)
+  - #3461 Buffer overflow in set_connect_msg() (Michael Catanzaro)
+  - #3464 g-ir-scanner fails silently on msys2 CI jobs (Philip Withnall)
+  - #3465 Avoid GError for control flow in GResources
+  - #3469 Unclear correctness of g_malloc() in pattern_coalesce() (Michael
+    Catanzaro)
+  - #3470 Update to Unicode 16.0.0 (Philip Withnall)
+  - #3472 Overactive GVariantTypeInfo collection causes considerable overhead
+    (Christian Hergert)
+  - #3477 Determine policy on 32-bit support (Philip Withnall)
+  - #3478 Incorrect Examples in GVariant Specification (Christian Hergert)
+  - #3480 glib/gvariant: incorrect use of G_ANALYZER_ANALYZING (Christian
+    Hergert)
+  - #3481 Discussion: utf8 validation optimization (Christian Hergert)
+  - #3483 mainloop Unix FD test intermittently fails on Hurd (Philip Withnall)
+  - #3484 g_app_info_launch_default_for_uri no longer works on macOS
+  - #3486 GVariant inline allocation support broke i686/32-bit builds (Christian
+    Hergert)
+  - #3488 `glib` does not properly detect `gobject-introspection` (Philip
+    Withnall)
+  - #3489 Multicast cannot be joined on Mac OS on non-default interface
+    (Nirbheek Chauhan)
+  - #3490 Meson: fix support for aarch64-w64-mingw32 (Windows on ARM64) (Carlo
+    Bramini)
+  - #3492 Incorrect Documentation for g_unix_mount_get_mount_path Return Value
+    Ownership (Jialu Zhou)
+  - #3500 AIX: build failure due to pollfd structure change (Parth Patel)
+  - #3502 Test regressions with tzdata 2024b (Rebecca N. Palmer)
+  - #3508 g_array_free and free_seg
+  - #3512 AIX: Undefined symbol related to ASAN Sanitizer
+  - !3657 Introduce a new GFileMonitor backend: libinotify-kqueue
+  - !3746 girepository: Add APIs for sync, async, and finish function
+    annotations
+  - !3816 Update the wrap file for gi-docgen
+  - !4126 build: Enable -Wfloat-conversion and fix warnings
+  - !4176 tests: Expand tests for app launching via D-Bus
+  - !4196 refstring: add GEqualFunc for ref-counted strings
+  - !4202 simpleproxyresolver: Ignore host with scope id
+  - !4204 Fix minor issues found by static analysis, and add some additional
+    code comments
+  - !4216 build: Post-release version bump
+  - !4218 Persian l10n
+  - !4219 tests: Run lint tests with detected bash
+  - !4223 Update Korean translation
+  - !4224 Update Catalan translation
+  - !4225 Update Czech translation
+  - !4226 Update Portuguese translation
+  - !4227 gspawn: close child_err_report_fd before exiting on error
+  - !4235 Update Ukrainian translation
+  - !4236 Cherry pick Polish and Brazilian Portuguese translations from
+    glib-2-82 to main
+  - !4237 Update French translation
+  - !4239 Update Galician translations for main
+  - !4243 gresource: Convert docs to gi-docgen linking syntax
+  - !4244 build: Bump Meson dependency to 1.4.0
+  - !4245 resource: Add g_resource[s]_has_children and avoid a pointless
+    allocation
+  - !4248 dir: Avoid some allocations
+  - !4252 gio: Fix overindented docstring of buffer argument
+  - !4253 Update Bulgarian translation
+  - !4254 Update British English translation (main)
+  - !4256 Updated Lithuanian translation
+  - !4257 Update Hungarian translation
+  - !4260 Collation keys are not encoded in UTF-8
+  - !4261 gsocket windows: check event before calling WSAEnumNetworkEvents
+  - !4262 Update Russian translation
+  - !4264 Update Danish translation
+  - !4267 Update Georgian translation
+  - !4268 subprojects: Update pcre2 to 10.44
+  - !4269 docs(glib): Fix link in string-utils ref
+  - !4272 gio: Add a query_exists vfunc to GFile
+  - !4277 tests: Add some explicit float → int casts
+  - !4278 GDBus: Don't log a message for G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE
+  - !4286 glib/gvariant: avoid GVariantType copy for stack builders
+  - !4288 girepository: Make _blob_is_registered_type static inline
+  - !4290 glib/gbytes: save small byte buffers inline
+  - !4292 Fix incorrect use of assert/debug/check macros
+  - !4293 gvarianttypeinfo: reduce caching overhead
+  - !4294 gvarianttype: mark const functions as such
+  - !4295 gvariant: Avoid malloc/free in valid_format_string()
+  - !4296 glib/gvariant: use g_utf8_validate() for strlen
+  - !4297 glib/gvarianttype: g_variant_type_is_subtype_of() fastpath
+  - !4298 glib/gvariant: avoid g_renew() for definite tuples
+  - !4299 glib/gvariant: Avoid extraneous GBytes ref counting
+  - !4300 gpoll windows: use a threadpool when polling large number of fds
+  - !4301 glib/gvariant: Inline small gvariant data using C99 flexible arrays
+  - !4302 glib/gvariant: skip bitlock for g_variant_ref_sink()
+  - !4303 gbytes: Convert docs to gi-docgen linking syntax
+  - !4304 gutf8: Convert docs to gi-docgen linking syntax
+  - !4305 build: switch back to c_std=gnu99 pending ObjC fix
+  - !4307 ci: Re-enable fatal warnings for FreeBSD CI
+  - !4308 utils: Add g_steal_handle_id() to complement g_clear_handle_id()
+  - !4310 tests: FreeBSD doesn't use glibc
+  - !4311 tests: Move fake-document-portal subprocess inside dbus-appinfo test
+  - !4313 remove quadratic behavior in g_string_replace
+  - !4315 fuzzing: Add simple fuzz test for g_string_replace()
+  - !4318 CI: Use Visual Studio 2019 for the MSVC CI
+  - !4321 gvariant-core.c: Fix suffix alignment on 32-bit MSVC builds
+  - !4322 gvariant: Fix unused variables when G_DISABLE_ASSERT is defined
+  - !4323 gbytes: Add an assertion to placate static analysis
+  - !4326 gvarianttype: Add two missing (nullable) annotations and port docs to
+    gi-docgen format
+  - !4327 gio/gdatainputstream: use memchr() when possible
+  - !4331 gir: Ignore function-inline and method-inline elements
+  - !4332 gstring: Fix a heap buffer overflow in the new g_string_replace() code
+  - !4334 fuzzing: Add input length limits on g_string_replace() test
+  - !4335 docs: Update CI platforms list and Visual Studio recommendation
+  - !4338 CI/MSYS2: Fix prefix for gobject-introspection
+  - !4339 Win32 cleanup: do not define STRICT
+  - !4340 gsocket: Fix #ifdef for defining g_socket_get_adapter_ipv4_addr()
+  - !4341 gio: Use g_steal_handle_id() with signal unsubscriptions
+  - !4342 CI: Add manual CI job for VS2019 ARM64 builds
+  - !4343 CI: Skip PCRE2 tests for now for 32-bit Visual Studio builds
+  - !4344 glib/gutf8: use ifunc to check for valgrind
+  - !4345 fuzzing: Add fuzz tests for GDataInputStream’s complex read methods
+  - !4346 gdate: Fix minor typo in documentation comment
+  - !4347 docs: Add Meson to the GSettings build integration
+  - !4348 gdatainputstream: Fix length return value on UTF-8 validation failure
+  - !4350 glib: Don't require GLIB_DOMAIN to be a NUL-terminated string
+  - !4351 Build fixes for building on Solaris & illumos
+  - !4352 gdatainputstream: Use memchr() for the multi-stop-char case too
+  - !4353 docs: Add CI runner maintainers to CODEOWNERS
+  - !4354 glib.supp: Suppress more _g_io_module_get_default_type leaks
+  - !4358 Add a CI job for Debian stable i386 (32-bit)
+  - !4359 tests: Use g_assert_*() rather than g_assert() in GDateTime tests
+  - !4365 fuzzing: Fix buffer overread error in the fuzz test itself
+  - !4366 glocalfile: Disable faccessat()-based query_exists on FreeBSD
+  - !4367 tests: Fix calls to deprecated API in unix-mounts tests
+  - !4373 macos: Remove extraneous space from type identifier
+  - !4374 thread: Force-limit thread name length
+  - !4375 Small improvements to g_on_error_stack_trace and g_on_error_query
+  - !4376 Enable GNetworkMonitorNetlink on FreeBSD
+  - !4377 gvariant: Introduce G_VARIANT_BUILDER_INIT_UNSET
+  - !4378 gio: Fix GFileEnumerator leaks in gio tools
+  - !4383 gtask: Fix comment for auto task naming via 'g_task_set_source_tag()'
+
+* Translation updates:
+  - Bulgarian (twlvnn kraftwerk)
+  - Catalan (Jordi Mas)
+  - Czech (AsciiWolf)
+  - Danish (Ask Hjorth Larsen)
+  - English (United Kingdom) (Bruce Cowan)
+  - French (Vincent Chatelain)
+  - Galician (Fran Diéguez)
+  - Georgian (NorwayFun)
+  - Hungarian (Balázs Úr)
+  - Korean (Changwoo Ryu)
+  - Lithuanian (Aurimas Černius)
+  - Persian (Danial Behzadi)
+  - Polish (Piotr Drąg)
+  - Portuguese (Hugo Carvalho)
+  - Portuguese (Brazil) (Rafael Fontenelle)
+  - Russian (jtux270)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.81.2, 2024-08-16
 ==============================================
 
