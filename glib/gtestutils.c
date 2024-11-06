@@ -1642,6 +1642,7 @@ test_rm_isolate_dirs (void)
  *    unit test and uses g_set_user_dirs() to set XDG directories to point into
  *    that temporary directory for the duration of the unit test. See the
  *    documentation for %G_TEST_OPTION_ISOLATE_DIRS.
+ *  - "nonfatal-assertions": This has the same effect as [func@GLib.test_set_nonfatal_assertions]. Since 2.82
  *
  * Since 2.58, if tests are compiled with `G_DISABLE_ASSERT` defined,
  * g_test_init() will print an error and exit. This is to prevent no-op tests
@@ -1700,6 +1701,8 @@ void
         no_g_set_prgname = TRUE;
       else if (g_strcmp0 (option, G_TEST_OPTION_ISOLATE_DIRS) == 0)
         test_isolate_dirs = TRUE;
+      else if (g_strcmp0 (option, "nonfatal-assertions") == 0)
+        test_nonfatal_assertions = TRUE;
     }
   va_end (args);
 
