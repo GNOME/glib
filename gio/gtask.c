@@ -1126,8 +1126,7 @@ void
  * name of the #GSource used for idle completion of the task.
  *
  * This function may only be called before the @task is first used in a thread
- * other than the one it was constructed in. It is called automatically by
- * g_task_set_source_tag() if not called already.
+ * other than the one it was constructed in.
  *
  * Since: 2.60
  */
@@ -1154,6 +1153,9 @@ void
  * Sets @task’s name, used in debugging and profiling.
  *
  * This is a variant of g_task_set_name() that avoids copying @name.
+ *
+ * This function is called automatically by [method@Gio.Task.set_source_tag]
+ * unless a name is set.
  *
  * Since: 2.76
  */
