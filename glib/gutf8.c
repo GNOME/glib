@@ -1607,6 +1607,12 @@ load_u8 (gconstpointer memory,
 # define _attribute_aligned(n)
 #endif
 
+/* See the HAVE_WORKING_IFUNC_ATTRIBUTE definition for an explanation of the
+ * no_sanitize_address annotation.
+ */
+#if g_macro__has_attribute(no_sanitize_address)
+  __attribute__((no_sanitize_address))
+#endif
 static inline gsize
 load_word (gconstpointer memory,
            gsize         offset)
