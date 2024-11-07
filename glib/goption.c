@@ -1950,13 +1950,14 @@ g_option_context_parse (GOptionContext   *context,
                 }
               else
                 { /* short option */
-                  gint new_i = i, arg_length;
+                  gint new_i = i;
+                  size_t arg_length;
                   gboolean *nulled_out = NULL;
                   gboolean has_h_entry = context_has_h_entry (context);
                   arg = (*argv)[i] + 1;
                   arg_length = strlen (arg);
                   nulled_out = g_newa0 (gboolean, arg_length);
-                  for (int j = 0; j < arg_length; j++)
+                  for (size_t j = 0; j < arg_length; j++)
                     {
                       if (context->help_enabled && (arg[j] == '?' ||
                         (arg[j] == 'h' && !has_h_entry)))
@@ -1995,7 +1996,7 @@ g_option_context_parse (GOptionContext   *context,
                     {
                       gchar *new_arg = NULL;
                       gint arg_index = 0;
-                      for (int j = 0; j < arg_length; j++)
+                      for (size_t j = 0; j < arg_length; j++)
                         {
                           if (!nulled_out[j])
                             {
