@@ -1694,12 +1694,12 @@ g_scanner_get_token_i (GScanner	*scanner,
        * by copying between potentially-overlapping union members. */
       if (scanner->config->store_int64)
         {
-          gint64 temp = value_p->v_int64;
+          guint64 temp = value_p->v_int64;
           value_p->v_float = temp;
         }
       else
         {
-          gint temp = value_p->v_int;
+          gulong temp = value_p->v_int;
           value_p->v_float = temp;
         }
     }
