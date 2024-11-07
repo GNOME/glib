@@ -185,7 +185,7 @@ g_rand_new (void)
 
       if (dev_urandom)
 	{
-	  int r;
+	  size_t r;
 
 	  setvbuf (dev_urandom, NULL, _IONBF, 0);
 	  do
