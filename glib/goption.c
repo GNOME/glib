@@ -513,7 +513,7 @@ g_option_context_add_main_entries (GOptionContext      *context,
   g_option_group_set_translation_domain (context->main_group, translation_domain);
 }
 
-static gint
+static size_t
 calculate_max_length (GOptionGroup *group,
                       GHashTable   *aliases)
 {
@@ -549,7 +549,7 @@ calculate_max_length (GOptionGroup *group,
 
 static void
 print_entry (GOptionGroup       *group,
-             gint                max_length,
+             size_t              max_length,
              const GOptionEntry *entry,
              GString            *string,
              GHashTable         *aliases)
@@ -590,7 +590,7 @@ group_has_visible_entries (GOptionContext *context,
 {
   GOptionFlags reject_filter = G_OPTION_FLAG_HIDDEN;
   GOptionEntry *entry;
-  gint i, l;
+  size_t i, l;
   gboolean main_group = group == context->main_group;
 
   if (!main_entries)
@@ -680,7 +680,7 @@ g_option_context_get_help (GOptionContext *context,
                            GOptionGroup   *group)
 {
   GList *list;
-  gint max_length = 0, len;
+  size_t max_length = 0, len;
   gsize i;
   GOptionEntry *entry;
   GHashTable *shadow_map;
@@ -822,6 +822,8 @@ g_option_context_get_help (GOptionContext *context,
   /* Add a bit of padding */
   max_length += 4;
 
+  g_assert (max_length <= G_MAXINT);
+
   if (!group && context->help_enabled)
     {
       list = context->groups;
@@ -829,13 +831,13 @@ g_option_context_get_help (GOptionContext *context,
       token = context_has_h_entry (context) ? '?' : 'h';
 
       g_string_append_printf (string, "%s\n  -%c, --%-*s %s\n",
-                              _("Help Options:"), token, max_length - 4, "help",
+                              _("Help Options:"), token, (int) max_length - 4, "help",
                               _("Show help options"));
 
       /* We only want --help-all when there are groups */
       if (list)
         g_string_append_printf (string, "  --%-*s %s\n",
-                                max_length, "help-all",
+                                (int) max_length, "help-all",
                                 _("Show all help options"));
 
       while (list)
@@ -844,7 +846,7 @@ g_option_context_get_help (GOptionContext *context,
 
           if (group_has_visible_entries (context, g, FALSE))
             g_string_append_printf (string, "  --help-%-*s %s\n",
-                                    max_length - 5, g->name,
+                                    (int) max_length - 5, g->name,
                                     TRANSLATE (g, g->help_description));
 
           list = list->next;
