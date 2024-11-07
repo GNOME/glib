@@ -2383,7 +2383,7 @@ journal_sendv (struct iovec *iov,
 
   memset (&mh, 0, sizeof (mh));
   mh.msg_name = &sa;
-  mh.msg_namelen = offsetof (struct sockaddr_un, sun_path) + strlen (sa.sun_path);
+  mh.msg_namelen = offsetof (struct sockaddr_un, sun_path) + (socklen_t) strlen (sa.sun_path);
   mh.msg_iov = iov;
   mh.msg_iovlen = iovlen;
 
