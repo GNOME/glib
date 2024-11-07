@@ -159,6 +159,9 @@ glib_tests = {
     'extra_programs' : ['testing-helper'],
     'c_args' : cc.get_id() == 'gcc' ? ['-Werror=sign-conversion'] : [],
   },
+  'testing-nonfatal' : {
+    'protocol' : 'exitcode'
+  },
   'test-printf' : {},
   'thread' : {},
   'thread-deprecated' : {},
