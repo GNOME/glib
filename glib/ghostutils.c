@@ -208,7 +208,7 @@ punycode_encode (const gchar *input_utf8,
  */
 static gchar *
 remove_junk (const gchar *str,
-             gint         len)
+             gssize       len)
 {
   GString *cleaned = NULL;
   const gchar *p;
@@ -237,7 +237,7 @@ remove_junk (const gchar *str,
 
 static inline gboolean
 contains_uppercase_letters (const gchar *str,
-                            gint         len)
+                            gssize       len)
 {
   const gchar *p;
 
@@ -251,7 +251,7 @@ contains_uppercase_letters (const gchar *str,
 
 static inline gboolean
 contains_non_ascii (const gchar *str,
-                    gint         len)
+                    gssize       len)
 {
   const gchar *p;
 
@@ -298,7 +298,7 @@ idna_is_prohibited (gunichar ch)
 /* RFC 3491 IDN cleanup algorithm. */
 static gchar *
 nameprep (const gchar *hostname,
-          gint         len,
+          gssize       len,
           gboolean    *is_unicode)
 {
   gchar *name, *tmp = NULL, *p;
