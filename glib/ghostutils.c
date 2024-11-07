@@ -301,7 +301,8 @@ nameprep (const gchar *hostname,
           gssize       len,
           gboolean    *is_unicode)
 {
-  gchar *name, *tmp = NULL, *p;
+  const char *name, *p;
+  char *name_owned = NULL, *name_normalized = NULL;
 
   /* It would be nice if we could do this without repeatedly
    * allocating strings and converting back and forth between
@@ -311,21 +312,20 @@ nameprep (const gchar *hostname,
    */
 
   /* Remove presentation-only characters */
-  name = remove_junk (hostname, len);
+  name = name_owned = remove_junk (hostname, len);
   if (name)
-    {
-      tmp = name;
-      len = -1;
-    }
+    len = -1;
   else
-    name = (gchar *)hostname;
+    name = hostname;
 
   /* Convert to lowercase */
   if (contains_uppercase_letters (name, len))
     {
-      name = g_utf8_strdown (name, len);
-      g_free (tmp);
-      tmp = name;
+      char *name_owned_lower = NULL;
+
+      name = name_owned_lower = g_utf8_strdown (name, len);
+      g_free (name_owned);
+      name_owned = g_steal_pointer (&name_owned_lower);
       len = -1;
     }
 
@@ -333,18 +333,19 @@ nameprep (const gchar *hostname,
   if (!contains_non_ascii (name, len))
     {
       *is_unicode = FALSE;
-      if (name == (gchar *)hostname)
+      if (name == hostname)
         return len == -1 ? g_strdup (hostname) : g_strndup (hostname, len);
       else
-        return name;
+        return g_steal_pointer (&name_owned);
     }
 
   *is_unicode = TRUE;
 
   /* Normalize */
-  name = g_utf8_normalize (name, len, G_NORMALIZE_NFKC);
-  g_free (tmp);
-  tmp = name;
+  name = name_normalized = g_utf8_normalize (name, len, G_NORMALIZE_NFKC);
+  g_free (name_owned);
+  name_owned = g_steal_pointer (&name_normalized);
+  len = -1;
 
   if (!name)
     return NULL;
@@ -356,11 +357,14 @@ nameprep (const gchar *hostname,
    * same as tolower(nfkc(X)), then we could skip the first tolower,
    * but I'm not sure it is.)
    */
-  if (contains_uppercase_letters (name, -1))
+  if (contains_uppercase_letters (name, len))
     {
-      name = g_utf8_strdown (name, -1);
-      g_free (tmp);
-      tmp = name;
+      char *name_owned_lower = NULL;
+
+      name = name_owned_lower = g_utf8_strdown (name, len);
+      g_free (name_owned);
+      name_owned = g_steal_pointer (&name_owned_lower);
+      len = -1;
     }
 
   /* Check for prohibited characters */
@@ -369,7 +373,8 @@ nameprep (const gchar *hostname,
       if (idna_is_prohibited (g_utf8_get_char (p)))
 	{
 	  name = NULL;
-          g_free (tmp);
+          g_clear_pointer (&name_owned, g_free);
+          len = -1;
 	  goto done;
 	}
     }
@@ -379,7 +384,7 @@ nameprep (const gchar *hostname,
    */
 
  done:
-  return name;
+  return g_steal_pointer (&name_owned);
 }
 
 /* RFC 3490, section 3.1 says '.', 0x3002, 0xFF0E, and 0xFF61 count as
