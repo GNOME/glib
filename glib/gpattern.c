@@ -289,12 +289,13 @@ g_pattern_spec_new (const gchar *pattern)
 {
   GPatternSpec *pspec;
   gboolean seen_joker = FALSE, seen_wildcard = FALSE, more_wildcards = FALSE;
-  gint hw_pos = -1, tw_pos = -1, hj_pos = -1, tj_pos = -1;
+  size_t hw_pos = 0, tw_pos = 0, hj_pos = 0, tj_pos = 0;
+  gboolean hw_pos_set = FALSE, hj_pos_set = FALSE;
   gboolean follows_wildcard = FALSE;
   guint pending_jokers = 0;
   const gchar *s;
   gchar *d;
-  guint i;
+  size_t i;
   
   g_return_val_if_fail (pattern != NULL, NULL);
 
@@ -316,8 +317,11 @@ g_pattern_spec_new (const gchar *pattern)
 	      continue;
 	    }
 	  follows_wildcard = TRUE;
-	  if (hw_pos < 0)
-	    hw_pos = i;
+	  if (!hw_pos_set)
+            {
+              hw_pos = i;
+              hw_pos_set = TRUE;
+            }
 	  tw_pos = i;
 	  break;
 	case '?':
@@ -328,8 +332,11 @@ g_pattern_spec_new (const gchar *pattern)
 	default:
 	  for (; pending_jokers; pending_jokers--, i++) {
 	    *d++ = '?';
-  	    if (hj_pos < 0)
-	     hj_pos = i;
+            if (!hj_pos_set)
+              {
+                hj_pos = i;
+                hj_pos_set = TRUE;
+              }
 	    tj_pos = i;
 	  }
 	  follows_wildcard = FALSE;
@@ -342,13 +349,16 @@ g_pattern_spec_new (const gchar *pattern)
     }
   for (; pending_jokers; pending_jokers--) {
     *d++ = '?';
-    if (hj_pos < 0)
-      hj_pos = i;
+    if (!hj_pos_set)
+      {
+        hj_pos = i;
+        hj_pos_set = TRUE;
+      }
     tj_pos = i;
   }
   *d++ = 0;
-  seen_joker = hj_pos >= 0;
-  seen_wildcard = hw_pos >= 0;
+  seen_joker = hj_pos_set;
+  seen_wildcard = hw_pos_set;
   more_wildcards = seen_wildcard && hw_pos != tw_pos;
   if (seen_wildcard)
     pspec->max_length = G_MAXUINT;
