@@ -972,7 +972,7 @@ parse_int (const gchar *arg_name,
       return FALSE;
     }
 
-  *result = tmp;
+  *result = (int) tmp;
   if (*result != tmp || errno == ERANGE)
     {
       g_set_error (error,
