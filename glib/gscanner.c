@@ -1168,7 +1168,7 @@ g_scanner_peek_next_char (GScanner *scanner)
     }
   else if (scanner->input_fd >= 0)
     {
-      gint count;
+      gssize count;
       gchar *buffer;
 
       buffer = scanner->buffer;
@@ -1218,7 +1218,7 @@ g_scanner_sync_file_offset (GScanner *scanner)
 
   if (scanner->input_fd >= 0 && scanner->text_end > scanner->text)
     {
-      gint buffered;
+      goffset buffered;
 
       buffered = scanner->text_end - scanner->text;
       if (lseek (scanner->input_fd, - buffered, SEEK_CUR) >= 0)
@@ -1243,7 +1243,7 @@ g_scanner_get_char (GScanner	*scanner,
     fchar = *(scanner->text++);
   else if (scanner->input_fd >= 0)
     {
-      gint count;
+      gssize count;
       gchar *buffer;
 
       buffer = scanner->buffer;
