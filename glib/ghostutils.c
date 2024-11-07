@@ -35,6 +35,7 @@
 #include "gmessages.h"
 #include "gstring.h"
 #include "gstrfuncs.h"
+#include "gtestutils.h"
 #include "glibintl.h"
 
 #ifdef G_PLATFORM_WIN32
@@ -587,8 +588,10 @@ punycode_decode (const gchar *input,
     split--;
   if (split > input)
     {
+      g_assert ((guint) (split - input) <= G_MAXUINT);
+
       output_chars = g_array_sized_new (FALSE, FALSE, sizeof (gunichar),
-					split - input);
+					(guint) (split - input));
       input_length -= (split - input) + 1;
       while (input < split)
 	{
