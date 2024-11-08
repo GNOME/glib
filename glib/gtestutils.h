@@ -302,6 +302,8 @@ void    g_test_init                     (int            *argc,
 /**
  * G_TEST_OPTION_ISOLATE_DIRS:
  *
+ * A value that can be passed as an option to [func@GLib.test_init].
+ *
  * Creates a unique temporary directory for each unit test and uses
  * g_set_user_dirs() to set XDG directories to point into subdirectories of it
  * for the duration of the unit test. The directory tree is cleaned up after the
@@ -329,6 +331,29 @@ void    g_test_init                     (int            *argc,
  * Since: 2.60
  */
 #define G_TEST_OPTION_ISOLATE_DIRS "isolate_dirs"
+
+/**
+ * G_TEST_OPTION_NO_PRGNAME:
+ *
+ * A value that can be passed as an option to [func@GLib.test_init].
+ *
+ * If this option is given, [func@GLib.test_init] will not call [func@GLib.set_prgname].
+ *
+ * Since: 2.84
+ */
+#define G_TEST_OPTION_NO_PRGNAME "no_g_set_prgname"
+
+/**
+ * G_TEST_OPTION_NONFATAL_ASSERTIONS:
+ *
+ * A value that can be passed as an option to [func@GLib.test_init].
+ *
+ * If this option is given, assertions will not abort the process, but
+ * call [func@GLib.test_fail]. Equivalent to [func@GLib.test_set_nonfatal_assertions].
+ *
+ * Since: 2.84
+ */
+#define G_TEST_OPTION_NONFATAL_ASSERTIONS "nonfatal-assertions"
 
 /* While we discourage its use, g_assert() is often used in unit tests
  * (especially in legacy code). g_assert_*() should really be used instead.
