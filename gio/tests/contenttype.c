@@ -541,7 +541,7 @@ test_mime_to_content (void)
   g_assert_cmpstr (uti, ==, "public.svg-image");
   g_free (uti);
   uti = g_content_type_from_mime_type ("application/my-custom-type");
-  g_assert (g_str_has_prefix (uti, "dyn."));
+  g_assert_true (g_str_has_prefix (uti, "dyn."));
   g_free (uti);
 #elif defined(G_OS_WIN32)
   g_test_skip ("mime from content type test not implemented on WIN32");
