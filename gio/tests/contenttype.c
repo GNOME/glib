@@ -520,6 +520,36 @@ test_mime_from_content (void)
 #endif
 }
 
+static void
+test_mime_to_content (void)
+{
+#ifdef __APPLE__
+  gchar *uti;
+  uti = g_content_type_from_mime_type ("image/bmp");
+  g_assert_cmpstr (uti, ==, "com.microsoft.bmp");
+  g_free (uti);
+  uti = g_content_type_from_mime_type ("image/gif");
+  g_assert_cmpstr (uti, ==, "com.compuserve.gif");
+  g_free (uti);
+  uti = g_content_type_from_mime_type ("image/png");
+  g_assert_cmpstr (uti, ==, "public.png");
+  g_free (uti);
+  uti = g_content_type_from_mime_type ("text/*");
+  g_assert_cmpstr (uti, ==, "public.text");
+  g_free (uti);
+  uti = g_content_type_from_mime_type ("image/svg+xml");
+  g_assert_cmpstr (uti, ==, "public.svg-image");
+  g_free (uti);
+  uti = g_content_type_from_mime_type ("application/my-custom-type");
+  g_assert_true (g_str_has_prefix (uti, "dyn."));
+  g_free (uti);
+#elif defined(G_OS_WIN32)
+  g_test_skip ("mime from content type test not implemented on WIN32");
+#else
+  g_test_skip ("mime from content type test not implemented on UNIX");
+#endif
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -527,6 +557,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/contenttype/guess", test_guess);
   g_test_add_func ("/contenttype/guess_svg_from_data", test_guess_svg_from_data);
+  g_test_add_func ("/contenttype/mime_to_content", test_mime_to_content);
   g_test_add_func ("/contenttype/mime_from_content", test_mime_from_content);
   g_test_add_func ("/contenttype/unknown", test_unknown);
   g_test_add_func ("/contenttype/subtype", test_subtype);
