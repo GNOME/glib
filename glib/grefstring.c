@@ -24,7 +24,7 @@
 
 #include "ghash.h"
 #include "gmessages.h"
-#include "grcbox.h"
+#include "gtestutils.h"
 #include "gthread.h"
 
 #include <string.h>
@@ -36,6 +36,43 @@
  */
 G_LOCK_DEFINE_STATIC (interned_ref_strings);
 static GHashTable *interned_ref_strings;
+
+#if G_GNUC_CHECK_VERSION(4,8) || defined(__clang__)
+# define _attribute_aligned(n) __attribute__((aligned(n)))
+#elif defined(_MSC_VER)
+# define _attribute_aligned(n) __declspec(align(n))
+#else
+# define _attribute_aligned(n)
+#endif
+
+typedef struct {
+  /* Length of the string without NUL-terminator */
+  size_t len;
+  /* Atomic reference count placed here to reduce struct padding */
+  int ref_count;
+  /* TRUE if interned, FALSE otherwise; immutable after construction */
+  guint8 interned;
+
+  /* First character of the actual string
+   * Make sure it is at least 2 * sizeof (size_t) aligned to allow for SIMD
+   * optimizations in operations on the string.
+   * Because MSVC sucks we need to handle both cases explicitly. */
+#if GLIB_SIZEOF_SIZE_T == 4
+  _attribute_aligned (8) char s[];
+#elif GLIB_SIZEOF_SIZE_T == 8
+  _attribute_aligned (16) char s[];
+#else
+#error "Only 32 bit and 64 bit size_t supported currently"
+#endif
+} GRefStringImpl;
+
+/* Assert that the start of the actual string is at least 2 * alignof (size_t) aligned */
+G_STATIC_ASSERT (offsetof (GRefStringImpl, s) % (2 * G_ALIGNOF (size_t)) == 0);
+
+/* Gets a pointer to the GRefStringImpl from its string pointer */
+#define G_REF_STRING_IMPL_FROM_STR(str) ((GRefStringImpl *) ((guint8 *) str - offsetof (GRefStringImpl, s)))
+/* Gets a pointer to the string pointer from the GRefStringImpl */
+#define G_REF_STRING_IMPL_TO_STR(str) (str->s)
 
 /**
  * g_ref_string_new:
@@ -51,16 +88,23 @@ static GHashTable *interned_ref_strings;
 char *
 g_ref_string_new (const char *str)
 {
-  char *res;
+  GRefStringImpl *impl;
   gsize len;
 
   g_return_val_if_fail (str != NULL, NULL);
-  
-  len = strlen (str);
-  
-  res = (char *) g_atomic_rc_box_dup (sizeof (char) * len + 1, str);
 
-  return res;
+  len = strlen (str);
+
+  if (sizeof (char) * len > G_MAXSIZE - sizeof (GRefStringImpl) - 1)
+    g_error ("GRefString allocation would overflow");
+
+  impl = g_malloc (sizeof (GRefStringImpl) + sizeof (char) * len + 1);
+  impl->len = len;
+  impl->ref_count = 1;
+  impl->interned = FALSE;
+  memcpy (G_REF_STRING_IMPL_TO_STR (impl), str, len + 1);
+
+  return G_REF_STRING_IMPL_TO_STR (impl);
 }
 
 /**
@@ -81,7 +125,7 @@ g_ref_string_new (const char *str)
 char *
 g_ref_string_new_len (const char *str, gssize len)
 {
-  char *res;
+  GRefStringImpl *impl;
 
   g_return_val_if_fail (str != NULL, NULL);
 
@@ -89,11 +133,17 @@ g_ref_string_new_len (const char *str, gssize len)
     return g_ref_string_new (str);
 
   /* allocate then copy as str[len] may not be readable */
-  res = (char *) g_atomic_rc_box_alloc ((gsize) len + 1);
-  memcpy (res, str, len);
-  res[len] = '\0';
+  if (sizeof (char) * len > G_MAXSIZE - sizeof (GRefStringImpl) - 1)
+    g_error ("GRefString allocation would overflow");
 
-  return res;
+  impl = g_malloc (sizeof (GRefStringImpl) + sizeof (char) * len + 1);
+  impl->len = len;
+  impl->ref_count = 1;
+  impl->interned = FALSE;
+  memcpy (G_REF_STRING_IMPL_TO_STR (impl), str, len);
+  G_REF_STRING_IMPL_TO_STR (impl)[len] = '\0';
+
+  return G_REF_STRING_IMPL_TO_STR (impl);
 }
 
 /* interned_str_equal: variant of g_str_equal() that compares
@@ -147,17 +197,14 @@ g_ref_string_new_intern (const char *str)
   res = g_hash_table_lookup (interned_ref_strings, str);
   if (res != NULL)
     {
-      /* We acquire the reference while holding the lock, to
-       * avoid a potential race between releasing the lock on
-       * the hash table and another thread releasing the reference
-       * on the same string
-       */
-      g_atomic_rc_box_acquire (res);
+      GRefStringImpl *impl = G_REF_STRING_IMPL_FROM_STR (res);
+      g_atomic_int_inc (&impl->ref_count);
       G_UNLOCK (interned_ref_strings);
       return res;
     }
 
   res = g_ref_string_new (str);
+  G_REF_STRING_IMPL_FROM_STR (res)->interned = TRUE;
   g_hash_table_add (interned_ref_strings, res);
   G_UNLOCK (interned_ref_strings);
 
@@ -179,25 +226,9 @@ g_ref_string_acquire (char *str)
 {
   g_return_val_if_fail (str != NULL, NULL);
 
-  return g_atomic_rc_box_acquire (str);
-}
+  g_atomic_int_inc (&G_REF_STRING_IMPL_FROM_STR (str)->ref_count);
 
-static void
-remove_if_interned (gpointer data)
-{
-  char *str = data;
-
-  G_LOCK (interned_ref_strings);
-
-  if (G_LIKELY (interned_ref_strings != NULL))
-    {
-      g_hash_table_remove (interned_ref_strings, str);
-
-      if (g_hash_table_size (interned_ref_strings) == 0)
-        g_clear_pointer (&interned_ref_strings, g_hash_table_destroy);
-    }
-
-  G_UNLOCK (interned_ref_strings);
+  return str;
 }
 
 /**
@@ -212,9 +243,51 @@ remove_if_interned (gpointer data)
 void
 g_ref_string_release (char *str)
 {
+  GRefStringImpl *impl;
+  int old_ref_count;
+
   g_return_if_fail (str != NULL);
 
-  g_atomic_rc_box_release_full (str, remove_if_interned);
+  impl = G_REF_STRING_IMPL_FROM_STR (str);
+
+  /* Non-interned strings are easy so let's get that out of the way here first */
+  if (!impl->interned)
+    {
+      if (g_atomic_int_dec_and_test (&impl->ref_count))
+        g_free (impl);
+      return;
+    }
+
+  old_ref_count = g_atomic_int_get (&impl->ref_count);
+  g_assert (old_ref_count >= 1);
+retry:
+  /* Fast path: multiple references, we can just try decrementing and be done with it */
+  if (old_ref_count > 1)
+    {
+      /* If the reference count stayed the same we're done, otherwise retry */
+      if (!g_atomic_int_compare_and_exchange_full (&impl->ref_count, old_ref_count, old_ref_count - 1, &old_ref_count))
+        goto retry;
+
+      return;
+    }
+
+  /* This is the last reference *currently* and would potentially free the string.
+   * To avoid races between freeing it and returning it from g_ref_string_new_intern()
+   * we must take the lock here before decrementing the reference count!
+   */
+  G_LOCK (interned_ref_strings);
+  /* If the string was not given out again in the meantime we're done */
+  if (g_atomic_int_dec_and_test (&impl->ref_count))
+    {
+      gboolean removed = g_hash_table_remove (interned_ref_strings, str);
+      g_assert (removed);
+
+      if (g_hash_table_size (interned_ref_strings) == 0)
+        g_clear_pointer (&interned_ref_strings, g_hash_table_destroy);
+
+      g_free (impl);
+    }
+  G_UNLOCK (interned_ref_strings);
 }
 
 /**
@@ -232,5 +305,5 @@ g_ref_string_length (char *str)
 {
   g_return_val_if_fail (str != NULL, 0);
 
-  return g_atomic_rc_box_get_size (str) - 1;
+  return G_REF_STRING_IMPL_FROM_STR (str)->len;
 }
