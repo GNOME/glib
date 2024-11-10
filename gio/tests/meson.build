@@ -60,10 +60,7 @@ gio_tests = {
   'buffered-output-stream' : {},
   'cancellable' : {},
   'contexts' : {},
-  'contenttype' : {
-    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392 / https://gitlab.gnome.org/GNOME/glib/-/issues/1251
-    'can_fail' : host_system == 'darwin',
-  },
+  'contenttype' : {},
   'converter-stream' : {
     # musl: charset tests fail due to missing collation support in musl libc
     # From https://wiki.musl-libc.org/roadmap#Open_future_goals
