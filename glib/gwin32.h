@@ -43,6 +43,11 @@ G_BEGIN_DECLS
 
 #ifdef G_OS_WIN32
 
+/* needed include for mingw-w[32|64] C++ builds; including this on Visual Studio in C mode will cause havoc of type conflicts */
+#if !defined (_MSC_VER) || defined (__cplusplus)
+#include <unknwn.h>
+#endif
+
 /*
  * To get prototypes for the following POSIXish functions, you have to
  * include the indicated non-POSIX headers. The functions are defined
@@ -135,7 +140,59 @@ gboolean g_win32_check_windows_version (const gint major,
                                         const gint spver,
                                         const GWin32OSType os_type);
 
+/**
+ * g_win32_clear_com:
+ * @com_obj: (not optional) (nullable): Pointer to COM object pointer to release and possibly clear
+ *
+ * Releases and so decrements the reference count of the COM object, and clears
+ * its pointer to `NULL` if its reference count reaches 0.
+ *
+ * The @com_obj pointer must not be NULL.
+ *
+ * If @com_obj references a `NULL` COM  object, this function is a no-op.
+ *
+ * This is equivalent to [func@GObject.clear_object] for dealing with
+ * Windows COM objects.
+ *
+ * Since: 2.84
+ */
+
+#ifndef __cplusplus
+
+#define g_win32_clear_com(com_obj) \
+G_STMT_START {\
+  IUnknown **unknown_com_obj = (IUnknown **)(com_obj); \
+  \
+  if (*unknown_com_obj) \
+    { \
+      (*unknown_com_obj)->lpVtbl->Release (*unknown_com_obj); \
+      *unknown_com_obj = NULL; \
+    } \
+}G_STMT_END
+
+#endif
+
 G_END_DECLS
+
+#ifdef __cplusplus
+/*
+ * There are COM objects that only have C++-style definitions, such as DirectWrite
+ * from the Windows SDK (albeit a C interface is provided for the mingw-w64 toolchain),
+ * so we need to have a C++ version for this
+ */
+template <typename com_interface>
+inline void
+g_win32_clear_com (com_interface **com_obj)
+{
+  IUnknown **unknown_com_obj = reinterpret_cast<IUnknown **>(com_obj);
+
+  if (*unknown_com_obj != nullptr)
+    {
+      (*unknown_com_obj)->Release ();
+      *unknown_com_obj = nullptr;
+    }
+}
+#endif
 
 #endif	 /* G_PLATFORM_WIN32 */
 
