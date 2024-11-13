@@ -279,7 +279,9 @@ retry:
   /* If the string was not given out again in the meantime we're done */
   if (g_atomic_int_dec_and_test (&impl->ref_count))
     {
-      gboolean removed = g_hash_table_remove (interned_ref_strings, str);
+      gboolean removed G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
+
+      removed = g_hash_table_remove (interned_ref_strings, str);
       g_assert (removed);
 
       if (g_hash_table_size (interned_ref_strings) == 0)
