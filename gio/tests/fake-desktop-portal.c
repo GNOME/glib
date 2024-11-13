@@ -22,6 +22,12 @@
 
 /* A stub implementation of xdg-desktop-portal */
 
+#ifdef __FreeBSD__
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/user.h>
+#endif  /* __FreeBSD__ */
+
 #include <glib.h>
 #include <gio/gio.h>
 #include <gio/gunixfdlist.h>
@@ -206,7 +212,7 @@ handle_to_uri (GVariant    *handle,
 {
   int fd = -1;
   int fd_id;
-  char *proc_path;
+  char *proc_path = NULL;
   char *path;
   char *uri;
 
@@ -216,8 +222,17 @@ handle_to_uri (GVariant    *handle,
   if (fd == -1)
     return NULL;
 
+#ifdef __FreeBSD__
+  struct kinfo_file kf;
+  kf.kf_structsize = sizeof (kf);
+  if (fcntl (fd, F_KINFO, &kf) == -1)
+    return NULL;
+  path = g_strdup (kf.kf_path);
+
+#else
   proc_path = g_strdup_printf ("/proc/self/fd/%d", fd);
   path = g_file_read_link (proc_path, NULL);
+#endif
   g_assert_nonnull (path);
 
   uri = g_filename_to_uri (path, NULL, NULL);
