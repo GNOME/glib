@@ -23,6 +23,44 @@
 #include <stdlib.h>
 #include <string.h>
 
+static void
+test_extra_bytes_at_end (void)
+{
+  char data[1024];
+  gsize size;
+  GBytes *bytes;
+  GConverter *converter;
+  GError *error = NULL;
+  GBytes *result;
+
+  /* Create some simple data to encode */
+  data[0] = 0;
+  bytes = g_bytes_new_static (data, 1);
+
+  /* encode the data */
+  converter = G_CONVERTER (g_zlib_compressor_new (G_ZLIB_COMPRESSOR_FORMAT_GZIP, 9));
+  result = g_converter_convert_bytes (converter, bytes, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (result);
+  g_bytes_unref (bytes);
+
+  /* Append a 0 byte to the encoded data */
+  size = g_bytes_get_size (result);
+  g_assert_cmpint (size, <, G_N_ELEMENTS (data)); /* just to be very sure */
+  memcpy (data, g_bytes_get_data (result, NULL), size);
+  data[size] = 0;
+  bytes = g_bytes_new_static (data, size + 1);
+  g_bytes_unref (result);
+
+  /* Decompress the just compressed bytes with the extra 0 */
+  converter = G_CONVERTER (g_zlib_decompressor_new (G_ZLIB_COMPRESSOR_FORMAT_GZIP));
+  result = g_converter_convert_bytes (converter, bytes, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_MESSAGE_TOO_LARGE);
+  g_assert_null (result);
+
+  g_object_unref (converter);
+  g_bytes_unref (bytes);
+}
 
 static void
 test_convert_bytes (void)
@@ -63,6 +101,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/converter/bytes", test_convert_bytes);
+  g_test_add_func ("/converter/extra-bytes-at-end", test_extra_bytes_at_end);
 
   return g_test_run();
 }
