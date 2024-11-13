@@ -91,7 +91,7 @@ timeout_cb (gpointer user_data)
 {
   gboolean *timed_out = user_data;
 
-  g_assert (!timed_out);
+  g_assert (!*timed_out);
   *timed_out = TRUE;
   g_main_context_wakeup (g_main_context_get_thread_default ());
 
