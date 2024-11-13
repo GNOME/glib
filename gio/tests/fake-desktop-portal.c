@@ -222,8 +222,8 @@ handle_to_uri (GVariant    *handle,
 
 #ifdef __FreeBSD__
   struct kinfo_file kf;
-  kf.kf_structsize = sizeof(kf);
-  if (fcntl(fd, F_KINFO, &kf) == -1)
+  kf.kf_structsize = sizeof (kf);
+  if (fcntl (fd, F_KINFO, &kf) == -1)
     return NULL;
   path = g_strdup (kf.kf_path);
 
