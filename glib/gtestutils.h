@@ -304,29 +304,31 @@ void    g_test_init                     (int            *argc,
  *
  * A value that can be passed as an option to [func@GLib.test_init].
  *
- * Creates a unique temporary directory for each unit test and uses
- * g_set_user_dirs() to set XDG directories to point into subdirectories of it
- * for the duration of the unit test. The directory tree is cleaned up after the
- * test finishes successfully. Note that this doesn’t take effect until
- * g_test_run() is called, so calls to (for example) g_get_user_home_dir() will
- * return the system-wide value when made in a test program’s main() function.
+ * Creates a unique temporary directory for each unit test and uses sets
+ * XDG directories to point into subdirectories of it for the duration of
+ * the unit test. The directory tree is cleaned up after the test finishes
+ * successfully.
+ *
+ * Note that this doesn’t take effect until [func@GLib.test_run] is called,
+ * so calls to (for example) [func@GLib.get_home_dir] will return the
+ * system-wide value when made in a test program’s main() function.
  *
  * The following functions will return subdirectories of the temporary directory
  * when this option is used. The specific subdirectory paths in use are not
  * guaranteed to be stable API — always use a getter function to retrieve them.
  *
- *  - g_get_home_dir()
- *  - g_get_user_cache_dir()
- *  - g_get_system_config_dirs()
- *  - g_get_user_config_dir()
- *  - g_get_system_data_dirs()
- *  - g_get_user_data_dir()
- *  - g_get_user_state_dir()
- *  - g_get_user_runtime_dir()
+ *  - [func@GLib.get_home_dir]
+ *  - [func@GLib.get_user_cache_dir]
+ *  - [func@GLib.get_system_config_dirs]
+ *  - [func@GLib.get_user_config_dir]
+ *  - [func@GLib.get_system_data_dirs]
+ *  - [func@GLib.get_user_data_dir]
+ *  - [func@GLib.get_user_state_dir]
+ *  - [func@GLib.get_user_runtime_dir]
  *
  * The subdirectories may not be created by the test harness; as with normal
- * calls to functions like g_get_user_cache_dir(), the caller must be prepared
- * to create the directory if it doesn’t exist.
+ * calls to functions like [func@GLib.get_user_cache_dir], the caller must
+ * be prepared to create the directory if it doesn’t exist.
  *
  * Since: 2.60
  */
@@ -507,12 +509,13 @@ void    g_test_queue_destroy            (GDestroyNotify destroy_func,
  *     child process is shared with stdin of its parent process.
  *     It is redirected to `/dev/null` otherwise.
  *
- * Test traps are guards around forked tests.
- * These flags determine what traps to set.
+ * Flags to pass to [func@GLib.test_trap_fork] to control input and output.
  *
- * Deprecated: 2.38: #GTestTrapFlags is used only with g_test_trap_fork(),
- * which is deprecated. g_test_trap_subprocess() uses
- * #GTestSubprocessFlags.
+ * Test traps are guards around forked tests. These flags determine what traps to set.
+ *
+ * Deprecated: 2.38: `GTestTrapFlags` is used only with [func@GLib.test_trap_fork],
+ *   which is deprecated. Its replacement, [func@GLib.test_trap_subprocess] uses
+ *   [flags@GLib.TestSubprocessFlags].
  */
 typedef enum {
   G_TEST_TRAP_DEFAULT GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
