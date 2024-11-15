@@ -71,9 +71,9 @@
 /**
  * g_test_initialized:
  *
- * Returns `TRUE` if [func@GLib.test_init] has been called.
+ * Returns true if [func@GLib.test_init] has been called.
  *
- * Returns: `TRUE` if [func@GLib.test_init] has been called.
+ * Returns: true if [func@GLib.test_init] has been called.
  *
  * Since: 2.36
  */
@@ -81,7 +81,7 @@
 /**
  * g_test_quick:
  *
- * Returns `TRUE` if tests are run in quick mode.
+ * Returns true if tests are run in quick mode.
  *
  * Tests are always run in slow mode or in fast mode; there is no "medium speed".
  *
@@ -89,13 +89,13 @@
  * [func@GLib.test_init], the options `-m quick`, `-m slow` and `-m thorough`
  * can be used to change this.
  *
- * Returns: `TRUE` if in quick mode
+ * Returns: true if in quick mode
  */
 
 /**
  * g_test_slow:
  *
- * Returns `TRUE` if tests are run in slow mode.
+ * Returns true if tests are run in slow mode.
  *
  * Tests are always run in slow mode or in fast mode; there is no "medium speed".
  *
@@ -103,13 +103,13 @@
  * [func@GLib.test_init], the options `-m quick`, `-m slow` and `-m thorough`
  * can be used to change this.
  *
- * Returns: `TRUE` if in slow mode
+ * Returns: true if in slow mode
  */
 
 /**
  * g_test_thorough:
  *
- * Returns `TRUE` if tests are run in thorough mode.
+ * Returns true if tests are run in thorough mode.
  *
  * Thorough mode is equivalent to slow mode.
  *
@@ -117,25 +117,25 @@
  * [func@GLib.test_init], the options `-m quick`, `-m slow` and `-m thorough`
  * can be used to change this.
  *
- * Returns: `TRUE` if in thorough mode
+ * Returns: true if in thorough mode
  */
 
 /**
  * g_test_perf:
  *
- * Returns `TRUE` if tests are run in performance mode.
+ * Returns true if tests are run in performance mode.
  *
  * By default, tests are run in quick mode. In tests that use
  * [func@GLib.test_init], the option `-m perf` enables performance tests, while
  * `-m quick` disables them.
  *
- * Returns: `TRUE` if in performance mode
+ * Returns: true if in performance mode
  */
 
 /**
  * g_test_undefined:
  *
- * Returns `TRUE` if tests may provoke assertions and other formally-undefined
+ * Returns true if tests may provoke assertions and other formally-undefined
  * behaviour, to verify that appropriate warnings are given.
  *
  * This might, in some cases, be useful to turn this off (e.g. if running tests
@@ -149,33 +149,33 @@
  * [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer)
  * is enabled, the default changes to not exercising undefined behaviour.
  *
- * Returns: `TRUE` if tests may provoke programming errors
+ * Returns: true if tests may provoke programming errors
  */
 
 /**
  * g_test_verbose:
  *
- * Returns `TRUE` if tests are run in verbose mode.
+ * Returns true if tests are run in verbose mode.
  *
  * In tests that use [func@GLib.test_init], the option `--verbose` enables this,
  * while `-q` or `--quiet` disables it.
  *
  * The default is neither verbose nor quiet.
  *
- * Returns: `TRUE` if in verbose mode
+ * Returns: true if in verbose mode
  */
 
 /**
  * g_test_quiet:
  *
- * Returns `TRUE` if tests are run in quiet mode.
+ * Returns true if tests are run in quiet mode.
  *
  * In tests that use [func@GLib.test_init], the option `-q` or `--quiet` enables
  * this, while `--verbose` disables it.
  *
  * The default is neither verbose nor quiet.
  *
- * Returns: `TRUE` if in quiet mode
+ * Returns: true if in quiet mode
  */
 
 /**
@@ -234,7 +234,7 @@
  * be undefined behaviour, like inputs that fail a [func@GLib.return_if_fail]
  * check. In these situations you should skip the entire test, including the
  * call to [func@GLib.test_trap_subprocess], unless [func@GLib.test_undefined]
- * returns `TRUE` to indicate that undefined behaviour may be tested.
+ * returns true to indicate that undefined behaviour may be tested.
  *
  * Since: 2.16
  */
@@ -276,7 +276,7 @@
  * to be undefined behaviour, like code that hits a [func@GLib.assert] or
  * [func@GLib.error]. In these situations you should skip the entire test,
  * including the call to [func@GLib.test_trap_subprocess], unless
- * [func@GLib.test_undefined] returns `TRUE` to indicate that undefined
+ * [func@GLib.test_undefined] returns true to indicate that undefined
  * behaviour may be tested.
  *
  * Since: 2.16
@@ -414,10 +414,10 @@
 
 /**
  * g_assert_cmpstr:
- * @s1: a string (may be `NULL`)
- * @cmp: The comparison operator to use.
- *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
- * @s2: another string (may be `NULL`)
+ * @s1: (nullable): a string
+ * @cmp: the comparison operator to use.
+ *     One of `==`, `!=`, `<`, `>`, `<=`, `>=`
+ * @s2: (nullable): another string
  *
  * Debugging macro to compare two strings.
  *
@@ -439,8 +439,8 @@
 
 /**
  * g_assert_cmpstrv:
- * @strv1: (nullable): a string array (may be `NULL`)
- * @strv2: (nullable): another string array (may be `NULL`)
+ * @strv1: (nullable): a string array
+ * @strv2: (nullable): another string array
  *
  * Debugging macro to check if two `NULL`-terminated string arrays (i.e. 2
  * `GStrv`) are equal.
@@ -466,8 +466,8 @@
 /**
  * g_assert_cmpint:
  * @n1: an integer
- * @cmp: The comparison operator to use.
- *   One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
+ * @cmp: the comparison operator to use.
+ *   One of `==`, `!=`, `<`, `>`, `<=`, `>=`
  * @n2: another integer
  *
  * Debugging macro to compare two integers.
@@ -483,8 +483,8 @@
 /**
  * g_assert_cmpuint:
  * @n1: an unsigned integer
- * @cmp: The comparison operator to use.
- *   One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
+ * @cmp: the comparison operator to use.
+ *   One of `==`, `!=`, `<`, `>`, `<=`, `>=`
  * @n2: another unsigned integer
  *
  * Debugging macro to compare two unsigned integers.
@@ -500,8 +500,8 @@
 /**
  * g_assert_cmphex:
  * @n1: an unsigned integer
- * @cmp: The comparison operator to use.
- *   One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
+ * @cmp: the comparison operator to use.
+ *   One of `==`, `!=`, `<`, `>`, `<=`, `>=`
  * @n2: another unsigned integer
  *
  * Debugging macro to compare to unsigned integers.
@@ -515,8 +515,8 @@
 /**
  * g_assert_cmpfloat:
  * @n1: a floating point number
- * @cmp: The comparison operator to use.
- *   One of `==`, `!=`, `<`, `>`, `<=`, `>=`.
+ * @cmp: the comparison operator to use.
+ *   One of `==`, `!=`, `<`, `>`, `<=`, `>=`
  * @n2: another floating point number
  *
  * Debugging macro to compare two floating point numbers.
@@ -567,9 +567,9 @@
 /**
  * g_assert_cmpmem:
  * @m1: (nullable): pointer to a buffer
- * @l1: length of @m1
+ * @l1: length of @m1 in bytes
  * @m2: (nullable): pointer to another buffer
- * @l2: length of @m2
+ * @l2: length of @m2 in bytes
  *
  * Debugging macro to compare memory regions.
  *
@@ -611,7 +611,7 @@
 
 /**
  * g_assert_no_error:
- * @err: a `GError`, possibly `NULL`
+ * @err: (nullable) a `GError`
  *
  * Debugging macro to check that a [struct@GLib.Error] is not set.
  *
@@ -625,7 +625,7 @@
 
 /**
  * g_assert_error:
- * @err: a `GError`, possibly `NULL`
+ * @err: (nullable): a `GError`
  * @dom: the expected error domain (a `GQuark`)
  * @c: the expected error code
  *
@@ -1153,7 +1153,7 @@ g_test_log (GTestLogType lbit,
 /**
  * g_test_disable_crash_reporting:
  *
- * Attempt to disable system crash reporting infrastructure.
+ * Attempts to disable system crash reporting infrastructure.
  *
  * This function should be called before exercising code paths that are
  * expected or intended to crash, to avoid wasting resources in system-wide
@@ -1626,15 +1626,14 @@ test_rm_isolate_dirs (void)
 
 /**
  * g_test_init:
- * @argc: Address of the @argc parameter of the main() function.
- *   Changed if any arguments were handled.
- * @argv: Address of the @argv parameter of main().
- *   Any parameters understood by g_test_init() are stripped before return.
- * @...: `NULL`-terminated list of special options.
+ * @argc: address of the @argc parameter of `main()`
+ * @argv: address of the @argv parameter of `main()`
+ * @...: `NULL`-terminated list of special options
  *
- * Initialize the GLib testing framework, e.g. by seeding the test random
- * number generator and the program name, and parsing test related commandline
- * args.
+ * Initializes the GLib testing framework.
+ *
+ * This includes seeding the test random number generator,
+ * setting the program name, and parsing test-related commandline args.
  *
  * This should be called before calling any other `g_test_*()` functions.
  *
@@ -1667,6 +1666,8 @@ test_rm_isolate_dirs (void)
  *
  * - `--debug-log`: Debug test logging output.
  *
+ * Any parsed arguments are removed from @argv, and @argc is adjust accordingly.
+ *
  * The following options are supported:
  *
  * - `G_TEST_OPTION_NO_PRGNAME`: Causes g_test_init() to not call
@@ -1677,7 +1678,7 @@ test_rm_isolate_dirs (void)
  * - `G_TEST_OPTION_NONFATAL_ASSERTIONS`: This has the same effect as
  *   [func@GLib.test_set_nonfatal_assertions]. Since 2.84
  *
- * Since 2.58, if tests are compiled with `G_DISABLE_ASSERT` defined, g_test_init()
+ * Since 2.58, if tests are compiled with `G_DISABLE_ASSERT` defined, `g_test_init()`
  * will print an error and exit. This is to prevent no-op tests from being executed,
  * as [func@GLib.assert] is commonly (erroneously) used in unit tests, and is a no-op
  * when compiled with `G_DISABLE_ASSERT`. Ensure your tests are compiled without
@@ -1942,7 +1943,7 @@ test_run_seed (const gchar *rseed)
 /**
  * g_test_rand_int:
  *
- * Get a reproducible random integer number.
+ * Gets a reproducible random integer number.
  *
  * The random numbers generated by the g_test_rand_*() family of functions
  * change with every new test program start, unless the --seed option is
@@ -1952,7 +1953,7 @@ test_run_seed (const gchar *rseed)
  * reseeded, to avoid dependencies between tests and to make --seed
  * effective for all test cases.
  *
- * Returns: a random number from the seeded random number generator.
+ * Returns: a random number from the seeded random number generator
  *
  * Since: 2.16
  */
@@ -1973,11 +1974,11 @@ g_test_rand_int (void)
  * @begin: the minimum value returned by this function
  * @end: the smallest value not to be returned by this function
  *
- * Get a reproducible random integer number out of a specified range.
+ * Gets a reproducible random integer number out of a specified range.
  *
  * See [func@GLib.test_rand_int] for details on test case random numbers.
  *
- * Returns: a number with @begin <= number < @end.
+ * Returns: a number with @begin <= number < @end
  *
  * Since: 2.16
  */
@@ -1997,11 +1998,11 @@ g_test_rand_int_range (gint32          begin,
 /**
  * g_test_rand_double:
  *
- * Get a reproducible random floating point number.
+ * Gets a reproducible random floating point number.
  *
  * See [func@GLib.test_rand_int] for details on test case random numbers.
  *
- * Returns: a random number from the seeded random number generator.
+ * Returns: a random number from the seeded random number generator
  *
  * Since: 2.16
  */
@@ -2022,11 +2023,11 @@ g_test_rand_double (void)
  * @range_start: the minimum value returned by this function
  * @range_end: the minimum value not returned by this function
  *
- * Get a reproducible random floating point number out of a specified range.
+ * Gets a reproducible random floating point number out of a specified range.
  *
  * See [func@GLib.test_rand_int] for details on test case random numbers.
  *
- * Returns: a number with @range_start <= number < @range_end.
+ * Returns: a number with @range_start <= number < @range_end
  *
  * Since: 2.16
  */
@@ -2046,7 +2047,7 @@ g_test_rand_double_range (double          range_start,
 /**
  * g_test_timer_start:
  *
- * Start a timing test.
+ * Starts a timing test.
  *
  * Call [func@GLib.test_timer_elapsed] when the task is supposed
  * to be done. Call this function again to restart the timer.
@@ -2065,10 +2066,10 @@ g_test_timer_start (void)
 /**
  * g_test_timer_elapsed:
  *
- * Get the number of seconds since the last start of the timer with
+ * Gets the number of seconds since the last start of the timer with
  * [func@GLib.test_timer_start].
  *
- * Returns: the time since the last start of the timer in seconds, as a double
+ * Returns: the time since the last start of the timer in seconds
  *
  * Since: 2.16
  */
@@ -2082,9 +2083,9 @@ g_test_timer_elapsed (void)
 /**
  * g_test_timer_last:
  *
- * Report the last result of [func@GLib.test_timer_elapsed].
+ * Reports the last result of [func@GLib.test_timer_elapsed].
  *
- * Returns: the last result of [func@GLib.test_timer_elapsed], as a double
+ * Returns: the last result of [func@GLib.test_timer_elapsed]
  *
  * Since: 2.16
  */
@@ -2098,9 +2099,9 @@ g_test_timer_last (void)
  * g_test_minimized_result:
  * @minimized_quantity: the reported value
  * @format: the format string of the report message
- * @...: arguments to pass to the printf() function
+ * @...: printf-like arguments to @format
  *
- * Report the result of a performance or measurement test.
+ * Reports the result of a performance or measurement test.
  *
  * The test should generally strive to minimize the reported
  * quantities (smaller values are better than larger ones),
@@ -2130,9 +2131,9 @@ g_test_minimized_result (double          minimized_quantity,
  * g_test_maximized_result:
  * @maximized_quantity: the reported value
  * @format: the format string of the report message
- * @...: arguments to pass to the printf() function
+ * @...: printf-like arguments to @format
  *
- * Report the result of a performance or measurement test.
+ * Reports the result of a performance or measurement test.
  *
  * The test should generally strive to maximize the reported
  * quantities (larger values are better than smaller ones),
@@ -2163,7 +2164,7 @@ g_test_maximized_result (double          maximized_quantity,
  * @format: the format string
  * @...: printf-like arguments to @format
  *
- * Add a message to the test report.
+ * Adds a message to the test report.
  *
  * Since: 2.16
  */
@@ -2186,7 +2187,7 @@ g_test_message (const char *format,
  * g_test_bug_base:
  * @uri_pattern: the base pattern for bug URIs
  *
- * Specify the base URI for bug reports.
+ * Specifies the base URI for bug reports.
  *
  * The base URI is used to construct bug report messages for
  * [func@GLib.test_message] when [func@GLib.test_bug] is called.
@@ -2214,19 +2215,19 @@ g_test_bug_base (const char *uri_pattern)
  * g_test_bug:
  * @bug_uri_snippet: Bug specific bug tracker URI or URI portion.
  *
- * This function adds a message to test reports that
- * associates a bug URI with a test case.
+ * Adds a message to test reports that associates a bug URI with a test case.
  *
  * Bug URIs are constructed from a base URI set with [func@GLib.test_bug_base]
  * and @bug_uri_snippet. If [func@GLib.test_bug_base] has not been called, it is
  * assumed to be the empty string, so a full URI can be provided to
  * [func@GLib.test_bug] instead.
  *
+ * See also [func@GLib.test_summary].
+ *
  * Since GLib 2.70, the base URI is not prepended to @bug_uri_snippet
  * if it is already a valid URI.
  *
  * Since: 2.16
- * See also: [func@GLib.test_summary]
  */
 void
 g_test_bug (const char *bug_uri_snippet)
@@ -2259,15 +2260,13 @@ g_test_bug (const char *bug_uri_snippet)
 
 /**
  * g_test_summary:
- * @summary: One or two sentences summarising what the test checks, and how it
- *  checks it.
+ * @summary: summary of the test purpose
  *
- * Set the summary for a test, which describes what the test checks, and how it
- * goes about checking it.
+ * Sets the summary for a test.
  *
  * This may be included in test report output, and is useful documentation for
  * anyone reading the source code or modifying a test in future. It must be a
- * single line.
+ * single line, and it should summarise what the test checks, and how.
  *
  * This should be called at the top of a test function.
  *
@@ -2283,8 +2282,9 @@ g_test_bug (const char *bug_uri_snippet)
  * }
  * ]|
  *
+ * See also [func@GLib.test_bug].
+ *
  * Since: 2.62
- * See also: [func@GLib.test_bug]
  */
 void
 g_test_summary (const char *summary)
@@ -2299,9 +2299,9 @@ g_test_summary (const char *summary)
 /**
  * g_test_get_root:
  *
- * Get the toplevel test suite for the test path API.
+ * Gets the toplevel test suite for the test path API.
  *
- * Returns: the toplevel `GTestSuite`
+ * Returns: the toplevel test suite
  *
  * Since: 2.16
  */
@@ -2321,8 +2321,9 @@ g_test_get_root (void)
 /**
  * g_test_run:
  *
- * Runs all tests under the toplevel suite which can be retrieved
- * with [func@GLib.test_get_root].
+ * Runs all tests under the toplevel suite.
+ *
+ * The toplevel suite can be retrieved with [func@GLib.test_get_root].
  *
  * Similar to [func@GLib.test_run_suite], the test cases to be run are
  * filtered according to test path arguments (`-p testpath` and `-s testpath`)
@@ -2421,7 +2422,7 @@ out:
  * @data_test: (scope async): the actual test function
  * @data_teardown: (scope async): the function to teardown the fixture data
  *
- * Create a new [struct@GLib.TestCase], named @test_name.
+ * Creates a new [struct@GLib.TestCase].
  *
  * This API is fairly low level, and calling [func@GLib.test_add] or
  * [func@GLib.test_add_func] is preferable.
@@ -2439,7 +2440,7 @@ out:
  * called with the same type of fixture (the @data_size argument), but
  * varying @test_name and @data_test arguments.
  *
- * Returns: a newly allocated #GTestCase.
+ * Returns: a newly allocated test case
  *
  * Since: 2.16
  */
@@ -2601,7 +2602,9 @@ g_test_fail (void)
  * @format: the format string
  * @...: printf-like arguments to @format
  *
- * Equivalent to [func@GLib.test_fail], but also record a message.
+ * Indicates that a test failed and records a message.
+ *
+ * Also see [func@GLib.test_fail].
  *
  * The message is formatted as if by [func@GLib.strdup_printf].
  *
@@ -2651,8 +2654,11 @@ g_test_incomplete (const gchar *msg)
  * @format: the format string
  * @...: printf-like arguments to @format
  *
- * Equivalent to [func@GLib.test_incomplete], but the explanation is
- * formatted as if by [func@GLib.strdup_printf].
+ * Indicates that a test failed because of some incomplete
+ * functionality.
+ *
+ * Equivalent to [func@GLib.test_incomplete], but the explanation
+ * is formatted as if by [func@GLib.strdup_printf].
  *
  * Since: 2.70
  */
@@ -2697,6 +2703,8 @@ g_test_skip (const gchar *msg)
  * @format: the format string
  * @...: printf-like arguments to @format
  *
+ * Indicates that a test was skipped.
+ *
  * Equivalent to [func@GLib.test_skip], but the explanation
  * is formatted as if by [func@GLib.strdup_printf].
  *
@@ -2730,7 +2738,7 @@ g_test_skip_printf (const char *format,
  * The return value of this function is only meaningful
  * if it is called from inside a test function.
  *
- * Returns: `TRUE` if the test has failed
+ * Returns: true if the test has failed
  *
  * Since: 2.38
  */
@@ -2743,9 +2751,11 @@ g_test_failed (void)
 /**
  * g_test_set_nonfatal_assertions:
  *
- * Changes the behaviour of the various `g_assert_*()` macros,
- * g_test_assert_expected_messages() and the various
- * `g_test_trap_assert_*()` macros to not abort to program.
+ * Changes the behaviour of the various assertion macros.
+ *
+ * The `g_assert_*()` macros, `g_test_assert_expected_messages()`
+ * and the various `g_test_trap_assert_*()` macros are changed
+ * to not abort to program.
  *
  * Instead, they will call [func@GLib.test_fail] and continue.
  * (This also changes the behavior of [func@GLib.test_fail] so that
@@ -2778,11 +2788,12 @@ g_test_set_nonfatal_assertions (void)
 
 /**
  * g_test_add_func:
- * @testpath: /-separated test case path name for the test.
- * @test_func: (scope async): The test function to invoke for this test.
+ * @testpath: a /-separated name for the test
+ * @test_func: (scope async): the test function to invoke for this test
  *
- * Create a new test case, similar to [func@GLib.test_create_case].
+ * Creates a new test case.
  *
+ * This function is similar to [func@GLib.test_create_case].
  * However the test is assumed to use no fixture, and test suites are
  * automatically created on the fly and added to the root fixture,
  * based on the /-separated portions of @testpath.
@@ -2819,12 +2830,13 @@ g_test_add_func (const char *testpath,
 
 /**
  * g_test_add_data_func:
- * @testpath: /-separated test case path name for the test.
- * @test_data: Test data argument for the test function.
- * @test_func: (scope async): The test function to invoke for this test.
+ * @testpath: a /-separated name for the test
+ * @test_data: data for the @test_func
+ * @test_func: (scope async): the test function to invoke for this test
  *
- * Create a new test case, similar to [func@GLib.test_create_case].
+ * Creates a new test case.
  *
+ * This function is similar to [func@GLib.test_create_case].
  * However the test is assumed to use no fixture, and test suites are
  * automatically created on the fly and added to the root fixture,
  * based on the /-separated portions of @testpath. The @test_data
@@ -2854,12 +2866,12 @@ g_test_add_data_func (const char     *testpath,
 
 /**
  * g_test_add_data_func_full:
- * @testpath: /-separated test case path name for the test.
- * @test_data: Test data argument for the test function.
- * @test_func: The test function to invoke for this test.
- * @data_free_func: #GDestroyNotify for @test_data.
+ * @testpath: a /-separated name for the test
+ * @test_data: data for @test_func
+ * @test_func: the test function to invoke for this test
+ * @data_free_func: #GDestroyNotify for @test_data
  *
- * Create a new test case, as with [func@GLib.test_add_data_func].
+ * Creates a new test case.
  *
  * In constract to [func@GLib.test_add_data_func], this function
  * is freeing @test_data after the test run is complete.
@@ -2920,9 +2932,9 @@ g_test_suite_case_exists (GTestSuite *suite,
  * g_test_create_suite:
  * @suite_name: a name for the suite
  *
- * Create a new test suite with the name @suite_name.
+ * Creates a new test suite with the name @suite_name.
  *
- * Returns: A newly allocated [struct@GLib.TestSuite] instance.
+ * Returns: a newly allocated test suite
  *
  * Since: 2.16
  */
@@ -2940,8 +2952,8 @@ g_test_create_suite (const char *suite_name)
 
 /**
  * g_test_suite_add:
- * @suite: a `GTestSuite`
- * @test_case: a `GTestCase`
+ * @suite: a test suite
+ * @test_case: a test case
  *
  * Adds @test_case to @suite.
  *
@@ -2959,8 +2971,8 @@ g_test_suite_add (GTestSuite     *suite,
 
 /**
  * g_test_suite_add_suite:
- * @suite: a `GTestSuite`
- * @nestedsuite: another `GTestSuite`
+ * @suite: a test suite
+ * @nestedsuite: another test suite
  *
  * Adds @nestedsuite to @suite.
  *
@@ -2978,9 +2990,9 @@ g_test_suite_add_suite (GTestSuite     *suite,
 
 /**
  * g_test_queue_free:
- * @gfree_pointer: the pointer to be stored.
+ * @gfree_pointer: the pointer to be stored
  *
- * Enqueue a pointer to be released with [func@GLib.free]
+ * Enqueues a pointer to be released with [func@GLib.free]
  * during the next teardown phase.
  *
  * This is equivalent to calling [func@GLib.test_queue_destroy]
@@ -2997,8 +3009,8 @@ g_test_queue_free (gpointer gfree_pointer)
 
 /**
  * g_test_queue_destroy:
- * @destroy_func: Destroy callback for teardown phase.
- * @destroy_data: Destroy callback data.
+ * @destroy_func: destroy callback for teardown phase
+ * @destroy_data: destroy callback data
  *
  * Enqueues a callback @destroy_func to be executed during the next test case
  * teardown phase.
@@ -3257,9 +3269,9 @@ g_test_suite_count (GTestSuite *suite)
 
 /**
  * g_test_run_suite:
- * @suite: a `GTestSuite`
+ * @suite: a test suite
  *
- * Execute the tests within @suite and all nested test suites.
+ * Executes the tests within @suite and all nested test suites.
  *
  * The test suites to be executed are filtered according to
  * test path arguments (`-p testpath` and `-s testpath`) as parsed by
@@ -3304,7 +3316,7 @@ g_test_run_suite (GTestSuite *suite)
 
 /**
  * g_test_case_free:
- * @test_case: a `GTestCase`
+ * @test_case: a test case
  *
  * Free the @test_case.
  *
@@ -3326,9 +3338,9 @@ g_test_case_free (GTestCase *test_case)
 
 /**
  * g_test_suite_free:
- * @suite: a #GTestSuite
+ * @suite: a test suite
  *
- * Free the @suite and all nested #GTestSuites.
+ * Frees the @suite and all nested suites.
  *
  * Since: 2.70
  */
@@ -3632,16 +3644,16 @@ g_assertion_message_error (const char     *domain,
 
 /**
  * g_strcmp0:
- * @str1: (nullable): a C string or `NULL`
- * @str2: (nullable): another C string or `NULL`
+ * @str1: (nullable): a string
+ * @str2: (nullable): another string
  *
- * Compares @str1 and @str2 like strcmp().
+ * Compares @str1 and @str2 like `strcmp()`.
  *
  * Handles `NULL` gracefully by sorting it before non-`NULL` strings.
  * Comparing two `NULL` pointers returns 0.
  *
  * Returns: an integer less than, equal to, or greater than zero,
- *   if @str1 is <, == or > than @str2.
+ *   if @str1 is <, == or > than @str2
  *
  * Since: 2.16
  */
@@ -3868,10 +3880,10 @@ wait_for_child (GPid pid,
 
 /**
  * g_test_trap_fork:
- * @usec_timeout: Timeout for the forked test in micro seconds.
- * @test_trap_flags: Flags to modify forking behaviour.
+ * @usec_timeout: timeout for the forked test in microseconds
+ * @test_trap_flags: flags to modify forking behaviour
  *
- * Fork the current test program to execute a test case that might
+ * Forks the current test program to execute a test case that might
  * not return or that might abort.
  *
  * If @usec_timeout is non-0, the forked test case is aborted and
@@ -3901,7 +3913,7 @@ wait_for_child (GPid pid,
  *   }
  * ]|
  *
- * Returns: `TRUE` for the forked child and `FALSE` for the executing parent process.
+ * Returns: true for the forked child and false for the executing parent process.
  *
  * Since: 2.16
  *
@@ -3984,9 +3996,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_test_trap_subprocess:
- * @test_path: (nullable): Test to run in a subprocess
- * @usec_timeout: Timeout for the subprocess test in micro seconds.
- * @test_flags: Flags to modify subprocess behaviour.
+ * @test_path: (nullable): test to run in a subprocess
+ * @usec_timeout: timeout for the subprocess test in microseconds.
+ * @test_flags: flags to modify subprocess behaviour
  *
  * Respawns the test program to run only @test_path in a subprocess.
  *
@@ -4006,15 +4018,14 @@ g_test_trap_subprocess (const char           *test_path,
 
 /**
  * g_test_trap_subprocess_with_envp:
- * @test_path: (nullable): Test to run in a subprocess
- * @envp: (array zero-terminated=1) (nullable) (element-type filename): Environment
- *   to run the test in, or `NULL` to inherit the parent’s environment. This must
- *   be in the GLib filename encoding.
- * @usec_timeout: Timeout for the subprocess test in micro seconds.
- * @test_flags: Flags to modify subprocess behaviour.
+ * @test_path: (nullable): test to run in a subprocess
+ * @envp: (array zero-terminated=1) (nullable) (element-type filename): environment
+ *   to run the test in
+ * @usec_timeout: timeout for the subprocess test in microseconds
+ * @test_flags: flags to modify subprocess behaviour
  *
  * Respawns the test program to run only @test_path in a subprocess with
- * the given @envp environment.
+ * a given environment.
  *
  * This can be used for a test case that might not return, or that
  * might abort.
@@ -4187,11 +4198,9 @@ g_test_trap_subprocess_with_envp (const char           *test_path,
 /**
  * g_test_subprocess:
  *
- * Returns `TRUE` (after [func@GLib.test_init] has been called)
- * if the test program is running under [func@GLib.test_trap_subprocess].
+ * Returns true if the test program is running under [func@GLib.test_trap_subprocess].
  *
- * Returns: `TRUE` if the test program is running under
- *   [func@GLib.test_trap_subprocess].
+ * Returns: true if the test program is running under [func@GLib.test_trap_subprocess]
  *
  * Since: 2.38
  */
@@ -4204,9 +4213,9 @@ g_test_subprocess (void)
 /**
  * g_test_trap_has_passed:
  *
- * Check the result of the last [func@GLib.test_trap_subprocess] call.
+ * Checks the result of the last [func@GLib.test_trap_subprocess] call.
  *
- * Returns: `TRUE` if the last test subprocess terminated successfully.
+ * Returns: true if the last test subprocess terminated successfully
  *
  * Since: 2.16
  */
@@ -4224,9 +4233,9 @@ g_test_trap_has_passed (void)
 /**
  * g_test_trap_reached_timeout:
  *
- * Check the result of the last [func@GLib.test_trap_subprocess] call.
+ * Checks the result of the last [func@GLib.test_trap_subprocess] call.
  *
- * Returns: `TRUE` if the last test subprocess got killed due to a timeout.
+ * Returns: true if the last test subprocess got killed due to a timeout
  *
  * Since: 2.16
  */

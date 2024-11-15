@@ -439,20 +439,24 @@ void    g_test_disable_crash_reporting  (void);
 
 /**
  * g_test_add:
- * @testpath:  The test path for a new test case.
- * @Fixture:   The type of a fixture data structure.
- * @tdata:     Data argument for the test functions.
- * @fsetup:    The function to set up the fixture data.
- * @ftest:     The actual test function.
- * @fteardown: The function to tear down the fixture data.
+ * @testpath: the test path for a new test case
+ * @Fixture: the type of a fixture data structure
+ * @tdata: data argument for the test functions
+ * @fsetup: the function to set up the fixture data
+ * @ftest: the actual test function
+ * @fteardown: the function to tear down the fixture data
  *
- * Hook up a new test case at @testpath, similar to g_test_add_func().
- * A fixture data structure with setup and teardown functions may be provided,
- * similar to g_test_create_case().
+ * Hooks up a new test case at @testpath.
  *
- * g_test_add() is implemented as a macro, so that the fsetup(), ftest() and
- * fteardown() callbacks can expect a @Fixture pointer as their first argument
- * in a type safe manner. They otherwise have type #GTestFixtureFunc.
+ * This function is similar to [func@GLib.test_add_func].
+ *
+ * A fixture data structure with setup and teardown functions
+ * may be provided, similar to [func@GLib.test_create_case].
+ *
+ * `g_test_add()` is implemented as a macro, so that the @fsetup,
+ * @ftest and @fteardown callbacks can expect a @Fixture pointer
+ * as their first argument in a type safe manner. They otherwise
+ * have type `GTestFixtureFunc`.
  *
  * Since: 2.16
  */
