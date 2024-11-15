@@ -43,10 +43,11 @@ test_extra_bytes_at_end (void)
   g_assert_no_error (error);
   g_assert_nonnull (result);
   g_bytes_unref (bytes);
+  g_clear_object (&converter);
 
   /* Append a 0 byte to the encoded data */
   size = g_bytes_get_size (result);
-  g_assert_cmpint (size, <, G_N_ELEMENTS (data)); /* just to be very sure */
+  g_assert_cmpuint (size, <, G_N_ELEMENTS (data)); /* just to be very sure */
   memcpy (data, g_bytes_get_data (result, NULL), size);
   data[size] = 0;
   bytes = g_bytes_new_static (data, size + 1);
@@ -57,6 +58,7 @@ test_extra_bytes_at_end (void)
   result = g_converter_convert_bytes (converter, bytes, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_MESSAGE_TOO_LARGE);
   g_assert_null (result);
+  g_clear_error (&error);
 
   g_object_unref (converter);
   g_bytes_unref (bytes);
