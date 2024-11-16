@@ -422,7 +422,11 @@ write_internal (GOutputStream  *stream,
     return -1;
 
   if (priv->finished)
-    return 0;
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_MESSAGE_TOO_LARGE,
+                           _("Unexpected data after end of conversion"));
+      return -1;
+    }
 
   /* Convert as much as possible */
   if (buffer_data_size (&priv->output_buffer) > 0)
