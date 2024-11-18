@@ -430,9 +430,9 @@
  * macro is that it can produce a message that includes the actual
  * values of @s1 and @s2.
  *
- * |[<!-- language="C" -->
+ * ```c
  *   g_assert_cmpstr (mystring, ==, "fubar");
- * ]|
+ * ```
  *
  * Since: 2.16
  */
@@ -455,10 +455,10 @@
  * `NULL`). The advantage of this macro is that it can produce a message that
  * includes how @strv1 and @strv2 are different.
  *
- * |[<!-- language="C" -->
+ * ```c
  *   const char *expected[] = { "one", "two", "three", NULL };
  *   g_assert_cmpstrv (mystrv, expected);
- * ]|
+ * ```
  *
  * Since: 2.68
  */
@@ -583,9 +583,9 @@
  *
  * @m1 may be `NULL` if (and only if) @l1 is zero; similarly for @m2 and @l2.
  *
- * |[<!-- language="C" -->
+ * ```c
  *   g_assert_cmpmem (buf->data, buf->len, expected, sizeof (expected));
- * ]|
+ * ```
  *
  * Since: 2.46
  */
@@ -2271,16 +2271,17 @@ g_test_bug (const char *bug_uri_snippet)
  * This should be called at the top of a test function.
  *
  * For example:
- * |[<!-- language="C" -->
+ * 
+ * ```c
  * static void
  * test_array_sort (void)
  * {
  *   g_test_summary ("Test my_array_sort() sorts the array correctly and stably, "
  *                   "including testing zero length and one-element arrays.");
  *
- *   …
+ *   // ...
  * }
- * ]|
+ * ```
  *
  * See also [func@GLib.test_bug].
  *
@@ -3897,21 +3898,23 @@ wait_for_child (GPid pid,
  * The forking parent process then asserts successful child program
  * termination and validates child program outputs.
  *
- * |[<!-- language="C" --> 
+ * ```c
  *   static void
  *   test_fork_patterns (void)
  *   {
  *     if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
  *       {
- *         g_print ("some stdout text: somagic17\n");
- *         g_printerr ("some stderr text: semagic43\n");
+ *         g_print ("some stdout text: somagic17
+");
+ *         g_printerr ("some stderr text: semagic43
+");
  *         exit (0); // successful test run
  *       }
  *     g_test_trap_assert_passed ();
  *     g_test_trap_assert_stdout ("*somagic17*");
  *     g_test_trap_assert_stderr ("*semagic43*");
  *   }
- * ]|
+ * ```
  *
  * Returns: true for the forked child and false for the executing parent process.
  *
@@ -4067,7 +4070,7 @@ g_test_trap_subprocess (const char           *test_path,
  * The following example tests that calling `my_object_new(1000000)` will
  * abort with an error message.
  *
- * |[<!-- language="C" -->
+ * ```c
  *   static void
  *   test_create_large_object (void)
  *   {
@@ -4112,7 +4115,7 @@ g_test_trap_subprocess (const char           *test_path,
  *                      test_different_username);
  *     return g_test_run ();
  *   }
- * ]|
+ * ```
  *
  * Since: 2.80
  */
