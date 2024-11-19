@@ -450,6 +450,12 @@ pkg.generate(libglib,
       valgrind_suppression_file_install_subdir /
       fs.name(valgrind_suppression_file),
   ],
+  uninstalled_variables : [
+    'glib_genmarshal=${prefix}/gobject/glib-genmarshal',
+    'gobject_query=${prefix}/gobject/gobject-query',
+    'glib_mkenums=${prefix}/gobject/glib-mkenums',
+    'glib_valgrind_suppressions=' + valgrind_suppression_file.full_path(),
+  ],
   version : glib_version,
   install_dir : glib_pkgconfigreldir,
   filebase : 'glib-2.0',
