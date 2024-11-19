@@ -14,7 +14,7 @@ variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v39.5"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
   DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v23"
-  DEBIAN_I386_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable-i386:v2"
+  DEBIAN_I386_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable-i386:v3"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v7"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v39.5"
   GOBJECT_INTROSPECTION_TAG: "1.80.1"
