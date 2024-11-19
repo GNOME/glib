@@ -1529,6 +1529,10 @@ g_static_resource_init (GStaticResource *static_resource)
 {
   GStaticResource *next;
 
+  g_return_if_fail (static_resource != NULL);
+  g_return_if_fail (static_resource->next == NULL);
+  g_return_if_fail (static_resource != g_atomic_pointer_get (&lazy_register_resources));
+
   do
     {
       next = g_atomic_pointer_get (&lazy_register_resources);
