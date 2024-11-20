@@ -451,6 +451,7 @@ test_null (void)
   gsize size;
 
   bytes = g_bytes_new (NULL, 0);
+  g_assert_null (g_bytes_get_data (bytes, NULL));
 
   data = g_bytes_unref_to_data (bytes, &size);
 
