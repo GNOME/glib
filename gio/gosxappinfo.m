@@ -314,7 +314,6 @@ get_bundle_for_id (CFStringRef bundle_id)
   CFURLRef app_url;
   NSBundle *bundle;
 
-#ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
   CFArrayRef urls = LSCopyApplicationURLsForBundleIdentifier (bundle_id, NULL);
   if (urls)
     {
@@ -326,9 +325,6 @@ get_bundle_for_id (CFStringRef bundle_id)
       CFRelease (urls);
     }
   else
-#else
-  if (LSFindApplicationForInfo (kLSUnknownCreator, bundle_id, NULL, NULL, &app_url) == kLSApplicationNotFoundErr)
-#endif
     {
 #ifdef G_ENABLE_DEBUG /* This can fail often, no reason to alloc strings */
       gchar *id_str = create_cstr_from_cfstring (bundle_id);
@@ -744,11 +740,7 @@ g_app_info_get_default_for_type_impl (const char *content_type,
   gchar *mime_type;
   CFStringRef type;
   NSBundle *bundle;
-#ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
   CFURLRef bundle_id;
-#else
-  CFStringRef bundle_id;
-#endif
 
   mime_type = g_content_type_get_mime_type (content_type);
   if (g_str_has_prefix (mime_type, "x-scheme-handler/"))
@@ -763,11 +755,7 @@ g_app_info_get_default_for_type_impl (const char *content_type,
 
   type = create_cfstring_from_cstr (content_type);
 
-#ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
   bundle_id = LSCopyDefaultApplicationURLForContentType (type, kLSRolesAll, NULL);
-#else
-  bundle_id = LSCopyDefaultRoleHandlerForContentType (type, kLSRolesAll);
-#endif
   CFRelease (type);
 
   if (!bundle_id)
@@ -776,11 +764,7 @@ g_app_info_get_default_for_type_impl (const char *content_type,
       return NULL;
     }
 
-#ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
   bundle = get_bundle_for_url (bundle_id);
-#else
-  bundle = get_bundle_for_id (bundle_id);
-#endif
   CFRelease (bundle_id);
 
   if (!bundle)

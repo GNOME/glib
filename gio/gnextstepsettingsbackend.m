@@ -345,12 +345,7 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
 
           g_variant_builder_init_static (&builder, type);
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
           for(key in object)
-#else
-          NSEnumerator *enumerator = [object objectEnumerator];
-          while((key = [enumerator nextObject]))
-#endif
             {
               GVariant *name;
               id value;
@@ -386,12 +381,7 @@ g_nextstep_settings_backend_get_g_variant (id                  object,
           value_type = g_variant_type_element (type);
           g_variant_builder_init_static (&builder, type);
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
           for(value in object)
-#else
-          NSEnumerator *enumerator = [object objectEnumerator];
-          while((value = [enumerator nextObject]))
-#endif
             {
               GVariant *variant = g_nextstep_settings_backend_get_g_variant (value, value_type);
 

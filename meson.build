@@ -965,12 +965,18 @@ if host_system == 'linux'
 endif
 
 osx_ldflags = []
-glib_have_os_x_9_or_later = false
 glib_have_carbon = false
 glib_have_cocoa = false
 if host_system == 'darwin'
   add_languages('objc', native: false, required: true)
   objcc = meson.get_compiler('objc')
+  if not objcc.compiles('''#include <AvailabilityMacros.h>
+                           #if MAC_OS_X_VERSION_MIN_REQUIRED < 101300
+                           #error message "GLib requires macOS 10.13 or later."
+                           #endif''',
+                         name : 'macOS 10.13 or later')
+    error('GLib requires macOS 10.13 or later.')
+  endif
 
   add_project_arguments(objcc.get_supported_arguments(warning_objc_args), language: 'objc')
 
@@ -981,11 +987,6 @@ if host_system == 'darwin'
 
   if glib_have_carbon
     glib_conf.set('HAVE_CARBON', true)
-    glib_have_os_x_9_or_later = objcc.compiles('''#include <AvailabilityMacros.h>
-                                                  #if MAC_OS_X_VERSION_MIN_REQUIRED < 1090
-                                                  #error Compiling for minimum OS X version before 10.9
-                                                  #endif''',
-                                               name : 'OS X 9 or later')
   endif
 
   # Mac OS X Cocoa support
