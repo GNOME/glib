@@ -198,6 +198,12 @@ thread6_func (gpointer data)
   pthread_getname_np (pthread_self(), name, 16);
 
   g_assert_cmpstr (name, ==, data);
+
+  name[0] = '\0';
+
+  g_thread_get_name (g_thread_self (), name, 16);
+
+  g_assert_cmpstr (name, ==, data);
 #endif
 
   return NULL;

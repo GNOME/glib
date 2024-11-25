@@ -827,6 +827,20 @@ g_system_thread_set_name (const gchar *name)
 #endif
 }
 
+void
+g_system_thread_get_name (GRealThread *thread,
+                          char        *buffer,
+                          gsize        length)
+{
+  GThreadPosix *pt = (GThreadPosix *) thread;
+
+#ifdef HAVE_PTHREAD_GETNAME_NP
+  pthread_getname_np (pt->system_thread, buffer, length);
+#else
+  buffer[0] = '\0';
+#endif
+}
+
 /* {{{1 GMutex and GCond futex implementation */
 
 #if defined(USE_NATIVE_MUTEX)

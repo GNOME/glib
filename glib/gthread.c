@@ -1107,6 +1107,32 @@ g_thread_self (void)
 }
 
 /**
+ * g_thread_get_name:
+ * @GThread: a thread
+ * @buffer: return location for the name
+ * @length: the length of @buffer
+ *
+ * Gets the name of the thread.
+ *
+ * The @buffer is filled with the name. If no name
+ * is set, or the buffer is too small, the @buffer
+ * is set to the empty string.
+ *
+ * This function is intended for debugging purposes.
+ *
+ * Since: 2.84
+ */
+void
+g_thread_get_name (GThread *thread,
+                   char    *buffer,
+                   gsize    length)
+{
+  GRealThread *real = (GRealThread*) thread;
+
+  g_system_thread_get_name (real, buffer, length);
+}
+
+/**
  * g_get_num_processors:
  *
  * Determine the approximate number of threads that the system will

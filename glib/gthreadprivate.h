@@ -159,6 +159,9 @@ void            g_system_thread_free            (GRealThread  *thread);
 
 G_NORETURN void g_system_thread_exit            (void);
 void            g_system_thread_set_name        (const gchar  *name);
+void            g_system_thread_get_name        (GRealThread  *thread,
+                                                 char         *buffer,
+                                                 gsize         length);
 
 /* gthread.c */
 GThread *g_thread_new_internal (const gchar *name,

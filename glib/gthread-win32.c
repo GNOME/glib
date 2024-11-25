@@ -649,6 +649,14 @@ g_system_thread_set_name (const gchar *name)
     SetThreadName ((DWORD) -1, name);
 }
 
+void
+g_system_thread_get_name (GRealThread *thread,
+                          char        *buffer,
+                          gsize        length)
+{
+  buffer[0] = '\0';
+}
+
 /* {{{1 Epilogue */
 
 void

@@ -165,6 +165,10 @@ gpointer        g_thread_join                   (GThread        *thread);
 GLIB_AVAILABLE_IN_ALL
 void            g_thread_yield                  (void);
 
+GLIB_AVAILABLE_IN_2_84
+void            g_thread_get_name               (GThread        *thread,
+                                                 char           *buffer,
+                                                 gsize           length);
 
 GLIB_AVAILABLE_IN_2_32
 void            g_mutex_init                    (GMutex         *mutex);
