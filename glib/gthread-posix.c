@@ -828,14 +828,11 @@ g_system_thread_set_name (const gchar *name)
 }
 
 void
-g_system_thread_get_name (GRealThread *thread,
-                          char        *buffer,
-                          gsize        length)
+g_system_thread_get_name (char  *buffer,
+                          gsize  length)
 {
-  GThreadPosix *pt = (GThreadPosix *) thread;
-
 #ifdef HAVE_PTHREAD_GETNAME_NP
-  pthread_getname_np (pt->system_thread, buffer, length);
+  pthread_getname_np (pthread_self (), buffer, length);
 #else
   buffer[0] = '\0';
 #endif

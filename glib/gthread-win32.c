@@ -651,9 +651,8 @@ g_system_thread_set_name (const gchar *name)
 }
 
 void
-g_system_thread_get_name (GRealThread *thread,
-                          char        *buffer,
-                          gsize        length)
+g_system_thread_get_name (char  *buffer,
+                          gsize  length)
 {
   /* FIXME: Not implemented yet */
   buffer[0] = '\0';
