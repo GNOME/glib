@@ -99,7 +99,7 @@ static gint wakeup_thread_serial = 0;
 /* Here all unused threads are waiting  */
 static GAsyncQueue *unused_thread_queue = NULL;
 static gint unused_threads = 0;
-static gint max_unused_threads = 2;
+static gint max_unused_threads = 8;
 static gint kill_unused_threads = 0;
 static guint max_idle_time = 15 * 1000;
 
@@ -985,7 +985,7 @@ g_thread_pool_wakeup_and_stop_all (GRealThreadPool *pool)
  * If @max_threads is -1, no limit is imposed on the number
  * of unused threads.
  *
- * The default value is 2.
+ * The default value is 8 since GLib 2.84. Previously the default value was 2.
  */
 void
 g_thread_pool_set_max_unused_threads (gint max_threads)
