@@ -103,7 +103,7 @@ static gint max_unused_threads = 2;
 static gint kill_unused_threads = 0;
 static guint max_idle_time = 15 * 1000;
 
-static guint thread_counter = 0;
+static int thread_counter = 0;
 
 typedef struct
 {
@@ -287,7 +287,7 @@ g_thread_pool_spawn_thread (gpointer data)
       GError *error = NULL;
       gchar name[16];
 
-      g_snprintf (name, sizeof (name), "pool-%u", thread_counter++);
+      g_snprintf (name, sizeof (name), "pool-%d", g_atomic_int_add (&thread_counter, 1));
 
       g_async_queue_lock (spawn_thread_queue);
       /* Spawn a new thread for the given pool and wake the requesting thread
@@ -445,7 +445,7 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
            */
           char name[16];
 
-          g_snprintf (name, sizeof (name), "pool-%u", thread_counter++);
+          g_snprintf (name, sizeof (name), "pool-%d", g_atomic_int_add (thread_counter, 1));
 
           thread = g_thread_try_new (name, g_thread_pool_thread_proxy, pool, error);
         }
