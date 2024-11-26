@@ -314,7 +314,7 @@ g_thread_pool_thread_proxy (gpointer data)
 
   pool = data;
 
-  DEBUG_MSG (("thread %s (%p) started for pool %p.", g_thread_self (), pool));
+  DEBUG_MSG (("thread %p started for pool %p.", g_thread_self (), pool));
 
   g_async_queue_lock (pool->queue);
 
