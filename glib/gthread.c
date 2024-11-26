@@ -882,12 +882,10 @@ g_thread_proxy (gpointer data)
   TRACE (GLIB_THREAD_SPAWNED (thread->thread.func, thread->thread.data,
                               thread->name));
 
-  if (thread->name)
-    {
-      g_system_thread_set_name (thread->name);
-      g_free (thread->name);
-      thread->name = NULL;
-    }
+  if (thread->name[0] != '\0')
+    g_system_thread_set_name (thread->name);
+  else
+    g_system_thread_get_name (thread, thread->name, 16);
 
   thread->retval = thread->thread.func (thread->thread.data);
 
@@ -1109,27 +1107,21 @@ g_thread_self (void)
 /**
  * g_thread_get_name:
  * @GThread: a thread
- * @buffer: return location for the name
- * @length: the length of @buffer
  *
  * Gets the name of the thread.
  *
- * The @buffer is filled with the name. If no name
- * is set, or the buffer is too small, the @buffer
- * is set to the empty string.
- *
  * This function is intended for debugging purposes.
+ *
+ * Returns: the name of the thread
  *
  * Since: 2.84
  */
-void
-g_thread_get_name (GThread *thread,
-                   char    *buffer,
-                   gsize    length)
+const char *
+g_thread_get_name (GThread *thread)
 {
   GRealThread *real = (GRealThread*) thread;
 
-  g_system_thread_get_name (real, buffer, length);
+  return real->name;
 }
 
 /**

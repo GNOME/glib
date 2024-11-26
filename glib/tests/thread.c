@@ -194,16 +194,15 @@ thread6_func (gpointer data)
 {
 #if defined (HAVE_PTHREAD_SETNAME_NP_WITH_TID) && defined (HAVE_PTHREAD_GETNAME_NP)
   char name[16];
+  const char *name2;
 
   pthread_getname_np (pthread_self(), name, 16);
 
   g_assert_cmpstr (name, ==, data);
 
-  name[0] = '\0';
+  name2= g_thread_get_name (g_thread_self ());
 
-  g_thread_get_name (g_thread_self (), name, 16);
-
-  g_assert_cmpstr (name, ==, data);
+  g_assert_cmpstr (name2, ==, data);
 #endif
 
   return NULL;

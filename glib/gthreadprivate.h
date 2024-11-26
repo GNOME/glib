@@ -34,7 +34,7 @@ struct  _GRealThread
 
   gint ref_count;
   gboolean ours;
-  gchar *name;
+  char name[16];
   gpointer retval;
 };
 

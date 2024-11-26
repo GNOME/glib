@@ -464,7 +464,8 @@ g_system_thread_new (GThreadFunc proxy,
   base_thread->thread.joinable = TRUE;
   base_thread->thread.func = func;
   base_thread->thread.data = data;
-  base_thread->name = g_strdup (name);
+  if (name)
+    g_strlcpy (base_thread->name, name, 16);
 
   thread->handle = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_win32_proxy, thread,
                                             CREATE_SUSPENDED, &ignore);
