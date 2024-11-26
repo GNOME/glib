@@ -1535,6 +1535,18 @@ g_uri_parse_relative (GUri         *base_uri,
       remove_dot_segments (uri->path);
     }
 
+  /* Fix up the invalid cases from
+   * https://datatracker.ietf.org/doc/html/rfc3986#section-3, as otherwise
+   * calling g_uri_to_string() on this URI will fail. These can be caused by
+   * remove_dot_segments(), e.g. `data:/.//` gets normalised to `data://` whose
+   * path is invalid given the lack of an authority. */
+  if (uri->host == NULL && uri->path[0] == '/' && uri->path[1] == '/')
+    {
+      char *new_path = g_strconcat ("/.", uri->path, NULL);
+      g_free (uri->path);
+      uri->path = g_steal_pointer (&new_path);
+    }
+
   return g_steal_pointer (&uri);
 }
 
