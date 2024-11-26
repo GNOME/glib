@@ -654,6 +654,7 @@ g_system_thread_get_name (GRealThread *thread,
                           char        *buffer,
                           gsize        length)
 {
+  /* FIXME: Not implemented yet */
   buffer[0] = '\0';
 }
 
