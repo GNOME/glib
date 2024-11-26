@@ -202,6 +202,15 @@ test_default_handler_debug_stderr (void)
 }
 
 static void
+test_default_handler_would_drop_env_systemd (void)
+{
+  g_setenv ("DEBUG_INVOCATION", "1", TRUE);
+
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
+  g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
+}
+
+static void
 test_default_handler_would_drop_env5 (void)
 {
   g_setenv ("G_MESSAGES_DEBUG", "foobar", TRUE);
@@ -556,6 +565,9 @@ test_default_handler (void)
                           G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-env5", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_passed ();
+  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-env-systemd", 0,
                           G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
   g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-robustness", 0,
@@ -1105,6 +1117,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-env3", test_default_handler_would_drop_env3);
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-env4", test_default_handler_would_drop_env4);
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-env5", test_default_handler_would_drop_env5);
+  g_test_add_func ("/logging/default-handler/subprocess/would-drop-env-systemd", test_default_handler_would_drop_env_systemd);
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-robustness", test_default_handler_would_drop_robustness);
   g_test_add_func ("/logging/default-handler/subprocess/structured-logging-non-null-terminated-strings", test_default_handler_structured_logging_non_nul_terminated_strings);
   g_test_add_func ("/logging/warnings", test_warnings);

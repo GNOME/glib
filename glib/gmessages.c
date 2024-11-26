@@ -316,8 +316,9 @@
  * manually.
  *
  * Such messages are suppressed by the [func@GLib.log_default_handler] and
- * [func@GLib.log_writer_default] unless the `G_MESSAGES_DEBUG` environment variable is
- * set appropriately. If you need to set the allowed domains at runtime, use
+ * [func@GLib.log_writer_default] unless the `G_MESSAGES_DEBUG` or
+ * `DEBUG_INVOCATION` environment variables are set appropriately. If you need
+ * to set the allowed domains at runtime, use
  * [func@GLib.log_writer_default_set_debug_domains].
  *
  * If structured logging is enabled, this will use [func@GLib.log_structured];
@@ -341,8 +342,9 @@
  * manually.
  *
  * Such messages are suppressed by the [func@GLib.log_default_handler] and
- * [func@GLib.log_writer_default] unless the `G_MESSAGES_DEBUG` environment variable is
- * set appropriately. If you need to set the allowed domains at runtime, use
+ * [func@GLib.log_writer_default] unless the `G_MESSAGES_DEBUG` or
+ * `DEBUG_INVOCATION` environment variables are set appropriately. If you need
+ * to set the allowed domains at runtime, use
  * [func@GLib.log_writer_default_set_debug_domains].
  *
  * If structured logging is enabled, this will use [func@GLib.log_structured];
@@ -2705,7 +2707,7 @@ static struct {
  *   `NULL` or an array with no values means none. Array with a single value `"all"` means all.
  *
  * Reset the list of domains to be logged, that might be initially set by the
- * `G_MESSAGES_DEBUG` environment variable.
+ * `G_MESSAGES_DEBUG` or `DEBUG_INVOCATION` environment variables.
  *
  * This function is thread-safe.
  *
@@ -2737,7 +2739,7 @@ should_drop_message (GLogLevelFlags   log_level,
                      const GLogField *fields,
                      gsize            n_fields)
 {
-  /* Disable debug message output unless specified in G_MESSAGES_DEBUG. */
+  /* Disable debug message output unless specified in G_MESSAGES_DEBUG/DEBUG_INVOCATION. */
   if (!(log_level & DEFAULT_LEVELS) &&
       !(log_level >> G_LOG_LEVEL_USER_SHIFT) &&
       !g_log_get_debug_enabled ())
@@ -2750,6 +2752,8 @@ should_drop_message (GLogLevelFlags   log_level,
       if (G_UNLIKELY (!g_log_global.domains_set))
         {
           g_log_global.domains = g_strdup (g_getenv ("G_MESSAGES_DEBUG"));
+          if (g_log_global.domains == NULL && g_strcmp0 (g_getenv ("DEBUG_INVOCATION"), "1") == 0)
+            g_log_global.domains = g_strdup ("all");
           g_log_global.domains_set = TRUE;
         }
 
@@ -2804,7 +2808,8 @@ should_drop_message (GLogLevelFlags   log_level,
  *
  * As with [func@GLib.log_default_handler], this function drops debug and informational
  * messages unless their log domain (or `all`) is listed in the space-separated
- * `G_MESSAGES_DEBUG` environment variable, or by [func@GLib.log_writer_default_set_debug_domains].
+ * `G_MESSAGES_DEBUG` environment variable, or `DEBUG_INVOCATION=1` is set in
+ * the environment, or by [func@GLib.log_writer_default_set_debug_domains].
  *
  * This can be used when implementing log writers with the same filtering
  * behaviour as the default, but a different destination or output format:
@@ -2815,7 +2820,7 @@ should_drop_message (GLogLevelFlags   log_level,
  * ]|
  *
  * or to skip an expensive computation if it is only needed for a debugging
- * message, and `G_MESSAGES_DEBUG` is not set:
+ * message, and `G_MESSAGES_DEBUG` and `DEBUG_INVOCATION` are not set:
  *
  * ```c
  * if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
@@ -2862,7 +2867,8 @@ g_log_writer_default_would_drop (GLogLevelFlags  log_level,
  *
  * As with [func@GLib.log_default_handler], this function drops debug and informational
  * messages unless their log domain (or `all`) is listed in the space-separated
- * `G_MESSAGES_DEBUG` environment variable, or set at runtime by [func@GLib.log_writer_default_set_debug_domains].
+ * `G_MESSAGES_DEBUG` environment variable, or `DEBUG_INVOCATION=1` is set in
+ * the environment, or set at runtime by [func@GLib.log_writer_default_set_debug_domains].
  *
  * [func@GLib.log_writer_default] uses the mask set by [func@GLib.log_set_always_fatal] to
  * determine which messages are fatal. When using a custom writer function instead it is
@@ -3005,7 +3011,8 @@ _g_log_writer_fallback (GLogLevelFlags   log_level,
  * implementations.
  *
  * Note also that the value of this does not depend on `G_MESSAGES_DEBUG`, nor
- * [func@GLib.log_writer_default_set_debug_domains]; see the docs for [func@GLib.log_set_debug_enabled].
+ * `DEBUG_INVOCATION`, nor [func@GLib.log_writer_default_set_debug_domains]; see
+ * the docs for [func@GLib.log_set_debug_enabled].
  *
  * Returns: `TRUE` if debug output is enabled, `FALSE` otherwise
  *
@@ -3023,7 +3030,7 @@ g_log_get_debug_enabled (void)
  *
  * Enable or disable debug output from the GLib logging system for all domains.
  *
- * This value interacts disjunctively with `G_MESSAGES_DEBUG` and
+ * This value interacts disjunctively with `G_MESSAGES_DEBUG`, `DEBUG_INVOCATION` and
  * [func@GLib.log_writer_default_set_debug_domains] — if any of them would allow
  * a debug message to be outputted, it will be.
  *
@@ -3355,6 +3362,9 @@ escape_string (GString *string)
  *     which debug and informational messages are printed. By default
  *     these messages are not printed. If you need to set the allowed
  *     domains at runtime, use [func@GLib.log_writer_default_set_debug_domains].
+ *   - `DEBUG_INVOCATION`: If set to `1`, this is equivalent to
+ *     `G_MESSAGES_DEBUG=all`. `DEBUG_INVOCATION` is a standard environment
+ *     variable set by systemd to prompt debug output. (Since: 2.84)
  *
  * `stderr` is used for levels [flags@GLib.LogLevelFlags.LEVEL_ERROR],
  * [flags@GLib.LogLevelFlags.LEVEL_CRITICAL], [flags@GLib.LogLevelFlags.LEVEL_WARNING] and
