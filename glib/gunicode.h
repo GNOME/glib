@@ -205,10 +205,10 @@ typedef enum
  * @G_UNICODE_BREAK_EMOJI_MODIFIER: Emoji Modifier (EM). Since: 2.50
  * @G_UNICODE_BREAK_ZERO_WIDTH_JOINER: Zero Width Joiner (ZWJ). Since: 2.50
  * @G_UNICODE_BREAK_AKSARA: Aksara (AK). Since: 2.80
- * @G_UNICODE_BREAK_AKSARA_PRE_BASE (AP). Since: 2.80
- * @G_UNICODE_BREAK_AKSARA_START (AS). Since: 2.80
- * @G_UNICODE_BREAK_VIRAMA_FINAL (VF). Since: 2.80
- * @G_UNICODE_BREAK_VIRAMA (VI). Since: 2.80
+ * @G_UNICODE_BREAK_AKSARA_PRE_BASE: Aksara Pre-Base (AP). Since: 2.80
+ * @G_UNICODE_BREAK_AKSARA_START: Aksara Start (AS). Since: 2.80
+ * @G_UNICODE_BREAK_VIRAMA_FINAL: Virama Final (VF). Since: 2.80
+ * @G_UNICODE_BREAK_VIRAMA: Virama (VI). Since: 2.80
  *
  * These are the possible line break classifications.
  *
