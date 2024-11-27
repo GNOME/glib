@@ -153,7 +153,7 @@ test_default_handler_bar_info (void)
   g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
 
-  g_setenv ("G_MESSAGES_DEBUG", "foo bar baz", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "foo bar baz");
 
   g_log ("bar", G_LOG_LEVEL_INFO, "message5");
   exit (0);
@@ -165,7 +165,7 @@ test_default_handler_baz_debug (void)
   g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
 
-  g_setenv ("G_MESSAGES_DEBUG", "foo bar baz", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "foo bar baz");
 
   g_log ("baz", G_LOG_LEVEL_DEBUG, "message6");
   exit (0);
@@ -177,7 +177,7 @@ test_default_handler_debug (void)
   g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
 
-  g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "all");
 
   g_log ("foo", G_LOG_LEVEL_DEBUG, "6");
   g_log ("bar", G_LOG_LEVEL_DEBUG, "6");
@@ -192,7 +192,7 @@ test_default_handler_debug_stderr (void)
   g_log_writer_default_set_use_stderr (TRUE);
   g_log_set_default_handler (g_log_default_handler, NULL);
 
-  g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "all");
 
   g_log ("foo", G_LOG_LEVEL_DEBUG, "6");
   g_log ("bar", G_LOG_LEVEL_DEBUG, "6");
@@ -204,7 +204,7 @@ test_default_handler_debug_stderr (void)
 static void
 test_default_handler_would_drop_env_systemd (void)
 {
-  g_setenv ("DEBUG_INVOCATION", "1", TRUE);
+  g_assert_cmpstr (g_getenv ("DEBUG_INVOCATION"), ==, "1");
 
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
@@ -213,7 +213,7 @@ test_default_handler_would_drop_env_systemd (void)
 static void
 test_default_handler_would_drop_env5 (void)
 {
-  g_setenv ("G_MESSAGES_DEBUG", "foobar", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "foobar");
 
   g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "foo"));
   g_assert_true (g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, "bar"));
@@ -222,7 +222,7 @@ test_default_handler_would_drop_env5 (void)
 static void
 test_default_handler_would_drop_env4 (void)
 {
-  g_setenv ("G_MESSAGES_DEBUG", "all", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "all");
 
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
@@ -236,7 +236,7 @@ test_default_handler_would_drop_env4 (void)
 static void
 test_default_handler_would_drop_env3 (void)
 {
-  g_setenv ("G_MESSAGES_DEBUG", "foo bar", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "foo bar");
 
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
@@ -250,7 +250,7 @@ test_default_handler_would_drop_env3 (void)
 static void
 test_default_handler_would_drop_env2 (void)
 {
-  g_setenv ("G_MESSAGES_DEBUG", "  bar    baz ", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "  bar    baz ");
 
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
@@ -264,7 +264,7 @@ test_default_handler_would_drop_env2 (void)
 static void
 test_default_handler_would_drop_env1 (void)
 {
-  g_unsetenv ("G_MESSAGES_DEBUG");
+  g_assert_null (g_getenv ("G_MESSAGES_DEBUG"));
 
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
@@ -278,7 +278,7 @@ test_default_handler_would_drop_env1 (void)
 static void
 test_default_handler_would_drop (void)
 {
-  g_unsetenv ("G_MESSAGES_DEBUG");
+  g_assert_null (g_getenv ("G_MESSAGES_DEBUG"));
 
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_ERROR, "foo"));
   g_assert_false (g_log_writer_default_would_drop (G_LOG_LEVEL_CRITICAL, "foo"));
@@ -449,7 +449,7 @@ test_default_handler_structured_logging_non_nul_terminated_strings (void)
 {
   g_log_writer_default_set_use_stderr (FALSE);
   g_log_set_default_handler (g_log_default_handler, NULL);
-  g_setenv ("G_MESSAGES_DEBUG", "foo", TRUE);
+  g_assert_cmpstr (g_getenv ("G_MESSAGES_DEBUG"), ==, "foo");
 
   const gchar domain_1[] = {'f', 'o', 'o' };
   const gchar domain_2[] = { 'b', 'a', 'r' };
@@ -470,111 +470,143 @@ test_default_handler_structured_logging_non_nul_terminated_strings (void)
   exit (0);
 }
 
+/* Helper wrapper around g_test_trap_subprocess_with_envp() which sets the
+ * logging-related environment variables. `NULL` will unset a variable. */
+static void
+test_trap_subprocess_with_logging_envp (const char *test_path,
+                                        const char *g_messages_debug,
+                                        const char *debug_invocation)
+{
+  char **envp = g_get_environ ();
+
+  if (g_messages_debug != NULL)
+    envp = g_environ_setenv (g_steal_pointer (&envp), "G_MESSAGES_DEBUG", g_messages_debug, TRUE);
+  else
+    envp = g_environ_unsetenv (g_steal_pointer (&envp), "G_MESSAGES_DEBUG");
+
+  if (debug_invocation != NULL)
+    envp = g_environ_setenv (g_steal_pointer (&envp), "DEBUG_INVOCATION", debug_invocation, TRUE);
+  else
+    envp = g_environ_unsetenv (g_steal_pointer (&envp), "DEBUG_INVOCATION");
+
+  g_test_trap_subprocess_with_envp (test_path, (const char * const *) envp, 0, G_TEST_SUBPROCESS_DEFAULT);
+
+  g_strfreev (envp);
+}
+
 static void
 test_default_handler (void)
 {
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/error", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/error",
+                                          NULL, NULL);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*ERROR*message1*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/error-stderr", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/error-stderr",
+                                          NULL, NULL);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*ERROR*message1*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/critical", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/critical",
+                                          NULL, NULL);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*message2*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/critical-stderr", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/critical-stderr",
+                                          NULL, NULL);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*message2*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/warning", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/warning",
+                                          NULL, NULL);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*WARNING*message3*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/warning-stderr", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/warning-stderr",
+                                          NULL, NULL);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*WARNING*message3*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/message", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/message",
+                                          NULL, NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("*Message*message4*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/message-stderr", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/message-stderr",
+                                          NULL, NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("*Message*message4*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/info", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/info",
+                                          NULL, NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout_unmatched ("*INFO*message5*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/info-stderr", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/info-stderr",
+                                          NULL, NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr_unmatched ("*INFO*message5*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/bar-info", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/bar-info",
+                                          "foo bar baz", NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*INFO*message5*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/baz-debug", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/baz-debug",
+                                          "foo bar baz", NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*DEBUG*message6*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/debug", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/debug",
+                                          "all", NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*DEBUG*6*6*6*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/debug-stderr", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/debug-stderr",
+                                          "all", NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout_unmatched ("DEBUG");
   g_test_trap_assert_stderr ("*DEBUG*6*6*6*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/0x400", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/0x400",
+                                          NULL, NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*LOG-0x400*message7*");
 
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/would-drop",
+                                          NULL, NULL);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-env1", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/would-drop-env1",
+                                          NULL, NULL);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-env2", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/would-drop-env2",
+                                          "  bar    baz ", NULL);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-env3", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/would-drop-env3",
+                                          "foo bar", NULL);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-env4", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/would-drop-env4",
+                                          "all", NULL);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-env5", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/would-drop-env5",
+                                          "foobar", NULL);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-env-systemd", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/would-drop-env-systemd",
+                                          NULL, "1");
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/would-drop-robustness", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/would-drop-robustness",
+                                          NULL, NULL);
   g_test_trap_assert_passed ();
-  g_test_trap_subprocess ("/logging/default-handler/subprocess/structured-logging-non-null-terminated-strings", 0,
-                          G_TEST_SUBPROCESS_DEFAULT);
+
+  test_trap_subprocess_with_logging_envp ("/logging/default-handler/subprocess/structured-logging-non-null-terminated-strings",
+                                          "foo", NULL);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout_unmatched ("*bar*");
   g_test_trap_assert_stdout_unmatched ("*bla*");
@@ -587,10 +619,11 @@ test_fatal_log_mask (void)
   if (g_test_subprocess ())
     {
       g_log_set_fatal_mask ("bu", G_LOG_LEVEL_INFO);
+      g_assert_null (g_getenv ("G_MESSAGES_DEBUG"));
       g_log ("bu", G_LOG_LEVEL_INFO, "fatal");
       return;
     }
-  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  test_trap_subprocess_with_logging_envp (NULL, NULL, NULL);
   g_test_trap_assert_failed ();
   /* G_LOG_LEVEL_INFO isn't printed by default */
   g_test_trap_assert_stdout_unmatched ("*fatal*");
@@ -1091,8 +1124,6 @@ test_structured_logging_set_writer_func_twice (void)
 int
 main (int argc, char *argv[])
 {
-  g_unsetenv ("G_MESSAGES_DEBUG");
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/logging/default-handler", test_default_handler);
