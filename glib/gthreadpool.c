@@ -445,7 +445,7 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
            */
           char name[16];
 
-          g_snprintf (name, sizeof (name), "pool-%d", g_atomic_int_add (thread_counter, 1));
+          g_snprintf (name, sizeof (name), "pool-%d", g_atomic_int_add (&thread_counter, 1));
 
           thread = g_thread_try_new (name, g_thread_pool_thread_proxy, pool, error);
         }
