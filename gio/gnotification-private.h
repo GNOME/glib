@@ -22,6 +22,7 @@
 #ifndef __G_NOTIFICATION_PRIVATE_H__
 #define __G_NOTIFICATION_PRIVATE_H__
 
+#include "gnotificationsound-private.h"
 #include "gnotification.h"
 
 const gchar *           g_notification_get_id                           (GNotification *notification);
@@ -33,6 +34,8 @@ const gchar *           g_notification_get_body                         (GNotifi
 const gchar *           g_notification_get_category                     (GNotification *notification);
 
 GIcon *                 g_notification_get_icon                         (GNotification *notification);
+
+GNotificationSound *    g_notification_get_sound                        (GNotification *notification);
 
 GNotificationPriority   g_notification_get_priority                     (GNotification *notification);
 

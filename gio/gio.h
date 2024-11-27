@@ -119,6 +119,7 @@
 #include <gio/gnetworkmonitor.h>
 #include <gio/gnetworkservice.h>
 #include <gio/gnotification.h>
+#include <gio/gnotificationsound.h>
 #include <gio/goutputstream.h>
 #include <gio/gpermission.h>
 #include <gio/gpollableinputstream.h>

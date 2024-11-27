@@ -88,6 +88,7 @@ struct _GNotification
   gchar *title;
   gchar *body;
   GIcon *icon;
+  GNotificationSound *sound;
   GNotificationPriority priority;
   gchar *category;
   GPtrArray *buttons;
@@ -123,6 +124,7 @@ g_notification_dispose (GObject *object)
   GNotification *notification = G_NOTIFICATION (object);
 
   g_clear_object (&notification->icon);
+  g_clear_object (&notification->sound);
 
   G_OBJECT_CLASS (g_notification_parent_class)->dispose (object);
 }
@@ -301,6 +303,45 @@ g_notification_set_icon (GNotification *notification,
     g_object_unref (notification->icon);
 
   notification->icon = g_object_ref (icon);
+}
+
+/**
+ * g_notification_set_sound:
+ * @notification: a [class@Gio.Notification]
+ * @sound: (nullable): a [class@Gio.NotificationSound]
+ *
+ * Sets the sound that will be played when @notification is shown.
+ * If %NULL no sound will be played if the platform supports it.
+ *
+ * Since: 2.85
+ */
+void
+g_notification_set_sound (GNotification      *notification,
+                          GNotificationSound *sound)
+{
+
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (G_IS_NOTIFICATION_SOUND (sound) || sound == NULL);
+
+  g_set_object (&notification->sound, sound);
+}
+
+/*< private >
+ * g_notification_get_sound:
+ * @notification: a [class@Gio.Notification]
+ *
+ * Gets the sound currently set on @notification.
+ *
+ * Returns: (nullable): (transfer none): the sound associated with @notification
+ *
+ * Since: 2.85
+ */
+GNotificationSound *
+g_notification_get_sound (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->sound;
 }
 
 /*< private >

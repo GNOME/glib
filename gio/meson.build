@@ -298,6 +298,7 @@ application_headers = files(
   'gmenuexporter.h',
   'gdbusmenumodel.h',
   'gnotification.h',
+  'gnotificationsound.h',
 )
 
 application_sources = files(
@@ -320,6 +321,7 @@ application_sources = files(
   'gmenuexporter.c',
   'gdbusmenumodel.c',
   'gnotification.c',
+  'gnotificationsound.c',
   'gnotificationbackend.c',
 )
 
