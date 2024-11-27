@@ -103,6 +103,8 @@ static gint max_unused_threads = 8;
 static gint kill_unused_threads = 0;
 static guint max_idle_time = 15 * 1000;
 
+static int thread_counter = 0;
+
 typedef struct
 {
   /* Either thread or error are set in the end. Both transfer-full. */
@@ -283,11 +285,9 @@ g_thread_pool_spawn_thread (gpointer data)
       SpawnThreadData *spawn_thread_data;
       GThread *thread = NULL;
       GError *error = NULL;
-      const gchar *prgname = g_get_prgname ();
-      gchar name[16] = "pool";
+      gchar name[16];
 
-      if (prgname)
-        g_snprintf (name, sizeof (name), "pool-%s", prgname);
+      g_snprintf (name, sizeof (name), "pool-%d", g_atomic_int_add (&thread_counter, 1));
 
       g_async_queue_lock (spawn_thread_queue);
       /* Spawn a new thread for the given pool and wake the requesting thread
@@ -434,12 +434,7 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
 
   if (!success)
     {
-      const gchar *prgname = g_get_prgname ();
-      gchar name[16] = "pool";
       GThread *thread;
-
-      if (prgname)
-        g_snprintf (name, sizeof (name), "pool-%s", prgname);
 
       /* No thread was found, we have to start a new one */
       if (pool->pool.exclusive)
@@ -448,6 +443,10 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
            * we simply start new threads that inherit the scheduler settings
            * from the current thread.
            */
+          char name[16];
+
+          g_snprintf (name, sizeof (name), "pool-%d", g_atomic_int_add (&thread_counter, 1));
+
           thread = g_thread_try_new (name, g_thread_pool_thread_proxy, pool, error);
         }
       else
