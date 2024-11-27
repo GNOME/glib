@@ -517,6 +517,195 @@ serialize_icon_cb (GObject      *source_object,
   g_object_unref (task);
 }
 
+static void
+file_read_cb (GObject      *source_object,
+              GAsyncResult *res,
+              gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GOutputStream *stream_out = G_OUTPUT_STREAM (g_task_get_task_data (task));
+  GError *error = NULL;
+  GFileInputStream *stream_in = NULL;
+
+  stream_in = g_file_read_finish (G_FILE (source_object), res, &error);
+  if (!stream_in)
+    {
+      g_task_return_error (task, g_steal_pointer (&error));
+      g_object_unref (task);
+      return;
+    }
+
+  g_output_stream_splice_async (stream_out,
+                                G_INPUT_STREAM (stream_in),
+                                G_OUTPUT_STREAM_SPLICE_CLOSE_SOURCE,
+                                g_task_get_priority (task),
+                                g_task_get_cancellable (task),
+                                splice_cb,
+                                g_object_ref (task));
+
+  g_object_unref (stream_in);
+  g_object_unref (task);
+}
+
+
+static void
+serialize_sound (GNotificationSound               *sound,
+                 GAsyncReadyCallback               callback,
+                 gpointer                          user_data)
+{
+  GTask *task = NULL;
+  GBytes *bytes = NULL;
+  GFile *file = NULL;
+
+  task = g_task_new (NULL, NULL, callback, user_data);
+  g_task_set_source_tag (task, serialize_sound);
+
+  if (sound == NULL)
+    {
+      g_task_set_task_data (task,
+                            g_variant_take_ref (g_variant_new_string ("silent")),
+                            (GDestroyNotify) g_variant_unref);
+      g_task_return_boolean (task, TRUE);
+    }
+  else if (g_notification_sound_is_default (sound))
+    {
+      g_task_set_task_data (task,
+                            g_variant_take_ref (g_variant_new_string ("default")),
+                            (GDestroyNotify) g_variant_unref);
+      g_task_return_boolean (task, TRUE);
+    }
+  else if ((bytes = g_notification_sound_get_bytes (sound)))
+    {
+      GOutputStream *stream_out = NULL;
+      GError *error = NULL;
+      int fd = -1;
+
+      fd = bytes_to_memfd ("notification-media",
+                           bytes,
+                           &error);
+      if (fd == -1)
+        {
+          g_task_return_error (task, g_steal_pointer (&error));
+          g_object_unref (task);
+          return;
+        }
+
+      stream_out = g_unix_output_stream_new (g_steal_fd (&fd), TRUE);
+      g_task_set_task_data (task, g_steal_pointer (&stream_out), g_object_unref);
+      g_task_return_boolean (task, TRUE);
+    }
+  else if ((file = g_notification_sound_get_file (sound)))
+    {
+      GOutputStream *stream_out = NULL;
+      int fd = -1;
+
+      fd = memfd_create ("notification-sound", MFD_ALLOW_SEALING);
+      if (fd == -1)
+        {
+          int saved_errno;
+
+          saved_errno = errno;
+          g_task_return_new_error (task,
+                                   G_IO_ERROR,
+                                   g_io_error_from_errno (saved_errno),
+                                   "memfd_create: %s", g_strerror (saved_errno));
+
+          g_object_unref (task);
+          return;
+        }
+
+      stream_out = g_unix_output_stream_new (g_steal_fd (&fd), TRUE);
+      g_task_set_task_data (task, g_steal_pointer (&stream_out), g_object_unref);
+
+      g_file_read_async (file,
+                         g_task_get_priority (task),
+                         NULL,
+                         file_read_cb,
+                         g_object_ref (task));
+    }
+  else
+    {
+      g_assert_not_reached ();
+    }
+
+  g_object_unref (task);
+}
+
+static GVariant*
+serialize_sound_finish (GAsyncResult  *result,
+                        GUnixFDList   *fd_list,
+                        GError       **error)
+{
+  GTask *task = G_TASK (result);
+  gpointer data;
+
+  g_return_val_if_fail (g_task_get_source_tag (task) == serialize_sound, NULL);
+
+  if (!g_task_propagate_boolean (G_TASK (result), error))
+    return NULL;
+
+  data = g_task_get_task_data (task);
+  g_assert (data != NULL);
+
+  if (G_IS_UNIX_OUTPUT_STREAM (data))
+    {
+      int fd;
+      int fd_in;
+
+      fd = g_unix_output_stream_get_fd (G_UNIX_OUTPUT_STREAM (data));
+      if (lseek (fd, 0, SEEK_SET) == -1)
+        {
+          int saved_errno = errno;
+
+          g_task_return_new_error (task,
+                                   G_IO_ERROR,
+                                   g_io_error_from_errno (saved_errno),
+                                   "lseek: %s", g_strerror (saved_errno));
+          return NULL;
+        }
+
+      fd_in = g_unix_fd_list_append (fd_list, fd, error);
+      if (fd_in == -1)
+        return NULL;
+
+      return g_variant_ref_sink (g_variant_new ("(sv)", "file-descriptor", g_variant_new_handle (fd_in)));
+    }
+  else
+    {
+      g_assert (data != NULL);
+      return g_variant_ref (data);
+    }
+}
+
+static void
+serialize_sound_cb (GObject      *source_object,
+                    GAsyncResult *res,
+                    gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  ParserData *data = g_task_get_task_data (task);
+  GError *error = NULL;
+  GVariant *sound_out = NULL;
+
+  sound_out = serialize_sound_finish (res, data->fd_list, &error);
+
+  if (!sound_out)
+    {
+      g_prefix_error_literal (&error, "Failed to serialize sound: ");
+      g_task_return_error (task, g_steal_pointer (&error));
+      g_object_unref (task);
+      return;
+    }
+
+  g_variant_builder_add (data->builder, "{sv}", "sound", sound_out);
+
+  if (parser_data_release (data))
+    g_task_return_boolean (task, TRUE);
+
+  g_clear_pointer (&sound_out, g_variant_unref);
+  g_object_unref (task);
+}
+
 static GVariant *
 serialize_buttons (GNotification *notification)
 {
@@ -586,6 +775,7 @@ serialize_notification (const char          *id,
   gchar *default_action = NULL;
   GVariant *default_action_target = NULL;
   GVariant *buttons = NULL;
+  GNotificationSound *sound = NULL;
 
   task = g_task_new (NULL, NULL, callback, user_data);
   g_task_set_source_tag (task, serialize_notification);
@@ -615,6 +805,16 @@ serialize_notification (const char          *id,
         {
           g_warning ("Can’t add icon to portal notification: %s isn’t handled", g_type_name_from_instance ((GTypeInstance *)icon));
         }
+    }
+
+  sound = g_notification_get_sound (notification);
+  /* For the portal a custom sound is considered a button */
+  if (version > 1 && !(sound && g_notification_sound_get_custom (sound, NULL, NULL)))
+    {
+      parser_data_hold (data);
+      serialize_sound (sound,
+                       serialize_sound_cb,
+                       g_object_ref (task));
     }
 
   g_variant_builder_add (data->builder, "{sv}", "priority", serialize_priority (notification));
