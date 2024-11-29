@@ -92,13 +92,14 @@ The default log functions (`g_log_default_handler()` for the old-style API
 and `g_log_writer_default()` for the structured API) both drop debug and
 informational messages by default, unless the log domains of those messages
 are listed in the `G_MESSAGES_DEBUG` environment variable (or it is set to
-`all`).
+`all`), or `DEBUG_INVOCATION=1` is set in the environment.
 
 It is recommended that custom log writer functions re-use the
-`G_MESSAGES_DEBUG` environment variable, rather than inventing a custom one,
-so that developers can re-use the same debugging techniques and tools across
-projects. Since GLib 2.68, this can be implemented by dropping messages for
-which `g_log_writer_default_would_drop()` returns `TRUE`.
+`G_MESSAGES_DEBUG` and `DEBUG_INVOCATION` environment variables, rather than
+inventing a custom one, so that developers can re-use the same debugging
+techniques and tools across projects. Since GLib 2.68, this can be implemented
+by dropping messages for which `g_log_writer_default_would_drop()` returns
+`TRUE`.
 
 ## Testing for Messages
 
