@@ -128,7 +128,10 @@ g_dbus_method_invocation_init (GDBusMethodInvocation *invocation)
  *
  * Gets the bus name that invoked the method.
  *
- * Returns: A string. Do not free, it is owned by @invocation.
+ * This can return %NULL if not specified by the caller, e.g. on peer-to-peer
+ * connections.
+ *
+ * Returns: (nullable): A string. Do not free, it is owned by @invocation.
  *
  * Since: 2.26
  */
@@ -162,12 +165,17 @@ g_dbus_method_invocation_get_object_path (GDBusMethodInvocation *invocation)
  *
  * Gets the name of the D-Bus interface the method was invoked on.
  *
+ * This can be `NULL` if it was not specified by the sender. See
+ * [callback@Gio.DBusInterfaceMethodCallFunc] or the
+ * [D-Bus Specification](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-types-method)
+ * for details on when this can happen and how it should be handled.
+ *
  * If this method call is a property Get, Set or GetAll call that has
  * been redirected to the method call handler then
  * "org.freedesktop.DBus.Properties" will be returned.  See
  * #GDBusInterfaceVTable for more information.
  *
- * Returns: A string. Do not free, it is owned by @invocation.
+ * Returns: (nullable): A string. Do not free, it is owned by @invocation.
  *
  * Since: 2.26
  */
