@@ -5155,6 +5155,14 @@ g_value_dup_object (const GValue *value)
  * emitting a signal while @gobject is being destroyed in another thread
  * is not safe).
  *
+ * This function cannot fail. If the given signal name doesn’t exist,
+ * a critical warning is emitted. No validation is performed on the
+ * "detail" string when specified in @detailed_signal, other than a
+ * non-empty check.
+ *
+ * Refer to the [signals documentation](signals.html) for more
+ * details.
+ *
  * Returns: the handler id.
  */
 gulong
