@@ -200,7 +200,7 @@ thread6_func (gpointer data)
 
   g_assert_cmpstr (name, ==, data);
 
-  name2= g_thread_get_name (g_thread_self ());
+  name2 = g_thread_get_name (g_thread_self ());
 
   g_assert_cmpstr (name2, ==, data);
 #endif

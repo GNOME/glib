@@ -655,6 +655,7 @@ g_system_thread_get_name (char  *buffer,
                           gsize  length)
 {
   /* FIXME: Not implemented yet */
+  g_assert (length >= 1);
   buffer[0] = '\0';
 }
 

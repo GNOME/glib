@@ -885,7 +885,7 @@ g_thread_proxy (gpointer data)
   if (thread->name[0] != '\0')
     g_system_thread_set_name (thread->name);
   else
-    g_system_thread_get_name (thread->name, 16);
+    g_system_thread_get_name (thread->name, sizeof (thread->name));
 
   thread->retval = thread->thread.func (thread->thread.data);
 
@@ -1106,7 +1106,7 @@ g_thread_self (void)
 
 /**
  * g_thread_get_name:
- * @GThread: a thread
+ * @thread: a thread
  *
  * Gets the name of the thread.
  *

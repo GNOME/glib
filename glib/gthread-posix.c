@@ -733,7 +733,7 @@ g_system_thread_new (GThreadFunc proxy,
   base_thread->thread.func = func;
   base_thread->thread.data = data;
   if (name)
-    g_strlcpy (base_thread->name, name, 16);
+    g_strlcpy (base_thread->name, name, sizeof (base_thread->name));
   thread->proxy = proxy;
 
   posix_check_cmd (pthread_attr_init (&attr));
@@ -834,6 +834,7 @@ g_system_thread_get_name (char  *buffer,
 #ifdef HAVE_PTHREAD_GETNAME_NP
   pthread_getname_np (pthread_self (), buffer, length);
 #else
+  g_assert (length >= 1);
   buffer[0] = '\0';
 #endif
 }
