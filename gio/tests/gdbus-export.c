@@ -161,6 +161,23 @@ foo_method_call (GDBusConnection       *connection,
     }
 }
 
+static void
+foo_method_call_with_closure (GDBusConnection       *connection,
+                              const gchar           *sender,
+                              const gchar           *object_path,
+                              const gchar           *interface_name,
+                              const gchar           *method_name,
+                              GVariant              *parameters,
+                              GDBusMethodInvocation *invocation,
+                              gpointer               user_data)
+{
+  /* The call below takes ownership of the invocation but ownership is not
+   * passed into the callback so get an additional reference here */
+  g_object_ref (invocation);
+
+  foo_method_call (connection, sender, object_path, interface_name, method_name, parameters, invocation, user_data);
+}
+
 static GVariant *
 foo_get_property (GDBusConnection       *connection,
                   const gchar           *sender,
@@ -1440,7 +1457,7 @@ test_object_registration_with_closures (void)
   registration_id = g_dbus_connection_register_object_with_closures (c,
                                                                      "/foo/boss",
                                                                      (GDBusInterfaceInfo *) &foo_interface_info,
-                                                                     g_cclosure_new (G_CALLBACK (foo_method_call), NULL, NULL),
+                                                                     g_cclosure_new (G_CALLBACK (foo_method_call_with_closure), NULL, NULL),
                                                                      g_cclosure_new (G_CALLBACK (foo_get_property), NULL, NULL),
                                                                      g_cclosure_new (G_CALLBACK (foo_set_property), NULL, NULL),
                                                                      &error);
