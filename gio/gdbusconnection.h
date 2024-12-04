@@ -265,15 +265,24 @@ GVariant *g_dbus_connection_call_with_unix_fd_list_sync       (GDBusConnection  
 /**
  * GDBusInterfaceMethodCallFunc:
  * @connection: A #GDBusConnection.
- * @sender: The unique bus name of the remote caller.
+ * @sender: (nullable): The unique bus name of the remote caller, or `NULL` if
+ *     not specified by the caller, e.g. on peer-to-peer connections.
  * @object_path: The object path that the method was invoked on.
- * @interface_name: The D-Bus interface name the method was invoked on.
+ * @interface_name: (nullable): The D-Bus interface name the method was invoked on,
+ *     or `NULL` if not specified by the sender.
  * @method_name: The name of the method that was invoked.
  * @parameters: A #GVariant tuple with parameters.
  * @invocation: (transfer full): A #GDBusMethodInvocation object that must be used to return a value or error.
  * @user_data: The @user_data #gpointer passed to g_dbus_connection_register_object().
  *
  * The type of the @method_call function in #GDBusInterfaceVTable.
+ *
+ * @interface_name may be `NULL` if not specified by the sender, although it’s
+ * encouraged for the sender to set it. If unset, and the object has only one
+ * method (across all interfaces) matching @method_name, that method is invoked.
+ * Otherwise, behaviour is implementation defined. See the
+ * [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-types-method).
+ * It is recommended to return [error@Gio.DBusError.UNKNOWN_METHOD].
  *
  * Since: 2.26
  */
@@ -289,7 +298,8 @@ typedef void (*GDBusInterfaceMethodCallFunc) (GDBusConnection       *connection,
 /**
  * GDBusInterfaceGetPropertyFunc:
  * @connection: A #GDBusConnection.
- * @sender: The unique bus name of the remote caller.
+ * @sender: (nullable): The unique bus name of the remote caller or %NULL if
+ *     not specified by the caller, e.g. on peer-to-peer connections.
  * @object_path: The object path that the method was invoked on.
  * @interface_name: The D-Bus interface name for the property.
  * @property_name: The name of the property to get the value of.
@@ -315,7 +325,8 @@ typedef GVariant *(*GDBusInterfaceGetPropertyFunc) (GDBusConnection       *conne
 /**
  * GDBusInterfaceSetPropertyFunc:
  * @connection: A #GDBusConnection.
- * @sender: The unique bus name of the remote caller.
+ * @sender: (nullable): The unique bus name of the remote caller or %NULL if
+ *     not specified by the caller, e.g. on peer-to-peer connections.
  * @object_path: The object path that the method was invoked on.
  * @interface_name: The D-Bus interface name for the property.
  * @property_name: The name of the property to get the value of.
