@@ -129,7 +129,7 @@
 
 /**
  * GLogFunc:
- * @log_domain: the log domain of the message
+ * @log_domain: (nullable): the log domain of the message
  * @log_level: the log level of the message (including the
  *   fatal and recursion flags)
  * @message: the message to process
@@ -142,6 +142,9 @@
  * custom log handler functions behave similarly, so that logging calls in user
  * code do not need modifying to add a new-line character to the message if the
  * log handler is changed.
+ *
+ * The `log_domain` parameter can be set to `NULL` or an empty string to use the default
+ * application domain.
  *
  * This is not used if structured logging is enabled; see
  * [Using Structured Logging](logging.html#using-structured-logging).
