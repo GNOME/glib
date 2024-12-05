@@ -658,7 +658,7 @@ g_log_set_fatal_mask (const gchar   *log_domain,
 
 /**
  * g_log_set_handler:
- * @log_domain: (nullable): the log domain, or `NULL` for the default `""`
+ * @log_domain: (nullable): the log domain
  *    application domain
  * @log_levels: the log levels to apply the log handler for.
  *    To handle fatal and recursive messages as well, combine
@@ -679,6 +679,9 @@ g_log_set_fatal_mask (const gchar   *log_domain,
  *
  * This has no effect if structured logging is enabled; see
  * [Using Structured Logging](logging.html#using-structured-logging).
+ *
+ * The `log_domain` parameter can be set to `NULL` or an empty string to use the default
+ * application domain.
  *
  * Here is an example for adding a log handler for all warning messages
  * in the default domain:
@@ -715,7 +718,7 @@ g_log_set_handler (const gchar	 *log_domain,
 
 /**
  * g_log_set_handler_full: (rename-to g_log_set_handler)
- * @log_domain: (nullable): the log domain, or `NULL` for the default `""`
+ * @log_domain: (nullable): the log domain
  *   application domain
  * @log_levels: the log levels to apply the log handler for.
  *   To handle fatal and recursive messages as well, combine
@@ -729,6 +732,9 @@ g_log_set_handler (const gchar	 *log_domain,
  *
  * This has no effect if structured logging is enabled; see
  * [Using Structured Logging](logging.html#using-structured-logging).
+ *
+ * The `log_domain` parameter can be set to `NULL` or an empty string to use the default
+ * application domain.
  *
  * Returns: the ID of the new handler
  *
@@ -1128,7 +1134,7 @@ static GSList *expected_messages = NULL;
 
 /**
  * g_logv:
- * @log_domain: (nullable): the log domain, or `NULL` for the default `""`
+ * @log_domain: (nullable): the log domain
  *   application domain
  * @log_level: the log level
  * @format: the message format. See the `printf()` documentation
@@ -1146,6 +1152,9 @@ static GSList *expected_messages = NULL;
  *
  * If [structured logging is enabled](logging.html#using-structured-logging) this will
  * output via the structured log writer function (see [func@GLib.log_set_writer_func]).
+ *
+ * The `log_domain` parameter can be set to `NULL` or an empty string to use the default
+ * application domain.
  */
 void
 g_logv (const gchar   *log_domain,
