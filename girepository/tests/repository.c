@@ -111,6 +111,9 @@ test_repository_info (RepositoryFixture *fx,
   object_info_by_gtype = GI_OBJECT_INFO (gi_repository_find_by_gtype (fx->repository, G_TYPE_OBJECT));
   g_assert_nonnull (object_info);
 
+  signal_info = gi_object_info_find_signal (object_info, "does-not-exist");
+  g_assert_null (signal_info);
+
   signal_info = gi_object_info_find_signal (object_info, "notify");
   g_assert_nonnull (signal_info);
   g_assert_true (GI_IS_SIGNAL_INFO (signal_info));
