@@ -701,13 +701,14 @@ typedef enum {
  * to #GEmblem.
  *
  * Since: 2.18
+ * Deprecated: 2.84
  */
 typedef enum  {
   G_EMBLEM_ORIGIN_UNKNOWN,
   G_EMBLEM_ORIGIN_DEVICE,
   G_EMBLEM_ORIGIN_LIVEMETADATA,
   G_EMBLEM_ORIGIN_TAG
-} GEmblemOrigin;
+} GEmblemOrigin GIO_DEPRECATED_TYPE_IN_2_84;
 
 /**
  * GResolverError:

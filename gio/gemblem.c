@@ -39,6 +39,8 @@
  *
  * Currently, only metainformation about the emblem's origin is
  * supported. More may be added in the future.
+ *
+ * Deprecated: 2.84
  */
 
 static void g_emblem_iface_init (GIconIface *iface);
@@ -48,7 +50,10 @@ struct _GEmblem
   GObject parent_instance;
 
   GIcon *icon;
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GEmblemOrigin origin;
+  G_GNUC_END_IGNORE_DEPRECATIONS
 };
 
 struct _GEmblemClass
@@ -140,13 +145,14 @@ g_emblem_class_init (GEmblemClass *klass)
    * The origin the emblem is derived from.
    *
    * Since: 2.18
+   * Deprecated: 2.84
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ORIGIN,
                                    g_param_spec_enum ("origin", NULL, NULL,
                                                       G_TYPE_EMBLEM_ORIGIN,
                                                       G_EMBLEM_ORIGIN_UNKNOWN,
-                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_DEPRECATED));
 
   /**
    * GEmblem:icon:
@@ -154,12 +160,13 @@ g_emblem_class_init (GEmblemClass *klass)
    * The actual icon of the emblem.
    *
    * Since: 2.18
+   * Deprecated: 2.84
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ICON,
                                    g_param_spec_object ("icon", NULL, NULL,
                                                       G_TYPE_OBJECT,
-                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                                                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_DEPRECATED));
 
 }
 
@@ -177,6 +184,7 @@ g_emblem_init (GEmblem *emblem)
  * Returns: a new #GEmblem.
  *
  * Since: 2.18
+ * Deprecated: 2.84
  */
 GEmblem *
 g_emblem_new (GIcon *icon)
@@ -194,6 +202,7 @@ g_emblem_new (GIcon *icon)
   return emblem;
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /**
  * g_emblem_new_with_origin:
  * @icon: a GIcon containing the icon.
@@ -204,6 +213,7 @@ g_emblem_new (GIcon *icon)
  * Returns: a new #GEmblem.
  *
  * Since: 2.18
+ * Deprecated: 2.84
  */
 GEmblem *
 g_emblem_new_with_origin (GIcon         *icon,
@@ -221,6 +231,7 @@ g_emblem_new_with_origin (GIcon         *icon,
 
   return emblem;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_emblem_get_icon:
@@ -232,6 +243,7 @@ g_emblem_new_with_origin (GIcon         *icon,
  *          the emblem and should not be modified or freed.
  *
  * Since: 2.18
+ * Deprecated: 2.84
  */
 GIcon *
 g_emblem_get_icon (GEmblem *emblem)
@@ -241,7 +253,7 @@ g_emblem_get_icon (GEmblem *emblem)
   return emblem->icon;
 }
 
-
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 /**
  * g_emblem_get_origin:
  * @emblem: a #GEmblem
@@ -251,6 +263,7 @@ g_emblem_get_icon (GEmblem *emblem)
  * Returns: (transfer none): the origin of the emblem
  *
  * Since: 2.18
+ * Deprecated: 2.84
  */
 GEmblemOrigin
 g_emblem_get_origin (GEmblem *emblem)
@@ -259,6 +272,7 @@ g_emblem_get_origin (GEmblem *emblem)
 
   return emblem->origin;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static guint
 g_emblem_hash (GIcon *icon)
@@ -266,7 +280,9 @@ g_emblem_hash (GIcon *icon)
   GEmblem *emblem = G_EMBLEM (icon);
   guint hash;
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   hash  = g_icon_hash (g_emblem_get_icon (emblem));
+  G_GNUC_END_IGNORE_DEPRECATIONS
   hash ^= emblem->origin;
 
   return hash;
@@ -320,6 +336,7 @@ g_emblem_from_tokens (gchar  **tokens,
 {
   GEmblem *emblem;
   GIcon *icon;
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GEmblemOrigin origin;
 
   emblem = NULL;
@@ -352,6 +369,7 @@ g_emblem_from_tokens (gchar  **tokens,
   origin = atoi (tokens[1]);
 
   emblem = g_emblem_new_with_origin (icon, origin);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_object_unref (icon);
 
   return G_ICON (emblem);

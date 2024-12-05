@@ -60,18 +60,22 @@ struct _GEmblemedIconClass
 GIO_AVAILABLE_IN_ALL
 GType  g_emblemed_icon_get_type    (void) G_GNUC_CONST;
 
-GIO_AVAILABLE_IN_ALL
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+GIO_DEPRECATED_IN_2_84
 GIcon *g_emblemed_icon_new         (GIcon         *icon,
                                     GEmblem       *emblem);
-GIO_AVAILABLE_IN_ALL
+GIO_DEPRECATED_IN_2_84
 GIcon *g_emblemed_icon_get_icon    (GEmblemedIcon *emblemed);
-GIO_AVAILABLE_IN_ALL
+GIO_DEPRECATED_IN_2_84
 GList *g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed);
-GIO_AVAILABLE_IN_ALL
+GIO_DEPRECATED_IN_2_84
 void   g_emblemed_icon_add_emblem  (GEmblemedIcon *emblemed,
                                     GEmblem       *emblem);
-GIO_AVAILABLE_IN_ALL
+GIO_DEPRECATED_IN_2_84
 void   g_emblemed_icon_clear_emblems  (GEmblemedIcon *emblemed);
+
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 G_END_DECLS
 

@@ -43,15 +43,19 @@ typedef struct _GEmblemClass   GEmblemClass;
 GIO_AVAILABLE_IN_ALL
 GType          g_emblem_get_type        (void) G_GNUC_CONST;
 
-GIO_AVAILABLE_IN_ALL
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+GIO_DEPRECATED_IN_2_84
 GEmblem       *g_emblem_new             (GIcon         *icon);
-GIO_AVAILABLE_IN_ALL
+GIO_DEPRECATED_IN_2_84
 GEmblem       *g_emblem_new_with_origin (GIcon         *icon,
                                          GEmblemOrigin  origin);
-GIO_AVAILABLE_IN_ALL
+GIO_DEPRECATED_IN_2_84
 GIcon         *g_emblem_get_icon        (GEmblem       *emblem);
-GIO_AVAILABLE_IN_ALL
+GIO_DEPRECATED_IN_2_84
 GEmblemOrigin  g_emblem_get_origin      (GEmblem       *emblem);
+
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 G_END_DECLS
 

@@ -41,6 +41,8 @@
  *
  * Note that `GEmblemedIcon` allows no control over the position
  * of the emblems. See also [class@Gio.Emblem] for more information.
+ *
+ * Deprecated: 2.84
  **/
 
 enum {
@@ -129,11 +131,12 @@ g_emblemed_icon_class_init (GEmblemedIconClass *klass)
    * The [iface@Gio.Icon] to attach emblems to.
    *
    * Since: 2.18
+   * Deprecated: 2.84
    */
   properties[PROP_GICON] =
     g_param_spec_object ("gicon", NULL, NULL,
                          G_TYPE_ICON,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS | G_PARAM_DEPRECATED);
 
   g_object_class_install_properties (gobject_class, NUM_PROPERTIES, properties);
 }
@@ -154,6 +157,7 @@ g_emblemed_icon_init (GEmblemedIcon *emblemed)
  * Returns: (transfer full) (type GEmblemedIcon): a new #GIcon
  *
  * Since: 2.18
+ * Deprecated: 2.84
  **/
 GIcon *
 g_emblemed_icon_new (GIcon   *icon,
@@ -168,12 +172,13 @@ g_emblemed_icon_new (GIcon   *icon,
                                             "gicon", icon,
                                             NULL));
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (emblem != NULL)
     g_emblemed_icon_add_emblem (emblemed, emblem);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   return G_ICON (emblemed);
 }
-
 
 /**
  * g_emblemed_icon_get_icon:
@@ -184,6 +189,7 @@ g_emblemed_icon_new (GIcon   *icon,
  * Returns: (transfer none): a #GIcon that is owned by @emblemed
  *
  * Since: 2.18
+ * Deprecated: 2.84
  **/
 GIcon *
 g_emblemed_icon_get_icon (GEmblemedIcon *emblemed)
@@ -203,6 +209,7 @@ g_emblemed_icon_get_icon (GEmblemedIcon *emblemed)
  *     #GEmblems that is owned by @emblemed
  *
  * Since: 2.18
+ * Deprecated: 2.84
  **/
 
 GList *
@@ -220,6 +227,7 @@ g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed)
  * Removes all the emblems from @icon.
  *
  * Since: 2.28
+ * Deprecated: 2.84
  **/
 void
 g_emblemed_icon_clear_emblems (GEmblemedIcon *emblemed)
@@ -257,6 +265,7 @@ g_emblem_comp (GEmblem *a,
  * Adds @emblem to the #GList of #GEmblems.
  *
  * Since: 2.18
+ * Deprecated: 2.84
  **/
 void 
 g_emblemed_icon_add_emblem (GEmblemedIcon *emblemed,

@@ -61,7 +61,7 @@
  *
  * If you want to consume `GIcon` (for example, in a toolkit) you must
  * be prepared to handle at least the three following cases:
- * [iface@Gio.LoadableIcon], [class@Gio.ThemedIcon] and [class@Gio.EmblemedIcon].
+ * [iface@Gio.LoadableIcon], [class@Gio.ThemedIcon] and [class@Gio.EmblemedIcon] (deprecated since 2.84).
  * It may also make sense to have fast-paths for other cases (like handling
  * [`GdkPixbuf`](https://docs.gtk.org/gdk-pixbuf/class.Pixbuf.html) directly,
  * for example) but all compliant `GIcon` implementations outside of GIO must
@@ -471,6 +471,7 @@ g_icon_new_for_string (const gchar   *str,
   return icon;
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 static GEmblem *
 g_icon_deserialize_emblem (GVariant *value)
 {
@@ -555,6 +556,7 @@ g_icon_deserialize_emblemed (GVariant *value)
 
   return icon;
 }
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * g_icon_deserialize:

@@ -244,17 +244,21 @@ test_g_icon_to_string (void)
   location = g_file_new_for_uri ("file:///some/path/somewhere.png");
   icon3 = g_file_icon_new (location);
   g_object_unref (location);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   emblem1 = g_emblem_new_with_origin (icon2, G_EMBLEM_ORIGIN_DEVICE);
   emblem2 = g_emblem_new_with_origin (icon3, G_EMBLEM_ORIGIN_LIVEMETADATA);
   icon4 = g_emblemed_icon_new (icon, emblem1);
   g_emblemed_icon_add_emblem (G_EMBLEMED_ICON (icon4), emblem2);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   data = g_icon_to_string (icon4);
   icon5 = g_icon_new_for_string (data, &error);
   g_assert_no_error (error);
   g_assert (g_icon_equal (icon4, icon5));
 
   g_object_get (emblem1, "origin", &origin, "icon", &i, NULL);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_assert (origin == G_EMBLEM_ORIGIN_DEVICE);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_assert (i == icon2);
   g_object_unref (i);
 
@@ -364,10 +368,12 @@ test_g_icon_serialize (void)
   location = g_file_new_for_uri ("file:///some/path/somewhere.png");
   icon3 = g_file_icon_new (location);
   g_object_unref (location);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   emblem1 = g_emblem_new_with_origin (icon2, G_EMBLEM_ORIGIN_DEVICE);
   emblem2 = g_emblem_new_with_origin (icon3, G_EMBLEM_ORIGIN_LIVEMETADATA);
   icon4 = g_emblemed_icon_new (icon, emblem1);
   g_emblemed_icon_add_emblem (G_EMBLEMED_ICON (icon4), emblem2);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   data = g_icon_serialize (icon4);
   icon5 = g_icon_deserialize (data);
   g_assert (g_icon_equal (icon4, icon5));
@@ -450,6 +456,7 @@ test_emblemed_icon (void)
 
   icon1 = g_themed_icon_new ("testicon");
   icon2 = g_themed_icon_new ("testemblem");
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   emblem1 = g_emblem_new (icon2);
   emblem2 = g_emblem_new_with_origin (icon2, G_EMBLEM_ORIGIN_TAG);
 
@@ -461,6 +468,7 @@ test_emblemed_icon (void)
   icon4 = g_emblemed_icon_new (icon1, emblem1);
   g_emblemed_icon_add_emblem (G_EMBLEMED_ICON (icon4), emblem2);
   emblems = g_emblemed_icon_get_emblems (G_EMBLEMED_ICON (icon4));
+  G_GNUC_END_IGNORE_DEPRECATIONS
   g_assert_cmpint (g_list_length (emblems), ==, 2);
 
   g_assert (!g_icon_equal (icon3, icon4));
@@ -472,6 +480,7 @@ test_emblemed_icon (void)
   g_variant_unref (variant);
 
   emblem = emblems->data;
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_assert (g_emblem_get_icon (emblem) == icon2);
   g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_UNKNOWN);
 
@@ -481,6 +490,7 @@ test_emblemed_icon (void)
 
   g_emblemed_icon_clear_emblems (G_EMBLEMED_ICON (icon4));
   g_assert (g_emblemed_icon_get_emblems (G_EMBLEMED_ICON (icon4)) == NULL);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   g_assert (g_icon_hash (icon4) != g_icon_hash (icon2));
   g_object_get (icon4, "gicon", &icon, NULL);
@@ -611,6 +621,9 @@ int
 main (int   argc,
       char *argv[])
 {
+  /* Disable deprecation warnings because GEmblemedIcon is deprecated and has deprecated properties */
+  g_setenv ("G_ENABLE_DIAGNOSTIC", "0", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/icons/to-string", test_g_icon_to_string);
