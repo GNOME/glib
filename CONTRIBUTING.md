@@ -228,7 +228,7 @@ Closes #1234
  `git commit -a --author "Joe Coder <joe@coder.org>"` and `--signoff`.
 
  - If your commit is addressing an issue, use the
- [GitLab syntax](https://docs.gitlab.com/ce/user/project/issues/automatic_issue_closing.html)
+ [GitLab syntax](https://docs.gitlab.com/ce/user/project/issues/managing_issues.html#default-closing-pattern)
  to automatically close the issue when merging the commit with the upstream
  repository:
 
