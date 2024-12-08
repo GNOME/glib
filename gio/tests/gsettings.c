@@ -3239,7 +3239,7 @@ test_extended_schema (void)
   GSettings *settings;
   gchar **keys;
 
-  settings = g_settings_new_with_path ("org.gtk.test.extends.extended", "/test/extendes/");
+  settings = g_settings_new_with_path ("org.gtk.test.extends.extended", "/test/extends/");
   g_object_get (settings, "settings-schema", &schema, NULL);
   keys = g_settings_schema_list_keys (schema);
   g_assert_true (strv_set_equal ((const gchar * const *) keys, "int32", "string", "another-int32", NULL));
