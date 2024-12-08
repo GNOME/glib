@@ -3239,11 +3239,26 @@ test_extended_schema (void)
   GSettings *settings;
   gchar **keys;
 
-  settings = g_settings_new_with_path ("org.gtk.test.extends.extended", "/test/extendes/");
+  settings = g_settings_new_with_path ("org.gtk.test.extends.extended", "/test/extends/");
   g_object_get (settings, "settings-schema", &schema, NULL);
   keys = g_settings_schema_list_keys (schema);
   g_assert_true (strv_set_equal ((const gchar * const *) keys, "int32", "string", "another-int32", NULL));
   g_strfreev (keys);
+  g_object_unref (settings);
+  g_settings_schema_unref (schema);
+}
+
+static void
+test_extended_schema_has_key (void)
+{
+  GSettingsSchema *schema;
+  GSettings *settings;
+
+  settings = g_settings_new_with_path ("org.gtk.test.extends.extended", "/test/extends/");
+  g_object_get (settings, "settings-schema", &schema, NULL);
+  g_assert_true (g_settings_schema_has_key (schema, "int32"));
+  g_assert_true (g_settings_schema_has_key (schema, "string"));
+  g_assert_true (g_settings_schema_has_key (schema, "another-int32"));
   g_object_unref (settings);
   g_settings_schema_unref (schema);
 }
@@ -3429,6 +3444,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/memory-backend", test_memory_backend);
   g_test_add_func ("/gsettings/read-descriptions", test_read_descriptions);
   g_test_add_func ("/gsettings/test-extended-schema", test_extended_schema);
+  g_test_add_func ("/gsettings/test-extended-schema-has-key", test_extended_schema_has_key);
   g_test_add_func ("/gsettings/default-value", test_default_value);
   g_test_add_func ("/gsettings/per-desktop", test_per_desktop);
   g_test_add_func ("/gsettings/per-desktop/subprocess", test_per_desktop_subprocess);
