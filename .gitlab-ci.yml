@@ -115,7 +115,7 @@ variables:
     - >
       if ! pkg-config --atleast-version "${GOBJECT_INTROSPECTION_TAG}" gobject-introspection-1.0; then
         mkdir -p gobject-introspection
-        git clone --branch $GOBJECT_INTROSPECTION_TAG https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
+        git clone --branch "${GOBJECT_INTROSPECTION_TAG}" https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
         meson gobject-introspection gobject-introspection/build --prefix=/usr
         sudo meson install -C gobject-introspection/build
       fi
@@ -127,7 +127,7 @@ variables:
 .build-linux:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
-    - cp -r $HOME/subprojects/* subprojects/
+    - cp -r "${HOME}"/subprojects/* subprojects/
 
 # FIXME: Work around https://gitlab.com/gitlab-org/gitlab/-/issues/391756
 .with-git:
@@ -143,7 +143,7 @@ style-check-advisory:
   extends:
     - .only-default
     - .with-git
-  image: $DEBIAN_IMAGE
+  image: "${DEBIAN_IMAGE}"
   stage: style-check
   allow_failure: true
   script:
@@ -156,7 +156,7 @@ sh-and-py-check:
   extends:
     - .only-default
     - .with-git
-  image: $DEBIAN_IMAGE
+  image: "${DEBIAN_IMAGE}"
   stage: style-check
   allow_failure: false
   script:
@@ -176,7 +176,7 @@ style-check-mandatory:
   extends:
     - .only-default
     - .with-git
-  image: $DEBIAN_IMAGE
+  image: "${DEBIAN_IMAGE}"
   stage: style-check
   allow_failure: false
   script:
@@ -190,7 +190,7 @@ fedora-x86_64:
     - .build-linux
     - .only-default-and-merges
     - .with-git
-  image: $FEDORA_IMAGE
+  image: "${FEDORA_IMAGE}"
   stage: build
   needs: []
   variables:
@@ -204,7 +204,7 @@ fedora-x86_64:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
-            --prefix=$HOME/glib-installed
+            --prefix="${HOME}/glib-installed"
             --localstatedir=/var
             --libdir=lib
             -Dsystemtap=enabled
@@ -259,7 +259,7 @@ fedora-x86_64:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
-            --prefix=$HOME/glib-installed
+            --prefix="${HOME}/glib-installed"
             --localstatedir=/var
             --libdir=lib
             -Dsystemtap=enabled
@@ -287,13 +287,13 @@ debian-stable-x86_64:
     # fedora-x86_64 and debian-stable-i386 should cover more or less
     # everything that this job does
     - .only-schedules-or-manual
-  image: $DEBIAN_IMAGE
+  image: "${DEBIAN_IMAGE}"
 
 debian-stable-i386:
   extends:
     - .build-debian
     - .only-default
-  image: $DEBIAN_I386_IMAGE
+  image: "${DEBIAN_I386_IMAGE}"
 
 hurd-i386:
   extends:
@@ -307,7 +307,7 @@ hurd-i386:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
-            --prefix=$HOME/glib-installed
+            --prefix="${HOME}/glib-installed"
             --localstatedir=/var
             --libdir=lib
             _build
@@ -331,7 +331,7 @@ muslc-alpine-x86_64:
     - .build-linux
     - .only-schedules-or-manual
     - .with-git
-  image: $ALPINE_IMAGE
+  image: "${ALPINE_IMAGE}"
   stage: build
   needs: []
   before_script:
@@ -341,7 +341,7 @@ muslc-alpine-x86_64:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
-            --prefix=$HOME/glib-installed
+            --prefix="${HOME}/glib-installed"
             --localstatedir=/var
             --libdir=lib
             _build
@@ -364,7 +364,7 @@ installed-tests:
   extends:
     - .build-linux
     - .only-schedules-or-manual
-  image: $FEDORA_IMAGE
+  image: "${FEDORA_IMAGE}"
   stage: build
   needs: []
   script:
@@ -404,7 +404,7 @@ G_DISABLE_ASSERT:
     - .only-schedules-or-manual
     - .with-git
     - .build-gobject-introspection
-  image: $FEDORA_IMAGE
+  image: "${FEDORA_IMAGE}"
   stage: build
   needs: []
   variables:
@@ -444,7 +444,7 @@ valgrind:
     - .only-schedules-or-manual
     - .with-git
     - .build-gobject-introspection
-  image: $FEDORA_IMAGE
+  image: "${FEDORA_IMAGE}"
   stage: analysis
   needs: []
   variables:
@@ -494,7 +494,7 @@ cross-android_arm64:
   extends:
     - .cross-build-linux
     - .only-default
-  image: $FEDORA_IMAGE
+  image: "${FEDORA_IMAGE}"
   script:
     # FIXME: add --werror
     - meson setup ${MESON_COMMON_OPTIONS} --cross-file=.gitlab-ci/cross_file_android_arm64_31.txt _build
@@ -504,7 +504,7 @@ cross-mingw64:
   extends:
     - .cross-build-linux
     - .only-default
-  image: $MINGW_IMAGE
+  image: "${MINGW_IMAGE}"
   variables:
     PYTHONUTF8: "1"
   script:
@@ -798,8 +798,8 @@ macos-arm64:
     TMPDIR: /Users/Shared/work/tmp
     # keep the user profile clean
     PIP_CACHE_DIR: /Users/Shared/work/cache
-    PIPENV_CACHE_DIR: $PIP_CACHE_DIR
-    PYTHONPYCACHEPREFIX: $PIP_CACHE_DIR
+    PIPENV_CACHE_DIR: "${PIP_CACHE_DIR}"
+    PYTHONPYCACHEPREFIX: "${PIP_CACHE_DIR}"
     # target macOS 11 Big Sur
     SDKROOT: /opt/sdks/MacOSX11.3.sdk
     # use the runner's ccache directory
@@ -836,7 +836,7 @@ macos-arm64:
 
 coverage:
   extends: .only-default
-  image: $FEDORA_IMAGE
+  image: "${FEDORA_IMAGE}"
   stage: coverage
   needs: ['fedora-x86_64', 'msys2-mingw32']
   artifacts:
@@ -861,7 +861,7 @@ scan-build:
     - .build-linux
     - .only-schedules-or-manual
     - .build-gobject-introspection
-  image: $FEDORA_IMAGE
+  image: "${FEDORA_IMAGE}"
   stage: analysis
   needs: []
   variables:
@@ -889,7 +889,7 @@ scan-build:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
-            --prefix=$HOME/glib-installed
+            --prefix="${HOME}/glib-installed"
             --localstatedir=/var
             --libdir=lib
             -Dglib_debug=enabled
@@ -911,7 +911,7 @@ scan-build:
     - .build-linux
     - .only-schedules-or-manual-in-default-branch
     - .build-gobject-introspection
-  image: $COVERITY_IMAGE
+  image: "${COVERITY_IMAGE}"
   stage: analysis
   needs: []
   variables:
@@ -924,7 +924,7 @@ scan-build:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
             --default-library=both
-            --prefix=$HOME/glib-installed
+            --prefix="${HOME}/glib-installed"
             --localstatedir=/var
             --libdir=lib
             -Dsystemtap=enabled
@@ -932,12 +932,13 @@ scan-build:
             -Dinstalled_tests=true
             -Dintrospection=enabled
             _coverity_build
-    - $HOME/cov-analysis-linux64-*/bin/cov-build --dir cov-int meson compile -C _coverity_build
+    # true is needed to fix GitLab having trouble parsing the quotes
+    - true && "${HOME}"/cov-analysis-linux64-*/bin/cov-build --dir cov-int meson compile -C _coverity_build
     - tar cfz cov-int.tar.gz cov-int
-    - curl https://scan.coverity.com/builds?project=$COVERITY_SCAN_PROJECT_NAME
-           --form token=$COVERITY_SCAN_TOKEN --form email=$GITLAB_USER_EMAIL
-           --form file=@cov-int.tar.gz --form version="$CI_COMMIT_SHA"
-           --form description="$CI_COMMIT_SHA / $CI_COMMIT_TITLE / $CI_COMMIT_REF_NAME:$CI_PIPELINE_ID"
+    - curl "https://scan.coverity.com/builds?project=${COVERITY_SCAN_PROJECT_NAME}"
+           --form token="${COVERITY_SCAN_TOKEN}" --form email="${GITLAB_USER_EMAIL}"
+           --form file=@cov-int.tar.gz --form version="${CI_COMMIT_SHA}"
+           --form description="${CI_COMMIT_SHA} / ${CI_COMMIT_TITLE} / ${CI_COMMIT_REF_NAME}:${CI_PIPELINE_ID}"
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
@@ -956,7 +957,7 @@ pages:
       - public
 
 dist-job:
-  image: $FEDORA_IMAGE
+  image: "${FEDORA_IMAGE}"
   stage: build
   only:
     - tags
@@ -970,18 +971,18 @@ dist-job:
     - meson dist -C _build
     # Compile again to build the docs
     - meson compile -C _build
-    - tar -c -J -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/glib glib-2.0
-    - tar -c -J -f "gmodule-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gmodule gmodule-2.0
-    - tar -c -J -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gobject gobject-2.0
-    - tar -c -J -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/gio gio-2.0
-    - tar -c -J -f "girepository-docs-$CI_COMMIT_TAG.tar.xz" -C _build/docs/reference/girepository girepository-2.0
+    - tar -c -J -f "glib-docs-${CI_COMMIT_TAG}.tar.xz" -C _build/docs/reference/glib glib-2.0
+    - tar -c -J -f "gmodule-docs-${CI_COMMIT_TAG}.tar.xz" -C _build/docs/reference/gmodule gmodule-2.0
+    - tar -c -J -f "gobject-docs-${CI_COMMIT_TAG}.tar.xz" -C _build/docs/reference/gobject gobject-2.0
+    - tar -c -J -f "gio-docs-${CI_COMMIT_TAG}.tar.xz" -C _build/docs/reference/gio gio-2.0
+    - tar -c -J -f "girepository-docs-${CI_COMMIT_TAG}.tar.xz" -C _build/docs/reference/girepository girepository-2.0
   artifacts:
     paths:
-      - "${CI_PROJECT_DIR}/_build/glib-docs-$CI_COMMIT_TAG.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gmodule-docs-$CI_COMMIT_TAG.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gobject-docs-$CI_COMMIT_TAG.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gio-docs-$CI_COMMIT_TAG.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/girepository-docs-$CI_COMMIT_TAG.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/glib-docs-${CI_COMMIT_TAG}.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/gmodule-docs-${CI_COMMIT_TAG}.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/gobject-docs-${CI_COMMIT_TAG}.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/gio-docs-${CI_COMMIT_TAG}.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/girepository-docs-${CI_COMMIT_TAG}.tar.xz"
       - "${CI_PROJECT_DIR}/_build/meson-dist/glib-*.tar.xz"
 
 issue-bot:
