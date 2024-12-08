@@ -58,6 +58,12 @@ Plain filenames which contain a colon will be interpreted as URIs with an
 unknown protocol. To avoid this, prefix them with a path such as ``./``, or with
 the ``file:`` protocol.
 
+Volumes, drives and mounts are limited to the ones which are considered
+interesting to the user, such as removable drives. System mounts will not be
+shown, meaning the output from ``gio mount`` is not equivalent to the output
+from tools like ``fdisk``, and ``gio monitor --mounts`` will only list events
+relevant to selected mounts.
+
 COMMANDS
 --------
 
