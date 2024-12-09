@@ -2338,8 +2338,11 @@ endif
 
 if host_system == 'windows'
   winsock2 = cc.find_library('ws2_32')
+  # Used for g_win32_clear_com() tests...
+  wincodecs = cc.find_library('windowscodecs')
 else
   winsock2 = not_found
+  wincodecs = not_found
 endif
 
 selinux_dep = []
