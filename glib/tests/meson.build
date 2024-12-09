@@ -209,6 +209,7 @@ if have_cxx
     'cxx' : {
       'source' : ['cxx.cpp'],
       'suite': ['cpp'],
+      'dependencies' : [wincodecs],
     }
   }
 
