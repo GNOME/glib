@@ -246,7 +246,9 @@ if host_machine.system() == 'windows'
     }
   endif
   glib_tests += {
-    'win32' : {},
+    'win32' : {
+      'dependencies' : [wincodecs],
+    },
   }
 else
   glib_tests += {
