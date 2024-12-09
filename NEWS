@@ -1,3 +1,28 @@
+Overview of changes in GLib 2.82.3, 2024-12-09
+==============================================
+
+* Fix compatibility with tzdata 2024b (#3502, work by Rebecca N. Palmer and
+  Simon McVittie)
+
+* Bugs fixed:
+  - #3502 Test regressions with tzdata 2024b (Rebecca N. Palmer)
+  - !4357 Backport !4356 “gdatetime test: Do not assume PST8PDT was always
+    exactly -8/-7” to glib-2-82
+  - !4370 Backport !4350 “glib: Don't require GLIB_DOMAIN to be a NUL-terminated
+    string” to glib-2-82
+  - !4380 Backport !4378 “gio: Fix GFileEnumerator leaks in gio tools” to
+    glib-2-82
+  - !4381 Backport !4373 “macos: Remove extraous space from type identifier” to
+    glib-2-82
+  - !4388 Backport !4232 “refstring: Fix race between releasing and re-acquiring
+    an interned GRefString” to glib-2-82
+  - !4397 Backport !4395 “appmonitor: Fix warning building test” to glib-2-82
+  - !4400 Backport !4398 “grefstring: Mark a variable as potentially unused” to
+    glib-2-82
+  - !4417 Backport !4415 “gdbus: Fix leak of method invocation when registering
+    an object with closures” to glib-2-82
+
+
 Overview of changes in GLib 2.82.2, 2024-10-17
 ==============================================
 
