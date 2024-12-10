@@ -2835,7 +2835,7 @@ class CodeGenerator:
                 )
             if m.unix_fd:
                 self.outfile.write(
-                    " * @out_fd_list: (out) (optional): Return location for a #GUnixFDList or %NULL to ignore.\n"
+                    " * @out_fd_list: (out) (optional) (nullable): Return location for a #GUnixFDList or %NULL to ignore.\n"
                 )
             self.outfile.write(
                 self.docbook_gen.expand(
@@ -2913,7 +2913,7 @@ class CodeGenerator:
                 )
             if m.unix_fd:
                 self.outfile.write(
-                    " * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.\n"
+                    " * @out_fd_list: (out) (optional) (nullable): Return location for a #GUnixFDList or %NULL.\n"
                 )
             self.outfile.write(
                 self.docbook_gen.expand(

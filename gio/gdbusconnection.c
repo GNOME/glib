@@ -6867,7 +6867,7 @@ g_dbus_connection_call_with_unix_fd_list (GDBusConnection     *connection,
 /**
  * g_dbus_connection_call_with_unix_fd_list_finish:
  * @connection: a #GDBusConnection
- * @out_fd_list: (out) (optional): return location for a #GUnixFDList or %NULL
+ * @out_fd_list: (out) (optional) (nullable): return location for a #GUnixFDList or %NULL
  * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback passed to
  *     g_dbus_connection_call_with_unix_fd_list()
  * @error: return location for error or %NULL
@@ -6914,7 +6914,7 @@ g_dbus_connection_call_with_unix_fd_list_finish (GDBusConnection  *connection,
  * @timeout_msec: the timeout in milliseconds, -1 to use the default
  *     timeout or %G_MAXINT for no timeout
  * @fd_list: (nullable): a #GUnixFDList or %NULL
- * @out_fd_list: (out) (optional): return location for a #GUnixFDList or %NULL
+ * @out_fd_list: (out) (optional) (nullable): return location for a #GUnixFDList or %NULL
  * @cancellable: (nullable): a #GCancellable or %NULL
  * @error: return location for error or %NULL
  *
