@@ -6090,6 +6090,11 @@ register_with_closures_on_set_property (GDBusConnection *connection,
  * Version of g_dbus_connection_register_object() using closures instead of a
  * #GDBusInterfaceVTable for easier binding in other languages.
  *
+ * Note that the reference counting semantics of the function wrapped by
+ * @method_call_closure are the same as those of
+ * [callback@Gio.DBusInterfaceMethodCallFunc]: ownership of a reference to the
+ * [class@Gio.DBusMethodInvocation] is transferred to the function.
+ *
  * Returns: 0 if @error is set, otherwise a registration ID (never 0)
  * that can be used with g_dbus_connection_unregister_object() .
  *
