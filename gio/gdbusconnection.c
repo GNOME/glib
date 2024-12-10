@@ -5950,7 +5950,7 @@ register_with_closures_on_method_call (GDBusConnection       *connection,
   g_value_set_variant (&params[5], parameters);
 
   g_value_init (&params[6], G_TYPE_DBUS_METHOD_INVOCATION);
-  g_value_take_object (&params[6], g_steal_pointer (&invocation));
+  g_value_set_object (&params[6], invocation);
 
   g_closure_invoke (data->method_call_closure, NULL, G_N_ELEMENTS (params), params, NULL);
 
