@@ -494,3 +494,15 @@ g_fake_desktop_portal_thread_stop (GFakeDesktopPortalThread *self)
   g_cancellable_cancel (self->cancellable);
   g_thread_join (g_steal_pointer (&self->thread));
 }
+
+/* Whether fake-desktop-portal is supported on this platform. This basically
+ * means whether _g_fd_query_path() will work at runtime. */
+gboolean
+g_fake_desktop_portal_is_supported (void)
+{
+#ifdef __GNU__
+  return FALSE;
+#else
+  return TRUE;
+#endif
+}

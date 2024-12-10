@@ -532,6 +532,12 @@ test_portal_open_file (void)
   char *uri;
   GFakeDesktopPortalThread *thread = NULL;
 
+  if (!g_fake_desktop_portal_is_supported ())
+    {
+      g_test_skip ("fake-desktop-portal not currently supported on this platform");
+      return;
+    }
+
   /* Run a fake-desktop-portal */
   thread = g_fake_desktop_portal_thread_new (session_bus_get_address ());
   g_fake_desktop_portal_thread_run (thread);
@@ -566,6 +572,12 @@ test_portal_open_uri (void)
   GError *error = NULL;
   const char *uri = "http://example.com";
   GFakeDesktopPortalThread *thread = NULL;
+
+  if (!g_fake_desktop_portal_is_supported ())
+    {
+      g_test_skip ("fake-desktop-portal not currently supported on this platform");
+      return;
+    }
 
   /* Run a fake-desktop-portal */
   thread = g_fake_desktop_portal_thread_new (session_bus_get_address ());
@@ -611,6 +623,12 @@ test_portal_open_file_async (void)
   char *uri;
   GFakeDesktopPortalThread *thread = NULL;
 
+  if (!g_fake_desktop_portal_is_supported ())
+    {
+      g_test_skip ("fake-desktop-portal not currently supported on this platform");
+      return;
+    }
+
   /* Run a fake-desktop-portal */
   thread = g_fake_desktop_portal_thread_new (session_bus_get_address ());
   g_fake_desktop_portal_thread_run (thread);
@@ -648,6 +666,12 @@ test_portal_open_uri_async (void)
   gboolean called = FALSE;
   const char *uri = "http://example.com";
   GFakeDesktopPortalThread *thread = NULL;
+
+  if (!g_fake_desktop_portal_is_supported ())
+    {
+      g_test_skip ("fake-desktop-portal not currently supported on this platform");
+      return;
+    }
 
   /* Run a fake-desktop-portal */
   thread = g_fake_desktop_portal_thread_new (session_bus_get_address ());
