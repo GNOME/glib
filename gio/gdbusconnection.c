@@ -5950,6 +5950,11 @@ register_with_closures_on_method_call (GDBusConnection       *connection,
   g_value_set_variant (&params[5], parameters);
 
   g_value_init (&params[6], G_TYPE_DBUS_METHOD_INVOCATION);
+  /* NOTE: This is deliberately *not* g_value_take_object(). A reference to
+   * `invocation` is transferred in to this function, and it needs to be
+   * transferred onwards to the `g_dbus_method_invocation_return_*()` method
+   * call which must eventually happen (either in the closure function, or in
+   * a delayed consequence from it). Changing this will break API. */
   g_value_set_object (&params[6], invocation);
 
   g_closure_invoke (data->method_call_closure, NULL, G_N_ELEMENTS (params), params, NULL);
