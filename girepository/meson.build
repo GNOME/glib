@@ -229,6 +229,7 @@ pkgconfig_variables = [
   'gidatadir=${datadir}/gobject-introspection-1.0',
   'girdir=' + gir_dir_pc_prefix / 'gir-1.0',
   'typelibdir=${libdir}/girepository-1.0',
+  'gi_compile_repository=' + pkgconfig_multiarch_bindir / 'gi-compile-repository'
 ]
 
 pkg.generate(libgirepository,
