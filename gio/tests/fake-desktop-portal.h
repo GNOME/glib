@@ -33,6 +33,8 @@ const gchar *g_fake_desktop_portal_thread_get_last_request_activation_token (GFa
 void g_fake_desktop_portal_thread_run (GFakeDesktopPortalThread *self);
 void g_fake_desktop_portal_thread_stop (GFakeDesktopPortalThread *self);
 
+gboolean g_fake_desktop_portal_is_supported (void);
+
 G_END_DECLS
 
 #endif /* __FAKE_DESKTOP_PORTAL_H__ */
