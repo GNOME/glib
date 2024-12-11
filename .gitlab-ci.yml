@@ -858,6 +858,7 @@ dist-job:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
   only:
+    - schedules
     - tags
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
