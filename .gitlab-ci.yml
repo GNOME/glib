@@ -971,6 +971,7 @@ dist-job:
     - .with-git
   image: "${FEDORA_IMAGE}"
   stage: build
+  needs: []
   before_script:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
