@@ -977,6 +977,7 @@ dist-job:
     - !reference [".with-git", "before_script"]
     - !reference [".build-gobject-introspection", "before_script"]
   only:
+    - schedules
     - tags
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
