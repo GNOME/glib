@@ -1,3 +1,12 @@
+Overview of changes in GLib 2.83.2, 2024-12-11
+==============================================
+
+* This release has the same code as 2.83.1, but contains a fix for release
+  archive generation which means that 2.83.1 does not have a release archive
+
+* Bugs fixed:
+  - !4433 ci: Enable -Dintrospection for dist builds
+
 Overview of changes in GLib 2.83.1, 2024-12-11
 ==============================================
 
