@@ -15,6 +15,8 @@ if get_option('documentation') and enable_gir
     '--fatal-warnings',
     '--add-include-path=@0@'.format(meson.current_build_dir() / '../../girepository/introspection'),
   ]
+elif get_option('documentation')
+  warning('Full documentation cannot be built without -Dintrospection=enabled')
 endif
 
 docs_dir = glib_datadir / 'doc'
