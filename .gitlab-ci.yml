@@ -848,17 +848,23 @@ pages:
       - public
 
 dist-job:
-  image: $FEDORA_IMAGE
+  extends:
+    - .build-linux
+    - .with-git
+  image: "${FEDORA_IMAGE}"
   stage: build
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
   only:
     - tags
   script:
-    # Ignore extra git security checks as we don't care in CI.
-    - git config --global --add safe.directory "${PWD}"
-    - git submodule update --init
-    - for m in $(git submodule foreach -q 'echo $path'); do git config --global --add safe.directory "${PWD}/${m}"; done
-    - meson subprojects download
-    - meson setup ${MESON_COMMON_OPTIONS} --buildtype release -Ddocumentation=true -Dman-pages=enabled _build
+    - meson setup ${MESON_COMMON_OPTIONS}
+            --buildtype release
+            -Ddocumentation=true
+            -Dintrospection=enabled
+            -Dman-pages=enabled
+            _build
     - meson dist -C _build
     # Compile again to build the docs
     - meson compile -C _build
