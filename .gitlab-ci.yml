@@ -1,3 +1,9 @@
+include:
+  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+    inputs:
+      dist-job-name: "dist-job"
+      tarball-artifact-path: "${TARBALL_ARTIFACT_PATH}"
+
 stages:
   - style-check
   - build
@@ -21,6 +27,8 @@ variables:
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
+  # expected naming scheme for the release-service job
+  TARBALL_ARTIFACT_PATH: _build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
 
 # Default CI job setup; contrast with `.only-origin`.
 #
