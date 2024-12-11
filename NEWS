@@ -1,3 +1,65 @@
+Overview of changes in GLib 2.83.1, 2024-12-11
+==============================================
+
+* Bugs fixed:
+  - #1251 gio/tests/contenttype fails on OS X: "public.directory" !=
+    "public.folder"
+  - #3441 Bump minimum supported version of macOS (John Ralls)
+  - #3493 Heap buffer overflow read in utf8_verify_ascii() (Philip Withnall)
+  - #3511 Build failure “'ifunc' is not supported on this target” with muslc
+    (Philip Withnall)
+  - #3517 Silent linked-list corruption in g_static_resource_init() on redundant
+    calls
+  - #3524 Wrong parameter type for g_enum_register_static in GObject-2.0.gir
+    (Jan-Willem Harmannij)
+  - #3526 Segfault in statically linked binary during initialization of ifuncs
+    since 2.83.0 (Philip Withnall)
+  - #3532 g_converter_output_stream_write() can return 0 (Benjamin Otte)
+  - #3540 g_signal_connect on "notify::non-existant-property" doesn't warn for
+    invalid property (Sid)
+  - #3545 Modernize the default value for g_thread_pool_set_max_unused_threads
+    (Matthias Clasen)
+  - #3546 Make the thread name available (Matthias Clasen)
+  - #3548 Fix g_settings_schema_has_key() to work with extended schemas
+  - #3552 Missing nullable annotation for `log_domain` in `GLogFunc` callback
+    (Roberto Leinardi)
+  - #3559 2.82.3 regression: lollypop crashes on startup (Philip Withnall)
+  - !4232 refstring: Fix race between releasing and re-acquiring an interned
+    GRefString
+  - !4382 girepository: gi_object_info_find_signal(): Avoid repeated allocations
+  - !4384 test utils: Make nonfatal assertions an option
+  - !4385 gutf8: Skip ASan instrumentation for load_word
+  - !4389 macos: Add extra content type tests
+  - !4393 Replace procfs linuxism with kinfo freebsdism
+  - !4395 appmonitor: Fix warning building test
+  - !4396 tests: Factor out a function to convert FD to path
+  - !4398 grefstring: Mark a variable as potentially unused
+  - !4399 meson: Add variables to -uninstalled.pc files
+  - !4401 testutils: Documentation improvements
+  - !4403 Revert "CI: Rebuild a slightly newer version of ninja for debian-
+    stable-i386"
+  - !4406 glib/gbytes: Be more careful when saving a GBytes of NULL
+  - !4407 guri: Fix paths starting with ‘//’ when parsing
+  - !4410 threadpool: Simplify pool thread naming
+  - !4411 gdbusconnection: Allow creating connection with cross-namespace
+  - !4412 gmessages: Treat DEBUG_INVOCATION=1 same as G_MESSAGES_DEBUG=all
+  - !4413 gunicode: Update some comments in gunicode.h for Unicode 16.0.0
+  - !4414 gdbus: Add a few missing `(nullable)` annotations to GDBus method
+    invocation related functions
+  - !4415 gdbus: Fix leak of method invocation when registering an object with
+    closures
+  - !4421 gparam: Add link to constructed vfunc to CONSTRUCT
+  - !4422 docs: Fix dead link in CONTRIBUTING
+  - !4423 gio-tool: Clarify that `gio mount -l` only lists user-interesting
+    things
+  - !4424 ci: Ensure all variables are quoted in .gitlab-ci.yml
+  - !4425 tests: Skip unsupported dbus-appinfo test on GNU/Hurd for the moment
+  - !4428 girepository: Expose gi-compile-repository and gi-* tools in pkg-
+    config
+  - !4429 gdbus: Add nullable annotations for fd list outs
+  - !4432 ci: Add release component to automate tarball publishing
+
+
 Overview of changes in GLib 2.83.0, 2024-11-06
 ==============================================
 
