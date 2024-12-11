@@ -1,3 +1,17 @@
+Overview of changes in GLib 2.82.4, 2024-12-11
+==============================================
+
+* Fix a double-unref crash which affects many apps which use pygobject to
+  export objects on D-Bus (#3559, work by Sebastian Dröge, Philip Withnall)
+
+* Bugs fixed:
+  - #3559 2.82.3 regression: lollypop crashes on startup (Philip Withnall)
+  - !4430 Backport !4427 “Revert "gdbus: Fix leak of method invocation when
+    registering an object with closures"” to glib-2-82
+  - !4434 Backport !4432 and !4433 “ci: Add release component to automate
+    tarball publishing” to glib-2-82
+
+
 Overview of changes in GLib 2.82.3, 2024-12-09
 ==============================================
 
