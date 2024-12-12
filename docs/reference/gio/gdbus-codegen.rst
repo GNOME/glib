@@ -124,8 +124,8 @@ details) is a ``RefEntry`` article describing the D-Bus interface. (See the
 GENERATING MARKDOWN DOCUMENTATION
 -----------------------------------------
 
-Each generated markdown file (see the ``--generate-md`` option for
-details) is a plain text markdown document describing the D-Bus interface.
+Each generated Markdown file (see the ``--generate-md`` option for
+details) is a plain text Markdown document describing the D-Bus interface.
 
 GENERATING RESTRUCTUREDTEXT DOCUMENTATION
 -----------------------------------------
