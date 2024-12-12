@@ -39,6 +39,7 @@ SYNOPSIS
 |    [--c-generate-autocleanup none|objects|all]
 |    [--output-directory *OUTDIR* | --output *OUTFILE*]
 |    [--generate-docbook *OUTFILES*]
+|    [--generate-md *OUTFILES*]
 |    [--generate-rst *OUTFILES*]
 |    [--pragma-once]
 |    [--xml-files *FILE*]
@@ -120,6 +121,12 @@ Each generated DocBook XML file (see the ``--generate-docbook`` option for
 details) is a ``RefEntry`` article describing the D-Bus interface. (See the
 `DocBook documentation <https://tdg.docbook.org/tdg/4.5/refentry.html>`_.)
 
+GENERATING MARKDOWN DOCUMENTATION
+-----------------------------------------
+
+Each generated Markdown file (see the ``--generate-md`` option for
+details) is a plain text Markdown document describing the D-Bus interface.
+
 GENERATING RESTRUCTUREDTEXT DOCUMENTATION
 -----------------------------------------
 
@@ -152,6 +159,15 @@ The following options are supported:
 
   Generate DocBook Documentation for each D-Bus interface and put it in
   ``OUTFILES-NAME.xml`` where ``NAME`` is a placeholder for the interface
+  name, e.g. ``net.Corp.FooBar`` and so on.
+
+  Pass ``--output-directory`` to specify the directory to put the output files
+  in. By default the current directory will be used.
+
+``--generate-md`` *OUTFILES*
+
+  Generate Markdown Documentation for each D-Bus interface and put it in
+  ``OUTFILES-NAME.md`` where ``NAME`` is a placeholder for the interface
   name, e.g. ``net.Corp.FooBar`` and so on.
 
   Pass ``--output-directory`` to specify the directory to put the output files
