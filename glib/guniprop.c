@@ -33,6 +33,7 @@
 #include "gunicode.h"
 #include "gunichartables.h"
 #include "gmirroringtable.h"
+#include "gunicodevalues.h"
 #include "gscripttable.h"
 #include "gunicodeprivate.h"
 #ifdef G_OS_WIN32
@@ -713,11 +714,69 @@ g_unichar_xdigit_value (gunichar c)
 }
 
 /**
+ * g_unichar_isnumber:
+ * @c: a Unicode character
+ *
+ * Determines if a character is a number.
+ *
+ * This means the character is classified as one of
+ * [GLib.UnicodeType.decimal_number],
+ * [GLib.UnicodeType.letter_number] or
+ * [GLib.UnicodeType.other_number].
+ *
+ * Returns: true if the character is a number
+ *
+ * Since: 2.84
+ */
+gboolean
+g_unichar_isnumber (gunichar c)
+{
+  return IS (TYPE(c),
+             OR (G_UNICODE_DECIMAL_NUMBER,
+             OR (G_UNICODE_LETTER_NUMBER,
+             OR (G_UNICODE_OTHER_NUMBER,
+             0))));
+}
+
+/**
+ * g_unichar_number_value:
+ * @c: a Unicode character
+ *
+ * Determines the numeric value of a character that is a number.
+ *
+ * See [func@GLib.unichar_isnumber].
+ *
+ * Returns: If @c is a number, its numeric value. Otherwise, -1.
+ *
+ * Since: 2.84
+ */
+double
+g_unichar_number_value (gunichar c)
+{
+  int lower = 0;
+  int upper = G_N_ELEMENTS (unicode_values) - 1;
+
+  while (lower <= upper)
+    {
+      int mid = (lower + upper) / 2;
+
+       if (c < unicode_values[mid].ch)
+         upper = mid - 1;
+       else if (c > unicode_values[mid].ch + (unicode_values[mid].length - 1))
+         lower = mid + 1;
+       else
+         return unicode_values[mid].value + (c - unicode_values[mid].ch) * unicode_values[mid].increment;
+    }
+
+  return -1;
+}
+
+/**
  * g_unichar_type:
  * @c: a Unicode character
- * 
+ *
  * Classifies a Unicode character by type.
- * 
+ *
  * Returns: the type of the character.
  **/
 GUnicodeType

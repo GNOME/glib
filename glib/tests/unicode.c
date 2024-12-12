@@ -999,6 +999,75 @@ test_xdigit_value (void)
   g_assert_cmpint (g_unichar_xdigit_value (G_UNICODE_LAST_CHAR_PART1 + 1), ==, -1);
 }
 
+static void
+test_number (void)
+{
+  g_assert_false (g_unichar_isnumber (' '));
+  g_assert_false (g_unichar_isnumber ('a'));
+  g_assert_true (g_unichar_isnumber ('0'));
+  g_assert_true (g_unichar_isnumber ('9'));
+  g_assert_false (g_unichar_isnumber ('A'));
+  g_assert_false (g_unichar_isnumber ('-'));
+  g_assert_false (g_unichar_isnumber ('*'));
+  g_assert_false (g_unichar_isnumber (0xFF21)); /* Unichar fullwidth 'A' */
+  g_assert_false (g_unichar_isnumber (0xFF3A)); /* Unichar fullwidth 'Z' */
+  g_assert_false (g_unichar_isnumber (0xFF41)); /* Unichar fullwidth 'a' */
+  g_assert_false (g_unichar_isnumber (0xFF5A)); /* Unichar fullwidth 'z' */
+  g_assert_true (g_unichar_isnumber (0xFF10));  /* Unichar fullwidth '0' */
+  g_assert_true (g_unichar_isnumber (0xFF19));  /* Unichar fullwidth '9' */
+  g_assert_false (g_unichar_isnumber (0xFF0A)); /* Unichar fullwidth '*' */
+  g_assert_true (g_unichar_isnumber (0x2161));  /* Roman numeral 2 'Ⅱ' */
+  g_assert_true (g_unichar_isnumber (0x216D));  /* Roman numeral 100  'Ⅽ' */
+  g_assert_true (g_unichar_isnumber (0x2180));  /* Roman numeral 1000  'ↀ' */
+  g_assert_true (g_unichar_isnumber (0x00BC));  /* ¼ one quarter */
+  g_assert_false (g_unichar_isnumber (0x79ED));  /* 秭 one billion, not a numeric category */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_false (g_unichar_isnumber (0x3FF5));
+  /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_false (g_unichar_isnumber (0xFFEFF));
+  /* U+E0001 Language Tag */
+  g_assert_false (g_unichar_isnumber (0xE0001));
+  g_assert_false (g_unichar_isnumber (G_UNICODE_LAST_CHAR));
+  g_assert_false (g_unichar_isnumber (G_UNICODE_LAST_CHAR + 1));
+  g_assert_false (g_unichar_isnumber (G_UNICODE_LAST_CHAR_PART1));
+  g_assert_false (g_unichar_isnumber (G_UNICODE_LAST_CHAR_PART1 + 1));
+}
+
+static void
+test_number_value (void)
+{
+  g_assert_cmpfloat (g_unichar_number_value (' '), ==, -1);
+  g_assert_cmpfloat (g_unichar_number_value ('a'), ==, -1);
+  g_assert_cmpfloat (g_unichar_number_value ('0'), ==, 0);
+  g_assert_cmpfloat (g_unichar_number_value ('9'), ==, 9);
+  g_assert_cmpfloat (g_unichar_number_value ('A'), ==, -1);
+  g_assert_cmpfloat (g_unichar_number_value ('-'), ==, -1);
+  g_assert_cmpfloat (g_unichar_number_value (0xFF21), ==, -1); /* Unichar 'A' */
+  g_assert_cmpfloat (g_unichar_number_value (0xFF3A), ==, -1); /* Unichar 'Z' */
+  g_assert_cmpfloat (g_unichar_number_value (0xFF41), ==, -1); /* Unichar 'a' */
+  g_assert_cmpfloat (g_unichar_number_value (0xFF5A), ==, -1); /* Unichar 'z' */
+  g_assert_cmpfloat (g_unichar_number_value (0xFF10), ==, 0);  /* Unichar '0' */
+  g_assert_cmpfloat (g_unichar_number_value (0xFF19), ==, 9);  /* Unichar '9' */
+  g_assert_cmpfloat (g_unichar_number_value (0xFF0A), ==, -1); /* Unichar '*' */
+  g_assert_cmpfloat (g_unichar_number_value (0x2161), ==, 2);  /* Roman numeral 2 'Ⅱ' */
+  g_assert_cmpfloat (g_unichar_number_value (0x216D), ==, 100);  /* Roman numeral 100  'Ⅽ' */
+  g_assert_cmpfloat (g_unichar_number_value (0x2180), ==, 1000);  /* Roman numeral 1000  'ↀ' */
+  g_assert_cmpfloat (g_unichar_number_value (0x00BC), ==, 0.25);  /* ¼ one quarter */
+  g_assert_cmpfloat (g_unichar_number_value (0x79ED), ==, 1000000000);  /* 秭 one billion */
+
+  /*** Testing TYPE() border cases ***/
+  g_assert_cmpfloat (g_unichar_number_value (0x3FF5), ==, -1);
+   /* U+FFEFF Plane 15 Private Use (needed to be > G_UNICODE_MAX_TABLE_INDEX) */
+  g_assert_cmpfloat (g_unichar_number_value (0xFFEFF), ==, -1);
+  /* U+E0001 Language Tag */
+  g_assert_cmpfloat (g_unichar_number_value (0xE0001), ==, -1);
+  g_assert_cmpfloat (g_unichar_number_value (G_UNICODE_LAST_CHAR), ==, -1);
+  g_assert_cmpfloat (g_unichar_number_value (G_UNICODE_LAST_CHAR + 1), ==, -1);
+  g_assert_cmpfloat (g_unichar_number_value (G_UNICODE_LAST_CHAR_PART1), ==, -1);
+  g_assert_cmpfloat (g_unichar_number_value (G_UNICODE_LAST_CHAR_PART1 + 1), ==, -1);
+}
+
 /* Test that g_unichar_ispunct() returns the correct value for various
  * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
 static void
@@ -2111,6 +2180,8 @@ main (int   argc,
   g_test_add_func ("/unicode/xdigit-value", test_xdigit_value);
   g_test_add_func ("/unicode/zero-width", test_zerowidth);
   g_test_add_func ("/unicode/normalize", test_normalize);
+  g_test_add_func ("/unicode/number", test_number);
+  g_test_add_func ("/unicode/number-value", test_number_value);
 
   return g_test_run();
 }

@@ -739,6 +739,12 @@ gint g_unichar_digit_value (gunichar c) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
 gint g_unichar_xdigit_value (gunichar c) G_GNUC_CONST;
 
+GLIB_AVAILABLE_IN_2_84
+gboolean g_unichar_isnumber (gunichar c) G_GNUC_CONST;
+
+GLIB_AVAILABLE_IN_2_84
+double g_unichar_number_value (gunichar c) G_GNUC_CONST;
+
 /* Return the Unicode character type of a given character.  */
 GLIB_AVAILABLE_IN_ALL
 GUnicodeType g_unichar_type (gunichar c) G_GNUC_CONST;
