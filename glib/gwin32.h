@@ -181,7 +181,7 @@ G_END_DECLS
  * so we need to have a C++ version for this
  */
 template <typename com_interface>
-inline void
+static inline void
 g_win32_clear_com (com_interface **com_obj)
 {
   IUnknown **unknown_com_obj = reinterpret_cast<IUnknown **>(com_obj);
