@@ -548,12 +548,14 @@ test_clear_com (void)
   g_assert_null (o);
   g_assert_true (SUCCEEDED (CoCreateInstance (CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (void **)&tmp)));
   g_assert_nonnull (tmp);
-  tmp->QueryInterface (IID_IWICImagingFactory, (void **)&o); /* IWICImagingFactory::QueryInterface increments the refcount */
+  tmp->QueryInterface (IID_IWICImagingFactory, (void **)&o); /* IWICImagingFactory::QueryInterface increments tmp's refcount */
   g_assert_nonnull (o);
-  g_assert_cmpint (o->AddRef (), ==, 3); /* refcount incremented again */
-  g_win32_clear_com (&o);
+  g_assert_cmpint (tmp->AddRef (), ==, 3); /* tmp's refcount incremented again */
+  g_win32_clear_com (&o);  /* tmp's refcount gets decremented */
   g_assert_null (o);
-  tmp->Release ();
+  g_assert_cmpint (tmp->Release (), ==, 1);  /* tmp's refcount gets decremented, again */
+  g_win32_clear_com (&tmp);
+  g_assert_null (tmp);
 
   CoUninitialize ();
 }
