@@ -43,7 +43,7 @@ G_BEGIN_DECLS
  * @vfs: a #GVfs
  * @identifier: the identifier to look up a #GFile for. This can either
  *     be a URI or a parse name as returned by g_file_get_parse_name()
- * @user_data: user data passed to the function
+ * @user_data: (nullable): user data passed to the function, or %NULL
  *
  * This function type is used by g_vfs_register_uri_scheme() to make it
  * possible for a client to associate a URI scheme to a different #GFile
@@ -52,7 +52,7 @@ G_BEGIN_DECLS
  * The client should return a reference to the new file that has been
  * created for @uri, or %NULL to continue with the default implementation.
  *
- * Returns: (transfer full): a #GFile for @identifier.
+ * Returns: (nullable) (transfer full): a #GFile for @identifier.
  *
  * Since: 2.50
  */
