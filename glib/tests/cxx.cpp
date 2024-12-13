@@ -19,6 +19,10 @@
 
 #include <glib.h>
 
+#ifdef G_OS_WIN32
+#include <wincodec.h>
+#endif
+
 #if !defined (G_CXX_STD_VERSION) || !defined (G_CXX_STD_CHECK_VERSION)
 #error G_CXX_STD_VERSION is not defined
 #endif
@@ -532,6 +536,31 @@ test_string_free (void)
   g_free (data);
 }
 
+#ifdef G_OS_WIN32
+static void
+test_clear_com (void)
+{
+  IWICImagingFactory *tmp;
+  IWICImagingFactory *o =  NULL;
+
+  CoInitialize (NULL);
+  g_win32_clear_com (&o);
+  g_assert_null (o);
+  g_assert_true (SUCCEEDED (CoCreateInstance (CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (void **)&tmp)));
+  g_assert_nonnull (tmp);
+  tmp->QueryInterface (IID_IWICImagingFactory, (void **)&o); /* IWICImagingFactory::QueryInterface increments tmp's refcount */
+  g_assert_nonnull (o);
+  g_assert_cmpint (tmp->AddRef (), ==, 3); /* tmp's refcount incremented again */
+  g_win32_clear_com (&o);  /* tmp's refcount gets decremented */
+  g_assert_null (o);
+  g_assert_cmpint (tmp->Release (), ==, 1);  /* tmp's refcount gets decremented, again */
+  g_win32_clear_com (&tmp);
+  g_assert_null (tmp);
+
+  CoUninitialize ();
+}
+#endif
+
 int
 main (int argc, char *argv[])
 {
@@ -566,5 +595,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/string-append", test_string_append);
   g_test_add_func ("/C++/string-free", test_string_free);
 
+#ifdef G_OS_WIN32
+  g_test_add_func ("/C++/test_clear_com", test_clear_com);
+#endif
   return g_test_run ();
 }

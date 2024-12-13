@@ -28,6 +28,9 @@
 #include <stdio.h>
 #include <windows.h>
 
+#define COBJMACROS
+#include <wincodec.h>
+
 static char *argv0 = NULL;
 
 #include "../gwin32-private.c"
@@ -154,6 +157,29 @@ veh_debugger (int argc, char *argv[])
   g_fprintf (stderr, "Debugger invoked, attaching to %lu and signalling %" G_GUINTPTR_FORMAT, pid, event);
 }
 
+static void
+test_clear_com (void)
+{
+  IWICImagingFactory *o = NULL;
+  IWICImagingFactory *tmp;
+
+  CoInitialize (NULL);
+  g_win32_clear_com (&o);
+  g_assert_null (o);
+  g_assert_true (SUCCEEDED (CoCreateInstance (&CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, &IID_IWICImagingFactory, (void **)&tmp)));
+  g_assert_nonnull (tmp);
+  IWICImagingFactory_QueryInterface (tmp, &IID_IWICImagingFactory, (void **)&o); /* IWICImagingFactory_QueryInterface increments tmp's refcount */
+  g_assert_nonnull (o);
+  g_assert_cmpint (IWICImagingFactory_AddRef (tmp), ==, 3); /* tmp's refcount incremented, again */
+  g_win32_clear_com (&o);  /* tmp's refcount decrements */
+  g_assert_null (o);
+  g_assert_cmpint (IWICImagingFactory_Release (tmp), ==, 1);   /* tmp's refcount decrements, again */
+  g_win32_clear_com (&tmp);
+  g_assert_null (tmp);
+
+  CoUninitialize ();
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -177,6 +203,7 @@ main (int   argc,
   g_test_add_func ("/win32/subprocess/debuggee", test_veh_debuggee);
   g_test_add_func ("/win32/subprocess/access_violation", test_access_violation);
   g_test_add_func ("/win32/subprocess/illegal_instruction", test_illegal_instruction);
+  g_test_add_func ("/win32/com/clear", test_clear_com);
 
   return g_test_run();
 }

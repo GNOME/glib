@@ -209,6 +209,7 @@ if have_cxx
     'cxx' : {
       'source' : ['cxx.cpp'],
       'suite': ['cpp'],
+      'dependencies' : [wincodecs],
     }
   }
 
@@ -218,6 +219,7 @@ if have_cxx
         'source' : ['cxx.cpp'],
         'suite' : ['cpp'],
         'cpp_args' : [arg, '-D_G_EXPECTED_CXX_STANDARD="@0@"'.format(std)],
+        'dependencies' : [wincodecs],
       },
     }
   endforeach
@@ -246,7 +248,9 @@ if host_machine.system() == 'windows'
     }
   endif
   glib_tests += {
-    'win32' : {},
+    'win32' : {
+      'dependencies' : [wincodecs],
+    },
   }
 else
   glib_tests += {
