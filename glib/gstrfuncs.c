@@ -3258,10 +3258,6 @@ g_strv_contains (const gchar * const *strv,
  * of order, sort the arrays first (using [func@GLib.qsort_with_data]
  * or similar).
  *
- * Elements are compared using [func@GLib.str_equal]. To match independently
- * of order, sort the arrays first (using [func@GLib.qsort_with_data]
- * or similar).
- *
  * Two empty arrays are considered equal. Neither @strv1 nor @strv2 may be
  * `NULL`.
  *
