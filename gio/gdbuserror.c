@@ -597,7 +597,7 @@ g_dbus_error_new_for_dbus_error (const gchar *dbus_error_name,
  * @format: (nullable): printf()-style format to prepend to @dbus_error_message or %NULL.
  * @...: Arguments for @format.
  *
- * Does nothing if @error is %NULL. Otherwise sets *@error to
+ * Does nothing if @error is %NULL. Otherwise sets `*error` to
  * a new #GError created with g_dbus_error_new_for_dbus_error()
  * with @dbus_error_message prepend with @format (unless %NULL).
  *

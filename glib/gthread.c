@@ -748,7 +748,7 @@ gboolean
  * g_once_init_leave:
  * @location: (inout) (not optional): location of a static initializable variable
  *    containing 0
- * @result: new non-0 value for *@value_location
+ * @result: new non-0 value for `*value_location`
  *
  * Counterpart to g_once_init_enter(). Expects a location of a static
  * 0-initialized initialization variable, and an initialization value
