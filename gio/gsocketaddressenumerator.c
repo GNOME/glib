@@ -81,13 +81,13 @@ g_socket_address_enumerator_class_init (GSocketAddressEnumeratorClass *enumerato
  * If @enumerator is expected to yield addresses, but for some reason
  * is unable to (eg, because of a DNS error), then the first call to
  * g_socket_address_enumerator_next() will return an appropriate error
- * in *@error. However, if the first call to
+ * in `*error`. However, if the first call to
  * g_socket_address_enumerator_next() succeeds, then any further
  * internal errors (other than @cancellable being triggered) will be
  * ignored.
  *
  * Returns: (transfer full) (nullable): a #GSocketAddress (owned by the caller), or %NULL on
- *     error (in which case *@error will be set) or if there are no
+ *     error (in which case `*error` will be set) or if there are no
  *     more addresses.
  */
 GSocketAddress *
@@ -181,7 +181,7 @@ g_socket_address_enumerator_real_next_finish (GSocketAddressEnumerator  *enumera
  * error handling.
  *
  * Returns: (transfer full) (nullable): a #GSocketAddress (owned by the caller), or %NULL on
- *     error (in which case *@error will be set) or if there are no
+ *     error (in which case `*error` will be set) or if there are no
  *     more addresses.
  */
 GSocketAddress *

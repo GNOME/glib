@@ -605,10 +605,10 @@ decompose_hangul_step (gunichar  ch,
  * decompositions. It does, however, include algorithmic
  * Hangul Jamo decomposition, as well as 'singleton'
  * decompositions which replace a character by a single
- * other character. In the case of singletons *@b will
+ * other character. In the case of singletons `*b` will
  * be set to zero.
  *
- * If @ch is not decomposable, *@a is set to @ch and *@b
+ * If @ch is not decomposable, `*a` is set to @ch and `*b`
  * is set to zero.
  *
  * Note that the way Unicode decomposition pairs are
