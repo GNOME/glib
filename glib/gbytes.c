@@ -128,7 +128,7 @@ g_bytes_new (gconstpointer data,
       GBytesInline *bytes;
 
       bytes = g_malloc (sizeof *bytes + size);
-      bytes->bytes.data = data != NULL ? bytes->inline_data : NULL;
+      bytes->bytes.data = (data != NULL && size > 0) ? bytes->inline_data : NULL;
       bytes->bytes.size = size;
       bytes->bytes.free_func = NULL;
       bytes->bytes.user_data = NULL;
