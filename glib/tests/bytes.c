@@ -457,6 +457,14 @@ test_null (void)
 
   g_assert_null (data);
   g_assert_cmpuint (size, ==, 0);
+
+  bytes = g_bytes_new ("some data which shouldn't be touched", 0);
+  g_assert_null (g_bytes_get_data (bytes, NULL));
+
+  data = g_bytes_unref_to_data (bytes, &size);
+
+  g_assert_null (data);
+  g_assert_cmpuint (size, ==, 0);
 }
 
 static void
