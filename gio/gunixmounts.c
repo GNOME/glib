@@ -2201,6 +2201,16 @@ g_unix_mounts_changed_since (guint64 time)
  *
  * Checks if the unix mounts have changed since a given unix time.
  *
+ * This can only work reliably if a [class@GioUnix.MountMonitor] is running in
+ * the process, otherwise changes in the mount entries file (such as
+ * `/proc/self/mountinfo` on Linux) cannot be detected and, as a result, this
+ * function has to conservatively always return `TRUE`.
+ *
+ * It is more efficient to use [signal@GioUnix.MountMonitor::mounts-changed] to
+ * be signalled of changes to the mount entries, rather than polling using this
+ * function. This function is more appropriate for infrequently determining
+ * cache validity.
+ *
  * Returns: %TRUE if the mounts have changed since @time.
  * Since 2.84
  **/
@@ -2216,6 +2226,16 @@ g_unix_mount_entries_changed_since (guint64 time)
  * 
  * Checks if the unix mount points have changed since a given unix time.
  * 
+ * Unlike [func@GioUnix.mount_entries_changed_since], this function can work
+ * reliably without a [class@GioUnix.MountMonitor] running, as it accesses the
+ * static mount point information (such as `/etc/fstab` on Linux), which has a
+ * valid modification time.
+ *
+ * It is more efficient to use [signal@GioUnix.MountMonitor::mountpoints-changed]
+ * to be signalled of changes to the mount points, rather than polling using
+ * this function. This function is more appropriate for infrequently determining
+ * cache validity.
+ *
  * Returns: %TRUE if the mount points have changed since @time. 
  **/
 gboolean
