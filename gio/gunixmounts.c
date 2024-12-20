@@ -2187,7 +2187,7 @@ g_unix_mount_point_at (const char *mount_path,
  * 
  * Returns: %TRUE if the mounts have changed since @time. 
  *
- * Deprecated: 2.84: Use g_unix_mount_entry_free() instead.
+ * Deprecated: 2.84: Use g_unix_mount_entries_changed_since() instead.
  **/
 gboolean
 g_unix_mounts_changed_since (guint64 time)
