@@ -39,7 +39,7 @@ typedef struct
 /* We *require* matches on URI and MTime, but the Size field is optional
  * (as per the spec).
  *
- * http://specifications.freedesktop.org/thumbnail-spec/thumbnail-spec-latest.html
+ * https://specifications.freedesktop.org/thumbnail-spec/latest/
  */
 #define MATCHED_URI    (1u << 0)
 #define MATCHED_MTIME  (1u << 1)
