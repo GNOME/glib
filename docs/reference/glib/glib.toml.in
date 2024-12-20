@@ -128,3 +128,38 @@ hidden = true
 [[object]]
 pattern = "macro__has_*"
 hidden = true
+
+# We have to hide the GioUnix and GioWin32 symbols from the documentation — they
+# have to be present in the GIR files (until we next break API), but their
+# documentation is split out to glib-{unix,win32}.toml.
+[[object]]
+pattern = "Unix[A-Z].+"
+hidden = true
+
+[[object]]
+pattern = "unix_.+"
+hidden = true
+
+[[struct]]
+pattern = "Unix[A-Z].+"
+hidden = true
+
+[[function]]
+pattern = "unix_.+"
+hidden = true
+
+[[object]]
+pattern = "Win32[A-Z].+"
+hidden = true
+
+[[object]]
+pattern = "win32_.+"
+hidden = true
+
+[[struct]]
+pattern = "Win32[A-Z].+"
+hidden = true
+
+[[function]]
+pattern = "win32_.+"
+hidden = true

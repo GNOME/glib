@@ -55,7 +55,14 @@ GType g_unix_mount_point_get_type (void) G_GNUC_CONST;
 /**
  * GUnixMountMonitor:
  *
- * Watches #GUnixMounts for changes.
+ * Watches for changes to the set of mount entries and mount points in the
+ * system.
+ *
+ * Connect to the [signal@GioUnix.MountMonitor::mounts-changed] signal to be
+ * notified of changes to the [struct@GioUnix.MountEntry] list.
+ *
+ * Connect to the [signal@GioUnix.MountMonitor::mountpoints-changed] signal to
+ * be notified of changes to the [struct@GioUnix.MountPoint] list.
  **/
 typedef struct _GUnixMountMonitor      GUnixMountMonitor;
 typedef struct _GUnixMountMonitorClass GUnixMountMonitorClass;
