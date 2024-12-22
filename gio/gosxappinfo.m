@@ -291,7 +291,6 @@ clear_urlspec (LSLaunchURLSpec *urlspec)
       CFArrayRemoveAllValues ((CFMutableArrayRef) urlspec->itemURLs);
       CFRelease (urlspec->itemURLs);
     }
-  CFRelease (urlspec->appURL);
 }
 
 static NSBundle *
@@ -450,6 +449,7 @@ g_osx_app_info_launch_internal (GAppInfo  *appinfo,
   GOsxAppInfo *info = G_OSX_APP_INFO (appinfo);
   LSLaunchURLSpec urlspec = { 0 };
   gint ret, success = TRUE;
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
   g_return_val_if_fail (G_IS_OSX_APP_INFO (appinfo), FALSE);
 
@@ -464,6 +464,7 @@ g_osx_app_info_launch_internal (GAppInfo  *appinfo,
     }
 
   clear_urlspec (&urlspec);
+  [pool drain];
   return success;
 }
 
