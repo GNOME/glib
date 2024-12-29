@@ -5640,8 +5640,7 @@ _weak_ref_set (GWeakRef *weak_ref,
 
 /**
  * g_weak_ref_init: (skip)
- * @weak_ref: (inout): uninitialized or empty location for a weak
- *    reference
+ * @weak_ref: uninitialized or empty location for a weak reference
  * @object: (type GObject.Object) (nullable): a #GObject or %NULL
  *
  * Initialise a non-statically-allocated #GWeakRef.
@@ -5675,7 +5674,7 @@ g_weak_ref_init (GWeakRef *weak_ref,
 
 /**
  * g_weak_ref_clear: (skip)
- * @weak_ref: (inout): location of a weak reference, which
+ * @weak_ref: location of a weak reference, which
  *  may be empty
  *
  * Frees resources associated with a non-statically-allocated #GWeakRef.
@@ -5697,7 +5696,7 @@ g_weak_ref_clear (GWeakRef *weak_ref)
 
 /**
  * g_weak_ref_get: (skip)
- * @weak_ref: (inout): location of a weak reference to a #GObject
+ * @weak_ref: location of a weak reference to a #GObject
  *
  * If @weak_ref is not empty, atomically acquire a strong
  * reference to the object it points to, and return that reference.
