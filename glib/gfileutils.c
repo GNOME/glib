@@ -2991,6 +2991,7 @@ g_get_current_dir (void)
     {
       /* Fallback return value */
       g_assert (buffer_size >= 2);
+      g_assert (buffer != NULL);
       buffer[0] = G_DIR_SEPARATOR;
       buffer[1] = 0;
     }
