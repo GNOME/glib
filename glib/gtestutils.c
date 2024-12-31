@@ -611,7 +611,7 @@
 
 /**
  * g_assert_no_error:
- * @err: (nullable) a `GError`
+ * @err: (nullable): a `GError`
  *
  * Debugging macro to check that a [struct@GLib.Error] is not set.
  *
