@@ -89,7 +89,7 @@ g_filter_output_stream_class_init (GFilterOutputStreamClass *klass)
   ostream_class->close_fn = g_filter_output_stream_close;
 
   /**
-   * GFilterOutputStream:close-base-stream:
+   * GFilterOutputStream:base-stream:
    *
    * The underlying base stream on which the I/O ops will be done.
    */
