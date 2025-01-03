@@ -30,6 +30,28 @@
 #include "gbsearcharray.h"
 #include "gtype-private.h"
 
+static GValue *
+value_copy (GValue *src_value)
+{
+  GValue *dest_value = g_new0 (GValue, 1);
+
+  if (G_VALUE_TYPE (src_value))
+    {
+      g_value_init (dest_value, G_VALUE_TYPE (src_value));
+      g_value_copy (src_value, dest_value);
+    }
+  return dest_value;
+}
+
+static void
+value_free (GValue *value)
+{
+  if (G_VALUE_TYPE (value))
+    g_value_unset (value);
+  g_free (value);
+}
+
+G_DEFINE_BOXED_TYPE (GValue, g_value, value_copy, value_free)
 
 /* --- typedefs & structures --- */
 typedef struct {
@@ -323,6 +345,7 @@ g_value_init_from_instance (GValue  *value,
 {
   g_return_if_fail (value != NULL && G_VALUE_TYPE(value) == 0);
 
+#if 0
   if (G_IS_OBJECT (instance))
     {
       /* Fast-path.
@@ -334,6 +357,7 @@ g_value_init_from_instance (GValue  *value,
       value->data[0].v_pointer = g_object_ref (instance);
     }
   else
+#endif
     {  
       GType g_type;
       GTypeValueTable *value_table;

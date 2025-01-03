@@ -20,7 +20,7 @@
 #include "config.h"
 
 #include "gtypeplugin.h"
-
+#include "gmessages.h"
 
 /**
  * GTypePlugin:

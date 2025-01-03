@@ -21,16 +21,9 @@
 
 #include <string.h>
 
-/* for GValueArray */
-#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
-#define GLIB_DISABLE_DEPRECATION_WARNINGS
-#endif
-
 #include "gboxed.h"
-#include "gclosure.h"
 #include "gtype-private.h"
 #include "gvalue.h"
-#include "gvaluearray.h"
 #include "gvaluecollector.h"
 
 static inline void              /* keep this function in sync with gvalue.c */
@@ -39,27 +32,6 @@ value_meminit (GValue *value,
 {
   value->g_type = value_type;
   memset (value->data, 0, sizeof (value->data));
-}
-
-static GValue *
-value_copy (GValue *src_value)
-{
-  GValue *dest_value = g_new0 (GValue, 1);
-
-  if (G_VALUE_TYPE (src_value))
-    {
-      g_value_init (dest_value, G_VALUE_TYPE (src_value));
-      g_value_copy (src_value, dest_value);
-    }
-  return dest_value;
-}
-
-static void
-value_free (GValue *value)
-{
-  if (G_VALUE_TYPE (value))
-    g_value_unset (value);
-  g_free (value);
 }
 
 static GPollFD *
@@ -108,9 +80,6 @@ gstring_free (GString *gstring)
   g_string_free (gstring, TRUE);
 }
 
-G_DEFINE_BOXED_TYPE (GClosure, g_closure, g_closure_ref, g_closure_unref)
-G_DEFINE_BOXED_TYPE (GValue, g_value, value_copy, value_free)
-G_DEFINE_BOXED_TYPE (GValueArray, g_value_array, g_value_array_copy, g_value_array_free)
 G_DEFINE_BOXED_TYPE (GDate, g_date, g_date_copy, g_date_free)
 /* the naming is a bit odd, but GString is obviously not G_TYPE_STRING */
 G_DEFINE_BOXED_TYPE (GString, g_gstring, gstring_copy, gstring_free)

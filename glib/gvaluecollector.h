@@ -19,18 +19,13 @@
  * gvaluecollector.h: GValue varargs stubs
  */
 
-#ifndef __GOBJECT_G_VALUE_COLLECTOR_H__
-#define __GOBJECT_G_VALUE_COLLECTOR_H__
+#ifndef __GLIB_G_VALUE_COLLECTOR_H__
+#define __GLIB_G_VALUE_COLLECTOR_H__
 
-/* Sadly, this file is part of the API but it's not included in
- * glib.h or glib-object.h, which means we need to retain a copy inside GObject,
- * even if GLib has its own header file, in order to maintain source compatibility.
- */
-#ifdef GLIB_GVALUECOLLECTOR_H
-#error "You cannot include glib/gvaluecollector.h and gobject/gvaluecollector.h at the same time"
-#endif
+/* Add a guard to avoid including both this file and gobject's copy */
+#define GLIB_GVALUECOLLECTOR_H
 
-#include <glib.h>
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 
@@ -285,4 +280,4 @@ G_STMT_START {										\
 
 G_END_DECLS
 
-#endif /* __GOBJECT_G_VALUE_COLLECTOR_H__ */
+#endif /* __GLIB_G_VALUE_COLLECTOR_H__ */

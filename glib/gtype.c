@@ -23,17 +23,18 @@
 
 #include "config.h"
 
-#include "../glib/gvalgrind.h"
+#include "gvalgrind.h"
 #include <string.h>
 
 #include "gtype.h"
 #include "gtype-private.h"
 #include "gtypeplugin.h"
 #include "gvaluecollector.h"
-#include "gatomicarray.h"
-#include "gobject_trace.h"
+#include "gatomicarray-private.h"
+#include "glib_trace.h"
 
 #include "glib-private.h"
+#include "glib-init.h"
 #include "gconstructor.h"
 
 #ifdef G_OS_WIN32
@@ -487,7 +488,7 @@ type_node_any_new_W (TypeNode             *pnode,
       pnode->children[i] = type;
     }
 
-  TRACE(GOBJECT_TYPE_NEW(name, node->supers[1], type));
+  TRACE(GLIB_TYPE_NEW(name, node->supers[1], type));
 
   node->plugin = plugin;
   node->n_children = 0;
@@ -1957,7 +1958,7 @@ g_type_create_instance (GType type)
     }
 #endif
 
-  TRACE(GOBJECT_OBJECT_NEW(instance, type));
+  TRACE(GLIB_INSTANCE_NEW(instance, type));
 
   return instance;
 }
@@ -4486,192 +4487,6 @@ g_type_init (void)
   g_assert_type_system_initialized ();
 }
 
-static void
-gobject_init (void)
-{
-  const gchar *env_string;
-  GTypeInfo info;
-  TypeNode *node;
-  GType type G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
-
-  /* Ensure GLib is initialized first, see
-   * https://bugzilla.gnome.org/show_bug.cgi?id=756139
-   */
-  GLIB_PRIVATE_CALL (glib_init) ();
-
-  G_WRITE_LOCK (&type_rw_lock);
-
-  /* setup GObject library wide debugging flags */
-  env_string = g_getenv ("GOBJECT_DEBUG");
-  if (env_string != NULL)
-    {
-      GDebugKey debug_keys[] = {
-        { "objects", G_TYPE_DEBUG_OBJECTS },
-        { "instance-count", G_TYPE_DEBUG_INSTANCE_COUNT },
-        { "signals", G_TYPE_DEBUG_SIGNALS },
-      };
-
-      _g_type_debug_flags = g_parse_debug_string (env_string, debug_keys, G_N_ELEMENTS (debug_keys));
-    }
-
-  /* quarks */
-  static_quark_type_flags = g_quark_from_static_string ("-g-type-private--GTypeFlags");
-  static_quark_iface_holder = g_quark_from_static_string ("-g-type-private--IFaceHolder");
-  static_quark_dependants_array = g_quark_from_static_string ("-g-type-private--dependants-array");
-
-  /* type qname hash table */
-  static_type_nodes_ht = g_hash_table_new (g_str_hash, g_str_equal);
-
-  /* invalid type G_TYPE_INVALID (0)
-   */
-  static_fundamental_type_nodes[0] = NULL;
-
-  /* void type G_TYPE_NONE
-   */
-  node = type_node_fundamental_new_W (G_TYPE_NONE, g_intern_static_string ("void"), 0);
-  type = NODE_TYPE (node);
-  g_assert (type == G_TYPE_NONE);
-
-  /* interface fundamental type G_TYPE_INTERFACE (!classed)
-   */
-  memset (&info, 0, sizeof (info));
-  node = type_node_fundamental_new_W (G_TYPE_INTERFACE, g_intern_static_string ("GInterface"), G_TYPE_FLAG_DERIVABLE);
-  type = NODE_TYPE (node);
-  type_data_make_W (node, &info, NULL);
-  g_assert (type == G_TYPE_INTERFACE);
-
-  G_WRITE_UNLOCK (&type_rw_lock);
-
-  _g_value_c_init ();
-
-  /* G_TYPE_TYPE_PLUGIN
-   */
-  g_type_ensure (g_type_plugin_get_type ());
-
-  /* G_TYPE_* value types
-   */
-  _g_value_types_init ();
-
-  /* G_TYPE_ENUM & G_TYPE_FLAGS
-   */
-  _g_enum_types_init ();
-
-  /* G_TYPE_BOXED
-   */
-  _g_boxed_type_init ();
-
-  /* G_TYPE_PARAM
-   */
-  _g_param_type_init ();
-
-  /* G_TYPE_OBJECT
-   */
-  _g_object_type_init ();
-
-  /* G_TYPE_PARAM_* pspec types
-   */
-  _g_param_spec_types_init ();
-
-  /* Value Transformations
-   */
-  _g_value_transforms_init ();
-
-  /* Signal system
-   */
-  _g_signal_init ();
-}
-
-#ifdef G_PLATFORM_WIN32
-
-void gobject_win32_init (void);
-
-void
-gobject_win32_init (void)
-{
-  /* May be called more than once in static compilation mode */
-  static gboolean win32_already_init = FALSE;
-  if (!win32_already_init)
-    {
-      win32_already_init = TRUE;
-      gobject_init ();
-    }
-}
-
-#ifndef GLIB_STATIC_COMPILATION
-
-BOOL WINAPI DllMain (HINSTANCE hinstDLL,
-                     DWORD     fdwReason,
-                     LPVOID    lpvReserved);
-
-BOOL WINAPI
-DllMain (HINSTANCE hinstDLL,
-         DWORD     fdwReason,
-         LPVOID    lpvReserved)
-{
-  switch (fdwReason)
-    {
-    case DLL_PROCESS_ATTACH:
-      gobject_win32_init ();
-      break;
-
-    default:
-      /* do nothing */
-      ;
-    }
-
-  return TRUE;
-}
-
-#elif defined(G_HAS_CONSTRUCTORS) /* && G_PLATFORM_WIN32 && GLIB_STATIC_COMPILATION */
-extern void glib_win32_init (void);
-
-#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
-#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(gobject_init_ctor)
-#endif
-
-G_DEFINE_CONSTRUCTOR(gobject_init_ctor)
-
-static void
-gobject_init_ctor (void)
-{
-  /* When built dynamically, module initialization is done through DllMain
-   * function which is called when the dynamic library is loaded by the glib
-   * module. So, in dynamic configuration glib is always initialized BEFORE
-   * gobject.
-   *
-   * When built statically, initialization mechanism relies on hooking
-   * functions to the CRT section directly at compilation time. As we don't
-   * control how each compilation unit will be built and in which order, we
-   * obtain the same kind of issue as the "static initialization order fiasco".
-   * In this case, we must ensure explicitly that glib is always well
-   * initialized BEFORE gobject.
-   */
-  glib_win32_init ();
-  gobject_win32_init ();
-}
-
-#else /* G_PLATFORM_WIN32 && GLIB_STATIC_COMPILATION && !G_HAS_CONSTRUCTORS */
-# error Your platform/compiler is missing constructor support
-#endif /* GLIB_STATIC_COMPILATION */
-
-#elif defined(G_HAS_CONSTRUCTORS) /* && !G_PLATFORM_WIN32 */
-
-#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
-#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(gobject_init_ctor)
-#endif
-
-G_DEFINE_CONSTRUCTOR (gobject_init_ctor)
-
-static void
-gobject_init_ctor (void)
-{
-  gobject_init ();
-}
-
-#else /* !G_PLATFORM_WIN32 && !G_HAS_CONSTRUCTORS */
-#error Your platform/compiler is missing constructor support
-#endif /* G_PLATFORM_WIN32 */
-
 /**
  * g_type_class_add_private:
  * @g_class: (type GObject.TypeClass): class structure for an instantiatable
@@ -5081,4 +4896,79 @@ g_type_ensure (GType type)
    */
   if (G_UNLIKELY (type == (GType)-1))
     g_error ("can't happen");
+}
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+gboolean
+g_type_has_debug_flag (int flag)
+{
+  return (_g_type_debug_flags & flag) != 0;
+}
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+void
+g_type_init_internal (void)
+{
+  GTypeInfo info;
+  TypeNode *node;
+  GType type G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
+
+  G_WRITE_LOCK (&type_rw_lock);
+
+  /* setup debugging flags */
+  const char *env_string = g_getenv ("GOBJECT_DEBUG");
+  if (env_string != NULL)
+    {
+      GDebugKey debug_keys[] = {
+        { "objects", G_TYPE_DEBUG_OBJECTS },
+        { "instance-count", G_TYPE_DEBUG_INSTANCE_COUNT },
+        { "signals", G_TYPE_DEBUG_SIGNALS },
+      };
+
+      _g_type_debug_flags = g_parse_debug_string (env_string, debug_keys, G_N_ELEMENTS (debug_keys));
+    }
+
+  /* quarks */
+  static_quark_type_flags = g_quark_from_static_string ("-g-type-private--GTypeFlags");
+  static_quark_iface_holder = g_quark_from_static_string ("-g-type-private--IFaceHolder");
+  static_quark_dependants_array = g_quark_from_static_string ("-g-type-private--dependants-array");
+
+  /* type qname hash table */
+  static_type_nodes_ht = g_hash_table_new (g_str_hash, g_str_equal);
+
+  /* invalid type G_TYPE_INVALID (0) */
+  static_fundamental_type_nodes[0] = NULL;
+
+  /* void type G_TYPE_NONE */
+  node = type_node_fundamental_new_W (G_TYPE_NONE, g_intern_static_string ("void"), 0);
+  type = NODE_TYPE (node);
+  g_assert (type == G_TYPE_NONE);
+
+  /* interface fundamental type G_TYPE_INTERFACE (!classed) */
+  memset (&info, 0, sizeof (info));
+  node = type_node_fundamental_new_W (G_TYPE_INTERFACE, g_intern_static_string ("GInterface"), G_TYPE_FLAG_DERIVABLE);
+  type = NODE_TYPE (node);
+  type_data_make_W (node, &info, NULL);
+  g_assert (type == G_TYPE_INTERFACE);
+
+  G_WRITE_UNLOCK (&type_rw_lock);
+
+  /* GValue initialization */
+  _g_value_c_init ();
+
+  /* G_TYPE_TYPE_PLUGIN */
+  g_type_ensure (g_type_plugin_get_type ());
+
+  /* G_TYPE_* fundamental value types */
+  _g_value_types_init ();
+
+  /* G_TYPE_ENUM & G_TYPE_FLAGS */
+  _g_enum_types_init ();
+
+  /* G_TYPE_BOXED */
+  _g_boxed_type_init ();
+
+  /* Value Transformations */
+  _g_value_transforms_init ();
+
 }

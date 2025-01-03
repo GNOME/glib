@@ -30,8 +30,6 @@
 #include "gvaluetypes.h"
 #include "gtype-private.h"
 #include "gvaluecollector.h"
-#include "gobject.h"
-#include "gparam.h"
 #include "gboxed.h"
 #include "genums.h"
 
@@ -1434,10 +1432,6 @@ g_strdup_value_contents (const GValue *value)
 
       if (!p)
 	contents = g_strdup ("NULL");
-      else if (G_VALUE_HOLDS_OBJECT (value))
-	contents = g_strdup_printf ("((%s*) %p)", G_OBJECT_TYPE_NAME (p), p);
-      else if (G_VALUE_HOLDS_PARAM (value))
-	contents = g_strdup_printf ("((%s*) %p)", G_PARAM_SPEC_TYPE_NAME (p), p);
       else if (G_VALUE_HOLDS (value, G_TYPE_STRV))
         {
           GStrv strv = g_value_get_boxed (value);
@@ -1462,7 +1456,7 @@ g_strdup_value_contents (const GValue *value)
       else if (G_VALUE_HOLDS_POINTER (value))
 	contents = g_strdup_printf ("((gpointer) %p)", p);
       else
-	contents = g_strdup ("???");
+        contents = g_strdup_printf ("((%s*) %p)", g_type_name (G_VALUE_TYPE (value)), p);
     }
   else
     contents = g_strdup ("???");

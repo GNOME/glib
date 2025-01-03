@@ -24,7 +24,8 @@
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include        <gobject/gtype.h>
+#include <glib.h>
+#include <gobject/gobject-visibility.h>
 
 G_BEGIN_DECLS
 
@@ -71,6 +72,13 @@ G_BEGIN_DECLS
  * Cast a function pointer to a #GCallback.
  */
 #define	G_CALLBACK(f)			 ((GCallback) (f))
+
+/**
+ * G_TYPE_CLOSURE:
+ *
+ * The #GType for #GClosure.
+ */
+#define G_TYPE_CLOSURE (g_closure_get_type ())
 
 
 /* -- typedefs --- */
@@ -219,6 +227,9 @@ struct _GCClosure
 
 
 /* --- prototypes --- */
+GOBJECT_AVAILABLE_IN_ALL
+GType   g_closure_get_type                      (void) G_GNUC_CONST;
+
 GOBJECT_AVAILABLE_IN_ALL
 GClosure* g_cclosure_new			(GCallback	callback_func,
 						 gpointer	user_data,

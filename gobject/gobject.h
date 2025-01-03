@@ -23,16 +23,24 @@
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include        <gobject/gtype.h>
-#include        <gobject/gvalue.h>
-#include        <gobject/gparam.h>
-#include        <gobject/gclosure.h>
-#include        <gobject/gsignal.h>
-#include        <gobject/gboxed.h>
+#include <glib.h>
+
+#include <gobject/gobject-visibility.h>
+#include <gobject/gparam.h>
+#include <gobject/gclosure.h>
+#include <gobject/gsignal.h>
 
 G_BEGIN_DECLS
 
 /* --- type macros --- */
+
+/**
+ * G_TYPE_OBJECT:
+ * 
+ * The fundamental type for #GObject.
+ */
+#define G_TYPE_OBJECT			G_TYPE_MAKE_FUNDAMENTAL (20)
+
 /**
  * G_TYPE_IS_OBJECT:
  * @type: Type id to check

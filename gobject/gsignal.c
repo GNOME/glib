@@ -29,13 +29,13 @@
 #include <string.h>
 #include <signal.h>
 
+#define GLIB_COMPILATION
+#include "../glib/gvaluecollector.h"
+
 #include "gsignal.h"
-#include "gtype-private.h"
+#include "gobject-private.h"
 #include "gbsearcharray.h"
-#include "gvaluecollector.h"
-#include "gvaluetypes.h"
 #include "gobject.h"
-#include "genums.h"
 #include "gobject_trace.h"
 
 

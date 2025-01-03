@@ -25,6 +25,7 @@
 #include "glib-init.h"
 #include "gutilsprivate.h"
 #include "gdatasetprivate.h"
+#include "gtype-private.h"
 
 #ifdef USE_INVALID_PARAMETER_HANDLER
 #include <crtdbg.h>
@@ -77,6 +78,8 @@ glib__private__ (void)
     g_set_prgname_once,
 
     g_datalist_id_update_atomic,
+
+    g_type_has_debug_flag,
   };
 
   return &table;

@@ -25,10 +25,7 @@
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include        <gobject/gvalue.h>
-#include        <gobject/genums.h>
-#include        <gobject/gboxed.h>
-#include        <gobject/gobject.h>
+#include <gobject/gobject.h>
 
 G_BEGIN_DECLS
 

@@ -19,10 +19,16 @@
 
 #include "config.h"
 
-#include "../glib/gvalgrind.h"
+#include "gvalgrind.h"
 #include <string.h>
 
-#include "gatomicarray.h"
+#include "gatomicarray-private.h"
+
+#include "gmem.h"
+#include "gmessages.h"
+#include "gslice.h"
+#include "gtestutils.h"
+#include "gthread.h"
 
 /* A GAtomicArray is a growable, mutable array of data
  * generally of the form of a header of a specific size and

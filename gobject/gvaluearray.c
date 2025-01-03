@@ -26,8 +26,15 @@
 #include <string.h>
 #include <stdlib.h>  /* qsort() */
 
+#ifndef GOBJECT_DISABLE_DEPRECATION_WARNINGS
+#define GOBJECT_DISABLE_DEPRECATION_WARNINGS
+#endif
+
 #include "gvaluearray.h"
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+G_DEFINE_BOXED_TYPE (GValueArray, g_value_array, g_value_array_copy, g_value_array_free)
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
  * GValueArray:

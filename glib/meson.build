@@ -22,6 +22,10 @@ glib_visibility_h = custom_target(
   install_dir: glib_sub_includedir,
 )
 
+# Expose as variable to be used by gobject-introspection
+# when it includes GLib as a subproject
+glib_types_h = files('glib-types.h')
+
 glib_built_headers = [gversionmacros_h, glib_visibility_h]
 glib_sources += glib_built_headers
 glib_c_args_internal = [
@@ -168,6 +172,7 @@ install_headers(glib_deprecated_headers,
 glib_sub_headers = files(
   'glib-autocleanups.h',
   'glib-typeof.h',
+  'glib-types.h',
   'galloca.h',
   'garray.h',
   'gasyncqueue.h',
@@ -176,6 +181,7 @@ glib_sub_headers = files(
   'gbase64.h',
   'gbitlock.h',
   'gbookmarkfile.h',
+  'gboxed.h',
   'gbytes.h',
   'gcharset.h',
   'gchecksum.h',
@@ -184,6 +190,7 @@ glib_sub_headers = files(
   'gdate.h',
   'gdatetime.h',
   'gdir.h',
+  'genums.h',
   'genviron.h',
   'gerror.h',
   'gfileutils.h',
@@ -235,11 +242,15 @@ glib_sub_headers = files(
   'gtimezone.h',
   'gtrashstack.h',
   'gtree.h',
+  'gtype.h',
+  'gtypeplugin.h',
   'gtypes.h',
   'guuid.h',
   'gunicode.h',
   'guri.h',
   'gutils.h',
+  'gvalue.h',
+  'gvaluetypes.h',
   'gvarianttype.h',
   'gvariant.h',
   'gversion.h',
@@ -266,10 +277,12 @@ glib_sources += files(
   'garray.c',
   'gasyncqueue.c',
   'gatomic.c',
+  'gatomicarray.c',
   'gbacktrace.c',
   'gbase64.c',
   'gbitlock.c',
   'gbookmarkfile.c',
+  'gboxed.c',
   'gbytes.c',
   'gcharset.c',
   'gchecksum.c',
@@ -279,6 +292,7 @@ glib_sources += files(
   'gdatetime.c',
   'gdatetime-private.c',
   'gdir.c',
+  'genums.c',
   'genviron.c',
   'gerror.c',
   'gfileutils.c',
@@ -331,6 +345,8 @@ glib_sources += files(
   'gtranslit.c',
   'gtrashstack.c',
   'gtree.c',
+  'gtype.c',
+  'gtypeplugin.c',
   'guniprop.c',
   'gutf8.c',
   'gunibreak.c',
@@ -339,6 +355,9 @@ glib_sources += files(
   'guri.c',
   'gutils.c',
   'guuid.c',
+  'gvalue.c',
+  'gvaluetransform.c',
+  'gvaluetypes.c',
   'gvariant.c',
   'gvariant-core.c',
   'gvariant-parser.c',

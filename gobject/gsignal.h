@@ -23,10 +23,12 @@
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include	<gobject/gclosure.h>
-#include	<gobject/gvalue.h>
-#include	<gobject/gparam.h>
-#include	<gobject/gmarshal.h>
+#include <glib.h>
+#include <gobject/gobject-visibility.h>
+
+#include <gobject/gclosure.h>
+#include <gobject/gmarshal.h>
+#include <gobject/gparam.h>
 
 G_BEGIN_DECLS
 

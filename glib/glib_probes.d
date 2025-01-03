@@ -58,4 +58,6 @@ provider glib {
 	probe variant__ref_sink(void*, const char*, int, int, int);
 	probe variant__take_ref(void*, const char*, int, int, int);
 	probe variant__from_parent(void*, const char*, int, int, void*);
+        probe instance__new(void*, unsigned long);
+        probe type__new(void*, unsigned long, unsigned long);
 };

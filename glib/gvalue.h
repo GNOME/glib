@@ -21,11 +21,11 @@
 #ifndef __G_VALUE_H__
 #define __G_VALUE_H__
 
-#if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
+#if !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include	<gobject/gtype.h>
+#include <glib/gtype.h>
 
 G_BEGIN_DECLS
 
@@ -82,6 +82,14 @@ G_BEGIN_DECLS
  */
 #define G_VALUE_HOLDS(value,type)	(G_TYPE_CHECK_VALUE_TYPE ((value), (type)))
 
+/**
+ * G_TYPE_VALUE:
+ *
+ * The type ID of the "GValue" type which is a boxed type,
+ * used to pass around pointers to GValues.
+ */
+#define G_TYPE_VALUE (g_value_get_type ())
+
 
 /* --- typedefs & structures --- */
 /**
@@ -131,42 +139,45 @@ struct _GValue
 
 
 /* --- prototypes --- */
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
+GType           g_value_get_type        (void) G_GNUC_CONST;
+
+GLIB_AVAILABLE_IN_ALL
 GValue*         g_value_init	   	(GValue       *value,
 					 GType         g_type);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 void            g_value_copy    	(const GValue *src_value,
 					 GValue       *dest_value);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 GValue*         g_value_reset   	(GValue       *value);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 void            g_value_unset   	(GValue       *value);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 void		g_value_set_instance	(GValue	      *value,
 					 gpointer      instance);
-GOBJECT_AVAILABLE_IN_2_42
+GLIB_AVAILABLE_IN_2_42
 void            g_value_init_from_instance   (GValue       *value,
                                               gpointer      instance);
 
 
 /* --- private --- */
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 gboolean	g_value_fits_pointer	(const GValue *value);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 gpointer	g_value_peek_pointer	(const GValue *value);
 
 
 /* --- implementation details --- */
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 gboolean g_value_type_compatible	(GType		 src_type,
 					 GType		 dest_type);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 gboolean g_value_type_transformable	(GType           src_type,
 					 GType           dest_type);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 gboolean g_value_transform		(const GValue   *src_value,
 					 GValue         *dest_value);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 void	g_value_register_transform_func	(GType		 src_type,
 					 GType		 dest_type,
 					 GValueTransform transform_func);
@@ -189,7 +200,7 @@ void	g_value_register_transform_func	(GType		 src_type,
  *
  * Since: 2.66
  */
-#define G_VALUE_INTERNED_STRING (1 << 28) GOBJECT_AVAILABLE_MACRO_IN_2_66
+#define G_VALUE_INTERNED_STRING (1 << 28) GLIB_AVAILABLE_MACRO_IN_2_66
 
 /**
  * G_VALUE_INIT:

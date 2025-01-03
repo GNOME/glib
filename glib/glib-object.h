@@ -23,8 +23,6 @@
 
 #include <gobject/gbinding.h>
 #include <gobject/gbindinggroup.h>
-#include <gobject/gboxed.h>
-#include <gobject/genums.h>
 #include <gobject/glib-enumtypes.h>
 #include <gobject/gobject.h>
 #include <gobject/gparam.h>
@@ -32,12 +30,8 @@
 #include <gobject/gsignal.h>
 #include <gobject/gsignalgroup.h>
 #include <gobject/gsourceclosure.h>
-#include <gobject/gtype.h>
 #include <gobject/gtypemodule.h>
-#include <gobject/gtypeplugin.h>
 #include <gobject/gvaluearray.h>
-#include <gobject/gvalue.h>
-#include <gobject/gvaluetypes.h>
 
 #include <gobject/gobject-autocleanups.h>
 

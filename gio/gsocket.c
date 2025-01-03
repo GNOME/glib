@@ -59,7 +59,7 @@
 #endif
 
 #define GOBJECT_COMPILATION
-#include "gobject/gtype-private.h" /* For _PRELUDE type define */
+#include "gobject/gobject-private.h" /* For _PRELUDE type define */
 #undef GOBJECT_COMPILATION
 #include "gcancellable.h"
 #include "gdatagrambased.h"

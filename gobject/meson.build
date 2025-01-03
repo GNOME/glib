@@ -2,12 +2,9 @@ gobject_includedir = glib_includedir / 'gobject'
 
 gobject_install_headers = files(
   'gobject-autocleanups.h',
-  'glib-types.h',
   'gbinding.h',
   'gbindinggroup.h',
-  'gboxed.h',
   'gclosure.h',
-  'genums.h',
   'gmarshal.h',
   'gobject.h',
   'gparam.h',
@@ -15,13 +12,9 @@ gobject_install_headers = files(
   'gsignal.h',
   'gsignalgroup.h',
   'gsourceclosure.h',
-  'gtype.h',
   'gtypemodule.h',
-  'gtypeplugin.h',
-  'gvalue.h',
   'gvaluearray.h',
   'gvaluecollector.h',
-  'gvaluetypes.h',
   'gobjectnotifyqueue.c', # sic
 )
 
@@ -38,12 +31,9 @@ gobject_sources += gobject_visibility_h
 install_headers(gobject_install_headers, install_dir : gobject_includedir)
 
 gobject_sources += files(
-  'gatomicarray.c',
   'gbinding.c',
   'gbindinggroup.c',
-  'gboxed.c',
   'gclosure.c',
-  'genums.c',
   'gmarshal.c',
   'gobject.c',
   'gparam.c',
@@ -51,13 +41,8 @@ gobject_sources += files(
   'gsignal.c',
   'gsignalgroup.c',
   'gsourceclosure.c',
-  'gtype.c',
   'gtypemodule.c',
-  'gtypeplugin.c',
-  'gvalue.c',
   'gvaluearray.c',
-  'gvaluetransform.c',
-  'gvaluetypes.c',
 )
 
 if host_system == 'windows' and glib_build_shared
@@ -133,10 +118,6 @@ glib_enumtypes_c = custom_target('glib_enumtypes_c',
   command : [python, glib_mkenums,
              '--template', files('glib-enumtypes.c.template'),
              '@INPUT@'])
-
-# Expose as variable to be used by gobject-introspection
-# when it includes GLib as a subproject
-glib_types_h = files('glib-types.h')
 
 libgobject = library('gobject-2.0',
   gobject_dtrace_obj, gobject_dtrace_hdr, glib_enumtypes_h, glib_enumtypes_c,

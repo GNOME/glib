@@ -37,6 +37,7 @@
 #include <glib/gbase64.h>
 #include <glib/gbitlock.h>
 #include <glib/gbookmarkfile.h>
+#include <glib/gboxed.h>
 #include <glib/gbytes.h>
 #include <glib/gcharset.h>
 #include <glib/gchecksum.h>
@@ -45,6 +46,7 @@
 #include <glib/gdate.h>
 #include <glib/gdatetime.h>
 #include <glib/gdir.h>
+#include <glib/genums.h>
 #include <glib/genviron.h>
 #include <glib/gerror.h>
 #include <glib/gfileutils.h>
@@ -93,11 +95,15 @@
 #include <glib/gtimezone.h>
 #include <glib/gtrashstack.h>
 #include <glib/gtree.h>
+#include <glib/gtype.h>
+#include <glib/gtypeplugin.h>
 #include <glib/gtypes.h>
 #include <glib/gunicode.h>
 #include <glib/guri.h>
 #include <glib/gutils.h>
 #include <glib/guuid.h>
+#include <glib/gvalue.h>
+#include <glib/gvaluetypes.h>
 #include <glib/gvariant.h>
 #include <glib/gvarianttype.h>
 #include <glib/gversion.h>
@@ -115,6 +121,7 @@
 #include <glib/deprecated/gthread.h>
 
 #include <glib/glib-autocleanups.h>
+#include <glib/glib-types.h>
 #include <glib/glib-typeof.h>
 
 #undef __GLIB_H_INSIDE__

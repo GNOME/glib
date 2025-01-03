@@ -19,14 +19,14 @@
 #ifndef __G_BOXED_H__
 #define __G_BOXED_H__
 
-#if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
-#error "Only <glib-object.h> can be included directly."
+#if !defined (__GLIB_H_INSIDE__) && !defined(GLIB_COMPILATION)
+#error "Only <glib.h> can be included directly."
 #endif
 
-#include        <gobject/gtype.h>
+#include <glib/gtype.h>
 
 #ifndef __GI_SCANNER__
-#include        <gobject/glib-types.h>
+#include <glib/glib-types.h>
 #endif
 
 G_BEGIN_DECLS
@@ -68,56 +68,35 @@ typedef void (*GBoxedFreeFunc) (gpointer boxed);
 
 
 /* --- prototypes --- */
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 gpointer g_boxed_copy                     (GType boxed_type,
                                            gconstpointer  src_boxed);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 void     g_boxed_free                     (GType          boxed_type,
                                            gpointer       boxed);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 void     g_value_set_boxed                (GValue        *value,
                                            gconstpointer  v_boxed);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 void     g_value_set_static_boxed         (GValue        *value,
                                            gconstpointer  v_boxed);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 void     g_value_take_boxed               (GValue        *value,
                                            gconstpointer  v_boxed);
-GOBJECT_DEPRECATED_FOR(g_value_take_boxed)
+GLIB_DEPRECATED_FOR(g_value_take_boxed)
 void     g_value_set_boxed_take_ownership (GValue        *value,
                                            gconstpointer  v_boxed);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 gpointer g_value_get_boxed                (const GValue  *value);
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 gpointer g_value_dup_boxed                (const GValue  *value);
 
 
 /* --- convenience --- */
-GOBJECT_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_ALL
 GType    g_boxed_type_register_static     (const gchar   *name,
                                            GBoxedCopyFunc boxed_copy,
                                            GBoxedFreeFunc boxed_free);
-
-/* --- GObject boxed types --- */
-/**
- * G_TYPE_CLOSURE:
- *
- * The #GType for #GClosure.
- */
-#define G_TYPE_CLOSURE (g_closure_get_type ())
-
-/**
- * G_TYPE_VALUE:
- *
- * The type ID of the "GValue" type which is a boxed type,
- * used to pass around pointers to GValues.
- */
-#define G_TYPE_VALUE (g_value_get_type ())
-
-GOBJECT_AVAILABLE_IN_ALL
-GType   g_closure_get_type         (void) G_GNUC_CONST;
-GOBJECT_AVAILABLE_IN_ALL
-GType   g_value_get_type           (void) G_GNUC_CONST;
 
 G_END_DECLS
 

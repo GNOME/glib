@@ -30,6 +30,7 @@ extern GLogLevelFlags g_log_msg_prefix;
 void glib_init (void);
 void g_quark_init (void);
 void g_error_init (void);
+void g_type_init_internal (void);
 
 #ifdef G_OS_WIN32
 #include <windows.h>

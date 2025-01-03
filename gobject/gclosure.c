@@ -26,16 +26,15 @@
 
 #include "../glib/gvalgrind.h"
 #include <string.h>
-
 #include <ffi.h>
 
 #include "gclosure.h"
+
 #include "gboxed.h"
-#include "gobject.h"
 #include "genums.h"
+#include "gobject-private.h"
 #include "gvalue.h"
 #include "gvaluetypes.h"
-#include "gtype-private.h"
 
 
 /**
@@ -90,6 +89,8 @@
  * - g_closure_invalidate() and invalidation notifiers allow callbacks to be
  *   automatically removed when the objects they point to go away.
  */
+
+G_DEFINE_BOXED_TYPE (GClosure, g_closure, g_closure_ref, g_closure_unref)
 
 #define	CLOSURE_MAX_REF_COUNT		((1 << 15) - 1)
 #define	CLOSURE_MAX_N_GUARDS		((1 << 1) - 1)

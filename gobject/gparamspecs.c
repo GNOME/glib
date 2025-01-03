@@ -31,7 +31,7 @@
 #endif
 
 #include "gparamspecs.h"
-#include "gtype-private.h"
+#include "gobject-private.h"
 #include "gvaluecollector.h"
 
 #include "gvaluearray.h"

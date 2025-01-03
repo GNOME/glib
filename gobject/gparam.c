@@ -28,7 +28,7 @@
 #include "gparam.h"
 #include "gparamspecs.h"
 #include "gvaluecollector.h"
-#include "gtype-private.h"
+#include "gobject-private.h"
 
 /**
  * GParamSpec: (ref-func g_param_spec_ref_sink) (unref-func g_param_spec_unref) (set-value-func g_value_set_param) (get-value-func g_value_get_param)

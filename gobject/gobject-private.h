@@ -23,7 +23,8 @@
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include "gboxed.h"
+#include "../glib/gtype-private.h"
+
 #include "gclosure.h"
 #include "gobject.h"
 
@@ -38,7 +39,7 @@
 #ifdef G_ENABLE_DEBUG
 #define GOBJECT_IF_DEBUG(debug_type, code_block) \
 G_STMT_START { \
-    if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) \
+    if (GLIB_PRIVATE_CALL (g_type_has_debug_flag) (G_TYPE_DEBUG_ ## debug_type)) \
       { code_block; } \
 } G_STMT_END
 #else   /* !G_ENABLE_DEBUG */
@@ -46,10 +47,6 @@ G_STMT_START { \
 #endif  /* G_ENABLE_DEBUG */
 
 G_BEGIN_DECLS
-
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-extern GTypeDebugFlags _g_type_debug_flags;
-G_GNUC_END_IGNORE_DEPRECATIONS
 
 typedef struct _GRealClosure  GRealClosure;
 struct _GRealClosure
@@ -64,24 +61,10 @@ struct _GRealClosure
 #define G_REAL_CLOSURE(_c) \
   ((GRealClosure *)G_STRUCT_MEMBER_P ((_c), -G_STRUCT_OFFSET (GRealClosure, closure)))
 
-void    _g_value_c_init          (void); /* sync with gvalue.c */
-void    _g_value_types_init      (void); /* sync with gvaluetypes.c */
-void    _g_enum_types_init       (void); /* sync with genums.c */
 void    _g_param_type_init       (void); /* sync with gparam.c */
-void    _g_boxed_type_init       (void); /* sync with gboxed.c */
 void    _g_object_type_init      (void); /* sync with gobject.c */
 void    _g_param_spec_types_init (void); /* sync with gparamspecs.c */
-void    _g_value_transforms_init (void); /* sync with gvaluetransform.c */
 void    _g_signal_init           (void); /* sync with gsignal.c */
-
-/* for gboxed.c */
-gpointer        _g_type_boxed_copy      (GType          type,
-                                         gpointer       value);
-void            _g_type_boxed_free      (GType          type,
-                                         gpointer       value);
-void            _g_type_boxed_init      (GType          type,
-                                         GBoxedCopyFunc copy_func,
-                                         GBoxedFreeFunc free_func);
 
 gboolean    _g_closure_is_void (GClosure       *closure,
 				gpointer        instance);

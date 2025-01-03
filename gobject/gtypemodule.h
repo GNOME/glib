@@ -24,7 +24,6 @@
 #endif
 
 #include <gobject/gobject.h>
-#include <gobject/genums.h>
 
 G_BEGIN_DECLS
 

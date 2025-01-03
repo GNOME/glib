@@ -1,5 +1,4 @@
 provider gobject {
-	probe type__new(char *, unsigned long, unsigned long);
 	probe object__new(void*, unsigned long);
 	probe object__ref(void*, unsigned long, unsigned int);
 	probe object__unref(void*, unsigned long, unsigned int);

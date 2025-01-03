@@ -21,7 +21,6 @@
 
 #include <stdlib.h>
 
-#include "gtypeplugin.h"
 #include "gtypemodule.h"
 
 

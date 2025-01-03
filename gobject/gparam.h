@@ -25,11 +25,18 @@
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include	<gobject/gvalue.h>
+#include <glib.h>
+#include <gobject/gobject-visibility.h>
 
 G_BEGIN_DECLS
 
 /* --- standard type macros --- */
+/**
+ * G_TYPE_PARAM:
+ * 
+ * The fundamental type from which all #GParamSpec types are derived.
+ */
+#define G_TYPE_PARAM			G_TYPE_MAKE_FUNDAMENTAL (19)
 /**
  * G_TYPE_IS_PARAM:
  * @type: a #GType ID

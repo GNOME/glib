@@ -19,11 +19,8 @@
 #ifndef __G_ATOMIC_ARRAY_H__
 #define __G_ATOMIC_ARRAY_H__
 
-#if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION)
-#error "Only <glib-object.h> can be included directly."
-#endif
-
-#include <glib/glib.h>
+#include <glib/gtypes.h>
+#include <glib/gatomic.h>
 
 G_BEGIN_DECLS
 

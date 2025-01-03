@@ -420,6 +420,7 @@ glib_init (void)
   g_debug_init ();
   g_quark_init ();
   g_error_init ();
+  g_type_init_internal ();
 }
 
 #ifdef G_PLATFORM_WIN32

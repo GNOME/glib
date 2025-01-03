@@ -27,9 +27,9 @@
 #include <signal.h>
 
 #include "../glib/glib-private.h"
+#include "../glib/gtype-private.h"
 
-#include "gobject.h"
-#include "gtype-private.h"
+#include "gobject-private.h"
 #include "gvaluecollector.h"
 #include "gsignal.h"
 #include "gparamspecs.h"
@@ -895,7 +895,7 @@ _g_object_type_init (void)
    *
    * See: https://bugzilla.gnome.org/show_bug.cgi?id=769504
    */
-  if (_g_type_debug_flags & G_TYPE_DEBUG_OBJECTS) \
+  if (GLIB_PRIVATE_CALL (g_type_has_debug_flag) (G_TYPE_DEBUG_OBJECTS))
     {
       debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
 # ifndef G_HAS_CONSTRUCTORS
@@ -2665,6 +2665,8 @@ g_object_new_internal (GObjectClass          *class,
 
   if (nqueue)
     g_object_notify_queue_thaw (object, nqueue, FALSE);
+
+  TRACE(GOBJECT_OBJECT_NEW(object, class->g_type_class.g_type));
 
   return object;
 }
@@ -5825,3 +5827,110 @@ g_weak_ref_set (GWeakRef *weak_ref,
 
   _weak_ref_set (weak_ref, object, FALSE);
 }
+
+static void
+gobject_init (void)
+{
+  /* G_TYPE_PARAM */
+  _g_param_type_init ();
+
+  /* G_TYPE_OBJECT */
+  _g_object_type_init ();
+
+  /* G_TYPE_PARAM_* pspec types */
+  _g_param_spec_types_init ();
+
+  /* Signal system */
+  _g_signal_init ();
+}
+
+#ifdef G_PLATFORM_WIN32
+
+void gobject_win32_init (void);
+
+void
+gobject_win32_init (void)
+{
+  /* May be called more than once in static compilation mode */
+  static gboolean win32_already_init = FALSE;
+  if (!win32_already_init)
+    {
+      win32_already_init = TRUE;
+      gobject_init ();
+    }
+}
+
+#ifndef GLIB_STATIC_COMPILATION
+
+BOOL WINAPI DllMain (HINSTANCE hinstDLL,
+                     DWORD     fdwReason,
+                     LPVOID    lpvReserved);
+
+BOOL WINAPI
+DllMain (HINSTANCE hinstDLL,
+         DWORD     fdwReason,
+         LPVOID    lpvReserved)
+{
+  switch (fdwReason)
+    {
+    case DLL_PROCESS_ATTACH:
+      gobject_win32_init ();
+      break;
+
+    default:
+      /* do nothing */
+      ;
+    }
+
+  return TRUE;
+}
+
+#elif defined(G_HAS_CONSTRUCTORS) /* && G_PLATFORM_WIN32 && GLIB_STATIC_COMPILATION */
+extern void glib_win32_init (void);
+
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(gobject_init_ctor)
+#endif
+
+G_DEFINE_CONSTRUCTOR(gobject_init_ctor)
+
+static void
+gobject_init_ctor (void)
+{
+  /* When built dynamically, module initialization is done through DllMain
+   * function which is called when the dynamic library is loaded by the glib
+   * module. So, in dynamic configuration glib is always initialized BEFORE
+   * gobject.
+   *
+   * When built statically, initialization mechanism relies on hooking
+   * functions to the CRT section directly at compilation time. As we don't
+   * control how each compilation unit will be built and in which order, we
+   * obtain the same kind of issue as the "static initialization order fiasco".
+   * In this case, we must ensure explicitly that glib is always well
+   * initialized BEFORE gobject.
+   */
+  glib_win32_init ();
+  gobject_win32_init ();
+}
+
+#else /* G_PLATFORM_WIN32 && GLIB_STATIC_COMPILATION && !G_HAS_CONSTRUCTORS */
+# error Your platform/compiler is missing constructor support
+#endif /* GLIB_STATIC_COMPILATION */
+
+#elif defined(G_HAS_CONSTRUCTORS) /* && !G_PLATFORM_WIN32 */
+
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(gobject_init_ctor)
+#endif
+
+G_DEFINE_CONSTRUCTOR (gobject_init_ctor)
+
+static void
+gobject_init_ctor (void)
+{
+  gobject_init ();
+}
+
+#else /* !G_PLATFORM_WIN32 && !G_HAS_CONSTRUCTORS */
+#error Your platform/compiler is missing constructor support
+#endif /* G_PLATFORM_WIN32 */

@@ -308,6 +308,9 @@ typedef struct {
                                            GDataListUpdateAtomicFunc callback,
                                            gpointer user_data);
 
+  /* See gtype.c */
+  gboolean (* g_type_has_debug_flag) (int flag);
+
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 

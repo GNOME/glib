@@ -24,9 +24,26 @@
 #endif
 
 #include <gobject/gclosure.h>
-#include <gobject/glib-types.h>
 
 G_BEGIN_DECLS
+
+/**
+ * G_TYPE_IO_CHANNEL:
+ *
+ * The #GType for #GIOChannel.
+ */
+#define G_TYPE_IO_CHANNEL (g_io_channel_get_type ())
+GOBJECT_AVAILABLE_IN_ALL
+GType   g_io_channel_get_type      (void) G_GNUC_CONST;
+
+/**
+ * G_TYPE_IO_CONDITION:
+ *
+ * The #GType for #GIOCondition.
+ */
+#define G_TYPE_IO_CONDITION (g_io_condition_get_type ())
+GOBJECT_AVAILABLE_IN_ALL
+GType   g_io_condition_get_type    (void) G_GNUC_CONST;
 
 GOBJECT_AVAILABLE_IN_ALL
 void g_source_set_closure        (GSource  *source,
