@@ -183,6 +183,32 @@ test_callable_info_static_method (RepositoryFixture *fx,
   gi_base_info_unref ((GIBaseInfo *) func_info);
 }
 
+static void
+test_callable_info_static_vfunc (RepositoryFixture *fx,
+                                 const void *unused)
+{
+  GIBaseInfo *info;
+  GIVFuncInfo *vfunc_info;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/gobject-introspection/-/merge_requests/361");
+
+  info = gi_repository_find_by_name (fx->repository, "Gio", "Icon");
+  g_assert_nonnull (info);
+
+  vfunc_info = gi_interface_info_find_vfunc (GI_INTERFACE_INFO (info), "from_tokens");
+  if (!vfunc_info)
+    {
+      g_test_skip ("g-ir-scanner is not new enough");
+      return;
+    }
+  g_assert_nonnull (vfunc_info);
+
+  g_assert_false (gi_callable_info_is_method (GI_CALLABLE_INFO (vfunc_info)));
+
+  gi_base_info_unref (info);
+  gi_base_info_unref ((GIBaseInfo *) vfunc_info);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -192,6 +218,7 @@ main (int argc, char **argv)
   ADD_REPOSITORY_TEST ("/callable-info/async-function", test_callable_get_async_function_for_sync_function, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/callable-info/is-method", test_callable_info_is_method, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/callable-info/static-method", test_callable_info_static_method, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/callable-info/static-vfunc", test_callable_info_static_vfunc, &typelib_load_spec_gio);
 
   return g_test_run ();
 }
