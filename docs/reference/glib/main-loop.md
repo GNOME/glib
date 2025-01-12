@@ -9,13 +9,13 @@ timeouts. New types of event sources can also be added using
 `g_source_attach()`.
 
 To allow multiple independent sets of sources to be handled in different
-threads, each source is associated with a `GMainContext`.  A `GMainContext`
-can only be running in a single thread, but sources can be added to it and
-removed from it from other threads. All functions which operate on a
-`GMainContext` or a built-in `GSource` are thread-safe.
+threads, each source is associated with a [struct@MainContext].  A
+[struct@MainContext] can only be running in a single thread, but sources can be
+added to it and removed from it from other threads. All functions which operate
+on a [struct@MainContext] or a built-in `GSource` are thread-safe.
 
 Each event source is assigned a priority. The default priority,
-`G_PRIORITY_DEFAULT`, is 0. Values less than 0 denote higher priorities.
+[const@PRIORITY_DEFAULT], is 0. Values less than 0 denote higher priorities.
 Values greater than 0 denote lower priorities. Events from high priority
 sources are always processed before events from lower priority sources.
 
@@ -31,7 +31,7 @@ exit the main loop, and `g_main_loop_run()` returns.
 
 It is possible to create new instances of `GMainLoop` recursively.  This is
 often used in GTK applications when showing modal dialog boxes. Note that
-event sources are associated with a particular `GMainContext`, and will be
+event sources are associated with a particular [struct@MainContext], and will be
 checked and dispatched for all main loops associated with that GMainContext.
 
 Libraries may contain wrappers of some of these functions, e.g.
