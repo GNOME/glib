@@ -135,9 +135,10 @@ gi_callable_info_can_throw_gerror (GICallableInfo *info)
  *
  * Determines if the callable info is a method.
  *
- * For [class@GIRepository.VFuncInfo]s, [class@GIRepository.CallbackInfo]s, and
- * [class@GIRepository.SignalInfo]s, this is always true. Otherwise, this looks
- * at the `GI_FUNCTION_IS_METHOD` flag on the [class@GIRepository.FunctionInfo].
+ * For [class@GIRepository.VFuncInfo]s and [class@GIRepository.SignalInfo]s,
+ * this is always true, and for [class@GIRepository.CallbackInfo]s always false.
+ * Otherwise, this looks at the `GI_FUNCTION_IS_METHOD` flag on the
+ * [class@GIRepository.FunctionInfo].
  *
  * Concretely, this function returns whether
  * [method@GIRepository.CallableInfo.get_n_args] matches the number of arguments
