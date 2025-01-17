@@ -536,6 +536,25 @@ test_string_free (void)
   g_free (data);
 }
 
+#if G_CXX_STD_CHECK_VERSION(14)
+static constexpr gboolean
+g_likely_test_expr (void)
+{
+  if G_LIKELY (1 == 1)
+    {
+      return TRUE;
+    }
+}
+
+static void
+test_constexpr_var_init (void)
+{
+  g_test_message ("Test that G_LIKELY macro creates an initialized variable "
+                  "for compatibility with constexpr");
+  g_assert_true (g_likely_test_expr ());
+}
+#endif
+
 #ifdef G_OS_WIN32
 static void
 test_clear_com (void)
@@ -594,6 +613,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/str-has-suffix/macro", test_str_has_suffix_macro);
   g_test_add_func ("/C++/string-append", test_string_append);
   g_test_add_func ("/C++/string-free", test_string_free);
+
+#if G_CXX_STD_CHECK_VERSION(14)
+  g_test_add_func ("/C++/constexpr-var-init", test_constexpr_var_init);
+#endif
 
 #ifdef G_OS_WIN32
   g_test_add_func ("/C++/test_clear_com", test_clear_com);
