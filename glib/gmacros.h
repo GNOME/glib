@@ -1239,11 +1239,9 @@
 #if G_GNUC_CHECK_VERSION(2, 0) && defined(__OPTIMIZE__)
 #define _G_BOOLEAN_EXPR_IMPL(uniq, expr)        \
  G_GNUC_EXTENSION ({                            \
-   int G_PASTE (_g_boolean_var_, uniq);         \
+   int G_PASTE (_g_boolean_var_, uniq) = 0;     \
    if (expr)                                    \
       G_PASTE (_g_boolean_var_, uniq) = 1;      \
-   else                                         \
-      G_PASTE (_g_boolean_var_, uniq) = 0;      \
    G_PASTE (_g_boolean_var_, uniq);             \
 })
 #define _G_BOOLEAN_EXPR(expr) _G_BOOLEAN_EXPR_IMPL (__COUNTER__, expr)
