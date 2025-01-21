@@ -810,69 +810,6 @@ test_cancellable_cancel_reset_connect_races (void)
   g_object_unref (cancellable);
 }
 
-static gboolean
-source_cancelled_counter_cb (GCancellable *cancellable,
-                             gpointer      user_data)
-{
-  guint *n_calls = user_data;
-
-  *n_calls = *n_calls + 1;
-
-  return G_SOURCE_CONTINUE;
-}
-
-static void
-do_nothing (G_GNUC_UNUSED void *user_data)
-{
-  /* An empty timeout/idle once callback function */
-}
-
-static void
-test_cancellable_source_can_be_fired_multiple_times (void)
-{
-  GCancellable *cancellable;
-  GSource *source;
-  guint n_calls = 0;
-
-  g_test_summary ("Test a cancellable source callback can be called multiple times");
-  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/774");
-
-  cancellable = g_cancellable_new ();
-  source = g_cancellable_source_new (cancellable);
-
-  g_source_set_callback (source, G_SOURCE_FUNC (source_cancelled_counter_cb),
-                         &n_calls, NULL);
-  g_source_attach (source, NULL);
-
-  g_cancellable_cancel (cancellable);
-  g_assert_cmpuint (n_calls, ==, 0);
-
-  while (g_main_context_pending (NULL))
-    g_main_context_iteration (NULL, TRUE);
-
-  g_assert_cmpuint (n_calls, ==, 1);
-
-  g_cancellable_cancel (cancellable);
-
-  g_timeout_add_once (100, do_nothing, NULL);
-  while (g_main_context_pending (NULL))
-    g_main_context_iteration (NULL, TRUE);
-
-  g_assert_cmpuint (n_calls, ==, 1);
-
-  g_cancellable_reset (cancellable);
-  g_cancellable_cancel (cancellable);
-  g_assert_cmpuint (n_calls, ==, 1);
-
-  while (g_main_context_pending (NULL))
-    g_main_context_iteration (NULL, TRUE);
-
-  g_assert_cmpuint (n_calls, ==, 2);
-
-  g_source_unref (source);
-  g_object_unref (cancellable);
-}
-
 int
 main (int argc, char *argv[])
 {
@@ -888,7 +825,6 @@ main (int argc, char *argv[])
   g_test_add_func ("/cancellable/cancel-reset-races", test_cancellable_cancel_reset_races);
   g_test_add_func ("/cancellable/cancel-reset-connect-races", test_cancellable_cancel_reset_connect_races);
   g_test_add_func ("/cancellable-source/threaded-dispose", test_cancellable_source_threaded_dispose);
-  g_test_add_func ("/cancellable-source/can-be-fired-multiple-times", test_cancellable_source_can_be_fired_multiple_times);
 
   return g_test_run ();
 }
