@@ -255,7 +255,7 @@ GIO inspects a few environment variables in addition to the ones used by GLib.
   implementation for local files that is included in GIO has the name
   "local", the implementation in the gvfs module has the name "gvfs". Most
   commonly, system software will set this to "local" to avoid having `GFile`
-  APIs perform unnecessary D-Bus calls. The special value help can be used
+  APIs perform unnecessary D-Bus calls. The special value "help" can be used
   to print a list of available implementations to standard output.
 
 The following environment variables are only useful for debugging GIO itself
@@ -267,19 +267,34 @@ environment.
   purposes. The GFileMonitor implementation for local files that is included
   in GIO on Linux has the name "inotify", others that are built are built as
   modules (depending on the platform) are called "fam" and "fen". The
-  special value help can be used to print a list of available
+  special value "help" can be used to print a list of available
   implementations to standard output.
 - `GIO_USE_VOLUME_MONITOR`.  This variable can be set to the name of a
   GVolumeMonitor implementation to override the default for debugging
   purposes. The GVolumeMonitor implementation for local files that is
   included in GIO has the name "unix", the udisks2-based implementation in
-  the gvfs module has the name "udisks2". The special value help can be used
+  the gvfs module has the name "udisks2". The special value "help" can be used
   to print a list of available implementations to standard output.
+- `GIO_USE_MEMORY_MONITOR`.  This variable can be set to the name of a
+  GMemoryMonitory implementation to override the default for debugging
+  purposes. The available implementations included in GIO have the names
+  "dbus", "portal" and "win32". The special value "help" can be used
+  to print a list of available implementations to standard output.
+- `GIO_USE_NETWORK_MONITOR`.  This variable can be set to the name of a
+  GNetworkMonitor implementation to override the default for debugging
+  purposes. The available implementations included in GIO have the names
+  "netlink", "networkmanager" and "portal". The special value "help" can
+  be used to print a list of available implementations to standard output.
+- `GIO_USE_POWER_PROFILE_MONITOR`. This variable can be set to the name of a
+  GPowerProfileMonitor implementation to override the default for debugging
+  purposes. The available implementations included in GIO have the names
+  "dbus" and "portal". The special value "help" can be used to print a list
+  of available implementations to standard output.
 - `GIO_USE_TLS`.  This variable can be set to the name of a GTlsBackend
   implementation to override the default for debugging purposes. GIO does
   not include a GTlsBackend implementation, the gnutls-based implementation
   in the glib-networking module has the name "gnutls". The special value
-  help can be used to print a list of available implementations to standard
+  "help" can be used to print a list of available implementations to standard
   output.
 - `GIO_USE_PORTALS`.  This variable can be set to override detection of portals
   and force them to be used to provide various bits of GIO functionality, for
@@ -292,11 +307,16 @@ environment.
   a set of paths separated by a colon, GIO will attempt to load additional
   modules from within the path. This environment variable is ignored when
   running in a setuid program.
+- `GNOTIFICATION_BACKEND`.  This variable can be set to the name of a
+  GNotificationBackend implementation to override the default for debugging
+  purposes. The implementations that are included in GIO have the names
+  "freedesktop", "cocoa", "gtk" and "portal". The special value "help" can
+  be used to print a list of available implementations to standard output.
 - `GSETTINGS_BACKEND`.  This variable can be set to the name of a
   GSettingsBackend implementation to override the default for debugging
   purposes. The memory-based implementation that is included in GIO has the
   name "memory", the one in dconf has the name "dconf". The special value
-  help can be used to print a list of available implementations to standard
+  "help" can be used to print a list of available implementations to standard
   output.
 - `GSETTINGS_SCHEMA_DIR`.  This variable can be set to the names of
   directories to consider when looking for compiled schemas for GSettings,
@@ -388,6 +408,12 @@ The following extension points are currently defined by GIO:
   It is still available to keep API and ABI stability, but GIO is no longer
   using it for default handlers. Instead, the mime handler mechanism is
   used, together with x-scheme-handler pseudo-mimetypes.
+- `G_NOTIFICATION_BACKEND_EXTENSION_POINT_NAME`.  Allows to provide an
+  alternative implementation for sending notifications. Implementations of
+  this extension point must derive from the GNotificationBackend type. GIO
+  contains implementations based on the freedesktop notification D-Bus
+  interface, the macOS Cocoa API, the gnome-shell D-Bus API, and the desktop
+  portal for this functionality.
 - `G_SETTINGS_BACKEND_EXTENSION_POINT_NAME`.  Allows to provide an
   alternative storage for GSettings. Implementations of this extension point
   must derive from the GSettingsBackend type. GIO contains a keyfile-based
@@ -404,5 +430,18 @@ The following extension points are currently defined by GIO:
 - `G_NETWORK_MONITOR_EXTENSION_POINT_NAME`.  Allows to provide
   implementations for network connectivity monitoring. Implementations of
   this extension point must implement the GNetworkMonitorInterface
-  interface. GIO contains an implementation of this extension point that is
-  using the netlink interface of the Linux kernel.
+  interface. GIO contains implementations of this extension point that use
+  the netlink interface of the Linux kernel, the NetworkManager D-Bus interface
+  and the desktop portal for this functionality.
+- `G_MEMORY_MONITOR_EXTENSION_POINT_NAME`.  Allows to provide
+  implementations for memory usage monitoring. Implementations of this
+  extension point must implement the GMemoryMonitorInterface interface.
+  GIO contains implementations of this extension point that use the
+  org.freedesktop.LowMemoryMonitor D-Bus interface, the Windows API and
+  the desktop portal for this functionality.
+- `G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME`.  Allows to provide
+  implementations for power usage monitoring. Implementations of this
+  extension point must implement the GPowerProfileMonitorInterface interface.
+  GIO contains implementations of this extension point that use the
+  net.hadess.PowerProfiles D-Bus interface and the desktop portal for
+  this functionality.
