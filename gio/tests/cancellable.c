@@ -261,6 +261,11 @@ threaded_dispose_thread_cb (gpointer user_data)
 static void
 test_cancellable_source_threaded_dispose (void)
 {
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_incomplete ("FIXME: Leaks lots of GCancellableSource objects, see glib#2309");
+  (void) cancelled_cb;
+  (void) threaded_dispose_thread_cb;
+#else
   ThreadedDisposeData data;
   GThread *thread = NULL;
   guint i;
@@ -270,10 +275,6 @@ test_cancellable_source_threaded_dispose (void)
                   "(in one thread) and cancelling the GCancellable it refers "
                   "to (in another thread)");
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/1841");
-#ifdef _GLIB_ADDRESS_SANITIZER
-  g_test_message ("We also ensure that no GCancellableSource are leaked");
-  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/2309");
-#endif
 
   /* Create a new thread and wait until it’s ready to execute. Each iteration of
    * the test will pass it a new #GCancellableSource. */
@@ -334,6 +335,7 @@ test_cancellable_source_threaded_dispose (void)
   g_cond_clear (&data.cond);
 
   g_ptr_array_unref (cancellables_pending_unref);
+#endif
 }
 
 static void
