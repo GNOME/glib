@@ -448,9 +448,9 @@ static gchar *array_free (GRealArray *, ArrayFreeFlags);
  * @array: A #GArray
  *
  * Atomically decrements the reference count of @array by one. If the
- * reference count drops to 0, all memory allocated by the array is
- * released. This function is thread-safe and may be called from any
- * thread.
+ * reference count drops to 0, the effect is the same as calling
+ * g_array_free() with @free_segment set to %TRUE. This function is
+ * thread-safe and may be called from any thread.
  *
  * Since: 2.22
  */
