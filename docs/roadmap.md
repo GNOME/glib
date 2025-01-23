@@ -27,7 +27,7 @@ Unstable release planning
 
 At the start of a development cycle, milestones are created for each release in
 the cycle according to the [GNOME release
-schedule](https://wiki.gnome.org/Schedule). GLib roughly follows the GNOME
+schedule](https://release.gnome.org/calendar/). GLib roughly follows the GNOME
 release schedule, but makes its releases one or two weeks ahead of each
 corresponding GNOME release. This allows other GNOME modules to depend on the
 correct GLib version for new APIs. GLib does not follow the GNOME module
@@ -42,7 +42,7 @@ maintainers think will have a wide benefit are prioritised.
 
 As a development cycle progresses, some of the releases are timed to coincide
 with [GNOME’s API/feature, string and hard code
-freezes](https://wiki.gnome.org/ReleasePlanning/Freezes). Issues which add API
+freezes](https://handbook.gnome.org/release-planning/freezes.html). Issues which add API
 and features are scheduled for the earlier micro releases in a development
 cycle, followed by issues which add or change translatable strings, followed by
 smaller bug fixes, documentation and unit test updates.

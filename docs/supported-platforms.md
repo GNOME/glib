@@ -31,7 +31,7 @@ GLib is regularly built on at least the following systems:
  * Fedora: http://koji.fedoraproject.org/koji/packageinfo?packageID=382
  * Ubuntu: http://packages.ubuntu.com/source/glib2.0
  * Debian: https://packages.debian.org/experimental/libglib2.0-0
- * FreeBSD: https://wiki.gnome.org/Projects/Jhbuild/FreeBSD
+ * FreeBSD: https://cgit.freebsd.org/ports/tree/devel/glib20
  * openSUSE: https://build.opensuse.org/package/show/GNOME:Factory/glib2
  * CI runners, https://gitlab.gnome.org/GNOME/glib/blob/main/.gitlab-ci.yml:
    - Fedora (39, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/fedora.Dockerfile)

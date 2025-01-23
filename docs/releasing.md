@@ -21,7 +21,7 @@ How to make a release
 ---
 
 Broadly, GLib follows the same process as [every other GNOME
-module](https://wiki.gnome.org/MaintainersCorner/Releasing).
+module](https://handbook.gnome.org/maintainers/making-a-release.html).
 
 These instructions use the following variables:
  - `new_version`: the version number of the release you are making, for example `2.73.1`
@@ -57,35 +57,27 @@ git add -p
 git commit -sm "${new_version}"
 ```
 
-Build the release tarball:
+Test build the release tarball:
 ```sh
-ninja -C build/ dist
+meson dist -C build/
 ```
 
-Tag, sign and push the release (see below for information about `git evtag`):
+Tag, sign and push the release, using `${new_version}` as the tag message (see below for information about `git evtag`):
 ```sh
 git evtag sign ${new_version}
 git push --atomic origin ${branch} ${new_version}
 ```
-To use a specific key add an option `-u ${keyid|email}` after the `sign` argument.
+You will need to **temporarily** allow maintainers to push to the `main` branch on https://gitlab.gnome.org/GNOME/glib/-/settings/repository. To use a specific key add an option `-u ${keyid|email}` after the `sign` argument.
 
-Use `${new_version}` as the tag message.
-
-Upload the release tarball (you will need a
-[GNOME LDAP account](https://wiki.gnome.org/Infrastructure/NewAccounts) for this):
-```sh
-scp build/meson-dist/glib-${new_version}.tar.xz master.gnome.org:
-ssh master.gnome.org ftpadmin install glib-${new_version}.tar.xz
-```
+The `dist-job` CI job will be triggered and will build and upload the final release archive.
 
 Add the release notes to GitLab and close the milestone:
- - Go to https://gitlab.gnome.org/GNOME/glib/-/tags/${new_version}/release/edit
-   and upload the release notes for the new release from the `NEWS` file
  - Go to https://gitlab.gnome.org/GNOME/glib/-/releases/${new_version}/edit
-   and link the milestone to it, then list the new release tarball and
+   and upload the release notes for the new release from the `NEWS` file
+ - Then link the milestone to it, then list the new release tarball and
    `sha256sum` file in the ‘Release Assets’ section as the ‘Other’ types.
    Get the file links from https://download.gnome.org/sources/glib/ and
-   name them ‘Release tarball’ and ‘Release tarball sha256sum’
+   name them ‘Release archive’ and ‘Release archive checksum’
  - Go to https://gitlab.gnome.org/GNOME/glib/-/milestones/
    choose the milestone and close it, as all issues and merge requests tagged
    for this release should now be complete

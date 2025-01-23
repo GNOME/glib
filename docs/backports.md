@@ -30,7 +30,7 @@ Policy
    - If unavoidable, liaise with the GNOME Translation Team and ensure string
      changes are landed with plenty of time to allow translators to provide new
      translations
-   - See https://wiki.gnome.org/TranslationProject/HandlingStringFreezes
+   - See https://handbook.gnome.org/release-planning/freezes.html#string-freeze
  * API or ABI changes (including API additions) must not be backported
    - A commit which changes the documented behaviour of a function counts as an
      API break

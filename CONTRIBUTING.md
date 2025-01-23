@@ -22,7 +22,7 @@ many things that we value:
 Please, do not use the issue tracker for support questions. If you have
 questions on how to use GLib effectively, you can use:
 
- - the `#gtk` channel on [Matrix](https://wiki.gnome.org/GettingInTouch/Matrix)
+ - the `#gtk` channel on [Matrix](https://handbook.gnome.org/get-in-touch/matrix.html)
  - the [`glib` tag on GNOME's Discourse](https://discourse.gnome.org/tags/glib)
 
 You can also look at the [`glib` tag on Stack
@@ -127,7 +127,7 @@ can be found on [the GNOME Developer Center](https://developer.gnome.org).
 
 The [GLib project uses GitLab](https://gitlab.gnome.org/GNOME/glib/) for code
 hosting and for tracking issues. More information about using GitLab can be
-found [on the GNOME wiki](https://wiki.gnome.org/GitLab).
+found [on the GNOME wiki](https://handbook.gnome.org/infrastructure/gitlab.html).
 
 ### Getting started
 
@@ -269,4 +269,4 @@ GLib to follow a few rules:
 
 If you have been contributing to GLib for a while and you don’t have commit
 access to the repository, you may ask to obtain it following the [GNOME account
-process](https://wiki.gnome.org/Infrastructure/NewAccounts).
+process](https://handbook.gnome.org/infrastructure/accounts.html).
