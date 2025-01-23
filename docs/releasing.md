@@ -21,7 +21,7 @@ How to make a release
 ---
 
 Broadly, GLib follows the same process as [every other GNOME
-module](https://wiki.gnome.org/MaintainersCorner/Releasing).
+module](https://handbook.gnome.org/maintainers/making-a-release.html).
 
 These instructions use the following variables:
  - `new_version`: the version number of the release you are making, for example `2.73.1`

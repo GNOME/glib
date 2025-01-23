@@ -88,7 +88,7 @@ Several labels are worth highlighting:
    as confidential.
  * Merge After Freeze: Merge requests which have been accepted, but which can’t
    be merged yet as GLib is in
-   [code freeze](https://wiki.gnome.org/ReleasePlanning/Freezes). All MRs tagged
+   [code freeze](https://handbook.gnome.org/release-planning/freezes.html). All MRs tagged
    like this will be merged en-masse when the freeze ends.
  * Needs Information: Issues which are blocked due to needing more information
    from the reporter. These can be closed after 4 weeks if the reporter does not
@@ -105,10 +105,10 @@ Several labels are worth highlighting:
    the translation team to be looped into an issue or merge request.
  * API deprecation: Issues or merge requests which deprecate GLib API, and hence
    can only land in an unstable release outside an
-   [API freeze](https://wiki.gnome.org/ReleasePlanning/Freezes).
+   [API freeze](https://handbook.gnome.org/release-planning/freezes.html#api-abi-freeze).
  * New API: Issues or merge requests which add new GLib API, and hence can only
    land in an unstable release outside an
-   [API freeze](https://wiki.gnome.org/ReleasePlanning/Freezes).
+   [API freeze](https://handbook.gnome.org/release-planning/freezes.html#api-abi-freeze).
  * Intermittent: Issues (such as test failures) which can only be reproduced
    intermittently.
  * Test failure: Issues which revolve around a unit test failing. Typically
