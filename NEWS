@@ -1,3 +1,46 @@
+Overview of changes in GLib 2.83.3, 2025-01-23
+==============================================
+
+* Fix build-time paths appearing in generated `Gio-2.0.gir` and
+  `GioUnix-2.0.gir` files (#3564, work by Simon McVittie)
+
+* Fix crash on macOS when opening links (#3568, work by John Ralls)
+
+* Bugs fixed:
+  - #3558 Recent `(inout)` changes caused unintended side-effects with
+    `GWeakRef` (Michael Catanzaro)
+  - #3561 Missing nullable annotation on parameter user_data and on the return
+    value of GVfsFileLookupFunc callback (fbrouille)
+  - #3562 GBytes semantics of handling empty strings are inconsistent and
+    confusing (Philip Withnall)
+  - #3563 Bad anchor link in g_signal_connect() documentation
+  - #3564 build-time paths to gio/gunixmounts.h, etc. end up in Gio-2.0.gir,
+    GioUnix-2.0.gir (Simon McVittie)
+  - #3568 Links crash application on MacOS due to lack of machine-id file (John
+    Ralls)
+  - #3569 Requirement of GUnixMountMonitor for a Valid Timestamp from
+    unix_mount_at is not Suffeciently Documented (Philip Withnall)
+  - #3582 gmacros:  _G_BOOLEAN_EXPR_IMPL is incompatible with c++ functions
+    marked constexpr
+  - !3885 [th/gdataset-index] add a lookup index (GHashTable) to `GData`
+  - !4392 GWin32: Add g_win32_com_clear()
+  - !4436 docs: Add --generate-md to the gdbus-codegen documentation
+  - !4437 docs: Fix some backslash escaping issues in doc comments
+  - !4440 gio, gobject: Improve reproducibility of enumtypes headers
+  - !4441 gstrfuncs: Drop a redundant paragraph
+  - !4442 Don't define test setups unless we're testing
+  - !4443 build: Make the introspection feature yield
+  - !4444 Fix pointer-to-paramref syntax in docs
+  - !4446 gio: Fix a link to a specifications document
+  - !4449 Add several assertions to help static analysis and fix some GIR
+    annotations
+  - !4450 Fix GCC version detection for GUINT*_SWAP_LE_BE
+  - !4454 gioenums: Add deprecation for FLAGS_NONE
+  - !4455 docs: Use gi-docgen syntax in main-loop.md
+  - !4458 docs: Document more extension points
+  - !4460 docs: Clarify that g_array_unref() works like g_ptr_array_unref().
+
+
 Overview of changes in GLib 2.83.2, 2024-12-11
 ==============================================
 
