@@ -224,20 +224,18 @@ url_escape_hostname (const char *url)
 }
 
 static CFURLRef
-create_url_from_cstr (const gchar *cstr,
-                      gboolean     is_file)
+create_url_from_cstr_or_file (gpointer data,
+                              gboolean is_file)
 {
+  const char *cstr;
   gchar *puny_cstr;
   CFStringRef str;
   CFURLRef url;
 
+  cstr = is_file ? g_file_get_uri ((GFile *) data) : (char *) data;
   puny_cstr = url_escape_hostname (cstr);
   str = CFStringCreateWithCString (NULL, puny_cstr ? puny_cstr : cstr, kCFStringEncodingUTF8);
-
-  if (is_file)
-    url = CFURLCreateWithFileSystemPath (NULL, str, kCFURLPOSIXPathStyle, FALSE);
-  else
-    url = CFURLCreateWithString (NULL, str, NULL);
+  url = CFURLCreateWithString (NULL, str, NULL);
 
   if (!url)
     g_debug ("Creating CFURL from %s %s failed!", cstr, is_file ? "file" : "uri");
@@ -264,7 +262,8 @@ create_url_list_from_glist (GList    *uris,
 
   for (lst = uris; lst != NULL && lst->data; lst = lst->next)
     {
-      CFURLRef url = create_url_from_cstr ((char*)lst->data, are_files);
+      /* lst->data is either a GFile* or a char* URI, depending on are_files */
+      CFURLRef url = create_url_from_cstr_or_file (lst->data, are_files);
       if (url)
         CFArrayAppendValue (array, url);
     }
