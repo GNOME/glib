@@ -821,7 +821,7 @@ complete_in_idle_cb (gpointer data)
  * @simple: a #GSimpleAsyncResult.
  *
  * Completes an asynchronous function in an idle handler in the
- * [thread-default main context][g-main-context-push-thread-default]
+ * thread-default main context (see [method@GLib.MainContext.push_thread_default])
  * of the thread that @simple was initially created in
  * (and re-pushes that context around the invocation of the callback).
  *

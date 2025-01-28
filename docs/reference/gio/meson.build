@@ -66,6 +66,7 @@ if get_option('documentation') and enable_gir
     'overview.md',
     'pollable-utils.md',
     'tls-overview.md',
+    'content-types.md',
   ]
   expand_content_unix_files = [
     'unix-mounts.md',

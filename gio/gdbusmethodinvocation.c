@@ -278,7 +278,8 @@ g_dbus_method_invocation_get_connection (GDBusMethodInvocation *invocation)
  * descriptor passing, that cannot be properly expressed in the
  * #GVariant API.
  *
- * See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+ * See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+ * and [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
  * for an example of how to use this low-level API to send and receive
  * UNIX file descriptors.
  *

@@ -117,7 +117,7 @@ gchar *                 g_desktop_app_info_get_action_name              (GDeskto
  * G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME:
  *
  * Extension point for default handler to URI association. See
- * [Extending GIO][extending-gio].
+ * [Extending GIO](overview.html#extending-gio).
  *
  * Deprecated: 2.28: The #GDesktopAppInfoLookup interface is deprecated and
  *    unused by GIO.

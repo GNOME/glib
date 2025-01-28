@@ -64,7 +64,7 @@ typedef GFile * (* GVfsFileLookupFunc) (GVfs       *vfs,
  * G_VFS_EXTENSION_POINT_NAME:
  *
  * Extension point for #GVfs functionality.
- * See [Extending GIO][extending-gio].
+ * See [Extending GIO](overview.html#extending-gio).
  */
 #define G_VFS_EXTENSION_POINT_NAME "gio-vfs"
 

@@ -241,7 +241,7 @@
 
 /**
  * g_test_trap_assert_stdout:
- * @soutpattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
+ * @soutpattern: a string that follows glob-style [pattern][struct@PatternSpec] rules
  *
  * Assert that the stdout output of the last test subprocess matches
  * @soutpattern.
@@ -253,7 +253,7 @@
 
 /**
  * g_test_trap_assert_stdout_unmatched:
- * @soutpattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
+ * @soutpattern: a string that follows glob-style [pattern][struct@PatternSpec] rules
  *
  * Assert that the stdout output of the last test subprocess
  * does not match @soutpattern.
@@ -265,7 +265,7 @@
 
 /**
  * g_test_trap_assert_stderr:
- * @serrpattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
+ * @serrpattern: a string that follows glob-style [pattern][struct@PatternSpec] rules
  *
  * Assert that the stderr output of the last test subprocess
  * matches @serrpattern.
@@ -284,7 +284,7 @@
 
 /**
  * g_test_trap_assert_stderr_unmatched:
- * @serrpattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
+ * @serrpattern: a string that follows glob-style [pattern][struct@PatternSpec] rules
  *
  * Assert that the stderr output of the last test subprocess
  * does not match @serrpattern.

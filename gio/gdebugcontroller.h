@@ -35,7 +35,7 @@ G_BEGIN_DECLS
  * G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME:
  *
  * Extension point for debug control functionality.
- * See [Extending GIO][extending-gio].
+ * See [Extending GIO](overview.html#extending-gio).
  *
  * Since: 2.72
  */

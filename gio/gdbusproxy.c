@@ -93,6 +93,8 @@
  * context (see [method@GLib.MainContext.push_thread_default]) of the thread
  * where the instance was constructed.
  *
+ *
+ * ## A watch proxy example
  * An example using a proxy for a well-known name can be found in
  * [`gdbus-example-watch-proxy.c`](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c).
  *
@@ -1958,7 +1960,7 @@ initable_iface_init (GInitableIface *initable_iface)
  *
  * See g_dbus_proxy_new_sync() and for a synchronous version of this constructor.
  *
- * #GDBusProxy is used in this [example][gdbus-wellknown-proxy].
+ * #GDBusProxy is used in this [example][class@Gio.DBusProxy#a-watch-proxy-example].
  *
  * Since: 2.26
  */
@@ -2059,7 +2061,7 @@ g_dbus_proxy_new_finish (GAsyncResult  *res,
  * This is a synchronous failable constructor. See g_dbus_proxy_new()
  * and g_dbus_proxy_new_finish() for the asynchronous version.
  *
- * #GDBusProxy is used in this [example][gdbus-wellknown-proxy].
+ * #GDBusProxy is used in this [example][class@Gio.DBusProxy#a-watch-proxy-example].
  *
  * Returns: (transfer full): A #GDBusProxy or %NULL if error is set.
  *    Free with g_object_unref().
@@ -2116,7 +2118,7 @@ g_dbus_proxy_new_sync (GDBusConnection     *connection,
  *
  * Like g_dbus_proxy_new() but takes a #GBusType instead of a #GDBusConnection.
  *
- * #GDBusProxy is used in this [example][gdbus-wellknown-proxy].
+ * #GDBusProxy is used in this [example][class@Gio.DBusProxy#a-watch-proxy-example].
  *
  * Since: 2.26
  */
@@ -2184,7 +2186,7 @@ g_dbus_proxy_new_for_bus_finish (GAsyncResult  *res,
  *
  * Like g_dbus_proxy_new_sync() but takes a #GBusType instead of a #GDBusConnection.
  *
- * #GDBusProxy is used in this [example][gdbus-wellknown-proxy].
+ * #GDBusProxy is used in this [example][class@Gio.DBusProxy#a-watch-proxy-example].
  *
  * Returns: (transfer full): A #GDBusProxy or %NULL if error is set.
  *    Free with g_object_unref().
@@ -2914,8 +2916,8 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
  * then the return value is checked against the return type.
  *
  * This is an asynchronous method. When the operation is finished,
- * @callback will be invoked in the
- * [thread-default main context][g-main-context-push-thread-default]
+ * @callback will be invoked in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this method from.
  * You can then call g_dbus_proxy_call_finish() to get the result of
  * the operation. See g_dbus_proxy_call_sync() for the synchronous

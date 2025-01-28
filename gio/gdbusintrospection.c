@@ -1750,7 +1750,7 @@ parser_error (GMarkupParseContext *context,
  * `<node>` element.
  *
  * Note that this routine is using a
- * [GMarkup][glib-Simple-XML-Subset-Parser.description]-based
+ * [GMarkup](../glib/markup.html)-based
  * parser that only accepts a subset of valid XML documents.
  *
  * Returns: A #GDBusNodeInfo structure or %NULL if @error is set. Free

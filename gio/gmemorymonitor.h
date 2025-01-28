@@ -33,7 +33,7 @@ G_BEGIN_DECLS
  * G_MEMORY_MONITOR_EXTENSION_POINT_NAME:
  *
  * Extension point for memory usage monitoring functionality.
- * See [Extending GIO][extending-gio].
+ * See [Extending GIO](overview.html#extending-gio).
  *
  * Since: 2.64
  */

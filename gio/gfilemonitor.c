@@ -280,8 +280,8 @@ g_file_monitor_set_rate_limit (GFileMonitor *monitor,
  * implementations only.
  *
  * Implementations are responsible to call this method from the
- * [thread-default main context][g-main-context-push-thread-default] of the
- * thread that the monitor was created in.
+ * thread-default main context (see [method@GLib.MainContext.push_thread_default])
+ * of the thread that the monitor was created in.
  **/
 void
 g_file_monitor_emit_event (GFileMonitor      *monitor,
