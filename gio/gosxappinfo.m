@@ -228,11 +228,16 @@ create_url_from_cstr_or_file (gpointer data,
                               gboolean is_file)
 {
   const char *cstr;
+  char *cstr_owned = NULL;
   gchar *puny_cstr;
   CFStringRef str;
   CFURLRef url;
 
-  cstr = is_file ? g_file_get_uri ((GFile *) data) : (char *) data;
+  if (is_file)
+    cstr = cstr_owned = g_file_get_uri ((GFile *) data);
+  else
+    cstr = (char *) data;
+
   puny_cstr = url_escape_hostname (cstr);
   str = CFStringCreateWithCString (NULL, puny_cstr ? puny_cstr : cstr, kCFStringEncodingUTF8);
   url = CFURLCreateWithString (NULL, str, NULL);
@@ -240,6 +245,7 @@ create_url_from_cstr_or_file (gpointer data,
   if (!url)
     g_debug ("Creating CFURL from %s %s failed!", cstr, is_file ? "file" : "uri");
 
+  g_free (cstr_owned);
   g_free (puny_cstr);
   CFRelease(str);
   return url;
