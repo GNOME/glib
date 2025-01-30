@@ -1415,6 +1415,8 @@ void
 g_variant_store (GVariant *value,
                  gpointer  data)
 {
+  g_return_if_fail (data != NULL);
+
   g_variant_lock (value);
 
   if (value->state & STATE_SERIALISED)
