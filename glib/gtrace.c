@@ -56,6 +56,7 @@
 #include "config.h"
 
 #include "gtrace-private.h"
+#include "glib-private.h"
 
 #include <stdarg.h>
 
@@ -90,7 +91,9 @@ void
   va_list args;
 
   va_start (args, message_format);
+  g_begin_ignore_leaks ();
   sysprof_collector_mark_vprintf (begin_time_nsec, duration_nsec, group, name, message_format, args);
+  g_end_ignore_leaks ();
   va_end (args);
 #endif  /* HAVE_SYSPROF */
 }
