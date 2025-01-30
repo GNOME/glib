@@ -57,7 +57,7 @@ typedef struct stat GStatBuf;
 
 #endif
 
-#if defined(G_OS_UNIX) && !defined(G_STDIO_WRAP_ON_UNIX) && !defined(__GI_SCANNER__)
+#if defined(G_OS_UNIX) && !defined(G_STDIO_WRAP_ON_UNIX)
 
 /* Just pass on to the system functions, so there's no potential for data
  * format mismatches, especially with large file interfaces. 
@@ -81,7 +81,7 @@ typedef struct stat GStatBuf;
 #define g_freopen freopen
 #define g_fsync   fsync
 #define g_utime   utime
-#endif
+#endif /* !__GTK_DOC_IGNORE__ */
 
 GLIB_AVAILABLE_IN_ALL
 int g_access (const gchar *filename,
