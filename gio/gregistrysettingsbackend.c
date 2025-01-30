@@ -179,6 +179,10 @@ typedef struct {
   CRITICAL_SECTION *cache_lock;
   GNode *cache_root;
 
+  /* A lock to protect access to the watch variable */
+  CRITICAL_SECTION watch_lock;
+  /* Contains the state of the watching thread. Any access to this variable
+   * must be done while holding the watch_lock critical section. */
   WatchThreadState *watch;
 } GRegistrySettingsBackend;
 
@@ -1901,6 +1905,7 @@ watch_thread_function (LPVOID parameter)
   return -1;
 }
 
+/* This function assumes you hold the watch lock! */
 static gboolean
 watch_start (GRegistrySettingsBackend *self)
 {
@@ -1947,6 +1952,7 @@ fail:
   return FALSE;
 }
 
+/* This function assumes you hold the watch lock! */
 /* This function assumes you hold the message lock! */
 static void
 watch_stop_unlocked (GRegistrySettingsBackend *self)
@@ -1982,6 +1988,7 @@ watch_stop_unlocked (GRegistrySettingsBackend *self)
   self->watch = NULL;
 }
 
+/* This function assumes you hold the watch lock! */
 static gboolean
 watch_add_notify (GRegistrySettingsBackend *self,
                   HANDLE                    event,
@@ -2055,6 +2062,7 @@ watch_add_notify (GRegistrySettingsBackend *self,
   return TRUE;
 }
 
+/* This function assumes you hold the watch lock! */
 static void
 watch_remove_notify (GRegistrySettingsBackend *self,
                      const gchar              *key_name)
@@ -2105,12 +2113,17 @@ g_registry_settings_backend_subscribe (GSettingsBackend *backend,
   HANDLE event;
   LONG result;
 
+  EnterCriticalSection (&self->watch_lock);
   if (self->watch == NULL && !watch_start (self))
-    return;
+    {
+      LeaveCriticalSection (&self->watch_lock);
+      return;
+    }
 
   if (g_atomic_int_dec_and_test (&self->watch->watches_remaining))
     {
       g_atomic_int_inc (&self->watch->watches_remaining);
+      LeaveCriticalSection (&self->watch_lock);
       g_warning ("subscribe() failed: only %i different paths may be watched.", MAX_WATCHES);
       return;
     }
@@ -2139,6 +2152,7 @@ g_registry_settings_backend_subscribe (GSettingsBackend *backend,
     {
       g_message_win32_error (result, "gregistrysettingsbackend: Unable to subscribe to key %s.", key_name);
       g_atomic_int_inc (&self->watch->watches_remaining);
+      LeaveCriticalSection (&self->watch_lock);
       return;
     }
 
@@ -2147,6 +2161,7 @@ g_registry_settings_backend_subscribe (GSettingsBackend *backend,
     {
       g_message_win32_error (result, "gregistrysettingsbackend: CreateEvent failed.");
       g_atomic_int_inc (&self->watch->watches_remaining);
+      LeaveCriticalSection (&self->watch_lock);
       RegCloseKey (hpath);
       return;
     }
@@ -2159,15 +2174,21 @@ g_registry_settings_backend_subscribe (GSettingsBackend *backend,
       RegCloseKey (hpath);
       CloseHandle (event);
     }
+
+  LeaveCriticalSection (&self->watch_lock);
 }
 
 static void
 g_registry_settings_backend_unsubscribe (GSettingsBackend *backend,
                                          const char       *key_name)
 {
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (backend);
+
   trace ("unsubscribe: %s.\n", key_name);
 
-  watch_remove_notify (G_REGISTRY_SETTINGS_BACKEND (backend), key_name);
+  EnterCriticalSection (&self->watch_lock);
+  watch_remove_notify (self, key_name);
+  LeaveCriticalSection (&self->watch_lock);
 }
 
 /********************************************************************************
@@ -2191,6 +2212,7 @@ g_registry_settings_backend_finalize (GObject *object)
       EnterCriticalSection (self->watch->message_lock);
       watch_stop_unlocked (self);
     }
+  DeleteCriticalSection (&self->watch_lock);
 
   DeleteCriticalSection (self->cache_lock);
   g_slice_free (CRITICAL_SECTION, self->cache_lock);
@@ -2341,6 +2363,7 @@ g_registry_settings_backend_init (GRegistrySettingsBackend *self)
   InitializeCriticalSection (self->cache_lock);
 
   self->watch = NULL;
+  InitializeCriticalSection (&self->watch_lock);
 }
 
 /**
