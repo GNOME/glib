@@ -2327,7 +2327,15 @@ test_byteswap (void)
    * often makes something non-normal but still readable. */
   three_size_copy = three.size + 1;
   three_data_copy = g_malloc (three_size_copy);
-  memcpy (three_data_copy, three.data, three.size);
+  if (three.data)
+    {
+      g_assert_cmpuint (three.size, !=, 0);
+      memcpy (three_data_copy, three.data, three.size);
+    }
+  else
+    {
+      g_assert_cmpuint (three.size, ==, 0);
+    }
   three_data_copy[three.size] = '\0';
 
   three_variant = g_variant_new_from_data (G_VARIANT_TYPE (g_variant_type_info_get_type_string (three.type_info)),
