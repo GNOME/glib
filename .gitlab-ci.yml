@@ -509,6 +509,7 @@ address-sanitizer:
             -Ddtrace=enabled
             -Dinstalled_tests=true
             -Dintrospection=enabled
+            -Dsysprof=disabled
             -Db_sanitize=address,undefined
             _build
     # Do not run ninja, let meson handle the build dependencies!
@@ -547,6 +548,7 @@ thread-sanitizer:
             --werror
             -Dinstalled_tests=true
             -Dintrospection=enabled
+            -Dsysprof=disabled
             -Db_sanitize=thread
             -Dglib_debug=disabled
             -Ddtrace=disabled
