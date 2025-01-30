@@ -25,6 +25,7 @@
 
 #include "gfilemonitor.h"
 #include "gioenumtypes.h"
+#include "glib.h"
 #include "gmarshal-internal.h"
 #include "gfile.h"
 #include "gvfs.h"
@@ -52,7 +53,7 @@
 
 struct _GFileMonitorPrivate
 {
-  gboolean cancelled;
+  int cancelled; /* atomic */
 };
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GFileMonitor, g_file_monitor, G_TYPE_OBJECT)
@@ -219,13 +220,9 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
 gboolean
 g_file_monitor_is_cancelled (GFileMonitor *monitor)
 {
-  gboolean res;
-
   g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
 
-  res = monitor->priv->cancelled;
-
-  return res;
+  return g_atomic_int_get (&monitor->priv->cancelled);
 }
 
 /**
@@ -241,11 +238,10 @@ g_file_monitor_cancel (GFileMonitor *monitor)
 {
   g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
 
-  if (!monitor->priv->cancelled)
+  if (!g_atomic_int_exchange (&monitor->priv->cancelled, TRUE))
     {
       G_FILE_MONITOR_GET_CLASS (monitor)->cancel (monitor);
 
-      monitor->priv->cancelled = TRUE;
       g_object_notify (G_OBJECT (monitor), "cancelled");
     }
 
@@ -293,7 +289,7 @@ g_file_monitor_emit_event (GFileMonitor      *monitor,
   g_return_if_fail (G_IS_FILE (child));
   g_return_if_fail (!other_file || G_IS_FILE (other_file));
 
-  if (monitor->priv->cancelled)
+  if (g_atomic_int_get (&monitor->priv->cancelled))
     return;
 
   g_signal_emit (monitor, g_file_monitor_changed_signal, 0, child, other_file, event_type);

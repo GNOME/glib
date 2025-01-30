@@ -134,7 +134,11 @@ gio_tests = {
   'vfs' : {},
   'volumemonitor' : {},
   'glistmodel' : {},
-  'testfilemonitor' : {'suite' : ['slow', 'flaky']},
+  'testfilemonitor' : {
+    'suite' : ['slow'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+    'can_fail' : host_system in ['darwin'],
+  },
   'thumbnail-verification' : {},
   'tls-certificate' : {'extra_sources' : ['gtesttlsbackend.c']},
   'tls-interaction' : {'extra_sources' : ['gtesttlsbackend.c']},
