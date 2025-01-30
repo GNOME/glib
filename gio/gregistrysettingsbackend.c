@@ -1738,6 +1738,7 @@ watch_thread_handle_message (WatchThreadState *self)
 
         trace ("watch thread: unsubscribe: freeing node %p, prefix %s, index %i\n",
                cache_node, self->message.watch.prefix, i);
+        g_free (self->message.watch.prefix);
 
         if (cache_node != NULL)
           {
@@ -1752,7 +1753,6 @@ watch_thread_handle_message (WatchThreadState *self)
           }
 
         _free_watch (self, i, cache_node);
-        g_free (self->message.watch.prefix);
 
         g_atomic_int_inc (&self->watches_remaining);
         break;
@@ -1765,6 +1765,11 @@ watch_thread_handle_message (WatchThreadState *self)
         /* Free any remaining cache and watch handles */
         for (i = 1; i < self->events->len; i++)
           _free_watch (self, i, g_ptr_array_index (self->cache_nodes, i));
+
+        g_ptr_array_unref (self->events);
+        g_ptr_array_unref (self->handles);
+        g_ptr_array_unref (self->prefixes);
+        g_ptr_array_unref (self->cache_nodes);
 
         SetEvent (self->message_received_event);
         ExitThread (0);
@@ -1993,7 +1998,7 @@ static gboolean
 watch_add_notify (GRegistrySettingsBackend *self,
                   HANDLE                    event,
                   HKEY                      hpath,
-                  gchar                    *gsettings_prefix)
+                  const gchar              *gsettings_prefix)
 {
   WatchThreadState *watch = self->watch;
   GNode *cache_node;
@@ -2039,7 +2044,7 @@ watch_add_notify (GRegistrySettingsBackend *self,
   watch->message.type = WATCH_THREAD_ADD_WATCH;
   watch->message.watch.event = event;
   watch->message.watch.hpath = hpath;
-  watch->message.watch.prefix = gsettings_prefix;
+  watch->message.watch.prefix = g_strdup (gsettings_prefix);
   watch->message.watch.cache_node = cache_node;
 
   SetEvent (watch->message_sent_event);
@@ -2168,7 +2173,7 @@ g_registry_settings_backend_subscribe (GSettingsBackend *backend,
 
   /* The actual watch is added by the thread, which has to re-subscribe each time it
    * receives a change. */
-  if (!watch_add_notify (self, event, hpath, g_strdup (key_name)))
+  if (!watch_add_notify (self, event, hpath, key_name))
     {
       g_atomic_int_inc (&self->watch->watches_remaining);
       RegCloseKey (hpath);
