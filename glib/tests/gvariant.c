@@ -2368,6 +2368,19 @@ test_byteswaps (void)
 }
 
 static void
+test_byteswap_zero_sized (void)
+{
+  GVariant *variant;
+  GVariant *swapped;
+
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_STRING, NULL, 0, TRUE, NULL, NULL);
+  swapped = g_variant_byteswap (variant);
+
+  g_variant_unref (variant);
+  g_variant_unref (swapped);
+}
+
+static void
 test_serialiser_children (void)
 {
   GBytes *data1, *data2;
@@ -5939,6 +5952,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/serialiser/variant", test_variants);
   g_test_add_func ("/gvariant/serialiser/strings", test_strings);
   g_test_add_func ("/gvariant/serialiser/byteswap", test_byteswaps);
+  g_test_add_func ("/gvariant/serialiser/byteswap/zero-sized", test_byteswap_zero_sized);
   g_test_add_func ("/gvariant/serialiser/children", test_serialiser_children);
 
   for (i = 1; i <= 20; i += 4)
