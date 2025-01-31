@@ -189,7 +189,7 @@ static GSource *proc_mounts_watch_source = NULL;
 #include <fshelp.h>
 #endif
 
-#if (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
+#if (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT) || defined(HAVE_GETFSENT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
 #include <sys/param.h>
 #include <sys/ucred.h>
 #include <sys/mount.h>
@@ -1653,7 +1653,7 @@ _g_get_unix_mount_points (void)
   return unix_mount_point_array_free_to_list (g_steal_pointer (&points), n_points);
 }
 
-#elif (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
+#elif (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT) || defined(HAVE_GETFSENT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
 
 static GList *
 _g_get_unix_mount_points (void)
