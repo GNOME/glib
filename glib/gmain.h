@@ -275,7 +275,7 @@ struct _GSource
   GMainContext *context;
 
   gint priority;
-  guint flags;
+  guint flags; /* (atomic) */
   guint source_id;
 
   GSList *poll_fds;
