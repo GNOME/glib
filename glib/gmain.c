@@ -32,6 +32,7 @@
  */
 
 #include "config.h"
+#include "glib.h"
 #include "glibconfig.h"
 #include "glib_trace.h"
 
@@ -980,10 +981,14 @@ void
 g_source_set_dispose_function (GSource            *source,
 			       GSourceDisposeFunc  dispose)
 {
+  gboolean is_valid G_GNUC_UNUSED;
+
   g_return_if_fail (source != NULL);
-  g_return_if_fail (source->priv->dispose == NULL);
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
-  source->priv->dispose = dispose;
+
+  is_valid = g_atomic_pointer_compare_and_exchange (&source->priv->dispose,
+                                                    NULL, dispose);
+  g_return_if_fail (is_valid);
 }
 
 /* Holds context's lock */
@@ -2223,14 +2228,16 @@ g_source_unref_internal (GSource      *source,
   if (g_atomic_int_dec_and_test (&source->ref_count))
     {
       /* If there's a dispose function, call this first */
-      if (source->priv->dispose)
+      GSourceDisposeFunc dispose_func;
+
+      if ((dispose_func = g_atomic_pointer_get (&source->priv->dispose)))
         {
           /* Temporarily increase the ref count again so that GSource methods
            * can be called from dispose(). */
           g_atomic_int_inc (&source->ref_count);
           if (context)
             UNLOCK_CONTEXT (context);
-          source->priv->dispose (source);
+          dispose_func (source);
           if (context)
             LOCK_CONTEXT (context);
 
