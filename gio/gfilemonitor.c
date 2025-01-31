@@ -23,13 +23,13 @@
 #include "config.h"
 #include <string.h>
 
+#include "gfile.h"
 #include "gfilemonitor.h"
 #include "gioenumtypes.h"
 #include "glib.h"
-#include "gmarshal-internal.h"
-#include "gfile.h"
-#include "gvfs.h"
 #include "glibintl.h"
+#include "gmarshal-internal.h"
+#include "gvfs.h"
 
 /**
  * GFileMonitor:
