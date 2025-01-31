@@ -50,6 +50,7 @@
  **/
 
 #define DEFAULT_RATE_LIMIT_MSECS 800
+#define ABOUT_TO_CANCEL (TRUE + 1)
 
 struct _GFileMonitorPrivate
 {
@@ -222,7 +223,7 @@ g_file_monitor_is_cancelled (GFileMonitor *monitor)
 {
   g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
 
-  return g_atomic_int_get (&monitor->priv->cancelled);
+  return g_atomic_int_get (&monitor->priv->cancelled) == TRUE;
 }
 
 /**
@@ -238,10 +239,11 @@ g_file_monitor_cancel (GFileMonitor *monitor)
 {
   g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
 
-  if (!g_atomic_int_exchange (&monitor->priv->cancelled, TRUE))
+  if (!g_atomic_int_exchange (&monitor->priv->cancelled, ABOUT_TO_CANCEL))
     {
       G_FILE_MONITOR_GET_CLASS (monitor)->cancel (monitor);
 
+      g_atomic_int_set (&monitor->priv->cancelled, TRUE);
       g_object_notify (G_OBJECT (monitor), "cancelled");
     }
 
