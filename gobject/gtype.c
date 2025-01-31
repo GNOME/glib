@@ -2718,7 +2718,7 @@ g_type_add_interface_dynamic (GType        instance_type,
  * Returns: (transfer none) (type GObject.TypeClass): the class structure
  *   for the type
  *
- * Since: 2.78
+ * Since: 2.84
  */
 gpointer
 g_type_class_get (GType type)
@@ -2779,7 +2779,7 @@ g_type_class_get (GType type)
  * Returns: (type GObject.TypeClass) (transfer none): the #GTypeClass
  *   structure for the given type ID
  *
- * Deprecated: 2.78: Use g_type_class_get() instead
+ * Deprecated: 2.84: Use g_type_class_get() instead
  */
 gpointer
 g_type_class_ref (GType type)
@@ -2797,7 +2797,7 @@ g_type_class_ref (GType type)
  * may be finalized by the type system, so further dereferencing of a
  * class pointer after g_type_class_unref() are invalid.
  *
- * Deprecated: 2.78: This function does not do anything.
+ * Deprecated: 2.84: This function does not do anything.
  */
 void
 g_type_class_unref (gpointer g_class)
@@ -2815,7 +2815,7 @@ g_type_class_unref (gpointer g_class)
  * of #GTypeClassCacheFuncs, avoiding the recursion which would occur
  * otherwise.
  *
- * Deprecated: 2.78: This function does not do anything
+ * Deprecated: 2.84: This function does not do anything
  */
 void
 g_type_class_unref_uncached (gpointer g_class)
@@ -3025,7 +3025,7 @@ g_type_interface_peek_parent (gpointer g_iface)
  *
  * Since: 2.4
  *
- * Deprecated: 2.78: Use g_type_default_interface_get() instead
+ * Deprecated: 2.84: Use g_type_default_interface_get() instead
  *
  * Returns: (type GObject.TypeInterface) (transfer none): the default
  *   vtable for the interface; call g_type_default_interface_unref()
@@ -3058,7 +3058,7 @@ g_type_default_interface_ref (GType g_type)
  * Returns: (type GObject.TypeInterface) (transfer none): the default
  *   vtable for the interface.
  *
- * Since: 2.78
+ * Since: 2.84
  */
 gpointer
 g_type_default_interface_get (GType g_type)
@@ -3136,7 +3136,7 @@ g_type_default_interface_peek (GType g_type)
  *
  * Since: 2.4
  *
- * Deprecated: 2.78: This function does not do anything
+ * Deprecated: 2.84: This function does not do anything
  */
 void
 g_type_default_interface_unref (gpointer g_iface)
