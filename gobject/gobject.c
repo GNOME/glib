@@ -1779,20 +1779,29 @@ g_object_real_dispose (GObject *object)
   g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
 }
 
+static gboolean
+g_diagnostic_is_enabled (void)
+{
+  static const char *g_enable_diagnostic = NULL;
+
+  if (g_once_init_enter_pointer (&g_enable_diagnostic))
+    {
+      const gchar *value = g_getenv ("G_ENABLE_DIAGNOSTIC");
+
+      if (value == NULL)
+        value = "0";
+
+      g_once_init_leave_pointer (&g_enable_diagnostic, value);
+    }
+
+  return g_enable_diagnostic[0] == '1';
+}
+
 #ifdef G_ENABLE_DEBUG
 static gboolean
 floating_check (GObject *object)
 {
-  static const char *g_enable_diagnostic = NULL;
-
-  if (G_UNLIKELY (g_enable_diagnostic == NULL))
-    {
-      g_enable_diagnostic = g_getenv ("G_ENABLE_DIAGNOSTIC");
-      if (g_enable_diagnostic == NULL)
-        g_enable_diagnostic = "0";
-    }
-
-  if (g_enable_diagnostic[0] == '1')
+  if (g_diagnostic_is_enabled ())
     return g_object_is_floating (object);
 
   return FALSE;
@@ -2090,21 +2099,10 @@ static void
 maybe_issue_property_deprecation_warning (const GParamSpec *pspec)
 {
   static GHashTable *already_warned_table;
-  static const gchar *enable_diagnostic;
   static GMutex already_warned_lock;
   gboolean already;
 
-  if (g_once_init_enter_pointer (&enable_diagnostic))
-    {
-      const gchar *value = g_getenv ("G_ENABLE_DIAGNOSTIC");
-
-      if (!value)
-        value = "0";
-
-      g_once_init_leave_pointer (&enable_diagnostic, value);
-    }
-
-  if (enable_diagnostic[0] == '0')
+  if (!g_diagnostic_is_enabled ())
     return;
 
   /* We hash only on property names: this means that we could end up in
