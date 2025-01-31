@@ -2768,6 +2768,11 @@ if cc.get_argument_syntax() == 'gcc'
 
   if 'thread' in glib_sanitizers
     test_preloaded_libs += 'tsan'
+
+    if enable_dtrace
+      # Tracing is not meant to be thread-safe, so let's make it incompatible with tsan.
+      error('Using Tracing together with thread sanitizer is not supported.')
+    endif
   endif
 
   # FIXME: Ideally meson should handle this for us
