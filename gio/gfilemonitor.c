@@ -51,6 +51,12 @@
 
 #define DEFAULT_RATE_LIMIT_MSECS 800
 
+typedef enum {
+  CANCEL_STATE_NONE,
+  CANCEL_STATE_CANCELLING,
+  CANCEL_STATE_CANCELLED,
+} GFileMonitorCancelState;
+
 struct _GFileMonitorPrivate
 {
   int cancelled; /* atomic */
@@ -222,7 +228,7 @@ g_file_monitor_is_cancelled (GFileMonitor *monitor)
 {
   g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
 
-  return g_atomic_int_get (&monitor->priv->cancelled);
+  return g_atomic_int_get (&monitor->priv->cancelled) == CANCEL_STATE_CANCELLED;
 }
 
 /**
@@ -238,10 +244,13 @@ g_file_monitor_cancel (GFileMonitor *monitor)
 {
   g_return_val_if_fail (G_IS_FILE_MONITOR (monitor), FALSE);
 
-  if (!g_atomic_int_exchange (&monitor->priv->cancelled, TRUE))
+  if (g_atomic_int_compare_and_exchange (&monitor->priv->cancelled,
+                                         CANCEL_STATE_NONE,
+                                         CANCEL_STATE_CANCELLING))
     {
       G_FILE_MONITOR_GET_CLASS (monitor)->cancel (monitor);
 
+      g_atomic_int_set (&monitor->priv->cancelled, CANCEL_STATE_CANCELLED);
       g_object_notify (G_OBJECT (monitor), "cancelled");
     }
 
@@ -289,7 +298,7 @@ g_file_monitor_emit_event (GFileMonitor      *monitor,
   g_return_if_fail (G_IS_FILE (child));
   g_return_if_fail (!other_file || G_IS_FILE (other_file));
 
-  if (g_atomic_int_get (&monitor->priv->cancelled))
+  if (g_atomic_int_get (&monitor->priv->cancelled) != CANCEL_STATE_NONE)
     return;
 
   g_signal_emit (monitor, g_file_monitor_changed_signal, 0, child, other_file, event_type);
