@@ -2660,6 +2660,7 @@ start_vfunc (GMarkupParseContext  *context,
   const char *offset;
   const char *invoker;
   const char *throws;
+  const char *is_static;
   const char *finish_func;
   const char *async_func;
   const char *sync_func;
@@ -2682,6 +2683,7 @@ start_vfunc (GMarkupParseContext  *context,
   offset = find_attribute ("offset", attribute_names, attribute_values);
   invoker = find_attribute ("invoker", attribute_names, attribute_values);
   throws = find_attribute ("throws", attribute_names, attribute_values);
+  is_static = find_attribute ("glib:static", attribute_names, attribute_values);
   finish_func = find_attribute ("glib:finish-func", attribute_names, attribute_values);
   sync_func = find_attribute ("glib:sync-func", attribute_names, attribute_values);
   async_func = find_attribute ("glib:async-func", attribute_names, attribute_values);
@@ -2727,6 +2729,11 @@ start_vfunc (GMarkupParseContext  *context,
     vfunc->throws = TRUE;
   else
     vfunc->throws = FALSE;
+
+  if (is_static && strcmp (is_static, "1") == 0)
+    vfunc->is_static = TRUE;
+  else
+    vfunc->is_static = FALSE;
 
   if (offset == NULL)
     vfunc->offset = 0xFFFF;

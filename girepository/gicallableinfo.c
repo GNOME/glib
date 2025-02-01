@@ -135,9 +135,12 @@ gi_callable_info_can_throw_gerror (GICallableInfo *info)
  *
  * Determines if the callable info is a method.
  *
- * For [class@GIRepository.VFuncInfo]s, [class@GIRepository.CallbackInfo]s, and
- * [class@GIRepository.SignalInfo]s, this is always true. Otherwise, this looks
- * at the `GI_FUNCTION_IS_METHOD` flag on the [class@GIRepository.FunctionInfo].
+ * For [class@GIRepository.SignalInfo]s, this is always true, and for
+ * [class@GIRepository.CallbackInfo]s always false.
+ * For [class@GIRepository.FunctionInfo]s this looks at the
+ * `GI_FUNCTION_IS_METHOD` flag on the [class@GIRepository.FunctionInfo].
+ * For [class@GIRepository.VFuncInfo]s this is true when the virtual function
+ * has an instance parameter.
  *
  * Concretely, this function returns whether
  * [method@GIRepository.CallableInfo.get_n_args] matches the number of arguments
@@ -159,6 +162,11 @@ gi_callable_info_is_method (GICallableInfo *info)
       return (!blob->constructor && !blob->is_static);
     }
   case GI_INFO_TYPE_VFUNC:
+    {
+      VFuncBlob *blob;
+      blob = (VFuncBlob *) &rinfo->typelib->data[rinfo->offset];
+      return !blob->is_static;
+    }
   case GI_INFO_TYPE_SIGNAL:
     return TRUE;
   case GI_INFO_TYPE_CALLBACK:

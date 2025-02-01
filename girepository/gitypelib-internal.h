@@ -1117,6 +1117,7 @@ typedef struct {
  * @invoker: If a method invoker for this virtual exists, this is the offset
  *   in the class structure of the method. If no method is known, this value
  *   will be 0x3ff.
+ * @is_static: True if the vfunc has no instance parameter.
  * @reserved: Reserved for future use.
  * @finish: The index of the finish function if is_async is TRUE, otherwise ASYNC_SENTINEL
  * @reserved2: Reserved for future use.
@@ -1142,7 +1143,8 @@ typedef struct {
 
   uint16_t struct_offset;
   uint16_t invoker  : 10; /* Number of bits matches @index in FunctionBlob */
-  uint16_t reserved : 6;
+  uint16_t is_static : 1;
+  uint16_t reserved : 5;
 
   uint16_t finish                  : 10;
   uint16_t reserved2               : 6;
