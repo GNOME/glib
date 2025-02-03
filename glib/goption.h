@@ -94,7 +94,11 @@ typedef struct _GOptionEntry   GOptionEntry;
  *
  * This flag marks the option as deprecated in the `--help`.
  *
- * Since: 2.82
+ * You should update the description of the option to describe what
+ * the user should do in response to the deprecation, for instance:
+ * remove the option, or replace it with another one.
+ *
+ * Since: 2.84
  */
 typedef enum
 {
@@ -106,7 +110,7 @@ typedef enum
   G_OPTION_FLAG_FILENAME	= 1 << 4,
   G_OPTION_FLAG_OPTIONAL_ARG    = 1 << 5,
   G_OPTION_FLAG_NOALIAS	        = 1 << 6,
-  G_OPTION_FLAG_DEPRECATED GLIB_AVAILABLE_ENUMERATOR_IN_2_82 = 1 << 7
+  G_OPTION_FLAG_DEPRECATED GLIB_AVAILABLE_ENUMERATOR_IN_2_84 = 1 << 7
 } GOptionFlags;
 
 /**
