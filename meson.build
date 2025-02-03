@@ -435,6 +435,7 @@ headers = [
   'sys/time.h', # MSC does not come with this by default
   'sys/times.h',
   'sys/types.h',
+  'sys/ucred.h',
   'sys/uio.h',
   'sys/vfs.h',
   'sys/vfstab.h',

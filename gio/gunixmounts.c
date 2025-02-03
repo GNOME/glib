@@ -191,9 +191,11 @@ static GSource *proc_mounts_watch_source = NULL;
 
 #if (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT) || defined(HAVE_GETFSENT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
 #include <sys/param.h>
-#include <sys/ucred.h>
 #include <sys/mount.h>
 #include <fstab.h>
+#ifdef HAVE_SYS_UCRED_H
+#include <sys/ucred.h>
+#endif
 #ifdef HAVE_SYS_SYSCTL_H
 #include <sys/sysctl.h>
 #endif
