@@ -2212,6 +2212,31 @@ test_help_no_help_options (void)
 }
 
 static void
+test_help_deprecated (void)
+{
+  GOptionContext *context;
+  gchar *str;
+  gchar *arg = NULL;
+  GOptionEntry entries[] = {
+    { "test", 't', G_OPTION_FLAG_DEPRECATED, G_OPTION_ARG_STRING, &arg, "Test tests", "Argument to use in test" },
+    { "test2", 0, 0, G_OPTION_ARG_NONE, NULL, "Tests also", NULL },
+    G_OPTION_ENTRY_NULL
+  };
+
+  context = g_option_context_new ("blabla");
+  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_set_summary (context, "Summary");
+  g_option_context_set_description (context, "Description");
+
+  str = g_option_context_get_help (context, FALSE, NULL);
+  g_test_message ("%s", str);
+  g_assert (strstr (str, "(deprecated)") != NULL);
+  g_free (str);
+
+  g_option_context_free (context);
+}
+
+static void
 set_bool (gpointer data)
 {
   gboolean *b = data;
@@ -2608,6 +2633,7 @@ main (int   argc,
   g_test_add_func ("/option/help/options", test_help);
   g_test_add_func ("/option/help/no-options", test_help_no_options);
   g_test_add_func ("/option/help/no-help-options", test_help_no_help_options);
+  g_test_add_func ("/option/help/deprecated", test_help_deprecated);
 
   g_test_add_func ("/option/basic", test_basic);
   g_test_add_func ("/option/translate", test_translate);
