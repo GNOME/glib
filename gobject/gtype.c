@@ -2797,7 +2797,8 @@ g_type_class_ref (GType type)
  * may be finalized by the type system, so further dereferencing of a
  * class pointer after g_type_class_unref() are invalid.
  *
- * Deprecated: 2.84: This function does not do anything.
+ * Deprecated: 2.84: Type class reference counting has been removed and type
+ *    classes now cannot be finalized. This function no longer does anything.
  */
 void
 g_type_class_unref (gpointer g_class)
@@ -2815,7 +2816,8 @@ g_type_class_unref (gpointer g_class)
  * of #GTypeClassCacheFuncs, avoiding the recursion which would occur
  * otherwise.
  *
- * Deprecated: 2.84: This function does not do anything
+ * Deprecated: 2.84: Type class reference counting has been removed and type
+ *    classes now cannot be finalized. This function no longer does anything.
  */
 void
 g_type_class_unref_uncached (gpointer g_class)
