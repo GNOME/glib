@@ -2230,7 +2230,7 @@ test_help_deprecated (void)
 
   str = g_option_context_get_help (context, FALSE, NULL);
   g_test_message ("%s", str);
-  g_assert (strstr (str, "This option is deprecated, and should not be used.") != NULL);
+  g_assert (strstr (str, "(deprecated)") != NULL);
   g_free (str);
 
   g_option_context_free (context);
