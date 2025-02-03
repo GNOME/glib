@@ -1762,9 +1762,22 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
     return FALSE;
 
   if (flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL)
-    serial_to_use = g_dbus_message_get_serial (message);
+    {
+      serial_to_use = g_dbus_message_get_serial (message);
+    }
   else
-    serial_to_use = ++connection->last_serial; /* TODO: handle overflow */
+    {
+      /* The serial_to_use must not be zero, as per
+       * https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-messages. */
+      if (connection->last_serial == G_MAXUINT32)
+        connection->last_serial = 1;
+      else
+        connection->last_serial++;
+
+      serial_to_use = connection->last_serial;
+    }
+
+  g_assert (serial_to_use != 0);
 
   switch (blob[0])
     {
