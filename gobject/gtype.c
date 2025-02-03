@@ -3138,7 +3138,9 @@ g_type_default_interface_peek (GType g_type)
  *
  * Since: 2.4
  *
- * Deprecated: 2.84: This function does not do anything
+ * Deprecated: 2.84: Interface reference counting has been removed and
+ *   interface types now cannot be finalized. This function no longer does
+ *   anything.
  */
 void
 g_type_default_interface_unref (gpointer g_iface)
