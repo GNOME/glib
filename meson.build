@@ -435,6 +435,7 @@ headers = [
   'sys/time.h', # MSC does not come with this by default
   'sys/times.h',
   'sys/types.h',
+  'sys/ucred.h',
   'sys/uio.h',
   'sys/vfs.h',
   'sys/vfstab.h',
@@ -698,6 +699,7 @@ functions = [
   'ftruncate64',
   'getauxval',
   'getc_unlocked',
+  'getfsent',
   'getfsstat',
   'getgrgid_r',
   'getmntent_r',
