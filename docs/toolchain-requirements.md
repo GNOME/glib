@@ -156,6 +156,49 @@ and back again losslessly. Any platform or compiler which doesn’t support this
 cannot be used to compile GLib or code which uses GLib. This precludes use of
 the `-pedantic` GCC flag with GLib.
 
+Calling functions through differently typed function pointers
+---
+_Hard requirement_
+
+GLib heavily relies on the ability to cast a function to a differently-typed
+function pointer and call it.  Specifically, all of the following must work:
+
+- Calling a function that takes one type of pointer through a function pointer
+  that takes a different type of pointer:
+
+  ```c
+  typedef void (*callback_type) (void *);
+  void func (char *x);
+  void *p = NULL;
+  ((callback_type) func) (p);
+  ```
+
+- Calling a function with additional arguments:
+
+  ```c
+  typedef void (*callback_type) (void *, void *);
+  void func (GtkWidget *);
+  ((callback_type) func) (some_widget, some_pointer_that_will_be_ignored);
+  ```
+
+- Calling a function with too few arguments, provided that the function
+  only uses arguments that are actually provided:
+
+  ```c
+  typedef void (*callback_type) (void *);
+  void
+  func (void *a, void *b)
+  {
+    /* b is unused */
+    do_something (a);
+  }
+  ((callback_type) func) (some_pointer);
+  ```
+
+Most native toolchains meet this requirement. When using Emscripten,
+`-sEMULATE_FUNCTION_POINTER_CASTS` is required.  This causes a performance
+penalty.
+
 NULL defined as void pointer, or same size and representation as void pointer
 ---
 
