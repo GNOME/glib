@@ -2476,6 +2476,8 @@ python = import('python').find_installation()
 
 python_version = python.language_version()
 python_version_req = '>=3.7'
+python_test_libraries_path = meson.project_source_root() / 'tests' / 'lib'
+assert(fs.exists(python_test_libraries_path))
 if not python_version.version_compare(python_version_req)
   error('Requires Python @0@, @1@ found.'.format(python_version_req, python_version))
 endif
