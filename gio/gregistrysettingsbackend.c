@@ -179,6 +179,10 @@ typedef struct {
   CRITICAL_SECTION *cache_lock;
   GNode *cache_root;
 
+  /* A lock to protect access to the watch variable */
+  CRITICAL_SECTION watch_lock;
+  /* Contains the state of the watching thread. Any access to this variable
+   * must be done while holding the watch_lock critical section. */
   WatchThreadState *watch;
 } GRegistrySettingsBackend;
 
@@ -1734,6 +1738,7 @@ watch_thread_handle_message (WatchThreadState *self)
 
         trace ("watch thread: unsubscribe: freeing node %p, prefix %s, index %i\n",
                cache_node, self->message.watch.prefix, i);
+        g_free (self->message.watch.prefix);
 
         if (cache_node != NULL)
           {
@@ -1748,7 +1753,6 @@ watch_thread_handle_message (WatchThreadState *self)
           }
 
         _free_watch (self, i, cache_node);
-        g_free (self->message.watch.prefix);
 
         g_atomic_int_inc (&self->watches_remaining);
         break;
@@ -1761,6 +1765,11 @@ watch_thread_handle_message (WatchThreadState *self)
         /* Free any remaining cache and watch handles */
         for (i = 1; i < self->events->len; i++)
           _free_watch (self, i, g_ptr_array_index (self->cache_nodes, i));
+
+        g_ptr_array_unref (self->events);
+        g_ptr_array_unref (self->handles);
+        g_ptr_array_unref (self->prefixes);
+        g_ptr_array_unref (self->cache_nodes);
 
         SetEvent (self->message_received_event);
         ExitThread (0);
@@ -1901,6 +1910,7 @@ watch_thread_function (LPVOID parameter)
   return -1;
 }
 
+/* This function assumes you hold the watch lock! */
 static gboolean
 watch_start (GRegistrySettingsBackend *self)
 {
@@ -1947,6 +1957,7 @@ fail:
   return FALSE;
 }
 
+/* This function assumes you hold the watch lock! */
 /* This function assumes you hold the message lock! */
 static void
 watch_stop_unlocked (GRegistrySettingsBackend *self)
@@ -1982,11 +1993,12 @@ watch_stop_unlocked (GRegistrySettingsBackend *self)
   self->watch = NULL;
 }
 
+/* This function assumes you hold the watch lock! */
 static gboolean
 watch_add_notify (GRegistrySettingsBackend *self,
                   HANDLE                    event,
                   HKEY                      hpath,
-                  gchar                    *gsettings_prefix)
+                  const gchar              *gsettings_prefix)
 {
   WatchThreadState *watch = self->watch;
   GNode *cache_node;
@@ -2032,7 +2044,7 @@ watch_add_notify (GRegistrySettingsBackend *self,
   watch->message.type = WATCH_THREAD_ADD_WATCH;
   watch->message.watch.event = event;
   watch->message.watch.hpath = hpath;
-  watch->message.watch.prefix = gsettings_prefix;
+  watch->message.watch.prefix = g_strdup (gsettings_prefix);
   watch->message.watch.cache_node = cache_node;
 
   SetEvent (watch->message_sent_event);
@@ -2055,6 +2067,7 @@ watch_add_notify (GRegistrySettingsBackend *self,
   return TRUE;
 }
 
+/* This function assumes you hold the watch lock! */
 static void
 watch_remove_notify (GRegistrySettingsBackend *self,
                      const gchar              *key_name)
@@ -2105,12 +2118,17 @@ g_registry_settings_backend_subscribe (GSettingsBackend *backend,
   HANDLE event;
   LONG result;
 
+  EnterCriticalSection (&self->watch_lock);
   if (self->watch == NULL && !watch_start (self))
-    return;
+    {
+      LeaveCriticalSection (&self->watch_lock);
+      return;
+    }
 
   if (g_atomic_int_dec_and_test (&self->watch->watches_remaining))
     {
       g_atomic_int_inc (&self->watch->watches_remaining);
+      LeaveCriticalSection (&self->watch_lock);
       g_warning ("subscribe() failed: only %i different paths may be watched.", MAX_WATCHES);
       return;
     }
@@ -2139,6 +2157,7 @@ g_registry_settings_backend_subscribe (GSettingsBackend *backend,
     {
       g_message_win32_error (result, "gregistrysettingsbackend: Unable to subscribe to key %s.", key_name);
       g_atomic_int_inc (&self->watch->watches_remaining);
+      LeaveCriticalSection (&self->watch_lock);
       return;
     }
 
@@ -2147,27 +2166,34 @@ g_registry_settings_backend_subscribe (GSettingsBackend *backend,
     {
       g_message_win32_error (result, "gregistrysettingsbackend: CreateEvent failed.");
       g_atomic_int_inc (&self->watch->watches_remaining);
+      LeaveCriticalSection (&self->watch_lock);
       RegCloseKey (hpath);
       return;
     }
 
   /* The actual watch is added by the thread, which has to re-subscribe each time it
    * receives a change. */
-  if (!watch_add_notify (self, event, hpath, g_strdup (key_name)))
+  if (!watch_add_notify (self, event, hpath, key_name))
     {
       g_atomic_int_inc (&self->watch->watches_remaining);
       RegCloseKey (hpath);
       CloseHandle (event);
     }
+
+  LeaveCriticalSection (&self->watch_lock);
 }
 
 static void
 g_registry_settings_backend_unsubscribe (GSettingsBackend *backend,
                                          const char       *key_name)
 {
+  GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (backend);
+
   trace ("unsubscribe: %s.\n", key_name);
 
-  watch_remove_notify (G_REGISTRY_SETTINGS_BACKEND (backend), key_name);
+  EnterCriticalSection (&self->watch_lock);
+  watch_remove_notify (self, key_name);
+  LeaveCriticalSection (&self->watch_lock);
 }
 
 /********************************************************************************
@@ -2191,6 +2217,7 @@ g_registry_settings_backend_finalize (GObject *object)
       EnterCriticalSection (self->watch->message_lock);
       watch_stop_unlocked (self);
     }
+  DeleteCriticalSection (&self->watch_lock);
 
   DeleteCriticalSection (self->cache_lock);
   g_slice_free (CRITICAL_SECTION, self->cache_lock);
@@ -2341,6 +2368,7 @@ g_registry_settings_backend_init (GRegistrySettingsBackend *self)
   InitializeCriticalSection (self->cache_lock);
 
   self->watch = NULL;
+  InitializeCriticalSection (&self->watch_lock);
 }
 
 /**
