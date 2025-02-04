@@ -25,6 +25,17 @@ foreach std : ['89', '99', '11', '17']
   endif
 endforeach
 
+# In the 2.85 cycle, this soft-dependency on C11 will become a hard dependency.
+# If this is a problem on your toolchain or platform, please file an issue
+# (https://gitlab.gnome.org/GNOME/glib/-/issues) and let us know. We have very
+# few metrics on the toolchains which are used to build GLib.
+if '11' not in c_standards
+  warning('Toolchain support for C11 will become a requirement for building ' +
+          'GLib in the next unstable development series (2.85). If this is ' +
+          'problematic for you, please file an issue ' +
+          '(https://gitlab.gnome.org/GNOME/glib/-/issues) now')
+endif
+
 have_cxx = add_languages('cpp', native: false, required: get_option('oss_fuzz').enabled())
 if have_cxx
   cxx = meson.get_compiler('cpp')

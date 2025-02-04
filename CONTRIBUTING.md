@@ -120,7 +120,7 @@ development tools appropriate for your operating system, including:
  - Meson
  - Ninja
  - Gettext (19.7 or newer)
- - a [C99 compatible compiler](./docs/toolchain-requirements.md)
+ - a [compatible toolchain](./docs/toolchain-requirements.md)
 
 Up-to-date instructions about developing GNOME applications and libraries
 can be found on [the GNOME Developer Center](https://developer.gnome.org).

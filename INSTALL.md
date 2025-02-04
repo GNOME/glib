@@ -15,9 +15,8 @@ meson install -C _build                 # install GLib
 Requirements
 ============
 
-GLib requires a C90-compliant (but not necessarily C99-compliant) C
-compiler and libc. On UNIX-like systems, it also assumes compliance
-with at least the original 1990 version of POSIX.
+GLib requires a [basic C toolchain](./docs/toolchain-requirements.md) and
+support for a minimum version of the C standard.
 
 GLib-2.0 requires pkg-config, which is tool for tracking the
 compilation flags needed for libraries. (For each library, a small `.pc`
