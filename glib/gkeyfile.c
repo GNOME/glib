@@ -81,11 +81,11 @@
  * `GKeyFile` lets you parse, edit or create files containing groups of
  * key-value pairs, which we call "key files" for lack of a better name.
  * Several freedesktop.org specifications use key files now, e.g the
- * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec)
- * and the [Icon Theme Specification](http://freedesktop.org/Standards/icon-theme-spec).
+ * [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry-spec/latest/)
+ * and the [Icon Theme Specification](https://specifications.freedesktop.org/icon-theme-spec/latest/).
  *
  * The syntax of key files is described in detail in the
- * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec),
+ * [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
  * here is a quick summary: Key files consists of groups of key-value pairs, interspersed
  * with comments.
  *
@@ -149,7 +149,7 @@
  *    true and false (in lower case) are allowed.
  *
  * Note that in contrast to the
- * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec),
+ * [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry-spec/latest/),
  * groups in key files may contain the same key multiple times; the last entry wins.
  * Key files may also contain multiple groups with the same name; they are merged
  * together. Another difference is that keys and group names in key files are not
@@ -251,7 +251,7 @@
  * G_KEY_FILE_DESKTOP_GROUP:
  *
  * The name of the main group of a desktop entry file, as defined in the
- * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec).
+ * [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry-spec/latest/).
  * Consult the specification for more
  * details about the meanings of the keys below.
  *
@@ -422,7 +422,7 @@
  *
  * A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
  * stating whether the application supports the
- * [Startup Notification Protocol Specification](http://www.freedesktop.org/Standards/startup-notification-spec).
+ * [Startup Notification Protocol Specification](https://specifications.freedesktop.org/startup-notification-spec/latest/).
  *
  * Since: 2.14
  */
