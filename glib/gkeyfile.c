@@ -1165,7 +1165,7 @@ g_key_file_load_from_data_dirs (GKeyFile       *key_file,
  *
  * Increases the reference count of @key_file.
  *
- * Returns: the same @key_file.
+ * Returns: (transfer full): the same @key_file.
  *
  * Since: 2.32
  **/
@@ -1181,7 +1181,7 @@ g_key_file_ref (GKeyFile *key_file)
 
 /**
  * g_key_file_free: (skip)
- * @key_file: a #GKeyFile
+ * @key_file: (transfer full): a #GKeyFile
  *
  * Clears all keys and groups from @key_file, and decreases the
  * reference count by 1. If the reference count reaches zero,
@@ -1204,7 +1204,7 @@ g_key_file_free (GKeyFile *key_file)
 
 /**
  * g_key_file_unref:
- * @key_file: a #GKeyFile
+ * @key_file: (transfer full): a #GKeyFile
  *
  * Decreases the reference count of @key_file by 1. If the reference count
  * reaches zero, frees the key file and all its allocated memory.
