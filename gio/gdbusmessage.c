@@ -984,9 +984,12 @@ g_dbus_message_get_serial (GDBusMessage *message)
 /**
  * g_dbus_message_set_serial:
  * @message: A #GDBusMessage.
- * @serial: A #guint32.
+ * @serial: A #guint32, which must not be zero.
  *
  * Sets the serial for @message.
+ *
+ * The [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-messages)
+ * does not allow the @serial to be zero.
  *
  * Since: 2.26
  */
@@ -995,6 +998,10 @@ g_dbus_message_set_serial (GDBusMessage  *message,
                            guint32        serial)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
+
+  /* As per https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-messages,
+   * this must not be zero. */
+  g_return_if_fail (serial != 0);
 
   if (message->locked)
     {
