@@ -56,6 +56,7 @@ static const struct {
   /* uppercase characters */
   { "EXAMPLE.COM", "example.com", FALSE, FALSE },
   { "\xc3\x89XAMPLE.COM", "xn--xample-9ua.com", TRUE, TRUE },
+  { "Ⅷ.com", "viii.com", TRUE, FALSE },
 
   /* unicode that decodes to ascii */
   { "\xe2\x93\x94\xe2\x93\xa7\xe2\x93\x90\xe2\x93\x9c\xe2\x93\x9f\xe2\x93\x9b\xe2\x93\x94.com", "example.com", TRUE, FALSE },
