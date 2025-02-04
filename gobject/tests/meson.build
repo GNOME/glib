@@ -227,6 +227,9 @@ foreach test_name, extra_args : gobject_tests
   )
 endforeach
 
+python_test_env = test_env
+python_test_env.prepend('PYTHONPATH', python_test_libraries_path)
+
 foreach test_name, extra_args : python_tests
   depends = [extra_args.get('depends', [])]
   suite = ['gobject', 'no-valgrind']
@@ -241,7 +244,7 @@ foreach test_name, extra_args : python_tests
     protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
-    env: test_env,
+    env: python_test_env,
     suite: suite,
   )
 
@@ -266,12 +269,3 @@ foreach test_name, extra_args : python_tests
     )
   endif
 endforeach
-
-# TAP test runner for Python tests
-if installed_tests_enabled
-  install_data(
-    files('taptestrunner.py'),
-    install_dir: installed_tests_execdir,
-    install_tag: 'tests',
-  )
-endif

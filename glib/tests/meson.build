@@ -512,6 +512,9 @@ if 'messages-low-memory' in test_extra_programs
   }
 endif
 
+python_test_env = test_env
+python_test_env.prepend('PYTHONPATH', python_test_libraries_path)
+
 foreach test_name, extra_args : python_tests
   depends = [extra_args.get('depends', [])]
   suite = ['glib', 'core', 'no-valgrind']
@@ -520,7 +523,7 @@ foreach test_name, extra_args : python_tests
     suite += 'failing'
   endif
 
-  local_test_env = test_env
+  local_test_env = python_test_env
   foreach var, value : extra_args.get('env', {})
     local_test_env.append(var, value)
   endforeach
