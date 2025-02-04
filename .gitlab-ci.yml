@@ -478,7 +478,8 @@ valgrind:
                  --no-suite slow
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog-valgrind.junit.xml"
+      junit:
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
@@ -683,7 +684,9 @@ msys2-clang64:
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
     reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
     name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
     when: always
     expire_in: 1 week
