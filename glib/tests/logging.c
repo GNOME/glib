@@ -570,6 +570,20 @@ test_default_handler (void)
 }
 
 static void
+test_journald_handler (void)
+{
+  /* We can’t require that the journal exists on the test system. But if it
+   * does, we can check that the writer doesn’t crash. */
+  const GLogField fields[] = {
+    { "MESSAGE", "This is a test message.", -1 },
+    { "MESSAGE_ID", "7187d27ad7f84351b76b7612eef52cd6", -1 },
+    { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 },
+  };
+
+  g_log_writer_journald (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields), NULL);
+}
+
+static void
 test_fatal_log_mask (void)
 {
   if (g_test_subprocess ())
@@ -1107,6 +1121,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-env5", test_default_handler_would_drop_env5);
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-robustness", test_default_handler_would_drop_robustness);
   g_test_add_func ("/logging/default-handler/subprocess/structured-logging-non-null-terminated-strings", test_default_handler_structured_logging_non_nul_terminated_strings);
+  g_test_add_func ("/logging/journald-handler", test_journald_handler);
   g_test_add_func ("/logging/warnings", test_warnings);
   g_test_add_func ("/logging/fatal-log-mask", test_fatal_log_mask);
   g_test_add_func ("/logging/set-handler", test_set_handler);
