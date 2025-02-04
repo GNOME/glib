@@ -161,12 +161,17 @@ if cc.get_id() != 'msvc'
 endif
 
 python_tests = {
-  'genmarshal.py' : {},
+  'genmarshal.py' : {
+    'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(glib_genmarshal.full_path())},
+  },
   'gobject-query.py' : {
     'depends' : gobject_query,
+    'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gobject_query.full_path())},
     'can_fail' : host_system == 'windows',
   },
-  'mkenums.py' : {},
+  'mkenums.py' : {
+    'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(glib_mkenums.full_path())},
+  },
 }
 
 test_env = environment()
@@ -238,13 +243,18 @@ foreach test_name, extra_args : python_tests
     suite += 'failing'
   endif
 
+  local_test_env = python_test_env
+  foreach var, value : extra_args.get('env', {})
+    local_test_env.set(var, value)
+  endforeach
+
   test(
     test_name,
     python,
     protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
-    env: python_test_env,
+    env: local_test_env,
     suite: suite,
   )
 

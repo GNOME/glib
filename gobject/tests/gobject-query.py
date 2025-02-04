@@ -20,19 +20,13 @@
 
 """Integration tests for gobject-query utility."""
 
-import collections
-import os
-import shutil
-import subprocess
 import unittest
 
 import taptestrunner
+import testprogramrunner
 
 
-Result = collections.namedtuple("Result", ("info", "out", "err"))
-
-
-class TestGobjectQuery(unittest.TestCase):
+class TestGobjectQuery(testprogramrunner.TestProgramRunner):
     """Integration test for running gobject-query.
 
     This can be run when installed or uninstalled. When uninstalled, it
@@ -42,44 +36,10 @@ class TestGobjectQuery(unittest.TestCase):
     handling of command line arguments, and its exit statuses.
     """
 
-    def setUp(self):
-        self.timeout_seconds = 10  # seconds per test
-        if "G_TEST_BUILDDIR" in os.environ:
-            self.__gobject_query = os.path.join(
-                os.environ["G_TEST_BUILDDIR"], "..", "gobject-query"
-            )
-        else:
-            self.__gobject_query = shutil.which("gobject-query")
-        print("gobject-query:", self.__gobject_query)
+    PROGRAM_NAME = "gobject-query"
 
     def runGobjectQuery(self, *args):
-        argv = [self.__gobject_query]
-        argv.extend(args)
-        print("Running:", argv)
-
-        env = os.environ.copy()
-        env["LC_ALL"] = "C.UTF-8"
-        env["G_DEBUG"] = "fatal-warnings"
-        print("Environment:", env)
-
-        # We want to ensure consistent line endings...
-        info = subprocess.run(
-            argv,
-            timeout=self.timeout_seconds,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            env=env,
-            text=True,
-            encoding="utf-8",
-        )
-        info.check_returncode()
-        out = info.stdout.strip()
-        err = info.stderr.strip()
-
-        result = Result(info, out, err)
-
-        print("Output:", result.out)
-        return result
+        return self.runTestProgram(args)
 
     def test_help(self):
         """Test the --help argument."""

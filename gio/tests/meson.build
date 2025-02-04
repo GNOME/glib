@@ -186,12 +186,14 @@ test_extra_programs = {
 python_tests = {
   # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2764
   'codegen.py' : {
+    'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gdbus_codegen.full_path())},
     'can_fail' : host_system == 'freebsd',
     'suite': ['gdbus-codegen', 'slow'],
     'timeout': 90,
   },
   'gio-tool.py' : {
     'depends' : gio_tool,
+    'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gio_tool.full_path())},
     'can_fail' : host_system == 'windows',
   },
 }
@@ -1183,13 +1185,18 @@ foreach test_name, extra_args : python_tests
     depends += test_extra_programs_targets[program]
   endforeach
 
+  local_test_env = python_test_env
+  foreach var, value : extra_args.get('env', {})
+    local_test_env.append(var, value)
+  endforeach
+
   test(
     test_name,
     python,
     protocol : extra_args.get('protocol', test_protocol),
     depends: depends,
     args: ['-B', files(test_name)],
-    env: python_test_env,
+    env: local_test_env,
     timeout: timeout,
     suite: suite,
   )
