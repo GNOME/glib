@@ -25,6 +25,7 @@
 #include <glib.h>
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
@@ -2595,6 +2596,63 @@ double_zero (void)
   g_option_context_free (context);
 }
 
+static void
+test_parsing_errors (void)
+{
+  GOptionContext *context = NULL;
+  double test_double = 123.0;
+  int test_int = 123;
+  int64_t test_int64 = 123;
+  const GOptionEntry entries[] = {
+    { "double", 0, 0, G_OPTION_ARG_DOUBLE, &test_double, NULL, NULL },
+    { "int", 0, 0, G_OPTION_ARG_INT, &test_int, NULL, NULL },
+    { "int64", 0, 0, G_OPTION_ARG_INT64, &test_int64, NULL, NULL },
+    G_OPTION_ENTRY_NULL
+  };
+  const char *test_cmds[] = {
+    "program --double abc",
+    "program --double 2e309",
+    "program --int abc",
+    "program --int 99999999999999999999999999999999999",
+    "program --int64 abc",
+    "program --int64 99999999999999999999999999999999999",
+  };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  for (size_t i = 0; i < G_N_ELEMENTS (test_cmds); i++)
+    {
+      gboolean retval;
+      GError *local_error = NULL;
+      char **argv = NULL, **argv_copy = NULL;
+      int argc;
+
+      g_test_message ("Testing command: %s", test_cmds[i]);
+
+      argv = split_string (test_cmds[i], &argc);
+      argv_copy = copy_stringv (argv, argc);
+
+      retval = g_option_context_parse (context, &argc, &argv, &local_error);
+      g_assert_error (local_error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+      g_assert_false (retval);
+      /* An error occurred, so argv has not been changed */
+      check_identical_stringv (argv_copy, argv);
+      g_clear_error (&local_error);
+
+      /* On failure, values should be reset */
+      g_assert_cmpfloat (test_double, ==, 123.0);
+      g_assert_cmpint (test_int, ==, 123);
+      g_assert_cmpint (test_int64, ==, 123);
+
+      g_strfreev (argv_copy);
+      g_free (argv);
+    }
+
+  g_option_context_free (context);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2708,6 +2766,9 @@ main (int   argc,
   g_test_add_func ("/option/bug/short-remaining", short_remaining);
   g_test_add_func ("/option/bug/double-free", double_free);
   g_test_add_func ("/option/bug/double-zero", double_zero);
+
+  /* Parsing errors */
+  g_test_add_func ("/option/parsing-errors", test_parsing_errors);
 
   return g_test_run();
 }
