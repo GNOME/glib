@@ -391,7 +391,8 @@ static gboolean g_idle_dispatch    (GSource     *source,
 				    GSourceFunc  callback,
 				    gpointer     user_data);
 
-static void block_source (GSource *source);
+static void block_source (GSource      *source,
+                          GMainContext *context);
 static GMainContext *source_dup_main_context (GSource *source);
 
 /* Lock for serializing access for safe execution of
@@ -1447,15 +1448,19 @@ guint
 g_source_get_id (GSource *source)
 {
   guint result;
+  GMainContext *context;
   
   g_return_val_if_fail (source != NULL, 0);
   g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
-  g_return_val_if_fail (source->context != NULL, 0);
+  context = source_dup_main_context (source);
+  g_return_val_if_fail (context != NULL, 0);
 
-  LOCK_CONTEXT (source->context);
+  LOCK_CONTEXT (context);
   result = source->source_id;
-  UNLOCK_CONTEXT (source->context);
+  UNLOCK_CONTEXT (context);
   
+  g_main_context_unref (context);
+
   return result;
 }
 
@@ -1472,6 +1477,10 @@ g_source_get_id (GSource *source)
  * [func@GLib.main_current_source]. But calling this function on a source
  * whose [struct@GLib.MainContext] has been destroyed is an error.
  *
+ * If the associated [struct@GLib.MainContext] could be destroy concurrently from
+ * a different thread, then this function is not safe to call and
+ * [method@GLib.Source.dup_context] should be used instead.
+ *
  * Returns: (transfer none) (nullable): the #GMainContext with which the
  *               source is associated, or %NULL if the context has not
  *               yet been added to a source.
@@ -1484,6 +1493,31 @@ g_source_get_context (GSource *source)
   g_return_val_if_fail (source->context != NULL || !SOURCE_DESTROYED (source), NULL);
 
   return source->context;
+}
+
+/**
+ * g_source_dup_context:
+ * @source: a #GSource
+ *
+ * Gets the [struct@GLib.MainContext] with which the source is associated.
+ *
+ * You can call this on a source that has been destroyed. You can
+ * always call this function on the source returned from
+ * [func@GLib.main_current_source].
+ *
+ * Returns: (transfer full) (nullable): the [struct@GLib.MainContext] with which the
+ *               source is associated, or `NULL`.
+ *
+ * Since: 2.86
+ **/
+GMainContext *
+g_source_dup_context (GSource *source)
+{
+  g_return_val_if_fail (source != NULL, NULL);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, NULL);
+  g_return_val_if_fail (source->context != NULL || !SOURCE_DESTROYED (source), NULL);
+
+  return source_dup_main_context (source);
 }
 
 /**
@@ -1516,7 +1550,7 @@ g_source_add_poll (GSource *source,
   g_return_if_fail (fd != NULL);
   g_return_if_fail (!SOURCE_DESTROYED (source));
   
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -1528,6 +1562,7 @@ g_source_add_poll (GSource *source,
       if (!SOURCE_BLOCKED (source))
 	g_main_context_add_poll_unlocked (context, source->priority, fd);
       UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
     }
 }
 
@@ -1553,7 +1588,7 @@ g_source_remove_poll (GSource *source,
   g_return_if_fail (fd != NULL);
   g_return_if_fail (!SOURCE_DESTROYED (source));
   
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -1565,6 +1600,7 @@ g_source_remove_poll (GSource *source,
       if (!SOURCE_BLOCKED (source))
 	g_main_context_remove_poll_unlocked (context, fd);
       UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
     }
 }
 
@@ -1609,7 +1645,7 @@ g_source_add_child_source (GSource *source,
   g_return_if_fail (child_source->context == NULL);
   g_return_if_fail (child_source->priv->parent_source == NULL);
 
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -1621,12 +1657,13 @@ g_source_add_child_source (GSource *source,
   child_source->priv->parent_source = source;
   g_source_set_priority_unlocked (child_source, NULL, source->priority);
   if (SOURCE_BLOCKED (source))
-    block_source (child_source);
+    block_source (child_source, NULL);
 
   if (context)
     {
       g_source_attach_unlocked (child_source, context, TRUE);
       UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
     }
 }
 
@@ -1671,7 +1708,7 @@ g_source_remove_child_source (GSource *source,
   g_return_if_fail (!SOURCE_DESTROYED (source));
   g_return_if_fail (!SOURCE_DESTROYED (child_source));
 
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -1679,7 +1716,10 @@ g_source_remove_child_source (GSource *source,
   g_child_source_remove_internal (child_source, context);
 
   if (context)
-    UNLOCK_CONTEXT (context);
+    {
+      UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
+    }
 }
 
 static void
@@ -1752,7 +1792,7 @@ g_source_set_callback_indirect (GSource              *source,
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (callback_funcs != NULL || callback_data == NULL);
 
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -1772,8 +1812,11 @@ g_source_set_callback_indirect (GSource              *source,
   source->callback_funcs = callback_funcs;
   
   if (context)
-    UNLOCK_CONTEXT (context);
-  
+    {
+      UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
+    }
+
   if (old_cb_funcs)
     old_cb_funcs->unref (old_cb_data);
 }
@@ -1870,14 +1913,14 @@ g_source_set_priority_unlocked (GSource      *source,
       /* Remove the source from the context's source and then
        * add it back after so it is sorted in the correct place
        */
-      source_remove_from_context (source, source->context);
+      source_remove_from_context (source, context);
     }
 
   source->priority = priority;
 
   if (context)
     {
-      source_add_to_context (source, source->context);
+      source_add_to_context (source, context);
 
       if (!SOURCE_BLOCKED (source))
 	{
@@ -1933,13 +1976,16 @@ g_source_set_priority (GSource  *source,
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (source->priv->parent_source == NULL);
 
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
   g_source_set_priority_unlocked (source, context, priority);
   if (context)
-    UNLOCK_CONTEXT (context);
+    {
+      UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
+    }
 }
 
 /**
@@ -1999,7 +2045,7 @@ g_source_set_ready_time (GSource *source,
   g_return_if_fail (source != NULL);
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -2007,8 +2053,10 @@ g_source_set_ready_time (GSource *source,
   if (source->priv->ready_time == ready_time)
     {
       if (context)
-        UNLOCK_CONTEXT (context);
-
+        {
+          UNLOCK_CONTEXT (context);
+          g_main_context_unref (context);
+        }
       return;
     }
 
@@ -2022,6 +2070,7 @@ g_source_set_ready_time (GSource *source,
       if (!SOURCE_BLOCKED (source))
         g_wakeup_signal (context->wakeup);
       UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
     }
 }
 
@@ -2065,7 +2114,7 @@ g_source_set_can_recurse (GSource  *source,
   g_return_if_fail (source != NULL);
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -2076,7 +2125,10 @@ g_source_set_can_recurse (GSource  *source,
     g_atomic_int_and (&source->flags, ~G_SOURCE_CAN_RECURSE);
 
   if (context)
-    UNLOCK_CONTEXT (context);
+    {
+      UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
+    }
 }
 
 /**
@@ -2107,7 +2159,7 @@ g_source_set_name_full (GSource    *source,
   g_return_if_fail (source != NULL);
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -2130,7 +2182,10 @@ g_source_set_name_full (GSource    *source,
   source->priv->static_name = is_static;
 
   if (context)
-    UNLOCK_CONTEXT (context);
+    {
+      UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
+    }
 }
 
 /**
@@ -2754,7 +2809,7 @@ g_source_add_unix_fd (GSource      *source,
   poll_fd->events = events;
   poll_fd->revents = 0;
 
-  context = source->context;
+  context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
@@ -2766,6 +2821,7 @@ g_source_add_unix_fd (GSource      *source,
       if (!SOURCE_BLOCKED (source))
         g_main_context_add_poll_unlocked (context, source->priority, poll_fd);
       UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
     }
 
   return poll_fd;
@@ -2803,13 +2859,16 @@ g_source_modify_unix_fd (GSource      *source,
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (g_slist_find (source->priv->fds, tag));
 
-  context = source->context;
+  context = source_dup_main_context (source);
   poll_fd = tag;
 
   poll_fd->events = new_events;
 
   if (context)
-    g_main_context_wakeup (context);
+    {
+      g_main_context_wakeup (context);
+      g_main_context_unref (context);
+    }
 }
 
 /**
@@ -2841,7 +2900,7 @@ g_source_remove_unix_fd (GSource  *source,
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
   g_return_if_fail (g_slist_find (source->priv->fds, tag));
 
-  context = source->context;
+  context = source_dup_main_context (source);
   poll_fd = tag;
 
   if (context)
@@ -2855,6 +2914,7 @@ g_source_remove_unix_fd (GSource  *source,
         g_main_context_remove_poll_unlocked (context, poll_fd);
 
       UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
     }
 
   g_free (poll_fd);
@@ -3334,7 +3394,8 @@ g_source_is_destroyed (GSource *source)
  */
 /* HOLDS: source->context's lock */
 static void
-block_source (GSource *source)
+block_source (GSource      *source,
+              GMainContext *context)
 {
   GSList *tmp_list;
 
@@ -3342,17 +3403,17 @@ block_source (GSource *source)
 
   g_atomic_int_or (&source->flags, G_SOURCE_BLOCKED);
 
-  if (source->context)
+  if (context)
     {
       tmp_list = source->poll_fds;
       while (tmp_list)
         {
-          g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
+          g_main_context_remove_poll_unlocked (context, tmp_list->data);
           tmp_list = tmp_list->next;
         }
 
       for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
-        g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
+        g_main_context_remove_poll_unlocked (context, tmp_list->data);
     }
 
   if (source->priv && source->priv->child_sources)
@@ -3360,7 +3421,7 @@ block_source (GSource *source)
       tmp_list = source->priv->child_sources;
       while (tmp_list)
 	{
-	  block_source (tmp_list->data);
+	  block_source (tmp_list->data, context);
 	  tmp_list = tmp_list->next;
 	}
     }
@@ -3368,7 +3429,8 @@ block_source (GSource *source)
 
 /* HOLDS: source->context's lock */
 static void
-unblock_source (GSource *source)
+unblock_source (GSource      *source,
+                GMainContext *context)
 {
   GSList *tmp_list;
 
@@ -3380,19 +3442,19 @@ unblock_source (GSource *source)
   tmp_list = source->poll_fds;
   while (tmp_list)
     {
-      g_main_context_add_poll_unlocked (source->context, source->priority, tmp_list->data);
+      g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
       tmp_list = tmp_list->next;
     }
 
   for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
-    g_main_context_add_poll_unlocked (source->context, source->priority, tmp_list->data);
+    g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
 
   if (source->priv && source->priv->child_sources)
     {
       tmp_list = source->priv->child_sources;
       while (tmp_list)
 	{
-	  unblock_source (tmp_list->data);
+	  unblock_source (tmp_list->data, context);
 	  tmp_list = tmp_list->next;
 	}
     }
@@ -3437,7 +3499,7 @@ g_main_dispatch (GMainContext *context)
 	    cb_funcs->ref (cb_data);
 	  
 	  if ((g_atomic_int_get (&source->flags) & G_SOURCE_CAN_RECURSE) == 0)
-	    block_source (source);
+	    block_source (source, context);
 	  
           was_in_call = g_atomic_int_or (&source->flags,
                                          (GSourceFlags) G_HOOK_FLAG_IN_CALL) &
@@ -3481,7 +3543,7 @@ g_main_dispatch (GMainContext *context)
             g_atomic_int_and (&source->flags, ~G_HOOK_FLAG_IN_CALL);
 
           if (SOURCE_BLOCKED (source) && !SOURCE_DESTROYED (source))
-	    unblock_source (source);
+	    unblock_source (source, context);
 	  
 	  /* Note: this depends on the fact that we can't switch
 	   * sources from one main context to another
@@ -4941,9 +5003,8 @@ g_source_get_time (GSource *source)
 
   g_return_val_if_fail (source != NULL, 0);
   g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
-  g_return_val_if_fail (source->context != NULL, 0);
-
-  context = source->context;
+  context = source_dup_main_context (source);
+  g_return_val_if_fail (context != NULL, 0);
 
   LOCK_CONTEXT (context);
 
@@ -4956,6 +5017,7 @@ g_source_get_time (GSource *source)
   result = context->time;
 
   UNLOCK_CONTEXT (context);
+  g_main_context_unref (context);
 
   return result;
 }

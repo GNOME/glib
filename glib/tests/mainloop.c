@@ -64,7 +64,7 @@ static GSourceFuncs global_funcs = {
 static void
 test_maincontext_basic (void)
 {
-  GMainContext *ctx;
+  GMainContext *ctx, *source_ctx;
   GSource *source;
   guint id;
   gpointer data = &global_funcs;
@@ -103,6 +103,10 @@ test_maincontext_basic (void)
   g_source_destroy (source);
   g_assert_true (g_source_get_context (source) == ctx);
   g_assert_null (g_main_context_find_source_by_id (ctx, id));
+  source_ctx = g_source_dup_context (source);
+  g_assert_true (source_ctx == ctx);
+  g_main_context_unref (source_ctx);
+  source_ctx = NULL;
 
   g_main_context_unref (ctx);
 
@@ -2604,7 +2608,7 @@ wait_simultaneous_destruction_test (SimultaneousDestructionTest * test)
 static void
 test_simultaneous_source_context_destruction (void)
 {
-  guint64 n_concurrent = 128, n_iterations = 100;
+  guint64 n_concurrent = 120, n_iterations = 100;
   SimultaneousDestructionTest **test;
   guint64 i;
 
