@@ -1332,3 +1332,15 @@
    fun:wcsxfrm*
    fun:g_utf8_collate_key
 }
+
+# sysprof deliberately leaks one SysprofCollector per thread
+{
+	glib-trace-collector
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:calloc
+	...
+	fun:sysprof_collector_get
+	...
+	fun:g_trace_mark
+}
