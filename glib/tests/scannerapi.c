@@ -18,10 +18,15 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 
 /* GScanner fixture */
 typedef struct {
@@ -129,6 +134,85 @@ test_scanner_tokens (ScannerFixture *fix,
   return;
 }
 
+static void
+test_scanner_multiline_comment (void)
+{
+  GScanner *scanner = NULL;
+  const char buf[] = "/** this\n * is\n * multilined */";
+  const size_t buflen = strlen (buf);
+
+  scanner = g_scanner_new (NULL);
+  scanner->config->skip_comment_multi = FALSE;
+
+  g_scanner_input_text (scanner, buf, buflen);
+
+  g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_NONE);
+  g_scanner_get_next_token (scanner);
+  g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_COMMENT_MULTI);
+  g_assert_cmpint (g_scanner_cur_line (scanner), ==, 3);
+  g_assert_cmpstr (g_scanner_cur_value (scanner).v_comment, ==, "* this\n * is\n * multilined ");
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_EOF);
+
+  g_scanner_destroy (scanner);
+}
+
+static void
+test_scanner_fd_input (void)
+{
+  /* GScanner does some internal buffering when reading from an FD, reading in
+   * chunks of `READ_BUFFER_SIZE` (currently 4000B) to an internal buffer. The
+   * parsing codepaths differ significantly depending on whether there’s data in
+   * the buffer, so all parsing operations have to be tested with chunk
+   * boundaries on each of the characters in that operation.
+   *
+   * Do that by prefixing the buffer we’re testing with a variable amount of
+   * whitespace. Whitespace is (by default) ignored by the scanner, so won’t
+   * affect the test other than by letting us choose where in the test string
+   * the chunk boundaries fall. */
+  const size_t whitespace_lens[] = { 0, 3998, 3999, 4000, 4001 };
+
+  for (size_t i = 0; i < G_N_ELEMENTS (whitespace_lens); i++)
+    {
+      GScanner *scanner = NULL;
+      char *filename = NULL;
+      int fd = -1;
+      char *buf = NULL;
+      const size_t whitespace_len = whitespace_lens[i];
+      size_t buflen;
+      const char *buf_suffix = "/** this\n * is\n * multilined */";
+
+      buflen = whitespace_len + strlen (buf_suffix) + 1;
+      buf = g_malloc (buflen);
+      memset (buf, ' ', whitespace_len);
+      memcpy (buf + whitespace_len, buf_suffix, strlen (buf_suffix));
+      buf[buflen - 1] = '\0';
+
+      scanner = g_scanner_new (NULL);
+      scanner->config->skip_comment_multi = FALSE;
+
+      filename = g_strdup ("scanner-fd-input-XXXXXX");
+      fd = g_mkstemp (filename);
+      g_assert_cmpint (fd, >=, 0);
+
+      g_assert_cmpint (write (fd, buf, buflen), ==, buflen);
+      g_assert_no_errno (lseek (fd, 0, SEEK_SET));
+
+      g_scanner_input_file (scanner, fd);
+
+      g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_NONE);
+      g_scanner_get_next_token (scanner);
+      g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_COMMENT_MULTI);
+      g_assert_cmpint (g_scanner_cur_line (scanner), ==, 3);
+      g_assert_cmpstr (g_scanner_cur_value (scanner).v_comment, ==, "* this\n * is\n * multilined ");
+      g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_EOF);
+
+      g_close (fd, NULL);
+      g_free (filename);
+      g_free (buf);
+      g_scanner_destroy (scanner);
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -139,6 +223,8 @@ main (int   argc,
   g_test_add ("/scanner/error", ScannerFixture, 0, scanner_fixture_setup, test_scanner_error, scanner_fixture_teardown);
   g_test_add ("/scanner/symbols", ScannerFixture, 0, scanner_fixture_setup, test_scanner_symbols, scanner_fixture_teardown);
   g_test_add ("/scanner/tokens", ScannerFixture, 0, scanner_fixture_setup, test_scanner_tokens, scanner_fixture_teardown);
+  g_test_add_func ("/scanner/multiline-comment", test_scanner_multiline_comment);
+  g_test_add_func ("/scanner/fd-input", test_scanner_fd_input);
 
   return g_test_run();
 }
