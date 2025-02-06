@@ -49,12 +49,12 @@ try:
                 )  # FIXME version
             try:
                 (self.p_mock, self.obj_ppd) = self.spawn_server_template(
-                    "power_profiles_daemon", {}, stdout=subprocess.PIPE
+                    "upower_power_profiles_daemon", {}, stdout=subprocess.PIPE
                 )
             except ModuleNotFoundError:
                 raise unittest.SkipTest(
                     "power-profiles-daemon dbusmock template not "
-                    "found. Requires dbusmock > 0.23.1."
+                    "found. Requires dbusmock > 0.31.1."
                 )  # FIXME version
             # set log to nonblocking
             flags = fcntl.fcntl(self.p_mock.stdout, fcntl.F_GETFL)
@@ -108,7 +108,7 @@ try:
                 self.power_profile_monitor.get_power_saver_enabled(), False
             )
             self.dbus_props.Set(
-                "net.hadess.PowerProfiles",
+                "org.freedesktop.UPower.PowerProfiles",
                 "ActiveProfile",
                 dbus.String("power-saver", variant_level=1),
             )
@@ -119,7 +119,7 @@ try:
             )
 
             self.dbus_props.Set(
-                "net.hadess.PowerProfiles",
+                "org.freedesktop.UPower.PowerProfiles",
                 "ActiveProfile",
                 dbus.String("balanced", variant_level=1),
             )
