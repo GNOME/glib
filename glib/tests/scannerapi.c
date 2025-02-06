@@ -213,6 +213,68 @@ test_scanner_fd_input (void)
     }
 }
 
+static void
+test_scanner_fd_input_rewind (void)
+{
+  /* GScanner does some internal buffering when reading from an FD, reading in
+   * chunks of `READ_BUFFER_SIZE` (currently 4000B) to an internal buffer. It
+   * allows the input FD’s file offset to be positioned to match the current
+   * parsing position. Test that works. */
+  GScanner *scanner = NULL;
+  char *filename = NULL;
+  int fd = -1;
+  char *buf = NULL;
+  const size_t whitespace_len = 4000;
+  size_t buflen;
+  const char *buf_suffix = "({})";
+  const struct
+    {
+      GTokenType expected_token;
+      off_t expected_offset;  /* offset after consuming @expected_token */
+    }
+  tokens_and_offsets[] =
+   {
+     { G_TOKEN_LEFT_PAREN, whitespace_len + 1 },
+     { G_TOKEN_LEFT_CURLY, whitespace_len + 2 },
+     { G_TOKEN_RIGHT_CURLY, whitespace_len + 3 },
+     { G_TOKEN_RIGHT_PAREN, whitespace_len + 4 },
+   };
+
+  buflen = whitespace_len + strlen (buf_suffix) + 1;
+  buf = g_malloc (buflen);
+  memset (buf, ' ', whitespace_len);
+  memcpy (buf + whitespace_len, buf_suffix, strlen (buf_suffix));
+  buf[buflen - 1] = '\0';
+
+  scanner = g_scanner_new (NULL);
+
+  filename = g_strdup ("scanner-fd-input-XXXXXX");
+  fd = g_mkstemp (filename);
+  g_assert_cmpint (fd, >=, 0);
+
+  g_assert_cmpint (write (fd, buf, buflen), ==, buflen);
+  g_assert_no_errno (lseek (fd, 0, SEEK_SET));
+
+  g_scanner_input_file (scanner, fd);
+
+  g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_NONE);
+
+  for (size_t i = 0; i < G_N_ELEMENTS (tokens_and_offsets); i++)
+    {
+      g_scanner_get_next_token (scanner);
+      g_scanner_sync_file_offset (scanner);
+      g_assert_cmpint (g_scanner_cur_token (scanner), ==, tokens_and_offsets[i].expected_token);
+      g_assert_cmpint (lseek (fd, 0, SEEK_CUR), ==, tokens_and_offsets[i].expected_offset);
+    }
+
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_EOF);
+
+  g_close (fd, NULL);
+  g_free (filename);
+  g_free (buf);
+  g_scanner_destroy (scanner);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -225,6 +287,7 @@ main (int   argc,
   g_test_add ("/scanner/tokens", ScannerFixture, 0, scanner_fixture_setup, test_scanner_tokens, scanner_fixture_teardown);
   g_test_add_func ("/scanner/multiline-comment", test_scanner_multiline_comment);
   g_test_add_func ("/scanner/fd-input", test_scanner_fd_input);
+  g_test_add_func ("/scanner/fd-input/rewind", test_scanner_fd_input_rewind);
 
   return g_test_run();
 }
