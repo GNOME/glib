@@ -157,6 +157,28 @@ test_scanner_multiline_comment (void)
 }
 
 static void
+test_scanner_int_to_float (void)
+{
+  GScanner *scanner = NULL;
+  const char buf[] = "4294967295";
+  const size_t buflen = strlen (buf);
+
+  scanner = g_scanner_new (NULL);
+  scanner->config->int_2_float = TRUE;
+
+  g_scanner_input_text (scanner, buf, buflen);
+
+  g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_NONE);
+  g_scanner_get_next_token (scanner);
+  g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_FLOAT);
+  g_assert_cmpint (g_scanner_cur_line (scanner), ==, 1);
+  g_assert_cmpfloat (g_scanner_cur_value (scanner).v_float, ==, 4294967295.0);
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_EOF);
+
+  g_scanner_destroy (scanner);
+}
+
+static void
 test_scanner_fd_input (void)
 {
   /* GScanner does some internal buffering when reading from an FD, reading in
@@ -286,6 +308,7 @@ main (int   argc,
   g_test_add ("/scanner/symbols", ScannerFixture, 0, scanner_fixture_setup, test_scanner_symbols, scanner_fixture_teardown);
   g_test_add ("/scanner/tokens", ScannerFixture, 0, scanner_fixture_setup, test_scanner_tokens, scanner_fixture_teardown);
   g_test_add_func ("/scanner/multiline-comment", test_scanner_multiline_comment);
+  g_test_add_func ("/scanner/int-to-float", test_scanner_int_to_float);
   g_test_add_func ("/scanner/fd-input", test_scanner_fd_input);
   g_test_add_func ("/scanner/fd-input/rewind", test_scanner_fd_input_rewind);
 
