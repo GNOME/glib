@@ -98,7 +98,12 @@ class TestProgramRunner(unittest.TestCase):
         print("tmpdir:", self.tmpdir.name)
 
     def runTestProgram(
-        self, *args, should_fail=False, timeout_seconds=10, wrapper_args=[]
+        self,
+        *args,
+        should_fail=False,
+        timeout_seconds=10,
+        wrapper_args=[],
+        environment={},
     ) -> Result:
         argv = [self.__program]
 
@@ -114,6 +119,7 @@ class TestProgramRunner(unittest.TestCase):
         env = os.environ.copy()
         env["LC_ALL"] = "C.UTF-8"
         env["G_DEBUG"] = "fatal-warnings"
+        env.update(environment)
 
         print("Running:", argv)
 
