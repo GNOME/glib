@@ -54,9 +54,9 @@ typedef enum
   PROP_POWER_SAVER_ENABLED = 1,
 } GPowerProfileMonitorDBusProperty;
 
-#define POWERPROFILES_DBUS_NAME "net.hadess.PowerProfiles"
-#define POWERPROFILES_DBUS_IFACE "net.hadess.PowerProfiles"
-#define POWERPROFILES_DBUS_PATH "/net/hadess/PowerProfiles"
+#define POWERPROFILES_DBUS_NAME "org.freedesktop.UPower.PowerProfiles"
+#define POWERPROFILES_DBUS_IFACE "org.freedesktop.UPower.PowerProfiles"
+#define POWERPROFILES_DBUS_PATH "/org/freedesktop/UPower/PowerProfiles"
 
 G_DEFINE_TYPE_WITH_CODE (GPowerProfileMonitorDBus, g_power_profile_monitor_dbus, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,

@@ -445,5 +445,5 @@ The following extension points are currently defined by GIO:
   implementations for power usage monitoring. Implementations of this
   extension point must implement the [iface@Gio.PowerProfileMonitor] interface.
   GIO contains implementations of this extension point that use the
-  `net.hadess.PowerProfiles` D-Bus interface and the desktop portal for
-  this functionality.
+  `org.freedesktop.UPower.PowerProfiles` D-Bus interface and the desktop portal
+  for this functionality.
