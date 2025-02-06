@@ -414,8 +414,8 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    *
    * If #GDBusServer:flags contains %G_DBUS_SERVER_FLAGS_RUN_IN_THREAD
    * then the signal is emitted in a new thread dedicated to the
-   * connection. Otherwise the signal is emitted in the
-   * [thread-default main context][g-main-context-push-thread-default]
+   * connection. Otherwise the signal is emitted in the thread-default
+   * main context (see [method@GLib.MainContext.push_thread_default])
    * of the thread that @server was constructed in.
    *
    * You are guaranteed that signal handlers for this signal runs
@@ -480,7 +480,7 @@ on_run (GSocketService    *service,
  * The returned #GDBusServer isn't active - you have to start it with
  * g_dbus_server_start().
  *
- * #GDBusServer is used in this [example][gdbus-peer-to-peer].
+ * #GDBusServer is used in this [example](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-peer.c).
  *
  * This is a synchronous failable constructor. There is currently no
  * asynchronous version.

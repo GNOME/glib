@@ -303,9 +303,9 @@
  *
  * You can use [method@Gio.Task.run_in_thread] to turn a synchronous
  * operation into an asynchronous one, by running it in a thread.
- * When it completes, the result will be dispatched to the thread-default main
- * context (see [method@GLib.MainContext.push_thread_default]) where the `GTask`
- * was created.
+ * When it completes, the result will be dispatched to the thread-default
+ * main context (see [method@GLib.MainContext.push_thread_default])
+ * where the `GTask` was created.
  *
  * Running a task in a thread:
  * ```c
@@ -796,8 +796,8 @@ g_task_finalize (GObject *object)
  * @callback_data: user data passed to @callback.
  *
  * Creates a #GTask acting on @source_object, which will eventually be
- * used to invoke @callback in the current
- * [thread-default main context][g-main-context-push-thread-default].
+ * used to invoke @callback in the current thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default]).
  *
  * Call this in the "start" method of your asynchronous method, and
  * pass the #GTask around throughout the asynchronous operation. You
@@ -1242,8 +1242,8 @@ g_task_get_priority (GTask *task)
  * @task: a #GTask
  *
  * Gets the #GMainContext that @task will return its result in (that
- * is, the context that was the
- * [thread-default main context][g-main-context-push-thread-default]
+ * is, the context that was the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * at the point when @task was created).
  *
  * This will always return a non-%NULL value, even if the task's

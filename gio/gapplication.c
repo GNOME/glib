@@ -2066,10 +2066,10 @@ g_application_get_resource_base_path (GApplication *application)
  *
  * Sets (or unsets) the base resource path of @application.
  *
- * The path is used to automatically load various [application
- * resources][gresource] such as menu layouts and action descriptions.
- * The various types of resources will be found at fixed names relative
- * to the given base path.
+ * The path is used to automatically load various
+ * [application resources][struct@Gio.Resource] such as menu layouts and
+ * action descriptions. The various types of resources will be found at
+ * fixed names relative to the given base path.
  *
  * By default, the resource base path is determined from the application
  * ID by prefixing '/' and replacing each '.' with '/'.  This is done at

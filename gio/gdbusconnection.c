@@ -1368,15 +1368,15 @@ flush_in_thread_func (GTask         *task,
  * @user_data: The data to pass to @callback
  *
  * Asynchronously flushes @connection, that is, writes all queued
- * outgoing message to the transport and then flushes the transport
+ * outgoing messages to the transport and then flushes the transport
  * (using g_output_stream_flush_async()). This is useful in programs
- * that wants to emit a D-Bus signal and then exit immediately. Without
- * flushing the connection, there is no guaranteed that the message has
+ * that want to emit a D-Bus signal and then exit immediately. Without
+ * flushing the connection, there is no guarantee that the message has
  * been sent to the networking buffers in the OS kernel.
  *
  * This is an asynchronous method. When the operation is finished,
- * @callback will be invoked in the
- * [thread-default main context][g-main-context-push-thread-default]
+ * @callback will be invoked in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this method from. You can
  * then call g_dbus_connection_flush_finish() to get the result of the
  * operation. See g_dbus_connection_flush_sync() for the synchronous
@@ -1561,13 +1561,13 @@ schedule_closed_unlocked (GDBusConnection *connection,
  * %G_IO_ERROR_CLOSED.
  *
  * When @connection has been closed, the #GDBusConnection::closed
- * signal is emitted in the
- * [thread-default main context][g-main-context-push-thread-default]
+ * signal is emitted in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * of the thread that @connection was constructed in.
  *
  * This is an asynchronous method. When the operation is finished,
- * @callback will be invoked in the 
- * [thread-default main context][g-main-context-push-thread-default]
+ * @callback will be invoked in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this method from. You can
  * then call g_dbus_connection_close_finish() to get the result of the
  * operation. See g_dbus_connection_close_sync() for the synchronous
@@ -1852,7 +1852,8 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
  * %G_IO_ERROR_CLOSED. If @message is not well-formed,
  * the operation fails with %G_IO_ERROR_INVALID_ARGUMENT.
  *
- * See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+ * See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+ * and [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
  * for an example of how to use this low-level API to send and receive
  * UNIX file descriptors.
  *
@@ -2138,8 +2139,8 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * the operation fails with %G_IO_ERROR_INVALID_ARGUMENT.
  *
  * This is an asynchronous method. When the operation is finished, @callback
- * will be invoked in the 
- * [thread-default main context][g-main-context-push-thread-default]
+ * will be invoked in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this method from. You can then call
  * g_dbus_connection_send_message_with_reply_finish() to get the result of the operation.
  * See g_dbus_connection_send_message_with_reply_sync() for the synchronous version.
@@ -2147,7 +2148,8 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * Note that @message must be unlocked, unless @flags contain the
  * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
  *
- * See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+ * See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+ * and [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
  * for an example of how to use this low-level API to send and receive
  * UNIX file descriptors.
  *
@@ -2194,7 +2196,8 @@ g_dbus_connection_send_message_with_reply (GDBusConnection       *connection,
  * be of type %G_DBUS_MESSAGE_TYPE_ERROR. Use
  * g_dbus_message_to_gerror() to transcode this to a #GError.
  *
- * See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+ * See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+ * and [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
  * for an example of how to use this low-level API to send and receive
  * UNIX file descriptors.
  *
@@ -2270,7 +2273,8 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * be of type %G_DBUS_MESSAGE_TYPE_ERROR. Use
  * g_dbus_message_to_gerror() to transcode this to a #GError.
  *
- * See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
+ * See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+ * and [client][class@Gio.DBusConnection#an-example-for-file-descriptor-passing]
  * for an example of how to use this low-level API to send and receive
  * UNIX file descriptors.
  *
@@ -3795,8 +3799,8 @@ add_signal_data (GDBusConnection *connection,
  *     subscription is removed or %NULL
  *
  * Subscribes to signals on @connection and invokes @callback whenever
- * the signal is received. Note that @callback will be invoked in the 
- * [thread-default main context][g-main-context-push-thread-default]
+ * the signal is received. Note that @callback will be invoked in the
+ * thread-default main context (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this method from.
  *
  * If @connection is not a message bus connection, @sender must be
@@ -5710,8 +5714,8 @@ obj_message_func (GDBusConnection *connection,
  * D-Bus interface that is described in @interface_info.
  *
  * Calls to functions in @vtable (and @user_data_free_func) will happen
- * in the 
- * [thread-default main context][g-main-context-push-thread-default]
+ * in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this method from.
  *
  * Note that all #GVariant values passed to functions in @vtable will match
@@ -5743,7 +5747,8 @@ obj_message_func (GDBusConnection *connection,
  * reference count is -1, see g_dbus_interface_info_ref()) for as long
  * as the object is exported. Also note that @vtable will be copied.
  *
- * See this [server][gdbus-server] for an example of how to use this method.
+ * See this [server][class@Gio.DBusConnection#an-example-d-bus-server]
+ * for an example of how to use this method.
  *
  * Returns: 0 if @error is set, otherwise a registration id (never 0)
  *     that can be used with g_dbus_connection_unregister_object()
@@ -6701,8 +6706,8 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
  * ]|
  *
  * This is an asynchronous method. When the operation is finished,
- * @callback will be invoked in the
- * [thread-default main context][g-main-context-push-thread-default]
+ * @callback will be invoked in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this method from. You can then call
  * g_dbus_connection_call_finish() to get the result of the operation.
  * See g_dbus_connection_call_sync() for the synchronous version of this
@@ -7412,8 +7417,8 @@ subtree_message_func (GDBusConnection *connection,
  * #gpointer will be used to call into the interface vtable for processing
  * the request.
  *
- * All calls into user-provided code will be invoked in the
- * [thread-default main context][g-main-context-push-thread-default]
+ * All calls into user-provided code will be invoked in the thread-default
+ * main context (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this method from.
  *
  * If an existing subtree is already registered at @object_path or
@@ -7429,8 +7434,8 @@ subtree_message_func (GDBusConnection *connection,
  * Note that @vtable will be copied so you cannot change it after
  * registration.
  *
- * See this [server][gdbus-subtree-server] for an example of how to use
- * this method.
+ * See this [server][class@Gio.DBusConnection#an-example-for-exporting-a-subtree]
+ * for an example of how to use this method.
  *
  * Returns: 0 if @error is set, otherwise a subtree registration ID (never 0)
  * that can be used with g_dbus_connection_unregister_subtree()

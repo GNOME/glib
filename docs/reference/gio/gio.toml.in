@@ -66,6 +66,8 @@ content_files = [
   "migrating-posix.md",
 
   "io-scheduler.md",
+
+  "content-types.md",
 ]
 content_images = [
   "gvfs-overview.png",

@@ -1795,9 +1795,9 @@ platform_get_argv0 (void)
  * this function will produce help output to stdout and
  * call `exit (0)`.
  *
- * Note that function depends on the [current locale][setlocale] for
- * automatic character set conversion of string and filename
- * arguments.
+ * Note that function depends on the
+ * [current locale](running.html#locale) for automatic
+ * character set conversion of string and filename arguments.
  *
  * Returns: %TRUE if the parsing was successful,
  *               %FALSE if an error occurred

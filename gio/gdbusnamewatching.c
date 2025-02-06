@@ -573,8 +573,8 @@ connection_get_cb (GObject      *source_object,
  * Starts watching @name on the bus specified by @bus_type and calls
  * @name_appeared_handler and @name_vanished_handler when the name is
  * known to have an owner respectively known to lose its
- * owner. Callbacks will be invoked in the
- * [thread-default main context][g-main-context-push-thread-default]
+ * owner. Callbacks will be invoked in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * of the thread you are calling this function from.
  *
  * You are guaranteed that one of the handlers will be invoked after
@@ -595,7 +595,7 @@ connection_get_cb (GObject      *source_object,
  * will be @name_vanished_handler. The reverse is also true.
  *
  * This behavior makes it very simple to write applications that want
- * to take action when a certain [name exists][gdbus-watching-names].
+ * to take action when a certain [name exists](dbus-name-watching.html#d-bus-name-watching).
  * Basically, the application should create object proxies in
  * @name_appeared_handler and destroy them again (if any) in
  * @name_vanished_handler.

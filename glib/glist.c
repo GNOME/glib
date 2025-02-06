@@ -39,8 +39,8 @@
 /**
  * GList:
  * @data: holds the element's data, which can be a pointer to any kind
- *        of data, or any integer value using the 
- *        [Type Conversion Macros][glib-Type-Conversion-Macros]
+ *        of data, or any integer value using the
+ *        [Type Conversion Macros](conversion-macros.html#conversion-macros)
  * @next: contains the link to the next element in the list
  * @prev: contains the link to the previous element in the list
  *

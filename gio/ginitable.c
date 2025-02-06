@@ -89,7 +89,7 @@ g_initable_default_init (GInitableInterface *iface)
  * If the object is not initialized, or initialization returns with an
  * error, then all operations on the object except g_object_ref() and
  * g_object_unref() are considered to be invalid, and have undefined
- * behaviour. See the [introduction][ginitable] for more details.
+ * behaviour. See the [description][iface@Gio.Initable#description] for more details.
  *
  * Callers should not assume that a class which implements #GInitable can be
  * initialized multiple times, unless the class explicitly documents itself as

@@ -177,8 +177,8 @@ typedef struct _GVolumeMonitor                GVolumeMonitor;
  * Type definition for a function that will be called back when an asynchronous
  * operation within GIO has been completed. #GAsyncReadyCallback
  * callbacks from #GTask are guaranteed to be invoked in a later
- * iteration of the
- * [thread-default main context][g-main-context-push-thread-default]
+ * iteration of the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * where the #GTask was created. All other users of
  * #GAsyncReadyCallback must likewise call it asynchronously in a
  * later iteration of the main context.
@@ -532,8 +532,8 @@ typedef struct _GDBusObjectManagerServer    GDBusObjectManagerServer;
  * use for an interface proxy (if @interface_name is not %NULL) or
  * object proxy (if @interface_name is %NULL).
  *
- * This function is called in the
- * [thread-default main loop][g-main-context-push-thread-default]
+ * This function is called in the thread-default main context
+ * (see [method@GLib.MainContext.push_thread_default])
  * that @manager was constructed in.
  *
  * Returns: A #GType to use for the remote object. The returned type

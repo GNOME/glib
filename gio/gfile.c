@@ -9412,8 +9412,8 @@ g_file_poll_mountable_finish (GFile         *file,
  * g_file_supports_thread_contexts:
  * @file: a #GFile
  *
- * Checks if @file supports
- * [thread-default contexts][g-main-context-push-thread-default-context].
+ * Checks if @file supports thread-default main contexts
+ * (see [method@GLib.MainContext.push_thread_default])
  * If this returns %FALSE, you cannot perform asynchronous operations on
  * @file in a thread that has a thread-default context.
  *

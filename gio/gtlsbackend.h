@@ -34,7 +34,7 @@ G_BEGIN_DECLS
  * G_TLS_BACKEND_EXTENSION_POINT_NAME:
  *
  * Extension point for TLS functionality via #GTlsBackend.
- * See [Extending GIO][extending-gio].
+ * See [Extending GIO](overview.html#extending-gio).
  */
 #define G_TLS_BACKEND_EXTENSION_POINT_NAME "gio-tls-backend"
 

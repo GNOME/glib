@@ -395,8 +395,8 @@ g_file_info_new (void)
  * @src_info: source to copy attributes from.
  * @dest_info: destination to copy attributes to.
  *
- * First clears all of the [GFileAttribute][gio-GFileAttribute] of @dest_info,
- * and then copies all of the file attributes from @src_info to @dest_info.
+ * First clears all of the [GFileAttribute](file-attributes.html#file-attributes) of
+ * @dest_info, and then copies all of the file attributes from @src_info to @dest_info.
  **/
 void
 g_file_info_copy_into (GFileInfo *src_info,
@@ -2066,7 +2066,7 @@ g_file_info_get_symlink_target (GFileInfo *info)
  * g_file_info_get_etag:
  * @info: a #GFileInfo.
  *
- * Gets the [entity tag](iface.File.html#entity-tags) for a given
+ * Gets the [entity tag][iface@Gio.File#entity-tags] for a given
  * #GFileInfo. See %G_FILE_ATTRIBUTE_ETAG_VALUE.
  *
  * It is an error to call this if the #GFileInfo does not contain
@@ -2319,7 +2319,7 @@ g_file_info_set_symbolic_icon (GFileInfo *info,
 /**
  * g_file_info_set_content_type:
  * @info: a #GFileInfo.
- * @content_type: a content type. See [GContentType][gio-GContentType]
+ * @content_type: a [content type](content-types.html#content-types).
  *
  * Sets the content type attribute for a given #GFileInfo.
  * See %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.

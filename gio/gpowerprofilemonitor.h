@@ -34,7 +34,7 @@ G_BEGIN_DECLS
  * G_POWER_PROFILE_MONITOR_EXTENSION_POINT_NAME:
  *
  * Extension point for power profile usage monitoring functionality.
- * See [Extending GIO][extending-gio].
+ * See [Extending GIO](overview.html#extending-gio).
  *
  * Since: 2.70
  */
