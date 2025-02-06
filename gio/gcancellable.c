@@ -742,15 +742,12 @@ cancellable_source_dispose (GSource *source)
            * dangling GCancellableSource pointer.
            *
            * Eliminate that race by waiting to ensure that our cancelled
-           * callback has been called, keeping a temporary ref, so that
-           * there's no risk that we're unreffing something that is still
-           * going to be used.
+           * callback has been called, so that there's no risk that we're
+           * unreffing something that is still going to be used.
            */
 
-          g_source_ref (source);
           while (!g_atomic_int_get (&cancellable_source->cancelled_callback_called))
             ;
-          g_source_unref (source);
         }
 
       g_clear_signal_handler (&cancellable_source->cancelled_handler, cancellable);
