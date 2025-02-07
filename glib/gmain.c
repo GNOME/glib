@@ -935,7 +935,7 @@ g_source_new (GSourceFuncs *source_funcs,
   source = (GSource*) g_malloc0 (struct_size);
   source->priv = g_slice_new0 (GSourcePrivate);
   source->source_funcs = source_funcs;
-  source->ref_count = 1;
+  g_atomic_int_set (&source->ref_count, 1);
   
   source->priority = G_PRIORITY_DEFAULT;
 
