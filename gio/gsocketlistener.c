@@ -549,10 +549,9 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
 
           if (!g_socket_bind (socket4, address, TRUE, error))
             {
-              g_object_unref (address);
-              g_object_unref (socket4);
-              if (socket6 != NULL)
-                g_object_unref (socket6);
+              g_clear_object (&address);
+              g_clear_object (&socket4);
+              g_clear_object (&socket6);
               g_clear_error (&socket6_listen_error);
 
               return FALSE;
@@ -1137,8 +1136,7 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
           if (!result ||
               !(address = g_socket_get_local_address (socket6, error)))
             {
-              g_object_unref (socket6);
-              socket6 = NULL;
+              g_clear_object (&socket6);
               break;
             }
 
@@ -1210,14 +1208,12 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
           else
             /* we failed to bind to the specified port.  try again. */
             {
-              g_object_unref (socket4);
-              socket4 = NULL;
+              g_clear_object (&socket4);
 
               /* keep this open so we get a different port number */
               sockets_to_close = g_slist_prepend (sockets_to_close,
-                                                  socket6);
+                                                  g_steal_pointer (&socket6));
               candidate_port = 0;
-              socket6 = NULL;
             }
         }
       else
@@ -1231,8 +1227,7 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
           if (!result ||
               !(address = g_socket_get_local_address (socket4, error)))
             {
-              g_object_unref (socket4);
-              socket4 = NULL;
+              g_clear_object (&socket4);
               break;
             }
 
@@ -1251,12 +1246,7 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
   /* should only be non-zero if we have a socket */
   g_assert ((candidate_port != 0) == (socket4 || socket6));
 
-  while (sockets_to_close)
-    {
-      g_object_unref (sockets_to_close->data);
-      sockets_to_close = g_slist_delete_link (sockets_to_close,
-                                              sockets_to_close);
-    }
+  g_slist_free_full (g_steal_pointer (&sockets_to_close), g_object_unref);
 
   /* now we actually listen() the sockets and add them to the listener. If
    * either of the listen()s fails, only return the other socket. Fail if both
