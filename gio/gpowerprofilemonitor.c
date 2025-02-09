@@ -40,6 +40,7 @@
  * “Low Power” mode on some systems).
  *
  * When in “Low Power” mode, it is recommended that applications:
+ *
  * - disable automatic downloads;
  * - reduce the rate of refresh from online sources such as calendar or
  *   email synchronisation;

@@ -241,7 +241,7 @@ GQuark g_option_error_quark (void);
  * @long_name: The long name of an option can be used to specify it
  *     in a commandline as `--long_name`. Every option must have a
  *     long name. To resolve conflicts if multiple option groups contain
- *     the same long name, it is also possible to specify the option as 
+ *     the same long name, it is also possible to specify the option as
  *     `--groupname-long_name`.
  * @short_name: If an option has a short name, it can be specified
  *     `-short_name` in a commandline. @short_name must be  a printable
@@ -254,13 +254,15 @@ GQuark g_option_error_quark (void);
  *     called to handle the extra argument. Otherwise, @arg_data is a
  *     pointer to a location to store the value, the required type of
  *     the location depends on the @arg type:
- *      - %G_OPTION_ARG_NONE: %gboolean
- *      - %G_OPTION_ARG_STRING: %gchar*
- *      - %G_OPTION_ARG_INT: %gint
- *      - %G_OPTION_ARG_FILENAME: %gchar*
- *      - %G_OPTION_ARG_STRING_ARRAY: %gchar**
- *      - %G_OPTION_ARG_FILENAME_ARRAY: %gchar**
- *      - %G_OPTION_ARG_DOUBLE: %gdouble
+ *
+ *     - %G_OPTION_ARG_NONE: %gboolean
+ *     - %G_OPTION_ARG_STRING: %gchar*
+ *     - %G_OPTION_ARG_INT: %gint
+ *     - %G_OPTION_ARG_FILENAME: %gchar*
+ *     - %G_OPTION_ARG_STRING_ARRAY: %gchar**
+ *     - %G_OPTION_ARG_FILENAME_ARRAY: %gchar**
+ *     - %G_OPTION_ARG_DOUBLE: %gdouble
+ *
  *     If @arg type is %G_OPTION_ARG_STRING or %G_OPTION_ARG_FILENAME,
  *     the location will contain a newly allocated string if the option
  *     was given. That string needs to be freed by the callee using g_free().
@@ -273,7 +275,7 @@ GQuark g_option_error_quark (void);
  *     by the option in `--help` output. The @arg_description is translated
  *     using the @translate_func of the group, see
  *     g_option_group_set_translation_domain().
- * 
+ *
  * A GOptionEntry struct defines a single option. To have an effect, they
  * must be added to a #GOptionGroup with g_option_context_add_main_entries()
  * or g_option_group_add_entries().
