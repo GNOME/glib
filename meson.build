@@ -183,7 +183,7 @@ test_timeout = 30
 test_timeout_slow = 90
 
 add_test_setup('default',
-  is_default: true,
+  is_default: not meson.is_subproject(),
   exclude_suites: ['flaky', 'failing'],
   env: common_test_env,
   timeout_multiplier: 2,
