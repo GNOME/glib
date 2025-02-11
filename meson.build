@@ -2487,6 +2487,12 @@ glib_conf.set('HAVE_PROC_SELF_CMDLINE', have_proc_self_cmdline)
 
 python = import('python').find_installation()
 
+# Sets the shebang on script files. This has been changed many times including
+# using env, the absolute path to the Python executable, and using both python
+# and python3 names. Please review the history here, prior to suggesting
+# further changes: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/439
+python_shebang = '/usr/bin/env python3'
+
 python_version = python.language_version()
 python_version_req = '>=3.7'
 if not python_version.version_compare(python_version_req)
