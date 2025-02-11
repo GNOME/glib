@@ -811,6 +811,40 @@ test_locale_string (void)
 
   setlocale (LC_ALL, old_locale);
   g_free (old_locale);
+
+  /* test that C locale is handled properly (as gettext does) */
+
+  old_locale = g_strdup (setlocale (LC_ALL, NULL));
+  keyfile = load_data (data, G_KEY_FILE_KEEP_TRANSLATIONS);
+
+  g_key_file_set_locale_string (keyfile, "valid", "key1", "C", "v1_C");
+  check_locale_string_value (keyfile, "valid", "key1", "C", "v1_C");
+  check_string_value (keyfile, "valid", "key1", "v1_C");
+  check_string_locale_value (keyfile, "valid", "key1", "C", "C");
+
+  /*
+   * FIXME:
+   * - Tests using setenv() needs to be converted to spawn subprocesses.
+   * - Tests using setlocale() should use uselocale() instead.
+   */
+  g_setenv ("LANGUAGE", "C:it:de", TRUE);
+  setlocale (LC_ALL, "");
+  check_locale_string_value (keyfile, "valid", "key1", NULL, "v1_C");
+  check_string_locale_value (keyfile, "valid", "key1", NULL, "C");
+
+  g_setenv ("LANGUAGE", "it:C:de", TRUE);
+  setlocale (LC_ALL, "");
+  check_locale_string_value (keyfile, "valid", "key1", NULL, "v1_C");
+  check_string_locale_value (keyfile, "valid", "key1", NULL, "C");
+
+  g_setenv ("LANGUAGE", "it:de:C", TRUE);
+  setlocale (LC_ALL, "");
+  check_locale_string_value (keyfile, "valid", "key1", NULL, "v1-de");
+  check_string_locale_value (keyfile, "valid", "key1", NULL, "de");
+
+  g_key_file_free (keyfile);
+  setlocale (LC_ALL, old_locale);
+  g_free (old_locale);
 }
 
 static void

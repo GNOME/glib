@@ -119,7 +119,8 @@
  * Key-value pairs generally have the form `key=value`, with the exception
  * of localized strings, which have the form `key[locale]=value`, with a
  * locale identifier of the form `lang_COUNTRY@MODIFIER` where `COUNTRY`
- * and `MODIFIER` are optional. Space before and after the '=' character
+ * and `MODIFIER` are optional. As a special case, the locale `C` is associated with
+ * the untranslated pair `key=value` (since GLib 2.84). Space before and after the '=' character
  * are ignored. Newline, tab, carriage return and backslash characters in
  * value are escaped as `\n`, `\t`, `\r`, and `\\\\`, respectively. To preserve
  * leading spaces in values, these can also be escaped as `\s`.
@@ -2170,6 +2171,8 @@ g_key_file_set_string_list (GKeyFile            *key_file,
  * Associates a string value for @key and @locale under @group_name.
  * If the translation for @key cannot be found then it is created.
  *
+ * If @locale is `C` then the untranslated value is set (since GLib 2.84).
+ *
  * Since: 2.6
  **/
 void
@@ -2187,7 +2190,7 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
   g_return_if_fail (string != NULL);
 
   value = g_key_file_parse_string_as_value (key_file, string, FALSE);
-  full_key = g_strdup_printf ("%s[%s]", key, locale);
+  full_key = g_strcmp0 (locale, "C") != 0 ? g_strdup_printf ("%s[%s]", key, locale) : g_strdup (key);
   g_key_file_set_value (key_file, group_name, full_key, value);
   g_free (full_key);
   g_free (value);
@@ -2203,7 +2206,9 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
  *
  * Returns the value associated with @key under @group_name
  * translated in the given @locale if available.  If @locale is
- * %NULL then the current locale is assumed. 
+ * %NULL then the current locale is assumed.
+ *
+ * If @locale is `C` then the untranslated value is returned (since GLib 2.84).
  *
  * If @locale is to be non-%NULL, or if the current locale will change over
  * the lifetime of the #GKeyFile, it must be loaded with
@@ -2253,6 +2258,9 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
   
   for (i = 0; languages[i]; i++)
     {
+      if (g_strcmp0 (languages[i], "C") == 0)
+        break;
+
       candidate_key = g_strdup_printf ("%s[%s]", key, languages[i]);
       
       translated_value = g_key_file_get_string (key_file,
@@ -2330,6 +2338,9 @@ g_key_file_get_locale_for_key (GKeyFile    *key_file,
     {
       gchar *candidate_key, *translated_value;
 
+      if (g_strcmp0 (languages[i], "C") == 0)
+        break;
+
       candidate_key = g_strdup_printf ("%s[%s]", key, languages[i]);
       translated_value = g_key_file_get_string (key_file, group_name, candidate_key, NULL);
       g_free (translated_value);
@@ -2358,6 +2369,8 @@ g_key_file_get_locale_for_key (GKeyFile    *key_file,
  * Returns the values associated with @key under @group_name
  * translated in the given @locale if available.  If @locale is
  * %NULL then the current locale is assumed.
+ *
+ * If @locale is `C` then the untranslated value is returned (since GLib 2.84).
  *
  * If @locale is to be non-%NULL, or if the current locale will change over
  * the lifetime of the #GKeyFile, it must be loaded with
@@ -2436,7 +2449,9 @@ g_key_file_get_locale_string_list (GKeyFile     *key_file,
  *
  * Associates a list of string values for @key and @locale under
  * @group_name.  If the translation for @key cannot be found then
- * it is created. 
+ * it is created.
+ *
+ * If @locale is `C` then the untranslated value is set (since GLib 2.84).
  *
  * Since: 2.6
  **/
@@ -2469,7 +2484,7 @@ g_key_file_set_locale_string_list (GKeyFile            *key_file,
       g_free (value);
     }
 
-  full_key = g_strdup_printf ("%s[%s]", key, locale);
+  full_key = g_strcmp0 (locale, "C") != 0 ? g_strdup_printf ("%s[%s]", key, locale) : g_strdup (key);
   g_key_file_set_value (key_file, group_name, full_key, value_list->str);
   g_free (full_key);
   g_string_free (value_list, TRUE);
