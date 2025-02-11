@@ -2490,7 +2490,7 @@ python = import('python').find_installation()
 # Sets the shebang on script files. This has been changed many times including
 # using env, the absolute path to the Python executable, and using both python
 # and python3 names. Please review the history here, prior to suggesting
-# further changes: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/439
+# further changes: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4391
 python_shebang = '/usr/bin/env python3'
 
 python_version = python.language_version()
