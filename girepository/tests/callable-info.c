@@ -199,6 +199,7 @@ test_callable_info_static_vfunc (RepositoryFixture *fx,
   if (!vfunc_info)
     {
       g_test_skip ("g-ir-scanner is not new enough");
+      gi_base_info_unref (info);
       return;
     }
   g_assert_nonnull (vfunc_info);
