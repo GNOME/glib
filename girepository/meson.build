@@ -248,9 +248,9 @@ if enable_gir
   subdir('introspection')
 endif
 
+subdir('decompiler')
+subdir('inspector')
+
 if build_tests
   subdir('tests')
 endif
-
-subdir('decompiler')
-subdir('inspector')

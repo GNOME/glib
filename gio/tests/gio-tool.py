@@ -23,21 +23,16 @@
 
 """Integration tests for the gio utility."""
 
-import collections
-import os
-import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 
 import taptestrunner
+import testprogramrunner
 
 
-Result = collections.namedtuple("Result", ("info", "out", "err"))
-
-
-class TestGioTool(unittest.TestCase):
+class TestGioTool(testprogramrunner.TestProgramRunner):
     """Integration test for running the gio tool.
 
     This can be run when installed or uninstalled. When uninstalled, it
@@ -48,61 +43,11 @@ class TestGioTool(unittest.TestCase):
     effects on the file system.
     """
 
-    # Track the cwd, we want to back out to that to clean up our tempdir
-    cwd = ""
-
-    def setUp(self):
-        self.timeout_seconds = 6  # seconds per test
-        self.tmpdir = tempfile.TemporaryDirectory()
-        self.cwd = os.getcwd()
-        os.chdir(self.tmpdir.name)
-        print("tmpdir:", self.tmpdir.name)
-
-        ext = ""
-        if os.name == "nt":
-            ext = ".exe"
-
-        if "G_TEST_BUILDDIR" in os.environ:
-            self.__gio = os.path.join(
-                os.environ["G_TEST_BUILDDIR"],
-                "..",
-                "gio" + ext,
-            )
-        else:
-            self.__gio = shutil.which("gio" + ext)
-        print("gio:", self.__gio)
-
-    def tearDown(self):
-        os.chdir(self.cwd)
-        self.tmpdir.cleanup()
+    PROGRAM_NAME = "gio"
+    PROGRAM_TYPE = testprogramrunner.ProgramType.NATIVE
 
     def runGio(self, *args):
-        argv = [self.__gio]
-        argv.extend(args)
-        print("Running:", argv)
-
-        env = os.environ.copy()
-        env["LC_ALL"] = "C.UTF-8"
-        env["G_DEBUG"] = "fatal-warnings"
-        print("Environment:", env)
-
-        # We want to ensure consistent line endings...
-        info = subprocess.run(
-            argv,
-            timeout=self.timeout_seconds,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            env=env,
-            universal_newlines=True,
-        )
-        info.check_returncode()
-        out = info.stdout.strip()
-        err = info.stderr.strip()
-
-        result = Result(info, out, err)
-
-        print("Output:", result.out)
-        return result
+        return self.runTestProgram(args, timeout_seconds=6)
 
     def test_help(self):
         """Test the --help argument and help subcommand."""

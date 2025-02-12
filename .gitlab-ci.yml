@@ -372,9 +372,15 @@ installed-tests:
   extends:
     - .build-linux
     - .only-schedules-or-manual
+    - .with-git
+    - .build-gobject-introspection
   image: "${FEDORA_IMAGE}"
   stage: build
   needs: []
+  before_script:
+    - !reference [".build-linux", "before_script"]
+    - !reference [".with-git", "before_script"]
+    - !reference [".build-gobject-introspection", "before_script"]
   script:
     # dtrace is disabled because it breaks the static-link.py test
     - meson setup ${MESON_COMMON_OPTIONS}
@@ -383,6 +389,7 @@ installed-tests:
             -Dinstalled_tests=true
             -Ddefault_library=both
             -Ddtrace=disabled
+            -Dintrospection=enabled
             _build
     - meson compile -C _build
     - sudo meson install -C _build
