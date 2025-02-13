@@ -70,6 +70,7 @@ typedef enum
   PROP_CANCELLED
 } GFileMonitorProperty;
 
+static GParamSpec *props[PROP_CANCELLED + 1];
 static guint g_file_monitor_changed_signal;
 
 static void
@@ -200,19 +201,21 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
    *
    * The limit of the monitor to watch for changes, in milliseconds.
    */
-  g_object_class_install_property (object_class, PROP_RATE_LIMIT,
-                                   g_param_spec_int ("rate-limit", NULL, NULL,
-                                                     0, G_MAXINT, DEFAULT_RATE_LIMIT_MSECS, G_PARAM_READWRITE |
-                                                     G_PARAM_EXPLICIT_NOTIFY | G_PARAM_STATIC_STRINGS));
+  props[PROP_RATE_LIMIT] =
+      g_param_spec_int ("rate-limit", NULL, NULL,
+                        0, G_MAXINT, DEFAULT_RATE_LIMIT_MSECS, G_PARAM_READWRITE |
+                        G_PARAM_EXPLICIT_NOTIFY | G_PARAM_STATIC_STRINGS);
 
   /**
    * GFileMonitor:cancelled:
    *
    * Whether the monitor has been cancelled.
    */
-  g_object_class_install_property (object_class, PROP_CANCELLED,
-                                   g_param_spec_boolean ("cancelled", NULL, NULL,
-                                                         FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_CANCELLED] =
+      g_param_spec_boolean ("cancelled", NULL, NULL,
+                            FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 }
 
 /**
