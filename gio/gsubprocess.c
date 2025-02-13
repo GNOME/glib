@@ -275,9 +275,8 @@ g_subprocess_exited (GPid     pid,
   GSubprocess *self = user_data;
   GSList *tasks;
 
-  g_assert (self->pid == pid);
-
   g_mutex_lock (&self->pending_waits_lock);
+  g_assert (self->pid == pid);
   self->status = status;
   tasks = self->pending_waits;
   self->pending_waits = NULL;
@@ -306,6 +305,7 @@ initable_init (GInitable     *initable,
   gint *pipe_ptrs[3] = { NULL, NULL, NULL };
   gint pipe_fds[3] = { -1, -1, -1 };
   gint close_fds[3] = { -1, -1, -1 };
+  GPid pid;
 #ifdef G_OS_UNIX
   gint stdin_fd = -1, stdout_fd = -1, stderr_fd = -1;
 #endif
@@ -415,19 +415,23 @@ initable_init (GInitable     *initable,
                                               -1, -1, -1,
                                               NULL, NULL, 0,
 #endif
-                                              &self->pid,
+                                              &pid,
                                               pipe_ptrs[0], pipe_ptrs[1], pipe_ptrs[2],
                                               error);
-  g_assert (success == (self->pid != 0));
+  g_assert (success == (pid != 0));
+
+  g_mutex_lock (&self->pending_waits_lock);
+  self->pid = pid;
+  g_mutex_unlock (&self->pending_waits_lock);
 
   {
     guint64 identifier;
     gint s G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
 
 #ifdef G_OS_WIN32
-    identifier = (guint64) GetProcessId (self->pid);
+    identifier = (guint64) GetProcessId (pid);
 #else
-    identifier = (guint64) self->pid;
+    identifier = (guint64) pid;
 #endif
 
     s = g_snprintf (self->identifier, sizeof self->identifier, "%"G_GUINT64_FORMAT, identifier);
@@ -441,7 +445,7 @@ initable_init (GInitable     *initable,
       GSource *source;
 
       worker_context = GLIB_PRIVATE_CALL (g_get_worker_context) ();
-      source = g_child_watch_source_new (self->pid);
+      source = g_child_watch_source_new (pid);
       g_source_set_callback (source, (GSourceFunc) g_subprocess_exited, g_object_ref (self), g_object_unref);
       g_source_attach (source, worker_context);
       g_source_unref (source);
@@ -637,12 +641,15 @@ g_subprocess_newv (const gchar * const  *argv,
 const gchar *
 g_subprocess_get_identifier (GSubprocess *subprocess)
 {
+  const char *identifier;
+
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), NULL);
 
-  if (subprocess->pid)
-    return subprocess->identifier;
-  else
-    return NULL;
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  identifier = subprocess->pid ? subprocess->identifier : NULL;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  return identifier;
 }
 
 /**
@@ -905,7 +912,11 @@ g_subprocess_wait (GSubprocess   *subprocess,
   /* We can shortcut in the case that the process already quit (but only
    * after we checked the cancellable).
    */
-  if (subprocess->pid == 0)
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  success = subprocess->pid == 0;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  if (success)
     return TRUE;
 
   /* Otherwise, we need to do this the long way... */
@@ -936,8 +947,16 @@ g_subprocess_wait_check (GSubprocess   *subprocess,
                          GCancellable  *cancellable,
                          GError       **error)
 {
-  return g_subprocess_wait (subprocess, cancellable, error) &&
-         g_spawn_check_wait_status (subprocess->status, error);
+  gint status;
+
+  if (!g_subprocess_wait (subprocess, cancellable, error))
+    return FALSE;
+
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  status = subprocess->status;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  return g_spawn_check_wait_status (status, error);
 }
 
 /**
@@ -980,8 +999,16 @@ g_subprocess_wait_check_finish (GSubprocess   *subprocess,
                                 GAsyncResult  *result,
                                 GError       **error)
 {
-  return g_subprocess_wait_finish (subprocess, result, error) &&
-         g_spawn_check_wait_status (subprocess->status, error);
+  gint status;
+
+  if (!g_subprocess_wait_finish (subprocess, result, error))
+    return FALSE;
+
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  status = subprocess->status;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  return g_spawn_check_wait_status (status, error);
 }
 
 #ifdef G_OS_UNIX
@@ -999,8 +1026,10 @@ g_subprocess_actually_send_signal (gpointer user_data)
   /* The pid is set to zero from the worker thread as well, so we don't
    * need to take a lock in order to prevent it from changing under us.
    */
+  g_mutex_lock (&signal_record->subprocess->pending_waits_lock);
   if (signal_record->subprocess->pid)
     kill (signal_record->subprocess->pid, signal_record->signalnum);
+  g_mutex_unlock (&signal_record->subprocess->pending_waits_lock);
 
   g_object_unref (signal_record->subprocess);
 
@@ -1082,7 +1111,9 @@ g_subprocess_force_exit (GSubprocess *subprocess)
 #ifdef G_OS_UNIX
   g_subprocess_dispatch_signal (subprocess, SIGKILL);
 #else
+  g_mutex_lock (&subprocess->pending_waits_lock);
   TerminateProcess (subprocess->pid, 1);
+  g_mutex_unlock (&subprocess->pending_waits_lock);
 #endif
 }
 
@@ -1109,10 +1140,19 @@ g_subprocess_force_exit (GSubprocess *subprocess)
 gint
 g_subprocess_get_status (GSubprocess *subprocess)
 {
-  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
-  g_return_val_if_fail (subprocess->pid == 0, FALSE);
+  gint status;
+  GPid pid;
 
-  return subprocess->status;
+  g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
+
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  pid = subprocess->pid;
+  status = subprocess->status;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  g_return_val_if_fail (pid == 0, FALSE);
+
+  return status;
 }
 
 /**
@@ -1133,13 +1173,22 @@ g_subprocess_get_status (GSubprocess *subprocess)
 gboolean
 g_subprocess_get_successful (GSubprocess *subprocess)
 {
+  GPid pid;
+  gint status;
+
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
-  g_return_val_if_fail (subprocess->pid == 0, FALSE);
+
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  pid = subprocess->pid;
+  status = subprocess->status;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  g_return_val_if_fail (pid == 0, FALSE);
 
 #ifdef G_OS_UNIX
-  return WIFEXITED (subprocess->status) && WEXITSTATUS (subprocess->status) == 0;
+  return WIFEXITED (status) && WEXITSTATUS (status) == 0;
 #else
-  return subprocess->status == 0;
+  return status == 0;
 #endif
 }
 
@@ -1162,11 +1211,20 @@ g_subprocess_get_successful (GSubprocess *subprocess)
 gboolean
 g_subprocess_get_if_exited (GSubprocess *subprocess)
 {
+  GPid pid;
+  gint status G_GNUC_UNUSED;
+
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
-  g_return_val_if_fail (subprocess->pid == 0, FALSE);
+
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  pid = subprocess->pid;
+  status = subprocess->status;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  g_return_val_if_fail (pid == 0, FALSE);
 
 #ifdef G_OS_UNIX
-  return WIFEXITED (subprocess->status);
+  return WIFEXITED (status);
 #else
   return TRUE;
 #endif
@@ -1192,15 +1250,24 @@ g_subprocess_get_if_exited (GSubprocess *subprocess)
 gint
 g_subprocess_get_exit_status (GSubprocess *subprocess)
 {
+  gint status;
+  GPid pid;
+
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), 1);
-  g_return_val_if_fail (subprocess->pid == 0, 1);
+
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  pid = subprocess->pid;
+  status = subprocess->status;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  g_return_val_if_fail (pid == 0, 1);
 
 #ifdef G_OS_UNIX
-  g_return_val_if_fail (WIFEXITED (subprocess->status), 1);
+  g_return_val_if_fail (WIFEXITED (status), 1);
 
-  return WEXITSTATUS (subprocess->status);
+  return WEXITSTATUS (status);
 #else
-  return subprocess->status;
+  return status;
 #endif
 }
 
@@ -1222,11 +1289,20 @@ g_subprocess_get_exit_status (GSubprocess *subprocess)
 gboolean
 g_subprocess_get_if_signaled (GSubprocess *subprocess)
 {
+  GPid pid;
+  gint status G_GNUC_UNUSED;
+
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
-  g_return_val_if_fail (subprocess->pid == 0, FALSE);
+
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  pid = subprocess->pid;
+  status = subprocess->status;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  g_return_val_if_fail (pid == 0, FALSE);
 
 #ifdef G_OS_UNIX
-  return WIFSIGNALED (subprocess->status);
+  return WIFSIGNALED (status);
 #else
   return FALSE;
 #endif
@@ -1251,13 +1327,22 @@ g_subprocess_get_if_signaled (GSubprocess *subprocess)
 gint
 g_subprocess_get_term_sig (GSubprocess *subprocess)
 {
+  GPid pid;
+  gint status G_GNUC_UNUSED;
+
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), 0);
-  g_return_val_if_fail (subprocess->pid == 0, 0);
+
+  g_mutex_lock (&subprocess->pending_waits_lock);
+  pid = subprocess->pid;
+  status = subprocess->status;
+  g_mutex_unlock (&subprocess->pending_waits_lock);
+
+  g_return_val_if_fail (pid == 0, 0);
 
 #ifdef G_OS_UNIX
-  g_return_val_if_fail (WIFSIGNALED (subprocess->status), 0);
+  g_return_val_if_fail (WIFSIGNALED (status), 0);
 
-  return WTERMSIG (subprocess->status);
+  return WTERMSIG (status);
 #else
   g_critical ("g_subprocess_get_term_sig() called on Windows, where "
               "g_subprocess_get_if_signaled() always returns FALSE...");
