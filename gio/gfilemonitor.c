@@ -64,12 +64,11 @@ struct _GFileMonitorPrivate
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GFileMonitor, g_file_monitor, G_TYPE_OBJECT)
 
-enum
+typedef enum
 {
-  PROP_0,
-  PROP_RATE_LIMIT,
+  PROP_RATE_LIMIT = 1,
   PROP_CANCELLED
-};
+} GFileMonitorProperty;
 
 static guint g_file_monitor_changed_signal;
 
@@ -79,14 +78,15 @@ g_file_monitor_set_property (GObject      *object,
                              const GValue *value,
                              GParamSpec   *pspec)
 {
-  //GFileMonitor *monitor;
-
-  //monitor = G_FILE_MONITOR (object);
-
-  switch (prop_id)
+  switch ((GFileMonitorProperty) prop_id)
     {
     case PROP_RATE_LIMIT:
       /* not supported by default */
+      break;
+
+    case PROP_CANCELLED:
+      /* Read only */
+      g_assert_not_reached ();
       break;
 
     default:
@@ -101,7 +101,7 @@ g_file_monitor_get_property (GObject    *object,
                              GValue     *value,
                              GParamSpec *pspec)
 {
-  switch (prop_id)
+  switch ((GFileMonitorProperty) prop_id)
     {
     case PROP_RATE_LIMIT:
       /* we expect this to be overridden... */
