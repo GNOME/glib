@@ -64,13 +64,13 @@ struct _GFileMonitorPrivate
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GFileMonitor, g_file_monitor, G_TYPE_OBJECT)
 
-enum
+typedef enum
 {
-  PROP_0,
-  PROP_RATE_LIMIT,
+  PROP_RATE_LIMIT = 1,
   PROP_CANCELLED
-};
+} GFileMonitorProperty;
 
+static GParamSpec *props[PROP_CANCELLED + 1];
 static guint g_file_monitor_changed_signal;
 
 static void
@@ -79,14 +79,15 @@ g_file_monitor_set_property (GObject      *object,
                              const GValue *value,
                              GParamSpec   *pspec)
 {
-  //GFileMonitor *monitor;
-
-  //monitor = G_FILE_MONITOR (object);
-
-  switch (prop_id)
+  switch ((GFileMonitorProperty) prop_id)
     {
     case PROP_RATE_LIMIT:
       /* not supported by default */
+      break;
+
+    case PROP_CANCELLED:
+      /* Read only */
+      g_assert_not_reached ();
       break;
 
     default:
@@ -101,7 +102,9 @@ g_file_monitor_get_property (GObject    *object,
                              GValue     *value,
                              GParamSpec *pspec)
 {
-  switch (prop_id)
+  GFileMonitor *self = G_FILE_MONITOR (object);
+
+  switch ((GFileMonitorProperty) prop_id)
     {
     case PROP_RATE_LIMIT:
       /* we expect this to be overridden... */
@@ -109,9 +112,7 @@ g_file_monitor_get_property (GObject    *object,
       break;
 
     case PROP_CANCELLED:
-      //g_mutex_lock (&fms->lock);
-      g_value_set_boolean (value, FALSE);//fms->cancelled);
-      //g_mutex_unlock (&fms->lock);
+      g_value_set_boolean (value, g_file_monitor_is_cancelled (self));
       break;
 
     default:
@@ -200,19 +201,21 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
    *
    * The limit of the monitor to watch for changes, in milliseconds.
    */
-  g_object_class_install_property (object_class, PROP_RATE_LIMIT,
-                                   g_param_spec_int ("rate-limit", NULL, NULL,
-                                                     0, G_MAXINT, DEFAULT_RATE_LIMIT_MSECS, G_PARAM_READWRITE |
-                                                     G_PARAM_EXPLICIT_NOTIFY | G_PARAM_STATIC_STRINGS));
+  props[PROP_RATE_LIMIT] =
+      g_param_spec_int ("rate-limit", NULL, NULL,
+                        0, G_MAXINT, DEFAULT_RATE_LIMIT_MSECS, G_PARAM_READWRITE |
+                        G_PARAM_EXPLICIT_NOTIFY | G_PARAM_STATIC_STRINGS);
 
   /**
    * GFileMonitor:cancelled:
    *
    * Whether the monitor has been cancelled.
    */
-  g_object_class_install_property (object_class, PROP_CANCELLED,
-                                   g_param_spec_boolean ("cancelled", NULL, NULL,
-                                                         FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_CANCELLED] =
+      g_param_spec_boolean ("cancelled", NULL, NULL,
+                            FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class, G_N_ELEMENTS (props), props);
 }
 
 /**
@@ -251,7 +254,7 @@ g_file_monitor_cancel (GFileMonitor *monitor)
       G_FILE_MONITOR_GET_CLASS (monitor)->cancel (monitor);
 
       g_atomic_int_set (&monitor->priv->cancelled, CANCEL_STATE_CANCELLED);
-      g_object_notify (G_OBJECT (monitor), "cancelled");
+      g_object_notify_by_pspec (G_OBJECT (monitor), props[PROP_CANCELLED]);
     }
 
   return TRUE;
