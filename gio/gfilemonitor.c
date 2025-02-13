@@ -102,6 +102,8 @@ g_file_monitor_get_property (GObject    *object,
                              GValue     *value,
                              GParamSpec *pspec)
 {
+  GFileMonitor *self = G_FILE_MONITOR (object);
+
   switch ((GFileMonitorProperty) prop_id)
     {
     case PROP_RATE_LIMIT:
@@ -110,9 +112,7 @@ g_file_monitor_get_property (GObject    *object,
       break;
 
     case PROP_CANCELLED:
-      //g_mutex_lock (&fms->lock);
-      g_value_set_boolean (value, FALSE);//fms->cancelled);
-      //g_mutex_unlock (&fms->lock);
+      g_value_set_boolean (value, g_file_monitor_is_cancelled (self));
       break;
 
     default:
