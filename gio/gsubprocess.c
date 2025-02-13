@@ -1113,7 +1113,7 @@ g_subprocess_force_exit (GSubprocess *subprocess)
 #else
   g_mutex_lock (&subprocess->pending_waits_lock);
   TerminateProcess (subprocess->pid, 1);
-  g_mutex_lock (&subprocess->pending_waits_lock);
+  g_mutex_unlock (&subprocess->pending_waits_lock);
 #endif
 }
 
