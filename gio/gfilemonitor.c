@@ -254,7 +254,7 @@ g_file_monitor_cancel (GFileMonitor *monitor)
       G_FILE_MONITOR_GET_CLASS (monitor)->cancel (monitor);
 
       g_atomic_int_set (&monitor->priv->cancelled, CANCEL_STATE_CANCELLED);
-      g_object_notify (G_OBJECT (monitor), "cancelled");
+      g_object_notify_by_pspec (G_OBJECT (monitor), props[PROP_CANCELLED]);
     }
 
   return TRUE;
