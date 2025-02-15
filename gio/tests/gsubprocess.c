@@ -1352,6 +1352,22 @@ test_terminate (void)
   g_object_unref (proc);
 }
 
+static void
+test_fail_initialization (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GSubprocess *proc;
+
+  proc = g_subprocess_new (G_SUBPROCESS_FLAGS_NONE,
+                           error,
+                           "thisprogramshouldnotexistprettyplease",
+                           NULL);
+
+  g_assert_null (proc);
+  g_assert_error (local_error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+}
+
 #ifdef G_OS_UNIX
 static void
 send_signal (gpointer user_data)
@@ -2244,6 +2260,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/communicate/utf8/invalid", test_communicate_utf8_invalid);
   g_test_add_func ("/gsubprocess/communicate/nothing", test_communicate_nothing);
   g_test_add_func ("/gsubprocess/terminate", test_terminate);
+  g_test_add_func ("/gsubprocess/fail-initialization", test_fail_initialization);
   g_test_add_func ("/gsubprocess/env", test_env);
   g_test_add_func ("/gsubprocess/env/inherit", test_env_inherit);
   g_test_add_func ("/gsubprocess/cwd", test_cwd);

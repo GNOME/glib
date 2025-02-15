@@ -305,7 +305,7 @@ initable_init (GInitable     *initable,
   gint *pipe_ptrs[3] = { NULL, NULL, NULL };
   gint pipe_fds[3] = { -1, -1, -1 };
   gint close_fds[3] = { -1, -1, -1 };
-  GPid pid;
+  GPid pid = 0;
 #ifdef G_OS_UNIX
   gint stdin_fd = -1, stdout_fd = -1, stderr_fd = -1;
 #endif
