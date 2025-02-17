@@ -724,14 +724,21 @@ serialize_buttons (GNotification *notification,
   GNotificationSound *sound = NULL;
   char *custom_sound_action = NULL;
   GVariant *custom_sound_target = NULL;
+  char *response_action = NULL;
+  GVariant *response_action_target = NULL;
 
   n_buttons = g_notification_get_n_buttons (notification);
 
-  sound = g_notification_get_sound (notification);
-  if (version > 1 && sound)
-    g_notification_sound_get_custom (sound, &custom_sound_action, &custom_sound_target);
+  if (version > 1)
+    {
+      sound = g_notification_get_sound (notification);
+      if (sound)
+        g_notification_sound_get_custom (sound, &custom_sound_action, &custom_sound_target);
 
-  if (n_buttons == 0 && custom_sound_action == NULL)
+      g_notification_get_response_action_for_text (notification, &response_action, &response_action_target);
+    }
+
+  if (n_buttons == 0 && custom_sound_action == NULL && response_action == NULL)
     return NULL;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("aa{sv}"));
@@ -748,6 +755,22 @@ serialize_buttons (GNotification *notification,
         {
           g_variant_builder_add (&builder, "{sv}", "target", custom_sound_target);
           g_clear_pointer (&custom_sound_target, g_variant_unref);
+        }
+
+      g_variant_builder_close (&builder);
+    }
+
+  if (response_action)
+    {
+      g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
+
+      g_variant_builder_add (&builder, "{sv}", "action", g_variant_new_take_string (response_action));
+      g_variant_builder_add (&builder, "{sv}", "purpose", g_variant_new_string ("im.reply-with-text"));
+
+      if (response_action_target)
+        {
+          g_variant_builder_add (&builder, "{sv}", "target", response_action_target);
+          g_clear_pointer (&response_action_target, g_variant_unref);
         }
 
       g_variant_builder_close (&builder);

@@ -44,6 +44,8 @@ struct _GNotification
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
+  gchar *response_action;
+  GVariant *response_action_target;
 };
 
 typedef enum
@@ -210,11 +212,15 @@ activate_app (GApplication *application,
   g_clear_object (&sound);
   send_and_wait (data, application, "test9", notification);
 
-  notification = g_notification_new ("Test10");
+  notification = g_notification_new ("test10");
   sound = g_notification_sound_new_custom ("app.play-custom-sound", g_variant_new_string ("some target"));
   g_notification_set_sound (notification, sound);
   g_clear_object (&sound);
   send_and_wait (data, application, "test10", notification);
+
+  notification = g_notification_new ("test11");
+  g_notification_set_response_action_for_text (notification, "app.response", g_variant_new_string("some target"));
+  send_and_wait (data, application, "test11", notification);
 
   send_and_wait (data, application, NULL, notification);
 
@@ -233,6 +239,7 @@ notification_received (GNotificationServer *server,
 {
   TestData *exp_data = user_data;
   struct _GNotification *exp_notification;
+  gboolean has_response_action = FALSE;
 
   g_assert_nonnull (exp_data);
   exp_notification = (struct _GNotification *)exp_data->notification;
@@ -460,9 +467,17 @@ notification_received (GNotificationServer *server,
       g_assert_true (g_variant_equal (default_action_target, exp_notification->default_action_target));
     }
 
+  if (exp_notification->default_action_target)
+    {
+      g_autoptr(GVariant) default_action_target = NULL;
+      default_action_target = g_variant_lookup_value (notification, "default-action-target", NULL);
+      g_assert_true (g_variant_equal (default_action_target, exp_notification->default_action_target));
+    }
+
   // Custom sound is a special system button for the portal
   if ((exp_notification->buttons && exp_notification->buttons->len > 0) ||
-      (exp_notification->sound && exp_notification->sound->sound_type == SOUND_TYPE_CUSTOM))
+      (exp_notification->sound && exp_notification->sound->sound_type == SOUND_TYPE_CUSTOM) ||
+      exp_notification->response_action)
     {
       gsize i;
       g_autoptr(GVariant) buttons = NULL;
@@ -495,6 +510,28 @@ notification_received (GNotificationServer *server,
 
               continue;
             }
+
+          if (exp_notification->response_action)
+            {
+              g_assert_false (g_variant_lookup (button, "label", "&s", &label));
+
+              g_assert_true (g_variant_lookup (button, "action", "&s", &action_name));
+              g_assert_cmpstr (action_name, ==, exp_notification->response_action);
+
+              if (exp_notification->response_action_target)
+                {
+                  action_target = g_variant_lookup_value (button, "target", NULL);
+                  g_assert_true (g_variant_equal (action_target, exp_notification->response_action_target));
+                }
+              else
+                {
+                  g_assert_null (g_variant_lookup_value (button, "target", NULL));
+                }
+
+              has_response_action = TRUE;
+              continue;
+            }
+
           exp_button = (Button*)g_ptr_array_index (exp_notification->buttons, i);
           g_assert_nonnull (exp_button);
 
@@ -520,6 +557,9 @@ notification_received (GNotificationServer *server,
           g_assert_true (g_variant_equal (action_target, exp_button->target));
         }
     }
+
+  if (exp_notification->response_action)
+    g_assert_true (has_response_action);
 
   send_and_wait_finish (exp_data);
 }
