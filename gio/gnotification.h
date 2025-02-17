@@ -117,6 +117,11 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
                                                                          const gchar   *action,
                                                                          GVariant      *target);
 
+GIO_AVAILABLE_IN_2_85
+void g_notification_set_response_action_for_text (GNotification *notification,
+                                                  const gchar   *action,
+                                                  GVariant      *target);
+
 /**
  * G_NOTIFICATION_CATEGORY_IM_RECEIVED:
  *

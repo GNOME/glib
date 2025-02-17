@@ -59,6 +59,9 @@ gboolean                g_notification_get_default_action               (GNotifi
                                                                          gchar         **action,
                                                                          GVariant      **target);
 
+gboolean                g_notification_get_response_action_for_text     (GNotification  *notification,
+                                                                         gchar         **action,
+                                                                         GVariant      **target);
 GVariant *              g_notification_serialize                        (GNotification *notification);
 
 #endif

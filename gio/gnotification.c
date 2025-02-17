@@ -96,6 +96,8 @@ struct _GNotification
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;  /* (nullable) (owned), not floating */
+  gchar *response_action;
+  GVariant *response_action_target;  /* (nullable) (owned), not floating */
 };
 
 typedef struct
@@ -993,6 +995,82 @@ g_notification_set_default_action_and_target_value (GNotification *notification,
 
   if (target)
     notification->default_action_target = g_variant_ref_sink (target);
+}
+
+/*< private >
+ * g_notification_get_response_action_for_text:
+ * @notification: a #GNotification
+ * @action: (out) (optional) (nullable) (transfer full): return location for the
+ *   response action, or %NULL if unset
+ * @target: (out) (optional) (nullable) (transfer full): return location for the
+ *   target of the response action, or %NULL if unset
+ *
+ * Gets the action and target for the response for text action of @notification.
+ *
+ * If this function returns %TRUE, @action is guaranteed to be set to a non-%NULL
+ * value (if a pointer is passed to @action). @target may still return a %NULL
+ * value, as the response action may have no target.
+ *
+ * Returns: %TRUE if @notification has a response action
+ */
+gboolean
+g_notification_get_response_action_for_text (GNotification  *notification,
+                                             gchar         **action,
+                                             GVariant      **target)
+{
+  if (notification->response_action == NULL)
+    return FALSE;
+
+  if (action)
+    *action = g_strdup (notification->response_action);
+
+  if (target)
+    {
+      if (notification->response_action_target)
+        *target = g_variant_ref (notification->response_action_target);
+      else
+        *target = NULL;
+    }
+
+  return TRUE;
+}
+/**
+ * g_notification_set_response_action_with_text:
+ * @notification: a [class@Gio.Notification]
+ * @action: an action name
+ * @target: (nullable): a [type@GLib.Variant] to use as @action's parameter, or %NULL
+ *
+ * If @action is set and supported by the platform the @notification will
+ * contain a text field that let's a user submit a text directly from it.
+ *
+ * @action must be an application-wide action (it must start with `app.`) and
+ * needs to use a tuple in form of `(vs)` as parameter, where the first item
+ * is the target and the second the response of the user.
+
+ * If @target is non-%NULL, @action will be activated with @target as
+ * its parameter.
+ *
+ * Since: 2.85
+ */
+void
+g_notification_set_response_action_for_text (GNotification *notification,
+                                             const gchar   *action,
+                                             GVariant      *target)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+  g_return_if_fail (action != NULL && g_action_name_is_valid (action));
+
+  if (!g_str_has_prefix (action, "app."))
+    {
+      g_warning ("%s: action '%s' does not start with 'app.'."
+                 "This is unlikely to work properly.", G_STRFUNC, action);
+    }
+
+  g_set_str (&notification->response_action, action);
+
+  g_clear_pointer (&notification->response_action_target, g_variant_unref);
+  if (target)
+    notification->response_action_target = g_variant_ref_sink (target);
 }
 
 static GVariant *
