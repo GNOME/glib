@@ -707,7 +707,8 @@ serialize_sound_cb (GObject      *source_object,
 }
 
 static GVariant *
-serialize_buttons (GNotification *notification)
+serialize_buttons (GNotification *notification,
+                   guint          version)
 {
   GVariantBuilder builder;
   guint n_buttons;
@@ -720,13 +721,37 @@ serialize_buttons (GNotification *notification)
     G_NOTIFICATION_BUTTON_PURPOSE_CALL_DISABLE_SPEAKERPHONE,
     NULL
   };
+  GNotificationSound *sound = NULL;
+  char *custom_sound_action = NULL;
+  GVariant *custom_sound_target = NULL;
 
   n_buttons = g_notification_get_n_buttons (notification);
 
-  if (n_buttons == 0)
+  sound = g_notification_get_sound (notification);
+  if (version > 1 && sound)
+    g_notification_sound_get_custom (sound, &custom_sound_action, &custom_sound_target);
+
+  if (n_buttons == 0 && custom_sound_action == NULL)
     return NULL;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("aa{sv}"));
+
+  /* For the portal playing a custom sound is considered a button */
+  if (custom_sound_action)
+    {
+      g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
+
+      g_variant_builder_add (&builder, "{sv}", "action", g_variant_new_take_string (custom_sound_action));
+      g_variant_builder_add (&builder, "{sv}", "purpose", g_variant_new_string ("system.custom-alert"));
+
+      if (custom_sound_target)
+        {
+          g_variant_builder_add (&builder, "{sv}", "target", custom_sound_target);
+          g_clear_pointer (&custom_sound_target, g_variant_unref);
+        }
+
+      g_variant_builder_close (&builder);
+    }
 
   for (i = 0; i < n_buttons; i++)
     {
@@ -754,7 +779,7 @@ serialize_buttons (GNotification *notification)
       g_variant_builder_close (&builder);
     }
 
-  return g_variant_builder_end (&builder);
+    return g_variant_builder_end (&builder);
 }
 
 static GVariant *
@@ -923,7 +948,7 @@ serialize_notification (const char          *id,
         }
     }
 
-  if ((buttons = serialize_buttons (notification)))
+  if ((buttons = serialize_buttons (notification, version)))
     g_variant_builder_add (data->builder, "{sv}", "buttons", buttons);
 
   if (parser_data_release (data))
