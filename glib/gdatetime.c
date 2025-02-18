@@ -1399,7 +1399,7 @@ static GTimeZone *
 parse_iso8601_timezone (const gchar *text, gsize length, size_t *tz_offset)
 {
   size_t tz_length;
-  gint i, offset_hours, offset_minutes;
+  gint offset_hours, offset_minutes;
   gint offset_sign = 1;
   GTimeZone *tz;
   const char *tz_start;
@@ -1412,16 +1412,15 @@ parse_iso8601_timezone (const gchar *text, gsize length, size_t *tz_offset)
     }
 
   /* Look for '+' or '-' of offset */
-  for (i = length - 1; i >= 0; i--)
-    if (text[i] == '+' || text[i] == '-')
+  for (tz_length = 1; tz_length <= length; tz_length++)
+    if (text[length - tz_length] == '+' || text[length - tz_length] == '-')
       {
-        offset_sign = text[i] == '-' ? -1 : 1;
+        offset_sign = text[length - tz_length] == '-' ? -1 : 1;
         break;
       }
-  if (i < 0)
+  if (tz_length > length)
     return NULL;
-  tz_start = text + i;
-  tz_length = length - i;
+  tz_start = text + length - tz_length;
 
   /* +hh:mm or -hh:mm */
   if (tz_length == 6 && tz_start[3] == ':')
