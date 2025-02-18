@@ -421,7 +421,7 @@ guint            g_dbus_connection_register_object            (GDBusConnection  
                                                                gpointer                    user_data,
                                                                GDestroyNotify              user_data_free_func,
                                                                GError                    **error);
-GIO_AVAILABLE_IN_2_46
+GIO_DEPRECATED_IN_2_84_FOR(g_dbus_connection_register_object_with_closures2)
 guint            g_dbus_connection_register_object_with_closures (GDBusConnection         *connection,
                                                                   const gchar             *object_path,
                                                                   GDBusInterfaceInfo      *interface_info,
@@ -429,6 +429,14 @@ guint            g_dbus_connection_register_object_with_closures (GDBusConnectio
                                                                   GClosure                *get_property_closure,
                                                                   GClosure                *set_property_closure,
                                                                   GError                 **error);
+GIO_AVAILABLE_IN_2_84
+guint            g_dbus_connection_register_object_with_closures2 (GDBusConnection         *connection,
+                                                                   const gchar             *object_path,
+                                                                   GDBusInterfaceInfo      *interface_info,
+                                                                   GClosure                *method_call_closure,
+                                                                   GClosure                *get_property_closure,
+                                                                   GClosure                *set_property_closure,
+                                                                   GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gboolean         g_dbus_connection_unregister_object          (GDBusConnection            *connection,
                                                                guint                       registration_id);

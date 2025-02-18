@@ -6117,6 +6117,9 @@ register_with_closures_on_set_property (GDBusConnection *connection,
  * that can be used with g_dbus_connection_unregister_object() .
  *
  * Since: 2.46
+ * Deprecated: 2.84: Deprecated in favour of
+ *    [method@Gio.DBusConnection.register_object_with_closures2], which has more
+ *    binding-friendly reference counting semantics.
  */
 guint
 g_dbus_connection_register_object_with_closures (GDBusConnection     *connection,
@@ -6131,6 +6134,117 @@ g_dbus_connection_register_object_with_closures (GDBusConnection     *connection
   GDBusInterfaceVTable vtable =
     {
       method_call_closure != NULL  ? register_with_closures_on_method_call  : NULL,
+      get_property_closure != NULL ? register_with_closures_on_get_property : NULL,
+      set_property_closure != NULL ? register_with_closures_on_set_property : NULL,
+      { 0 }
+    };
+
+  data = register_object_data_new (method_call_closure, get_property_closure, set_property_closure);
+
+  return g_dbus_connection_register_object (connection,
+                                            object_path,
+                                            interface_info,
+                                            &vtable,
+                                            g_steal_pointer (&data),
+                                            register_object_free_func,
+                                            error);
+}
+
+static void
+register_with_closures_on_method_call2 (GDBusConnection       *connection,
+                                        const gchar           *sender,
+                                        const gchar           *object_path,
+                                        const gchar           *interface_name,
+                                        const gchar           *method_name,
+                                        GVariant              *parameters,
+                                        GDBusMethodInvocation *invocation,
+                                        gpointer               user_data)
+{
+  RegisterObjectData *data = user_data;
+  GValue params[] = { G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], sender);
+
+  g_value_init (&params[2], G_TYPE_STRING);
+  g_value_set_string (&params[2], object_path);
+
+  g_value_init (&params[3], G_TYPE_STRING);
+  g_value_set_string (&params[3], interface_name);
+
+  g_value_init (&params[4], G_TYPE_STRING);
+  g_value_set_string (&params[4], method_name);
+
+  g_value_init (&params[5], G_TYPE_VARIANT);
+  g_value_set_variant (&params[5], parameters);
+
+  g_value_init (&params[6], G_TYPE_DBUS_METHOD_INVOCATION);
+  /* NOTE: This is deliberately *not* g_value_set_object(), in contrast with the
+   * deprecated implementation in register_with_closures_on_method_call().
+   *
+   * A reference to `invocation` is transferred in to this function, but
+   * bindings don’t expect a `GClosure` to provide any (transfer full)
+   * arguments, so consume the reference here. Bindings need to add an
+   * additional reference to the `GDBusMethodInvocation` before calling any
+   * `g_dbus_method_invocation_return_*()` methods on it. They can do this
+   * automatically based on the introspection annotations for those methods. */
+  g_value_take_object (&params[6], invocation);
+
+  g_closure_invoke (data->method_call_closure, NULL, G_N_ELEMENTS (params), params, NULL);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
+  g_value_unset (params + 2);
+  g_value_unset (params + 3);
+  g_value_unset (params + 4);
+  g_value_unset (params + 5);
+  g_value_unset (params + 6);
+}
+
+/**
+ * g_dbus_connection_register_object_with_closures2:
+ * @connection: A [class@Gio.DBusConnection].
+ * @object_path: The object path to register at.
+ * @interface_info: Introspection data for the interface.
+ * @method_call_closure: (nullable): [type@GObject.Closure] for handling incoming method calls.
+ * @get_property_closure: (nullable): [type@GObject.Closure] for getting a property.
+ * @set_property_closure: (nullable): [type@GObject.Closure] for setting a property.
+ * @error: Return location for error or `NULL`.
+ *
+ * Version of [method@Gio.DBusConnection.register_object] using closures instead
+ * of a [type@Gio.DBusInterfaceVTable] for easier binding in other languages.
+ *
+ * In contrast to [method@Gio.DBusConnection.register_object] and
+ * [method@Gio.DBusConnection.register_object_with_closures], the reference
+ * counting semantics of the function wrapped by @method_call_closure are *not*
+ * the same as those of [callback@Gio.DBusInterfaceMethodCallFunc]. Ownership of
+ * a reference to the [class@Gio.DBusMethodInvocation] is *not* transferred to
+ * the function. Bindings must ensure that they add a reference to the
+ * [class@Gio.DBusMethodInvocation] before calling any
+ * `g_dbus_method_invocation_return_*()` methods on it. This should be automatic
+ * as a result of the introspection annotations on those methods.
+ *
+ * Returns: `0` if @error is set, otherwise a registration ID (never `0`)
+ * that can be used with [method@Gio.DBusConnection.unregister_object].
+ *
+ * Since: 2.84
+ */
+guint
+g_dbus_connection_register_object_with_closures2 (GDBusConnection     *connection,
+                                                  const gchar         *object_path,
+                                                  GDBusInterfaceInfo  *interface_info,
+                                                  GClosure            *method_call_closure,
+                                                  GClosure            *get_property_closure,
+                                                  GClosure            *set_property_closure,
+                                                  GError             **error)
+{
+  RegisterObjectData *data;
+  GDBusInterfaceVTable vtable =
+    {
+      method_call_closure != NULL  ? register_with_closures_on_method_call2  : NULL,
       get_property_closure != NULL ? register_with_closures_on_get_property : NULL,
       set_property_closure != NULL ? register_with_closures_on_set_property : NULL,
       { 0 }

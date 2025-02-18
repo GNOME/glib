@@ -161,6 +161,23 @@ foo_method_call (GDBusConnection       *connection,
     }
 }
 
+static void
+foo_method_call_with_closure (GDBusConnection       *connection,
+                              const gchar           *sender,
+                              const gchar           *object_path,
+                              const gchar           *interface_name,
+                              const gchar           *method_name,
+                              GVariant              *parameters,
+                              GDBusMethodInvocation *invocation,
+                              gpointer               user_data)
+{
+  /* The call below takes ownership of the invocation but ownership is not
+   * passed into the callback so get an additional reference here */
+  g_object_ref (invocation);
+
+  foo_method_call (connection, sender, object_path, interface_name, method_name, parameters, invocation, user_data);
+}
+
 static GVariant *
 foo_get_property (GDBusConnection       *connection,
                   const gchar           *sender,
@@ -1427,8 +1444,9 @@ test_object_registration (void)
 }
 
 static void
-test_object_registration_with_closures (void)
+test_object_registration_with_closures (gconstpointer test_data)
 {
+  gboolean use_new_api = GPOINTER_TO_INT (test_data);
   GError *error;
   guint registration_id;
 
@@ -1437,13 +1455,27 @@ test_object_registration_with_closures (void)
   g_assert_no_error (error);
   g_assert_nonnull (c);
 
-  registration_id = g_dbus_connection_register_object_with_closures (c,
-                                                                     "/foo/boss",
-                                                                     (GDBusInterfaceInfo *) &foo_interface_info,
-                                                                     g_cclosure_new (G_CALLBACK (foo_method_call), NULL, NULL),
-                                                                     g_cclosure_new (G_CALLBACK (foo_get_property), NULL, NULL),
-                                                                     g_cclosure_new (G_CALLBACK (foo_set_property), NULL, NULL),
-                                                                     &error);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
+  if (use_new_api)
+    registration_id = g_dbus_connection_register_object_with_closures2 (c,
+                                                                        "/foo/boss",
+                                                                        (GDBusInterfaceInfo *) &foo_interface_info,
+                                                                        g_cclosure_new (G_CALLBACK (foo_method_call_with_closure), NULL, NULL),
+                                                                        g_cclosure_new (G_CALLBACK (foo_get_property), NULL, NULL),
+                                                                        g_cclosure_new (G_CALLBACK (foo_set_property), NULL, NULL),
+                                                                        &error);
+  else
+    registration_id = g_dbus_connection_register_object_with_closures (c,
+                                                                       "/foo/boss",
+                                                                       (GDBusInterfaceInfo *) &foo_interface_info,
+                                                                       g_cclosure_new (G_CALLBACK (foo_method_call), NULL, NULL),
+                                                                       g_cclosure_new (G_CALLBACK (foo_get_property), NULL, NULL),
+                                                                       g_cclosure_new (G_CALLBACK (foo_set_property), NULL, NULL),
+                                                                       &error);
+
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
   g_assert_no_error (error);
   g_assert_cmpuint (registration_id, >, 0);
 
@@ -1978,7 +2010,8 @@ main (int   argc,
   loop = g_main_loop_new (NULL, FALSE);
 
   g_test_add_func ("/gdbus/object-registration", test_object_registration);
-  g_test_add_func ("/gdbus/object-registration-with-closures", test_object_registration_with_closures);
+  g_test_add_data_func ("/gdbus/object-registration-with-closures", GINT_TO_POINTER (FALSE), test_object_registration_with_closures);
+  g_test_add_data_func ("/gdbus/object-registration-with-closures2", GINT_TO_POINTER (TRUE), test_object_registration_with_closures);
   g_test_add_func ("/gdbus/registered-interfaces", test_registered_interfaces);
   g_test_add_func ("/gdbus/async-properties", test_async_properties);
   g_test_add_data_func ("/gdbus/threaded-unregistration/object", GINT_TO_POINTER (FALSE), test_threaded_unregistration);
