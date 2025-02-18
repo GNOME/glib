@@ -1393,8 +1393,10 @@ parse_iso8601_date (const gchar *text, gsize length,
     return FALSE;
 }
 
+/* Value returned in tz_offset is valid if and only if the function return value
+ * is non-NULL. */
 static GTimeZone *
-parse_iso8601_timezone (const gchar *text, gsize length, gssize *tz_offset)
+parse_iso8601_timezone (const gchar *text, gsize length, size_t *tz_offset)
 {
   gint i, tz_length, offset_hours, offset_minutes;
   gint offset_sign = 1;
@@ -1462,11 +1464,11 @@ static gboolean
 parse_iso8601_time (const gchar *text, gsize length,
                     gint *hour, gint *minute, gdouble *seconds, GTimeZone **tz)
 {
-  gssize tz_offset = -1;
+  size_t tz_offset = 0;
 
   /* Check for timezone suffix */
   *tz = parse_iso8601_timezone (text, length, &tz_offset);
-  if (tz_offset >= 0)
+  if (*tz != NULL)
     length = tz_offset;
 
   /* hh:mm:ss(.sss) */
