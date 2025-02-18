@@ -1394,7 +1394,8 @@ parse_iso8601_date (const gchar *text, gsize length,
 static GTimeZone *
 parse_iso8601_timezone (const gchar *text, gsize length, size_t *tz_offset)
 {
-  gint i, tz_length, offset_hours, offset_minutes;
+  size_t tz_length;
+  gint i, offset_hours, offset_minutes;
   gint offset_sign = 1;
   GTimeZone *tz;
 
