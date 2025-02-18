@@ -1398,6 +1398,7 @@ parse_iso8601_timezone (const gchar *text, gsize length, size_t *tz_offset)
   gint i, offset_hours, offset_minutes;
   gint offset_sign = 1;
   GTimeZone *tz;
+  const char *tz_start;
 
   /* UTC uses Z suffix  */
   if (length > 0 && text[length - 1] == 'Z')
@@ -1415,34 +1416,35 @@ parse_iso8601_timezone (const gchar *text, gsize length, size_t *tz_offset)
       }
   if (i < 0)
     return NULL;
+  tz_start = text + i;
   tz_length = length - i;
 
   /* +hh:mm or -hh:mm */
-  if (tz_length == 6 && text[i+3] == ':')
+  if (tz_length == 6 && tz_start[3] == ':')
     {
-      if (!get_iso8601_int (text + i + 1, 2, &offset_hours) ||
-          !get_iso8601_int (text + i + 4, 2, &offset_minutes))
+      if (!get_iso8601_int (tz_start + 1, 2, &offset_hours) ||
+          !get_iso8601_int (tz_start + 4, 2, &offset_minutes))
         return NULL;
     }
   /* +hhmm or -hhmm */
   else if (tz_length == 5)
     {
-      if (!get_iso8601_int (text + i + 1, 2, &offset_hours) ||
-          !get_iso8601_int (text + i + 3, 2, &offset_minutes))
+      if (!get_iso8601_int (tz_start + 1, 2, &offset_hours) ||
+          !get_iso8601_int (tz_start + 3, 2, &offset_minutes))
         return NULL;
     }
   /* +hh or -hh */
   else if (tz_length == 3)
     {
-      if (!get_iso8601_int (text + i + 1, 2, &offset_hours))
+      if (!get_iso8601_int (tz_start + 1, 2, &offset_hours))
         return NULL;
       offset_minutes = 0;
     }
   else
     return NULL;
 
-  *tz_offset = i;
-  tz = g_time_zone_new_identifier (text + i);
+  *tz_offset = tz_start - text;
+  tz = g_time_zone_new_identifier (tz_start);
 
   /* Double-check that the GTimeZone matches our interpretation of the timezone.
    * This can fail because our interpretation is less strict than (for example)
