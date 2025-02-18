@@ -1540,7 +1540,8 @@ parse_iso8601_time (const gchar *text, gsize length,
 GDateTime *
 g_date_time_new_from_iso8601 (const gchar *text, GTimeZone *default_tz)
 {
-  gint length, date_length = -1;
+  size_t length, date_length = 0;
+  gboolean date_length_set = FALSE;
   gint hour = 0, minute = 0;
   gdouble seconds = 0.0;
   GTimeZone *tz = NULL;
@@ -1551,11 +1552,14 @@ g_date_time_new_from_iso8601 (const gchar *text, GTimeZone *default_tz)
   /* Count length of string and find date / time separator ('T', 't', or ' ') */
   for (length = 0; text[length] != '\0'; length++)
     {
-      if (date_length < 0 && (text[length] == 'T' || text[length] == 't' || text[length] == ' '))
-        date_length = length;
+      if (!date_length_set && (text[length] == 'T' || text[length] == 't' || text[length] == ' '))
+        {
+          date_length = length;
+          date_length_set = TRUE;
+        }
     }
 
-  if (date_length < 0)
+  if (!date_length_set)
     return NULL;
 
   if (!parse_iso8601_time (text + date_length + 1, length - (date_length + 1),
