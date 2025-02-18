@@ -866,6 +866,23 @@ test_GDateTime_new_from_iso8601 (void)
    * NaN */
   dt = g_date_time_new_from_iso8601 ("0005306 000001,666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666600080000-00", NULL);
   g_assert_null (dt);
+
+  /* Various invalid timezone offsets which look like they could be in
+   * `+hh:mm`, `-hh:mm`, `+hhmm`, `-hhmm`, `+hh` or `-hh` format */
+  dt = g_date_time_new_from_iso8601 ("2025-02-18T18:14:00+01:xx", NULL);
+  g_assert_null (dt);
+  dt = g_date_time_new_from_iso8601 ("2025-02-18T18:14:00+xx:00", NULL);
+  g_assert_null (dt);
+  dt = g_date_time_new_from_iso8601 ("2025-02-18T18:14:00+xx:xx", NULL);
+  g_assert_null (dt);
+  dt = g_date_time_new_from_iso8601 ("2025-02-18T18:14:00+01xx", NULL);
+  g_assert_null (dt);
+  dt = g_date_time_new_from_iso8601 ("2025-02-18T18:14:00+xx00", NULL);
+  g_assert_null (dt);
+  dt = g_date_time_new_from_iso8601 ("2025-02-18T18:14:00+xxxx", NULL);
+  g_assert_null (dt);
+  dt = g_date_time_new_from_iso8601 ("2025-02-18T18:14:00+xx", NULL);
+  g_assert_null (dt);
 }
 
 typedef struct {
