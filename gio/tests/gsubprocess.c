@@ -1356,16 +1356,16 @@ static void
 test_fail_initialization (void)
 {
   GError *local_error = NULL;
-  GError **error = &local_error;
   GSubprocess *proc;
 
   proc = g_subprocess_new (G_SUBPROCESS_FLAGS_NONE,
-                           error,
+                           &local_error,
                            "thisprogramshouldnotexistprettyplease",
                            NULL);
 
-  g_assert_null (proc);
   g_assert_error (local_error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+  g_assert_null (proc);
+  g_clear_error (&local_error);
 }
 
 #ifdef G_OS_UNIX
