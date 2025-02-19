@@ -2229,6 +2229,8 @@ retry_beginning:
       return;
     }
 
+  g_return_if_fail (old_ref > 0);
+
   if (!have_lock && context)
     LOCK_CONTEXT (context);
 
@@ -2359,7 +2361,7 @@ void
 g_source_unref (GSource *source)
 {
   g_return_if_fail (source != NULL);
-  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
+  /* refcount is checked inside g_source_unref_internal() */
 
   g_source_unref_internal (source, source->context, FALSE);
 }
