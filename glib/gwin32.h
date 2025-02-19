@@ -43,11 +43,6 @@ G_BEGIN_DECLS
 
 #ifdef G_OS_WIN32
 
-/* needed include for C++ builds; including this in C mode will cause havoc of type conflicts */
-#ifdef __cplusplus
-#include <unknwn.h>
-#endif
-
 /*
  * To get prototypes for the following POSIXish functions, you have to
  * include the indicated non-POSIX headers. The functions are defined
@@ -184,12 +179,10 @@ template <typename com_interface>
 static inline void
 g_win32_clear_com (com_interface **com_obj)
 {
-  IUnknown **unknown_com_obj = reinterpret_cast<IUnknown **>(com_obj);
-
-  if (*unknown_com_obj != NULL)
+  if (*com_obj != NULL)
     {
-      (*unknown_com_obj)->Release ();
-      *unknown_com_obj = NULL;
+      (*com_obj)->Release ();
+      *com_obj = NULL;
     }
 }
 #endif
