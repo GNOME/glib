@@ -755,8 +755,11 @@ repeatedly_connecting_thread (gpointer data)
 
   for (guint i = 0; i < iterations; ++i)
     {
-      gboolean callback_called = FALSE;  /* (atomic) */
+      gboolean callback_called; /* (atomic) */
       gboolean called;
+
+      g_atomic_int_set (&callback_called, FALSE);
+
       gulong id = g_cancellable_connect (cancellable,
                                          G_CALLBACK (on_racy_cancellable_cancelled),
                                          &callback_called, NULL);
@@ -780,13 +783,14 @@ test_cancellable_cancel_reset_connect_races (void)
   GThread *resetting_thread = NULL;
   GThread *cancelling_thread = NULL;
   GThread *connecting_thread = NULL;
-  gboolean callback_called = FALSE;  /* (atomic) */
+  gboolean callback_called;  /* (atomic) */
 
   g_test_summary ("Tests threads racing for cancelling, connecting and disconnecting "
                   " and resetting a GCancellable");
 
   cancellable = g_cancellable_new ();
 
+  g_atomic_int_set (&callback_called, FALSE);
   g_cancellable_connect (cancellable, G_CALLBACK (on_racy_cancellable_cancelled),
                          &callback_called, NULL);
   g_assert_false (g_atomic_int_get (&callback_called));
