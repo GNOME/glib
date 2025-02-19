@@ -32,6 +32,7 @@
  */
 
 #include "config.h"
+#include "glib.h"
 #include "glibconfig.h"
 #include "glib_trace.h"
 
@@ -307,8 +308,10 @@ typedef struct _GSourceIter
 #define UNLOCK_CONTEXT(context) g_mutex_unlock (&context->mutex)
 #define G_THREAD_SELF g_thread_self ()
 
-#define SOURCE_DESTROYED(source) (((source)->flags & G_HOOK_FLAG_ACTIVE) == 0)
-#define SOURCE_BLOCKED(source) (((source)->flags & G_SOURCE_BLOCKED) != 0)
+#define SOURCE_DESTROYED(source) \
+  ((g_atomic_int_get (&((source)->flags)) & G_HOOK_FLAG_ACTIVE) == 0)
+#define SOURCE_BLOCKED(source) \
+  ((g_atomic_int_get (&((source)->flags)) & G_SOURCE_BLOCKED) != 0)
 
 /* Forward declarations */
 
@@ -930,11 +933,11 @@ g_source_new (GSourceFuncs *source_funcs,
   source = (GSource*) g_malloc0 (struct_size);
   source->priv = g_slice_new0 (GSourcePrivate);
   source->source_funcs = source_funcs;
-  source->ref_count = 1;
+  g_atomic_int_set (&source->ref_count, 1);
   
   source->priority = G_PRIORITY_DEFAULT;
 
-  source->flags = G_HOOK_FLAG_ACTIVE;
+  g_atomic_int_set (&source->flags, G_HOOK_FLAG_ACTIVE);
 
   source->priv->ready_time = -1;
 
@@ -976,10 +979,14 @@ void
 g_source_set_dispose_function (GSource            *source,
 			       GSourceDisposeFunc  dispose)
 {
+  gboolean was_unset G_GNUC_UNUSED;
+
   g_return_if_fail (source != NULL);
-  g_return_if_fail (source->priv->dispose == NULL);
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
-  source->priv->dispose = dispose;
+
+  was_unset = g_atomic_pointer_compare_and_exchange (&source->priv->dispose,
+                                                     NULL, dispose);
+  g_return_if_fail (was_unset);
 }
 
 /* Holds context's lock */
@@ -1284,8 +1291,8 @@ g_source_destroy_internal (GSource      *source,
       GSList *tmp_list;
       gpointer old_cb_data;
       GSourceCallbackFuncs *old_cb_funcs;
-      
-      source->flags &= ~G_HOOK_FLAG_ACTIVE;
+
+      g_atomic_int_and (&source->flags, ~G_HOOK_FLAG_ACTIVE);
 
       old_cb_data = source->callback_data;
       old_cb_funcs = source->callback_funcs;
@@ -1359,7 +1366,7 @@ g_source_destroy (GSource *source)
   if (context)
     g_source_destroy_internal (source, context, FALSE);
   else
-    source->flags &= ~G_HOOK_FLAG_ACTIVE;
+    g_atomic_int_and (&source->flags, ~G_HOOK_FLAG_ACTIVE);
 }
 
 /**
@@ -2007,9 +2014,9 @@ g_source_set_can_recurse (GSource  *source,
     LOCK_CONTEXT (context);
   
   if (can_recurse)
-    source->flags |= G_SOURCE_CAN_RECURSE;
+    g_atomic_int_or (&source->flags, G_SOURCE_CAN_RECURSE);
   else
-    source->flags &= ~G_SOURCE_CAN_RECURSE;
+    g_atomic_int_and (&source->flags, ~G_SOURCE_CAN_RECURSE);
 
   if (context)
     UNLOCK_CONTEXT (context);
@@ -2029,8 +2036,8 @@ g_source_get_can_recurse (GSource  *source)
 {
   g_return_val_if_fail (source != NULL, FALSE);
   g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, FALSE);
-  
-  return (source->flags & G_SOURCE_CAN_RECURSE) != 0;
+
+  return (g_atomic_int_get (&source->flags) & G_SOURCE_CAN_RECURSE) != 0;
 }
 
 static void
@@ -2246,11 +2253,13 @@ retry_beginning:
   if (old_ref == 1)
     {
       /* If there's a dispose function, call this first */
-      if (source->priv->dispose)
+      GSourceDisposeFunc dispose_func;
+
+      if ((dispose_func = g_atomic_pointer_get (&source->priv->dispose)))
         {
           if (context)
             UNLOCK_CONTEXT (context);
-          source->priv->dispose (source);
+          dispose_func (source);
           if (context)
             LOCK_CONTEXT (context);
         }
@@ -3267,7 +3276,7 @@ block_source (GSource *source)
 
   g_return_if_fail (!SOURCE_BLOCKED (source));
 
-  source->flags |= G_SOURCE_BLOCKED;
+  g_atomic_int_or (&source->flags, G_SOURCE_BLOCKED);
 
   if (source->context)
     {
@@ -3301,8 +3310,8 @@ unblock_source (GSource *source)
 
   g_return_if_fail (SOURCE_BLOCKED (source)); /* Source already unblocked */
   g_return_if_fail (!SOURCE_DESTROYED (source));
-  
-  source->flags &= ~G_SOURCE_BLOCKED;
+
+  g_atomic_int_and (&source->flags, ~G_SOURCE_BLOCKED);
 
   tmp_list = source->poll_fds;
   while (tmp_list)
@@ -3339,7 +3348,7 @@ g_main_dispatch (GMainContext *context)
       context->pending_dispatches->pdata[i] = NULL;
       g_assert (source);
 
-      source->flags &= ~G_SOURCE_READY;
+      g_atomic_int_and (&source->flags, ~G_SOURCE_READY);
 
       if (!SOURCE_DESTROYED (source))
 	{
@@ -3363,11 +3372,12 @@ g_main_dispatch (GMainContext *context)
 	  if (cb_funcs)
 	    cb_funcs->ref (cb_data);
 	  
-	  if ((source->flags & G_SOURCE_CAN_RECURSE) == 0)
+	  if ((g_atomic_int_get (&source->flags) & G_SOURCE_CAN_RECURSE) == 0)
 	    block_source (source);
 	  
-	  was_in_call = source->flags & G_HOOK_FLAG_IN_CALL;
-	  source->flags |= G_HOOK_FLAG_IN_CALL;
+          was_in_call = g_atomic_int_or (&source->flags,
+                                         (GSourceFlags) G_HOOK_FLAG_IN_CALL) &
+                                         G_HOOK_FLAG_IN_CALL;
 
 	  if (cb_funcs)
 	    cb_funcs->get (cb_data, source, &callback, &user_data);
@@ -3404,9 +3414,9 @@ g_main_dispatch (GMainContext *context)
  	  LOCK_CONTEXT (context);
 	  
 	  if (!was_in_call)
-	    source->flags &= ~G_HOOK_FLAG_IN_CALL;
+            g_atomic_int_and (&source->flags, ~G_HOOK_FLAG_IN_CALL);
 
-	  if (SOURCE_BLOCKED (source) && !SOURCE_DESTROYED (source))
+          if (SOURCE_BLOCKED (source) && !SOURCE_DESTROYED (source))
 	    unblock_source (source);
 	  
 	  /* Note: this depends on the fact that we can't switch
@@ -3773,7 +3783,7 @@ g_main_context_prepare_unlocked (GMainContext *context,
       if ((n_ready > 0) && (source->priority > current_priority))
 	break;
 
-      if (!(source->flags & G_SOURCE_READY))
+      if (!(g_atomic_int_get (&source->flags) & G_SOURCE_READY))
 	{
 	  gboolean result;
 	  gboolean (* prepare) (GSource  *source,
@@ -3834,13 +3844,13 @@ g_main_context_prepare_unlocked (GMainContext *context,
 
 	      while (ready_source)
 		{
-		  ready_source->flags |= G_SOURCE_READY;
+                  g_atomic_int_or (&ready_source->flags, G_SOURCE_READY);
 		  ready_source = ready_source->priv->parent_source;
 		}
 	    }
 	}
 
-      if (source->flags & G_SOURCE_READY)
+      if (g_atomic_int_get (&source->flags) & G_SOURCE_READY)
 	{
 	  n_ready++;
 	  current_priority = source->priority;
@@ -4106,8 +4116,8 @@ g_main_context_check_unlocked (GMainContext *context,
       if ((n_ready > 0) && (source->priority > max_priority))
 	break;
 
-      if (!(source->flags & G_SOURCE_READY))
-	{
+      if (!(g_atomic_int_get (&source->flags) & G_SOURCE_READY))
+        {
           gboolean result;
           gboolean (* check) (GSource *source);
 
@@ -4177,13 +4187,13 @@ g_main_context_check_unlocked (GMainContext *context,
 
 	      while (ready_source)
 		{
-		  ready_source->flags |= G_SOURCE_READY;
+                  g_atomic_int_or (&ready_source->flags, G_SOURCE_READY);
 		  ready_source = ready_source->priv->parent_source;
 		}
 	    }
 	}
 
-      if (source->flags & G_SOURCE_READY)
+      if (g_atomic_int_get (&source->flags) & G_SOURCE_READY)
 	{
           g_source_ref (source);
 	  g_ptr_array_add (context->pending_dispatches, source);
