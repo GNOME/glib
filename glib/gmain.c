@@ -2210,34 +2210,57 @@ g_source_unref_internal (GSource      *source,
 {
   gpointer old_cb_data = NULL;
   GSourceCallbackFuncs *old_cb_funcs = NULL;
+  int old_ref;
 
   g_return_if_fail (source != NULL);
+
+  old_ref = g_atomic_int_get (&source->ref_count);
+
+retry_beginning:
+  if (old_ref > 1)
+    {
+      /* We have many references. If we can decrement the ref counter, we are done. */
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &source->ref_count,
+                                                   old_ref, old_ref - 1,
+                                                   &old_ref))
+        goto retry_beginning;
+
+      return;
+    }
 
   if (!have_lock && context)
     LOCK_CONTEXT (context);
 
-  if (g_atomic_int_dec_and_test (&source->ref_count))
+  /* We are about to drop the last reference, there's not guarantee at this
+   * point that another thread already changed the value at this point or
+   * that is also entering the disposal phase, but there is no much we can do
+   * and dropping the reference too early would be still risky since it could
+   * lead to a preventive finalization.
+   * So let's just get all the threads that reached this point to get in, while
+   * the final check on whether is the case or not to continue with the
+   * finalization will be done by a final unique atomic dec and test.
+   */
+  if (old_ref == 1)
     {
       /* If there's a dispose function, call this first */
       if (source->priv->dispose)
         {
-          /* Temporarily increase the ref count again so that GSource methods
-           * can be called from dispose(). */
-          g_atomic_int_inc (&source->ref_count);
           if (context)
             UNLOCK_CONTEXT (context);
           source->priv->dispose (source);
           if (context)
             LOCK_CONTEXT (context);
+        }
 
-          /* Now the reference count might be bigger than 0 again, in which
-           * case we simply return from here before freeing the source */
-          if (!g_atomic_int_dec_and_test (&source->ref_count))
-            {
-              if (!have_lock && context)
-                UNLOCK_CONTEXT (context);
-              return;
-            }
+      /* At this point the source can have been revived by any of the threads
+       * acting on it or it's really ready for being finalized.
+       */
+      if (!g_atomic_int_dec_and_test (&source->ref_count))
+        {
+          if (!have_lock && context)
+            UNLOCK_CONTEXT (context);
+
+          return;
         }
 
       TRACE (GLIB_SOURCE_BEFORE_FREE (source, context,
