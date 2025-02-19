@@ -2191,12 +2191,13 @@ g_source_set_name_by_id (guint           tag,
 GSource *
 g_source_ref (GSource *source)
 {
+  int old_ref G_GNUC_UNUSED;
   g_return_val_if_fail (source != NULL, NULL);
+
+  old_ref = g_atomic_int_add (&source->ref_count, 1);
   /* We allow ref_count == 0 here to allow the dispose function to resurrect
    * the GSource if needed */
-  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) >= 0, NULL);
-
-  g_atomic_int_inc (&source->ref_count);
+  g_return_val_if_fail (old_ref >= 0, NULL);
 
   return source;
 }
