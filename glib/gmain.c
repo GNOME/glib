@@ -2255,12 +2255,13 @@ retry_beginning:
       /* At this point the source can have been revived by any of the threads
        * acting on it or it's really ready for being finalized.
        */
-      if (!g_atomic_int_dec_and_test (&source->ref_count))
+      if (!g_atomic_int_compare_and_exchange_full ((int *) &source->ref_count,
+                                                   1, 0, &old_ref))
         {
           if (!have_lock && context)
             UNLOCK_CONTEXT (context);
 
-          return;
+          goto retry_beginning;
         }
 
       TRACE (GLIB_SOURCE_BEFORE_FREE (source, context,
