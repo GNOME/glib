@@ -448,6 +448,18 @@ test_dates (void)
       g_assert_cmpint (g_date_get_sunday_weeks_in_year (0), ==, 0);
       g_test_assert_expected_messages ();
 
+      /* g_date_get_week_of_year (d) */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion *failed*");
+      g_assert_cmpint (g_date_get_week_of_year (d, G_DATE_MONDAY), ==, 0);
+      g_test_assert_expected_messages ();
+
+      /* g_date_get_weeks_in_year (y) */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion *failed*");
+      g_assert_cmpint (g_date_get_weeks_in_year (0, G_DATE_MONDAY), ==, 0);
+      g_test_assert_expected_messages ();
+
       /* g_date_get_iso8601_week_of_year (d) */
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion *failed*");
@@ -493,6 +505,8 @@ test_dates (void)
   g_assert_cmpint (g_date_get_monday_weeks_in_year (1776), ==, 53);
 
   g_assert_cmpint (g_date_get_sunday_weeks_in_year (1792), ==, 53);
+
+  g_assert_cmpint (g_date_get_weeks_in_year (2000, G_DATE_SATURDAY), ==, 53);
 
   /* Trigger the update of the dmy/julian parts */
   d = g_date_new_julian (1);
@@ -1412,6 +1426,8 @@ test_year (gconstpointer t)
 
   guint32 first_day_of_year = G_DATE_BAD_JULIAN;
   guint16 days_in_year = g_date_is_leap_year (y) ? 366 : 365;
+  guint   saturday_week_of_year = 0;
+  guint   saturday_weeks_in_year = g_date_get_weeks_in_year (y, G_DATE_SATURDAY);
   guint   sunday_week_of_year = 0;
   guint   sunday_weeks_in_year = g_date_get_sunday_weeks_in_year (y);
   guint   monday_week_of_year = 0;
@@ -1420,6 +1436,7 @@ test_year (gconstpointer t)
 
   g_assert_true (g_date_valid_year (y));
   /* Years ought to have roundabout 52 weeks */
+  g_assert (saturday_weeks_in_year == 52 || saturday_weeks_in_year == 53);
   g_assert (sunday_weeks_in_year == 52 || sunday_weeks_in_year == 53);
   g_assert (monday_weeks_in_year == 52 || monday_weeks_in_year == 53);
 
@@ -1510,6 +1527,21 @@ test_year (gconstpointer t)
                              ==, 0);
 
           sunday_week_of_year = g_date_get_sunday_week_of_year (d);
+
+          g_assert_cmpint (g_date_get_week_of_year (d, G_DATE_SATURDAY),
+                           <=, saturday_weeks_in_year);
+          g_assert_cmpint (g_date_get_week_of_year (d, G_DATE_SATURDAY),
+                           >=, saturday_week_of_year);
+          if (g_date_get_weekday (d) == G_DATE_SATURDAY)
+            g_assert_cmpint (g_date_get_week_of_year (d, G_DATE_SATURDAY) -
+                                 saturday_week_of_year,
+                             ==, 1);
+          else
+            g_assert_cmpint (g_date_get_week_of_year (d, G_DATE_SATURDAY) -
+                                 saturday_week_of_year,
+                             ==, 0);
+
+          saturday_week_of_year = g_date_get_week_of_year (d, G_DATE_SATURDAY);
 
           g_assert_cmpint (g_date_compare (d, d), ==, 0);
 
@@ -1753,6 +1785,60 @@ test_valid_dmy (void)
     }
 }
 
+static void
+test_week_of_year (void)
+{
+  const struct
+    {
+      unsigned int year;
+      unsigned int month;
+      unsigned int day;
+      unsigned int expected_saturday_week_of_year;
+      unsigned int expected_sunday_week_of_year;
+      unsigned int expected_monday_week_of_year;
+    }
+  vectors[] =
+    {
+      { 2000, 1, 1, 1, 0, 0 },  /* first day of the year is a Saturday */
+      { 2000, 1, 7, 1, 1, 1 },
+      { 2000, 1, 8, 2, 1, 1 },
+      { 2001, 1, 1, 0, 0, 1 },  /* first day of the year is a Monday */
+      { 2001, 1, 7, 1, 1, 1 },
+      { 2001, 1, 8, 1, 1, 2 },
+      { 2002, 1, 1, 0, 0, 0 },  /* first day of the year is a Tuesday */
+      { 2002, 1, 7, 1, 1, 1 },
+      { 2002, 1, 8, 1, 1, 1 },
+      { 2003, 1, 1, 0, 0, 0 },  /* first day of the year is a Wednesday */
+      { 2003, 1, 7, 1, 1, 1 },
+      { 2003, 1, 8, 1, 1, 1 },
+      { 2004, 1, 1, 0, 0, 0 },  /* first day of the year is a Thursday */
+      { 2004, 1, 7, 1, 1, 1 },
+      { 2004, 1, 8, 1, 1, 1 },
+      { 2006, 1, 1, 0, 1, 0 },  /* first day of the year is a Sunday */
+      { 2006, 1, 7, 1, 1, 1 },
+      { 2006, 1, 8, 1, 2, 1 },
+      { 2010, 1, 1, 0, 0, 0 },  /* first day of the year is a Friday */
+      { 2010, 1, 7, 1, 1, 1 },
+      { 2010, 1, 8, 1, 1, 1 },
+    };
+
+  for (size_t i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      GDate date;
+
+      g_date_clear (&date, 1);
+      g_date_set_dmy (&date, vectors[i].day, vectors[i].month, vectors[i].year);
+      g_test_message ("Considering %04u-%02u-%02u",
+                      vectors[i].year, vectors[i].month, vectors[i].day);
+
+      g_assert_cmpuint (g_date_get_week_of_year (&date, G_DATE_SATURDAY), ==, vectors[i].expected_saturday_week_of_year);
+      g_assert_cmpuint (g_date_get_week_of_year (&date, G_DATE_SUNDAY), ==, vectors[i].expected_sunday_week_of_year);
+      g_assert_cmpuint (g_date_get_week_of_year (&date, G_DATE_MONDAY), ==, vectors[i].expected_monday_week_of_year);
+      g_assert_cmpuint (g_date_get_sunday_week_of_year (&date), ==, vectors[i].expected_sunday_week_of_year);
+      g_assert_cmpuint (g_date_get_monday_week_of_year (&date), ==, vectors[i].expected_monday_week_of_year);
+    }
+}
+
 int
 main (int argc, char** argv)
 {
@@ -1806,6 +1892,7 @@ main (int argc, char** argv)
     }
   g_test_add_func ("/date/copy", test_copy);
   g_test_add_func ("/date/valid-dmy", test_valid_dmy);
+  g_test_add_func ("/date/week-of-year", test_week_of_year);
 
   return g_test_run ();
 }
