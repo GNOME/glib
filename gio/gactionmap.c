@@ -137,7 +137,7 @@ g_action_map_remove_action (GActionMap  *action_map,
  *   activate function for this action, given as a single GVariant type string
  *   (or `NULL` for no parameter)
  * @state: the initial state for this action, given in
- *   [GVariant text format](gvariant-text-format.html).  The state is parsed
+ *   [GVariant text format](../glib/gvariant-text-format.html).  The state is parsed
  *   with no extra type information, so type tags must be added to the string
  *   if they are necessary.  Stateless actions should give `NULL` here.
  * @change_state: the callback to connect to the "change-state" signal of the
