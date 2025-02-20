@@ -1,3 +1,72 @@
+Overview of changes in GLib 2.83.4, 2025-02-20
+==============================================
+
+* Fix Python shebang paths so they work on Windows again (#3331, work by
+  Dan Yeaw and others)
+
+* Fix refcounting semantics of `g_dbus_connection_register_object_with_closures()`
+  by adding a replacement API (#3560, work by Philip Withnall)
+
+* Support static vfuncs in GIRepository (!4457, work by Philip Chimento)
+
+* Add support for QNX8.0 (!4466, work by Felix Xing)
+
+* Add a soft dependency on C11 — if your toolchain doesn’t support C11, you have
+  six months to tell us before this becomes a hard dependency (!4473)
+
+* Port from `net.hadess.PowerProfiles` to `org.freedesktop.UPower.PowerProfiles`
+  for `GPowerProfileMonitorDBus` (!4478, work by Marco Trevisan)
+
+* Bugs fixed:
+  - #3331 Windows build broken because of Python paths (Dan Yeaw)
+  - #3448 Use after free in GCancellableSource test (Marco Trevisan (Treviño))
+  - #3560 Fix refcounting semantics of
+    g_dbus_connection_register_object_with_closures() (Philip Withnall)
+  - #3578 gkeyfile: Honor C in $LANGUAGE as gettext does (Gaël Bonithon)
+  - #3587 g_app_info_launch crashes on macos (Andre Miranda)
+  - #3592 GDBusConnection does not handle serial number overflow (Philip
+    Withnall)
+  - #3595 Toolchain documentation should mention that GLib assumes functions can
+    be called through wrongly-typed function pointers (Demi Obenour)
+  - #3612 cancellable unit test crashes in /cancellable-source/threaded-dispose
+    (Marco Trevisan (Treviño))
+  - #3613 Potentially revert g_win32_com_clear() due to pulling in windows.h
+  - !3255 Drop TypeNode reference counting
+  - !4046 Add G_OPTION_FLAG_DEPRECATED
+  - !4457 Support static vfuncs in GIRepository
+  - !4461 docs: Update the release documentation for the new release workflow
+  - !4464 gosxappinfo: Fix leak
+  - !4466 Add support for QNX8.0
+  - !4468 Registry backend fixes
+  - !4471 glib.supp: Ignore once-per-thread leak from SysprofCollector
+  - !4472 gkeyfile: Convert docs to gi-docgen linking syntax
+  - !4473 build: Add a soft dependency on C11
+  - !4475 docs: Fix invalid references and broken links
+  - !4476 tests: Cleanup python tests and add tests for gi-compile-repository
+    and gi-inspect-typelib
+  - !4477 gcancellable: remove sketchy source ref/unref
+  - !4478 gio/powerprofilemonitordbus: Use newer D-Bus API
+  - !4479 docs: Make docs more markdown-ish
+  - !4483 tests: Fix a memory leak if a callable-info test is skipped
+  - !4486 meson: Fix typo in comment about python shebang
+  - !4487 gio/gfilemonitor: Use atomic API to get / store cancelled state
+  - !4488 gmain: Use atomic logic to handle internal GSource flags
+  - !4490 gio/subprocess: Lock while writing on shared pid and status values
+  - !4491 Update Brazilian Portuguese translation
+  - !4492 gfilemonitor: Various cleanups and minor fixes to property handling
+  - !4493 gdbus: Add g_clear_dbus_signal_subscription() inline convenience
+    function
+  - !4494 gio/subprocess: Initialize pid variable to 0
+  - !4495 gio/gvolumemonitor: Suggest disconnecting signals
+  - !4496 Update Polish translation for GNOME 48
+  - !4497 tests: Fix a minor leak in a new GSubprocess test
+  - !4498 gdatetime: Fix integer overflow when parsing very long ISO8601 inputs
+
+* Translation updates:
+  - Polish (Piotr Drąg)
+  - Portuguese (Brazil) (Rafael Fontenelle)
+
+
 Overview of changes in GLib 2.83.3, 2025-01-23
 ==============================================
 
