@@ -1,3 +1,16 @@
+Overview of changes in GLib 2.82.5, 2025-02-20
+==============================================
+
+* Bugs fixed:
+  - #3587 g_app_info_launch crashes on macos (Andre Miranda)
+  - !4463 Backport !4462 “gosxappinfo: Correctly launch list of files” to
+    glib-2-82
+  - !4482 Backport !4442 “Don't mark test setups as default in subprojects” to
+    glib-2-82
+  - !4499 Backport !4498 “gdatetime: Fix integer overflow when parsing very long
+    ISO8601 inputs” to glib-2-82
+
+
 Overview of changes in GLib 2.82.4, 2024-12-11
 ==============================================
 
