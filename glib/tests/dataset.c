@@ -469,8 +469,7 @@ test_datalist_id_remove_multiple_destroy_order (void)
 }
 
 static gpointer
-_update_atomic_cb (GQuark key_id,
-                   gpointer *data,
+_update_atomic_cb (gpointer *data,
                    GDestroyNotify *destroy_notify,
                    gpointer user_data)
 {

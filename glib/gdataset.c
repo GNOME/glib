@@ -1114,7 +1114,7 @@ g_datalist_id_update_atomic (GData **datalist,
       new_destroy = NULL;
     }
 
-  result = callback (key_id, &new_data, &new_destroy, user_data);
+  result = callback (&new_data, &new_destroy, user_data);
 
   if (data && !new_data)
     {
