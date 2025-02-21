@@ -354,10 +354,10 @@ datalist_remove (GData *data, guint32 idx)
   g_assert (idx < data->len);
 #endif
 
-  /* g_data_remove_internal() relies on the fact, that this function removes
-   * the entry similar to g_array_remove_index_fast(). That is, the entries up
-   * to @idx are left unchanged, and the last entry is moved to position @idx.
-   * */
+  /* We remove the element similar to g_array_remove_index_fast(). That is, the
+   * entries up to @idx are left unchanged, and the last entry is moved to
+   * position @idx.
+   */
 
   index = datalist_index_get (data);
   if (G_UNLIKELY (index))
