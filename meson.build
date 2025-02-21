@@ -2500,6 +2500,7 @@ assert(fs.exists(python_test_libraries_path))
 if not python_version.version_compare(python_version_req)
   error('Requires Python @0@, @1@ found.'.format(python_version_req, python_version))
 endif
+python_test_libraries_built = meson.project_build_root() / 'tests' / 'lib'
 
 # Determine which user environment-dependent files that we want to install
 bash = find_program('bash', required : false)

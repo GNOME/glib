@@ -16,7 +16,7 @@ export TEST_REQUIRES_TOOLS="black git"
 
 run_lint () {
     # shellcheck disable=SC2046
-    black --diff --check $(git ls-files '*.py')
+    black --diff --check $(git ls-files '*.py' 'tests/lib/*.py.in')
 }
 
 # shellcheck source=tests/lint-common.sh

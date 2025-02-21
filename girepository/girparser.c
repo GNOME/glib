@@ -303,6 +303,8 @@ static GMarkupParser firstpass_parser =
   NULL,
 };
 
+/* If you change this search order, gobject-introspection.git and
+ * tests/installed/glibconfig.py.in will probably also need updating */
 static char *
 locate_gir (GIIrParser *parser,
             const char *girname)
