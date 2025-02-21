@@ -737,17 +737,15 @@ g_data_remove_internal (GData  **datalist,
 
   /* Allocate an array of GDataElt to hold copies of the elements
    * that are removed from the datalist. Allow enough space for all
-   * the keys; if a key is not found, the corresponding element of
-   * old is not populated, so we initialize them all to NULL to
-   * detect that case.
+   * the keys.
    *
    * At most allocate 400 bytes on the stack. Especially since we call
    * out to external code, we don't know how much stack we can use. */
   if (n_keys <= 400u / sizeof (GDataElt))
-    old = g_newa0 (GDataElt, n_keys);
+    old = g_newa (GDataElt, n_keys);
   else
     {
-      old_to_free = g_new0 (GDataElt, n_keys);
+      old_to_free = g_new (GDataElt, n_keys);
       old = old_to_free;
     }
 
