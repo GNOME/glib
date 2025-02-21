@@ -464,8 +464,8 @@ datalist_find (GData *data, GQuark key_id, guint32 *out_idx)
   GHashTable *index;
   guint32 i;
 
-  if (!data)
-    goto out_not_found;
+  if (G_UNLIKELY (!data))
+    return NULL;
 
   index = datalist_index_get (data);
 
@@ -483,12 +483,12 @@ datalist_find (GData *data, GQuark key_id, guint32 *out_idx)
             }
         }
 
-      goto out_not_found;
+      return NULL;
     }
 
   data_elt = g_hash_table_lookup (index, &key_id);
   if (!data_elt)
-    goto out_not_found;
+    return NULL;
 
 #if G_ENABLE_DEBUG
   g_assert (data_elt >= data->data && data_elt < &data->data[data->len]);
@@ -497,11 +497,6 @@ datalist_find (GData *data, GQuark key_id, guint32 *out_idx)
   if (out_idx)
     *out_idx = (data_elt - data->data);
   return data_elt;
-
-out_not_found:
-  if (out_idx)
-    *out_idx = G_MAXUINT32;
-  return NULL;
 }
 
 /**
