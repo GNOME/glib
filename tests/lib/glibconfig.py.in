@@ -25,5 +25,5 @@ else:
     # /usr/share fallback
     GIR_XML_SEARCH_PATHS = [
         Path(r"@glib_girdir@"),
-        Path(r"@glib_datadir@") / "gir-1.0",
+        Path(r"@glib_datadir@") / r"@gir_suffix@",
     ]

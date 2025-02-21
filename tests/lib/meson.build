@@ -12,6 +12,7 @@ install_data(
 )
 
 tests_conf = configuration_data()
+tests_conf.set('gir_suffix', gir_suffix)
 tests_conf.set('glib_datadir', glib_datadir)
 tests_conf.set('glib_girdir', glib_girdir)
 

@@ -29,7 +29,10 @@ else
   gir_dir_pc_prefix = join_paths('${prefix}', gir_dir_prefix)
 endif
 
-glib_girdir = get_option('prefix') / gir_dir_prefix / 'gir-1.0'
+# This is effectively the GIR XML format major version
+gir_suffix = 'gir-1.0'
+
+glib_girdir = get_option('prefix') / gir_dir_prefix / gir_suffix
 
 gir_includedir = glib_includedir / 'girepository'
 
@@ -81,7 +84,7 @@ install_headers(girepo_headers + girepo_ffi_headers, install_dir: gir_includedir
 gir_c_args = [
   '-DGI_COMPILATION',
   '-DG_LOG_DOMAIN="GLib-GIRepository"',
-  '-DGIR_SUFFIX="gir-1.0"',
+  '-DGIR_SUFFIX="@0@"'.format(gir_suffix),
   '-DGIR_DIR="@0@"'.format(glib_girdir),
   '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
   '-DGOBJECT_INTROSPECTION_DATADIR="@0@"'.format(glib_datadir),
@@ -227,7 +230,7 @@ executable('gi-dump-types',
 
 pkgconfig_variables = [
   'gidatadir=${datadir}/gobject-introspection-1.0',
-  'girdir=' + gir_dir_pc_prefix / 'gir-1.0',
+  'girdir=' + gir_dir_pc_prefix / gir_suffix,
   'typelibdir=${libdir}/girepository-1.0',
   'gi_compile_repository=' + pkgconfig_multiarch_bindir / 'gi-compile-repository'
 ]
