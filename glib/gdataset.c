@@ -712,10 +712,26 @@ g_data_set_internal (GData	  **datalist,
 
 }
 
-static inline void
-g_data_remove_internal (GData  **datalist,
-                        GQuark  *keys,
-                        gsize    n_keys)
+/**
+ * g_datalist_id_remove_multiple:
+ * @datalist: a datalist
+ * @keys: (array length=n_keys): keys to remove
+ * @n_keys: length of @keys.
+ *
+ * Removes multiple keys from a datalist.
+ *
+ * This is more efficient than calling g_datalist_id_remove_data()
+ * multiple times in a row.
+ *
+ * Before 2.80, @n_keys had to be not larger than 16.
+ * Since 2.84, performance is improved for larger number of keys.
+ *
+ * Since: 2.74
+ */
+void
+g_datalist_id_remove_multiple (GData **datalist,
+                               GQuark *keys,
+                               gsize n_keys)
 {
   GData *d;
   GDataElt *old;
@@ -970,30 +986,6 @@ g_datalist_id_set_data_full (GData	  **datalist,
     }
 
   g_data_set_internal (datalist, key_id, data, destroy_func, NULL);
-}
-
-/**
- * g_datalist_id_remove_multiple:
- * @datalist: a datalist
- * @keys: (array length=n_keys): keys to remove
- * @n_keys: length of @keys.
- *
- * Removes multiple keys from a datalist.
- *
- * This is more efficient than calling g_datalist_id_remove_data()
- * multiple times in a row.
- *
- * Before 2.80, @n_keys had to be not larger than 16.
- * Since 2.84, performance is improved for larger number of keys.
- *
- * Since: 2.74
- */
-void
-g_datalist_id_remove_multiple (GData  **datalist,
-                               GQuark  *keys,
-                               gsize    n_keys)
-{
-  g_data_remove_internal (datalist, keys, n_keys);
 }
 
 /**
