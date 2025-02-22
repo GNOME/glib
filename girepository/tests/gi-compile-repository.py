@@ -20,11 +20,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA  02110-1301  USA
 
-""" Integration tests for gi-compile-repository. """
+"""Integration tests for gi-compile-repository."""
 
 import os
 import unittest
 
+import glibconfig
 import taptestrunner
 import testprogramrunner
 
@@ -39,20 +40,9 @@ class TestGICompileRepositoryBase(testprogramrunner.TestProgramRunner):
     def setUpClass(cls):
         super().setUpClass()
 
-        if "G_TEST_BUILDDIR" in os.environ:
-            cls._gir_path = os.path.join(
-                os.environ["G_TEST_BUILDDIR"], "..", "introspection"
-            )
-        else:
-            cls._gir_path = os.path.join(
-                os.path.dirname(os.path.realpath(__file__)),
-                "..",
-                "..",
-                "..",
-                "share",
-                "gir-1.0",
-            )
-        print(f"gir path set to {cls._gir_path}")
+        # list of pathlib.Path
+        cls._gir_paths = glibconfig.GIR_XML_SEARCH_PATHS
+        print(f"gir path set to {cls._gir_paths}")
 
 
 class TestGICompileRepository(TestGICompileRepositoryBase):
@@ -73,13 +63,20 @@ class TestGICompileRepositoryForGLib(TestGICompileRepositoryBase):
     GIR_NAME = "GLib-2.0"
 
     def runTestProgram(self, *args, **kwargs):
-        gir_file = os.path.join(self._gir_path, f"{self.GIR_NAME}.gir")
-        self.assertTrue(os.path.exists(gir_file))
-        argv = [gir_file]
+        for d in self._gir_paths:
+            gir_file = d / f"{self.GIR_NAME}.gir"
+
+            if gir_file.exists():
+                break
+        else:
+            self.fail(f"Could not find {self.GIR_NAME}.gir in {self._gir_paths}")
+
+        argv = [str(gir_file)]
         argv.extend(*args)
 
         if self.GIR_NAME != "GLib-2.0":
-            argv.extend(["--includedir", self._gir_path])
+            for d in self._gir_paths:
+                argv.extend(["--includedir", str(d)])
 
         return super().runTestProgram(argv, **kwargs)
 

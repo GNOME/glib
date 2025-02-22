@@ -21,7 +21,7 @@ run_lint () {
     # shellcheck disable=SC2046
     flake8 \
         --max-line-length=88 --ignore="$formatting_warnings" \
-        $(git ls-files '*.py')
+        $(git ls-files '*.py' 'tests/lib/*.py.in')
 }
 
 # shellcheck source=tests/lint-common.sh
