@@ -136,48 +136,9 @@ test(
 #### Using Autotools
 
 If you are using Autotools, you're strongly encouraged to use the Automake
-TAP harness; GLib provides template files for easily integrating with it:
+TAP harness. You can follow the instructions in the Automake manual section [“Using the TAP test protocol”](https://www.gnu.org/software/automake/manual/automake.html#Using-the-TAP-test-protocol).
 
-- [`glib-tap.mk`](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/glib-tap.mk)
-- [`tap-test`](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/tap-test)
-- [`tap-driver.sh`](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/tap-driver.sh)
-
-You can copy these files in your own project's root directory, and then set
-up your `Makefile.am` file to reference them, for instance:
-
-```
-include $(top_srcdir)/glib-tap.mk
-
-# test binaries
-test_programs = \
-  foo \
-  bar
-
-# data distributed in the tarball
-dist_test_data = \
-  foo.data.txt \
-  bar.data.txt
-
-# data not distributed in the tarball
-test_data = \
-  blah.data.txt
-```
-
-Make sure to distribute the TAP files, using something like the following in
-your top-level `Makefile.am`:
-
-```
-EXTRA_DIST += \
-  tap-driver.sh \
-  tap-test
-```
-
-`glib-tap.mk` will be distributed implicitly due to being included in a
-`Makefile.am`. All three files should be added to version control.
-
-If you don't have access to the Autotools TAP harness, you can use the
-gtester and gtester-report tools, and use the
-[`glib.mk`](https://gitlab.gnome.org/GNOME/glib/blob/glib-2-58/glib.mk)
-Automake template provided by GLib. Note, however, that since GLib 2.62,
-gtester and gtester-report have been deprecated in favour of using TAP. The
-`--tap` argument to tests is enabled by default as of GLib 2.62.
+Since tests for a program using GLib are likely to be compiled executables,
+they will have no file extension, and therefore you’ll want to set
+`LOG_DRIVER` where the manual suggests `TEST_LOG_DRIVER` (which assumes test
+programs ending in `.test`).
