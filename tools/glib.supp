@@ -1126,6 +1126,22 @@
 	...
 	fun:g_private_set_alloc0
 }
+{
+	g_private_set_leak
+	Memcheck:Leak
+	match-leak-kinds:definite,reachable
+	fun:malloc
+	...
+	fun:g_private_set_leak
+}
+{
+	g_private_set_leak-calloc
+	Memcheck:Leak
+	match-leak-kinds:definite,reachable
+	fun:calloc
+	...
+	fun:g_private_set_leak
+}
 
 # Keys for thread-private data
 {

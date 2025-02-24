@@ -188,6 +188,28 @@ g_end_ignore_leaks (void)
 #endif
 }
 
+/**
+ * g_private_set_leak:
+ * @key: a #GPrivate
+ * @value: the new value
+ *
+ * Sets the thread local variable @key to have the value @value in the
+ * current thread.
+ * The value using this API will be considered leaked and suppressed in valgrind
+ * (when the GLib default suppression file - glib.supp - is used) and the leak
+ * sanitizer.
+ *
+ * This function differs from g_private_replace() in the following way:
+ * the #GDestroyNotify for @key is not called on the old value.
+ */
+static inline void
+g_private_set_leak (GPrivate *key,
+                    gpointer  value)
+{
+  g_private_set (key, value);
+  g_ignore_leak (value);
+}
+
 #undef HAS_DYNAMIC_ASAN_LOADING
 
 GMainContext *          g_get_worker_context            (void);
