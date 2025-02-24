@@ -522,8 +522,7 @@ g_private_set_alloc0 (GPrivate *key,
 {
   gpointer allocated = g_malloc0 (size);
 
-  g_ignore_leak (allocated);
-  g_private_set (key, allocated);
+  g_private_set_leak (key, allocated);
 
   return g_steal_pointer (&allocated);
 }
