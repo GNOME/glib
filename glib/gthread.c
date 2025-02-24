@@ -505,7 +505,8 @@ static GPrivate     g_thread_specific_private = G_PRIVATE_INIT (g_thread_cleanup
  *
  * Sets the thread local variable @key to have a newly-allocated and zero-filled
  * value of given @size, and returns a pointer to that memory. Allocations made
- * using this API will be suppressed in valgrind: it is intended to be used for
+ * using this API will be suppressed in valgrind (when the GLib default
+ * suppression file, `glib.supp`, is used): it is intended to be used for
  * one-time allocations which are known to be leaked, such as those for
  * per-thread initialisation data. Otherwise, this function behaves the same as
  * g_private_set().
