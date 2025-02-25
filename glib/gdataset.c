@@ -1371,13 +1371,15 @@ g_datalist_id_replace_data (GData          **datalist,
             }
         }
     }
-
-  if (val == NULL && oldval == NULL && newval != NULL)
+  else
     {
-      if (datalist_append (&d, key_id, newval, destroy))
-        {
-          set_d = TRUE;
-        }
+      if (oldval == NULL && newval != NULL)
+      {
+        if (datalist_append (&d, key_id, newval, destroy))
+          {
+            set_d = TRUE;
+          }
+      }
     }
 
   if (set_d)
