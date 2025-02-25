@@ -636,7 +636,7 @@ g_data_set_internal (GData	  **datalist,
               if (dataset && !d)
                 g_dataset_destroy_internal (dataset);
 
-              if (d_to_free)
+              if (G_UNLIKELY (d_to_free))
                 g_free (d_to_free);
             }
           else
@@ -782,7 +782,7 @@ g_datalist_id_remove_multiple (GData **datalist,
   if (found_keys > 0 && datalist_shrink (&d, &d_to_free))
     {
       g_datalist_unlock_and_set (datalist, d);
-      if (d_to_free)
+      if (G_UNLIKELY (d_to_free))
         g_free (d_to_free);
     }
   else
@@ -1127,7 +1127,7 @@ g_datalist_id_update_atomic (GData **datalist,
       if (datalist_shrink (&d, &d_to_free))
         {
           g_datalist_unlock_and_set (datalist, d);
-          if (d_to_free)
+          if (G_UNLIKELY (d_to_free))
             g_free (d_to_free);
           to_unlock = FALSE;
         }
@@ -1376,7 +1376,7 @@ g_datalist_id_replace_data (GData          **datalist,
   else
     g_datalist_unlock (datalist);
 
-  if (d_to_free)
+  if (G_UNLIKELY (d_to_free))
     g_free (d_to_free);
 
   return val == oldval;
