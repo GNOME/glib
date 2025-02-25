@@ -261,7 +261,7 @@ else
     getpwuid_preload = shared_library('getpwuid-preload',
                                       'getpwuid-preload.c',
                                       name_prefix : '',
-                                      dependencies: libdl_dep,
+                                      dependencies: [libdl_dep, libglib_dep],
                                       install_dir : installed_tests_execdir,
                                       install_tag : 'tests',
                                       install: installed_tests_enabled)
