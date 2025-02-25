@@ -172,6 +172,9 @@ g_iconv_open (const gchar  *to_codeset,
  * used), or it may return -1 and set an error such as %EILSEQ, in such a
  * situation.
  *
+ * See [`iconv(3posix)`](man:iconv(3posix)) and [`iconv(3)`](man:iconv(3)) for more details about behavior when an
+ * error occurs.
+ *
  * Returns: count of non-reversible conversions, or -1 on error
  **/
 gsize 
