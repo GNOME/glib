@@ -657,6 +657,24 @@ object_bit_unlock (GObject *object, guint lock_bit)
 
 /* --- functions --- */
 
+static const GObjectNotifyQueue notify_queue_empty = {
+  .freeze_count = 0,
+};
+
+G_ALWAYS_INLINE static inline gboolean
+_is_notify_queue_empty (const GObjectNotifyQueue *nqueue)
+{
+  /* Only the notify_queue_empty as a zero freeze count. We check here for that
+   * condition instead of pointer comparing to &notify_queue_empty. That seems
+   * useful, because callers will afterwards anyway dereferenciate
+   * "freeze_count" from memory.
+   */
+#if G_ENABLE_DEBUG
+  g_assert ((nqueue == &notify_queue_empty) == (nqueue->freeze_count == 0));
+#endif
+  return nqueue->freeze_count == 0;
+}
+
 G_ALWAYS_INLINE static inline gsize
 g_object_notify_queue_alloc_size (gsize alloc)
 {
@@ -688,9 +706,9 @@ g_object_notify_queue_freeze_cb (gpointer *data,
 
   if (!nqueue)
     {
-      /* The nqueue doesn't exist yet. We create it, and freeze thus 1 time. */
-      *data = g_object_notify_queue_new_frozen ();
-      *destroy_notify = g_free;
+      /* The nqueue doesn't exist yet. We use the dummy object that is shared
+       * by all instances. */
+      *data = (gpointer) &notify_queue_empty;
     }
   else if (!freeze_always)
     {
@@ -701,7 +719,14 @@ g_object_notify_queue_freeze_cb (gpointer *data,
     }
   else
     {
-      if (G_UNLIKELY (nqueue->freeze_count == G_MAXUINT16))
+      if (_is_notify_queue_empty (nqueue))
+        {
+          nqueue = g_object_notify_queue_new_frozen ();
+          *data = nqueue;
+          *destroy_notify = g_free;
+          nqueue->freeze_count++;
+        }
+      else if (G_UNLIKELY (nqueue->freeze_count == G_MAXUINT16))
         {
           g_critical ("Free queue for %s (%p) is larger than 65535,"
                       " called g_object_freeze_notify() too often."
@@ -732,12 +757,18 @@ g_object_notify_queue_thaw_cb (gpointer *data,
   GObject *object = user_data;
   GObjectNotifyQueue *nqueue = *data;
 
-  if (G_UNLIKELY (!nqueue || nqueue->freeze_count == 0))
+  if (G_UNLIKELY (!nqueue))
     {
       g_critical ("%s: property-changed notification for %s(%p) is not frozen",
                   G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
       return NULL;
     }
+
+  if (_is_notify_queue_empty (nqueue))
+  {
+    *data = NULL;
+    return NULL;
+  }
 
   nqueue->freeze_count--;
 
@@ -816,6 +847,12 @@ g_object_notify_queue_add_cb (gpointer *data,
        * We only ensure that a nqueue exists. If it doesn't exist, we create
        * it (and freeze once). If it already exists (and is frozen), we don't
        * freeze an additional time. */
+      nqueue = g_object_notify_queue_new_frozen ();
+      *data = nqueue;
+      *destroy_notify = g_free;
+    }
+  else if (_is_notify_queue_empty (nqueue))
+    {
       nqueue = g_object_notify_queue_new_frozen ();
       *data = nqueue;
       *destroy_notify = g_free;
