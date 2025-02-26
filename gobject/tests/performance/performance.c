@@ -78,6 +78,8 @@ run_test (PerformanceTest *test)
   gpointer data = NULL;
   guint64 i, num_rounds;
   double elapsed, min_elapsed, max_elapsed, avg_elapsed, factor;
+  double var_mean = 0;
+  double var_m2 = 0;
   GTimer *timer;
 
   if (verbose || !quiet)
@@ -183,6 +185,9 @@ run_test (PerformanceTest *test)
   max_elapsed = 0.0;
   for (i = 0; i < num_rounds; i++)
     {
+      double delta;
+      double delta2;
+
       test->init (test, data, factor);
       g_timer_start (timer);
       test->run (test, data);
@@ -194,6 +199,12 @@ run_test (PerformanceTest *test)
       min_elapsed = MIN (min_elapsed, elapsed);
       max_elapsed = MAX (max_elapsed, elapsed);
       avg_elapsed += elapsed;
+
+      /* Iteratively compute standard deviation using Welford's online algorithm. */
+      delta = elapsed - var_mean;
+      var_mean += delta / (i + 1);
+      delta2 = elapsed - var_mean;
+      var_m2 += delta * delta2;
     }
 
   if (num_rounds > 1)
@@ -201,9 +212,16 @@ run_test (PerformanceTest *test)
 
   if (verbose)
     {
+      double sample_stddev;
+
+      if (num_rounds < 2)
+        sample_stddev = NAN;
+      else
+        sample_stddev = sqrt (var_m2 / (num_rounds - 1)) * 1000;
+
       g_print ("Minimum corrected round time: %.2f msecs\n", min_elapsed * 1000);
+      g_print ("Average corrected round time: %.2f msecs +/- %.3f stddev\n", avg_elapsed * 1000, sample_stddev);
       g_print ("Maximum corrected round time: %.2f msecs\n", max_elapsed * 1000);
-      g_print ("Average corrected round time: %.2f msecs\n", avg_elapsed * 1000);
     }
 
   /* Print the results */
