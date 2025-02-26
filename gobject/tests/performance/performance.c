@@ -33,7 +33,7 @@
 
 static gboolean verbose = FALSE;
 static gboolean quiet = FALSE;
-static int test_length = DEFAULT_TEST_TIME;
+static double test_length = DEFAULT_TEST_TIME;
 static double test_factor = 0;
 static GTimer *global_timer = NULL;
 
@@ -42,7 +42,7 @@ static GOptionEntry cmd_entries[] = {
    "Print extra information", NULL},
   {"quiet", 'q', 0, G_OPTION_ARG_NONE, &quiet,
    "Print extra information", NULL},
-  {"seconds", 's', 0, G_OPTION_ARG_INT, &test_length,
+  {"seconds", 's', 0, G_OPTION_ARG_DOUBLE, &test_length,
    "Time to run each test in seconds", NULL},
   {"factor", 'f', 0, G_OPTION_ARG_DOUBLE, &test_factor,
    "Use a fixed factor for sample runs (also $GLIB_PERFORMANCE_FACTOR)", NULL},
