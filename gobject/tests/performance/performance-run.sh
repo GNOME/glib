@@ -11,10 +11,13 @@
 #
 # 1) configure the build. For example run
 #     $ git clean -fdx
-#     $ meson build -Dprefix=/tmp/glib/ -Db_lto=true --buildtype release -Ddebug=true
+#     $ meson build -Dprefix=/tmp/glib/ -Db_lto=true --buildtype release -Ddebug=false
 #    Beware, that running the script will check out other commits,
 #    build the tree and run `ninja install`. Don't have important
 #    work there.
+#
+#    Consider setting `echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor`
+#    and check `watch cat /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_cur_freq`.
 #
 # 2) run the script. Set $COMMITS to the list of commit sha's to test.
 #    Environment variables:
@@ -33,23 +36,23 @@
 #
 #    # once:
 #    git clean -fdx
-#    meson build -Dprefix=/tmp/glib/ -Db_lto=true --buildtype release -Ddebug=true
+#    meson build -Dprefix=/tmp/glib/ -Db_lto=true --buildtype release -Ddebug=false
 #
 #    # test:
 #    COMMIT_END=my-test-branch
 #    COMMIT_START="$(git merge-base origin/main "$COMMIT_END")"
-#    PERF="" PATCH="" COMMITS=" $COMMIT_START $COMMIT_END " /tmp/performance-run.sh -s 5
-#    PERF="" PATCH="" COMMITS=" $COMMIT_START $( git log --reverse --pretty=%H "$COMMIT_START..$COMMIT_END" ) " /tmp/performance-run.sh -s 5
+#    PERF="" PATCH="" COMMITS=" $COMMIT_START $COMMIT_END " /tmp/performance-run.sh -q -s 5
+#    PERF="" PATCH="" COMMITS=" $COMMIT_START $( git log --reverse --pretty=%H "$COMMIT_START..$COMMIT_END" ) " /tmp/performance-run.sh -q -s 5
 #
-#    GLIB_PERFORMANCE_FACTOR=17.06 PERF='perf stat -r 3 -B' PATCH="" COMMITS=" $COMMIT_START $COMMIT_END " /tmp/performance-run.sh -s 1 property-get
+#    GLIB_PERFORMANCE_FACTOR=1 PERF='perf stat -r 3 -B' PATCH="" COMMITS=" $COMMIT_START $COMMIT_END " /tmp/performance-run.sh -q -s 1 property-get
 
 set -e
 
 usage() {
-    sed -n '4,/^$/ s/^#\( \(.*\)\|\)$/\2/p' "$0"
+    sed -n '/^# Run /,/^$/ s/^#\( \(.*\)\|\)$/\2/p' "$0"
 }
 
-if [ "$#" -eq 1 ] && [ "$1" == "-h" ] ; then
+if [[ "$#" -eq 1 && ( "$1" == "-h" || "$1" == "--help" ) ]]; then
     usage
     exit 0
 fi
@@ -92,7 +95,7 @@ Testing commits:
 
 $(_list_commits "    ")
 
-  \$ meson build -Dprefix=/tmp/glib/ -Db_lto=true --buildtype release -Ddebug=true
+  \$ meson build -Dprefix=/tmp/glib/ -Db_lto=true --buildtype release -Ddebug=false
   \$ PATCH=$(printf '%q' "$PATCH") \\
     PREPARE_CMD=$(printf '%q' "$PREPARE_CMD") \\
     PERF=$(printf '%q' "$PERF") \\
@@ -151,6 +154,7 @@ for idx in "${!COMMITS_V[@]}" ; do
     #     ./build/gobject/tests/performance/performance
     # ldd ./build/gobject/tests/performance/performance
 
+    sleep 2
     (
         if [ -z "$PERF" ] ; then
             TESTRUN="$I" TESTCOMMIT="$commit" ./build/gobject/tests/performance/performance "$@"

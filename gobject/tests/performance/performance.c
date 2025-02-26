@@ -52,7 +52,10 @@ static GOptionEntry cmd_entries[] = {
 typedef struct _PerformanceTest PerformanceTest;
 struct _PerformanceTest {
   const char *name;
+
   gpointer extra_data;
+
+  guint base_factor;
 
   gpointer (*setup) (PerformanceTest *test);
   void (*init) (PerformanceTest *test,
@@ -501,8 +504,6 @@ complex_object_init (ComplexObject *complex_object)
  * Test object construction performance
  *************************************************************/
 
-#define NUM_OBJECT_TO_CONSTRUCT 10000
-
 struct ConstructionTest {
   GObject **objects;
   unsigned int n_objects;
@@ -528,7 +529,7 @@ test_construction_init (PerformanceTest *test,
   struct ConstructionTest *data = _data;
   unsigned int n;
 
-  n = (unsigned int) (NUM_OBJECT_TO_CONSTRUCT * count_factor);
+  n = (unsigned int) (test->base_factor * count_factor);
   if (data->n_objects != n)
     {
       data->n_objects = n;
@@ -650,7 +651,7 @@ test_finalization_init (PerformanceTest *test,
   struct ConstructionTest *data = _data;
   unsigned int n;
 
-  n = (unsigned int) (NUM_OBJECT_TO_CONSTRUCT * count_factor);
+  n = (unsigned int) (test->base_factor * count_factor);
   if (data->n_objects != n)
     {
       data->n_objects = n;
@@ -710,7 +711,10 @@ test_finalization_print_result (PerformanceTest *test,
  * Test runtime type check performance
  *************************************************************/
 
-#define NUM_KILO_CHECKS_PER_ROUND 50
+/* Work around g_type_check_instance_is_a being marked "pure",
+ * and thus only called once for the loop. */
+static gboolean (*my_type_check_instance_is_a) (GTypeInstance *type_instance,
+                                                GType iface_type);
 
 struct TypeCheckTest {
   GObject *object;
@@ -721,6 +725,8 @@ static gpointer
 test_type_check_setup (PerformanceTest *test)
 {
   struct TypeCheckTest *data;
+
+  my_type_check_instance_is_a = &g_type_check_instance_is_a;
 
   data = g_new0 (struct TypeCheckTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
@@ -735,14 +741,8 @@ test_type_check_init (PerformanceTest *test,
 {
   struct TypeCheckTest *data = _data;
 
-  data->n_checks = (unsigned int) (factor * NUM_KILO_CHECKS_PER_ROUND);
+  data->n_checks = (unsigned int) (test->base_factor * factor);
 }
-
-
-/* Work around g_type_check_instance_is_a being marked "pure",
-   and thus only called once for the loop. */
-gboolean (*my_type_check_instance_is_a) (GTypeInstance *type_instance,
-					 GType          iface_type) = &g_type_check_instance_is_a;
 
 static void
 test_type_check_run (PerformanceTest *test,
@@ -799,8 +799,6 @@ test_type_check_teardown (PerformanceTest *test,
  * Test signal emissions performance (common code)
  *************************************************************/
 
-#define NUM_EMISSIONS_PER_ROUND 10000
-
 struct EmissionTest {
   GObject *object;
   unsigned int n_checks;
@@ -851,7 +849,7 @@ test_emission_unhandled_init (PerformanceTest *test,
 {
   struct EmissionTest *data = _data;
 
-  data->n_checks = (unsigned int) (factor * NUM_EMISSIONS_PER_ROUND);
+  data->n_checks = (unsigned int) (test->base_factor * factor);
 }
 
 static void
@@ -924,7 +922,7 @@ test_emission_handled_init (PerformanceTest *test,
 {
   struct EmissionTest *data = _data;
 
-  data->n_checks = (unsigned int) (factor * NUM_EMISSIONS_PER_ROUND);
+  data->n_checks = (unsigned int) (test->base_factor * factor);
 }
 
 static void
@@ -957,8 +955,6 @@ test_emission_handled_teardown (PerformanceTest *test,
 /*************************************************************
  * Test object notify performance (common code)
  *************************************************************/
-
-#define NUM_NOTIFY_PER_ROUND 10000
 
 struct NotifyTest {
   GObject *object;
@@ -1008,7 +1004,7 @@ test_notify_unhandled_init (PerformanceTest *test,
 {
   struct NotifyTest *data = _data;
 
-  data->n_checks = (unsigned int) (factor * NUM_NOTIFY_PER_ROUND);
+  data->n_checks = (unsigned int) (test->base_factor * factor);
 }
 
 static void
@@ -1070,7 +1066,7 @@ test_notify_handled_init (PerformanceTest *test,
 {
   struct NotifyTest *data = _data;
 
-  data->n_checks = (unsigned int) (factor * NUM_NOTIFY_PER_ROUND);
+  data->n_checks = (unsigned int) (test->base_factor * factor);
 }
 
 static void
@@ -1107,8 +1103,6 @@ test_notify_handled_teardown (PerformanceTest *test,
 /*************************************************************
  * Test object set performance
  *************************************************************/
-
-#define NUM_SET_PER_ROUND 10000
 
 struct SetTest {
   GObject *object;
@@ -1150,7 +1144,7 @@ test_set_init (PerformanceTest *test,
 {
   struct SetTest *data = _data;
 
-  data->n_checks = (unsigned int) (factor * NUM_SET_PER_ROUND);
+  data->n_checks = (unsigned int) (test->base_factor * factor);
 }
 
 static void
@@ -1184,8 +1178,6 @@ test_set_teardown (PerformanceTest *test,
 /*************************************************************
  * Test object get performance
  *************************************************************/
-
-#define NUM_GET_PER_ROUND 10000
 
 struct GetTest {
   GObject *object;
@@ -1228,7 +1220,7 @@ test_get_init (PerformanceTest *test,
 {
   struct GetTest *data = _data;
 
-  data->n_checks = (unsigned int) (factor * NUM_GET_PER_ROUND);
+  data->n_checks = (unsigned int) (test->base_factor * factor);
 }
 
 static void
@@ -1262,8 +1254,6 @@ test_get_teardown (PerformanceTest *test,
 /*************************************************************
  * Test object refcount performance
  *************************************************************/
-
-#define NUM_KILO_REFS_PER_ROUND 100000
 
 struct RefcountTest {
   GObject *object;
@@ -1303,7 +1293,7 @@ test_refcount_init (PerformanceTest *test,
 {
   struct RefcountTest *data = _data;
 
-  data->n_checks = (unsigned int) (factor * NUM_KILO_REFS_PER_ROUND);
+  data->n_checks = (unsigned int) (test->base_factor * factor);
 }
 
 static void
@@ -1381,6 +1371,7 @@ static PerformanceTest tests[] = {
   {
     "simple-construction",
     simple_object_get_type,
+    347800,
     test_construction_setup,
     test_construction_init,
     test_construction_run,
@@ -1391,6 +1382,7 @@ static PerformanceTest tests[] = {
   {
     "simple-construction1",
     simple_object_get_type,
+    1454500,
     test_construction_setup,
     test_construction_init,
     test_construction_run1,
@@ -1401,6 +1393,7 @@ static PerformanceTest tests[] = {
   {
     "complex-construction",
     complex_object_get_type,
+    110800,
     test_construction_setup,
     test_construction_init,
     test_complex_construction_run,
@@ -1411,6 +1404,7 @@ static PerformanceTest tests[] = {
   {
     "complex-construction1",
     complex_object_get_type,
+    204600,
     test_construction_setup,
     test_construction_init,
     test_complex_construction_run1,
@@ -1421,6 +1415,7 @@ static PerformanceTest tests[] = {
   {
     "complex-construction2",
     complex_object_get_type,
+    237400,
     test_construction_setup,
     test_construction_init,
     test_complex_construction_run2,
@@ -1431,6 +1426,7 @@ static PerformanceTest tests[] = {
   {
     "finalization",
     simple_object_get_type,
+    47400,
     test_construction_setup,
     test_finalization_init,
     test_finalization_run,
@@ -1441,6 +1437,7 @@ static PerformanceTest tests[] = {
   {
     "type-check",
     NULL,
+    1887,
     test_type_check_setup,
     test_type_check_init,
     test_type_check_run,
@@ -1451,6 +1448,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled",
     GUINT_TO_POINTER (COMPLEX_SIGNAL),
+    56300,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1461,6 +1459,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled-empty",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_EMPTY),
+    496900,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1471,6 +1470,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled-generic",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC),
+    71700,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1481,6 +1481,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled-generic-empty",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC_EMPTY),
+    506300,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1491,6 +1492,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled-args",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_ARGS),
+    52000,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run_args,
@@ -1501,6 +1503,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled",
     GUINT_TO_POINTER (COMPLEX_SIGNAL),
+    38600,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1511,6 +1514,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled-empty",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_EMPTY),
+    40100,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1521,6 +1525,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled-generic",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC),
+    39600,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1531,6 +1536,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled-generic-empty",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC_EMPTY),
+    70400,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1541,6 +1547,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled-args",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_ARGS),
+    37800,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run_args,
@@ -1551,6 +1558,7 @@ static PerformanceTest tests[] = {
   {
     "notify-unhandled",
     complex_object_get_type,
+    526300,
     test_notify_unhandled_setup,
     test_notify_unhandled_init,
     test_notify_run,
@@ -1561,6 +1569,7 @@ static PerformanceTest tests[] = {
   {
     "notify-by-pspec-unhandled",
     complex_object_get_type,
+    1568600,
     test_notify_unhandled_setup,
     test_notify_unhandled_init,
     test_notify_by_pspec_run,
@@ -1571,6 +1580,7 @@ static PerformanceTest tests[] = {
   {
     "notify-handled",
     complex_object_get_type,
+    25500,
     test_notify_handled_setup,
     test_notify_handled_init,
     test_notify_run,
@@ -1581,6 +1591,7 @@ static PerformanceTest tests[] = {
   {
     "notify-by-pspec-handled",
     complex_object_get_type,
+    26600,
     test_notify_handled_setup,
     test_notify_handled_init,
     test_notify_by_pspec_run,
@@ -1591,6 +1602,7 @@ static PerformanceTest tests[] = {
   {
     "property-set",
     complex_object_get_type,
+    346300,
     test_set_setup,
     test_set_init,
     test_set_run,
@@ -1601,6 +1613,7 @@ static PerformanceTest tests[] = {
   {
     "property-get",
     complex_object_get_type,
+    329200,
     test_get_setup,
     test_get_init,
     test_get_run,
@@ -1611,6 +1624,7 @@ static PerformanceTest tests[] = {
   {
     "refcount",
     NULL,
+    83000,
     test_refcount_setup,
     test_refcount_init,
     test_refcount_run,
@@ -1621,6 +1635,7 @@ static PerformanceTest tests[] = {
   {
     "refcount-1",
     NULL,
+    230000,
     test_refcount_setup,
     test_refcount_init,
     test_refcount_1_run,
@@ -1631,6 +1646,7 @@ static PerformanceTest tests[] = {
   {
     "refcount-toggle",
     NULL,
+    133000,
     test_refcount_setup,
     test_refcount_init,
     test_refcount_1_run,
