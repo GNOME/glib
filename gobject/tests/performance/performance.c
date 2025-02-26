@@ -1146,6 +1146,14 @@ test_set_setup (PerformanceTest *test)
    * "property-get" test and avoid this by taking an additional reference. */
   g_object_ref (data->object);
 
+  if (g_str_equal (test->name, "property-set-signaled"))
+    {
+      /* If an object has a listener, then a property set will freeze notifications.
+       * That has an overhead, and we have a separate test for that. */
+      g_signal_connect (data->object, "notify::val2",
+                        G_CALLBACK (test_notify_handled_handler), NULL);
+    }
+
   return data;
 }
 
@@ -1615,6 +1623,17 @@ static PerformanceTest tests[] = {
     "property-set",
     complex_object_get_type,
     346300,
+    test_set_setup,
+    test_set_init,
+    test_set_run,
+    test_set_finish,
+    test_set_teardown,
+    test_set_print_result
+  },
+  {
+    "property-set-signaled",
+    complex_object_get_type,
+    45019,
     test_set_setup,
     test_set_init,
     test_set_run,
