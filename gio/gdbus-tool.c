@@ -587,6 +587,61 @@ _g_variant_parse_me_harder (GVariantType   *type,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#ifdef G_OS_UNIX
+static gboolean
+walk_variant_for_handle (GVariantBuilder  *builder,
+                         GUnixFDList      *fd_list,
+                         GVariant         *value)
+{
+  g_assert (!g_variant_is_floating (value));
+
+  if (g_variant_is_container (value))
+    {
+      gboolean res = TRUE;
+      GVariantIter iter;
+      GVariant *child;
+
+      g_variant_iter_init (&iter, value);
+
+      g_variant_builder_open (builder, g_variant_get_type (value));
+
+      while ((child = g_variant_iter_next_value (&iter)) && res)
+        {
+          res = walk_variant_for_handle (builder, fd_list, child);
+          g_variant_unref (child);
+        }
+
+      g_variant_builder_close (builder);
+
+      if (!res)
+        return FALSE;
+    }
+  else if (g_variant_is_of_type (value, G_VARIANT_TYPE_HANDLE))
+    {
+      GError *error = NULL;
+      int fd_id = -1;
+
+      if ((fd_id = g_unix_fd_list_append (fd_list, g_variant_get_handle (value), &error)) < 0)
+        {
+          g_printerr (_("Error adding handle %d: %s\n"),
+                        g_variant_get_handle (value), error->message);
+          g_error_free (error);
+          return FALSE;
+        }
+
+      g_variant_builder_add_value (builder, g_variant_new_handle (fd_id));
+    }
+  else
+    {
+      g_variant_builder_add_value (builder, value);
+    }
+
+  return TRUE;
+}
+#endif
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 static gchar *opt_emit_dest = NULL;
 static gchar *opt_emit_object_path = NULL;
 static gchar *opt_emit_signal = NULL;
@@ -921,7 +976,6 @@ handle_call (gint        *argc,
   GPtrArray *in_signature_types;
 #ifdef G_OS_UNIX
   GUnixFDList *fd_list;
-  gint fd_id;
 #endif
   gboolean complete_names;
   gboolean complete_paths;
@@ -940,7 +994,7 @@ handle_call (gint        *argc,
   result = NULL;
   in_signature_types = NULL;
 #ifdef G_OS_UNIX
-  fd_list = NULL;
+  fd_list = g_unix_fd_list_new ();
 #endif
 
   modify_argv0_for_command (argc, argv, "call");
@@ -1187,23 +1241,16 @@ handle_call (gint        *argc,
           g_free (context);
         }
 #ifdef G_OS_UNIX
-      if (g_variant_is_of_type (value, G_VARIANT_TYPE_HANDLE))
+      if (!walk_variant_for_handle (&builder, fd_list, value))
         {
-          if (!fd_list)
-            fd_list = g_unix_fd_list_new ();
-          if ((fd_id = g_unix_fd_list_append (fd_list, g_variant_get_handle (value), &error)) == -1)
-            {
-              g_printerr (_("Error adding handle %d: %s\n"),
-                          g_variant_get_handle (value), error->message);
-              g_variant_builder_clear (&builder);
-              g_error_free (error);
-              goto out;
-            } 
-	  g_variant_unref (value);
-          value = g_variant_new_handle (fd_id);
-      	}
-#endif
+          g_clear_pointer (&value, g_variant_unref);
+          g_variant_builder_clear (&builder);
+          goto out;
+        }
+#else
       g_variant_builder_add_value (&builder, value);
+#endif
+      g_clear_pointer (&value, g_variant_unref);
       ++parm;
     }
   parameters = g_variant_builder_end (&builder);
