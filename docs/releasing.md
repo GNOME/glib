@@ -54,7 +54,7 @@ You can get review of your `NEWS` changes from other co-maintainers if you wish.
 Commit the release:
 ```sh
 git add -p
-git commit -sm "${new_version}"
+git commit -s -m "${new_version}" --gpg-sign
 ```
 
 Test build the release tarball:
@@ -85,12 +85,22 @@ Add the release notes to GitLab and close the milestone:
 `git-evtag`
 ---
 
-Releases must be done with `git evtag` rather than `git tag`, as it provides
+Releases should be done with `git evtag` rather than `git tag -s`, as it provides
 stronger security guarantees. See
 [its documentation](https://github.com/cgwalters/git-evtag) for more details.
 In particular, it calculates its checksum over all blobs reachable from the tag,
 including submodules; and uses a stronger checksum than SHA-1.
 
+`git tag -a` must not be used. Releases must be cryptographically signed to
+prove that they were made by a maintainer and have not been modified since
+release.
+
 You will need a GPG key for this, ideally which has been signed by others so
 that it can be verified as being yours. However, even if your GPG key is
 unsigned, using `git evtag` is still beneficial over using `git tag`.
+
+It is possible to use an SSH key rather than a GPG key — git supports both,
+although GitLab currently does not support verifying signatures by SSH keys.
+
+See [the GNOME Handbook](https://handbook.gnome.org/maintainers/signing-releases.html)
+for further information about release signing.
