@@ -22,7 +22,6 @@
 #include "../testcommon.h"
 
 #define WARM_UP_N_RUNS 50
-#define WARM_UP_ALWAYS_SEC 2.0
 #define ESTIMATE_ROUND_TIME_N_RUNS 5
 #define DEFAULT_TEST_TIME 15 /* seconds */
  /* The time we want each round to take, in seconds, this should
@@ -81,6 +80,7 @@ run_test (PerformanceTest *test)
   double var_mean = 0;
   double var_m2 = 0;
   GTimer *timer;
+  const double WARM_UP_ALWAYS_SEC = MIN (2.0, test_length / 20);
 
   if (verbose)
     g_print ("Running test %s\n", test->name);
@@ -125,7 +125,11 @@ run_test (PerformanceTest *test)
       if (i >= WARM_UP_N_RUNS)
         break;
 
-      if (test_factor == 0 && g_timer_elapsed (timer, NULL) > test_length / 10)
+      if (test_factor > 0 && i < ESTIMATE_ROUND_TIME_N_RUNS)
+        {
+          /* run at least this many times with fixed factor. */
+        }
+      else if (g_timer_elapsed (timer, NULL) > test_length / 10)
         {
           /* The warm up should not take longer than 10 % of the entire
            * test run. Note that the warm up time for WARM_UP_ALWAYS_SEC
@@ -139,8 +143,7 @@ run_test (PerformanceTest *test)
 
   if (verbose)
     {
-      g_print ("Warm up time: %.2f secs\n", elapsed);
-      g_print ("Estimating round time\n");
+      g_print ("Warm up time: %.2f secs (%" G_GUINT64_FORMAT " rounds)\n", elapsed, i);
     }
 
   min_elapsed = 0;
@@ -148,9 +151,13 @@ run_test (PerformanceTest *test)
   if (test_factor > 0)
     {
       factor = test_factor;
+      if (verbose)
+        g_print ("Fixed correction factor %.2f\n", factor);
     }
   else
     {
+      if (verbose)
+        g_print ("Estimating round time\n");
       /* Estimate time for one run by doing a few test rounds. */
       for (i = 0; i < ESTIMATE_ROUND_TIME_N_RUNS; i++)
         {
@@ -168,10 +175,9 @@ run_test (PerformanceTest *test)
         }
 
       factor = TARGET_ROUND_TIME / min_elapsed;
+      if (verbose)
+        g_print ("Uncorrected round time: %.4f msecs, correction factor %.2f\n", 1000 * min_elapsed, factor);
     }
-
-  if (verbose)
-    g_print ("Uncorrected round time: %.4f msecs, correction factor %.2f\n", 1000*min_elapsed, factor);
 
   /* Calculate number of rounds needed */
   num_rounds = (guint64) (test_length / TARGET_ROUND_TIME) + 1;
