@@ -1371,7 +1371,7 @@ static PerformanceTest tests[] = {
   {
     "simple-construction",
     simple_object_get_type,
-    10000,
+    347800,
     test_construction_setup,
     test_construction_init,
     test_construction_run,
@@ -1382,7 +1382,7 @@ static PerformanceTest tests[] = {
   {
     "simple-construction1",
     simple_object_get_type,
-    10000,
+    1454500,
     test_construction_setup,
     test_construction_init,
     test_construction_run1,
@@ -1393,7 +1393,7 @@ static PerformanceTest tests[] = {
   {
     "complex-construction",
     complex_object_get_type,
-    10000,
+    110800,
     test_construction_setup,
     test_construction_init,
     test_complex_construction_run,
@@ -1404,7 +1404,7 @@ static PerformanceTest tests[] = {
   {
     "complex-construction1",
     complex_object_get_type,
-    10000,
+    204600,
     test_construction_setup,
     test_construction_init,
     test_complex_construction_run1,
@@ -1415,7 +1415,7 @@ static PerformanceTest tests[] = {
   {
     "complex-construction2",
     complex_object_get_type,
-    10000,
+    237400,
     test_construction_setup,
     test_construction_init,
     test_complex_construction_run2,
@@ -1426,7 +1426,7 @@ static PerformanceTest tests[] = {
   {
     "finalization",
     simple_object_get_type,
-    10000,
+    47400,
     test_construction_setup,
     test_finalization_init,
     test_finalization_run,
@@ -1437,7 +1437,7 @@ static PerformanceTest tests[] = {
   {
     "type-check",
     NULL,
-    50,
+    1887,
     test_type_check_setup,
     test_type_check_init,
     test_type_check_run,
@@ -1448,7 +1448,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled",
     GUINT_TO_POINTER (COMPLEX_SIGNAL),
-    10000,
+    56300,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1459,7 +1459,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled-empty",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_EMPTY),
-    10000,
+    496900,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1470,7 +1470,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled-generic",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC),
-    10000,
+    71700,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1481,7 +1481,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled-generic-empty",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC_EMPTY),
-    10000,
+    506300,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run,
@@ -1492,7 +1492,7 @@ static PerformanceTest tests[] = {
   {
     "emit-unhandled-args",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_ARGS),
-    10000,
+    52000,
     test_emission_unhandled_setup,
     test_emission_unhandled_init,
     test_emission_run_args,
@@ -1503,7 +1503,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled",
     GUINT_TO_POINTER (COMPLEX_SIGNAL),
-    10000,
+    38600,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1514,7 +1514,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled-empty",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_EMPTY),
-    10000,
+    40100,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1525,7 +1525,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled-generic",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC),
-    10000,
+    39600,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1536,7 +1536,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled-generic-empty",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_GENERIC_EMPTY),
-    10000,
+    70400,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run,
@@ -1547,7 +1547,7 @@ static PerformanceTest tests[] = {
   {
     "emit-handled-args",
     GUINT_TO_POINTER (COMPLEX_SIGNAL_ARGS),
-    10000,
+    37800,
     test_emission_handled_setup,
     test_emission_handled_init,
     test_emission_run_args,
@@ -1558,7 +1558,7 @@ static PerformanceTest tests[] = {
   {
     "notify-unhandled",
     complex_object_get_type,
-    10000,
+    526300,
     test_notify_unhandled_setup,
     test_notify_unhandled_init,
     test_notify_run,
@@ -1569,7 +1569,7 @@ static PerformanceTest tests[] = {
   {
     "notify-by-pspec-unhandled",
     complex_object_get_type,
-    10000,
+    1568600,
     test_notify_unhandled_setup,
     test_notify_unhandled_init,
     test_notify_by_pspec_run,
@@ -1580,7 +1580,7 @@ static PerformanceTest tests[] = {
   {
     "notify-handled",
     complex_object_get_type,
-    10000,
+    25500,
     test_notify_handled_setup,
     test_notify_handled_init,
     test_notify_run,
@@ -1591,7 +1591,7 @@ static PerformanceTest tests[] = {
   {
     "notify-by-pspec-handled",
     complex_object_get_type,
-    10000,
+    26600,
     test_notify_handled_setup,
     test_notify_handled_init,
     test_notify_by_pspec_run,
@@ -1602,7 +1602,7 @@ static PerformanceTest tests[] = {
   {
     "property-set",
     complex_object_get_type,
-    10000,
+    346300,
     test_set_setup,
     test_set_init,
     test_set_run,
@@ -1613,7 +1613,7 @@ static PerformanceTest tests[] = {
   {
     "property-get",
     complex_object_get_type,
-    10000,
+    329200,
     test_get_setup,
     test_get_init,
     test_get_run,
@@ -1624,7 +1624,7 @@ static PerformanceTest tests[] = {
   {
     "refcount",
     NULL,
-    100000,
+    83000,
     test_refcount_setup,
     test_refcount_init,
     test_refcount_run,
@@ -1635,7 +1635,7 @@ static PerformanceTest tests[] = {
   {
     "refcount-1",
     NULL,
-    100000,
+    230000,
     test_refcount_setup,
     test_refcount_init,
     test_refcount_1_run,
@@ -1646,7 +1646,7 @@ static PerformanceTest tests[] = {
   {
     "refcount-toggle",
     NULL,
-    100000,
+    133000,
     test_refcount_setup,
     test_refcount_init,
     test_refcount_1_run,
