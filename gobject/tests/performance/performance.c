@@ -712,6 +712,11 @@ test_finalization_print_result (PerformanceTest *test,
 
 #define NUM_KILO_CHECKS_PER_ROUND 50
 
+/* Work around g_type_check_instance_is_a being marked "pure",
+ * and thus only called once for the loop. */
+static gboolean (*my_type_check_instance_is_a) (GTypeInstance *type_instance,
+                                                GType iface_type);
+
 struct TypeCheckTest {
   GObject *object;
   unsigned int n_checks;
@@ -721,6 +726,8 @@ static gpointer
 test_type_check_setup (PerformanceTest *test)
 {
   struct TypeCheckTest *data;
+
+  my_type_check_instance_is_a = &g_type_check_instance_is_a;
 
   data = g_new0 (struct TypeCheckTest, 1);
   data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
@@ -737,12 +744,6 @@ test_type_check_init (PerformanceTest *test,
 
   data->n_checks = (unsigned int) (factor * NUM_KILO_CHECKS_PER_ROUND);
 }
-
-
-/* Work around g_type_check_instance_is_a being marked "pure",
-   and thus only called once for the loop. */
-gboolean (*my_type_check_instance_is_a) (GTypeInstance *type_instance,
-					 GType          iface_type) = &g_type_check_instance_is_a;
 
 static void
 test_type_check_run (PerformanceTest *test,
