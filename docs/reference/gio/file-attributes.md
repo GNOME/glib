@@ -75,13 +75,13 @@ for a given file).
 - `"gvfs"`: The ‘GVFS’ namespace. Keys in this namespace contain information
   about the current GVFS backend in use.
 - `"xattr"`: The ‘xattr’ namespace. Gets information about extended user
-  attributes. See [`attr(5)`](man:attr(5)). The `user.` prefix of the extended
+  attributes. See [`xattr(7)`](man:xattr(7)). The `user.` prefix of the extended
   user attribute name is stripped away when constructing keys in this namespace,
   e.g. `xattr::mime_type` for the extended attribute with the name
   `user.mime_type`. Note that this information is only available if
   GLib has been built with extended attribute support.
 - `"xattr-sys"`: The ‘xattr-sys’ namespace. Gets information about
-  extended attributes which are not user-specific. See [`attr(5)`](man:attr(5)).
+  extended attributes which are not user-specific. See [`xattr(7)`](man:xattr(7)).
   Note that this information is only available if GLib has been built with
   extended attribute support.
 - `"selinux"`: The ‘SELinux’ namespace. Includes information about the
