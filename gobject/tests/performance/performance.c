@@ -189,12 +189,6 @@ run_test (PerformanceTest *test)
       g_timer_stop (timer);
       test->finish (test, data);
 
-      if (i < num_rounds / 20)
-        {
-          /* The first 5% are additional warm up. Ignore. */
-          continue;
-        }
-
       elapsed = g_timer_elapsed (timer, NULL);
 
       min_elapsed = MIN (min_elapsed, elapsed);
