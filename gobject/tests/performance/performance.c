@@ -82,7 +82,7 @@ run_test (PerformanceTest *test)
   double var_m2 = 0;
   GTimer *timer;
 
-  if (verbose || !quiet)
+  if (verbose)
     g_print ("Running test %s\n", test->name);
 
   /* Set up test */
