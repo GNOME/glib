@@ -461,7 +461,7 @@ class Method:
         method_invocation_arg.gvalue_type = "object"
         method_invocation_arg.gvalue_get = "g_marshal_value_peek_object"
         method_invocation_arg.gclosure_marshaller = None
-        self.marshaller_in_args = [method_invocation_arg] + self.in_args
+        self.marshaller_in_args = [method_invocation_arg]
 
         if self.unix_fd:
             fd_list_arg = Arg("fd_list", None)
@@ -469,7 +469,9 @@ class Method:
             fd_list_arg.gvalue_type = "object"
             fd_list_arg.gvalue_get = "g_marshal_value_peek_object"
             fd_list_arg.gclosure_marshaller = None
-            self.marshaller_in_args.insert(0, fd_list_arg)
+            self.marshaller_in_args.append(fd_list_arg)
+
+        self.marshaller_in_args.extend(self.in_args)
 
         for a in self.annotations:
             a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
