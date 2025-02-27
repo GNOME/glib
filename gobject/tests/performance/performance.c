@@ -22,7 +22,6 @@
 #include "../testcommon.h"
 
 #define WARM_UP_N_RUNS 50
-#define WARM_UP_ALWAYS_SEC 2.0
 #define ESTIMATE_ROUND_TIME_N_RUNS 5
 #define DEFAULT_TEST_TIME 15 /* seconds */
  /* The time we want each round to take, in seconds, this should
@@ -33,7 +32,7 @@
 
 static gboolean verbose = FALSE;
 static gboolean quiet = FALSE;
-static int test_length = DEFAULT_TEST_TIME;
+static double test_length = DEFAULT_TEST_TIME;
 static double test_factor = 0;
 static GTimer *global_timer = NULL;
 
@@ -42,7 +41,7 @@ static GOptionEntry cmd_entries[] = {
    "Print extra information", NULL},
   {"quiet", 'q', 0, G_OPTION_ARG_NONE, &quiet,
    "Print extra information", NULL},
-  {"seconds", 's', 0, G_OPTION_ARG_INT, &test_length,
+  {"seconds", 's', 0, G_OPTION_ARG_DOUBLE, &test_length,
    "Time to run each test in seconds", NULL},
   {"factor", 'f', 0, G_OPTION_ARG_DOUBLE, &test_factor,
    "Use a fixed factor for sample runs (also $GLIB_PERFORMANCE_FACTOR)", NULL},
@@ -78,9 +77,12 @@ run_test (PerformanceTest *test)
   gpointer data = NULL;
   guint64 i, num_rounds;
   double elapsed, min_elapsed, max_elapsed, avg_elapsed, factor;
+  double var_mean = 0;
+  double var_m2 = 0;
   GTimer *timer;
+  const double WARM_UP_ALWAYS_SEC = MIN (2.0, test_length / 20);
 
-  if (verbose || !quiet)
+  if (verbose)
     g_print ("Running test %s\n", test->name);
 
   /* Set up test */
@@ -123,7 +125,11 @@ run_test (PerformanceTest *test)
       if (i >= WARM_UP_N_RUNS)
         break;
 
-      if (test_factor == 0 && g_timer_elapsed (timer, NULL) > test_length / 10)
+      if (test_factor > 0 && i < ESTIMATE_ROUND_TIME_N_RUNS)
+        {
+          /* run at least this many times with fixed factor. */
+        }
+      else if (g_timer_elapsed (timer, NULL) > test_length / 10)
         {
           /* The warm up should not take longer than 10 % of the entire
            * test run. Note that the warm up time for WARM_UP_ALWAYS_SEC
@@ -137,8 +143,7 @@ run_test (PerformanceTest *test)
 
   if (verbose)
     {
-      g_print ("Warm up time: %.2f secs\n", elapsed);
-      g_print ("Estimating round time\n");
+      g_print ("Warm up time: %.2f secs (%" G_GUINT64_FORMAT " rounds)\n", elapsed, i);
     }
 
   min_elapsed = 0;
@@ -146,9 +151,13 @@ run_test (PerformanceTest *test)
   if (test_factor > 0)
     {
       factor = test_factor;
+      if (verbose)
+        g_print ("Fixed correction factor %.2f\n", factor);
     }
   else
     {
+      if (verbose)
+        g_print ("Estimating round time\n");
       /* Estimate time for one run by doing a few test rounds. */
       for (i = 0; i < ESTIMATE_ROUND_TIME_N_RUNS; i++)
         {
@@ -166,10 +175,9 @@ run_test (PerformanceTest *test)
         }
 
       factor = TARGET_ROUND_TIME / min_elapsed;
+      if (verbose)
+        g_print ("Uncorrected round time: %.4f msecs, correction factor %.2f\n", 1000 * min_elapsed, factor);
     }
-
-  if (verbose)
-    g_print ("Uncorrected round time: %.4f msecs, correction factor %.2f\n", 1000*min_elapsed, factor);
 
   /* Calculate number of rounds needed */
   num_rounds = (guint64) (test_length / TARGET_ROUND_TIME) + 1;
@@ -183,23 +191,26 @@ run_test (PerformanceTest *test)
   max_elapsed = 0.0;
   for (i = 0; i < num_rounds; i++)
     {
+      double delta;
+      double delta2;
+
       test->init (test, data, factor);
       g_timer_start (timer);
       test->run (test, data);
       g_timer_stop (timer);
       test->finish (test, data);
 
-      if (i < num_rounds / 20)
-        {
-          /* The first 5% are additional warm up. Ignore. */
-          continue;
-        }
-
       elapsed = g_timer_elapsed (timer, NULL);
 
       min_elapsed = MIN (min_elapsed, elapsed);
       max_elapsed = MAX (max_elapsed, elapsed);
       avg_elapsed += elapsed;
+
+      /* Iteratively compute standard deviation using Welford's online algorithm. */
+      delta = elapsed - var_mean;
+      var_mean += delta / (i + 1);
+      delta2 = elapsed - var_mean;
+      var_m2 += delta * delta2;
     }
 
   if (num_rounds > 1)
@@ -207,9 +218,16 @@ run_test (PerformanceTest *test)
 
   if (verbose)
     {
+      double sample_stddev;
+
+      if (num_rounds < 2)
+        sample_stddev = NAN;
+      else
+        sample_stddev = sqrt (var_m2 / (num_rounds - 1)) * 1000;
+
       g_print ("Minimum corrected round time: %.2f msecs\n", min_elapsed * 1000);
+      g_print ("Average corrected round time: %.2f msecs +/- %.3f stddev\n", avg_elapsed * 1000, sample_stddev);
       g_print ("Maximum corrected round time: %.2f msecs\n", max_elapsed * 1000);
-      g_print ("Average corrected round time: %.2f msecs\n", avg_elapsed * 1000);
     }
 
   /* Print the results */
@@ -1134,6 +1152,14 @@ test_set_setup (PerformanceTest *test)
    * "property-get" test and avoid this by taking an additional reference. */
   g_object_ref (data->object);
 
+  if (g_str_equal (test->name, "property-set-signaled"))
+    {
+      /* If an object has a listener, then a property set will freeze notifications.
+       * That has an overhead, and we have a separate test for that. */
+      g_signal_connect (data->object, "notify::val2",
+                        G_CALLBACK (test_notify_handled_handler), NULL);
+    }
+
   return data;
 }
 
@@ -1603,6 +1629,17 @@ static PerformanceTest tests[] = {
     "property-set",
     complex_object_get_type,
     346300,
+    test_set_setup,
+    test_set_init,
+    test_set_run,
+    test_set_finish,
+    test_set_teardown,
+    test_set_print_result
+  },
+  {
+    "property-set-signaled",
+    complex_object_get_type,
+    45019,
     test_set_setup,
     test_set_init,
     test_set_run,
