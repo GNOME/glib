@@ -21,6 +21,7 @@
  */
 
 #include <dlfcn.h>
+#include <glib.h>
 #include <pwd.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -58,13 +59,24 @@
 
 #undef getpwuid
 
+/* Only modify the result if running inside a GLib test. Otherwise, we risk
+ * breaking test harness code, or test wrapper processes (as this binary is
+ * loaded via LD_PRELOAD, it will affect all wrapper processes). */
+static inline int
+should_modify_result (void)
+{
+  const char *path = g_test_get_path ();
+  return (path != NULL && *path != '\0');
+}
+
 static struct passwd my_pw;
 
 DEFINE_WRAPPER (struct passwd *, getpwuid, (uid_t uid))
 {
   struct passwd *pw = GET_REAL (getpwuid) (uid);
   my_pw = *pw;
-  my_pw.pw_name = NULL;
+  if (should_modify_result ())
+    my_pw.pw_name = NULL;
   return &my_pw;
 }
 
@@ -75,7 +87,8 @@ DEFINE_WRAPPER (int, getpwnam_r, (const char     *name,
                                   struct passwd **result))
 {
   int code = GET_REAL (getpwnam_r) (name, pwd, buf, buflen, result);
-  pwd->pw_name = NULL;
+  if (should_modify_result ())
+    pwd->pw_name = NULL;
   return code;
 }
 
@@ -86,6 +99,7 @@ DEFINE_WRAPPER (int, getpwuid_r, (uid_t           uid,
                                   struct passwd **result))
 {
   int code = GET_REAL (getpwuid_r) (uid, pwd, buf, buflen, result);
-  pwd->pw_name = NULL;
+  if (should_modify_result ())
+    pwd->pw_name = NULL;
   return code;
 }
