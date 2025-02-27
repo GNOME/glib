@@ -1352,6 +1352,11 @@ G_END_DECLS
         self.assertIs(stripped_out.count(f"{func_name},"), 1)
         self.assertIs(stripped_out.count(f"{func_name} ("), 1)
 
+        self.assertLess(
+            stripped_out.index("arg_method_invocation"),
+            stripped_out.index("arg_fd_list"),
+        )
+
         index = 1
         self.assertIs(
             stripped_out.count(f"g_marshal_value_peek_object (param_values + {index})"),
