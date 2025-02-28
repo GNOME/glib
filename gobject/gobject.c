@@ -110,6 +110,7 @@ enum {
 #define OPTIONAL_FLAG_LOCK               (1 << 3) /* _OPTIONAL_BIT_LOCK */
 #define OPTIONAL_FLAG_EVER_HAD_WEAK_REF  (1 << 4) /* whether on the object ever g_weak_ref_set() was called. */
 #define OPTIONAL_FLAG_NEEDS_NOTIFY       (1 << 5) /* Corresponds to CLASS_NEEDS_NOTIFY(). */
+#define OPTIONAL_FLAG_FROZEN_IN_CONSTRUCTION (1 << 6) /* Whether we are OPTIONAL_FLAG_IN_CONSTRUCTION and froze the notify queue. */
 
 /* We use g_bit_lock(), which only supports one lock per integer.
  *
@@ -826,29 +827,41 @@ g_object_notify_queue_add_cb (gpointer *data,
                               GDestroyNotify *destroy_notify,
                               gpointer user_data)
 {
-  GParamSpec *pspec = ((gpointer *) user_data)[0];
-  gboolean in_init = GPOINTER_TO_INT (((gpointer *) user_data)[1]);
+  GObject *object = ((gpointer *) user_data)[0];
+  GParamSpec *pspec = ((gpointer *) user_data)[1];
+  gboolean is_notify = GPOINTER_TO_INT (((gpointer *) user_data)[2]);
   GObjectNotifyQueue *nqueue = *data;
   guint16 i;
 
   if (!nqueue)
     {
-      if (!in_init)
+      guint flags;
+
+      if (!is_notify)
         {
-          /* We are not in-init and are currently not frozen. There is nothing
-           * to do. We return FALSE to the caller, which then will dispatch
-           * the event right away. */
+          /* We are called object_set_property() at a time when we expect to be
+           * frozen. Somebody messed up the ref-count for freeze/thaw. This is
+           * a bug. */
+          g_return_val_if_reached (GINT_TO_POINTER (FALSE));
+        }
+
+      flags = object_get_optional_flags (object);
+
+      if (!(flags & OPTIONAL_FLAG_IN_CONSTRUCTION))
+        {
+          /* We are no longer constructing and are not frozen. The user called
+           * g_object_notify(). We return FALSE here and out caller
+           * g_object_notify_by_spec_internal() will directly dispatch the
+           * notification. */
           return GINT_TO_POINTER (FALSE);
         }
 
-      /* If we are "in_init", we always want to create a queue now.
-       *
-       * Note in that case, the freeze will be balanced at the end of object
-       * initialization.
-       *
-       * We only ensure that a nqueue exists. If it doesn't exist, we create
-       * it (and freeze once). If it already exists (and is frozen), we don't
-       * freeze an additional time. */
+      /* We are still under construction, but not yet frozen due to that.
+       * We don't want to notify yet, so we freeze here. */
+#ifdef G_ENABLE_DEBUG
+      g_assert (!(flags & OPTIONAL_FLAG_FROZEN_IN_CONSTRUCTION));
+#endif
+      object_set_optional_flags (object, OPTIONAL_FLAG_FROZEN_IN_CONSTRUCTION);
       nqueue = g_object_notify_queue_new_frozen ();
       *data = nqueue;
       *destroy_notify = g_free;
@@ -893,14 +906,18 @@ out:
 static gboolean
 g_object_notify_queue_add (GObject *object,
                            GParamSpec *pspec,
-                           gboolean in_init)
+                           gboolean is_notify)
 {
   gpointer result;
 
   result = _g_datalist_id_update_atomic (&object->qdata,
                                          quark_notify_queue,
                                          g_object_notify_queue_add_cb,
-                                         ((gpointer[]){ pspec, GINT_TO_POINTER (!!in_init) }));
+                                         ((gpointer[]) {
+                                             object,
+                                             pspec,
+                                             GINT_TO_POINTER (!!is_notify),
+                                         }));
 
   return GPOINTER_TO_INT (result);
 }
@@ -1814,6 +1831,7 @@ g_object_init (GObject		*object,
 {
   guint *p_flags;
   gboolean needs_notify = CLASS_NEEDS_NOTIFY (class);
+  gboolean needs_freeze = (CLASS_HAS_PROPS (class) && needs_notify);
 
   object->ref_count = 1;
   object->qdata = NULL;
@@ -1824,8 +1842,10 @@ g_object_init (GObject		*object,
   *p_flags = OPTIONAL_FLAG_IN_CONSTRUCTION;
   if (needs_notify)
     *p_flags |= OPTIONAL_FLAG_NEEDS_NOTIFY;
+  if (needs_freeze)
+    *p_flags |= OPTIONAL_FLAG_FROZEN_IN_CONSTRUCTION;
 
-  if (CLASS_HAS_PROPS (class) && needs_notify)
+  if (needs_freeze)
     {
       /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
       g_object_notify_queue_freeze (object, TRUE);
@@ -2038,9 +2058,7 @@ g_object_notify_by_spec_internal (GObject    *object,
   if (!needs_notify)
     return;
 
-  in_init = (object_flags & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
-
-  if (g_object_notify_queue_add (object, pspec, in_init))
+  if (g_object_notify_queue_add (object, pspec, TRUE))
     return;
 
   /*
