@@ -1794,12 +1794,6 @@ object_in_construction (GObject *object)
 }
 
 static inline void
-set_object_in_construction (GObject *object)
-{
-  object_set_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
-}
-
-static inline void
 unset_object_in_construction (GObject *object)
 {
   object_unset_optional_flags (object, OPTIONAL_FLAG_IN_CONSTRUCTION);
@@ -1809,17 +1803,21 @@ static void
 g_object_init (GObject		*object,
 	       GObjectClass	*class)
 {
+  guint *p_flags;
+
   object->ref_count = 1;
   object->qdata = NULL;
+
+  /* We are still very early during construction. At this point we set the flag
+   * without atomic. */
+  p_flags = object_get_optional_flags_p (object);
+  *p_flags = OPTIONAL_FLAG_IN_CONSTRUCTION;
 
   if (CLASS_HAS_PROPS (class) && CLASS_NEEDS_NOTIFY (class))
     {
       /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
       g_object_notify_queue_freeze (object, TRUE);
     }
-
-  /* mark object in-construction for notify_queue_thaw() and to allow construct-only properties */
-  set_object_in_construction (object);
 
   GOBJECT_IF_DEBUG (OBJECTS,
     {
