@@ -2571,8 +2571,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
 
   if (CLASS_HAS_PROPS (class))
     {
-      if ((newly_constructed && _g_object_has_notify_handler (object)) ||
-          _g_object_has_notify_handler (object))
+      if (newly_constructed && _g_object_has_notify_handler (object))
         {
           /* This may or may not have been setup in g_object_init().
            * If it hasn't, we do it now.
