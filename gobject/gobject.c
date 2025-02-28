@@ -109,6 +109,7 @@ enum {
 #define OPTIONAL_FLAG_HAS_NOTIFY_HANDLER (1 << 2) /* Same, specifically for "notify" */
 #define OPTIONAL_FLAG_LOCK               (1 << 3) /* _OPTIONAL_BIT_LOCK */
 #define OPTIONAL_FLAG_EVER_HAD_WEAK_REF  (1 << 4) /* whether on the object ever g_weak_ref_set() was called. */
+#define OPTIONAL_FLAG_NEEDS_NOTIFY       (1 << 5) /* Corresponds to CLASS_NEEDS_NOTIFY(). */
 
 /* We use g_bit_lock(), which only supports one lock per integer.
  *
@@ -1771,10 +1772,15 @@ _g_object_has_signal_handler (GObject *object)
 }
 
 static inline gboolean
+_g_object_has_notify_handler_for_flags (guint flags)
+{
+  return (flags & (OPTIONAL_FLAG_HAS_NOTIFY_HANDLER | OPTIONAL_FLAG_NEEDS_NOTIFY)) != 0;
+}
+
+static inline gboolean
 _g_object_has_notify_handler (GObject *object)
 {
-  return CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object)) ||
-         (object_get_optional_flags (object) & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0;
+  return _g_object_has_notify_handler_for_flags (object_get_optional_flags (object));
 }
 
 void
@@ -1782,8 +1788,10 @@ _g_object_set_has_signal_handler (GObject *object,
                                   guint    signal_id)
 {
   guint flags = OPTIONAL_FLAG_HAS_SIGNAL_HANDLER;
+
   if (signal_id == gobject_signals[NOTIFY])
     flags |= OPTIONAL_FLAG_HAS_NOTIFY_HANDLER;
+
   object_set_optional_flags (object, flags);
 }
 
@@ -1804,6 +1812,7 @@ g_object_init (GObject		*object,
 	       GObjectClass	*class)
 {
   guint *p_flags;
+  gboolean needs_notify = CLASS_NEEDS_NOTIFY (class);
 
   object->ref_count = 1;
   object->qdata = NULL;
@@ -1812,8 +1821,10 @@ g_object_init (GObject		*object,
    * without atomic. */
   p_flags = object_get_optional_flags_p (object);
   *p_flags = OPTIONAL_FLAG_IN_CONSTRUCTION;
+  if (needs_notify)
+    *p_flags |= OPTIONAL_FLAG_NEEDS_NOTIFY;
 
-  if (CLASS_HAS_PROPS (class) && CLASS_NEEDS_NOTIFY (class))
+  if (CLASS_HAS_PROPS (class) && needs_notify)
     {
       /* freeze object's notification queue, g_object_new_internal() preserves pairedness */
       g_object_notify_queue_freeze (object, TRUE);
@@ -2021,8 +2032,7 @@ g_object_notify_by_spec_internal (GObject    *object,
   /* get all flags we need with a single atomic read */
   object_flags = object_get_optional_flags (object);
 
-  needs_notify = ((object_flags & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0) ||
-                  CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object));
+  needs_notify = _g_object_has_notify_handler_for_flags (object_flags);
 
   if (!needs_notify)
     return;
