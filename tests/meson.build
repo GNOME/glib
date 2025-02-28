@@ -25,13 +25,15 @@ if have_bash
   endforeach
 endif
 
-test(
-  'check-missing-install-tag.py',
-  python,
-  args : ['-B', files('check-missing-install-tag.py')],
-  env : test_env,
-  suite : ['lint', 'no-valgrind'],
-  protocol : 'tap',
-)
+if not meson.is_subproject()
+  test(
+    'check-missing-install-tag.py',
+    python,
+    args : ['-B', files('check-missing-install-tag.py')],
+    env : test_env,
+    suite : ['lint', 'no-valgrind'],
+    protocol : 'tap',
+  )
+endif
 
 subdir('lib')
