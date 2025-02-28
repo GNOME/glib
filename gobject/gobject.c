@@ -204,6 +204,7 @@ static gchar*	g_value_object_lcopy_value		(const GValue	*value,
 static void	g_object_dispatch_properties_changed	(GObject	*object,
 							 guint		 n_pspecs,
 							 GParamSpec    **pspecs);
+static void closure_array_destroy_all (GObject *object);
 static guint               object_floating_flag_handler (GObject        *object,
                                                          gint            job);
 static inline void object_set_optional_flags (GObject *object,
@@ -1760,7 +1761,7 @@ g_object_real_dispose (GObject *object)
 
   /* GWeakNotify and GClosure can call into user code */
   g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
-  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
+  closure_array_destroy_all (object);
 }
 
 #ifdef G_ENABLE_DEBUG
@@ -4485,7 +4486,7 @@ retry_decrement:
 
   /* The object is almost gone. Finalize. */
 
-  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
+  closure_array_destroy_all (object);
   g_signal_handlers_destroy (object);
   g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
 
@@ -5243,24 +5244,47 @@ object_remove_closure (gpointer data,
                                 closure);
 }
 
-static void
-destroy_closure_array (gpointer data)
+static gpointer
+closure_array_destroy_all_cb (gpointer *data,
+                              GDestroyNotify *destroy_notify,
+                              gpointer user_data)
 {
-  CArray *carray = data;
-  GObject *object = carray->object;
-  guint i, n = carray->n_closures;
-  
-  for (i = 0; i < n; i++)
+  CArray *carray = *data;
+  GClosure *closure;
+
+  if (!carray)
+    return NULL;
+
+  closure = carray->closures[--carray->n_closures];
+
+  if (carray->n_closures == 0)
     {
-      GClosure *closure = carray->closures[i];
-      
-      /* removing object_remove_closure() upfront is probably faster than
-       * letting it fiddle with quark_closure_array which is empty anyways
-       */
+      g_free (carray);
+      *data = NULL;
+    }
+
+  return closure;
+}
+
+static void
+closure_array_destroy_all (GObject *object)
+{
+  GClosure *closure;
+
+  /* We invalidate closures in a loop. As this emits external callbacks, a callee
+   * could register another closure, which the loop would invalidate too.
+   *
+   * This is an intentional choice. Maybe it would be instead better to only
+   * only release the closures that were registered when the loop started. That
+   * would be possible, but is not done that way. */
+  while ((closure = _g_datalist_id_update_atomic (&object->qdata,
+                                                  quark_closure_array,
+                                                  closure_array_destroy_all_cb,
+                                                  NULL)))
+    {
       g_closure_remove_invalidate_notifier (closure, object, object_remove_closure);
       g_closure_invalidate (closure);
     }
-  g_free (carray);
 }
 
 static gpointer
@@ -5280,7 +5304,11 @@ g_object_watch_closure_cb (gpointer *data,
       carray->n_closures = 1;
       i = 0;
 
-      *destroy_notify = destroy_closure_array;
+#if G_ENABLE_DEBUG
+      /* We never expect there is anything to destroy. We require
+       * these entries to be released via closure_array_destroy_all(). */
+      *destroy_notify = g_destroy_notify_assert_not_reached;
+#endif
     }
   else
     {
