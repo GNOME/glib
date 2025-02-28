@@ -2022,34 +2022,35 @@ g_object_notify_by_spec_internal (GObject    *object,
 
   /* get all flags we need with a single atomic read */
   object_flags = object_get_optional_flags (object);
+
   needs_notify = ((object_flags & OPTIONAL_FLAG_HAS_NOTIFY_HANDLER) != 0) ||
                   CLASS_NEEDS_NOTIFY (G_OBJECT_GET_CLASS (object));
+
+  if (!needs_notify)
+    return;
+
   in_init = (object_flags & OPTIONAL_FLAG_IN_CONSTRUCTION) != 0;
 
-  if (pspec != NULL && needs_notify)
-    {
-      if (!g_object_notify_queue_add (object, pspec, in_init))
-        {
-          /*
-           * Coverity doesn’t understand the paired ref/unref here and seems to
-           * ignore the ref, thus reports every call to g_object_notify() as
-           * causing a double-free. That’s incorrect, but I can’t get a model
-           * file to work for avoiding the false positives, so instead comment
-           * out the ref/unref when doing static analysis.
-           */
+  if (g_object_notify_queue_add (object, pspec, in_init))
+    return;
+
+  /*
+   * Coverity doesn’t understand the paired ref/unref here and seems to
+   * ignore the ref, thus reports every call to g_object_notify() as
+   * causing a double-free. That’s incorrect, but I can’t get a model
+   * file to work for avoiding the false positives, so instead comment
+   * out the ref/unref when doing static analysis.
+   */
 #ifndef __COVERITY__
-          g_object_ref (object);
+  g_object_ref (object);
 #endif
 
-          /* not frozen, so just dispatch the notification directly */
-          G_OBJECT_GET_CLASS (object)
-              ->dispatch_properties_changed (object, 1, &pspec);
+  /* not frozen, so just dispatch the notification directly */
+  G_OBJECT_GET_CLASS (object)->dispatch_properties_changed (object, 1, &pspec);
 
 #ifndef __COVERITY__
-          g_object_unref (object);
+  g_object_unref (object);
 #endif
-        }
-    }
 }
 
 /**
