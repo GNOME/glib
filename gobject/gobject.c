@@ -3035,7 +3035,7 @@ g_object_set_is_valid_property (GObject         *object,
                   G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
       return FALSE;
     }
-  if (G_UNLIKELY (((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))))
+  if (G_UNLIKELY (pspec->flags & G_PARAM_CONSTRUCT_ONLY))
     {
       g_critical ("%s: construct property \"%s\" for object '%s' can't be set after construction",
                   G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
