@@ -2225,9 +2225,13 @@ else
 endif
 
 pcre2_req = '>=10.32'
+pcre2_options = [
+  'default_library=static',
+  'test=false',
+]
 
 # Pick up pcre from the system, or if "--force-fallback-for libpcre2-8" was specified
-pcre2 = dependency('libpcre2-8', version: pcre2_req, required: false, default_options: ['default_library=static'])
+pcre2 = dependency('libpcre2-8', version: pcre2_req, required: false, default_options: pcre2_options)
 if not pcre2.found()
   if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'
   # MSVC: Search for the PCRE2 library by the configuration, which corresponds
@@ -2243,7 +2247,7 @@ endif
 
 # Try again with the fallback
 if not pcre2.found()
-  pcre2 = dependency('libpcre2-8', version: pcre2_req, allow_fallback: true, default_options: ['default_library=static'])
+  pcre2 = dependency('libpcre2-8', version: pcre2_req, allow_fallback: true, default_options: pcre2_options)
   assert(pcre2.type_name() == 'internal')
   # static flags are automatically enabled by the subproject if it's built
   # with default_library=static
