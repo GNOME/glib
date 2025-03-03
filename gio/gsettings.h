@@ -256,7 +256,7 @@ typedef gboolean      (*GSettingsBindGetMapping)                        (GValue 
 
 /**
  * GSettingsGetMapping:
- * @value: the #GVariant to map, or %NULL
+ * @value: (nullable): the #GVariant to map, or %NULL
  * @result: (out): the result of the mapping
  * @user_data: (closure): the user data that was passed to
  * g_settings_get_mapped()
