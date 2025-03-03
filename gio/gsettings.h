@@ -231,7 +231,7 @@ void                    g_settings_sync                                 (void);
  * The type for the function that is used to convert an object property
  * value to a #GVariant for storing it in #GSettings.
  *
- * Returns: a new #GVariant holding the data from @value,
+ * Returns: (nullable): a new #GVariant holding the data from @value,
  *     or %NULL in case of an error
  */
 typedef GVariant *    (*GSettingsBindSetMapping)                        (const GValue       *value,
