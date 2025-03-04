@@ -90,7 +90,7 @@
  *   debug_controller = G_DEBUG_CONTROLLER (g_debug_controller_dbus_new (priv->connection, NULL, &child_error));
  *   if (debug_controller == NULL)
  *     {
- *       g_error ("Could not register debug controller on bus: %s"),
+ *       g_error ("Could not register debug controller on bus: %s",
  *                child_error->message);
  *     }
  *
