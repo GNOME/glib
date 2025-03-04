@@ -1845,7 +1845,7 @@ g_settings_get_mapped (GSettings           *settings,
  * A convenience variant of [method@Gio.Settings.get] for strings.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a string type in the schema for @settings.
+ * having an `s` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: (not nullable) (transfer full): a newly-allocated string
  *
@@ -1876,7 +1876,7 @@ g_settings_get_string (GSettings   *settings,
  * A convenience variant of [method@Gio.Settings.set] for strings.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a string type in the schema for @settings.
+ * having an `s` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: true if setting the key succeeded,
  *   false if the key was not writable
@@ -1901,7 +1901,7 @@ g_settings_set_string (GSettings   *settings,
  * A convenience variant of [method@Gio.Settings.get] for 32-bit integers.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having an int32 type in the schema for @settings.
+ * having an `i` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: an integer
  *
@@ -1932,7 +1932,7 @@ g_settings_get_int (GSettings   *settings,
  * A convenience variant of [method@Gio.Settings.set] for 32-bit integers.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having an int32 type in the schema for @settings.
+ * having an `i` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: true if setting the key succeeded,
  *   false if the key was not writable
@@ -1957,7 +1957,7 @@ g_settings_set_int (GSettings   *settings,
  * A convenience variant of [method@Gio.Settings.get] for 64-bit integers.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having an int64 type in the schema for @settings.
+ * having an `x` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: a 64-bit integer
  *
@@ -1988,7 +1988,7 @@ g_settings_get_int64 (GSettings   *settings,
  * A convenience variant of [method@Gio.Settings.set] for 64-bit integers.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having an int64 type in the schema for @settings.
+ * having an `x` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: true if setting the key succeeded,
  *   false if the key was not writable
@@ -2014,7 +2014,7 @@ g_settings_set_int64 (GSettings   *settings,
  * integers.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a uint32 type in the schema for @settings.
+ * having a `u` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: an unsigned integer
  *
@@ -2046,7 +2046,7 @@ g_settings_get_uint (GSettings   *settings,
  * integers.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a uint32 type in the schema for @settings.
+ * having a `u` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: true if setting the key succeeded,
  *   false if the key was not writable
@@ -2072,7 +2072,7 @@ g_settings_set_uint (GSettings   *settings,
  * integers.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a uint64 type in the schema for @settings.
+ * having a `t` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: a 64-bit unsigned integer
  *
@@ -2104,7 +2104,7 @@ g_settings_get_uint64 (GSettings   *settings,
  * integers.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a uint64 type in the schema for @settings.
+ * having a `t` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: true if setting the key succeeded,
  *   false if the key was not writable
@@ -2129,7 +2129,7 @@ g_settings_set_uint64 (GSettings   *settings,
  * A convenience variant of [method@Gio.Settings.get] for doubles.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a ‘double’ type in the schema for @settings.
+ * having a `d` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: a double
  *
@@ -2160,7 +2160,7 @@ g_settings_get_double (GSettings   *settings,
  * A convenience variant of [method@Gio.Settings.set] for doubles.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a ‘double’ type in the schema for @settings.
+ * having a `d` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: true if setting the key succeeded,
  *   false if the key was not writable
@@ -2185,7 +2185,7 @@ g_settings_set_double (GSettings   *settings,
  * A convenience variant of [method@Gio.Settings.get] for booleans.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a boolean type in the schema for @settings.
+ * having a `b` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: a boolean
  *
@@ -2216,7 +2216,7 @@ g_settings_get_boolean (GSettings  *settings,
  * A convenience variant of [method@Gio.Settings.set] for booleans.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having a boolean type in the schema for @settings.
+ * having a `b` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: true if setting the key succeeded,
  *   false if the key was not writable
@@ -2239,7 +2239,7 @@ g_settings_set_boolean (GSettings  *settings,
  * A convenience variant of [method@Gio.Settings.get] for string arrays.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having an array of strings type in the schema for @settings.
+ * having an `as` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: (array zero-terminated=1) (not nullable) (transfer full): a
  *   newly-allocated, `NULL`-terminated array of strings, the value that
@@ -2273,7 +2273,7 @@ g_settings_get_strv (GSettings   *settings,
  * @value is `NULL`, then @key is set to be the empty array.
  *
  * It is a programmer error to give a @key that isn’t specified as
- * having an array of strings type in the schema for @settings.
+ * having an `as` type in the schema for @settings (see [struct@GLib.VariantType]).
  *
  * Returns: true if setting the key succeeded,
  *   false if the key was not writable
