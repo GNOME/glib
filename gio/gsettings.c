@@ -2506,8 +2506,8 @@ g_settings_is_writable (GSettings   *settings,
  * @name: the name of the child schema
  *
  * Creates a child settings object which has a base path of
- * `base-path/@name`, where `base-path` is the base path of
- * @settings.
+ * `base-path/name`, where `base-path` is the base path of
+ * @settings and `name` is as specified by the caller.
  *
  * The schema for the child settings object must have been declared
  * in the schema of @settings using a `<child>` element.
