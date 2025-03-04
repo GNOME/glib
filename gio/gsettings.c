@@ -236,6 +236,31 @@
  * `glib-compile-schemas` expects schema files to have the extension
  * `.gschema.override`.
  *
+ * ## Delay-apply mode
+ *
+ * By default, values set on a [class@Gio.Settings] instance immediately start
+ * to be written to the backend (although these writes may not complete by the
+ * time that [method@Gio.Settings.set]) returns; see [func@Gio.Settings.sync]).
+ *
+ * In order to allow groups of settings to be changed simultaneously and
+ * atomically, GSettings also supports a ‘delay-apply’ mode. In this mode,
+ * updated values are kept locally in the [class@Gio.Settings] instance until
+ * they are explicitly applied by calling [method@Gio.Settings.apply].
+ *
+ * For example, this could be useful for a preferences dialog where the
+ * preferences all need to be applied simultaneously when the user clicks ‘Save’.
+ *
+ * Switching a [class@Gio.Settings] instance to ‘delay-apply’ mode is a one-time
+ * irreversible operation: from that point onwards, *all* changes made to that
+ * [class@Gio.Settings] have to be explicitly applied by calling
+ * [method@Gio.Settings.apply]. The ‘delay-apply’ mode is also propagated to any
+ * child settings objects subsequently created using
+ * [method@Gio.Settings.get_child].
+ *
+ * At any point, the set of unapplied changes can be queried using
+ * [property@Gio.Settings:has-unapplied], and discarded by calling
+ * [method@Gio.Settings.revert].
+ *
  * ## Binding
  *
  * A very convenient feature of GSettings lets you bind [class@GObject.Object]
@@ -994,9 +1019,8 @@ g_settings_class_init (GSettingsClass *class)
    /**
     * GSettings:delay-apply:
     *
-    * Whether the [class@Gio.Settings] object is in ‘delay-apply’ mode.
-    *
-    * See [method@Gio.Settings.delay] for details.
+    * Whether the [class@Gio.Settings] object is in
+    * [‘delay-apply’ mode](class.Settings.html#delay-apply-mode).
     *
     * Since: 2.28
     */
@@ -2300,7 +2324,8 @@ g_settings_set_strv (GSettings           *settings,
  * g_settings_delay:
  * @settings: the settings object
  *
- * Changes the [class@Gio.Settings] object into ‘delay-apply’ mode.
+ * Changes the [class@Gio.Settings] object into
+ * [‘delay-apply’ mode](class.Settings.html#delay-apply-mode).
  *
  * In this
  * mode, changes to @settings are not immediately propagated to the
@@ -2338,9 +2363,9 @@ g_settings_delay (GSettings *settings)
  *
  * Applies any changes that have been made to the settings.
  *
- * This function does nothing unless @settings is in ‘delay-apply’ mode;
- * see [method@Gio.Settings.delay].  In the normal case settings are always
- * applied immediately.
+ * This function does nothing unless @settings is in
+ * [‘delay-apply’ mode](class.Settings.html#delay-apply-mode).  In the normal
+ * case settings are always applied immediately.
  **/
 void
 g_settings_apply (GSettings *settings)
@@ -2358,11 +2383,11 @@ g_settings_apply (GSettings *settings)
  * g_settings_revert:
  * @settings: the settings object
  *
- * Reverts all non-applied changes to the settings.
+ * Reverts all unapplied changes to the settings.
  *
- * This function does nothing unless @settings is in ‘delay-apply’ mode; see
- * [method@Gio.Settings.delay].  In the normal case settings are always applied
- * immediately.
+ * This function does nothing unless @settings is in
+ * [‘delay-apply’ mode](class.Settings.html#delay-apply-mode).  In the normal
+ * case settings are always applied immediately.
  *
  * Change notifications will be emitted for affected keys.
  **/
@@ -2385,7 +2410,8 @@ g_settings_revert (GSettings *settings)
  * Returns whether the [class@Gio.Settings] object has any unapplied
  * changes.
  *
- * This can only be the case if it is in ‘delay-apply’ mode.
+ * This can only be the case if it is in
+ * [‘delay-apply’ mode](class.Settings.html#delay-apply-mode).
  *
  * Returns: true if @settings has unapplied changes, false otherwise
  *
