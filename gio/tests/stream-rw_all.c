@@ -119,10 +119,10 @@ static void
 test_read_all_async_memory (void)
 {
   GInputStream *ms;
-  gchar b[24] = "0123456789ABCDEFGHIJ!@#$";
+  gchar b[] = "0123456789ABCDEFGHIJ!@#$";
   gchar buf[10];
 
-  ms = g_memory_input_stream_new_from_data (b, sizeof b, NULL);
+  ms = g_memory_input_stream_new_from_data (b, strlen (b), NULL);
 
   g_input_stream_read_all_async (ms, buf, 10, 0, NULL, read_done, NULL);
   wait_for_read (TRUE, 10);
