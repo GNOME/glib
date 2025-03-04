@@ -279,7 +279,7 @@
  *
  * ### Meson
  *
- * GSettings is natively supported by Meson's [GNOME module](https://mesonbuild.com/Gnome-module.html).
+ * GSettings is natively supported by Meson’s [GNOME module](https://mesonbuild.com/Gnome-module.html).
  *
  * You can install the schemas as any other data file:
  *
@@ -789,13 +789,14 @@ g_settings_class_init (GSettingsClass *class)
    * @settings: the object on which the signal was emitted
    * @key: the name of the key that changed
    *
-   * The "changed" signal is emitted when a key has potentially changed.
-   * You should call one of the g_settings_get() calls to check the new
+   * Emitted when a key has potentially changed.
+   *
+   * You should call one of the [method@Gio.Settings.get] calls to check the new
    * value.
    *
    * This signal supports detailed connections.  You can connect to the
-   * detailed signal "changed::x" in order to only receive callbacks
-   * when key "x" changes.
+   * detailed signal `changed::x` in order to only receive callbacks
+   * when key `x` changes.
    *
    * Note that @settings only emits this signal if you have read @key at
    * least once while a signal handler was already connected for @key.
@@ -810,28 +811,29 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings::change-event:
    * @settings: the object on which the signal was emitted
-   * @keys: (array length=n_keys) (element-type GQuark) (nullable):
-   *        an array of #GQuarks for the changed keys, or %NULL
-   * @n_keys: the length of the @keys array, or 0
+   * @keys: (array length=n_keys) (element-type GQuark) (nullable): array of the
+   *   keys which have changed
+   * @n_keys: the length of the @keys array, or `0`
    *
-   * The "change-event" signal is emitted once per change event that
-   * affects this settings object.  You should connect to this signal
+   * Emitted once per change event that affects this settings object.
+   *
+   * You should connect to this signal
    * only if you are interested in viewing groups of changes before they
-   * are split out into multiple emissions of the "changed" signal.
-   * For most use cases it is more appropriate to use the "changed" signal.
+   * are split out into multiple emissions of the [signal@Gio.Settings::changed] signal.
+   * For most use cases it is more appropriate to use the [signal@Gio.Settings::changed] signal.
    *
    * In the event that the change event applies to one or more specified
-   * keys, @keys will be an array of #GQuark of length @n_keys.  In the
-   * event that the change event applies to the #GSettings object as a
+   * keys, @keys will be an array of [alias@GLib.Quark]s of length @n_keys.  In the
+   * event that the change event applies to the [class@Gio.Settings] object as a
    * whole (ie: potentially every key has been changed) then @keys will
-   * be %NULL and @n_keys will be 0.
+   * be `NULL` and @n_keys will be `0`.
    *
-   * The default handler for this signal invokes the "changed" signal
+   * The default handler for this signal invokes the [signal@Gio.Settings::changed] signal
    * for each affected key.  If any other connected handler returns
-   * %TRUE then this default functionality will be suppressed.
+   * true then this default functionality will be suppressed.
    *
-   * Returns: %TRUE to stop other handlers from being invoked for the
-   *          event. FALSE to propagate the event further.
+   * Returns: true to stop other handlers from being invoked for the
+   *   event, false to propagate the event further
    */
   g_settings_signals[SIGNAL_CHANGE_EVENT] =
     g_signal_new (I_("change-event"), G_TYPE_SETTINGS,
@@ -849,13 +851,14 @@ g_settings_class_init (GSettingsClass *class)
    * @settings: the object on which the signal was emitted
    * @key: the key
    *
-   * The "writable-changed" signal is emitted when the writability of a
-   * key has potentially changed.  You should call
-   * g_settings_is_writable() in order to determine the new status.
+   * Emitted when the writability of a key has potentially changed.
+   *
+   * You should call [method@Gio.Settings.is_writable] in order to determine the
+   * new status.
    *
    * This signal supports detailed connections.  You can connect to the
-   * detailed signal "writable-changed::x" in order to only receive
-   * callbacks when the writability of "x" changes.
+   * detailed signal `writable-changed::x` in order to only receive
+   * callbacks when the writability of `x` changes.
    */
   g_settings_signals[SIGNAL_WRITABLE_CHANGED] =
     g_signal_new (I_("writable-changed"), G_TYPE_SETTINGS,
@@ -867,29 +870,30 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings::writable-change-event:
    * @settings: the object on which the signal was emitted
-   * @key: the quark of the key, or 0
+   * @key: the quark of the key, or `0`
    *
-   * The "writable-change-event" signal is emitted once per writability
-   * change event that affects this settings object.  You should connect
+   * Emitted once per writability change event that affects this settings object.
+   *
+   * You should connect
    * to this signal if you are interested in viewing groups of changes
    * before they are split out into multiple emissions of the
-   * "writable-changed" signal.  For most use cases it is more
-   * appropriate to use the "writable-changed" signal.
+   * [signal@Gio.Settings::writable-changed] signal.  For most use cases it is more
+   * appropriate to use the [signal@Gio.Settings::writable-changed] signal.
    *
    * In the event that the writability change applies only to a single
-   * key, @key will be set to the #GQuark for that key.  In the event
+   * key, @key will be set to the [alias@GLib.Quark] for that key.  In the event
    * that the writability change affects the entire settings object,
-   * @key will be 0.
+   * @key will be `0`.
    *
-   * The default handler for this signal invokes the "writable-changed"
-   * and "changed" signals for each affected key.  This is done because
+   * The default handler for this signal invokes the [signal@Gio.Settings::writable-changed]
+   * and [signal@Gio.Settings::changed] signals for each affected key.  This is done because
    * changes in writability might also imply changes in value (if for
    * example, a new mandatory setting is introduced).  If any other
-   * connected handler returns %TRUE then this default functionality
+   * connected handler returns true then this default functionality
    * will be suppressed.
    *
-   * Returns: %TRUE to stop other handlers from being invoked for the
-   *          event. FALSE to propagate the event further.
+   * Returns: true to stop other handlers from being invoked for the
+   *   event, false to propagate the event further
    */
   g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT] =
     g_signal_new (I_("writable-change-event"), G_TYPE_SETTINGS,
@@ -915,12 +919,13 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings:settings-schema:
    *
-   * The #GSettingsSchema describing the types of keys for this
-   * #GSettings object.
+   * The [struct@Gio.SettingsSchema] describing the types of keys for this
+   * [class@Gio.Settings] object.
    *
-   * Ideally, this property would be called 'schema'.  #GSettingsSchema
+   * Ideally, this property would be called [property@Gio.Settings:schema].
+   * [struct@Gio.SettingsSchema]
    * has only existed since version 2.32, however, and before then the
-   * 'schema' property was used to refer to the ID of the schema rather
+   * [property@Gio.Settings:schema] property was used to refer to the ID of the schema rather
    * than the schema itself.  Take care.
    */
   g_object_class_install_property (object_class, PROP_SCHEMA,
@@ -933,17 +938,17 @@ g_settings_class_init (GSettingsClass *class)
    * GSettings:schema:
    *
    * The name of the schema that describes the types of keys
-   * for this #GSettings object.
+   * for this [class@Gio.Settings] object.
    *
-   * The type of this property is *not* #GSettingsSchema.
-   * #GSettingsSchema has only existed since version 2.32 and
+   * The type of this property is *not* [struct@Gio.SettingsSchema].
+   * [struct@Gio.SettingsSchema] has only existed since version 2.32 and
    * unfortunately this name was used in previous versions to refer to
    * the schema ID rather than the schema itself.  Take care to use the
-   * 'settings-schema' property if you wish to pass in a
-   * #GSettingsSchema.
+   * [property@Gio.Settings:settings-schema] property if you wish to pass in a
+   * [struct@Gio.SettingsSchema].
    *
-   * Deprecated:2.32:Use the 'schema-id' property instead.  In a future
-   * version, this property may instead refer to a #GSettingsSchema.
+   * Deprecated:2.32:Use the [property@Gio.Settings:schema-id] property instead.
+   *   In a future version, this property may instead refer to a [struct@Gio.SettingsSchema].
    */
   g_object_class_install_property (object_class, PROP_SCHEMA_ID,
     g_param_spec_string ("schema", NULL, NULL,
@@ -955,7 +960,7 @@ g_settings_class_init (GSettingsClass *class)
    * GSettings:schema-id:
    *
    * The name of the schema that describes the types of keys
-   * for this #GSettings object.
+   * for this [class@Gio.Settings] object.
    */
   g_object_class_install_property (object_class, PROP_SCHEMA_ID,
     g_param_spec_string ("schema-id", NULL, NULL,
@@ -977,8 +982,9 @@ g_settings_class_init (GSettingsClass *class)
    /**
     * GSettings:has-unapplied:
     *
-    * If this property is %TRUE, the #GSettings object has outstanding
-    * changes that will be applied when g_settings_apply() is called.
+    * Whether the [class@Gio.Settings] object has outstanding changes.
+    *
+    * These changes will be applied when [method@Gio.Settings.apply] is called.
     */
    g_object_class_install_property (object_class, PROP_HAS_UNAPPLIED,
      g_param_spec_boolean ("has-unapplied", NULL, NULL,
@@ -988,8 +994,9 @@ g_settings_class_init (GSettingsClass *class)
    /**
     * GSettings:delay-apply:
     *
-    * Whether the #GSettings object is in 'delay-apply' mode. See
-    * g_settings_delay() for details.
+    * Whether the [class@Gio.Settings] object is in ‘delay-apply’ mode.
+    *
+    * See [method@Gio.Settings.delay] for details.
     *
     * Since: 2.28
     */
@@ -1002,23 +1009,23 @@ g_settings_class_init (GSettingsClass *class)
 /* Construction (new, new_with_path, etc.) {{{1 */
 /**
  * g_settings_new:
- * @schema_id: the id of the schema
+ * @schema_id: the ID of the schema
  *
- * Creates a new #GSettings object with the schema specified by
+ * Creates a new [class@Gio.Settings] object with the schema specified by
  * @schema_id.
  *
  * It is an error for the schema to not exist: schemas are an
  * essential part of a program, as they provide type information.
  * If schemas need to be dynamically loaded (for example, from an
- * optional runtime dependency), g_settings_schema_source_lookup()
+ * optional runtime dependency), [method@Gio.SettingsSchemaSource.lookup]
  * can be used to test for their existence before loading them.
  *
- * Signals on the newly created #GSettings object will be dispatched
- * via the thread-default #GMainContext in effect at the time of the
- * call to g_settings_new().  The new #GSettings will hold a reference
- * on the context.  See g_main_context_push_thread_default().
+ * Signals on the newly created [class@Gio.Settings] object will be dispatched
+ * via the thread-default [struct@GLib.MainContext] in effect at the time of the
+ * call to [ctor@Gio.Settings.new].  The new [class@Gio.Settings] will hold a reference
+ * on the context.  See [method@GLib.MainContext.push_thread_default].
  *
- * Returns: (not nullable) (transfer full): a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new [class@Gio.Settings] object
  *
  * Since: 2.26
  */
@@ -1049,24 +1056,24 @@ path_is_valid (const gchar *path)
 
 /**
  * g_settings_new_with_path:
- * @schema_id: the id of the schema
+ * @schema_id: the ID of the schema
  * @path: the path to use
  *
- * Creates a new #GSettings object with the relocatable schema specified
+ * Creates a new [class@Gio.Settings] object with the relocatable schema specified
  * by @schema_id and a given path.
  *
  * You only need to do this if you want to directly create a settings
- * object with a schema that doesn't have a specified path of its own.
- * That's quite rare.
+ * object with a schema that doesn’t have a specified path of its own.
+ * That’s quite rare.
  *
  * It is a programmer error to call this function for a schema that
  * has an explicitly specified path.
  *
  * It is a programmer error if @path is not a valid path.  A valid path
- * begins and ends with '/' and does not contain two consecutive '/'
+ * begins and ends with `/` and does not contain two consecutive `/`
  * characters.
  *
- * Returns: (not nullable) (transfer full): a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new [class@Gio.Settings] object
  *
  * Since: 2.26
  */
@@ -1085,19 +1092,19 @@ g_settings_new_with_path (const gchar *schema_id,
 
 /**
  * g_settings_new_with_backend:
- * @schema_id: the id of the schema
- * @backend: the #GSettingsBackend to use
+ * @schema_id: the ID of the schema
+ * @backend: the settings backend to use
  *
- * Creates a new #GSettings object with the schema specified by
- * @schema_id and a given #GSettingsBackend.
+ * Creates a new [class@Gio.Settings] object with the schema specified by
+ * @schema_id and a given [class@Gio.SettingsBackend].
  *
- * Creating a #GSettings object with a different backend allows accessing
+ * Creating a [class@Gio.Settings] object with a different backend allows accessing
  * settings from a database other than the usual one. For example, it may make
- * sense to pass a backend corresponding to the "defaults" settings database on
+ * sense to pass a backend corresponding to the ‘defaults’ settings database on
  * the system to get a settings object that modifies the system default
  * settings instead of the settings for this user.
  *
- * Returns: (not nullable) (transfer full): a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new [class@Gio.Settings] object
  *
  * Since: 2.26
  */
@@ -1116,17 +1123,17 @@ g_settings_new_with_backend (const gchar      *schema_id,
 
 /**
  * g_settings_new_with_backend_and_path:
- * @schema_id: the id of the schema
- * @backend: the #GSettingsBackend to use
+ * @schema_id: the ID of the schema
+ * @backend: the settings backend to use
  * @path: the path to use
  *
- * Creates a new #GSettings object with the schema specified by
- * @schema_id and a given #GSettingsBackend and path.
+ * Creates a new [class@Gio.Settings] object with the schema specified by
+ * @schema_id and a given [class@Gio.SettingsBackend] and path.
  *
- * This is a mix of g_settings_new_with_backend() and
- * g_settings_new_with_path().
+ * This is a mix of [ctor@Gio.Settings.new_with_backend] and
+ * [ctor@Gio.Settings.new_with_path].
  *
- * Returns: (not nullable) (transfer full): a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new [class@Gio.Settings] object
  *
  * Since: 2.26
  */
@@ -1148,11 +1155,11 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
 
 /**
  * g_settings_new_full:
- * @schema: a #GSettingsSchema
- * @backend: (nullable): a #GSettingsBackend
+ * @schema: the schema describing the settings
+ * @backend: (nullable): the settings backend to use
  * @path: (nullable): the path to use
  *
- * Creates a new #GSettings object with a given schema, backend and
+ * Creates a new [class@Gio.Settings] object with a given schema, backend and
  * path.
  *
  * It should be extremely rare that you ever want to use this function.
@@ -1160,23 +1167,23 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
  * that want to provide access to schemas loaded from custom locations,
  * etc).
  *
- * At the most basic level, a #GSettings object is a pure composition of
- * 4 things: a #GSettingsSchema, a #GSettingsBackend, a path within that
- * backend, and a #GMainContext to which signals are dispatched.
+ * At the most basic level, a [class@Gio.Settings] object is a pure composition of
+ * four things: a [struct@Gio.SettingsSchema], a [class@Gio.SettingsBackend], a path within that
+ * backend, and a [struct@GLib.MainContext] to which signals are dispatched.
  *
  * This constructor therefore gives you full control over constructing
- * #GSettings instances.  The first 3 parameters are given directly as
+ * [class@Gio.Settings] instances.  The first 3 parameters are given directly as
  * @schema, @backend and @path, and the main context is taken from the
- * thread-default (as per g_settings_new()).
+ * thread-default (as per [ctor@Gio.Settings.new]).
  *
- * If @backend is %NULL then the default backend is used.
+ * If @backend is `NULL` then the default backend is used.
  *
- * If @path is %NULL then the path from the schema is used.  It is an
- * error if @path is %NULL and the schema has no path of its own or if
- * @path is non-%NULL and not equal to the path that the schema does
+ * If @path is `NULL` then the path from the schema is used.  It is an
+ * error if @path is `NULL` and the schema has no path of its own or if
+ * @path is non-`NULL` and not equal to the path that the schema does
  * have.
  *
- * Returns: (not nullable) (transfer full): a new #GSettings object
+ * Returns: (not nullable) (transfer full): a new [class@Gio.Settings] object
  *
  * Since: 2.32
  */
@@ -1245,15 +1252,15 @@ g_settings_read_from_backend (GSettings          *settings,
 /* Public Get/Set API {{{1 (get, get_value, set, set_value, get_mapped) */
 /**
  * g_settings_get_value:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored in @settings for @key.
  *
- * It is a programmer error to give a @key that isn't contained in the
+ * It is a programmer error to give a @key that isn’t contained in the
  * schema for @settings.
  *
- * Returns: (not nullable) (transfer full): a new #GVariant
+ * Returns: (not nullable) (transfer full): a new [struct@GLib.Variant]
  *
  * Since: 2.26
  */
@@ -1280,29 +1287,29 @@ g_settings_get_value (GSettings   *settings,
 
 /**
  * g_settings_get_user_value:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the user value for
  *
- * Checks the "user value" of a key, if there is one.
+ * Checks the ‘user value’ of a key, if there is one.
  *
  * The user value of a key is the last value that was set by the user.
  *
- * After calling g_settings_reset() this function should always return
- * %NULL (assuming something is not wrong with the system
+ * After calling [method@Gio.Settings.reset] this function should always return
+ * `NULL` (assuming something is not wrong with the system
  * configuration).
  *
- * It is possible that g_settings_get_value() will return a different
+ * It is possible that [method@Gio.Settings.get_value] will return a different
  * value than this function.  This can happen in the case that the user
  * set a value for a key that was subsequently locked down by the system
- * administrator -- this function will return the user's old value.
+ * administrator — this function will return the user’s old value.
  *
- * This function may be useful for adding a "reset" option to a UI or
+ * This function may be useful for adding a ‘reset’ option to a UI or
  * for providing indication that a particular value has been changed.
  *
- * It is a programmer error to give a @key that isn't contained in the
+ * It is a programmer error to give a @key that isn’t contained in the
  * schema for @settings.
  *
- * Returns: (nullable) (transfer full): the user's value, if set
+ * Returns: (nullable) (transfer full): the user’s value, if set
  *
  * Since: 2.40
  **/
@@ -1325,29 +1332,29 @@ g_settings_get_user_value (GSettings   *settings,
 
 /**
  * g_settings_get_default_value:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the default value for
  *
- * Gets the "default value" of a key.
+ * Gets the ‘default value’ of a key.
  *
- * This is the value that would be read if g_settings_reset() were to be
+ * This is the value that would be read if [method@Gio.Settings.reset] were to be
  * called on the key.
  *
  * Note that this may be a different value than returned by
- * g_settings_schema_key_get_default_value() if the system administrator
+ * [method@Gio.SettingsSchemaKey.get_default_value] if the system administrator
  * has provided a default value.
  *
- * Comparing the return values of g_settings_get_default_value() and
- * g_settings_get_value() is not sufficient for determining if a value
+ * Comparing the return values of [method@Gio.Settings.get_default_value] and
+ * [method@Gio.Settings.get_value] is not sufficient for determining if a value
  * has been set because the user may have explicitly set the value to
  * something that happens to be equal to the default.  The difference
- * here is that if the default changes in the future, the user's key
+ * here is that if the default changes in the future, the user’s key
  * will still be set.
  *
  * This function may be useful for adding an indication to a UI of what
  * the default value was before the user set it.
  *
- * It is a programmer error to give a @key that isn't contained in the
+ * It is a programmer error to give a @key that isn’t contained in the
  * schema for @settings.
  *
  * Returns: (nullable) (transfer full): the default value
@@ -1377,7 +1384,7 @@ g_settings_get_default_value (GSettings   *settings,
 
 /**
  * g_settings_get_enum:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored in @settings for @key and converts it
@@ -1386,7 +1393,7 @@ g_settings_get_default_value (GSettings   *settings,
  * In order to use this function the type of the value must be a string
  * and it must be marked in the schema file as an enumerated type.
  *
- * It is a programmer error to give a @key that isn't contained in the
+ * It is a programmer error to give a @key that isn’t contained in the
  * schema for @settings or is not marked as an enumerated type.
  *
  * If the value stored in the configuration database is not a valid
@@ -1432,22 +1439,22 @@ g_settings_get_enum (GSettings   *settings,
 
 /**
  * g_settings_set_enum:
- * @settings: a #GSettings object
- * @key: a key, within @settings
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: an enumerated value
  *
  * Looks up the enumerated type nick for @value and writes it to @key,
  * within @settings.
  *
- * It is a programmer error to give a @key that isn't contained in the
+ * It is a programmer error to give a @key that isn’t contained in the
  * schema for @settings or is not marked as an enumerated type, or for
  * @value not to be a valid value for the named type.
  *
  * After performing the write, accessing @key directly with
- * g_settings_get_string() will return the 'nick' associated with
+ * [method@Gio.Settings.get_string] will return the ‘nick’ associated with
  * @value.
  *
- * Returns: %TRUE, if the set succeeds
+ * Returns: true if the set succeeds, false otherwise
  **/
 gboolean
 g_settings_set_enum (GSettings   *settings,
@@ -1487,7 +1494,7 @@ g_settings_set_enum (GSettings   *settings,
 
 /**
  * g_settings_get_flags:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored in @settings for @key and converts it
@@ -1496,7 +1503,7 @@ g_settings_set_enum (GSettings   *settings,
  * In order to use this function the type of the value must be an array
  * of strings and it must be marked in the schema file as a flags type.
  *
- * It is a programmer error to give a @key that isn't contained in the
+ * It is a programmer error to give a @key that isn’t contained in the
  * schema for @settings or is not marked as a flags type.
  *
  * If the value stored in the configuration database is not a valid
@@ -1542,23 +1549,23 @@ g_settings_get_flags (GSettings   *settings,
 
 /**
  * g_settings_set_flags:
- * @settings: a #GSettings object
- * @key: a key, within @settings
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: a flags value
  *
  * Looks up the flags type nicks for the bits specified by @value, puts
  * them in an array of strings and writes the array to @key, within
  * @settings.
  *
- * It is a programmer error to give a @key that isn't contained in the
+ * It is a programmer error to give a @key that isn’t contained in the
  * schema for @settings or is not marked as a flags type, or for @value
  * to contain any bits that are not value for the named type.
  *
  * After performing the write, accessing @key directly with
- * g_settings_get_strv() will return an array of 'nicks'; one for each
+ * [method@Gio.Settings.get_strv] will return an array of ‘nicks’; one for each
  * bit in @value.
  *
- * Returns: %TRUE, if the set succeeds
+ * Returns: true if the set succeeds, false otherwise
  **/
 gboolean
 g_settings_set_flags (GSettings   *settings,
@@ -1598,20 +1605,20 @@ g_settings_set_flags (GSettings   *settings,
 
 /**
  * g_settings_set_value:
- * @settings: a #GSettings object
- * @key: the name of the key to set
- * @value: a #GVariant of the correct type
+ * @settings: the settings object
+ * @key: the key to set the value for
+ * @value: a [struct@GLib.Variant] of the correct type
  *
  * Sets @key in @settings to @value.
  *
- * It is a programmer error to give a @key that isn't contained in the
+ * It is a programmer error to give a @key that isn’t contained in the
  * schema for @settings or for @value to have the incorrect type, per
  * the schema.
  *
  * If @value is floating then this function consumes the reference.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.26
  **/
@@ -1659,18 +1666,18 @@ g_settings_set_value (GSettings   *settings,
 
 /**
  * g_settings_get:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
- * @format: a #GVariant format string
+ * @format: a [struct@GLib.Variant] format string
  * @...: arguments as per @format
  *
  * Gets the value that is stored at @key in @settings.
  *
- * A convenience function that combines g_settings_get_value() with
- * g_variant_get().
+ * A convenience function that combines [method@Gio.Settings.get_value] with
+ * [method@GLib.Variant.get].
  *
- * It is a programmer error to give a @key that isn't contained in the
- * schema for @settings or for the #GVariantType of @format to mismatch
+ * It is a programmer error to give a @key that isn’t contained in the
+ * schema for @settings or for the [struct@GLib.VariantType] of @format to mismatch
  * the type given in the schema.
  *
  * Since: 2.26
@@ -1702,22 +1709,22 @@ g_settings_get (GSettings   *settings,
 
 /**
  * g_settings_set:
- * @settings: a #GSettings object
- * @key: the name of the key to set
- * @format: a #GVariant format string
+ * @settings: the settings object
+ * @key: the key to set the value for
+ * @format: a [struct@GLib.Variant] format string
  * @...: arguments as per @format
  *
  * Sets @key in @settings to @value.
  *
- * A convenience function that combines g_settings_set_value() with
- * g_variant_new().
+ * A convenience function that combines [method@Gio.Settings.set_value] with
+ * [ctor@GLib.Variant.new].
  *
- * It is a programmer error to give a @key that isn't contained in the
- * schema for @settings or for the #GVariantType of @format to mismatch
+ * It is a programmer error to give a @key that isn’t contained in the
+ * schema for @settings or for the [struct@GLib.VariantType] of @format to mismatch
  * the type given in the schema.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.26
  */
@@ -1739,10 +1746,10 @@ g_settings_set (GSettings   *settings,
 
 /**
  * g_settings_get_mapped:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  * @mapping: (scope call): the function to map the value in the
- *           settings database to the value used by the application
+ *   settings database to the value used by the application
  * @user_data: user data for @mapping
  *
  * Gets the value that is stored at @key in @settings, subject to
@@ -1754,26 +1761,26 @@ g_settings_set (GSettings   *settings,
  * indicates that the processing was unsuccessful (due to a parse error,
  * for example) then the mapping is tried again with another value.
  *
- * This allows a robust 'fall back to defaults' behaviour to be
+ * This allows a robust ‘fall back to defaults’ behaviour to be
  * implemented somewhat automatically.
  *
- * The first value that is tried is the user's setting for the key.  If
+ * The first value that is tried is the user’s setting for the key.  If
  * the mapping function fails to map this value, other values may be
  * tried in an unspecified order (system or site defaults, translated
  * schema default values, untranslated schema default values, etc).
  *
  * If the mapping function fails for all possible values, one additional
- * attempt is made: the mapping function is called with a %NULL value.
+ * attempt is made: the mapping function is called with a `NULL` value.
  * If the mapping function still indicates failure at this point then
  * the application will be aborted.
  *
  * The result parameter for the @mapping function is pointed to a
- * #gpointer which is initially set to %NULL.  The same pointer is given
- * to each invocation of @mapping.  The final value of that #gpointer is
- * what is returned by this function.  %NULL is valid; it is returned
+ * `gpointer` which is initially set to `NULL`.  The same pointer is given
+ * to each invocation of @mapping.  The final value of that `gpointer` is
+ * what is returned by this function.  `NULL` is valid; it is returned
  * just as any other value would be.
  *
- * Returns: (nullable) (transfer full): the result, which may be %NULL
+ * Returns: (nullable) (transfer full): the result, which may be `NULL`
  **/
 gpointer
 g_settings_get_mapped (GSettings           *settings,
@@ -1830,14 +1837,14 @@ g_settings_get_mapped (GSettings           *settings,
 /* Convenience API (get, set_string, int, double, boolean, strv) {{{1 */
 /**
  * g_settings_get_string:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored at @key in @settings.
  *
- * A convenience variant of g_settings_get() for strings.
+ * A convenience variant of [method@Gio.Settings.get] for strings.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having a string type in the schema for @settings.
  *
  * Returns: (not nullable) (transfer full): a newly-allocated string
@@ -1860,19 +1867,19 @@ g_settings_get_string (GSettings   *settings,
 
 /**
  * g_settings_set_string:
- * @settings: a #GSettings object
- * @key: the name of the key to set
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: the value to set it to
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for strings.
+ * A convenience variant of [method@Gio.Settings.set] for strings.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having a string type in the schema for @settings.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.26
  */
@@ -1886,15 +1893,15 @@ g_settings_set_string (GSettings   *settings,
 
 /**
  * g_settings_get_int:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored at @key in @settings.
  *
- * A convenience variant of g_settings_get() for 32-bit integers.
+ * A convenience variant of [method@Gio.Settings.get] for 32-bit integers.
  *
- * It is a programmer error to give a @key that isn't specified as
- * having a int32 type in the schema for @settings.
+ * It is a programmer error to give a @key that isn’t specified as
+ * having an int32 type in the schema for @settings.
  *
  * Returns: an integer
  *
@@ -1916,19 +1923,19 @@ g_settings_get_int (GSettings   *settings,
 
 /**
  * g_settings_set_int:
- * @settings: a #GSettings object
- * @key: the name of the key to set
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: the value to set it to
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for 32-bit integers.
+ * A convenience variant of [method@Gio.Settings.set] for 32-bit integers.
  *
- * It is a programmer error to give a @key that isn't specified as
- * having a int32 type in the schema for @settings.
+ * It is a programmer error to give a @key that isn’t specified as
+ * having an int32 type in the schema for @settings.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.26
  */
@@ -1942,15 +1949,15 @@ g_settings_set_int (GSettings   *settings,
 
 /**
  * g_settings_get_int64:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored at @key in @settings.
  *
- * A convenience variant of g_settings_get() for 64-bit integers.
+ * A convenience variant of [method@Gio.Settings.get] for 64-bit integers.
  *
- * It is a programmer error to give a @key that isn't specified as
- * having a int64 type in the schema for @settings.
+ * It is a programmer error to give a @key that isn’t specified as
+ * having an int64 type in the schema for @settings.
  *
  * Returns: a 64-bit integer
  *
@@ -1972,19 +1979,19 @@ g_settings_get_int64 (GSettings   *settings,
 
 /**
  * g_settings_set_int64:
- * @settings: a #GSettings object
- * @key: the name of the key to set
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: the value to set it to
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for 64-bit integers.
+ * A convenience variant of [method@Gio.Settings.set] for 64-bit integers.
  *
- * It is a programmer error to give a @key that isn't specified as
- * having a int64 type in the schema for @settings.
+ * It is a programmer error to give a @key that isn’t specified as
+ * having an int64 type in the schema for @settings.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.50
  */
@@ -1998,15 +2005,15 @@ g_settings_set_int64 (GSettings   *settings,
 
 /**
  * g_settings_get_uint:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored at @key in @settings.
  *
- * A convenience variant of g_settings_get() for 32-bit unsigned
+ * A convenience variant of [method@Gio.Settings.get] for 32-bit unsigned
  * integers.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having a uint32 type in the schema for @settings.
  *
  * Returns: an unsigned integer
@@ -2029,20 +2036,20 @@ g_settings_get_uint (GSettings   *settings,
 
 /**
  * g_settings_set_uint:
- * @settings: a #GSettings object
- * @key: the name of the key to set
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: the value to set it to
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for 32-bit unsigned
+ * A convenience variant of [method@Gio.Settings.set] for 32-bit unsigned
  * integers.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having a uint32 type in the schema for @settings.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.30
  */
@@ -2056,15 +2063,15 @@ g_settings_set_uint (GSettings   *settings,
 
 /**
  * g_settings_get_uint64:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored at @key in @settings.
  *
- * A convenience variant of g_settings_get() for 64-bit unsigned
+ * A convenience variant of [method@Gio.Settings.get] for 64-bit unsigned
  * integers.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having a uint64 type in the schema for @settings.
  *
  * Returns: a 64-bit unsigned integer
@@ -2087,20 +2094,20 @@ g_settings_get_uint64 (GSettings   *settings,
 
 /**
  * g_settings_set_uint64:
- * @settings: a #GSettings object
- * @key: the name of the key to set
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: the value to set it to
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for 64-bit unsigned
+ * A convenience variant of [method@Gio.Settings.set] for 64-bit unsigned
  * integers.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having a uint64 type in the schema for @settings.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.50
  */
@@ -2114,15 +2121,15 @@ g_settings_set_uint64 (GSettings   *settings,
 
 /**
  * g_settings_get_double:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored at @key in @settings.
  *
- * A convenience variant of g_settings_get() for doubles.
+ * A convenience variant of [method@Gio.Settings.get] for doubles.
  *
- * It is a programmer error to give a @key that isn't specified as
- * having a 'double' type in the schema for @settings.
+ * It is a programmer error to give a @key that isn’t specified as
+ * having a ‘double’ type in the schema for @settings.
  *
  * Returns: a double
  *
@@ -2144,19 +2151,19 @@ g_settings_get_double (GSettings   *settings,
 
 /**
  * g_settings_set_double:
- * @settings: a #GSettings object
- * @key: the name of the key to set
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: the value to set it to
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for doubles.
+ * A convenience variant of [method@Gio.Settings.set] for doubles.
  *
- * It is a programmer error to give a @key that isn't specified as
- * having a 'double' type in the schema for @settings.
+ * It is a programmer error to give a @key that isn’t specified as
+ * having a ‘double’ type in the schema for @settings.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.26
  */
@@ -2170,14 +2177,14 @@ g_settings_set_double (GSettings   *settings,
 
 /**
  * g_settings_get_boolean:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
  * Gets the value that is stored at @key in @settings.
  *
- * A convenience variant of g_settings_get() for booleans.
+ * A convenience variant of [method@Gio.Settings.get] for booleans.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having a boolean type in the schema for @settings.
  *
  * Returns: a boolean
@@ -2200,19 +2207,19 @@ g_settings_get_boolean (GSettings  *settings,
 
 /**
  * g_settings_set_boolean:
- * @settings: a #GSettings object
- * @key: the name of the key to set
+ * @settings: the settings object
+ * @key: the key to set the value for
  * @value: the value to set it to
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for booleans.
+ * A convenience variant of [method@Gio.Settings.set] for booleans.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having a boolean type in the schema for @settings.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.26
  */
@@ -2226,17 +2233,17 @@ g_settings_set_boolean (GSettings  *settings,
 
 /**
  * g_settings_get_strv:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to get the value for
  *
- * A convenience variant of g_settings_get() for string arrays.
+ * A convenience variant of [method@Gio.Settings.get] for string arrays.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having an array of strings type in the schema for @settings.
  *
  * Returns: (array zero-terminated=1) (not nullable) (transfer full): a
- * newly-allocated, %NULL-terminated array of strings, the value that
- * is stored at @key in @settings.
+ *   newly-allocated, `NULL`-terminated array of strings, the value that
+ *   is stored at @key in @settings.
  *
  * Since: 2.26
  */
@@ -2256,20 +2263,20 @@ g_settings_get_strv (GSettings   *settings,
 
 /**
  * g_settings_set_strv:
- * @settings: a #GSettings object
- * @key: the name of the key to set
- * @value: (nullable) (array zero-terminated=1): the value to set it to, or %NULL
+ * @settings: the settings object
+ * @key: the key to set the value for
+ * @value: (nullable) (array zero-terminated=1): the value to set it to
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for string arrays.  If
- * @value is %NULL, then @key is set to be the empty array.
+ * A convenience variant of [method@Gio.Settings.set] for string arrays.  If
+ * @value is `NULL`, then @key is set to be the empty array.
  *
- * It is a programmer error to give a @key that isn't specified as
+ * It is a programmer error to give a @key that isn’t specified as
  * having an array of strings type in the schema for @settings.
  *
- * Returns: %TRUE if setting the key succeeded,
- *     %FALSE if the key was not writable
+ * Returns: true if setting the key succeeded,
+ *   false if the key was not writable
  *
  * Since: 2.26
  */
@@ -2291,11 +2298,13 @@ g_settings_set_strv (GSettings           *settings,
 /* Delayed apply (delay, apply, revert, get_has_unapplied) {{{1 */
 /**
  * g_settings_delay:
- * @settings: a #GSettings object
+ * @settings: the settings object
  *
- * Changes the #GSettings object into 'delay-apply' mode. In this
+ * Changes the [class@Gio.Settings] object into ‘delay-apply’ mode.
+ *
+ * In this
  * mode, changes to @settings are not immediately propagated to the
- * backend, but kept locally until g_settings_apply() is called.
+ * backend, but kept locally until [method@Gio.Settings.apply] is called.
  *
  * Since: 2.26
  */
@@ -2325,11 +2334,12 @@ g_settings_delay (GSettings *settings)
 
 /**
  * g_settings_apply:
- * @settings: a #GSettings instance
+ * @settings: the settings object
  *
- * Applies any changes that have been made to the settings.  This
- * function does nothing unless @settings is in 'delay-apply' mode;
- * see g_settings_delay().  In the normal case settings are always
+ * Applies any changes that have been made to the settings.
+ *
+ * This function does nothing unless @settings is in ‘delay-apply’ mode;
+ * see [method@Gio.Settings.delay].  In the normal case settings are always
  * applied immediately.
  **/
 void
@@ -2346,11 +2356,12 @@ g_settings_apply (GSettings *settings)
 
 /**
  * g_settings_revert:
- * @settings: a #GSettings instance
+ * @settings: the settings object
  *
- * Reverts all non-applied changes to the settings.  This function
- * does nothing unless @settings is in 'delay-apply' mode; see
- * g_settings_delay().  In the normal case settings are always applied
+ * Reverts all non-applied changes to the settings.
+ *
+ * This function does nothing unless @settings is in ‘delay-apply’ mode; see
+ * [method@Gio.Settings.delay].  In the normal case settings are always applied
  * immediately.
  *
  * Change notifications will be emitted for affected keys.
@@ -2369,12 +2380,14 @@ g_settings_revert (GSettings *settings)
 
 /**
  * g_settings_get_has_unapplied:
- * @settings: a #GSettings object
+ * @settings: the settings object
  *
- * Returns whether the #GSettings object has any unapplied
- * changes.  This can only be the case if it is in 'delayed-apply' mode.
+ * Returns whether the [class@Gio.Settings] object has any unapplied
+ * changes.
  *
- * Returns: %TRUE if @settings has unapplied changes
+ * This can only be the case if it is in ‘delay-apply’ mode.
+ *
+ * Returns: true if @settings has unapplied changes, false otherwise
  *
  * Since: 2.26
  */
@@ -2391,7 +2404,7 @@ g_settings_get_has_unapplied (GSettings *settings)
 /* Extra API (reset, sync, get_child, is_writable, list_*, ranges) {{{1 */
 /**
  * g_settings_reset:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the name of a key
  *
  * Resets @key to its default value.
@@ -2419,12 +2432,12 @@ g_settings_reset (GSettings *settings,
  *
  * Ensures that all pending operations are complete for the default backend.
  *
- * Writes made to a #GSettings are handled asynchronously.  For this
+ * Writes made to a [class@Gio.Settings] are handled asynchronously.  For this
  * reason, it is very unlikely that the changes have it to disk by the
- * time g_settings_set() returns.
+ * time [method@Gio.Settings.set] returns.
  *
  * This call will block until all of the writes have made it to the
- * backend.  Since the mainloop is not running, no change notifications
+ * backend.  Since the main loop is not running, no change notifications
  * will be dispatched during this call (but some may be queued by the
  * time the call is done).
  **/
@@ -2436,12 +2449,12 @@ g_settings_sync (void)
 
 /**
  * g_settings_is_writable:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @name: the name of a key
  *
- * Finds out if a key can be written or not
+ * Finds out if a key can be written.
  *
- * Returns: %TRUE if the key @name is writable
+ * Returns: true if the key @name is writable, false otherwise
  *
  * Since: 2.26
  */
@@ -2463,7 +2476,7 @@ g_settings_is_writable (GSettings   *settings,
 
 /**
  * g_settings_get_child:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @name: the name of the child schema
  *
  * Creates a child settings object which has a base path of
@@ -2473,10 +2486,10 @@ g_settings_is_writable (GSettings   *settings,
  * The schema for the child settings object must have been declared
  * in the schema of @settings using a `<child>` element.
  *
- * The created child settings object will inherit the #GSettings:delay-apply
- * mode from @settings.
+ * The created child settings object will inherit the
+ * [property@Gio.Settings:delay-apply] mode from @settings.
  *
- * Returns: (not nullable) (transfer full): a 'child' settings object
+ * Returns: (not nullable) (transfer full): a ‘child’ settings object
  *
  * Since: 2.26
  */
@@ -2508,20 +2521,20 @@ g_settings_get_child (GSettings   *settings,
 
 /**
  * g_settings_list_keys:
- * @settings: a #GSettings object
+ * @settings: the settings object
  *
  * Introspects the list of keys on @settings.
  *
- * You should probably not be calling this function from "normal" code
+ * You should probably not be calling this function from ‘normal’ code
  * (since you should already know what keys are in your schema).  This
  * function is intended for introspection reasons.
  *
- * You should free the return value with g_strfreev() when you are done
+ * You should free the return value with [func@GLib.strfreev] when you are done
  * with it.
  *
  * Returns: (not nullable) (transfer full) (element-type utf8): a list
- *    of the keys on @settings, in no defined order
- * Deprecated: 2.46: Use g_settings_schema_list_keys() instead.
+ *   of the keys on @settings, in no defined order
+ * Deprecated: 2.46: Use [method@Gio.SettingsSchema.list_keys] instead.
  */
 gchar **
 g_settings_list_keys (GSettings *settings)
@@ -2531,22 +2544,22 @@ g_settings_list_keys (GSettings *settings)
 
 /**
  * g_settings_list_children:
- * @settings: a #GSettings object
+ * @settings: the settings object
  *
  * Gets the list of children on @settings.
  *
  * The list is exactly the list of strings for which it is not an error
- * to call g_settings_get_child().
+ * to call [method@Gio.Settings.get_child].
  *
- * There is little reason to call this function from "normal" code, since
+ * There is little reason to call this function from ‘normal’ code, since
  * you should already know what children are in your schema. This function
  * may still be useful there for introspection reasons, however.
  *
- * You should free the return value with g_strfreev() when you are done
+ * You should free the return value with [func@GLib.strfreev] when you are done
  * with it.
  *
  * Returns: (not nullable) (transfer full) (element-type utf8): a list of the children
- *    on @settings, in no defined order
+ *   on @settings, in no defined order
  */
 gchar **
 g_settings_list_children (GSettings *settings)
@@ -2556,14 +2569,14 @@ g_settings_list_children (GSettings *settings)
 
 /**
  * g_settings_get_range:
- * @settings: a #GSettings
+ * @settings: the settings object
  * @key: the key to query the range of
  *
  * Queries the range of a key.
  *
  * Since: 2.28
  *
- * Deprecated:2.40:Use g_settings_schema_key_get_range() instead.
+ * Deprecated:2.40:Use [method@Gio.SettingsSchemaKey.get_range] instead.
  **/
 GVariant *
 g_settings_get_range (GSettings   *settings,
@@ -2581,18 +2594,18 @@ g_settings_get_range (GSettings   *settings,
 
 /**
  * g_settings_range_check:
- * @settings: a #GSettings
+ * @settings: the settings object
  * @key: the key to check
  * @value: the value to check
  *
  * Checks if the given @value is of the correct type and within the
  * permitted range for @key.
  *
- * Returns: %TRUE if @value is valid for @key
+ * Returns: true if @value is valid for @key, false otherwise
  *
  * Since: 2.28
  *
- * Deprecated:2.40:Use g_settings_schema_key_range_check() instead.
+ * Deprecated:2.40:Use [method@Gio.SettingsSchemaKey.range_check] instead.
  **/
 gboolean
 g_settings_range_check (GSettings   *settings,
@@ -2826,9 +2839,9 @@ g_settings_bind_invert_boolean_set_mapping (const GValue       *value,
 
 /**
  * g_settings_bind:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to bind
- * @object: (type GObject.Object): a #GObject
+ * @object: (type GObject.Object): the object with property to bind
  * @property: the name of the property to bind
  * @flags: flags for the binding
  *
@@ -2838,14 +2851,14 @@ g_settings_bind_invert_boolean_set_mapping (const GValue       *value,
  * The binding uses the default GIO mapping functions to map
  * between the settings and property values. These functions
  * handle booleans, numeric types and string types in a
- * straightforward way. Use g_settings_bind_with_mapping() if
+ * straightforward way. Use [method@Gio.Settings.bind_with_mapping] if
  * you need a custom mapping, or map between types that are not
  * supported by the default mapping functions.
  *
- * Unless the @flags include %G_SETTINGS_BIND_NO_SENSITIVITY, this
+ * Unless the @flags include [flags@Gio.SettingsBindFlags.NO_SENSITIVITY], this
  * function also establishes a binding between the writability of
- * @key and the "sensitive" property of @object (if @object has
- * a boolean property by that name). See g_settings_bind_writable()
+ * @key and the `sensitive` property of @object (if @object has
+ * a boolean property by that name). See [method@Gio.Settings.bind_writable]
  * for more details about writable bindings.
  *
  * Note that the lifecycle of the binding is tied to @object,
@@ -2880,17 +2893,17 @@ g_settings_bind (GSettings          *settings,
 
 /**
  * g_settings_bind_with_mapping: (skip)
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to bind
- * @object: (type GObject.Object): a #GObject
+ * @object: (type GObject.Object): the object with property to bind
  * @property: the name of the property to bind
  * @flags: flags for the binding
  * @get_mapping: (nullable): a function that gets called to convert values
- *     from @settings to @object, or %NULL to use the default GIO mapping
+ *   from @settings to @object, or `NULL` to use the default GIO mapping
  * @set_mapping: (nullable): a function that gets called to convert values
- *     from @object to @settings, or %NULL to use the default GIO mapping
+ *   from @object to @settings, or `NULL` to use the default GIO mapping
  * @user_data: data that gets passed to @get_mapping and @set_mapping
- * @destroy: #GDestroyNotify function for @user_data
+ * @destroy: destroy notify function for @user_data
  *
  * Create a binding between the @key in the @settings object
  * and the property @property of @object.
@@ -3166,18 +3179,18 @@ bind_with_mapping_destroy (void *user_data)
 
 /**
  * g_settings_bind_with_mapping_closures: (rename-to g_settings_bind_with_mapping):
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to bind
- * @object: a #GObject
+ * @object: the object with property to bind
  * @property: the name of the property to bind
  * @flags: flags for the binding
  * @get_mapping: (nullable): a function that gets called to convert values
- *     from @settings to @object, or %NULL to use the default GIO mapping
+ *   from @settings to @object, or `NULL` to use the default GIO mapping
  * @set_mapping: (nullable): a function that gets called to convert values
- *     from @object to @settings, or %NULL to use the default GIO mapping
+ *   from @object to @settings, or `NULL` to use the default GIO mapping
  *
- * Version of g_settings_bind_with_mapping() using closures instead of callbacks
- * for easier binding in other languages.
+ * Version of [method@Gio.Settings.bind_with_mapping] using closures instead of
+ * callbacks for easier binding in other languages.
  *
  * Since: 2.82
  */
@@ -3242,24 +3255,25 @@ g_settings_binding_writable_changed (GSettings   *settings,
 
 /**
  * g_settings_bind_writable:
- * @settings: a #GSettings object
+ * @settings: the settings object
  * @key: the key to bind
- * @object: (type GObject.Object):a #GObject
+ * @object: (type GObject.Object): the object with property to bind
  * @property: the name of a boolean property to bind
- * @inverted: whether to 'invert' the value
+ * @inverted: whether to ‘invert’ the value
  *
  * Create a binding between the writability of @key in the
  * @settings object and the property @property of @object.
- * The property must be boolean; "sensitive" or "visible"
+ *
+ * The property must be boolean; `sensitive` or `visible`
  * properties of widgets are the most likely candidates.
  *
  * Writable bindings are always uni-directional; changes of the
  * writability of the setting will be propagated to the object
  * property, not the other way.
  *
- * When the @inverted argument is %TRUE, the binding inverts the
+ * When the @inverted argument is true, the binding inverts the
  * value as it passes from the setting to the object, i.e. @property
- * will be set to %TRUE if the key is not writable.
+ * will be set to true if the key is not writable.
  *
  * Note that the lifecycle of the binding is tied to @object,
  * and that you can have only one binding per object property.
@@ -3317,7 +3331,7 @@ g_settings_bind_writable (GSettings   *settings,
 
 /**
  * g_settings_unbind:
- * @object: (type GObject.Object): the object
+ * @object: (type GObject.Object): the object with property to unbind
  * @property: the property whose binding is removed
  *
  * Removes an existing binding for @property on @object.
@@ -3551,10 +3565,10 @@ g_settings_action_enabled_changed (GSettings   *settings,
 
 /**
  * g_settings_create_action:
- * @settings: a #GSettings
+ * @settings: the settings object
  * @key: the name of a key in @settings
  *
- * Creates a #GAction corresponding to a given #GSettings key.
+ * Creates a [iface@Gio.Action] corresponding to a given [class@Gio.Settings] key.
  *
  * The action has the same name as the key.
  *
@@ -3569,7 +3583,7 @@ g_settings_action_enabled_changed (GSettings   *settings,
  * activations take the new value for the key (which must have the
  * correct type).
  *
- * Returns: (not nullable) (transfer full): a new #GAction
+ * Returns: (not nullable) (transfer full): a new [iface@Gio.Action]
  *
  * Since: 2.32
  **/
