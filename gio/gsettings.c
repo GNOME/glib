@@ -2885,9 +2885,9 @@ g_settings_bind (GSettings          *settings,
  * @object: (type GObject.Object): a #GObject
  * @property: the name of the property to bind
  * @flags: flags for the binding
- * @get_mapping: a function that gets called to convert values
+ * @get_mapping: (nullable): a function that gets called to convert values
  *     from @settings to @object, or %NULL to use the default GIO mapping
- * @set_mapping: a function that gets called to convert values
+ * @set_mapping: (nullable): a function that gets called to convert values
  *     from @object to @settings, or %NULL to use the default GIO mapping
  * @user_data: data that gets passed to @get_mapping and @set_mapping
  * @destroy: #GDestroyNotify function for @user_data
