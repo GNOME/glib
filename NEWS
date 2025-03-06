@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.84.0, 2025-03-06
+==============================================
+
+* Bugs fixed:
+  - #3590 Update Slovenian (sl) translation in glib
+  - !4539 Update Korean translation
+  - !4540 tests: Minor fixes to reference and stream-rw_all tests
+  - !4542 gdebugcontrollerdbus: Fix a minor typo in a code example in the docs
+  - !4543 Update Hungarian translation
+
+* Translation updates:
+  - Hungarian (Balázs Úr)
+  - Korean (Changwoo Ryu)
+  - Slovenian (Martin)
+
+
 Overview of changes in GLib 2.83.5, 2025-02-28
 ==============================================
 
