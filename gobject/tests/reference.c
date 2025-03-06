@@ -1,5 +1,7 @@
 #include <glib-object.h>
 
+#include "gvalgrind.h"
+
 static void
 test_fundamentals (void)
 {
@@ -951,6 +953,16 @@ test_weak_ref_concurrent (gconstpointer testdata)
   };
   ConcurrentThreadData thread_data[CONCURRENT_N_THREADS];
   GWeakRef weak_ref = { 0 };
+
+  /* The race in this test is very hard to reproduce under valgrind, so skip it.
+   * Otherwise the test can run for tens of minutes. */
+#if defined (ENABLE_VALGRIND)
+  if (RUNNING_ON_VALGRIND)
+    {
+      g_test_skip ("Skipping hard-to-reproduce race under valgrind");
+      return;
+    }
+#endif
 
   /* Let several threads call g_weak_ref_set() & g_weak_ref_get() in a loop. */
 
