@@ -117,6 +117,9 @@ GLogLevelFlags  g_log_set_fatal_mask    (const gchar    *log_domain,
 GLIB_AVAILABLE_IN_ALL
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 
+GLIB_AVAILABLE_IN_2_86
+GLogLevelFlags  g_log_get_always_fatal  (void);
+
 /* Structured logging mechanism. */
 
 /**

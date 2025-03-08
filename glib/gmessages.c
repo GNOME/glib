@@ -558,6 +558,48 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
 }
 
 /**
+ * g_log_get_always_fatal:
+ *
+ * Gets the current fatal mask.
+ *
+ * This is mostly used by custom log writers to make fatal messages
+ * (`fatal-warnings`, `fatal-criticals`) work as expected, when using the
+ * `G_DEBUG` environment variable (see [Running GLib Applications](glib-running.html)).
+ *
+ * An example usage is shown below:
+ *
+ * ```c
+ * static GLogWriterOutput
+ * my_custom_log_writer_fn (GLogLevelFlags log_level,
+ *                          const GLogField *fields,
+ *                          gsize n_fields,
+ *                          gpointer user_data)
+ * {
+ *
+ *    // abort if the message was fatal
+ *    if (log_level & g_log_get_always_fatal ())
+ *      g_abort ();
+ *
+ *    // custom log handling code
+ *    ...
+ *    ...
+ *
+ *    // success
+ *    return G_LOG_WRITER_HANDLED;
+ * }
+ * ```
+ *
+ * Returns: the current fatal mask
+ *
+ * Since: 2.86
+ */
+GLogLevelFlags
+g_log_get_always_fatal (void)
+{
+  return g_log_always_fatal;
+}
+
+/**
  * g_log_set_always_fatal:
  * @fatal_mask: the mask containing bits set for each level of error which is
  *   to be fatal
