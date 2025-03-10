@@ -32,13 +32,15 @@ static void
 test_dir_nonexisting (void)
 {
   GDir *dir;
-  GError *error;
+  GError *error = NULL;
+  char *path = NULL;
 
-  error = NULL;
-  dir = g_dir_open ("/pfrkstrf", 0, &error);
-  g_assert (dir == NULL);
+  path = g_build_filename (g_get_tmp_dir (), "does-not-exist", NULL);
+  dir = g_dir_open (path, 0, &error);
+  g_assert_null (dir);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_error_free (error);
+  g_free (path);
 }
 
 static void
