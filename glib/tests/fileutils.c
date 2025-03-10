@@ -1396,7 +1396,7 @@ test_mkdtemp (void)
 
   name = g_strdup ("testXXXXXXtest"),
   ret = g_mkdtemp (name);
-  g_assert (ret == name);
+  g_assert_true (ret == name);
   g_assert_null (strstr (name, "XXXXXX"));
   g_rmdir (name);
   g_free (name);
@@ -2093,7 +2093,7 @@ test_stdio_wrappers (void)
 
   g_remove ("mkdir-test/test-create");
   ret = g_rmdir ("mkdir-test");
-  g_assert (ret == 0 || errno == ENOENT);
+  g_assert_true (ret == 0 || errno == ENOENT);
 
   ret = g_stat ("mkdir-test", &buf);
   g_assert_cmpint (ret, ==, -1);
