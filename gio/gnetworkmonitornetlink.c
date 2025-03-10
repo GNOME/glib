@@ -42,7 +42,7 @@
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
 #endif
-#ifdef HAVE_NETLINK_NETLINK_H
+#if defined(HAVE_NETLINK_NETLINK_H) && defined(HAVE_NETLINK_NETLINK_ROUTE_H)
 #include <netlink/netlink.h>
 #include <netlink/netlink_route.h>
 #endif
