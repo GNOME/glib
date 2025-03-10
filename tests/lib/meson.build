@@ -2,14 +2,16 @@
 # Copyright 2025 Simon McVittie
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-install_data(
-  files(
-    'taptestrunner.py',
-    'testprogramrunner.py',
-  ),
-  install_dir: installed_tests_execdir,
-  install_tag: 'tests',
-)
+if installed_tests_enabled
+  install_data(
+    files(
+      'taptestrunner.py',
+      'testprogramrunner.py',
+    ),
+    install_dir: installed_tests_execdir,
+    install_tag: 'tests',
+  )
+endif
 
 tests_conf = configuration_data()
 tests_conf.set('gir_suffix', gir_suffix)
