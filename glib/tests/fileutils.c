@@ -817,19 +817,18 @@ test_mkdir_with_parents (void)
 #ifndef G_OS_WIN32
   gboolean can_override_dac = check_cap_dac_override (NULL);
 #endif
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
+  g_test_message ("Checking g_mkdir_with_parents() in subdir ./hum/");
   test_mkdir_with_parents_1 ("hum");
   g_remove ("hum");
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
+
+  g_test_message ("Checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
   test_mkdir_with_parents_1 ("./hii///haa/hee///");
   g_remove ("hii/haa/hee");
   g_remove ("hii/haa");
   g_remove ("hii");
+
   cwd = g_get_current_dir ();
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in cwd: %s", cwd);
+  g_test_message ("Checking g_mkdir_with_parents() in cwd: %s", cwd);
   test_mkdir_with_parents_1 (cwd);
 
   new_path = g_build_filename (cwd, "new", NULL);
