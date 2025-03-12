@@ -124,14 +124,6 @@ typedef gboolean (*GSignalAccumulator)	(GSignalInvocationHint *ihint,
  *  of as object methods which can be called generically by 
  *  third-party code.
  * @G_SIGNAL_NO_HOOKS: No emissions hooks are supported for this signal.
- * @G_SIGNAL_MUST_COLLECT: Varargs signal emission will always collect the
- *   arguments, even if there are no signal handlers connected.  Since 2.30.
- * @G_SIGNAL_DEPRECATED: The signal is deprecated and will be removed
- *   in a future version. A warning will be generated if it is connected while
- *   running with G_ENABLE_DIAGNOSTIC=1.  Since 2.32.
- * @G_SIGNAL_ACCUMULATOR_FIRST_RUN: Only used in #GSignalAccumulator accumulator
- *   functions for the #GSignalInvocationHint::run_type field to mark the first
- *   call to the accumulator function for a signal emission.  Since 2.68.
  *
  * The signal flags are used to specify a signal's behaviour.
  */
@@ -149,6 +141,39 @@ typedef enum
   /* normal signal flags until 1 << 16 */
   G_SIGNAL_ACCUMULATOR_FIRST_RUN    = 1 << 17,
 } GSignalFlags;
+
+/**
+ * G_SIGNAL_MUST_COLLECT:
+ *
+ * Varargs signal emission will always collect the arguments, even if there
+ * are no signal handlers connected.
+ *
+ * Since: 2.30
+ */
+
+/**
+ * G_SIGNAL_DEPRECATED:
+ *
+ * The signal is deprecated and will be removed in a future version.
+ *
+ * A warning will be generated if it is connected while running with
+ * `G_ENABLE_DIAGNOSTIC=1`.
+ *
+ * Since: 2.32
+ */
+
+/**
+ * G_SIGNAL_ACCUMULATOR_FIRST_RUN:
+ *
+ * The signal accumulator was invoked for the first time.
+ *
+ * This flag is only used in [callback@GObject.SignalAccumulator][accumulator functions]
+ * for the `run_type` field of the [struct@GObject.SignalInvocationHint], to
+ * mark the first call to the accumulator function for a signal emission.
+ *
+ * Since: 2.68
+ */
+
 /**
  * G_SIGNAL_FLAGS_MASK:
  * 
