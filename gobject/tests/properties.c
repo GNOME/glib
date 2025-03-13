@@ -475,6 +475,24 @@ properties_notify_queue (void)
 }
 
 static void
+test_properties_notify_too_frozen (void)
+{
+  if (g_test_subprocess ())
+    {
+      TestObject *obj = g_object_new (test_object_get_type (), NULL);
+
+      for (unsigned int i = 0; i < 1000000; i++)
+        g_object_freeze_notify (G_OBJECT (obj));
+
+      g_object_unref (obj);
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*called g_object_freeze_notify() too often*");
+}
+
+static void
 properties_construct (void)
 {
   TestObject *obj;
@@ -830,6 +848,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/properties/install-many", properties_install_many);
   g_test_add_func ("/properties/notify", properties_notify);
   g_test_add_func ("/properties/notify-queue", properties_notify_queue);
+  g_test_add_func ("/properties/notify/too-many-freezes", test_properties_notify_too_frozen);
   g_test_add_func ("/properties/construct", properties_construct);
   g_test_add_func ("/properties/get-property", properties_get_property);
   g_test_add_func ("/properties/set-property/variant/floating", properties_set_property_variant_floating);
