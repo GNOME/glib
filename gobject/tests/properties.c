@@ -30,7 +30,7 @@ test_object_set_foo (TestObject *obj,
     {
       obj->foo = foo;
 
-      g_assert (properties[PROP_FOO] != NULL);
+      g_assert_nonnull (properties[PROP_FOO]);
       g_object_notify_by_pspec (G_OBJECT (obj), properties[PROP_FOO]);
     }
 }
@@ -45,7 +45,7 @@ test_object_set_bar (TestObject *obj,
     {
       obj->bar = bar;
 
-      g_assert (properties[PROP_BAR] != NULL);
+      g_assert_nonnull (properties[PROP_BAR]);
       g_object_notify_by_pspec (G_OBJECT (obj), properties[PROP_BAR]);
     }
 }
@@ -59,7 +59,7 @@ test_object_set_baz (TestObject  *obj,
       g_free (obj->baz);
       obj->baz = g_strdup (baz);
 
-      g_assert (properties[PROP_BAZ] != NULL);
+      g_assert_nonnull (properties[PROP_BAZ]);
       g_object_notify_by_pspec (G_OBJECT (obj), properties[PROP_BAZ]);
     }
 }
@@ -80,7 +80,7 @@ test_object_set_var (TestObject *obj,
       g_clear_pointer (&obj->var, g_variant_unref);
       obj->var = g_steal_pointer (&new_var);
 
-      g_assert (properties[PROP_VAR] != NULL);
+      g_assert_nonnull (properties[PROP_VAR]);
       g_object_notify_by_pspec (G_OBJECT (obj), properties[PROP_VAR]);
     }
 }
@@ -94,7 +94,7 @@ test_object_set_quux (TestObject  *obj,
       g_free (obj->quux);
       obj->quux = g_strdup (quux);
 
-      g_assert (properties[PROP_QUUX] != NULL);
+      g_assert_nonnull (properties[PROP_QUUX]);
       g_object_notify_by_pspec (G_OBJECT (obj), properties[PROP_QUUX]);
     }
 }
@@ -246,24 +246,24 @@ properties_install (void)
   GParamSpec *pspec;
   char *name;
 
-  g_assert (properties[PROP_FOO] != NULL);
+  g_assert_nonnull (properties[PROP_FOO]);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "foo");
-  g_assert (properties[PROP_FOO] == pspec);
+  g_assert_true (properties[PROP_FOO] == pspec);
 
   name = g_strdup ("bar");
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), name);
-  g_assert (properties[PROP_BAR] == pspec);
+  g_assert_true (properties[PROP_BAR] == pspec);
   g_free (name);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "baz");
-  g_assert (properties[PROP_BAZ] == pspec);
+  g_assert_true (properties[PROP_BAZ] == pspec);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "var");
-  g_assert (properties[PROP_VAR] == pspec);
+  g_assert_true (properties[PROP_VAR] == pspec);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "quux");
-  g_assert (properties[PROP_QUUX] == pspec);
+  g_assert_true (properties[PROP_QUUX] == pspec);
 
   g_object_unref (obj);
 }
@@ -366,10 +366,10 @@ properties_install_many (void)
   GParamSpec *pspec;
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "one");
-  g_assert (props[1] == pspec);
+  g_assert_true (props[1] == pspec);
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), "ten");
-  g_assert (props[10] == pspec);
+  g_assert_true (props[10] == pspec);
 
   g_object_unref (obj);
 }
@@ -385,7 +385,7 @@ on_notify (GObject           *gobject,
            GParamSpec        *pspec,
            TestNotifyClosure *closure)
 {
-  g_assert (closure->pspec == pspec);
+  g_assert_true (closure->pspec == pspec);
   g_assert_cmpstr (closure->name, ==, pspec->name);
   closure->fired = TRUE;
 }
@@ -396,8 +396,8 @@ properties_notify (void)
   TestObject *obj = g_object_new (test_object_get_type (), NULL);
   TestNotifyClosure closure;
 
-  g_assert (properties[PROP_FOO] != NULL);
-  g_assert (properties[PROP_QUUX] != NULL);
+  g_assert_nonnull (properties[PROP_FOO]);
+  g_assert_nonnull (properties[PROP_QUUX]);
   g_signal_connect (obj, "notify", G_CALLBACK (on_notify), &closure);
 
   closure.name = "foo";
@@ -405,19 +405,19 @@ properties_notify (void)
 
   closure.fired = FALSE;
   g_object_set (obj, "foo", 47, NULL);
-  g_assert (closure.fired);
+  g_assert_true (closure.fired);
 
   closure.name = "baz";
   closure.pspec = properties[PROP_BAZ];
 
   closure.fired = FALSE;
   g_object_set (obj, "baz", "something new", NULL);
-  g_assert (closure.fired);
+  g_assert_true (closure.fired);
 
   /* baz lacks explicit notify, so we will see this twice */
   closure.fired = FALSE;
   g_object_set (obj, "baz", "something new", NULL);
-  g_assert (closure.fired);
+  g_assert_true (closure.fired);
 
   /* quux on the other hand, ... */
   closure.name = "quux";
@@ -425,12 +425,12 @@ properties_notify (void)
 
   closure.fired = FALSE;
   g_object_set (obj, "quux", "something new", NULL);
-  g_assert (closure.fired);
+  g_assert_true (closure.fired);
 
   /* no change; no notify */
   closure.fired = FALSE;
   g_object_set (obj, "quux", "something new", NULL);
-  g_assert (!closure.fired);
+  g_assert_false (closure.fired);
 
 
   g_object_unref (obj);
@@ -446,7 +446,7 @@ on_notify2 (GObject    *gobject,
             GParamSpec *pspec,
             Notifys    *n)
 {
-  g_assert (n->pspec[n->pos] == pspec);
+  g_assert_true (n->pspec[n->pos] == pspec);
   n->pos++;
 }
 
@@ -456,7 +456,7 @@ properties_notify_queue (void)
   TestObject *obj = g_object_new (test_object_get_type (), NULL);
   Notifys n;
 
-  g_assert (properties[PROP_FOO] != NULL);
+  g_assert_nonnull (properties[PROP_FOO]);
 
   n.pspec[0] = properties[PROP_BAZ];
   n.pspec[1] = properties[PROP_BAR];
@@ -469,9 +469,27 @@ properties_notify_queue (void)
   g_object_set (obj, "foo", 47, NULL);
   g_object_set (obj, "bar", TRUE, "foo", 42, "baz", "abc", NULL);
   g_object_thaw_notify (G_OBJECT (obj));
-  g_assert (n.pos == 3);
+  g_assert_cmpint (n.pos, ==, 3);
 
   g_object_unref (obj);
+}
+
+static void
+test_properties_notify_too_frozen (void)
+{
+  if (g_test_subprocess ())
+    {
+      TestObject *obj = g_object_new (test_object_get_type (), NULL);
+
+      for (unsigned int i = 0; i < 1000000; i++)
+        g_object_freeze_notify (G_OBJECT (obj));
+
+      g_object_unref (obj);
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*called g_object_freeze_notify() too often*");
 }
 
 static void
@@ -509,9 +527,9 @@ properties_construct (void)
                       NULL);
 
   g_object_get (obj, "foo", &val, NULL);
-  g_assert (val == 18);
+  g_assert_cmpint (val, ==, 18);
   g_object_get (obj, "bar", &b, NULL);
-  g_assert (!b);
+  g_assert_false (b);
   g_object_get (obj, "baz", &s, NULL);
   g_assert_cmpstr (s, ==, "boo");
   g_free (s);
@@ -830,6 +848,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/properties/install-many", properties_install_many);
   g_test_add_func ("/properties/notify", properties_notify);
   g_test_add_func ("/properties/notify-queue", properties_notify_queue);
+  g_test_add_func ("/properties/notify/too-many-freezes", test_properties_notify_too_frozen);
   g_test_add_func ("/properties/construct", properties_construct);
   g_test_add_func ("/properties/get-property", properties_get_property);
   g_test_add_func ("/properties/set-property/variant/floating", properties_set_property_variant_floating);
