@@ -52,7 +52,13 @@
  * the test. The overrides are not thread-safe and will not be automatically
  * cleared at the end of a test.
  */
-#ifdef HAVE_RTLD_NEXT
+/* FIXME: Not currently supported on macOS as its symbol lookup works
+ * differently to Linux. It will likely need something like DYLD_INTERPOSE()
+ * from getpwuid-preload.c here to work. At that point, this common code for
+ * mocking arbitrary syscalls using dlsym(RTLD_NEXT) should probably be factored
+ * out into a set of internal helpers, because various tests do it for various
+ * syscalls. */
+#if defined(HAVE_RTLD_NEXT) && !defined(__APPLE__)
 #define MOCK_SOCKET_SUPPORTED
 #endif
 
