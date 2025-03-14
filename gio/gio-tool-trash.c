@@ -92,7 +92,7 @@ restore_trash (GFile         *file,
   GFile *target = NULL;
   GFile *dir_target = NULL;
   gboolean ret = FALSE;
-  gchar *orig_path = NULL;
+  const gchar *orig_path = NULL;
   GError *local_error = NULL;
 
   info = g_file_query_info (file, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH, G_FILE_QUERY_INFO_NONE, cancellable, &local_error);
@@ -102,7 +102,7 @@ restore_trash (GFile         *file,
       goto exit_func;
     }
 
-  orig_path = g_file_info_get_attribute_as_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
+  orig_path = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
   if (!orig_path)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND, _("Unable to find original path"));
@@ -110,7 +110,6 @@ restore_trash (GFile         *file,
     }
 
   target = g_file_new_for_commandline_arg (orig_path);
-  g_free (orig_path);
 
   dir_target = g_file_get_parent (target);
   if (dir_target)
@@ -173,7 +172,7 @@ trash_list (GFile         *file,
   while ((info = g_file_enumerator_next_file (enumerator, cancellable, &local_error)) != NULL)
     {
       const char *name;
-      char *orig_path;
+      const char *orig_path;
       char *uri;
       GFile* child;
 
@@ -181,12 +180,11 @@ trash_list (GFile         *file,
       child = g_file_get_child (file, name);
       uri = g_file_get_uri (child);
       g_object_unref (child);
-      orig_path = g_file_info_get_attribute_as_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
+      orig_path = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
 
       g_print ("%s\t%s\n", uri, orig_path);
 
       g_object_unref (info);
-      g_free (orig_path);
       g_free (uri);
     }
 
