@@ -936,19 +936,54 @@
 #endif
 
 #undef	MAX
-#define MAX(a, b)  (((a) > (b)) ? (a) : (b))
-
 #undef	MIN
-#define MIN(a, b)  (((a) < (b)) ? (a) : (b))
-
 #undef	ABS
-#define ABS(a)	   (((a) < 0) ? -(a) : (a))
-
 #undef	CLAMP
-#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
+#ifdef glib_typeof
+
+#define MAX(a, b) \
+  (G_GNUC_EXTENSION ({ \
+    glib_typeof(a) _a = (a); \
+    glib_typeof(b) _b = (b); \
+    _a > _b ? _a : _b; \
+  }))
+#define MIN(a, b) \
+  (G_GNUC_EXTENSION ({ \
+    glib_typeof(a) _a = (a); \
+    glib_typeof(b) _b = (b); \
+    _a < _b ? _a : _b; \
+  }))
+#define ABS(a) \
+  (G_GNUC_EXTENSION ({ \
+    glib_typeof(a) _a = (a); \
+    _a < 0 ? -_a : _a; \
+  }))
+#define CLAMP(x,low,high) \
+  (G_GNUC_EXTENSION ({ \
+    glib_typeof(x) _x = (x); \
+    glib_typeof(low) _low = (low); \
+    glib_typeof(high) _high = (high); \
+    _x > _high ? _high : (_x < _low ? _low : _x); \
+  }))
+#define G_APPROX_VALUE(a,b,epsilon) \
+  (G_GNUC_EXTENSION ({ \
+    glib_typeof(a) _a = (a); \
+    glib_typeof(b) _b = (b); \
+    glib_typeof(epsilon) _epsilon = (epsilon); \
+    ((_a > _b ? _a - _b : _b - _a) < _epsilon); \
+  }))
+
+#else
+
+#define MAX(a, b)  (((a) > (b)) ? (a) : (b))
+#define MIN(a, b)  (((a) < (b)) ? (a) : (b))
+#define ABS(a)	   (((a) < 0) ? -(a) : (a))
+#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 #define G_APPROX_VALUE(a, b, epsilon) \
   (((a) > (b) ? (a) - (b) : (b) - (a)) < (epsilon))
+
+#endif
 
 /* Count the number of elements in an array. The array must be defined
  * as such; using this with a dynamically allocated array will give
