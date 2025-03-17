@@ -174,6 +174,7 @@ trash_list (GFile         *file,
       const char *name;
       const char *orig_path;
       char *uri;
+      gchar *utf8_path;
       GFile* child;
 
       name = g_file_info_get_name (info);
@@ -181,11 +182,13 @@ trash_list (GFile         *file,
       uri = g_file_get_uri (child);
       g_object_unref (child);
       orig_path = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
+      utf8_path = g_filename_to_utf8 (orig_path, -1, NULL, NULL, NULL);
 
-      g_print ("%s\t%s\n", uri, orig_path);
+      g_print ("%s\t%s\n", uri, utf8_path);
 
       g_object_unref (info);
       g_free (uri);
+      g_free (utf8_path);
     }
 
   if (local_error)
