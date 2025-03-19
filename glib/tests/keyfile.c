@@ -1534,6 +1534,30 @@ test_int64 (void)
   g_key_file_free (file);
 }
 
+#ifdef G_OS_UNIX
+static void
+copy_file (const char *source,
+           const char *dest)
+{
+  char *dest_dir = NULL;
+  guint8 *file_contents = NULL;
+  size_t file_contents_len = 0;
+  GError *local_error = NULL;
+
+  dest_dir = g_path_get_dirname (dest);
+  g_mkdir_with_parents (dest_dir, 0700);
+  g_free (dest_dir);
+
+  g_file_get_contents (source, (char **) &file_contents, &file_contents_len, &local_error);
+  g_assert_no_error (local_error);
+
+  g_file_set_contents (dest, (const char *) file_contents, file_contents_len, &local_error);
+  g_assert_no_error (local_error);
+
+  g_free (file_contents);
+}
+#endif  /* G_OS_UNIX */
+
 static void
 test_load (void)
 {
@@ -1541,11 +1565,20 @@ test_load (void)
   GError *error;
   gboolean bools[2] = { TRUE, FALSE };
   gboolean loaded;
+#ifdef G_OS_UNIX
+  char *xdg_data_home_test_file = NULL;
+#endif
 
   file = g_key_file_new ();
   error = NULL;
 #ifdef G_OS_UNIX
-  /* Uses the value of $XDG_DATA_HOME we set in main() */
+  /* Uses the value of $XDG_DATA_HOME set by G_TEST_OPTION_ISOLATE_DIRS in main(),
+   * so we need to copy the test file to that temporary directory */
+  xdg_data_home_test_file = g_build_filename (g_get_user_data_dir (), "keyfiletest.ini", NULL);
+  copy_file (g_test_get_filename (G_TEST_DIST, "keyfiletest.ini", NULL),
+             xdg_data_home_test_file);
+  g_free (xdg_data_home_test_file);
+
   loaded = g_key_file_load_from_data_dirs (file, "keyfiletest.ini", NULL, 0, &error);
 #else
   loaded = g_key_file_load_from_file (file, g_test_get_filename (G_TEST_DIST, "keyfiletest.ini", NULL), 0, &error);
@@ -1963,7 +1996,7 @@ test_free_when_not_last_ref (void)
 int
 main (int argc, char *argv[])
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
 #ifdef G_OS_UNIX
   g_setenv ("XDG_DATA_HOME", g_test_get_dir (G_TEST_DIST), TRUE);
