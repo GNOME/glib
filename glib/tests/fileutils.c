@@ -664,7 +664,7 @@ test_build_filenamev (void)
 static void
 test_mkdir_with_parents_1 (const gchar *base)
 {
-  char *p0 = g_build_filename (base, "fum", NULL);
+  char *p0 = g_build_filename (g_get_tmp_dir (), base, "fum", NULL);
   char *p1 = g_build_filename (p0, "tem", NULL);
   char *p2 = g_build_filename (p1, "zap", NULL);
   FILE *f;
@@ -817,6 +817,7 @@ test_mkdir_with_parents (void)
 #ifndef G_OS_WIN32
   gboolean can_override_dac = check_cap_dac_override (NULL);
 #endif
+
   g_test_message ("Checking g_mkdir_with_parents() in subdir ./hum/");
   test_mkdir_with_parents_1 ("hum");
   g_remove ("hum");
@@ -828,9 +829,6 @@ test_mkdir_with_parents (void)
   g_remove ("hii");
 
   cwd = g_get_current_dir ();
-  g_test_message ("Checking g_mkdir_with_parents() in cwd: %s", cwd);
-  test_mkdir_with_parents_1 (cwd);
-
   new_path = g_build_filename (cwd, "new", NULL);
   g_assert_cmpint (g_mkdir_with_parents (new_path, 0), ==, 0);
   g_assert_cmpint (g_rmdir (new_path), ==, 0);
@@ -1445,7 +1443,7 @@ test_get_contents (void)
   gchar *contents;
   GError *error = NULL;
   const gchar *text = "abcdefghijklmnopqrstuvwxyz";
-  const gchar *filename = "file-test-get-contents";
+  char *filename = g_build_filename (g_get_tmp_dir (), "file-test-get-contents", NULL);
   gsize bytes_written;
 
   f = g_fopen (filename, "w");
@@ -1474,6 +1472,7 @@ test_get_contents (void)
 
   g_free (contents);
   g_remove (filename);
+  g_free (filename);
 }
 
 static gboolean
@@ -2196,7 +2195,7 @@ test_stdio_wrappers (void)
 static void
 test_fopen_modes (void)
 {
-  char        *path = g_build_filename ("temp-fopen", NULL);
+  char        *path = g_build_filename (g_get_tmp_dir (), "temp-fopen", NULL);
   gsize        i;
   const gchar *modes[] =
     {

@@ -32,8 +32,6 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#define DEFAULT_TEST_DIR		"testdir_live-g-file"
-
 #define PATTERN_FILE_SIZE	0x10000
 #define TEST_HANDLE_SPECIAL	TRUE
 
@@ -1342,9 +1340,10 @@ int
 main (int argc, char *argv[])
 {
   static gboolean only_create_struct;
-  const char *target_path;
+  char *target_path = NULL;
   GError *error;
   GOptionContext *context;
+  int retval;
 
   static GOptionEntry cmd_entries[] = {
     {"read-write", 'w', 0, G_OPTION_ARG_NONE, &write_test,
@@ -1365,7 +1364,7 @@ main (int argc, char *argv[])
   posix_compat = FALSE;
 
   /*  strip all gtester-specific args  */
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   /*  no extra parameters specified, assume we're executed from glib test suite  */ 
   if (argc < 2)
@@ -1374,7 +1373,7 @@ main (int argc, char *argv[])
 	  verbose = TRUE;
 	  write_test = TRUE;
 	  only_create_struct = FALSE;
-	  target_path = DEFAULT_TEST_DIR;
+	  target_path = g_build_filename (g_get_tmp_dir (), "testdir_live-g-file", NULL);
 #ifdef G_PLATFORM_WIN32
 	  posix_compat = FALSE;
 #else
@@ -1394,7 +1393,7 @@ main (int argc, char *argv[])
 
   /*  remaining arg should is the target path; we don't care of the extra args here  */ 
   if (argc >= 2)
-    target_path = strdup (argv[1]);
+    target_path = g_strdup (argv[1]);
   
   if (! target_path) 
     {
@@ -1471,6 +1470,9 @@ main (int argc, char *argv[])
     g_test_add_data_func ("/live-g-file/final_clean", target_path,
     	  	  prep_clean_structure);
 
-  return g_test_run ();
+  retval = g_test_run ();
 
+  g_free (target_path);
+
+  return retval;
 }

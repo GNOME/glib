@@ -39,8 +39,10 @@ test_small_writes (void)
   guint bytes_remaining;
   gchar tmp;
   GError *local_error = NULL;
+  char *path = NULL;
 
-  io = g_io_channel_new_file ("iochannel-test-outfile", "w", &local_error);
+  path = g_build_filename (g_get_tmp_dir (), "iochannel-test-outfile", NULL);
+  io = g_io_channel_new_file (path, "w", &local_error);
   g_assert_no_error (local_error);
 
   g_io_channel_set_encoding (io, NULL, NULL);
@@ -61,7 +63,8 @@ test_small_writes (void)
   g_assert_cmpint (status, ==, G_IO_STATUS_NORMAL);
 
   g_io_channel_unref (io);
-  g_remove ("iochannel-test-outfile");
+  g_remove (path);
+  g_free (path);
 }
 
 static void
@@ -70,7 +73,7 @@ test_read_write (void)
   GIOChannel *gio_r, *gio_w ;
   GError *local_error = NULL;
   GString *buffer;
-  char *filename;
+  char *in_path = NULL, *out_path = NULL;
   gint rlength = 0;
   glong wlength = 0;
   gsize length_out;
@@ -78,14 +81,15 @@ test_read_write (void)
   GIOStatus status;
   const gsize buffer_size_bytes = 1024;
 
-  filename = g_test_build_filename (G_TEST_DIST, "iochannel-test-infile", NULL);
+  in_path = g_test_build_filename (G_TEST_DIST, "iochannel-test-infile", NULL);
 
   setbuf (stdout, NULL); /* For debugging */
 
-  gio_r = g_io_channel_new_file (filename, "r", &local_error);
+  gio_r = g_io_channel_new_file (in_path, "r", &local_error);
   g_assert_no_error (local_error);
 
-  gio_w = g_io_channel_new_file ("iochannel-test-outfile", "w", &local_error);
+  out_path = g_build_filename (g_get_tmp_dir (), "iochannel-test-outfile", NULL);
+  gio_w = g_io_channel_new_file (out_path, "w", &local_error);
   g_assert_no_error (local_error);
 
   g_io_channel_set_encoding (gio_r, encoding, &local_error);
@@ -164,7 +168,8 @@ test_read_write (void)
 
   test_small_writes ();
 
-  g_free (filename);
+  g_free (in_path);
+  g_free (out_path);
   g_string_free (buffer, TRUE);
 }
 
@@ -227,7 +232,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/io-channel/read-write", test_read_write);
   g_test_add_func ("/io-channel/read-line/embedded-nuls", test_read_line_embedded_nuls);
