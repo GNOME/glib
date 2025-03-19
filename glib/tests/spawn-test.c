@@ -195,8 +195,8 @@ test_spawn_basics (void)
 {
   gboolean result;
   GError *err = NULL;
-  const char *tmp_filename;
-  char *tmp_filename_quoted = NULL;
+  char *tmp_filename = NULL, *tmp_filename_quoted = NULL;
+  int fd = -1;
   gchar *output = NULL;
   gchar *erroutput = NULL;
   char full_cmdline[1000] = {0};
@@ -256,7 +256,10 @@ test_spawn_basics (void)
    * important e.g for the MSYS2 environment, which provides coreutils
    * sort.exe
    */
-  tmp_filename = "spawn-test-created-file.txt";
+  fd = g_file_open_tmp ("spawn-test-created-file-XXXXXX.txt", &tmp_filename, NULL);
+  g_assert_cmpint (fd, >, -1);
+  g_close (fd, NULL);
+
   g_file_set_contents (tmp_filename,
                        "line first\nline 2\nline last\n", -1, &err);
   g_assert_no_error(err);
@@ -310,6 +313,7 @@ test_spawn_basics (void)
   g_free (erroutput);
   erroutput = NULL;
   g_unlink (tmp_filename);
+  g_free (tmp_filename);
   g_free (tmp_filename_quoted);
 
 #ifdef G_OS_WIN32
@@ -538,7 +542,7 @@ main (int   argc,
   dirname = g_path_get_dirname (argv[0]);
 #endif
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/spawn/basics", test_spawn_basics);
 #ifdef G_OS_UNIX
