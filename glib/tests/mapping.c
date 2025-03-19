@@ -51,12 +51,10 @@ check_stop (gpointer data)
 
 #ifdef G_OS_WIN32
   char *stop_name = NULL;
-  char *curdir = g_get_current_dir ();
 
-  stop_name = g_build_filename (curdir, "maptest.stop", NULL);
+  stop_name = g_build_filename (g_get_tmp_dir (), "maptest.stop", NULL);
   stop = g_file_test (stop_name, G_FILE_TEST_EXISTS);
   g_free (stop_name);
-  g_free (curdir);
 #endif
 
   if (stop)
@@ -105,9 +103,10 @@ child_main (void)
 {
   GMappedFile *map;
   GMainLoop *loop;
-  gchar *dir, *global_filename, *childname;
+  const char *dir;
+  char *global_filename = NULL, *childname = NULL;
 
-  dir = g_get_current_dir ();
+  dir = g_get_tmp_dir ();
   global_filename = g_build_filename (dir, "maptest", NULL);
   childname = g_build_filename (dir, "mapchild", NULL);
 
@@ -130,7 +129,6 @@ child_main (void)
 
   g_free (childname);
   g_free (global_filename);
-  g_free (dir);
   g_mapped_file_unref (map);
 
   signal_parent (NULL);
@@ -140,9 +138,10 @@ static void
 test_mapping_flags (void)
 {
   GMappedFile *map;
-  gchar *dir, *global_filename;
+  const char *dir;
+  char *global_filename = NULL;
 
- dir = g_get_current_dir ();
+  dir = g_get_tmp_dir ();
   global_filename = g_build_filename (dir, "maptest", NULL);
 
   write_or_die (global_filename, "ABC", -1);
@@ -160,7 +159,6 @@ test_mapping_flags (void)
   g_remove (global_filename);
 
   g_free (global_filename);
-  g_free (dir);
 }
 
 static void
@@ -171,9 +169,10 @@ test_private (void)
   gboolean result;
   gchar *buffer;
   gsize len;
-  gchar *dir, *global_filename;
+  const char *dir;
+  char *global_filename = NULL;
 
-  dir = g_get_current_dir ();
+  dir = g_get_tmp_dir ();
   global_filename = g_build_filename (dir, "maptest", NULL);
 
   write_or_die (global_filename, "ABC", -1);
@@ -196,7 +195,6 @@ test_private (void)
   g_remove (global_filename);
 
   g_free (global_filename);
-  g_free (dir);
 }
 
 static void
@@ -215,9 +213,10 @@ test_child_private (void)
   int wait_status;
 #endif
   gchar pid[100];
-  gchar *dir, *global_filename, *childname;
+  const char *dir;
+  char *global_filename = NULL, *childname = NULL, *stop_name = NULL;
 
-  dir = g_get_current_dir ();
+  dir = g_get_tmp_dir ();
   global_filename = g_build_filename (dir, "maptest", NULL);
   childname = g_build_filename (dir, "mapchild", NULL);
   stop_name = g_build_filename (dir, "maptest.stop", NULL);
@@ -297,7 +296,6 @@ test_child_private (void)
 
   g_free (childname);
   g_free (global_filename);
-  g_free (dir);
   g_free (stop_name);
 }
 
@@ -317,7 +315,7 @@ main (int argc,
     }
 #endif
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
   local_argv = argv;
 
   if (argc > 1)
