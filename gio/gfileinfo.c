@@ -873,9 +873,24 @@ _g_file_info_get_attribute_value (GFileInfo  *info,
  * @info: a #GFileInfo.
  * @attribute: a file attribute key.
  *
- * Gets the value of an attribute, formatted as a string.
- * This escapes things as needed to make the string valid
- * UTF-8.
+ * Gets the value of an attribute, formatted as a human readable string.
+ *
+ * This escapes things as needed to make the string valid UTF-8 and readable by
+ * humans. It’s not meant to be a machine readable or reversible escaping
+ * format.
+ *
+ * To format file name attributes of type
+ * [enum@Gio.FileAttributeType.BYTE_STRING] for output as UTF-8, use
+ * [func@GLib.filename_to_utf8] instead:
+ * ```c
+ * const char *trash_orig_path_byte_string;
+ * g_autofree char *trash_orig_path_utf8 = NULL;
+ *
+ * trash_orig_path_byte_string = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_TRASH_ORIG_PATH);
+ * trash_orig_path_utf8 = g_filename_to_utf8 (trash_orig_path_byte_string, -1, NULL, NULL, NULL);
+ * if (trash_orig_path_utf8 != NULL)
+ *   g_message ("Some larger UTF-8 string with filename embedded as %s", trash_orig_path_utf8);
+ * ```
  *
  * Returns: (nullable): a UTF-8 string associated with the given @attribute, or
  *    %NULL if the attribute wasn’t set.
