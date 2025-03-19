@@ -2675,6 +2675,11 @@ endif
 gir_args = [
   '--quiet',
 ]
+if gobject_introspection.version().version_compare('>=1.83.2')
+  gir_args += [
+    '--doc-format=gi-docgen',
+  ]
+endif
 
 pkg = import('pkgconfig')
 windows = import('windows')
