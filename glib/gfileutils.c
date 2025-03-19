@@ -1597,8 +1597,9 @@ wrap_g_open (const gchar *filename,
  * @tmpl: (type filename): template directory name
  * @mode: permissions to create the temporary directory with
  *
- * Creates a temporary directory. See the mkdtemp() documentation
- * on most UNIX-like systems.
+ * Creates a temporary directory in the current directory.
+ *
+ * See the [`mkdtemp()`](man:mkdtemp(3)) documentation on most UNIX-like systems.
  *
  * The parameter is a string that should follow the rules for
  * mkdtemp() templates, i.e. contain the string "XXXXXX".
@@ -1633,8 +1634,9 @@ g_mkdtemp_full (gchar *tmpl,
  * g_mkdtemp: (skip)
  * @tmpl: (type filename): template directory name
  *
- * Creates a temporary directory. See the mkdtemp() documentation
- * on most UNIX-like systems.
+ * Creates a temporary directory in the current directory.
+ *
+ * See the [`mkdtemp()`](man:mkdtemp(3)) documentation on most UNIX-like systems.
  *
  * The parameter is a string that should follow the rules for
  * mkdtemp() templates, i.e. contain the string "XXXXXX".
@@ -1668,8 +1670,9 @@ g_mkdtemp (gchar *tmpl)
  *   and O_CREAT, which are passed automatically
  * @mode: permissions to create the temporary file with
  *
- * Opens a temporary file. See the mkstemp() documentation
- * on most UNIX-like systems.
+ * Opens a temporary file in the current directory.
+ *
+ * See the [`mkstemp()`](man:mkstemp(3)) documentation on most UNIX-like systems.
  *
  * The parameter is a string that should follow the rules for
  * mkstemp() templates, i.e. contain the string "XXXXXX".
@@ -1701,8 +1704,9 @@ g_mkstemp_full (gchar *tmpl,
  * g_mkstemp: (skip)
  * @tmpl: (type filename): template filename
  *
- * Opens a temporary file. See the mkstemp() documentation
- * on most UNIX-like systems.
+ * Opens a temporary file in the current directory.
+ *
+ * See the [`mkstemp()`](man:mkstemp(3)) documentation on most UNIX-like systems.
  *
  * The parameter is a string that should follow the rules for
  * mkstemp() templates, i.e. contain the string "XXXXXX".
