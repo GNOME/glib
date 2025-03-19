@@ -1592,7 +1592,7 @@ test_save (void)
   ok = g_key_file_load_from_data (kf, data, strlen (data), 0, NULL);
   g_assert_true (ok);
 
-  file = g_strdup ("key_file_XXXXXX");
+  file = g_build_filename (g_get_tmp_dir (), "key_file_XXXXXX", NULL);
   fd = g_mkstemp (file);
   g_assert_cmpint (fd, !=, -1);
   ok = g_close (fd, &error);

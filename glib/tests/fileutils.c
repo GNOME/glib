@@ -1342,7 +1342,7 @@ test_mkstemp (void)
   g_free (name);
 
   /* Test normal case */
-  name = g_strdup ("testXXXXXXtest"),
+  name = g_build_filename (g_get_tmp_dir (), "testXXXXXXtest", NULL),
   fd = g_mkstemp (name);
   g_assert_cmpint (fd, !=, -1);
   g_assert_null (strstr (name, "XXXXXX"));
@@ -1358,8 +1358,8 @@ test_mkstemp (void)
   strcpy (template, "foobarXXX");
   g_assert_cmpint (g_mkstemp (template), ==, -1);
 
-  strcpy (template, "fooXXXXXX");
-  fd = g_mkstemp (template);
+  name = g_build_filename (g_get_tmp_dir (), "fooXXXXXX", NULL);
+  fd = g_mkstemp (name);
   g_assert_cmpint (fd, !=, -1);
   result = write (fd, hello, hellolen);
   g_assert_cmpint (result, !=, -1);
@@ -1374,15 +1374,16 @@ test_mkstemp (void)
   g_assert_cmpstr (chars, ==, hello);
 
   close (fd);
-  remove (template);
+  remove (name);
+  g_free (name);
 
-  /* Check that is does not work for "fooXXXXXX.pdf" */
-  strcpy (template, "fooXXXXXX.pdf");
-  fd = g_mkstemp (template);
+  /* Check that it works for "fooXXXXXX.pdf" */
+  name = g_build_filename (g_get_tmp_dir (), "fooXXXXXX.pdf", NULL);
+  fd = g_mkstemp (name);
   g_assert_cmpint (fd, !=, -1);
-
   close (fd);
-  remove (template);
+  remove (name);
+  g_free (name);
 }
 
 static void
@@ -1390,10 +1391,10 @@ test_mkdtemp (void)
 {
   gint fd;
   gchar *ret;
-  gchar *name;
+  gchar *name, *name2;
   char template[32];
 
-  name = g_strdup ("testXXXXXXtest"),
+  name = g_build_filename (g_get_tmp_dir (), "testXXXXXXtest", NULL),
   ret = g_mkdtemp (name);
   g_assert_true (ret == name);
   g_assert_null (strstr (name, "XXXXXX"));
@@ -1411,27 +1412,29 @@ test_mkdtemp (void)
   strcpy (template, "foodir");
   g_assert_null (g_mkdtemp (template));
 
-  strcpy (template, "fooXXXXXX");
-  ret = g_mkdtemp (template);
+  name = g_build_filename (g_get_tmp_dir (), "fooXXXXXX", NULL);
+  ret = g_mkdtemp (name);
   g_assert_nonnull (ret);
-  g_assert_true (ret == template);
-  g_assert_false (g_file_test (template, G_FILE_TEST_IS_REGULAR));
-  g_assert_true (g_file_test (template, G_FILE_TEST_IS_DIR));
+  g_assert_true (ret == name);
+  g_assert_false (g_file_test (name, G_FILE_TEST_IS_REGULAR));
+  g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
 
-  strcat (template, "/abc");
-  fd = g_open (template, O_WRONLY | O_CREAT, 0600);
+  name2 = g_build_filename (name, "abc", NULL);
+  fd = g_open (name2, O_WRONLY | O_CREAT, 0600);
   g_assert_cmpint (fd, !=, -1);
   close (fd);
-  g_assert_true (g_file_test (template, G_FILE_TEST_IS_REGULAR));
-  g_assert_cmpint (g_unlink (template), !=, -1);
+  g_assert_true (g_file_test (name2, G_FILE_TEST_IS_REGULAR));
+  g_assert_cmpint (g_unlink (name2), !=, -1);
+  g_free (name2);
 
-  template[9] = '\0';
-  g_assert_cmpint (g_rmdir (template), !=, -1);
+  g_assert_cmpint (g_rmdir (name), !=, -1);
+  g_free (name);
 
-  strcpy (template, "fooXXXXXX.dir");
-  g_assert_nonnull (g_mkdtemp (template));
-  g_assert_true (g_file_test (template, G_FILE_TEST_IS_DIR));
-  g_rmdir (template);
+  name = g_build_filename (g_get_tmp_dir (), "fooXXXXXX.dir", NULL);
+  g_assert_nonnull (g_mkdtemp (name));
+  g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
+  g_rmdir (name);
+  g_free (name);
 }
 
 static void
