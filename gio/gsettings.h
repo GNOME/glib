@@ -224,15 +224,15 @@ void                    g_settings_sync                                 (void);
 
 /**
  * GSettingsBindSetMapping:
- * @value: a #GValue containing the property value to map
- * @expected_type: the #GVariantType to create
+ * @value: the property value to map
+ * @expected_type: expected type of the result
  * @user_data: user data that was specified when the binding was created
  *
  * The type for the function that is used to convert an object property
- * value to a #GVariant for storing it in #GSettings.
+ * value to a [struct@GLib.Variant] for storing it in [class@Gio.Settings].
  *
- * Returns: a new #GVariant holding the data from @value,
- *     or %NULL in case of an error
+ * Returns: (nullable): a new [struct@GLib.Variant] holding the data from @value,
+ *   or `NULL` in case of an error
  */
 typedef GVariant *    (*GSettingsBindSetMapping)                        (const GValue       *value,
                                                                          const GVariantType *expected_type,
@@ -241,14 +241,15 @@ typedef GVariant *    (*GSettingsBindSetMapping)                        (const G
 /**
  * GSettingsBindGetMapping:
  * @value: return location for the property value
- * @variant: the #GVariant
+ * @variant: variant to map to the property value
  * @user_data: user data that was specified when the binding was created
  *
- * The type for the function that is used to convert from #GSettings to
- * an object property. The @value is already initialized to hold values
- * of the appropriate type.
+ * The type for the function that is used to convert from [class@Gio.Settings]
+ * to an object property.
  *
- * Returns: %TRUE if the conversion succeeded, %FALSE in case of an error
+ * The @value is already initialized to hold values of the appropriate type.
+ *
+ * Returns: true if the conversion succeeded, false in case of an error
  */
 typedef gboolean      (*GSettingsBindGetMapping)                        (GValue             *value,
                                                                          GVariant           *variant,
@@ -256,23 +257,23 @@ typedef gboolean      (*GSettingsBindGetMapping)                        (GValue 
 
 /**
  * GSettingsGetMapping:
- * @value: the #GVariant to map, or %NULL
+ * @value: (nullable): variant to map to the application value
  * @result: (out): the result of the mapping
  * @user_data: (closure): the user data that was passed to
- * g_settings_get_mapped()
+ *   [method@Gio.Settings.get_mapped]
  *
  * The type of the function that is used to convert from a value stored
- * in a #GSettings to a value that is useful to the application.
+ * in a [class@Gio.Settings] to a value that is useful to the application.
  *
  * If the value is successfully mapped, the result should be stored at
- * @result and %TRUE returned.  If mapping fails (for example, if @value
- * is not in the right format) then %FALSE should be returned.
+ * @result and true returned.  If mapping fails (for example, if @value
+ * is not in the right format) then false should be returned.
  *
- * If @value is %NULL then it means that the mapping function is being
- * given a "last chance" to successfully return a valid value.  %TRUE
+ * If @value is `NULL` then it means that the mapping function is being
+ * given a ‘last chance’ to successfully return a valid value.  True
  * must be returned in this case.
  *
- * Returns: %TRUE if the conversion succeeded, %FALSE in case of an error
+ * Returns: true if the conversion succeeded, false in case of an error
  **/
 typedef gboolean      (*GSettingsGetMapping)                            (GVariant           *value,
                                                                          gpointer           *result,
@@ -281,20 +282,23 @@ typedef gboolean      (*GSettingsGetMapping)                            (GVarian
 /**
  * GSettingsBindFlags:
  * @G_SETTINGS_BIND_DEFAULT: Equivalent to `G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET`
- * @G_SETTINGS_BIND_GET: Update the #GObject property when the setting changes.
- *     It is an error to use this flag if the property is not writable.
- * @G_SETTINGS_BIND_SET: Update the setting when the #GObject property changes.
- *     It is an error to use this flag if the property is not readable.
- * @G_SETTINGS_BIND_NO_SENSITIVITY: Do not try to bind a "sensitivity" property to the writability of the setting
- * @G_SETTINGS_BIND_GET_NO_CHANGES: When set in addition to %G_SETTINGS_BIND_GET, set the #GObject property
- *     value initially from the setting, but do not listen for changes of the setting
- * @G_SETTINGS_BIND_INVERT_BOOLEAN: When passed to g_settings_bind(), uses a pair of mapping functions that invert
- *     the boolean value when mapping between the setting and the property.  The setting and property must both
- *     be booleans.  You cannot pass this flag to g_settings_bind_with_mapping().
+ * @G_SETTINGS_BIND_GET: Update the [class@GObject.Object] property when the setting changes.
+ *   It is an error to use this flag if the property is not writable.
+ * @G_SETTINGS_BIND_SET: Update the setting when the [class@GObject.Object] property changes.
+ *   It is an error to use this flag if the property is not readable.
+ * @G_SETTINGS_BIND_NO_SENSITIVITY: Do not try to bind a ‘sensitivity’ property to the writability of the setting
+ * @G_SETTINGS_BIND_GET_NO_CHANGES: When set in addition to [flags@Gio.SettingsBindFlags.GET],
+ *   set the [class@GObject.Object] property
+ *   value initially from the setting, but do not listen for changes of the setting
+ * @G_SETTINGS_BIND_INVERT_BOOLEAN: When passed to [method@Gio.Settings.bind],
+ *   uses a pair of mapping functions that invert
+ *   the boolean value when mapping between the setting and the property.  The setting and property must both
+ *   be booleans.  You cannot pass this flag to [method@Gio.Settings.bind_with_mapping].
  *
- * Flags used when creating a binding. These flags determine in which
- * direction the binding works. The default is to synchronize in both
- * directions.
+ * Flags used when creating a binding.
+ *
+ * These flags determine in which direction the binding works. The default is to
+ * synchronize in both directions.
  */
 typedef enum
 {
