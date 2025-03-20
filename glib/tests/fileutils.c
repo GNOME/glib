@@ -2219,7 +2219,36 @@ test_fopen_modes (void)
       "a+b",
       "wb+",
       "rb+",
-      "ab+"
+      "ab+",
+      "we",
+      "re",
+      "ae",
+      "w+e",
+      "r+e",
+      "a+e",
+      "wbe",
+      "rbe",
+      "abe",
+      "w+be",
+      "r+be",
+      "a+be",
+      "wb+e",
+      "rb+e",
+      "ab+e",
+      "web",
+      "reb",
+      "aeb",
+      "w+eb",
+      "r+eb",
+      "a+eb",
+      "web+",
+      "reb+",
+      "aeb+",
+#ifdef G_OS_WIN32
+      /* https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/fopen-wfopen?view=msvc-170#unicode-support */
+      "w, ccs=utf-16le",
+      "we, ccs=utf-16le",
+#endif
     };
 
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/merge_requests/119");
