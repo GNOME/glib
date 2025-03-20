@@ -267,7 +267,7 @@ test_pollable_unix_nulldev (void)
                   "on a system where we are able to tell it apart from devices "
                   "that actually implement poll");
 
-#if defined (HAVE_EPOLL_CREATE) || defined (HAVE_KQUEUE)
+#if defined (HAVE_EPOLL_CREATE1) || defined (HAVE_KQUEUE)
   int fd = g_open ("/dev/null", O_RDWR, 0);
   g_assert_cmpint (fd, !=, -1);
 
