@@ -23,7 +23,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#if defined (HAVE_EPOLL_CREATE)
+#if defined (HAVE_EPOLL_CREATE1)
 #include <sys/epoll.h>
 #elif defined (HAVE_KQUEUE)
 #include <sys/event.h>
@@ -65,7 +65,7 @@ _g_fd_is_pollable (int fd)
    * absolute certainty:
    */
 
-#if defined (HAVE_EPOLL_CREATE)
+#if defined (HAVE_EPOLL_CREATE1)
   /*
    * Linux
    *
