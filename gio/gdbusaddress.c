@@ -53,12 +53,6 @@
 #include <windows.h>
 #endif
 
-#ifdef G_OS_WIN32
-#define FO_CLOEXEC ""
-#else
-#define FO_CLOEXEC "e"
-#endif
-
 #include "glibintl.h"
 
 /**
@@ -720,7 +714,7 @@ g_dbus_address_connect (const gchar   *address_entry,
           int errsv;
 
           /* be careful to read only 16 bytes - we also check that the file is only 16 bytes long */
-          f = fopen (nonce_file, "rb" FO_CLOEXEC);
+          f = g_fopen (nonce_file, "rbe");
           errsv = errno;
           if (f == NULL)
             {

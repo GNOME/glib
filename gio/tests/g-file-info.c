@@ -792,7 +792,7 @@ test_internal_enhanced_stdio (void)
 
       g_remove (ps);
 
-      f = g_fopen (ps, "wb");
+      f = g_fopen (ps, "wbe");
       g_assert_nonnull (f);
 
       h = (HANDLE) _get_osfhandle (fileno (f));
@@ -875,7 +875,7 @@ test_internal_enhanced_stdio (void)
 
   g_assert_true (SystemTimeToFileTime (&st, &ft));
 
-  f = g_fopen (p0, "w");
+  f = g_fopen (p0, "we");
   g_assert_nonnull (f);
 
   h = (HANDLE) _get_osfhandle (fileno (f));
@@ -888,7 +888,7 @@ test_internal_enhanced_stdio (void)
 
   fclose (f);
 
-  f = g_fopen (p1, "w");
+  f = g_fopen (p1, "we");
   g_assert_nonnull (f);
 
   fclose (f);

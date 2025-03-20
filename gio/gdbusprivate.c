@@ -2195,7 +2195,7 @@ unpublish_session_bus (void)
 static void
 wait_console_window (void)
 {
-  FILE *console = fopen ("CONOUT$", "w");
+  FILE *console = g_fopen ("CONOUT$", "we");
 
   SetConsoleTitleW (L"gdbus-daemon output. Type any character to close this window.");
   fprintf (console, _("(Type any character to close this window)\n"));

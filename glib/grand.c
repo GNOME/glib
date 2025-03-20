@@ -49,6 +49,7 @@
 #include "genviron.h"
 #include "gmain.h"
 #include "gmem.h"
+#include "gstdio.h"
 #include "gtestutils.h"
 #include "gthread.h"
 #include "gtimer.h"
@@ -179,7 +180,7 @@ g_rand_new (void)
 
       do
 	{
-	  dev_urandom = fopen ("/dev/urandom", "rbe");
+	  dev_urandom = g_fopen ("/dev/urandom", "rbe");
 	}
       while G_UNLIKELY (dev_urandom == NULL && errno == EINTR);
 

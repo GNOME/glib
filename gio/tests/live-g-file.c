@@ -23,6 +23,7 @@
  */
 
 #include <glib/glib.h>
+#include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -305,7 +306,7 @@ test_create_structure (gconstpointer test_data)
 	  basename = g_path_get_basename (item.filename);
 	  path = g_build_filename (test_data, dir, ".hidden", NULL);
 
-	  f = fopen (path, "a");
+	  f = g_fopen (path, "ae");
 	  fprintf (f, "%s\n", basename);
 	  fclose (f);
 

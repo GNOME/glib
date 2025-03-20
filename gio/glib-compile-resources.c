@@ -1131,7 +1131,7 @@ main (int argc, char **argv)
     {
       FILE *file;
 
-      file = fopen (target, "w");
+      file = g_fopen (target, "we");
       if (file == NULL)
 	{
 	  g_printerr ("can't write to file %s", target);
@@ -1180,7 +1180,7 @@ main (int argc, char **argv)
 	}
       g_unlink (binary_target);
 
-      file = fopen (target, "w");
+      file = g_fopen (target, "we");
       if (file == NULL)
 	{
 	  g_printerr ("can't write to file %s", target);

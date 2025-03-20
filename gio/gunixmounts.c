@@ -79,6 +79,7 @@ extern char* hasmntopt(const struct mntent* mnt, const char* opt);
 #include "gfilemonitor.h"
 #include "glibintl.h"
 #include "glocalfile.h"
+#include "gstdio.h"
 #include "gthemedicon.h"
 #include "gcontextspecificgroup.h"
 
@@ -202,7 +203,7 @@ static GSource *proc_mounts_watch_source = NULL;
 #endif
 
 #ifndef HAVE_SETMNTENT
-#define setmntent(f,m) fopen(f,m)
+#define setmntent(f,m) g_fopen (f, m)
 #endif
 #ifndef HAVE_ENDMNTENT
 #define endmntent(f) fclose(f)
@@ -3965,7 +3966,7 @@ _resolve_dev_root (void)
           /* see if device with similar major:minor as /dev/root is mention
            * in /etc/mtab (it usually is) 
            */
-          f = fopen ("/etc/mtab", "re");
+          f = g_fopen ("/etc/mtab", "re");
           if (f != NULL) 
             {
 	      struct mntent *entp;

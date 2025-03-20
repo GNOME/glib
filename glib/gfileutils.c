@@ -938,7 +938,7 @@ get_contents_posix (const gchar  *filename,
       FILE *f;
       gboolean retval;
 
-      f = fdopen (fd, "r");
+      f = fdopen (fd, "re");
       
       if (f == NULL)
         {
@@ -969,7 +969,7 @@ get_contents_win32 (const gchar  *filename,
   FILE *f;
   gboolean retval;
   
-  f = g_fopen (filename, "rb");
+  f = g_fopen (filename, "rbe");
 
   if (f == NULL)
     {

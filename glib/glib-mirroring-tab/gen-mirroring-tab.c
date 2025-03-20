@@ -30,6 +30,7 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -156,7 +157,7 @@ read_data (
   FILE *f;
 
   fprintf (stderr, "Reading '%s'\n", data_file_name);
-  if (!(f = fopen (data_file_name, "rt")))
+  if (!(f = g_fopen (data_file_name, "rte")))
     die2 ("error: cannot open '%s' for reading", data_file_name);
 
   if (!strcmp (data_file_type, "BidiMirroring.txt"))

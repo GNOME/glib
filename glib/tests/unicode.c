@@ -33,6 +33,7 @@
 #include <stdio.h>
 
 #include "glib.h"
+#include "glib/gstdio.h"
 
 #include "glib/gunidecomp.h"
 
@@ -636,7 +637,7 @@ test_casemap_and_casefold (void)
   save_and_clear_env ("LANG", &old_lang);
 
   filename = g_test_build_filename (G_TEST_DIST, "casemap.txt", NULL);
-  infile = fopen (filename, "r");
+  infile = g_fopen (filename, "re");
   g_assert (infile != NULL);
 
   while (fgets (buffer, sizeof (buffer), infile))
@@ -700,7 +701,7 @@ test_casemap_and_casefold (void)
   g_free (filename);
   filename = g_test_build_filename (G_TEST_DIST, "casefold.txt", NULL);
 
-  infile = fopen (filename, "r");
+  infile = g_fopen (filename, "re");
   g_assert (infile != NULL);
 
   while (fgets (buffer, sizeof (buffer), infile))
