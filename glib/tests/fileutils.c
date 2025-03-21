@@ -664,7 +664,7 @@ test_build_filenamev (void)
 static void
 test_mkdir_with_parents_1 (const gchar *base)
 {
-  char *p0 = g_build_filename (base, "fum", NULL);
+  char *p0 = g_build_filename (g_get_tmp_dir (), base, "fum", NULL);
   char *p1 = g_build_filename (p0, "tem", NULL);
   char *p2 = g_build_filename (p1, "zap", NULL);
   FILE *f;
@@ -817,21 +817,18 @@ test_mkdir_with_parents (void)
 #ifndef G_OS_WIN32
   gboolean can_override_dac = check_cap_dac_override (NULL);
 #endif
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
+
+  g_test_message ("Checking g_mkdir_with_parents() in subdir ./hum/");
   test_mkdir_with_parents_1 ("hum");
   g_remove ("hum");
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
+
+  g_test_message ("Checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
   test_mkdir_with_parents_1 ("./hii///haa/hee///");
   g_remove ("hii/haa/hee");
   g_remove ("hii/haa");
   g_remove ("hii");
-  cwd = g_get_current_dir ();
-  if (g_test_verbose())
-    g_printerr ("checking g_mkdir_with_parents() in cwd: %s", cwd);
-  test_mkdir_with_parents_1 (cwd);
 
+  cwd = g_get_current_dir ();
   new_path = g_build_filename (cwd, "new", NULL);
   g_assert_cmpint (g_mkdir_with_parents (new_path, 0), ==, 0);
   g_assert_cmpint (g_rmdir (new_path), ==, 0);
@@ -1343,7 +1340,7 @@ test_mkstemp (void)
   g_free (name);
 
   /* Test normal case */
-  name = g_strdup ("testXXXXXXtest"),
+  name = g_build_filename (g_get_tmp_dir (), "testXXXXXXtest", NULL),
   fd = g_mkstemp (name);
   g_assert_cmpint (fd, !=, -1);
   g_assert_null (strstr (name, "XXXXXX"));
@@ -1359,8 +1356,8 @@ test_mkstemp (void)
   strcpy (template, "foobarXXX");
   g_assert_cmpint (g_mkstemp (template), ==, -1);
 
-  strcpy (template, "fooXXXXXX");
-  fd = g_mkstemp (template);
+  name = g_build_filename (g_get_tmp_dir (), "fooXXXXXX", NULL);
+  fd = g_mkstemp (name);
   g_assert_cmpint (fd, !=, -1);
   result = write (fd, hello, hellolen);
   g_assert_cmpint (result, !=, -1);
@@ -1375,15 +1372,16 @@ test_mkstemp (void)
   g_assert_cmpstr (chars, ==, hello);
 
   close (fd);
-  remove (template);
+  remove (name);
+  g_free (name);
 
-  /* Check that is does not work for "fooXXXXXX.pdf" */
-  strcpy (template, "fooXXXXXX.pdf");
-  fd = g_mkstemp (template);
+  /* Check that it works for "fooXXXXXX.pdf" */
+  name = g_build_filename (g_get_tmp_dir (), "fooXXXXXX.pdf", NULL);
+  fd = g_mkstemp (name);
   g_assert_cmpint (fd, !=, -1);
-
   close (fd);
-  remove (template);
+  remove (name);
+  g_free (name);
 }
 
 static void
@@ -1391,12 +1389,12 @@ test_mkdtemp (void)
 {
   gint fd;
   gchar *ret;
-  gchar *name;
+  gchar *name, *name2;
   char template[32];
 
-  name = g_strdup ("testXXXXXXtest"),
+  name = g_build_filename (g_get_tmp_dir (), "testXXXXXXtest", NULL),
   ret = g_mkdtemp (name);
-  g_assert (ret == name);
+  g_assert_true (ret == name);
   g_assert_null (strstr (name, "XXXXXX"));
   g_rmdir (name);
   g_free (name);
@@ -1412,27 +1410,29 @@ test_mkdtemp (void)
   strcpy (template, "foodir");
   g_assert_null (g_mkdtemp (template));
 
-  strcpy (template, "fooXXXXXX");
-  ret = g_mkdtemp (template);
+  name = g_build_filename (g_get_tmp_dir (), "fooXXXXXX", NULL);
+  ret = g_mkdtemp (name);
   g_assert_nonnull (ret);
-  g_assert_true (ret == template);
-  g_assert_false (g_file_test (template, G_FILE_TEST_IS_REGULAR));
-  g_assert_true (g_file_test (template, G_FILE_TEST_IS_DIR));
+  g_assert_true (ret == name);
+  g_assert_false (g_file_test (name, G_FILE_TEST_IS_REGULAR));
+  g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
 
-  strcat (template, "/abc");
-  fd = g_open (template, O_WRONLY | O_CREAT, 0600);
+  name2 = g_build_filename (name, "abc", NULL);
+  fd = g_open (name2, O_WRONLY | O_CREAT, 0600);
   g_assert_cmpint (fd, !=, -1);
   close (fd);
-  g_assert_true (g_file_test (template, G_FILE_TEST_IS_REGULAR));
-  g_assert_cmpint (g_unlink (template), !=, -1);
+  g_assert_true (g_file_test (name2, G_FILE_TEST_IS_REGULAR));
+  g_assert_cmpint (g_unlink (name2), !=, -1);
+  g_free (name2);
 
-  template[9] = '\0';
-  g_assert_cmpint (g_rmdir (template), !=, -1);
+  g_assert_cmpint (g_rmdir (name), !=, -1);
+  g_free (name);
 
-  strcpy (template, "fooXXXXXX.dir");
-  g_assert_nonnull (g_mkdtemp (template));
-  g_assert_true (g_file_test (template, G_FILE_TEST_IS_DIR));
-  g_rmdir (template);
+  name = g_build_filename (g_get_tmp_dir (), "fooXXXXXX.dir", NULL);
+  g_assert_nonnull (g_mkdtemp (name));
+  g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
+  g_rmdir (name);
+  g_free (name);
 }
 
 static void
@@ -1443,7 +1443,7 @@ test_get_contents (void)
   gchar *contents;
   GError *error = NULL;
   const gchar *text = "abcdefghijklmnopqrstuvwxyz";
-  const gchar *filename = "file-test-get-contents";
+  char *filename = g_build_filename (g_get_tmp_dir (), "file-test-get-contents", NULL);
   gsize bytes_written;
 
   f = g_fopen (filename, "w");
@@ -1472,6 +1472,7 @@ test_get_contents (void)
 
   g_free (contents);
   g_remove (filename);
+  g_free (filename);
 }
 
 static gboolean
@@ -2093,7 +2094,7 @@ test_stdio_wrappers (void)
 
   g_remove ("mkdir-test/test-create");
   ret = g_rmdir ("mkdir-test");
-  g_assert (ret == 0 || errno == ENOENT);
+  g_assert_true (ret == 0 || errno == ENOENT);
 
   ret = g_stat ("mkdir-test", &buf);
   g_assert_cmpint (ret, ==, -1);
@@ -2194,7 +2195,7 @@ test_stdio_wrappers (void)
 static void
 test_fopen_modes (void)
 {
-  char        *path = g_build_filename ("temp-fopen", NULL);
+  char        *path = g_build_filename (g_get_tmp_dir (), "temp-fopen", NULL);
   gsize        i;
   const gchar *modes[] =
     {

@@ -195,8 +195,11 @@ test_spawn_basics (void)
 {
   gboolean result;
   GError *err = NULL;
+  char *tmp_filename = NULL, *tmp_filename_quoted = NULL;
+  int fd = -1;
   gchar *output = NULL;
   gchar *erroutput = NULL;
+  char full_cmdline[1000] = {0};
 #ifdef G_OS_WIN32
   size_t n;
   char buf[100];
@@ -205,7 +208,6 @@ test_spawn_basics (void)
   gchar **envp = g_get_environ ();
   gchar *system_directory;
   gchar spawn_binary[1000] = {0};
-  gchar full_cmdline[1000] = {0};
   GList *cmd_shell_env_vars = NULL;
   const LCID old_lcid = GetThreadUILanguage ();
   const unsigned int initial_cp = GetConsoleOutputCP ();
@@ -254,18 +256,23 @@ test_spawn_basics (void)
    * important e.g for the MSYS2 environment, which provides coreutils
    * sort.exe
    */
-  g_file_set_contents ("spawn-test-created-file.txt",
+  fd = g_file_open_tmp ("spawn-test-created-file-XXXXXX.txt", &tmp_filename, NULL);
+  g_assert_cmpint (fd, >, -1);
+  g_close (fd, NULL);
+
+  g_file_set_contents (tmp_filename,
                        "line first\nline 2\nline last\n", -1, &err);
   g_assert_no_error(err);
 
+  tmp_filename_quoted = g_shell_quote (tmp_filename);
 #ifndef G_OS_WIN32
-  result = g_spawn_command_line_sync ("sort spawn-test-created-file.txt",
-                                      &output, &erroutput, NULL, &err);
+  g_snprintf (full_cmdline, sizeof (full_cmdline),
+              "sort %s", tmp_filename_quoted);
 #else
   g_snprintf (full_cmdline, sizeof (full_cmdline),
-              "'%s\\sort.exe' spawn-test-created-file.txt", system_directory);
-  result = g_spawn_command_line_sync (full_cmdline, &output, &erroutput, NULL, &err);
+              "'%s\\sort.exe' %s", system_directory, tmp_filename_quoted);
 #endif
+  result = g_spawn_command_line_sync (full_cmdline, &output, &erroutput, NULL, &err);
   g_assert_no_error (err);
   g_assert_true (result);
   g_assert_nonnull (output);
@@ -305,7 +312,9 @@ test_spawn_basics (void)
 #endif
   g_free (erroutput);
   erroutput = NULL;
-  g_unlink ("spawn-test-created-file.txt");
+  g_unlink (tmp_filename);
+  g_free (tmp_filename);
+  g_free (tmp_filename_quoted);
 
 #ifdef G_OS_WIN32
   g_test_message ("Running spawn-test-win32-gui in various ways.");
@@ -533,7 +542,7 @@ main (int   argc,
   dirname = g_path_get_dirname (argv[0]);
 #endif
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/spawn/basics", test_spawn_basics);
 #ifdef G_OS_UNIX

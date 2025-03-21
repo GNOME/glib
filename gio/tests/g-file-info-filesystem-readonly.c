@@ -96,7 +96,8 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
   GFile *mounted_file;
   GUnixMountMonitor *mount_monitor = NULL;
   gchar *bindfs, *fusermount;
-  gchar *curdir, *dir_to_mount, *dir_mountpoint;
+  const char *curdir;
+  char *dir_to_mount = NULL, *dir_mountpoint = NULL;
   gchar *file_in_mount, *file_in_mountpoint;
   GError *error = NULL;
 
@@ -127,10 +128,10 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
       return;
     }
 
-  curdir = g_get_current_dir ();
-  dir_to_mount = g_strdup_printf ("%s/dir_bindfs_to_mount", curdir);
-  file_in_mount = g_strdup_printf ("%s/example.txt", dir_to_mount);
-  dir_mountpoint = g_strdup_printf ("%s/dir_bindfs_mountpoint", curdir);
+  curdir = g_get_tmp_dir ();
+  dir_to_mount = g_build_filename (curdir, "dir_bindfs_to_mount", NULL);
+  file_in_mount = g_build_filename (dir_to_mount, "example.txt", NULL);
+  dir_mountpoint = g_build_filename (curdir, "dir_bindfs_mountpoint", NULL);
 
   g_mkdir (dir_to_mount, 0777);
   g_mkdir (dir_mountpoint, 0777);
@@ -141,7 +142,6 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
       g_free (dir_mountpoint);
       g_free (file_in_mount);
       g_free (dir_to_mount);
-      g_free (curdir);
       g_free (fusermount);
       g_free (bindfs);
       return;
@@ -164,7 +164,6 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
       g_free (dir_mountpoint);
       g_free (file_in_mount);
       g_free (dir_to_mount);
-      g_free (curdir);
       g_free (fusermount);
       g_free (bindfs);
 
@@ -172,7 +171,7 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     }
 
   /* Let's check now, that the file is in indeed in a readonly filesystem */
-  file_in_mountpoint = g_strdup_printf ("%s/example.txt", dir_mountpoint);
+  file_in_mountpoint = g_build_filename (dir_mountpoint, "example.txt", NULL);
   mounted_file = g_file_new_for_path (file_in_mountpoint);
 
   if (with_mount_monitor)
@@ -197,7 +196,6 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
       g_free (dir_mountpoint);
       g_free (file_in_mount);
       g_free (dir_to_mount);
-      g_free (curdir);
       g_free (fusermount);
       g_free (bindfs);
 
@@ -241,7 +239,6 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
 
   g_free (bindfs);
   g_free (fusermount);
-  g_free (curdir);
   g_free (dir_to_mount);
   g_free (dir_mountpoint);
   g_free (file_in_mount);
@@ -254,7 +251,7 @@ main (int argc, char *argv[])
   /* To avoid unnecessary D-Bus calls, see http://goo.gl/ir56j2 */
   g_setenv ("GIO_USE_VFS", "local", FALSE);
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_bug ("https://bugzilla.gnome.org/show_bug.cgi?id=787731");
 

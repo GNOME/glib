@@ -3289,7 +3289,7 @@ main (int argc, char *argv[])
 
   setlocale (LC_ALL, "");
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   if (!g_test_subprocess ())
     {

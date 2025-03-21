@@ -4232,13 +4232,17 @@ g_file_move_finish (GFile         *file,
  *   %NULL to ignore
  * @error: a #GError, or %NULL
  *
- * Creates a directory. Note that this will only create a child directory
+ * Creates a directory.
+ *
+ * Note that this will only create a child directory
  * of the immediate parent directory of the path or URI given by the #GFile.
  * To recursively create directories, see g_file_make_directory_with_parents().
+ *
  * This function will fail if the parent directory does not exist, setting
  * @error to %G_IO_ERROR_NOT_FOUND. If the file system doesn't support
  * creating directories, this function will fail, setting @error to
- * %G_IO_ERROR_NOT_SUPPORTED.
+ * %G_IO_ERROR_NOT_SUPPORTED. If the directory already exists,
+ * [error@Gio.IOErrorEnum.EXISTS] will be returned.
  *
  * For a local #GFile the newly created directory will have the default
  * (current) ownership and permissions of the current process.

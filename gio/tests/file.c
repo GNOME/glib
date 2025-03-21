@@ -2843,7 +2843,7 @@ test_measure_async (void)
 static void
 test_load_bytes (void)
 {
-  gchar filename[] = "g_file_load_bytes_XXXXXX";
+  char *filename = NULL;
   GError *error = NULL;
   GBytes *bytes;
   GFile *file;
@@ -2851,6 +2851,7 @@ test_load_bytes (void)
   int fd;
   int ret;
 
+  filename = g_build_filename (g_get_tmp_dir (), "g_file_load_bytes_XXXXXX", NULL);
   fd = g_mkstemp (filename);
   g_assert_cmpint (fd, !=, -1);
   len = strlen ("test_load_bytes");
@@ -2870,6 +2871,7 @@ test_load_bytes (void)
 
   g_bytes_unref (bytes);
   g_object_unref (file);
+  g_free (filename);
 }
 
 typedef struct
@@ -2899,12 +2901,13 @@ static void
 test_load_bytes_async (void)
 {
   LoadBytesAsyncData data = { 0 };
-  gchar filename[] = "g_file_load_bytes_XXXXXX";
+  char *filename = NULL;
   GError *error = NULL;
   int len;
   int fd;
   int ret;
 
+  filename = g_build_filename (g_get_tmp_dir (), "g_file_load_bytes_XXXXXX", NULL);
   fd = g_mkstemp (filename);
   g_assert_cmpint (fd, !=, -1);
   len = strlen ("test_load_bytes_async");
@@ -2926,6 +2929,7 @@ test_load_bytes_async (void)
   g_object_unref (data.file);
   g_bytes_unref (data.bytes);
   g_main_loop_unref (data.main_loop);
+  g_free (filename);
 }
 
 #if GLIB_SIZEOF_SIZE_T > 4
@@ -2987,15 +2991,19 @@ check_testfile_4gb_contents (const char *data,
 static void
 test_load_contents_4gb (void)
 {
-  char filename[] = "g_file_load_contents_4gb_XXXXXX";
+  char *filename = NULL;
   GError *error = NULL;
   gboolean result;
   char *data;
   gsize len;
   GFile *file;
 
+  filename = g_build_filename (g_get_tmp_dir (), "g_file_load_contents_4gb_XXXXXX", NULL);
   if (!create_testfile_4gb_or_skip (filename))
-    return;
+    {
+      g_free (filename);
+      return;
+    }
 
   file = g_file_new_for_path (filename);
   result = g_file_load_contents (file, NULL, &data, &len, NULL, &error);
@@ -3008,6 +3016,7 @@ test_load_contents_4gb (void)
 
   g_free (data);
   g_object_unref (file);
+  g_free (filename);
 }
 
 static void
@@ -3026,7 +3035,7 @@ load_contents_4gb_cb (GObject      *object,
 static void
 test_load_contents_4gb_async (void)
 {
-  char filename[] = "g_file_load_contents_4gb_async_XXXXXX";
+  char *filename = NULL;
   GFile *file;
   GAsyncResult *async_result = NULL;
   GError *error = NULL;
@@ -3034,8 +3043,12 @@ test_load_contents_4gb_async (void)
   gsize len;
   gboolean ret;
 
+  filename = g_build_filename (g_get_tmp_dir (), "g_file_load_contents_4gb_async_XXXXXX", NULL);
   if (!create_testfile_4gb_or_skip (filename))
-    return;
+    {
+      g_free (filename);
+      return;
+    }
 
   file = g_file_new_for_path (filename);
   g_file_load_contents_async (file, NULL, load_contents_4gb_cb, &async_result);
@@ -3054,18 +3067,23 @@ test_load_contents_4gb_async (void)
   g_free (data);
   g_object_unref (async_result);
   g_object_unref (file);
+  g_free (filename);
 }
 
 static void
 test_load_bytes_4gb (void)
 {
-  char filename[] = "g_file_load_bytes_4gb_XXXXXX";
+  char *filename = NULL;
   GError *error = NULL;
   GBytes *bytes;
   GFile *file;
 
+  filename = g_build_filename (g_get_tmp_dir (), "g_file_load_bytes_4gb_XXXXXX", NULL);
   if (!create_testfile_4gb_or_skip (filename))
-    return;
+    {
+      g_free (filename);
+      return;
+    }
 
   file = g_file_new_for_path (filename);
   bytes = g_file_load_bytes (file, NULL, NULL, &error);
@@ -3078,6 +3096,7 @@ test_load_bytes_4gb (void)
 
   g_bytes_unref (bytes);
   g_object_unref (file);
+  g_free (filename);
 }
 
 static void

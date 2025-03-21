@@ -153,6 +153,7 @@ test_corner_cases (void)
   gchar *message, **messages;
   GError *error = NULL;
   GBookmarkFile *bookmark;
+  char *path = NULL;
 
   bookmark = g_bookmark_file_new ();
 
@@ -669,8 +670,10 @@ test_corner_cases (void)
   g_clear_error (&error);
 
   /* g_bookmark_file_to_file() */
-  g_assert_true (g_bookmark_file_to_file (bookmark, "a", &error));
+  path = g_build_filename (g_get_tmp_dir (), "corner-case-bookmark-file.xbel", NULL);
+  g_assert_true (g_bookmark_file_to_file (bookmark, path, &error));
   g_assert_no_error (error);
+  g_free (path);
 
   /* g_bookmark_file_remove_group() */
   g_assert_false (g_bookmark_file_remove_group (bookmark, "a", NULL, NULL));

@@ -1050,6 +1050,13 @@ g_key_file_load_from_bytes (GKeyFile       *key_file,
  * Looks for a key file named @file in the paths specified in @search_dirs,
  * loads the file into @key_file and returns the file’s full path in @full_path.
  *
+ * @search_dirs are checked in the order listed in the array, with the highest
+ * priority directory listed first. Within each directory, @file is looked for.
+ * If it’s not found, `-` characters in @file are progressively replaced with
+ * directory separators to search subdirectories of the search directory. If the
+ * file has not been found after all `-` characters have been replaced, the next
+ * search directory in @search_dirs is checked.
+ *
  * If the file could not be found in any of the @search_dirs,
  * [error@GLib.KeyFileError.NOT_FOUND] is returned. If
  * the file is found but the OS returns an error when opening or reading the
@@ -1125,8 +1132,10 @@ g_key_file_load_from_dirs (GKeyFile       *key_file,
  * @error: return location for a [struct@GLib.Error]
  *
  * Looks for a key file named @file in the paths returned from
- * [func@GLib.get_user_data_dir] and [func@GLib.get_system_data_dirs],
- * loads the file into @key_file and returns the file’s full path in
+ * [func@GLib.get_user_data_dir] and [func@GLib.get_system_data_dirs].
+ *
+ * The search algorithm from [method@GLib.KeyFile.load_from_dirs] is used. If
+ * @file is found, it’s loaded into @key_file and its full path is returned in
  * @full_path.
  *
  * If the file could not be loaded then either a [error@GLib.FileError] or

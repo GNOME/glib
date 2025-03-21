@@ -50,7 +50,11 @@ check_stop (gpointer data)
   GMainLoop *loop = data;
 
 #ifdef G_OS_WIN32
-  stop = g_file_test ("STOP", G_FILE_TEST_EXISTS);
+  char *stop_name = NULL;
+
+  stop_name = g_build_filename (g_get_tmp_dir (), "maptest.stop", NULL);
+  stop = g_file_test (stop_name, G_FILE_TEST_EXISTS);
+  g_free (stop_name);
 #endif
 
   if (stop)
@@ -99,9 +103,10 @@ child_main (void)
 {
   GMappedFile *map;
   GMainLoop *loop;
-  gchar *dir, *global_filename, *childname;
+  const char *dir;
+  char *global_filename = NULL, *childname = NULL;
 
-  dir = g_get_current_dir ();
+  dir = g_get_tmp_dir ();
   global_filename = g_build_filename (dir, "maptest", NULL);
   childname = g_build_filename (dir, "mapchild", NULL);
 
@@ -124,7 +129,6 @@ child_main (void)
 
   g_free (childname);
   g_free (global_filename);
-  g_free (dir);
   g_mapped_file_unref (map);
 
   signal_parent (NULL);
@@ -134,9 +138,10 @@ static void
 test_mapping_flags (void)
 {
   GMappedFile *map;
-  gchar *dir, *global_filename;
+  const char *dir;
+  char *global_filename = NULL;
 
- dir = g_get_current_dir ();
+  dir = g_get_tmp_dir ();
   global_filename = g_build_filename (dir, "maptest", NULL);
 
   write_or_die (global_filename, "ABC", -1);
@@ -151,10 +156,9 @@ test_mapping_flags (void)
   g_test_message ("test_mapping: ok");
 
   /* Cleaning left over files */
-  g_remove ("maptest");
+  g_remove (global_filename);
 
   g_free (global_filename);
-  g_free (dir);
 }
 
 static void
@@ -165,9 +169,10 @@ test_private (void)
   gboolean result;
   gchar *buffer;
   gsize len;
-  gchar *dir, *global_filename;
+  const char *dir;
+  char *global_filename = NULL;
 
-  dir = g_get_current_dir ();
+  dir = g_get_tmp_dir ();
   global_filename = g_build_filename (dir, "maptest", NULL);
 
   write_or_die (global_filename, "ABC", -1);
@@ -186,11 +191,10 @@ test_private (void)
   g_assert_cmpstr (buffer, ==, "ABC");
   g_free (buffer);
 
-  g_free (global_filename);
-  g_free (dir);
-
   /* Cleaning left over files */
-  g_remove ("maptest");
+  g_remove (global_filename);
+
+  g_free (global_filename);
 }
 
 static void
@@ -209,16 +213,18 @@ test_child_private (void)
   int wait_status;
 #endif
   gchar pid[100];
-  gchar *dir, *global_filename, *childname;
+  const char *dir;
+  char *global_filename = NULL, *childname = NULL, *stop_name = NULL;
 
-#ifdef G_OS_WIN32
-  g_remove ("STOP");
-  g_assert_false (g_file_test ("STOP", G_FILE_TEST_EXISTS));
-#endif
-
-  dir = g_get_current_dir ();
+  dir = g_get_tmp_dir ();
   global_filename = g_build_filename (dir, "maptest", NULL);
   childname = g_build_filename (dir, "mapchild", NULL);
+  stop_name = g_build_filename (dir, "maptest.stop", NULL);
+
+#ifdef G_OS_WIN32
+  g_remove (stop_name);
+  g_assert_false (g_file_test (stop_name, G_FILE_TEST_EXISTS));
+#endif
 
   write_or_die (global_filename, "ABC", -1);
   map = map_or_die (global_filename, TRUE);
@@ -260,7 +266,7 @@ test_child_private (void)
 #ifndef G_OS_WIN32
   kill (child_pid, SIGUSR1);
 #else
-  g_file_set_contents ("STOP", "Hey there\n", -1, NULL);
+  g_file_set_contents (stop_name, "Hey there\n", -1, NULL);
 #endif
 
 #ifndef G_OS_WIN32
@@ -283,13 +289,14 @@ test_child_private (void)
   g_assert_cmpstr (buffer, ==, "ABC");
   g_free (buffer);
 
+  /* Cleaning left over files */
+  g_remove (childname);
+  g_remove (global_filename);
+  g_remove (stop_name);
+
   g_free (childname);
   g_free (global_filename);
-  g_free (dir);
-
-  /* Cleaning left over files */
-  g_remove ("mapchild");
-  g_remove ("maptest");
+  g_free (stop_name);
 }
 
 int
@@ -308,7 +315,7 @@ main (int argc,
     }
 #endif
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
   local_argv = argv;
 
   if (argc > 1)
