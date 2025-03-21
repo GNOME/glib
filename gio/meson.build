@@ -528,6 +528,7 @@ gio_base_sources = files(
   'gmarshal-internal.c',
   'gmount.c',
   'gmemorymonitor.c',
+  'gmemorymonitorbase.c',
   'gmemorymonitordbus.c',
   'gmemoryinputstream.c',
   'gmemoryoutputstream.c',
