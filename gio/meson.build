@@ -391,6 +391,12 @@ if host_system != 'windows'
     'gunixoutputstream.h',
   )
 
+  if glib_conf.has('HAVE_SYSINFO')
+    unix_sources += files(
+      'gmemorymonitorpoll.c',
+    )
+  endif
+
   if glib_have_cocoa
     settings_sources += files('gnextstepsettingsbackend.m')
     contenttype_sources += files('gcontenttype-osx.m')

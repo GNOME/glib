@@ -55,6 +55,9 @@
 #ifdef __linux__
 #include "gmemorymonitorpsi.h"
 #endif
+#ifdef HAVE_SYSINFO
+#include "gmemorymonitorpoll.h"
+#endif
 #include "gpowerprofilemonitor.h"
 #include "gpowerprofilemonitordbus.h"
 #include "gpowerprofilemonitorportal.h"
@@ -1087,6 +1090,9 @@ extern GType g_memory_monitor_dbus_get_type (void);
 #ifdef __linux__
 extern GType g_memory_monitor_psi_get_type (void);
 #endif
+#ifdef HAVE_SYSINFO
+extern GType g_memory_monitor_poll_get_type (void);
+#endif
 extern GType g_memory_monitor_portal_get_type (void);
 extern GType g_memory_monitor_win32_get_type (void);
 extern GType g_power_profile_monitor_dbus_get_type (void);
@@ -1369,6 +1375,9 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_memory_monitor_dbus_get_type ());
 #ifdef __linux__
       g_type_ensure (g_memory_monitor_psi_get_type ());
+#endif
+#ifdef HAVE_SYSINFO
+      g_type_ensure (g_memory_monitor_poll_get_type ());
 #endif
       g_type_ensure (g_memory_monitor_portal_get_type ());
       g_type_ensure (g_network_monitor_portal_get_type ());
