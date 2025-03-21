@@ -365,6 +365,7 @@ if host_system != 'windows'
     'gunixoutputstream.c',
     'gfdonotificationbackend.c',
     'ggtknotificationbackend.c',
+    'gmemorymonitorpsi.c',
   )
 
   portal_sources = [files(
