@@ -140,6 +140,41 @@ test_struct_sizeof_member (void)
     g_assert_cmpint (G_SIZEOF_MEMBER (struct { char a; int b; }, b), ==, sizeof (int));
 }
 
+#if G_GNUC_CHECK_VERSION(4, 6)
+  _Pragma ("GCC diagnostic push")
+  _Pragma ("GCC diagnostic ignored \"-Wsequence-point\"")
+#endif
+
+static void
+test_double_eval (void)
+{
+  int i, j;
+
+  i = 1;
+  j = 1;
+
+  /* Note: this is *not* correct use of these macros */
+  g_print ("%d\n", MAX(++i, ++j));
+  i = j = 1;
+  g_assert_true (MAX (++i, ++j) == 3);
+  g_assert_true (i == 2);
+  g_assert_true (j == 3);
+  g_assert_true (MIN (--i, --j) == 1);
+  g_assert_true (i == 1);
+
+  j = 3;
+
+  g_assert_true (CLAMP (5, ++i, ++j) == 4);
+
+  i = -5;
+
+  g_assert_true (ABS (++i) == 4);
+}
+
+#if G_GNUC_CHECK_VERSION(4, 6)
+  _Pragma ("GCC diagnostic pop")
+#endif
+
 int
 main (int   argc,
       char *argv[])
@@ -153,6 +188,7 @@ main (int   argc,
   g_test_add_func ("/alignof/fallback", test_alignof_fallback);
   g_test_add_func ("/assert/static", test_assert_static);
   g_test_add_func ("/struct/sizeof_member", test_struct_sizeof_member);
+  g_test_add_func ("/common-macros/double-eval", test_double_eval);
 
   return g_test_run ();
 }
