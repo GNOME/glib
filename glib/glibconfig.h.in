@@ -6,8 +6,6 @@
 #ifndef __GLIBCONFIG_H__
 #define __GLIBCONFIG_H__
 
-#include <glib/gmacros.h>
-
 #include <limits.h>
 #include <float.h>
 #mesondefine GLIB_HAVE_ALLOCA_H
@@ -26,7 +24,9 @@
  */
 #mesondefine GLIB_USING_SYSTEM_PRINTF
 
-G_BEGIN_DECLS
+#ifdef G_CXX_STD_VERSION
+extern "C" {
+#endif
 
 #define G_MINFLOAT	FLT_MIN
 #define G_MAXFLOAT	FLT_MAX
@@ -215,6 +215,8 @@ typedef @g_pid_type@ GPid;
 
 #mesondefine G_HAVE_FREE_SIZED
 
-G_END_DECLS
+#ifdef G_CXX_STD_VERSION
+}
+#endif
 
 #endif /* __GLIBCONFIG_H__ */

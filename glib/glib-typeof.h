@@ -24,8 +24,6 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
-#include <glib/gversionmacros.h>
-
 /*
  * We can only use __typeof__ on GCC >= 4.8, and not when compiling C++. Since
  * __typeof__ is used in a few places in GLib, provide a pre-processor symbol
@@ -37,8 +35,7 @@
 #if !G_CXX_STD_CHECK_VERSION (11) && \
     (G_GNUC_CHECK_VERSION(4, 8) || defined(__clang__))
 #define glib_typeof(t) __typeof__ (t)
-#elif G_CXX_STD_CHECK_VERSION (11) && \
-      GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_68
+#elif G_CXX_STD_CHECK_VERSION (11)
 /* C++11 decltype() is close enough for our usage */
 #include <type_traits>
 #define glib_typeof(t) typename std::remove_reference<decltype (t)>::type

@@ -940,6 +940,8 @@
 #undef	ABS
 #undef	CLAMP
 
+#include "glib-typeof.h"
+
 #ifdef glib_typeof
 
 #define MAX(a, b) \
