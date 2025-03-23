@@ -226,7 +226,7 @@ g_socket_address_new_from_native (gpointer native,
       if (len < sizeof (*addr))
 	return NULL;
 
-      iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin_addr), AF_INET);
+      iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin_addr), G_SOCKET_FAMILY_IPV4);
       sockaddr = g_inet_socket_address_new (iaddr, g_ntohs (addr->sin_port));
       g_object_unref (iaddr);
       return sockaddr;
@@ -248,11 +248,11 @@ g_socket_address_new_from_native (gpointer native,
 	  sin_addr.sin_family = AF_INET;
 	  sin_addr.sin_port = addr->sin6_port;
 	  memcpy (&(sin_addr.sin_addr.s_addr), addr->sin6_addr.s6_addr + 12, 4);
-	  iaddr = g_inet_address_new_from_bytes ((guint8 *) &(sin_addr.sin_addr), AF_INET);
+	  iaddr = g_inet_address_new_from_bytes ((guint8 *) &(sin_addr.sin_addr), G_SOCKET_FAMILY_IPV4);
 	}
       else
 	{
-	  iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin6_addr), AF_INET6);
+	  iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin6_addr), G_SOCKET_FAMILY_IPV6);
 	}
 
       sockaddr = g_object_new (G_TYPE_INET_SOCKET_ADDRESS,
