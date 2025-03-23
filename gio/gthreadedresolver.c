@@ -40,6 +40,10 @@
 #include "gsocketaddress.h"
 #include "gsrvtarget.h"
 
+#if HAVE_GETIFADDRS
+#include <ifaddrs.h>
+#endif
+
 /*
  * GThreadedResolver is a threaded wrapper around the system libc’s
  * `getaddrinfo()`.
@@ -255,6 +259,53 @@ lookup_data_free (LookupData *data)
   g_free (data);
 }
 
+static gboolean
+only_has_loopback_interfaces (void)
+{
+#if HAVE_GETIFADDRS
+  struct ifaddrs *addrs;
+  gboolean only_loopback = TRUE;
+
+  if (getifaddrs (&addrs) != 0)
+    {
+      int saved_errno = errno;
+      g_debug ("getifaddrs() failed: %s", g_strerror (saved_errno));
+      return FALSE;
+    }
+
+  for (struct ifaddrs *addr = addrs; addr; addr = addr->ifa_next)
+    {
+      struct sockaddr *sa = addr->ifa_addr;
+      GSocketAddress *saddr = g_socket_address_new_from_native (sa, sizeof (struct sockaddr));
+
+      if (!saddr)
+        continue;
+
+      if (!G_IS_INET_SOCKET_ADDRESS (saddr))
+        {
+          g_object_unref (saddr);
+          continue;
+        }
+
+      GInetAddress *inetaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (saddr));
+      if (!g_inet_address_get_is_loopback (inetaddr))
+        {
+          only_loopback = FALSE;
+          g_object_unref (saddr);
+          break;
+        }
+
+      g_object_unref (saddr);
+    }
+
+  freeifaddrs (addrs);
+  return only_loopback;
+#else /* FIXME: Check GetAdaptersAddresses() on win32. */
+  return FALSE;
+#endif
+}
+
+
 static GList *
 do_lookup_by_name (const gchar   *hostname,
                    int            address_family,
@@ -266,8 +317,14 @@ do_lookup_by_name (const gchar   *hostname,
   gint retval;
   struct addrinfo addrinfo_hints = { 0 };
 
+  /* In general we only want IPs for valid interfaces.
+   * However this will return nothing if you only have loopback interfaces.
+   * Instead in this case we will manually filter out invalid IPs. */
+  gboolean only_loopback = only_has_loopback_interfaces ();
+
 #ifdef AI_ADDRCONFIG
-  addrinfo_hints.ai_flags = AI_ADDRCONFIG;
+  if (!only_loopback)
+    addrinfo_hints.ai_flags = AI_ADDRCONFIG;
 #endif
   /* socktype and protocol don't actually matter, they just get copied into the
   * returned addrinfo structures (and then we ignore them). But if
@@ -295,8 +352,14 @@ do_lookup_by_name (const gchar   *hostname,
               continue;
             }
 
-          addr = g_object_ref (g_inet_socket_address_get_address ((GInetSocketAddress *)sockaddr));
-          addresses = g_list_prepend (addresses, addr);
+          addr = g_inet_socket_address_get_address ((GInetSocketAddress *) sockaddr);
+          if (only_loopback && !g_inet_address_get_is_loopback (addr))
+            {
+              g_object_unref (sockaddr);
+              continue;
+            }
+
+          addresses = g_list_prepend (addresses, g_object_ref (addr));
           g_object_unref (sockaddr);
         }
 
