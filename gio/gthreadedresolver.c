@@ -281,14 +281,12 @@ do_lookup_by_name (const gchar   *hostname,
 
   if (retval == 0)
     {
-      struct addrinfo *ai;
-      GSocketAddress *sockaddr;
-      GInetAddress *addr;
-
       addresses = NULL;
-      for (ai = res; ai; ai = ai->ai_next)
+      for (struct addrinfo *ai = res; ai; ai = ai->ai_next)
         {
-          sockaddr = g_socket_address_new_from_native (ai->ai_addr, ai->ai_addrlen);
+          GInetAddress *addr;
+          GSocketAddress *sockaddr = g_socket_address_new_from_native (ai->ai_addr, ai->ai_addrlen);
+
           if (!sockaddr)
             continue;
           if (!G_IS_INET_SOCKET_ADDRESS (sockaddr))
