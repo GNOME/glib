@@ -260,7 +260,7 @@ lookup_data_free (LookupData *data)
 }
 
 static gboolean
-only_has_loopback_interfaces (void)
+check_only_has_loopback_interfaces (void)
 {
 #if HAVE_GETIFADDRS
   struct ifaddrs *addrs;
@@ -305,6 +305,42 @@ only_has_loopback_interfaces (void)
 #endif
 }
 
+static GMutex interface_mutex;
+
+static void
+network_changed_cb (GNetworkMonitor *monitor,
+                    int             *is_loopback_only)
+{
+  g_mutex_lock (&interface_mutex);
+  *is_loopback_only = -1;
+  g_mutex_unlock (&interface_mutex);
+}
+
+static gboolean
+only_has_loopback_interfaces_cached (void)
+{
+  static GNetworkMonitor *network_monitor;
+  static int is_loopback_only = -1;
+  static gboolean caching_supported;
+
+  g_mutex_lock (&interface_mutex);
+  if (!network_monitor)
+    {
+      network_monitor = g_network_monitor_get_default ();
+      caching_supported = g_strcmp0 ("GNetworkMonitorBase", g_type_name_from_instance ((GTypeInstance *)network_monitor)) != 0;
+      if (caching_supported)
+        {
+          g_signal_connect (network_monitor, "network-changed", G_CALLBACK (network_changed_cb), &is_loopback_only);
+          g_object_ref (network_monitor);
+        }
+    }
+
+  if (!caching_supported || is_loopback_only == -1)
+    is_loopback_only = check_only_has_loopback_interfaces ();
+  g_mutex_unlock (&interface_mutex);
+
+  return is_loopback_only;
+}
 
 static GList *
 do_lookup_by_name (const gchar   *hostname,
@@ -320,7 +356,7 @@ do_lookup_by_name (const gchar   *hostname,
   /* In general we only want IPs for valid interfaces.
    * However this will return nothing if you only have loopback interfaces.
    * Instead in this case we will manually filter out invalid IPs. */
-  gboolean only_loopback = only_has_loopback_interfaces ();
+  gboolean only_loopback = only_has_loopback_interfaces_cached ();
 
 #ifdef AI_ADDRCONFIG
   if (!only_loopback)
