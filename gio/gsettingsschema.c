@@ -342,15 +342,15 @@ g_settings_schema_source_new_from_directory (const gchar            *directory,
 /**
  * g_settings_schema_source_new_from_path:
  * @path: (type filename): the filename of a compiled schema source
- * @parent: (nullable): a #GSettingsSchemaSource, or %NULL
- * @trusted: %TRUE, if the directory is trusted
- * @error: a pointer to a #GError pointer set to %NULL, or %NULL
+ * @parent: (nullable): a `GSettingsSchemaSource`
+ * @trusted: true, if the directory is trusted
+ * @error: return location for an error
  *
- * Almost identical to g_settings_schema_source_new_from_directory() but
- * takes a path to a compiled schema file directly instead of to the
- * directory it is in.
+ * Almost identical to [ctor@Gio.SettingsSchemaSource.new_from_directory],
+ * but takes a path to a compiled schema file directly instead of to
+ * the directory it is in.
  *
- * Returns: (transfer full): a new #GSettingsSchemaSource, or %NULL
+ * Returns: (transfer full): a new `GSettingsSchemaSource`
  *
  * Since: 2.86
  **/
@@ -382,10 +382,10 @@ g_settings_schema_source_new_from_path (const gchar            *path,
 
 /**
  * g_settings_schema_source_new_from_bytes:
- * @bytes: a #GBytes
- * @parent: (nullable): a #GSettingsSchemaSource, or %NULL
- * @trusted: %TRUE, if the data is trusted
- * @error: a pointer to a #GError pointer set to %NULL, or %NULL
+ * @bytes: a `GBytes`
+ * @parent: (nullable): a `GSettingsSchemaSource`
+ * @trusted: true, if the data is trusted
+ * @error: return location for an error
  *
  * Attempts to create a new schema source corresponding to the contents
  * of @bytes, which should contain the data as produced by the
@@ -394,14 +394,15 @@ g_settings_schema_source_new_from_path (const gchar            *path,
  * This should only be used in standalone applications and should not
  * be used in situations where settings are shared with other applications.
  *
- * Note that g_settings_schema_key_get_summary() and
- * g_settings_schema_key_get_description() will always return %NULL for
- * a #GSettingsSchemaKey belonging to a #GSettingsSchema created from a
- * schema source returned by this function.
+ * Note that [method@Gio.SettingsSchemaKey.get_summary] and
+ * [method@Gio.SettingsSchemaKey.get_description] will always return `NULL`
+ * for a `GSettingsSchemaKey` belonging to a `GSettingsSchema` created
+ * from a schema source returned by this function.
  *
- * See g_settings_schema_source_new_from_directory() for more information.
+ * See [ctor@Gio.SettingsSchemaSource.new_from_directory] for
+ * more information.
  *
- * Returns: (transfer full) (nullable): a new #GSettingsSchemaSource, or %NULL
+ * Returns: (transfer full) (nullable): a new `GSettingsSchemaSource`
  *
  * Since: 2.86
  **/
@@ -433,10 +434,10 @@ g_settings_schema_source_new_from_bytes (GBytes                 *bytes,
 /**
  * g_settings_schema_source_new_from_resource:
  * @path: the resource path
- * @lookup_flags: A #GResourceLookupFlags
- * @parent: (nullable): a #GSettingsSchemaSource, or %NULL
- * @trusted: %TRUE, if the resource is trusted
- * @error: a pointer to a #GError pointer set to %NULL, or %NULL
+ * @lookup_flags: flags for the resource lookup
+ * @parent: (nullable): a `GSettingsSchemaSource`
+ * @trusted: true, if the resource is trusted
+ * @error: return location for an error
  *
  * Attempts to create a new schema source corresponding to the contents
  * of the given resource, which should contain the data as produced by the
@@ -445,13 +446,14 @@ g_settings_schema_source_new_from_bytes (GBytes                 *bytes,
  * This should only be used in standalone applications and should not
  * be used in situations where settings are shared with other applications.
  *
- * Note that for g_settings_schema_key_get_summary() and
- * g_settings_schema_key_get_description() to work, an XML schema resource
- * $path.xml must be present.
+ * Note that [method@Gio.SettingsSchemaKey.get_summary] and
+ * [method@Gio.SettingsSchemaKey.get_description] to work, an XML schema
+ * resource @path.xml must be present.
  *
- * See g_settings_schema_source_new_from_directory() for more information.
+ * See [ctor@Gio.SettingsSchemaSource.new_from_directory] for
+ * more information.
  *
- * Returns: (transfer full): a new #GSettingsSchemaSource, or %NULL
+ * Returns: (transfer full): a new `GSettingsSchemaSource`
  *
  * Since: 2.86
  **/
