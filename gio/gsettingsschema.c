@@ -352,7 +352,7 @@ g_settings_schema_source_new_from_directory (const gchar            *directory,
  *
  * Returns: (transfer full): a new #GSettingsSchemaSource, or %NULL
  *
- * Since: 2.78
+ * Since: 2.86
  **/
 GSettingsSchemaSource *
 g_settings_schema_source_new_from_path (const gchar            *path,
@@ -403,7 +403,7 @@ g_settings_schema_source_new_from_path (const gchar            *path,
  *
  * Returns: (transfer full) (nullable): a new #GSettingsSchemaSource, or %NULL
  *
- * Since: 2.78
+ * Since: 2.86
  **/
 GSettingsSchemaSource *
 g_settings_schema_source_new_from_bytes (GBytes                 *bytes,
@@ -453,7 +453,7 @@ g_settings_schema_source_new_from_bytes (GBytes                 *bytes,
  *
  * Returns: (transfer full): a new #GSettingsSchemaSource, or %NULL
  *
- * Since: 2.78
+ * Since: 2.86
  **/
 GSettingsSchemaSource *
 g_settings_schema_source_new_from_resource (const gchar            *path,

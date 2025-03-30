@@ -48,19 +48,19 @@ GSettingsSchemaSource * g_settings_schema_source_new_from_directory     (const g
                                                                          gboolean                trusted,
                                                                          GError                **error);
 
-GIO_AVAILABLE_IN_2_78
+GIO_AVAILABLE_IN_2_86
 GSettingsSchemaSource * g_settings_schema_source_new_from_path          (const gchar            *path,
                                                                          GSettingsSchemaSource  *parent,
                                                                          gboolean                trusted,
                                                                          GError                **error);
 
-GIO_AVAILABLE_IN_2_78
+GIO_AVAILABLE_IN_2_86
 GSettingsSchemaSource * g_settings_schema_source_new_from_bytes         (GBytes                 *bytes,
                                                                          GSettingsSchemaSource  *parent,
                                                                          gboolean                trusted,
                                                                          GError                **error);
 
-GIO_AVAILABLE_IN_2_78
+GIO_AVAILABLE_IN_2_86
 GSettingsSchemaSource * g_settings_schema_source_new_from_resource      (const gchar            *path,
                                                                          GResourceLookupFlags   lookup_flags,
                                                                          GSettingsSchemaSource  *parent,
