@@ -1550,7 +1550,7 @@ process_verbs_commands (GList             *verbs,
 
       if (verb_key)
         {
-          gsize verb_displayname_len;
+          size_t verb_displayname_size;
 
           got_value = g_win32_registry_key_get_value_w (verb_key,
                                                         g_win32_registry_get_os_dirs_w (),
@@ -1558,12 +1558,12 @@ process_verbs_commands (GList             *verbs,
                                                         L"MUIVerb",
                                                         &val_type,
                                                         (void **) &verb_displayname,
-                                                        &verb_displayname_len,
+                                                        &verb_displayname_size,
                                                         NULL);
 
           if (got_value &&
               val_type == G_WIN32_REGISTRY_VALUE_STR &&
-              verb_displayname_len > sizeof (gunichar2))
+              verb_displayname_size > sizeof (gunichar2))
             verb_displayname_u8 = g_utf16_to_utf8 (verb_displayname, -1, NULL, NULL, NULL);
 
           g_clear_pointer (&verb_displayname, g_free);
@@ -1576,12 +1576,12 @@ process_verbs_commands (GList             *verbs,
                                                             L"",
                                                             &val_type,
                                                             (void **) &verb_displayname,
-                                                            &verb_displayname_len,
+                                                            &verb_displayname_size,
                                                             NULL);
 
               if (got_value &&
                   val_type == G_WIN32_REGISTRY_VALUE_STR &&
-                  verb_displayname_len > sizeof (gunichar2))
+                  verb_displayname_size > sizeof (gunichar2))
                 verb_displayname_u8 = g_utf16_to_utf8 (verb_displayname, -1, NULL, NULL, NULL);
             }
 
@@ -1623,7 +1623,7 @@ process_uwp_verbs (GList                    *verbs,
       gboolean got_value;
       GWin32RegistryValueType val_type;
       gunichar2 *acid;
-      gsize acid_len;
+      size_t acid_size;
 
       key = _g_win32_registry_key_build_and_new_w (NULL, path_to_progid, progid,
                                                    L"\\", verb->shellpath, NULL);
@@ -1642,12 +1642,12 @@ process_uwp_verbs (GList                    *verbs,
                                                     L"ActivatableClassId",
                                                     &val_type,
                                                     (void **) &acid,
-                                                    &acid_len,
+                                                    &acid_size,
                                                     NULL);
 
       if (got_value &&
           val_type == G_WIN32_REGISTRY_VALUE_STR &&
-          acid_len > sizeof (gunichar2))
+          acid_size > sizeof (gunichar2))
         {
           /* TODO: default value of a shell subkey, if not empty,
            * might contain something like @{Some.Identifier_1234.456.678.789_some_words?ms-resource://Arbitrary.Path/Pointing/Somewhere}
