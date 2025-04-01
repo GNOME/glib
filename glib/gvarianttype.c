@@ -36,6 +36,19 @@
  *
  * A type in the [type@GLib.Variant] type system.
  *
+ * [type@GLib.Variant] types are represented as strings, but have a strict
+ * syntax described below. All [type@GLib.VariantType]s passed to GLib must be
+ * valid, and they are typically expected to be static (i.e. not provided by
+ * user input) as they determine how binary [type@GLib.Variant] data is
+ * interpreted.
+ *
+ * To convert a static string to a [type@GLib.VariantType] in C, use the
+ * [func@GLib.VARIANT_TYPE] casting macro. When GLib is compiled with checks
+ * enabled, it will validate the type. To check if an arbitrary string is a
+ * valid [type@GLib.VariantType], use [func@GLib.VariantType.string_is_valid].
+ *
+ * ## GVariant Type System
+ *
  * This section introduces the [type@GLib.Variant] type system. It is based, in
  * large part, on the D-Bus type system, with two major changes and
  * some minor lifting of restrictions. The
