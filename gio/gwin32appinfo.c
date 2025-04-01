@@ -3669,10 +3669,7 @@ grab_registry_string (GWin32RegistryKey  *handler_appkey,
 
   /* There's no way for us to resolve "ms-resource:..." strings */
   if (value != NULL &&
-      value_size >= ms_resource_prefix_len &&
-      memcmp (value,
-              ms_resource_prefix,
-              ms_resource_prefix_len * sizeof (gunichar2)) == 0)
+      wcsncmp (value, ms_resource_prefix, ms_resource_prefix_len) == 0)
     g_clear_pointer (&value, g_free);
 
   if (value == NULL)
