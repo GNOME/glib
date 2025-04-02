@@ -566,6 +566,16 @@ g_cancellable_connect (GCancellable   *cancellable,
 
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), 0);
 
+  /* If the cancellable is already cancelled we may end up calling the callback
+   * immediately, and the callback may unref the Cancellable, so we need to add
+   * an extra reference here. We can't do it only in the case the cancellable
+   * is already cancelled because it can be potentially be reset, so we can't
+   * rely on the atomic value only, but we need to be locked to be really sure.
+   * At the same time we don't want to wake up the ToggleNotify if toggle
+   * references are enabled while we're locked.
+   */
+  g_object_ref (cancellable);
+
   g_mutex_lock (&cancellable->priv->mutex);
 
   if (g_atomic_int_get (&cancellable->priv->cancelled))
@@ -592,6 +602,8 @@ g_cancellable_connect (GCancellable   *cancellable,
     }
 
   g_mutex_unlock (&cancellable->priv->mutex);
+
+  g_object_unref (cancellable);
 
   return id;
 }
