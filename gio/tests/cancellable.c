@@ -952,9 +952,159 @@ test_connect_to_disposing_callback (void)
   g_object_add_weak_pointer (G_OBJECT (cancellable), (gpointer *) &cancellable);
 
   id = g_cancellable_connect (cancellable, G_CALLBACK (assert_references_and_unref),
-                              GINT_TO_POINTER (3), NULL);
+                              GINT_TO_POINTER (4), NULL);
   g_assert_cmpuint (id, >, 0);
   g_cancellable_cancel (cancellable);
+  g_assert_null (cancellable);
+}
+
+typedef struct
+{
+  gulong id;
+  gboolean ignore_next_toggle_down;
+} ToggleReferenceData;
+
+static void
+toggle_reference_cb (gpointer data,
+                     GObject *object,
+                     gboolean is_last_ref)
+{
+  GCancellable *cancellable = G_CANCELLABLE (object);
+  ToggleReferenceData *toggle_data = data;
+
+  g_test_message ("Toggle reference callback for %s (%p), last: %d",
+                  g_type_name_from_instance ((GTypeInstance *) object),
+                  object, is_last_ref);
+
+  if (!is_last_ref)
+    {
+      g_assert_false (g_cancellable_is_cancelled (cancellable));
+
+      /* Disconnect and reconnect to the signal so that we can verify that the
+       * "toggle-up" does not happen while we're locked
+       */
+      g_cancellable_disconnect (cancellable, toggle_data->id);
+      toggle_data->id = g_cancellable_connect (cancellable,
+                                               G_CALLBACK (assert_references_and_unref),
+                                               GINT_TO_POINTER (4), NULL);
+      return;
+    }
+
+  g_assert_true (is_last_ref);
+
+  if (toggle_data->ignore_next_toggle_down)
+    {
+      g_assert_false (g_cancellable_is_cancelled (cancellable));
+      toggle_data->ignore_next_toggle_down = FALSE;
+      return;
+    }
+
+  g_assert_true (g_cancellable_is_cancelled (cancellable));
+
+  /* This would deadlock if the last reference was removed during cancellation */
+  g_cancellable_disconnect (cancellable, toggle_data->id);
+  toggle_data->id = 0;
+}
+
+static void
+test_connect_to_disposing_callback_with_toggle_reference (void)
+{
+  GCancellable *cancellable;
+  ToggleReferenceData data = {0};
+
+  cancellable = g_cancellable_new ();
+  g_object_add_weak_pointer (G_OBJECT (cancellable), (gpointer *) &cancellable);
+
+  data.id = g_cancellable_connect (cancellable, G_CALLBACK (assert_references_and_unref),
+                                   GINT_TO_POINTER (4), NULL);
+
+  /* Switch to toggle references. */
+  g_object_add_toggle_ref (G_OBJECT (cancellable), toggle_reference_cb, &data);
+  data.ignore_next_toggle_down = TRUE;
+  g_object_unref (cancellable);
+
+  g_cancellable_cancel (cancellable);
+  g_assert_cmpuint (data.id, ==, 0);
+  g_assert_null (cancellable);
+}
+
+static void
+cancelled_toggle_reference_cb (gpointer data,
+                               GObject *object,
+                               gboolean is_last_ref)
+{
+  GCancellable *cancellable = G_CANCELLABLE (object);
+  ToggleReferenceData *toggle_data = data;
+
+  g_test_message ("Toggle reference callback for %s (%p), last: %d",
+                  g_type_name_from_instance ((GTypeInstance *) object),
+                  object, is_last_ref);
+
+  if (!is_last_ref)
+    {
+      gulong id;
+
+      if (g_cancellable_is_cancelled (cancellable))
+        {
+          /* Disconnect and reconnect to the signal so that we can verify that the
+           * "toggle-up" does not happen while we're locked
+           */
+          g_cancellable_disconnect (cancellable, toggle_data->id);
+          id = g_cancellable_connect (cancellable, G_CALLBACK (do_nothing), NULL, NULL);
+          g_assert_cmpuint (id, ==, 0);
+          return;
+        }
+
+      /* Connect and disconnect to the signal so that we can verify that the
+       * "toggle-up" does not happen while we're locked
+       */
+      id = g_cancellable_connect (cancellable, G_CALLBACK (do_nothing), NULL, NULL);
+      g_cancellable_disconnect (cancellable, id);
+      return;
+    }
+
+  g_assert_true (is_last_ref);
+
+  if (toggle_data->ignore_next_toggle_down)
+    {
+      g_assert_false (g_cancellable_is_cancelled (cancellable));
+      toggle_data->ignore_next_toggle_down = FALSE;
+      return;
+    }
+
+  g_assert_true (g_cancellable_is_cancelled (cancellable));
+
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
+                         "*has no handler with id*");
+
+  /* We try resetting the a signal that isn't connected, since we don't care
+   * about anything but checking wether this would deadlock
+   */
+  g_cancellable_disconnect (cancellable, G_MAXULONG);
+
+  g_test_assert_expected_messages ();
+}
+
+static void
+test_connect_cancelled_to_disposing_callback_with_toggle_reference (void)
+{
+  GCancellable *cancellable;
+  ToggleReferenceData data = {0};
+  gulong id;
+
+  cancellable = g_cancellable_new ();
+  g_object_add_weak_pointer (G_OBJECT (cancellable), (gpointer *) &cancellable);
+
+  /* Switch to toggle references. */
+  g_object_add_toggle_ref (G_OBJECT (cancellable), cancelled_toggle_reference_cb, &data);
+  data.ignore_next_toggle_down = TRUE;
+  g_object_unref (cancellable);
+
+  g_cancellable_cancel (cancellable);
+  id = g_cancellable_connect (cancellable, G_CALLBACK (assert_references_and_unref),
+                              GINT_TO_POINTER (3), NULL);
+
+  g_assert_cmpuint (id, ==, 0);
   g_assert_null (cancellable);
 }
 
@@ -972,7 +1122,7 @@ test_connect_cancelled_to_disposing_callback (void)
 
   g_cancellable_cancel (cancellable);
   id = g_cancellable_connect (cancellable, G_CALLBACK (assert_references_and_unref),
-                              GINT_TO_POINTER (2), NULL);
+                              GINT_TO_POINTER (3), NULL);
   g_assert_cmpuint (id, ==, 0);
   g_assert_null (cancellable);
 }
@@ -1005,7 +1155,7 @@ test_connect_cancelled_with_destroy_func_disposing_cancellable (void)
   gulong id;
 
   cancellable = g_cancellable_new ();
-  g_object_add_weak_pointer (G_OBJECT (cancellable), (gpointer*) &cancellable);
+  g_object_add_weak_pointer (G_OBJECT (cancellable), (gpointer *) &cancellable);
 
   g_cancellable_cancel (cancellable);
   id = g_cancellable_connect (cancellable, G_CALLBACK (on_connect_data_callback),
@@ -1025,8 +1175,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/cancellable/connect-data-is-destroyed-on-disconnect-and-dispose", test_connect_data_is_destroyed_on_disconnect_and_dispose);
   g_test_add_func ("/cancellable/connect-to-disposing-callback", test_connect_to_disposing_callback);
   g_test_add_func ("/cancellable/connect-cancelled-data-is-destroyed", test_connect_cancelled_data_is_destroyed);
+  g_test_add_func ("/cancellable/connect-to-disposing-callback-with-toggle-reference", test_connect_to_disposing_callback_with_toggle_reference);
   g_test_add_func ("/cancellable/connect-cancelled-to-disposing-callback", test_connect_cancelled_to_disposing_callback);
   g_test_add_func ("/cancellable/connect-cancelled-with-destroy-func-disposing-cancellable", test_connect_cancelled_with_destroy_func_disposing_cancellable);
+  g_test_add_func ("/cancellable/connect-cancelled-to-disposing-callback-with-toggle-reference", test_connect_cancelled_to_disposing_callback_with_toggle_reference);
   g_test_add_func ("/cancellable/disconnect-on-cancelled-callback-hangs", test_cancellable_disconnect_on_cancelled_callback_hangs);
   g_test_add_func ("/cancellable/resets-on-cancel-callback-hangs", test_cancellable_reset_on_cancelled_callback_hangs);
   g_test_add_func ("/cancellable/poll-fd", test_cancellable_poll_fd);

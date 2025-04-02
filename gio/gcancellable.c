@@ -531,6 +531,13 @@ g_cancellable_cancel (GCancellable *cancellable)
   if (priv->wakeup)
     GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
 
+  /* Adding another reference, in case the callback is unreffing the
+   * cancellable and there are toggle references, so that the second to last
+   * reference (that would lead a toggle notification) won't be released
+   * while we're locked.
+   */
+  g_object_ref (cancellable);
+
   g_signal_emit (cancellable, signals[CANCELLED], 0);
 
   if (g_atomic_int_dec_and_test (&priv->cancelled_running))
@@ -538,6 +545,7 @@ g_cancellable_cancel (GCancellable *cancellable)
 
   g_mutex_unlock (&priv->mutex);
 
+  g_object_unref (cancellable);
   g_object_unref (cancellable);
 }
 
@@ -595,6 +603,7 @@ g_cancellable_connect (GCancellable   *cancellable,
 		       gpointer        data,
 		       GDestroyNotify  data_destroy_func)
 {
+  GCancellable *extra_ref = NULL;
   gulong id;
 
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), 0);
@@ -615,6 +624,13 @@ g_cancellable_connect (GCancellable   *cancellable,
     {
       void (*_callback) (GCancellable *cancellable,
                          gpointer      user_data);
+
+      /* Adding another reference, in case the callback is unreffing the
+       * cancellable and there are toggle references, so that the second to last
+       * reference (that would lead a toggle notification) won't be released
+       * while we're locked.
+       */
+      extra_ref = g_object_ref (cancellable);
 
       _callback = (void *)callback;
       id = 0;
@@ -638,6 +654,7 @@ g_cancellable_connect (GCancellable   *cancellable,
     data_destroy_func (data);
 
   g_object_unref (cancellable);
+  g_clear_object (&extra_ref);
 
   return id;
 }
