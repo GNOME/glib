@@ -1154,12 +1154,15 @@ g_get_prgname (void)
  * If you are using #GApplication the program name is set in
  * g_application_run(). In case of GDK or GTK it is set in
  * gdk_init(), which is called by gtk_init() and the
- * #GtkApplication::startup handler. The program name is found by
- * taking the last component of @argv[0].
+ * #GtkApplication::startup handler. By default, the program name is
+ * found by taking the last component of @argv[0].
  *
  * Since GLib 2.72, this function can be called multiple times
  * and is fully thread safe. Prior to GLib 2.72, this function
  * could only be called once per process.
+ *
+ * See the [GTK documentation](https://docs.gtk.org/gtk4/migrating-3to4.html#set-a-proper-application-id)
+ * for requirements on integrating g_set_prgname() with GTK applications.
  */
 void
 g_set_prgname (const gchar *prgname)
