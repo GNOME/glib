@@ -712,6 +712,9 @@ on_racy_cancellable_cancelled (GCancellable *cancellable,
 {
   gboolean *callback_called = data;  /* (atomic) */
 
+  /* This must be a no-op and never dead-lock here! */
+  g_cancellable_cancel (cancellable);
+
   g_assert_true (g_cancellable_is_cancelled (cancellable));
   g_atomic_int_set (callback_called, TRUE);
 }
@@ -875,6 +878,37 @@ test_cancellable_source_can_be_fired_multiple_times (void)
   g_object_unref (cancellable);
 }
 
+static void
+assert_references_and_unref (GCancellable *cancellable, gpointer data)
+{
+  gint expected_references = GPOINTER_TO_INT (data);
+
+  /* This must be a no-op and never dead-lock here! */
+  g_cancellable_cancel (cancellable);
+
+  g_assert_cmpint (G_OBJECT (cancellable)->ref_count, ==, expected_references);
+  g_object_unref (cancellable);
+}
+
+static void
+test_connect_to_disposing_callback (void)
+{
+  GCancellable *cancellable;
+  gulong id;
+
+  g_test_summary ("A cancellable signal callback can unref the cancellable");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3643");
+
+  cancellable = g_cancellable_new ();
+  g_object_add_weak_pointer (G_OBJECT (cancellable), (gpointer *) &cancellable);
+
+  id = g_cancellable_connect (cancellable, G_CALLBACK (assert_references_and_unref),
+                              GINT_TO_POINTER (3), NULL);
+  g_assert_cmpuint (id, >, 0);
+  g_cancellable_cancel (cancellable);
+  g_assert_null (cancellable);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -882,6 +916,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/cancellable/multiple-concurrent", test_cancel_multiple_concurrent);
   g_test_add_func ("/cancellable/null", test_cancel_null);
+  g_test_add_func ("/cancellable/connect-to-disposing-callback", test_connect_to_disposing_callback);
   g_test_add_func ("/cancellable/disconnect-on-cancelled-callback-hangs", test_cancellable_disconnect_on_cancelled_callback_hangs);
   g_test_add_func ("/cancellable/resets-on-cancel-callback-hangs", test_cancellable_reset_on_cancelled_callback_hangs);
   g_test_add_func ("/cancellable/poll-fd", test_cancellable_poll_fd);
