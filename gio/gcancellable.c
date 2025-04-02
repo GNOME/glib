@@ -583,10 +583,12 @@ g_cancellable_connect (GCancellable   *cancellable,
     }
   else
     {
-      id = g_signal_connect_data (cancellable, "cancelled",
-                                  callback, data,
-                                  (GClosureNotify) data_destroy_func,
-                                  G_CONNECT_DEFAULT);
+      GClosure *closure;
+
+      closure = g_cclosure_new (callback, data,
+                                (GClosureNotify) data_destroy_func);
+      id = g_signal_connect_closure_by_id (cancellable, signals[CANCELLED],
+                                           0, closure, FALSE);
     }
 
   g_mutex_unlock (&cancellable->priv->mutex);
