@@ -879,6 +879,55 @@ test_cancellable_source_can_be_fired_multiple_times (void)
 }
 
 static void
+data_cleanup_cb (gpointer user_data)
+{
+  gboolean *data_cleanup_called = user_data;
+
+  *data_cleanup_called = TRUE;
+}
+
+static void
+test_connect_data_is_destroyed_on_disconnect_and_dispose (void)
+{
+  GCancellable *cancellable;
+  gboolean data_cleanup_called;
+  gulong id;
+
+  cancellable = g_cancellable_new ();
+
+  data_cleanup_called = FALSE;
+  id = g_cancellable_connect (cancellable, G_CALLBACK (do_nothing),
+                              &data_cleanup_called, data_cleanup_cb);
+  g_assert_cmpuint (id, >, 0);
+  g_cancellable_disconnect (cancellable, id);
+  g_assert_true (data_cleanup_called);
+
+  data_cleanup_called = FALSE;
+  id = g_cancellable_connect (cancellable, G_CALLBACK (do_nothing),
+                              &data_cleanup_called, data_cleanup_cb);
+  g_assert_cmpuint (id, >, 0);
+  g_clear_object (&cancellable);
+  g_assert_true (data_cleanup_called);
+}
+
+static void
+test_connect_cancelled_data_is_destroyed (void)
+{
+  GCancellable *cancellable;
+  gboolean data_cleanup_called;
+  gulong id;
+
+  cancellable = g_cancellable_new ();
+  data_cleanup_called = FALSE;
+  g_cancellable_cancel (cancellable);
+  id = g_cancellable_connect (cancellable, G_CALLBACK (do_nothing),
+                              &data_cleanup_called, data_cleanup_cb);
+  g_assert_cmpuint (id, ==, 0);
+  g_assert_true (data_cleanup_called);
+  g_clear_object (&cancellable);
+}
+
+static void
 assert_references_and_unref (GCancellable *cancellable, gpointer data)
 {
   gint expected_references = GPOINTER_TO_INT (data);
@@ -928,6 +977,44 @@ test_connect_cancelled_to_disposing_callback (void)
   g_assert_null (cancellable);
 }
 
+static void
+on_connect_data_callback (GCancellable *cancellable,
+                          gpointer user_data)
+{
+  g_assert_true (cancellable == user_data);
+}
+
+static void
+connect_data_destroy (gpointer user_data)
+{
+  GCancellable *cancellable = user_data;
+
+  g_assert_true (g_cancellable_is_cancelled (cancellable));
+
+  /* We try resetting the cancellable, since we don't care
+   * about anything but checking wether this would deadlock
+   */
+  g_cancellable_reset (cancellable);
+  g_object_unref (cancellable);
+}
+
+static void
+test_connect_cancelled_with_destroy_func_disposing_cancellable (void)
+{
+  GCancellable *cancellable;
+  gulong id;
+
+  cancellable = g_cancellable_new ();
+  g_object_add_weak_pointer (G_OBJECT (cancellable), (gpointer*) &cancellable);
+
+  g_cancellable_cancel (cancellable);
+  id = g_cancellable_connect (cancellable, G_CALLBACK (on_connect_data_callback),
+                              cancellable, connect_data_destroy);
+  g_assert_cmpuint (id, ==, 0);
+
+  g_assert_null (cancellable);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -935,8 +1022,11 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/cancellable/multiple-concurrent", test_cancel_multiple_concurrent);
   g_test_add_func ("/cancellable/null", test_cancel_null);
+  g_test_add_func ("/cancellable/connect-data-is-destroyed-on-disconnect-and-dispose", test_connect_data_is_destroyed_on_disconnect_and_dispose);
   g_test_add_func ("/cancellable/connect-to-disposing-callback", test_connect_to_disposing_callback);
+  g_test_add_func ("/cancellable/connect-cancelled-data-is-destroyed", test_connect_cancelled_data_is_destroyed);
   g_test_add_func ("/cancellable/connect-cancelled-to-disposing-callback", test_connect_cancelled_to_disposing_callback);
+  g_test_add_func ("/cancellable/connect-cancelled-with-destroy-func-disposing-cancellable", test_connect_cancelled_with_destroy_func_disposing_cancellable);
   g_test_add_func ("/cancellable/disconnect-on-cancelled-callback-hangs", test_cancellable_disconnect_on_cancelled_callback_hangs);
   g_test_add_func ("/cancellable/resets-on-cancel-callback-hangs", test_cancellable_reset_on_cancelled_callback_hangs);
   g_test_add_func ("/cancellable/poll-fd", test_cancellable_poll_fd);

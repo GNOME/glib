@@ -620,21 +620,22 @@ g_cancellable_connect (GCancellable   *cancellable,
       id = 0;
 
       _callback (cancellable, data);
-
-      if (data_destroy_func)
-        data_destroy_func (data);
     }
   else
     {
       GClosure *closure;
 
-      closure = g_cclosure_new (callback, data,
-                                (GClosureNotify) data_destroy_func);
+      closure = g_cclosure_new (callback, g_steal_pointer (&data),
+                                (GClosureNotify) g_steal_pointer (&data_destroy_func));
+
       id = g_signal_connect_closure_by_id (cancellable, signals[CANCELLED],
                                            0, closure, FALSE);
     }
 
   g_mutex_unlock (&cancellable->priv->mutex);
+
+  if (data_destroy_func)
+    data_destroy_func (data);
 
   g_object_unref (cancellable);
 
