@@ -1978,7 +1978,7 @@ g_win32_registry_get_os_dirs (void)
  * @value_type: (out) (optional): type of the value retrieved.
  * @value_data: (out callee-allocates) (optional): contents of the value.
  * @value_data_size: (out) (optional): size of the buffer pointed
- *   by @value_data.
+ *   by @value_data, in bytes.
  * @error: (nullable): a pointer to %NULL #GError, or %NULL
  *
  * Get data from a value of a key. String data is guaranteed to be
@@ -2245,7 +2245,7 @@ MuiRegQueryValueExW (HKEY                     hKey,
  * @value_type: (out) (optional): type of the value retrieved.
  * @value_data: (out callee-allocates) (optional): contents of the value.
  * @value_data_size: (out) (optional): size of the buffer pointed
- *   by @value_data.
+ *   by @value_data, in bytes.
  * @error: (nullable): a pointer to %NULL #GError, or %NULL
  *
  * Get data from a value of a key. String data is guaranteed to be
