@@ -33,9 +33,9 @@ G_BEGIN_DECLS
 
 /**
  * GBusAcquiredCallback:
- * @connection: The #GDBusConnection to a message bus.
- * @name: The name that is requested to be owned.
- * @user_data: User data passed to g_bus_own_name().
+ * @connection: the connection to a message bus
+ * @name: the name that is requested to be owned
+ * @user_data: user data passed to [func@Gio.bus_own_name]
  *
  * Invoked when a connection to a message bus has been obtained.
  *
@@ -47,9 +47,10 @@ typedef void (*GBusAcquiredCallback) (GDBusConnection *connection,
 
 /**
  * GBusNameAcquiredCallback:
- * @connection: The #GDBusConnection on which to acquired the name.
- * @name: The name being owned.
- * @user_data: User data passed to g_bus_own_name() or g_bus_own_name_on_connection().
+ * @connection: the connection on which to acquired the name
+ * @name: the name being owned
+ * @user_data: user data passed to [func@Gio.bus_own_name] or
+ *   [func@Gio.bus_own_name_on_connection]
  *
  * Invoked when the name is acquired.
  *
@@ -61,10 +62,11 @@ typedef void (*GBusNameAcquiredCallback) (GDBusConnection *connection,
 
 /**
  * GBusNameLostCallback:
- * @connection: The #GDBusConnection on which to acquire the name or %NULL if
- * the connection was disconnected.
- * @name: The name being owned.
- * @user_data: User data passed to g_bus_own_name() or g_bus_own_name_on_connection().
+ * @connection: the connect on which to acquire the name or `NULL` if
+ *   the connection was disconnected
+ * @name: the name being owned
+ * @user_data: user data passed to [func@Gio.bus_own_name] or
+ *   [func@Gio.bus_own_name_on_connection]
  *
  * Invoked when the name is lost or @connection has been closed.
  *
