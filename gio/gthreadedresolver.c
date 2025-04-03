@@ -36,9 +36,14 @@
 #include "gcancellable.h"
 #include "ginetaddress.h"
 #include "ginetsocketaddress.h"
+#include "gnetworkmonitorbase.h"
 #include "gtask.h"
 #include "gsocketaddress.h"
 #include "gsrvtarget.h"
+
+#if HAVE_GETIFADDRS
+#include <ifaddrs.h>
+#endif
 
 /*
  * GThreadedResolver is a threaded wrapper around the system libc’s
@@ -86,6 +91,11 @@ struct _GThreadedResolver
   GResolver parent_instance;
 
   GThreadPool *thread_pool;  /* (owned) */
+
+  GMutex interface_mutex;
+  GNetworkMonitor *network_monitor; /* (owned) */
+  gboolean monitor_supports_caching;
+  int network_is_loopback_only;
 };
 
 G_DEFINE_TYPE (GThreadedResolver, g_threaded_resolver, G_TYPE_RESOLVER)
@@ -106,6 +116,10 @@ g_threaded_resolver_init (GThreadedResolver *self)
                                               20,
                                               FALSE,
                                               NULL);
+
+  self->network_is_loopback_only = -1;
+
+  g_mutex_init (&self->interface_mutex);
 }
 
 static void
@@ -115,6 +129,12 @@ g_threaded_resolver_finalize (GObject *object)
 
   g_thread_pool_free (self->thread_pool, TRUE, FALSE);
   self->thread_pool = NULL;
+
+  if (self->network_monitor)
+    g_signal_handlers_disconnect_by_data (self->network_monitor, object);
+
+  g_clear_object (&self->network_monitor);
+  g_mutex_clear (&self->interface_mutex);
 
   G_OBJECT_CLASS (g_threaded_resolver_parent_class)->finalize (object);
 }
@@ -255,19 +275,102 @@ lookup_data_free (LookupData *data)
   g_free (data);
 }
 
+static gboolean
+check_only_has_loopback_interfaces (void)
+{
+#if HAVE_GETIFADDRS
+  struct ifaddrs *addrs;
+  gboolean only_loopback = TRUE;
+
+  if (getifaddrs (&addrs) != 0)
+    {
+      int saved_errno = errno;
+      g_debug ("getifaddrs() failed: %s", g_strerror (saved_errno));
+      return FALSE;
+    }
+
+  for (struct ifaddrs *addr = addrs; addr; addr = addr->ifa_next)
+    {
+      struct sockaddr *sa = addr->ifa_addr;
+      GSocketAddress *saddr = g_socket_address_new_from_native (sa, sizeof (struct sockaddr));
+
+      if (!saddr)
+        continue;
+
+      if (!G_IS_INET_SOCKET_ADDRESS (saddr))
+        {
+          g_object_unref (saddr);
+          continue;
+        }
+
+      GInetAddress *inetaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (saddr));
+      if (!g_inet_address_get_is_loopback (inetaddr))
+        {
+          only_loopback = FALSE;
+          g_object_unref (saddr);
+          break;
+        }
+
+      g_object_unref (saddr);
+    }
+
+  freeifaddrs (addrs);
+  return only_loopback;
+#else /* FIXME: Check GetAdaptersAddresses() on win32. */
+  return FALSE;
+#endif
+}
+
+static void
+network_changed_cb (GNetworkMonitor   *monitor,
+                    gboolean           network_available,
+                    GThreadedResolver *resolver)
+{
+  g_mutex_lock (&resolver->interface_mutex);
+  resolver->network_is_loopback_only = -1;
+  g_mutex_unlock (&resolver->interface_mutex);
+}
+
+static gboolean
+only_has_loopback_interfaces_cached (GThreadedResolver *resolver)
+{
+  g_mutex_lock (&resolver->interface_mutex);
+
+  if (!resolver->network_monitor)
+    {
+      resolver->network_monitor = g_object_ref (g_network_monitor_get_default ());
+      resolver->monitor_supports_caching = G_TYPE_FROM_INSTANCE (resolver->network_monitor) != G_TYPE_NETWORK_MONITOR_BASE;
+      g_signal_connect_object (resolver->network_monitor, "network-changed", G_CALLBACK (network_changed_cb), resolver, G_CONNECT_DEFAULT);
+    }
+
+  if (!resolver->monitor_supports_caching || resolver->network_is_loopback_only == -1)
+    resolver->network_is_loopback_only = check_only_has_loopback_interfaces ();
+
+  g_mutex_unlock (&resolver->interface_mutex);
+
+  return resolver->network_is_loopback_only;
+}
+
 static GList *
-do_lookup_by_name (const gchar   *hostname,
-                   int            address_family,
-                   GCancellable  *cancellable,
-                   GError       **error)
+do_lookup_by_name (GThreadedResolver  *resolver,
+                   const gchar        *hostname,
+                   int                 address_family,
+                   GCancellable       *cancellable,
+                   GError            **error)
 {
   struct addrinfo *res = NULL;
   GList *addresses;
   gint retval;
   struct addrinfo addrinfo_hints = { 0 };
 
+  /* In general we only want IPs for valid interfaces.
+   * However this will return nothing if you only have loopback interfaces.
+   * Instead in this case we will manually filter out invalid IPs. */
+  gboolean only_loopback = only_has_loopback_interfaces_cached (resolver);
+
 #ifdef AI_ADDRCONFIG
-  addrinfo_hints.ai_flags = AI_ADDRCONFIG;
+  if (!only_loopback)
+    addrinfo_hints.ai_flags = AI_ADDRCONFIG;
 #endif
   /* socktype and protocol don't actually matter, they just get copied into the
   * returned addrinfo structures (and then we ignore them). But if
@@ -281,14 +384,12 @@ do_lookup_by_name (const gchar   *hostname,
 
   if (retval == 0)
     {
-      struct addrinfo *ai;
-      GSocketAddress *sockaddr;
-      GInetAddress *addr;
-
       addresses = NULL;
-      for (ai = res; ai; ai = ai->ai_next)
+      for (struct addrinfo *ai = res; ai; ai = ai->ai_next)
         {
-          sockaddr = g_socket_address_new_from_native (ai->ai_addr, ai->ai_addrlen);
+          GInetAddress *addr;
+          GSocketAddress *sockaddr = g_socket_address_new_from_native (ai->ai_addr, ai->ai_addrlen);
+
           if (!sockaddr)
             continue;
           if (!G_IS_INET_SOCKET_ADDRESS (sockaddr))
@@ -297,8 +398,14 @@ do_lookup_by_name (const gchar   *hostname,
               continue;
             }
 
-          addr = g_object_ref (g_inet_socket_address_get_address ((GInetSocketAddress *)sockaddr));
-          addresses = g_list_prepend (addresses, addr);
+          addr = g_inet_socket_address_get_address ((GInetSocketAddress *) sockaddr);
+          if (only_loopback && !g_inet_address_get_is_loopback (addr))
+            {
+              g_object_unref (sockaddr);
+              continue;
+            }
+
+          addresses = g_list_prepend (addresses, g_object_ref (addr));
           g_object_unref (sockaddr);
         }
 
@@ -1569,13 +1676,15 @@ threaded_resolver_worker_cb (gpointer task_data,
   GTask *task = G_TASK (g_steal_pointer (&task_data));
   LookupData *data = g_task_get_task_data (task);
   GCancellable *cancellable = g_task_get_cancellable (task);
+  GThreadedResolver *resolver = G_THREADED_RESOLVER (user_data);
   GError *local_error = NULL;
   gboolean should_return;
 
   switch (data->lookup_type) {
   case LOOKUP_BY_NAME:
     {
-      GList *addresses = do_lookup_by_name (data->lookup_by_name.hostname,
+      GList *addresses = do_lookup_by_name (resolver,
+                                            data->lookup_by_name.hostname,
                                             data->lookup_by_name.address_family,
                                             cancellable,
                                             &local_error);

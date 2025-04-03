@@ -715,6 +715,7 @@ functions = [
   'getfsent',
   'getfsstat',
   'getgrgid_r',
+  'getifaddrs',
   'getmntent_r',
   'getpwuid_r',
   'getresuid',
