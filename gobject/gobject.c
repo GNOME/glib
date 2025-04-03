@@ -127,7 +127,6 @@ enum {
 #define OPTIONAL_BIT_LOCK_WEAK_REFS      1
 #define OPTIONAL_BIT_LOCK_NOTIFY         2
 #define OPTIONAL_BIT_LOCK_TOGGLE_REFS    3
-#define OPTIONAL_BIT_LOCK_CLOSURE_ARRAY  4
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P >= 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -205,6 +204,7 @@ static gchar*	g_value_object_lcopy_value		(const GValue	*value,
 static void	g_object_dispatch_properties_changed	(GObject	*object,
 							 guint		 n_pspecs,
 							 GParamSpec    **pspecs);
+static void closure_array_destroy_all (GObject *object);
 static guint               object_floating_flag_handler (GObject        *object,
                                                          gint            job);
 static inline void object_set_optional_flags (GObject *object,
@@ -1776,7 +1776,7 @@ g_object_real_dispose (GObject *object)
 
   /* GWeakNotify and GClosure can call into user code */
   g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
-  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
+  closure_array_destroy_all (object);
 }
 
 static gboolean
@@ -4501,7 +4501,7 @@ retry_decrement:
 
   /* The object is almost gone. Finalize. */
 
-  g_datalist_id_set_data (&object->qdata, quark_closure_array, NULL);
+  closure_array_destroy_all (object);
   g_signal_handlers_destroy (object);
   g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
 
@@ -5219,47 +5219,123 @@ typedef struct {
   GClosure *closures[1]; /* flexible array */
 } CArray;
 
-static void
-object_remove_closure (gpointer  data,
-		       GClosure *closure)
+static gpointer
+object_remove_closure_cb (gpointer *data,
+                          GDestroyNotify *destroy_notify,
+                          gpointer user_data)
 {
-  GObject *object = data;
-  CArray *carray;
+  GClosure *closure = user_data;
+  CArray *carray = *data;
   guint i;
-  
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
-  carray = g_object_get_qdata (object, quark_closure_array);
+
   for (i = 0; i < carray->n_closures; i++)
-    if (carray->closures[i] == closure)
-      {
-	carray->n_closures--;
-	if (i < carray->n_closures)
-	  carray->closures[i] = carray->closures[carray->n_closures];
-	object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
-	return;
-      }
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
-  g_assert_not_reached ();
+    {
+      if (carray->closures[i] == closure)
+        {
+          carray->n_closures--;
+          if (carray->n_closures == 0)
+            {
+              g_free (carray);
+              *data = NULL;
+            }
+          else if (i < carray->n_closures)
+            carray->closures[i] = carray->closures[carray->n_closures];
+          return NULL;
+        }
+    }
+
+  g_return_val_if_reached (NULL);
 }
 
 static void
-destroy_closure_array (gpointer data)
+object_remove_closure (gpointer data,
+                       GClosure *closure)
 {
-  CArray *carray = data;
-  GObject *object = carray->object;
-  guint i, n = carray->n_closures;
-  
-  for (i = 0; i < n; i++)
+  GObject *object = data;
+
+  _g_datalist_id_update_atomic (&object->qdata,
+                                quark_closure_array,
+                                object_remove_closure_cb,
+                                closure);
+}
+
+static gpointer
+closure_array_destroy_all_cb (gpointer *data,
+                              GDestroyNotify *destroy_notify,
+                              gpointer user_data)
+{
+  CArray *carray = *data;
+  GClosure *closure;
+
+  if (!carray)
+    return NULL;
+
+  closure = carray->closures[--carray->n_closures];
+
+  if (carray->n_closures == 0)
     {
-      GClosure *closure = carray->closures[i];
-      
-      /* removing object_remove_closure() upfront is probably faster than
-       * letting it fiddle with quark_closure_array which is empty anyways
-       */
+      g_free (carray);
+      *data = NULL;
+    }
+
+  return closure;
+}
+
+static void
+closure_array_destroy_all (GObject *object)
+{
+  GClosure *closure;
+
+  /* We invalidate closures in a loop. As this emits external callbacks, a callee
+   * could register another closure, which the loop would invalidate too.
+   *
+   * This is an intentional choice. Maybe it would be instead better to only
+   * only release the closures that were registered when the loop started. That
+   * would be possible, but is not done that way. */
+  while ((closure = _g_datalist_id_update_atomic (&object->qdata,
+                                                  quark_closure_array,
+                                                  closure_array_destroy_all_cb,
+                                                  NULL)))
+    {
       g_closure_remove_invalidate_notifier (closure, object, object_remove_closure);
       g_closure_invalidate (closure);
     }
-  g_free (carray);
+}
+
+static gpointer
+g_object_watch_closure_cb (gpointer *data,
+                           GDestroyNotify *destroy_notify,
+                           gpointer user_data)
+{
+  GObject *object = ((gpointer *) user_data)[0];
+  GClosure *closure = ((gpointer *) user_data)[1];
+  CArray *carray = *data;
+  guint i;
+
+  if (!carray)
+    {
+      carray = g_new (CArray, 1);
+      carray->object = object;
+      carray->n_closures = 1;
+      i = 0;
+
+#if G_ENABLE_DEBUG
+      /* We never expect there is anything to destroy. We require
+       * these entries to be released via closure_array_destroy_all(). */
+      *destroy_notify = g_destroy_notify_assert_not_reached;
+#endif
+    }
+  else
+    {
+      i = carray->n_closures++;
+      carray = g_realloc (carray, sizeof (*carray) + sizeof (carray->closures[0]) * i);
+    }
+
+  *data = carray;
+
+  carray->closures[i] = closure;
+
+  return NULL;
 }
 
 /**
@@ -5281,36 +5357,21 @@ void
 g_object_watch_closure (GObject  *object,
 			GClosure *closure)
 {
-  CArray *carray;
-  guint i;
-  
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (closure != NULL);
   g_return_if_fail (closure->is_invalid == FALSE);
   g_return_if_fail (closure->in_marshal == FALSE);
-  g_return_if_fail (g_atomic_int_get (&object->ref_count) > 0);	/* this doesn't work on finalizing objects */
-  
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) > 0); /* this doesn't work on finalizing objects */
+
   g_closure_add_invalidate_notifier (closure, object, object_remove_closure);
   g_closure_add_marshal_guards (closure,
-				object, (GClosureNotify) g_object_ref,
-				object, (GClosureNotify) g_object_unref);
-  object_bit_lock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
-  carray = g_datalist_id_remove_no_notify (&object->qdata, quark_closure_array);
-  if (!carray)
-    {
-      carray = g_renew (CArray, NULL, 1);
-      carray->object = object;
-      carray->n_closures = 1;
-      i = 0;
-    }
-  else
-    {
-      i = carray->n_closures++;
-      carray = g_realloc (carray, sizeof (*carray) + sizeof (carray->closures[0]) * i);
-    }
-  carray->closures[i] = closure;
-  g_datalist_id_set_data_full (&object->qdata, quark_closure_array, carray, destroy_closure_array);
-  object_bit_unlock (object, OPTIONAL_BIT_LOCK_CLOSURE_ARRAY);
+                                object, (GClosureNotify) g_object_ref,
+                                object, (GClosureNotify) g_object_unref);
+
+  _g_datalist_id_update_atomic (&object->qdata,
+                                quark_closure_array,
+                                g_object_watch_closure_cb,
+                                ((gpointer[]){ object, closure }));
 }
 
 /**
