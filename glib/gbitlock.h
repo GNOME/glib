@@ -34,12 +34,23 @@ G_BEGIN_DECLS
 GLIB_AVAILABLE_IN_ALL
 void      g_bit_lock                      (volatile gint *address,
                                            gint           lock_bit);
+GLIB_AVAILABLE_IN_2_86
+void g_bit_lock_and_get (gint *address,
+                         guint lock_bit,
+                         gint *out_val);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean  g_bit_trylock                   (volatile gint *address,
                                            gint           lock_bit);
 GLIB_AVAILABLE_IN_ALL
 void      g_bit_unlock                    (volatile gint *address,
                                            gint           lock_bit);
+
+GLIB_AVAILABLE_IN_2_86
+void g_bit_unlock_and_set (gint *address,
+                           guint lock_bit,
+                           gint new_val,
+                           gint preserve_mask);
 
 GLIB_AVAILABLE_IN_ALL
 void      g_pointer_bit_lock              (volatile void *address,
