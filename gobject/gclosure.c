@@ -110,15 +110,17 @@ typedef union {
 G_STMT_START {                                                                          \
   ClosureInt *cunion = (ClosureInt*) _closure;                 		                \
   gint new_int, old_int, success;                              		                \
+  old_int = g_atomic_int_get (&cunion->vint);                   	                \
   do                                                    		                \
     {                                                   		                \
       ClosureInt tmp;                                   		                \
-      tmp.vint = old_int = cunion->vint;                		                \
+      tmp.vint = old_int;                               		                \
       _SET_OLD tmp.closure._field;                                                      \
       tmp.closure._field _OP _value;                      		                \
       _SET_NEW tmp.closure._field;                                                      \
       new_int = tmp.vint;                               		                \
-      success = g_atomic_int_compare_and_exchange (&cunion->vint, old_int, new_int);    \
+      success = g_atomic_int_compare_and_exchange_full (&cunion->vint, old_int, new_int,\
+							&old_int);			\
     }                                                   		                \
   while (!success && _must_set);                                                        \
 } G_STMT_END
