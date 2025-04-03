@@ -2401,7 +2401,11 @@ end_type_recurse (ParseContext *ctx)
       else
         g_assert_not_reached ();
     }
-  g_clear_pointer ((GIIrNode **) &param, gi_ir_node_free);
+
+  if (param != NULL)
+    gi_ir_node_free ((GIIrNode *) param);
+  param = NULL;
+
   g_list_free_full (ctx->type_parameters, (GDestroyNotify) gi_ir_node_free);
   ctx->type_parameters = (GList *)ctx->type_stack->data;
   ctx->type_stack = g_list_delete_link (ctx->type_stack, ctx->type_stack);
