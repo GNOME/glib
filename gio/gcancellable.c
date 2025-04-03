@@ -264,6 +264,11 @@ g_cancellable_get_current  (void)
  * is to drop the reference to a cancellable after cancelling it,
  * and let it die with the outstanding async operations. You should
  * create a fresh cancellable for further async operations.
+ *
+ * In the event that a [signal@Gio.Cancellable::cancelled] signal handler is currently
+ * running, this call will block until the handler has finished.
+ * Calling this function from a signal handler will therefore result in a
+ * deadlock.
  **/
 void 
 g_cancellable_reset (GCancellable *cancellable)
@@ -392,6 +397,11 @@ g_cancellable_get_fd (GCancellable *cancellable)
  * readable status. Reading to unset the readable status is done
  * with g_cancellable_reset().
  *
+ * Note that in the event that a [signal@Gio.Cancellable::cancelled] signal handler is
+ * currently running, this call will block until the handler has finished.
+ * Calling this function from a signal handler will therefore result in a
+ * deadlock.
+ *
  * Returns: %TRUE if @pollfd was successfully initialized, %FALSE on 
  *          failure to prepare the cancellable.
  * 
@@ -440,7 +450,12 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
  * block scarce file descriptors until it is finalized if this function
  * is not called. This can cause the application to run out of file 
  * descriptors when many #GCancellables are used at the same time.
- * 
+ *
+ * Note that in the event that a [signal@Gio.Cancellable::cancelled] signal handler is
+ * currently running, this call will block until the handler has finished.
+ * Calling this function from a signal handler will therefore result in a
+ * deadlock.
+ *
  * Since: 2.22
  **/
 void
@@ -484,6 +499,9 @@ g_cancellable_release_fd (GCancellable *cancellable)
  * cancel the operation from the same thread in which it is running,
  * then the operation's #GAsyncReadyCallback will not be invoked until
  * the application returns to the main loop.
+ *
+ * It is safe (although useless, since it will be a no-op) to call
+ * this function from a [signal@Gio.Cancellable::cancelled] signal handler.
  **/
 void
 g_cancellable_cancel (GCancellable *cancellable)
@@ -513,6 +531,13 @@ g_cancellable_cancel (GCancellable *cancellable)
   if (priv->wakeup)
     GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
 
+  /* Adding another reference, in case the callback is unreffing the
+   * cancellable and there are toggle references, so that the second to last
+   * reference (that would lead a toggle notification) won't be released
+   * while we're locked.
+   */
+  g_object_ref (cancellable);
+
   g_signal_emit (cancellable, signals[CANCELLED], 0);
 
   if (g_atomic_int_dec_and_test (&priv->cancelled_running))
@@ -520,6 +545,7 @@ g_cancellable_cancel (GCancellable *cancellable)
 
   g_mutex_unlock (&priv->mutex);
 
+  g_object_unref (cancellable);
   g_object_unref (cancellable);
 }
 
@@ -538,7 +564,10 @@ g_cancellable_cancel (GCancellable *cancellable)
  * either directly at the time of the connect if @cancellable is already
  * cancelled, or when @cancellable is cancelled in some thread.
  * In case the cancellable is reset via [method@Gio.Cancellable.reset]
- * then the callback can be called again if the @cancellable is cancelled.
+ * then the callback can be called again if the @cancellable is cancelled and
+ * if it had not been previously cancelled at the time
+ * [method@Gio.Cancellable.connect] was called (e.g. if the connection actually
+ * took place, returning a non-zero value).
  *
  * @data_destroy_func will be called when the handler is
  * disconnected, or immediately if the cancellable is already
@@ -547,9 +576,21 @@ g_cancellable_cancel (GCancellable *cancellable)
  * See #GCancellable::cancelled for details on how to use this.
  *
  * Since GLib 2.40, the lock protecting @cancellable is not held when
- * @callback is invoked.  This lifts a restriction in place for
+ * @callback is invoked. This lifts a restriction in place for
  * earlier GLib versions which now makes it easier to write cleanup
- * code that unconditionally invokes e.g. g_cancellable_cancel().
+ * code that unconditionally invokes e.g. [method@Gio.Cancellable.cancel].
+ * Note that since 2.82 GLib still holds a lock during the callback but it’s
+ * designed in a way that most of the [class@Gio.Cancellable] methods can be
+ * called, including [method@Gio.Cancellable.cancel] or
+ * [method@GObject.Object.unref].
+ *
+ * There are still some methods that will deadlock (by design) when
+ * called from the [signal@Gio.Cancellable::cancelled] callbacks:
+ *  - [method@Gio.Cancellable.connect]
+ *  - [method@Gio.Cancellable.disconnect]
+ *  - [method@Gio.Cancellable.reset]
+ *  - [method@Gio.Cancellable.make_pollfd]
+ *  - [method@Gio.Cancellable.release_fd]
  *
  * Returns: The id of the signal handler or 0 if @cancellable has already
  *          been cancelled.
@@ -562,9 +603,20 @@ g_cancellable_connect (GCancellable   *cancellable,
 		       gpointer        data,
 		       GDestroyNotify  data_destroy_func)
 {
+  GCancellable *extra_ref = NULL;
   gulong id;
 
   g_return_val_if_fail (G_IS_CANCELLABLE (cancellable), 0);
+
+  /* If the cancellable is already cancelled we may end up calling the callback
+   * immediately, and the callback may unref the Cancellable, so we need to add
+   * an extra reference here. We can't do it only in the case the cancellable
+   * is already cancelled because it can be potentially be reset, so we can't
+   * rely on the atomic value only, but we need to be locked to be really sure.
+   * At the same time we don't want to wake up the ToggleNotify if toggle
+   * references are enabled while we're locked.
+   */
+  g_object_ref (cancellable);
 
   g_mutex_lock (&cancellable->priv->mutex);
 
@@ -573,23 +625,36 @@ g_cancellable_connect (GCancellable   *cancellable,
       void (*_callback) (GCancellable *cancellable,
                          gpointer      user_data);
 
+      /* Adding another reference, in case the callback is unreffing the
+       * cancellable and there are toggle references, so that the second to last
+       * reference (that would lead a toggle notification) won't be released
+       * while we're locked.
+       */
+      extra_ref = g_object_ref (cancellable);
+
       _callback = (void *)callback;
       id = 0;
 
       _callback (cancellable, data);
-
-      if (data_destroy_func)
-        data_destroy_func (data);
     }
   else
     {
-      id = g_signal_connect_data (cancellable, "cancelled",
-                                  callback, data,
-                                  (GClosureNotify) data_destroy_func,
-                                  G_CONNECT_DEFAULT);
+      GClosure *closure;
+
+      closure = g_cclosure_new (callback, g_steal_pointer (&data),
+                                (GClosureNotify) g_steal_pointer (&data_destroy_func));
+
+      id = g_signal_connect_closure_by_id (cancellable, signals[CANCELLED],
+                                           0, closure, FALSE);
     }
 
   g_mutex_unlock (&cancellable->priv->mutex);
+
+  if (data_destroy_func)
+    data_destroy_func (data);
+
+  g_object_unref (cancellable);
+  g_clear_object (&extra_ref);
 
   return id;
 }
