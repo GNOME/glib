@@ -123,12 +123,19 @@ g_bytes_new (gconstpointer data,
 {
   g_return_val_if_fail (data != NULL || size == 0, NULL);
 
+  if (data == NULL || size == 0)
+    {
+      g_assert (data != NULL || size == 0);
+
+      return g_bytes_new_with_free_func (NULL, size, NULL, NULL);
+    }
+
   if (size <= G_BYTES_MAX_INLINE)
     {
       GBytesInline *bytes;
 
       bytes = g_malloc (sizeof *bytes + size);
-      bytes->bytes.data = (data != NULL && size > 0) ? bytes->inline_data : NULL;
+      bytes->bytes.data = bytes->inline_data;
       bytes->bytes.size = size;
       bytes->bytes.free_func = NULL;
       bytes->bytes.user_data = NULL;

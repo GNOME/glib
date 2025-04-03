@@ -26,6 +26,7 @@
 #include "garray.h"
 #include "genviron.h"
 #include "ghash.h"
+#include "glib-private.h"
 #include "gmessages.h"
 #include "gstrfuncs.h"
 #include "gthread.h"
@@ -807,6 +808,7 @@ g_get_language_names_with_category (const gchar *category_name)
       cache = g_hash_table_new_full (g_str_hash, g_str_equal,
                                      g_free, language_names_cache_free);
       g_private_set (&cache_private, cache);
+      g_ignore_leak (cache);
     }
 
   languages = guess_category_value (category_name);
@@ -835,6 +837,7 @@ g_get_language_names_with_category (const gchar *category_name)
       name_cache->languages = g_strdup (languages);
       name_cache->language_names = (gchar **) g_ptr_array_free (array, FALSE);
       g_hash_table_insert (cache, g_strdup (category_name), name_cache);
+      g_ignore_leak (name_cache);
     }
 
   return (const gchar * const *) name_cache->language_names;

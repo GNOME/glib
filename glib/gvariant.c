@@ -6187,12 +6187,16 @@ g_variant_byteswap (GVariant *value)
   GVariantTypeInfo *type_info;
   guint alignment;
   GVariant *new;
+  gsize size = 0;
 
   type_info = g_variant_get_type_info (value);
 
   g_variant_type_info_query (type_info, &alignment, NULL);
 
-  if (alignment && g_variant_is_normal_form (value))
+  if (alignment)
+    size = g_variant_get_size (value);
+
+  if (size > 0 && g_variant_is_normal_form (value))
     {
       /* (potentially) contains multi-byte numeric data, but is also already in
        * normal form so we can use a faster byteswapping codepath on the
@@ -6201,7 +6205,7 @@ g_variant_byteswap (GVariant *value)
       GBytes *bytes;
 
       serialised.type_info = g_variant_get_type_info (value);
-      serialised.size = g_variant_get_size (value);
+      serialised.size = size;
       serialised.data = g_malloc (serialised.size);
       serialised.depth = g_variant_get_depth (value);
       serialised.ordered_offsets_up_to = G_MAXSIZE;  /* operating on the normal form */
