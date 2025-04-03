@@ -103,23 +103,26 @@
 
 typedef union {
   GClosure closure;
-  gint vint;
-} ClosureInt;
+  int atomic_int;
+} GClosureFlags;
+
+G_STATIC_ASSERT (sizeof (GClosureFlags) == sizeof (GClosure));
+G_STATIC_ASSERT (G_ALIGNOF (GClosureFlags) == G_ALIGNOF (GClosure));
 
 #define ATOMIC_CHANGE_FIELD(_closure, _field, _OP, _value, _must_set, _SET_OLD, _SET_NEW)      \
 G_STMT_START {                                                                          \
-  ClosureInt *cunion = (ClosureInt*) _closure;                 		                \
+  GClosureFlags *cunion = (GClosureFlags *) _closure; \
   gint new_int, old_int, success;                              		                \
-  old_int = g_atomic_int_get (&cunion->vint);                   	                \
+  old_int = g_atomic_int_get (&cunion->atomic_int); \
   do                                                    		                \
     {                                                   		                \
-      ClosureInt tmp;                                   		                \
-      tmp.vint = old_int;                               		                \
-      _SET_OLD tmp.closure._field;                                                      \
-      tmp.closure._field _OP _value;                      		                \
-      _SET_NEW tmp.closure._field;                                                      \
-      new_int = tmp.vint;                               		                \
-      success = g_atomic_int_compare_and_exchange_full (&cunion->vint, old_int, new_int,\
+      GClosureFlags tmp; \
+      tmp.atomic_int = old_int; \
+      _SET_OLD tmp.closure._field; \
+      tmp.closure._field _OP _value; \
+      _SET_NEW tmp.closure._field; \
+      new_int = tmp.atomic_int; \
+      success = g_atomic_int_compare_and_exchange_full (&cunion->atomic_int, old_int, new_int, \
 							&old_int);			\
     }                                                   		                \
   while (!success && _must_set);                                                        \
