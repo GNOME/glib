@@ -25,6 +25,7 @@
 #include <glib.h>
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <locale.h>
@@ -274,9 +275,9 @@ check_identical_stringv (gchar **before, gchar **after)
 
   /* ... it is actually the same pointer */
   for (i = 0; before[i] != NULL; i++)
-    g_assert (before[i] == after[i]);
+    g_assert_true (before[i] == after[i]);
 
-  g_assert (after[i] == NULL);
+  g_assert_null (after[i]);
 }
 
 
@@ -286,7 +287,7 @@ error_test1_pre_parse (GOptionContext *context,
 		       gpointer	       data,
 		       GError        **error)
 {
-  g_assert (error_test1_int == 0x12345678);
+  g_assert_cmpint (error_test1_int, ==, 0x12345678);
 
   return TRUE;
 }
@@ -297,7 +298,7 @@ error_test1_post_parse (GOptionContext *context,
 			gpointer	  data,
 			GError        **error)
 {
-  g_assert (error_test1_int == 20);
+  g_assert_cmpint (error_test1_int, ==, 20);
 
   /* Set an error in the post hook */
   g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, " ");
@@ -334,14 +335,14 @@ error_test1 (void)
   argv_copy = copy_stringv (argv, argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert (retval == FALSE);
-  g_assert (error != NULL);
+  g_assert_false (retval);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   /* An error occurred, so argv has not been changed */
   check_identical_stringv (argv_copy, argv);
   g_clear_error (&error);
 
   /* On failure, values should be reset */
-  g_assert (error_test1_int == 0x12345678);
+  g_assert_cmpint (error_test1_int, ==, 0x12345678);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -354,7 +355,7 @@ error_test2_pre_parse (GOptionContext *context,
 		       gpointer	  data,
 		       GError        **error)
 {
-  g_assert (strcmp (error_test2_string, "foo") == 0);
+  g_assert_cmpstr (error_test2_string, ==, "foo");
 
   return TRUE;
 }
@@ -365,7 +366,7 @@ error_test2_post_parse (GOptionContext *context,
 			gpointer	  data,
 			GError        **error)
 {
-  g_assert (strcmp (error_test2_string, "bar") == 0);
+  g_assert_cmpstr (error_test2_string, ==, "bar");
 
   /* Set an error in the post hook */
   g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, " ");
@@ -402,12 +403,12 @@ error_test2 (void)
   argv_copy = copy_stringv (argv, argc);
   retval = g_option_context_parse (context, &argc, &argv, &error);
 
-  g_assert (retval == FALSE);
-  g_assert (error != NULL);
+  g_assert_false (retval);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   check_identical_stringv (argv_copy, argv);
   g_clear_error (&error);
 
-  g_assert (strcmp (error_test2_string, "foo") == 0);
+  g_assert_cmpstr (error_test2_string, ==, "foo");
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -420,7 +421,7 @@ error_test3_pre_parse (GOptionContext *context,
 		       gpointer	  data,
 		       GError        **error)
 {
-  g_assert (!error_test3_boolean);
+  g_assert_false (error_test3_boolean);
 
   return TRUE;
 }
@@ -431,7 +432,7 @@ error_test3_post_parse (GOptionContext *context,
 			gpointer	  data,
 			GError        **error)
 {
-  g_assert (error_test3_boolean);
+  g_assert_true (error_test3_boolean);
 
   /* Set an error in the post hook */
   g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE, " ");
@@ -468,12 +469,12 @@ error_test3 (void)
   argv_copy = copy_stringv (argv, argc);
   retval = g_option_context_parse (context, &argc, &argv, &error);
 
-  g_assert (retval == FALSE);
-  g_assert (error != NULL);
+  g_assert_false (retval);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   check_identical_stringv (argv_copy, argv);
   g_clear_error (&error);
 
-  g_assert (!error_test3_boolean);
+  g_assert_false (error_test3_boolean);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -502,10 +503,10 @@ arg_test1 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (arg_test1_int == 30);
+  g_assert_cmpint (arg_test1_int, ==, 30);
 
   /* We free all of the strings in a copy of argv, because now argv is a
    * subset - some have been removed in-place
@@ -537,10 +538,10 @@ arg_test2 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (strcmp (arg_test2_string, "bar") == 0);
+  g_assert_cmpstr (arg_test2_string, ==, "bar");
 
   g_free (arg_test2_string);
 
@@ -571,10 +572,10 @@ arg_test3 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (strcmp (arg_test3_filename, "foo.txt") == 0);
+  g_assert_cmpstr (arg_test3_filename, ==, "foo.txt");
 
   g_free (arg_test3_filename);
 
@@ -605,10 +606,10 @@ arg_test4 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (arg_test4_double == 30.03);
+  g_assert_cmpfloat (arg_test4_double, ==, 30.03);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -649,10 +650,10 @@ arg_test5 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (arg_test5_double == 30.03);
+  g_assert_cmpfloat (arg_test5_double, ==, 30.03);
 
  cleanup:
   setlocale (LC_NUMERIC, old_locale);
@@ -686,11 +687,11 @@ arg_test6 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (arg_test6_int64 == G_GINT64_CONSTANT(4294967296));
-  g_assert (arg_test6_int64_2 == G_GINT64_CONSTANT(0xfffffffff));
+  g_assert_cmpint (arg_test6_int64, ==, G_GINT64_CONSTANT (4294967296));
+  g_assert_cmpint (arg_test6_int64_2, ==, G_GINT64_CONSTANT (0xfffffffff));
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -727,9 +728,9 @@ callback_test1 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (strcmp (callback_test1_string, "foo.txt") == 0);
+  g_assert_cmpstr (callback_test1_string, ==, "foo.txt");
 
   g_free (callback_test1_string);
 
@@ -768,9 +769,9 @@ callback_test2 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (callback_test2_int == 2);
+  g_assert_cmpint (callback_test2_int, ==, 2);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -812,11 +813,11 @@ callback_test_optional_1 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (strcmp (callback_test_optional_string, "foo.txt") == 0);
+  g_assert_cmpstr (callback_test_optional_string, ==, "foo.txt");
   
-  g_assert (callback_test_optional_boolean);
+  g_assert_true (callback_test_optional_boolean);
 
   g_free (callback_test_optional_string);
 
@@ -848,11 +849,11 @@ callback_test_optional_2 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (callback_test_optional_string == NULL);
+  g_assert_null (callback_test_optional_string);
   
-  g_assert (callback_test_optional_boolean);
+  g_assert_true (callback_test_optional_boolean);
 
   g_free (callback_test_optional_string);
 
@@ -884,11 +885,11 @@ callback_test_optional_3 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (strcmp (callback_test_optional_string, "foo.txt") == 0);
+  g_assert_cmpstr (callback_test_optional_string, ==, "foo.txt");
   
-  g_assert (callback_test_optional_boolean);
+  g_assert_true (callback_test_optional_boolean);
 
   g_free (callback_test_optional_string);
 
@@ -921,11 +922,11 @@ callback_test_optional_4 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (callback_test_optional_string == NULL);
+  g_assert_null (callback_test_optional_string);
   
-  g_assert (callback_test_optional_boolean);
+  g_assert_true (callback_test_optional_boolean);
 
   g_free (callback_test_optional_string);
 
@@ -959,11 +960,11 @@ callback_test_optional_5 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (callback_test_optional_string == NULL);
+  g_assert_null (callback_test_optional_string);
   
-  g_assert (callback_test_optional_boolean);
+  g_assert_true (callback_test_optional_boolean);
 
   g_free (callback_test_optional_string);
 
@@ -997,11 +998,11 @@ callback_test_optional_6 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (callback_test_optional_string == NULL);
+  g_assert_null (callback_test_optional_string);
   
-  g_assert (callback_test_optional_boolean);
+  g_assert_true (callback_test_optional_boolean);
 
   g_free (callback_test_optional_string);
 
@@ -1035,11 +1036,11 @@ callback_test_optional_7 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (callback_test_optional_string == NULL);
+  g_assert_null (callback_test_optional_string);
   
-  g_assert (callback_test_optional_boolean);
+  g_assert_true (callback_test_optional_boolean);
 
   g_free (callback_test_optional_string);
 
@@ -1073,11 +1074,11 @@ callback_test_optional_8 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (callback_test_optional_string);
+  g_assert_nonnull (callback_test_optional_string);
   
-  g_assert (callback_test_optional_boolean);
+  g_assert_true (callback_test_optional_boolean);
 
   g_free (callback_test_optional_string);
 
@@ -1118,11 +1119,11 @@ callback_remaining_test1 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (callback_remaining_args->len == 2);
-  g_assert (strcmp (callback_remaining_args->pdata[0], "foo.txt") == 0);
-  g_assert (strcmp (callback_remaining_args->pdata[1], "blah.txt") == 0);
+  g_assert_cmpuint (callback_remaining_args->len, ==, 2);
+  g_assert_cmpstr (callback_remaining_args->pdata[0], ==, "foo.txt");
+  g_assert_cmpstr (callback_remaining_args->pdata[1], ==, "blah.txt");
 
   g_ptr_array_foreach (callback_remaining_args, (GFunc) g_free, NULL);
   g_ptr_array_free (callback_remaining_args, TRUE);
@@ -1164,7 +1165,7 @@ callback_returns_false (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
-  g_assert (retval == FALSE);
+  g_assert_false (retval);
   check_identical_stringv (argv_copy, argv);
 
   g_option_context_free (context);
@@ -1181,7 +1182,7 @@ callback_returns_false (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
-  g_assert (retval == FALSE);
+  g_assert_false (retval);
   check_identical_stringv (argv_copy, argv);
 
   g_option_context_free (context);
@@ -1198,7 +1199,7 @@ callback_returns_false (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
-  g_assert (retval == FALSE);
+  g_assert_false (retval);
   check_identical_stringv (argv_copy, argv);
 
   g_option_context_free (context);
@@ -1215,7 +1216,7 @@ callback_returns_false (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
-  g_assert (retval == FALSE);
+  g_assert_false (retval);
   check_identical_stringv (argv_copy, argv);
 
   g_option_context_free (context);
@@ -1248,11 +1249,11 @@ ignore_test1 (void)
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
   arg = join_stringv (argc, argv);
-  g_assert (strcmp (arg, "program --hello") == 0);
+  g_assert_cmpstr (arg, ==, "program --hello");
 
   g_free (arg);
   g_strfreev (argv_copy);
@@ -1284,11 +1285,11 @@ ignore_test2 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
   arg = join_stringv (argc, argv);
-  g_assert (strcmp (arg, "program -es") == 0);
+  g_assert_cmpstr (arg, ==, "program -es");
 
   g_free (arg);
   g_strfreev (argv_copy);
@@ -1319,13 +1320,13 @@ ignore_test3 (void)
   
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
   arg = join_stringv (argc, argv);
-  g_assert (strcmp (arg, "program --hello") == 0);
+  g_assert_cmpstr (arg, ==, "program --hello");
 
-  g_assert (strcmp (ignore_test3_string, "foo") == 0);
+  g_assert_cmpstr (ignore_test3_string, ==, "foo");
   g_free (ignore_test3_string);
 
   g_free (arg);
@@ -1356,12 +1357,12 @@ array_test1 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (strcmp (array_test1_array[0], "foo") == 0);
-  g_assert (strcmp (array_test1_array[1], "bar") == 0);
-  g_assert (array_test1_array[2] == NULL);
+  g_assert_cmpstr (array_test1_array[0], ==, "foo");
+  g_assert_cmpstr (array_test1_array[1], ==, "bar");
+  g_assert_null (array_test1_array[2]);
 
   g_strfreev (array_test1_array);
   
@@ -1440,14 +1441,14 @@ rest_test1 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (argv[0], "program") == 0);
-  g_assert (strcmp (argv[1], "foo") == 0);
-  g_assert (strcmp (argv[2], "bar") == 0);
-  g_assert (argv[3] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (argv[0], ==, "program");
+  g_assert_cmpstr (argv[1], ==, "foo");
+  g_assert_cmpstr (argv[2], ==, "bar");
+  g_assert_null (argv[3]);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -1478,15 +1479,15 @@ rest_test2 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (argv[0], "program") == 0);
-  g_assert (strcmp (argv[1], "foo") == 0);
-  g_assert (strcmp (argv[2], "--") == 0);
-  g_assert (strcmp (argv[3], "-bar") == 0);
-  g_assert (argv[4] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (argv[0], ==, "program");
+  g_assert_cmpstr (argv[1], ==, "foo");
+  g_assert_cmpstr (argv[2], ==, "--");
+  g_assert_cmpstr (argv[3], ==, "-bar");
+  g_assert_null (argv[4]);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -1517,14 +1518,14 @@ rest_test2a (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (argv[0], "program") == 0);
-  g_assert (strcmp (argv[1], "foo") == 0);
-  g_assert (strcmp (argv[2], "bar") == 0);
-  g_assert (argv[3] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (argv[0], ==, "program");
+  g_assert_cmpstr (argv[1], ==, "foo");
+  g_assert_cmpstr (argv[2], ==, "bar");
+  g_assert_null (argv[3]);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -1555,14 +1556,14 @@ rest_test2b (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (argv[0], "program") == 0);
-  g_assert (strcmp (argv[1], "foo") == 0);
-  g_assert (strcmp (argv[2], "-bar") == 0);
-  g_assert (argv[3] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (argv[0], ==, "program");
+  g_assert_cmpstr (argv[1], ==, "foo");
+  g_assert_cmpstr (argv[2], ==, "-bar");
+  g_assert_null (argv[3]);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -1592,14 +1593,14 @@ rest_test2c (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (argv[0], "program") == 0);
-  g_assert (strcmp (argv[1], "foo") == 0);
-  g_assert (strcmp (argv[2], "bar") == 0);
-  g_assert (argv[3] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (argv[0], ==, "program");
+  g_assert_cmpstr (argv[1], ==, "foo");
+  g_assert_cmpstr (argv[2], ==, "bar");
+  g_assert_null (argv[3]);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -1629,14 +1630,14 @@ rest_test2d (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (argv[0], "program") == 0);
-  g_assert (strcmp (argv[1], "--") == 0);
-  g_assert (strcmp (argv[2], "-bar") == 0);
-  g_assert (argv[3] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (argv[0], ==, "program");
+  g_assert_cmpstr (argv[1], ==, "--");
+  g_assert_cmpstr (argv[2], ==, "-bar");
+  g_assert_null (argv[3]);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -1669,13 +1670,13 @@ rest_test3 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (array_test1_array[0], "foo") == 0);
-  g_assert (strcmp (array_test1_array[1], "bar") == 0);
-  g_assert (array_test1_array[2] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (array_test1_array[0], ==, "foo");
+  g_assert_cmpstr (array_test1_array[1], ==, "bar");
+  g_assert_null (array_test1_array[2]);
 
   g_strfreev (array_test1_array);
 
@@ -1710,13 +1711,13 @@ rest_test4 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (array_test1_array[0], "foo") == 0);
-  g_assert (strcmp (array_test1_array[1], "-bar") == 0);
-  g_assert (array_test1_array[2] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (array_test1_array[0], ==, "foo");
+  g_assert_cmpstr (array_test1_array[1], ==, "-bar");
+  g_assert_null (array_test1_array[2]);
 
   g_strfreev (array_test1_array);
 
@@ -1750,13 +1751,13 @@ rest_test5 (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Check array */
-  g_assert (ignore_test1_boolean);
-  g_assert (strcmp (array_test1_array[0], "foo") == 0);
-  g_assert (strcmp (array_test1_array[1], "bar") == 0);
-  g_assert (array_test1_array[2] == NULL);
+  g_assert_true (ignore_test1_boolean);
+  g_assert_cmpstr (array_test1_array[0], ==, "foo");
+  g_assert_cmpstr (array_test1_array[1], ==, "bar");
+  g_assert_null (array_test1_array[2]);
 
   g_strfreev (array_test1_array);
 
@@ -1786,8 +1787,8 @@ unknown_short_test (void)
   argv_copy = copy_stringv (argv, argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert (!retval);
-  g_assert (error != NULL);
+  g_assert_false (retval);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_UNKNOWN_OPTION);
   g_clear_error (&error);
 
   g_strfreev (argv_copy);
@@ -1816,9 +1817,9 @@ lonely_dash_test (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
-  g_assert (argv[1] && strcmp (argv[1], "-") == 0);
+  g_assert_cmpstr (argv[1], ==, "-");
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -1860,7 +1861,7 @@ triple_dash_test (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_UNKNOWN_OPTION);
-  g_assert (retval == FALSE);
+  g_assert_false (retval);
 
   g_option_context_free (context);
   g_clear_error (&error);
@@ -1892,8 +1893,8 @@ missing_arg_test (void)
   argv_copy = copy_stringv (argv, argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert (retval == FALSE);
-  g_assert (error != NULL);
+  g_assert_false (retval);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   /* An error occurred, so argv has not been changed */
   check_identical_stringv (argv_copy, argv);
   g_clear_error (&error);
@@ -1906,8 +1907,8 @@ missing_arg_test (void)
   argv_copy = copy_stringv (argv, argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert (retval == FALSE);
-  g_assert (error != NULL);
+  g_assert_false (retval);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   /* An error occurred, so argv has not been changed */
   check_identical_stringv (argv_copy, argv);
   g_clear_error (&error);
@@ -1960,7 +1961,7 @@ dash_arg_test (void)
   test_arg = NULL;
   error = NULL;
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert (retval);
+  g_assert_true (retval);
   g_assert_no_error (error);
   g_assert_cmpstr (test_arg, ==, "-3");
 
@@ -1976,7 +1977,7 @@ dash_arg_test (void)
   error = NULL;
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
   g_assert_cmpstr (test_arg, ==, NULL);
 
   g_option_context_free (context);
@@ -1996,8 +1997,8 @@ test_basic (void)
   context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, entries, NULL);
 
-  g_assert (g_option_context_get_help_enabled (context));
-  g_assert (!g_option_context_get_ignore_unknown_options (context));
+  g_assert_true (g_option_context_get_help_enabled (context));
+  g_assert_false (g_option_context_get_ignore_unknown_options (context));
   g_assert_cmpstr (g_option_context_get_summary (context), ==, NULL);
   g_assert_cmpstr (g_option_context_get_description (context), ==, NULL);
 
@@ -2006,8 +2007,8 @@ test_basic (void)
   g_option_context_set_summary (context, "summary");
   g_option_context_set_description(context, "description");
 
-  g_assert (!g_option_context_get_help_enabled (context));
-  g_assert (g_option_context_get_ignore_unknown_options (context));
+  g_assert_false (g_option_context_get_help_enabled (context));
+  g_assert_true (g_option_context_get_ignore_unknown_options (context));
   g_assert_cmpstr (g_option_context_get_summary (context), ==, "summary");
   g_assert_cmpstr (g_option_context_get_description (context), ==, "description");
 
@@ -2067,10 +2068,10 @@ test_translate (void)
   g_free (str);
   g_option_context_free (context);
 
-  g_assert (data.parameter_seen);
-  g_assert (data.summary_seen);
-  g_assert (data.description_seen);
-  g_assert (data.destroyed);
+  g_assert_true (data.parameter_seen);
+  g_assert_true (data.summary_seen);
+  g_assert_true (data.description_seen);
+  g_assert_true (data.destroyed);
 }
 
 static void
@@ -2105,24 +2106,24 @@ test_help (void)
   g_option_context_add_group (context, group);
 
   str = g_option_context_get_help (context, FALSE, NULL);
-  g_assert (strstr (str, "blabla") != NULL);
-  g_assert (strstr (str, "Test tests") != NULL);
-  g_assert (strstr (str, "Argument to use in test") != NULL);
-  g_assert (strstr (str, "Tests also") == NULL);
-  g_assert (strstr (str, "REST") != NULL);
-  g_assert (strstr (str, "Summary") != NULL);
-  g_assert (strstr (str, "Description") != NULL);
-  g_assert (strstr (str, "--help") != NULL);
-  g_assert (strstr (str, "--help-all") != NULL);
-  g_assert (strstr (str, "--help-group1") != NULL);
-  g_assert (strstr (str, "Group1-description") != NULL);
-  g_assert (strstr (str, "Group1-help") != NULL);
-  g_assert (strstr (str, "Group test arg") != NULL);
-  g_assert (strstr (str, "Group frob") != NULL);
-  g_assert (strstr (str, "Main frob") != NULL);
-  g_assert (strstr (str, "--frob") != NULL);
-  g_assert (strstr (str, "--group1-test") != NULL);
-  g_assert (strstr (str, "--group1-frob") == NULL);
+  g_assert_nonnull (strstr (str, "blabla"));
+  g_assert_nonnull (strstr (str, "Test tests"));
+  g_assert_nonnull (strstr (str, "Argument to use in test"));
+  g_assert_null (strstr (str, "Tests also"));
+  g_assert_nonnull (strstr (str, "REST"));
+  g_assert_nonnull (strstr (str, "Summary"));
+  g_assert_nonnull (strstr (str, "Description"));
+  g_assert_nonnull (strstr (str, "--help"));
+  g_assert_nonnull (strstr (str, "--help-all"));
+  g_assert_nonnull (strstr (str, "--help-group1"));
+  g_assert_nonnull (strstr (str, "Group1-description"));
+  g_assert_nonnull (strstr (str, "Group1-help"));
+  g_assert_nonnull (strstr (str, "Group test arg"));
+  g_assert_nonnull (strstr (str, "Group frob"));
+  g_assert_nonnull (strstr (str, "Main frob"));
+  g_assert_nonnull (strstr (str, "--frob"));
+  g_assert_nonnull (strstr (str, "--group1-test"));
+  g_assert_null (strstr (str, "--group1-frob"));
   g_free (str);
 
   g_option_context_free (context);
@@ -2143,10 +2144,10 @@ test_help_no_options (void)
   g_option_context_add_main_entries (context, entries, NULL);
 
   str = g_option_context_get_help (context, FALSE, NULL);
-  g_assert (strstr (str, "blabla") != NULL);
-  g_assert (strstr (str, "REST") != NULL);
-  g_assert (strstr (str, "Help Options") != NULL);
-  g_assert (strstr (str, "Application Options") == NULL);
+  g_assert_nonnull (strstr (str, "blabla"));
+  g_assert_nonnull (strstr (str, "REST"));
+  g_assert_nonnull (strstr (str, "Help Options"));
+  g_assert_null (strstr (str, "Application Options"));
 
   g_free (str);
   g_option_context_free (context);
@@ -2187,25 +2188,25 @@ test_help_no_help_options (void)
   g_option_context_add_group (context, group);
 
   str = g_option_context_get_help (context, FALSE, NULL);
-  g_assert (strstr (str, "blabla") != NULL);
-  g_assert (strstr (str, "Test tests") != NULL);
-  g_assert (strstr (str, "Argument to use in test") != NULL);
-  g_assert (strstr (str, "Tests also") == NULL);
-  g_assert (strstr (str, "REST") != NULL);
-  g_assert (strstr (str, "Summary") != NULL);
-  g_assert (strstr (str, "Description") != NULL);
-  g_assert (strstr (str, "Help Options") == NULL);
-  g_assert (strstr (str, "--help") == NULL);
-  g_assert (strstr (str, "--help-all") == NULL);
-  g_assert (strstr (str, "--help-group1") == NULL);
-  g_assert (strstr (str, "Group1-description") != NULL);
-  g_assert (strstr (str, "Group1-help") == NULL);
-  g_assert (strstr (str, "Group test arg") != NULL);
-  g_assert (strstr (str, "Group frob") != NULL);
-  g_assert (strstr (str, "Main frob") != NULL);
-  g_assert (strstr (str, "--frob") != NULL);
-  g_assert (strstr (str, "--group1-test") != NULL);
-  g_assert (strstr (str, "--group1-frob") == NULL);
+  g_assert_nonnull (strstr (str, "blabla"));
+  g_assert_nonnull (strstr (str, "Test tests"));
+  g_assert_nonnull (strstr (str, "Argument to use in test"));
+  g_assert_null (strstr (str, "Tests also"));
+  g_assert_nonnull (strstr (str, "REST"));
+  g_assert_nonnull (strstr (str, "Summary"));
+  g_assert_nonnull (strstr (str, "Description"));
+  g_assert_null (strstr (str, "Help Options"));
+  g_assert_null (strstr (str, "--help"));
+  g_assert_null (strstr (str, "--help-all"));
+  g_assert_null (strstr (str, "--help-group1"));
+  g_assert_nonnull (strstr (str, "Group1-description"));
+  g_assert_null (strstr (str, "Group1-help"));
+  g_assert_nonnull (strstr (str, "Group test arg"));
+  g_assert_nonnull (strstr (str, "Group frob"));
+  g_assert_nonnull (strstr (str, "Main frob"));
+  g_assert_nonnull (strstr (str, "--frob"));
+  g_assert_nonnull (strstr (str, "--group1-test"));
+  g_assert_null (strstr (str, "--group1-frob"));
   g_free (str);
 
   g_option_context_free (context);
@@ -2252,19 +2253,19 @@ test_main_group (void)
   gboolean b = FALSE;
 
   context = g_option_context_new (NULL);
-  g_assert (g_option_context_get_main_group (context) == NULL);
+  g_assert_null (g_option_context_get_main_group (context));
   group = g_option_group_new ("name", "description", "hlep", &b, set_bool);
   g_option_context_add_group (context, group);
   group = g_option_group_new ("name2", "description", "hlep", NULL, NULL);
   g_option_context_add_group (context, group);
-  g_assert (g_option_context_get_main_group (context) == NULL);
+  g_assert_null (g_option_context_get_main_group (context));
   group = g_option_group_new ("name", "description", "hlep", NULL, NULL);
   g_option_context_set_main_group (context, group);
-  g_assert (g_option_context_get_main_group (context) == group);
+  g_assert_true (g_option_context_get_main_group (context) == group);
 
   g_option_context_free (context);
 
-  g_assert (b);
+  g_assert_true (b);
 }
 
 static gboolean error_func_called = FALSE;
@@ -2305,13 +2306,13 @@ test_error_hook (void)
   argv_copy = copy_stringv (argv, argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
-  g_assert (retval == FALSE);
-  g_assert (error != NULL);
+  g_assert_false (retval);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
   /* An error occurred, so argv has not been changed */
   check_identical_stringv (argv_copy, argv);
   g_clear_error (&error);
 
-  g_assert (error_func_called);
+  g_assert_true (error_func_called);
 
   g_strfreev (argv_copy);
   g_free (argv);
@@ -2356,7 +2357,7 @@ test_group_parse (void)
   retval = g_option_context_parse (context, &argc, &argv, &error);
 
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
   g_assert_cmpstr (arg1, ==, "arg1");
   g_assert_cmpstr (arg2, ==, "arg2");
   g_assert_cmpstr (arg3, ==, "arg3");
@@ -2412,29 +2413,29 @@ test_strict_posix (void)
   g_option_context_set_strict_posix (context, FALSE);
   n_parsed = option_context_parse_command_line (context, "program --foo command --bar");
   g_assert_cmpint (n_parsed, ==, 2);
-  g_assert (foo == TRUE);
-  g_assert (bar == TRUE);
+  g_assert_true (foo);
+  g_assert_true (bar);
 
   foo = bar = FALSE;
   g_option_context_set_strict_posix (context, TRUE);
   n_parsed = option_context_parse_command_line (context, "program --foo command --bar");
   g_assert_cmpint (n_parsed, ==, 1);
-  g_assert (foo == TRUE);
-  g_assert (bar == FALSE);
+  g_assert_true (foo);
+  g_assert_false (bar);
 
   foo = bar = FALSE;
   g_option_context_set_strict_posix (context, TRUE);
   n_parsed = option_context_parse_command_line (context, "program --foo --bar command");
   g_assert_cmpint (n_parsed, ==, 2);
-  g_assert (foo == TRUE);
-  g_assert (bar == TRUE);
+  g_assert_true (foo);
+  g_assert_true (bar);
 
   foo = bar = FALSE;
   g_option_context_set_strict_posix (context, TRUE);
   n_parsed = option_context_parse_command_line (context, "program command --foo --bar");
   g_assert_cmpint (n_parsed, ==, 0);
-  g_assert (foo == FALSE);
-  g_assert (bar == FALSE);
+  g_assert_false (foo);
+  g_assert_false (bar);
 
   g_option_context_free (context);
 }
@@ -2465,7 +2466,7 @@ flag_reverse_string (void)
   argv = split_string ("program --test bla", &argc);
 
   retval = g_option_context_parse_strv (context, &argv, &error);
-  g_assert (retval == TRUE);
+  g_assert_true (retval);
   g_assert_no_error (error);
   g_strfreev (argv);
   g_option_context_free (context);
@@ -2498,7 +2499,7 @@ flag_optional_int (void)
   argv = split_string ("program --test 5", &argc);
 
   retval = g_option_context_parse_strv (context, &argv, &error);
-  g_assert (retval == TRUE);
+  g_assert_true (retval);
   g_assert_no_error (error);
   g_strfreev (argv);
   g_option_context_free (context);
@@ -2539,13 +2540,13 @@ short_remaining (void)
   g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
 
-  g_assert (ignore);
-  g_assert (remaining);
+  g_assert_true (ignore);
+  g_assert_true (remaining);
   g_assert_cmpint (number, ==, 4);
   g_assert_cmpstr (text, ==, "hello");
   g_assert_cmpstr (files[0], ==, "file1"); 
   g_assert_cmpstr (files[1], ==, "file2"); 
-  g_assert (files[2] == NULL); 
+  g_assert_null (files[2]);
 
   g_free (text);
   g_strfreev (files);
@@ -2610,13 +2611,70 @@ double_zero (void)
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert_no_error (error);
-  g_assert (retval);
+  g_assert_true (retval);
 
   /* Last arg specified is the one that should be stored */
-  g_assert (test_val == 0);
+  g_assert_cmpfloat (test_val, ==, 0.0);
 
   g_strfreev (argv_copy);
   g_free (argv);
+  g_option_context_free (context);
+}
+
+static void
+test_parsing_errors (void)
+{
+  GOptionContext *context = NULL;
+  double test_double = 123.0;
+  int test_int = 123;
+  int64_t test_int64 = 123;
+  const GOptionEntry entries[] = {
+    { "double", 0, 0, G_OPTION_ARG_DOUBLE, &test_double, NULL, NULL },
+    { "int", 0, 0, G_OPTION_ARG_INT, &test_int, NULL, NULL },
+    { "int64", 0, 0, G_OPTION_ARG_INT64, &test_int64, NULL, NULL },
+    G_OPTION_ENTRY_NULL
+  };
+  const char *test_cmds[] = {
+    "program --double abc",
+    "program --double 2e309",
+    "program --int abc",
+    "program --int 99999999999999999999999999999999999",
+    "program --int64 abc",
+    "program --int64 99999999999999999999999999999999999",
+  };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  for (size_t i = 0; i < G_N_ELEMENTS (test_cmds); i++)
+    {
+      gboolean retval;
+      GError *local_error = NULL;
+      char **argv = NULL, **argv_copy = NULL;
+      int argc;
+
+      g_test_message ("Testing command: %s", test_cmds[i]);
+
+      argv = split_string (test_cmds[i], &argc);
+      argv_copy = copy_stringv (argv, argc);
+
+      retval = g_option_context_parse (context, &argc, &argv, &local_error);
+      g_assert_error (local_error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+      g_assert_false (retval);
+      /* An error occurred, so argv has not been changed */
+      check_identical_stringv (argv_copy, argv);
+      g_clear_error (&local_error);
+
+      /* On failure, values should be reset */
+      g_assert_cmpfloat (test_double, ==, 123.0);
+      g_assert_cmpint (test_int, ==, 123);
+      g_assert_cmpint (test_int64, ==, 123);
+
+      g_strfreev (argv_copy);
+      g_free (argv);
+    }
+
   g_option_context_free (context);
 }
 
@@ -2734,6 +2792,9 @@ main (int   argc,
   g_test_add_func ("/option/bug/short-remaining", short_remaining);
   g_test_add_func ("/option/bug/double-free", double_free);
   g_test_add_func ("/option/bug/double-zero", double_zero);
+
+  /* Parsing errors */
+  g_test_add_func ("/option/parsing-errors", test_parsing_errors);
 
   return g_test_run();
 }

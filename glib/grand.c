@@ -185,7 +185,7 @@ g_rand_new (void)
 
       if (dev_urandom)
 	{
-	  int r;
+	  size_t r;
 
 	  setvbuf (dev_urandom, NULL, _IONBF, 0);
 	  do
@@ -207,7 +207,7 @@ g_rand_new (void)
   if (!dev_urandom_exists)
     {
       gint64 now_us = g_get_real_time ();
-      seed[0] = now_us / G_USEC_PER_SEC;
+      seed[0] = (guint32) (now_us / G_USEC_PER_SEC);
       seed[1] = now_us % G_USEC_PER_SEC;
       seed[2] = getpid ();
       seed[3] = getppid ();

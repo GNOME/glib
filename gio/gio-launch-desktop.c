@@ -129,7 +129,7 @@ journal_stream_fd (const char *identifier,
   if (fd < 0)
     goto fail;
 
-  salen = offsetof (struct sockaddr_un, sun_path) + strlen (sa.un.sun_path) + 1;
+  salen = offsetof (struct sockaddr_un, sun_path) + (socklen_t) strlen (sa.un.sun_path) + 1;
 
   if (connect (fd, &sa.sa, salen) < 0)
     goto fail;

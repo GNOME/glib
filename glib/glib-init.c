@@ -234,7 +234,7 @@ GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static gboolean
 debug_key_matches (const gchar *key,
                    const gchar *token,
-                   guint        length)
+                   size_t       length)
 {
   /* may not call GLib functions: see note in g_parse_debug_string() */
   for (; length; length--, key++, token++)
