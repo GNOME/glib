@@ -47,8 +47,10 @@
   #undef g_pointer_bit_unlock_and_set
 
   #define g_bit_lock                    _emufutex_g_bit_lock
+  #define g_bit_lock_and_get            _emufutex_g_bit_lock_and_get
   #define g_bit_trylock                 _emufutex_g_bit_trylock
   #define g_bit_unlock                  _emufutex_g_bit_unlock
+  #define g_bit_unlock_and_set          _emufutex_g_bit_unlock_and_set
   #define g_pointer_bit_lock            _emufutex_g_pointer_bit_lock
   #define g_pointer_bit_lock_and_get    _emufutex_g_pointer_bit_lock_and_get
   #define g_pointer_bit_trylock         _emufutex_g_pointer_bit_trylock
