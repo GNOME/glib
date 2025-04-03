@@ -1,3 +1,59 @@
+Overview of changes in GLib 2.84.1, 2025-04-03
+==============================================
+
+* Fix test failure when building against gobject-introspection ≥1.83.4 (#3634,
+  work by Philip Withnall)
+
+* Bugs fixed:
+  - #3630 2.84.0 build failure on Linux: ../gio/gnetworkmonitornetlink.c:47:10:
+    fatal error: netlink/netlink_route.h: No such file or directory (Philip
+    Withnall)
+  - #3634 test failure with gobject-introspection 1.83.4: warning: element
+    doc:format from state 3 is unknown, ignoring (Philip Withnall)
+  - #3636 gio/trash does not handle special characters well
+  - #3642 `g_cancellable_connect()` documentation incorrect (Marco Trevisan
+    (Treviño))
+  - #3643 g_cancellable_connect(): is it safe to unref cancellable from
+    callback? (Marco Trevisan (Treviño))
+  - #3649 Crash with some registry key values in GWin32AppInfo (Philip Withnall)
+  - !4484 Memory sanitizer fixes
+  - !4489 gobject: Be consistent in using atomic logic to handle the
+    GParamSpecPool
+  - !4541 gsettings: Port docs to gi-docgen format, add missing annotations and
+    make various improvements
+  - !4544 tests: Don't install runner scripts without installed_tests
+  - !4545 Update French translation
+  - !4547 Update Catalan translation
+  - !4548 Update Turkish translation
+  - !4551 Updated Danish translation
+  - !4552 Update Persian translation
+  - !4553 docs: Document GSignalFlags members added after 2.0
+  - !4554 Update Indonesian translation
+  - !4555 tests: Add a test for g_object_freeze_notify() being called too often
+  - !4557 gfileinfo: Slightly expand docs for
+    g_file_info_get_attribute_as_string()
+  - !4558 gi: Dynamically set doc-format
+  - !4561 tests: Various fixes to create temporary files in /tmp rather than the
+    build directory
+  - !4562 gdbusnameowning: Convert docs to gi-docgen linking syntax
+  - !4563 giounix-private: Fix macro for checking for epoll_create1()
+  - !4565 Fix LGPL in header
+  - !4567 gutils: make documentation of g_set_prgname() clearer
+  - !4568 docs: Add some detail
+  - !4569 Update Romanian translation
+  - !4570 gspawn-win32: Fix potential integer overflows in argv handling
+  - !4571 gvarianttype: Improve docs on type validation
+
+* Translation updates:
+  - Catalan (Jordi Mas)
+  - Danish (Ask Hjorth Larsen)
+  - French (Vincent Chatelain)
+  - Indonesian (Andika Triwidada)
+  - Persian (Danial Behzadi)
+  - Romanian (Antonio Marin)
+  - Turkish (Sabri Ünal)
+
+
 Overview of changes in GLib 2.84.0, 2025-03-06
 ==============================================
 
