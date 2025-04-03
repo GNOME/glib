@@ -2778,6 +2778,8 @@ should_drop_message (GLogLevelFlags   log_level,
 
       if (log_domain == NULL)
         {
+          log_domain_length = 0;
+
           for (i = 0; i < n_fields; i++)
             {
               if (g_strcmp0 (fields[i].key, "GLIB_DOMAIN") == 0)
