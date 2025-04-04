@@ -593,12 +593,12 @@ GClosure*
 g_closure_ref (GClosure *closure)
 {
   guint new_ref_count;
+
   g_return_val_if_fail (closure != NULL, NULL);
-  g_return_val_if_fail (closure->ref_count > 0, NULL);
-  g_return_val_if_fail (closure->ref_count < CLOSURE_MAX_REF_COUNT, NULL);
 
   ATOMIC_INC_ASSIGN (closure, ref_count, &new_ref_count);
   g_return_val_if_fail (new_ref_count > 1, NULL);
+  g_return_val_if_fail (new_ref_count < CLOSURE_MAX_REF_COUNT + 1, NULL);
 
   return closure;
 }
