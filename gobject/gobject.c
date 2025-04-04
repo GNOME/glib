@@ -3672,6 +3672,40 @@ weak_refs_notify (gpointer data)
   g_free (wstack);
 }
 
+static gpointer
+g_object_weak_ref_cb (gpointer *data,
+                      GDestroyNotify *destroy_notify,
+                      gpointer user_data)
+{
+  GObject *object = ((gpointer *) user_data)[0];
+  GWeakNotify notify = ((gpointer *) user_data)[1];
+  gpointer notify_data = ((gpointer *) user_data)[2];
+  WeakRefStack *wstack = *data;
+  guint i;
+
+  if (!wstack)
+    {
+      wstack = g_new (WeakRefStack, 1);
+      wstack->object = object;
+      wstack->n_weak_refs = 1;
+      i = 0;
+
+      *destroy_notify = weak_refs_notify;
+    }
+  else
+    {
+      i = wstack->n_weak_refs++;
+      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
+    }
+
+  *data = wstack;
+
+  wstack->weak_refs[i].notify = notify;
+  wstack->weak_refs[i].data = notify_data;
+
+  return NULL;
+}
+
 /**
  * g_object_weak_ref: (skip)
  * @object: #GObject to reference weakly
@@ -3694,30 +3728,15 @@ g_object_weak_ref (GObject    *object,
 		   GWeakNotify notify,
 		   gpointer    data)
 {
-  WeakRefStack *wstack;
-  guint i;
-  
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
   object_bit_lock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
-  wstack = g_datalist_id_remove_no_notify (&object->qdata, quark_weak_notifies);
-  if (wstack)
-    {
-      i = wstack->n_weak_refs++;
-      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
-    }
-  else
-    {
-      wstack = g_renew (WeakRefStack, NULL, 1);
-      wstack->object = object;
-      wstack->n_weak_refs = 1;
-      i = 0;
-    }
-  wstack->weak_refs[i].notify = notify;
-  wstack->weak_refs[i].data = data;
-  g_datalist_id_set_data_full (&object->qdata, quark_weak_notifies, wstack, weak_refs_notify);
+  _g_datalist_id_update_atomic (&object->qdata,
+                                quark_weak_notifies,
+                                g_object_weak_ref_cb,
+                                ((gpointer[]){ object, notify, data }));
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
 }
 
