@@ -176,7 +176,7 @@ g_futex_wake (const gint *address)
 static gint g_bit_lock_contended[CONTENTION_CLASSES];  /* (atomic) */
 
 G_ALWAYS_INLINE static inline guint
-bit_lock_contended_class (gpointer address)
+bit_lock_contended_class (gconstpointer address)
 {
   return ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
 }
@@ -186,6 +186,37 @@ bit_lock_contended_class (gpointer address)
     #define USE_ASM_GOTO 1
   #endif
 #endif
+
+static const gint *g_futex_int_address (const void *address);
+
+G_ALWAYS_INLINE static inline void
+bit_lock_futex_wait (gconstpointer address, gboolean is_pointer_pointer, gint value)
+{
+  const guint CLASS = bit_lock_contended_class (address);
+
+  g_atomic_int_add (&g_bit_lock_contended[CLASS], +1);
+  if (is_pointer_pointer)
+    address = g_futex_int_address (address);
+  g_futex_wait (address, value);
+  g_atomic_int_add (&g_bit_lock_contended[CLASS], -1);
+}
+
+G_ALWAYS_INLINE static inline void
+bit_lock_futex_maybe_wake (gconstpointer address, gboolean is_pointer_pointer)
+{
+  const guint CLASS = bit_lock_contended_class (address);
+
+  /* Warning: unlocking may allow another thread to proceed and destroy the
+   * memory that @address points to. We thus must not dereference it anymore.
+   */
+
+  if (g_atomic_int_get (&g_bit_lock_contended[CLASS]))
+    {
+      if (is_pointer_pointer)
+        address = g_futex_int_address (address);
+      g_futex_wake (address);
+    }
+}
 
 /**
  * g_bit_lock_and_get:
@@ -232,13 +263,7 @@ g_bit_lock_and_get (gint *address,
 
             v = (guint) g_atomic_int_get (address);
             if (v & MASK)
-              {
-                guint class = bit_lock_contended_class (address);
-
-                g_atomic_int_add (&g_bit_lock_contended[class], +1);
-                g_futex_wait (address, v);
-                g_atomic_int_add (&g_bit_lock_contended[class], -1);
-              }
+              bit_lock_futex_wait (address, FALSE, (gint) v);
           }
         }
     }
@@ -247,14 +272,8 @@ g_bit_lock_and_get (gint *address,
 retry:
   v = g_atomic_int_or ((guint *) address, MASK);
   if (v & MASK)
-    /* already locked */
     {
-      guint class = bit_lock_contended_class (address);
-
-      g_atomic_int_add (&g_bit_lock_contended[class], +1);
-      g_futex_wait (address, v);
-      g_atomic_int_add (&g_bit_lock_contended[class], -1);
-
+      bit_lock_futex_wait (address, FALSE, (gint) v);
       goto retry;
     }
 
@@ -376,13 +395,7 @@ g_bit_unlock (volatile gint *address,
   /* Warning: unlocking may allow another thread to proceed and destroy the
    * memory that @address points to. We thus must not dereference it anymore.
    */
-
-  {
-    guint class = bit_lock_contended_class (address_nonvolatile);
-
-    if (g_atomic_int_get (&g_bit_lock_contended[class]))
-      g_futex_wake (address_nonvolatile);
-  }
+  bit_lock_futex_maybe_wake (address_nonvolatile, FALSE);
 }
 
 /**
@@ -436,13 +449,7 @@ g_bit_unlock_and_set (gint *address,
   /* Warning: unlocking may allow another thread to proceed and destroy the
    * memory that @address points to. We thus must not dereference it anymore.
    */
-
-  {
-    guint class = bit_lock_contended_class (address);
-
-    if (g_atomic_int_get (&g_bit_lock_contended[class]))
-      g_futex_wake (address);
-  }
+  bit_lock_futex_maybe_wake (address, FALSE);
 }
 
 /* We emulate pointer-sized futex(2) because the kernel API only
@@ -534,7 +541,6 @@ void
                               guint lock_bit,
                               guintptr *out_ptr)
 {
-  guint class = bit_lock_contended_class (address);
   guintptr mask;
   guintptr v;
 
@@ -558,11 +564,7 @@ void
         contended:
           v = (guintptr) g_atomic_pointer_get ((gpointer *) address);
           if (v & mask)
-            {
-              g_atomic_int_add (&g_bit_lock_contended[class], +1);
-              g_futex_wait (g_futex_int_address (address), v);
-              g_atomic_int_add (&g_bit_lock_contended[class], -1);
-            }
+            bit_lock_futex_wait (address, TRUE, (gint) v);
         }
     }
 #endif
@@ -570,11 +572,8 @@ void
 retry:
   v = g_atomic_pointer_or ((gpointer *) address, mask);
   if (v & mask)
-    /* already locked */
     {
-      g_atomic_int_add (&g_bit_lock_contended[class], +1);
-      g_futex_wait (g_futex_int_address (address), (guint) v);
-      g_atomic_int_add (&g_bit_lock_contended[class], -1);
+      bit_lock_futex_wait (address, TRUE, (gint) v);
       goto retry;
     }
 
@@ -696,13 +695,7 @@ void
     /* Warning: unlocking may allow another thread to proceed and destroy the
      * memory that @address points to. We thus must not dereference it anymore.
      */
-
-    {
-      guint class = bit_lock_contended_class (address_nonvolatile);
-
-      if (g_atomic_int_get (&g_bit_lock_contended[class]))
-        g_futex_wake (g_futex_int_address (address_nonvolatile));
-    }
+    bit_lock_futex_maybe_wake (address_nonvolatile, TRUE);
   }
 }
 
@@ -762,7 +755,6 @@ void (g_pointer_bit_unlock_and_set) (void *address,
                                      guintptr preserve_mask)
 {
   gpointer *pointer_address = address;
-  guint class = bit_lock_contended_class (address);
   gpointer ptr2;
 
   g_return_if_fail (lock_bit < 32u);
@@ -782,8 +774,7 @@ void (g_pointer_bit_unlock_and_set) (void *address,
       g_atomic_pointer_set (pointer_address, ptr2);
     }
 
-  if (g_atomic_int_get (&g_bit_lock_contended[class]) > 0)
-    g_futex_wake (g_futex_int_address (address));
+  bit_lock_futex_maybe_wake (address, TRUE);
 
   /* It makes no sense, if unlocking mangles the pointer. Assert against
    * that.
