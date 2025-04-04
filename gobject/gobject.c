@@ -3690,13 +3690,13 @@ weak_refs_notify (gpointer data)
  * Use #GWeakRef if thread-safety is required.
  */
 void
-g_object_weak_ref (GObject    *object,
-		   GWeakNotify notify,
-		   gpointer    data)
+g_object_weak_ref (GObject *object,
+                   GWeakNotify notify,
+                   gpointer data)
 {
   WeakRefStack *wstack;
   guint i;
-  
+
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
@@ -3730,9 +3730,9 @@ g_object_weak_ref (GObject    *object,
  * Removes a weak reference callback to an object.
  */
 void
-g_object_weak_unref (GObject    *object,
-		     GWeakNotify notify,
-		     gpointer    data)
+g_object_weak_unref (GObject *object,
+                     GWeakNotify notify,
+                     gpointer data)
 {
   WeakRefStack *wstack;
   gboolean found_one = FALSE;
@@ -3747,16 +3747,16 @@ g_object_weak_unref (GObject    *object,
       guint i;
 
       for (i = 0; i < wstack->n_weak_refs; i++)
-	if (wstack->weak_refs[i].notify == notify &&
-	    wstack->weak_refs[i].data == data)
-	  {
-	    found_one = TRUE;
-	    wstack->n_weak_refs -= 1;
-	    if (i != wstack->n_weak_refs)
-	      wstack->weak_refs[i] = wstack->weak_refs[wstack->n_weak_refs];
+        if (wstack->weak_refs[i].notify == notify &&
+            wstack->weak_refs[i].data == data)
+          {
+            found_one = TRUE;
+            wstack->n_weak_refs -= 1;
+            if (i != wstack->n_weak_refs)
+              wstack->weak_refs[i] = wstack->weak_refs[wstack->n_weak_refs];
 
-	    break;
-	  }
+            break;
+          }
     }
   object_bit_unlock (object, OPTIONAL_BIT_LOCK_WEAK_REFS);
   if (!found_one)
