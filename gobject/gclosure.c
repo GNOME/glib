@@ -580,6 +580,30 @@ closure_try_remove_fnotify (GClosure       *closure,
   return FALSE;
 }
 
+static GClosureFlags
+closure_ref_internal (GClosure *closure)
+{
+  guint new_ref_count;
+  int old_int, success;
+  GClosureFlags tmp = { .atomic_int = 0, };
+
+  old_int = g_atomic_int_get (&((GClosureFlags *) closure)->atomic_int);
+  do
+    {
+      tmp.atomic_int = old_int;
+      tmp.flags.ref_count += 1;
+      success = g_atomic_int_compare_and_exchange_full (&((GClosureFlags *) closure)->atomic_int, old_int, tmp.atomic_int, &old_int);
+    }
+  while (!success);
+
+  new_ref_count = tmp.flags.ref_count;
+
+  g_return_val_if_fail (new_ref_count > 1, tmp);
+  g_return_val_if_fail (new_ref_count < CLOSURE_MAX_REF_COUNT + 1, tmp);
+
+  return tmp;
+}
+
 /**
  * g_closure_ref:
  * @closure: #GClosure to increment the reference count on
@@ -592,14 +616,9 @@ closure_try_remove_fnotify (GClosure       *closure,
 GClosure*
 g_closure_ref (GClosure *closure)
 {
-  guint new_ref_count;
-
   g_return_val_if_fail (closure != NULL, NULL);
 
-  ATOMIC_INC_ASSIGN (closure, ref_count, &new_ref_count);
-  g_return_val_if_fail (new_ref_count > 1, NULL);
-  g_return_val_if_fail (new_ref_count < CLOSURE_MAX_REF_COUNT + 1, NULL);
-
+  closure_ref_internal (closure);
   return closure;
 }
 
@@ -865,18 +884,19 @@ g_closure_invoke (GClosure       *closure,
 		  const GValue   *param_values,
 		  gpointer        invocation_hint)
 {
+  GClosureFlags reffed_flags;
   GRealClosure *real_closure;
 
   g_return_if_fail (closure != NULL);
 
   real_closure = G_REAL_CLOSURE (closure);
 
-  g_closure_ref (closure);      /* preserve floating flag */
-  if (!closure->is_invalid)
+  reffed_flags = closure_ref_internal (closure);  /* preserve floating flag */
+  if (!reffed_flags.flags.is_invalid)
     {
       GClosureMarshal marshal;
       gpointer marshal_data;
-      gboolean in_marshal = closure->in_marshal;
+      gboolean in_marshal = reffed_flags.flags.in_marshal;
 
       g_return_if_fail (closure->marshal || real_closure->meta_marshal);
 
@@ -928,18 +948,19 @@ _g_closure_invoke_va (GClosure       *closure,
 		      int             n_params,
 		      GType          *param_types)
 {
+  GClosureFlags reffed_flags;
   GRealClosure *real_closure;
 
   g_return_if_fail (closure != NULL);
 
   real_closure = G_REAL_CLOSURE (closure);
 
-  g_closure_ref (closure);      /* preserve floating flag */
-  if (!closure->is_invalid)
+  reffed_flags = closure_ref_internal (closure);  /* preserve floating flag */
+  if (!reffed_flags.flags.is_invalid)
     {
       GVaClosureMarshal marshal;
       gpointer marshal_data;
-      gboolean in_marshal = closure->in_marshal;
+      gboolean in_marshal = reffed_flags.flags.in_marshal;
 
       g_return_if_fail (closure->marshal || real_closure->meta_marshal);
 
