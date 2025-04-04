@@ -138,9 +138,10 @@ thread_func (gpointer user_data)
   GRand *rand;
 
   rand = g_rand_new ();
+  g_assert (data->n_locks <= G_MAXINT32);
 
   for (unsigned int i = 0; i < data->n_iterations; i++)
-    acquire (data, g_rand_int_range (rand, 0, data->n_locks));
+    acquire (data, g_rand_int_range (rand, 0, (gint32) data->n_locks));
 
   g_rand_free (rand);
 
