@@ -129,7 +129,7 @@ typedef union {
 G_STATIC_ASSERT (sizeof (GClosureFlags) == sizeof (GClosure));
 G_STATIC_ASSERT (G_ALIGNOF (GClosureFlags) == G_ALIGNOF (GClosure));
 
-#define ATOMIC_CHANGE_FIELD(_closure, _field, _OP, _value, _must_set, _SET_OLD, _SET_NEW)      \
+#define ATOMIC_CHANGE_FIELD(_closure, _field, _OP, _value, _SET_OLD, _SET_NEW) \
 G_STMT_START {                                                                          \
   GClosureFlags *cunion = (GClosureFlags *) _closure; \
   gint new_int, old_int, success;                              		                \
@@ -145,15 +145,15 @@ G_STMT_START {                                                                  
       success = g_atomic_int_compare_and_exchange_full (&cunion->atomic_int, old_int, new_int, \
 							&old_int);			\
     }                                                   		                \
-  while (!success && _must_set);                                                        \
+  while (!success); \
 } G_STMT_END
 
-#define ATOMIC_SWAP(_closure, _field, _value, _oldv)   ATOMIC_CHANGE_FIELD (_closure, _field, =, _value, TRUE, *(_oldv) =,     (void) )
-#define ATOMIC_SET(_closure, _field, _value)           ATOMIC_CHANGE_FIELD (_closure, _field, =, _value, TRUE,     (void),     (void) )
-#define ATOMIC_INC(_closure, _field)                   ATOMIC_CHANGE_FIELD (_closure, _field, +=,     1, TRUE,     (void),     (void) )
-#define ATOMIC_INC_ASSIGN(_closure, _field, _newv)     ATOMIC_CHANGE_FIELD (_closure, _field, +=,     1, TRUE,     (void), *(_newv) = )
-#define ATOMIC_DEC(_closure, _field)                   ATOMIC_CHANGE_FIELD (_closure, _field, -=,     1, TRUE,     (void),     (void) )
-#define ATOMIC_DEC_ASSIGN(_closure, _field, _newv)     ATOMIC_CHANGE_FIELD (_closure, _field, -=,     1, TRUE,     (void), *(_newv) = )
+#define ATOMIC_SWAP(_closure, _field, _value, _oldv)   ATOMIC_CHANGE_FIELD (_closure, _field, =, _value, *(_oldv) =,     (void) )
+#define ATOMIC_SET(_closure, _field, _value)           ATOMIC_CHANGE_FIELD (_closure, _field, =, _value,     (void),     (void) )
+#define ATOMIC_INC(_closure, _field)                   ATOMIC_CHANGE_FIELD (_closure, _field, +=,     1,     (void),     (void) )
+#define ATOMIC_INC_ASSIGN(_closure, _field, _newv)     ATOMIC_CHANGE_FIELD (_closure, _field, +=,     1,     (void), *(_newv) = )
+#define ATOMIC_DEC(_closure, _field)                   ATOMIC_CHANGE_FIELD (_closure, _field, -=,     1,     (void),     (void) )
+#define ATOMIC_DEC_ASSIGN(_closure, _field, _newv)     ATOMIC_CHANGE_FIELD (_closure, _field, -=,     1,     (void), *(_newv) = )
 
 static inline GClosureFlags
 closure_atomic_get_flags (GClosure *closure)
