@@ -653,8 +653,8 @@ g_pointer_bit_lock_mask_ptr (gpointer ptr, guint lock_bit, gboolean set, guintpt
  * @ptr: the new pointer value to set
  * @preserve_mask: if non-zero, those bits of the current pointer in @address
  *   are preserved.
- *   Note that the @lock_bit bit will be always set according to @set,
- *   regardless of @preserve_mask and the currently set value in @address.
+ *   Note that the @lock_bit bit will be always unset regardless of
+ *   @ptr, @preserve_mask and the currently set value in @address.
  *
  * This is equivalent to g_pointer_bit_unlock() and atomically setting
  * the pointer value.
