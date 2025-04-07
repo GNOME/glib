@@ -469,7 +469,7 @@ g_bit_unlock_and_set (gint *address,
  *
  *   g_futex_wake (g_futex_int_address (int_address));
  */
-static const gint *
+G_ALWAYS_INLINE static inline const gint *
 g_futex_int_address (const void *address)
 {
   const gint *int_address = address;
