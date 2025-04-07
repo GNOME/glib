@@ -3725,8 +3725,11 @@ typedef struct
 typedef struct
 {
   guint n_weak_refs;
+  guint alloc_size;
   WeakRefTuple weak_refs[1]; /* flexible array */
 } WeakRefStack;
+
+#define WEAK_REF_STACK_ALLOC_SIZE(alloc_size) (G_STRUCT_OFFSET (WeakRefStack, weak_refs) + sizeof (WeakRefTuple) * (alloc_size))
 
 static gpointer
 g_object_weak_ref_cb (gpointer *data,
@@ -3739,10 +3742,12 @@ g_object_weak_ref_cb (gpointer *data,
 
   if (!wstack)
     {
-      wstack = g_new (WeakRefStack, 1);
+      wstack = g_malloc (WEAK_REF_STACK_ALLOC_SIZE (1));
+      wstack->alloc_size = 1;
       wstack->n_weak_refs = 1;
       i = 0;
 
+      *data = wstack;
       /* We don't set a @destroy_notify. Shortly before finalize(), we call
        * g_object_weak_release_all(), which frees the WeakRefStack. At that
        * point the ref-count is already at zero and g_object_weak_ref() will
@@ -3755,10 +3760,17 @@ g_object_weak_ref_cb (gpointer *data,
   else
     {
       i = wstack->n_weak_refs++;
-      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
-    }
 
-  *data = wstack;
+      if (G_UNLIKELY (wstack->n_weak_refs > wstack->alloc_size))
+        {
+          if (G_UNLIKELY (wstack->alloc_size >= (G_MAXUINT / 2u + 1u)))
+            g_error ("g_object_weak_ref(): cannot register more than 2^31 references");
+          wstack->alloc_size = wstack->alloc_size * 2u;
+
+          wstack = g_realloc (wstack, WEAK_REF_STACK_ALLOC_SIZE (wstack->alloc_size));
+          *data = wstack;
+        }
+    }
 
   wstack->weak_refs[i] = *tuple;
 
@@ -3824,11 +3836,21 @@ g_object_weak_unref_cb (gpointer *data,
               g_free (wstack);
               *data = NULL;
             }
-          else if (i != wstack->n_weak_refs)
+          else
             {
-              memmove (&wstack->weak_refs[i],
-                       &wstack->weak_refs[i + 1],
-                       sizeof (wstack->weak_refs[i]) * (wstack->n_weak_refs - i));
+              if (i != wstack->n_weak_refs)
+                {
+                  memmove (&wstack->weak_refs[i],
+                           &wstack->weak_refs[i + 1],
+                           sizeof (wstack->weak_refs[i]) * (wstack->n_weak_refs - i));
+                }
+
+              if (G_UNLIKELY (wstack->n_weak_refs <= wstack->alloc_size / 4u))
+                {
+                  wstack->alloc_size = wstack->alloc_size / 2u;
+                  wstack = g_realloc (wstack, WEAK_REF_STACK_ALLOC_SIZE (wstack->alloc_size));
+                  *data = wstack;
+                }
             }
 
           found_one = TRUE;
@@ -3897,6 +3919,9 @@ g_object_weak_release_all_cb (gpointer *data,
       memmove (&wstack->weak_refs[0],
                &wstack->weak_refs[1],
                sizeof (wstack->weak_refs[0]) * wstack->n_weak_refs);
+
+      /* Don't bother shrinking the buffer. The caller will loop until all
+       * elements are removed. */
     }
 
   return tuple;
