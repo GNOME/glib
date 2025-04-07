@@ -812,7 +812,7 @@ g_system_thread_set_name (const gchar *name)
 #if defined(HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID)
   pthread_setname_np (name); /* on OS X and iOS */
 #elif defined(HAVE_PTHREAD_SETNAME_NP_WITH_TID)
-#ifdef __LINUX__
+#ifdef __linux__
 #define MAX_THREADNAME_LEN 16
 #else
 #define MAX_THREADNAME_LEN 32
