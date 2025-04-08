@@ -1302,9 +1302,21 @@ g_file_query_file_type (GFile               *file,
  * The @attributes value is a string that specifies the file
  * attributes that should be gathered. It is not an error if
  * it’s not possible to read a particular requested attribute
- * from a file — it just won't be set. @attributes should be a
- * comma-separated list of attributes or attribute wildcards.
- * The wildcard `"*"` means all attributes, and a wildcard like
+ * from a file — it just won't be set. In particular this means that if a file
+ * is inaccessible (due to being in a folder with restrictive permissions), for
+ * example, you can expect the returned [class@Gio.FileInfo] to have very few
+ * attributes set. You should check whether an attribute is set using
+ * [method@Gio.FileInfo.has_attribute] before trying to retrieve its value.
+ *
+ * It is guaranteed that if any of the following attributes are listed in
+ * @attributes, they will always be set in the returned [class@Gio.FileInfo],
+ * even if the user doesn’t have permissions to access the file:
+ *
+ *  - [const@Gio.FILE_ATTRIBUTE_STANDARD_NAME]
+ *  - [const@Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
+ *
+ * @attributes should be a comma-separated list of attributes or attribute
+ * wildcards. The wildcard `"*"` means all attributes, and a wildcard like
  * `"standard::*"` means all attributes in the standard namespace.
  * An example attribute query might be `"standard::*,owner::user"`.
  * The standard attributes are available as defines, like
