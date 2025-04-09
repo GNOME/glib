@@ -1858,6 +1858,12 @@ g_object_dispatch_properties_changed (GObject     *object,
  * reference cycles.
  *
  * This function should only be called from object system implementations.
+ *
+ * This function temporarily acquires another strong reference while running
+ * dispose.
+ *
+ * Note that this first calls #GObjectClass.dispose. Afterwards, all #GWeakRef
+ * pointers are cleared.
  */
 void
 g_object_run_dispose (GObject *object)
