@@ -654,6 +654,20 @@ test_weak_ref_on_dispose (void)
   g_assert_null (g_weak_ref_get (&weak));
 }
 
+static GWeakRef *_weak_ref_on_run_dispose_weak = NULL;
+
+static void
+_weak_ref_on_run_dispose_weak_cb (gpointer data,
+                                  GObject *where_the_object_was)
+{
+  g_assert_nonnull (_weak_ref_on_run_dispose_weak);
+  g_assert_true (_weak_ref_on_run_dispose_weak == data);
+
+  _weak_ref_on_run_dispose_weak = NULL;
+
+  g_assert_null (g_weak_ref_get (data));
+}
+
 static void
 test_weak_ref_on_run_dispose (void)
 {
@@ -669,7 +683,16 @@ test_weak_ref_on_run_dispose (void)
   g_assert_true (obj == g_weak_ref_get (&weak));
   g_object_unref (obj);
 
+  if (g_random_boolean ())
+    {
+      /* Inside the weak notification, we expect the weakref to be NULL
+       * already. */
+      _weak_ref_on_run_dispose_weak = &weak;
+      g_object_weak_ref (obj, _weak_ref_on_run_dispose_weak_cb, &weak);
+    }
+
   g_object_run_dispose (obj);
+  g_assert_null (_weak_ref_on_run_dispose_weak);
   g_assert_null (g_weak_ref_get (&weak));
 
   g_weak_ref_set (&weak, obj);
