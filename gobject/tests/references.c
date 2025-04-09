@@ -282,6 +282,73 @@ test_references (void)
   g_assert_true (object_destroyed);
 }
 
+/*****************************************************************************/
+
+static guint weak_ref4_notified;
+static guint weak_ref4_has_stable_order;
+
+static void
+weak_ref4 (gpointer data,
+           GObject *object)
+{
+  static gint last = -1;
+  gint idx;
+
+  if (weak_ref4_has_stable_order)
+    {
+      idx = (gint) GPOINTER_TO_UINT (data);
+      g_assert_cmpint (last, <, idx);
+      last = idx;
+    }
+
+  weak_ref4_notified++;
+}
+
+static void
+test_references_many (void)
+{
+  GObject *object;
+  guint *indexes;
+  guint i;
+  guint n;
+  guint m;
+
+  /* Test subscribing a (random) number of weak references. */
+  object = g_object_new (TEST_TYPE_OBJECT, NULL);
+  n = g_random_int () % 1000;
+  indexes = g_new (guint, MAX (n, 1));
+  for (i = 0; i < n; i++)
+    {
+      g_object_weak_ref (object, weak_ref4, GUINT_TO_POINTER (i));
+      indexes[i] = i;
+    }
+  for (i = 0; i < n; i++)
+    {
+      guint tmp, j;
+
+      j = (guint) g_random_int_range ((gint) i, (gint) n);
+      tmp = indexes[i];
+      indexes[i] = indexes[j];
+      indexes[j] = tmp;
+    }
+  if (g_random_boolean ())
+    {
+      m = 0;
+    }
+  else
+    {
+      m = g_random_int () % (n + 1u);
+      for (i = 0; i < m; i++)
+        g_object_weak_unref (object, weak_ref4, GUINT_TO_POINTER (indexes[i]));
+    }
+  weak_ref4_has_stable_order = (m == 0);
+  g_object_unref (object);
+  g_assert_cmpint (weak_ref4_notified, ==, n - m);
+  g_free (indexes);
+}
+
+/*****************************************************************************/
+
 int
 main (int   argc,
       char *argv[])
@@ -293,6 +360,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gobject/references", test_references);
+  g_test_add_func ("/gobject/references-many", test_references_many);
 
   return g_test_run ();
 }
