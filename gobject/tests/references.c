@@ -285,7 +285,6 @@ test_references (void)
 /*****************************************************************************/
 
 static guint weak_ref4_notified;
-static guint weak_ref4_has_stable_order;
 
 static void
 weak_ref4 (gpointer data,
@@ -294,12 +293,9 @@ weak_ref4 (gpointer data,
   static gint last = -1;
   gint idx;
 
-  if (weak_ref4_has_stable_order)
-    {
-      idx = (gint) GPOINTER_TO_UINT (data);
-      g_assert_cmpint (last, <, idx);
-      last = idx;
-    }
+  idx = (gint) GPOINTER_TO_UINT (data);
+  g_assert_cmpint (last, <, idx);
+  last = idx;
 
   weak_ref4_notified++;
 }
@@ -331,17 +327,9 @@ test_references_many (void)
       indexes[i] = indexes[j];
       indexes[j] = tmp;
     }
-  if (g_random_boolean ())
-    {
-      m = 0;
-    }
-  else
-    {
-      m = g_random_int () % (n + 1u);
-      for (i = 0; i < m; i++)
-        g_object_weak_unref (object, weak_ref4, GUINT_TO_POINTER (indexes[i]));
-    }
-  weak_ref4_has_stable_order = (m == 0);
+  m = g_random_int () % (n + 1u);
+  for (i = 0; i < m; i++)
+    g_object_weak_unref (object, weak_ref4, GUINT_TO_POINTER (indexes[i]));
   g_object_unref (object);
   g_assert_cmpint (weak_ref4_notified, ==, n - m);
   g_free (indexes);

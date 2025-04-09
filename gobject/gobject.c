@@ -3827,7 +3827,11 @@ g_object_weak_unref_cb (gpointer *data,
               *data = NULL;
             }
           else if (i != wstack->n_weak_refs)
-            wstack->weak_refs[i] = wstack->weak_refs[wstack->n_weak_refs];
+            {
+              memmove (&wstack->weak_refs[i],
+                       &wstack->weak_refs[i + 1],
+                       sizeof (wstack->weak_refs[i]) * (wstack->n_weak_refs - i));
+            }
 
           found_one = TRUE;
           break;
