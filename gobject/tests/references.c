@@ -285,19 +285,80 @@ test_references (void)
 /*****************************************************************************/
 
 static guint weak_ref4_notified;
+static guint weak_ref4_finalizing_notified;
+static guint weak_ref4_finalizing_notified_skipped;
+static gint weak_ref4_finalizing_resurrected = -1;
+static guint weak_ref4_indexes_n;
+static const guint *weak_ref4_indexes;
+
+static void
+weak_ref4_finalizing (gpointer data,
+                      GObject *object)
+{
+  static gint last = -1;
+  gint idx;
+
+  g_assert_true (weak_ref4_finalizing_resurrected == FALSE || weak_ref4_finalizing_resurrected == 4);
+
+  idx = (gint) GPOINTER_TO_UINT (data);
+  g_assert_cmpint (last, <, idx);
+  last = idx;
+
+  weak_ref4_finalizing_notified++;
+}
 
 static void
 weak_ref4 (gpointer data,
            GObject *object)
 {
   static gint last = -1;
-  gint idx;
+  guint idx;
 
-  idx = (gint) GPOINTER_TO_UINT (data);
-  g_assert_cmpint (last, <, idx);
-  last = idx;
+  g_assert_cmpint (weak_ref4_finalizing_notified, ==, 0);
+
+  idx = GPOINTER_TO_UINT (data);
+  g_assert_cmpint (last, <, (gint) idx);
+  last = (gint) idx;
 
   weak_ref4_notified++;
+
+  if (weak_ref4_finalizing_resurrected == -1)
+    {
+      if (g_random_boolean ())
+        {
+          /* Resurrect the object. */
+          weak_ref4_finalizing_resurrected = TRUE;
+          g_object_ref (object);
+        }
+      else
+        weak_ref4_finalizing_resurrected = FALSE;
+    }
+
+  g_object_weak_ref (object, weak_ref4_finalizing, GUINT_TO_POINTER (idx));
+
+  if (weak_ref4_indexes_n > 0 && (g_random_int () % 4 == 0))
+    {
+
+      while (weak_ref4_indexes_n > 0 && weak_ref4_indexes[weak_ref4_indexes_n - 1] <= idx)
+        {
+          /* already invoked. Skip. */
+          weak_ref4_indexes_n--;
+        }
+
+      /* From the callback, we unregister another callback that we know is
+       * still registered. */
+      if (weak_ref4_indexes_n > 0)
+        {
+          guint new_idx = weak_ref4_indexes[weak_ref4_indexes_n - 1];
+
+          weak_ref4_indexes_n--;
+          g_object_weak_unref (object, weak_ref4, GUINT_TO_POINTER (new_idx));
+
+          /* Behave as if we got this callback invoked still, so that the remainder matches up. */
+          weak_ref4_finalizing_notified_skipped++;
+          weak_ref4_notified++;
+        }
+    }
 }
 
 static void
@@ -330,8 +391,29 @@ test_references_many (void)
   m = g_random_int () % (n + 1u);
   for (i = 0; i < m; i++)
     g_object_weak_unref (object, weak_ref4, GUINT_TO_POINTER (indexes[i]));
+  weak_ref4_indexes_n = n - m;
+  weak_ref4_indexes = &indexes[m];
   g_object_unref (object);
   g_assert_cmpint (weak_ref4_notified, ==, n - m);
+  if (n - m == 0)
+    {
+      g_assert_cmpint (weak_ref4_finalizing_resurrected, ==, -1);
+      g_assert_cmpint (weak_ref4_finalizing_notified, ==, 0);
+      g_assert_cmpint (weak_ref4_finalizing_notified_skipped, ==, 0);
+    }
+  else if (weak_ref4_finalizing_resurrected == TRUE)
+    {
+      weak_ref4_finalizing_resurrected = 4;
+      g_assert_cmpint (weak_ref4_finalizing_notified, ==, 0);
+      g_object_unref (object);
+      g_assert_cmpint (weak_ref4_notified, ==, n - m);
+      g_assert_cmpint (weak_ref4_finalizing_notified + weak_ref4_finalizing_notified_skipped, ==, n - m);
+    }
+  else
+    {
+      g_assert_cmpint (weak_ref4_finalizing_resurrected, ==, FALSE);
+      g_assert_cmpint (weak_ref4_finalizing_notified + weak_ref4_finalizing_notified_skipped, ==, n - m);
+    }
   g_free (indexes);
 }
 
@@ -368,6 +450,105 @@ test_references_two (void)
 
 /*****************************************************************************/
 
+#define RUN_DISPOSE_N_THREADS 5
+
+GThread *run_dispose_threads[RUN_DISPOSE_N_THREADS];
+GObject *run_dispose_obj;
+gint run_dispose_thread_ready_count;
+const guint RUN_DISPOSE_N_ITERATIONS = 5000;
+
+gint run_dispose_weak_notify_pending;
+gint run_dispose_weak_notify_pending_nested;
+
+static void
+_run_dispose_weak_notify_nested (gpointer data,
+                                 GObject *where_the_object_was)
+{
+  g_assert_true (run_dispose_obj == where_the_object_was);
+  g_assert_cmpint (g_atomic_int_add (&run_dispose_weak_notify_pending_nested, -1), >, 0);
+}
+
+static void
+_run_dispose_weak_notify (gpointer data,
+                          GObject *where_the_object_was)
+{
+  g_assert_true (run_dispose_obj == where_the_object_was);
+  g_assert_cmpint (g_atomic_int_add (&run_dispose_weak_notify_pending, -1), >, 0);
+
+  if (g_random_int () % 10 == 0)
+    {
+      g_object_run_dispose (run_dispose_obj);
+    }
+
+  if (g_random_int () % 10 == 0)
+    {
+      g_atomic_int_inc (&run_dispose_weak_notify_pending_nested);
+      g_object_weak_ref (run_dispose_obj, _run_dispose_weak_notify_nested, NULL);
+    }
+}
+
+static gpointer
+_run_dispose_thread_fcn (gpointer thread_data)
+{
+  guint i;
+
+  g_atomic_int_inc (&run_dispose_thread_ready_count);
+
+  while (g_atomic_int_get (&run_dispose_thread_ready_count) != RUN_DISPOSE_N_THREADS)
+    g_usleep (10);
+
+  for (i = 0; i < RUN_DISPOSE_N_ITERATIONS; i++)
+    {
+      g_atomic_int_inc (&run_dispose_weak_notify_pending);
+      g_object_weak_ref (run_dispose_obj, _run_dispose_weak_notify, NULL);
+      if (g_random_int () % 10 == 0)
+        g_object_run_dispose (run_dispose_obj);
+    }
+
+  g_object_run_dispose (run_dispose_obj);
+
+  return NULL;
+}
+
+static void
+test_references_run_dispose (void)
+{
+  GQuark quark_weak_notifies = g_quark_from_static_string ("GObject-weak-notifies");
+  guint i;
+
+  run_dispose_obj = g_object_new (G_TYPE_OBJECT, NULL);
+
+  for (i = 0; i < RUN_DISPOSE_N_THREADS; i++)
+    {
+      run_dispose_threads[i] = g_thread_new ("run-dispose", _run_dispose_thread_fcn, GINT_TO_POINTER (i));
+    }
+  for (i = 0; i < RUN_DISPOSE_N_THREADS; i++)
+    {
+      g_thread_join (run_dispose_threads[i]);
+    }
+
+  g_assert_cmpint (g_atomic_int_get (&run_dispose_weak_notify_pending), ==, 0);
+
+  if (g_atomic_int_get (&run_dispose_weak_notify_pending_nested) == 0)
+    {
+      g_assert_null (g_object_get_qdata (run_dispose_obj, quark_weak_notifies));
+    }
+  else
+    {
+      g_assert_nonnull (g_object_get_qdata (run_dispose_obj, quark_weak_notifies));
+    }
+
+  g_object_run_dispose (run_dispose_obj);
+
+  g_assert_cmpint (g_atomic_int_get (&run_dispose_weak_notify_pending), ==, 0);
+  g_assert_cmpint (g_atomic_int_get (&run_dispose_weak_notify_pending_nested), ==, 0);
+  g_assert_null (g_object_get_qdata (run_dispose_obj, quark_weak_notifies));
+
+  g_clear_object (&run_dispose_obj);
+}
+
+/*****************************************************************************/
+
 int
 main (int   argc,
       char *argv[])
@@ -381,6 +562,7 @@ main (int   argc,
   g_test_add_func ("/gobject/references", test_references);
   g_test_add_func ("/gobject/references-many", test_references_many);
   g_test_add_func ("/gobject/references_two", test_references_two);
+  g_test_add_func ("/gobject/references_run_dispose", test_references_run_dispose);
 
   return g_test_run ();
 }
