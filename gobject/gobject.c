@@ -5548,15 +5548,16 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  * atomic with respect to invalidation of weak pointers to destroyed
  * objects.
  *
+ * #GWeakRefs are reset before calling #GObjectClass.dispose (after, in case of
+ * #GObjectClass.run_dispose()).
  * If the object's #GObjectClass.dispose method results in additional
  * references to the object being held (‘re-referencing’), any #GWeakRefs taken
- * before it was disposed will continue to point to %NULL.  Any #GWeakRefs taken
- * during disposal and after re-referencing, or after disposal has returned due
- * to the re-referencing, will continue to point to the object until its refcount
- * goes back to zero, at which point they too will be invalidated.
- *
- * It is invalid to take a #GWeakRef on an object during #GObjectClass.dispose
- * without first having or creating a strong reference to the object.
+ * before it was disposed will continue to point to %NULL. If during disposal
+ * the object gets re-referenced and resurrected, the #GWeakRefs taken during
+ * disposal will be set until the reference count drops towards zero again and
+ * #GObjectClass.dispose is called again. If #GWeakRefs were taken during
+ * disposal but the object not resurrected, they will be set to %NULL right
+ * after, before finalization.
  */
 
 #define WEAK_REF_LOCK_BIT 0
