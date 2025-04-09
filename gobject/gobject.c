@@ -1897,6 +1897,13 @@ g_object_dispatch_properties_changed (GObject     *object,
  * reference cycles.
  *
  * This function should only be called from object system implementations.
+ *
+ * This function temporarily acquires another strong reference while running
+ * dispose.
+ *
+ * This first clears all #GWeakRef pointers and then calls
+ * #GObjectClass.dispose. (Before 2.86, #GWeakRef pointers were
+ * cleared after #GObjectClass.dispose).
  */
 void
 g_object_run_dispose (GObject *object)
@@ -1908,10 +1915,6 @@ g_object_run_dispose (GObject *object)
 
   g_object_ref (object);
 
-  TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 0));
-  G_OBJECT_GET_CLASS (object)->dispose (object);
-  TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 0));
-
   if ((object_get_optional_flags (object) & OPTIONAL_FLAG_EVER_HAD_WEAK_REF))
     {
       wrdata = weak_ref_data_get_surely (object);
@@ -1919,6 +1922,10 @@ g_object_run_dispose (GObject *object)
       weak_ref_data_clear_list (wrdata, object);
       weak_ref_data_unlock (wrdata);
     }
+
+  TRACE (GOBJECT_OBJECT_DISPOSE (object, G_TYPE_FROM_INSTANCE (object), 0));
+  G_OBJECT_GET_CLASS (object)->dispose (object);
+  TRACE (GOBJECT_OBJECT_DISPOSE_END (object, G_TYPE_FROM_INSTANCE (object), 0));
 
   g_object_unref (object);
 }
@@ -6073,8 +6080,7 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  * atomic with respect to invalidation of weak pointers to destroyed
  * objects.
  *
- * #GWeakRefs are reset before calling #GObjectClass.dispose (after, in case of
- * #GObjectClass.run_dispose()).
+ * #GWeakRefs are reset before calling #GObjectClass.dispose.
  * If the object's #GObjectClass.dispose method results in additional
  * references to the object being held (‘re-referencing’), any #GWeakRefs taken
  * before it was disposed will continue to point to %NULL. If during disposal
@@ -6083,6 +6089,10 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  * #GObjectClass.dispose is called again. If #GWeakRefs were taken during
  * disposal but the object not resurrected, they will be set to %NULL right
  * after, before finalization.
+ *
+ * Note that #GObjectClass.run_dispose() also resets #GWeakRefs. As such, the
+ * #GWeakRef actually tracks whether #GObjectClass.dispose() was called
+ * and not the reference count reaching zero.
  */
 
 #define WEAK_REF_LOCK_BIT 0
