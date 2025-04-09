@@ -208,7 +208,7 @@ static guint               object_floating_flag_handler (GObject        *object,
                                                          gint            job);
 static inline void object_set_optional_flags (GObject *object,
                                               guint flags);
-static void g_object_weak_release_all (GObject *object);
+static void g_object_weak_release_all (GObject *object, gboolean release_all);
 
 static void object_interface_check_properties           (gpointer        check_data,
 							 gpointer        g_iface);
@@ -1775,7 +1775,7 @@ g_object_real_dispose (GObject *object)
   g_signal_handlers_destroy (object);
 
   /* GWeakNotify and GClosure can call into user code */
-  g_object_weak_release_all (object);
+  g_object_weak_release_all (object, FALSE);
   closure_array_destroy_all (object);
 }
 
@@ -3659,12 +3659,48 @@ typedef struct {
 
 typedef struct
 {
+  guint remaining_to_notify;
+} WeakRefReleaseAllState;
+
+typedef struct
+{
   guint n_weak_refs;
   guint alloc_size;
+  WeakRefReleaseAllState *ws_release_all_state;
   WeakRefTuple weak_refs[1]; /* flexible array */
 } WeakRefStack;
 
 #define WEAK_REF_STACK_ALLOC_SIZE(alloc_size) (G_STRUCT_OFFSET (WeakRefStack, weak_refs) + sizeof (WeakRefTuple) * (alloc_size))
+
+G_ALWAYS_INLINE static inline void
+_weak_ref_stack_free (WeakRefStack *wstack)
+{
+#ifdef G_ENABLE_DEBUG
+  g_assert (!wstack->ws_release_all_state);
+#endif
+  g_free (wstack);
+}
+
+G_ALWAYS_INLINE static inline gboolean
+_weak_ref_stack_update_release_all_state (WeakRefStack *wstack, guint idx)
+{
+#ifdef G_ENABLE_DEBUG
+  g_assert (idx < wstack->n_weak_refs);
+  g_assert (wstack->ws_release_all_state);
+  g_assert (wstack->ws_release_all_state->remaining_to_notify <= wstack->n_weak_refs);
+  g_assert (wstack->ws_release_all_state->remaining_to_notify > 0u);
+#endif
+  if (idx < wstack->ws_release_all_state->remaining_to_notify)
+    {
+      wstack->ws_release_all_state->remaining_to_notify--;
+      if (wstack->ws_release_all_state->remaining_to_notify == 0u)
+        {
+          wstack->ws_release_all_state = NULL;
+          return TRUE;
+        }
+    }
+  return FALSE;
+}
 
 static gpointer
 g_object_weak_ref_cb (gpointer *data,
@@ -3681,6 +3717,7 @@ g_object_weak_ref_cb (gpointer *data,
       wstack = g_malloc (WEAK_REF_STACK_ALLOC_SIZE (2));
       wstack->alloc_size = 2;
       wstack->n_weak_refs = 1;
+      wstack->ws_release_all_state = NULL;
       i = 0;
 
       *data = wstack;
@@ -3772,10 +3809,13 @@ g_object_weak_unref_cb (gpointer *data,
               wstack->weak_refs[i].data != notify_data)
             continue;
 
+          if (wstack->ws_release_all_state)
+            _weak_ref_stack_update_release_all_state (wstack, i);
+
           wstack->n_weak_refs -= 1;
           if (wstack->n_weak_refs == 0)
             {
-              g_free (wstack);
+              _weak_ref_stack_free (wstack);
               *data = NULL;
             }
           else
@@ -3828,13 +3868,21 @@ g_object_weak_unref (GObject    *object,
                                 ((gpointer[]){ notify, data }));
 }
 
+typedef struct
+{
+  WeakRefReleaseAllState *const release_all_state;
+  WeakRefTuple tuple;
+  gboolean release_all_done;
+} WeakRefReleaseAllData;
+
 static gpointer
 g_object_weak_release_all_cb (gpointer *data,
                               GDestroyNotify *destroy_notify,
                               gpointer user_data)
 {
-  WeakRefTuple *tuple = user_data;
   WeakRefStack *wstack = *data;
+  WeakRefReleaseAllData *wdata = user_data;
+  WeakRefReleaseAllState *release_all_state = wdata->release_all_state;
 
   if (!wstack)
     return NULL;
@@ -3843,15 +3891,69 @@ g_object_weak_release_all_cb (gpointer *data,
   g_assert (wstack->n_weak_refs > 0);
 #endif
 
+  if (release_all_state)
+    {
+      if (release_all_state->remaining_to_notify == G_MAXUINT)
+        {
+          if (G_UNLIKELY (wstack->ws_release_all_state))
+            {
+              /* Already set? This can only happen in a very obscure case.
+               *
+               * Usually, we cannot reach a scenario where we reenter
+               * g_object_weak_release_all(). That is because the caller of
+               * g_object_weak_release_all() holds a strong reference (maybe
+               * the last one) that they plan to return afterwards. So while we
+               * emit weak notifications, no callee can also drop the ref-count
+               * to zero.
+               *
+               * However, a callee might call g_object_run_dispose(). In that
+               * case, we will find wstack->ws_release_all_state already set.
+               *
+               * In this case, we emit all notifications right now (prefer the
+               * new state) and indicate to the outer state that we are done.
+               */
+#ifdef G_ENABLE_DEBUG
+              g_assert (wstack->ws_release_all_state != release_all_state);
+              g_assert (wstack->ws_release_all_state->remaining_to_notify > 0u);
+#endif
+              wstack->ws_release_all_state->remaining_to_notify = 0u;
+              wstack->ws_release_all_state = NULL;
+            }
+          if (wstack->n_weak_refs == 1u)
+            {
+              /* We only collect the single entry. Bypass the handling of release_all_state. */
+              wdata->release_all_done = TRUE;
+              release_all_state = NULL;
+            }
+          else
+            {
+              release_all_state->remaining_to_notify = wstack->n_weak_refs - 1u;
+              wstack->ws_release_all_state = release_all_state;
+            }
+        }
+      else
+        {
+          if (release_all_state->remaining_to_notify == 0u)
+            {
+              return NULL;
+            }
+#ifdef G_ENABLE_DEBUG
+          g_assert (wstack->ws_release_all_state == release_all_state);
+#endif
+          if (_weak_ref_stack_update_release_all_state (wstack, 0))
+            wdata->release_all_done = TRUE;
+        }
+    }
+
   wstack->n_weak_refs--;
 
   /* Emit the notifications in FIFO order. This is less efficient and maybe
    * less logical, but this is what we did in the past. */
-  *tuple = wstack->weak_refs[0];
+  wdata->tuple = wstack->weak_refs[0];
 
   if (wstack->n_weak_refs == 0)
     {
-      g_free (wstack);
+      _weak_ref_stack_free (wstack);
       *data = NULL;
     }
   else
@@ -3860,34 +3962,37 @@ g_object_weak_release_all_cb (gpointer *data,
                &wstack->weak_refs[1],
                sizeof (wstack->weak_refs[0]) * wstack->n_weak_refs);
 
-      /* Don't bother shrinking the buffer. The caller will loop until all
-       * elements are removed. */
+      /* Don't bother to shrink the buffer. Most likely the object gets
+       * destroyed soon after. */
     }
 
-  return tuple;
+  return wdata;
 }
 
 static void
-g_object_weak_release_all (GObject *object)
+g_object_weak_release_all (GObject *object, gboolean release_all)
 {
-  WeakRefTuple tuple;
+  WeakRefReleaseAllState release_all_state = {
+    .remaining_to_notify = G_MAXUINT,
+  };
+  WeakRefReleaseAllData wdata = {
+    .release_all_state = release_all ? NULL : &release_all_state,
+    .release_all_done = FALSE,
+  };
 
-  /* We notify weak references in a loop. As this emits external callbacks, a
-   * callee could register another weak reference, which the loop would notify
-   * right away. This means, registering new weak references during dispose
-   * does not work well, which you might want to do when resurrecting the
-   * object under destruction.
-   *
-   * This is an intentional choice. It would be complicated to keep track of
-   * the tuples that were present when the loop starts, and only notify those.
-   *
-   * You are advised to not register new weak references while handling a weak
-   * notification. */
-  while (_g_datalist_id_update_atomic (&object->qdata,
-                                       quark_weak_notifies,
-                                       g_object_weak_release_all_cb,
-                                       &tuple))
-    tuple.notify (tuple.data, object);
+  while (TRUE)
+    {
+      if (!_g_datalist_id_update_atomic (&object->qdata,
+                                         quark_weak_notifies,
+                                         g_object_weak_release_all_cb,
+                                         &wdata))
+        break;
+
+      wdata.tuple.notify (wdata.tuple.data, object);
+
+      if (wdata.release_all_done)
+        break;
+    }
 }
 
 /**
@@ -4630,7 +4735,7 @@ retry_decrement:
 
   closure_array_destroy_all (object);
   g_signal_handlers_destroy (object);
-  g_object_weak_release_all (object);
+  g_object_weak_release_all (object, TRUE);
 
   TRACE (GOBJECT_OBJECT_FINALIZE (object, G_TYPE_FROM_INSTANCE (object)));
   G_OBJECT_GET_CLASS (object)->finalize (object);

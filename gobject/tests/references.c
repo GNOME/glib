@@ -285,19 +285,80 @@ test_references (void)
 /*****************************************************************************/
 
 static guint weak_ref4_notified;
+static guint weak_ref4_finalizing_notified;
+static guint weak_ref4_finalizing_notified_skipped;
+static gint weak_ref4_finalizing_resurrected = -1;
+static guint weak_ref4_indexes_n;
+static const guint *weak_ref4_indexes;
+
+static void
+weak_ref4_finalizing (gpointer data,
+                      GObject *object)
+{
+  static gint last = -1;
+  gint idx;
+
+  g_assert_true (weak_ref4_finalizing_resurrected == FALSE || weak_ref4_finalizing_resurrected == 4);
+
+  idx = (gint) GPOINTER_TO_UINT (data);
+  g_assert_cmpint (last, <, idx);
+  last = idx;
+
+  weak_ref4_finalizing_notified++;
+}
 
 static void
 weak_ref4 (gpointer data,
            GObject *object)
 {
   static gint last = -1;
-  gint idx;
+  guint idx;
 
-  idx = (gint) GPOINTER_TO_UINT (data);
-  g_assert_cmpint (last, <, idx);
-  last = idx;
+  g_assert_cmpint (weak_ref4_finalizing_notified, ==, 0);
+
+  idx = GPOINTER_TO_UINT (data);
+  g_assert_cmpint (last, <, (gint) idx);
+  last = (gint) idx;
 
   weak_ref4_notified++;
+
+  if (weak_ref4_finalizing_resurrected == -1)
+    {
+      if (g_random_boolean ())
+        {
+          /* Resurrect the object. */
+          weak_ref4_finalizing_resurrected = TRUE;
+          g_object_ref (object);
+        }
+      else
+        weak_ref4_finalizing_resurrected = FALSE;
+    }
+
+  g_object_weak_ref (object, weak_ref4_finalizing, GUINT_TO_POINTER (idx));
+
+  if (weak_ref4_indexes_n > 0 && (g_random_int () % 4 == 0))
+    {
+
+      while (weak_ref4_indexes_n > 0 && weak_ref4_indexes[weak_ref4_indexes_n - 1] <= idx)
+        {
+          /* already invoked. Skip. */
+          weak_ref4_indexes_n--;
+        }
+
+      /* From the callback, we unregister another callback that we know is
+       * still registered. */
+      if (weak_ref4_indexes_n > 0)
+        {
+          guint new_idx = weak_ref4_indexes[weak_ref4_indexes_n - 1];
+
+          weak_ref4_indexes_n--;
+          g_object_weak_unref (object, weak_ref4, GUINT_TO_POINTER (new_idx));
+
+          /* Behave as if we got this callback invoked still, so that the remainder matches up. */
+          weak_ref4_finalizing_notified_skipped++;
+          weak_ref4_notified++;
+        }
+    }
 }
 
 static void
@@ -330,8 +391,29 @@ test_references_many (void)
   m = g_random_int () % (n + 1u);
   for (i = 0; i < m; i++)
     g_object_weak_unref (object, weak_ref4, GUINT_TO_POINTER (indexes[i]));
+  weak_ref4_indexes_n = n - m;
+  weak_ref4_indexes = &indexes[m];
   g_object_unref (object);
   g_assert_cmpint (weak_ref4_notified, ==, n - m);
+  if (n - m == 0)
+    {
+      g_assert_cmpint (weak_ref4_finalizing_resurrected, ==, -1);
+      g_assert_cmpint (weak_ref4_finalizing_notified, ==, 0);
+      g_assert_cmpint (weak_ref4_finalizing_notified_skipped, ==, 0);
+    }
+  else if (weak_ref4_finalizing_resurrected == TRUE)
+    {
+      weak_ref4_finalizing_resurrected = 4;
+      g_assert_cmpint (weak_ref4_finalizing_notified, ==, 0);
+      g_object_unref (object);
+      g_assert_cmpint (weak_ref4_notified, ==, n - m);
+      g_assert_cmpint (weak_ref4_finalizing_notified + weak_ref4_finalizing_notified_skipped, ==, n - m);
+    }
+  else
+    {
+      g_assert_cmpint (weak_ref4_finalizing_resurrected, ==, FALSE);
+      g_assert_cmpint (weak_ref4_finalizing_notified + weak_ref4_finalizing_notified_skipped, ==, n - m);
+    }
   g_free (indexes);
 }
 
