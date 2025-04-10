@@ -437,8 +437,9 @@ g_string_insert_len (GString     *string,
     return string;
 
   if (len < 0)
-    len = strlen (val);
-  len_unsigned = len;
+    len_unsigned = strlen (val);
+  else
+    len_unsigned = len;
 
   if (pos < 0)
     pos_unsigned = string->len;
@@ -736,10 +737,12 @@ g_string_insert_c (GString *string,
   g_string_maybe_expand (string, 1);
 
   if (pos < 0)
-    pos = string->len;
+    pos_unsigned = string->len;
   else
-    g_return_val_if_fail ((gsize) pos <= string->len, string);
-  pos_unsigned = pos;
+    {
+      pos_unsigned = pos;
+      g_return_val_if_fail (pos_unsigned <= string->len, string);
+    }
 
   /* If not just an append, move the old stuff */
   if (pos_unsigned < string->len)
@@ -772,6 +775,7 @@ g_string_insert_unichar (GString  *string,
                          gssize    pos,
                          gunichar  wc)
 {
+  gsize pos_unsigned;
   gint charlen, first, i;
   gchar *dest;
 
@@ -813,15 +817,18 @@ g_string_insert_unichar (GString  *string,
   g_string_maybe_expand (string, charlen);
 
   if (pos < 0)
-    pos = string->len;
+    pos_unsigned = string->len;
   else
-    g_return_val_if_fail ((gsize) pos <= string->len, string);
+    {
+      pos_unsigned = pos;
+      g_return_val_if_fail (pos_unsigned <= string->len, string);
+    }
 
   /* If not just an append, move the old stuff */
-  if ((gsize) pos < string->len)
-    memmove (string->str + pos + charlen, string->str + pos, string->len - pos);
+  if (pos_unsigned < string->len)
+    memmove (string->str + pos_unsigned + charlen, string->str + pos_unsigned, string->len - pos_unsigned);
 
-  dest = string->str + pos;
+  dest = string->str + pos_unsigned;
   /* Code copied from g_unichar_to_utf() */
   for (i = charlen - 1; i > 0; --i)
     {
@@ -879,6 +886,7 @@ g_string_overwrite_len (GString     *string,
                         const gchar *val,
                         gssize       len)
 {
+  gssize len_unsigned;
   gsize end;
 
   g_return_val_if_fail (string != NULL, NULL);
@@ -890,14 +898,16 @@ g_string_overwrite_len (GString     *string,
   g_return_val_if_fail (pos <= string->len, string);
 
   if (len < 0)
-    len = strlen (val);
+    len_unsigned = strlen (val);
+  else
+    len_unsigned = len;
 
-  end = pos + len;
+  end = pos + len_unsigned;
 
   if (end > string->len)
     g_string_maybe_expand (string, end - string->len);
 
-  memcpy (string->str + pos, val, len);
+  memcpy (string->str + pos, val, len_unsigned);
 
   if (end > string->len)
     {
