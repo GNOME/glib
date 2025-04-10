@@ -1900,13 +1900,29 @@ g_log_structured_standard (const gchar    *log_domain,
       { "CODE_FUNC", func, -1 },
       /* Filled in later: */
       { "MESSAGE", NULL, -1 },
-      /* If @log_domain is %NULL, we will not pass this field: */
-      { "GLIB_DOMAIN", log_domain, -1 },
+      /* Optionally GLIB_DOMAIN and/or SYSLOG_IDENTIFIER */
+      { NULL, NULL, -1 },
+      { NULL, NULL, -1 },
     };
-  gsize n_fields;
+  gsize n_fields = 5;
+  const gchar *prgname = g_get_prgname ();
   gchar *message_allocated = NULL;
   gchar buffer[1025];
   va_list args;
+
+  if (log_domain)
+    {
+      fields[n_fields].key = "GLIB_DOMAIN";
+      fields[n_fields].value = log_domain;
+      n_fields++;
+    }
+
+  if (prgname)
+    {
+      fields[n_fields].key = "SYSLOG_IDENTIFIER";
+      fields[n_fields].value = prgname;
+      n_fields++;
+    }
 
   va_start (args, message_format);
 
@@ -1927,7 +1943,6 @@ g_log_structured_standard (const gchar    *log_domain,
 
   va_end (args);
 
-  n_fields = G_N_ELEMENTS (fields) - ((log_domain == NULL) ? 1 : 0);
   g_log_structured_array (log_level, fields, n_fields);
 
   g_free (message_allocated);
@@ -3395,8 +3410,9 @@ g_log_default_handler (const gchar   *log_domain,
 		       const gchar   *message,
 		       gpointer	      unused_data)
 {
-  GLogField fields[4];
+  GLogField fields[5];
   int n_fields = 0;
+  const gchar *prgname;
 
   /* we can be called externally with recursion for whatever reason */
   if (log_level & G_LOG_FLAG_RECURSION)
@@ -3422,9 +3438,18 @@ g_log_default_handler (const gchar   *log_domain,
 
   if (log_domain)
     {
-      fields[3].key = "GLIB_DOMAIN";
-      fields[3].value = log_domain;
-      fields[3].length = -1;
+      fields[n_fields].key = "GLIB_DOMAIN";
+      fields[n_fields].value = log_domain;
+      fields[n_fields].length = -1;
+      n_fields++;
+    }
+
+  prgname = g_get_prgname ();
+  if (prgname)
+    {
+      fields[n_fields].key = "SYSLOG_IDENTIFIER";
+      fields[n_fields].value = prgname;
+      fields[n_fields].length = -1;
       n_fields++;
     }
 
