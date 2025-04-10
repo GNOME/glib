@@ -165,7 +165,7 @@ md5_byte_reverse (guchar *buffer,
 #else
 static inline void
 sha_byte_reverse (guint32 *buffer,
-                  gint     length)
+                  size_t   length)
 {
   length /= sizeof (guint32);
   while (length--)
@@ -749,11 +749,11 @@ sha1_sum_update (Sha1sum      *sha1,
 static void
 sha1_sum_close (Sha1sum *sha1)
 {
-  gint count;
+  size_t count;
   guchar *data_p;
 
   /* Compute number of bytes mod 64 */
-  count = (gint) ((sha1->bits[0] >> 3) & 0x3f);
+  count = (sha1->bits[0] >> 3) & 0x3f;
 
   /* Set the first char of padding to 0x80.  This is safe since there is
      always at least one byte free */
@@ -806,7 +806,7 @@ static void
 sha1_sum_digest (Sha1sum *sha1,
                  guint8  *digest)
 {
-  gint i;
+  size_t i;
 
   for (i = 0; i < SHA1_DIGEST_LEN; i++)
     digest[i] = sha1->digest[i];
@@ -1328,17 +1328,18 @@ static void
 sha512_sum_close (Sha512sum *sha512)
 {
   guint l;
-  gint zeros;
+  size_t zeros;
   guint8 pad[SHA2_BLOCK_LEN * 2] = { 0, };
-  guint pad_len = 0;
-  gint i;
+  size_t pad_len = 0;
+  size_t i;
 
   /* apply padding [§5.1.2] */
   l = sha512->block_len * 8;
-  zeros = 896 - (l + 1);
 
-  if (zeros < 0)
-    zeros += 128 * 8;
+  if (896 < l + 1)
+    zeros = 896 - (l + 1) + 128 * 8;
+  else
+    zeros = 896 - (l + 1);
 
   pad[0] = 0x80; /* 1000 0000 */
   zeros -= 7;
@@ -1588,11 +1589,15 @@ g_checksum_update (GChecksum    *checksum,
                    const guchar *data,
                    gssize        length)
 {
+  size_t unsigned_length;
+
   g_return_if_fail (checksum != NULL);
   g_return_if_fail (length == 0 || data != NULL);
 
   if (length < 0)
-    length = strlen ((const gchar *) data);
+    unsigned_length = strlen ((const gchar *) data);
+  else
+    unsigned_length = (size_t) length;
 
   if (checksum->digest_str)
     {
@@ -1605,17 +1610,17 @@ g_checksum_update (GChecksum    *checksum,
   switch (checksum->type)
     {
     case G_CHECKSUM_MD5:
-      md5_sum_update (&(checksum->sum.md5), data, length);
+      md5_sum_update (&(checksum->sum.md5), data, unsigned_length);
       break;
     case G_CHECKSUM_SHA1:
-      sha1_sum_update (&(checksum->sum.sha1), data, length);
+      sha1_sum_update (&(checksum->sum.sha1), data, unsigned_length);
       break;
     case G_CHECKSUM_SHA256:
-      sha256_sum_update (&(checksum->sum.sha256), data, length);
+      sha256_sum_update (&(checksum->sum.sha256), data, unsigned_length);
       break;
     case G_CHECKSUM_SHA384:
     case G_CHECKSUM_SHA512:
-      sha512_sum_update (&(checksum->sum.sha512), data, length);
+      sha512_sum_update (&(checksum->sum.sha512), data, unsigned_length);
       break;
     default:
       g_assert_not_reached ();
@@ -1704,11 +1709,14 @@ g_checksum_get_digest (GChecksum  *checksum,
 {
   gboolean checksum_open = FALSE;
   gchar *str = NULL;
+  gssize signed_len;
   gsize len;
 
   g_return_if_fail (checksum != NULL);
 
-  len = g_checksum_type_get_length (checksum->type);
+  signed_len = g_checksum_type_get_length (checksum->type);
+  g_assert (signed_len >= 0);  /* @checksum should be internally consistent */
+  len = (size_t) signed_len;
   g_return_if_fail (*digest_len >= len);
 
   checksum_open = !!(checksum->digest_str == NULL);
@@ -1827,12 +1835,16 @@ g_compute_checksum_for_string (GChecksumType  checksum_type,
                                const gchar   *str,
                                gssize         length)
 {
+  size_t unsigned_length;
+
   g_return_val_if_fail (length == 0 || str != NULL, NULL);
 
   if (length < 0)
-    length = strlen (str);
+    unsigned_length = strlen (str);
+  else
+    unsigned_length = (size_t) length;
 
-  return g_compute_checksum_for_data (checksum_type, (const guchar *) str, length);
+  return g_compute_checksum_for_data (checksum_type, (const guchar *) str, unsigned_length);
 }
 
 /**
