@@ -404,7 +404,7 @@ on_new_connection (GDBusServer *server,
 
   g_ptr_array_add (data->current_connections, g_object_ref (connection));
 
-#if G_CREDENTIALS_SUPPORTED
+#if defined(G_CREDENTIALS_SUPPORTED)
     {
       GCredentials *credentials;
 
@@ -420,7 +420,7 @@ on_new_connection (GDBusServer *server,
 #else
       g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
                         getuid ());
-#if G_CREDENTIALS_HAS_PID
+#if defined(G_CREDENTIALS_HAS_PID)
       g_assert_cmpint (g_credentials_get_unix_pid (credentials, &error), ==,
                        getpid ());
       g_assert_no_error (error);
@@ -1026,7 +1026,7 @@ do_test_peer (void)
     error = NULL;
     credentials = g_socket_get_credentials (socket, &error);
 
-#if G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED
+#if defined(G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED)
     g_assert_no_error (error);
     g_assert (G_IS_CREDENTIALS (credentials));
 
@@ -1039,7 +1039,7 @@ do_test_peer (void)
 #else
     g_assert_cmpuint (g_credentials_get_unix_user (credentials, NULL), ==,
                       getuid ());
-#if G_CREDENTIALS_HAS_PID
+#if defined(G_CREDENTIALS_HAS_PID)
     g_assert_cmpint (g_credentials_get_unix_pid (credentials, &error), ==,
                      getpid ());
     g_assert_no_error (error);

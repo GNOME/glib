@@ -75,7 +75,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (GUnixCredentialsMessage, g_unix_credentials_message,
 static gsize
 g_unix_credentials_message_get_size (GSocketControlMessage *message)
 {
-#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+#if defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED)
   return G_CREDENTIALS_NATIVE_SIZE;
 #else
   return 0;
@@ -85,7 +85,7 @@ g_unix_credentials_message_get_size (GSocketControlMessage *message)
 static int
 g_unix_credentials_message_get_level (GSocketControlMessage *message)
 {
-#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+#if defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED)
   return SOL_SOCKET;
 #else
   return 0;
@@ -95,15 +95,15 @@ g_unix_credentials_message_get_level (GSocketControlMessage *message)
 static int
 g_unix_credentials_message_get_msg_type (GSocketControlMessage *message)
 {
-#if G_CREDENTIALS_USE_LINUX_UCRED
+#if defined(G_CREDENTIALS_USE_LINUX_UCRED)
   return SCM_CREDENTIALS;
-#elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
+#elif defined(G_CREDENTIALS_USE_FREEBSD_CMSGCRED)
   return SCM_CREDS;
-#elif G_CREDENTIALS_USE_NETBSD_UNPCBID
+#elif defined(G_CREDENTIALS_USE_NETBSD_UNPCBID)
   return SCM_CREDS;
-#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+#elif defined(G_CREDENTIALS_USE_SOLARIS_UCRED)
   return SCM_UCRED;
-#elif G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+#elif defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED)
   #error "G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED is set but there is no msg_type defined for this platform"
 #else
   /* includes G_CREDENTIALS_USE_APPLE_XUCRED */
@@ -117,7 +117,7 @@ g_unix_credentials_message_deserialize (gint     level,
                                         gsize    size,
                                         gpointer data)
 {
-#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+#if defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED)
   GSocketControlMessage *message;
   GCredentials *credentials;
 
@@ -157,7 +157,7 @@ static void
 g_unix_credentials_message_serialize (GSocketControlMessage *_message,
                                       gpointer               data)
 {
-#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+#if defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED)
   GUnixCredentialsMessage *message = G_UNIX_CREDENTIALS_MESSAGE (_message);
 
   memcpy (data,
@@ -289,7 +289,7 @@ g_unix_credentials_message_class_init (GUnixCredentialsMessageClass *class)
 gboolean
 g_unix_credentials_message_is_supported (void)
 {
-#if G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
+#if defined(G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED)
   return TRUE;
 #else
   return FALSE;

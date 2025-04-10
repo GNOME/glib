@@ -169,7 +169,6 @@
 #undef G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
 #define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_SPOOFING_SUPPORTED 1
-#define G_CREDENTIALS_HAS_PID 0
 
 void _g_credentials_set_local_peerid (GCredentials *credentials,
                                       pid_t         pid);

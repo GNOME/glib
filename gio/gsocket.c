@@ -6301,7 +6301,7 @@ g_socket_get_credentials (GSocket   *socket,
 
   ret = NULL;
 
-#if G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED
+#if defined(G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED)
 
 #ifdef SO_PEERCRED
   {
@@ -6320,7 +6320,7 @@ g_socket_get_credentials (GSocket   *socket,
                                   native_creds_buf);
       }
   }
-#elif G_CREDENTIALS_USE_APPLE_XUCRED
+#elif defined(G_CREDENTIALS_USE_APPLE_XUCRED)
   {
     struct xucred cred;
     socklen_t optlen = sizeof (cred);
@@ -6377,7 +6377,7 @@ g_socket_get_credentials (GSocket   *socket,
         return NULL;
       }
   }
-#elif G_CREDENTIALS_USE_NETBSD_UNPCBID
+#elif defined(G_CREDENTIALS_USE_NETBSD_UNPCBID)
   {
     struct unpcbid cred;
     socklen_t optlen = sizeof (cred);
@@ -6394,7 +6394,7 @@ g_socket_get_credentials (GSocket   *socket,
                                   &cred);
       }
   }
-#elif G_CREDENTIALS_USE_SOLARIS_UCRED
+#elif defined(G_CREDENTIALS_USE_SOLARIS_UCRED)
   {
     ucred_t *ucred = NULL;
 
@@ -6407,7 +6407,7 @@ g_socket_get_credentials (GSocket   *socket,
         ucred_free (ucred);
       }
   }
-#elif G_CREDENTIALS_USE_WIN32_PID
+#elif defined(G_CREDENTIALS_USE_WIN32_PID)
   {
     DWORD peerid, drc;
 

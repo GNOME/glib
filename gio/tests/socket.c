@@ -2012,7 +2012,7 @@ test_nosigpipe (void)
 }
 #endif
 
-#if G_CREDENTIALS_SUPPORTED
+#if defined(G_CREDENTIALS_SUPPORTED)
 static gpointer client_setup_thread (gpointer user_data);
 
 static void
@@ -2604,7 +2604,7 @@ main (int   argc,
 #ifdef SO_NOSIGPIPE
   g_test_add_func ("/socket/nosigpipe", test_nosigpipe);
 #endif
-#if G_CREDENTIALS_SUPPORTED
+#if defined(G_CREDENTIALS_SUPPORTED)
   g_test_add_func ("/socket/credentials/tcp_client", test_credentials_tcp_client);
   g_test_add_func ("/socket/credentials/tcp_server", test_credentials_tcp_server);
   g_test_add_func ("/socket/credentials/unix_socketpair", test_credentials_unix_socketpair);
