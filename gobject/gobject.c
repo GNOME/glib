@@ -1862,8 +1862,11 @@ g_object_dispatch_properties_changed (GObject     *object,
  * This function temporarily acquires another strong reference while running
  * dispose.
  *
- * Note that this first calls #GObjectClass.dispose. Afterwards, all #GWeakRef
- * pointers are cleared.
+ * Note that this first clears all #GWeakRef pointers and then calls
+ * #GObjectClass.dispose.
+ *
+ * Note that before 2.86, #GWeakRef pointers were cleared after
+ * #GObjectClass.dispose.
  */
 void
 g_object_run_dispose (GObject *object)
@@ -1875,10 +1878,6 @@ g_object_run_dispose (GObject *object)
 
   g_object_ref (object);
 
-  TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 0));
-  G_OBJECT_GET_CLASS (object)->dispose (object);
-  TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 0));
-
   if ((object_get_optional_flags (object) & OPTIONAL_FLAG_EVER_HAD_WEAK_REF))
     {
       wrdata = weak_ref_data_get_surely (object);
@@ -1886,6 +1885,10 @@ g_object_run_dispose (GObject *object)
       weak_ref_data_clear_list (wrdata, object);
       weak_ref_data_unlock (wrdata);
     }
+
+  TRACE (GOBJECT_OBJECT_DISPOSE(object,G_TYPE_FROM_INSTANCE(object), 0));
+  G_OBJECT_GET_CLASS (object)->dispose (object);
+  TRACE (GOBJECT_OBJECT_DISPOSE_END(object,G_TYPE_FROM_INSTANCE(object), 0));
 
   g_object_unref (object);
 }
