@@ -292,8 +292,11 @@ check_only_has_loopback_interfaces (void)
   for (struct ifaddrs *addr = addrs; addr; addr = addr->ifa_next)
     {
       struct sockaddr *sa = addr->ifa_addr;
-      GSocketAddress *saddr = g_socket_address_new_from_native (sa, sizeof (struct sockaddr));
+      GSocketAddress *saddr;
+      if (!sa)
+        continue;
 
+      saddr = g_socket_address_new_from_native (sa, sizeof (struct sockaddr));
       if (!saddr)
         continue;
 
