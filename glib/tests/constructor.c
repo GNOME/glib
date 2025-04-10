@@ -43,7 +43,7 @@ void string_check (const char *string);
 MODULE_IMPORT
 int string_find (const char *string);
 
-#if G_HAS_CONSTRUCTORS
+#if defined(G_HAS_CONSTRUCTORS)
 
 #ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
 #pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS (ctor)
@@ -189,7 +189,7 @@ unload_library (void)
 static void
 test_app (void)
 {
-#if G_HAS_CONSTRUCTORS
+#if defined(G_HAS_CONSTRUCTORS)
   string_check ("app_" "ctor");
 #endif
 #if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
@@ -205,7 +205,7 @@ test_lib (gconstpointer data)
   /* Constructors */
   load_library (library_path);
 
-#if G_HAS_CONSTRUCTORS
+#if defined(G_HAS_CONSTRUCTORS)
   string_check ("lib_" "ctor");
 #endif
 #if defined (_WIN32) && defined (G_HAS_TLS_CALLBACKS)
@@ -215,7 +215,7 @@ test_lib (gconstpointer data)
   /* Destructors */
   unload_library ();
 
-#if G_HAS_CONSTRUCTORS
+#if defined(G_HAS_CONSTRUCTORS)
   /* Destructors in dynamically-loaded libraries do not
    * necessarily run on dlclose. On some systems dlclose
    * is effectively a no-op (e.g with the Musl LibC) and
