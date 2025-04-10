@@ -840,7 +840,7 @@ test_repository_find_by_gtype (RepositoryFixture *fx,
     GType platform_specific_type;
     const char *expected_name, *expected_namespace;
 
-#if defined(G_OS_UNIX) && !(__APPLE__)
+#if defined(G_OS_UNIX) && !defined(__APPLE__)
     platform_specific_type = G_TYPE_DESKTOP_APP_INFO;
     expected_name = "DesktopAppInfo";
     expected_namespace = "GioUnix";

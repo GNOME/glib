@@ -24,7 +24,7 @@
 
 #include <glib.h>
 
-#if TEST_EMULATED_FUTEX
+#ifdef TEST_EMULATED_FUTEX
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-prototypes"

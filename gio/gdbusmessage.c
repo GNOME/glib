@@ -30,11 +30,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#if MAJOR_IN_MKDEV
+#if defined(MAJOR_IN_MKDEV)
 #include <sys/mkdev.h>
-#elif MAJOR_IN_SYSMACROS
+#elif defined(MAJOR_IN_SYSMACROS)
 #include <sys/sysmacros.h>
-#elif MAJOR_IN_TYPES
+#elif defined(MAJOR_IN_TYPES)
 #include <sys/types.h>
 #else
 #define MAJOR_MINOR_NOT_FOUND 1

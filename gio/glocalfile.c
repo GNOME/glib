@@ -27,7 +27,7 @@
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
-#if G_OS_UNIX
+#ifdef G_OS_UNIX
 #include <dirent.h>
 #include <unistd.h>
 #endif
