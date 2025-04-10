@@ -123,7 +123,7 @@ static size_t relation_count_internal (GRelation     *relation,
  **/
 struct _GRealTuples
 {
-  gint      len;
+  guint     len;
   gint      width;
   gpointer *data;
 };
