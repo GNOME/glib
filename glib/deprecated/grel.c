@@ -197,6 +197,8 @@ g_relation_new (gint fields)
   GRelation* rel = g_new0 (GRelation, 1);
   size_t unsigned_fields;
   
+  g_return_val_if_fail (fields == 2, NULL);
+
   unsigned_fields = (size_t) fields;
 
   rel->fields = unsigned_fields;
