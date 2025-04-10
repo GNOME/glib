@@ -124,7 +124,7 @@ static size_t relation_count_internal (GRelation     *relation,
 struct _GRealTuples
 {
   guint     len;
-  gint      width;
+  size_t    width;
   gpointer *data;
 };
 
@@ -622,11 +622,16 @@ g_tuples_index (GTuples     *tuples0,
 		gint         field)
 {
   GRealTuples *tuples = (GRealTuples*) tuples0;
-  
+  size_t unsigned_index, unsigned_field;
+
   g_return_val_if_fail (tuples0 != NULL, NULL);
-  g_return_val_if_fail (field < tuples->width, NULL);
-  
-  return tuples->data[index * tuples->width + field];
+  g_return_val_if_fail (index >= 0, NULL);
+  g_return_val_if_fail (field >= 0 && (size_t) field < tuples->width, NULL);
+
+  unsigned_index = (size_t) index;
+  unsigned_field = (size_t) field;
+
+  return tuples->data[unsigned_index * tuples->width + unsigned_field];
 }
 
 /* Print
