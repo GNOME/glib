@@ -579,6 +579,8 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Wmissing-field-initializers',
     '-Wnonnull',
     '-Wnull-dereference',
+    # We prefer #ifdef to #if
+    '-Wundef',
     '-Wunused',
     # Due to maintained deprecated code, we do not want to see unused parameters
     '-Wno-unused-parameter',
