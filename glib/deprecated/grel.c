@@ -391,10 +391,13 @@ g_relation_delete  (GRelation     *relation,
   GHashTable *table; 
   GHashTable *key_table;
   size_t count;
+  size_t unsigned_field;
   
   g_return_val_if_fail (relation != NULL, 0);
+  g_return_val_if_fail (field >= 0 && (size_t) field < relation->fields, 0);
 
-  table = relation->hashed_tuple_tables[field];
+  unsigned_field = (size_t) field;
+  table = relation->hashed_tuple_tables[unsigned_field];
   count = relation->count;
 
   g_return_val_if_fail (table != NULL, 0);
@@ -404,7 +407,7 @@ g_relation_delete  (GRelation     *relation,
   if (!key_table)
     return 0;
   
-  relation->current_field = field;
+  relation->current_field = unsigned_field;
   
   g_hash_table_foreach (key_table, g_relation_delete_tuple, relation);
   
@@ -458,10 +461,13 @@ g_relation_select (GRelation     *relation,
   GHashTable  *key_table;
   GRealTuples *tuples; 
   size_t count;
+  size_t unsigned_field;
   
   g_return_val_if_fail (relation != NULL, NULL);
+  g_return_val_if_fail (field >= 0 && (size_t) field < relation->fields, NULL);
 
-  table = relation->hashed_tuple_tables[field];
+  unsigned_field = (size_t) field;
+  table = relation->hashed_tuple_tables[unsigned_field];
 
   g_return_val_if_fail (table != NULL, NULL);
   
@@ -503,10 +509,13 @@ g_relation_count (GRelation     *relation,
 {
   GHashTable  *table;
   GHashTable  *key_table;
+  size_t unsigned_field;
   
   g_return_val_if_fail (relation != NULL, 0);
+  g_return_val_if_fail (field >= 0 && (size_t) field < relation->fields, 0);
 
-  table = relation->hashed_tuple_tables[field];
+  unsigned_field = (size_t) field;
+  table = relation->hashed_tuple_tables[unsigned_field];
 
   g_return_val_if_fail (table != NULL, 0);
   
