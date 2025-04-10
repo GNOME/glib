@@ -537,6 +537,7 @@ enum
 };
 
 /* Break an X/Open style locale specification into components
+ * e.g. `en_GB` or `uz_UZ.utf8@cyrillic`
  */
 static guint
 explode_locale (const gchar *locale,
@@ -563,7 +564,7 @@ explode_locale (const gchar *locale,
   else
     at_pos = locale + strlen (locale);
 
-  if (dot_pos)
+  if (dot_pos && dot_pos < at_pos)
     {
       mask |= COMPONENT_CODESET;
       *codeset = g_strndup (dot_pos, at_pos - dot_pos);
@@ -571,7 +572,7 @@ explode_locale (const gchar *locale,
   else
     dot_pos = at_pos;
 
-  if (uscore_pos)
+  if (uscore_pos && uscore_pos < dot_pos)
     {
       mask |= COMPONENT_TERRITORY;
       *territory = g_strndup (uscore_pos, dot_pos - uscore_pos);
@@ -579,6 +580,7 @@ explode_locale (const gchar *locale,
   else
     uscore_pos = dot_pos;
 
+  g_assert (uscore_pos >= locale);
   *language = g_strndup (locale, uscore_pos - locale);
 
   return mask;
