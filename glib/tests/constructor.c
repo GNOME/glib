@@ -215,7 +215,7 @@ test_lib (gconstpointer data)
   /* Destructors */
   unload_library ();
 
-#if G_HAS_DESTRUCTORS
+#if G_HAS_CONSTRUCTORS
   /* Destructors in dynamically-loaded libraries do not
    * necessarily run on dlclose. On some systems dlclose
    * is effectively a no-op (e.g with the Musl LibC) and
