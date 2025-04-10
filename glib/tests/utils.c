@@ -42,29 +42,6 @@
 #include <windows.h>
 #endif
 
-static gboolean
-strv_check (const gchar * const *strv, ...)
-{
-  va_list args;
-  gchar *s;
-  gint i;
-
-  va_start (args, strv);
-  for (i = 0; strv[i]; i++)
-    {
-      s = va_arg (args, gchar*);
-      if (g_strcmp0 (strv[i], s) != 0)
-        {
-          va_end (args);
-          return FALSE;
-        }
-    }
-
-  va_end (args);
-
-  return TRUE;
-}
-
 static void
 test_language_names (void)
 {
@@ -72,21 +49,23 @@ test_language_names (void)
 
   g_setenv ("LANGUAGE", "de:en_US", TRUE);
   names = g_get_language_names ();
-  g_assert (strv_check (names, "de", "en_US", "en", "C", NULL));
+  g_assert_cmpstrv (names, ((const char *[]) { "de", "en_US", "en", "C", NULL }));
 
   g_setenv ("LANGUAGE", "tt_RU.UTF-8@iqtelif", TRUE);
   names = g_get_language_names ();
-  g_assert (strv_check (names,
-                        "tt_RU.UTF-8@iqtelif",
-                        "tt_RU@iqtelif",
-                        "tt.UTF-8@iqtelif",
-                        "tt@iqtelif",
-                        "tt_RU.UTF-8",
-                        "tt_RU",
-                        "tt.UTF-8",
-                        "tt",
-                        "C",
-                        NULL));
+  g_assert_cmpstrv (names,
+                    ((const char *[]) {
+                      "tt_RU.UTF-8@iqtelif",
+                      "tt_RU@iqtelif",
+                      "tt.UTF-8@iqtelif",
+                      "tt@iqtelif",
+                      "tt_RU.UTF-8",
+                      "tt_RU",
+                      "tt.UTF-8",
+                      "tt",
+                      "C",
+                      NULL
+                    }));
 }
 
 static void
@@ -95,11 +74,11 @@ test_locale_variants (void)
   char **v;
 
   v = g_get_locale_variants ("fr_BE");
-  g_assert (strv_check ((const gchar * const *) v, "fr_BE", "fr", NULL));
+  g_assert_cmpstrv (v, ((const char *[]) { "fr_BE", "fr", NULL }));
   g_strfreev (v);
 
   v = g_get_locale_variants ("sr_SR@latin");
-  g_assert (strv_check ((const gchar * const *) v, "sr_SR@latin", "sr@latin", "sr_SR", "sr", NULL));
+  g_assert_cmpstrv (v, ((const char *[]) { "sr_SR@latin", "sr@latin", "sr_SR", "sr", NULL }));
   g_strfreev (v);
 }
 
@@ -111,27 +90,27 @@ test_version (void)
               GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION,
               glib_major_version, glib_minor_version, glib_micro_version);
 
-  g_assert (glib_check_version (GLIB_MAJOR_VERSION,
-                                GLIB_MINOR_VERSION,
-                                GLIB_MICRO_VERSION) == NULL);
-  g_assert (glib_check_version (GLIB_MAJOR_VERSION,
-                                GLIB_MINOR_VERSION,
-                                0) == NULL);
-  g_assert (glib_check_version (GLIB_MAJOR_VERSION - 1,
-                                0,
-                                0) != NULL);
-  g_assert (glib_check_version (GLIB_MAJOR_VERSION + 1,
-                                0,
-                                0) != NULL);
-  g_assert (glib_check_version (GLIB_MAJOR_VERSION,
-                                GLIB_MINOR_VERSION + 1,
-                                0) != NULL);
+  g_assert_null (glib_check_version (GLIB_MAJOR_VERSION,
+                                     GLIB_MINOR_VERSION,
+                                     GLIB_MICRO_VERSION));
+  g_assert_null (glib_check_version (GLIB_MAJOR_VERSION,
+                                     GLIB_MINOR_VERSION,
+                                     0));
+  g_assert_nonnull (glib_check_version (GLIB_MAJOR_VERSION - 1,
+                                        0,
+                                        0));
+  g_assert_nonnull (glib_check_version (GLIB_MAJOR_VERSION + 1,
+                                        0,
+                                        0));
+  g_assert_nonnull (glib_check_version (GLIB_MAJOR_VERSION,
+                                        GLIB_MINOR_VERSION + 1,
+                                        0));
   /* don't use + 1 here, since a +/-1 difference can
    * happen due to post-release version bumps in git
    */
-  g_assert (glib_check_version (GLIB_MAJOR_VERSION,
-                                GLIB_MINOR_VERSION,
-                                GLIB_MICRO_VERSION + 3) != NULL);
+  g_assert_nonnull (glib_check_version (GLIB_MAJOR_VERSION,
+                                        GLIB_MINOR_VERSION,
+                                        GLIB_MICRO_VERSION + 3));
 }
 
 static const gchar *argv0;
@@ -463,11 +442,11 @@ test_find_program (void)
   gsize i;
 
   res = g_find_program_in_path ("sh");
-  g_assert (res != NULL);
+  g_assert_nonnull (res);
   g_free (res);
 
   res = g_find_program_in_path ("/bin/sh");
-  g_assert (res != NULL);
+  g_assert_nonnull (res);
   g_free (res);
 
   /* Resolve any symlinks in the CWD as that breaks the test e.g.
@@ -499,13 +478,13 @@ test_find_program (void)
 #endif
 
   res = g_find_program_in_path ("this_program_does_not_exit");
-  g_assert (res == NULL);
+  g_assert_null (res);
 
   res = g_find_program_in_path ("/bin");
-  g_assert (res == NULL);
+  g_assert_null (res);
 
   res = g_find_program_in_path ("/etc/passwd");
-  g_assert (res == NULL);
+  g_assert_null (res);
 }
 
 static char *
@@ -789,7 +768,7 @@ test_username (void)
 
   name = g_get_user_name ();
 
-  g_assert (name != NULL);
+  g_assert_nonnull (name);
 }
 
 static void
@@ -799,7 +778,7 @@ test_realname (void)
 
   name = g_get_real_name ();
 
-  g_assert (name != NULL);
+  g_assert_nonnull (name);
 }
 
 static void
@@ -809,7 +788,7 @@ test_hostname (void)
 
   name = g_get_host_name ();
 
-  g_assert (name != NULL);
+  g_assert_nonnull (name);
   g_assert_true (g_utf8_validate (name, -1, NULL));
 }
 
@@ -899,11 +878,11 @@ test_desktop_special_dir (void)
   const gchar *dir, *dir2;
 
   dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-  g_assert (dir != NULL);
+  g_assert_nonnull (dir);
 
   g_reload_user_special_dirs_cache ();
   dir2 = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-  g_assert (dir2 != NULL);
+  g_assert_nonnull (dir2);
 }
 
 static void
@@ -970,11 +949,11 @@ test_clear_pointer (void)
 
   a = g_malloc (5);
   g_clear_pointer (&a, g_free);
-  g_assert (a == NULL);
+  g_assert_null (a);
 
   a = g_malloc (5);
   (g_clear_pointer) (&a, g_free);
-  g_assert (a == NULL);
+  g_assert_null (a);
 }
 
 /* Test that g_clear_pointer() works with a GDestroyNotify which contains a cast.
@@ -1046,15 +1025,15 @@ test_take_pointer (void)
   get_obj (NULL);
 
   get_obj (&a);
-  g_assert (a);
+  g_assert_nonnull (a);
 
   /* ensure that it works to skip the macro */
   b = (g_steal_pointer) (&a);
-  g_assert (!a);
+  g_assert_null (a);
   obj_count--;
   g_free (b);
 
-  g_assert (!obj_count);
+  g_assert_cmpint (obj_count, ==, 0);
 }
 
 static void
@@ -1063,16 +1042,16 @@ test_misc_mem (void)
   gpointer a;
 
   a = g_try_malloc (0);
-  g_assert (a == NULL);
+  g_assert_null (a);
 
   a = g_try_malloc0 (0);
-  g_assert (a == NULL);
+  g_assert_null (a);
 
   a = g_malloc (16);
   a = g_try_realloc (a, 20);
   a = g_try_realloc (a, 0);
 
-  g_assert (a == NULL);
+  g_assert_null (a);
 }
 
 static void
@@ -1209,11 +1188,11 @@ test_nullify (void)
 {
   gpointer p = &test_nullify;
 
-  g_assert (p != NULL);
+  g_assert_nonnull (p);
 
   g_nullify_pointer (&p);
 
-  g_assert (p == NULL);
+  g_assert_null (p);
 }
 
 static void
@@ -1241,7 +1220,7 @@ test_check_setuid (void)
   gboolean res;
 
   res = GLIB_PRIVATE_CALL(g_check_setuid) ();
-  g_assert (!res);
+  g_assert_false (res);
 }
 
 /* Test the defined integer limits are correct, as some compilers have had
