@@ -301,13 +301,13 @@ weak_ref_data_ref (WeakRefData *wrdata)
 {
   gint ref;
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (wrdata);
 #endif
 
   ref = g_atomic_int_add (&wrdata->atomic_field, 1);
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   /* Overflow is almost impossible to happen, because the user would need to
    * spawn that many operating system threads, that all call
    * g_weak_ref_{set,get}() in parallel.
@@ -344,7 +344,7 @@ weak_ref_data_unref (WeakRefData *wrdata)
   if (!g_atomic_int_dec_and_test (&wrdata->atomic_field))
     return;
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   /* We expect that the list of weak locations is empty at this point.
    * During g_object_unref() (_object_unref_clear_weak_locations()) it
    * should have been cleared.
@@ -438,7 +438,7 @@ weak_ref_data_get_surely (GObject *object)
    * That is likely not worth it. */
 
   wrdata = weak_ref_data_get (object);
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (wrdata);
 #endif
   return wrdata;
@@ -508,7 +508,7 @@ weak_ref_data_list_remove (WeakRefData *wrdata, guint16 idx, gboolean allow_shri
 {
   GWeakRef *weak_ref;
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (idx < wrdata->len);
 #endif
 
@@ -576,7 +576,7 @@ weak_ref_data_has (GObject *object, WeakRefData *wrdata, WeakRefData **out_new_w
        *
        * In other words, weak_ref_data_has(NULL, NULL, out_new_wrdata) is TRUE.
        */
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
       g_assert (!out_new_wrdata);
 #endif
       return !wrdata;
@@ -591,7 +591,7 @@ weak_ref_data_has (GObject *object, WeakRefData *wrdata, WeakRefData **out_new_w
        * evaluation will be %FALSE. */
       if (out_new_wrdata)
         *out_new_wrdata = weak_ref_data_ref (weak_ref_data_get (object));
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
       g_assert (out_new_wrdata
                     ? *out_new_wrdata
                     : weak_ref_data_get (object));
@@ -892,7 +892,7 @@ _g_object_type_init (void)
   g_assert (type == G_TYPE_OBJECT);
   g_value_register_transform_func (G_TYPE_OBJECT, G_TYPE_OBJECT, g_value_object_transform_value);
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   /* We cannot use GOBJECT_IF_DEBUG here because of the G_HAS_CONSTRUCTORS
    * conditional in between, as the C spec leaves conditionals inside macro
    * expansions as undefined behavior. Only GCC and Clang are known to work
@@ -4023,7 +4023,7 @@ toggle_refs_check_and_ref_or_deref (GObject *object,
   const gint ref_next = is_ref ? 2 : 1;
   gboolean success;
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (ref_curr == *old_ref);
 #endif
 
@@ -4325,7 +4325,7 @@ _object_unref_clear_weak_locations (GObject *object, gint *p_old_ref, gboolean d
         {
           if (!g_atomic_int_compare_and_exchange ((gint *) &object->ref_count, 1, 0))
             {
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
               g_assert_not_reached ();
 #endif
             }
@@ -5354,7 +5354,7 @@ g_object_watch_closure_cb (gpointer *data,
       carray->n_closures = 1;
       i = 0;
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
       /* We never expect there is anything to destroy. We require
        * these entries to be released via closure_array_destroy_all(). */
       *destroy_notify = g_destroy_notify_assert_not_reached;
@@ -5612,7 +5612,7 @@ weak_ref_data_clear_list (WeakRefData *wrdata, GObject *object)
       /* Fast-path. Most likely @weak_ref is currently not locked, so we can
        * just atomically set the pointer to NULL. */
       ptr = g_atomic_pointer_get (&weak_ref->priv.p);
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
       g_assert (G_IS_OBJECT (_weak_ref_clean_pointer (ptr)));
       g_assert (!object || object == _weak_ref_clean_pointer (ptr));
 #endif
@@ -5643,7 +5643,7 @@ _weak_ref_set (GWeakRef *weak_ref,
 
   new_wrdata = weak_ref_data_get_or_create (new_object);
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (!new_object || object_get_optional_flags (new_object) & OPTIONAL_FLAG_EVER_HAD_WEAK_REF);
 #endif
 
@@ -5655,7 +5655,7 @@ _weak_ref_set (GWeakRef *weak_ref,
        * Also important, the caller ensured that @new_object is not NULL. So we
        * are expected to set @weak_ref from NULL to a non-NULL @new_object. */
       old_wrdata = NULL;
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
       g_assert (new_object);
 #endif
     }
@@ -5732,7 +5732,7 @@ _weak_ref_set (GWeakRef *weak_ref,
 
   if (new_object)
     {
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
       g_assert (new_wrdata != NULL);
       g_assert (weak_ref_data_list_find (new_wrdata, weak_ref) < 0);
 #endif

@@ -200,7 +200,7 @@ datalist_index_get (GData *data)
 
   p_index = datalist_index_get_ptr (data);
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (!p_index || *p_index);
 #endif
 
@@ -350,7 +350,7 @@ datalist_remove (GData *data, guint32 idx)
 {
   GHashTable *index;
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (idx < data->len);
 #endif
 
@@ -424,7 +424,7 @@ datalist_shrink (GData **data, GData **d_to_free)
     }
   v *= 2u;
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (v > d->len);
   g_assert (v <= (d->alloc == G_MAXUINT32 ? 0x80000000u : d->alloc / 2u));
 #endif
@@ -490,7 +490,7 @@ datalist_find (GData *data, GQuark key_id, guint32 *out_idx)
   if (!data_elt)
     return NULL;
 
-#if G_ENABLE_DEBUG
+#ifdef G_ENABLE_DEBUG
   g_assert (data_elt >= data->data && data_elt < &data->data[data->len]);
 #endif
 
