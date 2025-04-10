@@ -71,15 +71,40 @@ test_language_names (void)
 static void
 test_locale_variants (void)
 {
-  char **v;
+  const struct
+    {
+      const char *locale_str;
+      const char * const *expected_variants;
+    }
+  vectors[] =
+    {
+      /* Try some valid locales */
+      { "en", (const char *[]) { "en", NULL } },
+      { "sr@latin", (const char *[]) { "sr@latin", "sr", NULL } },
+      { "fr_BE", (const char *[]) { "fr_BE", "fr", NULL } },
+      { "sr_SR@latin", (const char *[]) { "sr_SR@latin", "sr@latin", "sr_SR", "sr", NULL } },
+      { "sr_SR@latin.UTF-8", (const char *[]) { "sr_SR@latin.UTF-8", "sr_SR@latin", "sr.UTF-8", "sr", NULL } },
 
-  v = g_get_locale_variants ("fr_BE");
-  g_assert_cmpstrv (v, ((const char *[]) { "fr_BE", "fr", NULL }));
-  g_strfreev (v);
+      /* And some invalid ones. The parser should try and extract what value it can */
+      { "sr@latin_invalid", (const char *[]) { "sr@latin_invalid", "sr@latin", NULL } },
+      { "sr.UTF-8@latin", (const char *[]) { "sr.UTF-8@latin", "sr@latin", "sr.UTF-8", "sr", NULL } },
+      { "sr.UTF-8_latin", (const char *[]) { "sr.UTF-8_latin", "sr.UTF-8", NULL } },
+      { "sr.UTF-8@latin_invalid", (const char *[]) { "sr.UTF-8@latin_invalid", "sr.UTF-8@latin", NULL } },
+    };
+  size_t i;
 
-  v = g_get_locale_variants ("sr_SR@latin");
-  g_assert_cmpstrv (v, ((const char *[]) { "sr_SR@latin", "sr@latin", "sr_SR", "sr", NULL }));
-  g_strfreev (v);
+  for (i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      char **v;
+
+      g_test_message ("Testing locale ‘%s’", vectors[i].locale_str);
+
+      v = g_get_locale_variants (vectors[i].locale_str);
+      g_assert_cmpstrv (v, vectors[i].expected_variants);
+      /* g_get_locale_variants() guarantees that the input is always in the output: */
+      g_assert_true (g_strv_contains ((const char * const *) v, vectors[i].locale_str));
+      g_strfreev (v);
+    }
 }
 
 static void
