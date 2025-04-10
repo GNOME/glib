@@ -106,6 +106,10 @@ struct _GRelation
   size_t count;
 };
 
+static size_t relation_count_internal (GRelation     *relation,
+                                       gconstpointer  key,
+                                       size_t         field);
+
 /**
  * GTuples:
  * @len: the number of records that matched.
@@ -477,7 +481,7 @@ g_relation_select (GRelation     *relation,
   if (!key_table)
     return (GTuples*)tuples;
   
-  count = g_relation_count (relation, key, field);
+  count = relation_count_internal (relation, key, unsigned_field);
   
   tuples->data = g_malloc (sizeof (gpointer) * relation->fields * count);
   tuples->width = relation->fields;
@@ -487,6 +491,29 @@ g_relation_select (GRelation     *relation,
   g_assert (count == (size_t) tuples->len);
   
   return (GTuples*)tuples;
+}
+
+static size_t
+relation_count_internal (GRelation     *relation,
+                         gconstpointer  key,
+                         size_t         field)
+{
+  GHashTable *table;
+  GHashTable *key_table;
+
+  g_return_val_if_fail (relation != NULL, 0);
+  g_return_val_if_fail (field < relation->fields, 0);
+
+  table = relation->hashed_tuple_tables[field];
+
+  g_return_val_if_fail (table != NULL, 0);
+
+  key_table = g_hash_table_lookup (table, key);
+
+  if (!key_table)
+    return 0;
+
+  return g_hash_table_size (key_table);
 }
 
 /**
@@ -507,24 +534,14 @@ g_relation_count (GRelation     *relation,
 		  gconstpointer  key,
 		  gint           field)
 {
-  GHashTable  *table;
-  GHashTable  *key_table;
-  size_t unsigned_field;
-  
-  g_return_val_if_fail (relation != NULL, 0);
+  unsigned int n_matches;
+
   g_return_val_if_fail (field >= 0 && (size_t) field < relation->fields, 0);
 
-  unsigned_field = (size_t) field;
-  table = relation->hashed_tuple_tables[unsigned_field];
-
-  g_return_val_if_fail (table != NULL, 0);
-  
-  key_table = g_hash_table_lookup (table, key);
-  
-  if (!key_table)
-    return 0;
-  
-  return g_hash_table_size (key_table);
+  /* Do the best we can with the limited return type */
+  n_matches = relation_count_internal (relation, key, (size_t) field);
+  g_return_val_if_fail (n_matches <= G_MAXINT, G_MAXINT);
+  return (gint) n_matches;
 }
 
 /**
