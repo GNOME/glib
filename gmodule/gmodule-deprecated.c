@@ -1,4 +1,5 @@
 #include "config.h"
+#include "gmoduleconf.h"
 
 /* 
  * This is the only way to disable deprecation warnings for macros, and we need
