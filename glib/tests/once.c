@@ -23,6 +23,7 @@
  * if advised of the possibility of such damage.
  */
 
+#include "config.h"
 #include <glib.h>
 #include "../gvalgrind.h"
 
