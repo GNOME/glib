@@ -1572,6 +1572,45 @@ g_checksum_free (GChecksum *checksum)
     }
 }
 
+/* Internal variant of g_checksum_update() which takes an explicit length and
+ * doesn’t use strlen() internally. */
+static void
+checksum_update_internal (GChecksum    *checksum,
+                          const guchar *data,
+                          size_t        length)
+{
+  g_return_if_fail (checksum != NULL);
+  g_return_if_fail (length == 0 || data != NULL);
+
+  if (checksum->digest_str)
+    {
+      g_warning ("The checksum '%s' has been closed and cannot be updated "
+                 "any more.",
+                 checksum->digest_str);
+      return;
+    }
+
+  switch (checksum->type)
+    {
+    case G_CHECKSUM_MD5:
+      md5_sum_update (&(checksum->sum.md5), data, length);
+      break;
+    case G_CHECKSUM_SHA1:
+      sha1_sum_update (&(checksum->sum.sha1), data, length);
+      break;
+    case G_CHECKSUM_SHA256:
+      sha256_sum_update (&(checksum->sum.sha256), data, length);
+      break;
+    case G_CHECKSUM_SHA384:
+    case G_CHECKSUM_SHA512:
+      sha512_sum_update (&(checksum->sum.sha512), data, length);
+      break;
+    default:
+      g_assert_not_reached ();
+      break;
+    }
+}
+
 /**
  * g_checksum_update:
  * @checksum: a #GChecksum
@@ -1599,33 +1638,7 @@ g_checksum_update (GChecksum    *checksum,
   else
     unsigned_length = (size_t) length;
 
-  if (checksum->digest_str)
-    {
-      g_warning ("The checksum '%s' has been closed and cannot be updated "
-                 "anymore.",
-                 checksum->digest_str);
-      return;
-    }
-
-  switch (checksum->type)
-    {
-    case G_CHECKSUM_MD5:
-      md5_sum_update (&(checksum->sum.md5), data, unsigned_length);
-      break;
-    case G_CHECKSUM_SHA1:
-      sha1_sum_update (&(checksum->sum.sha1), data, unsigned_length);
-      break;
-    case G_CHECKSUM_SHA256:
-      sha256_sum_update (&(checksum->sum.sha256), data, unsigned_length);
-      break;
-    case G_CHECKSUM_SHA384:
-    case G_CHECKSUM_SHA512:
-      sha512_sum_update (&(checksum->sum.sha512), data, unsigned_length);
-      break;
-    default:
-      g_assert_not_reached ();
-      break;
-    }
+  checksum_update_internal (checksum, data, unsigned_length);
 }
 
 /**
@@ -1807,7 +1820,7 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
   if (!checksum)
     return NULL;
 
-  g_checksum_update (checksum, data, length);
+  checksum_update_internal (checksum, data, length);
   retval = g_strdup (g_checksum_get_string (checksum));
   g_checksum_free (checksum);
 
