@@ -70,7 +70,7 @@ get_alias_hash (void)
           const char *canonical;
           const char *alias;
           const char **alias_array;
-          int count = 0;
+          size_t count = 0;
 
           alias = aliases;
           aliases += strlen (aliases) + 1;
