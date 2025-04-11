@@ -217,7 +217,7 @@ my_test_do_signal3 (GTest * test)
 static void
 my_test_do_prop (GTest * test)
 {
-  test->value = g_random_int ();
+  test->value = (int) g_random_int ();
   g_object_notify (G_OBJECT (test), "test-prop");
 }
 

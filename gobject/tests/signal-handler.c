@@ -147,7 +147,7 @@ test_disconnect_many_random (void)
 
   for (i = 0; i < n_handlers; i++)
     {
-      j = g_test_rand_int_range (0, n_handlers);
+      j = (guint) g_test_rand_int_range (0, (int) n_handlers);
       id = handlers[i];
       handlers[i] = handlers[j];
       handlers[j] = id;
@@ -189,7 +189,7 @@ test_disconnect_2_signals (void)
 
   for (i = 0; i < n_handlers; i++)
     {
-      j = g_test_rand_int_range (0, n_handlers);
+      j = (guint) g_test_rand_int_range (0, (int) n_handlers);
       id = handlers[i];
       handlers[i] = handlers[j];
       handlers[j] = id;
@@ -240,7 +240,7 @@ test_disconnect_2_objects (void)
 
   for (i = 0; i < n_handlers; i++)
     {
-      j = g_test_rand_int_range (0, n_handlers);
+      j = (guint) g_test_rand_int_range (0, (int) n_handlers);
       id = handlers[i];
       handlers[i] = handlers[j];
       handlers[j] = id;
@@ -282,7 +282,7 @@ test_block_many (void)
 
   for (i = 0; i < n_handlers; i++)
     {
-      j = g_test_rand_int_range (0, n_handlers);
+      j = (guint) g_test_rand_int_range (0, (int) n_handlers);
       id = handlers[i];
       handlers[i] = handlers[j];
       handlers[j] = id;
