@@ -2224,22 +2224,20 @@ start_type (GMarkupParseContext  *context,
           size = find_attribute ("fixed-size", attribute_names, attribute_values);
 
           typenode->has_length = len != NULL;
-          if (!typenode->has_length)
-            typenode->length = -1;
-          else if (g_ascii_string_to_unsigned (len, 10, 0, G_MAXUINT, &parsed_uint, error))
+          if (typenode->has_length &&
+              g_ascii_string_to_unsigned (len, 10, 0, G_MAXUINT, &parsed_uint, error))
             typenode->length = parsed_uint;
-          else
+          else if (typenode->has_length)
             {
               gi_ir_node_free ((GIIrNode *) typenode);
               return FALSE;
             }
 
           typenode->has_size = size != NULL;
-          if (!typenode->has_size)
-            typenode->size = -1;
-          else if (g_ascii_string_to_unsigned (size, 10, 0, G_MAXSIZE, &parsed_uint, error))
+          if (typenode->has_size &&
+              g_ascii_string_to_unsigned (size, 10, 0, G_MAXSIZE, &parsed_uint, error))
             typenode->size = parsed_uint;
-          else
+          else if (typenode->has_size)
             {
               gi_ir_node_free ((GIIrNode *) typenode);
               return FALSE;
@@ -2256,9 +2254,7 @@ start_type (GMarkupParseContext  *context,
         } else {
           typenode->zero_terminated = FALSE;
           typenode->has_length = FALSE;
-          typenode->length = -1;
           typenode->has_size = FALSE;
-          typenode->size = -1;
         }
     }
   else

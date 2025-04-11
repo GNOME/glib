@@ -1523,8 +1523,6 @@ gi_ir_node_build_typelib (GIIrNode         *node,
                         array->dimensions.length = type->length;
                       else if (array->has_size)
                         array->dimensions.size  = type->size;
-                      else
-                        array->dimensions.length = -1;
 
                       pos = *offset2 + G_STRUCT_OFFSET (ArrayTypeBlob, type);
                       *offset2 += sizeof (ArrayTypeBlob);
