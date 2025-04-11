@@ -823,7 +823,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_INT, type));        \
   g_value_init (&src, G_TYPE_INT);                                      \
   g_value_init (&dest, type);                                           \
-  g_value_set_int (&src, value);                                        \
+  g_value_set_int (&src, (int) value);                                  \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -855,7 +855,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_UINT, type));       \
   g_value_init (&src, G_TYPE_UINT);                                     \
   g_value_init (&dest, type);                                           \
-  g_value_set_uint (&src, value);                                       \
+  g_value_set_uint (&src, (unsigned int) value);                        \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -880,7 +880,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_LONG, type));       \
   g_value_init (&src, G_TYPE_LONG);                                     \
   g_value_init (&dest, type);                                           \
-  g_value_set_long (&src, value);                                       \
+  g_value_set_long (&src, (long) value);                                \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -905,7 +905,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_ULONG, type));      \
   g_value_init (&src, G_TYPE_ULONG);                                    \
   g_value_init (&dest, type);                                           \
-  g_value_set_ulong (&src, value);                                      \
+  g_value_set_ulong (&src, (gulong) value);                             \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -930,7 +930,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_INT64, type));      \
   g_value_init (&src, G_TYPE_INT64);                                    \
   g_value_init (&dest, type);                                           \
-  g_value_set_int64 (&src, value);                                      \
+  g_value_set_int64 (&src, (gint64) value);                             \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -955,7 +955,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_UINT64, type));     \
   g_value_init (&src, G_TYPE_UINT64);                                   \
   g_value_init (&dest, type);                                           \
-  g_value_set_uint64 (&src, value);                                     \
+  g_value_set_uint64 (&src, (guint64) value);                           \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -980,7 +980,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_FLOAT, type));     \
   g_value_init (&src, G_TYPE_FLOAT);                                   \
   g_value_init (&dest, type);                                          \
-  g_value_set_float (&src, value);                                     \
+  g_value_set_float (&src, (float) value);                             \
   g_assert_true (g_value_transform (&src, &dest));                     \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                   \
   g_value_unset (&src);                                                \
@@ -1005,7 +1005,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_DOUBLE, type));     \
   g_value_init (&src, G_TYPE_DOUBLE);                                   \
   g_value_init (&dest, type);                                           \
-  g_value_set_double (&src, value);                                     \
+  g_value_set_double (&src, (double) value);                            \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
