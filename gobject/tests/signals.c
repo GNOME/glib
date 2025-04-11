@@ -1509,7 +1509,7 @@ test_introspection (void)
   g_assert_cmpstr (query.signal_name, ==, "simple");
   g_assert_true (query.itype == test_get_type ());
   g_assert_cmpint (query.signal_flags, ==, G_SIGNAL_RUN_LAST);
-  g_assert_cmpint (query.return_type, ==, G_TYPE_NONE);
+  g_assert_cmpuint (query.return_type, ==, G_TYPE_NONE);
   g_assert_cmpuint (query.n_params, ==, 0);
 
   g_free (ids);
@@ -2074,11 +2074,11 @@ test_weak_ref_disconnect (void)
                                          &state,
                                          (GClosureNotify) weak_ref_disconnect_notify,
                                          0);
-  g_assert_cmpint (state.handler, >, 0);
+  g_assert_cmpuint (state.handler, >, 0);
 
   g_object_unref (test);
 
-  g_assert_cmpint (state.handler, ==, 0);
+  g_assert_cmpuint (state.handler, ==, 0);
   g_assert_null (g_weak_ref_get (&state.wr));
   g_weak_ref_clear (&state.wr);
 }

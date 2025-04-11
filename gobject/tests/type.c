@@ -118,10 +118,10 @@ test_interface_prerequisite (void)
 
   g_free (prereqs);
 
-  g_assert_cmpint (g_type_interface_instantiatable_prerequisite (baa_get_type ()), ==, G_TYPE_INVALID);
-  g_assert_cmpint (g_type_interface_instantiatable_prerequisite (boo_get_type ()), ==, G_TYPE_INVALID);
+  g_assert_cmpuint (g_type_interface_instantiatable_prerequisite (baa_get_type ()), ==, G_TYPE_INVALID);
+  g_assert_cmpuint (g_type_interface_instantiatable_prerequisite (boo_get_type ()), ==, G_TYPE_INVALID);
 
-  g_assert_cmpint (g_type_interface_instantiatable_prerequisite (bozo_get_type ()), ==, G_TYPE_INITIALLY_UNOWNED);
+  g_assert_cmpuint (g_type_interface_instantiatable_prerequisite (bozo_get_type ()), ==, G_TYPE_INITIALLY_UNOWNED);
 }
 
 typedef struct {

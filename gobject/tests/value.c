@@ -72,7 +72,7 @@ test_enum_transformation (void)
  memset (&xform, 0, sizeof (GValue));
  g_value_init (&xform, G_TYPE_ULONG);
  g_value_transform (&orig, &xform);
- g_assert_cmpint (g_value_get_ulong (&xform), ==, 1);
+ g_assert_cmpuint (g_value_get_ulong (&xform), ==, 1);
 
  memset (&xform, 0, sizeof (GValue));
  g_value_init (&xform, G_TYPE_INT64);
@@ -82,7 +82,7 @@ test_enum_transformation (void)
  memset (&xform, 0, sizeof (GValue));
  g_value_init (&xform, G_TYPE_UINT64);
  g_value_transform (&orig, &xform);
- g_assert_cmpint (g_value_get_uint64 (&xform), ==, 1);
+ g_assert_cmpuint (g_value_get_uint64 (&xform), ==, 1);
 }
 
 

@@ -166,7 +166,7 @@ check_flags_validation (void)
 
       /* This check will fail in case of gint -> glong conversion
        * in value_flags_enum_collect_value() */
-      g_assert_cmpint (flag_read, ==, flag_set);
+      g_assert_cmpuint (flag_read, ==, flag_set);
 
       g_object_unref (test);
     }

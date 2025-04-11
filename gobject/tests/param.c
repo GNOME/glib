@@ -195,13 +195,13 @@ test_param_spec_ulong (void)
 
   g_param_value_set_default (pspec, &value);
   g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_ULONG);
-  g_assert_cmpint (g_value_get_ulong (&value), ==, 30);
+  g_assert_cmpuint (g_value_get_ulong (&value), ==, 30);
   g_assert_true (g_param_value_defaults (pspec, &value));
 
   g_value_set_ulong (&value, 0);
   g_assert_false (g_param_value_is_valid (pspec, &value));
   g_assert_true (g_param_value_validate (pspec, &value));
-  g_assert_cmpint (g_value_get_ulong (&value), ==, 20);
+  g_assert_cmpuint (g_value_get_ulong (&value), ==, 20);
 
   g_param_spec_unref (pspec);
 }
@@ -239,13 +239,13 @@ test_param_spec_uint64 (void)
 
   g_param_value_set_default (pspec, &value);
   g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_UINT64);
-  g_assert_cmpint (g_value_get_uint64 (&value), ==, 30);
+  g_assert_cmpuint (g_value_get_uint64 (&value), ==, 30);
   g_assert_true (g_param_value_defaults (pspec, &value));
 
   g_value_set_uint64 (&value, 0);
   g_assert_false (g_param_value_is_valid (pspec, &value));
   g_assert_true (g_param_value_validate (pspec, &value));
-  g_assert_cmpint (g_value_get_uint64 (&value), ==, 20);
+  g_assert_cmpuint (g_value_get_uint64 (&value), ==, 20);
 
   g_param_spec_unref (pspec);
 }
@@ -522,12 +522,12 @@ test_param_spec_gtype (void)
   g_value_set_gtype (&value, G_TYPE_INT);
   g_assert_false (g_param_value_is_valid (pspec, &value));
   g_assert_true (g_param_value_validate (pspec, &value));
-  g_assert_cmpint (g_value_get_gtype (&value), ==, G_TYPE_PARAM);
+  g_assert_cmpuint (g_value_get_gtype (&value), ==, G_TYPE_PARAM);
 
   g_value_set_gtype (&value, G_TYPE_PARAM_INT);
   g_assert_true (g_param_value_is_valid (pspec, &value));
   g_assert_false (g_param_value_validate (pspec, &value));
-  g_assert_cmpint (g_value_get_gtype (&value), ==, G_TYPE_PARAM_INT);
+  g_assert_cmpuint (g_value_get_gtype (&value), ==, G_TYPE_PARAM_INT);
 
   g_param_spec_unref (pspec);
 }
@@ -834,7 +834,7 @@ test_value_transform (void)
    * https://bugzilla.gnome.org/show_bug.cgi?id=659870
    * for why it is broken.
    */
-  CHECK_INT_CONVERSION(G_TYPE_CHAR, g_assert_cmpuint, char, 124)
+  CHECK_INT_CONVERSION(G_TYPE_CHAR, g_assert_cmpint, char, 124)
 
   CHECK_INT_CONVERSION(G_TYPE_CHAR, g_assert_cmpint, schar, -124)
   CHECK_INT_CONVERSION(G_TYPE_CHAR, g_assert_cmpint, schar, 124)
