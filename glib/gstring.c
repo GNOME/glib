@@ -886,7 +886,7 @@ g_string_overwrite_len (GString     *string,
                         const gchar *val,
                         gssize       len)
 {
-  gssize len_unsigned;
+  gsize len_unsigned;
   gsize end;
 
   g_return_val_if_fail (string != NULL, NULL);
