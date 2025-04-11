@@ -454,11 +454,12 @@ push_node (ParseContext *ctx, GIIrNode *node)
   ctx->node_stack = g_slist_prepend (ctx->node_stack, node);
 }
 
-static GIIrNodeType * parse_type_internal (GIIrModule *module,
-                                           const char *str,
-                                           char **next,
-                                           gboolean in_glib,
-                                           gboolean in_gobject);
+static GIIrNodeType * parse_type_internal (GIIrModule  *module,
+                                           const char  *str,
+                                           char       **next,
+                                           gboolean     in_glib,
+                                           gboolean     in_gobject,
+                                           GError     **error);
 
 typedef struct {
   const char *str;
@@ -575,11 +576,12 @@ parse_basic (const char *str)
 }
 
 static GIIrNodeType *
-parse_type_internal (GIIrModule   *module,
-                     const char   *str,
-                     char        **next,
-                     gboolean      in_glib,
-                     gboolean      in_gobject)
+parse_type_internal (GIIrModule  *module,
+                     const char  *str,
+                     char       **next,
+                     gboolean     in_glib,
+                     gboolean     in_gobject,
+                     GError     **error)
 {
   const BasicTypeInfo *basic;
   GIIrNodeType *type;
@@ -686,7 +688,12 @@ parse_type_internal (GIIrModule   *module,
 
           end = strchr (str, '>');
           if (end == NULL)
-            goto error;
+            {
+              g_set_error (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "Failed to parse type ‘%s’", type->unparsed);
+              goto error;
+            }
           tmp = g_strndup (str, (size_t) (end - str));
           type->errors = g_strsplit (tmp, ",", 0);
           g_free (tmp);
@@ -719,6 +726,7 @@ parse_type_internal (GIIrModule   *module,
   return type;
 
 error:
+  g_assert (error == NULL || *error != NULL);
   gi_ir_node_free ((GIIrNode *)type);
   g_free (temporary_type);
   return NULL;
@@ -793,7 +801,9 @@ is_pointer_or_disguised_structure (ParseContext *ctx,
 }
 
 static GIIrNodeType *
-parse_type (ParseContext *ctx, const char *type)
+parse_type (ParseContext  *ctx,
+            const char    *type,
+            GError       **error)
 {
   GIIrNodeType *node;
   const BasicTypeInfo *basic;
@@ -807,11 +817,11 @@ parse_type (ParseContext *ctx, const char *type)
   if (basic == NULL)
     type = resolve_aliases (ctx, type);
 
-  node = parse_type_internal (ctx->current_module, type, NULL, in_glib, in_gobject);
+  node = parse_type_internal (ctx->current_module, type, NULL, in_glib, in_gobject, error);
   if (node)
     g_debug ("Parsed type: %s => %d", type, node->tag);
   else
-    g_critical ("Failed to parse type: '%s'", type);
+    g_debug ("Failed to parse type: '%s'", type);
 
   return node;
 }
@@ -1519,7 +1529,8 @@ start_field (GMarkupParseContext  *context,
     }
   else
     {
-      field->type = parse_type (ctx, "gpointer");
+      field->type = parse_type (ctx, "gpointer", NULL);
+      g_assert (field->type != NULL);  /* parsing `gpointer` should never fail */
     }
 
   ((GIIrNode *)field)->name = g_strdup (name);
@@ -2278,7 +2289,9 @@ start_type (GMarkupParseContext  *context,
           pointer_depth > 0)
         pointer_depth--;
 
-      typenode = parse_type (ctx, name);
+      typenode = parse_type (ctx, name, error);
+      if (typenode == NULL)
+        return FALSE;
 
       /* A "pointer" structure is one where the c:type is a typedef that
        * to a pointer to a structure; we used to call them "disguised"
@@ -2322,14 +2335,17 @@ end_type_top (ParseContext *ctx)
       typenode->tag == GI_TYPE_TAG_GSLIST)
     {
       if (typenode->parameter_type1 == NULL)
-        typenode->parameter_type1 = parse_type (ctx, "gpointer");
+        typenode->parameter_type1 = parse_type (ctx, "gpointer", NULL);
+      g_assert (typenode->parameter_type1 != NULL);  /* parsing `gpointer` should never fail */
     }
   else if (typenode->tag == GI_TYPE_TAG_GHASH)
     {
       if (typenode->parameter_type1 == NULL)
         {
-          typenode->parameter_type1 = parse_type (ctx, "gpointer");
-          typenode->parameter_type2 = parse_type (ctx, "gpointer");
+          typenode->parameter_type1 = parse_type (ctx, "gpointer", NULL);
+          g_assert (typenode->parameter_type1 != NULL);  /* parsing `gpointer` should never fail */
+          typenode->parameter_type2 = parse_type (ctx, "gpointer", NULL);
+          g_assert (typenode->parameter_type2 != NULL);  /* same */
         }
     }
 
@@ -2979,6 +2995,7 @@ start_discriminator (GMarkupParseContext  *context,
   const char *type;
   const char *offset;
   guint64 parsed_offset;
+  GIIrNodeType *discriminator_type = NULL;
 
   if (!(strcmp (element_name, "discriminator") == 0 &&
         ctx->state == STATE_UNION))
@@ -2997,8 +3014,11 @@ start_discriminator (GMarkupParseContext  *context,
       return FALSE;
     }
 
-  ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_type
-    = parse_type (ctx, type);
+  discriminator_type = parse_type (ctx, type, error);
+  if (discriminator_type == NULL)
+    return FALSE;
+
+  ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_type = g_steal_pointer (&discriminator_type);
 
   if (g_ascii_string_to_unsigned (offset, 10, 0, G_MAXSIZE, &parsed_offset, error))
     ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_offset = parsed_offset;
