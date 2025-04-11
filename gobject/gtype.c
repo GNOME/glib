@@ -3628,7 +3628,7 @@ type_add_flags_W (TypeNode  *node,
 {
   guint dflags;
   
-  g_return_if_fail ((flags & ~TYPE_FLAG_MASK) == 0);
+  g_return_if_fail ((flags & (unsigned) ~TYPE_FLAG_MASK) == 0);
   g_return_if_fail (node != NULL);
   
   if ((flags & TYPE_FLAG_MASK) && node->is_classed && node->data && node->data->class.class)
@@ -3725,7 +3725,7 @@ _g_type_test_flags (GType type,
   node = lookup_type_node_I (type);
   if (node)
     {
-      if ((flags & ~NODE_FLAG_MASK) == 0)
+      if ((flags & (unsigned) ~NODE_FLAG_MASK) == 0)
         {
           if ((flags & G_TYPE_FLAG_CLASSED) && !node->is_classed)
             return FALSE;

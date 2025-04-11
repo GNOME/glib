@@ -1250,7 +1250,7 @@ g_object_bind_property_full (gpointer               source,
   if ((flags & G_BINDING_INVERT_BOOLEAN) &&
       (transform_to != NULL || transform_from != NULL))
     {
-      flags &= ~G_BINDING_INVERT_BOOLEAN;
+      flags &= (unsigned) ~G_BINDING_INVERT_BOOLEAN;
     }
 
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (source), source_property);

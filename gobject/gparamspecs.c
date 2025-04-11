@@ -775,7 +775,7 @@ param_string_validate (GParamSpec *pspec,
             {
               value->data[0].v_pointer = g_strdup (string);
               string = value->data[0].v_pointer;
-              value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+              value->data[1].v_uint &= (unsigned) ~G_VALUE_NOCOPY_CONTENTS;
             }
 	  string[0] = sspec->substitutor;
 	  n_changed++;
@@ -789,7 +789,7 @@ param_string_validate (GParamSpec *pspec,
                   value->data[0].v_pointer = g_strdup (string);
                   s = (gchar*) value->data[0].v_pointer + (s - string);
                   string = value->data[0].v_pointer;
-                  value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+                  value->data[1].v_uint &= (unsigned) ~G_VALUE_NOCOPY_CONTENTS;
                 }
 	      *s = sspec->substitutor;
 	      n_changed++;
@@ -800,14 +800,14 @@ param_string_validate (GParamSpec *pspec,
       if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
         g_free (value->data[0].v_pointer);
       else
-        value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+        value->data[1].v_uint &= (unsigned) ~G_VALUE_NOCOPY_CONTENTS;
       value->data[0].v_pointer = NULL;
       n_changed++;
       string = value->data[0].v_pointer;
     }
   if (sspec->ensure_non_null && !string)
     {
-      value->data[1].v_uint &= ~G_VALUE_NOCOPY_CONTENTS;
+      value->data[1].v_uint &= (unsigned) ~G_VALUE_NOCOPY_CONTENTS;
       value->data[0].v_pointer = g_strdup ("");
       n_changed++;
       string = value->data[0].v_pointer;

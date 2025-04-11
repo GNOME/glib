@@ -948,7 +948,7 @@ g_object_base_class_init (GObjectClass *class)
   GObjectClass *pclass = g_type_class_peek_parent (class);
 
   /* Don't inherit HAS_DERIVED_CLASS flag from parent class */
-  class->flags &= ~CLASS_HAS_DERIVED_CLASS_FLAG;
+  class->flags &= (unsigned) ~CLASS_HAS_DERIVED_CLASS_FLAG;
 
   if (pclass)
     pclass->flags |= CLASS_HAS_DERIVED_CLASS_FLAG;
