@@ -3080,7 +3080,14 @@ parse_include (GMarkupParseContext *context,
       return FALSE;
     }
 
-  module = gi_ir_parser_parse_string (ctx->parser, name, girpath, buffer, length, &error);
+  if (length > G_MAXSSIZE)
+    {
+      g_printerr ("Input file ‘%s’ too big\n", girpath);
+      g_free (girpath);
+      return FALSE;
+    }
+
+  module = gi_ir_parser_parse_string (ctx->parser, name, girpath, buffer, (gssize) length, &error);
   g_free (buffer);
   if (error != NULL)
     {
@@ -3922,7 +3929,7 @@ cleanup (GMarkupParseContext *context,
  * @namespace: the namespace of the string
  * @filename: (nullable) (type filename): Path to parsed file, or `NULL`
  * @buffer: (array length=length): the data containing the XML
- * @length: length of the data, in bytes
+ * @length: length of the data, in bytes, or `-1` if nul terminated
  * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Parse a string that holds a complete GIR XML file, and return a list of a
@@ -4061,7 +4068,19 @@ gi_ir_parser_parse_file (GIIrParser   *parser,
       return NULL;
     }
 
-  module = gi_ir_parser_parse_string (parser, namespace, filename, buffer, length, error);
+  if (length > G_MAXSSIZE)
+    {
+      g_free (namespace);
+      g_free (buffer);
+
+      g_set_error (error,
+                   G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "Input file too big");
+      return NULL;
+    }
+
+  module = gi_ir_parser_parse_string (parser, namespace, filename, buffer, (gssize) length, error);
 
   g_free (namespace);
 
