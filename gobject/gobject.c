@@ -3891,7 +3891,7 @@ g_object_is_floating (gpointer _object)
 {
   GObject *object = _object;
   g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
-  return floating_flag_handler (object, 0);
+  return (floating_flag_handler (object, 0) != 0);
 }
 
 /**
@@ -3922,7 +3922,7 @@ gpointer
   g_return_val_if_fail (G_IS_OBJECT (object), object);
   g_return_val_if_fail (g_atomic_int_get (&object->ref_count) >= 1, object);
   g_object_ref (object);
-  was_floating = floating_flag_handler (object, -1);
+  was_floating = (floating_flag_handler (object, -1) != 0);
   if (was_floating)
     g_object_unref (object);
   return object;
