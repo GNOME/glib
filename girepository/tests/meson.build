@@ -94,7 +94,7 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 
 test_deps = [libm, thread_dep, libgirepository_dep]
-test_cargs = ['-DG_LOG_DOMAIN="GIRepository"', '-UG_DISABLE_ASSERT']
+test_cargs = ['-DG_LOG_DOMAIN="GIRepository"', '-UG_DISABLE_ASSERT', warning_sign_conversion_args]
 test_cpp_args = test_cargs
 
 foreach test_name, extra_args : girepository_tests

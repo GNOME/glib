@@ -3,6 +3,7 @@
 
 custom_c_args = [
   '-DG_LOG_DOMAIN="GLib-GirDecompiler"',
+  warning_sign_conversion_args,
 ]
 
 if cc.get_id() != 'msvc'
