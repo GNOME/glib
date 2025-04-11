@@ -152,8 +152,8 @@ param_int_init (GParamSpec *pspec)
 {
   GParamSpecInt *ispec = G_PARAM_SPEC_INT (pspec);
   
-  ispec->minimum = 0x7fffffff;
-  ispec->maximum = 0x80000000;
+  ispec->minimum = (int) 0x7fffffff;
+  ispec->maximum = (int) 0x80000000;
   ispec->default_value = 0;
 }
 
@@ -253,11 +253,11 @@ param_long_init (GParamSpec *pspec)
   GParamSpecLong *lspec = G_PARAM_SPEC_LONG (pspec);
   
 #if SIZEOF_LONG == 4
-  lspec->minimum = 0x7fffffff;
-  lspec->maximum = 0x80000000;
+  lspec->minimum = (glong) 0x7fffffff;
+  lspec->maximum = (glong) 0x80000000;
 #else /* SIZEOF_LONG != 4 (8) */
-  lspec->minimum = 0x7fffffffffffffff;
-  lspec->maximum = 0x8000000000000000;
+  lspec->minimum = (glong) 0x7fffffffffffffff;
+  lspec->maximum = (glong) 0x8000000000000000;
 #endif
   lspec->default_value = 0;
 }
