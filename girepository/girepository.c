@@ -607,7 +607,8 @@ load_dependencies_recurse (GIRepository *repository,
           const char *dependency_version;
 
           last_dash = strrchr (dependency, '-');
-          dependency_namespace = g_strndup (dependency, last_dash - dependency);
+          g_assert (last_dash != NULL);  /* get_typelib_dependencies() guarantees this */
+          dependency_namespace = g_strndup (dependency, (size_t) (last_dash - dependency));
           dependency_version = last_dash+1;
 
           if (!gi_repository_require (repository, dependency_namespace, dependency_version,
@@ -785,7 +786,8 @@ get_typelib_dependencies_transitive (GIRepository *repository,
 
       /* Recurse for this namespace. */
       last_dash = strrchr (dependency, '-');
-      dependency_namespace = g_strndup (dependency, last_dash - dependency);
+      g_assert (last_dash != NULL);  /* get_typelib_dependencies() guarantees this */
+      dependency_namespace = g_strndup (dependency, (size_t) (last_dash - dependency));
 
       typelib = get_registered (repository, dependency_namespace, NULL);
       g_return_if_fail (typelib != NULL);
@@ -1742,7 +1744,12 @@ enumerate_namespace_versions (const char         *namespace,
 
               name_end = strrchr (entry, '.');
               last_dash = strrchr (entry, '-');
-              version = g_strndup (last_dash+1, name_end-(last_dash+1));
+
+              /* These are guaranteed by the suffix and prefix checks above: */
+              g_assert (name_end != NULL);
+              g_assert (last_dash != NULL);
+
+              version = g_strndup (last_dash + 1, (size_t) (name_end - (last_dash + 1u)));
               if (!parse_version (version, &major, &minor))
                 {
                   g_free (version);

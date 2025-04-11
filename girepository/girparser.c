@@ -707,7 +707,7 @@ parse_type_internal (GIIrModule   *module,
              *str == ':')
         (str)++;
 
-      type->giinterface = g_strndup (start, str - start);
+      type->giinterface = g_strndup (start, (size_t) (str - start));
     }
 
   if (next)
