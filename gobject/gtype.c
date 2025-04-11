@@ -125,9 +125,9 @@
  * larger alignment than this, but we don't need to
  * do better than malloc.
  */
-#define STRUCT_ALIGNMENT (2 * sizeof (gsize))
+#define STRUCT_ALIGNMENT (2u * sizeof (gsize))
 #define ALIGN_STRUCT(offset) \
-      ((offset + (STRUCT_ALIGNMENT - 1)) & -STRUCT_ALIGNMENT)
+      (((size_t) (offset) + (STRUCT_ALIGNMENT - 1u)) & -STRUCT_ALIGNMENT)
 
 
 /* --- typedefs --- */
@@ -442,7 +442,7 @@ type_node_any_new_W (TypeNode             *pnode,
   else
     {
       node->supers[0] = type;
-      memcpy (node->supers + 1, pnode->supers, sizeof (GType) * (1 + pnode->n_supers + 1));
+      memcpy (node->supers + 1, pnode->supers, sizeof (GType) * (1u + pnode->n_supers + 1u));
       
       node->is_abstract = (type_flags & G_TYPE_FLAG_ABSTRACT) != 0;
       node->is_classed = pnode->is_classed;
@@ -1239,7 +1239,7 @@ type_data_ref_Wm (TypeNode *node)
 static gboolean
 iface_node_has_available_offset_L (TypeNode *iface_node,
 				   gsize offset,
-				   int for_index)
+				   size_t for_index)
 {
   guint8 *offsets;
 
@@ -1263,8 +1263,7 @@ find_free_iface_offset_L (IFaceEntries *entries)
   IFaceEntry *entry;
   TypeNode *iface_node;
   gsize offset;
-  int i;
-  int n_entries;
+  size_t i, n_entries;
 
   n_entries = IFACE_ENTRIES_N_ENTRIES (entries);
   offset = 0;
@@ -1290,7 +1289,7 @@ find_free_iface_offset_L (IFaceEntries *entries)
 static void
 iface_node_set_offset_L (TypeNode *iface_node,
 			 gsize offset,
-			 int index)
+			 size_t index)
 {
   guint8 *offsets, *old_offsets;
   gsize new_size, old_size;
@@ -1821,8 +1820,8 @@ g_type_create_instance (GType type)
   GTypeInstance *instance;
   GTypeClass *class;
   gchar *allocated;
-  gint private_size;
-  gint ivar_size;
+  size_t private_size;
+  size_t ivar_size;
   guint i;
 
   node = lookup_type_node_I (type);
@@ -1928,8 +1927,8 @@ g_type_free_instance (GTypeInstance *instance)
   TypeNode *node;
   GTypeClass *class;
   gchar *allocated;
-  gint private_size;
-  gint ivar_size;
+  size_t private_size;
+  size_t ivar_size;
 
   g_return_if_fail (instance != NULL && instance->g_class != NULL);
   

@@ -95,11 +95,11 @@
 #define	CLOSURE_MAX_N_GUARDS		((1 << 1) - 1)
 #define	CLOSURE_MAX_N_FNOTIFIERS	((1 << 2) - 1)
 #define	CLOSURE_MAX_N_INOTIFIERS	((1 << 8) - 1)
-#define	CLOSURE_N_MFUNCS(cl)		(((cl)->n_guards << 1L))
+#define	CLOSURE_N_MFUNCS(cl)		((size_t) ((cl)->n_guards << 1L))
 /* same as G_CLOSURE_N_NOTIFIERS() (keep in sync) */
-#define	CLOSURE_N_NOTIFIERS(cl)		(CLOSURE_N_MFUNCS (cl) + \
+#define	CLOSURE_N_NOTIFIERS(cl)		((size_t) (CLOSURE_N_MFUNCS (cl) + \
                                          (cl)->n_fnotifiers + \
-                                         (cl)->n_inotifiers)
+                                         (cl)->n_inotifiers))
 
 /* A copy of the flags bitfield from the beginning of `struct _GClosure`, which
  * is in union with an int for atomic access to all fields at the same time.
@@ -223,7 +223,7 @@ g_closure_new_simple (guint           sizeof_closure,
 		      gpointer        data)
 {
   GClosure *closure;
-  gint private_size;
+  size_t private_size;
   gchar *allocated;
 
   g_return_val_if_fail (sizeof_closure >= sizeof (GClosure), NULL);
@@ -1316,7 +1316,7 @@ value_to_ffi_type (const GValue *gvalue,
     case G_TYPE_FLAGS:
       g_assert (enum_tmpval != NULL);
       rettype = &ffi_type_uint;
-      *enum_tmpval = g_value_get_flags (gvalue);
+      *enum_tmpval = (int) g_value_get_flags (gvalue);
       *value = enum_tmpval;
       *tmpval_used = TRUE;
       break;
@@ -1560,10 +1560,10 @@ g_cclosure_marshal_generic (GClosure     *closure,
 {
   ffi_type *rtype;
   void *rvalue;
-  int n_args;
+  size_t n_args;
   ffi_type **atypes;
   void **args;
-  int i;
+  size_t i;
   ffi_cif cif;
   GCClosure *cc = (GCClosure*) closure;
   gint *enum_tmpval;
@@ -1659,16 +1659,21 @@ g_cclosure_marshal_generic_va (GClosure *closure,
 {
   ffi_type *rtype;
   void *rvalue;
-  int n_args;
+  size_t n_args;
+  size_t unsigned_n_params;
   ffi_type **atypes;
   void **args;
   va_arg_storage *storage;
-  int i;
+  size_t i;
   ffi_cif cif;
   GCClosure *cc = (GCClosure*) closure;
   gint *enum_tmpval;
   gboolean tmpval_used = FALSE;
   va_list args_copy;
+
+  g_return_if_fail (n_params >= 0);
+
+  unsigned_n_params = (size_t) n_params;
 
   enum_tmpval = g_alloca (sizeof (gint));
   if (return_value && G_VALUE_TYPE (return_value))
@@ -1682,10 +1687,10 @@ g_cclosure_marshal_generic_va (GClosure *closure,
 
   rvalue = g_alloca (MAX (rtype->size, sizeof (ffi_arg)));
 
-  n_args = n_params + 2;
+  n_args = unsigned_n_params + 2;
   atypes = g_alloca (sizeof (ffi_type *) * n_args);
   args =  g_alloca (sizeof (gpointer) * n_args);
-  storage = g_alloca (sizeof (va_arg_storage) * n_params);
+  storage = g_alloca (sizeof (va_arg_storage) * unsigned_n_params);
 
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
@@ -1705,7 +1710,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
   va_copy (args_copy, args_list);
 
   /* Box non-primitive arguments */
-  for (i = 0; i < n_params; i++)
+  for (i = 0; i < unsigned_n_params; i++)
     {
       GType type = param_types[i]  & ~G_SIGNAL_TYPE_STATIC_SCOPE;
       GType fundamental = G_TYPE_FUNDAMENTAL (type);
@@ -1738,7 +1743,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
   ffi_call (&cif, marshal_data ? marshal_data : cc->callback, rvalue, args);
 
   /* Unbox non-primitive arguments */
-  for (i = 0; i < n_params; i++)
+  for (i = 0; i < unsigned_n_params; i++)
     {
       GType type = param_types[i]  & ~G_SIGNAL_TYPE_STATIC_SCOPE;
       GType fundamental = G_TYPE_FUNDAMENTAL (type);
