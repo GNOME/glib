@@ -50,6 +50,9 @@ if enable_gir
       'dependencies': [libffi_dep],
       'depends': glib_gir_testing_dep,
     },
+    'ir-parser' : {
+      'dependencies': [libgirepository_internals_dep],
+    },
     'object-info' : {
       'depends': gio_gir_testing_dep,
     },
