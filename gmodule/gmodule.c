@@ -481,7 +481,7 @@ g_module_open_full (const gchar   *file_name,
     _g_module_debug_init ();
 
   if (module_debug_flags & G_MODULE_DEBUG_BIND_NOW_MODULES)
-    flags &= ~G_MODULE_BIND_LAZY;
+    flags &= (unsigned) ~G_MODULE_BIND_LAZY;
 
   if (!file_name)
     {      
