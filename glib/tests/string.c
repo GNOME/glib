@@ -767,6 +767,40 @@ test_string_new_take_null (void)
   g_string_free (g_steal_pointer (&string), TRUE);
 }
 
+static void
+test_string_copy (void)
+{
+  GString *string1 = NULL, *string2 = NULL;
+
+  string1 = g_string_new ("hello");
+  string2 = g_string_copy (string1);
+  g_assert_cmpstr (string1->str, ==, string2->str);
+  g_assert_true (string1->str != string2->str);
+  g_assert_cmpuint (string1->len, ==, string2->len);
+  g_assert_cmpuint (string2->allocated_len, ==, string2->allocated_len);
+  g_string_free (string1, TRUE);
+  g_string_free (string2, TRUE);
+
+  string1 = g_string_sized_new (100);
+  string2 = g_string_copy (string1);
+  g_assert_cmpstr (string1->str, ==, string2->str);
+  g_assert_true (string1->str != string2->str);
+  g_assert_cmpuint (string1->len, ==, string2->len);
+  g_assert_cmpuint (string2->allocated_len, ==, string2->allocated_len);
+  g_string_free (string1, TRUE);
+  g_string_free (string2, TRUE);
+
+  string1 = g_string_sized_new (200);
+  g_string_append_len (string1, "test with embedded\0nuls", 25);
+  string2 = g_string_copy (string1);
+  g_assert_cmpmem (string1->str, string1->len, string2->str, string2->len);
+  g_assert_true (string1->str != string2->str);
+  g_assert_cmpuint (string1->len, ==, string2->len);
+  g_assert_cmpuint (string2->allocated_len, ==, string2->allocated_len);
+  g_string_free (string1, TRUE);
+  g_string_free (string2, TRUE);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -796,6 +830,7 @@ main (int   argc,
   g_test_add_func ("/string/steal", test_string_steal);
   g_test_add_func ("/string/new-take", test_string_new_take);
   g_test_add_func ("/string/new-take/null", test_string_new_take_null);
+  g_test_add_func ("/string/copy", test_string_copy);
 
   return g_test_run();
 }

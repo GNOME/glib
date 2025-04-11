@@ -215,6 +215,38 @@ g_string_new_len (const gchar *init,
 }
 
 /**
+ * g_string_copy:
+ * @string: a string
+ *
+ * Copies the [struct@GLib.String] instance and its contents.
+ *
+ * This will preserve the allocation length of the [struct@GLib.String] in the
+ * copy.
+ *
+ * Returns: (transfer full): a copy of @string
+ * Since: 2.86
+ */
+GString *
+g_string_copy (GString *string)
+{
+  GString *copy = NULL;
+
+  g_return_val_if_fail (string != NULL, NULL);
+
+  copy = g_slice_new (GString);
+  copy->allocated_len = string->allocated_len;
+  copy->len = string->len;
+
+  /* We can’t just strdup(string->str) here because it may contain embedded nuls. */
+  copy->str = g_malloc (string->allocated_len);
+  if (string->str != NULL && string->len > 0)
+    memcpy (copy->str, string->str, string->len);
+  copy->str[copy->len] = '\0';
+
+  return g_steal_pointer (&copy);
+}
+
+/**
  * g_string_free:
  * @string: (transfer full): a #GString
  * @free_segment: if %TRUE, the actual character data is freed as well
