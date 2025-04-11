@@ -685,7 +685,9 @@ parse_type_internal (GIIrModule   *module,
           (str)++;
 
           end = strchr (str, '>');
-          tmp = g_strndup (str, end - str);
+          if (end == NULL)
+            goto error;
+          tmp = g_strndup (str, (size_t) (end - str));
           type->errors = g_strsplit (tmp, ",", 0);
           g_free (tmp);
 
@@ -716,7 +718,7 @@ parse_type_internal (GIIrModule   *module,
   g_free (temporary_type);
   return type;
 
-/* error: */
+error:
   gi_ir_node_free ((GIIrNode *)type);
   g_free (temporary_type);
   return NULL;
