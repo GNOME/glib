@@ -165,7 +165,7 @@ md5_byte_reverse (guchar *buffer,
 #else
 static inline void
 sha_byte_reverse (guint32 *buffer,
-                  gint     length)
+                  size_t   length)
 {
   length /= sizeof (guint32);
   while (length--)
@@ -749,11 +749,11 @@ sha1_sum_update (Sha1sum      *sha1,
 static void
 sha1_sum_close (Sha1sum *sha1)
 {
-  gint count;
+  size_t count;
   guchar *data_p;
 
   /* Compute number of bytes mod 64 */
-  count = (gint) ((sha1->bits[0] >> 3) & 0x3f);
+  count = (sha1->bits[0] >> 3) & 0x3f;
 
   /* Set the first char of padding to 0x80.  This is safe since there is
      always at least one byte free */
@@ -806,7 +806,7 @@ static void
 sha1_sum_digest (Sha1sum *sha1,
                  guint8  *digest)
 {
-  gint i;
+  size_t i;
 
   for (i = 0; i < SHA1_DIGEST_LEN; i++)
     digest[i] = sha1->digest[i];
@@ -1328,17 +1328,18 @@ static void
 sha512_sum_close (Sha512sum *sha512)
 {
   guint l;
-  gint zeros;
+  size_t zeros;
   guint8 pad[SHA2_BLOCK_LEN * 2] = { 0, };
-  guint pad_len = 0;
-  gint i;
+  size_t pad_len = 0;
+  size_t i;
 
   /* apply padding [§5.1.2] */
   l = sha512->block_len * 8;
-  zeros = 896 - (l + 1);
 
-  if (zeros < 0)
-    zeros += 128 * 8;
+  if (896 < l + 1)
+    zeros = 896 - (l + 1) + 128 * 8;
+  else
+    zeros = 896 - (l + 1);
 
   pad[0] = 0x80; /* 1000 0000 */
   zeros -= 7;
@@ -1571,33 +1572,20 @@ g_checksum_free (GChecksum *checksum)
     }
 }
 
-/**
- * g_checksum_update:
- * @checksum: a #GChecksum
- * @data: (array length=length) (element-type guint8): buffer used to compute the checksum
- * @length: size of the buffer, or -1 if it is a null-terminated string.
- *
- * Feeds @data into an existing #GChecksum. The checksum must still be
- * open, that is g_checksum_get_string() or g_checksum_get_digest() must
- * not have been called on @checksum.
- *
- * Since: 2.16
- */
-void
-g_checksum_update (GChecksum    *checksum,
-                   const guchar *data,
-                   gssize        length)
+/* Internal variant of g_checksum_update() which takes an explicit length and
+ * doesn’t use strlen() internally. */
+static void
+checksum_update_internal (GChecksum    *checksum,
+                          const guchar *data,
+                          size_t        length)
 {
   g_return_if_fail (checksum != NULL);
   g_return_if_fail (length == 0 || data != NULL);
 
-  if (length < 0)
-    length = strlen ((const gchar *) data);
-
   if (checksum->digest_str)
     {
       g_warning ("The checksum '%s' has been closed and cannot be updated "
-                 "anymore.",
+                 "any more.",
                  checksum->digest_str);
       return;
     }
@@ -1621,6 +1609,36 @@ g_checksum_update (GChecksum    *checksum,
       g_assert_not_reached ();
       break;
     }
+}
+
+/**
+ * g_checksum_update:
+ * @checksum: a #GChecksum
+ * @data: (array length=length) (element-type guint8): buffer used to compute the checksum
+ * @length: size of the buffer, or -1 if it is a null-terminated string.
+ *
+ * Feeds @data into an existing #GChecksum. The checksum must still be
+ * open, that is g_checksum_get_string() or g_checksum_get_digest() must
+ * not have been called on @checksum.
+ *
+ * Since: 2.16
+ */
+void
+g_checksum_update (GChecksum    *checksum,
+                   const guchar *data,
+                   gssize        length)
+{
+  size_t unsigned_length;
+
+  g_return_if_fail (checksum != NULL);
+  g_return_if_fail (length == 0 || data != NULL);
+
+  if (length < 0)
+    unsigned_length = strlen ((const gchar *) data);
+  else
+    unsigned_length = (size_t) length;
+
+  checksum_update_internal (checksum, data, unsigned_length);
 }
 
 /**
@@ -1704,11 +1722,14 @@ g_checksum_get_digest (GChecksum  *checksum,
 {
   gboolean checksum_open = FALSE;
   gchar *str = NULL;
+  gssize signed_len;
   gsize len;
 
   g_return_if_fail (checksum != NULL);
 
-  len = g_checksum_type_get_length (checksum->type);
+  signed_len = g_checksum_type_get_length (checksum->type);
+  g_assert (signed_len >= 0);  /* @checksum should be internally consistent */
+  len = (size_t) signed_len;
   g_return_if_fail (*digest_len >= len);
 
   checksum_open = !!(checksum->digest_str == NULL);
@@ -1799,7 +1820,7 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
   if (!checksum)
     return NULL;
 
-  g_checksum_update (checksum, data, length);
+  checksum_update_internal (checksum, data, length);
   retval = g_strdup (g_checksum_get_string (checksum));
   g_checksum_free (checksum);
 
@@ -1827,12 +1848,16 @@ g_compute_checksum_for_string (GChecksumType  checksum_type,
                                const gchar   *str,
                                gssize         length)
 {
+  size_t unsigned_length;
+
   g_return_val_if_fail (length == 0 || str != NULL, NULL);
 
   if (length < 0)
-    length = strlen (str);
+    unsigned_length = strlen (str);
+  else
+    unsigned_length = (size_t) length;
 
-  return g_compute_checksum_for_data (checksum_type, (const guchar *) str, length);
+  return g_compute_checksum_for_data (checksum_type, (const guchar *) str, unsigned_length);
 }
 
 /**

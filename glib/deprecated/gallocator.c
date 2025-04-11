@@ -40,7 +40,7 @@ g_mem_chunk_new (const gchar *name,
   g_return_val_if_fail (atom_size > 0, NULL);
 
   mem_chunk = g_slice_new (GMemChunk);
-  mem_chunk->alloc_size = atom_size;
+  mem_chunk->alloc_size = (guint) atom_size;
 
   return mem_chunk;
 }

@@ -135,7 +135,7 @@ GThreadFunctions g_thread_functions_for_glib_use =
 static guint64
 gettime (void)
 {
-  return g_get_monotonic_time () * 1000;
+  return (guint64) g_get_monotonic_time () * 1000;
 }
 
 guint64 (*g_thread_gettime) (void) = gettime;
@@ -803,8 +803,8 @@ guint
 g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
 {
   GRecMutex *rm;
-  gint depth;
-  gint i;
+  guint depth;
+  guint i;
 
   rm = g_static_rec_mutex_get_rec_mutex_impl (mutex);
 
