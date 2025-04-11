@@ -1056,7 +1056,7 @@ signal_parse_name (const gchar *name,
   else if (colon[1] == ':')
     {
       gchar buffer[32];
-      guint l = colon - name;
+      size_t l = (size_t) (colon - name);
       
       if (colon[2] == '\0')
         return 0;

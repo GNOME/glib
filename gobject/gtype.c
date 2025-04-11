@@ -4600,7 +4600,7 @@ g_type_add_instance_private (GType class_gtype,
    * should make the migration fully transparent even if we're effectively
    * copying this macro into everybody's code.
    */
-  return private_size;
+  return (gint) private_size;
 }
 
 /* semi-private function, should only be used by G_DEFINE_TYPE_EXTENDED */
@@ -4610,7 +4610,7 @@ g_type_class_adjust_private_offset (gpointer  g_class,
 {
   GType class_gtype = ((GTypeClass *) g_class)->g_type;
   TypeNode *node = lookup_type_node_I (class_gtype);
-  gssize private_size;
+  size_t private_size;
 
   g_return_if_fail (private_size_or_offset != NULL);
 

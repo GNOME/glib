@@ -182,7 +182,7 @@ g_bsearch_array_get_index (GBSearchArray        *barray,
                            const GBSearchConfig *bconfig,
                            gconstpointer         node_in_array)
 {
-  guint distance = ((guint8*) node_in_array) - G_BSEARCH_ARRAY_NODES (barray);
+  size_t distance = (size_t) (((guint8*) node_in_array) - G_BSEARCH_ARRAY_NODES (barray));
 
   g_return_val_if_fail (node_in_array != NULL, barray->n_nodes);
 
