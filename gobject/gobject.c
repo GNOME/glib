@@ -1657,21 +1657,21 @@ g_object_interface_list_properties (gpointer      g_iface,
 static inline guint
 object_get_optional_flags (GObject *object)
 {
-  return g_atomic_int_get (object_get_optional_flags_p (object));
+  return (guint) g_atomic_int_get ((gint *) object_get_optional_flags_p (object));
 }
 
 static inline void
 object_set_optional_flags (GObject *object,
                           guint flags)
 {
-  g_atomic_int_or (object_get_optional_flags_p (object), flags);
+  g_atomic_int_or ((gint *) object_get_optional_flags_p (object), (int) flags);
 }
 
 static inline void
 object_unset_optional_flags (GObject *object,
                                guint flags)
 {
-  g_atomic_int_and (object_get_optional_flags_p (object), ~flags);
+  g_atomic_int_and ((gint *) object_get_optional_flags_p (object), (int) ~flags);
 }
 
 gboolean

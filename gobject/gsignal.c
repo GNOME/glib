@@ -3853,9 +3853,9 @@ signal_emit_unlocked_R (SignalNode   *node,
 
                 if (!(old_flags & G_HOOK_FLAG_IN_CALL))
                   {
-                    g_atomic_int_compare_and_exchange (&hook->flags,
-                                                       old_flags | G_HOOK_FLAG_IN_CALL,
-                                                       old_flags);
+                    g_atomic_int_compare_and_exchange ((gint *) &hook->flags,
+                                                       (gint) old_flags | G_HOOK_FLAG_IN_CALL,
+                                                       (gint) old_flags);
                   }
 
                 hook_returns[i] = !!need_destroy;
