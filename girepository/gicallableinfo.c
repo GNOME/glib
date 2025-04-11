@@ -80,7 +80,7 @@ signature_offset (GICallableInfo *info)
       g_assert_not_reached ();
     }
   if (sigoff >= 0)
-    return *(uint32_t *)&rinfo->typelib->data[rinfo->offset + sigoff];
+    return *(uint32_t *)&rinfo->typelib->data[rinfo->offset + (unsigned) sigoff];
   return 0;
 }
 
@@ -354,8 +354,8 @@ gi_callable_info_get_n_args (GICallableInfo *info)
   uint32_t offset;
   SignatureBlob *blob;
 
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), -1);
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), 0);
 
   offset = signature_offset (info);
   blob = (SignatureBlob *)&rinfo->typelib->data[offset];
@@ -710,7 +710,7 @@ gi_callable_info_invoke (GICallableInfo    *info,
     }
   for (i = 0; i < n_args; i++)
     {
-      int offset = (is_method ? 1 : 0);
+      size_t offset = (is_method ? 1 : 0);
       ainfo = gi_callable_info_get_arg ((GICallableInfo *)info, i);
       switch (gi_arg_info_get_direction (ainfo))
         {

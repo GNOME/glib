@@ -976,12 +976,12 @@ gi_repository_get_n_infos (GIRepository *repository,
   GITypelib *typelib;
   unsigned int n_interfaces = 0;
 
-  g_return_val_if_fail (GI_IS_REPOSITORY (repository), -1);
-  g_return_val_if_fail (namespace != NULL, -1);
+  g_return_val_if_fail (GI_IS_REPOSITORY (repository), 0);
+  g_return_val_if_fail (namespace != NULL, 0);
 
   typelib = get_registered (repository, namespace, NULL);
 
-  g_return_val_if_fail (typelib != NULL, -1);
+  g_return_val_if_fail (typelib != NULL, 0);
 
   n_interfaces = ((Header *)typelib->data)->n_local_entries;
 
