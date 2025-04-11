@@ -118,7 +118,7 @@ static const GEnumValue my_enum_values[] =
 typedef enum {
   MY_FLAGS_FIRST_BIT = (1 << 0),
   MY_FLAGS_THIRD_BIT = (1 << 2),
-  MY_FLAGS_LAST_BIT = (1 << 31)
+  MY_FLAGS_LAST_BIT = (1u << 31)
 } MyFlags;
 
 static const GFlagsValue my_flag_values[] =
