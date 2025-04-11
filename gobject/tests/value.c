@@ -633,9 +633,9 @@ test_valuearray_basic (void)
   a = g_value_array_new (20);
 
   g_value_init (&v, G_TYPE_INT);
-  for (i = 0; i < 100; i++)
+  for (int j = 0; j < 100; j++)
     {
-      g_value_set_int (&v, i);
+      g_value_set_int (&v, j);
       g_value_array_append (a, &v);
     }
 
@@ -646,9 +646,9 @@ test_valuearray_basic (void)
   for (i = 20; i < 100; i+= 5)
     g_value_array_remove (a, 100 - i);
 
-  for (i = 100; i < 150; i++)
+  for (int j = 100; j < 150; j++)
     {
-      g_value_set_int (&v, i);
+      g_value_set_int (&v, j);
       g_value_array_prepend (a, &v);
     }
 
@@ -692,7 +692,7 @@ test_value_array_sort_with_data (void)
 
   /* Add some values and try sorting them. */
   g_value_init (&v, G_TYPE_INT);
-  for (unsigned int i = 0; i < 100; i++)
+  for (int i = 0; i < 100; i++)
     {
       g_value_set_int (&v, 100 - i);
       g_value_array_append (a, &v);

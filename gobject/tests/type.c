@@ -3,7 +3,7 @@
 static void
 test_registration_serial (void)
 {
-  gint serial1, serial2, serial3;
+  guint serial1, serial2, serial3;
 
   serial1 = g_type_get_type_registration_serial ();
   g_pointer_type_register_static ("my+pointer");

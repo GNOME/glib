@@ -1376,10 +1376,10 @@ static void test_implementation_class_init (TestImplementationClass *class)
 }
 
 typedef struct {
-  gint change_this_flag;
-  gint change_this_type;
-  gint use_this_flag;
-  gint use_this_type;
+  guint change_this_flag;
+  guint change_this_type;
+  guint use_this_flag;
+  guint use_this_type;
 } TestParamImplementData;
 
 static void
@@ -1433,7 +1433,7 @@ test_param_implement (void)
                   continue;
               }
 
-            test_path = g_strdup_printf ("/param/implement/subprocess/%d-%d-%d-%d",
+            test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%u",
                                          change_this_flag, change_this_type,
                                          use_this_flag, use_this_type);
             g_test_trap_subprocess (test_path, G_TIME_SPAN_SECOND,
@@ -1545,8 +1545,8 @@ param_int_init (GParamSpec *pspec)
 {
   GParamSpecInt *ispec = (GParamSpecInt *)pspec;
 
-  ispec->minimum = 0x7fffffff;
-  ispec->maximum = 0x80000000;
+  ispec->minimum = (int) 0x7fffffff;
+  ispec->maximum = (int) 0x80000000;
   ispec->default_value = 0;
 }
 
@@ -1686,7 +1686,7 @@ main (int argc, char *argv[])
       for (data.use_this_flag = 0; data.use_this_flag < 16; data.use_this_flag++)
         for (data.use_this_type = 0; data.use_this_type < 4; data.use_this_type++)
           {
-            test_path = g_strdup_printf ("/param/implement/subprocess/%d-%d-%d-%d",
+            test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%u",
                                          data.change_this_flag, data.change_this_type,
                                          data.use_this_flag, data.use_this_type);
             test_data = g_memdup2 (&data, sizeof (TestParamImplementData));
