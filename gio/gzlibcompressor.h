@@ -59,6 +59,12 @@ GIO_AVAILABLE_IN_ALL
 void             g_zlib_compressor_set_file_info (GZlibCompressor *compressor,
                                                   GFileInfo       *file_info);
 
+GIO_AVAILABLE_IN_2_86
+int              g_zlib_compressor_get_os        (GZlibCompressor *compressor);
+GIO_AVAILABLE_IN_2_86
+void             g_zlib_compressor_set_os        (GZlibCompressor *compressor,
+                                                  int              os);
+
 G_END_DECLS
 
 #endif /* __G_ZLIB_COMPRESSOR_H__ */
