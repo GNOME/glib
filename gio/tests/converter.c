@@ -96,6 +96,41 @@ test_convert_bytes (void)
   g_bytes_unref (bytes);
 }
 
+static void
+test_gzip_os_property (void)
+{
+  const int os_testvalue = 42;
+  const char *data = "Hello World";
+  GBytes *bytes;
+  GZlibCompressor *compressor;
+  GError *error = NULL;
+  GBytes *result;
+  int os;
+  const char *encoded;
+
+  bytes = g_bytes_new_static (data, sizeof (data));
+
+  compressor = g_zlib_compressor_new (G_ZLIB_COMPRESSOR_FORMAT_GZIP, 9);
+  g_zlib_compressor_set_os (compressor, os_testvalue);
+  g_assert_cmpint (g_zlib_compressor_get_os (compressor), ==, os_testvalue);
+
+  g_object_get (compressor, "os", &os, NULL);
+  g_assert_cmpint (os, ==, os_testvalue);
+
+  result = g_converter_convert_bytes (G_CONVERTER (compressor), bytes, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (result);
+
+  /* The OS is stored in the 10th byte of the header, see RFC 1952 */
+  g_assert_cmpint (g_bytes_get_size (result), >, 10);
+  encoded = g_bytes_get_data (result, NULL);
+  g_assert_cmpint (encoded[9], ==, os_testvalue);
+
+  g_bytes_unref (result);
+  g_object_unref (compressor);
+  g_bytes_unref (bytes);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -104,6 +139,7 @@ main (int   argc,
 
   g_test_add_func ("/converter/bytes", test_convert_bytes);
   g_test_add_func ("/converter/extra-bytes-at-end", test_extra_bytes_at_end);
+  g_test_add_func ("/converter/gzip-os-property", test_gzip_os_property);
 
   return g_test_run();
 }
