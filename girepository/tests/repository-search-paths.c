@@ -27,7 +27,7 @@ test_repository_search_paths_get_expected_libdir_path (void)
 {
 #if defined(G_PLATFORM_WIN32)
   const char *tests_build_dir = g_getenv ("G_TEST_BUILDDIR");
-  char *expected_rel_path = g_build_filename (tests_build_dir, "lib", "girepository-1.0", NULL);
+  char *expected_rel_path = g_build_filename (tests_build_dir, "..", "lib", "girepository-1.0", NULL);
 #elif defined(__APPLE__)
   const char *tests_build_dir = g_getenv ("G_TEST_BUILDDIR");
   char *expected_rel_path = g_build_filename (tests_build_dir, "..", "girepository-1.0", NULL);

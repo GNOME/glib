@@ -140,8 +140,6 @@ G_DEFINE_TYPE (GIRepository, gi_repository, G_TYPE_OBJECT);
 
 static HMODULE girepository_dll = NULL;
 
-#ifdef DLL_EXPORT
-
 BOOL WINAPI DllMain (HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 
 BOOL WINAPI
@@ -155,7 +153,6 @@ DllMain (HINSTANCE hinstDLL,
   return TRUE;
 }
 
-#endif /* DLL_EXPORT */
 #endif /* G_PLATFORM_WIN32 */
 
 #ifdef __APPLE__
