@@ -2195,7 +2195,8 @@ gi_ir_node_build_typelib (GIIrNode         *node,
         blob->n_fields = 0;
         blob->n_functions = 0;
 
-        blob->discriminator_offset = union_->discriminator_offset;
+        g_assert (union_->discriminator_offset <= G_MAXINT32);
+        blob->discriminator_offset = (int32_t) union_->discriminator_offset;
 
         if (union_->copy_func)
           blob->copy_func = gi_ir_write_string (union_->copy_func, strings, data, offset2);
