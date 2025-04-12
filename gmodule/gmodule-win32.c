@@ -52,7 +52,7 @@ set_error (GError      **error,
   gchar *message;
   va_list args;
 
-  win32_error = g_win32_error_message (GetLastError ());
+  win32_error = g_win32_error_message ((gint) GetLastError ());
 
   va_start (args, format);
   detail = g_strdup_vprintf (format, args);
