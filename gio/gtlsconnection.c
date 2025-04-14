@@ -880,7 +880,7 @@ G_DEFINE_QUARK (g-tls-channel-binding-error-quark, g_tls_channel_binding_error)
  * g_tls_connection_get_channel_binding_data:
  * @conn: a #GTlsConnection
  * @type: #GTlsChannelBindingType type of data to fetch
- * @data: (out callee-allocates)(optional)(transfer none): #GByteArray is
+ * @data: (out caller-allocates) (optional) (transfer none): #GByteArray is
  *        filled with the binding data, or %NULL
  * @error: a #GError pointer, or %NULL
  *
