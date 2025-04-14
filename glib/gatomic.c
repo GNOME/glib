@@ -57,7 +57,7 @@
 
 /**
  * g_atomic_int_get:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gconstpointer): a pointer to a #gint or #guint
  *
  * Gets the current value of @atomic.
  *
@@ -79,7 +79,7 @@ gint
 
 /**
  * g_atomic_int_set:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  * @newval: a new value to store
  *
  * Sets the value of @atomic to @newval.
@@ -101,7 +101,7 @@ void
 
 /**
  * g_atomic_int_inc:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  *
  * Increments the value of @atomic by 1.
  *
@@ -122,7 +122,7 @@ void
 
 /**
  * g_atomic_int_dec_and_test:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  *
  * Decrements the value of @atomic by 1.
  *
@@ -146,7 +146,7 @@ gboolean
 
 /**
  * g_atomic_int_compare_and_exchange:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  * @oldval: the value to compare with
  * @newval: the value to conditionally replace with
  *
@@ -177,7 +177,7 @@ gboolean
 
 /**
  * g_atomic_int_compare_and_exchange_full:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  * @oldval: the value to compare with
  * @newval: the value to conditionally replace with
  * @preval: (out): the contents of @atomic before this operation
@@ -210,7 +210,7 @@ gboolean
 
 /**
  * g_atomic_int_exchange:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  * @newval: the value to replace with
  *
  * Sets the @atomic to @newval and returns the old value from @atomic.
@@ -235,7 +235,7 @@ gint
 
 /**
  * g_atomic_int_add:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  * @val: the value to add
  *
  * Atomically adds @val to the value of @atomic.
@@ -264,7 +264,7 @@ gint
 
 /**
  * g_atomic_int_and:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  * @val: the value to 'and'
  *
  * Performs an atomic bitwise 'and' of the value of @atomic and @val,
@@ -291,7 +291,7 @@ guint
 
 /**
  * g_atomic_int_or:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  * @val: the value to 'or'
  *
  * Performs an atomic bitwise 'or' of the value of @atomic and @val,
@@ -318,7 +318,7 @@ guint
 
 /**
  * g_atomic_int_xor:
- * @atomic: a pointer to a #gint or #guint
+ * @atomic: (type gpointer): a pointer to a #gint or #guint
  * @val: the value to 'xor'
  *
  * Performs an atomic bitwise 'xor' of the value of @atomic and @val,
@@ -1149,7 +1149,7 @@ guintptr
 
 /**
  * g_atomic_int_exchange_and_add:
- * @atomic: a pointer to a #gint
+ * @atomic: (type gpointer): a pointer to a #gint
  * @val: the value to add
  *
  * This function existed before g_atomic_int_add() returned the prior
