@@ -244,6 +244,24 @@ g_bit_lock_and_get (gint *address,
   g_assert (lock_bit < 32u);
 #endif
 
+  /* Beware: g_object_weak_release_all_cb() relies that g_bit_lock() on a newly
+   * initialized integer (that is not yet shared between threads) is identical
+   * to just initializing the lock bit without atomic.
+   *
+   * In other words:
+   *
+   *    mystruct = g_new (MyStruct, 1);
+   *    mystruct->flags = 0;
+   *    g_bit_lock (&mystruct->flags, 1);
+   *    return mystruct; // share pointer.
+   *
+   * should be the same as:
+   *
+   *    mystruct = g_new (MyStruct, 1);
+   *    mystruct->flags = 1;
+   *    return mystruct; // share pointer.
+   */
+
 #ifdef USE_ASM_GOTO
   if (G_LIKELY (!out_val))
     {
