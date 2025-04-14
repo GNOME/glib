@@ -3694,10 +3694,59 @@ g_object_disconnect (gpointer     _object,
   va_end (var_args);
 }
 
+#define WEAK_REF_SYNC_DATA_LOCK_BIT 0
+
+typedef struct
+{
+  guint w_refcount;
+  gint w_sync_flag;
+
+  /* We use bitlock, which is not re-entrant. This would mean, a
+   * g_object_weak_unref_sync() from within a callback would dead-lock. We
+   * avoid that by remembering here the thread which is currently notifying and
+   * avoid taking the lock. */
+  GThread *w_notifying_thread;
+  GDestroyNotify destroy;
+} WeakRefSyncData;
+
+G_ALWAYS_INLINE static inline void
+_weak_ref_sync_data_free (WeakRefSyncData *sync_data)
+{
+  g_free_sized (sync_data, sizeof (WeakRefSyncData));
+}
+
+G_ALWAYS_INLINE static inline void
+_weak_ref_sync_data_unref (WeakRefSyncData *sync_data)
+{
+  if ((--sync_data->w_refcount) == 0)
+    _weak_ref_sync_data_free (sync_data);
+}
+
 typedef struct
 {
   GWeakNotify notify;
   gpointer data;
+  union
+  {
+    /* A tagged union. Depending on "is_notifying", we either have "destroy" or
+     * "sync_data".
+     *
+     * This is to save a separate pointer for "destroy" in the long-lived
+     * WeakRefStack. Once we start notifying, we move it to
+     * "WeakRefSyncData.destroy". */
+    GDestroyNotify destroy;
+    WeakRefSyncData *sync_data;
+  } u;
+
+  /* To bad, we need two bits here, but none of the above pointers is
+   * guaranteed to be malloced (and to have a certain minimal alignment), so we
+   * cannot encode the bits there. Maybe you could argue, that on every
+   * supported architecture, function pointers must be aligned to >= 2, so we
+   * would have two bits available. But that is unclear to always hold.
+   *
+   * Thus, add separate fields, which increases the struct size. */
+  guint8 synchronize;
+  guint8 is_notifying;
 } WeakRefTuple;
 
 struct _WeakRefReleaseAllState;
@@ -3717,6 +3766,23 @@ typedef struct
 } WeakRefStack;
 
 #define WEAK_REF_STACK_ALLOC_SIZE(alloc_size) (G_STRUCT_OFFSET (WeakRefStack, weak_refs) + sizeof (WeakRefTuple) * (alloc_size))
+
+G_ALWAYS_INLINE static inline WeakRefTuple *
+_weak_ref_tuple_init (WeakRefTuple *tuple,
+                      GWeakNotify notify,
+                      gpointer data,
+                      GDestroyNotify destroy,
+                      gboolean synchronize)
+{
+  *tuple = (WeakRefTuple){
+    .notify = notify,
+    .data = data,
+    .synchronize = (!!synchronize),
+    .is_notifying = FALSE,
+    .u.destroy = destroy,
+  };
+  return tuple;
+}
 
 G_GNUC_UNUSED G_ALWAYS_INLINE static inline gboolean
 _weak_ref_release_all_state_contains (WeakRefReleaseAllState *release_all_state, WeakRefReleaseAllState *needle)
@@ -3811,12 +3877,41 @@ _weak_ref_stack_update_release_all_state (WeakRefStack *wstack, guint idx)
     }
 }
 
+static void
+_weak_ref_stack_remove (WeakRefStack **p_wstack, guint idx, gpointer *data, gboolean allow_shrink)
+{
+  WeakRefStack *wstack = *p_wstack;
+
+  _weak_ref_stack_update_release_all_state (wstack, idx);
+
+  wstack->n_weak_refs--;
+
+  if (wstack->n_weak_refs == 0)
+    {
+      _weak_ref_stack_free (wstack);
+      *data = NULL;
+      *p_wstack = NULL;
+    }
+  else
+    {
+      if (idx != wstack->n_weak_refs)
+        {
+          memmove (&wstack->weak_refs[idx],
+                   &wstack->weak_refs[idx + 1],
+                   sizeof (wstack->weak_refs[0]) * (wstack->n_weak_refs - idx));
+        }
+
+      if (allow_shrink)
+        _weak_ref_stack_maybe_shrink (p_wstack, data);
+    }
+}
+
 static gpointer
 g_object_weak_ref_cb (gpointer *data,
                       GDestroyNotify *destroy_notify,
                       gpointer user_data)
 {
-  WeakRefTuple *tuple = user_data;
+  const WeakRefTuple *tuple = user_data;
   WeakRefStack *wstack = *data;
   guint i;
 
@@ -3858,6 +3953,80 @@ g_object_weak_ref_cb (gpointer *data,
   return NULL;
 }
 
+static inline void
+_g_object_weak_ref (GObject *object,
+                    GWeakNotify notify,
+                    gpointer data,
+                    GDestroyNotify destroy,
+                    gboolean synchronize)
+{
+  WeakRefTuple tuple;
+
+  _weak_ref_tuple_init (&tuple, notify, data, destroy, synchronize);
+  _g_datalist_id_update_atomic (&object->qdata,
+                                quark_weak_notifies,
+                                g_object_weak_ref_cb,
+                                &tuple);
+}
+
+/**
+ * g_object_weak_ref_full: (skip)
+ * @object: #GObject to reference weakly
+ * @notify: callback to invoke before the object is freed
+ * @data: extra data to pass to notify
+ * @destroy: an optional #GDestroyNotify for @data.
+ * @synchronize: whether to hold a mutex during the callback
+ *
+ * Adds a weak reference callback to an object. Weak references are used for
+ * notification when an object is disposed. They are called "weak references"
+ * because they allow you to safely hold a pointer to an object without calling
+ * g_object_ref() (g_object_ref() adds a strong reference, that is, forces the
+ * object to stay alive).
+ *
+ * Weak notifications are emitted around the time of GObject's dispose() hook.
+ * That is, either during g_object_run_dispose() or during g_object_unref().
+ * At that time, the object is still mostly alive and its reference count is
+ * positive. While you could acquire new references or register weak
+ * references, this should be avoided to let the object getting fully
+ * destroyed. If the object was not resurrected during dispose(), any
+ * remaining notifications will be emitted right before finalize(). At that
+ * time, the object is mostly dead already and new references cannot be
+ * acquired anymore.
+ *
+ * This reference can be later removed via g_object_weak_unref() or
+ * g_object_weak_unref_full().
+ *
+ * If @synchronize is TRUE, the @notify callback will be invoked with a
+ * per-registration lock. Use this if and only if you also plan to call
+ * g_object_weak_unref_full() with synchronization. If a @destroy callback is
+ * provided, then it is called for @data. For more details see
+ * g_object_weak_unref_full().
+ *
+ * Care must be taken to properly handle thread-safety. See
+ * g_object_weak_unref_full() for details.
+ *
+ * You may combine this with GWeakRef.
+ *
+ * Since: 2.86
+ */
+void
+g_object_weak_ref_full (GObject *object,
+                        GWeakNotify notify,
+                        gpointer data,
+                        GDestroyNotify destroy,
+                        gboolean synchronize)
+{
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (notify != NULL);
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
+
+  _g_object_weak_ref (object,
+                      notify,
+                      data,
+                      destroy,
+                      synchronize);
+}
+
 /**
  * g_object_weak_ref: (skip)
  * @object: #GObject to reference weakly
@@ -3870,10 +4039,15 @@ g_object_weak_ref_cb (gpointer *data,
  * to an object without calling g_object_ref() (g_object_ref() adds a
  * strong reference, that is, forces the object to stay alive).
  *
- * Note that the weak references created by this method are not
- * thread-safe: they cannot safely be used in one thread if the
- * object's last g_object_unref() might happen in another thread.
- * Use #GWeakRef if thread-safety is required.
+ * This reference can be later removed via g_object_weak_unref()
+ * or g_object_weak_unref_full().
+ *
+ * Care must be taken to properly handle thread-safety. See
+ * g_object_weak_unref_full() for details.
+ *
+ * You may combine this with GWeakRef.
+ *
+ * For more details see g_object_weak_ref_full().
  */
 void
 g_object_weak_ref (GObject    *object,
@@ -3884,60 +4058,288 @@ g_object_weak_ref (GObject    *object,
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
-  _g_datalist_id_update_atomic (&object->qdata,
-                                quark_weak_notifies,
-                                g_object_weak_ref_cb,
-                                &((WeakRefTuple){
-                                    .notify = notify,
-                                    .data = data,
-                                }));
+  _g_object_weak_ref (object,
+                      notify,
+                      data,
+                      NULL,
+                      FALSE);
 }
+
+typedef struct
+{
+  WeakRefTuple search_tuple;
+  WeakRefTuple found_tuple;
+
+  /* Unref specifies the weak notification by the "notify" callback and the
+   * "data".  This may not be unique. We want to actively remove at most one
+   * matching entry, but synchronize with all entries that are currently being
+   * notified.
+   *
+   * This flag tracks whether we did remove an entry.
+   */
+  gboolean did_unref;
+
+  /* We call g_object_weak_unref_cb() in a loop. In common cases,
+   * g_object_weak_unref_cb() is able to indicate to the caller whether
+   * it needs to be called again.
+   */
+  gboolean check_more;
+
+  WeakRefSyncData *sync_data_to_release;
+
+  GThread *calling_thread;
+
+} WeakUnrefCbData;
 
 static gpointer
 g_object_weak_unref_cb (gpointer *data,
                         GDestroyNotify *destroy_notify,
                         gpointer user_data)
 {
-  WeakRefTuple *tuple = user_data;
+  WeakUnrefCbData *wu_data = user_data;
+  WeakRefTuple *tuple;
   WeakRefStack *wstack = *data;
   guint idx;
 
+  g_clear_pointer (&wu_data->sync_data_to_release,
+                   _weak_ref_sync_data_unref);
+
+  /* First, find the tuple we want to unref... */
   if (wstack)
     {
       for (idx = 0; idx < wstack->n_weak_refs; idx++)
         {
-          if (wstack->weak_refs[idx].notify == tuple->notify &&
-              wstack->weak_refs[idx].data == tuple->data)
-            goto handle_weak_ref_found;
+          tuple = &wstack->weak_refs[idx];
+
+          if (tuple->notify != wu_data->search_tuple.notify ||
+              tuple->data != wu_data->search_tuple.data)
+            continue;
+
+          if (G_UNLIKELY (tuple->is_notifying))
+            {
+              /* This entry is already being notified. We maybe want to sync
+               * with it. Note that there could be multiple such matching
+               * entries. We sync with them all (the caller will call us in a
+               * loop until "check_more" is unset). */
+              if (!wu_data->search_tuple.synchronize)
+                {
+                  /* The caller does not want to sync. Skip. */
+                  continue;
+                }
+              if (!_g_bit_lock_is_locked (&tuple->u.sync_data->w_sync_flag, WEAK_REF_SYNC_DATA_LOCK_BIT))
+                {
+                  /* This entry is alreay fully notified and the callback
+                   * returned. This check is not only an optimization, it is
+                   * important so we don't pick the same entry more than once.
+                   * Skip. */
+                  continue;
+                }
+
+              if (!wu_data->calling_thread)
+                wu_data->calling_thread = g_thread_self ();
+
+              if (tuple->u.sync_data->w_notifying_thread == wu_data->calling_thread)
+                {
+                  /* We got an unref call from inside a notify callback (which already
+                   * holds the lock). We cannot synchronize again. Skip. */
+                  continue;
+                }
+            }
+          else
+            {
+              if (wu_data->did_unref)
+                {
+                  /* We already unrefed one entry. We don't want another. Skip. */
+                  continue;
+                }
+
+              if (G_UNLIKELY (wu_data->search_tuple.synchronize && !tuple->synchronize))
+                {
+                  /* The caller must indicate during g_object_weak_ref_full()
+                   * whether to synchronize, so that we setup the lock during
+                   * release. The caller cannot request synchronize only during
+                   * g_object_weak_unref_full(). */
+                  g_critical ("%s: must register weak ref %p(%p) with g_object_weak_ref_full(synchronize=TRUE) to synchronize during unref",
+                              G_STRFUNC, wu_data->search_tuple.notify, wu_data->search_tuple.data);
+                }
+            }
+
+          goto handle_weak_ref_found;
         }
     }
 
-  g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, tuple->notify, tuple->data);
   return NULL;
 
 handle_weak_ref_found:
 
-  _weak_ref_stack_update_release_all_state (wstack, idx);
+  wu_data->found_tuple = *tuple;
 
-  wstack->n_weak_refs -= 1;
-  if (wstack->n_weak_refs == 0)
+  if (tuple->is_notifying)
     {
-      _weak_ref_stack_free (wstack);
-      *data = NULL;
+      tuple->u.sync_data->w_refcount++;
     }
   else
     {
-      if (idx != wstack->n_weak_refs)
-        {
-          memmove (&wstack->weak_refs[idx],
-                   &wstack->weak_refs[idx + 1],
-                   sizeof (wstack->weak_refs[idx]) * (wstack->n_weak_refs - idx));
-        }
+      _weak_ref_stack_remove (&wstack, idx, data, TRUE);
 
-      _weak_ref_stack_maybe_shrink (&wstack, data);
+      /* We found and removed our entry. We only need the outer loop to call us
+       * back, if there is more to synchronize. Check for that. */
+      wu_data->check_more = FALSE;
+      if (!wu_data->search_tuple.synchronize)
+        {
+          /* The caller does not want to synchronize. We don't check more. */
+        }
+      else
+        {
+          if (wstack)
+            {
+              for (idx++; idx < wstack->n_weak_refs; idx++)
+                {
+                  tuple = &wstack->weak_refs[idx];
+
+                  if (tuple->notify != wu_data->search_tuple.notify ||
+                      tuple->data != wu_data->search_tuple.data)
+                    continue;
+
+                  /* There are other entries that match. We will need the caller
+                   * to call back, maybe we want to synchronize with those too. */
+                  wu_data->check_more = TRUE;
+                  break;
+                }
+            }
+        }
     }
 
-  return NULL;
+  return &wu_data->found_tuple;
+}
+
+G_ALWAYS_INLINE static inline gboolean
+_g_object_weak_unref (GObject *object,
+                      GWeakNotify notify,
+                      gpointer data,
+                      gboolean synchronize,
+                      gboolean steal_data)
+{
+  WeakUnrefCbData wu_data;
+
+  wu_data.did_unref = FALSE;
+  wu_data.check_more = TRUE;
+  wu_data.sync_data_to_release = NULL;
+  wu_data.calling_thread = NULL;
+  _weak_ref_tuple_init (&wu_data.search_tuple, notify, data, NULL, synchronize);
+
+  while (TRUE)
+    {
+      const WeakRefTuple *found_tuple;
+
+      found_tuple = _g_datalist_id_update_atomic (&object->qdata,
+                                                  quark_weak_notifies,
+                                                  g_object_weak_unref_cb,
+                                                  &wu_data);
+      if (!found_tuple)
+        break;
+
+      if (found_tuple->is_notifying)
+        {
+          WeakRefSyncData *sync_data = found_tuple->u.sync_data;
+
+          /* This entry's weak notification is invoked on another thread.
+           * Synchronize. */
+          g_bit_lock (&sync_data->w_sync_flag, WEAK_REF_SYNC_DATA_LOCK_BIT);
+          g_bit_unlock (&sync_data->w_sync_flag, WEAK_REF_SYNC_DATA_LOCK_BIT);
+
+          /* To unref/release the sync_data, pass it back into
+           * g_object_weak_unref_cb(). */
+          wu_data.sync_data_to_release = sync_data;
+          continue;
+        }
+
+      wu_data.did_unref = TRUE;
+
+      if (!steal_data && found_tuple->u.destroy)
+        found_tuple->u.destroy (found_tuple->data);
+
+      if (!wu_data.check_more)
+        break;
+    }
+
+  return wu_data.did_unref;
+}
+
+/**
+ * g_object_weak_unref_full: (skip)
+ * @object: #GObject to remove a weak reference from
+ * @notify: callback to search for
+ * @data: data to search for
+ * @synchronize: whether to synchronize with a concurrent weak notification.
+ * @steal_data: whether to not invoke the #GDestroyNotify and steal the data
+ *
+ * Removes a weak reference callback to an object.
+ *
+ * Unlike g_object_weak_unref(), it is permissible that the weak reference
+ * is not found. The return value atomically indicates whether the notification
+ * could be unregistered. If the function returns %FALSE, it may be that
+ * the registration never existed, or that the weak notification was already
+ * called, or that the weak notification is still about to be called. Knowing
+ * this is important to properly release resources.
+ *
+ * Setting @synchornize to %TRUE requires that synchronization was alraedy
+ * enabled during g_object_weak_ref_full(). In that case, weak notifications
+ * are emitted holding a per-registration mutex. If @synchronize is then
+ * set %TRUE, g_object_weak_unref_full() will acquire that mutex too, and
+ * wait for a concurrent @notify to complete. This means, that when the function
+ * returns %TRUE, you know that the weak notification was successfully removed
+ * and never fires. More importantly, when the function returns %FALSE, you
+ * know that the weak notification was already completed (or never existed
+ * in the first place).
+ *
+ * Note that synchronization has the potential for deadlock. Don't synchronize
+ * g_object_weak_ref_full() while holding a lock that is also acquired by the
+ * @notify callback. On the other hand, the @destroy notification is called
+ * outside any lock. If you want to do non-trivial operations during a weak
+ * notification while also synchronizing, you could do that during @destroy.
+ *
+ * A @destroy callback could be provided during g_object_weak_ref_full().
+ * If @steal_data is set to %TRUE, a successful unregistration suppresses
+ * the invocation of the @destroy callback. In other cases, the @destroy
+ * callback is either invoked by the thread that does the @notify or by
+ * g_object_weak_unref_full().
+ *
+ * There are multiple ways how to properly handle thread-safety, where
+ * other threads might dispose an object and trigger a notification.
+ * The most important way is the return value of the function, that tells
+ * you whether the notification was unregistered before ever being invoked.
+ * You can also set @synchronize to %TRUE, which means you know that any
+ * potential notification will have been completed before the function returns.
+ *
+ * Often weak notifications are combined with #GWeakRef. That makes sense,
+ * because you will need a strong reference before calling
+ * g_object_weak_unref_full().  But it does not cover all races, because
+ * g_object_run_dispose() also invokes weak notifications, but is unaffected by
+ * #GWeakRef. In general, to properly handle thread-safety you must look at the
+ * return value of this function (to cleanup resources once) or use a @destroy
+ * notify (which also ensures that the resources are released exactly once).
+ *
+ * Since: 2.86
+ *
+ * Returns: %TRUE if a weak notification was found and unregistered without
+ *   ever being invoked.
+ */
+gboolean
+g_object_weak_unref_full (GObject *object,
+                          GWeakNotify notify,
+                          gpointer data,
+                          gboolean synchronize,
+                          gboolean steal_data)
+{
+  g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (notify != NULL, FALSE);
+
+  return _g_object_weak_unref (object,
+                               notify,
+                               data,
+                               synchronize,
+                               steal_data);
 }
 
 /**
@@ -3947,29 +4349,50 @@ handle_weak_ref_found:
  * @data: data to search for
  *
  * Removes a weak reference callback to an object.
+ *
+ * Note that it is a bug to call g_object_weak_unref() for a non-registered
+ * weak notification. If other threads can dispose the objects, this condition
+ * can be violated due to a race. Avoid that by using
+ * g_object_weak_unref_full() which gracefully accepts that the notification
+ * may not be registered. For thread-safty see g_object_weak_ref_full().
+ *
+ * g_object_weak_unref() will destroy the data, if a #GDestroyNotify
+ * was provided during g_object_weak_ref_full().
+ *
+ * This has the same effect as calling g_object_weak_unref_full()
+ * with @synchronize and @steal_data set to %FALSE.
  */
 void
-g_object_weak_unref (GObject    *object,
-		     GWeakNotify notify,
-		     gpointer    data)
+g_object_weak_unref (GObject *object,
+                     GWeakNotify notify,
+                     gpointer data)
 {
+  gboolean weak_ref_found;
+
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  _g_datalist_id_update_atomic (&object->qdata,
-                                quark_weak_notifies,
-                                g_object_weak_unref_cb,
-                                &((WeakRefTuple){
-                                    .notify = notify,
-                                    .data = data,
-                                }));
+  weak_ref_found = _g_object_weak_unref (object,
+                                         notify,
+                                         data,
+                                         FALSE,
+                                         FALSE);
+
+  if (G_UNLIKELY (!weak_ref_found))
+    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
 }
 
 typedef struct
 {
   WeakRefReleaseAllState *const release_all_state;
   WeakRefTuple tuple;
+  WeakRefSyncData *sync_data_to_release;
   gboolean release_all_done;
+
+  /* Cache the memory allocated sync data here. Maybe we can reuse it. */
+  WeakRefSyncData *sync_data_cache;
+
+  GThread *calling_thread;
 } WeakRefReleaseAllData;
 
 static gpointer
@@ -3980,32 +4403,61 @@ g_object_weak_release_all_cb (gpointer *data,
   WeakRefStack *wstack = *data;
   WeakRefReleaseAllData *wdata = user_data;
   WeakRefReleaseAllState *release_all_state = wdata->release_all_state;
+  WeakRefTuple *tuple;
+  guint idx;
 
   if (!wstack)
-    return NULL;
+    {
+#ifdef G_ENABLE_DEBUG
+      g_assert (!wdata->sync_data_to_release);
+#endif
+      return NULL;
+    }
 
 #ifdef G_ENABLE_DEBUG
   g_assert (wstack->n_weak_refs > 0);
 #endif
 
+  if (wdata->sync_data_to_release)
+    {
+      WeakRefSyncData *sync_data = g_steal_pointer (&wdata->sync_data_to_release);
+
+      /* We have a previous sync-data. Thus, there is a corresponding
+       * gravestone entry in "wstack" that we need to remove. Do that now. */
+
+      for (idx = 0; idx < wstack->n_weak_refs; idx++)
+        {
+          tuple = &wstack->weak_refs[idx];
+          if (tuple->is_notifying &&
+              tuple->u.sync_data == sync_data)
+            break;
+        }
+#ifdef G_ENABLE_DEBUG
+      g_assert (idx < wstack->n_weak_refs);
+#endif
+
+      if (sync_data->w_refcount == 1 && !wdata->sync_data_cache)
+        {
+          /* We cache this allocation for later reuse. */
+          wdata->sync_data_cache = sync_data;
+        }
+      else
+        _weak_ref_sync_data_unref (sync_data);
+
+      _weak_ref_stack_remove (&wstack, idx, data, FALSE);
+      if (!wstack)
+        return NULL;
+    }
+
   if (release_all_state)
     {
       if (release_all_state->remaining_to_notify == G_MAXUINT)
         {
-          if (wstack->n_weak_refs == 1u)
-            {
-              /* We only pop the single entry. */
-              wdata->release_all_done = TRUE;
-              release_all_state = NULL;
-            }
-          else
-            {
-              release_all_state->remaining_to_notify = wstack->n_weak_refs;
+          release_all_state->remaining_to_notify = wstack->n_weak_refs;
 
-              /* Prepend to linked list. */
-              release_all_state->release_all_next = wstack->release_all_states;
-              wstack->release_all_states = release_all_state;
-            }
+          /* Prepend to linked list. */
+          release_all_state->release_all_next = wstack->release_all_states;
+          wstack->release_all_states = release_all_state;
         }
       else
         {
@@ -4023,51 +4475,89 @@ g_object_weak_release_all_cb (gpointer *data,
         }
     }
 
-  _weak_ref_stack_update_release_all_state (wstack, 0);
-
-  if (release_all_state && release_all_state->remaining_to_notify == 0)
-    wdata->release_all_done = TRUE;
-
-  wstack->n_weak_refs--;
-
-  /* Emit the notifications in FIFO order. */
-  wdata->tuple = wstack->weak_refs[0];
-
-  if (wstack->n_weak_refs == 0)
+  /* Find a not yet handled tuple. */
+  for (idx = 0; TRUE; idx++)
     {
-      _weak_ref_stack_free (wstack);
-      *data = NULL;
+      if (idx >= wstack->n_weak_refs)
+        {
+          /* We have some tuples in "wstack", but they are all being
+           * notified (on another thread). There is nothing left. */
+          return NULL;
+        }
 
-      /* Also set release_all_done.
-       *
-       * If g_object_weak_release_all() was called during dispose (with
-       * release_all FALSE), we anyway have an upper limit of how many
-       * notifications we want to pop. We only pop the notifications that were
-       * registered when the loop initially starts. In that case, we surely
-       * don't want the caller to call back.
-       *
-       * g_object_weak_release_all() is also being called before finalize. At
-       * that point, the ref count is already at zero, and g_object_weak_ref()
-       * asserts against being called. So nobody can register a new weak ref
-       * anymore.
-       *
-       * In both cases, we don't require the calling loop to call back. This
-       * saves an additional GData lookup. */
-      wdata->release_all_done = TRUE;
+      tuple = &wstack->weak_refs[idx];
+      if (tuple->is_notifying)
+        continue;
+
+      break;
+    }
+
+  if (tuple->synchronize)
+    {
+      WeakRefSyncData *sync_data;
+
+      if (!wdata->calling_thread)
+        wdata->calling_thread = g_thread_self ();
+
+      if (wdata->sync_data_cache)
+        sync_data = g_steal_pointer (&wdata->sync_data_cache);
+      else
+        sync_data = g_new (WeakRefSyncData, 1);
+
+      *sync_data = (WeakRefSyncData){
+        .w_sync_flag = 0,
+        .w_refcount = 1,
+        .w_notifying_thread = wdata->calling_thread,
+        .destroy = tuple->u.destroy,
+      };
+
+      _g_bit_lock_init (&sync_data->w_sync_flag, WEAK_REF_SYNC_DATA_LOCK_BIT);
+
+      tuple->is_notifying = TRUE;
+      tuple->u.sync_data = sync_data;
+
+      wdata->tuple = *tuple;
     }
   else
     {
-      memmove (&wstack->weak_refs[0],
-               &wstack->weak_refs[1],
-               sizeof (wstack->weak_refs[0]) * wstack->n_weak_refs);
+      wdata->tuple = *tuple;
 
-      if (wdata->release_all_done)
+      _weak_ref_stack_remove (&wstack, idx, data, FALSE);
+
+      if (!wstack)
         {
-          /* We maybe-shrink on each g_object_weak_unref(). During release-all,
-           * we usually don't shrink, because we expect that we pop all entries.
-           * In this case, we are now done and additional entries were subscribed
-           * in the meantime. In this case also maybe-shrink. */
-          _weak_ref_stack_maybe_shrink (&wstack, data);
+          /* Also set release_all_done.
+           *
+           * If g_object_weak_release_all() was called during dispose (with
+           * release_all FALSE), we anyway have an upper limit of how many
+           * notifications we want to pop. We only pop the notifications that were
+           * registered when the loop initially starts. In that case, we surely
+           * don't want the caller to call back.
+           *
+           * g_object_weak_release_all() is also being called before finalize. At
+           * that point, the ref count is already at zero, and g_object_weak_ref()
+           * asserts against being called. So nobody can register a new weak ref
+           * anymore.
+           *
+           * In both cases, we don't require the calling loop to call back. This
+           * saves an additional GData lookup. */
+          wdata->release_all_done = TRUE;
+        }
+      else
+        {
+          if (release_all_state && release_all_state->remaining_to_notify == 0)
+            {
+              wdata->release_all_done = TRUE;
+
+              /* We maybe-shrink during each g_object_weak_unref(). But during
+               * release-all, we usually don't shrink, because we expect that
+               * we will pop all entries.
+               *
+               * Now, we are done poping entries and the "wstack" is still not
+               * empty (because new notifications were registered).
+               * Maybe-shrink now. */
+              _weak_ref_stack_maybe_shrink (&wstack, data);
+            }
         }
     }
 
@@ -4083,21 +4573,76 @@ g_object_weak_release_all (GObject *object, gboolean release_all)
   WeakRefReleaseAllData wdata = {
     .release_all_state = release_all ? NULL : &release_all_state,
     .release_all_done = FALSE,
+    .sync_data_to_release = NULL,
+    .sync_data_cache = NULL,
+    .calling_thread = NULL,
   };
 
   while (TRUE)
     {
+      GDestroyNotify destroy;
+
       if (!_g_datalist_id_update_atomic (&object->qdata,
                                          quark_weak_notifies,
                                          g_object_weak_release_all_cb,
                                          &wdata))
         break;
 
-      wdata.tuple.notify (wdata.tuple.data, object);
+#ifdef G_ENABLE_DEBUG
+      g_assert (!wdata.sync_data_to_release);
+#endif
+
+      if (wdata.tuple.is_notifying)
+        {
+          WeakRefSyncData *sync_data = wdata.tuple.u.sync_data;
+
+          wdata.tuple.notify (wdata.tuple.data, object);
+
+          g_bit_unlock (&sync_data->w_sync_flag, WEAK_REF_SYNC_DATA_LOCK_BIT);
+
+          /* We must remove the tuple from the "warray",
+           * g_object_weak_release_all_cb() did not yet do that. Also, we must
+           * _weak_ref_sync_data_unref() the "sync_data".
+           *
+           * This must be done again while holding a GData lock, so call back
+           * into g_object_weak_release_all_cb(). */
+          wdata.sync_data_to_release = sync_data;
+#ifdef G_ENABLE_DEBUG
+          g_assert (!wdata.release_all_done);
+#endif
+
+          destroy = sync_data->destroy;
+        }
+      else
+        {
+          wdata.tuple.notify (wdata.tuple.data, object);
+          destroy = wdata.tuple.u.destroy;
+        }
+
+      if (destroy)
+        {
+          /* We call destroy() after releasing the lock. That is intentional.
+           *
+           * That is because emitting notify() while holding a lock has a
+           * (small) possibility for deadlock. That means, the callee must be
+           * careful to not call into untrusted code.
+           *
+           * However, the callee also knows that after the "notify" callback,
+           * we will emit the "destroy" notify. Thus, the callee can use that
+           * callback to do anything (thereby avoiding any potential dead-lock).
+           *
+           * This means, "destroy" is not synchronized, and the caller of
+           * g_object_weak_unref_full() cannot know whether it completed.  That
+           * may be undesirable in some cases, but the benefit is to provide a
+           * callback for cleanup that has no danger of dead-lock. */
+          destroy (wdata.tuple.data);
+        }
 
       if (wdata.release_all_done)
         break;
     }
+
+  g_clear_pointer (&wdata.sync_data_cache, _weak_ref_sync_data_free);
 }
 
 /**

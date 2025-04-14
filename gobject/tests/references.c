@@ -549,6 +549,336 @@ test_references_run_dispose (void)
 
 /*****************************************************************************/
 
+static gint _ref_thread_safe_weak_was_invoked = 0;
+
+typedef struct
+{
+  gint ref_count;
+  GMutex mutex;
+
+  /* This represents the action that is taken by either the weak notification
+   * xor the thread that calls g_object_weak_unref_full().
+   *
+   * The point is that there is a guarantee that exactly one of the two parties
+   * performs this action. This is what g_object_weak_ref_full() allows, to
+   * have the action thread safe.
+   *
+   * Obviously, the action happens on two different threads, so you will need
+   * some form of synchronization around it (e.g. a mutex). */
+  const char *synchronized_action;
+} RefThreadSafeData;
+
+static gpointer
+_ref_thread_safe_thread_fcn (gpointer thread_data)
+{
+  g_object_unref (thread_data);
+  return NULL;
+}
+
+static void
+_ref_thread_safe_weak_cb (gpointer data,
+                          GObject *where_the_object_was)
+{
+  RefThreadSafeData *wdata = data;
+
+  if (!g_atomic_int_compare_and_exchange (&_ref_thread_safe_weak_was_invoked, 0, 1))
+    g_assert_not_reached ();
+
+  g_mutex_lock (&wdata->mutex);
+  if (!wdata->synchronized_action)
+    wdata->synchronized_action = "_ref_thread_safe_weak_cb";
+  g_mutex_unlock (&wdata->mutex);
+
+  g_usleep (100);
+
+  if (!g_atomic_int_compare_and_exchange (&_ref_thread_safe_weak_was_invoked, 1, 2))
+    g_assert_not_reached ();
+}
+
+static RefThreadSafeData *
+_ref_thread_safe_ref (gpointer data)
+{
+  RefThreadSafeData *wdata = data;
+
+  g_atomic_int_inc (&wdata->ref_count);
+  return data;
+}
+
+static void
+_ref_thread_safe_unref (gpointer data)
+{
+  RefThreadSafeData *wdata = data;
+
+  if (g_atomic_int_dec_and_test (&wdata->ref_count))
+    {
+      g_mutex_clear (&wdata->mutex);
+      g_free (wdata);
+    }
+}
+
+static void
+test_references_thread_safe (void)
+{
+  GThread *thread;
+  GObject *obj;
+  const char *called_synchronized_action;
+  RefThreadSafeData *wdata;
+  gint usec_sleep;
+  gboolean should_steal_data = g_random_boolean ();
+  gboolean did_steal_data = FALSE;
+  gboolean did_unref = FALSE;
+  int was_invoked;
+
+  obj = g_object_new (G_TYPE_OBJECT, NULL);
+
+  wdata = g_new (RefThreadSafeData, 1);
+  *wdata = (RefThreadSafeData){
+    .ref_count = 1,
+    .synchronized_action = NULL,
+  };
+  g_mutex_init (&wdata->mutex);
+
+  /* To test and use g_object_weak_ref_full() in a thread safe way we pass on
+   * an (atomic) reference to our RefThreadSafeData. In this case, the whole
+   * setup is elaborate and cumbersome.
+   *
+   * Note that a real user who subscribes to a weak notification does so for a
+   * reason. They must already track state about what they doing (only so that
+   * they can call g_object_weak_unref_full() later. At that point, they will
+   * already have part of this in place. It will be easier for such a real
+   * world usage to extend their code to use g_object_weak_ref_full() in a
+   * thread safe way, than it is for our test here.
+   */
+
+  g_object_weak_ref_full (obj,
+                          _ref_thread_safe_weak_cb,
+                          _ref_thread_safe_ref (wdata),
+                          _ref_thread_safe_unref,
+                          g_random_boolean ());
+
+  thread = g_thread_new ("run-dispose", _ref_thread_safe_thread_fcn, obj);
+
+  usec_sleep = g_random_int_range (-1, 20);
+  if (usec_sleep != -1)
+    g_usleep ((gulong) usec_sleep);
+
+  g_mutex_lock (&wdata->mutex);
+  if (!wdata->synchronized_action)
+    {
+      /* We want to call g_object_weak_unref_full(), for that that we must be
+       * sure that the object is still alive.
+       *
+       * We could use a GWeakRef (in addition) to that to get a strong
+       * reference first.
+       *
+       * Instead, we can synchronize with the weak notification. If the weak
+       * notification at this point (while holding the mutex), did not yet run,
+       * we know that the object is still alive. We know this even without
+       * acquiring a strong reference(!) and thus without emitting a toggle
+       * notification.
+       */
+      did_unref = g_object_weak_unref_full (obj, _ref_thread_safe_weak_cb, wdata, FALSE, should_steal_data);
+      if (did_unref)
+        did_steal_data = should_steal_data;
+      wdata->synchronized_action = "main_thread";
+    }
+  called_synchronized_action = wdata->synchronized_action;
+  g_mutex_unlock (&wdata->mutex);
+
+  /* At this point, exactly one thread ran the action ("main_thread" or
+   * "_ref_thread_safe_weak_cb") while under a mutex. We also safely
+   * called g_object_weak_unref_full().
+   *
+   * Note that if g_object_weak_unref_full() returned FALSE, then in parallel
+   * _ref_thread_safe_weak_cb() callback might still be running and access
+   * wdata. But the weak notification callback will also obtain the mutex, and
+   * see that it should do nothing further. */
+  g_assert_cmpstr (called_synchronized_action, !=, NULL);
+
+  was_invoked = g_atomic_int_get (&_ref_thread_safe_weak_was_invoked);
+  if (did_unref)
+    {
+      /* If g_object_weak_unref_full() did unregister the notification, the
+       * callback is not running. */
+      g_assert_cmpint (was_invoked, ==, 0);
+    }
+  if (g_str_equal (called_synchronized_action, "_ref_thread_safe_weak_cb"))
+    {
+      /* was_invoked must be at least 1 (maybe not yet 2). */
+      g_assert_cmpint (was_invoked, >=, 1);
+    }
+
+  if (did_steal_data)
+    {
+      /* We successfully stole the data. Must do the additional unref here. */
+      _ref_thread_safe_unref (wdata);
+    }
+
+  _ref_thread_safe_unref (wdata);
+
+  g_thread_join (thread);
+
+  /* _ref_thread_safe_weak_cb() ran to completion iff we did not successfully
+   * g_object_weak_unref_full(). */
+  g_assert_cmpint (g_atomic_int_get (&_ref_thread_safe_weak_was_invoked), ==, (did_unref ? 0 : 2));
+}
+
+/*****************************************************************************/
+
+static gboolean _weak_ref_sync_was_invoked = FALSE;
+
+typedef struct
+{
+  GObject *obj;
+  gboolean is_run_dispose;
+  gpointer was_notified;
+  gpointer some_data;
+} WeakRefSyncData;
+
+static gpointer
+_weak_ref_sync_thread_fcn (gpointer thread_data)
+{
+  WeakRefSyncData *wdata = thread_data;
+
+  if (wdata->is_run_dispose)
+    g_object_run_dispose (wdata->obj);
+  else
+    g_object_unref (wdata->obj);
+  return NULL;
+}
+
+static void
+_weak_ref_sync_weak_cb (gpointer data,
+                        GObject *where_the_object_was)
+{
+  WeakRefSyncData *wdata = data;
+  gint msec_sleep;
+
+  msec_sleep = g_random_int_range (-1, 5);
+  if (msec_sleep != -1)
+    g_usleep ((gulong) (msec_sleep * 1000));
+
+  g_assert_false (_weak_ref_sync_was_invoked);
+  _weak_ref_sync_was_invoked = TRUE;
+
+  g_assert_null (wdata->was_notified);
+  g_assert_nonnull (wdata->some_data);
+  wdata->was_notified = g_steal_pointer (&wdata->some_data);
+
+  if (g_random_boolean ())
+    {
+      gboolean did_unref;
+
+      did_unref = g_object_weak_unref_full (wdata->obj, _weak_ref_sync_weak_cb, wdata, FALSE, FALSE);
+      g_assert_false (did_unref);
+    }
+}
+
+static void
+test_weak_ref_sync (gconstpointer test_user_data)
+{
+  const gboolean IS_RUN_DISPOSE = GPOINTER_TO_INT (test_user_data);
+  GThread *thread;
+  GObject *obj = g_object_new (G_TYPE_OBJECT, NULL);
+  WeakRefSyncData wdata = {
+    .obj = obj,
+    .is_run_dispose = IS_RUN_DISPOSE,
+    .was_notified = NULL,
+    .some_data = g_malloc0 (1),
+  };
+  gint usec_sleep;
+  gboolean did_unref = FALSE;
+  gboolean called_unref = TRUE;
+  GWeakRef weakref;
+  gboolean has_weakref;
+
+  has_weakref = (!IS_RUN_DISPOSE || g_random_boolean ());
+  if (has_weakref)
+    g_weak_ref_init (&weakref, obj);
+
+  g_object_weak_ref_full (obj, _weak_ref_sync_weak_cb, &wdata, NULL, TRUE);
+
+  thread = g_thread_new ("run-dispose", _weak_ref_sync_thread_fcn, &wdata);
+
+  usec_sleep = g_random_int_range (-1, 20);
+  if (usec_sleep != -1)
+    g_usleep ((gulong) usec_sleep);
+
+  if (IS_RUN_DISPOSE)
+    {
+      /* The thread only runs g_object_run_dispose(). We know that our object is valid. */
+      did_unref = g_object_weak_unref_full (obj, _weak_ref_sync_weak_cb, &wdata, TRUE, FALSE);
+    }
+  else
+    {
+      GObject *obj2 = g_weak_ref_get (&weakref);
+
+      /* The thread runs g_object_unref(). We want to test a concurrent
+       * g_object_weak_unref_full(), so we need to first acquire a strong
+       * reference.
+       *
+       * So how does g_object_weak_unref_full() do anything useful? For one, it
+       * exists primarily to fix races when other threads run
+       * g_object_run_dispose(). In this case, we can only use GWeakRef to
+       * acquire a strong reference first. */
+
+      if (obj2)
+        {
+          did_unref = g_object_weak_unref_full (obj2, _weak_ref_sync_weak_cb, &wdata, TRUE, FALSE);
+          g_object_unref (obj2);
+        }
+      else
+        {
+          called_unref = FALSE;
+          did_unref = FALSE;
+        }
+    }
+
+  if (!called_unref)
+    {
+      /* We never called g_object_weak_ref_full(). We know that the
+       * other thread will call unref, but we didn't synchronize to know
+       * whether the thread already did that.
+       *
+       * We cannot assert. */
+    }
+  else
+    {
+      if (did_unref)
+        {
+          g_assert_null (wdata.was_notified);
+          g_assert_nonnull (wdata.some_data);
+        }
+      else
+        {
+          g_assert_nonnull (wdata.was_notified);
+          g_assert_null (wdata.some_data);
+        }
+
+      g_assert_cmpint (!did_unref, ==, _weak_ref_sync_was_invoked);
+      g_assert_cmpint (did_unref, ==, !_weak_ref_sync_was_invoked);
+    }
+
+  g_thread_join (thread);
+
+  if (IS_RUN_DISPOSE)
+    g_object_unref (obj);
+
+  _weak_ref_sync_was_invoked = FALSE;
+
+  if (did_unref)
+    g_free (wdata.was_notified);
+  else if (called_unref)
+    g_free (wdata.some_data);
+  else
+    {
+      g_free (wdata.was_notified);
+      g_free (wdata.some_data);
+    }
+}
+
+/*****************************************************************************/
+
 int
 main (int   argc,
       char *argv[])
@@ -563,6 +893,9 @@ main (int   argc,
   g_test_add_func ("/gobject/references-many", test_references_many);
   g_test_add_func ("/gobject/references_two", test_references_two);
   g_test_add_func ("/gobject/references_run_dispose", test_references_run_dispose);
+  g_test_add_func ("/gobject/references_thread_safe", test_references_thread_safe);
+  g_test_add_data_func ("/gobject/weak_ref_sync/unref", GINT_TO_POINTER (FALSE), test_weak_ref_sync);
+  g_test_add_data_func ("/gobject/weak_ref_sync/run-dispose", GINT_TO_POINTER (TRUE), test_weak_ref_sync);
 
   return g_test_run ();
 }
