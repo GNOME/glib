@@ -1113,7 +1113,7 @@ g_dtls_connection_get_negotiated_protocol (GDtlsConnection *conn)
  * g_dtls_connection_get_channel_binding_data:
  * @conn: a #GDtlsConnection
  * @type: #GTlsChannelBindingType type of data to fetch
- * @data: (out callee-allocates)(optional)(transfer none): #GByteArray is
+ * @data: (out caller-allocates) (optional) (transfer none): #GByteArray is
  *        filled with the binding data, or %NULL
  * @error: a #GError pointer, or %NULL
  *
