@@ -517,10 +517,20 @@ GOBJECT_AVAILABLE_IN_ALL
 void	    g_object_weak_ref		      (GObject	      *object,
 					       GWeakNotify     notify,
 					       gpointer	       data);
+GOBJECT_AVAILABLE_IN_2_86
+void g_object_weak_ref_full (GObject *object,
+                             GWeakNotify notify,
+                             gpointer data,
+                             GDestroyNotify destroy);
 GOBJECT_AVAILABLE_IN_ALL
 void	    g_object_weak_unref		      (GObject	      *object,
 					       GWeakNotify     notify,
 					       gpointer	       data);
+GOBJECT_AVAILABLE_IN_2_86
+gboolean g_object_weak_unref_full (GObject *object,
+                                   GWeakNotify notify,
+                                   gpointer data,
+                                   gboolean steal_data);
 GOBJECT_AVAILABLE_IN_ALL
 void        g_object_add_weak_pointer         (GObject        *object, 
                                                gpointer       *weak_pointer_location);
