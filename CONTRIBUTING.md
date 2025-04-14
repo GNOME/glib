@@ -153,7 +153,15 @@ Typically, you should work on your own branch:
 $ git checkout -b your-branch
 ```
 
-Once you’ve finished working on the bug fix or feature, push the branch
+Once you’ve finished working on the bug fix or feature, make sure the tests
+pass by using the standard `meson` test harness:
+
+```sh
+$ meson test -C _builddir
+$ meson test -C _builddir --setup=valgrind
+```
+
+Then push the branch
 to the Git repository and open a new merge request, to let the GLib
 core developers review your contribution.
 
