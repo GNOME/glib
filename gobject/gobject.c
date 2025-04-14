@@ -3697,6 +3697,7 @@ g_object_disconnect (gpointer     _object,
 typedef struct
 {
   GWeakNotify notify;
+  GDestroyNotify destroy;
   gpointer data;
 } WeakRefTuple;
 
@@ -3858,6 +3859,70 @@ g_object_weak_ref_cb (gpointer *data,
   return NULL;
 }
 
+G_ALWAYS_INLINE static inline void
+_g_object_weak_ref_full (GObject *object,
+                         GWeakNotify notify,
+                         gpointer data,
+                         GDestroyNotify destroy)
+{
+  _g_datalist_id_update_atomic (&object->qdata,
+                                quark_weak_notifies,
+                                g_object_weak_ref_cb,
+                                &((WeakRefTuple){
+                                    .notify = notify,
+                                    .data = data,
+                                    .destroy = destroy,
+                                }));
+}
+
+/**
+ * g_object_weak_unref_full: (skip)
+ * @object: #GObject to remove a weak reference from
+ * @notify: callback to search for
+ * @data: data to search for
+ * @destroy: an optional #GDestroyNotify.
+ *
+ * Adds a weak reference callback to an object. Weak references are
+ * used for notification when an object is disposed. They are called
+ * "weak references" because they allow you to safely hold a pointer
+ * to an object without calling g_object_ref() (g_object_ref() adds a
+ * strong reference, that is, forces the object to stay alive).
+ *
+ * The @notify callback is invoked on the thread that disposes the object,
+ * either by releasing the last reference or by calling g_object_run_dispose().
+ * It is guaranteed that the @notify callback is invoked zero or one time.
+ * When g_object_weak_unref_full() returns %TRUE, the @notify callback was
+ * successfully unregistered and never invoked. If it returns %FALSE, it
+ * was already or will still be invoked.
+ *
+ * You are guaranteed, that the @destroy callback is called exactly once,
+ * unless you pass successfully steal the data during
+ * g_object_weak_unref_full(). If it is invoked, it happens either right after
+ * the @notify callback or during the g_object_weak_unref() call.
+ *
+ * Without careful actions, weak notifications are not thread-safe if the
+ * dispose can happen on anther thread. You might combine weak notifications
+ * with #GWeakRef to solve that partly. However, obtaining a strong reference
+ * via #GWeakRef does not guard against another thread calling
+ * g_object_run_dispose(). A fully thread-safe solution can use a @destroy
+ * callback here, which is guaranteed to be executed once and act as a
+ * synchronization point.
+ *
+ * Since: 2.86
+ */
+void
+g_object_weak_ref_full (GObject *object,
+                        GWeakNotify notify,
+                        gpointer data,
+                        GDestroyNotify destroy)
+{
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (notify != NULL);
+  g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
+
+  _g_object_weak_ref_full (object, notify, data, destroy);
+}
+
 /**
  * g_object_weak_ref: (skip)
  * @object: #GObject to reference weakly
@@ -3873,7 +3938,9 @@ g_object_weak_ref_cb (gpointer *data,
  * Note that the weak references created by this method are not
  * thread-safe: they cannot safely be used in one thread if the
  * object's last g_object_unref() might happen in another thread.
- * Use #GWeakRef if thread-safety is required.
+ *
+ * Use #GWeakRef or g_object_weak_ref_full() with suitable callbacks if
+ * thread-safety is required.
  */
 void
 g_object_weak_ref (GObject    *object,
@@ -3884,13 +3951,7 @@ g_object_weak_ref (GObject    *object,
   g_return_if_fail (notify != NULL);
   g_return_if_fail (g_atomic_int_get (&object->ref_count) >= 1);
 
-  _g_datalist_id_update_atomic (&object->qdata,
-                                quark_weak_notifies,
-                                g_object_weak_ref_cb,
-                                &((WeakRefTuple){
-                                    .notify = notify,
-                                    .data = data,
-                                }));
+  _g_object_weak_ref_full (object, notify, data, NULL);
 }
 
 static gpointer
@@ -3912,10 +3973,11 @@ g_object_weak_unref_cb (gpointer *data,
         }
     }
 
-  g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, tuple->notify, tuple->data);
   return NULL;
 
 handle_weak_ref_found:
+
+  tuple->destroy = wstack->weak_refs[idx].destroy;
 
   _weak_ref_stack_update_release_all_state (wstack, idx);
 
@@ -3937,7 +3999,68 @@ handle_weak_ref_found:
       _weak_ref_stack_maybe_shrink (&wstack, data);
     }
 
-  return NULL;
+  return tuple;
+}
+
+G_ALWAYS_INLINE static inline gboolean
+_g_object_weak_unref_full (GObject *object,
+                           GWeakNotify notify,
+                           gpointer data,
+                           gboolean steal_data)
+{
+  WeakRefTuple tuple = {
+    .notify = notify,
+    .data = data,
+    .destroy = NULL,
+  };
+  gpointer result;
+
+  result = _g_datalist_id_update_atomic (&object->qdata,
+                                         quark_weak_notifies,
+                                         g_object_weak_unref_cb,
+                                         &tuple);
+  if (!result)
+    return FALSE;
+
+  if (!steal_data && tuple.destroy)
+    tuple.destroy (data);
+
+  return TRUE;
+}
+
+/**
+ * g_object_weak_unref_full: (skip)
+ * @object: #GObject to remove a weak reference from
+ * @notify: callback to search for
+ * @data: data to search for
+ * @steal_data: whether to not invoke the #GDestroyNotify and steal the data
+ *
+ * Removes a weak reference callback to an object.
+ *
+ * Unlike g_object_weak_unref(), it is acceptable that there is nothing to
+ * unregister. That might be due to a race where the object is disposed on
+ * another thread. You can tell based on the return value whether that was the
+ * case.
+ *
+ * Depending on @steal_data and whether the weak notification is still
+ * registered, the destroy notification from g_object_weak_ref_full() will be
+ * called on the data.
+ *
+ * Since: 2.86
+ *
+ * Returns: %TRUE if a weak notification was found and unregistered without
+ *   ever being invoked.
+ */
+gboolean
+g_object_weak_unref_full (GObject *object,
+                          GWeakNotify notify,
+                          gpointer data,
+                          gboolean steal_data)
+{
+  g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (notify != NULL, FALSE);
+
+  return _g_object_weak_unref_full (object, notify, data, steal_data);
 }
 
 /**
@@ -3947,22 +4070,30 @@ handle_weak_ref_found:
  * @data: data to search for
  *
  * Removes a weak reference callback to an object.
+ *
+ * Note that it is a bug to call GObjectClass.weak_unref() for a non-registered
+ * weak notification. If other threads can dispose the objects, this condition
+ * can be violated due to a race. Avoid that by using
+ * GObjectClass.weak_unref_full() which gracefully accepts that the
+ * notification may not be registered.
+ *
+ * GObjectClass.weak_unref() will destroy the data, if a #GDestroyNotify
+ * was provided during GObjectClass.weak_ref_full().
  */
 void
 g_object_weak_unref (GObject    *object,
 		     GWeakNotify notify,
 		     gpointer    data)
 {
+  gboolean weak_ref_found;
+
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (notify != NULL);
 
-  _g_datalist_id_update_atomic (&object->qdata,
-                                quark_weak_notifies,
-                                g_object_weak_unref_cb,
-                                &((WeakRefTuple){
-                                    .notify = notify,
-                                    .data = data,
-                                }));
+  weak_ref_found = _g_object_weak_unref_full (object, notify, data, FALSE);
+
+  if (G_UNLIKELY (!weak_ref_found))
+    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, data);
 }
 
 typedef struct
@@ -4094,6 +4225,9 @@ g_object_weak_release_all (GObject *object, gboolean release_all)
         break;
 
       wdata.tuple.notify (wdata.tuple.data, object);
+
+      if (wdata.tuple.destroy)
+        wdata.tuple.destroy (wdata.tuple.data);
 
       if (wdata.release_all_done)
         break;
