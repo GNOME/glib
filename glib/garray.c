@@ -1455,9 +1455,9 @@ g_ptr_array_new_from_null_terminated_array (gpointer       *data,
  * g_assert (chunk_buffer->len == 0);
  * ]|
  *
- * Returns: (transfer full) (nullable): the element data, which should be
- *     freed using g_free(). This may be %NULL if the array doesn’t have any
- *     elements (i.e. if `*len` is zero).
+ * Returns: (transfer full) (nullable) (array length=len): the element data,
+ *   which should be freed using g_free(). This may be %NULL if the array
+ *   doesn’t have any elements (i.e. if `*len` is zero).
  *
  * Since: 2.64
  */
@@ -1797,8 +1797,9 @@ g_ptr_array_unref (GPtrArray *array)
  * threads, use only the atomic g_ptr_array_ref() and g_ptr_array_unref()
  * functions.
  *
- * Returns: (transfer full) (nullable): the pointer array if @free_segment is
- *     %FALSE, otherwise %NULL. The pointer array should be freed using g_free().
+ * Returns: (transfer full) (array) (nullable): the pointer array if
+ *   @free_segment is %FALSE, otherwise %NULL. The pointer array should
+ *   be freed using g_free().
  */
 gpointer*
 g_ptr_array_free (GPtrArray *array,
@@ -2705,8 +2706,8 @@ g_byte_array_new (void)
  * the underlying array is preserved for use elsewhere and returned
  * to the caller.
  *
- * Returns: (transfer full): the element data, which should be
- *     freed using g_free().
+ * Returns: (transfer full) (array length=len): the element data,
+ *   which should be freed using g_free().
  *
  * Since: 2.64
  */
@@ -2782,8 +2783,9 @@ g_byte_array_sized_new (guint reserved_size)
  * @array is greater than one, the #GByteArray wrapper is preserved but
  * the size of @array will be set to zero.
  *
- * Returns: the element data if @free_segment is %FALSE, otherwise
- *          %NULL.  The element data should be freed using g_free().
+ * Returns: (nullable) (array) (transfer full): the element data if
+ *   @free_segment is %FALSE, otherwise %NULL.  The element data
+ *   should be freed using g_free().
  */
 guint8*
 g_byte_array_free (GByteArray *array,
@@ -2858,7 +2860,7 @@ g_byte_array_unref (GByteArray *array)
 /**
  * g_byte_array_append:
  * @array: a #GByteArray
- * @data: the byte data to be added
+ * @data: (array length=len): the byte data to be added
  * @len: the number of bytes to add
  *
  * Adds the given bytes to the end of the #GByteArray.
@@ -2879,7 +2881,7 @@ g_byte_array_append (GByteArray   *array,
 /**
  * g_byte_array_prepend:
  * @array: a #GByteArray
- * @data: the byte data to be added
+ * @data: (array length=len): the byte data to be added
  * @len: the number of bytes to add
  *
  * Adds the given data to the start of the #GByteArray.
