@@ -3868,49 +3868,47 @@ g_object_weak_unref_cb (gpointer *data,
 {
   WeakRefTuple *tuple = user_data;
   WeakRefStack *wstack = *data;
-  gboolean found_one = FALSE;
-  guint i;
+  guint idx;
 
   if (wstack)
     {
-      for (i = 0; i < wstack->n_weak_refs; i++)
+      for (idx = 0; idx < wstack->n_weak_refs; idx++)
         {
-          if (wstack->weak_refs[i].notify != tuple->notify ||
-              wstack->weak_refs[i].data != tuple->data)
-            continue;
-
-          _weak_ref_stack_update_release_all_state (wstack, i);
-
-          wstack->n_weak_refs -= 1;
-          if (wstack->n_weak_refs == 0)
-            {
-              _weak_ref_stack_free (wstack);
-              *data = NULL;
-            }
-          else
-            {
-              if (i != wstack->n_weak_refs)
-                {
-                  memmove (&wstack->weak_refs[i],
-                           &wstack->weak_refs[i + 1],
-                           sizeof (wstack->weak_refs[i]) * (wstack->n_weak_refs - i));
-                }
-
-              if (G_UNLIKELY (wstack->n_weak_refs <= wstack->alloc_size / 4u))
-                {
-                  wstack->alloc_size = wstack->alloc_size / 2u;
-                  wstack = g_realloc (wstack, WEAK_REF_STACK_ALLOC_SIZE (wstack->alloc_size));
-                  *data = wstack;
-                }
-            }
-
-          found_one = TRUE;
-          break;
+          if (wstack->weak_refs[idx].notify == tuple->notify &&
+              wstack->weak_refs[idx].data == tuple->data)
+            goto handle_weak_ref_found;
         }
     }
 
-  if (!found_one)
-    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, tuple->notify, tuple->data);
+  g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, tuple->notify, tuple->data);
+  return NULL;
+
+handle_weak_ref_found:
+
+  _weak_ref_stack_update_release_all_state (wstack, idx);
+
+  wstack->n_weak_refs -= 1;
+  if (wstack->n_weak_refs == 0)
+    {
+      _weak_ref_stack_free (wstack);
+      *data = NULL;
+    }
+  else
+    {
+      if (idx != wstack->n_weak_refs)
+        {
+          memmove (&wstack->weak_refs[idx],
+                   &wstack->weak_refs[idx + 1],
+                   sizeof (wstack->weak_refs[idx]) * (wstack->n_weak_refs - idx));
+        }
+
+      if (G_UNLIKELY (wstack->n_weak_refs <= wstack->alloc_size / 4u))
+        {
+          wstack->alloc_size = wstack->alloc_size / 2u;
+          wstack = g_realloc (wstack, WEAK_REF_STACK_ALLOC_SIZE (wstack->alloc_size));
+          *data = wstack;
+        }
+    }
 
   return NULL;
 }
