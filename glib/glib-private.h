@@ -75,6 +75,47 @@ void __lsan_ignore_object (const void *p) __attribute__ ((weak));
 
 #endif
 
+#ifdef G_ENABLE_DEBUG
+/**
+ * _G_ENABLE_DEBUG:
+ *
+ * A preprocessor define that is always either 0 or 1,
+ * depending on defined(G_ENABLE_DEBUG). It can be used
+ * with #if or in C code (where the compiler recognizes
+ * this as a constant).
+ */
+#define _G_ENABLE_DEBUG 1
+#else
+#define _G_ENABLE_DEBUG 0
+#endif
+
+/**
+ * _g_assert():
+ * @condition: the condition that must evaluate to a true value.
+ *
+ * If %G_ENABLE_DEBUG is defined, this expands to a g_assert().
+ * Otherwise, it expands to (effectively) no operation.
+ *
+ * Note that the comiler will always see the condition, to avoid
+ * warnings about unused variables. But usually, the condition will
+ * not be evaluated and must have no side effects.
+ */
+#define _g_assert(condition)  \
+  G_STMT_START                \
+  {                           \
+    if (_G_ENABLE_DEBUG)      \
+      {                       \
+        g_assert (condition); \
+      }                       \
+    if (0)                    \
+      {                       \
+        if (condition)        \
+          {                   \
+          }                   \
+      }                       \
+  }                           \
+  G_STMT_END
+
 /**
  * G_CONTAINER_OF:
  * @ptr: a pointer to a member @field of type @type.
