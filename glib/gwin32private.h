@@ -27,7 +27,11 @@
 #include "config.h"
 
 #include <windows.h>
+
 #include <stdbool.h>
+
+bool
+g_win32_handle_is_console_output (HANDLE handle);
 
 bool
 g_win32_substitute_pid_and_event (wchar_t       *local_debugger,
@@ -35,7 +39,6 @@ g_win32_substitute_pid_and_event (wchar_t       *local_debugger,
                                   const wchar_t *cmdline,
                                   DWORD          pid,
                                   guintptr       event);
-
 
 #endif /* G_PLATFORM_WIN32 */
 

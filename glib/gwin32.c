@@ -73,6 +73,7 @@
 #include "gwin32.h"
 #include "gwin32private.h"
 #include "gthreadprivate.h"
+#include "gwin32private.h"
 #include "glib-init.h"
 
 #ifdef G_WITH_CYGWIN
@@ -1519,6 +1520,41 @@ g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_han
     }
 
   return executable_path;
+}
+
+/** < private >
+ *
+ * g_win32_handle_is_console_output:
+ *
+ * @handle: the given HANDLE
+ *
+ * Checks if the given HANDLE refers to a Win32 console screen
+ * buffer (output HANDLE).
+ */
+bool
+g_win32_handle_is_console_output (HANDLE handle)
+{
+  /* MSDN suggests using GetConsoleMode() to check if a HANDLE refers to
+   * the console. However GetConsoleMode() requires read access rights
+   * (FILE_READ_DATA | FILE_READ_ATTRIBUTES | FILE_READ_EA on Windows 10),
+   * and output HANDLEs may have been opened with write rights only. To
+   * overcome that, we use WriteConsole() with a zero characters count.
+   */
+  const wchar_t *dummy = L"";
+  if (!WriteConsole (handle, dummy, 0, NULL, NULL))
+    {
+      DWORD code = GetLastError ();
+
+      if (code != ERROR_INVALID_FUNCTION && code != ERROR_INVALID_HANDLE)
+        {
+          g_warning ("%s failed with error code %u",
+                     "WriteConsole", (unsigned int) GetLastError ());
+        }
+
+      return false;
+    }
+
+  return true;
 }
 
 /*
