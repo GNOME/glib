@@ -77,15 +77,16 @@
 #endif
 
 #ifdef G_OS_WIN32
+#include "gwin32.h"
+#include "gwin32private.h"
+
 #include <process.h>		/* For getpid() */
 #include <io.h>
-#  include <windows.h>
+#include <windows.h>
 
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 #endif
-
-#include "gwin32.h"
 #endif
 
 /**
@@ -3470,12 +3471,30 @@ static void
 print_string (FILE        *stream,
               const gchar *string)
 {
-  const gchar *charset;
+  const gchar *charset = NULL;
+  bool print_utf8;
   int ret;
 
-  if (g_get_console_charset (&charset))
+#ifdef _WIN32
+  int fd;
+  HANDLE handle;
+
+  fd = _fileno (stream);
+  if (fd < 0)
+    return;
+
+  handle = (HANDLE) _get_osfstream (fd);
+
+  if (g_win32_handle_is_console_output (handle))
+    print_utf8 = g_get_console_charset (&charset);
+  else
+    print_utf8 = true;
+#else
+  print_utf8 = g_get_charset (&charset);
+#endif
+
+  if (print_utf8)
     {
-      /* charset is UTF-8 already */
       ret = fputs (string, stream);
     }
   else
