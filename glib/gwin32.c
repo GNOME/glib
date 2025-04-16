@@ -1453,6 +1453,31 @@ g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_han
   return executable_path;
 }
 
+bool
+g_win32_handle_is_console_output (HANDLE handle,
+                                  bool   log_errors)
+{
+  /* MSDN suggests using GetConsoleMode() to check if a HANDLE refers to
+   * the console. However, GetConsoleMode() requires read access rights
+   * (FILE_READ_DATA | FILE_READ_ATTRIBUTES | FILE_READ_EA on Windows 10)
+   * and output HANDLEs may be opened with write rights only. To overcome
+   * that we use WriteConsole() with a zero characters count.
+   */
+  const wchar_t *dummy = L"";
+  if (!WriteConsole (handle, dummy, 0, NULL, NULL))
+    {
+      if (log_errors &&
+          GetLastError () != ERROR_INVALID_HANDLE)
+        {
+          WIN32_API_FAILED ("WriteConsole");
+        }
+
+      return false;
+    }
+
+  return true;
+}
+
 /*
  * g_win32_handle_is_socket:
  * @h: a win32 HANDLE
