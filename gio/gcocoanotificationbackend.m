@@ -29,6 +29,7 @@
 #include "giomodule-priv.h"
 #include "gnotification-private.h"
 #include "gthemedicon.h"
+#include "gbytesicon.h"
 #include "gfileicon.h"
 #include "gfile.h"
 
@@ -76,6 +77,22 @@ nsimage_from_gicon (GIcon *icon)
           [str_path release];
           g_free (path);
         }
+      return image;
+    }
+  else if (G_IS_BYTES_ICON (icon))
+    {
+      NSImage *image = nil;
+      GBytes *bytes;
+      gconstpointer bytes_data;
+      gsize bytes_size;
+      NSData *data;
+
+      bytes = g_bytes_icon_get_bytes (G_BYTES_ICON (icon));
+      bytes_data = g_bytes_get_data (bytes, &bytes_size);
+      data = [[NSData alloc] initWithBytes:bytes_data
+                                    length:bytes_size];
+
+      image = [[NSImage alloc] initWithData:data];
       return image;
     }
   else
