@@ -23,6 +23,9 @@
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
+#if defined(HAVE_SYS_SYSCTL_H) && defined(HAVE_SYSCTLBYNAME)
+#include <sys/sysctl.h>
+#endif
 
 #include "gnetworkmonitornetlink.h"
 #include "gcredentials.h"
@@ -301,6 +304,35 @@ finish_dump (GNetworkMonitorNetlink *nl)
                                        nl->priv->dump_networks->len);
   g_ptr_array_free (nl->priv->dump_networks, TRUE);
   nl->priv->dump_networks = NULL;
+
+  /* FreeBSD features "jailing" functionality, which can be approximated to
+   * Linux namespaces. A jail may or may not share the host's network stack,
+   * which includes routing tables.
+   * When jail runs in non-vnet mode and has a shared stack with the host,
+   * the kernel prevents jailed processes from getting full view on a routing
+   * table. This makes GNetworkManager believe that we're offline and return
+   * FALSE for the "available" property.
+   * To workaround this problem, do the same thing as GNetworkMonitorBase -
+   * add a fake network of 0 length.
+   */
+#ifdef __FreeBSD__
+  gboolean is_jailed = FALSE;
+  gsize len = sizeof (is_jailed);
+
+  if (sysctlbyname ("security.jail.jailed", &is_jailed, &len, NULL, 0) != 0)
+    return;
+
+  if (!is_jailed)
+    return;
+
+  if (is_jailed && !g_network_monitor_get_network_available (G_NETWORK_MONITOR (nl)))
+    {
+      GInetAddressMask *network;
+      network = g_inet_address_mask_new_from_string ("0.0.0.0/0", NULL);
+      g_network_monitor_base_add_network (G_NETWORK_MONITOR_BASE (nl), network);
+      g_object_unref (network);
+    }
+#endif
 }
 
 static gboolean
