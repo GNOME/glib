@@ -373,15 +373,15 @@ gi_type_info_get_array_type (GITypeInfo *info)
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
 
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_TYPE_INFO (info), -1);
+  g_return_val_if_fail (info != NULL, GI_ARRAY_TYPE_C);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), GI_ARRAY_TYPE_C);
 
   type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
       ArrayTypeBlob *blob = (ArrayTypeBlob *)&rinfo->typelib->data[rinfo->offset];
-      g_return_val_if_fail (blob->tag == GI_TYPE_TAG_ARRAY, -1);
+      g_return_val_if_fail (blob->tag == GI_TYPE_TAG_ARRAY, GI_ARRAY_TYPE_C);
 
       return blob->array_type;
     }

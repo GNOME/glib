@@ -116,8 +116,8 @@ gi_function_info_get_flags (GIFunctionInfo *info)
   GIRealInfo *rinfo;
   FunctionBlob *blob;
 
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_FUNCTION_INFO (info), -1);
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_FUNCTION_INFO (info), 0);
 
   rinfo = (GIRealInfo *)info;
   blob = (FunctionBlob *)&rinfo->typelib->data[rinfo->offset];
