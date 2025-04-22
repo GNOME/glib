@@ -920,7 +920,7 @@ g_closure_invoke (GClosure       *closure,
 	       marshal_data);
       if (!in_marshal)
 	closure_invoke_notifiers (closure, POST_NOTIFY);
-      ATOMIC_SET (closure, in_marshal, in_marshal);
+      ATOMIC_SET (closure, in_marshal, (guint) in_marshal);
     }
   g_closure_unref (closure);
 }
@@ -984,7 +984,7 @@ _g_closure_invoke_va (GClosure       *closure,
 	       n_params, param_types);
       if (!in_marshal)
 	closure_invoke_notifiers (closure, POST_NOTIFY);
-      ATOMIC_SET (closure, in_marshal, in_marshal);
+      ATOMIC_SET (closure, in_marshal, (guint) in_marshal);
     }
   g_closure_unref (closure);
 }
