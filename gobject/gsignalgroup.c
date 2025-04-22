@@ -736,7 +736,7 @@ g_signal_group_connect_closure_ (GSignalGroup   *self,
   handler->signal_id = signal_id;
   handler->signal_detail = signal_detail;
   handler->closure = g_closure_ref (closure);
-  handler->connect_after = after;
+  handler->connect_after = (guint) after;
 
   g_closure_sink (closure);
 
