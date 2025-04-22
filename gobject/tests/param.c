@@ -1164,7 +1164,7 @@ test_interface_default_init (TestInterfaceInterface *iface)
               continue;
 
             /* we think that this is impossible.  make sure. */
-            pspec = g_param_spec_object ("xyz", "xyz", "xyz", types[i], j);
+            pspec = g_param_spec_object ("xyz", "xyz", "xyz", types[i], (GParamFlags) j);
 
             g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                                    "*assertion*pspec->flags*failed*");
@@ -1176,7 +1176,7 @@ test_interface_default_init (TestInterfaceInterface *iface)
 
         /* install the property */
         g_snprintf (prop_name, sizeof prop_name, "%s-%s", names[i], perms[j]);
-        pspec = g_param_spec_object (prop_name, prop_name, prop_name, types[i], j);
+        pspec = g_param_spec_object (prop_name, prop_name, prop_name, types[i], (GParamFlags) j);
         g_object_interface_install_property (iface, pspec);
       }
 }
@@ -1320,8 +1320,8 @@ static gint valid_impl_flags[16][16] = {
 
 static guint change_this_flag;
 static guint change_this_type;
-static guint use_this_flag;
-static guint use_this_type;
+static GParamFlags use_this_flag;
+static size_t use_this_type_index;
 
 typedef GObjectClass TestImplementationClass;
 typedef GObject TestImplementation;
@@ -1371,15 +1371,15 @@ static void test_implementation_class_init (TestImplementationClass *class)
     g_error ("Interface property does not exist");
 
   g_snprintf (prop_name, sizeof prop_name, "%s-%s", names[change_this_type], perms[change_this_flag]);
-  pspec = g_param_spec_object (prop_name, prop_name, prop_name, types[use_this_type], use_this_flag);
+  pspec = g_param_spec_object (prop_name, prop_name, prop_name, types[use_this_type_index], use_this_flag);
   g_object_class_install_property (class, 1, pspec);
 }
 
 typedef struct {
   guint change_this_flag;
   guint change_this_type;
-  guint use_this_flag;
-  guint use_this_type;
+  GParamFlags use_this_flag;
+  size_t use_this_type_index;
 } TestParamImplementData;
 
 static void
@@ -1401,7 +1401,7 @@ test_param_implement_child (gconstpointer user_data)
   change_this_flag = data->change_this_flag;
   change_this_type = data->change_this_type;
   use_this_flag = data->use_this_flag;
-  use_this_type = data->use_this_type;
+  use_this_type_index = data->use_this_type_index;
 
   g_type_class_ref (test_implementation_get_type ());
 }
@@ -1421,7 +1421,7 @@ test_param_implement (void)
   for (change_this_flag = 0; change_this_flag < 16; change_this_flag++)
     for (change_this_type = 0; change_this_type < 3; change_this_type++)
       for (use_this_flag = 0; use_this_flag < 16; use_this_flag++)
-        for (use_this_type = 0; use_this_type < 4; use_this_type++)
+        for (use_this_type_index = 0; use_this_type_index < 4; use_this_type_index++)
           {
             if (!g_test_undefined ())
               {
@@ -1429,13 +1429,13 @@ test_param_implement (void)
                 if (valid_impl_flags[change_this_flag][use_this_flag] != 'v')
                   continue;
 
-                if (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type] != 'v')
+                if (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type_index] != 'v')
                   continue;
               }
 
-            test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%u",
+            test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%" G_GSIZE_FORMAT,
                                          change_this_flag, change_this_type,
-                                         use_this_flag, use_this_type);
+                                         use_this_flag, use_this_type_index);
             g_test_trap_subprocess (test_path, G_TIME_SPAN_SECOND,
                                     G_TEST_SUBPROCESS_DEFAULT);
             g_free (test_path);
@@ -1445,7 +1445,7 @@ test_param_implement (void)
               {
               case 0:
                 /* make sure the other table agrees */
-                g_assert_cmpint (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type], ==, 0);
+                g_assert_cmpint (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type_index], ==, 0);
                 g_test_trap_assert_failed ();
                 g_test_trap_assert_stderr ("*Interface property does not exist*");
                 continue;
@@ -1470,7 +1470,7 @@ test_param_implement (void)
               }
 
             /* Next, we check if there should have been a type error. */
-            switch (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type])
+            switch (valid_impl_types[change_this_type * 16 + change_this_flag][use_this_type_index])
               {
               case 0:
                 /* this should have been caught above */
@@ -1684,11 +1684,11 @@ main (int argc, char *argv[])
   for (data.change_this_flag = 0; data.change_this_flag < 16; data.change_this_flag++)
     for (data.change_this_type = 0; data.change_this_type < 3; data.change_this_type++)
       for (data.use_this_flag = 0; data.use_this_flag < 16; data.use_this_flag++)
-        for (data.use_this_type = 0; data.use_this_type < 4; data.use_this_type++)
+        for (data.use_this_type_index = 0; data.use_this_type_index < 4; data.use_this_type_index++)
           {
-            test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%u",
+            test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%" G_GSIZE_FORMAT,
                                          data.change_this_flag, data.change_this_type,
-                                         data.use_this_flag, data.use_this_type);
+                                         data.use_this_flag, data.use_this_type_index);
             test_data = g_memdup2 (&data, sizeof (TestParamImplementData));
             g_test_add_data_func_full (test_path, g_steal_pointer (&test_data), test_param_implement_child, g_free);
             g_free (test_path);

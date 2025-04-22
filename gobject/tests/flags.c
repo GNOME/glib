@@ -116,7 +116,7 @@ my_test_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_FLAGS:
-      g_value_set_flags (value, test->flags);
+      g_value_set_flags (value, (guint) test->flags);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -135,7 +135,7 @@ my_test_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_FLAGS:
-      test->flags = g_value_get_flags (value);
+      test->flags = (MyFlagsEnum) g_value_get_flags (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -157,7 +157,7 @@ check_flags_validation (void)
 
   for (i = 0; i < G_N_ELEMENTS (test_flags); i++)
     {
-      guint flag_set = test_flags[i];
+      guint flag_set = (guint) test_flags[i];
       GObject *test = g_object_new (G_TYPE_TEST,
 				    "flags", flag_set,
 				    NULL);
