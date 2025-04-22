@@ -205,7 +205,7 @@ The standard C `long` type should be preferred in new code.
 `G_MAXLONG`
 :   The maximum value which can be held in a `glong`.
 
-    This is the same as standard C `ULONG_MAX`, which is available since C99
+    This is the same as standard C `LONG_MAX`, which is available since C99
     and should be preferred in new code.
 
 ### `gulong`
@@ -243,13 +243,16 @@ Values of this type can range from `G_MININT8` (= -128) to
 `G_MININT8`
 :   The minimum value which can be held in a `gint8`.
 
+    This is the same as standard C `INT8_MIN`, which is available since C99
+    and should be preferred in new code.
+
     Since: 2.4
 
 `G_MAXINT8`
 :   The maximum value which can be held in a `gint8`.
 
-    This is the same as standard C `INT8_MAX`, which should be
-    preferred in new code.
+    This is the same as standard C `INT8_MAX`, which is available since C99
+    and should be preferred in new code.
 
     Since: 2.4
 
@@ -267,8 +270,8 @@ Values of this type can range from `0` to `G_MAXUINT8` (= 255).
 `G_MAXUINT8`
 :   The maximum value which can be held in a `guint8`.
 
-    This is the same as standard C `UINT8_MAX`, which should be
-    preferred in new code.
+    This is the same as standard C `UINT8_MAX`, which is available since C99
+    and should be preferred in new code.
 
     Since: 2.4
 
@@ -290,13 +293,16 @@ To print or scan values of this type, use
 `G_MININT16`
 :   The minimum value which can be held in a `gint16`.
 
+    This is the same as standard C `INT16_MIN`, which is available since C99
+    and should be preferred in new code.
+
     Since: 2.4
 
 `G_MAXINT16`
 :   The maximum value which can be held in a `gint16`.
 
-    This is the same as standard C `INT16_MAX`, which should be
-    preferred in new code.
+    This is the same as standard C `INT16_MAX`, which is available since C99
+    and should be preferred in new code.
 
     Since: 2.4
 
@@ -354,8 +360,8 @@ To print or scan values of this type, use
 `G_MAXUINT16`
 :   The maximum value which can be held in a `guint16`.
 
-    This is the same as standard C `UINT16_MAX`, which should be
-    preferred in new code.
+    This is the same as standard C `UINT16_MAX`, which is available since C99
+    and should be preferred in new code.
 
     Since: 2.4
 
@@ -392,13 +398,16 @@ See [`gsize`](#gsize) for more details of what this implies.
 `G_MININT32`
 :   The minimum value which can be held in a `gint32`.
 
+    This is the same as standard C `INT32_MIN`, which is available since C99
+    and should be preferred in new code.
+
     Since: 2.4
 
 `G_MAXINT32`
 :   The maximum value which can be held in a `gint32`.
 
-    This is the same as standard C `INT32_MAX`, which should be
-    preferred in new code.
+    This is the same as standard C `INT32_MAX`, which is available since C99
+    and should be preferred in new code.
 
     Since: 2.4
 
@@ -443,8 +452,8 @@ See [`gsize`](#gsize) for more details of what this implies.
 `G_MAXUINT32`
 :   The maximum value which can be held in a `guint32`.
 
-    This is the same as standard C `UINT32_MAX`, which should be
-    preferred in new code.
+    This is the same as standard C `UINT32_MAX`, which is available since C99
+    and should be preferred in new code.
 
     Since: 2.4
 
@@ -483,8 +492,14 @@ See [`gsize`](#gsize) for more details of what this implies.
 `G_MININT64`
 :   The minimum value which can be held in a `gint64`.
 
+    This is the same as standard C `INT64_MIN`, which is available since C99
+    and should be preferred in new code.
+
 `G_MAXINT64`
 :   The maximum value which can be held in a `gint64`.
+
+    This is the same as standard C `INT64_MAX`, which is available since C99
+    and should be preferred in new code.
 
 `G_GINT64_MODIFIER`
 :   The platform dependent length modifier for conversion specifiers
@@ -510,7 +525,7 @@ See [`gsize`](#gsize) for more details of what this implies.
     is not defined. Note that [`scanf()`](man:scanf(3)) may not support 64-bit
     integers, even if `G_GINT64_FORMAT` is defined. Due to its weak error
     handling, `scanf()` is not recommended for parsing anyway; consider using
-    [func@GLib.ascii_strtoull] instead.
+    [func@GLib.ascii_strtoll] instead.
 
     This is not necessarily the correct format for printing and scanning
     `int64_t` values, even though the in-memory representation is the same.
@@ -546,8 +561,8 @@ See [`gsize`](#gsize) for more details of what this implies.
 `G_MAXUINT64`
 :   The maximum value which can be held in a `guint64`.
 
-    This is the same as standard C `UINT64_MAX`, which should be
-    preferred in new code.
+    This is the same as standard C `UINT64_MAX`, which is available since C99
+    and should be preferred in new code.
 
 `G_GUINT64_FORMAT`
 :   This is the platform dependent conversion specifier for scanning
