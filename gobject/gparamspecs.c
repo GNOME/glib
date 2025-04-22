@@ -47,8 +47,8 @@ param_char_init (GParamSpec *pspec)
 {
   GParamSpecChar *cspec = G_PARAM_SPEC_CHAR (pspec);
   
-  cspec->minimum = 0x7f;
-  cspec->maximum = 0x80;
+  cspec->minimum = CHAR_MIN;
+  cspec->maximum = CHAR_MAX;
   cspec->default_value = 0;
 }
 
@@ -87,7 +87,7 @@ param_uchar_init (GParamSpec *pspec)
   GParamSpecUChar *uspec = G_PARAM_SPEC_UCHAR (pspec);
   
   uspec->minimum = 0;
-  uspec->maximum = 0xff;
+  uspec->maximum = UCHAR_MAX;
   uspec->default_value = 0;
 }
 
@@ -152,8 +152,8 @@ param_int_init (GParamSpec *pspec)
 {
   GParamSpecInt *ispec = G_PARAM_SPEC_INT (pspec);
   
-  ispec->minimum = (int) 0x7fffffff;
-  ispec->maximum = (int) 0x80000000;
+  ispec->minimum = INT_MIN;
+  ispec->maximum = INT_MAX;
   ispec->default_value = 0;
 }
 
@@ -203,7 +203,7 @@ param_uint_init (GParamSpec *pspec)
   GParamSpecUInt *uspec = G_PARAM_SPEC_UINT (pspec);
   
   uspec->minimum = 0;
-  uspec->maximum = 0xffffffff;
+  uspec->maximum = UINT_MAX;
   uspec->default_value = 0;
 }
 
@@ -252,13 +252,8 @@ param_long_init (GParamSpec *pspec)
 {
   GParamSpecLong *lspec = G_PARAM_SPEC_LONG (pspec);
   
-#if SIZEOF_LONG == 4
-  lspec->minimum = (glong) 0x7fffffff;
-  lspec->maximum = (glong) 0x80000000;
-#else /* SIZEOF_LONG != 4 (8) */
-  lspec->minimum = (glong) 0x7fffffffffffffff;
-  lspec->maximum = (glong) 0x8000000000000000;
-#endif
+  lspec->minimum = LONG_MIN;
+  lspec->maximum = LONG_MAX;
   lspec->default_value = 0;
 }
 
@@ -308,11 +303,7 @@ param_ulong_init (GParamSpec *pspec)
   GParamSpecULong *uspec = G_PARAM_SPEC_ULONG (pspec);
   
   uspec->minimum = 0;
-#if SIZEOF_LONG == 4
-  uspec->maximum = 0xffffffff;
-#else /* SIZEOF_LONG != 4 (8) */
-  uspec->maximum = 0xffffffffffffffff;
-#endif
+  uspec->maximum = ULONG_MAX;
   uspec->default_value = 0;
 }
 
