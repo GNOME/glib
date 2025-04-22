@@ -19,7 +19,7 @@ typedef struct _GTestClass GTestClass;
 struct _GTest
 {
   GObject object;
-  gint id;
+  unsigned int id;
   gint dummy;
 
   gint count;

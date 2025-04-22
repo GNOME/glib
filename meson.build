@@ -660,6 +660,13 @@ if have_cxx
   add_project_arguments(cxx.get_supported_arguments(warning_cxx_args), language: 'cpp')
 endif
 
+# FIXME: This is checked and implemented separately from warning_common_args for
+# now because it causes so many warnings. Adding it as a variable in various
+# directories allows us to gradually tighten up support for it. Eventually, the
+# warning can be enabled unconditionally in warning_c_args, and this variable
+# removed. See https://gitlab.gnome.org/GNOME/glib/-/issues/3405
+warning_sign_conversion_args = cc.get_supported_arguments(['-Wsign-conversion'])
+
 # FIXME: We cannot build some of the GResource tests with -z nodelete, which
 # means we cannot use that flag in add_project_link_arguments(), and must add
 # it to the relevant targets manually. We do the same with -Bsymbolic-functions

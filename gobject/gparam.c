@@ -54,7 +54,7 @@
 
 /* --- defines --- */
 #define PARAM_FLOATING_FLAG                     0x2
-#define	G_PARAM_USER_MASK			(~0U << G_PARAM_USER_SHIFT)
+#define	G_PARAM_USER_MASK			((GParamFlags) (~0U << G_PARAM_USER_SHIFT))
 #define PSPEC_APPLIES_TO_VALUE(pspec, value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
 
 /* --- prototypes --- */
@@ -956,7 +956,7 @@ param_spec_pool_hash (gconstpointer key_spec)
   guint h = (guint) key->owner_type;
 
   for (p = key->name; *p; p++)
-    h = (h << 5) - h + *p;
+    h = (guint) (h << 5) - h + (guint) *p;
 
   return h;
 }
@@ -1182,11 +1182,11 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
       /* strip type prefix */
       if (delim && delim[1] == ':')
         {
-          guint l = delim - param_name;
+          size_t l = (size_t) (delim - param_name);
           gchar stack_buffer[32], *buffer = l < 32 ? stack_buffer : g_new (gchar, l + 1);
           GType type;
 
-          strncpy (buffer, param_name, delim - param_name);
+          strncpy (buffer, param_name, l);
           buffer[l] = 0;
           type = g_type_from_name (buffer);
           if (l >= 32)
@@ -1311,7 +1311,7 @@ pool_depth_list (gpointer key,
   GSList **slists = data[0];
   GType owner_type = (GType) data[1];
   GHashTable *ht = data[2];
-  int *count = data[3];
+  unsigned int *count = data[3];
 
   if (g_type_is_a (owner_type, pspec->owner_type) &&
       should_list_pspec (pspec, owner_type, ht))
@@ -1350,7 +1350,7 @@ pool_depth_list_for_interface (gpointer key,
   GSList **slists = data[0];
   GType owner_type = (GType) data[1];
   GHashTable *ht = data[2];
-  int *count = data[3];
+  unsigned int *count = data[3];
 
   if (pspec->owner_type == owner_type &&
       should_list_pspec (pspec, owner_type, ht))
@@ -1382,7 +1382,7 @@ g_param_spec_pool_list (GParamSpecPool *pool,
   GSList **slists, *node;
   gpointer data[4];
   guint d, i;
-  int n_pspecs = 0;
+  unsigned int n_pspecs = 0;
 
   g_return_val_if_fail (pool != NULL, NULL);
   g_return_val_if_fail (owner_type > 0, NULL);

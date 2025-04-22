@@ -3,7 +3,7 @@
 static void
 test_registration_serial (void)
 {
-  gint serial1, serial2, serial3;
+  guint serial1, serial2, serial3;
 
   serial1 = g_type_get_type_registration_serial ();
   g_pointer_type_register_static ("my+pointer");
@@ -118,10 +118,10 @@ test_interface_prerequisite (void)
 
   g_free (prereqs);
 
-  g_assert_cmpint (g_type_interface_instantiatable_prerequisite (baa_get_type ()), ==, G_TYPE_INVALID);
-  g_assert_cmpint (g_type_interface_instantiatable_prerequisite (boo_get_type ()), ==, G_TYPE_INVALID);
+  g_assert_cmpuint (g_type_interface_instantiatable_prerequisite (baa_get_type ()), ==, G_TYPE_INVALID);
+  g_assert_cmpuint (g_type_interface_instantiatable_prerequisite (boo_get_type ()), ==, G_TYPE_INVALID);
 
-  g_assert_cmpint (g_type_interface_instantiatable_prerequisite (bozo_get_type ()), ==, G_TYPE_INITIALLY_UNOWNED);
+  g_assert_cmpuint (g_type_interface_instantiatable_prerequisite (bozo_get_type ()), ==, G_TYPE_INITIALLY_UNOWNED);
 }
 
 typedef struct {

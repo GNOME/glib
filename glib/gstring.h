@@ -58,6 +58,8 @@ GString*     g_string_new_len           (const gchar     *init,
                                          gssize           len);
 GLIB_AVAILABLE_IN_ALL
 GString*     g_string_sized_new         (gsize            dfl_size);
+GLIB_AVAILABLE_IN_2_86
+GString     *g_string_copy              (GString         *string);
 GLIB_AVAILABLE_IN_ALL
 gchar*      (g_string_free)             (GString         *string,
                                          gboolean         free_segment);

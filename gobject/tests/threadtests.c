@@ -220,8 +220,8 @@ test_threaded_object_init (void)
 }
 
 typedef struct {
-    MyTester0 *strong;
-    guint unref_delay;
+  MyTester0 *strong;
+  gulong unref_delay;
 } UnrefInThreadData;
 
 static gpointer
@@ -269,7 +269,7 @@ test_threaded_weak_ref (void)
       gpointer weak;
 #endif
       MyTester0 *strengthened;
-      guint get_delay;
+      gulong get_delay;
       GThread *thread;
       GError *error = NULL;
 
@@ -290,8 +290,8 @@ test_threaded_weak_ref (void)
        * timing. Ideally, we want each side to win half the races; on
        * smcv's laptop, these timings are about right.
        */
-      data.unref_delay = g_random_int_range (SLEEP_MIN_USEC / 2, SLEEP_MAX_USEC / 2);
-      get_delay = g_random_int_range (SLEEP_MIN_USEC, SLEEP_MAX_USEC);
+      data.unref_delay = (gulong) g_random_int_range (SLEEP_MIN_USEC / 2, SLEEP_MAX_USEC / 2);
+      get_delay = (gulong) g_random_int_range (SLEEP_MIN_USEC, SLEEP_MAX_USEC);
 
       /* One half of the race is to unref the shared object */
       thread = g_thread_create (unref_in_thread, &data, TRUE, &error);

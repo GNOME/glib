@@ -948,7 +948,7 @@ g_object_base_class_init (GObjectClass *class)
   GObjectClass *pclass = g_type_class_peek_parent (class);
 
   /* Don't inherit HAS_DERIVED_CLASS flag from parent class */
-  class->flags &= ~CLASS_HAS_DERIVED_CLASS_FLAG;
+  class->flags &= (unsigned) ~CLASS_HAS_DERIVED_CLASS_FLAG;
 
   if (pclass)
     pclass->flags |= CLASS_HAS_DERIVED_CLASS_FLAG;
@@ -1657,21 +1657,21 @@ g_object_interface_list_properties (gpointer      g_iface,
 static inline guint
 object_get_optional_flags (GObject *object)
 {
-  return g_atomic_int_get (object_get_optional_flags_p (object));
+  return (guint) g_atomic_int_get ((gint *) object_get_optional_flags_p (object));
 }
 
 static inline void
 object_set_optional_flags (GObject *object,
                           guint flags)
 {
-  g_atomic_int_or (object_get_optional_flags_p (object), flags);
+  g_atomic_int_or ((gint *) object_get_optional_flags_p (object), (int) flags);
 }
 
 static inline void
 object_unset_optional_flags (GObject *object,
                                guint flags)
 {
-  g_atomic_int_and (object_get_optional_flags_p (object), ~flags);
+  g_atomic_int_and ((gint *) object_get_optional_flags_p (object), (int) ~flags);
 }
 
 gboolean
@@ -3891,7 +3891,7 @@ g_object_is_floating (gpointer _object)
 {
   GObject *object = _object;
   g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
-  return floating_flag_handler (object, 0);
+  return (floating_flag_handler (object, 0) != 0);
 }
 
 /**
@@ -3922,7 +3922,7 @@ gpointer
   g_return_val_if_fail (G_IS_OBJECT (object), object);
   g_return_val_if_fail (g_atomic_int_get (&object->ref_count) >= 1, object);
   g_object_ref (object);
-  was_floating = floating_flag_handler (object, -1);
+  was_floating = (floating_flag_handler (object, -1) != 0);
   if (was_floating)
     g_object_unref (object);
   return object;

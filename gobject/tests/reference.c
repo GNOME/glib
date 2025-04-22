@@ -48,10 +48,10 @@ test_type_query (void)
   GTypeQuery query;
 
   g_type_query (G_TYPE_ENUM, &query);
-  g_assert_cmpint (query.type, ==, G_TYPE_ENUM);
+  g_assert_cmpuint (query.type, ==, G_TYPE_ENUM);
   g_assert_cmpstr (query.type_name, ==, "GEnum");
-  g_assert_cmpint (query.class_size, ==, sizeof (GEnumClass));
-  g_assert_cmpint (query.instance_size, ==, 0);
+  g_assert_cmpuint (query.class_size, ==, sizeof (GEnumClass));
+  g_assert_cmpuint (query.instance_size, ==, 0);
 }
 
 typedef struct _MyObject MyObject;
@@ -790,7 +790,7 @@ test_weak_ref_many (void)
   /* We register them in a somewhat juggled order. That's because below, we will clear them
    * again, and we don't want to always clear them in the same order as they were registered.
    * For that, we calculate the actual index by jumping around by adding a prime number. */
-  j = (g_test_rand_int () % (N + 1));
+  j = ((guint) g_test_rand_int () % (N + 1));
   for (i = 0; i < N; i++)
     {
       j = (j + PRIME) % N;
@@ -805,7 +805,7 @@ test_weak_ref_many (void)
       g_assert_null (g_weak_ref_get (&weak_ref1));
     }
 
-  n = g_test_rand_int () % (N + 1u);
+  n = (guint) g_test_rand_int () % (N + 1u);
   for (i = 0; i < N; i++)
     g_weak_ref_set (&weak_refs[i], i < n ? NULL : obj);
 
@@ -972,9 +972,9 @@ test_weak_ref_concurrent (gconstpointer testdata)
   for (i = 0; i < CONCURRENT_N_THREADS; i++)
     {
       const guint32 rnd_seed[] = {
-        g_test_rand_int (),
-        g_test_rand_int (),
-        g_test_rand_int (),
+        (guint32) g_test_rand_int (),
+        (guint32) g_test_rand_int (),
+        (guint32) g_test_rand_int (),
       };
 
       thread_data[i] = (ConcurrentThreadData){

@@ -195,13 +195,13 @@ test_param_spec_ulong (void)
 
   g_param_value_set_default (pspec, &value);
   g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_ULONG);
-  g_assert_cmpint (g_value_get_ulong (&value), ==, 30);
+  g_assert_cmpuint (g_value_get_ulong (&value), ==, 30);
   g_assert_true (g_param_value_defaults (pspec, &value));
 
   g_value_set_ulong (&value, 0);
   g_assert_false (g_param_value_is_valid (pspec, &value));
   g_assert_true (g_param_value_validate (pspec, &value));
-  g_assert_cmpint (g_value_get_ulong (&value), ==, 20);
+  g_assert_cmpuint (g_value_get_ulong (&value), ==, 20);
 
   g_param_spec_unref (pspec);
 }
@@ -239,13 +239,13 @@ test_param_spec_uint64 (void)
 
   g_param_value_set_default (pspec, &value);
   g_assert_true (G_VALUE_TYPE (&value) == G_TYPE_UINT64);
-  g_assert_cmpint (g_value_get_uint64 (&value), ==, 30);
+  g_assert_cmpuint (g_value_get_uint64 (&value), ==, 30);
   g_assert_true (g_param_value_defaults (pspec, &value));
 
   g_value_set_uint64 (&value, 0);
   g_assert_false (g_param_value_is_valid (pspec, &value));
   g_assert_true (g_param_value_validate (pspec, &value));
-  g_assert_cmpint (g_value_get_uint64 (&value), ==, 20);
+  g_assert_cmpuint (g_value_get_uint64 (&value), ==, 20);
 
   g_param_spec_unref (pspec);
 }
@@ -522,12 +522,12 @@ test_param_spec_gtype (void)
   g_value_set_gtype (&value, G_TYPE_INT);
   g_assert_false (g_param_value_is_valid (pspec, &value));
   g_assert_true (g_param_value_validate (pspec, &value));
-  g_assert_cmpint (g_value_get_gtype (&value), ==, G_TYPE_PARAM);
+  g_assert_cmpuint (g_value_get_gtype (&value), ==, G_TYPE_PARAM);
 
   g_value_set_gtype (&value, G_TYPE_PARAM_INT);
   g_assert_true (g_param_value_is_valid (pspec, &value));
   g_assert_false (g_param_value_validate (pspec, &value));
-  g_assert_cmpint (g_value_get_gtype (&value), ==, G_TYPE_PARAM_INT);
+  g_assert_cmpuint (g_value_get_gtype (&value), ==, G_TYPE_PARAM_INT);
 
   g_param_spec_unref (pspec);
 }
@@ -823,7 +823,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_INT, type));        \
   g_value_init (&src, G_TYPE_INT);                                      \
   g_value_init (&dest, type);                                           \
-  g_value_set_int (&src, value);                                        \
+  g_value_set_int (&src, (int) value);                                  \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -834,7 +834,7 @@ test_value_transform (void)
    * https://bugzilla.gnome.org/show_bug.cgi?id=659870
    * for why it is broken.
    */
-  CHECK_INT_CONVERSION(G_TYPE_CHAR, g_assert_cmpuint, char, 124)
+  CHECK_INT_CONVERSION(G_TYPE_CHAR, g_assert_cmpint, char, 124)
 
   CHECK_INT_CONVERSION(G_TYPE_CHAR, g_assert_cmpint, schar, -124)
   CHECK_INT_CONVERSION(G_TYPE_CHAR, g_assert_cmpint, schar, 124)
@@ -855,7 +855,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_UINT, type));       \
   g_value_init (&src, G_TYPE_UINT);                                     \
   g_value_init (&dest, type);                                           \
-  g_value_set_uint (&src, value);                                       \
+  g_value_set_uint (&src, (unsigned int) value);                        \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -880,7 +880,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_LONG, type));       \
   g_value_init (&src, G_TYPE_LONG);                                     \
   g_value_init (&dest, type);                                           \
-  g_value_set_long (&src, value);                                       \
+  g_value_set_long (&src, (long) value);                                \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -905,7 +905,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_ULONG, type));      \
   g_value_init (&src, G_TYPE_ULONG);                                    \
   g_value_init (&dest, type);                                           \
-  g_value_set_ulong (&src, value);                                      \
+  g_value_set_ulong (&src, (gulong) value);                             \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -930,7 +930,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_INT64, type));      \
   g_value_init (&src, G_TYPE_INT64);                                    \
   g_value_init (&dest, type);                                           \
-  g_value_set_int64 (&src, value);                                      \
+  g_value_set_int64 (&src, (gint64) value);                             \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -955,7 +955,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_UINT64, type));     \
   g_value_init (&src, G_TYPE_UINT64);                                   \
   g_value_init (&dest, type);                                           \
-  g_value_set_uint64 (&src, value);                                     \
+  g_value_set_uint64 (&src, (guint64) value);                           \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -980,7 +980,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_FLOAT, type));     \
   g_value_init (&src, G_TYPE_FLOAT);                                   \
   g_value_init (&dest, type);                                          \
-  g_value_set_float (&src, value);                                     \
+  g_value_set_float (&src, (float) value);                             \
   g_assert_true (g_value_transform (&src, &dest));                     \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                   \
   g_value_unset (&src);                                                \
@@ -1005,7 +1005,7 @@ test_value_transform (void)
   g_assert_true (g_value_type_transformable (G_TYPE_DOUBLE, type));     \
   g_value_init (&src, G_TYPE_DOUBLE);                                   \
   g_value_init (&dest, type);                                           \
-  g_value_set_double (&src, value);                                     \
+  g_value_set_double (&src, (double) value);                            \
   g_assert_true (g_value_transform (&src, &dest));                      \
   cmpfunc (g_value_get_##getter (&dest), ==, value);                    \
   g_value_unset (&src);                                                 \
@@ -1376,10 +1376,10 @@ static void test_implementation_class_init (TestImplementationClass *class)
 }
 
 typedef struct {
-  gint change_this_flag;
-  gint change_this_type;
-  gint use_this_flag;
-  gint use_this_type;
+  guint change_this_flag;
+  guint change_this_type;
+  guint use_this_flag;
+  guint use_this_type;
 } TestParamImplementData;
 
 static void
@@ -1433,7 +1433,7 @@ test_param_implement (void)
                   continue;
               }
 
-            test_path = g_strdup_printf ("/param/implement/subprocess/%d-%d-%d-%d",
+            test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%u",
                                          change_this_flag, change_this_type,
                                          use_this_flag, use_this_type);
             g_test_trap_subprocess (test_path, G_TIME_SPAN_SECOND,
@@ -1545,8 +1545,8 @@ param_int_init (GParamSpec *pspec)
 {
   GParamSpecInt *ispec = (GParamSpecInt *)pspec;
 
-  ispec->minimum = 0x7fffffff;
-  ispec->maximum = 0x80000000;
+  ispec->minimum = (int) 0x7fffffff;
+  ispec->maximum = (int) 0x80000000;
   ispec->default_value = 0;
 }
 
@@ -1686,7 +1686,7 @@ main (int argc, char *argv[])
       for (data.use_this_flag = 0; data.use_this_flag < 16; data.use_this_flag++)
         for (data.use_this_type = 0; data.use_this_type < 4; data.use_this_type++)
           {
-            test_path = g_strdup_printf ("/param/implement/subprocess/%d-%d-%d-%d",
+            test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%u",
                                          data.change_this_flag, data.change_this_type,
                                          data.use_this_flag, data.use_this_type);
             test_data = g_memdup2 (&data, sizeof (TestParamImplementData));

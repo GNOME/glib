@@ -62,7 +62,7 @@
  *    as described above.
  */
 
-#define	GROUP_N_VALUES	(8)	/* power of 2 !! */
+#define	GROUP_N_VALUES	(8u)	/* power of 2 !! */
 
 
 /* --- functions --- */
@@ -99,6 +99,7 @@ value_array_grow (GValueArray *value_array,
     {
       guint i = value_array->n_prealloced;
 
+      /* round up to the next multiple of GROUP_N_VALUES */
       value_array->n_prealloced = (value_array->n_values + GROUP_N_VALUES - 1) & ~(GROUP_N_VALUES - 1);
       value_array->values = g_renew (GValue, value_array->values, value_array->n_prealloced);
       if (!zero_init)

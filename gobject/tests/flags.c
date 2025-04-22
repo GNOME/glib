@@ -75,8 +75,8 @@ my_test_flags_get_type (void)
   if (G_UNLIKELY(flags_type == 0))
     {
       static const GFlagsValue values[] = {
-	{ LOWEST_FLAG,  "LOWEST_FLAG",  "lowest" },
-	{ HIGHEST_FLAG, "HIGHEST_FLAG", "highest" },
+	{ (unsigned) LOWEST_FLAG,  "LOWEST_FLAG",  "lowest" },
+	{ (unsigned) HIGHEST_FLAG, "HIGHEST_FLAG", "highest" },
 	{ 0, NULL, NULL }
       };
 
@@ -146,7 +146,7 @@ my_test_set_property (GObject      *object,
 static void
 check_flags_validation (void)
 {
-  guint test_flags[] = {
+  MyFlagsEnum test_flags[] = {
     NO_FLAG,
     LOWEST_FLAG,
     HIGHEST_FLAG,
@@ -166,7 +166,7 @@ check_flags_validation (void)
 
       /* This check will fail in case of gint -> glong conversion
        * in value_flags_enum_collect_value() */
-      g_assert_cmpint (flag_read, ==, flag_set);
+      g_assert_cmpuint (flag_read, ==, flag_set);
 
       g_object_unref (test);
     }

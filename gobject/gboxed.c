@@ -96,12 +96,6 @@ _g_boxed_type_init (void)
   g_assert (type == G_TYPE_BOXED);
 }
 
-static GString *
-gstring_copy (GString *src_gstring)
-{
-  return g_string_new_len (src_gstring->str, src_gstring->len);
-}
-
 static void
 gstring_free (GString *gstring)
 {
@@ -113,7 +107,7 @@ G_DEFINE_BOXED_TYPE (GValue, g_value, value_copy, value_free)
 G_DEFINE_BOXED_TYPE (GValueArray, g_value_array, g_value_array_copy, g_value_array_free)
 G_DEFINE_BOXED_TYPE (GDate, g_date, g_date_copy, g_date_free)
 /* the naming is a bit odd, but GString is obviously not G_TYPE_STRING */
-G_DEFINE_BOXED_TYPE (GString, g_gstring, gstring_copy, gstring_free)
+G_DEFINE_BOXED_TYPE (GString, g_gstring, g_string_copy, gstring_free)
 G_DEFINE_BOXED_TYPE (GHashTable, g_hash_table, g_hash_table_ref, g_hash_table_unref)
 G_DEFINE_BOXED_TYPE (GArray, g_array, g_array_ref, g_array_unref)
 G_DEFINE_BOXED_TYPE (GPtrArray, g_ptr_array,g_ptr_array_ref, g_ptr_array_unref)
