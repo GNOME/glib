@@ -454,11 +454,12 @@ push_node (ParseContext *ctx, GIIrNode *node)
   ctx->node_stack = g_slist_prepend (ctx->node_stack, node);
 }
 
-static GIIrNodeType * parse_type_internal (GIIrModule *module,
-                                           const char *str,
-                                           char **next,
-                                           gboolean in_glib,
-                                           gboolean in_gobject);
+static GIIrNodeType * parse_type_internal (GIIrModule  *module,
+                                           const char  *str,
+                                           char       **next,
+                                           gboolean     in_glib,
+                                           gboolean     in_gobject,
+                                           GError     **error);
 
 typedef struct {
   const char *str;
@@ -575,11 +576,12 @@ parse_basic (const char *str)
 }
 
 static GIIrNodeType *
-parse_type_internal (GIIrModule   *module,
-                     const char   *str,
-                     char        **next,
-                     gboolean      in_glib,
-                     gboolean      in_gobject)
+parse_type_internal (GIIrModule  *module,
+                     const char  *str,
+                     char       **next,
+                     gboolean     in_glib,
+                     gboolean     in_gobject,
+                     GError     **error)
 {
   const BasicTypeInfo *basic;
   GIIrNodeType *type;
@@ -685,7 +687,14 @@ parse_type_internal (GIIrModule   *module,
           (str)++;
 
           end = strchr (str, '>');
-          tmp = g_strndup (str, end - str);
+          if (end == NULL)
+            {
+              g_set_error (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "Failed to parse type ‘%s’", type->unparsed);
+              goto error;
+            }
+          tmp = g_strndup (str, (size_t) (end - str));
           type->errors = g_strsplit (tmp, ",", 0);
           g_free (tmp);
 
@@ -707,7 +716,7 @@ parse_type_internal (GIIrModule   *module,
              *str == ':')
         (str)++;
 
-      type->giinterface = g_strndup (start, str - start);
+      type->giinterface = g_strndup (start, (size_t) (str - start));
     }
 
   if (next)
@@ -716,7 +725,8 @@ parse_type_internal (GIIrModule   *module,
   g_free (temporary_type);
   return type;
 
-/* error: */
+error:
+  g_assert (error == NULL || *error != NULL);
   gi_ir_node_free ((GIIrNode *)type);
   g_free (temporary_type);
   return NULL;
@@ -791,7 +801,9 @@ is_pointer_or_disguised_structure (ParseContext *ctx,
 }
 
 static GIIrNodeType *
-parse_type (ParseContext *ctx, const char *type)
+parse_type (ParseContext  *ctx,
+            const char    *type,
+            GError       **error)
 {
   GIIrNodeType *node;
   const BasicTypeInfo *basic;
@@ -805,11 +817,11 @@ parse_type (ParseContext *ctx, const char *type)
   if (basic == NULL)
     type = resolve_aliases (ctx, type);
 
-  node = parse_type_internal (ctx->current_module, type, NULL, in_glib, in_gobject);
+  node = parse_type_internal (ctx->current_module, type, NULL, in_glib, in_gobject, error);
   if (node)
     g_debug ("Parsed type: %s => %d", type, node->tag);
   else
-    g_critical ("Failed to parse type: '%s'", type);
+    g_debug ("Failed to parse type: '%s'", type);
 
   return node;
 }
@@ -1517,7 +1529,8 @@ start_field (GMarkupParseContext  *context,
     }
   else
     {
-      field->type = parse_type (ctx, "gpointer");
+      field->type = parse_type (ctx, "gpointer", NULL);
+      g_assert (field->type != NULL);  /* parsing `gpointer` should never fail */
     }
 
   ((GIIrNode *)field)->name = g_strdup (name);
@@ -2211,22 +2224,20 @@ start_type (GMarkupParseContext  *context,
           size = find_attribute ("fixed-size", attribute_names, attribute_values);
 
           typenode->has_length = len != NULL;
-          if (!typenode->has_length)
-            typenode->length = -1;
-          else if (g_ascii_string_to_unsigned (len, 10, 0, G_MAXUINT, &parsed_uint, error))
+          if (typenode->has_length &&
+              g_ascii_string_to_unsigned (len, 10, 0, G_MAXUINT, &parsed_uint, error))
             typenode->length = parsed_uint;
-          else
+          else if (typenode->has_length)
             {
               gi_ir_node_free ((GIIrNode *) typenode);
               return FALSE;
             }
 
           typenode->has_size = size != NULL;
-          if (!typenode->has_size)
-            typenode->size = -1;
-          else if (g_ascii_string_to_unsigned (size, 10, 0, G_MAXSIZE, &parsed_uint, error))
+          if (typenode->has_size &&
+              g_ascii_string_to_unsigned (size, 10, 0, G_MAXSIZE, &parsed_uint, error))
             typenode->size = parsed_uint;
-          else
+          else if (typenode->has_size)
             {
               gi_ir_node_free ((GIIrNode *) typenode);
               return FALSE;
@@ -2243,9 +2254,7 @@ start_type (GMarkupParseContext  *context,
         } else {
           typenode->zero_terminated = FALSE;
           typenode->has_length = FALSE;
-          typenode->length = -1;
           typenode->has_size = FALSE;
-          typenode->size = -1;
         }
     }
   else
@@ -2276,7 +2285,9 @@ start_type (GMarkupParseContext  *context,
           pointer_depth > 0)
         pointer_depth--;
 
-      typenode = parse_type (ctx, name);
+      typenode = parse_type (ctx, name, error);
+      if (typenode == NULL)
+        return FALSE;
 
       /* A "pointer" structure is one where the c:type is a typedef that
        * to a pointer to a structure; we used to call them "disguised"
@@ -2320,14 +2331,17 @@ end_type_top (ParseContext *ctx)
       typenode->tag == GI_TYPE_TAG_GSLIST)
     {
       if (typenode->parameter_type1 == NULL)
-        typenode->parameter_type1 = parse_type (ctx, "gpointer");
+        typenode->parameter_type1 = parse_type (ctx, "gpointer", NULL);
+      g_assert (typenode->parameter_type1 != NULL);  /* parsing `gpointer` should never fail */
     }
   else if (typenode->tag == GI_TYPE_TAG_GHASH)
     {
       if (typenode->parameter_type1 == NULL)
         {
-          typenode->parameter_type1 = parse_type (ctx, "gpointer");
-          typenode->parameter_type2 = parse_type (ctx, "gpointer");
+          typenode->parameter_type1 = parse_type (ctx, "gpointer", NULL);
+          g_assert (typenode->parameter_type1 != NULL);  /* parsing `gpointer` should never fail */
+          typenode->parameter_type2 = parse_type (ctx, "gpointer", NULL);
+          g_assert (typenode->parameter_type2 != NULL);  /* same */
         }
     }
 
@@ -2977,6 +2991,7 @@ start_discriminator (GMarkupParseContext  *context,
   const char *type;
   const char *offset;
   guint64 parsed_offset;
+  GIIrNodeType *discriminator_type = NULL;
 
   if (!(strcmp (element_name, "discriminator") == 0 &&
         ctx->state == STATE_UNION))
@@ -2995,8 +3010,11 @@ start_discriminator (GMarkupParseContext  *context,
       return FALSE;
     }
 
-  ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_type
-    = parse_type (ctx, type);
+  discriminator_type = parse_type (ctx, type, error);
+  if (discriminator_type == NULL)
+    return FALSE;
+
+  ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_type = g_steal_pointer (&discriminator_type);
 
   if (g_ascii_string_to_unsigned (offset, 10, 0, G_MAXSIZE, &parsed_offset, error))
     ((GIIrNodeUnion *)CURRENT_NODE (ctx))->discriminator_offset = parsed_offset;
@@ -3062,7 +3080,14 @@ parse_include (GMarkupParseContext *context,
       return FALSE;
     }
 
-  module = gi_ir_parser_parse_string (ctx->parser, name, girpath, buffer, length, &error);
+  if (length > G_MAXSSIZE)
+    {
+      g_printerr ("Input file ‘%s’ too big\n", girpath);
+      g_free (girpath);
+      return FALSE;
+    }
+
+  module = gi_ir_parser_parse_string (ctx->parser, name, girpath, buffer, (gssize) length, &error);
   g_free (buffer);
   if (error != NULL)
     {
@@ -3904,7 +3929,7 @@ cleanup (GMarkupParseContext *context,
  * @namespace: the namespace of the string
  * @filename: (nullable) (type filename): Path to parsed file, or `NULL`
  * @buffer: (array length=length): the data containing the XML
- * @length: length of the data, in bytes
+ * @length: length of the data, in bytes, or `-1` if nul terminated
  * @error: return location for a [type@GLib.Error], or `NULL`
  *
  * Parse a string that holds a complete GIR XML file, and return a list of a
@@ -4043,7 +4068,19 @@ gi_ir_parser_parse_file (GIIrParser   *parser,
       return NULL;
     }
 
-  module = gi_ir_parser_parse_string (parser, namespace, filename, buffer, length, error);
+  if (length > G_MAXSSIZE)
+    {
+      g_free (namespace);
+      g_free (buffer);
+
+      g_set_error (error,
+                   G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "Input file too big");
+      return NULL;
+    }
+
+  module = gi_ir_parser_parse_string (parser, namespace, filename, buffer, (gssize) length, error);
 
   g_free (namespace);
 

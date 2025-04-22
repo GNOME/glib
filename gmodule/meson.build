@@ -96,7 +96,7 @@ libgmodule = library('gmodule-2.0',
   install : true,
   include_directories : [configinc, gmoduleinc],
   dependencies : [libdl_dep, libglib_dep],
-  c_args : ['-DG_LOG_DOMAIN="GModule"', '-DGMODULE_COMPILATION'],
+  c_args : ['-DG_LOG_DOMAIN="GModule"', '-DGMODULE_COMPILATION', warning_sign_conversion_args],
   gnu_symbol_visibility : 'hidden',
   link_args : [glib_link_flags],
 )

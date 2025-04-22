@@ -89,6 +89,7 @@ gir_c_args = [
   '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
   '-DGOBJECT_INTROSPECTION_DATADIR="@0@"'.format(glib_datadir),
   '-DGOBJECT_INTROSPECTION_RELATIVE_LIBDIR="@0@"'.format(get_option('libdir')),
+  warning_sign_conversion_args,
 ]
 
 custom_c_args = []

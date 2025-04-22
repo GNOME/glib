@@ -250,7 +250,7 @@ node_cmp_offset_func (const void *a,
 {
   const GIIrNode *na = a;
   const GIIrNode *nb = b;
-  return na->offset - nb->offset;
+  return (int) na->offset - (int) nb->offset;
 }
 
 static void

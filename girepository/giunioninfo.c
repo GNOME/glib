@@ -169,7 +169,7 @@ gi_union_info_get_discriminator_offset (GIUnionInfo *info,
   UnionBlob *blob = (UnionBlob *)&rinfo->typelib->data[rinfo->offset];
   size_t discriminator_offset;
 
-  discriminator_offset = (blob->discriminated) ? blob->discriminator_offset : 0;
+  discriminator_offset = (blob->discriminated) ? (size_t) blob->discriminator_offset : 0;
 
   if (out_offset != NULL)
     *out_offset = discriminator_offset;

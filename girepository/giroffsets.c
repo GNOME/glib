@@ -356,7 +356,7 @@ get_field_size_alignment (GIIrTypelibBuild *build,
   return success;
 }
 
-#define GI_ALIGN(n, align) (((n) + (align) - 1) & ~((align) - 1))
+#define GI_ALIGN(n, align) (((n) + (align) - 1u) & ~((align) - 1u))
 
 static gboolean
 compute_struct_field_offsets (GIIrTypelibBuild *build,

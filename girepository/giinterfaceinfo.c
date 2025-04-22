@@ -149,7 +149,7 @@ gi_interface_info_get_property (GIInterfaceInfo *info,
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
-    + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
+    + (blob->n_prerequisites + (blob->n_prerequisites % 2u)) * 2u
     + n * header->property_blob_size;
 
   return (GIPropertyInfo *) gi_base_info_new (GI_INFO_TYPE_PROPERTY, (GIBaseInfo*)info,
@@ -207,7 +207,7 @@ gi_interface_info_get_method (GIInterfaceInfo *info,
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
-    + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
+    + (blob->n_prerequisites + (blob->n_prerequisites % 2u)) * 2u
     + blob->n_properties * header->property_blob_size
     + n * header->function_blob_size;
 
@@ -239,7 +239,7 @@ gi_interface_info_find_method (GIInterfaceInfo *info,
   InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
-    + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
+    + (blob->n_prerequisites + (blob->n_prerequisites % 2u)) * 2u
     + blob->n_properties * header->property_blob_size;
 
   return gi_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
@@ -296,7 +296,7 @@ gi_interface_info_get_signal (GIInterfaceInfo *info,
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
-    + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
+    + (blob->n_prerequisites + (blob->n_prerequisites % 2u)) * 2u
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + n * header->signal_blob_size;
@@ -392,7 +392,7 @@ gi_interface_info_get_vfunc (GIInterfaceInfo *info,
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
-    + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
+    + (blob->n_prerequisites + (blob->n_prerequisites % 2u)) * 2u
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size
@@ -433,7 +433,7 @@ gi_interface_info_find_vfunc (GIInterfaceInfo *info,
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
-    + (blob->n_prerequisites + blob->n_prerequisites % 2) * 2
+    + (blob->n_prerequisites + blob->n_prerequisites % 2u) * 2u
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size;
@@ -492,7 +492,7 @@ gi_interface_info_get_constant (GIInterfaceInfo *info,
   blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
-    + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
+    + (blob->n_prerequisites + (blob->n_prerequisites % 2u)) * 2u
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size

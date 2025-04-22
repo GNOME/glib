@@ -70,7 +70,7 @@ gi_object_info_get_field_offset (GIObjectInfo *info,
   FieldBlob *field_blob;
 
   offset = rinfo->offset + header->object_blob_size
-    + (blob->n_interfaces + blob->n_interfaces % 2) * 2;
+    + (blob->n_interfaces + blob->n_interfaces % 2u) * 2u;
 
   for (size_t i = 0; i < n; i++)
     {
@@ -383,7 +383,7 @@ gi_object_info_get_property (GIObjectInfo *info,
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->object_blob_size
-    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + (blob->n_interfaces + blob->n_interfaces % 2u) * 2u
     + blob->n_fields * header->field_blob_size
     + blob->n_field_callbacks * header->callback_blob_size
     + n * header->property_blob_size;
@@ -444,7 +444,7 @@ gi_object_info_get_method (GIObjectInfo *info,
 
 
   offset = rinfo->offset + header->object_blob_size
-    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + (blob->n_interfaces + blob->n_interfaces % 2u) * 2u
     + blob->n_fields * header->field_blob_size
     + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
@@ -484,7 +484,7 @@ gi_object_info_find_method (GIObjectInfo *info,
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->object_blob_size
-    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + (blob->n_interfaces + blob->n_interfaces % 2u) * 2u
     + blob->n_fields * header->field_blob_size +
     + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size;
@@ -528,8 +528,7 @@ gi_object_info_find_method_using_interfaces (GIObjectInfo  *info,
 
   if (result == NULL)
     {
-      int n_interfaces;
-      int i;
+      unsigned int n_interfaces, i;
 
       n_interfaces = gi_object_info_get_n_interfaces (info);
       for (i = 0; i < n_interfaces; ++i)
@@ -588,7 +587,7 @@ object_get_signal_offset (GIObjectInfo *info, unsigned int n)
   ObjectBlob *blob = (ObjectBlob *) &rinfo->typelib->data[rinfo->offset];
 
   return rinfo->offset + header->object_blob_size
-    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + (blob->n_interfaces + blob->n_interfaces % 2u) * 2u
     + blob->n_fields * header->field_blob_size
     + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
@@ -723,7 +722,7 @@ gi_object_info_get_vfunc (GIObjectInfo *info,
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->object_blob_size
-    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + (blob->n_interfaces + blob->n_interfaces % 2u) * 2u
     + blob->n_fields * header->field_blob_size
     + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
@@ -771,7 +770,7 @@ gi_object_info_find_vfunc (GIObjectInfo *info,
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->object_blob_size
-    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + (blob->n_interfaces + blob->n_interfaces % 2u) * 2u
     + blob->n_fields * header->field_blob_size
     + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
@@ -822,8 +821,7 @@ gi_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 
   if (result == NULL)
     {
-      int n_interfaces;
-      int i;
+      unsigned int n_interfaces, i;
 
       n_interfaces = gi_object_info_get_n_interfaces (info);
       for (i = 0; i < n_interfaces; ++i)
@@ -902,7 +900,7 @@ gi_object_info_get_constant (GIObjectInfo *info,
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->object_blob_size
-    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + (blob->n_interfaces + blob->n_interfaces % 2u) * 2u
     + blob->n_fields * header->field_blob_size
     + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
