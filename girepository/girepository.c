@@ -198,13 +198,13 @@ gi_repository_get_library_path_macos (void)
           if (cmd->cmd == LC_SEGMENT)
             {
               struct segment_command *seg = (struct segment_command *) cmd;
-              if (((intptr_t) ptr >= (seg->vmaddr + offset)) && ((intptr_t) ptr < (seg->vmaddr + offset + seg->vmsize)))
+              if (((intptr_t) ptr >= ((intptr_t) seg->vmaddr + offset)) && ((intptr_t) ptr < ((intptr_t) seg->vmaddr + offset + (intptr_t) seg->vmsize)))
                 return _dyld_get_image_name (i);
            }
           if (cmd->cmd == LC_SEGMENT_64)
             {
               struct segment_command_64 *seg = (struct segment_command_64 *) cmd;
-              if (((uintptr_t ) ptr >= (seg->vmaddr + offset)) && ((uintptr_t ) ptr < (seg->vmaddr + offset + seg->vmsize)))
+              if (((intptr_t) ptr >= ((intptr_t) seg->vmaddr + offset)) && ((intptr_t) ptr < ((intptr_t) seg->vmaddr + offset + (intptr_t) seg->vmsize)))
                 return _dyld_get_image_name (i);
             }
           /* Jump to the next command */
