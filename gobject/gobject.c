@@ -3738,6 +3738,38 @@ _weak_ref_stack_free (WeakRefStack *wstack)
   g_free (wstack);
 }
 
+G_ALWAYS_INLINE static inline gboolean
+_weak_ref_stack_needs_shrink (WeakRefStack *wstack)
+{
+  return wstack->n_weak_refs <= wstack->alloc_size / 4u;
+}
+
+G_ALWAYS_INLINE static inline void
+_weak_ref_stack_maybe_shrink (WeakRefStack **p_wstack, gpointer *data)
+{
+  WeakRefStack *wstack = *p_wstack;
+
+#ifdef G_ENABLE_DEBUG
+  g_assert (wstack->n_weak_refs > 0);
+#endif
+
+  if (!G_UNLIKELY (_weak_ref_stack_needs_shrink (wstack)))
+    return;
+
+  /* There is a loop here to find the right allocation size, because during
+   * g_object_weak_release_all() we don't shrink every time an entry is
+   * removed. */
+  do
+    {
+      wstack->alloc_size = wstack->alloc_size / 2u;
+    }
+  while (G_UNLIKELY (_weak_ref_stack_needs_shrink (wstack)));
+
+  wstack = g_realloc (wstack, WEAK_REF_STACK_ALLOC_SIZE (wstack->alloc_size));
+  *data = wstack;
+  *p_wstack = wstack;
+}
+
 G_ALWAYS_INLINE static inline void
 _weak_ref_stack_update_release_all_state (WeakRefStack *wstack, guint idx)
 {
@@ -3902,12 +3934,7 @@ handle_weak_ref_found:
                    sizeof (wstack->weak_refs[idx]) * (wstack->n_weak_refs - idx));
         }
 
-      if (G_UNLIKELY (wstack->n_weak_refs <= wstack->alloc_size / 4u))
-        {
-          wstack->alloc_size = wstack->alloc_size / 2u;
-          wstack = g_realloc (wstack, WEAK_REF_STACK_ALLOC_SIZE (wstack->alloc_size));
-          *data = wstack;
-        }
+      _weak_ref_stack_maybe_shrink (&wstack, data);
     }
 
   return NULL;
@@ -4034,8 +4061,14 @@ g_object_weak_release_all_cb (gpointer *data,
                &wstack->weak_refs[1],
                sizeof (wstack->weak_refs[0]) * wstack->n_weak_refs);
 
-      /* Don't bother to shrink the buffer. Most likely the object gets
-       * destroyed soon after. */
+      if (wdata->release_all_done)
+        {
+          /* We maybe-shrink on each g_object_weak_unref(). During release-all,
+           * we usually don't shrink, because we expect that we pop all entries.
+           * In this case, we are now done and additional entries were subscribed
+           * in the meantime. In this case also maybe-shrink. */
+          _weak_ref_stack_maybe_shrink (&wstack, data);
+        }
     }
 
   return wdata;
