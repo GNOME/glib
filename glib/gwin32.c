@@ -1583,8 +1583,7 @@ g_win32_handle_is_console_output (HANDLE handle)
 
       if (code != ERROR_INVALID_FUNCTION && code != ERROR_INVALID_HANDLE)
         {
-          g_warning ("%s failed with error code %u",
-                     "WriteConsole", (unsigned int) GetLastError ());
+          WIN32_API_FAILED ("WriteConsole");
         }
 
       return false;
@@ -1701,4 +1700,73 @@ g_win32_reopen_noninherited (int fd,
     }
 
   return dupfd;
+}
+
+static bool
+g_win32_error_message_in_place (DWORD    code,
+                                wchar_t *buffer,
+                                size_t   wchars_count)
+{
+  const DWORD flags = FORMAT_MESSAGE_FROM_SYSTEM |
+                      FORMAT_MESSAGE_IGNORE_INSERTS;
+  DWORD wchars_written;
+
+  g_assert (wchars_count > 0);
+
+  wchars_written = FormatMessage (flags, NULL, code, 0, buffer, wchars_count - 1, NULL);
+  if (wchars_written == 0)
+    return false;
+
+  g_assert (wchars_written < wchars_count);
+
+  if (wchars_written >= 2)
+    {
+      wchars_written -= (buffer[wchars_written - 1] == L'\n') +
+                        (buffer[wchars_written - 2] == L'\r');
+    }
+
+  buffer[wchars_written] = L'\0';
+
+  return true;
+}
+
+/** < private >
+ *
+ * g_win32_api_failed:
+ *
+ * @where: location in the source code
+ * @api: name of the failing API
+ * @code: a Windows error code or a failing HRESULT
+ *
+ * Prints a warning about the failing API with an extended
+ * error description (see g_win32_error_message).
+ */
+void
+g_win32_api_failed_with_code (const char *where,
+                              const char *api,
+                              DWORD       code)
+{
+  wchar_t description[500];
+
+  if (g_win32_error_message_in_place (code, description, G_N_ELEMENTS (description)))
+    g_warning ("%s failed: %S", api, description);
+  else
+    g_warning ("%s failed with error code %u", api, (unsigned int) code);
+}
+
+/** < private >
+ *
+ * g_win32_api_failed:
+ *
+ * @where: location in the source code
+ * @api: name of the failing API
+ *
+ * Prints a warning about the failing API with an extended
+ * error description (see g_win32_error_message).
+ */
+void
+g_win32_api_failed (const char *where,
+                    const char *api)
+{
+  g_win32_api_failed_with_code (where, api, GetLastError ());
 }
