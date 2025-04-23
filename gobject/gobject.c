@@ -3715,13 +3715,17 @@ g_object_disconnect (gpointer     _object,
   va_end (var_args);
 }
 
-typedef struct {
+typedef struct
+{
+  GWeakNotify notify;
+  gpointer data;
+} WeakRefTuple;
+
+typedef struct
+{
   GObject *object;
   guint n_weak_refs;
-  struct {
-    GWeakNotify notify;
-    gpointer    data;
-  } weak_refs[1];  /* flexible array */
+  WeakRefTuple weak_refs[1]; /* flexible array */
 } WeakRefStack;
 
 static void
@@ -3806,8 +3810,7 @@ g_object_weak_unref_cb (gpointer *data,
                         GDestroyNotify *destroy_notify,
                         gpointer user_data)
 {
-  GWeakNotify notify = ((gpointer *) user_data)[0];
-  gpointer notify_data = ((gpointer *) user_data)[1];
+  WeakRefTuple *tuple = user_data;
   WeakRefStack *wstack = *data;
   gboolean found_one = FALSE;
   guint i;
@@ -3816,8 +3819,8 @@ g_object_weak_unref_cb (gpointer *data,
     {
       for (i = 0; i < wstack->n_weak_refs; i++)
         {
-          if (wstack->weak_refs[i].notify != notify ||
-              wstack->weak_refs[i].data != notify_data)
+          if (wstack->weak_refs[i].notify != tuple->notify ||
+              wstack->weak_refs[i].data != tuple->data)
             continue;
 
           wstack->n_weak_refs -= 1;
@@ -3839,7 +3842,7 @@ g_object_weak_unref_cb (gpointer *data,
     }
 
   if (!found_one)
-    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, notify_data);
+    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, tuple->notify, tuple->data);
 
   return NULL;
 }
@@ -3863,7 +3866,10 @@ g_object_weak_unref (GObject    *object,
   _g_datalist_id_update_atomic (&object->qdata,
                                 quark_weak_notifies,
                                 g_object_weak_unref_cb,
-                                ((gpointer[]){ notify, data }));
+                                &((WeakRefTuple){
+                                    .notify = notify,
+                                    .data = data,
+                                }));
 }
 
 /**
