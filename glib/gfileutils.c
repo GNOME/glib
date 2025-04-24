@@ -1318,8 +1318,8 @@ g_file_set_contents (const gchar  *filename,
  * to 7 characters to @filename.
  *
  * If the file didn’t exist before and is created, it will be given the
- * permissions from @mode. Otherwise, the permissions of the existing file may
- * be changed to @mode depending on @flags, or they may remain unchanged.
+ * permissions from @mode. Otherwise, the permissions of the existing file will
+ * remain unchanged.
  *
  * Returns: %TRUE on success, %FALSE if an error occurred
  *
@@ -1362,6 +1362,7 @@ g_file_set_contents_full (const gchar            *filename,
       gboolean retval;
       int fd;
       gboolean do_fsync;
+      GStatBuf old_stat;
 
       tmp_filename = g_strdup_printf ("%s.XXXXXX", filename);
 
@@ -1377,6 +1378,26 @@ g_file_set_contents_full (const gchar            *filename,
                             saved_errno);
           retval = FALSE;
           goto consistent_out;
+        }
+
+      /* Maintain the permissions of the file if it exists */
+      if (!g_stat (filename, &old_stat))
+        {
+#ifndef G_OS_WIN32
+          if (fchmod (fd, old_stat.st_mode))
+#else  /* G_OS_WIN32 */
+          if (chmod (tmp_filename, old_stat.st_mode))
+#endif /* G_OS_WIN32 */
+            {
+              int saved_errno = errno;
+              if (error)
+                set_file_error (error,
+                                tmp_filename, _ ("Failed to set permissions of “%s”: %s"),
+                                saved_errno);
+              g_unlink (tmp_filename);
+              retval = FALSE;
+              goto consistent_out;
+            }
         }
 
       do_fsync = fd_should_be_fsynced (fd, filename, flags);
