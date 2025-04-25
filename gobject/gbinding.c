@@ -377,12 +377,12 @@ weak_unbind (gpointer  user_data,
       return;
     }
 
+  source = g_weak_ref_get (&context->source);
+  target = g_weak_ref_get (&context->target);
+
   g_mutex_lock (&binding->unbind_lock);
 
   transform_func = g_steal_pointer (&binding->transform_func);
-
-  source = g_weak_ref_get (&context->source);
-  target = g_weak_ref_get (&context->target);
 
   binding_was_removed = unbind_internal_locked (context, binding, source, target);
 
@@ -607,12 +607,12 @@ g_binding_unbind_internal (GBinding *binding,
   gboolean binding_was_removed = FALSE;
   TransformFunc *transform_func;
 
+  source = g_weak_ref_get (&context->source);
+  target = g_weak_ref_get (&context->target);
+
   g_mutex_lock (&binding->unbind_lock);
 
   transform_func = g_steal_pointer (&binding->transform_func);
-
-  source = g_weak_ref_get (&context->source);
-  target = g_weak_ref_get (&context->target);
 
   binding_was_removed = unbind_internal_locked (context, binding, source, target);
 
