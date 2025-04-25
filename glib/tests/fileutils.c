@@ -1687,9 +1687,7 @@ test_set_contents_full (void)
           EXISTING_FILE_DIRECTORY,
         }
       existing_file;
-      /* only relevant if @existing_file is
-       * %EXISTING_FILE_NONE or %EXISTING_FILE_REGULAR */
-      int mode;
+      int new_mode;  /* only relevant if @existing_file is %EXISTING_FILE_NONE */
       gboolean use_strlen;
 
       gboolean expected_success;
@@ -1700,8 +1698,6 @@ test_set_contents_full (void)
       { EXISTING_FILE_NONE, 0644, FALSE, TRUE, 0 },
       { EXISTING_FILE_NONE, 0644, TRUE, TRUE, 0 },
       { EXISTING_FILE_NONE, 0600, FALSE, TRUE, 0 },
-      // Assume umask is 022, ensures that we preserve perms with, eg. 077
-      { EXISTING_FILE_REGULAR, 0666, FALSE, TRUE, 0 },
       { EXISTING_FILE_REGULAR, 0644, FALSE, TRUE, 0 },
 #ifndef G_OS_WIN32
       { EXISTING_FILE_SYMLINK, 0644, FALSE, TRUE, 0 },
@@ -1746,8 +1742,6 @@ test_set_contents_full (void)
                 g_assert_no_errno (g_fsync (fd));
                 close (fd);
 
-                g_assert_no_errno (chmod (file_name, tests[i].mode));
-
 #ifndef G_OS_WIN32
                 /* Pass an existing symlink to g_file_set_contents_full() to see
                  * what it does. */
@@ -1791,7 +1785,7 @@ test_set_contents_full (void)
           /* Set the file contents */
           ret = g_file_set_contents_full (set_contents_name, "b",
                                           tests[i].use_strlen ? -1 : 1,
-                                          flags, tests[i].mode, &error);
+                                          flags, tests[i].new_mode, &error);
 
           if (!tests[i].expected_success)
             {
@@ -1815,10 +1809,10 @@ test_set_contents_full (void)
 
               g_assert_no_errno (g_lstat (set_contents_name, &statbuf));
 
-              if (tests[i].existing_file & (EXISTING_FILE_NONE | EXISTING_FILE_REGULAR))
+              if (tests[i].existing_file == EXISTING_FILE_NONE)
                 {
                   int mode = statbuf.st_mode & ~S_IFMT;
-                  int new_mode = tests[i].mode;
+                  int new_mode = tests[i].new_mode;
 #ifdef G_OS_WIN32
                   /* on windows, group and others perms handling is different */
                   /* only check the rwx user permissions */
