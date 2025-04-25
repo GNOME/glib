@@ -314,8 +314,7 @@ unbind_internal_locked (BindingContext *context, GBinding *binding, GObject *sou
         {
           g_signal_handler_disconnect (source, binding->source_notify);
 
-          g_object_weak_unref (source, weak_unbind, context);
-          binding_context_unref (context);
+          g_object_weak_unref_full (source, weak_unbind, context, FALSE);
 
           binding->source_notify = 0;
         }
@@ -341,8 +340,7 @@ unbind_internal_locked (BindingContext *context, GBinding *binding, GObject *sou
       /* Remove the weak notify from the target, at most once */
       if (binding->target_weak_notify_installed)
         {
-          g_object_weak_unref (target, weak_unbind, context);
-          binding_context_unref (context);
+          g_object_weak_unref_full (target, weak_unbind, context, FALSE);
           binding->target_weak_notify_installed = FALSE;
         }
     }
@@ -376,7 +374,6 @@ weak_unbind (gpointer  user_data,
   if (!binding)
     {
       /* The binding was already destroyed before so there's nothing to do */
-      binding_context_unref (context);
       return;
     }
 
@@ -430,9 +427,6 @@ weak_unbind (gpointer  user_data,
   /* This will take care of the binding itself. */
   if (binding_was_removed)
     g_object_unref (binding);
-
-  /* Each weak notify owns a reference to the binding context. */
-  binding_context_unref (context);
 }
 
 static gboolean
@@ -833,7 +827,10 @@ g_binding_constructed (GObject *gobject)
                                                            source_notify_closure,
                                                            FALSE);
 
-  g_object_weak_ref (source, weak_unbind, binding_context_ref (binding->context));
+  g_object_weak_ref_full (source,
+                          weak_unbind,
+                          binding_context_ref (binding->context),
+                          (GDestroyNotify) binding_context_unref);
 
   if (binding->flags & G_BINDING_BIDIRECTIONAL)
     {
@@ -853,7 +850,10 @@ g_binding_constructed (GObject *gobject)
 
   if (target != source)
     {
-      g_object_weak_ref (target, weak_unbind, binding_context_ref (binding->context));
+      g_object_weak_ref_full (target,
+                              weak_unbind,
+                              binding_context_ref (binding->context),
+                              (GDestroyNotify) binding_context_unref);
 
       /* Need to remember separately if a target weak notify was installed as
        * unlike for the source it can exist independently of the property
