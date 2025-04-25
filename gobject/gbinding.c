@@ -387,31 +387,10 @@ weak_unbind (gpointer  user_data,
   source = g_weak_ref_get (&context->source);
   target = g_weak_ref_get (&context->target);
 
-  /* If this is called then either the source or target or both must be in the
-   * process of being disposed. If this happens as part of g_object_unref()
-   * then the weak references are actually cleared, otherwise if disposing
-   * happens as part of g_object_run_dispose() then they would still point to
-   * the disposed object.
-   *
-   * If the object this is being called for is either the source or the target
-   * and we actually got a strong reference to it nonetheless (see above),
-   * then signal handlers and weak notifies for it are already disconnected
-   * and they must not be disconnected a second time. Instead simply clear the
-   * weak reference and be done with it.
-   *
-   * See https://gitlab.gnome.org/GNOME/glib/-/issues/2266 */
-
-  if (source == where_the_object_was)
-    {
-      g_weak_ref_set (&context->source, NULL);
-      g_clear_object (&source);
-    }
-
-  if (target == where_the_object_was)
-    {
-      g_weak_ref_set (&context->target, NULL);
-      g_clear_object (&target);
-    }
+  /* FIXME: note that another thread might (at this point) race to call
+   * g_object_run_dispose(). In that case, unbind_internal_locked() will
+   * also try to unref the weak notifications and we get a double
+   * binding_context_unref(). */
 
   binding_was_removed = unbind_internal_locked (context, binding, source, target);
 
