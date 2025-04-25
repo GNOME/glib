@@ -152,30 +152,30 @@ g_binding_flags_get_type (void)
  * the source and target and the first to be called has to release it.
  */
 typedef struct {
+  gatomicrefcount ref_count;
+  gboolean binding_removed;
   GWeakRef binding;
   GWeakRef source;
   GWeakRef target;
-  gboolean binding_removed;
 } BindingContext;
 
 static BindingContext *
 binding_context_ref (BindingContext *context)
 {
-  return g_atomic_rc_box_acquire (context);
-}
-
-static void
-binding_context_clear (BindingContext *context)
-{
-  g_weak_ref_clear (&context->binding);
-  g_weak_ref_clear (&context->source);
-  g_weak_ref_clear (&context->target);
+  g_atomic_ref_count_inc (&context->ref_count);
+  return context;
 }
 
 static void
 binding_context_unref (BindingContext *context)
 {
-  g_atomic_rc_box_release_full (context, (GDestroyNotify) binding_context_clear);
+  if (g_atomic_ref_count_dec (&context->ref_count))
+    {
+      g_weak_ref_clear (&context->binding);
+      g_weak_ref_clear (&context->source);
+      g_weak_ref_clear (&context->target);
+      g_free_sized (context, sizeof (BindingContext));
+    }
 }
 
 /* Reference counting for the transform functions to ensure that they're always
@@ -931,12 +931,20 @@ g_binding_class_init (GBindingClass *klass)
 static void
 g_binding_init (GBinding *binding)
 {
-  g_mutex_init (&binding->unbind_lock);
+  BindingContext *context;
 
-  binding->context = g_atomic_rc_box_new0 (BindingContext);
-  g_weak_ref_init (&binding->context->binding, binding);
-  g_weak_ref_init (&binding->context->source, NULL);
-  g_weak_ref_init (&binding->context->target, NULL);
+  context = g_new (BindingContext, 1);
+  *context = (BindingContext) {
+    .binding_removed = FALSE,
+  };
+  g_atomic_ref_count_init (&context->ref_count);
+  g_weak_ref_init (&context->binding, binding);
+  g_weak_ref_init (&context->source, NULL);
+  g_weak_ref_init (&context->target, NULL);
+
+  binding->context = context;
+
+  g_mutex_init (&binding->unbind_lock);
 }
 
 /**
