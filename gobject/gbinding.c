@@ -185,6 +185,8 @@ binding_context_unref (BindingContext *context)
  * while the transform functions are currently in use inside the notify callbacks.
  */
 typedef struct {
+  gatomicrefcount ref_count;
+
   GBindingTransformFunc transform_s2t;
   GBindingTransformFunc transform_t2s;
 
@@ -198,12 +200,17 @@ transform_func_new (GBindingTransformFunc transform_s2t,
                     gpointer              transform_data,
                     GDestroyNotify        destroy_notify)
 {
-  TransformFunc *func = g_atomic_rc_box_new0 (TransformFunc);
+  TransformFunc *func;
 
-  func->transform_s2t = transform_s2t;
-  func->transform_t2s = transform_t2s;
-  func->transform_data = transform_data;
-  func->destroy_notify = destroy_notify;
+  func = g_new (TransformFunc, 1);
+
+  *func = (TransformFunc) {
+    .transform_s2t = transform_s2t,
+    .transform_t2s = transform_t2s,
+    .transform_data = transform_data,
+    .destroy_notify = destroy_notify,
+  };
+  g_atomic_ref_count_init (&func->ref_count);
 
   return func;
 }
@@ -211,20 +218,19 @@ transform_func_new (GBindingTransformFunc transform_s2t,
 static TransformFunc *
 transform_func_ref (TransformFunc *func)
 {
-  return g_atomic_rc_box_acquire (func);
-}
-
-static void
-transform_func_clear (TransformFunc *func)
-{
-  if (func->destroy_notify)
-    func->destroy_notify (func->transform_data);
+  g_atomic_ref_count_inc (&func->ref_count);
+  return func;
 }
 
 static void
 transform_func_unref (TransformFunc *func)
 {
-  g_atomic_rc_box_release_full (func, (GDestroyNotify) transform_func_clear);
+  if (g_atomic_ref_count_dec (&func->ref_count))
+    {
+      if (func->destroy_notify)
+        func->destroy_notify (func->transform_data);
+      g_free_sized (func, sizeof (TransformFunc));
+    }
 }
 
 #define G_BINDING_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_BINDING, GBindingClass))
