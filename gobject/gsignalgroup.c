@@ -527,7 +527,7 @@ g_signal_group_dispose (GObject *object)
   if (self->has_bound_at_least_once)
     g_signal_group_unbind (self);
 
-  g_clear_pointer (&self->handlers, g_ptr_array_unref);
+  g_ptr_array_set_size (self->handlers, 0);
 
   g_rec_mutex_unlock (&self->mutex);
 
@@ -541,6 +541,7 @@ g_signal_group_finalize (GObject *object)
 
   g_weak_ref_clear (&self->target_ref);
   g_rec_mutex_clear (&self->mutex);
+  g_ptr_array_unref (self->handlers);
 
   G_OBJECT_CLASS (g_signal_group_parent_class)->finalize (object);
 }
