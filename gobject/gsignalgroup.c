@@ -53,12 +53,38 @@
  * Since: 2.72
  */
 
+typedef struct
+{
+  gatomicrefcount ref_count;
+  GRecMutex mutex;
+  GSignalGroup *self;
+} SyncData;
+
+typedef struct
+{
+  SyncData *sync_data;
+
+  /* Note that we don't own a strong reference to @target. However,
+   * we have a g_object_weak_ref() notification that guards this object.
+   * This gives us some guarantees about the object still being alive.
+   *
+   * So, while we hold target->sync_data->mutex:
+   * - if another thread destroyes the object, it will invoke the weak
+   *   notification and wait to obtain the mutex.
+   * - note that target->sync_data->mutex is a GRecMutex. So if you are in a
+   *   function that holds the mutex and you check whether we have a target,
+   *   then must must be careful to not call something (e.g. user callbacks)
+   *   that can trigger an unref of the target. But we anyway must not call
+   *   user code while holding the mutex. */
+  GObject *target;
+} TargetData;
+
 struct _GSignalGroup
 {
   GObject     parent_instance;
 
-  GWeakRef    target_ref;
-  GRecMutex   mutex;
+  SyncData   *sync_data;
+  TargetData *target_data;
   GPtrArray  *handlers;
   GType       target_type;
   gssize      block_count;
@@ -102,6 +128,74 @@ enum
 
 static GParamSpec *properties[LAST_PROP];
 static guint signals[LAST_SIGNAL];
+
+static void g_signal_group__target_weak_notify (gpointer data,
+                                                GObject *where_object_was);
+
+static SyncData *
+sync_data_new (GSignalGroup *self)
+{
+  SyncData *sync_data;
+
+  sync_data = g_new (SyncData, 1);
+  *sync_data = (SyncData) {
+    .self = self,
+  };
+  g_atomic_ref_count_init (&sync_data->ref_count);
+  g_rec_mutex_init (&sync_data->mutex);
+
+  return sync_data;
+}
+
+static SyncData *
+sync_data_ref (SyncData *sync_data)
+{
+  g_atomic_ref_count_inc (&sync_data->ref_count);
+  return sync_data;
+}
+
+static void
+sync_data_unref (SyncData *sync_data)
+{
+  if (g_atomic_ref_count_dec (&sync_data->ref_count))
+    {
+      g_rec_mutex_clear (&sync_data->mutex);
+      g_free_sized (sync_data, sizeof (SyncData));
+    }
+}
+
+static TargetData *
+target_data_new (SyncData *sync_data, GObject *target)
+{
+  TargetData *target_data;
+
+  target_data = g_new (TargetData, 1);
+  *target_data = (TargetData) {
+    .sync_data = sync_data_ref (sync_data),
+    .target = target,
+  };
+
+  return target_data;
+}
+
+static void
+target_data_free (TargetData *target_data)
+{
+  sync_data_unref (target_data->sync_data);
+  g_free_sized (target_data, sizeof (TargetData));
+}
+
+static void
+target_data_weakunref (TargetData *target_data)
+{
+  GObject *target = target_data->target;
+
+  target_data->target = NULL;
+  g_object_weak_unref_full (target,
+                            g_signal_group__target_weak_notify,
+                            target_data,
+                            TRUE);
+}
 
 static void
 g_signal_group_set_target_type (GSignalGroup *self,
@@ -156,15 +250,28 @@ static void
 g_signal_group__target_weak_notify (gpointer  data,
                                     GObject  *where_object_was)
 {
-  GSignalGroup *self = data;
+  TargetData *target_data = data;
+  GSignalGroup *self;
   guint i;
 
-  g_assert (G_IS_SIGNAL_GROUP (self));
-  g_assert (where_object_was != NULL);
+  g_rec_mutex_lock (&target_data->sync_data->mutex);
 
-  g_rec_mutex_lock (&self->mutex);
+  if (!target_data->target)
+    {
+      g_rec_mutex_unlock (&target_data->sync_data->mutex);
+      return;
+    }
 
-  g_weak_ref_set (&self->target_ref, NULL);
+#ifdef G_ENABLE_DEBUG
+  g_assert (target_data->target == where_object_was);
+  g_assert (target_data->sync_data->self->target_data == target_data);
+#endif
+
+  target_data->target = NULL;
+
+  self = target_data->sync_data->self;
+
+  self->target_data = NULL;
 
   for (i = 0; i < self->handlers->len; i++)
     {
@@ -176,7 +283,7 @@ g_signal_group__target_weak_notify (gpointer  data,
   g_signal_emit (self, signals[UNBIND], 0);
   g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_TARGET]);
 
-  g_rec_mutex_unlock (&self->mutex);
+  g_rec_mutex_unlock (&self->sync_data->mutex);
 }
 
 static void
@@ -223,8 +330,14 @@ g_signal_group_bind (GSignalGroup *self,
 
   hold = g_object_ref (target);
 
-  g_weak_ref_set (&self->target_ref, hold);
-  g_object_weak_ref (hold, g_signal_group__target_weak_notify, self);
+  g_clear_pointer (&self->target_data, target_data_weakunref);
+
+  self->target_data = target_data_new (self->sync_data, hold);
+
+  g_object_weak_ref_full (hold,
+                          g_signal_group__target_weak_notify,
+                          self->target_data,
+                          (GDestroyNotify) target_data_free);
 
   g_signal_group_gc_handlers (self);
 
@@ -243,12 +356,10 @@ g_signal_group_bind (GSignalGroup *self,
 static void
 g_signal_group_unbind (GSignalGroup *self)
 {
-  GObject *target;
+  GObject *target = NULL;
   guint i;
 
   g_return_if_fail (G_IS_SIGNAL_GROUP (self));
-
-  target = g_weak_ref_get (&self->target_ref);
 
   /*
    * Target may be NULL by this point, as we got notified of its destruction.
@@ -256,17 +367,14 @@ g_signal_group_unbind (GSignalGroup *self)
    * cleanly disconnect our connections.
    */
 
-  if (target != NULL)
+  if (self->target_data)
     {
-      g_weak_ref_set (&self->target_ref, NULL);
-
+      target = self->target_data->target;
       /*
        * Let go of our weak reference now that we have a full reference
        * for the life of this function.
        */
-      g_object_weak_unref (target,
-                           g_signal_group__target_weak_notify,
-                           self);
+      g_clear_pointer (&self->target_data, target_data_weakunref);
     }
 
   g_signal_group_gc_handlers (self);
@@ -289,6 +397,15 @@ g_signal_group_unbind (GSignalGroup *self)
        * If @target is NULL, we lost a race to cleanup the weak
        * instance and the signal connections have already been
        * finalized and therefore nothing to do.
+       *
+       * Note that we don't hold a strong reference on @target. But at this point
+       * we still can be sure that @target is alive, because:
+       * - if another thread were to destroy GObject, then it would need to invoke
+       *   the weak notification, which would wait on sync_data->mutex.
+       * - as sync_data->mutex is a GRecMutex, the current thread could destroy
+       *   @target. But if you review the code between where we get the pointer
+       *   to @target and here, you see that we don't call external code or don't do
+       *   anything that could cause @target to be destroyed.
        */
 
       if (target != NULL && handler_id != 0)
@@ -296,8 +413,6 @@ g_signal_group_unbind (GSignalGroup *self)
     }
 
   g_signal_emit (self, signals [UNBIND], 0);
-
-  g_clear_object (&target);
 }
 
 static gboolean
@@ -332,19 +447,16 @@ g_signal_group_check_target_type (GSignalGroup *self,
 void
 g_signal_group_block (GSignalGroup *self)
 {
-  GObject *target;
   guint i;
 
   g_return_if_fail (G_IS_SIGNAL_GROUP (self));
   g_return_if_fail (self->block_count >= 0);
 
-  g_rec_mutex_lock (&self->mutex);
+  g_rec_mutex_lock (&self->sync_data->mutex);
 
   self->block_count++;
 
-  target = g_weak_ref_get (&self->target_ref);
-
-  if (target == NULL)
+  if (!self->target_data)
     goto unlock;
 
   for (i = 0; i < self->handlers->len; i++)
@@ -356,13 +468,12 @@ g_signal_group_block (GSignalGroup *self)
       g_assert (handler->closure != NULL);
       g_assert (handler->handler_id != 0);
 
-      g_signal_handler_block (target, handler->handler_id);
+      g_signal_handler_block (self->target_data->target,
+                              handler->handler_id);
     }
 
-  g_object_unref (target);
-
 unlock:
-  g_rec_mutex_unlock (&self->mutex);
+  g_rec_mutex_unlock (&self->sync_data->mutex);
 }
 
 /**
@@ -379,18 +490,16 @@ unlock:
 void
 g_signal_group_unblock (GSignalGroup *self)
 {
-  GObject *target;
   guint i;
 
   g_return_if_fail (G_IS_SIGNAL_GROUP (self));
   g_return_if_fail (self->block_count > 0);
 
-  g_rec_mutex_lock (&self->mutex);
+  g_rec_mutex_lock (&self->sync_data->mutex);
 
   self->block_count--;
 
-  target = g_weak_ref_get (&self->target_ref);
-  if (target == NULL)
+  if (!self->target_data)
     goto unlock;
 
   for (i = 0; i < self->handlers->len; i++)
@@ -402,13 +511,12 @@ g_signal_group_unblock (GSignalGroup *self)
       g_assert (handler->closure != NULL);
       g_assert (handler->handler_id != 0);
 
-      g_signal_handler_unblock (target, handler->handler_id);
+      g_signal_handler_unblock (self->target_data->target,
+                                handler->handler_id);
     }
 
-  g_object_unref (target);
-
 unlock:
-  g_rec_mutex_unlock (&self->mutex);
+  g_rec_mutex_unlock (&self->sync_data->mutex);
 }
 
 /**
@@ -428,9 +536,11 @@ g_signal_group_dup_target (GSignalGroup *self)
 
   g_return_val_if_fail (G_IS_SIGNAL_GROUP (self), NULL);
 
-  g_rec_mutex_lock (&self->mutex);
-  target = g_weak_ref_get (&self->target_ref);
-  g_rec_mutex_unlock (&self->mutex);
+  g_rec_mutex_lock (&self->sync_data->mutex);
+  target = self->target_data
+               ? g_object_ref (self->target_data->target)
+               : NULL;
+  g_rec_mutex_unlock (&self->sync_data->mutex);
 
   return target;
 }
@@ -454,21 +564,16 @@ void
 g_signal_group_set_target (GSignalGroup *self,
                            gpointer      target)
 {
-  GObject *object;
-
   g_return_if_fail (G_IS_SIGNAL_GROUP (self));
 
-  g_rec_mutex_lock (&self->mutex);
+  g_rec_mutex_lock (&self->sync_data->mutex);
 
-  object = g_weak_ref_get (&self->target_ref);
-
-  if (object == (GObject *)target)
+  if ((self->target_data ? self->target_data->target : NULL) == target)
     goto cleanup;
 
   if (!g_signal_group_check_target_type (self, target))
     goto cleanup;
 
-  /* Only emit unbind if we've ever called bind */
   if (self->has_bound_at_least_once)
     g_signal_group_unbind (self);
 
@@ -477,8 +582,7 @@ g_signal_group_set_target (GSignalGroup *self,
   g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_TARGET]);
 
 cleanup:
-  g_clear_object (&object);
-  g_rec_mutex_unlock (&self->mutex);
+  g_rec_mutex_unlock (&self->sync_data->mutex);
 }
 
 static void
@@ -502,9 +606,12 @@ g_signal_group_constructed (GObject *object)
   GSignalGroup *self = (GSignalGroup *)object;
   GObject *target;
 
-  g_rec_mutex_lock (&self->mutex);
+  g_rec_mutex_lock (&self->sync_data->mutex);
 
-  target = g_weak_ref_get (&self->target_ref);
+  target = self->target_data
+               ? g_object_ref (self->target_data->target)
+               : NULL;
+
   if (!g_signal_group_check_target_type (self, target))
     g_signal_group_set_target (self, NULL);
 
@@ -512,7 +619,7 @@ g_signal_group_constructed (GObject *object)
 
   g_clear_object (&target);
 
-  g_rec_mutex_unlock (&self->mutex);
+  g_rec_mutex_unlock (&self->sync_data->mutex);
 }
 
 static void
@@ -520,7 +627,7 @@ g_signal_group_dispose (GObject *object)
 {
   GSignalGroup *self = (GSignalGroup *)object;
 
-  g_rec_mutex_lock (&self->mutex);
+  g_rec_mutex_lock (&self->sync_data->mutex);
 
   g_signal_group_gc_handlers (self);
 
@@ -529,7 +636,7 @@ g_signal_group_dispose (GObject *object)
 
   g_ptr_array_set_size (self->handlers, 0);
 
-  g_rec_mutex_unlock (&self->mutex);
+  g_rec_mutex_unlock (&self->sync_data->mutex);
 
   G_OBJECT_CLASS (g_signal_group_parent_class)->dispose (object);
 }
@@ -539,8 +646,7 @@ g_signal_group_finalize (GObject *object)
 {
   GSignalGroup *self = (GSignalGroup *)object;
 
-  g_weak_ref_clear (&self->target_ref);
-  g_rec_mutex_clear (&self->mutex);
+  sync_data_unref (self->sync_data);
   g_ptr_array_unref (self->handlers);
 
   G_OBJECT_CLASS (g_signal_group_parent_class)->finalize (object);
@@ -676,7 +782,7 @@ g_signal_group_class_init (GSignalGroupClass *klass)
 static void
 g_signal_group_init (GSignalGroup *self)
 {
-  g_rec_mutex_init (&self->mutex);
+  self->sync_data = sync_data_new (self);
   self->handlers = g_ptr_array_new_with_free_func (signal_handler_free);
   self->target_type = G_TYPE_OBJECT;
 }
@@ -707,7 +813,6 @@ g_signal_group_connect_closure_ (GSignalGroup   *self,
                                  GClosure       *closure,
                                  gboolean        after)
 {
-  GObject *target;
   SignalHandler *handler;
   guint signal_id;
   GQuark signal_detail;
@@ -723,12 +828,12 @@ g_signal_group_connect_closure_ (GSignalGroup   *self,
       return FALSE;
     }
 
-  g_rec_mutex_lock (&self->mutex);
+  g_rec_mutex_lock (&self->sync_data->mutex);
 
   if (self->has_bound_at_least_once)
     {
       g_critical ("Cannot add signals after setting target");
-      g_rec_mutex_unlock (&self->mutex);
+      g_rec_mutex_unlock (&self->sync_data->mutex);
       return FALSE;
     }
 
@@ -743,10 +848,11 @@ g_signal_group_connect_closure_ (GSignalGroup   *self,
 
   g_ptr_array_add (self->handlers, handler);
 
-  target = g_weak_ref_get (&self->target_ref);
-
-  if (target != NULL)
+  if (self->target_data)
     {
+      GObject *target;
+
+      target = g_object_ref (self->target_data->target);
       g_signal_group_bind_handler (self, handler, target);
       g_object_unref (target);
     }
@@ -754,7 +860,7 @@ g_signal_group_connect_closure_ (GSignalGroup   *self,
   /* Lazily remove any old handlers on connect */
   g_signal_group_gc_handlers (self);
 
-  g_rec_mutex_unlock (&self->mutex);
+  g_rec_mutex_unlock (&self->sync_data->mutex);
   return TRUE;
 }
 
