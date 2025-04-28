@@ -26,6 +26,7 @@
 
 #include "gprintf.h"
 #include "gprintfint.h"
+#include "gprintprivate.h"
 
 
 /**

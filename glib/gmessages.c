@@ -48,8 +48,6 @@
 
 #include "galloca.h"
 #include "gbacktrace.h"
-#include "gcharset.h"
-#include "gconvert.h"
 #include "genviron.h"
 #include "glib-init.h"
 #include "glib-private.h"
@@ -3493,21 +3491,7 @@ static void
 print_string (FILE        *stream,
               const gchar *string)
 {
-  const gchar *charset;
-  int ret;
-
-  if (g_get_console_charset (&charset))
-    {
-      /* charset is UTF-8 already */
-      ret = fputs (string, stream);
-    }
-  else
-    {
-      char *converted_string = g_print_convert (string, charset);
-
-      ret = fputs (converted_string, stream);
-      g_free (converted_string);
-    }
+  int ret = g_fputs (string, stream);
 
   /* In case of failure we can just return early, but there's nothing else
    * we can do at this level
