@@ -2129,38 +2129,18 @@ g_log_writer_is_journald (gint output_fd)
 
 static void escape_string (GString *string);
 
-/**
- * g_log_writer_format_fields:
- * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
- *    level
- * @fields: (array length=n_fields): key–value pairs of structured data forming
- *    the log message
- * @n_fields: number of elements in the @fields array
- * @use_color: `TRUE` to use
- *   [ANSI color escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
- *   when formatting the message, `FALSE` to not
- *
- * Format a structured log message as a string suitable for outputting to the
- * terminal (or elsewhere).
- *
- * This will include the values of all fields it knows
- * how to interpret, which includes `MESSAGE` and `GLIB_DOMAIN` (see the
- * documentation for [func@GLib.log_structured]). It does not include values from
- * unknown fields.
- *
- * The returned string does **not** have a trailing new-line character. It is
- * encoded in the character set of the current locale, which is not necessarily
- * UTF-8.
- *
- * Returns: (transfer full): string containing the formatted log message, in
- *    the character set of the current locale
- * Since: 2.50
- */
-gchar *
-g_log_writer_format_fields (GLogLevelFlags   log_level,
-                            const GLogField *fields,
-                            gsize            n_fields,
-                            gboolean         use_color)
+struct LogFormatted {
+  GString *gstring;
+  const char *message;
+  gssize message_length;
+};
+
+static void
+log_writer_format_fields_internal (struct LogFormatted *ctx,
+                                   GLogLevelFlags       log_level,
+                                   const GLogField     *fields,
+                                   gsize                n_fields,
+                                   gboolean             use_color)
 {
   gsize i;
   const gchar *message = NULL;
@@ -2234,34 +2214,113 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
                           time_buf, (gint) ((now / 1000) % 1000),
                           color_reset (use_color));
 
-  if (message == NULL)
+  ctx->gstring = gstring;
+  ctx->message = message;
+  ctx->message_length = message_length;
+}
+
+static char *
+log_writer_format_fields_utf8 (GLogLevelFlags   log_level,
+                               const GLogField *fields,
+                               gsize            n_fields,
+                               gboolean         use_color)
+{
+  struct LogFormatted ctx;
+
+  log_writer_format_fields_internal (&ctx,
+                                     log_level,
+                                     fields,
+                                     n_fields,
+                                     use_color);
+
+  if (ctx.message == NULL)
     {
-      g_string_append (gstring, "(NULL) message");
+      g_string_append (ctx.gstring, "(NULL) message");
+    }
+  else
+    {
+      GString *msg;
+
+      msg = g_string_new_len (ctx.message, ctx.message_length);
+      escape_string (msg);
+
+      g_string_append (ctx.gstring, msg->str);
+
+      g_string_free (msg, TRUE);
+    }
+
+  return g_string_free (ctx.gstring, FALSE);
+}
+
+/**
+ * g_log_writer_format_fields:
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
+ *    level
+ * @fields: (array length=n_fields): key–value pairs of structured data forming
+ *    the log message
+ * @n_fields: number of elements in the @fields array
+ * @use_color: `TRUE` to use
+ *   [ANSI color escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
+ *   when formatting the message, `FALSE` to not
+ *
+ * Format a structured log message as a string suitable for outputting to the
+ * terminal (or elsewhere).
+ *
+ * This will include the values of all fields it knows
+ * how to interpret, which includes `MESSAGE` and `GLIB_DOMAIN` (see the
+ * documentation for [func@GLib.log_structured]). It does not include values from
+ * unknown fields.
+ *
+ * The returned string does **not** have a trailing new-line character. It is
+ * encoded in the character set of the current locale, which is not necessarily
+ * UTF-8.
+ *
+ * Returns: (transfer full): string containing the formatted log message, in
+ *    the character set of the current locale
+ * Since: 2.50
+ */
+gchar *
+g_log_writer_format_fields (GLogLevelFlags   log_level,
+                            const GLogField *fields,
+                            gsize            n_fields,
+                            gboolean         use_color)
+{
+  struct LogFormatted ctx;
+
+  log_writer_format_fields_internal (&ctx,
+                                     log_level,
+                                     fields,
+                                     n_fields,
+                                     use_color);
+
+  if (ctx.message == NULL)
+    {
+      g_string_append (ctx.gstring, "(NULL) message");
     }
   else
     {
       GString *msg;
       const gchar *charset;
 
-      msg = g_string_new_len (message, message_length);
+      msg = g_string_new_len (ctx.message, ctx.message_length);
       escape_string (msg);
 
       if (g_get_console_charset (&charset))
         {
           /* charset is UTF-8 already */
-          g_string_append (gstring, msg->str);
+          g_string_append (ctx.gstring, msg->str);
         }
       else
         {
           char *lstring = g_print_convert (msg->str, charset);
-          g_string_append (gstring, lstring);
+          g_string_append (ctx.gstring, lstring);
           g_free (lstring);
         }
 
       g_string_free (msg, TRUE);
     }
 
-  return g_string_free (gstring, FALSE);
+  return g_string_free (ctx.gstring, FALSE);
 }
 
 /**
