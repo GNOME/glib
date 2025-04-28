@@ -2223,7 +2223,8 @@ static char *
 log_writer_format_fields_utf8 (GLogLevelFlags   log_level,
                                const GLogField *fields,
                                gsize            n_fields,
-                               gboolean         use_color)
+                               gboolean         use_color,
+                               gboolean         add_trailing_newline)
 {
   struct LogFormatted ctx;
 
@@ -2248,6 +2249,9 @@ log_writer_format_fields_utf8 (GLogLevelFlags   log_level,
 
       g_string_free (msg, TRUE);
     }
+
+  if (add_trailing_newline)
+    g_string_append (ctx.gstring, "\n");
 
   return g_string_free (ctx.gstring, FALSE);
 }
@@ -2672,7 +2676,7 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
                                gpointer         user_data)
 {
   FILE *stream;
-  gchar *out = NULL;  /* in the current locale’s character set */
+  char *out;
 
   g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
@@ -2681,9 +2685,10 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
   if (!stream || fileno (stream) < 0)
     return G_LOG_WRITER_UNHANDLED;
 
-  out = g_log_writer_format_fields (log_level, fields, n_fields,
-                                    g_log_writer_supports_color (fileno (stream)));
-  _g_fprintf (stream, "%s\n", out);
+  out = log_writer_format_fields_utf8 (log_level, fields, n_fields,
+                                       g_log_writer_supports_color (fileno (stream)),
+                                       TRUE);
+  g_fputs (out, stream);
   fflush (stream);
   g_free (out);
 
