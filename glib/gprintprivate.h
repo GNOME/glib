@@ -28,6 +28,10 @@
 
 G_BEGIN_DECLS
 
+int
+g_fputs (const char *string,
+         FILE       *stream);
+
 char *
 g_print_convert (const char *string,
                  const char *charset);
