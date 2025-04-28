@@ -580,6 +580,11 @@ tokenize_command_line (const gchar *command_line,
                      _("Text ended just after a “\\” character."
                        " (The text was “%s”)"),
                      command_line);
+      else if (current_quote == '#')
+        g_set_error (error,
+                     G_SHELL_ERROR,
+                     G_SHELL_ERROR_EMPTY_STRING,
+                     _("Text was empty (or contained only whitespace)"));
       else
         g_set_error (error,
                      G_SHELL_ERROR,
