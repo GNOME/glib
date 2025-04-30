@@ -157,8 +157,8 @@ g_slist_free_full (GSList         *list,
  *
  * Adds a new element on to the end of the list.
  *
- * The return value is the new start of the list, which may
- * have changed, so make sure you store the new value.
+ * Note that the return value is the new start of the list
+ * if @list was empty; make sure you store the new value.
  *
  * Note that g_slist_append() has to traverse the entire list
  * to find the end, which is inefficient when adding multiple
@@ -178,7 +178,7 @@ g_slist_free_full (GSList         *list,
  * number_list = g_slist_append (number_list, GINT_TO_POINTER (14));
  * ]|
  *
- * Returns: the new start of the #GSList
+ * Returns: either @list or the new start of the #GSList if @list was %NULL
  */
 GSList*
 g_slist_append (GSList   *list,
@@ -210,8 +210,8 @@ g_slist_append (GSList   *list,
  *
  * Adds a new element on to the start of the list.
  *
- * The return value is the new start of the list, which
- * may have changed, so make sure you store the new value.
+ * Note that the return value is the new start of the list, 
+ * which will have changed, so make sure you store the new value.
  *
  * |[<!-- language="C" --> 
  * // Notice that it is initialized to the empty list.
@@ -220,7 +220,8 @@ g_slist_append (GSList   *list,
  * list = g_slist_prepend (list, "first");
  * ]|
  *
- * Returns: the new start of the #GSList
+ * Returns: a pointer to the newly prepended element, 
+ * which is the new start of the #GSList
  */
 GSList*
 g_slist_prepend (GSList   *list,
@@ -246,7 +247,7 @@ g_slist_prepend (GSList   *list,
  *
  * Inserts a new element into the list at the given position.
  *
- * Returns: the new start of the #GSList
+ * Returns: the (possibly changed) start of the #GSList
  */
 GSList*
 g_slist_insert (GSList   *list,
