@@ -366,6 +366,7 @@ typedef enum {
 
 /**
  * GIFieldInfoFlags:
+ * @GI_FIELD_INFO_FLAGS_NONE: no flags set (since: 2.86)
  * @GI_FIELD_IS_READABLE: field is readable.
  * @GI_FIELD_IS_WRITABLE: field is writable.
  *
@@ -376,12 +377,14 @@ typedef enum {
 
 typedef enum
 {
+  GI_FIELD_INFO_FLAGS_NONE GI_AVAILABLE_ENUMERATOR_IN_2_86 = 0,
   GI_FIELD_IS_READABLE = 1 << 0,
   GI_FIELD_IS_WRITABLE = 1 << 1
 } GIFieldInfoFlags;
 
 /**
  * GIVFuncInfoFlags:
+ * @GI_VFUNC_INFO_FLAGS_NONE: no flags set (since: 2.86)
  * @GI_VFUNC_MUST_CHAIN_UP: chains up to the parent type
  * @GI_VFUNC_MUST_OVERRIDE: overrides
  * @GI_VFUNC_MUST_NOT_OVERRIDE: does not override
@@ -392,6 +395,7 @@ typedef enum
  */
 typedef enum
 {
+  GI_VFUNC_INFO_FLAGS_NONE GI_AVAILABLE_ENUMERATOR_IN_2_86 = 0,
   GI_VFUNC_MUST_CHAIN_UP     = 1 << 0,
   GI_VFUNC_MUST_OVERRIDE     = 1 << 1,
   GI_VFUNC_MUST_NOT_OVERRIDE = 1 << 2,
@@ -399,6 +403,7 @@ typedef enum
 
 /**
  * GIFunctionInfoFlags:
+ * @GI_FUNCTION_INFO_FLAGS_NONE: no flags set (since: 2.86)
  * @GI_FUNCTION_IS_METHOD: is a method.
  * @GI_FUNCTION_IS_CONSTRUCTOR: is a constructor.
  * @GI_FUNCTION_IS_GETTER: is a getter of a [class@GIRepository.PropertyInfo].
@@ -411,6 +416,7 @@ typedef enum
  */
 typedef enum
 {
+  GI_FUNCTION_INFO_FLAGS_NONE GI_AVAILABLE_ENUMERATOR_IN_2_86 = 0,
   GI_FUNCTION_IS_METHOD      = 1 << 0,
   GI_FUNCTION_IS_CONSTRUCTOR = 1 << 1,
   GI_FUNCTION_IS_GETTER      = 1 << 2,
