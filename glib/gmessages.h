@@ -590,7 +590,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  *
  * To debug failure of a g_return_if_fail() check, run the code under a debugger
  * with `G_DEBUG=fatal-criticals` or `G_DEBUG=fatal-warnings` defined in the
- * environment (see [Running GLib Applications](glib-running.html)):
+ * environment (see [Running GLib Applications](running.html)):
  *
  * |[
  *   G_DEBUG=fatal-warnings gdb ./my-program

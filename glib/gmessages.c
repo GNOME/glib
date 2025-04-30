@@ -219,7 +219,7 @@
  *
  * You can make warnings fatal at runtime by setting the `G_DEBUG`
  * environment variable (see
- * [Running GLib Applications](glib-running.html)):
+ * [Running GLib Applications](running.html)):
  *
  * ```
  * G_DEBUG=fatal-warnings gdb ./my-program
@@ -254,7 +254,7 @@
  *
  * You can make critical warnings fatal at runtime by
  * setting the `G_DEBUG` environment variable (see
- * [Running GLib Applications](glib-running.html)):
+ * [Running GLib Applications](running.html)):
  *
  * ```
  * G_DEBUG=fatal-warnings gdb ./my-program
@@ -564,7 +564,7 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
  *
  * This is mostly used by custom log writers to make fatal messages
  * (`fatal-warnings`, `fatal-criticals`) work as expected, when using the
- * `G_DEBUG` environment variable (see [Running GLib Applications](glib-running.html)).
+ * `G_DEBUG` environment variable (see [Running GLib Applications](running.html)).
  *
  * An example usage is shown below:
  *
@@ -612,7 +612,7 @@ g_log_get_always_fatal (void)
  *
  * You can also make some message levels fatal at runtime by setting
  * the `G_DEBUG` environment variable (see
- * [Running GLib Applications](glib-running.html)).
+ * [Running GLib Applications](running.html)).
  *
  * Libraries should not call this function, as it affects all messages logged
  * by a process, including those from other libraries.
