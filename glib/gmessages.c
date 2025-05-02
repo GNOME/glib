@@ -56,6 +56,7 @@
 #include "gmain.h"
 #include "gmem.h"
 #include "gpattern.h"
+#include "gprintprivate.h"
 #include "gprintfint.h"
 #include "gstrfuncs.h"
 #include "gstring.h"
@@ -944,55 +945,6 @@ g_log_remove_handler (const gchar *log_domain,
   g_mutex_unlock (&g_messages_lock);
   g_warning ("%s: could not find handler with id '%d' for domain \"%s\"",
 	     G_STRLOC, handler_id, log_domain);
-}
-
-#define CHAR_IS_SAFE(wc) (!((wc < 0x20 && wc != '\t' && wc != '\n' && wc != '\r') || \
-			    (wc == 0x7f) || \
-			    (wc >= 0x80 && wc < 0xa0)))
-     
-static gchar*
-strdup_convert (const gchar *string,
-		const gchar *charset)
-{
-  if (!g_utf8_validate (string, -1, NULL))
-    {
-      GString *gstring = g_string_new ("[Invalid UTF-8] ");
-      guchar *p;
-
-      for (p = (guchar *)string; *p; p++)
-	{
-	  if (CHAR_IS_SAFE(*p) &&
-	      !(*p == '\r' && *(p + 1) != '\n') &&
-	      *p < 0x80)
-	    g_string_append_c (gstring, *p);
-	  else
-	    g_string_append_printf (gstring, "\\x%02x", (guint)(guchar)*p);
-	}
-      
-      return g_string_free (gstring, FALSE);
-    }
-  else
-    {
-      GError *err = NULL;
-      
-      gchar *result = g_convert_with_fallback (string, -1, charset, "UTF-8", "?", NULL, NULL, &err);
-      if (result)
-	return result;
-      else
-	{
-	  /* Not thread-safe, but doesn't matter if we print the warning twice
-	   */
-	  static gboolean warned = FALSE; 
-	  if (!warned)
-	    {
-	      warned = TRUE;
-	      _g_fprintf (stderr, "GLib: Cannot convert message: %s\n", err->message);
-	    }
-	  g_error_free (err);
-	  
-	  return g_strdup (string);
-	}
-    }
 }
 
 /* For a radix of 8 we need at most 3 output bytes for 1 input
@@ -2303,7 +2255,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
         }
       else
         {
-          gchar *lstring = strdup_convert (msg->str, charset);
+          char *lstring = g_print_convert (msg->str, charset);
           g_string_append (gstring, lstring);
           g_free (lstring);
         }
@@ -3346,6 +3298,10 @@ _g_log_fallback_handler (const gchar   *log_domain,
   write_string (stream, "\n");
 }
 
+#define CHAR_IS_SAFE(wc) (!((wc < 0x20 && wc != '\t' && wc != '\n' && wc != '\r') || \
+                            (wc == 0x7f) || \
+                            (wc >= 0x80 && wc < 0xa0)))
+
 static void
 escape_string (GString *string)
 {
@@ -3547,7 +3503,7 @@ print_string (FILE        *stream,
     }
   else
     {
-      gchar *converted_string = strdup_convert (string, charset);
+      char *converted_string = g_print_convert (string, charset);
 
       ret = fputs (converted_string, stream);
       g_free (converted_string);
