@@ -403,3 +403,49 @@ g_openuri_portal_open_file_finish (GAsyncResult  *result,
 {
   return g_task_propagate_boolean (G_TASK (result), error);
 }
+
+gboolean
+g_openuri_portal_can_open (const char *uri)
+{
+  GXdpOpenURI *openuri;
+  const char *scheme;
+  GVariantBuilder opt_builder;
+  gboolean supported;
+
+  scheme = g_uri_peek_scheme (uri);
+  if (!scheme)
+    return FALSE;
+
+  openuri = gxdp_open_uri_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS |
+                                                  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION,
+                                                  "org.freedesktop.portal.Desktop",
+                                                  "/org/freedesktop/portal/desktop",
+                                                  NULL,
+                                                  NULL);
+
+  if (openuri == NULL)
+    return FALSE;
+
+  if (gxdp_open_uri_get_version (openuri) < 5)
+    {
+      g_clear_object (&openuri);
+      return FALSE;
+    }
+
+  g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+  if (!gxdp_open_uri_call_scheme_supported_sync (openuri,
+                                                 scheme,
+                                                 g_variant_builder_end (&opt_builder),
+                                                 &supported,
+                                                 NULL,
+                                                 NULL))
+    {
+      g_clear_object (&openuri);
+      return FALSE;
+    }
+
+  g_clear_object (&openuri);
+  return supported;
+}
