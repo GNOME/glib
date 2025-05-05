@@ -124,8 +124,8 @@ gi_property_info_get_ownership_transfer (GIPropertyInfo *info)
   GIRealInfo *rinfo = (GIRealInfo *)info;
   PropertyBlob *blob;
 
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_PROPERTY_INFO (info), -1);
+  g_return_val_if_fail (info != NULL, GI_TRANSFER_NOTHING);
+  g_return_val_if_fail (GI_IS_PROPERTY_INFO (info), GI_TRANSFER_NOTHING);
 
   blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
 

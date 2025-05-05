@@ -499,7 +499,7 @@ static IntegerAliasInfo integer_aliases[] = {
 
 typedef struct {
   const char *str;
-  int tag;
+  GITypeTag tag;
   gboolean pointer;
 } BasicTypeInfo;
 

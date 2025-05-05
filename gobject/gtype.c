@@ -1444,7 +1444,7 @@ type_add_interface_Wm (TypeNode             *node,
    */
   if (node->data)
     {
-      InitState class_state = g_atomic_int_get (&node->data->class.init_state);
+      InitState class_state = (InitState) g_atomic_int_get (&node->data->class.init_state);
       
       if (class_state >= BASE_IFACE_INIT)
         type_iface_vtable_base_init_Wm (iface, node);

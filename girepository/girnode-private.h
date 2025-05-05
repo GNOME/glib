@@ -147,7 +147,7 @@ struct _GIIrNodeType
   uint8_t is_ghashtable : 1;
   uint8_t is_interface : 1;
   uint8_t is_error : 1;
-  int tag;
+  GITypeTag tag;
 
   char *unparsed; /* (owned) */
 

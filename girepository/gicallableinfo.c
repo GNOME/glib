@@ -297,8 +297,8 @@ gi_callable_info_get_caller_owns (GICallableInfo *info)
   GIRealInfo *rinfo = (GIRealInfo*) info;
   SignatureBlob *blob;
 
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), -1);
+  g_return_val_if_fail (info != NULL, GI_TRANSFER_NOTHING);
+  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), GI_TRANSFER_NOTHING);
 
   blob = (SignatureBlob *)&rinfo->typelib->data[signature_offset (info)];
 
@@ -327,8 +327,8 @@ gi_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
   GIRealInfo *rinfo = (GIRealInfo*) info;
   SignatureBlob *blob;
 
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), -1);
+  g_return_val_if_fail (info != NULL, GI_TRANSFER_NOTHING);
+  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), GI_TRANSFER_NOTHING);
 
   blob = (SignatureBlob *)&rinfo->typelib->data[signature_offset (info)];
 

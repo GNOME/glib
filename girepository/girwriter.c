@@ -221,7 +221,7 @@ write_type_info (const char *ns,
                  GITypeInfo  *info,
                  Xml         *file)
 {
-  int tag;
+  GITypeTag tag;
   GITypeInfo *type;
   gboolean is_pointer;
 

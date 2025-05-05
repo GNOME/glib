@@ -755,7 +755,7 @@ node_update_single_va_closure (SignalNode *node)
 
   node->single_va_closure_is_valid = TRUE;
   node->single_va_closure = closure;
-  node->single_va_closure_is_after = is_after;
+  node->single_va_closure_is_after = (guint) is_after;
 }
 
 static inline void
