@@ -40,6 +40,8 @@ void     g_openuri_portal_open_file_async  (GFile               *file,
 gboolean g_openuri_portal_open_file_finish (GAsyncResult        *result,
                                             GError             **error);
 
+gboolean g_openuri_portal_can_open         (const char *uri);
+
 G_END_DECLS
 
 #endif
