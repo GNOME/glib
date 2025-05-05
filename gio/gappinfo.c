@@ -1285,6 +1285,13 @@ launch_default_for_uri_portal_open_uri (GTask *task, GError *error)
       /* Reset any error previously set by launch_default_for_uri */
       g_error_free (error);
 
+      if (!g_openuri_portal_can_open (data->uri))
+        {
+          g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                                   _("The URI %s is not supported"), data->uri);
+          return;
+        }
+
       file = g_file_new_for_uri (data->uri);
 
       if (data->context)
