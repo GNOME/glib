@@ -117,6 +117,9 @@ GLogLevelFlags  g_log_set_fatal_mask    (const gchar    *log_domain,
 GLIB_AVAILABLE_IN_ALL
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
 
+GLIB_AVAILABLE_IN_2_86
+GLogLevelFlags  g_log_get_always_fatal  (void);
+
 /* Structured logging mechanism. */
 
 /**
@@ -587,7 +590,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  *
  * To debug failure of a g_return_if_fail() check, run the code under a debugger
  * with `G_DEBUG=fatal-criticals` or `G_DEBUG=fatal-warnings` defined in the
- * environment (see [Running GLib Applications](glib-running.html)):
+ * environment (see [Running GLib Applications](running.html)):
  *
  * |[
  *   G_DEBUG=fatal-warnings gdb ./my-program

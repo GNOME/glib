@@ -643,6 +643,17 @@ test_fatal_log_mask (void)
   g_test_trap_assert_stdout_unmatched ("*fatal*");
 }
 
+static void
+test_always_fatal (void)
+{
+  GLogLevelFlags log_level;
+
+  log_level = G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING;
+  g_log_set_always_fatal (log_level);
+
+  g_assert_cmpint (g_log_get_always_fatal (), ==, log_level | G_LOG_LEVEL_ERROR);
+}
+
 static gint my_print_count = 0;
 static void
 my_print_handler (const gchar *text)
@@ -1168,6 +1179,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/journald-handler", test_journald_handler);
   g_test_add_func ("/logging/warnings", test_warnings);
   g_test_add_func ("/logging/fatal-log-mask", test_fatal_log_mask);
+  g_test_add_func ("/logging/always-fatal", test_always_fatal);
   g_test_add_func ("/logging/set-handler", test_set_handler);
   g_test_add_func ("/logging/print-handler", test_print_handler);
   g_test_add_func ("/logging/printerr-handler", test_printerr_handler);
