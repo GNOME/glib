@@ -207,6 +207,7 @@ static guint               object_floating_flag_handler (GObject        *object,
                                                          gint            job);
 static inline void object_set_optional_flags (GObject *object,
                                               guint flags);
+static void g_object_weak_release_all (GObject *object, gboolean release_all);
 
 static void object_interface_check_properties           (gpointer        check_data,
 							 gpointer        g_iface);
@@ -1827,7 +1828,7 @@ g_object_real_dispose (GObject *object)
   g_signal_handlers_destroy (object);
 
   /* GWeakNotify and GClosure can call into user code */
-  g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
+  g_object_weak_release_all (object, FALSE);
   closure_array_destroy_all (object);
 }
 
@@ -3715,24 +3716,89 @@ g_object_disconnect (gpointer     _object,
   va_end (var_args);
 }
 
-typedef struct {
-  GObject *object;
+typedef struct
+{
+  GWeakNotify notify;
+  gpointer data;
+} WeakRefTuple;
+
+struct _WeakRefReleaseAllState;
+
+typedef struct _WeakRefReleaseAllState
+{
+  guint remaining_to_notify;
+  struct _WeakRefReleaseAllState *release_all_next;
+} WeakRefReleaseAllState;
+
+typedef struct
+{
   guint n_weak_refs;
-  struct {
-    GWeakNotify notify;
-    gpointer    data;
-  } weak_refs[1];  /* flexible array */
+  guint alloc_size;
+  WeakRefReleaseAllState *release_all_states;
+  WeakRefTuple weak_refs[1]; /* flexible array */
 } WeakRefStack;
 
-static void
-weak_refs_notify (gpointer data)
-{
-  WeakRefStack *wstack = data;
-  guint i;
+#define WEAK_REF_STACK_ALLOC_SIZE(alloc_size) (G_STRUCT_OFFSET (WeakRefStack, weak_refs) + sizeof (WeakRefTuple) * (alloc_size))
 
-  for (i = 0; i < wstack->n_weak_refs; i++)
-    wstack->weak_refs[i].notify (wstack->weak_refs[i].data, wstack->object);
+G_GNUC_UNUSED G_ALWAYS_INLINE static inline gboolean
+_weak_ref_release_all_state_contains (WeakRefReleaseAllState *release_all_state, WeakRefReleaseAllState *needle)
+{
+  for (; release_all_state; release_all_state = release_all_state->release_all_next)
+    {
+      if (release_all_state == needle)
+        return TRUE;
+    }
+  return FALSE;
+}
+
+G_ALWAYS_INLINE static inline void
+_weak_ref_stack_free (WeakRefStack *wstack)
+{
+#ifdef G_ENABLE_DEBUG
+  g_assert (!wstack->release_all_states);
+#endif
   g_free (wstack);
+}
+
+G_ALWAYS_INLINE static inline void
+_weak_ref_stack_update_release_all_state (WeakRefStack *wstack, guint idx)
+{
+  WeakRefReleaseAllState **previous_ptr;
+  WeakRefReleaseAllState *release_all_state;
+
+#ifdef G_ENABLE_DEBUG
+  g_assert (idx < wstack->n_weak_refs);
+#endif
+
+  previous_ptr = &wstack->release_all_states;
+
+  while (G_UNLIKELY ((release_all_state = *previous_ptr)))
+    {
+      if (idx >= release_all_state->remaining_to_notify)
+        {
+#ifdef G_ENABLE_DEBUG
+          g_assert (release_all_state->remaining_to_notify <= wstack->n_weak_refs);
+#endif
+          /* We removed an index higher than the "remaining_to_notify" count. */
+          goto next;
+        }
+
+      /* Lower the "remaining_to_notify" bar of the entries we consider, as we
+       * just removed an entry at index @idx (below that bar). */
+      release_all_state->remaining_to_notify--;
+
+      if (release_all_state->remaining_to_notify > 0)
+        goto next;
+
+      /* Remove the entry from the linked list. No need to reset
+       * release_all_state->release_all_next pointer to NULL as it has no
+       * purpose when not being linked. */
+      *previous_ptr = release_all_state->release_all_next;
+      continue;
+
+    next:
+      previous_ptr = &release_all_state->release_all_next;
+    }
 }
 
 static gpointer
@@ -3740,31 +3806,44 @@ g_object_weak_ref_cb (gpointer *data,
                       GDestroyNotify *destroy_notify,
                       gpointer user_data)
 {
-  GObject *object = ((gpointer *) user_data)[0];
-  GWeakNotify notify = ((gpointer *) user_data)[1];
-  gpointer notify_data = ((gpointer *) user_data)[2];
+  WeakRefTuple *tuple = user_data;
   WeakRefStack *wstack = *data;
   guint i;
 
   if (!wstack)
     {
-      wstack = g_new (WeakRefStack, 1);
-      wstack->object = object;
+      wstack = g_malloc (WEAK_REF_STACK_ALLOC_SIZE (1));
+      wstack->alloc_size = 1;
       wstack->n_weak_refs = 1;
+      wstack->release_all_states = NULL;
       i = 0;
 
-      *destroy_notify = weak_refs_notify;
+      *data = wstack;
+      /* We don't set a @destroy_notify. Shortly before finalize(), we call
+       * g_object_weak_release_all(), which frees the WeakRefStack. At that
+       * point the ref-count is already at zero and g_object_weak_ref() will
+       * assert against being called. This means, we expect that there is
+       * never anything to destroy. */
+#ifdef G_ENABLE_DEBUG
+      *destroy_notify = g_destroy_notify_assert_not_reached;
+#endif
     }
   else
     {
       i = wstack->n_weak_refs++;
-      wstack = g_realloc (wstack, sizeof (*wstack) + sizeof (wstack->weak_refs[0]) * i);
+
+      if (G_UNLIKELY (wstack->n_weak_refs > wstack->alloc_size))
+        {
+          if (G_UNLIKELY (wstack->alloc_size >= (G_MAXUINT / 2u + 1u)))
+            g_error ("g_object_weak_ref(): cannot register more than 2^31 references");
+          wstack->alloc_size = wstack->alloc_size * 2u;
+
+          wstack = g_realloc (wstack, WEAK_REF_STACK_ALLOC_SIZE (wstack->alloc_size));
+          *data = wstack;
+        }
     }
 
-  *data = wstack;
-
-  wstack->weak_refs[i].notify = notify;
-  wstack->weak_refs[i].data = notify_data;
+  wstack->weak_refs[i] = *tuple;
 
   return NULL;
 }
@@ -3798,7 +3877,10 @@ g_object_weak_ref (GObject    *object,
   _g_datalist_id_update_atomic (&object->qdata,
                                 quark_weak_notifies,
                                 g_object_weak_ref_cb,
-                                ((gpointer[]){ object, notify, data }));
+                                &((WeakRefTuple){
+                                    .notify = notify,
+                                    .data = data,
+                                }));
 }
 
 static gpointer
@@ -3806,8 +3888,7 @@ g_object_weak_unref_cb (gpointer *data,
                         GDestroyNotify *destroy_notify,
                         gpointer user_data)
 {
-  GWeakNotify notify = ((gpointer *) user_data)[0];
-  gpointer notify_data = ((gpointer *) user_data)[1];
+  WeakRefTuple *tuple = user_data;
   WeakRefStack *wstack = *data;
   gboolean found_one = FALSE;
   guint i;
@@ -3816,18 +3897,34 @@ g_object_weak_unref_cb (gpointer *data,
     {
       for (i = 0; i < wstack->n_weak_refs; i++)
         {
-          if (wstack->weak_refs[i].notify != notify ||
-              wstack->weak_refs[i].data != notify_data)
+          if (wstack->weak_refs[i].notify != tuple->notify ||
+              wstack->weak_refs[i].data != tuple->data)
             continue;
+
+          _weak_ref_stack_update_release_all_state (wstack, i);
 
           wstack->n_weak_refs -= 1;
           if (wstack->n_weak_refs == 0)
             {
-              g_free (wstack);
+              _weak_ref_stack_free (wstack);
               *data = NULL;
             }
-          else if (i != wstack->n_weak_refs)
-            wstack->weak_refs[i] = wstack->weak_refs[wstack->n_weak_refs];
+          else
+            {
+              if (i != wstack->n_weak_refs)
+                {
+                  memmove (&wstack->weak_refs[i],
+                           &wstack->weak_refs[i + 1],
+                           sizeof (wstack->weak_refs[i]) * (wstack->n_weak_refs - i));
+                }
+
+              if (G_UNLIKELY (wstack->n_weak_refs <= wstack->alloc_size / 4u))
+                {
+                  wstack->alloc_size = wstack->alloc_size / 2u;
+                  wstack = g_realloc (wstack, WEAK_REF_STACK_ALLOC_SIZE (wstack->alloc_size));
+                  *data = wstack;
+                }
+            }
 
           found_one = TRUE;
           break;
@@ -3835,7 +3932,7 @@ g_object_weak_unref_cb (gpointer *data,
     }
 
   if (!found_one)
-    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, notify, notify_data);
+    g_critical ("%s: couldn't find weak ref %p(%p)", G_STRFUNC, tuple->notify, tuple->data);
 
   return NULL;
 }
@@ -3859,7 +3956,139 @@ g_object_weak_unref (GObject    *object,
   _g_datalist_id_update_atomic (&object->qdata,
                                 quark_weak_notifies,
                                 g_object_weak_unref_cb,
-                                ((gpointer[]){ notify, data }));
+                                &((WeakRefTuple){
+                                    .notify = notify,
+                                    .data = data,
+                                }));
+}
+
+typedef struct
+{
+  WeakRefReleaseAllState *const release_all_state;
+  WeakRefTuple tuple;
+  gboolean release_all_done;
+} WeakRefReleaseAllData;
+
+static gpointer
+g_object_weak_release_all_cb (gpointer *data,
+                              GDestroyNotify *destroy_notify,
+                              gpointer user_data)
+{
+  WeakRefStack *wstack = *data;
+  WeakRefReleaseAllData *wdata = user_data;
+  WeakRefReleaseAllState *release_all_state = wdata->release_all_state;
+
+  if (!wstack)
+    return NULL;
+
+#ifdef G_ENABLE_DEBUG
+  g_assert (wstack->n_weak_refs > 0);
+#endif
+
+  if (release_all_state)
+    {
+      if (release_all_state->remaining_to_notify == G_MAXUINT)
+        {
+          if (wstack->n_weak_refs == 1u)
+            {
+              /* We only pop the single entry. */
+              wdata->release_all_done = TRUE;
+              release_all_state = NULL;
+            }
+          else
+            {
+              release_all_state->remaining_to_notify = wstack->n_weak_refs;
+
+              /* Prepend to linked list. */
+              release_all_state->release_all_next = wstack->release_all_states;
+              wstack->release_all_states = release_all_state;
+            }
+        }
+      else
+        {
+          if (release_all_state->remaining_to_notify == 0u)
+            {
+#ifdef G_ENABLE_DEBUG
+              g_assert (!_weak_ref_release_all_state_contains (wstack->release_all_states, release_all_state));
+#endif
+              return NULL;
+            }
+#ifdef G_ENABLE_DEBUG
+          g_assert (release_all_state->remaining_to_notify <= wstack->n_weak_refs);
+          g_assert (_weak_ref_release_all_state_contains (wstack->release_all_states, release_all_state));
+#endif
+        }
+    }
+
+  _weak_ref_stack_update_release_all_state (wstack, 0);
+
+  if (release_all_state && release_all_state->remaining_to_notify == 0)
+    wdata->release_all_done = TRUE;
+
+  wstack->n_weak_refs--;
+
+  /* Emit the notifications in FIFO order. */
+  wdata->tuple = wstack->weak_refs[0];
+
+  if (wstack->n_weak_refs == 0)
+    {
+      _weak_ref_stack_free (wstack);
+      *data = NULL;
+
+      /* Also set release_all_done.
+       *
+       * If g_object_weak_release_all() was called during dispose (with
+       * release_all FALSE), we anyway have an upper limit of how many
+       * notifications we want to pop. We only pop the notifications that were
+       * registered when the loop initially starts. In that case, we surely
+       * don't want the caller to call back.
+       *
+       * g_object_weak_release_all() is also being called before finalize. At
+       * that point, the ref count is already at zero, and g_object_weak_ref()
+       * asserts against being called. So nobody can register a new weak ref
+       * anymore.
+       *
+       * In both cases, we don't require the calling loop to call back. This
+       * saves an additional GData lookup. */
+      wdata->release_all_done = TRUE;
+    }
+  else
+    {
+      memmove (&wstack->weak_refs[0],
+               &wstack->weak_refs[1],
+               sizeof (wstack->weak_refs[0]) * wstack->n_weak_refs);
+
+      /* Don't bother to shrink the buffer. Most likely the object gets
+       * destroyed soon after. */
+    }
+
+  return wdata;
+}
+
+static void
+g_object_weak_release_all (GObject *object, gboolean release_all)
+{
+  WeakRefReleaseAllState release_all_state = {
+    .remaining_to_notify = G_MAXUINT,
+  };
+  WeakRefReleaseAllData wdata = {
+    .release_all_state = release_all ? NULL : &release_all_state,
+    .release_all_done = FALSE,
+  };
+
+  while (TRUE)
+    {
+      if (!_g_datalist_id_update_atomic (&object->qdata,
+                                         quark_weak_notifies,
+                                         g_object_weak_release_all_cb,
+                                         &wdata))
+        break;
+
+      wdata.tuple.notify (wdata.tuple.data, object);
+
+      if (wdata.release_all_done)
+        break;
+    }
 }
 
 /**
@@ -4603,7 +4832,7 @@ retry_decrement:
 
   closure_array_destroy_all (object);
   g_signal_handlers_destroy (object);
-  g_datalist_id_set_data (&object->qdata, quark_weak_notifies, NULL);
+  g_object_weak_release_all (object, TRUE);
 
   TRACE (GOBJECT_OBJECT_FINALIZE (object, G_TYPE_FROM_INSTANCE (object)));
   G_OBJECT_GET_CLASS (object)->finalize (object);
