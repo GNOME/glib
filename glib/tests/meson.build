@@ -98,6 +98,7 @@ glib_tests = {
   },
   'pathbuf' : {},
   'pattern' : {},
+  'print' : {},
   'private' : {},
   'protocol' : {},
   'queue' : {},
