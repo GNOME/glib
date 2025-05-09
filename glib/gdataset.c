@@ -1098,6 +1098,9 @@ g_datalist_id_update_atomic (GData **datalist,
   GDestroyNotify new_destroy;
   guint32 idx;
 
+  g_return_val_if_fail (datalist, NULL);
+  g_return_val_if_fail (key_id != 0, NULL);
+
   d = g_datalist_lock_and_get (datalist);
 
   data = datalist_find (d, key_id, &idx);
