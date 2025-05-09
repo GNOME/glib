@@ -301,6 +301,10 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
   gboolean reallocated;
   GData *d;
 
+#ifdef G_ENABLE_DEBUG
+  g_assert (key_id != 0);
+#endif
+
   d = *data;
   if (!d)
     {
@@ -612,6 +616,10 @@ g_data_set_internal (GData	  **datalist,
   GData *new_d = NULL;
   GDataElt old, *data;
   guint32 idx;
+
+#ifdef G_ENABLE_DEBUG
+  g_assert (key_id != 0);
+#endif
 
   d = g_datalist_lock_and_get (datalist);
 
