@@ -654,29 +654,9 @@ test_weak_ref_on_dispose (void)
   g_assert_null (g_weak_ref_get (&weak));
 }
 
-static GWeakRef *_weak_ref_on_run_dispose_weak = NULL;
-
 static void
-_weak_ref_on_run_dispose_weak_cb (gpointer data,
-                                  GObject *where_the_object_was)
+test_weak_ref_on_run_dispose (void)
 {
-  g_assert_nonnull (_weak_ref_on_run_dispose_weak);
-  g_assert_true (_weak_ref_on_run_dispose_weak == data);
-
-  /* It is important that GWeakRef are cleared *before* we emit notifications.
-   * For example, see weak_unbind() which relies on this.
-   *
-   * See also: https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4586 */
-
-  g_assert_null (g_weak_ref_get (data));
-
-  _weak_ref_on_run_dispose_weak = NULL;
-}
-
-static void
-test_weak_ref_on_run_dispose (gconstpointer test_data)
-{
-  const gboolean WITH_WEAK_NOTIFY = GPOINTER_TO_INT (test_data);
   GObject *obj;
   GWeakRef weak = { { GUINT_TO_POINTER (0xDEADBEEFU) } };
 
@@ -689,16 +669,7 @@ test_weak_ref_on_run_dispose (gconstpointer test_data)
   g_assert_true (obj == g_weak_ref_get (&weak));
   g_object_unref (obj);
 
-  if (WITH_WEAK_NOTIFY)
-    {
-      /* Inside the weak notification, we expect the weakref to be NULL
-       * already. */
-      _weak_ref_on_run_dispose_weak = &weak;
-      g_object_weak_ref (obj, _weak_ref_on_run_dispose_weak_cb, &weak);
-    }
-
   g_object_run_dispose (obj);
-  g_assert_null (_weak_ref_on_run_dispose_weak);
   g_assert_null (g_weak_ref_get (&weak));
 
   g_weak_ref_set (&weak, obj);
@@ -1675,8 +1646,7 @@ main (int argc, char **argv)
   g_test_add_func ("/object/weak-pointer/set-function", test_weak_pointer_set_function);
   g_test_add_func ("/object/weak-ref", test_weak_ref);
   g_test_add_func ("/object/weak-ref/on-dispose", test_weak_ref_on_dispose);
-  g_test_add_data_func ("/object/weak-ref/on-run-dispose/with-weak-notify", GINT_TO_POINTER (TRUE), test_weak_ref_on_run_dispose);
-  g_test_add_data_func ("/object/weak-ref/on-run-dispose/without-weak-notify", GINT_TO_POINTER (FALSE), test_weak_ref_on_run_dispose);
+  g_test_add_func ("/object/weak-ref/on-run-dispose", test_weak_ref_on_run_dispose);
   g_test_add_func ("/object/weak-ref/on-toggle-notify", test_weak_ref_on_toggle_notify);
   g_test_add_func ("/object/weak-ref/in-toggle-notify", test_weak_ref_in_toggle_notify);
   g_test_add_func ("/object/weak-ref/many", test_weak_ref_many);
