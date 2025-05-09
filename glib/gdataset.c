@@ -1082,8 +1082,6 @@ g_datalist_id_remove_no_notify (GData	**datalist,
  * @user_data.
  *
  * Returns: the value returned by @callback.
- *
- * Since: 2.80
  */
 gpointer
 g_datalist_id_update_atomic (GData **datalist,
