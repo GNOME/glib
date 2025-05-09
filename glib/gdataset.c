@@ -1017,8 +1017,11 @@ g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
 
   g_return_val_if_fail (dataset_location != NULL, NULL);
   
+  if (key_id == 0)
+    return NULL;
+
   G_LOCK (g_dataset_global);
-  if (key_id && g_dataset_location_ht)
+  if (g_dataset_location_ht)
     {
       GDataset *dataset;
   
@@ -1207,9 +1210,12 @@ g_dataset_id_get_data (gconstpointer  dataset_location,
   gpointer retval = NULL;
 
   g_return_val_if_fail (dataset_location != NULL, NULL);
-  
+
+  if (key_id == 0)
+    return NULL;
+
   G_LOCK (g_dataset_global);
-  if (key_id && g_dataset_location_ht)
+  if (g_dataset_location_ht)
     {
       GDataset *dataset;
       
