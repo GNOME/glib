@@ -1429,6 +1429,9 @@ g_datalist_get_data (GData **datalist,
 
   g_return_val_if_fail (datalist != NULL, NULL);
 
+  if (G_UNLIKELY (!key))
+    return NULL;
+
   d = g_datalist_lock_and_get (datalist);
 
   if (!d)
@@ -1442,6 +1445,8 @@ g_datalist_get_data (GData **datalist,
 
       for (i = 0; i < d->len; i++)
         {
+          const char *qstr;
+
           data_elt = &d->data[i];
           /* Here we intentionally compare by strings, instead of calling
            * g_quark_try_string() first.
@@ -1449,7 +1454,8 @@ g_datalist_get_data (GData **datalist,
            * See commit 1cceda49b60b ('Make g_datalist_get_data not look up the
            * quark').
            */
-          if (g_strcmp0 (g_quark_to_string (data_elt->key), key) == 0)
+          qstr = g_quark_to_string (data_elt->key);
+          if (qstr && strcmp (qstr, key) == 0)
             {
               res = data_elt->data;
               goto out;
@@ -1459,7 +1465,7 @@ g_datalist_get_data (GData **datalist,
     }
 
   key_id = g_quark_try_string (key);
-  if (key_id == 0 && key)
+  if (key_id == 0)
     goto out;
 
   data_elt = g_hash_table_lookup (index, &key_id);

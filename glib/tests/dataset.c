@@ -254,9 +254,6 @@ test_datalist_basic (gconstpointer test_data)
   ret = g_datalist_get_data (&list, "two");
   g_assert_null (ret);
 
-  /* Despite the bug below, we won't find a NULL entry at this point.
-   * If !HAS_MANY, there are no bogus quarks and we don't find them.
-   * With HAS_MANY, we have bogus quarks but use the lookup index. */
   ret = g_datalist_get_data (&list, NULL);
   g_assert_null (ret);
 
@@ -268,13 +265,7 @@ test_datalist_basic (gconstpointer test_data)
 
   /* Ensure that we don't find the BOGUS_QUARK when looking up by NULL. */
   ret = g_datalist_get_data (&list, NULL);
-  if (HAS_MANY)
-    g_assert_null (ret);
-  else
-    {
-      /* This is a bug. */
-      g_assert_true (ret == data);
-    }
+  g_assert_null (ret);
 
   g_datalist_clear (&list);
 }
