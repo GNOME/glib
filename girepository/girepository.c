@@ -2271,3 +2271,33 @@ gi_typelib_blob_type_to_info_type (GITypelibBlobType blob_type)
       return (GIInfoType) blob_type;
     }
 }
+
+/**
+ * gi_repository_dup_default:
+ *
+ * Gets the singleton process-global default `GIRepository`.
+ *
+ * The singleton is needed for situations where you must coordinate between
+ * bindings and libraries which also need to interact with introspection which
+ * could affect the bindings. For example, a Python application using a
+ * GObject-based library through `GIRepository` to load plugins also written in
+ * Python.
+ *
+ * Returns: (transfer full): the global singleton repository
+ *
+ * Since: 2.86
+ */
+GIRepository *
+gi_repository_dup_default (void)
+{
+  static GIRepository *instance;
+
+  if (g_once_init_enter (&instance))
+    {
+      GIRepository *repository = gi_repository_new ();
+      g_object_add_weak_pointer (G_OBJECT (repository), (gpointer *)&instance);
+      g_once_init_leave (&instance, repository);
+    }
+
+  return g_object_ref (instance);
+}

@@ -895,6 +895,20 @@ test_repository_loaded_namespaces (RepositoryFixture *fx,
   g_strfreev (namespaces);
 }
 
+static void
+test_repository_dup_default (void)
+{
+  GIRepository *repository1 = gi_repository_dup_default ();
+  GIRepository *repository2 = gi_repository_dup_default ();
+
+  g_assert_nonnull (repository1);
+  g_assert_nonnull (repository2);
+  g_assert_true (repository1 == repository2);
+
+  g_clear_object (&repository1);
+  g_clear_object (&repository2);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -924,6 +938,7 @@ main (int   argc,
   ADD_REPOSITORY_TEST ("/repository/vfunc-info-with-invoker-on-object", test_repository_vfunc_info_with_invoker_on_object, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/repository/find-by-gtype", test_repository_find_by_gtype, &typelib_load_spec_gio_platform);
   ADD_REPOSITORY_TEST ("/repository/loaded-namespaces", test_repository_loaded_namespaces, &typelib_load_spec_gio_platform);
+  g_test_add_func ("/repository/dup_default", test_repository_dup_default);
 
   return g_test_run ();
 }
