@@ -147,9 +147,8 @@ g_socket_address_init (GSocketAddress *address)
  * g_socket_address_to_native().
  *
  * Returns: the size of the native struct sockaddr that
- *     @address represents, or `-1` if the passed
- *     @address is of type other than `AF_INET`
- *     or `AF_INET6` 
+ *     @address represents, or `-1` if @address
+ *     is not valid
  *
  * Since: 2.22
  */
