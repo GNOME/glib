@@ -726,6 +726,8 @@ guint    g_source_get_id          (GSource        *source);
 
 GLIB_AVAILABLE_IN_ALL
 GMainContext *g_source_get_context (GSource       *source);
+GLIB_AVAILABLE_IN_2_86
+GMainContext *g_source_dup_context (GSource       *source);
 
 GLIB_AVAILABLE_IN_ALL
 void     g_source_set_callback    (GSource        *source,
