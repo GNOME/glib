@@ -3496,6 +3496,11 @@ g_key_file_set_group_comment (GKeyFile     *key_file,
  * If both @key and @group_name are `NULL`, then @comment will be
  * written above the first group in the file.
  *
+ * Passing a non-existent @group_name or @key to this function returns 
+ * false and populates @error. (In contrast, passing a non-existent 
+ * `group_name` or `key` to [method@GLib.KeyFile.set_string] 
+ * creates the associated group name and key.)
+ *
  * Note that this function prepends a `#` comment marker to
  * each line of @comment.
  *
