@@ -1508,6 +1508,8 @@ get_windows_version (gboolean with_windows)
             }
 
           g_string_append (version, versions[i].spversion);
+
+          break;
         }
     }
 
