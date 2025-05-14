@@ -100,8 +100,8 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
 
 /**
  * GSourceFuncs:
- * @prepare: Called before all the file descriptors are polled. If the
- *     source can determine that it is ready here (without waiting for the
+ * @prepare: (nullable): Called before all the file descriptors are polled. If
+ *     the source can determine that it is ready here (without waiting for the
  *     results of the poll() call) it should return %TRUE. It can also return
  *     a @timeout_ value which should be the maximum timeout (in milliseconds)
  *     which should be passed to the poll() call. The actual timeout used will
@@ -111,9 +111,9 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     %FALSE with a timeout of -1.  If @prepare returns a
  *     timeout and the source also has a ready time set, then the
  *     lower of the two will be used.
- * @check: Called after all the file descriptors are polled. The source
- *     should return %TRUE if it is ready to be dispatched. Note that some
- *     time may have passed since the previous prepare function was called,
+ * @check: (nullable): Called after all the file descriptors are polled. The
+ *     source should return %TRUE if it is ready to be dispatched. Note that
+ *     some time may have passed since the previous prepare function was called,
  *     so the source should be checked again here.  Since 2.36 this may
  *     be %NULL, in which case the effect is as if the function always returns
  *     %FALSE.
@@ -127,11 +127,12 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     The return value of the @dispatch function should be
  *     [const@GLib.SOURCE_REMOVE] if the source should be removed or
  *     [const@GLib.SOURCE_CONTINUE] to keep it.
- * @finalize: Called when the source is finalized. At this point, the source
- *     will have been destroyed, had its callback cleared, and have been removed
- *     from its [struct@GLib.MainContext], but it will still have its final
- *     reference count, so methods can be called on it from within this
- *     function.
+ * @finalize: (nullable): Called when the source is finalized. At this point,
+ *     the source will have been destroyed, had its callback cleared, and have
+ *     been removed from its [struct@GLib.MainContext], but it will still have
+ *     its final reference count, so methods can be called on it from within
+ *     this function. This may be %NULL, in which case the effect is as if the
+ *     function does nothing and returns.
  *
  * The `GSourceFuncs` struct contains a table of
  * functions used to handle event sources in a generic manner.
