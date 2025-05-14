@@ -259,7 +259,9 @@ g_zlib_compressor_class_init (GZlibCompressorClass *klass)
    * GZlibCompressor:level:
    *
    * The level of compression from `0` (no compression) to `9` (most
-   * compression). `-1` for the default level.
+   * compression).
+   *
+   * `-1` for the default level.
    *
    * Since: 2.24
    */
@@ -275,9 +277,14 @@ g_zlib_compressor_class_init (GZlibCompressorClass *klass)
   /**
    * GZlibCompressor:file-info:
    *
-   * If set to a non-%NULL #GFileInfo object, and #GZlibCompressor:format is
-   * %G_ZLIB_COMPRESSOR_FORMAT_GZIP, the compressor will write the file name
-   * and modification time from the file info to the GZIP header.
+   * A [class@Gio.FileInfo] containing file information to put into the gzip
+   * header.
+   *
+   * The file name and modification time from the file info will be used.
+   *
+   * This will only be used if non-`NULL` and
+   * [property@Gio.ZlibCompressor:format] is
+   * [enum@Gio.ZlibCompressorFormat.GZIP].
    *
    * Since: 2.26
    */
@@ -316,13 +323,12 @@ g_zlib_compressor_class_init (GZlibCompressorClass *klass)
 
 /**
  * g_zlib_compressor_new:
- * @format: The format to use for the compressed data
- * @level: compression level (0-9), -1 for default
+ * @format: the format to use for the compressed data
+ * @level: compression level (`0`-`9`), `-1` for default
  *
- * Creates a new #GZlibCompressor.
+ * Creates a compressor.
  *
- * Returns: a new #GZlibCompressor
- *
+ * Returns: a new [class@Gio.ZlibCompressor]
  * Since: 2.24
  **/
 GZlibCompressor *
@@ -341,12 +347,11 @@ g_zlib_compressor_new (GZlibCompressorFormat format,
 
 /**
  * g_zlib_compressor_get_file_info:
- * @compressor: a #GZlibCompressor
+ * @compressor: a compressor
  *
- * Returns the #GZlibCompressor:file-info property.
+ * Gets the [property@Gio.ZlibCompressor:file-info] property.
  *
- * Returns: (nullable) (transfer none): a #GFileInfo, or %NULL
- *
+ * Returns: (nullable) (transfer none): file info for the gzip header, if set
  * Since: 2.26
  */
 GFileInfo *
@@ -359,17 +364,14 @@ g_zlib_compressor_get_file_info (GZlibCompressor *compressor)
 
 /**
  * g_zlib_compressor_set_file_info:
- * @compressor: a #GZlibCompressor
- * @file_info: (nullable): a #GFileInfo
+ * @compressor: a compressor
+ * @file_info: (nullable): file info for the gzip header
  *
- * Sets @file_info in @compressor. If non-%NULL, and @compressor's
- * #GZlibCompressor:format property is %G_ZLIB_COMPRESSOR_FORMAT_GZIP,
- * it will be used to set the file name and modification time in
- * the GZIP header of the compressed data.
+ * Sets the [property@Gio.ZlibCompressor:file-info] property.
  *
  * Note: it is an error to call this function while a compression is in
  * progress; it may only be called immediately after creation of @compressor,
- * or after resetting it with g_converter_reset().
+ * or after resetting it with [method@Gio.Converter.reset].
  *
  * Since: 2.26
  */
