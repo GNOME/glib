@@ -233,10 +233,12 @@ g_zlib_decompressor_class_init (GZlibDecompressorClass *klass)
   /**
    * GZlibDecompressor:file-info:
    *
-   * A #GFileInfo containing the information found in the GZIP header
-   * of the data stream processed, or %NULL if the header was not yet
-   * fully processed, is not present at all, or the compressor's
-   * #GZlibDecompressor:format property is not %G_ZLIB_COMPRESSOR_FORMAT_GZIP.
+   * A [class@Gio.FileInfo] containing the information found in the gzip header
+   * of the data stream processed.
+   *
+   * This will be `NULL` if the header was not yet fully processed, is not
+   * present at all, or the compressor’s [property@Gio.ZlibDecompressor:format]
+   * property is not [enum@Gio.ZlibCompressorFormat.GZIP].
    *
    * Since: 2.26
    */
@@ -250,12 +252,11 @@ g_zlib_decompressor_class_init (GZlibDecompressorClass *klass)
 
 /**
  * g_zlib_decompressor_new:
- * @format: The format to use for the compressed data
+ * @format: the format to use for the compressed data
  *
- * Creates a new #GZlibDecompressor.
+ * Creates a new decompressor.
  *
- * Returns: a new #GZlibDecompressor
- *
+ * Returns: a new [class@Gio.ZlibDecompressor]
  * Since: 2.24
  **/
 GZlibDecompressor *
@@ -274,14 +275,9 @@ g_zlib_decompressor_new (GZlibCompressorFormat format)
  * g_zlib_decompressor_get_file_info:
  * @decompressor: a #GZlibDecompressor
  *
- * Retrieves the #GFileInfo constructed from the GZIP header data
- * of compressed data processed by @compressor, or %NULL if @decompressor's
- * #GZlibDecompressor:format property is not %G_ZLIB_COMPRESSOR_FORMAT_GZIP,
- * or the header data was not fully processed yet, or it not present in the
- * data stream at all.
+ * Gets the [property@Gio.ZlibDecompressor:file-info] property.
  *
- * Returns: (nullable) (transfer none): a #GFileInfo, or %NULL
- *
+ * Returns: (nullable) (transfer none): file info from the gzip header, if available
  * Since: 2.26
  */
 GFileInfo *
