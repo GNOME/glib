@@ -6,14 +6,19 @@ being defined at build time:
 
 `--buildtype={plain,release,minsize,custom}`
  : No special macros or options
+
 `--buildtype={debug,debugoptimized}` (`debugoptimized` is the default)
  : `-DG_ENABLE_DEBUG -g`
+
 `-Dglib_debug=disabled`
  : Omits `G_ENABLE_DEBUG` when implied by `--buildtype`/`-Ddebug`
+
 `-Dglib_debug=enabled`
  : Defines `G_ENABLE_DEBUG` regardless of `--buildtype`/`-Ddebug`
+
 `-Dglib_asserts=false`
  : `-DG_DISABLE_ASSERT`
+
 `-Dglib_checks=false`
  : `-DG_DISABLE_CHECKS`
 
