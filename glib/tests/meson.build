@@ -252,7 +252,9 @@ if host_machine.system() == 'windows'
     'win32' : {
       'dependencies' : [wincodecs],
     },
-    'win32-private' : {},
+    'win32-private' : {
+      'dependencies' : [winsock2],
+    },
   }
 else
   glib_tests += {

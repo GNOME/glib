@@ -20,10 +20,90 @@
 
 #include "config.h"
 
+#include <winsock2.h>
+#include <windows.h>
+
 #include <glib.h>
 #include <glib/gwin32private.h>
 
-#include <windows.h>
+static void
+test_handle_is_console_output_files (void)
+{
+  const struct {
+    const wchar_t *path;
+    DWORD access_rights;
+    bool expected_value;
+  } tests[] = {
+    { L"CONOUT$", GENERIC_WRITE,                true },
+    { L"CONIN$",  GENERIC_WRITE | GENERIC_READ, false },
+    { L"NUL",     GENERIC_WRITE,                false },
+  };
+  HANDLE handle;
+
+  /* ERROR_ACCESS_DENIED is returned if this process
+   * is already associated with a console. */
+  g_assert_true (AllocConsole () || GetLastError () == ERROR_ACCESS_DENIED);
+
+  for (size_t i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      const DWORD share_mode = FILE_SHARE_READ |
+                               FILE_SHARE_WRITE |
+                               FILE_SHARE_DELETE;
+
+      handle = CreateFile (tests[i].path,
+                           tests[i].access_rights,
+                           share_mode,
+                           NULL,
+                           OPEN_EXISTING,
+                           0, NULL);
+      g_assert_true (handle != INVALID_HANDLE_VALUE);
+
+      if (tests[i].expected_value)
+        g_assert_true (g_win32_handle_is_console_output (handle));
+      else
+        g_assert_false (g_win32_handle_is_console_output (handle));
+
+      CloseHandle (handle);
+    }
+}
+
+static void
+test_handle_is_console_output_screen_buffer (void)
+{
+  const DWORD access_rights = GENERIC_WRITE;
+  const DWORD share_mode = FILE_SHARE_READ | FILE_SHARE_WRITE;
+  const DWORD flags = CONSOLE_TEXTMODE_BUFFER;
+  HANDLE handle;
+
+  handle = CreateConsoleScreenBuffer (access_rights, share_mode, NULL, flags, NULL);
+
+  g_assert_true (handle != INVALID_HANDLE_VALUE);
+  g_assert_true (g_win32_handle_is_console_output (handle));
+
+  CloseHandle (handle);
+}
+
+static void
+test_handle_is_console_output_socket (void)
+{
+  const DWORD flags = WSA_FLAG_OVERLAPPED |
+                      WSA_FLAG_NO_HANDLE_INHERIT;
+  SOCKET sock;
+
+  WSADATA wsa_data;
+  int code = WSAStartup (MAKEWORD (2, 2), &wsa_data);
+  if (code)
+    g_error ("%s failed with error code %d", "WSAStartup", code);
+
+  sock = WSASocket (AF_INET, SOCK_DGRAM, IPPROTO_UDP, NULL, 0, flags);
+  if (sock == INVALID_SOCKET)
+    g_error ("%s failed with error code %u", "WSASocket", WSAGetLastError ());
+
+  g_assert_false (g_win32_handle_is_console_output ((HANDLE)sock));
+
+  closesocket (sock);
+  WSACleanup ();
+}
 
 static void
 test_substitute_pid_and_event (void)
@@ -70,6 +150,13 @@ main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/win32/handle-is-console-output/files",
+                   test_handle_is_console_output_files);
+  g_test_add_func ("/win32/handle-is-console-output/screen-buffer",
+                   test_handle_is_console_output_screen_buffer);
+  g_test_add_func ("/win32/handle-is-console-output/socket",
+                   test_handle_is_console_output_socket);
 
   g_test_add_func ("/win32/substitute-pid-and-event", test_substitute_pid_and_event);
 
