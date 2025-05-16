@@ -50,6 +50,11 @@ g_win32_api_failed (const char *where,
 #define WIN32_API_FAILED(api) do { g_win32_api_failed (G_STRLOC, api); } while (0)
 
 bool
+g_win32_error_message_in_place   (DWORD          code,
+                                  wchar_t       *buffer,
+                                  size_t         wchars_count);
+
+bool
 g_win32_substitute_pid_and_event (wchar_t       *local_debugger,
                                   gsize          debugger_size,
                                   const wchar_t *cmdline,

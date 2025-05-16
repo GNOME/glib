@@ -1702,7 +1702,7 @@ g_win32_reopen_noninherited (int fd,
   return dupfd;
 }
 
-static bool
+bool
 g_win32_error_message_in_place (DWORD    code,
                                 wchar_t *buffer,
                                 size_t   wchars_count)

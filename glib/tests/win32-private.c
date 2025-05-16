@@ -106,6 +106,26 @@ test_handle_is_console_output_socket (void)
 }
 
 static void
+test_error_message (void)
+{
+  wchar_t buffer[100];
+  size_t length;
+
+  g_win32_error_message_in_place (ERROR_PATH_NOT_FOUND, buffer, G_N_ELEMENTS (buffer));
+  length = wcslen (buffer);
+
+  g_assert_cmpint (length, >, 1);
+  g_assert_cmpint (length, <, G_N_ELEMENTS (buffer));
+  g_assert_cmpint (buffer[length - 1], !=, L'\n');
+
+  /* Test small buffer */
+  for (size_t i = 0; i < 10; i++)
+    buffer[i] = L'\0';
+  g_win32_error_message_in_place (ERROR_PATH_NOT_FOUND, buffer, 10);
+  g_assert_cmpint (buffer[10 - 1], ==, L'\0');
+}
+
+static void
 test_substitute_pid_and_event (void)
 {
   const wchar_t not_enough[] = L"too long when %e and %p are substituted";
@@ -157,6 +177,8 @@ main (int   argc,
                    test_handle_is_console_output_screen_buffer);
   g_test_add_func ("/win32/handle-is-console-output/socket",
                    test_handle_is_console_output_socket);
+
+  g_test_add_func ("/win32/error-message", test_error_message);
 
   g_test_add_func ("/win32/substitute-pid-and-event", test_substitute_pid_and_event);
 
