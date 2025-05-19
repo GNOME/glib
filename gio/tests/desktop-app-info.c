@@ -876,15 +876,15 @@ assert_implementations (const gchar *interface,
   g_free (result);
 }
 
-#define ALL_USR_APPS  "evince-previewer.desktop nautilus-classic.desktop gnome-font-viewer.desktop "         \
-                      "baobab.desktop yelp.desktop eog.desktop cheese.desktop org.gnome.clocks.desktop "         \
-                      "gnome-contacts.desktop kde4-kate.desktop gcr-prompter.desktop totem.desktop "         \
-                      "gnome-terminal.desktop nautilus-autorun-software.desktop gcr-viewer.desktop "         \
-                      "nautilus-connect-server.desktop kde4-dolphin.desktop gnome-music.desktop "            \
-                      "kde4-konqbrowser.desktop gucharmap.desktop kde4-okular.desktop nautilus.desktop "     \
-                      "gedit.desktop evince.desktop file-roller.desktop dconf-editor.desktop glade.desktop " \
-                      "invalid-desktop.desktop"
-#define HOME_APPS     "epiphany-weather-for-toronto-island-9c6a4e022b17686306243dada811d550d25eb1fb.desktop"
+#define ALL_USR_APPS "evince-previewer.desktop nautilus-classic.desktop gnome-font-viewer.desktop "         \
+                     "baobab.desktop yelp.desktop eog.desktop cheese.desktop org.gnome.clocks.desktop "     \
+                     "gnome-contacts.desktop kde4-kate.desktop gcr-prompter.desktop totem.desktop "         \
+                     "gnome-terminal.desktop nautilus-autorun-software.desktop gcr-viewer.desktop "         \
+                     "nautilus-connect-server.desktop kde4-dolphin.desktop gnome-music.desktop "            \
+                     "kde4-konqbrowser.desktop gucharmap.desktop kde4-okular.desktop nautilus.desktop "     \
+                     "gedit.desktop evince.desktop file-roller.desktop dconf-editor.desktop glade.desktop " \
+                     "invalid-desktop.desktop org.gnome.Calculator.desktop libreoffice-calc.desktop"
+#define HOME_APPS    "epiphany-weather-for-toronto-island-9c6a4e022b17686306243dada811d550d25eb1fb.desktop"
 #define ALL_HOME_APPS HOME_APPS " eog.desktop"
 
 static void
@@ -923,9 +923,14 @@ test_search (void)
    * match the prefix command ("/bin/sh") in the Exec= line though. Then with
    * substring matching, Image Viewer (eog) should be in next group because it
    * contains "Slideshow" in its keywords.
+   *
+   * Finally we have LibreOffice Calc, which contains "OpenDocument Spreadsheet".
+   * It is sorted last because its match ("sh" in "Spreadsheet") occurs in a
+   * later token.
    */
   assert_search ("sh", "gnome-terminal.desktop\n"
-                       "eog.desktop\n", TRUE, FALSE, NULL, NULL);
+                       "eog.desktop\n"
+                       "libreoffice-calc.desktop\n", TRUE, FALSE, NULL, NULL);
 
   /* "frobnicator.desktop" is ignored by get_all() because the binary is
    * missing, but search should still find it (to avoid either stale results
@@ -946,6 +951,18 @@ test_search (void)
   assert_search ("con", "gnome-contacts.desktop nautilus-connect-server.desktop\n"
                         "dconf-editor.desktop\n"
                         "nautilus-classic.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* We prefer matches of tokens that come earlier in a string. In this case
+   * "LibreOffice Calc" and "Calculator" both have a name that contains a prefix
+   * match "cal", but the one in Calculator occurs in the first token.
+   */
+  assert_search ("cal", "org.gnome.Calculator.desktop\nlibreoffice-calc.desktop\n", TRUE, TRUE, NULL, NULL);
+
+  /* Same as above, but ensure that substring matches are sorted after prefix matches */
+  assert_search ("ca", "org.gnome.Calculator.desktop\n"
+                       "libreoffice-calc.desktop\n"
+                       "frobnicator.desktop\n"
+                       "cheese.desktop\n", TRUE, TRUE, NULL, NULL);
 
   /* "gnome" will match "eye of gnome" from the user's directory, plus
    * matching "GNOME Clocks" X-GNOME-FullName.

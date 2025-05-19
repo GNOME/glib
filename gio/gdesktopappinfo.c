@@ -536,6 +536,7 @@ struct search_result
   const gchar *app_name;
   gint         category;
   gint         match_type;
+  gint         token_pos;
 };
 
 static struct search_result *static_token_results;
@@ -589,13 +590,20 @@ compare_categories (gconstpointer a,
   if (ra->match_type != rb->match_type)
     return ra->match_type - rb->match_type;
 
-  return ra->category - rb->category;
+  if (ra->category != rb->category)
+    return ra->category - rb->category;
+
+  /* We prefer matches that occur earlier in the string. Eg. this will match 'Calculator'
+   * before 'LibreOffice Calc' when searching for 'calc'.
+   */
+  return ra->token_pos - rb->token_pos;
 }
 
 static void
 add_token_result (const gchar *app_name,
                   guint16      category,
-                  guint16      match_type)
+                  guint16      match_type,
+                  guint16      token_pos)
 {
   if G_UNLIKELY (static_token_results_size == static_token_results_allocated)
     {
@@ -606,6 +614,7 @@ add_token_result (const gchar *app_name,
   static_token_results[static_token_results_size].app_name = app_name;
   static_token_results[static_token_results_size].category = category;
   static_token_results[static_token_results_size].match_type = match_type;
+  static_token_results[static_token_results_size].token_pos = token_pos;
   static_token_results_size++;
 }
 
@@ -696,6 +705,9 @@ merge_token_results (gboolean first)
                * Writer should be higher priority than LibreOffice Draw with
                * `lib w`.
                *
+               * We prioritize tokens that occur near the start of the string
+               * over tokens that appear near the end.
+               *
                * (This ignores the difference between partly prefix matches and
                * all substring matches, however most time we just focus on exact
                * prefix matches, who cares the 10th-20th search results?)
@@ -705,6 +717,8 @@ merge_token_results (gboolean first)
                                                        static_token_results[i].category);
               static_search_results[j].match_type = MAX (static_search_results[k].match_type,
                                                          static_token_results[i].match_type);
+              static_search_results[j].token_pos = MAX (static_search_results[k].token_pos,
+                                                        static_token_results[i].token_pos);
               j++;
             }
         }
@@ -1091,7 +1105,8 @@ typedef GHashTable MemoryIndex;
 struct _MemoryIndexEntry
 {
   const gchar      *app_name; /* pointer to the hashtable key */
-  gint              match_category;
+  gint              match_category; /* the entry key (Name, Exec, ...) */
+  gint              token_pos; /* the position of the token in the field */
   MemoryIndexEntry *next;
 };
 
@@ -1113,6 +1128,7 @@ static void
 memory_index_add_token (MemoryIndex *mi,
                         const gchar *token,
                         gint         match_category,
+                        gint         token_pos,
                         const gchar *app_name)
 {
   MemoryIndexEntry *mie, *first;
@@ -1120,6 +1136,7 @@ memory_index_add_token (MemoryIndex *mi,
   mie = g_slice_new (MemoryIndexEntry);
   mie->app_name = app_name;
   mie->match_category = match_category;
+  mie->token_pos = token_pos;
 
   first = g_hash_table_lookup (mi, token);
 
@@ -1142,15 +1159,16 @@ memory_index_add_string (MemoryIndex *mi,
                          const gchar *app_name)
 {
   gchar **tokens, **alternates;
-  gint i;
+  gint i, n;
 
   tokens = g_str_tokenize_and_fold (string, NULL, &alternates);
 
   for (i = 0; tokens[i]; i++)
-    memory_index_add_token (mi, tokens[i], match_category, app_name);
+    memory_index_add_token (mi, tokens[i], match_category, i, app_name);
 
+  n = i;
   for (i = 0; alternates[i]; i++)
-    memory_index_add_token (mi, alternates[i], match_category, app_name);
+    memory_index_add_token (mi, alternates[i], match_category, n + i, app_name);
 
   g_strfreev (alternates);
   g_strfreev (tokens);
@@ -1231,7 +1249,7 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
           /* Make note of the Implements= line */
           implements = g_key_file_get_string_list (key_file, "Desktop Entry", "Implements", NULL, NULL);
           for (i = 0; implements && implements[i]; i++)
-            memory_index_add_token (dir->memory_implementations, implements[i], 0, app);
+            memory_index_add_token (dir->memory_implementations, implements[i], i, 0, app);
           g_strfreev (implements);
         }
 
@@ -1272,7 +1290,7 @@ desktop_file_dir_unindexed_search (DesktopFileDir  *dir,
 
       while (mie)
         {
-          add_token_result (mie->app_name, mie->match_category, match_type);
+          add_token_result (mie->app_name, mie->match_category, match_type, mie->token_pos);
           mie = mie->next;
         }
     }
@@ -4740,6 +4758,7 @@ g_desktop_app_info_search (const gchar *search_string)
   gchar **search_tokens;
   gint last_category = -1;
   gint last_match_type = -1;
+  gint last_token_pos = -1;
   gchar ***results;
   gint n_groups = 0;
   gint start_of_group;
@@ -4767,10 +4786,12 @@ g_desktop_app_info_search (const gchar *search_string)
   /* Count the total number of unique categories and match types */
   for (i = 0; i < static_total_results_size; i++)
     if (static_total_results[i].category != last_category ||
-        static_total_results[i].match_type != last_match_type)
+        static_total_results[i].match_type != last_match_type ||
+        static_total_results[i].token_pos != last_token_pos)
       {
         last_category = static_total_results[i].category;
         last_match_type = static_total_results[i].match_type;
+        last_token_pos = static_total_results[i].token_pos;
         n_groups++;
       }
 
@@ -4783,14 +4804,17 @@ g_desktop_app_info_search (const gchar *search_string)
       gint n_items_in_group = 0;
       gint this_category;
       gint this_match_type;
+      gint this_token_pos;
       gint j;
 
       this_category = static_total_results[start_of_group].category;
       this_match_type = static_total_results[start_of_group].match_type;
+      this_token_pos = static_total_results[start_of_group].token_pos;
 
       while (start_of_group + n_items_in_group < static_total_results_size &&
              static_total_results[start_of_group + n_items_in_group].category == this_category &&
-             static_total_results[start_of_group + n_items_in_group].match_type == this_match_type)
+             static_total_results[start_of_group + n_items_in_group].match_type == this_match_type &&
+             static_total_results[start_of_group + n_items_in_group].token_pos == this_token_pos)
         n_items_in_group++;
 
       results[i] = g_new (gchar *, n_items_in_group + 1);
