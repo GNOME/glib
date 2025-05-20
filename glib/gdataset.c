@@ -301,6 +301,10 @@ datalist_append (GData **data, GQuark key_id, gpointer new_data, GDestroyNotify 
   gboolean reallocated;
   GData *d;
 
+#ifdef G_ENABLE_DEBUG
+  g_assert (key_id != 0);
+#endif
+
   d = *data;
   if (!d)
     {
@@ -612,6 +616,10 @@ g_data_set_internal (GData	  **datalist,
   GData *new_d = NULL;
   GDataElt old, *data;
   guint32 idx;
+
+#ifdef G_ENABLE_DEBUG
+  g_assert (key_id != 0);
+#endif
 
   d = g_datalist_lock_and_get (datalist);
 
@@ -1009,8 +1017,11 @@ g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
 
   g_return_val_if_fail (dataset_location != NULL, NULL);
   
+  if (key_id == 0)
+    return NULL;
+
   G_LOCK (g_dataset_global);
-  if (key_id && g_dataset_location_ht)
+  if (g_dataset_location_ht)
     {
       GDataset *dataset;
   
@@ -1082,8 +1093,6 @@ g_datalist_id_remove_no_notify (GData	**datalist,
  * @user_data.
  *
  * Returns: the value returned by @callback.
- *
- * Since: 2.80
  */
 gpointer
 g_datalist_id_update_atomic (GData **datalist,
@@ -1097,6 +1106,9 @@ g_datalist_id_update_atomic (GData **datalist,
   gpointer result;
   GDestroyNotify new_destroy;
   guint32 idx;
+
+  g_return_val_if_fail (datalist, NULL);
+  g_return_val_if_fail (key_id != 0, NULL);
 
   d = g_datalist_lock_and_get (datalist);
 
@@ -1198,9 +1210,12 @@ g_dataset_id_get_data (gconstpointer  dataset_location,
   gpointer retval = NULL;
 
   g_return_val_if_fail (dataset_location != NULL, NULL);
-  
+
+  if (key_id == 0)
+    return NULL;
+
   G_LOCK (g_dataset_global);
-  if (key_id && g_dataset_location_ht)
+  if (g_dataset_location_ht)
     {
       GDataset *dataset;
       
@@ -1414,6 +1429,9 @@ g_datalist_get_data (GData **datalist,
 
   g_return_val_if_fail (datalist != NULL, NULL);
 
+  if (G_UNLIKELY (!key))
+    return NULL;
+
   d = g_datalist_lock_and_get (datalist);
 
   if (!d)
@@ -1427,6 +1445,8 @@ g_datalist_get_data (GData **datalist,
 
       for (i = 0; i < d->len; i++)
         {
+          const char *qstr;
+
           data_elt = &d->data[i];
           /* Here we intentionally compare by strings, instead of calling
            * g_quark_try_string() first.
@@ -1434,7 +1454,8 @@ g_datalist_get_data (GData **datalist,
            * See commit 1cceda49b60b ('Make g_datalist_get_data not look up the
            * quark').
            */
-          if (g_strcmp0 (g_quark_to_string (data_elt->key), key) == 0)
+          qstr = g_quark_to_string (data_elt->key);
+          if (qstr && strcmp (qstr, key) == 0)
             {
               res = data_elt->data;
               goto out;
@@ -1444,7 +1465,7 @@ g_datalist_get_data (GData **datalist,
     }
 
   key_id = g_quark_try_string (key);
-  if (key_id == 0 && key)
+  if (key_id == 0)
     goto out;
 
   data_elt = g_hash_table_lookup (index, &key_id);

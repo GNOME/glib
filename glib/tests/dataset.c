@@ -224,14 +224,29 @@ test_datalist_clear (void)
 }
 
 static void
-test_datalist_basic (void)
+test_datalist_basic (gconstpointer test_data)
 {
+  const gboolean HAS_MANY = GPOINTER_TO_INT (test_data);
+  const GQuark BOGUS_QUARK = 1000000000u;
   GData *list = NULL;
   gpointer data;
   gpointer ret;
+  guint i;
 
   g_datalist_init (&list);
   data = "one";
+
+  if (HAS_MANY)
+    {
+      /* Add many entries. This ensures we cover the code path where GData uses
+       * a lookup hash table. */
+      for (i = 0; i < 200; i++)
+        {
+          /* pick a bogus GQuark. They work fine here. */
+          g_datalist_id_set_data (&list, BOGUS_QUARK + 1u + i, data);
+        }
+    }
+
   g_datalist_set_data (&list, "one", data);
   ret = g_datalist_get_data (&list, "one");
   g_assert_true (ret == data);
@@ -239,6 +254,16 @@ test_datalist_basic (void)
   ret = g_datalist_get_data (&list, "two");
   g_assert_null (ret);
 
+  ret = g_datalist_get_data (&list, NULL);
+  g_assert_null (ret);
+
+  /* It is not enforced that GQuark are valid. They are just numbers and work
+   * too. */
+  g_datalist_id_set_data (&list, BOGUS_QUARK, data);
+  ret = g_datalist_id_get_data (&list, BOGUS_QUARK);
+  g_assert_true (ret == data);
+
+  /* Ensure that we don't find the BOGUS_QUARK when looking up by NULL. */
   ret = g_datalist_get_data (&list, NULL);
   g_assert_null (ret);
 
@@ -531,7 +556,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/dataset/full", test_dataset_full);
   g_test_add_func ("/dataset/foreach", test_dataset_foreach);
   g_test_add_func ("/dataset/destroy", test_dataset_destroy);
-  g_test_add_func ("/datalist/basic", test_datalist_basic);
+  g_test_add_data_func ("/datalist/basic/few", GINT_TO_POINTER (FALSE), test_datalist_basic);
+  g_test_add_data_func ("/datalist/basic/many", GINT_TO_POINTER (TRUE), test_datalist_basic);
   g_test_add_func ("/datalist/id", test_datalist_id);
   g_test_add_func ("/datalist/recursive-clear", test_datalist_clear);
   g_test_add_func ("/datalist/id-remove-multiple", test_datalist_id_remove_multiple);
