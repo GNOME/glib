@@ -1260,8 +1260,13 @@ g_local_file_query_info (GFile                *file,
 }
 
 /* FIXME: faccessat() is available on FreeBSD but appears to not work correctly
- * here. This needs diagnosing; https://gitlab.gnome.org/GNOME/glib/-/issues/3495 */
-#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__)
+ * here. This needs diagnosing; https://gitlab.gnome.org/GNOME/glib/-/issues/3495
+ *
+ * On Android (bionic as of 2015-02-24), faccess() returns EINVAL if any flags are set,
+ * so we have to use the fallback path. See
+ * https://cs.android.com/android/_/android/platform/bionic/+/35778253a5ed71e87a608ca590b63729d9f88567
+ */
+#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__) && !defined(__ANDROID__)
 static gboolean
 g_local_file_query_exists (GFile        *file,
                            GCancellable *cancellable)
@@ -3155,7 +3160,7 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->monitor_dir = g_local_file_monitor_dir;
   iface->monitor_file = g_local_file_monitor_file;
   iface->measure_disk_usage = g_local_file_measure_disk_usage;
-#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__)
+#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__) && !defined(__ANDROID__)
   iface->query_exists = g_local_file_query_exists;
 #endif
 
