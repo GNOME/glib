@@ -1,3 +1,159 @@
+Overview of changes in GLib 2.85.0, 2025-05-20
+==============================================
+
+ * Preserve mode for existing file when creating a temporary file for atomic
+   updates with g_file_set_contents() (dconf#76, work by Wesley Hershberger)
+
+ * Fix race conditions between g_main_context_unref() and g_source_*() methods
+   (#803, work by Matthew Waters)
+
+ * Allow file handles inside nested containers when using the `gdbus call`
+   command (#3624, work by Julian Sparber)
+
+ * Fix DNS resolution of local addresses in offline mode (#3641, work by
+   Patrick Griffis)
+
+ * Various performance improvements to GObject locking (various MRs by
+   Thomas Haller)
+
+ * Prefer matches occurring earlier in the string when searching
+   `GDesktopAppInfo`s, improving search for apps in gnome-shell (!4369, work by
+   Fina Wilke)
+
+ * Fix thread safety of `GClosure` flags (!4575, !4577, work by Sam James and
+   Philip Withnall)
+
+* Bugs fixed:
+  - GNOME/dconf#76 dconf update can set incorrect permissions to dconf system db
+    (Wesley Hershberger)
+  - #490 Not clearly documented behavior of g_key_file_set_comment function.
+    (marklkram)
+  - #803 g_main_context_unref() versus g_source_*() race (Matthew Waters)
+  - #1002 GObject doesn't support removing a weak reference in a GWeakNotify for
+    the same object
+  - #1250 gsocketlistener: Fix IPv4 listen() error-handling resulting in use-
+    after-free
+  - #2377 Document that `g_socket_address_get_native_size()` can return `-1` on
+    errors
+  - #2544 Consider `g_log_always_fatal` for aborting in
+    `g_log_structured_array()` (sid)
+  - #3405 Enable -Wconversion warnings by default (progress towards this, but it
+    is not complete)
+  - #3616 docs: Broken link in GioActionEntry (Philip Withnall)
+  - #3617 Add generalised version of g_date_get_monday_week_of_year() (Philip
+    Withnall)
+  - #3624 `gdbus call` should look for file handles inside nested containers
+    (Julian Sparber)
+  - #3630 2.84.0 build failure on Linux: ../gio/gnetworkmonitornetlink.c:47:10:
+    fatal error: netlink/netlink_route.h: No such file or directory (Philip
+    Withnall)
+  - #3634 test failure with gobject-introspection 1.83.4: warning: element
+    doc:format from state 3 is unknown, ignoring (Philip Withnall)
+  - #3636 gio/trash does not handle special characters well
+  - #3641 GResolver: Local DNS resolution failure in offline mode (Patrick
+    Griffis)
+  - #3642 `g_cancellable_connect()` documentation incorrect (Marco Trevisan
+    (Treviño))
+  - #3643 g_cancellable_connect(): is it safe to unref cancellable from
+    callback? (Marco Trevisan (Treviño))
+  - #3649 Crash with some registry key values in GWin32AppInfo (Philip Withnall)
+  - #3656 Set SYSLOG_IDENTIFIER when logging to journald (Axel Karjalainen)
+  - #3657 girepository: Wrong typelib path on Windows
+  - #3663 Cannot use GZlibCompressor in GTK testsuite (Benjamin Otte)
+  - #3684 UAF in GSignalGroup weak notify callbacks (Thomas Haller)
+  - #3686 docs.gtk.org doesn't mention that GSourceFuncs.finalize may be NULL
+    (BZZZZ)
+  - #3693 Random failures in debian-i386-stable
+  - !4185 [th/gobject-no-object-locks-pt1-notify] use
+    `g_datalist_id_update_atomic()` instead of OPTIONAL_BIT_LOCK_NOTIFY
+  - !4247 mappedfile: Avoid some allocations
+  - !4369 gdesktopappinfo: Prefer matches that occur earlier in the match string
+  - !4387 Fix various -Wshorten-64-to-32 warnings
+  - !4484 Memory sanitizer fixes
+  - !4489 gobject: Be consistent in using atomic logic to handle the
+    GParamSpecPool
+  - !4520 [th/gdataset-cleanup] minor cleanups of gdataset
+  - !4536 [th/gobj-closure-array-atomic] use g_datalist_id_update_atomic() for
+    array of closure watches
+  - !4541 gsettings: Port docs to gi-docgen format, add missing annotations and
+    make various improvements
+  - !4544 tests: Don't install runner scripts without installed_tests
+  - !4545 Update French translation
+  - !4547 Update Catalan translation
+  - !4548 Update Turkish translation
+  - !4551 Updated Danish translation
+  - !4552 Update Persian translation
+  - !4553 docs: Document GSignalFlags members added after 2.0
+  - !4554 Update Indonesian translation
+  - !4555 tests: Add a test for g_object_freeze_notify() being called too often
+  - !4557 gfileinfo: Slightly expand docs for
+    g_file_info_get_attribute_as_string()
+  - !4558 gi: Dynamically set doc-format
+  - !4561 tests: Various fixes to create temporary files in /tmp rather than the
+    build directory
+  - !4562 gdbusnameowning: Convert docs to gi-docgen linking syntax
+  - !4563 giounix-private: Fix macro for checking for epoll_create1()
+  - !4565 Fix LGPL in header
+  - !4567 gutils: make documentation of g_set_prgname() clearer
+  - !4568 docs: Add some detail
+  - !4569 Update Romanian translation
+  - !4570 gspawn-win32: Fix potential integer overflows in argv handling
+  - !4571 gvarianttype: Improve docs on type validation
+  - !4575 gclosure: fix ATOMIC_CHANGE_FIELD to read vint atomically
+  - !4577 gclosure: Allow full set of closure flags to be queried atomically
+  - !4578 [th/bit-lock-and-set] bitlock: add g_bit_lock_and_get() and
+    g_bit_unlock_and_set() API
+  - !4579 tests: Add missing unistd.h include to scannerapi.c
+  - !4581 [th/gobj-no-weak-ref-lock] drop OPTIONAL_BIT_LOCK_WEAK_REFS object
+    lock for `g_object_weak_{ref,unref}()`
+  - !4583 thread: fix Linux detection
+  - !4585 gfile: Expand documentation around file info for inaccessible files
+  - !4586 [th/gobj-doc-weakref] clear #GWeakRef earlier in
+    g_object_run_dispose() and reword docs about #GWeakRef
+  - !4588 gstring: carefully handle gssize parameters
+  - !4590 Various -Wsign-conversion warning fixes
+  - !4591 gthreadedresolver: fix crash in loopback interface check
+  - !4592 gstring: Make len_unsigned unsigned
+  - !4594 Enable -Wsign-conversion for girepository, gthread, gmodule
+  - !4596 docs: Mention how to run the test suite in CONTRIBUTING.md
+  - !4598 gtlsconnection: Fix annotation
+  - !4599 Mark pointer as (type gpointer)
+  - !4601 garray: Fix annotations
+  - !4602 docs: fix typo glong: ULONG_MAX -> LONG_MAX
+  - !4603 Fix GNetworkMonitorNetlink operation under a FreeBSD jail with shared
+    network stack
+  - !4604 cocoa: add support for GBytesIcon in notification backend
+  - !4605 gparamspecs: Use standard min/max constants rather than literals
+  - !4606 gobject, girepository: Fix several -Wsign-conversion warnings on macOS
+  - !4609 Update Portuguese translation
+  - !4610 Update Ukrainian translation
+  - !4613 Update macOS job for new CI runner
+  - !4615 shell: Handle empty comment gracefully
+  - !4619 gslist: Improve documentation for append / prepend / insert methods
+  - !4620 glocalfile: Disable faccessat()-based query_exists on Android
+  - !4621 gallocator: mark as deprecated
+  - !4627 [th/gsignalgroup-dispose] gsignalgroup: make GSignalGroup.dispose() a
+    bit more reentrant
+  - !4628 [th/gdataset-fix-zero-key] fix and cleanup related to using a zero
+    GQuark for keys in GData
+  - !4631 Update German translation
+  - !4632 win32: Only print one OS version
+  - !4633 gzlibcompressor: Convert docs to gi-docgen linking syntax
+  - !4638 docs: Fix formatting of definition lists
+
+* Translation updates:
+  - Catalan (Jordi Mas)
+  - Danish (Ask Hjorth Larsen)
+  - French (Vincent Chatelain)
+  - German (Philipp Kiemle)
+  - Indonesian (Andika Triwidada)
+  - Persian (Danial Behzadi)
+  - Portuguese (Hugo Carvalho)
+  - Romanian (Antonio Marin)
+  - Turkish (Sabri Ünal)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.84.1, 2025-04-03
 ==============================================
 
