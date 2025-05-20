@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.84.2, 2025-05-20
+==============================================
+
+* Bugs fixed:
+  - !4576 Backport !4575 “gclosure: fix ATOMIC_CHANGE_FIELD to read vint
+    atomically” to glib-2-84
+  - !4595 Backport !4582 “Windows: fix wrong typelib path” to glib-2-84
+  - !4614 Backport "gstring: carefully handle gssize parameters"
+  - !4616 Backport !4613 “Update macOS job for new CI runner” to glib-2-84
+  - !4623 Backport !4617 “gdate: Call tzset before localtime_r” to glib-2-84
+  - !4639 Backport -Wsign-conversion fixes for g_get_locale_variants() from
+    !4590 to glib-2-84
+  - !4640 Backport !4620 “glocalfile: Disable faccessat()-based query_exists on
+    Android” to glib-2-84
+
+
 Overview of changes in GLib 2.84.1, 2025-04-03
 ==============================================
 
