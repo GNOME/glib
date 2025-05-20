@@ -102,29 +102,10 @@ enum {
   PROP_NONE
 };
 
-#define _OPTIONAL_BIT_LOCK               3
-
 #define OPTIONAL_FLAG_IN_CONSTRUCTION    (1 << 0)
 #define OPTIONAL_FLAG_HAS_SIGNAL_HANDLER (1 << 1) /* Set if object ever had a signal handler */
 #define OPTIONAL_FLAG_HAS_NOTIFY_HANDLER (1 << 2) /* Same, specifically for "notify" */
-#define OPTIONAL_FLAG_LOCK               (1 << 3) /* _OPTIONAL_BIT_LOCK */
 #define OPTIONAL_FLAG_EVER_HAD_WEAK_REF  (1 << 4) /* whether on the object ever g_weak_ref_set() was called. */
-
-/* We use g_bit_lock(), which only supports one lock per integer.
- *
- * Hence, while we have locks for different purposes, internally they all
- * map to the same bit lock (_OPTIONAL_BIT_LOCK).
- *
- * This means you cannot take a lock (object_bit_lock()) while already holding
- * another bit lock. There is an assert against that with G_ENABLE_DEBUG
- * builds (_object_bit_is_locked).
- *
- * In the past, we had different global mutexes per topic. Now we have one
- * per-object mutex for several topics. The downside is that we are not as
- * parallel as possible. The alternative would be to add individual locking
- * integers to GObjectPrivate. But increasing memory usage for more parallelism
- * (per-object!) is not worth it. */
-#define OPTIONAL_BIT_LOCK_UNUSED 1
 
 #if SIZEOF_INT == 4 && GLIB_SIZEOF_VOID_P >= 8
 #define HAVE_OPTIONAL_FLAGS_IN_GOBJECT 1
@@ -615,46 +596,6 @@ weak_ref_data_has (GObject *object, WeakRefData *wrdata, WeakRefData **out_new_w
 }
 
 /*****************************************************************************/
-
-#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
-/* Using this thread-local global is sufficient to guard the per-object
- * locking, because while the current thread holds a lock on one object, it
- * never calls out to another object (because doing so would would be prone to
- * deadlock). */
-static G_THREAD_LOCAL guint _object_bit_is_locked;
-#endif
-
-G_GNUC_UNUSED static void
-object_bit_lock (GObject *object, guint lock_bit)
-{
-#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
-  /* all object_bit_lock() really use the same bit/mutex. The "lock_bit" argument
-   * only exists for asserting. object_bit_lock() is not re-entrant (also not with
-   * different "lock_bit" values). */
-  g_assert (lock_bit > 0);
-  g_assert (_object_bit_is_locked == 0);
-  _object_bit_is_locked = lock_bit;
-#endif
-
-  g_bit_lock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
-}
-
-G_GNUC_UNUSED static void
-object_bit_unlock (GObject *object, guint lock_bit)
-{
-#if defined(G_ENABLE_DEBUG) && defined(G_THREAD_LOCAL)
-  /* All lock_bit map to the same mutex. We cannot use two different locks on
-   * the same integer. Assert against that. */
-  g_assert (lock_bit > 0);
-  g_assert (_object_bit_is_locked == lock_bit);
-  _object_bit_is_locked = 0;
-#endif
-
-  /* Warning: after unlock, @object may be a dangling pointer (destroyed on
-   * another thread) and must not be touched anymore. */
-
-  g_bit_unlock ((gint *) object_get_optional_flags_p (object), _OPTIONAL_BIT_LOCK);
-}
 
 /* --- functions --- */
 
