@@ -56,7 +56,7 @@ static GSList *g_futex_address_list = NULL;
 
 /* < private >
  * g_futex_wait:
- * @address: a pointer to an integer
+ * @address: (type gpointer): a pointer to an integer
  * @value: the value that should be at @address
  *
  * Atomically checks that the value stored at @address is equal to
@@ -80,7 +80,7 @@ g_futex_wait (const gint *address,
 
 /* < private >
  * g_futex_wake:
- * @address: a pointer to an integer
+ * @address: (type gpointer): a pointer to an integer
  *
  * Nominally, wakes one thread that is blocked in g_futex_wait() on
  * @address (if any thread is currently waiting).
@@ -220,7 +220,7 @@ bit_lock_futex_maybe_wake (gconstpointer address, gboolean is_pointer_pointer)
 
 /**
  * g_bit_lock_and_get:
- * @address: a pointer to an integer
+ * @address: (type gpointer): a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
  * @out_val: (out) (optional): return location for the new value of the integer
  *
@@ -283,7 +283,7 @@ retry:
 
 /**
  * g_bit_lock:
- * @address: a pointer to an integer
+ * @address: (type gpointer): a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
  *
  * Sets the indicated @lock_bit in @address.  If the bit is already
@@ -312,7 +312,7 @@ g_bit_lock (volatile gint *address,
 
 /**
  * g_bit_trylock:
- * @address: a pointer to an integer
+ * @address: (type gpointer) a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
  *
  * Sets the indicated @lock_bit in @address, returning %TRUE if
@@ -361,7 +361,7 @@ g_bit_trylock (volatile gint *address,
 
 /**
  * g_bit_unlock:
- * @address: a pointer to an integer
+ * @address: (type gpointer): a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
  *
  * Clears the indicated @lock_bit in @address.  If another thread is
@@ -400,7 +400,7 @@ g_bit_unlock (volatile gint *address,
 
 /**
  * g_bit_unlock_and_set:
- * @address: a pointer to an integer
+ * @address: (type gpointer): a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
  * @val: the new value to set
  * @preserve_mask: mask for bits from @address to preserve
