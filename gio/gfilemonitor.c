@@ -280,7 +280,7 @@ g_file_monitor_set_rate_limit (GFileMonitor *monitor,
  * g_file_monitor_emit_event:
  * @monitor: a #GFileMonitor.
  * @child: a #GFile.
- * @other_file: a #GFile.
+ * @other_file: (nullable): a #GFile, or %NULL.
  * @event_type: a set of #GFileMonitorEvent flags.
  *
  * Emits the #GFileMonitor::changed signal if a change
