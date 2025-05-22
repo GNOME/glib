@@ -781,6 +781,7 @@ g_object_notify_queue_thaw_cb (gpointer *data,
     return NULL;
 
   *data = NULL;
+  *destroy_notify = NULL;
   return nqueue;
 }
 
@@ -4579,6 +4580,7 @@ toggle_refs_unref_cb (gpointer *data,
           g_datalist_unset_flags (&trdata->object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
           g_free (tstack);
           *data = NULL;
+          *destroy_notify = NULL;
         }
       else if (i != tstack->n_toggle_refs)
         tstack->toggle_refs[i] = tstack->toggle_refs[tstack->n_toggle_refs];
