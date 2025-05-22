@@ -2516,6 +2516,26 @@ if not python_version.version_compare(python_version_req)
 endif
 python_test_libraries_built = meson.project_build_root() / 'tests' / 'lib'
 
+# FIXME: https://github.com/mesonbuild/meson/issues/4668
+#
+# If we have a Python test which spawns a built native binary, that binary is
+# listed in the `depends` argument of the `test()`. On Linux, this results in
+# the directories containing the built libraries which the binary depends on
+# being added to the `LD_LIBRARY_PATH` of the test invocation. On Windows,
+# however, Meson currently doesn’t add those directories to `PATH` (which is the
+# equivalent of `LD_LIBRARY_PATH`), so we have to do it manually.
+python_test_env_common_path = []
+if host_system == 'windows'
+  build_root = meson.project_build_root()
+  python_test_env_common_path += [
+    build_root / 'gmodule',
+    build_root / 'girepository',
+    build_root / 'gio',
+    build_root / 'glib',
+    build_root / 'gobject',
+  ]
+endif
+
 # Determine which user environment-dependent files that we want to install
 bash = find_program('bash', required : false)
 have_bash = bash.found() # For completion scripts
