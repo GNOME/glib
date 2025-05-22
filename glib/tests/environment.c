@@ -19,6 +19,10 @@
 
 #include <glib.h>
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
+
 static void
 test_listenv (void)
 {
@@ -148,25 +152,60 @@ test_getenv (void)
 
   g_unsetenv ("foo");
   g_assert_null (g_getenv ("foo"));
+
+  g_assert_null (g_getenv (""));
 }
 
 static void
 test_setenv (void)
 {
-  const gchar *var, *value;
+  if (g_test_subprocess ())
+    {
+      const char *var, *value;
 
-  var = "NOSUCHENVVAR";
-  value = "value1";
+      var = "NOSUCHENVVAR";
+      value = "value1";
 
-  g_assert_null (g_getenv (var));
-  g_setenv (var, value, FALSE);
-  g_assert_cmpstr (g_getenv (var), ==, value);
-  g_assert_true (g_setenv (var, "value2", FALSE));
-  g_assert_cmpstr (g_getenv (var), ==, value);
-  g_assert_true (g_setenv (var, "value2", TRUE));
-  g_assert_cmpstr (g_getenv (var), ==, "value2");
-  g_unsetenv (var);
-  g_assert_null (g_getenv (var));
+      g_assert_null (g_getenv (var));
+      g_setenv (var, value, FALSE);
+      g_assert_cmpstr (g_getenv (var), ==, value);
+      g_assert_true (g_setenv (var, "value2", FALSE));
+      g_assert_cmpstr (g_getenv (var), ==, value);
+      g_assert_true (g_setenv (var, "value2", TRUE));
+      g_assert_cmpstr (g_getenv (var), ==, "value2");
+      g_unsetenv (var);
+      g_assert_null (g_getenv (var));
+
+      g_assert_true (g_setenv ("EMPTY_VAR", "", TRUE));
+      g_assert_cmpstr (g_getenv ("EMPTY_VAR"), ==, "");
+
+      g_assert_false (g_setenv ("", "value", TRUE));
+
+#ifdef G_OS_WIN32
+      {
+        wchar_t invalid_utf16[] = {
+          L't', L'e', L's', L't',
+          LOW_SURROGATE_START,
+          HIGH_SURROGATE_START,
+          L'\0'
+        };
+        if (!SetEnvironmentVariable (L"INVALID_UTF16_VAR", invalid_utf16))
+          {
+            g_error ("%s failed with error code %u",
+                     "SetEnvironmentVariable", (unsigned int) GetLastError ());
+          }
+      }
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, "*invalid UTF-16*");
+      g_assert_null (g_getenv ("INVALID_UTF16_VAR"));
+      g_test_assert_expected_messages ();
+#endif
+
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_passed ();
 }
 
 static void
@@ -309,6 +348,52 @@ test_environ_case (void)
   g_strfreev (env);
 }
 
+static void
+test_expansion (void)
+{
+  g_test_summary ("Test expansion of environment variable references.");
+
+#ifdef G_OS_WIN32
+  if (g_test_subprocess ())
+    {
+      const struct
+      {
+        const wchar_t *name;
+        const wchar_t *value;
+      } tests[] = {
+        { L"EMPTY_VAR", L"" },
+        { L"NON_EXISTING_VAR", NULL },
+        { L"HELLO_VAR", L"HELLO" },
+        { L"TO_EXPAND_VAR1", L"%HELLO_VAR% WORLD" },
+        { L"TO_EXPAND_VAR2", L"%EMPTY_VAR%" },
+        { L"TO_EXPAND_VAR3", L"%NON_EXISTING_VAR%" },
+        { L"VAR1", L"%VAR2%" },
+        { L"VAR2", L"%VAR1%" },
+      };
+
+      for (size_t i = 0; i < G_N_ELEMENTS (tests); i++)
+        if (!SetEnvironmentVariable (tests[i].name, tests[i].value))
+          {
+            g_error ("%s failed with error code %u",
+                     "SetEnvironmentVariable", (unsigned int) GetLastError ());
+          }
+
+      g_assert_cmpstr (g_getenv ("TO_EXPAND_VAR1"), ==, "HELLO WORLD");
+      g_assert_cmpstr (g_getenv ("TO_EXPAND_VAR2"), ==, "");
+      g_assert_cmpstr (g_getenv ("TO_EXPAND_VAR3"), ==, "%NON_EXISTING_VAR%");
+
+      g_assert_nonnull (g_getenv ("VAR1"));
+
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_passed ();
+#else
+  g_test_skip ("Environment variable expansion is only supported on Windows");
+#endif
+}
+
 int
 main (int argc, char **argv)
 {
@@ -320,6 +405,7 @@ main (int argc, char **argv)
   g_test_add_func ("/environ/array", test_environ_array);
   g_test_add_func ("/environ/null", test_environ_null);
   g_test_add_func ("/environ/case", test_environ_case);
+  g_test_add_func ("/environ/expansion", test_expansion);
 
   return g_test_run ();
 }

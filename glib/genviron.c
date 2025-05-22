@@ -448,81 +448,114 @@ g_get_environ (void)
 }
 
 /* Win32 implementation {{{1 */
-#else   /* G_OS_WIN32 */
+
+#else /* G_OS_WIN32 */
+
+static wchar_t *
+expand_environment_string (const wchar_t *string_utf16)
+{
+  wchar_t *expanded = NULL;
+  DWORD previous_wchars_count = 0;
+  DWORD wchars_count = 0;
+
+  do
+    {
+      previous_wchars_count = wchars_count;
+      expanded = g_renew (wchar_t, expanded, wchars_count);
+
+      /* Note: ExpandEnvironmentStrings is 1-pass only. In addition, placeholders
+       * referring to non-existing variables are kept as-is, they aren't removed.
+       * That differs e.g from CMD. */
+      wchars_count = ExpandEnvironmentStrings (string_utf16, expanded, wchars_count);
+    }
+  while (wchars_count > previous_wchars_count);
+
+  if (wchars_count == 0)
+    {
+      g_warning ("%s failed with error code %u",
+                 "ExpandEnvironmentStrings", (unsigned int) GetLastError ());
+      g_clear_pointer (&expanded, g_free);
+    }
+
+  return expanded;
+}
 
 const gchar *
 g_getenv (const gchar *variable)
 {
-  GQuark quark;
-  gchar *value;
-  wchar_t dummy[2], *wname, *wvalue;
-  DWORD len;
+  wchar_t *name_utf16 = NULL;
+  wchar_t *value_utf16 = NULL;
+  DWORD previous_wchars_count = 0;
+  DWORD wchars_count = 0;
+  char *value_utf8 = NULL;
+  GQuark quark = 0;
 
   g_return_val_if_fail (variable != NULL, NULL);
   g_return_val_if_fail (g_utf8_validate (variable, -1, NULL), NULL);
 
-  /* On Windows NT, it is relatively typical that environment
-   * variables contain references to other environment variables. If
-   * so, use ExpandEnvironmentStrings(). (In an ideal world, such
-   * environment variables would be stored in the Registry as
-   * REG_EXPAND_SZ type values, and would then get automatically
-   * expanded before a program sees them. But there is broken software
-   * that stores environment variables as REG_SZ values even if they
-   * contain references to other environment variables.)
-   */
+  name_utf16 = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
+  g_assert (name_utf16);
 
-  wname = g_utf8_to_utf16 (variable, -1, NULL, NULL, NULL);
-
-  len = GetEnvironmentVariableW (wname, dummy, 2);
-
-  if (len == 0)
+  do
     {
-      g_free (wname);
-      if (GetLastError () == ERROR_ENVVAR_NOT_FOUND)
-        return NULL;
+      value_utf16 = g_renew (wchar_t, value_utf16, wchars_count);
 
-      quark = g_quark_from_static_string ("");
-      return g_quark_to_string (quark);
+      previous_wchars_count = wchars_count;
+
+      SetLastError (ERROR_SUCCESS);
+      wchars_count = GetEnvironmentVariable (name_utf16, value_utf16, wchars_count);
     }
-  else if (len == 1)
-    len = 2;
+  while (wchars_count > previous_wchars_count);
 
-  wvalue = g_new (wchar_t, len);
-
-  if (GetEnvironmentVariableW (wname, wvalue, len) != len - 1)
+  if (wchars_count == 0)
     {
-      g_free (wname);
-      g_free (wvalue);
-      return NULL;
-    }
+      DWORD code = GetLastError ();
 
-  if (wcschr (wvalue, L'%') != NULL)
-    {
-      wchar_t *tem = wvalue;
-
-      len = ExpandEnvironmentStringsW (wvalue, dummy, 2);
-
-      if (len > 0)
+      if (code == ERROR_SUCCESS)
         {
-          wvalue = g_new (wchar_t, len);
+          /* Value is an empty string */
+          quark = g_quark_from_static_string ("");
+        }
+      else if (code == ERROR_ENVVAR_NOT_FOUND)
+        {
+          /* The variable doesn't exist */
+        }
+      else
+        {
+          g_warning ("%s failed with error code %u",
+                     "GetEnvironmentVariable", (unsigned int) GetLastError ());
+        }
+    }
+  else
+    {
+      g_assert (wchars_count != previous_wchars_count);
+      g_assert (value_utf16[wchars_count] == L'\0');
 
-          if (ExpandEnvironmentStringsW (tem, wvalue, len) != len)
-            {
-              g_free (wvalue);
-              wvalue = tem;
-            }
+      /* On Windows NT, it is relatively typical that environment
+       * variables contain references to other environment variables.
+       * If so, use ExpandEnvironmentStrings() */
+      if (wcschr (value_utf16, L'%'))
+        {
+          wchar_t *expanded = expand_environment_string (value_utf16);
+
+          g_free (value_utf16);
+          value_utf16 = expanded;
+        }
+
+      if (value_utf16)
+        {
+          value_utf8 = g_utf16_to_utf8 (value_utf16, -1, NULL, NULL, NULL);
+
+          if (value_utf8 == NULL)
+            g_warning ("Environment variable `%s' contains invalid UTF-16", variable);
           else
-            g_free (tem);
+            quark = g_quark_from_string (value_utf8);
         }
     }
 
-  value = g_utf16_to_utf8 (wvalue, -1, NULL, NULL, NULL);
-
-  g_free (wname);
-  g_free (wvalue);
-
-  quark = g_quark_from_string (value);
-  g_free (value);
+  g_free (name_utf16);
+  g_free (value_utf16);
+  g_free (value_utf8);
 
   return g_quark_to_string (quark);
 }
