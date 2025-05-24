@@ -347,6 +347,7 @@ g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
   SortData sd;
 
   g_return_if_fail (queue != NULL);
+  g_return_if_fail (data != NULL);
 
   sd.func = func;
   sd.user_data = user_data;
