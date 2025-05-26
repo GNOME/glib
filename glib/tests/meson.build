@@ -251,6 +251,7 @@ if host_machine.system() == 'windows'
     'win32' : {
       'dependencies' : [wincodecs],
     },
+    'win32-private' : {},
   }
 else
   glib_tests += {

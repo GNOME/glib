@@ -33,48 +33,6 @@
 
 static char *argv0 = NULL;
 
-#include "../gwin32-private.c"
-
-static void
-test_subst_pid_and_event (void)
-{
-  const wchar_t not_enough[] = L"too long when %e and %p are substituted";
-  wchar_t debugger_3[3];
-  wchar_t debugger_not_enough[G_N_ELEMENTS (not_enough)];
-  wchar_t debugger_enough[G_N_ELEMENTS (not_enough) + 1];
-  char *debugger_enough_utf8;
-  wchar_t debugger_big[65535] = {0};
-  char *debugger_big_utf8;
-  gchar *output;
-  guintptr be = (guintptr) 0xFFFFFFFF;
-  DWORD bp = MAXDWORD;
-
-  /* %f is not valid */
-  g_assert_false (_g_win32_subst_pid_and_event_w (debugger_3, G_N_ELEMENTS (debugger_3),
-                                                  L"%f", 0, 0));
-
-  g_assert_false (_g_win32_subst_pid_and_event_w (debugger_3, G_N_ELEMENTS (debugger_3),
-                                                  L"string longer than 10", 0, 0));
-  /* 200 is longer than %e, so the string doesn't fit by 1 byte */
-  g_assert_false (_g_win32_subst_pid_and_event_w (debugger_not_enough, G_N_ELEMENTS (debugger_not_enough),
-                                                  not_enough, 10, 200));
-
-  /* This should fit */
-  g_assert_true (_g_win32_subst_pid_and_event_w (debugger_enough, G_N_ELEMENTS (debugger_enough),
-                                                 not_enough, 10, 200));
-  debugger_enough_utf8 = g_utf16_to_utf8 (debugger_enough, -1, NULL, NULL, NULL);
-  g_assert_cmpstr (debugger_enough_utf8, ==, "too long when 200 and 10 are substituted");
-  g_free (debugger_enough_utf8);
-
-  g_assert_true (_g_win32_subst_pid_and_event_w (debugger_big, G_N_ELEMENTS (debugger_big),
-                                                 L"multipl%e big %e %entries and %pids are %provided here", bp, be));
-  debugger_big_utf8 = g_utf16_to_utf8 (debugger_big, -1, NULL, NULL, NULL);
-  output = g_strdup_printf ("multipl%llu big %llu %lluntries and %luids are %lurovided here", (guint64) be, (guint64) be, (guint64) be, bp, bp);
-  g_assert_cmpstr (debugger_big_utf8, ==, output);
-  g_free (debugger_big_utf8);
-  g_free (output);
-}
-
 /* Crash with access violation */
 static void
 test_access_violation (void)
@@ -193,8 +151,6 @@ main (int   argc,
       veh_debugger (argc, argv);
       return 0;
     }
-
-  g_test_add_func ("/win32/substitute-pid-and-event", test_subst_pid_and_event);
 
   g_test_add_func ("/win32/veh/access_violation", test_veh_crash_access_violation);
   g_test_add_func ("/win32/veh/illegal_instruction", test_veh_crash_illegal_instruction);
