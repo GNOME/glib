@@ -437,6 +437,26 @@ libglib_dep = declare_dependency(
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 
+libglib_static_dep = declare_dependency(
+  compile_args: ['-DGLIB_STATIC_COMPILATION'],
+  objects: libglib.extract_all_objects(recursive: true),
+  dependencies: [
+    atomic_dep,
+    gnulib_libm_dependency,
+    libiconv,
+    libintl_deps,
+    libm,
+    librt,
+    libsysprof_capture_dep,
+    pcre2,
+    platform_deps,
+    thread_dep,
+  ],
+  link_with: [charset_lib, gnulib_lib],
+  sources: glib_built_headers,
+  include_directories: [configinc, glibinc],
+)
+
 pkg.generate(libglib,
   libraries : [libintl_deps],
   libraries_private : [win32_ldflags],
