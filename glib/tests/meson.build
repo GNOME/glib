@@ -396,6 +396,7 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 
 test_deps = [libm, thread_dep, libglib_dep]
+test_deps_static = [libm, thread_dep, libglib_static_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GLib"', '-UG_DISABLE_ASSERT']
 test_cpp_args = test_cargs
 
@@ -448,12 +449,14 @@ foreach test_name, extra_args : glib_tests
     )
   endif
 
+  base_deps = test_name.contains('-private') ? test_deps_static : test_deps
+
   exe = executable(test_name, source,
     c_args : test_cargs + extra_args.get('c_args', []),
     cpp_args : test_cpp_args + extra_args.get('cpp_args', []),
     link_args : extra_args.get('link_args', []),
     override_options : extra_args.get('override_options', []),
-    dependencies : test_deps + extra_args.get('dependencies', []),
+    dependencies : base_deps + extra_args.get('dependencies', []),
     link_with : extra_args.get('link_with', []),
     install_dir: installed_tests_execdir,
     install_tag: 'tests',
