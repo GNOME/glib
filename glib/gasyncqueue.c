@@ -140,7 +140,7 @@ g_async_queue_ref_unlocked (GAsyncQueue *queue)
 
 /**
  * g_async_queue_unref_and_unlock:
- * @queue: a #GAsyncQueue
+ * @queue: (transfer full): a #GAsyncQueue
  *
  * Decreases the reference count of the asynchronous @queue by 1
  * and releases the lock. This function must be called while holding
@@ -231,7 +231,7 @@ g_async_queue_unlock (GAsyncQueue *queue)
 /**
  * g_async_queue_push:
  * @queue: a #GAsyncQueue
- * @data: (not nullable): data to push onto the @queue
+ * @data: (not nullable) (transfer full): data to push onto the @queue
  *
  * Pushes the @data into the @queue.
  *
@@ -252,7 +252,7 @@ g_async_queue_push (GAsyncQueue *queue,
 /**
  * g_async_queue_push_unlocked:
  * @queue: a #GAsyncQueue
- * @data: (not nullable): data to push onto the @queue
+ * @data: (not nullable) (transfer full): data to push onto the @queue
  *
  * Pushes the @data into the @queue.
  *
@@ -275,7 +275,7 @@ g_async_queue_push_unlocked (GAsyncQueue *queue,
 /**
  * g_async_queue_push_sorted:
  * @queue: a #GAsyncQueue
- * @data: (not nullable): the @data to push into the @queue
+ * @data: (not nullable) (transfer full): the @data to push into the @queue
  * @func: (scope call): the #GCompareDataFunc is used to sort @queue
  * @user_data: user data passed to @func.
  *
@@ -316,7 +316,7 @@ g_async_queue_invert_compare (gpointer  v1,
 /**
  * g_async_queue_push_sorted_unlocked:
  * @queue: a #GAsyncQueue
- * @data: the data to push into the @queue
+ * @data: (not nullable) (transfer full): the data to push into the @queue
  * @func: (scope call): the #GCompareDataFunc is used to sort @queue
  * @user_data: user data passed to @func.
  *
@@ -397,7 +397,7 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
  * Pops data from the @queue. If @queue is empty, this function
  * blocks until data becomes available.
  *
- * Returns: data from the queue
+ * Returns: (not nullable) (transfer full): data from the queue
  */
 gpointer
 g_async_queue_pop (GAsyncQueue *queue)
@@ -422,7 +422,7 @@ g_async_queue_pop (GAsyncQueue *queue)
  *
  * This function must be called while holding the @queue's lock.
  *
- * Returns: data from the queue.
+ * Returns: (not nullable) (transfer full): data from the queue.
  */
 gpointer
 g_async_queue_pop_unlocked (GAsyncQueue *queue)
@@ -439,8 +439,8 @@ g_async_queue_pop_unlocked (GAsyncQueue *queue)
  * Tries to pop data from the @queue. If no data is available,
  * %NULL is returned.
  *
- * Returns: (nullable): data from the queue or %NULL, when no data is
- *   available immediately.
+ * Returns: (nullable) (transfer full): data from the queue or %NULL, when no
+ *   data is available immediately.
  */
 gpointer
 g_async_queue_try_pop (GAsyncQueue *queue)
@@ -465,8 +465,8 @@ g_async_queue_try_pop (GAsyncQueue *queue)
  *
  * This function must be called while holding the @queue's lock.
  *
- * Returns: (nullable): data from the queue or %NULL, when no data is
- *   available immediately.
+ * Returns: (nullable) (transfer full): data from the queue or %NULL, when no
+ *   data is available immediately.
  */
 gpointer
 g_async_queue_try_pop_unlocked (GAsyncQueue *queue)
@@ -486,8 +486,8 @@ g_async_queue_try_pop_unlocked (GAsyncQueue *queue)
  *
  * If no data is received before the timeout, %NULL is returned.
  *
- * Returns: (nullable): data from the queue or %NULL, when no data is
- *   received before the timeout.
+ * Returns: (nullable) (transfer full): data from the queue or %NULL, when no
+ *   data is received before the timeout.
  */
 gpointer
 g_async_queue_timeout_pop (GAsyncQueue *queue,
@@ -517,8 +517,8 @@ g_async_queue_timeout_pop (GAsyncQueue *queue,
  *
  * This function must be called while holding the @queue's lock.
  *
- * Returns: (nullable): data from the queue or %NULL, when no data is
- *   received before the timeout.
+ * Returns: (nullable) (transfer full): data from the queue or %NULL, when no
+ *   data is received before the timeout.
  */
 gpointer
 g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
@@ -544,8 +544,8 @@ g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
  * To easily calculate @end_time, a combination of g_get_real_time()
  * and g_time_val_add() can be used.
  *
- * Returns: (nullable): data from the queue or %NULL, when no data is
- *   received before @end_time.
+ * Returns: (nullable) (transfer full): data from the queue or %NULL, when no
+ *   data is received before @end_time.
  *
  * Deprecated: use g_async_queue_timeout_pop().
  */
@@ -590,8 +590,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  *
  * This function must be called while holding the @queue's lock.
  *
- * Returns: (nullable): data from the queue or %NULL, when no data is
- *   received before @end_time.
+ * Returns: (nullable) (transfer full): data from the queue or %NULL, when no
+ *   data is received before @end_time.
  *
  * Deprecated: use g_async_queue_timeout_pop_unlocked().
  */
@@ -753,7 +753,7 @@ g_async_queue_sort_unlocked (GAsyncQueue      *queue,
 /**
  * g_async_queue_remove:
  * @queue: a #GAsyncQueue
- * @item: (not nullable): the data to remove from the @queue
+ * @item: (not nullable) (transfer none): the data to remove from the @queue
  *
  * Remove an item from the queue.
  *
@@ -780,7 +780,7 @@ g_async_queue_remove (GAsyncQueue *queue,
 /**
  * g_async_queue_remove_unlocked:
  * @queue: a #GAsyncQueue
- * @item: the data to remove from the @queue
+ * @item: (not nullable) (transfer none): the data to remove from the @queue
  *
  * Remove an item from the queue.
  *
@@ -803,7 +803,7 @@ g_async_queue_remove_unlocked (GAsyncQueue *queue,
 /**
  * g_async_queue_push_front:
  * @queue: a #GAsyncQueue
- * @item: (not nullable): data to push into the @queue
+ * @item: (not nullable) (transfer full): data to push into the @queue
  *
  * Pushes the @item into the @queue. @item must not be %NULL.
  * In contrast to g_async_queue_push(), this function
@@ -827,7 +827,7 @@ g_async_queue_push_front (GAsyncQueue *queue,
 /**
  * g_async_queue_push_front_unlocked:
  * @queue: a #GAsyncQueue
- * @item: (not nullable): data to push into the @queue
+ * @item: (not nullable) (transfer full): data to push into the @queue
  *
  * Pushes the @item into the @queue. @item must not be %NULL.
  * In contrast to g_async_queue_push_unlocked(), this function
