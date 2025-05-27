@@ -40,8 +40,8 @@ compare_func (gconstpointer d1, gconstpointer d2, gpointer data)
   return i1 - i2;
 }
 
-static
-void test_async_queue_sort (void)
+static void
+test_async_queue_sort (void)
 {
   GAsyncQueue *q;
 
