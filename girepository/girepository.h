@@ -242,6 +242,9 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   void           *invocation_hint,
                                   void           *marshal_data);
 
+GI_AVAILABLE_IN_2_86
+GIRepository *gi_repository_dup_default (void);
+
 #include <girepository/girepository-autocleanups.h>
 
 G_END_DECLS
