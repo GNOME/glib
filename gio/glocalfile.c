@@ -1997,6 +1997,79 @@ _g_local_file_is_lost_found_dir (const char *path, dev_t path_dev)
 }
 #endif
 
+/* Check whether subsequently deleting the original file from the trash
+ * (in the gvfsd-trash process) will succeed. If we think it won’t, return
+ * an error, as the trash spec says trashing should not be allowed.
+ * https://specifications.freedesktop.org/trash-spec/latest/#implementation-notes
+ *
+ * Check ownership to see if we can delete. gvfsd will automatically chmod
+ * a file to allow it to be deleted, so checking the permissions bitfield isn’t
+ * relevant.
+ */
+static gboolean
+check_removing_recursively (GFile        *file,
+                            gboolean      user_owned,
+                            uid_t         uid,
+                            GCancellable *cancellable,
+                            GError       **error)
+{
+  GFileEnumerator *enumerator;
+
+  enumerator = g_file_enumerate_children (file,
+                                          G_FILE_ATTRIBUTE_STANDARD_TYPE ","
+                                          G_FILE_ATTRIBUTE_UNIX_UID,
+                                          G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                                          cancellable,
+                                          error);
+
+  if (!enumerator)
+    return FALSE;
+
+  while (TRUE)
+    {
+      GFileInfo *info;
+      GFile *child;
+
+      if (!g_file_enumerator_iterate (enumerator, &info, &child, cancellable, error))
+        {
+          g_object_unref (enumerator);
+          return FALSE;
+        }
+
+      if (!info)
+        break;
+
+      if (!user_owned)
+        {
+          GLocalFile *local = G_LOCAL_FILE (child);
+
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED,
+                       _("Unable to trash child file %s"), local->filename);
+          g_object_unref (enumerator);
+          return FALSE;
+        }
+
+      if ((g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY))
+        {
+          uid_t fuid;
+
+          fuid = g_file_info_get_attribute_uint32 (info,
+                                                   G_FILE_ATTRIBUTE_UNIX_UID);
+          if (!check_removing_recursively (child,
+                                           fuid == uid,
+                                           uid,
+                                           cancellable,
+                                           error))
+            {
+              g_object_unref (enumerator);
+              return FALSE;
+            }
+        }
+    }
+  g_object_unref (enumerator);
+  return TRUE;
+}
+
 static gboolean
 g_local_file_trash (GFile         *file,
 		    GCancellable  *cancellable,
@@ -2382,9 +2455,22 @@ g_local_file_trash (GFile         *file,
 
   g_clear_pointer (&data, g_free);
 
-  /* TODO: Maybe we should verify that you can delete the file from the trash
-   * before moving it? OTOH, that is hard, as it needs a recursive scan
-   */
+  if (S_ISDIR (file_stat.st_mode))
+    {
+      uid_t uid = geteuid ();
+
+      if (file_stat.st_uid == uid &&
+          !check_removing_recursively (file, TRUE, uid, cancellable, error))
+        {
+          g_unlink (infofile);
+
+          g_free (filesdir);
+          g_free (trashname);
+          g_free (infofile);
+
+          return FALSE;
+        }
+    }
 
   trashfile = g_build_filename (filesdir, trashname, NULL);
 
