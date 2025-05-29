@@ -86,7 +86,7 @@ write_out_typelib (gchar     *prefix,
       file_obj = g_file_new_for_path (filename);
       tmp_filename = g_strdup_printf ("%s.tmp", filename);
       tmp_file_obj = g_file_new_for_path (tmp_filename);
-      file = g_fopen (tmp_filename, "wb");
+      file = g_fopen (tmp_filename, "wbe");
 
       if (file == NULL)
         {

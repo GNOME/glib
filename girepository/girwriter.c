@@ -1368,7 +1368,7 @@ gi_ir_writer_write (GIRepository *repository,
         full_filename = g_strdup_printf ("%s-%s", ns, filename);
       else
         full_filename = g_strdup (filename);
-      ofile = g_fopen (filename, "w");
+      ofile = g_fopen (filename, "we");
 
       if (ofile == NULL)
         {

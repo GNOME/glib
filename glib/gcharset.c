@@ -28,6 +28,7 @@
 #include "ghash.h"
 #include "glib-private.h"
 #include "gmessages.h"
+#include "gstdio.h"
 #include "gstrfuncs.h"
 #include "gthread.h"
 #include "gthreadprivate.h"
@@ -447,7 +448,7 @@ read_aliases (const gchar *file,
   FILE *fp;
   char buf[256];
 
-  fp = fopen (file, "re");
+  fp = g_fopen (file, "re");
   if (!fp)
     return;
   while (fgets (buf, 256, fp))

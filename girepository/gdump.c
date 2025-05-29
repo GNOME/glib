@@ -33,6 +33,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <glib/gstdio.h>
 #include <gmodule.h>
 
 #include <stdlib.h>
@@ -637,7 +638,7 @@ gi_repository_dump (const char  *input_filename,
       return FALSE;
     }
 
-  input = fopen (input_filename, "rb");
+  input = g_fopen (input_filename, "rbe");
   if (input == NULL)
     {
       int saved_errno = errno;
@@ -649,7 +650,7 @@ gi_repository_dump (const char  *input_filename,
       return FALSE;
     }
 
-  output = fopen (output_filename, "wb");
+  output = g_fopen (output_filename, "wbe");
   if (output == NULL)
     {
       int saved_errno = errno;

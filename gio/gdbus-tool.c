@@ -34,6 +34,7 @@
 #endif
 
 #include <gi18n.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_WIN32
 #include "glib/glib-private.h"
@@ -71,7 +72,7 @@ completion_debug (const gchar *format, ...)
   s = g_strdup_vprintf (format, var_args);
   if (f == NULL)
     {
-      f = fopen ("/tmp/gdbus-completion-debug.txt", "a+");
+      f = g_fopen ("/tmp/gdbus-completion-debug.txt", "a+e");
     }
   fprintf (f, "%s\n", s);
   g_free (s);

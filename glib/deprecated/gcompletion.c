@@ -39,6 +39,7 @@
 
 #include <glib/gstrfuncs.h>
 #include <glib/gmessages.h>
+#include <glib/gstdio.h>
 #include <glib/gunicode.h>
 
 #include <string.h>
@@ -467,7 +468,7 @@ main (int   argc,
       return 1;
     }
   
-  file = fopen (argv[1], "r");
+  file = g_fopen (argv[1], "re");
   if (!file)
     {
       g_warning ("Cannot open %s", argv[1]);

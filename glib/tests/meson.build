@@ -515,6 +515,9 @@ endif
 python_test_env = test_env
 python_test_env.prepend('PYTHONPATH', python_test_libraries_path)
 python_test_env.prepend('PYTHONPATH', python_test_libraries_built)
+if python_test_env_common_path.length() > 0
+  python_test_env.prepend('PATH', python_test_env_common_path)
+endif
 
 foreach test_name, extra_args : python_tests
   depends = [extra_args.get('depends', [])]

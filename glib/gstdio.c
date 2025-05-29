@@ -145,11 +145,15 @@ w32_error_to_errno (DWORD error_code)
  * "wb+". The 'b' needs to be appended to "w+", i.e. "w+b". Note
  * that otherwise these 2 modes are supposed to be aliases, hence
  * swappable at will. TODO: Is this still true?
+ *
+ * It also doesn’t accept `e`, which Unix uses for O_CLOEXEC. This function
+ * rewrites that to `N` — see
+ * https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/fopen-wfopen?view=msvc-170
  */
 static void
 _g_win32_fix_mode (wchar_t *mode)
 {
-  wchar_t *ptr;
+  wchar_t *ptr, *e_ptr, *comma_ptr;
   wchar_t temp;
 
   ptr = wcschr (mode, L'+');
@@ -159,6 +163,13 @@ _g_win32_fix_mode (wchar_t *mode)
       mode[1] = *ptr;
       *ptr = temp;
     }
+
+  /* Rewrite `e` (O_CLOEXEC) to `N`, if it occurs before any extended attributes
+   * (https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/fopen-wfopen?view=msvc-170#unicode-support) */
+  e_ptr = wcschr (mode, L'e');
+  comma_ptr = wcschr (mode, L',');
+  if (e_ptr != NULL && (comma_ptr == NULL || e_ptr < comma_ptr))
+    *e_ptr = L'N';
 }
 
 /* From
@@ -1562,6 +1573,13 @@ g_rmdir (const gchar *filename)
  * used by GLib are different. Convenience functions like g_file_set_contents_full()
  * avoid this problem.
  *
+ * Since GLib 2.86, the `e` option is supported in @mode on all platforms. On
+ * Unix platforms it will set `O_CLOEXEC` on the opened file descriptor. On
+ * Windows platforms it will be converted to the
+ * [`N` modifier](https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/fopen-wfopen?view=msvc-170).
+ * It is recommended to set `e` unconditionally, unless you know the returned
+ * file should be shared between this process and a new fork.
+ *
  * Returns: A `FILE*` if the file was successfully opened, or %NULL if
  *     an error occurred
  * 
@@ -1617,6 +1635,9 @@ g_fopen (const gchar *filename,
  * opens a file and associates it with an existing stream.
  * 
  * See your C library manual for more details about freopen().
+ *
+ * Since GLib 2.86, the `e` option is supported in @mode on all platforms. See
+ * the documentation for [func@GLib.fopen] for more details.
  *
  * Returns: A FILE* if the file was successfully opened, or %NULL if
  *     an error occurred.

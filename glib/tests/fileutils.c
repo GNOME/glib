@@ -705,7 +705,7 @@ test_mkdir_with_parents_1 (const gchar *base)
   if (g_file_test (p1, G_FILE_TEST_EXISTS))
     g_error ("failed, did g_rmdir(%s), but %s is still there", p1, p1);
 
-  f = g_fopen (p1, "w");
+  f = g_fopen (p1, "we");
   if (f == NULL)
     g_error ("failed, couldn't create file %s", p1);
   fclose (f);
@@ -1446,7 +1446,7 @@ test_get_contents (void)
   char *filename = g_build_filename (g_get_tmp_dir (), "file-test-get-contents", NULL);
   gsize bytes_written;
 
-  f = g_fopen (filename, "w");
+  f = g_fopen (filename, "we");
   bytes_written = fwrite (text, 1, strlen (text), f);
   g_assert_cmpint (bytes_written, ==, strlen (text));
   fclose (f);
@@ -2042,7 +2042,7 @@ test_read_link (void)
   g_free (newpath);
   g_free (badpath);
 
-  file = fopen (filename, "w");
+  file = g_fopen (filename, "we");
   g_assert_nonnull (file);
   fclose (file);
 
@@ -2219,7 +2219,36 @@ test_fopen_modes (void)
       "a+b",
       "wb+",
       "rb+",
-      "ab+"
+      "ab+",
+      "we",
+      "re",
+      "ae",
+      "w+e",
+      "r+e",
+      "a+e",
+      "wbe",
+      "rbe",
+      "abe",
+      "w+be",
+      "r+be",
+      "a+be",
+      "wb+e",
+      "rb+e",
+      "ab+e",
+      "web",
+      "reb",
+      "aeb",
+      "w+eb",
+      "r+eb",
+      "a+eb",
+      "web+",
+      "reb+",
+      "aeb+",
+#ifdef G_OS_WIN32
+      /* https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/fopen-wfopen?view=msvc-170#unicode-support */
+      "w, ccs=utf-16le",
+      "we, ccs=utf-16le",
+#endif
     };
 
   g_test_bug ("https://gitlab.gnome.org/GNOME/glib/merge_requests/119");
