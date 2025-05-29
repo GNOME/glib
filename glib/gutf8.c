@@ -27,6 +27,7 @@
 #include <langinfo.h>
 #endif
 #include <string.h>
+#include <stdbool.h>
 
 #ifdef G_PLATFORM_WIN32
 #include <stdio.h>
@@ -41,6 +42,7 @@
 #include "gthread.h"
 #include "glibintl.h"
 #include "gvalgrind.h"
+#include "gunicodeprivate.h"
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \
@@ -1572,6 +1574,401 @@ g_ucs4_to_utf16 (const gunichar  *str,
     *items_read = i;
   
   return result;
+}
+
+/**< private >
+ * find_invalid_or_incomplete_utf8_sequence:
+ *
+ * @string: the source string.
+ *
+ * Returns the first byte of a sequence that is either invalid
+ * UTF-8 or incomplete UTF-8, or a pointer to the NULL terminator
+ * if all of @string is valid UTF-8.
+ */
+static const char *
+find_invalid_or_incomplete_utf8_sequence (const char *string)
+{
+  const char *end = string;
+
+  g_utf8_validate (string, -1, &end);
+
+  return end;
+}
+
+/**< private >
+ * find_valid_and_complete_utf8_sequence:
+ *
+ * @string: a NULL-terminated source string.
+ *
+ * Returns the first byte of a sequence that is valid (and complete)
+ * UTF-8, or a pointer to the NULL terminator if no such sequence
+ * could be found.
+ */
+static const char *
+find_valid_and_complete_utf8_sequence (const char *string)
+{
+  const unsigned char *iter = (const unsigned char *)string;
+
+  for (;; iter++)
+    {
+      if (*iter < 128 ||
+          ((*iter & 0xC0) == 0xC0 &&
+           g_utf8_get_char_validated ((const char*)iter, -1) < (gunichar2)-2))
+        {
+          break;
+        }
+    }
+
+  return (const char *) iter;
+}
+
+
+/**< private >
+ * invalidly_encoded_string_to_utf16_get_output_length:
+ *
+ * @start: start of the source string.
+ * @end: end of the source string (excluded).
+ *
+ * Returns the output length, as a count of gunichar2, that is necessary
+ * for the generic translation of an invalidly-encoded string to UTF-16.
+ */
+static size_t
+invalidly_encoded_string_to_utf16_get_output_length (const char *start,
+                                                     const char *end)
+{
+  size_t count;
+
+  g_assert ((uintptr_t)end >= (uintptr_t)start);
+
+  /* We output one gunichar2 for each input byte */
+  count = (uintptr_t)end - (uintptr_t)start;
+
+  return count;
+}
+
+/**< private >
+ * invalidly_encoded_string_to_utf16:
+ *
+ * @start: start of the string.
+ * @end: end of the string (excluded).
+ * @output: the output buffer. Must be long enough to hold
+ *          the entire output.
+ *
+ * Performs a generic conversion of an invalidly-encoded string
+ * to UTF-16. Note: the current implementation simply outputs
+ * Unicode Replacement Characters "�" (U+FFFD) for each byte in
+ * the source string.
+ */
+static size_t
+invalidly_encoded_string_to_utf16 (const char *start,
+                                   const char *end,
+                                   gunichar2  *output)
+{
+  size_t count;
+
+  g_assert ((uintptr_t)end >= (uintptr_t)start);
+  count = (uintptr_t)end - (uintptr_t)start;
+
+  for (size_t i = 0; i < count; i++)
+    output[i] = 0xFFFD;
+
+  return count;
+}
+
+/**< private >
+ * invalidly_encoded_string_to_utf16_backtrack:
+ *
+ * @start: start of the source string.
+ * @output_length: length within the output UTF-16 string
+ *                 expressed as a count of gunichar2.
+ *
+ * Backtracks an output-length in count of gunichar2 to the
+ * corresponding length, in bytes, of the source string.
+ */
+static size_t
+invalidly_encoded_string_to_utf16_backtrack (const char *start,
+                                             size_t      output_length)
+{
+  /* The conversion process outputs one gunichar2 (a complete
+   * character) for each input byte, so the mapping is very
+   * simple.
+   */
+  return output_length;
+}
+
+
+/**< private >
+ * valid_utf8_to_utf16_get_output_length:
+ *
+ * @start: start of the source string. Must be valid UTF-8.
+ * @end: end of the source string (excluded).
+ *
+ * Returns the output-length, in count of gunichar2, necessary for the
+ * translation of a valid UTF-8 string to UTF-16.
+ */
+static size_t
+valid_utf8_to_utf16_get_output_length (const char *start,
+                                       const char *end)
+{
+  size_t count = 0;
+
+  while (start < end)
+    {
+      gunichar codepoint = g_utf8_get_char (start);
+
+      if (codepoint <= 0xFFFF)
+        count += 1;
+      else
+        count += 2;
+
+      start = g_utf8_next_char (start);
+    }
+
+  g_assert (start == end);
+
+  return count;
+}
+
+/**< private >
+ * valid_utf8_to_utf16:
+ *
+ * @start: start of the source string. Must be valid UTF-8
+ * @end: end of the source string (excluded).
+ * @output: the output buffer. Must be long enough to hold
+ *          the entire output.
+ *
+ * Performs the conversion of a valid UTF-8 string to UTF-16.
+ */
+static size_t
+valid_utf8_to_utf16 (const char *start,
+                     const char *end,
+                     gunichar2  *output)
+{
+  size_t count = 0;
+
+  while (start < end)
+    {
+      gunichar codepoint = g_utf8_get_char (start);
+
+      if (codepoint <= 0xFFFF)
+        {
+          output[count++] = (gunichar2) codepoint;
+        }
+      else
+        {
+          gunichar subtract = codepoint - 0x010000;
+          output[count++] = 0xD800 + ((subtract >> 10) & 0x3FF);
+          output[count++] = 0xDC00 + (subtract & 0x3FF);
+        }
+
+      start = g_utf8_next_char (start);
+    }
+
+  g_assert (start == end);
+
+  return count;
+}
+
+/**< private >
+ * valid_utf8_to_utf16_backtrack:
+ *
+ * @start: start of the source string. Must be valid UTF-8.
+ * @output_length: length within the output UTF-16 string expressed
+ *                 as a count of gunichar2.
+ *
+ * Backtracks an output-length in count of gunichar2 to the
+ * corresponding length, in bytes, of the source string.
+ */
+static size_t
+valid_utf8_to_utf16_backtrack (const char *start,
+                               size_t      output_length)
+{
+  const char *iter = start;
+  size_t count = 0;
+
+  for (; *iter != '\0'; iter = g_utf8_next_char (iter))
+    {
+      if (output_length <= count)
+        break;
+
+      if (g_utf8_get_char (iter) <= 0xFFFF)
+        count += 1;
+      else
+        count += 2;
+    }
+
+  return (uintptr_t)iter - (uintptr_t)start;
+}
+
+
+static size_t
+utf8_to_utf16_make_valid_get_output_length (const char *string)
+{
+  const char *start = string;
+  size_t count = 0;
+
+  while (true)
+    {
+      const char *end = NULL;
+
+      end = find_invalid_or_incomplete_utf8_sequence (start);
+      count += valid_utf8_to_utf16_get_output_length (start, end);
+      start = end;
+
+      if (start[0] == '\0')
+        break;
+
+      end = find_valid_and_complete_utf8_sequence (start);
+      g_assert ((uintptr_t)end > (uintptr_t)start);
+      count += invalidly_encoded_string_to_utf16_get_output_length (start, end);
+      start = end;
+
+      if (start[0] == '\0')
+        break;
+    }
+
+  return count;
+}
+
+static size_t
+utf8_to_utf16_make_valid_backtrack (const char *string,
+                                    size_t      output_length)
+{
+  const char *start = string;
+  size_t count = 0;
+  size_t l;
+
+  while (true)
+    {
+      const char *end = NULL;
+
+      end = find_invalid_or_incomplete_utf8_sequence (start);
+      l = valid_utf8_to_utf16_get_output_length (start, end);
+      if (output_length < count + l)
+        return count + valid_utf8_to_utf16_backtrack (start, output_length);
+      count += (uintptr_t)end - (uintptr_t)start;
+      output_length -= l;
+      start = end;
+
+      if (start[0] == '\0')
+        return (uintptr_t)start - (uintptr_t)string;
+
+      end = find_valid_and_complete_utf8_sequence (start);
+      g_assert ((uintptr_t)end > (uintptr_t)start);
+      l = invalidly_encoded_string_to_utf16_get_output_length (start, end);
+      if (output_length < l)
+        return count + invalidly_encoded_string_to_utf16_backtrack (start, output_length);
+      count += (uintptr_t)end - (uintptr_t)start;
+      output_length -= l;
+      start = end;
+
+      if (start[0] == '\0')
+        return (uintptr_t)start - (uintptr_t)string;
+    }
+
+  return count;
+}
+
+
+static size_t
+utf8_to_utf16_make_valid (const char *string,
+                          gunichar2  *output)
+{
+  const char *start = string;
+  size_t count = 0;
+
+  while (true)
+    {
+      const char *end = NULL;
+
+      end = find_invalid_or_incomplete_utf8_sequence (start);
+      count += valid_utf8_to_utf16 (start, end, &output[count]);
+      start = end;
+
+      if (start[0] == '\0')
+        break;
+
+      end = find_valid_and_complete_utf8_sequence (start);
+      g_assert ((uintptr_t)end > (uintptr_t)start);
+      count += invalidly_encoded_string_to_utf16 (start, end, &output[count]);
+      start = end;
+
+      if (start[0] == '\0')
+        break;
+    }
+
+  return count;
+}
+
+/** < private >
+ * g_utf8_to_utf16_make_valid:
+ *
+ * @utf8: source UTF-8 string. May contain invalid or incomplete sequences.
+ * @buffer: optional auxiliary buffer where the output UTF-16 string will be
+ *          stored if large enough to hold the output. Callers can pass NULL,
+ *          in which case the output buffer is allocated on the heap.
+ * @buffer_len: length, in count of gunichar2, of @buffer. This is used only
+ *              if @buffer is not NULL.
+ * @out_utf16: pointer that will be set the to output string. If @buffer is
+ *             long enough to hold the data, *out_utf16 will equal @buffer
+ *             upon return; otherwise *out_utf16 will point to heap-allocated
+ *             data, which must be freed using `g_free`.
+ * @out_utf16_len: pointer to size_t that will be set to the length of the
+ *                 output UTF-16 string on return, in count of gunichar2.
+ *                 Can be NULL.
+ *
+ * Performs conversion of an UTF-8 string that may contain invalid sequences
+ * to UTF-16.
+ *
+ * On return, the caller should check if *out_utf16 equals @buffer and call
+ * `g_free` accordingly.
+ */
+void
+g_utf8_to_utf16_make_valid (const char  *utf8,
+                            gunichar2   *buffer,
+                            size_t       buffer_len,
+                            gunichar2  **out_utf16,
+                            size_t      *out_utf16_len)
+{
+  size_t output_length = utf8_to_utf16_make_valid_get_output_length (utf8);
+
+  if (output_length < buffer_len)
+    {
+      *out_utf16 = buffer;
+    }
+  else
+    {
+      /* output_length cannot be greater than strlen (utf8), which
+       * is less than SIZE_MAX since utf8 is null-terminated.
+       * As such, (output_length + 1) cannot overflow.
+       */
+      *out_utf16 = g_new (gunichar2, output_length + 1);
+    }
+
+  utf8_to_utf16_make_valid (utf8, *out_utf16);
+
+  /* Add the terminating NULL character */
+  (*out_utf16)[output_length] = L'\0';
+
+  if (out_utf16_len)
+    *out_utf16_len = output_length;
+}
+
+/** < private >
+ * g_utf8_to_utf16_make_valid_backtrack:
+ *
+ * @utf8: source UTF-8 string. May contain invalid or incomplete sequences.
+ * @utf16_len: length within the output UTF-16 string expressed as a count
+ *             of gunichar2.
+ *
+ * Backtracks an output-length in count of gunichar2 to the
+ * corresponding length, in bytes, of the source string.
+ */
+size_t
+g_utf8_to_utf16_make_valid_backtrack (const char  *utf8,
+                                      size_t       utf16_len)
+{
+  return utf8_to_utf16_make_valid_backtrack (utf8, utf16_len);
 }
 
 /* SIMD-based UTF-8 validation originates in the c-utf8 project from
