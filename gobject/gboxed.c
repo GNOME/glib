@@ -466,7 +466,7 @@ value_set_boxed_internal (GValue       *value,
 /**
  * g_value_set_boxed:
  * @value: a valid #GValue of %G_TYPE_BOXED derived type
- * @v_boxed: (nullable): boxed value to be set
+ * @v_boxed: (nullable): caller-owned boxed object to be duplicated for the #GValue
  *
  * Set the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed.
  */
