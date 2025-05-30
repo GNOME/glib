@@ -42,58 +42,133 @@
 /**
  * GRegex:
  *
- * A `GRegex` is the "compiled" form of a regular expression pattern.
+ * A `GRegex` is a compiled form of a regular expression.
+ * 
+ * After instantiating a `GRegex`, you can use its methods to find matches
+ * in a string, replace matches within a string, or split the string at matches.
  *
- * `GRegex` implements regular expression pattern matching using syntax and
- * semantics similar to Perl regular expression. See the
- * [PCRE documentation](man:pcrepattern(3)) for the syntax definition.
+ * `GRegex` implements regular expression pattern matching using syntax and 
+ * semantics (such as character classes, quantifiers, and capture groups) 
+ * similar to Perl regular expression. See the 
+ * [PCRE documentation](man:pcre2pattern(3)) for details.
  *
- * Some functions accept a @start_position argument, setting it differs
- * from just passing over a shortened string and setting %G_REGEX_MATCH_NOTBOL
- * in the case of a pattern that begins with any kind of lookbehind assertion.
- * For example, consider the pattern `\Biss\B` which finds occurrences of `iss`
- * in the middle of words. (`\B` matches only if the current position in the
- * subject is not a word boundary.) When applied to the string `Mississipi`
- * from the fourth byte, namely `issipi`, it does not match, because `\B` is
- * always false at the start of the subject, which is deemed to be a word
- * boundary. However, if the entire string is passed, but with
- * @start_position set to 4, it finds the second occurrence of `iss` because
- * it is able to look behind the starting point to discover that it is
- * preceded by a letter.
+ * A typical scenario for regex pattern matching is to check if a string 
+ * matches a pattern. The following statements implement this scenario.
+ * 
+ * ``` { .c }
+ * const char *regex_pattern = ".*GLib.*";
+ * const char *string_to_search = "You will love the GLib implementation of regex";
+ * g_autoptr(GMatchInfo) match_info = NULL;
+ * g_autoptr(GRegex) regex = NULL;
  *
- * Note that, unless you set the %G_REGEX_RAW flag, all the strings passed
- * to these functions must be encoded in UTF-8. The lengths and the positions
- * inside the strings are in bytes and not in characters, so, for instance,
- * `\xc3\xa0` (i.e., `à`) is two bytes long but it is treated as a
- * single character. If you set %G_REGEX_RAW the strings can be non-valid
- * UTF-8 strings and a byte is treated as a character, so `\xc3\xa0` is two
- * bytes and two characters long.
+ * regex = g_regex_new (regex_pattern, G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, NULL);
+ * g_assert (regex != NULL);
+ * 
+ * if (g_regex_match (regex, string_to_search, G_REGEX_MATCH_DEFAULT, &match_info))
+ *   {
+ *     int start_pos, end_pos;
+ *     g_match_info_fetch_pos (match_info, 0, &start_pos, &end_pos);
+ *     g_print ("Match successful! Overall pattern matches bytes %d to %d\n", start_pos, end_pos);
+ *   }
+ * else
+ *   {
+ *     g_print ("No match!\n");
+ *   }
+ * ```
+ * 
+ * The constructor for `GRegex` includes two sets of bitmapped flags:
+
+ * * [flags@GLib.RegexCompileFlags]—These flags 
+ * control how GLib compiles the regex. There are options for case 
+ * sensitivity, multiline, ignoring whitespace, etc.
+ * * [flags@GLib.RegexMatchFlags]—These flags control 
+ * `GRegex`’s matching behavior, such as anchoring and customizing definitions 
+ * for newline characters.
+ * 
+ * Some regex patterns include backslash assertions, such as `\d` (digit) or 
+ * `\D` (non-digit). The regex pattern must escape those backslashes. For 
+ * example, the pattern `"\\d\\D"` matches a digit followed by a non-digit.
  *
- * When matching a pattern, `\n` matches only against a `\n` character in
- * the string, and `\r` matches only a `\r` character. To match any newline
- * sequence use `\R`. This particular group matches either the two-character
- * sequence CR + LF (`\r\n`), or one of the single characters LF (linefeed,
- * U+000A, `\n`), VT vertical tab, U+000B, `\v`), FF (formfeed, U+000C, `\f`),
- * CR (carriage return, U+000D, `\r`), NEL (next line, U+0085), LS (line
- * separator, U+2028), or PS (paragraph separator, U+2029).
+ * GLib’s implementation of pattern matching includes a `start_position` 
+ * argument for some of the match, replace, and split methods. Specifying 
+ * a start position provides flexibility when you want to ignore the first 
+ * _n_ characters of a string, but want to incorporate backslash assertions 
+ * at character _n_ - 1. For example, a database field contains inconsistent
+ * spelling for a job title: `healthcare provider` and `health-care provider`.
+ * The database manager wants to make the spelling consistent by adding a 
+ * hyphen when it is missing. The following regex pattern tests for the string 
+ * `care` preceded by a non-word boundary character (instead of a hyphen) 
+ * and followed by a space.
  *
- * The behaviour of the dot, circumflex, and dollar metacharacters are
- * affected by newline characters, the default is to recognize any newline
- * character (the same characters recognized by `\R`). This can be changed
- * with `G_REGEX_NEWLINE_CR`, `G_REGEX_NEWLINE_LF` and `G_REGEX_NEWLINE_CRLF`
- * compile options, and with `G_REGEX_MATCH_NEWLINE_ANY`,
- * `G_REGEX_MATCH_NEWLINE_CR`, `G_REGEX_MATCH_NEWLINE_LF` and
- * `G_REGEX_MATCH_NEWLINE_CRLF` match options. These settings are also
- * relevant when compiling a pattern if `G_REGEX_EXTENDED` is set, and an
- * unescaped `#` outside a character class is encountered. This indicates
- * a comment that lasts until after the next newline.
+ * ``` { .c }
+ * const char *regex_pattern = "\\Bcare\\s";
+ * ```
  *
- * Creating and manipulating the same `GRegex` structure from different
- * threads is not a problem as `GRegex` does not modify its internal
- * state between creation and destruction, on the other hand `GMatchInfo`
- * is not threadsafe.
+ * An efficient way to match with this pattern is to start examining at 
+ * `start_position` 6 in the string `healthcare` or `health-care`.
+
+ * ``` { .c }
+ * const char *regex_pattern = "\\Bcare\\s";
+ * const char *string_to_search = "healthcare provider";
+ * g_autoptr(GMatchInfo) match_info = NULL;
+ * g_autoptr(GRegex) regex = NULL;
  *
- * The regular expressions low-level functionalities are obtained through
+ * regex = g_regex_new (
+ *   regex_pattern,
+ *   G_REGEX_DEFAULT,
+ *   G_REGEX_MATCH_DEFAULT,
+ *   NULL);
+ * g_assert (regex != NULL);
+ * 
+ * g_regex_match_full (
+ *   regex, 
+ *   string_to_search, 
+ *   -1,
+ *   6, // position of 'c' in the test string.
+ *   G_REGEX_MATCH_DEFAULT, 
+ *   &match_info,
+ *   NULL);
+ * ```
+ * 
+ * The method [method@GLib.Regex.match_full] (and other methods implementing 
+ * `start_pos`) allow for lookback before the start position to determine if 
+ * the previous character satisfies an assertion.
+ *
+ * Unless you set the [flags@GLib.RegexCompileFlags.RAW] as one of 
+ * the `GRegexCompileFlags`, all the strings passed to `GRegex` methods must 
+ * be encoded in UTF-8. The lengths and the positions inside the strings are 
+ * in bytes and not in characters, so, for instance, `\xc3\xa0` (i.e., `à`) 
+ * is two bytes long but it is treated as a single character. If you set 
+ * `G_REGEX_RAW`, the strings can be non-valid UTF-8 strings and a byte is 
+ * treated as a character, so `\xc3\xa0` is two bytes and two characters long.
+ *
+ * Regarding line endings, `\n` matches a `\n` character, and `\r` matches 
+ * a `\r` character. More generally, `\R` matches all typical line endings: 
+ * CR + LF (`\r\n`), LF (linefeed, U+000A, `\n`), VT (vertical tab, U+000B, 
+ * `\v`), FF (formfeed, U+000C, `\f`), CR (carriage return, U+000D, `\r`), 
+ * NEL (next line, U+0085), LS (line separator, U+2028), and PS (paragraph 
+ * separator, U+2029).
+ * 
+ * The behaviour of the dot, circumflex, and dollar metacharacters are 
+ * affected by newline characters. By default, `GRegex` matches any newline 
+ * character matched by `\R`. You can limit the matched newline characters by 
+ * specifying the [flags@GLib.RegexMatchFlags.NEWLINE_CR], 
+ * [flags@GLib.RegexMatchFlags.NEWLINE_LF], and 
+ * [flags@GLib.RegexMatchFlags.NEWLINE_CRLF] compile options, and 
+ * with [flags@GLib.RegexMatchFlags.NEWLINE_ANY], 
+ * [flags@GLib.RegexMatchFlags.NEWLINE_CR], 
+ * [flags@GLib.RegexMatchFlags.NEWLINE_LF] and 
+ * [flags@GLib.RegexMatchFlags.NEWLINE_CRLF] match options. 
+ * These settings are also relevant when compiling a pattern if 
+ * [flags@GLib.RegexCompileFlags.EXTENDED] is set and an unescaped 
+ * `#` outside a character class is encountered. This indicates a comment 
+ * that lasts until after the next newline.
+ * 
+ * Because `GRegex` does not modify its internal state between creation and 
+ * destruction, you can create and modify the same `GRegex` instance from 
+ * different threads. In contrast, [struct@GLib.MatchInfo] is not thread safe.
+ * 
+ * The regular expression low-level functionalities are obtained through
  * the excellent [PCRE](http://www.pcre.org/) library written by Philip Hazel.
  *
  * Since: 2.14
