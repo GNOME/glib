@@ -1445,7 +1445,7 @@ g_match_info_fetch (const GMatchInfo *match_info,
  * @start_pos: (out) (optional): pointer to location where to store
  *     the start position, or %NULL
  * @end_pos: (out) (optional): pointer to location where to store
- *     the end position, or %NULL
+ *     the end position (the byte after the final byte of the match), or %NULL
  *
  * Retrieves the position in bytes of the @match_num'th capturing
  * parentheses. 0 is the full text of the match, 1 is the first
@@ -1454,6 +1454,9 @@ g_match_info_fetch (const GMatchInfo *match_info,
  * If @match_num is a valid sub pattern but it didn't match anything
  * (e.g. sub pattern 1, matching "b" against "(a)?b") then @start_pos
  * and @end_pos are set to -1 and %TRUE is returned.
+ *
+ * As @end_pos is set to the byte after the final byte of the match (on success),
+ * the length of the match can be calculated as `end_pos - start_pos`.
  *
  * If the match was obtained using the DFA algorithm, that is using
  * g_regex_match_all() or g_regex_match_all_full(), the retrieved
@@ -1574,13 +1577,16 @@ g_match_info_fetch_named (const GMatchInfo *match_info,
  * @start_pos: (out) (optional): pointer to location where to store
  *     the start position, or %NULL
  * @end_pos: (out) (optional): pointer to location where to store
- *     the end position, or %NULL
+ *     the end position (the byte after the final byte of the match), or %NULL
  *
  * Retrieves the position in bytes of the capturing parentheses named @name.
  *
  * If @name is a valid sub pattern name but it didn't match anything
  * (e.g. sub pattern `"X"`, matching `"b"` against `"(?P<X>a)?b"`)
  * then @start_pos and @end_pos are set to -1 and %TRUE is returned.
+ *
+ * As @end_pos is set to the byte after the final byte of the match (on success),
+ * the length of the match can be calculated as `end_pos - start_pos`.
  *
  * Returns: %TRUE if the position was fetched, %FALSE otherwise.
  *     If the position cannot be fetched, @start_pos and @end_pos
