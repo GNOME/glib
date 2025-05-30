@@ -458,48 +458,6 @@ glib_win32_deinit (gboolean detach_thread)
   g_crash_handler_win32_deinit ();
 }
 
-#ifndef GLIB_STATIC_COMPILATION
-
-BOOL WINAPI DllMain (HINSTANCE hinstDLL,
-                     DWORD     fdwReason,
-                     LPVOID    lpvReserved);
-
-BOOL WINAPI
-DllMain (HINSTANCE hinstDLL,
-         DWORD     fdwReason,
-         LPVOID    lpvReserved)
-{
-  switch (fdwReason)
-    {
-    case DLL_PROCESS_ATTACH:
-      glib_dll = hinstDLL;
-      glib_win32_init ();
-      break;
-
-    case DLL_THREAD_DETACH:
-#ifdef THREADS_WIN32
-      g_thread_win32_thread_detach ();
-#endif
-      break;
-
-    case DLL_PROCESS_DETACH:
-      glib_win32_deinit (lpvReserved == NULL);
-      break;
-
-    default:
-      /* do nothing */
-      ;
-    }
-
-  return TRUE;
-}
-
-#else
-
-#ifndef G_HAS_CONSTRUCTORS
-#error static compilation on Windows requires constructor support
-#endif
-
 #ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
 #pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(glib_priv_constructor)
 #endif
@@ -518,7 +476,7 @@ glib_priv_constructor (void)
 }
 
 #ifndef G_HAS_TLS_CALLBACKS
-#error static compilation on Windows requires TLS callbacks support
+#error Compilation on Windows requires TLS callbacks support
 #endif
 
 G_DEFINE_TLS_CALLBACK (glib_priv_tls_callback)
@@ -547,8 +505,6 @@ glib_priv_tls_callback (LPVOID hinstance,
       break;
     }
 }
-
-#endif /* GLIB_STATIC_COMPILATION */
 
 #elif defined(G_HAS_CONSTRUCTORS) /* && !G_PLATFORM_WIN32 */
 

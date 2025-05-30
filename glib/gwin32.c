@@ -70,6 +70,8 @@
 #endif
 
 #include "glib.h"
+#include "gwin32.h"
+#include "gwin32private.h"
 #include "gthreadprivate.h"
 #include "glib-init.h"
 
@@ -1065,7 +1067,66 @@ static DWORD       *exceptions_to_catch = NULL;
 static HANDLE       debugger_wakeup_event = 0;
 static DWORD        debugger_spawn_flags = 0;
 
-#include "gwin32-private.c"
+/* Copy @cmdline into @debugger, and substitute @pid for `%p`
+ * and @event for `%e`.
+ * If @debugger_size (in wchar_ts) is overflowed, return %FALSE.
+ * Also returns %FALSE when `%` is followed by anything other
+ * than `e` or `p`.
+ */
+bool
+g_win32_substitute_pid_and_event (wchar_t       *local_debugger,
+                                  gsize          debugger_size,
+                                  const wchar_t *cmdline,
+                                  DWORD          pid,
+                                  guintptr       event)
+{
+  gsize i = 0, dbg_i = 0;
+/* These are integers, and they can't be longer than 20 characters
+ * even when they are 64-bit and in decimal notation.
+ * Use 30 just to be sure.
+ */
+#define STR_BUFFER_SIZE 30
+  wchar_t pid_str[STR_BUFFER_SIZE] = {0};
+  gsize pid_str_len;
+  wchar_t event_str[STR_BUFFER_SIZE] = {0};
+  gsize event_str_len;
+
+  _snwprintf_s (pid_str, STR_BUFFER_SIZE, G_N_ELEMENTS (pid_str), L"%lu", pid);
+  pid_str[G_N_ELEMENTS (pid_str) - 1] = 0;
+  pid_str_len = wcslen (pid_str);
+  _snwprintf_s (event_str, STR_BUFFER_SIZE, G_N_ELEMENTS (pid_str), L"%Iu", event);
+  event_str[G_N_ELEMENTS (pid_str) - 1] = 0;
+  event_str_len = wcslen (event_str);
+#undef STR_BUFFER_SIZE
+
+  while (cmdline[i] != 0 && dbg_i < debugger_size)
+    {
+      if (cmdline[i] != L'%')
+        local_debugger[dbg_i++] = cmdline[i++];
+      else if (cmdline[i + 1] == L'p')
+        {
+          gsize j = 0;
+          while (j < pid_str_len && dbg_i < debugger_size)
+            local_debugger[dbg_i++] = pid_str[j++];
+          i += 2;
+        }
+      else if (cmdline[i + 1] == L'e')
+        {
+          gsize j = 0;
+          while (j < event_str_len && dbg_i < debugger_size)
+            local_debugger[dbg_i++] = event_str[j++];
+          i += 2;
+        }
+      else
+        return FALSE;
+    }
+  if (dbg_i < debugger_size)
+    local_debugger[dbg_i] = 0;
+  else
+    return FALSE;
+
+  return TRUE;
+}
 
 static char *
 copy_chars (char       *buffer,
@@ -1295,9 +1356,9 @@ g_crash_handler_win32_init (void)
   debugger_wakeup_event = CreateEvent (&sa, FALSE, FALSE, NULL);
 
   /* Put process ID and event handle into debugger commandline */
-  if (!_g_win32_subst_pid_and_event_w (debugger, G_N_ELEMENTS (debugger),
-                                       debugger_env, GetCurrentProcessId (),
-                                       (guintptr) debugger_wakeup_event))
+  if (!g_win32_substitute_pid_and_event (debugger, G_N_ELEMENTS (debugger),
+                                         debugger_env, GetCurrentProcessId (),
+                                         (guintptr) debugger_wakeup_event))
     {
       CloseHandle (debugger_wakeup_event);
       debugger_wakeup_event = 0;
