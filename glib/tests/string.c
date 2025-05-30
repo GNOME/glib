@@ -791,7 +791,7 @@ test_string_copy (void)
   g_string_free (string2, TRUE);
 
   string1 = g_string_sized_new (200);
-  g_string_append_len (string1, "test with embedded\0nuls", 25);
+  g_string_append_len (string1, "test with embedded\0nuls", sizeof ("test with embedded\0nuls"));
   string2 = g_string_copy (string1);
   g_assert_cmpmem (string1->str, string1->len, string2->str, string2->len);
   g_assert_true (string1->str != string2->str);
