@@ -2004,6 +2004,7 @@ g_local_file_trash (GFile         *file,
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   GStatBuf file_stat, home_stat;
+  dev_t checked_st_dev;
   const char *homedir;
   char *trashdir, *topdir, *infodir, *filesdir;
   char *basename, *trashname, *trashfile, *infoname, *infofile;
@@ -2049,6 +2050,8 @@ g_local_file_trash (GFile         *file,
   is_homedir_trash = FALSE;
   trashdir = NULL;
 
+  checked_st_dev = file_stat.st_dev;
+
   /* On overlayfs, a file's st_dev will be different to the home directory's.
    * We still want to create our trash directory under the home directory, so
    * instead we should stat the directory that the file we're deleting is in as
@@ -2056,13 +2059,14 @@ g_local_file_trash (GFile         *file,
    */
   if (!S_ISDIR (file_stat.st_mode))
     {
+      GStatBuf parent_stat;
       path = g_path_get_dirname (local->filename);
       /* If the parent is a symlink to a different device then it might have
        * st_dev equal to the home directory's, in which case we will end up
        * trying to rename across a filesystem boundary, which doesn't work. So
        * we use g_stat here instead of g_lstat, to know where the symlink
        * points to. */
-      if (g_stat (path, &file_stat))
+      if (g_stat (path, &parent_stat))
 	{
 	  errsv = errno;
 	  g_free (path);
@@ -2072,10 +2076,11 @@ g_local_file_trash (GFile         *file,
 			  file, errsv);
 	  return FALSE;
 	}
+      checked_st_dev = parent_stat.st_dev;
       g_free (path);
     }
 
-  if (file_stat.st_dev == home_stat.st_dev)
+  if (checked_st_dev == home_stat.st_dev)
     {
       is_homedir_trash = TRUE;
       errno = 0;
