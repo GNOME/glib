@@ -143,6 +143,10 @@ typedef struct _GMarkupParser GMarkupParser;
  * errors are intended to be set from these callbacks. If you set an error
  * from a callback, g_markup_parse_context_parse() will report that error
  * back to its caller.
+ *
+ * Refer to the [GMarkup](../glib/markup.html) documentation to understand
+ * the scope and limitations of `GMarkupParser`. In particular, it is not a
+ * full XML parser and it must not be used to process untrusted data.
  */
 struct _GMarkupParser
 {
