@@ -79,20 +79,27 @@ content_images = [
 # We have to hide the GioUnix and GioWin32 symbols from the documentation — they
 # have to be present in the GIR files (until we next break API), but their
 # documentation is split out to gio-{unix,win32}.toml.
+#
+# There are four exceptions, which are ‘Unix’ APIs which are legitimately in
+# the main Gio library as they can now be used on Windows:
+#  - GUnixConnection
+#  - GUnixCredentialsMessage
+#  - GUnixFDList
+#  - GUnixSocketAddress
 [[object]]
-pattern = "Unix[A-Z].+"
+pattern = "Unix(?!Connection|CredentialsMessage|FDList|SocketAddress).+"
 hidden = true
 
 [[object]]
-pattern = "unix_.+"
+pattern = "unix_(?!connection|credentials_message|fd_list|socket_address).+"
 hidden = true
 
 [[struct]]
-pattern = "Unix[A-Z].+"
+pattern = "Unix(?!Connection|CredentialsMessage|FDList|SocketAddress).+"
 hidden = true
 
 [[function]]
-pattern = "unix_.+"
+pattern = "unix_(?!connection|credentials_message|fd_list|socket_address).+"
 hidden = true
 
 [[object]]
