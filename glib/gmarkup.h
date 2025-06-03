@@ -145,7 +145,7 @@ typedef struct _GMarkupParser GMarkupParser;
  * back to its caller.
  *
  * Refer to the [GMarkup](../glib/markup.html) documentation to understand
- * the scope and limitations of GMarkupParser. In particular, it is not a
+ * the scope and limitations of `GMarkupParser`. In particular, it is not a
  * full XML parser and it must not be used to process untrusted data.
  */
 struct _GMarkupParser
