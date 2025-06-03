@@ -68,10 +68,6 @@ static void
 g_string_expand (GString *string,
                  gsize    len)
 {
-  /* Detect potential overflow */
-  if G_UNLIKELY ((G_MAXSIZE - string->len - 1) < len)
-    g_error ("adding %" G_GSIZE_FORMAT " to string would overflow", len);
-
   string->allocated_len = g_nearest_pow (string->len + len + 1);
   /* If the new size is bigger than G_MAXSIZE / 2, only allocate enough
    * memory for this string and don't over-allocate.
@@ -86,6 +82,10 @@ static inline void
 g_string_maybe_expand (GString *string,
                        gsize    len)
 {
+  /* Detect potential overflow */
+  if G_UNLIKELY ((G_MAXSIZE - string->len - 1) < len)
+    g_error ("adding %" G_GSIZE_FORMAT " to string would overflow", len);
+
   if (G_UNLIKELY (string->len + len >= string->allocated_len))
     g_string_expand (string, len);
 }
