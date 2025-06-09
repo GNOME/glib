@@ -69,6 +69,7 @@ option('tapset_install_dir',
 option('sysprof',
        type : 'feature',
        value : 'auto',
+       yield : true,
        description : 'include tracing support for sysprof')
 
 option('documentation',
