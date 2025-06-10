@@ -176,6 +176,7 @@ glib_tests = {
   'utf8-pointer' : {
     'c_args' : cc.get_id() == 'gcc' ? ['-Werror=cast-qual'] : [],
   },
+  'utf8-private' : {},
   'utf8-validate' : {},
   'utf8-misc' : {},
   'utils' : {
