@@ -120,6 +120,7 @@ glib_bindir = join_paths(glib_prefix, get_option('bindir'))
 glib_libdir = join_paths(glib_prefix, get_option('libdir'))
 glib_libexecdir = join_paths(glib_prefix, get_option('libexecdir'))
 glib_datadir = join_paths(glib_prefix, get_option('datadir'))
+glib_localedir = join_paths(glib_prefix, get_option('localedir'))
 glib_pkgdatadir = join_paths(glib_datadir, 'glib-2.0')
 glib_includedir = join_paths(glib_prefix, get_option('includedir'), 'glib-2.0')
 if get_option('gio_module_dir') != ''
@@ -2346,7 +2347,7 @@ glib_conf.set('HAVE_BIND_TEXTDOMAIN_CODESET', have_bind_textdomain_codeset)
 glib_conf.set('HAVE_DCGETTEXT', 1)
 glib_conf.set('HAVE_GETTEXT', 1)
 
-glib_conf.set_quoted('GLIB_LOCALE_DIR', join_paths(glib_datadir, 'locale'))
+glib_conf.set_quoted('GLIB_LOCALE_DIR', glib_localedir)
 
 glib_conf.set_quoted('GLIB_LOCALSTATEDIR', glib_localstatedir)
 glib_conf.set_quoted('GLIB_RUNSTATEDIR', glib_runstatedir)
@@ -2795,6 +2796,7 @@ summary({
   'libexecdir' : glib_libexecdir,
   'pkgdatadir' : glib_pkgdatadir,
   'datadir' : glib_datadir,
+  'localedir' : glib_localedir,
   'includedir' : glib_includedir,
   'giomodulesdir' : glib_giomodulesdir,
   'localstatedir' : glib_localstatedir,
