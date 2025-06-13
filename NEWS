@@ -1,3 +1,11 @@
+Overview of changes in GLib 2.84.3, 2025-06-13
+==============================================
+
+* Bugs fixed:
+  - !4656 Backport !4655 “gstring: Fix overflow check when expanding the string”
+    to glib-2-84
+
+
 Overview of changes in GLib 2.84.2, 2025-05-20
 ==============================================
 
