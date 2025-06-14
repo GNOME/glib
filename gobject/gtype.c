@@ -3888,8 +3888,8 @@ g_type_fundamental (GType type_id)
 }
 
 gboolean
-g_type_check_instance_is_a (GTypeInstance *type_instance,
-			    GType          iface_type)
+g_type_check_instance_is_a (const GTypeInstance *type_instance,
+			    GType                iface_type)
 {
   TypeNode *node, *iface;
   gboolean check;
@@ -3908,8 +3908,8 @@ g_type_check_instance_is_a (GTypeInstance *type_instance,
 }
 
 gboolean
-g_type_check_instance_is_fundamentally_a (GTypeInstance *type_instance,
-                                          GType          fundamental_type)
+g_type_check_instance_is_fundamentally_a (const GTypeInstance *type_instance,
+                                          GType                fundamental_type)
 {
   TypeNode *node;
   if (!type_instance || !type_instance->g_class)
@@ -3937,7 +3937,7 @@ g_type_check_class_is_a (GTypeClass *type_class,
 
 GTypeInstance*
 g_type_check_instance_cast (GTypeInstance *type_instance,
-			    GType          iface_type)
+			    GType                iface_type)
 {
   if (type_instance)
     {
@@ -4011,7 +4011,7 @@ g_type_check_class_cast (GTypeClass *type_class,
  * Returns: %TRUE if @instance is valid, %FALSE otherwise
  */
 gboolean
-g_type_check_instance (GTypeInstance *type_instance)
+g_type_check_instance (const GTypeInstance *type_instance)
 {
   /* this function is just here to make the signal system
    * conveniently elaborated on instance checks

@@ -731,7 +731,7 @@ test_finalization_print_result (PerformanceTest *test,
 
 /* Work around g_type_check_instance_is_a being marked "pure",
  * and thus only called once for the loop. */
-static gboolean (*my_type_check_instance_is_a) (GTypeInstance *type_instance,
+static gboolean (*my_type_check_instance_is_a) (const GTypeInstance *type_instance,
                                                 GType iface_type);
 
 struct TypeCheckTest {

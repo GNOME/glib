@@ -510,7 +510,7 @@ struct _GTypeQuery
  *
  * Returns: %TRUE if @instance is valid
  */
-#define G_TYPE_CHECK_INSTANCE(instance)				(_G_TYPE_CHI ((GTypeInstance*) (instance)))
+#define G_TYPE_CHECK_INSTANCE(instance)				(_G_TYPE_CHI ((const GTypeInstance*) (instance)))
 /**
  * G_TYPE_CHECK_INSTANCE_CAST:
  * @instance: (nullable): Location of a #GTypeInstance structure
@@ -1614,9 +1614,9 @@ guint     g_type_get_type_registration_serial (void);
   _GLIB_DEFINE_AUTOPTR_CHAINUP (ModuleObjName, ParentName)                                               \
   G_DEFINE_AUTOPTR_CLEANUP_FUNC (ModuleObjName##Class, g_type_class_unref)                               \
                                                                                                          \
-  G_GNUC_UNUSED static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                       \
+  G_GNUC_UNUSED static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                  \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
-  G_GNUC_UNUSED static inline gboolean MODULE##_IS_##OBJ_NAME (gpointer ptr) {                           \
+  G_GNUC_UNUSED static inline gboolean MODULE##_IS_##OBJ_NAME (gconstpointer ptr) {                           \
     return G_TYPE_CHECK_INSTANCE_TYPE (ptr, module_obj_name##_get_type ()); }                            \
   G_GNUC_END_IGNORE_DEPRECATIONS
 
@@ -2622,16 +2622,16 @@ GTypeValueTable* g_type_value_table_peek        (GType		     type);
 
 /*< private >*/
 GOBJECT_AVAILABLE_IN_ALL
-gboolean	 g_type_check_instance          (GTypeInstance      *instance) G_GNUC_PURE;
+gboolean	 g_type_check_instance          (const GTypeInstance *instance) G_GNUC_PURE;
 GOBJECT_AVAILABLE_IN_ALL
 GTypeInstance*   g_type_check_instance_cast     (GTypeInstance      *instance,
 						 GType               iface_type);
 GOBJECT_AVAILABLE_IN_ALL
-gboolean         g_type_check_instance_is_a	(GTypeInstance      *instance,
-						 GType               iface_type) G_GNUC_PURE;
+gboolean         g_type_check_instance_is_a	(const GTypeInstance *instance,
+						 GType                iface_type) G_GNUC_PURE;
 GOBJECT_AVAILABLE_IN_2_42
-gboolean         g_type_check_instance_is_fundamentally_a (GTypeInstance *instance,
-                                                           GType          fundamental_type) G_GNUC_PURE;
+gboolean         g_type_check_instance_is_fundamentally_a (const GTypeInstance *instance,
+                                                           GType                fundamental_type) G_GNUC_PURE;
 GOBJECT_AVAILABLE_IN_ALL
 GTypeClass*      g_type_check_class_cast        (GTypeClass         *g_class,
 						 GType               is_a_type);
@@ -2668,7 +2668,7 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
     ((ct*) (void *) g_type_check_class_cast ((GTypeClass*) cp, gt))
 #endif
 
-#define _G_TYPE_CHI(ip)			(g_type_check_instance ((GTypeInstance*) ip))
+#define _G_TYPE_CHI(ip)			(g_type_check_instance ((const GTypeInstance*) ip))
 #define _G_TYPE_CHV(vl)			(g_type_check_value ((GValue*) vl))
 #define _G_TYPE_IGC(ip, gt, ct)         ((ct*) (((GTypeInstance*) ip)->g_class))
 #define _G_TYPE_IGI(ip, gt, ct)         ((ct*) g_type_interface_peek (((GTypeInstance*) ip)->g_class, gt))
