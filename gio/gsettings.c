@@ -3161,6 +3161,14 @@ bind_with_mapping_invoke_get (GValue *value,
   g_closure_invoke (data->get_mapping_closure, &out, 2, params, /* hint = */ NULL);
 
   retval = g_value_get_boolean (&out);
+  if (retval)
+    {
+      const GValue *out_value = g_value_get_boxed (&params[0]);
+
+      g_assert (out_value != NULL);
+
+      g_value_copy (out_value, value);
+    }
 
   g_value_unset (&out);
   g_value_unset (&params[0]);
