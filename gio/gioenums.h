@@ -987,13 +987,20 @@ typedef enum
  * @G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT: Allow another message bus connection to claim the name.
  * @G_BUS_NAME_OWNER_FLAGS_REPLACE: If another message bus connection owns the name and have
  * specified %G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT, then take the name from the other connection.
- * @G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE: If another message bus connection owns the name, immediately
- * return an error from g_bus_own_name() rather than entering the waiting queue for that name. (Since 2.54)
  *
  * Flags used in g_bus_own_name().
  *
  * Since: 2.26
  */
+/**
+ * G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE:
+ *
+ * If another message bus connection owns the name, immediately return an error
+ * from [func@Gio.bus_own_name] rather than entering the waiting queue for that
+ * name.
+ *
+ * Since: 2.54
+ **/
 typedef enum
 {
   G_BUS_NAME_OWNER_FLAGS_NONE = 0,                    /*< nick=none >*/
