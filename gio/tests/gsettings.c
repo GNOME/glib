@@ -1827,6 +1827,7 @@ test_bind_with_mapping_closures_parameters (void)
   GSettings *settings;
   GClosure *get;
   GClosure *set;
+  gboolean val;
   BindWithMappingData data = { FALSE, FALSE, FALSE, FALSE };
 
   settings = g_settings_new ("org.gtk.test.binding");
@@ -1843,6 +1844,8 @@ test_bind_with_mapping_closures_parameters (void)
 
   g_assert_true (data.get_called);
   g_assert_false (data.set_called);
+  g_object_get (obj, "bool", &val, NULL);
+  g_assert_true (val);
 
   data.get_called = FALSE;
   g_object_set (obj, "bool", FALSE, NULL);
