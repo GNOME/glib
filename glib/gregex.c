@@ -1516,32 +1516,221 @@ g_match_info_fetch (const GMatchInfo *match_info,
 /**
  * g_match_info_fetch_pos:
  * @match_info: #GMatchInfo structure
- * @match_num: number of the sub expression
+ * @match_num: number of the capture parenthesis
  * @start_pos: (out) (optional): pointer to location where to store
  *     the start position, or %NULL
  * @end_pos: (out) (optional): pointer to location where to store
  *     the end position (the byte after the final byte of the match), or %NULL
  *
- * Retrieves the position in bytes of the @match_num'th capturing
- * parentheses. 0 is the full text of the match, 1 is the first
- * paren set, 2 the second, and so on.
- *
- * If @match_num is a valid sub pattern but it didn't match anything
- * (e.g. sub pattern 1, matching "b" against "(a)?b") then @start_pos
- * and @end_pos are set to -1 and %TRUE is returned.
+ * Returns the start and end positions (in bytes) of a successfully matching 
+ * capture parenthesis.
+ * 
+ * Valid values for @match_num are `0` for the full text of the match,
+ * `1` for the first paren set, `2` for the second, and so on.
  *
  * As @end_pos is set to the byte after the final byte of the match (on success),
  * the length of the match can be calculated as `end_pos - start_pos`.
  *
- * If the match was obtained using the DFA algorithm, that is using
- * g_regex_match_all() or g_regex_match_all_full(), the retrieved
- * position is not that of a set of parentheses but that of a matched
- * substring. Substrings are matched in reverse order of length, so
- * 0 is the longest match.
+ * As a best practice, initialize @start_pos and @end_pos to identifiable 
+ * values, such as `G_MAXINT`, so that you can test if 
+ * `g_match_info_fetch_pos()` actually changed the value for a given 
+ * capture parenthesis.
  *
- * Returns: %TRUE if the position was fetched, %FALSE otherwise. If
- *   the position cannot be fetched, @start_pos and @end_pos are left
- *   unchanged
+ * The parameter @match_num corresponds to a matched capture parenthesis. The 
+ * actual value you use for @match_num depends on the method used to generate
+ * @match_info. The following sections describe those methods.
+ * 
+ * ## Methods Using Non-deterministic Finite Automata Matching
+ *
+ * The methods [method@GLib.Regex.match] and [method@GLib.Regex.match_full]
+ * return a [struct@GLib.MatchInfo] using traditional (greedy) pattern
+ * matching, also known as 
+ * [Non-deterministic Finite Automaton](https://en.wikipedia.org/wiki/Nondeterministic_finite_automaton)
+ * (NFA) matching. You pass the returned `GMatchInfo` from these methods to 
+ * `g_match_info_fetch_pos()` to determine the start and end positions 
+ * of capture parentheses. The values for @match_num correspond to the capture 
+ * parentheses in order, with `0` corresponding to the entire matched string.
+ * 
+ * @match_num can refer to a capture parenthesis with no match. For example, 
+ * the string `b` matches against the pattern `(a)?b`, but the capture
+ * parenthesis `(a)` has no match. In this case, `g_match_info_fetch_pos()`
+ * returns true and sets @start_pos and @end_pos to `-1` when called with
+ * `match_num` as `1` (for `(a)`).
+ *
+ * For an expanded example, a regex pattern is `(a)?(.*?)the (.*)`, 
+ * and a candidate string is `glib regexes are the best`. In this scenario 
+ * there are four capture parentheses numbered 0–3: an implicit one 
+ * for the entire string, and three explicitly declared in the regex pattern.
+ *
+ * Given this example, the following table describes the return values 
+ * from `g_match_info_fetch_pos()` for various values of @match_num.
+ *
+ * `match_num` | Contents | Return value | Returned `start_pos` | Returned `end_pos`
+ * ----------- | -------- | ------------ | -------------------- | ------------------
+ * 0 | Matches entire string | True | 0 | 25
+ * 1 | Does not match first character | True | -1 | -1
+ * 2 | All text before `the ` | True | 0 | 17
+ * 3 | All text after `the ` | True | 21 | 25
+ * 4 | Capture paren out of range | False | Unchanged | Unchanged
+ *
+ * The following code sample and output implements this example.
+ *
+ * ``` { .c }
+ * #include <glib.h>
+ *
+ * int
+ * main (int argc, char *argv[])
+ * {
+ *   g_autoptr(GError) local_error = NULL;
+ *   const char *regex_pattern = "(a)?(.*?)the (.*)";
+ *   const char *test_string = "glib regexes are the best";
+ *   g_autoptr(GRegex) regex = NULL;
+ *
+ *   regex = g_regex_new (regex_pattern,
+ *                        G_REGEX_DEFAULT,
+ *                        G_REGEX_MATCH_DEFAULT,
+ *                        &local_error);
+ *   if (regex == NULL)
+ *     {
+ *       g_printerr ("Error creating regex: %s\n", local_error->message);
+ *       return 1;
+ *     }
+ *
+ *   g_autoptr(GMatchInfo) match_info = NULL;
+ *   g_regex_match (regex, test_string, G_REGEX_MATCH_DEFAULT, &match_info);
+ *
+ *   int n_matched_strings = g_match_info_get_match_count (match_info);
+ *
+ *   // Print header line
+ *   g_print ("match_num Contents                  Return value returned start_pos returned end_pos\n");
+ *
+ *   // Iterate over each capture paren, including one that is out of range as a demonstration.
+ *   for (int match_num = 0; match_num <= n_matched_strings; match_num++)
+ *     {
+ *       gboolean found_match;
+ *       g_autofree char *paren_string = NULL;
+ *       int start_pos = G_MAXINT;
+ *       int end_pos = G_MAXINT;
+ *
+ *       found_match = g_match_info_fetch_pos (match_info,
+ *                                             match_num,
+ *                                             &start_pos,
+ *                                             &end_pos);
+ *
+ *       // If no match, display N/A as the found string.
+ *       if (start_pos == G_MAXINT || start_pos == -1)
+ *         paren_string = g_strdup ("N/A");
+ *       else
+ *         paren_string = g_strndup (test_string + start_pos, end_pos - start_pos);
+ *
+ *       g_print ("%-9d %-25s %-12d %-18d %d\n", match_num, paren_string, found_match, start_pos, end_pos);
+ *     }
+ *
+ *   return 0;
+ * }
+ * ```
+ *
+ * ```
+ * match_num Contents                  Return value returned start_pos returned end_pos
+ * 0         glib regexes are the best 1            0                  25
+ * 1         N/A                       1            -1                 -1
+ * 2         glib regexes are          1            0                  17
+ * 3         best                      1            21                 25
+ * 4         N/A                       0            2147483647         2147483647
+ * ```
+ * ## Methods Using Deterministic Finite Automata Matching
+ *
+ * The methods [method@GLib.Regex.match_all] and 
+ * [method@GLib.Regex.match_all_full]
+ * return a `GMatchInfo` using
+ * [Deterministic Finite Automaton](https://en.wikipedia.org/wiki/Deterministic_finite_automaton)
+ * (DFA) pattern matching. This algorithm detects overlapping matches. You pass
+ * the returned `GMatchInfo` from these methods to `g_match_info_fetch_pos()`
+ * to determine the start and end positions of each overlapping match. Use the 
+ * method [method@GLib.MatchInfo.get_match_count] to determine the number 
+ * of overlapping matches.
+ *
+ * For example, a regex pattern is `<.*>`, and a candidate string is 
+ * `<a> <b> <c>`. In this scenario there are three implicit capture 
+ * parentheses: one for the entire string, one for `<a> <b>`, and one for `<a>`.
+ *
+ * Given this example, the following table describes the return values from
+ * `g_match_info_fetch_pos()` for various values of @match_num.
+ *
+ * `match_num` | Contents | Return value | Returned `start_pos` | Returned `end_pos`
+ * ----------- | -------- | ------------ | -------------------- | ------------------
+ * 0 | Matches entire string | True | 0 | 11
+ * 1 | Matches `<a> <b>` | True | 0 | 7
+ * 2 | Matches `<a>` | True | 0 | 3
+ * 3 | Capture paren out of range | False | Unchanged | Unchanged
+ *
+ * The following code sample and output implements this example.
+ *
+ * ``` { .c }
+ * #include <glib.h>
+ *
+ * int
+ * main (int argc, char *argv[])
+ * {
+ *   g_autoptr(GError) local_error = NULL;
+ *   const char *regex_pattern = "<.*>";
+ *   const char *test_string = "<a> <b> <c>";
+ *   g_autoptr(GRegex) regex = NULL;
+ * 
+ *   regex = g_regex_new (regex_pattern,
+ *                        G_REGEX_DEFAULT,
+ *                        G_REGEX_MATCH_DEFAULT,
+ *                        &local_error);
+ *   if (regex == NULL)
+ *     {
+ *       g_printerr ("Error creating regex: %s\n", local_error->message);
+ *       return -1;
+ *     }
+ *
+ *   g_autoptr(GMatchInfo) match_info = NULL;
+ *   g_regex_match_all (regex, test_string, G_REGEX_MATCH_DEFAULT, &match_info);
+ *
+ *   int n_matched_strings = g_match_info_get_match_count (match_info);
+ *
+ *   // Print header line 
+ *   g_print ("match_num Contents                  Return value returned start_pos returned end_pos\n");
+ * 
+ *   // Iterate over each capture paren, including one that is out of range as a demonstration.
+ *   for (int match_num = 0; match_num <= n_matched_strings; match_num++)
+ *     {
+ *       gboolean found_match;
+ *       g_autofree char *paren_string = NULL;
+ *       int start_pos = G_MAXINT;
+ *       int end_pos = G_MAXINT;
+ *
+ *       found_match = g_match_info_fetch_pos (match_info, match_num, &start_pos, &end_pos);
+ *
+ *       // If no match, display N/A as the found string.
+ *       if (start_pos == G_MAXINT || start_pos == -1)
+ *         paren_string = g_strdup ("N/A");
+ *       else
+ *         paren_string = g_strndup (test_string + start_pos, end_pos - start_pos);
+ *
+ *       g_print ("%-9d %-25s %-12d %-18d %d\n", match_num, paren_string, found_match, start_pos, end_pos);
+ *     }
+ *
+ *   return 0;
+ * }
+ * ```
+ *
+ * ```
+ * match_num Contents                  Return value returned start_pos returned end_pos
+ * 0         <a> <b> <c>               1            0                  11
+ * 1         <a> <b>                   1            0                  7
+ * 2         <a>                       1            0                  3
+ * 3         N/A                       0            2147483647         2147483647
+ * ```
+ *
+ * Returns: True if @match_num is within range, false otherwise. If
+ *   the capture paren has a match, @start_pos and @end_pos contain the 
+ *   start and end positions (in bytes) of the matching substring. If the 
+ *   capture paren has no match, @start_pos and @end_pos are `-1`. If 
+ *   @match_num is out of range, @start_pos and @end_pos are left unchanged.
  *
  * Since: 2.14
  */
