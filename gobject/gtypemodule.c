@@ -525,10 +525,9 @@ g_type_module_add_interface (GTypeModule          *module,
  * g_type_module_register_enum:
  * @module: (nullable): a #GTypeModule
  * @name: name for the type
- * @const_static_values: an array of #GEnumValue structs for the
- *                       possible enumeration values. The array is
- *                       terminated by a struct with all members being
- *                       0.
+ * @const_static_values: (array zero-terminated=1): an array of #GEnumValue
+ *  structs for the possible enumeration values. The array is terminated by a
+ *  struct with all members being 0.
  *
  * Looks up or registers an enumeration that is implemented with a particular
  * type plugin. If a type with name @type_name was previously registered,
@@ -567,10 +566,9 @@ g_type_module_register_enum (GTypeModule      *module,
  * g_type_module_register_flags:
  * @module: (nullable): a #GTypeModule
  * @name: name for the type
- * @const_static_values: an array of #GFlagsValue structs for the
- *                       possible flags values. The array is
- *                       terminated by a struct with all members being
- *                       0.
+ * @const_static_values: (array zero-terminated=1): an array of #GFlagsValue
+ *  structs for the possible flags values. The array is terminated by a struct
+ *  with all members being 0.
  *
  * Looks up or registers a flags type that is implemented with a particular
  * type plugin. If a type with name @type_name was previously registered,
