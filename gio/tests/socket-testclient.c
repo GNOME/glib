@@ -103,6 +103,17 @@ lookup_client_certificate (GTlsClientConnection  *conn,
   return certificate;
 }
 
+static GSocket *
+make_socket (GSocketFamily socket_family, GSocketType socket_type, GError **error)
+{
+  GSocket *socket = g_socket_new (socket_family, socket_type, 0, error);
+
+  if (socket && read_timeout)
+    g_socket_set_timeout (socket, read_timeout);
+
+  return socket;
+}
+
 static gboolean
 make_connection (const char       *argument,
 		 GTlsCertificate  *certificate,
@@ -115,7 +126,6 @@ make_connection (const char       *argument,
 		 GError          **error)
 {
   GSocketType socket_type;
-  GSocketFamily socket_family;
   GSocketAddressEnumerator *enumerator;
   GSocketConnectable *connectable;
   GSocketAddress *src_address;
@@ -127,17 +137,6 @@ make_connection (const char       *argument,
   else
     socket_type = G_SOCKET_TYPE_STREAM;
 
-  if (unix_socket)
-    socket_family = G_SOCKET_FAMILY_UNIX;
-  else
-    socket_family = G_SOCKET_FAMILY_IPV4;
-
-  *socket = g_socket_new (socket_family, socket_type, 0, error);
-  if (*socket == NULL)
-    return FALSE;
-
-  if (read_timeout)
-    g_socket_set_timeout (*socket, read_timeout);
 
   if (unix_socket)
     {
@@ -171,11 +170,21 @@ make_connection (const char       *argument,
           return FALSE;
         }
 
+      *socket = make_socket (unix_socket ? G_SOCKET_FAMILY_UNIX : g_socket_address_get_family (*address),
+                             socket_type, error);
+      if (*socket == NULL)
+        {
+          g_object_unref (*address);
+          g_object_unref (enumerator);
+          return FALSE;
+        }
+
       if (g_socket_connect (*socket, *address, cancellable, &err))
         break;
       g_message ("Connection to %s failed: %s, trying next", socket_address_to_string (*address), err->message);
       g_clear_error (&err);
 
+      g_object_unref (*socket);
       g_object_unref (*address);
     }
   g_object_unref (enumerator);
