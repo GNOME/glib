@@ -70,6 +70,12 @@ GLIB_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_loopback         (GSocketFamily         family);
 
 GLIB_AVAILABLE_IN_ALL
+GInetAddress *        g_inet_address_new_from_bytes_with_ipv6_info (const guint8  *bytes,
+                                                                    GSocketFamily  family,
+                                                                    guint32        flowinfo,
+                                                                    guint32        scope_id);
+
+GLIB_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_any              (GSocketFamily         family);
 
 GLIB_AVAILABLE_IN_ALL
@@ -117,6 +123,12 @@ gboolean              g_inet_address_get_is_mc_org_local  (GInetAddress         
 
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_inet_address_get_is_mc_site_local (GInetAddress         *address);
+
+GLIB_AVAILABLE_IN_ALL
+guint32               g_inet_address_get_scope_id         (GInetAddress         *address);
+
+GLIB_AVAILABLE_IN_ALL
+guint32               g_inet_address_get_flowinfo         (GInetAddress         *address);
 
 G_END_DECLS
 
