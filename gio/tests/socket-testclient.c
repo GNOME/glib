@@ -131,6 +131,7 @@ make_connection (const char       *argument,
   GSocketAddress *src_address;
   GTlsInteraction *interaction;
   GError *err = NULL;
+  char *socket_string;
 
   if (use_udp)
     socket_type = G_SOCKET_TYPE_DATAGRAM;
@@ -181,7 +182,9 @@ make_connection (const char       *argument,
 
       if (g_socket_connect (*socket, *address, cancellable, &err))
         break;
-      g_message ("Connection to %s failed: %s, trying next", socket_address_to_string (*address), err->message);
+      socket_string = socket_address_to_string (*address);
+      g_message ("Connection to %s failed: %s, trying next", socket_string, err->message);
+      g_free (socket_string);
       g_clear_error (&err);
 
       g_object_unref (*socket);
@@ -189,8 +192,9 @@ make_connection (const char       *argument,
     }
   g_object_unref (enumerator);
 
-  g_print ("Connected to %s\n",
-           socket_address_to_string (*address));
+  socket_string = socket_address_to_string (*address);
+  g_print ("Connected to %s\n", socket_string);
+  g_free (socket_string);
 
   src_address = g_socket_get_local_address (*socket, error);
   if (!src_address)
@@ -199,8 +203,9 @@ make_connection (const char       *argument,
       return FALSE;
     }
 
-  g_print ("local address: %s\n",
-           socket_address_to_string (src_address));
+  socket_string = socket_address_to_string (src_address);
+  g_print ("local address: %s\n", socket_string);
+  g_free (socket_string);
   g_object_unref (src_address);
 
   if (use_udp)
