@@ -435,9 +435,6 @@ GInetAddress *
 g_inet_address_new_from_string (const gchar *string)
 {
   struct in_addr in_addr;
-#ifdef HAVE_IPV6
-  struct in6_addr in6_addr;
-#endif
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -447,12 +444,53 @@ g_inet_address_new_from_string (const gchar *string)
    */
   g_networking_init ();
 
-  if (inet_pton (AF_INET, string, &in_addr) > 0)
-    return g_inet_address_new_from_bytes ((guint8 *)&in_addr, AF_INET);
 #ifdef HAVE_IPV6
-  else if (inet_pton (AF_INET6, string, &in6_addr) > 0)
-    return g_inet_address_new_from_bytes ((guint8 *)&in6_addr, AF_INET6);
+  /* IPv6 address (or it's invalid). We use getaddrinfo() because
+   * it will handle parsing a scope_id as well.
+   */
+  if (strchr (string, ':'))
+    {
+      struct addrinfo *res;
+      struct addrinfo hints = {
+        .ai_family = AF_INET6,
+        .ai_socktype = SOCK_STREAM,
+        .ai_flags = AI_NUMERICHOST,
+      };
+      int status;
+      GInetAddress *address = NULL;
+      
+      status = getaddrinfo (string, NULL, &hints, &res);
+      if (status == 0)
+        {
+          g_assert (res->ai_addrlen == sizeof (struct sockaddr_in6));
+          struct sockaddr_in6 *sockaddr6 = (struct sockaddr_in6 *)res->ai_addr;
+          address = g_inet_address_new_from_bytes_with_ipv6_info (((guint8 *)&sockaddr6->sin6_addr),
+                                                                  G_SOCKET_FAMILY_IPV6,
+                                                                sockaddr6->sin6_flowinfo,
+                                                                sockaddr6->sin6_scope_id);
+          freeaddrinfo (res);
+        }
+      else
+        {
+          struct in6_addr in6_addr;
+          g_debug ("getaddrinfo failed to resolve host string %s", string);
+
+          if (inet_pton (AF_INET6, string, &in6_addr) > 0)
+            address = g_inet_address_new_from_bytes ((guint8 *)&in6_addr, G_SOCKET_FAMILY_IPV6);
+        }
+
+      return address;
+    }
 #endif
+
+  /* IPv4 (or invalid). We don't want to use getaddrinfo() here,
+   * because it accepts the stupid "IPv4 numbers-and-dots
+   * notation" addresses that are never used for anything except
+   * phishing. Since we don't have to worry about scope IDs for
+   * IPv4, we can just use inet_pton().
+   */
+  if (inet_pton (AF_INET, string, &in_addr) > 0)
+    return g_inet_address_new_from_bytes ((guint8 *)&in_addr, G_SOCKET_FAMILY_IPV4);
 
   return NULL;
 }
