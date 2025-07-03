@@ -17,14 +17,23 @@ socket_address_to_string (GSocketAddress *address)
 
   if (G_IS_INET_SOCKET_ADDRESS (address))
     {
+      GInetSocketAddress *socket_address;
       GInetAddress *inet_address;
       char *str;
       int port;
+      guint32 scope_id;
 
-      inet_address = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (address));
+      socket_address = G_INET_SOCKET_ADDRESS (address);
+      scope_id = g_inet_socket_address_get_scope_id (socket_address);
+      inet_address = g_inet_socket_address_get_address (socket_address);
       str = g_inet_address_to_string (inet_address);
-      port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (address));
-      res = g_strdup_printf ("%s:%d", str, port);
+      port = g_inet_socket_address_get_port (socket_address);
+      if (scope_id)
+        res = g_strdup_printf ("[%s%%%u]:%d", str, scope_id, port);
+      else if (g_inet_address_get_family (inet_address) == G_SOCKET_FAMILY_IPV6)
+        res = g_strdup_printf ("[%s]:%d", str, port);
+      else
+        res = g_strdup_printf ("%s:%d", str, port);
       g_free (str);
     }
 #ifdef G_OS_UNIX
