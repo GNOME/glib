@@ -402,7 +402,8 @@ g_inet_socket_address_new (GInetAddress *address,
  * Creates a new #GInetSocketAddress for @address and @port.
  *
  * If @address is an IPv6 address, it can also contain a scope ID
- * (separated from the address by a `%`).
+ * (separated from the address by a `%`). Note that currently this
+ * behavior is platform specific. This may change in a future release.
  *
  * Returns: (nullable) (transfer full): a new #GInetSocketAddress,
  * or %NULL if @address cannot be parsed.

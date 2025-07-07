@@ -425,6 +425,10 @@ g_inet_address_init (GInetAddress *address)
  *
  * Parses @string as an IP address and creates a new #GInetAddress.
  *
+ * If @address is an IPv6 address, it can also contain a scope ID
+ * (separated from the address by a `%`). Note that currently this
+ * behavior is platform specific. This may change in a future release.
+ *
  * Returns: (nullable) (transfer full): a new #GInetAddress corresponding
  * to @string, or %NULL if @string could not be parsed.
  *     Free the returned object with g_object_unref().

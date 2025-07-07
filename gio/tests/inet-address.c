@@ -53,9 +53,11 @@ test_parse (void)
   addr = g_inet_address_new_from_string ("204.152.189.116");
   g_assert (addr != NULL);
   g_object_unref (addr);
+#ifndef G_OS_WIN32
   addr = g_inet_address_new_from_string ("::1%0");
   g_assert (addr != NULL);
   g_object_unref (addr);
+#endif
 
   addr = g_inet_address_new_from_string ("::1::2");
   g_assert (addr == NULL);
@@ -209,11 +211,12 @@ test_socket_address (void)
 
   g_object_unref (saddr);
 
-  addr = g_inet_address_new_from_string ("::1%25");
+  addr = g_inet_address_new_from_string ("::1");
   saddr = G_INET_SOCKET_ADDRESS (g_object_new (G_TYPE_INET_SOCKET_ADDRESS,
                                                "address", addr,
                                                "port", 308,
                                                "flowinfo", 10,
+                                               "scope-id", 25,
                                                NULL));
   g_object_unref (addr);
 
