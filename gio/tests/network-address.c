@@ -176,8 +176,13 @@ static ResolveTest address_tests[] = {
    * (just) IP addresses.
    */
   { "192.168.1.2:80",      TRUE,  FALSE, FALSE },
+#ifndef G_OS_WIN32 /* getaddrinfo on Windows is more forgiving about format and accepts these strings */
   { "[fe80::42]",          TRUE,  FALSE, FALSE },
   { "[fe80::42]:80",       TRUE,  FALSE, FALSE },
+#else
+  { "[fe80::42]",          TRUE,  TRUE, FALSE },
+  { "[fe80::42]:80",       TRUE,  TRUE, FALSE },
+#endif
 
   /* These should not be considered IP addresses by anyone. */
   { "192.168.258",         FALSE, FALSE, FALSE },
