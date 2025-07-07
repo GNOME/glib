@@ -127,20 +127,10 @@ g_file_enumerator_dispose (GObject *object)
     enumerator->priv->container = NULL;
   }
 
-  G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose (object);
-}
-
-static void
-g_file_enumerator_finalize (GObject *object)
-{
-  GFileEnumerator *enumerator;
-
-  enumerator = G_FILE_ENUMERATOR (object);
-  
   if (!enumerator->priv->closed)
     g_file_enumerator_close (enumerator, NULL, NULL);
 
-  G_OBJECT_CLASS (g_file_enumerator_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_file_enumerator_parent_class)->dispose (object);
 }
 
 static void
@@ -150,7 +140,6 @@ g_file_enumerator_class_init (GFileEnumeratorClass *klass)
 
   gobject_class->set_property = g_file_enumerator_set_property;
   gobject_class->dispose = g_file_enumerator_dispose;
-  gobject_class->finalize = g_file_enumerator_finalize;
 
   klass->next_files_async = g_file_enumerator_real_next_files_async;
   klass->next_files_finish = g_file_enumerator_real_next_files_finish;

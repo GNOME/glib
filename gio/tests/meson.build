@@ -98,6 +98,7 @@ gio_tests = {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
     'can_fail' : host_system in ['darwin', 'windows', 'gnu'],
   },
+  'file-enumerator' : {},
   'inet-address' : {},
   'io-stream' : {},
   'max-version' : {'install' : false},
