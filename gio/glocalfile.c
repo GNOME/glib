@@ -1189,6 +1189,7 @@ g_local_file_set_display_name (GFile         *file,
       if (errsv != ENOENT)
         {
           g_set_io_error (error, _("Error renaming file %s: %s"), new_file, errsv);
+          g_object_unref (new_file);
           return NULL;
         }
     }
