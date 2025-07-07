@@ -1189,6 +1189,7 @@ g_local_file_set_display_name (GFile         *file,
       if (errsv != ENOENT)
         {
           g_set_io_error (error, _("Error renaming file %s: %s"), new_file, errsv);
+          g_object_unref (new_file);
           return NULL;
         }
     }
@@ -1196,6 +1197,7 @@ g_local_file_set_display_name (GFile         *file,
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_EXISTS,
                            _("Can’t rename file, filename already exists"));
+      g_object_unref (new_file);
       return NULL;
     }
 
