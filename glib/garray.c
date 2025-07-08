@@ -892,7 +892,7 @@ g_array_remove_range (GArray *farray,
   if (index_ + length != array->len)
     memmove (g_array_elt_pos (array, index_),
              g_array_elt_pos (array, index_ + length),
-             (array->len - (index_ + length)) * array->elt_size);
+             g_array_elt_len (array, array->len - (index_ + length)));
 
   array->len -= length;
   if (G_UNLIKELY (g_mem_gc_friendly))
@@ -1026,7 +1026,7 @@ g_array_binary_search (GArray        *array,
         {
           middle = left + (right - left) / 2;
 
-          val = compare_func (_array->data + (_array->elt_size * middle), target);
+          val = compare_func (g_array_elt_pos (_array, middle), target);
           if (val == 0)
             {
               result = TRUE;
@@ -1590,7 +1590,7 @@ g_array_copy (GArray *array)
                                       rarray->elt_size, rarray->elt_capacity);
   new_rarray->len = rarray->len;
   if (rarray->len > 0)
-    memcpy (new_rarray->data, rarray->data, rarray->len * rarray->elt_size);
+    memcpy (new_rarray->data, rarray->data, g_array_elt_len (rarray, rarray->len));
 
   g_array_zero_terminate (new_rarray);
 
