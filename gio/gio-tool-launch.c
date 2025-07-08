@@ -97,7 +97,7 @@ handle_launch (int argc, char *argv[], gboolean do_help)
   keyfile = g_key_file_new ();
   if (!g_key_file_load_from_file (keyfile, desktop_file, G_KEY_FILE_NONE, &error))
     {
-      print_error (_("Unable to load ‘%s‘: %s"), desktop_file, error->message);
+      print_error (_("Unable to load ‘%s’: %s"), desktop_file, error->message);
       g_clear_error (&error);
       retval = 1;
     }
@@ -106,7 +106,7 @@ handle_launch (int argc, char *argv[], gboolean do_help)
       app = (GAppInfo*)g_desktop_app_info_new_from_keyfile (keyfile);
       if (!app)
         {
-          print_error (_("Unable to load application information for ‘%s‘"), desktop_file);
+          print_error (_("Unable to load application information for ‘%s’"), desktop_file);
           retval = 1;
         }
       else
