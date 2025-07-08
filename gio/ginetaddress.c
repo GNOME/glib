@@ -45,10 +45,8 @@ struct _GInetAddressPrivate
     struct in_addr ipv4;
     struct in6_addr ipv6;
   } addr;
-#ifdef HAVE_IPV6
   guint32 flowinfo;
   guint32 scope_id;
-#endif
 };
 
 /**
@@ -119,15 +117,11 @@ g_inet_address_set_property (GObject      *object,
       break;
 
     case PROP_SCOPE_ID:
-#ifdef HAVE_IPV6
       address->priv->scope_id = g_value_get_uint (value);
-#endif
       break;
 
     case PROP_FLOWINFO:
-#ifdef HAVE_IPV6
       address->priv->flowinfo = g_value_get_uint (value);
-#endif
       break;
 
     default:
@@ -459,7 +453,6 @@ g_inet_address_new_from_string (const gchar *string)
    */
   g_networking_init ();
 
-#ifdef HAVE_IPV6
   /* IPv6 address (or it's invalid). We use getaddrinfo() because
    * it will handle parsing a scope_id as well.
    */
@@ -477,8 +470,8 @@ g_inet_address_new_from_string (const gchar *string)
       status = getaddrinfo (string, NULL, &hints, &res);
       if (status == 0)
         {
-          g_assert (res->ai_addrlen == sizeof (struct sockaddr_in6));
           struct sockaddr_in6 *sockaddr6 = (struct sockaddr_in6 *)res->ai_addr;
+          g_assert (res->ai_addrlen == sizeof (struct sockaddr_in6));
           address = g_inet_address_new_from_bytes_with_ipv6_info (((guint8 *)&sockaddr6->sin6_addr),
                                                                   G_SOCKET_FAMILY_IPV6,
                                                                 sockaddr6->sin6_flowinfo,
@@ -496,7 +489,6 @@ g_inet_address_new_from_string (const gchar *string)
 
       return address;
     }
-#endif
 
   /* IPv4 (or invalid). We don't want to use getaddrinfo() here,
    * because it accepts the stupid "IPv4 numbers-and-dots
@@ -963,10 +955,8 @@ g_inet_address_get_scope_id (GInetAddress *address)
 {
   g_return_val_if_fail (G_IS_INET_ADDRESS (address), 0);
 
-#ifdef HAVE_IPV6
   if (address->priv->family == AF_INET6)
     return address->priv->scope_id;
-#endif
   return 0;
 }
 
@@ -984,10 +974,8 @@ g_inet_address_get_flowinfo (GInetAddress *address)
 {
   g_return_val_if_fail (G_IS_INET_ADDRESS (address), 0);
 
-#ifdef HAVE_IPV6
   if (address->priv->family == AF_INET6)
     return address->priv->flowinfo;
-#endif
   return 0;
 }
 
