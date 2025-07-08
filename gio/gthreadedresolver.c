@@ -130,6 +130,14 @@ do_lookup_by_name (GTask         *task,
               continue;
             }
 
+          if (ai->ai_family == AF_INET6)
+          {
+            struct sockaddr_in6 *ipv6 = (struct sockaddr_in6 *)ai->ai_addr;
+            char ipstr[INET6_ADDRSTRLEN];
+            inet_ntop(ai->ai_family, &ipv6->sin6_addr, ipstr, sizeof ipstr);
+            g_message ("Recieved IPv6 DNS response: hostname=%s address=%s, scope-id=%d", hostname, ipstr, ipv6->sin6_scope_id);
+          }
+
           addr = g_object_ref (g_inet_socket_address_get_address ((GInetSocketAddress *)sockaddr));
           addresses = g_list_prepend (addresses, addr);
           g_object_unref (sockaddr);
