@@ -801,6 +801,23 @@ test_string_copy (void)
   g_string_free (string2, TRUE);
 }
 
+static void
+test_string_sized_new (void)
+{
+
+  if (g_test_subprocess ())
+    {
+      GString *string = g_string_sized_new (G_MAXSIZE);
+      g_string_free (string, TRUE);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*string would overflow*");
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -831,6 +848,7 @@ main (int   argc,
   g_test_add_func ("/string/new-take", test_string_new_take);
   g_test_add_func ("/string/new-take/null", test_string_new_take_null);
   g_test_add_func ("/string/copy", test_string_copy);
+  g_test_add_func ("/string/sized-new", test_string_sized_new);
 
   return g_test_run();
 }
