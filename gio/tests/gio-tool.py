@@ -23,6 +23,7 @@
 
 """Integration tests for the gio utility."""
 
+import platform
 import subprocess
 import sys
 import tempfile
@@ -81,6 +82,7 @@ class TestGioTool(testprogramrunner.TestProgramRunner):
                 )
 
 
+@unittest.skipIf(platform.system() == "Darwin", "gio launch not supported on darwin")
 class TestGioLaunchExpandsDesktopEntry(testprogramrunner.TestProgramRunner):
     """Integration test for `gio launch` with field code %k in the Exec line.
 
