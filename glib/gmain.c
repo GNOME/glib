@@ -574,6 +574,8 @@ retry_decrement:
     }
   g_source_iter_clear (&iter);
 
+  g_rw_lock_writer_unlock (&source_destroy_lock);
+
   /* Next destroy all sources. As we still hold a reference to all of them,
    * this won't cause any of them to be freed yet and especially prevents any
    * source that unrefs another source from its finalize function to be freed.
@@ -583,8 +585,6 @@ retry_decrement:
       source = s_iter->data;
       g_source_destroy_internal (source, context, TRUE);
     }
-
-  g_rw_lock_writer_unlock (&source_destroy_lock);
 
   /* the context is going to die now */
   g_return_if_fail (old_ref > 0);
