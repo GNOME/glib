@@ -1360,7 +1360,7 @@ g_string_append_vprintf (GString     *string,
   if (len >= 0)
     {
       g_string_maybe_expand (string, len);
-      memcpy (string->str + string->len, buf, len + 1);
+      memcpy (string->str + string->len, buf, (size_t) len + 1);
       string->len += len;
       g_free (buf);
     }
