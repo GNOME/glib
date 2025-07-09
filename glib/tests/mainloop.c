@@ -2385,6 +2385,38 @@ test_maincontext_source_finalization_from_dispatch (gconstpointer user_data)
 }
 
 static void
+callback_source_unref (gpointer cb_data)
+{
+  GSource *s = (GSource *) cb_data;
+
+  g_source_destroy (s);
+};
+
+static GSourceCallbackFuncs callback_funcs = {
+  NULL,
+  callback_source_unref,
+  NULL,
+};
+
+static void
+test_context_ref_while_in_source_callbackfuncs_unref (void)
+{
+  GMainContext *c = g_main_context_new ();
+  GSource *s;
+
+  g_test_summary ("Tests if calling GSource API in GSourceCallbackFuncs.unref "
+                  "does not deadlock attempting to retrieve the relevant GMainContext.");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/issues/3725");
+
+  s = g_source_new (&source_with_source_funcs, sizeof (SourceWithSource));
+  g_source_set_callback_indirect (s, s, &callback_funcs);
+  g_source_attach (s, c);
+  g_source_unref (s);
+
+  g_main_context_unref (c);
+}
+
+static void
 once_cb (gpointer user_data)
 {
   guint *counter = user_data;
@@ -2671,6 +2703,7 @@ main (int argc, char *argv[])
     }
   g_test_add_func ("/maincontext/idle-once", test_maincontext_idle_once);
   g_test_add_func ("/maincontext/timeout-once", test_maincontext_timeout_once);
+  g_test_add_func ("/maincontext/context-ref-in-source-callbackfuncs-unref", test_context_ref_while_in_source_callbackfuncs_unref);
 
   g_test_add_func ("/mainloop/basic", test_mainloop_basic);
   g_test_add_func ("/mainloop/timeouts", test_timeouts);
