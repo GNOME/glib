@@ -42,6 +42,10 @@ struct _GInetAddressPrivate
     struct in6_addr ipv6;
 #endif
   } addr;
+#ifdef HAVE_IPV6
+  guint32 flowinfo;
+  guint32 scope_id;
+#endif
 };
 
 /**
@@ -78,6 +82,8 @@ enum
   PROP_IS_MC_NODE_LOCAL,
   PROP_IS_MC_ORG_LOCAL,
   PROP_IS_MC_SITE_LOCAL,
+  PROP_FLOWINFO,
+  PROP_SCOPE_ID,
 };
 
 static void
@@ -104,6 +110,18 @@ g_inet_address_set_property (GObject      *object,
       g_assert (address->priv->family == AF_INET);
       memcpy (&address->priv->addr, g_value_get_pointer (value),
               sizeof (address->priv->addr.ipv4));
+#endif
+      break;
+
+    case PROP_SCOPE_ID:
+#ifdef HAVE_IPV6
+      address->priv->scope_id = g_value_get_uint (value);
+#endif
+      break;
+
+    case PROP_FLOWINFO:
+#ifdef HAVE_IPV6
+      address->priv->flowinfo = g_value_get_uint (value);
 #endif
       break;
 
@@ -170,6 +188,14 @@ g_inet_address_get_property (GObject    *object,
 
     case PROP_IS_MC_SITE_LOCAL:
       g_value_set_boolean (value, g_inet_address_get_is_mc_site_local (address));
+      break;
+
+    case PROP_FLOWINFO:
+      g_value_set_uint (value, g_inet_address_get_flowinfo (address));
+      break;
+
+    case PROP_SCOPE_ID:
+      g_value_set_uint (value, g_inet_address_get_scope_id (address));
       break;
 
     default:
@@ -353,6 +379,38 @@ g_inet_address_class_init (GInetAddressClass *klass)
                                                          FALSE,
                                                          G_PARAM_READABLE |
                                                          G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GInetAddress:flowinfo:
+   *
+   * The flowinfo for an IPv6 address.
+   * See [method@Gio.InetAddress.get_flowinfo].
+   *
+   * Since: 2.86
+   */
+  g_object_class_install_property (gobject_class, PROP_FLOWINFO,
+                                   g_param_spec_uint ("flowinfo", NULL, NULL,
+                                                      0, G_MAXUINT32,
+                                                      0,
+                                                      G_PARAM_READWRITE |
+                                                          G_PARAM_CONSTRUCT_ONLY |
+                                                          G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GInetAddress:scope-id:
+   *
+   * The scope-id for an IPv6 address.
+   * See [method@Gio.InetAddress.get_scope_id].
+   *
+   * Since: 2.86
+   */
+  g_object_class_install_property (gobject_class, PROP_SCOPE_ID,
+                                   g_param_spec_uint ("scope-id", NULL, NULL,
+                                                      0, G_MAXUINT32,
+                                                      0,
+                                                      G_PARAM_READWRITE |
+                                                          G_PARAM_CONSTRUCT_ONLY |
+                                                          G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -367,6 +425,10 @@ g_inet_address_init (GInetAddress *address)
  *
  * Parses @string as an IP address and creates a new #GInetAddress.
  *
+ * If @address is an IPv6 address, it can also contain a scope ID
+ * (separated from the address by a `%`). Note that currently this
+ * behavior is platform specific. This may change in a future release.
+ *
  * Returns: (nullable) (transfer full): a new #GInetAddress corresponding
  * to @string, or %NULL if @string could not be parsed.
  *     Free the returned object with g_object_unref().
@@ -377,9 +439,6 @@ GInetAddress *
 g_inet_address_new_from_string (const gchar *string)
 {
   struct in_addr in_addr;
-#ifdef HAVE_IPV6
-  struct in6_addr in6_addr;
-#endif
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -389,12 +448,53 @@ g_inet_address_new_from_string (const gchar *string)
    */
   g_networking_init ();
 
-  if (inet_pton (AF_INET, string, &in_addr) > 0)
-    return g_inet_address_new_from_bytes ((guint8 *)&in_addr, AF_INET);
 #ifdef HAVE_IPV6
-  else if (inet_pton (AF_INET6, string, &in6_addr) > 0)
-    return g_inet_address_new_from_bytes ((guint8 *)&in6_addr, AF_INET6);
+  /* IPv6 address (or it's invalid). We use getaddrinfo() because
+   * it will handle parsing a scope_id as well.
+   */
+  if (strchr (string, ':'))
+    {
+      struct addrinfo *res;
+      struct addrinfo hints = {
+        .ai_family = AF_INET6,
+        .ai_socktype = SOCK_STREAM,
+        .ai_flags = AI_NUMERICHOST,
+      };
+      int status;
+      GInetAddress *address = NULL;
+      
+      status = getaddrinfo (string, NULL, &hints, &res);
+      if (status == 0)
+        {
+          g_assert (res->ai_addrlen == sizeof (struct sockaddr_in6));
+          struct sockaddr_in6 *sockaddr6 = (struct sockaddr_in6 *)res->ai_addr;
+          address = g_inet_address_new_from_bytes_with_ipv6_info (((guint8 *)&sockaddr6->sin6_addr),
+                                                                  G_SOCKET_FAMILY_IPV6,
+                                                                sockaddr6->sin6_flowinfo,
+                                                                sockaddr6->sin6_scope_id);
+          freeaddrinfo (res);
+        }
+      else
+        {
+          struct in6_addr in6_addr;
+          g_debug ("getaddrinfo failed to resolve host string %s", string);
+
+          if (inet_pton (AF_INET6, string, &in6_addr) > 0)
+            address = g_inet_address_new_from_bytes ((guint8 *)&in6_addr, G_SOCKET_FAMILY_IPV6);
+        }
+
+      return address;
+    }
 #endif
+
+  /* IPv4 (or invalid). We don't want to use getaddrinfo() here,
+   * because it accepts the stupid "IPv4 numbers-and-dots
+   * notation" addresses that are never used for anything except
+   * phishing. Since we don't have to worry about scope IDs for
+   * IPv4, we can just use inet_pton().
+   */
+  if (inet_pton (AF_INET, string, &in_addr) > 0)
+    return g_inet_address_new_from_bytes ((guint8 *)&in_addr, G_SOCKET_FAMILY_IPV4);
 
   return NULL;
 }
@@ -490,6 +590,38 @@ g_inet_address_new_any (GSocketFamily family)
 #endif
 }
 
+/**
+ * g_inet_address_new_from_bytes_with_ipv6_info:
+ * @bytes: (array) (element-type guint8): raw address data
+ * @family: the address family of @bytes
+ * @scope_id: the scope-id of the address
+ *
+ * Creates a new [class@Gio.InetAddress] from the given @family, @bytes
+ * and @scope_id.
+ *
+ * @bytes must be 4 bytes for [enum@Gio.SocketFamily.IPV4] and 16 bytes for
+ * [enum@Gio.SocketFamily.IPV6].
+ *
+ * Returns: (transfer full): a new internet address corresponding to
+ *   @family, @bytes and @scope_id
+ *
+ * Since: 2.86
+ */
+GInetAddress *
+g_inet_address_new_from_bytes_with_ipv6_info (const guint8  *bytes,
+			                      GSocketFamily  family,
+                                              guint32        flowinfo,
+                                              guint32        scope_id)
+{
+  g_return_val_if_fail (G_INET_ADDRESS_FAMILY_IS_VALID (family), NULL);
+
+  return g_object_new (G_TYPE_INET_ADDRESS,
+		       "family", family,
+		       "bytes", bytes,
+                       "flowinfo", flowinfo,
+                       "scope-id", scope_id,
+		       NULL);
+}
 
 /**
  * g_inet_address_to_string:
@@ -865,6 +997,49 @@ g_inet_address_get_is_mc_site_local (GInetAddress *address)
     g_assert_not_reached ();
 #endif
 }
+
+/**
+ * g_inet_address_get_scope_id:
+ * @address: a #GInetAddress
+ *
+ * Gets the value of [property@Gio.InetAddress:scope-id].
+ *
+ * Returns: The scope-id for the address, `0` if unset or not IPv6 address.
+ * Since: 2.86
+ */
+guint32
+g_inet_address_get_scope_id (GInetAddress *address)
+{
+  g_return_val_if_fail (G_IS_INET_ADDRESS (address), 0);
+
+#ifdef HAVE_IPV6
+  if (address->priv->family == AF_INET6)
+    return address->priv->scope_id;
+#endif
+  return 0;
+}
+
+/**
+ * g_inet_address_get_flowinfo:
+ * @address: a #GInetAddress
+ *
+ * Gets the value of [property@Gio.InetAddress:flowinfo].
+ *
+ * Returns: The flowinfo for the address, `0` if unset or not IPv6 address.
+ * Since: 2.86
+ */
+guint32
+g_inet_address_get_flowinfo (GInetAddress *address)
+{
+  g_return_val_if_fail (G_IS_INET_ADDRESS (address), 0);
+
+#ifdef HAVE_IPV6
+  if (address->priv->family == AF_INET6)
+    return address->priv->flowinfo;
+#endif
+  return 0;
+}
+
 
 /**
  * g_inet_address_equal:

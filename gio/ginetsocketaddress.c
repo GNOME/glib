@@ -97,12 +97,12 @@ g_inet_socket_address_get_property (GObject    *object,
 
       case PROP_FLOWINFO:
 	g_return_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6);
-        g_value_set_uint (value, address->priv->flowinfo);
+        g_value_set_uint (value, g_inet_socket_address_get_flowinfo (address));
         break;
 
       case PROP_SCOPE_ID:
 	g_return_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6);
-        g_value_set_uint (value, address->priv->scope_id);
+        g_value_set_uint (value, g_inet_socket_address_get_scope_id (address));
         break;
 
       default:
@@ -220,8 +220,8 @@ g_inet_socket_address_to_native (GSocketAddress  *address,
       memset (sock, 0, sizeof (*sock));
       sock->sin6_family = AF_INET6;
       sock->sin6_port = g_htons (addr->priv->port);
-      sock->sin6_flowinfo = addr->priv->flowinfo;
-      sock->sin6_scope_id = addr->priv->scope_id;
+      sock->sin6_flowinfo = g_inet_socket_address_get_flowinfo (addr);
+      sock->sin6_scope_id = g_inet_socket_address_get_scope_id (addr);
       memcpy (&(sock->sin6_addr.s6_addr), g_inet_address_to_bytes (addr->priv->address), sizeof (sock->sin6_addr));
       return TRUE;
     }
@@ -282,6 +282,8 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
    *
    * The `sin6_flowinfo` field, for IPv6 addresses.
    *
+   * If unset this property is inherited from [property@Gio.InetSocketAddress:address].
+   *
    * Since: 2.32
    */
   g_object_class_install_property (gobject_class, PROP_FLOWINFO,
@@ -297,6 +299,8 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
    * GInetSocketAddress:scope-id:
    *
    * The `sin6_scope_id` field, for IPv6 addresses.
+   *
+   * If unset this property is inherited from [property@Gio.InetSocketAddress:address].
    *
    * Since: 2.32
    */
@@ -398,7 +402,8 @@ g_inet_socket_address_new (GInetAddress *address,
  * Creates a new #GInetSocketAddress for @address and @port.
  *
  * If @address is an IPv6 address, it can also contain a scope ID
- * (separated from the address by a `%`).
+ * (separated from the address by a `%`). Note that currently this
+ * behavior is platform specific. This may change in a future release.
  *
  * Returns: (nullable) (transfer full): a new #GInetSocketAddress,
  * or %NULL if @address cannot be parsed.
@@ -409,60 +414,16 @@ GSocketAddress *
 g_inet_socket_address_new_from_string (const char *address,
                                        guint       port)
 {
-  static struct addrinfo *hints, hints_struct;
   GSocketAddress *saddr;
   GInetAddress *iaddr;
-  struct addrinfo *res;
-  gint status;
 
-  if (strchr (address, ':'))
-    {
-      /* IPv6 address (or it's invalid). We use getaddrinfo() because
-       * it will handle parsing a scope_id as well.
-       */
+  iaddr = g_inet_address_new_from_string (address);
+  if (!iaddr)
+    return NULL;
 
-      if (G_UNLIKELY (g_once_init_enter_pointer (&hints)))
-        {
-          hints_struct.ai_family = AF_UNSPEC;
-          hints_struct.ai_socktype = SOCK_STREAM;
-          hints_struct.ai_protocol = 0;
-          hints_struct.ai_flags = AI_NUMERICHOST;
-          g_once_init_leave_pointer (&hints, &hints_struct);
-        }
+  saddr = g_inet_socket_address_new (iaddr, port);
 
-      status = getaddrinfo (address, NULL, hints, &res);
-      if (status != 0)
-        return NULL;
-
-      if (res->ai_family == AF_INET6 &&
-          res->ai_addrlen == sizeof (struct sockaddr_in6))
-        {
-          ((struct sockaddr_in6 *)res->ai_addr)->sin6_port = g_htons (port);
-          saddr = g_socket_address_new_from_native (res->ai_addr, res->ai_addrlen);
-        }
-      else
-        saddr = NULL;
-
-      freeaddrinfo (res);
-    }
-  else
-    {
-      /* IPv4 (or invalid). We don't want to use getaddrinfo() here,
-       * because it accepts the stupid "IPv4 numbers-and-dots
-       * notation" addresses that are never used for anything except
-       * phishing. Since we don't have to worry about scope IDs for
-       * IPv4, we can just use g_inet_address_new_from_string().
-       */
-      iaddr = g_inet_address_new_from_string (address);
-      if (!iaddr)
-        return NULL;
-
-      g_warn_if_fail (g_inet_address_get_family (iaddr) == G_SOCKET_FAMILY_IPV4);
-
-      saddr = g_inet_socket_address_new (iaddr, port);
-      g_object_unref (iaddr);
-    }
-
+  g_object_unref (iaddr);
   return saddr;
 }
 
@@ -511,6 +472,8 @@ g_inet_socket_address_get_port (GInetSocketAddress *address)
  * Gets the `sin6_flowinfo` field from @address,
  * which must be an IPv6 address.
  *
+ * If not overridden this value will be inherited from [property@Gio.InetSocketAddress:address].
+ *
  * Returns: the flowinfo field
  *
  * Since: 2.32
@@ -521,7 +484,7 @@ g_inet_socket_address_get_flowinfo (GInetSocketAddress *address)
   g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (address), 0);
   g_return_val_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6, 0);
 
-  return address->priv->flowinfo;
+  return address->priv->flowinfo ? address->priv->flowinfo : g_inet_address_get_flowinfo (address->priv->address);
 }
 
 /**
@@ -530,6 +493,8 @@ g_inet_socket_address_get_flowinfo (GInetSocketAddress *address)
  *
  * Gets the `sin6_scope_id` field from @address,
  * which must be an IPv6 address.
+ *
+ * If not overridden this value will be inherited from [property@Gio.InetSocketAddress:address].
  *
  * Returns: the scope id field
  *
@@ -541,5 +506,5 @@ g_inet_socket_address_get_scope_id (GInetSocketAddress *address)
   g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (address), 0);
   g_return_val_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6, 0);
 
-  return address->priv->scope_id;
+  return address->priv->scope_id ? address->priv->scope_id : g_inet_address_get_scope_id (address->priv->address);
 }
