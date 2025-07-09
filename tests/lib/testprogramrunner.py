@@ -104,6 +104,7 @@ class TestProgramRunner(unittest.TestCase):
         timeout_seconds=10,
         wrapper_args=[],
         environment={},
+        cwd=None,
     ) -> Result:
         argv = [self.__program]
 
@@ -123,6 +124,9 @@ class TestProgramRunner(unittest.TestCase):
 
         print("Running:", argv)
 
+        if cwd is not None:
+            print("Working Directory:", cwd)
+
         # We want to ensure consistent line endings...
         info = subprocess.run(
             argv,
@@ -134,6 +138,7 @@ class TestProgramRunner(unittest.TestCase):
             text=True,
             encoding="utf-8",
             check=False,
+            cwd=cwd,
         )
 
         result = Result(

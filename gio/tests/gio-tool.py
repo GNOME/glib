@@ -23,10 +23,13 @@
 
 """Integration tests for the gio utility."""
 
+import platform
 import subprocess
 import sys
 import tempfile
 import unittest
+
+from pathlib import Path
 
 import taptestrunner
 import testprogramrunner
@@ -77,6 +80,76 @@ class TestGioTool(testprogramrunner.TestProgramRunner):
                 self.assertIn(
                     "standard::content-type: application/x-zerosize", result.out
                 )
+
+
+@unittest.skipIf(platform.system() == "Darwin", "gio launch not supported on darwin")
+class TestGioLaunchExpandsDesktopEntry(testprogramrunner.TestProgramRunner):
+    """Integration test for `gio launch` with field code %k in the Exec line.
+
+    This can be run when installed or uninstalled. When uninstalled, it
+    requires G_TEST_BUILDDIR and G_TEST_SRCDIR to be set.
+
+    The idea with this test harness is to test that the `gio launch` command
+    expands the `%k` field code in a desktop entry's Exec line to its location,
+    i.e. its absolute path.
+    """
+
+    PROGRAM_NAME = "gio"
+    PROGRAM_TYPE = testprogramrunner.ProgramType.NATIVE
+
+    TEMPLATE = """
+[Desktop Entry]
+Type = Application
+Name = Test
+Exec = {python} -c 'print("%k")'
+"""
+
+    def setUp(self):
+        super().setUp()
+
+        self.parent = Path(self.tmpdir.name).resolve()
+
+        self.folder = self.parent / "folder"
+        self.entry = self.folder / "desktop.entry"
+
+        self.sibling = self.parent / "sibling"
+
+        self.folder.mkdir(exist_ok=True, parents=True)
+        self.sibling.mkdir(exist_ok=True, parents=True)
+
+        with self.entry.open("w", encoding="utf-8") as fd:
+            fd.write(self.TEMPLATE.format(python=sys.executable))
+
+    def launchAndCheck(self, entry: Path, cwd: Path = None):
+        result = self.runTestProgram(["launch", str(entry)], cwd=str(cwd))
+
+        self.assertEqual(result.out, str(self.entry))
+
+    def test_absolute_from_folder(self):
+        """Test with absolute path, with changing working directory to folder."""
+        self.launchAndCheck(self.entry, cwd=self.folder)
+
+    def test_absolute_from_parent(self):
+        """Test with absolute path, with changing working directory to parent."""
+        self.launchAndCheck(self.entry, cwd=self.parent)
+
+    def test_absolute_from_sibling(self):
+        """Test with absolute path, with changing working directory to sibling."""
+        self.launchAndCheck(self.entry, cwd=self.sibling)
+
+    def test_relative_from_folder(self):
+        """Test with relative path, with changing working directory to folder."""
+        self.launchAndCheck(self.entry.relative_to(self.folder), cwd=self.folder)
+
+    def test_relative_from_parent(self):
+        """Test with relative path, with changing working directory to parent."""
+        self.launchAndCheck(self.entry.relative_to(self.parent), cwd=self.parent)
+
+    def test_relative_from_sibling(self):
+        """Test with relative path, with changing working directory to sibling."""
+        self.launchAndCheck(
+            Path("..") / self.entry.relative_to(self.parent), cwd=self.sibling
+        )
 
 
 if __name__ == "__main__":
