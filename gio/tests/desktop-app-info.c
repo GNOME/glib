@@ -1350,6 +1350,8 @@ get_terminal_divider (const char *terminal_name)
 {
   if (g_str_equal (terminal_name, "xdg-terminal-exec"))
     return NULL;
+  if (g_str_equal (terminal_name, "ptyxis"))
+    return "--";
   if (g_str_equal (terminal_name, "kgx"))
     return "-e";
   if (g_str_equal (terminal_name, "gnome-terminal"))
@@ -1869,6 +1871,7 @@ main (int   argc,
   guint i;
   const gchar *supported_terminals[] = {
     "xdg-terminal-exec",
+    "ptyxis",
     "kgx",
     "gnome-terminal",
     "mate-terminal",
