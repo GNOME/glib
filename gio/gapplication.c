@@ -191,12 +191,12 @@
  *     alternative to handling some commandline options locally
  * @before_emit: invoked on the primary instance before 'activate', 'open',
  *     'command-line' or any action invocation, gets the 'platform data' from
- *     the calling instance
+ *     the calling instance. Must chain up
  * @after_emit: invoked on the primary instance after 'activate', 'open',
  *     'command-line' or any action invocation, gets the 'platform data' from
- *     the calling instance
+ *     the calling instance. Must chain up
  * @add_platform_data: invoked (locally) to add 'platform data' to be sent to
- *     the primary instance when activating, opening or invoking actions
+ *     the primary instance when activating, opening or invoking actions. Must chain up
  * @quit_mainloop: Used to be invoked on the primary instance when the use
  *     count of the application drops to zero (and after any inactivity
  *     timeout, if requested). Not used anymore since 2.32
