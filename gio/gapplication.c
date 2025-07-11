@@ -1094,6 +1094,12 @@ g_application_call_command_line (GApplication        *application,
       GApplicationCommandLine *cmdline;
       GVariant *v;
       gint handler_exit_status;
+      GVariant *platform_data;
+
+      g_variant_ref_sink (options);
+      platform_data = g_variant_ref_sink (get_platform_data (application, options));
+
+      G_APPLICATION_GET_CLASS (application)->before_emit (application, platform_data);
 
       v = g_variant_new_bytestring_array ((const gchar **) arguments, -1);
       cmdline = g_object_new (G_TYPE_APPLICATION_COMMAND_LINE,
@@ -1107,6 +1113,10 @@ g_application_call_command_line (GApplication        *application,
       *exit_status = g_application_command_line_get_exit_status (cmdline);
 
       g_object_unref (cmdline);
+
+      G_APPLICATION_GET_CLASS (application)->after_emit (application, platform_data);
+      g_variant_unref (platform_data);
+      g_variant_unref (options);
     }
 }
 
@@ -2451,7 +2461,14 @@ g_application_activate (GApplication *application)
                                  get_platform_data (application, NULL));
 
   else
-    g_signal_emit (application, g_application_signals[SIGNAL_ACTIVATE], 0);
+    {
+      GVariant *platform_data = g_variant_ref_sink (get_platform_data (application, NULL));
+
+      G_APPLICATION_GET_CLASS (application)->before_emit (application, platform_data);
+      g_signal_emit (application, g_application_signals[SIGNAL_ACTIVATE], 0);
+      G_APPLICATION_GET_CLASS (application)->after_emit (application, platform_data);
+      g_variant_unref (platform_data);
+    }
 }
 
 /**
@@ -2495,8 +2512,14 @@ g_application_open (GApplication  *application,
                              get_platform_data (application, NULL));
 
   else
-    g_signal_emit (application, g_application_signals[SIGNAL_OPEN],
-                   0, files, n_files, hint);
+    {
+      GVariant *platform_data = g_variant_ref_sink (get_platform_data (application, NULL));
+
+      G_APPLICATION_GET_CLASS (application)->before_emit (application, platform_data);
+      g_signal_emit (application, g_application_signals[SIGNAL_OPEN], 0, files, n_files, hint);
+      G_APPLICATION_GET_CLASS (application)->after_emit (application, platform_data);
+      g_variant_unref (platform_data);
+    }
 }
 
 /* Run {{{1 */
