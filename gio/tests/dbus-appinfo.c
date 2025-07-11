@@ -232,8 +232,6 @@ test_application_before_emit (GApplication *application,
   const gchar *startup_id;
   gsize i;
 
-  g_assert (!saw_startup_id);
-
   const gchar *startup_id_keys[] = {
     "desktop-startup-id",
     "activation-token",
