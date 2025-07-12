@@ -198,7 +198,9 @@ g_array_new_take (gpointer  data,
 
 /**
  * g_array_new_take_zero_terminated: (skip)
- * @data: (array zero-terminated=1): an array of elements of @element_size
+ * @data: (array zero-terminated=1) (transfer full) (nullable): an array
+ *     of elements of @element_size, %NULL terminated,
+ *     or %NULL for an empty array
  * @clear: %TRUE if #GArray elements should be automatically cleared
  *     to 0 when they are allocated
  * @element_size: the size of each element in bytes
@@ -271,8 +273,9 @@ g_array_new_take_zero_terminated (gpointer  data,
  * the underlying array is preserved for use elsewhere and returned
  * to the caller.
  *
- * If the array was created with the @zero_terminate property
- * set to %TRUE, the returned data is zero terminated too.
+ * Note that if the array was created with the @zero_terminate
+ * property set to %TRUE, this may still return %NULL if the length
+ * of the array was zero and data was not yet allocated.
  *
  * If array elements contain dynamically-allocated memory,
  * the array elements should also be freed by the caller.
@@ -770,11 +773,12 @@ g_array_set_size (GArray *farray,
     }
   else if (length < array->len)
     g_array_remove_range (farray, length, array->len - length);
-  
+
   array->len = length;
-  
-  g_array_zero_terminate (array);
-  
+
+  if (G_LIKELY (array->data != NULL))
+    g_array_zero_terminate (array);
+
   return farray;
 }
 
@@ -880,6 +884,9 @@ g_array_remove_range (GArray *farray,
   g_return_val_if_fail (index_ <= array->len, NULL);
   g_return_val_if_fail (index_ <= G_MAXUINT - length, NULL);
   g_return_val_if_fail (index_ + length <= array->len, NULL);
+
+  if (length == 0)
+    return farray;
 
   if (array->clear_func != NULL)
     {
