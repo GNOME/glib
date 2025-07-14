@@ -255,7 +255,7 @@ g_array_new_take_zero_terminated (gpointer  data,
         }
     }
 
-  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+  g_return_val_if_fail (len < G_MAXUINT, NULL);
 
   array = g_array_new_take (data, len, clear, element_size);
   ((GRealArray *)array)->zero_terminated = TRUE;
@@ -1274,7 +1274,7 @@ g_ptr_array_new_take_null_terminated (gpointer       *data,
         len += 1;
     }
 
-  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+  g_return_val_if_fail (len < G_MAXUINT, NULL);
 
   array = g_ptr_array_new_take (g_steal_pointer (&data), len, element_free_func);
   ((GRealPtrArray *)array)->null_terminated = TRUE;
@@ -1294,7 +1294,7 @@ ptr_array_new_from_array (gpointer       *data,
   GRealPtrArray *rarray;
 
   g_assert (data != NULL || len == 0);
-  g_assert (len <= G_MAXUINT);
+  g_assert (len <= G_MAXUINT - (null_terminated ? 1 : 0));
 
   array = ptr_array_new (len, element_free_func, null_terminated);
   rarray = (GRealPtrArray *)array;
