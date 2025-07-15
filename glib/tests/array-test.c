@@ -337,6 +337,7 @@ array_new_take_zero_terminated_null (void)
   g_assert_cmpuint (len, ==, 0);
 
   g_free (out_str);
+  g_array_free (garray, TRUE);
 }
 
 static void
