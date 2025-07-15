@@ -7,6 +7,9 @@ These functions provide a portable way to dynamically load object files
 systems that provide an implementation of `dlopen()` (e.g. Linux/Sun), as
 well as Windows platforms via DLLs.
 
+Do not call these functions from within global constructors (for example, those
+using GCC’s `__attribute__((constructor))` attribute) as this may lead to deadlock.
+
 A program which wants to use these functions must be linked to the libraries
 output by the command:
 
