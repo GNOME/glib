@@ -26,10 +26,11 @@
 
 #undef G_DISABLE_ASSERT
 
+#include "glib.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "glib.h"
 
 /* Test data to be passed to any function which calls g_array_new(), providing
  * the parameters for that call. Most #GArray tests should be repeated for all
@@ -343,7 +344,7 @@ static void
 array_new_take_overflow (void)
 {
 #if SIZE_WIDTH <= UINT_WIDTH
-  g_test_skip ("Overflow test requires UINT_WIDTH > SIZE_WIDTH.");
+  g_test_skip ("Overflow test requires SIZE_WIDTH > UINT_WIDTH.");
 #else
   if (!g_test_undefined ())
       return;
@@ -1328,7 +1329,7 @@ static void
 pointer_array_new_take_overflow (void)
 {
 #if SIZE_WIDTH <= UINT_WIDTH
-  g_test_skip ("Overflow test requires UINT_WIDTH > SIZE_WIDTH.");
+  g_test_skip ("Overflow test requires SIZE_WIDTH > UINT_WIDTH.");
 #else
   if (!g_test_undefined ())
       return;
@@ -1633,7 +1634,7 @@ static void
 pointer_array_new_from_array_overflow (void)
 {
 #if SIZE_WIDTH <= UINT_WIDTH
-  g_test_skip ("Overflow test requires UINT_WIDTH > SIZE_WIDTH.");
+  g_test_skip ("Overflow test requires SIZE_WIDTH > UINT_WIDTH.");
 #else
   if (!g_test_undefined ())
       return;
@@ -2871,7 +2872,7 @@ static void
 byte_array_new_take_overflow (void)
 {
 #if SIZE_WIDTH <= UINT_WIDTH
-  g_test_skip ("Overflow test requires G_MAXSIZE > G_MAXUINT.");
+  g_test_skip ("Overflow test requires SIZE_WIDTH > UINT_WIDTH.");
 #else
   GByteArray* arr;
 
