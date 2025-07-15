@@ -185,7 +185,7 @@ g_array_new_take (gpointer  data,
 
   g_return_val_if_fail (data != NULL || len == 0, NULL);
   g_return_val_if_fail (len <= G_MAXUINT, NULL);
-  g_return_val_if_fail (element_size <= G_MAXUINT, NULL);
+  g_return_val_if_fail (element_size > 0 && element_size <= G_MAXUINT, NULL);
 
   array = g_array_sized_new (FALSE, clear, element_size, 0);
   rarray = (GRealArray *) array;
@@ -237,7 +237,7 @@ g_array_new_take_zero_terminated (gpointer  data,
   GArray *array;
   gsize len = 0;
 
-  g_return_val_if_fail (element_size <= G_MAXUINT, NULL);
+  g_return_val_if_fail (element_size > 0 && element_size <= G_MAXUINT, NULL);
 
   if (data != NULL)
     {
