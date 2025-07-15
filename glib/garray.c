@@ -255,7 +255,7 @@ g_array_new_take_zero_terminated (gpointer  data,
         }
     }
 
-  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+  g_return_val_if_fail (len < G_MAXUINT, NULL);
 
   array = g_array_new_take (data, len, clear, element_size);
   ((GRealArray *)array)->zero_terminated = TRUE;
@@ -1150,10 +1150,6 @@ ptr_array_new (guint reserved_size,
 
   if (reserved_size != 0)
     {
-      if (G_LIKELY (reserved_size < G_MAXUINT) &&
-          null_terminated)
-        reserved_size++;
-
       g_ptr_array_maybe_expand (array, reserved_size);
       g_assert (array->pdata != NULL);
 
@@ -1274,7 +1270,7 @@ g_ptr_array_new_take_null_terminated (gpointer       *data,
         len += 1;
     }
 
-  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+  g_return_val_if_fail (len < G_MAXUINT, NULL);
 
   array = g_ptr_array_new_take (g_steal_pointer (&data), len, element_free_func);
   ((GRealPtrArray *)array)->null_terminated = TRUE;
@@ -1294,7 +1290,7 @@ ptr_array_new_from_array (gpointer       *data,
   GRealPtrArray *rarray;
 
   g_assert (data != NULL || len == 0);
-  g_assert (len <= G_MAXUINT);
+  g_assert (len <= G_MAXUINT - (null_terminated ? 1 : 0));
 
   array = ptr_array_new (len, element_free_func, null_terminated);
   rarray = (GRealPtrArray *)array;
@@ -1405,7 +1401,7 @@ g_ptr_array_new_from_null_terminated_array (gpointer       *data,
     }
 
   g_assert (data != NULL || len == 0);
-  g_return_val_if_fail (len <= G_MAXUINT, NULL);
+  g_return_val_if_fail (len < G_MAXUINT, NULL);
 
   return ptr_array_new_from_array (
     data, len, copy_func, copy_func_user_data, element_free_func, TRUE);
@@ -1530,7 +1526,7 @@ g_ptr_array_copy (GPtrArray *array,
 
   if (rarray->alloc > 0)
     {
-      g_ptr_array_maybe_expand ((GRealPtrArray *) new_array, array->len + rarray->null_terminated);
+      g_ptr_array_maybe_expand ((GRealPtrArray *) new_array, array->len);
 
       if (array->len > 0)
         {
@@ -1885,22 +1881,24 @@ static void
 g_ptr_array_maybe_expand (GRealPtrArray *array,
                           guint          len)
 {
-  guint max_len;
+  guint max_len, want_len;
 
   /* The maximum array length is derived from following constraints:
    * - The number of bytes must fit into a gsize / 2.
    * - The number of elements must fit into guint.
+   * - null terminated arrays must leave space for the terminating element
    */
-  max_len = MIN (G_MAXSIZE / 2 / sizeof (gpointer), G_MAXUINT);
+  max_len = MIN (G_MAXSIZE / 2 / sizeof (gpointer), G_MAXUINT) - (array->null_terminated ? 1 : 0);
 
   /* Detect potential overflow */
   if G_UNLIKELY ((max_len - array->len) < len)
     g_error ("adding %u to array would overflow", len);
 
-  if ((array->len + len) > array->alloc)
+  want_len = array->len + len + (array->null_terminated ? 1 : 0);
+  if (want_len > array->alloc)
     {
       guint old_alloc = array->alloc;
-      gsize want_alloc = g_nearest_pow (sizeof (gpointer) * (array->len + len));
+      gsize want_alloc = g_nearest_pow (sizeof (gpointer) * want_len);
       want_alloc = MAX (want_alloc, MIN_ARRAY_SIZE);
       array->alloc = MIN (want_alloc / sizeof (gpointer), G_MAXUINT);
       array->pdata = g_realloc (array->pdata, want_alloc);
@@ -1937,11 +1935,7 @@ g_ptr_array_set_size  (GPtrArray *array,
     {
       guint i;
 
-      if (G_UNLIKELY (rarray->null_terminated) &&
-          length_unsigned - rarray->len > G_MAXUINT - 1)
-        g_error ("array would overflow");
-
-      g_ptr_array_maybe_expand (rarray, (length_unsigned - rarray->len) + rarray->null_terminated);
+      g_ptr_array_maybe_expand (rarray, length_unsigned - rarray->len);
 
       /* This is not
        *     memset (array->pdata + array->len, 0,
@@ -2226,7 +2220,7 @@ g_ptr_array_add (GPtrArray *array,
   g_return_if_fail (rarray);
   g_return_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL));
 
-  g_ptr_array_maybe_expand (rarray, 1u + rarray->null_terminated);
+  g_ptr_array_maybe_expand (rarray, 1u);
 
   rarray->pdata[rarray->len++] = data;
 
@@ -2271,11 +2265,7 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
   if (array->len == 0u)
     return;
 
-  if (G_UNLIKELY (array->len == G_MAXUINT) &&
-      rarray_to_extend->null_terminated)
-    g_error ("adding %u to array would overflow", array->len);
-
-  g_ptr_array_maybe_expand (rarray_to_extend, array->len + rarray_to_extend->null_terminated);
+  g_ptr_array_maybe_expand (rarray_to_extend, array->len);
 
   if (func != NULL)
     {
@@ -2352,7 +2342,7 @@ g_ptr_array_insert (GPtrArray *array,
   g_return_if_fail (index_ >= -1);
   g_return_if_fail (index_ < 0 || (guint) index_ <= rarray->len);
 
-  g_ptr_array_maybe_expand (rarray, 1u + rarray->null_terminated);
+  g_ptr_array_maybe_expand (rarray, 1u);
 
   real_index = (index_ >= 0) ? (guint) index_ : rarray->len;
 
