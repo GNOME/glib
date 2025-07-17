@@ -321,6 +321,21 @@ array_new_take_zero_terminated (void)
   g_clear_pointer (&old_data_copy, g_free);
 }
 
+/* Check that zero terminated arrays with zero size elements are not allowed. */
+static void
+array_new_take_zero_terminated_zero_size (void)
+{
+  gpointer str = g_strdup ("not null");
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion 'element_size > 0 && element_size <= G_MAXUINT' failed");
+  g_assert_null (
+      g_array_new_take_zero_terminated (str, FALSE, 0));
+  g_test_assert_expected_messages ();
+
+  g_free (str);
+}
+
 /* Check that a non-existing array becomes a zero-terminated one when requested. */
 static void
 array_new_take_zero_terminated_null (void)
@@ -358,11 +373,22 @@ array_new_take_overflow (void)
   g_test_assert_expected_messages ();
 
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                         "*assertion 'element_size <= G_MAXUINT' failed");
+                         "*assertion 'element_size > 0 && element_size <= G_MAXUINT' failed");
   g_assert_null (
     g_array_new_take (NULL, 0, FALSE, (gsize) G_MAXUINT + 1));
   g_test_assert_expected_messages ();
 #endif
+}
+
+/* Check that arrays with zero size elements are not allowed. */
+static void
+array_new_take_zero_size (void)
+{
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*assertion 'element_size > 0 && element_size <= G_MAXUINT' failed");
+  g_assert_null (
+      g_array_new_take (NULL, 0, FALSE, 0));
+  g_test_assert_expected_messages ();
 }
 
 /* Check g_array_steal() function */
@@ -3241,7 +3267,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/new/take", array_new_take);
   g_test_add_func ("/array/new/take/empty", array_new_take_empty);
   g_test_add_func ("/array/new/take/overflow", array_new_take_overflow);
+  g_test_add_func ("/array/new/take/zero-size", array_new_take_zero_size);
   g_test_add_func ("/array/new/take-zero-terminated", array_new_take_zero_terminated);
+  g_test_add_func ("/array/new/take-zero-terminated/zero-size", array_new_take_zero_terminated_zero_size);
   g_test_add_func ("/array/new/take-zero-terminated/null", array_new_take_zero_terminated_null);
   g_test_add_func ("/array/ref-count", array_ref_count);
   g_test_add_func ("/array/steal", array_steal);
