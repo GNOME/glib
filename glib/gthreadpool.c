@@ -582,6 +582,7 @@ g_thread_pool_new_full (GFunc           func,
 {
   GRealThreadPool *retval;
   G_LOCK_DEFINE_STATIC (init);
+  GError *local_error = NULL;
 
   g_return_val_if_fail (func, NULL);
   g_return_val_if_fail (!exclusive || max_threads != -1, NULL);
@@ -629,27 +630,36 @@ g_thread_pool_new_full (GFunc           func,
 
       spawn_thread_queue = g_async_queue_new ();
       g_cond_init (&spawn_thread_cond);
-      pool_spawner = g_thread_new ("pool-spawner", g_thread_pool_spawn_thread, NULL);
+      pool_spawner = g_thread_try_new ("pool-spawner", g_thread_pool_spawn_thread, NULL, &local_error);
       g_ignore_leak (pool_spawner);
     }
   G_UNLOCK (init);
 
-  if (retval->pool.exclusive)
+  if (retval->pool.exclusive && local_error == NULL)
     {
       g_async_queue_lock (retval->queue);
 
       while (retval->num_threads < (guint) retval->max_threads)
         {
-          GError *local_error = NULL;
-
           if (!g_thread_pool_start_thread (retval, &local_error))
             {
-              g_propagate_error (error, local_error);
               break;
             }
         }
 
       g_async_queue_unlock (retval->queue);
+    }
+
+  if (local_error != NULL)
+    {
+      /* Failed to create pool spawner or failed to start a thread,
+       * so we must return NULL */
+      g_propagate_error (error, local_error);
+
+      g_clear_pointer (&retval->queue, g_async_queue_unref);
+      g_cond_clear (&retval->cond);
+
+      g_clear_pointer (&retval, g_free);
     }
 
   return (GThreadPool*) retval;
