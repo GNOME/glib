@@ -234,6 +234,7 @@ g_array_new_take_zero_terminated (gpointer  data,
                                   gboolean  clear,
                                   gsize     element_size)
 {
+  GRealArray *rarray;
   GArray *array;
   gsize len = 0;
 
@@ -258,7 +259,10 @@ g_array_new_take_zero_terminated (gpointer  data,
   g_return_val_if_fail (len < G_MAXUINT, NULL);
 
   array = g_array_new_take (data, len, clear, element_size);
-  ((GRealArray *)array)->zero_terminated = TRUE;
+  rarray = (GRealArray *) array;
+  rarray->zero_terminated = TRUE;
+  if (G_LIKELY (rarray->data != NULL))
+    rarray->elt_capacity = len + 1;
 
   return array;
 }
@@ -1261,6 +1265,7 @@ GPtrArray *
 g_ptr_array_new_take_null_terminated (gpointer       *data,
                                       GDestroyNotify  element_free_func)
 {
+  GRealPtrArray *rarray;
   GPtrArray *array;
   gsize len = 0;
 
@@ -1273,7 +1278,10 @@ g_ptr_array_new_take_null_terminated (gpointer       *data,
   g_return_val_if_fail (len < G_MAXUINT, NULL);
 
   array = g_ptr_array_new_take (g_steal_pointer (&data), len, element_free_func);
-  ((GRealPtrArray *)array)->null_terminated = TRUE;
+  rarray = (GRealPtrArray *) array;
+  rarray->null_terminated = TRUE;
+  if (G_LIKELY (rarray->pdata != NULL))
+    rarray->alloc = len + 1;
 
   return array;
 }
