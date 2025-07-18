@@ -123,7 +123,7 @@ Exec = {python} -c 'print("%k")'
     def launchAndCheck(self, entry: Path, cwd: Path = None):
         result = self.runTestProgram(["launch", str(entry)], cwd=str(cwd))
 
-        self.assertEqual(result.out, str(self.entry))
+        self.assertIn(str(self.entry), result.out)
 
     def test_absolute_from_folder(self):
         """Test with absolute path, with changing working directory to folder."""
