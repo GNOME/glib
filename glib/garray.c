@@ -1589,8 +1589,8 @@ g_array_copy (GArray *array)
   g_return_val_if_fail (rarray != NULL, NULL);
 
   new_rarray =
-    (GRealArray *) g_array_sized_new (rarray->zero_terminated, rarray->clear,
-                                      rarray->elt_size, rarray->elt_capacity);
+      (GRealArray *) g_array_sized_new (rarray->zero_terminated, rarray->clear,
+                                        rarray->elt_size, rarray->len);
   new_rarray->len = rarray->len;
   if (rarray->len > 0)
     memcpy (new_rarray->data, rarray->data, g_array_elt_len (rarray, rarray->len));

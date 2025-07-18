@@ -1112,6 +1112,26 @@ test_array_copy_sized (void)
   g_array_unref (array1);
 }
 
+/* Check that copying does not exponentially grow array size. */
+static void
+test_array_copy_zero_terminated (void)
+{
+  GArray *array;
+
+  array = g_array_new_take_zero_terminated (NULL, FALSE, 1);
+
+  for (gint i = 0; i < 32; i++)
+    {
+      GArray *next;
+
+      next = g_array_copy (array);
+      g_array_unref (array);
+      array = next;
+    }
+
+  g_array_unref (array);
+}
+
 static void
 array_overflow_append_vals (void)
 {
@@ -3276,7 +3296,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/steal", array_steal);
   g_test_add_func ("/array/clear-func", array_clear_func);
   g_test_add_func ("/array/binary-search", test_array_binary_search);
-  g_test_add_func ("/array/copy-sized", test_array_copy_sized);
+  g_test_add_func ("/array/copy/sized", test_array_copy_sized);
+  g_test_add_func ("/array/copy/zero-terminated", test_array_copy_zero_terminated);
   g_test_add_func ("/array/overflow-append-vals", array_overflow_append_vals);
   g_test_add_func ("/array/overflow-set-size", array_overflow_set_size);
   g_test_add_func ("/array/remove-range/zero-terminated-null", array_remove_range_zero_terminated_null);
