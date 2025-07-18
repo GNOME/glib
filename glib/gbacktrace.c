@@ -497,7 +497,7 @@ stack_trace (const char * const *args)
                     }
                   break;
                 case 1:
-                  if (idx < BUFSIZE)
+                  if (idx < BUFSIZE - 1)
                     buffer[idx++] = c;
                   if ((c == '\n') || (c == '\r'))
                     {
