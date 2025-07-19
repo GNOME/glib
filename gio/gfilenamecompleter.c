@@ -371,6 +371,8 @@ init_completion (GFilenameCompleter *completer,
     {
       schedule_load_basenames (completer, parent, should_escape);
       g_object_unref (file);
+      g_object_unref (parent);
+
       return NULL;
     }
   
@@ -388,10 +390,18 @@ init_completion (GFilenameCompleter *completer,
       g_free (t);
       
       if (basename == NULL)
-	return NULL;
+        {
+          g_object_unref (file);
+          g_object_unref (parent);
+
+          return NULL;
+        }
     }
 
   *basename_out = basename;
+
+  g_object_unref (file);
+  g_object_unref (parent);
 
   return completer->basenames;
 }
