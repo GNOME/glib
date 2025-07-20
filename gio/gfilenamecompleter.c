@@ -346,7 +346,9 @@ init_completion (GFilenameCompleter *completer,
   char *basename;
   char *t;
   size_t len;
+  GList *basenames;
 
+  basenames = NULL;
   *basename_out = NULL;
   
   should_escape = ! (g_path_is_absolute (initial_text) || *initial_text == '~');
@@ -355,23 +357,20 @@ init_completion (GFilenameCompleter *completer,
   
   if (len > 0 &&
       initial_text[len - 1] == '/')
-    return NULL;
+    goto out;
   
   file = g_file_parse_name (initial_text);
   parent = g_file_get_parent (file);
   if (parent == NULL)
-    {
-      g_object_unref (file);
-      return NULL;
-    }
+    goto out;
 
   if (completer->basenames_dir == NULL ||
       completer->basenames_are_escaped != should_escape ||
       !g_file_equal (parent, completer->basenames_dir))
     {
       schedule_load_basenames (completer, parent, should_escape);
-      g_object_unref (file);
-      return NULL;
+
+      goto out;
     }
   
   basename = g_file_get_basename (file);
@@ -388,12 +387,17 @@ init_completion (GFilenameCompleter *completer,
       g_free (t);
       
       if (basename == NULL)
-	return NULL;
+        goto out;
     }
 
+  basenames = completer->basenames;
   *basename_out = basename;
 
-  return completer->basenames;
+out:
+  g_clear_object (&file);
+  g_clear_object (&parent);
+
+  return basenames;
 }
 
 /**
