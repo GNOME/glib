@@ -1096,7 +1096,9 @@ g_application_call_command_line (GApplication        *application,
       gint handler_exit_status;
       GVariant *platform_data;
 
-      g_variant_ref_sink (options);
+      if (options != NULL)
+        g_variant_ref_sink (options);
+
       platform_data = g_variant_ref_sink (get_platform_data (application, options));
 
       G_APPLICATION_GET_CLASS (application)->before_emit (application, platform_data);
@@ -1116,7 +1118,8 @@ g_application_call_command_line (GApplication        *application,
 
       G_APPLICATION_GET_CLASS (application)->after_emit (application, platform_data);
       g_variant_unref (platform_data);
-      g_variant_unref (options);
+      if (options != NULL)
+        g_variant_unref (options);
     }
 }
 
