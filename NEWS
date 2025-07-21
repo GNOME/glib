@@ -1,3 +1,53 @@
+Overview of changes in GLib 2.85.2, 2025-07-21
+==============================================
+
+* New Linux PSI based backend for `GMemoryMonitor` as an option to use instead
+  of the existing Low Memory Monitor daemon backend (!4481, work by Kate Hsuan)
+
+* Bugs fixed:
+  - #1443 Deadlock between g_module_open() and dlopen() when called from a
+    constructor
+  - #2848 Doc: clarification request regarding g_match_info_fetch_pos return
+    value (Mark Lautman)
+  - #3712 Crash in g_thread_pool_new_full
+  - #3713 call g_file_enumerator_close in g_file_enumerator_finalize is not safe
+    (fbrouille)
+  - #3716 (CVE-2025-7039) (#YWH-PGM9867-104) Buffer Under-read on GLib through
+    glib/gfileutils.c via get_tmp_file() (Michael Catanzaro)
+  - #3721 GFile leak in g_local_file_set_display_name during error handling
+    (Philip Withnall, Michael Catanzaro)
+  - #3725 Deadlock on source_destroy_lock inside g_main_context_unref() and
+    g_source_destroy() (with child sources) (Matthew Waters)
+  - #3726 GApplication sometimes fails to call before_emit (Matthias Clasen)
+  - !4481 gio: gmemorymonitorpsi: Replace GMemoryMonitor backend with kernel PSI
+    event
+  - !4665 gio: enums: Fix GBusNameOwnerFlags's annotation
+  - !4667 Incorrect output parameter handling in closure helper of
+    g_settings_bind_with_mapping_closures
+  - !4669 Add missing `(array zero-terminated=1)` annotations
+  - !4676 Fix IPv6 scope-id from DNS responses being lost
+  - !4680 gbacktrace: Correctly wait for children on Unix
+  - !4681 (CVE-2025-6052) gstring: Improve
+    g_string_expand/g_string_append_len_inline checks
+  - !4682 gio-tool-launch: fix %k field code expansion
+  - !4683 gio-tool-launch: Fix mismatched curly quotes in translatable strings
+  - !4684 garray: Support unallocated zero terminated arrays
+  - !4685 garray: Use g_array_elt_len/pos where appropriate
+  - !4687 gstring: Fix g_string_append_vprintf overflow
+  - !4690 garray: Fix out of boundary write in g_ptr_array_copy
+  - !4692 tests: Fix a minor leak in array-test
+  - !4693 tests: Loosen string comparison assertion in gio-tool.py
+  - !4694 tests: Do not always skip array overflow checks
+  - !4695 garray: Add more element_size > 0 checks
+  - !4698 garray: Avoid exponential growth in g_array_copy
+  - !4699 garray: Set capacity in terminated take functions
+  - !4700 gfileutils: Fix OOB read in g_build_path(name)_va
+  - !4701 gbacktrace: Fix OOB write in stack_trace
+  - !4702 gio/filenamecompleter: Fix leaks
+  - !4703 application: NULL check for options
+  - !4704 tests: Add a regression test for GApplication command line handling
+
+
 Overview of changes in GLib 2.85.1, 2025-06-13
 ==============================================
 
