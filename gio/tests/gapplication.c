@@ -879,6 +879,76 @@ test_command_line_done (void)
   g_assert_cmpint (status, ==, 42);
 }
 
+typedef GApplication TestCommandLineArgumentsApp;
+typedef GApplicationClass TestCommandLineArgumentsAppClass;
+
+static GType test_command_line_arguments_app_get_type (void);
+G_DEFINE_TYPE (TestCommandLineArgumentsApp, test_command_line_arguments_app, G_TYPE_APPLICATION)
+
+static void
+test_command_line_arguments_app_init (TestCommandLineArgumentsApp *app)
+{
+}
+
+static gboolean
+test_command_line_arguments_app_local_command_line (GApplication   *application,
+                                                    char         ***arguments,
+                                                    int            *exit_status)
+{
+  /* Pretend we couldn’t parse the arguments */
+  return FALSE;
+}
+
+static void
+test_command_line_arguments_app_class_init (TestCommandLineArgumentsAppClass *klass)
+{
+  G_APPLICATION_CLASS (klass)->local_command_line = test_command_line_arguments_app_local_command_line;
+}
+
+static gint
+command_line_arguments_callback (GApplication            *app,
+                                 GApplicationCommandLine *command_line,
+                                 void                    *user_data)
+{
+  char ***out_args = user_data;
+  int argc;
+
+  *out_args = g_application_command_line_get_arguments (command_line, &argc);
+  g_assert_cmpint (argc, ==, g_strv_length (*out_args));
+
+  return 42;  /* exit status */
+}
+
+static void
+test_command_line_arguments (void)
+{
+  g_test_summary ("Test HANDLES_COMMAND_LINE locally with a ->local_command_line "
+                  "vfunc which forces g_application_run() to take a fallback error handling path");
+
+  char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+  const char *const argv[] = { binpath, "spam", "eggs", NULL };
+  GApplication *app;
+  int status;
+  unsigned long command_line_id;
+  char **args = NULL;
+
+  app = g_object_new (test_command_line_arguments_app_get_type (),
+                      "application-id", "org.gtk.TestApplication",
+                      "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
+                      NULL);
+  command_line_id = g_signal_connect (app, "command-line", G_CALLBACK (command_line_arguments_callback), &args);
+
+  status = g_application_run (app, G_N_ELEMENTS (argv) - 1, (char **) argv);
+
+  g_assert_cmpint (status, ==, 42);
+  g_assert_cmpstrv (args, argv);
+
+  g_signal_handler_disconnect (app, command_line_id);
+  g_object_unref (app);
+  g_free (binpath);
+  g_strfreev (args);
+}
+
 static void
 test_busy (void)
 {
@@ -1937,6 +2007,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/resource-path", test_resource_path);
   g_test_add_func ("/gapplication/test-help", test_help);
   g_test_add_func ("/gapplication/command-line-done", test_command_line_done);
+  g_test_add_func ("/gapplication/command-line/arguments", test_command_line_arguments);
   g_test_add_func ("/gapplication/test-busy", test_busy);
   g_test_add_func ("/gapplication/test-handle-local-options1", test_handle_local_options_success);
   g_test_add_func ("/gapplication/test-handle-local-options2", test_handle_local_options_failure);
