@@ -759,6 +759,7 @@ functions = [
   'strtoll_l',
   'strtoull_l',
   'symlink',
+  'sysinfo',
   'timegm',
   'unsetenv',
   'uselocale',

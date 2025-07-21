@@ -155,6 +155,18 @@ gio_tests = {
   'win32-appinfo' : {},
 }
 
+if host_system == 'linux'
+  gio_tests += {
+    'memory-monitor-psi' : {},
+  }
+endif
+
+if glib_conf.has('HAVE_SYSINFO')
+  gio_tests += {
+    'memory-monitor-poll' : {},
+  }
+endif
+
 if glib_have_cocoa
   gio_tests += {
     'osx-appinfo' : {}

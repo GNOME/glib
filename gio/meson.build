@@ -365,6 +365,7 @@ if host_system != 'windows'
     'gunixoutputstream.c',
     'gfdonotificationbackend.c',
     'ggtknotificationbackend.c',
+    'gmemorymonitorpsi.c',
   )
 
   portal_sources = [files(
@@ -389,6 +390,12 @@ if host_system != 'windows'
     'gunixinputstream.h',
     'gunixoutputstream.h',
   )
+
+  if glib_conf.has('HAVE_SYSINFO')
+    unix_sources += files(
+      'gmemorymonitorpoll.c',
+    )
+  endif
 
   if glib_have_cocoa
     settings_sources += files('gnextstepsettingsbackend.m')
@@ -528,6 +535,7 @@ gio_base_sources = files(
   'gmarshal-internal.c',
   'gmount.c',
   'gmemorymonitor.c',
+  'gmemorymonitorbase.c',
   'gmemorymonitordbus.c',
   'gmemoryinputstream.c',
   'gmemoryoutputstream.c',
