@@ -631,6 +631,18 @@ g_thread_pool_new_full (GFunc           func,
       spawn_thread_queue = g_async_queue_new ();
       g_cond_init (&spawn_thread_cond);
       pool_spawner = g_thread_try_new ("pool-spawner", g_thread_pool_spawn_thread, NULL, &local_error);
+      if (pool_spawner == NULL)
+        {
+          /* The only way to know that the pool_spawner exists is
+           * if (spawn_thread_queue != NULL), so if creating the pool_spawner
+           * failed, we must destroy the queue.
+           */
+          g_clear_pointer (&spawn_thread_queue, g_async_queue_unref);
+          /* We must also clear spawn_thread_cond, so that a future attempt
+           * to create a non-exclusive pool can safely initialize it.
+           */
+          g_cond_clear (&spawn_thread_cond);
+        }
       g_ignore_leak (pool_spawner);
     }
   G_UNLOCK (init);
