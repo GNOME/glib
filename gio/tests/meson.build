@@ -74,6 +74,7 @@ gio_tests = {
   'error': {},
   'file-thumbnail' : {},
   'fileattributematcher' : {},
+  'filenamecompleter' : {},
   'filter-streams' : {},
   'giomodule' : {
     'depends' : glib_build_shared ? [libtestmodulea, libtestmoduleb] : [],
