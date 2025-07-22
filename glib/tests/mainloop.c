@@ -25,6 +25,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include "glib-private.h"
+#include "gvalgrind.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -2643,6 +2644,16 @@ test_simultaneous_source_context_destruction (void)
   guint64 n_concurrent = 120, n_iterations = 100;
   SimultaneousDestructionTest **test;
   guint64 i;
+
+  /* The race in this test is very hard to reproduce under valgrind, so skip it.
+   * Otherwise the test can run for tens of minutes. */
+#if defined (ENABLE_VALGRIND)
+  if (RUNNING_ON_VALGRIND && !g_test_thorough ())
+    {
+      g_test_skip ("Skipping hard-to-reproduce race under valgrind");
+      return;
+    }
+#endif
 
   if (g_test_thorough ())
     {
