@@ -342,7 +342,7 @@ init_completion (GFilenameCompleter *completer,
 		 char **basename_out)
 {
   gboolean should_escape;
-  GFile *file, *parent;
+  GFile *file = NULL, *parent = NULL;
   char *basename;
   char *t;
   size_t len;
