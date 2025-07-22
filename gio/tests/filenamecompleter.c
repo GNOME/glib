@@ -1,0 +1,178 @@
+/*
+ * Copyright (C) 2025 Khalid Abu Shawarib.
+ *
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ *
+ * Author: Khalid Abu Shawarib <kas@gnome.org>
+ */
+
+#include <gio/gio.h>
+
+static void
+create_files (const GStrv hier)
+{
+  g_mkdir_with_parents (g_get_home_dir (), 0700);
+
+  for (guint i = 0; hier[i] != NULL; i++)
+    {
+      GFile *file = g_file_new_build_filename (g_get_home_dir (), hier[i], NULL);
+      gboolean is_directory = g_str_has_suffix (hier[i], "/");
+
+      if (is_directory)
+        g_file_make_directory (file, NULL, NULL);
+      else
+        {
+          GFileOutputStream *stream = g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL);
+
+          g_object_unref (stream);
+        }
+
+      g_assert_true (g_file_query_exists (file, NULL));
+
+      g_object_unref (file);
+    }
+}
+
+static void
+got_completion_data_callback (GFilenameCompleter *self,
+                              gpointer            user_data)
+{
+  gboolean *got_files = user_data;
+
+  *got_files = TRUE;
+}
+
+static GStrv
+prefix_filenames (const gchar * const  strings[],
+                  const gchar         *prefix)
+{
+  GStrvBuilder *builder = g_strv_builder_new ();
+
+  for (guint i = 0; strings[i] != NULL; i++)
+    g_strv_builder_take (builder, g_build_filename (prefix, strings[i], NULL));
+
+  return g_strv_builder_unref_to_strv (builder);
+}
+
+static void
+test_completions (void)
+{
+  const gchar *base_path = g_get_home_dir ();
+  const GStrv files_hier = (char *[]){
+    "file_1",
+    "file_2",
+    "folder_1/",
+    "folder_2/",
+    NULL
+  };
+  const struct {
+    const gchar *string;
+    const gchar * const all_completions[5];
+    const gchar * const dirs_completions[5];
+  } test_cases[] = {
+    {
+      "f",
+      {
+        "file_1",
+        "file_2",
+        "folder_1/",
+        "folder_2/",
+        NULL
+      },
+      {
+        "folder_1/",
+        "folder_2/",
+        NULL
+      }
+    },
+
+    {
+      "fi",
+      {
+        "file_1",
+        "file_2",
+        NULL
+      },
+      {
+        NULL
+      }
+    },
+
+    {
+      "fo",
+      {
+        "folder_1/",
+        "folder_2/",
+        NULL
+      },
+      {
+        "folder_1/",
+        "folder_2/",
+        NULL
+      }
+    }
+  };
+
+  create_files (files_hier);
+
+  for (uint i = 0; i < G_N_ELEMENTS (test_cases); i++)
+    {
+      GFilenameCompleter *all_completer = g_filename_completer_new ();
+      GFilenameCompleter *dirs_completer = g_filename_completer_new ();
+      GStrv all_results_completions, all_expected_completions;
+      GStrv dirs_results_completions, dirs_expected_completions;
+      gchar *path_to_complete = g_build_filename (base_path, test_cases[i].string, NULL);
+      gboolean got_files;
+
+      /* dirs_only = FALSE */
+      got_files = FALSE;
+      g_signal_connect (all_completer, "got-completion-data",
+                        G_CALLBACK (got_completion_data_callback), &got_files);
+      g_filename_completer_set_dirs_only (all_completer, FALSE);
+      g_strfreev (g_filename_completer_get_completions (all_completer, path_to_complete));
+
+      for (guint context_iter = 0; context_iter < 1000 && (!got_files); context_iter++)
+        g_main_context_iteration (NULL, TRUE);
+
+      all_expected_completions = prefix_filenames (test_cases[i].all_completions, base_path);
+      all_results_completions = g_filename_completer_get_completions (all_completer, path_to_complete);
+      g_assert_cmpstrv (all_expected_completions, all_results_completions);
+
+      g_strfreev (all_expected_completions);
+      g_strfreev (all_results_completions);
+
+      /* dirs_only = TRUE */
+      got_files = FALSE;
+      g_signal_connect (dirs_completer, "got-completion-data",
+                        G_CALLBACK (got_completion_data_callback), &got_files);
+      g_filename_completer_set_dirs_only (dirs_completer, TRUE);
+      g_strfreev (g_filename_completer_get_completions (dirs_completer, path_to_complete));
+
+      for (guint context_iter = 0; context_iter < 1000 && (!got_files); context_iter++)
+        g_main_context_iteration (NULL, TRUE);
+
+      dirs_expected_completions = prefix_filenames (test_cases[i].dirs_completions, base_path);
+      dirs_results_completions = g_filename_completer_get_completions (dirs_completer, path_to_complete);
+      g_assert_cmpstrv (dirs_expected_completions, dirs_results_completions);
+
+      g_strfreev (dirs_expected_completions);
+      g_strfreev (dirs_results_completions);
+
+      g_free (path_to_complete);
+      g_object_unref (all_completer);
+      g_object_unref (dirs_completer);
+    }
+}
+
+int
+main (int   argc,
+      char *argv[])
+{
+  g_setenv ("LC_ALL", "C", TRUE);
+
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
+
+  g_test_add_func ("/filenamecompleter/basic", test_completions);
+
+  return g_test_run ();
+}
