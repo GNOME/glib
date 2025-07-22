@@ -65,11 +65,10 @@ test_event (const void *data)
                           "poll-interval-ms", 50,
                           "mem-free-ratio", test_data->simulated_mem_free_ratio,
                           NULL);
-  g_initable_init (G_INITABLE (monitor), NULL, &local_error);
-  g_assert_no_error (local_error);
-
   warning_id = g_signal_connect (monitor, "low-memory-warning",
                                  G_CALLBACK (memory_monitor_signal_cb), &warning_level);
+  g_initable_init (G_INITABLE (monitor), NULL, &local_error);
+  g_assert_no_error (local_error);
 
   while (warning_level == -1)
     g_main_context_iteration (NULL, TRUE);
