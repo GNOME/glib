@@ -25,6 +25,83 @@
 
 #include <glib.h>
 
+#ifdef G_OS_UNIX
+#include <sys/resource.h>
+#endif
+
+#ifdef HAVE_PRLIMIT
+static gpointer
+dummy_thread_func (gpointer data)
+{
+  return NULL;
+}
+
+static void
+pool_fail_func (gpointer data,
+                gpointer user_data)
+{
+}
+#endif
+
+static void
+test_pool_fail (void)
+{
+#ifdef HAVE_PRLIMIT
+  struct rlimit ol, nl;
+  GThread *thread;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3712");
+
+  getrlimit (RLIMIT_NPROC, &nl);
+  nl.rlim_cur = 1;
+
+  if (prlimit (getpid (), RLIMIT_NPROC, &nl, &ol) != 0)
+    {
+      int errsv = errno;
+      g_error ("setting RLIMIT_NPROC to {cur=%ld,max=%ld} failed: %s",
+               (long) nl.rlim_cur, (long) nl.rlim_max, g_strerror (errsv));
+    }
+
+  thread = g_thread_try_new ("a", dummy_thread_func, NULL, NULL);
+  if (thread != NULL)
+    {
+      g_test_skip ("Cannot test failure to create a thread-pool "
+                   "when we cannot block the creation of threads");
+      g_thread_unref (thread);
+    }
+  else
+    {
+      GError *local_error = NULL;
+
+      for (unsigned int i = 0; i < 2; i++)
+        {
+          GThreadPool *pool;
+
+          /* The first time, i == 0, so the new pool is exclusive;
+           * g_thread_pool_new() tries to populate the pool with the
+           * single thread, and fails.
+           * The second time the pool is not exclusive;
+           * spawn_thread_queue has not been created,
+           * so g_thread_pool_new() tries to create the pool_spawner, and fails.
+           */
+          pool = g_thread_pool_new (pool_fail_func, NULL, 1, (i == 0),
+                                    &local_error);
+          g_assert_null (pool);
+          g_assert_error (local_error, G_THREAD_ERROR, G_THREAD_ERROR_AGAIN);
+          g_clear_error (&local_error);
+        }
+    }
+
+  if (prlimit (getpid (), RLIMIT_NPROC, &ol, NULL) != 0)
+    {
+      int errsv = errno;
+      g_error ("resetting RLIMIT_NPROC failed: %s", g_strerror (errsv));
+    }
+#else
+  g_test_skip ("Cannot test failure to create a thread-pool without prlimit()");
+#endif
+}
+
 typedef struct {
   GMutex mutex;
   GCond cond;
@@ -259,6 +336,11 @@ int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+
+  /* Run this test first, before the spawn_thread_queue has been
+   * created: */
+  g_test_add_func ("/thread_pool/pool_fail", test_pool_fail);
+  /* Remaining tests should run fine. */
 
   g_test_add_data_func ("/thread_pool/shared", GINT_TO_POINTER (TRUE), test_simple);
   g_test_add_data_func ("/thread_pool/exclusive", GINT_TO_POINTER (FALSE), test_simple);
