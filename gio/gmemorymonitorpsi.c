@@ -178,11 +178,15 @@ g_memory_monitor_low_trigger_cb (GMemoryMonitorPsi            *monitor,
 
   mem_ratio = g_memory_monitor_base_query_mem_ratio ();
 
-  /* if mem free ratio > 0.5, don't signal */
-  if (mem_ratio < 0.0)
-    return G_SOURCE_REMOVE;
-  else if (mem_ratio > 0.5)
-    return G_SOURCE_CONTINUE;
+  /* if the test is running, skip memory ratio test */
+  if (!monitor->proc_override)
+    {
+      /* if mem free ratio > 0.5, don't signal */
+      if (mem_ratio < 0.0)
+        return G_SOURCE_REMOVE;
+      if (mem_ratio > 0.5)
+        return G_SOURCE_CONTINUE;
+    }
 
   g_memory_monitor_base_send_event_to_user (G_MEMORY_MONITOR_BASE (monitor), level_type);
 
