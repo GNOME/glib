@@ -150,15 +150,15 @@ g_memory_monitor_mem_ratio_cb (gpointer data)
 
   mem_ratio = g_memory_monitor_base_query_mem_ratio ();
 
+  /* free ratio override */
+  if (monitor->mem_free_ratio >= 0.0)
+    mem_ratio = monitor->mem_free_ratio;
+
   if (mem_ratio < 0.0)
     return G_SOURCE_REMOVE;
 
   if (mem_ratio > 0.5)
     return G_SOURCE_CONTINUE;
-
-  /* free ratio override */
-  if (monitor->mem_free_ratio >= 0.0)
-    mem_ratio = monitor->mem_free_ratio;
 
   g_debug ("memory free ratio %f", mem_ratio);
 
