@@ -131,10 +131,16 @@ g_memory_monitor_default_init (GMemoryMonitorInterface *iface)
    * @monitor: a #GMemoryMonitor
    * @level: the #GMemoryMonitorWarningLevel warning level
    *
-   * Emitted when the system is running low on free memory. The signal
+   * Emitted when the system is running low on free memory.
+   *
+   * The signal
    * handler should then take the appropriate action depending on the
    * warning level. See the #GMemoryMonitorWarningLevel documentation for
    * details.
+   *
+   * Since the [iface@Gio.MemoryMonitor] is a singleton, this signal will be
+   * emitted in the [func@GLib.MainContext.default][global-default main
+   * context].
    *
    * Since: 2.64
    */
