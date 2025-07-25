@@ -2543,6 +2543,41 @@ test_receive_bytes_from (void)
   ip_test_data_free (data);
 }
 
+static void
+test_accept_cancelled (void)
+{
+  GSocket *socket = NULL;
+  GError *local_error = NULL;
+  GCancellable *cancellable = NULL;
+  GSocket *socket2 = NULL;
+
+  g_test_summary ("Calling g_socket_accept() with a cancelled cancellable "
+                  "should return immediately regardless of whether the socket "
+                  "is blocking");
+
+  socket = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &local_error);
+  g_assert_no_error (local_error);
+
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+
+  for (unsigned int i = 0; i < 2; i++)
+    {
+      g_socket_set_blocking (socket, i);
+
+      socket2 = g_socket_accept (socket, cancellable, &local_error);
+      g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+      g_assert_null (socket2);
+      g_clear_error (&local_error);
+    }
+
+  g_clear_object (&cancellable);
+  g_clear_object (&socket);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2611,6 +2646,8 @@ main (int   argc,
 #endif
   g_test_add_func ("/socket/receive_bytes", test_receive_bytes);
   g_test_add_func ("/socket/receive_bytes_from", test_receive_bytes_from);
+
+  g_test_add_func ("/socket/accept/cancelled", test_accept_cancelled);
 
   return g_test_run();
 }
