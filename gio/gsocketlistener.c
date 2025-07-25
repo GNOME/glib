@@ -811,7 +811,6 @@ g_socket_listener_accept (GSocketListener  *listener,
 typedef struct
 {
   GList *sources;  /* (element-type GSource) */
-  gboolean returned_yet;
 } AcceptSocketAsyncData;
 
 static void
@@ -830,12 +829,12 @@ accept_ready (GSocket      *accept_socket,
   GError *error = NULL;
   GSocket *socket;
   GObject *source_object;
-  AcceptSocketAsyncData *data = g_task_get_task_data (task);
 
   /* Don’t call g_task_return_*() multiple times if we have multiple incoming
-   * connections in the same #GMainContext iteration. */
-  if (data->returned_yet)
-    return G_SOURCE_REMOVE;
+   * connections in the same `GMainContext` iteration. We expect `GMainContext`
+   * to guarantee this behaviour, but let’s double check that the other sources
+   * have been destroyed correctly. */
+  g_assert (!g_source_is_destroyed (g_main_current_source ()));
 
   socket = g_socket_accept (accept_socket, g_task_get_cancellable (task), &error);
   if (socket)
@@ -852,7 +851,10 @@ accept_ready (GSocket      *accept_socket,
       g_task_return_error (task, error);
     }
 
-  data->returned_yet = TRUE;
+  /* Explicitly clear the task data so we know the other sources are destroyed. */
+  g_task_set_task_data (task, NULL, NULL);
+
+  /* Drop the final reference to the @task. */
   g_object_unref (task);
 
   return G_SOURCE_REMOVE;
@@ -893,8 +895,11 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
       return;
     }
 
+  /* This transfers the one strong ref of @task to all of the sources. The first
+   * source to be ready will call g_socket_accept() and take ownership of the
+   * @task. The other callbacks have to return early (if dispatched) after
+   * that. */
   data = g_new0 (AcceptSocketAsyncData, 1);
-  data->returned_yet = FALSE;
   data->sources = add_sources (listener,
 			 accept_ready,
 			 task,
