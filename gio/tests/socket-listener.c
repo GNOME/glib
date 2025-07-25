@@ -23,13 +23,13 @@
 #include "config.h"
 
 #include <gio/gio.h>
+#include <stdint.h>
 
 #ifdef HAVE_RTLD_NEXT
 #include <dlfcn.h>
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
-#include <stdint.h>
 #include <sys/socket.h>
 #endif
 
@@ -549,6 +549,140 @@ test_add_inet_port_listen_failures (void)
 #endif
 }
 
+static void
+async_result_cb (GObject      *source_object,
+                 GAsyncResult *result,
+                 void         *user_data)
+{
+  GAsyncResult **result_out = user_data;
+
+  g_assert (*result_out == NULL);
+  *result_out = g_object_ref (result);
+
+  g_main_context_wakeup (NULL);
+}
+
+static gboolean
+any_are_null (const void   * const *ptr_array,
+              size_t                n_elements)
+{
+  for (size_t i = 0; i < n_elements; i++)
+    if (ptr_array[i] == NULL)
+      return TRUE;
+
+  return FALSE;
+}
+
+static void
+test_accept_multi_simultaneously (void)
+{
+  GSocketListener *listener = NULL;
+  GAsyncResult *accept_results[5] = { NULL, };
+  struct
+    {
+      uint16_t listening_port;
+      GSocketClient *client;
+      GAsyncResult *result;
+      GSocketConnection *connection;
+    }
+  clients[5] = { { 0, NULL, NULL, NULL }, };
+  GSocketConnection *server_connection = NULL;
+  GCancellable *cancellable = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test that accepting multiple pending connections on the "
+                  "same GMainContext iteration works");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3739");
+
+  G_STATIC_ASSERT (G_N_ELEMENTS (clients) >= 2);
+  G_STATIC_ASSERT (G_N_ELEMENTS (accept_results) == G_N_ELEMENTS (clients));
+
+  listener = g_socket_listener_new ();
+  cancellable = g_cancellable_new ();
+
+  /* Listen on several ports at once. */
+  for (size_t i = 0; i < G_N_ELEMENTS (clients); i++)
+    {
+      clients[i].listening_port = g_socket_listener_add_any_inet_port (listener, NULL, &local_error);
+      g_assert_no_error (local_error);
+    }
+
+  /* Start to accept a connection, but don’t iterate the `GMainContext` yet. */
+  g_socket_listener_accept_async (listener, cancellable, async_result_cb, &accept_results[0]);
+
+  /* Connect to multiple ports before iterating the `GMainContext`, so that
+   * multiple sockets are ready in the first iteration. */
+  for (size_t i = 0; i < G_N_ELEMENTS (clients); i++)
+    {
+      clients[i].client = g_socket_client_new ();
+      g_socket_client_connect_to_host_async (clients[i].client,
+                                             "localhost", clients[i].listening_port,
+                                             cancellable, async_result_cb, &clients[i].result);
+    }
+
+  while (accept_results[0] == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  /* Exactly one server connection should have been created, because we called
+   * g_socket_listener_accept_async() once. */
+  server_connection = g_socket_listener_accept_finish (listener, accept_results[0], NULL,
+                                                       &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (server_connection);
+  g_io_stream_close (G_IO_STREAM (server_connection), NULL, NULL);
+  g_clear_object (&server_connection);
+
+  /* Conversely, all the client connection requests should have succeeded
+   * because the kernel will queue them on the server side. */
+  for (size_t i = 0; i < G_N_ELEMENTS (clients); i++)
+    {
+      g_assert_nonnull (clients[i].result);
+
+      clients[i].connection = g_socket_client_connect_to_host_finish (clients[i].client,
+                                                                      clients[i].result,
+                                                                      &local_error);
+      g_assert_no_error (local_error);
+      g_assert_nonnull (clients[i].connection);
+    }
+
+  /* Accept the remaining connections. */
+  for (size_t i = 1; i < G_N_ELEMENTS (accept_results); i++)
+    g_socket_listener_accept_async (listener, cancellable, async_result_cb, &accept_results[i]);
+
+  while (any_are_null ((const void * const *) accept_results, G_N_ELEMENTS (accept_results)))
+    g_main_context_iteration (NULL, TRUE);
+
+  for (size_t i = 1; i < G_N_ELEMENTS (accept_results); i++)
+    {
+      server_connection = g_socket_listener_accept_finish (listener, accept_results[i], NULL,
+                                                           &local_error);
+      g_assert_no_error (local_error);
+      g_assert_nonnull (server_connection);
+      g_io_stream_close (G_IO_STREAM (server_connection), NULL, NULL);
+      g_clear_object (&server_connection);
+    }
+
+  /* Clean up. */
+  g_socket_listener_close (listener);
+  g_cancellable_cancel (cancellable);
+
+  while (g_main_context_iteration (NULL, FALSE));
+
+  for (size_t i = 0; i < G_N_ELEMENTS (clients); i++)
+    {
+      g_io_stream_close (G_IO_STREAM (clients[i].connection), NULL, NULL);
+      g_clear_object (&clients[i].connection);
+      g_clear_object (&clients[i].result);
+      g_assert_finalize_object (clients[i].client);
+    }
+
+  for (size_t i = 0; i < G_N_ELEMENTS (accept_results); i++)
+    g_clear_object (&accept_results[i]);
+
+  g_assert_finalize_object (listener);
+  g_clear_object (&cancellable);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -556,6 +690,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/socket-listener/event-signal", test_event_signal);
+  g_test_add_func ("/socket-listener/accept/multi-simultaneously", test_accept_multi_simultaneously);
   g_test_add_func ("/socket-listener/add-any-inet-port/listen-failures", test_add_any_inet_port_listen_failures);
   g_test_add_func ("/socket-listener/add-inet-port/listen-failures", test_add_inet_port_listen_failures);
 
