@@ -3119,6 +3119,9 @@ g_socket_connect (GSocket         *socket,
   if (!g_socket_address_to_native (address, &buffer.storage, sizeof buffer, error))
     return FALSE;
 
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return FALSE;
+
   if (socket->priv->remote_address)
     g_object_unref (socket->priv->remote_address);
   socket->priv->remote_address = g_object_ref (address);
