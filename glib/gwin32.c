@@ -194,16 +194,20 @@ g_win32_getlocale (void)
 
 /**
  * g_win32_error_message:
- * @error: error code.
+ * @error: Win32 error code
  *
- * Translate a Win32 error code (as returned by GetLastError() or
- * WSAGetLastError()) into the corresponding message. The message is
- * either language neutral, or in the thread's language, or the user's
- * language, the system's language, or US English (see docs for
- * FormatMessage()). The returned string is in UTF-8. It should be
- * deallocated with g_free().
+ * Translate a Win32 error code into a human readable message.
  *
- * Returns: newly-allocated error message
+ * The error code could be as returned by
+ * [`GetLastError()`](https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror)
+ * or [`WSAGetLastError()`](https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsagetlasterror).
+ *
+ * The message is either language neutral, or in the thread’s language, or the
+ * user’s language, the system’s language, or US English (see documentation for
+ * [`FormatMessage()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessagew)).
+ * The returned string is in UTF-8.
+ *
+ * Returns: (transfer full) (not nullable): newly-allocated error message
  **/
 gchar *
 g_win32_error_message (gint error)
