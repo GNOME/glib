@@ -84,6 +84,8 @@ test_receive_signals (SetupData *setup, gconstpointer data)
   monitor = g_object_new (G_TYPE_MEMORY_MONITOR_PSI,
                           "proc-path", setup->mock_proc_path,
                           NULL);
+  warning_id = g_signal_connect (monitor, "low-memory-warning",
+                                 G_CALLBACK (memory_monitor_psi_signal_cb), &warning_level);
   g_initable_init (G_INITABLE (monitor), NULL, &local_error);
   g_assert_no_error (local_error);
 
@@ -92,9 +94,6 @@ test_receive_signals (SetupData *setup, gconstpointer data)
                        -1,
                        &local_error);
   g_assert_no_error (local_error);
-
-  warning_id = g_signal_connect (monitor, "low-memory-warning",
-                                 G_CALLBACK (memory_monitor_psi_signal_cb), &warning_level);
 
   while (warning_level == -1)
     g_main_context_iteration (NULL, TRUE);

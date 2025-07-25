@@ -103,6 +103,34 @@ g_memory_monitor_base_level_enum_to_byte (GMemoryMonitorLowMemoryLevel level)
   return level_bytes[level];
 }
 
+typedef struct
+{
+  GWeakRef monitor_weak;
+  GMemoryMonitorWarningLevel level;
+} SendEventData;
+
+static void
+send_event_data_free (SendEventData *data)
+{
+  g_weak_ref_clear (&data->monitor_weak);
+  g_free (data);
+}
+
+/* Invoked in the global default main context */
+static gboolean
+send_event_cb (void *user_data)
+{
+  SendEventData *data = user_data;
+  GMemoryMonitor *monitor = g_weak_ref_get (&data->monitor_weak);
+
+  if (monitor != NULL)
+    g_signal_emit_by_name (monitor, "low-memory-warning", data->level);
+
+  g_clear_object (&monitor);
+
+  return G_SOURCE_REMOVE;
+}
+
 void
 g_memory_monitor_base_send_event_to_user (GMemoryMonitorBase              *monitor,
                                           GMemoryMonitorLowMemoryLevel     warning_level)
@@ -115,10 +143,19 @@ g_memory_monitor_base_send_event_to_user (GMemoryMonitorBase              *monit
   if (priv->last_trigger_us[warning_level] == 0 ||
       (current_time - priv->last_trigger_us[warning_level]) > (RECOVERY_INTERVAL_SEC * G_USEC_PER_SEC))
     {
+      SendEventData *data = NULL;
+
       g_debug ("Send low memory signal with warning level %u", warning_level);
 
-      g_signal_emit_by_name (monitor, "low-memory-warning",
-                             g_memory_monitor_base_level_enum_to_byte (warning_level));
+      /* The signal has to be emitted in the global default main context,
+       * because the `GMemoryMonitor` is a singleton which may have been created
+       * in an arbitrary thread, or which may be calling this function from the
+       * GLib worker thread. */
+      data = g_new0 (SendEventData, 1);
+      g_weak_ref_init (&data->monitor_weak, monitor);
+      data->level = g_memory_monitor_base_level_enum_to_byte (warning_level);
+      g_main_context_invoke_full (NULL, G_PRIORITY_DEFAULT, send_event_cb,
+                                  g_steal_pointer (&data), (GDestroyNotify) send_event_data_free);
       priv->last_trigger_us[warning_level] = current_time;
     }
 }
