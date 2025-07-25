@@ -239,6 +239,19 @@ check_listener (GSocketListener *listener,
   return TRUE;
 }
 
+static void
+add_socket (GSocketListener *listener,
+            GSocket         *socket,
+            GObject         *source_object)
+{
+  if (source_object)
+    g_object_set_qdata_full (G_OBJECT (socket), source_quark,
+                             g_object_ref (source_object),
+                             g_object_unref);
+
+  g_ptr_array_add (listener->priv->sockets, g_object_ref (socket));
+}
+
 /**
  * g_socket_listener_add_socket:
  * @listener: a #GSocketListener
@@ -282,13 +295,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
       return FALSE;
     }
 
-  g_object_ref (socket);
-  g_ptr_array_add (listener->priv->sockets, socket);
-
-  if (source_object)
-    g_object_set_qdata_full (G_OBJECT (socket), source_quark,
-			     g_object_ref (source_object), g_object_unref);
-
+  add_socket (listener, socket, source_object);
 
   if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
     G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
@@ -502,11 +509,6 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
           g_signal_emit (listener, signals[EVENT], 0,
                          G_SOCKET_LISTENER_LISTENED, socket6);
 
-          if (source_object)
-            g_object_set_qdata_full (G_OBJECT (socket6), source_quark,
-                                     g_object_ref (source_object),
-                                     g_object_unref);
-
           /* If this socket already speaks IPv4 then we are done. */
           if (g_socket_speaks_ipv4 (socket6))
             need_ipv4_socket = FALSE;
@@ -568,11 +570,6 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
             {
               g_signal_emit (listener, signals[EVENT], 0,
                              G_SOCKET_LISTENER_LISTENED, socket4);
-
-              if (source_object)
-                g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
-                                         g_object_ref (source_object),
-                                         g_object_unref);
             }
         }
       else
@@ -612,16 +609,19 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
   g_assert (socket6 != NULL || socket4 != NULL);
 
   if (socket6 != NULL)
-    g_ptr_array_add (listener->priv->sockets, socket6);
+    add_socket (listener, socket6, source_object);
 
   if (socket4 != NULL)
-    g_ptr_array_add (listener->priv->sockets, socket4);
+    add_socket (listener, socket4, source_object);
 
   if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
     G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
 
   g_clear_error (&socket6_listen_error);
   g_clear_error (&socket4_listen_error);
+
+  g_clear_object (&socket6);
+  g_clear_object (&socket4);
 
   return TRUE;
 }
@@ -1263,12 +1263,7 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
           g_signal_emit (listener, signals[EVENT], 0,
                          G_SOCKET_LISTENER_LISTENED, socket6);
 
-          if (source_object)
-            g_object_set_qdata_full (G_OBJECT (socket6), source_quark,
-                                     g_object_ref (source_object),
-                                     g_object_unref);
-
-          g_ptr_array_add (listener->priv->sockets, socket6);
+          add_socket (listener, socket6, source_object);
         }
       else
         {
@@ -1288,12 +1283,7 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
           g_signal_emit (listener, signals[EVENT], 0,
                          G_SOCKET_LISTENER_LISTENED, socket4);
 
-          if (source_object)
-            g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
-                                     g_object_ref (source_object),
-                                     g_object_unref);
-
-          g_ptr_array_add (listener->priv->sockets, socket4);
+          add_socket (listener, socket4, source_object);
         }
       else
         {
@@ -1326,6 +1316,9 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
   if ((socket4 != NULL || socket6 != NULL) &&
       G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
     G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
+
+  g_clear_object (&socket6);
+  g_clear_object (&socket4);
 
   return candidate_port;
 }
