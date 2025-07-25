@@ -207,6 +207,9 @@ g_win32_getlocale (void)
  * [`FormatMessage()`](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessagew)).
  * The returned string is in UTF-8.
  *
+ * If a human readable message cannot be found for the given @error, an empty
+ * string is returned.
+ *
  * Returns: (transfer full) (not nullable): newly-allocated error message
  **/
 gchar *
