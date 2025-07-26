@@ -345,6 +345,28 @@ guint g_uint_hash (gconstpointer v);
 #undef G_THREAD_LOCAL
 #endif
 
+struct _GUnlocker
+{
+  struct
+  {
+    gint released;
+    gint lock_bit;
+    gint *address;
+  } _priv;
+};
+
+static inline void
+_g_unlocker_init_bitlock (GUnlocker *unlocker, gint *address, gint lock_bit)
+{
+  *unlocker = (GUnlocker) {
+    ._priv = {
+        .released = 0,
+        .lock_bit = lock_bit,
+        .address = address,
+    },
+  };
+}
+
 /* Convenience wrapper to call private g_datalist_id_update_atomic() function. */
 #define _g_datalist_id_update_atomic_full(datalist, key_id, already_locked, callback, user_data) \
   (GLIB_PRIVATE_CALL (g_datalist_id_update_atomic) ((datalist), (key_id), (already_locked), (callback), (user_data)))

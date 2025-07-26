@@ -56,6 +56,7 @@ typedef struct _GRWLock         GRWLock;
 typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
 typedef struct _GOnce           GOnce;
+typedef struct _GUnlocker       GUnlocker;
 
 union _GMutex
 {
@@ -206,6 +207,9 @@ GLIB_AVAILABLE_IN_2_32
 gboolean        g_rec_mutex_trylock             (GRecMutex      *rec_mutex);
 GLIB_AVAILABLE_IN_2_32
 void            g_rec_mutex_unlock              (GRecMutex      *rec_mutex);
+
+GLIB_AVAILABLE_IN_2_86
+void            g_unlocker_release              (GUnlocker      *unlocker);
 
 GLIB_AVAILABLE_IN_2_32
 void            g_cond_init                     (GCond          *cond);

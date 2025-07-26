@@ -1436,6 +1436,15 @@ g_rec_mutex_trylock (GRecMutex *rec_mutex)
   return g_rec_mutex_trylock_impl (rec_mutex);
 }
 
+/* {{{1 GUnlocker */
+
+void
+g_unlocker_release (GUnlocker *unlocker)
+{
+  if (g_atomic_int_compare_and_exchange (&unlocker->_priv.released, 0, 1))
+    g_bit_unlock (unlocker->_priv.address, unlocker->_priv.lock_bit);
+}
+
 /* {{{1 GRWLock */
 
 /**
