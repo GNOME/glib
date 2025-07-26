@@ -32,6 +32,18 @@
 #include <dlfcn.h>
 #include <glib.h>
 
+#ifdef __CYGWIN__
+#define CYGWIN_WORKAROUND
+#endif
+
+#ifdef CYGWIN_WORKAROUND
+#include <sys/cygwin.h>
+#include <windows.h>
+#include <tlhelp32.h>
+
+#include <errno.h>
+#endif
+
 /* Perl includes <nlist.h> and <link.h> instead of <dlfcn.h> on some systems? */
 
 
@@ -193,6 +205,80 @@ _g_module_close (gpointer handle)
     }
 }
 
+#ifdef CYGWIN_WORKAROUND
+
+static gpointer
+find_in_any_module_cygwin (const char *symbol_name)
+{
+  HANDLE snapshot;
+  MODULEENTRY32 entry = {
+    .dwSize = sizeof (entry),
+  };
+  gpointer p = NULL;
+
+retry:
+  snapshot = CreateToolhelp32Snapshot (TH32CS_SNAPMODULE, 0);
+  if (snapshot == INVALID_HANDLE_VALUE)
+    {
+      DWORD code = GetLastError ();
+      if (code == ERROR_BAD_LENGTH)
+        {
+          /* Probably only happens when inspecting other processes */
+          g_thread_yield ();
+          goto retry;
+        }
+      else
+        {
+          g_warning ("%s failed with error code %u",
+                     "CreateToolhelp32Snapshot",
+                     (unsigned int) code);
+          return NULL;
+        }
+    }
+
+  if (Module32First (snapshot, &entry))
+    {
+      do
+        {
+          if ((p = GetProcAddress (entry.hModule, symbol_name)) != NULL)
+            {
+              ssize_t size = 0;
+              char *posix_path;
+
+              G_STATIC_ASSERT (G_N_ELEMENTS (entry.szExePath) <= MAX_PATH);
+
+              do
+                {
+                  posix_path = (size > 0) ? g_alloca ((long unsigned int) size) : NULL;
+                  size = cygwin_conv_path (CCP_WIN_W_TO_POSIX, entry.szExePath, posix_path, (size_t) size);
+                }
+              while (size > 0);
+
+              if (size < 0)
+                {
+                  g_warning ("%s failed with errno %d", "cygwin_conv_path", errno);
+                  break;
+                }
+
+              if (g_str_has_prefix (posix_path, "/usr/lib") ||
+                  g_str_has_prefix (posix_path, "/usr/local/lib"))
+                {
+                  p = NULL;
+                }
+              else
+                break;
+            }
+        }
+      while (Module32Next (snapshot, &entry));
+    }
+
+  CloseHandle (snapshot);
+
+  return p;
+}
+
+#endif
+
 static gpointer
 _g_module_symbol (gpointer     handle,
 		  const gchar *symbol_name)
@@ -204,9 +290,22 @@ _g_module_symbol (gpointer     handle,
   fetch_dlerror (FALSE);
   p = dlsym (handle, symbol_name);
   msg = fetch_dlerror (FALSE);
+#ifndef CYGWIN_WORKAROUND
   if (msg)
     g_module_set_error (msg);
   unlock_dlerror ();
-  
+#else
+  if (msg)
+    {
+      char *msg_copy = g_strdup (msg);
+      unlock_dlerror ();
+      p = find_in_any_module_cygwin (symbol_name);
+      if (!p)
+        g_module_set_error_unduped (msg_copy);
+      else
+        g_free (msg_copy);
+    }
+#endif
+
   return p;
 }
