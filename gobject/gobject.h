@@ -249,6 +249,28 @@ typedef void (*GObjectFinalizeFunc)     (GObject      *object);
 typedef void (*GWeakNotify)		(gpointer      data,
 					 GObject      *where_the_object_was);
 
+/**
+ * GWeakSyncedNotify:
+ * @data: data that was provided when the weak reference was established
+ * @where_the_object_was: the object being disposed
+ * @unlocker: a #GUnlocker to release the lock early
+ *
+ * Similar to #GWeakNotify. This callback is added to an object via
+ * g_object_weak_ref_sync() to get a thread-safe callback when the object
+ * gets notified.
+ *
+ * Note that the callback is invoked with holding a per-object lock.  That
+ * makes the notification thread-safe, but has the potential of deadlock.  In
+ * particular, if the callback tries to acquire a lock that another thread
+ * already holds, and that other threads then tries to call
+ * g_object_weak_unref_full() for the same notification.
+ *
+ * Since: 2.86
+ */
+typedef void (*GWeakSyncedNotify)       (gpointer      data,
+                                         GObject      *where_the_object_was,
+                                         GUnlocker    *unlocker);
+
 struct  _GObject
 {
   GTypeInstance  g_type_instance;
@@ -531,6 +553,16 @@ gboolean g_object_weak_unref_full (GObject *object,
                                    GWeakNotify notify,
                                    gpointer data,
                                    gboolean steal_data);
+
+GOBJECT_AVAILABLE_IN_2_86
+void g_object_weak_ref_sync (GObject *object,
+                             GWeakSyncedNotify notify,
+                             gpointer data);
+GOBJECT_AVAILABLE_IN_2_86
+gboolean g_object_weak_unref_sync (GObject *object,
+                                   GWeakSyncedNotify notify,
+                                   gpointer data);
+
 GOBJECT_AVAILABLE_IN_ALL
 void        g_object_add_weak_pointer         (GObject        *object, 
                                                gpointer       *weak_pointer_location);

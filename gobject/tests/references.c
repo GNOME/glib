@@ -721,6 +721,168 @@ test_references_thread_safe (void)
 
 /*****************************************************************************/
 
+static gboolean _weak_ref_sync_was_invoked = FALSE;
+
+typedef struct
+{
+  GObject *obj;
+  gboolean is_run_dispose;
+  gpointer was_notified;
+  gpointer some_data;
+} WeakRefSyncData;
+
+static gpointer
+_weak_ref_sync_thread_fcn (gpointer thread_data)
+{
+  WeakRefSyncData *wdata = thread_data;
+
+  if (wdata->is_run_dispose)
+    g_object_run_dispose (wdata->obj);
+  else
+    g_object_unref (wdata->obj);
+  return NULL;
+}
+
+static void
+_weak_ref_sync_weak_cb (gpointer data,
+                        GObject *where_the_object_was,
+                        GUnlocker *unlocker)
+{
+  WeakRefSyncData *wdata = data;
+  gint msec_sleep;
+
+  msec_sleep = g_random_int_range (-1, 5);
+  if (msec_sleep != -1)
+    g_usleep ((gulong) (msec_sleep * 1000));
+
+  g_assert_false (_weak_ref_sync_was_invoked);
+  _weak_ref_sync_was_invoked = TRUE;
+
+  g_assert_null (wdata->was_notified);
+  g_assert_nonnull (wdata->some_data);
+  wdata->was_notified = g_steal_pointer (&wdata->some_data);
+
+  if (g_random_boolean ())
+    {
+      gboolean did_unref;
+
+      did_unref = g_object_weak_unref_sync (wdata->obj, _weak_ref_sync_weak_cb, wdata);
+      g_assert_false (did_unref);
+    }
+
+  if (g_random_boolean ())
+    {
+      g_unlocker_release (unlocker);
+      if (g_random_boolean ())
+        g_unlocker_release (unlocker);
+    }
+}
+
+static void
+test_weak_ref_sync (gconstpointer test_user_data)
+{
+  const gboolean IS_RUN_DISPOSE = GPOINTER_TO_INT (test_user_data);
+  GThread *thread;
+  GObject *obj = g_object_new (G_TYPE_OBJECT, NULL);
+  WeakRefSyncData wdata = {
+    .obj = obj,
+    .is_run_dispose = IS_RUN_DISPOSE,
+    .was_notified = NULL,
+    .some_data = g_malloc0 (1),
+  };
+  gint usec_sleep;
+  gboolean did_unref = FALSE;
+  gboolean called_unref = TRUE;
+  GWeakRef weakref;
+  gboolean has_weakref;
+
+  has_weakref = (!IS_RUN_DISPOSE || g_random_boolean ());
+  if (has_weakref)
+    g_weak_ref_init (&weakref, obj);
+
+  g_object_weak_ref_sync (obj, _weak_ref_sync_weak_cb, &wdata);
+
+  thread = g_thread_new ("run-dispose", _weak_ref_sync_thread_fcn, &wdata);
+
+  usec_sleep = g_random_int_range (-1, 20);
+  if (usec_sleep != -1)
+    g_usleep ((gulong) usec_sleep);
+
+  if (IS_RUN_DISPOSE)
+  {
+    /* The thread only runs g_object_run_dispose(). We know that our object is valid. */
+    did_unref = g_object_weak_unref_sync (obj, _weak_ref_sync_weak_cb, &wdata);
+  }
+  else
+    {
+      GObject *obj2 = g_weak_ref_get (&weakref);
+
+      /* The thread runs g_object_unref(). We want to test a concurrent
+       * g_object_weak_unref_sync(), so we need to first acquire a strong
+       * reference.
+       *
+       * So how does g_object_weak_unref_sync() do anything useful? For one, it
+       * exists primarily to fix races when other threads run
+       * g_object_run_dispose(). In this case, we can only use GWeakRef to
+       * acquire a strong reference first. */
+
+      if (obj2)
+        {
+          did_unref = g_object_weak_unref_sync (obj2, _weak_ref_sync_weak_cb, &wdata);
+          g_object_unref (obj2);
+        }
+      else
+        {
+          called_unref = FALSE;
+          did_unref = FALSE;
+        }
+    }
+
+  if (!called_unref)
+    {
+      /* We never called g_object_weak_unref_sync(). We know that the
+       * other thread will call unref, but we didn't synchronize to know
+       * whether the thread already did that.
+       *
+       * We cannot assert. */
+    }
+  else
+    {
+      if (did_unref)
+        {
+          g_assert_null (wdata.was_notified);
+          g_assert_nonnull (wdata.some_data);
+        }
+      else
+        {
+          g_assert_nonnull (wdata.was_notified);
+          g_assert_null (wdata.some_data);
+        }
+
+      g_assert_cmpint (!did_unref, ==, _weak_ref_sync_was_invoked);
+      g_assert_cmpint (did_unref, ==, !_weak_ref_sync_was_invoked);
+    }
+
+  g_thread_join (thread);
+
+  if (IS_RUN_DISPOSE)
+    g_object_unref (obj);
+
+  _weak_ref_sync_was_invoked = FALSE;
+
+  if (did_unref)
+    g_free (wdata.was_notified);
+  else if (called_unref)
+    g_free (wdata.some_data);
+  else
+    {
+      g_free (wdata.was_notified);
+      g_free (wdata.some_data);
+    }
+}
+
+/*****************************************************************************/
+
 int
 main (int   argc,
       char *argv[])
@@ -736,6 +898,8 @@ main (int   argc,
   g_test_add_func ("/gobject/references_two", test_references_two);
   g_test_add_func ("/gobject/references_run_dispose", test_references_run_dispose);
   g_test_add_func ("/gobject/references_thread_safe", test_references_thread_safe);
+  g_test_add_data_func ("/gobject/weak_ref_sync/unref", GINT_TO_POINTER (FALSE), test_weak_ref_sync);
+  g_test_add_data_func ("/gobject/weak_ref_sync/run-dispose", GINT_TO_POINTER (TRUE), test_weak_ref_sync);
 
   return g_test_run ();
 }
