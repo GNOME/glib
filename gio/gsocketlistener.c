@@ -239,6 +239,32 @@ check_listener (GSocketListener *listener,
   return TRUE;
 }
 
+static void
+add_socket (GSocketListener *listener,
+            GSocket         *socket,
+            GObject         *source_object,
+            gboolean         set_non_blocking)
+{
+  if (source_object)
+    g_object_set_qdata_full (G_OBJECT (socket), source_quark,
+                             g_object_ref (source_object),
+                             g_object_unref);
+
+  g_ptr_array_add (listener->priv->sockets, g_object_ref (socket));
+
+  /* Because the implementation of `GSocketListener` uses polling and `GSource`s
+   * to wait for connections, we absolutely do *not* need `GSocket`’s internal
+   * implementation of blocking operations to get in the way. Otherwise we end
+   * up calling poll() on the results of poll(), which is racy and confusing.
+   *
+   * Unfortunately, the existence of g_socket_listener_add_socket() to add a
+   * socket which is used elsewhere, means that we need an escape hatch
+   * (`!set_non_blocking`) to allow sockets to remain in blocking mode if the
+   * caller really wants it. */
+  if (set_non_blocking)
+    g_socket_set_blocking (socket, FALSE);
+}
+
 /**
  * g_socket_listener_add_socket:
  * @listener: a #GSocketListener
@@ -249,6 +275,9 @@ check_listener (GSocketListener *listener,
  * Adds @socket to the set of sockets that we try to accept
  * new clients from. The socket must be bound to a local
  * address and listened to.
+ *
+ * For parallel calls to [class@Gio.SocketListener] methods to work, the socket
+ * must be in non-blocking mode. (See [property@Gio.Socket:blocking].)
  *
  * @source_object will be passed out in the various calls
  * to accept to identify this particular source, which is
@@ -282,13 +311,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
       return FALSE;
     }
 
-  g_object_ref (socket);
-  g_ptr_array_add (listener->priv->sockets, socket);
-
-  if (source_object)
-    g_object_set_qdata_full (G_OBJECT (socket), source_quark,
-			     g_object_ref (source_object), g_object_unref);
-
+  add_socket (listener, socket, source_object, FALSE);
 
   if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
     G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
@@ -502,11 +525,6 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
           g_signal_emit (listener, signals[EVENT], 0,
                          G_SOCKET_LISTENER_LISTENED, socket6);
 
-          if (source_object)
-            g_object_set_qdata_full (G_OBJECT (socket6), source_quark,
-                                     g_object_ref (source_object),
-                                     g_object_unref);
-
           /* If this socket already speaks IPv4 then we are done. */
           if (g_socket_speaks_ipv4 (socket6))
             need_ipv4_socket = FALSE;
@@ -568,11 +586,6 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
             {
               g_signal_emit (listener, signals[EVENT], 0,
                              G_SOCKET_LISTENER_LISTENED, socket4);
-
-              if (source_object)
-                g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
-                                         g_object_ref (source_object),
-                                         g_object_unref);
             }
         }
       else
@@ -612,16 +625,19 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
   g_assert (socket6 != NULL || socket4 != NULL);
 
   if (socket6 != NULL)
-    g_ptr_array_add (listener->priv->sockets, socket6);
+    add_socket (listener, socket6, source_object, TRUE);
 
   if (socket4 != NULL)
-    g_ptr_array_add (listener->priv->sockets, socket4);
+    add_socket (listener, socket4, source_object, TRUE);
 
   if (G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
     G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
 
   g_clear_error (&socket6_listen_error);
   g_clear_error (&socket4_listen_error);
+
+  g_clear_object (&socket6);
+  g_clear_object (&socket4);
 
   return TRUE;
 }
@@ -811,7 +827,6 @@ g_socket_listener_accept (GSocketListener  *listener,
 typedef struct
 {
   GList *sources;  /* (element-type GSource) */
-  gboolean returned_yet;
 } AcceptSocketAsyncData;
 
 static void
@@ -830,12 +845,12 @@ accept_ready (GSocket      *accept_socket,
   GError *error = NULL;
   GSocket *socket;
   GObject *source_object;
-  AcceptSocketAsyncData *data = g_task_get_task_data (task);
 
   /* Don’t call g_task_return_*() multiple times if we have multiple incoming
-   * connections in the same #GMainContext iteration. */
-  if (data->returned_yet)
-    return G_SOURCE_REMOVE;
+   * connections in the same `GMainContext` iteration. We expect `GMainContext`
+   * to guarantee this behaviour, but let’s double check that the other sources
+   * have been destroyed correctly. */
+  g_assert (!g_source_is_destroyed (g_main_current_source ()));
 
   socket = g_socket_accept (accept_socket, g_task_get_cancellable (task), &error);
   if (socket)
@@ -849,10 +864,37 @@ accept_ready (GSocket      *accept_socket,
     }
   else
     {
+      /* This can happen if there are multiple pending g_socket_listener_accept_async()
+       * calls (say N), and fewer queued incoming connections (say C) than that
+       * on this `GSocket`, in a single `GMainContext` iteration.
+       * (There may still be queued incoming connections on other `GSocket`s in
+       * the `GSocketListener`.)
+       *
+       * If so, the `GSocketSource`s for that pending g_socket_listener_accept_async()
+       * call will all raise `G_IO_IN` in this `GMainContext` iteration. The
+       * first C calls to accept_ready() succeed, but the following N-C calls
+       * would block, as all the queued incoming connections on this `GSocket`
+       * have been accepted by then. The `GSocketSource`s for these remaining
+       * g_socket_listener_accept_async() calls will not have been destroyed,
+       * because there’s an independent set of `GSocketSource`s for each
+       * g_socket_listener_accept_async() call, rather than one `GSocketSource`
+       * for each socket in the `GSocketListener`.
+       *
+       * This is why we need sockets in the `GSocketListener` to be non-blocking:
+       * otherwise the above g_socket_accept() call would block. */
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
+        {
+          g_clear_error (&error);
+          return G_SOURCE_CONTINUE;
+        }
+
       g_task_return_error (task, error);
     }
 
-  data->returned_yet = TRUE;
+  /* Explicitly clear the task data so we know the other sources are destroyed. */
+  g_task_set_task_data (task, NULL, NULL);
+
+  /* Drop the final reference to the @task. */
   g_object_unref (task);
 
   return G_SOURCE_REMOVE;
@@ -893,8 +935,11 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
       return;
     }
 
+  /* This transfers the one strong ref of @task to all of the sources. The first
+   * source to be ready will call g_socket_accept() and take ownership of the
+   * @task. The other callbacks have to return early (if dispatched) after
+   * that. */
   data = g_new0 (AcceptSocketAsyncData, 1);
-  data->returned_yet = FALSE;
   data->sources = add_sources (listener,
 			 accept_ready,
 			 task,
@@ -1263,12 +1308,7 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
           g_signal_emit (listener, signals[EVENT], 0,
                          G_SOCKET_LISTENER_LISTENED, socket6);
 
-          if (source_object)
-            g_object_set_qdata_full (G_OBJECT (socket6), source_quark,
-                                     g_object_ref (source_object),
-                                     g_object_unref);
-
-          g_ptr_array_add (listener->priv->sockets, socket6);
+          add_socket (listener, socket6, source_object, TRUE);
         }
       else
         {
@@ -1288,12 +1328,7 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
           g_signal_emit (listener, signals[EVENT], 0,
                          G_SOCKET_LISTENER_LISTENED, socket4);
 
-          if (source_object)
-            g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
-                                     g_object_ref (source_object),
-                                     g_object_unref);
-
-          g_ptr_array_add (listener->priv->sockets, socket4);
+          add_socket (listener, socket4, source_object, TRUE);
         }
       else
         {
@@ -1326,6 +1361,9 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
   if ((socket4 != NULL || socket6 != NULL) &&
       G_SOCKET_LISTENER_GET_CLASS (listener)->changed)
     G_SOCKET_LISTENER_GET_CLASS (listener)->changed (listener);
+
+  g_clear_object (&socket6);
+  g_clear_object (&socket4);
 
   return candidate_port;
 }

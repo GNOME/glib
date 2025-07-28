@@ -2974,6 +2974,9 @@ g_socket_accept (GSocket       *socket,
   if (!check_timeout (socket, error))
     return NULL;
 
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return NULL;
+
   while (TRUE)
     {
       gboolean try_accept = TRUE;
@@ -3114,6 +3117,9 @@ g_socket_connect (GSocket         *socket,
     return FALSE;
 
   if (!g_socket_address_to_native (address, &buffer.storage, sizeof buffer, error))
+    return FALSE;
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return FALSE;
 
   if (socket->priv->remote_address)
