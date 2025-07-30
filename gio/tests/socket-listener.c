@@ -573,19 +573,31 @@ any_are_null (const void   * const *ptr_array,
   return FALSE;
 }
 
+typedef struct
+{
+  uint16_t listening_port;
+  GSocketClient *client;
+  GAsyncResult *result;
+  GSocketConnection *connection;
+} AcceptMultiSimultaneouslyClient;
+
+static gboolean
+any_client_results_are_null (const AcceptMultiSimultaneouslyClient *clients,
+                             size_t                                 n_clients)
+{
+  for (size_t i = 0; i < n_clients; i++)
+    if (clients[i].result == NULL)
+      return TRUE;
+
+  return FALSE;
+}
+
 static void
 test_accept_multi_simultaneously (void)
 {
   GSocketListener *listener = NULL;
   GAsyncResult *accept_results[5] = { NULL, };
-  struct
-    {
-      uint16_t listening_port;
-      GSocketClient *client;
-      GAsyncResult *result;
-      GSocketConnection *connection;
-    }
-  clients[5] = { { 0, NULL, NULL, NULL }, };
+  AcceptMultiSimultaneouslyClient clients[5] = { { 0, NULL, NULL, NULL }, };
   GSocketConnection *server_connection = NULL;
   GCancellable *cancellable = NULL;
   GError *local_error = NULL;
@@ -620,7 +632,8 @@ test_accept_multi_simultaneously (void)
                                              cancellable, async_result_cb, &clients[i].result);
     }
 
-  while (accept_results[0] == NULL)
+  while (accept_results[0] == NULL ||
+         any_client_results_are_null (clients, G_N_ELEMENTS (clients)))
     g_main_context_iteration (NULL, TRUE);
 
   /* Exactly one server connection should have been created, because we called
