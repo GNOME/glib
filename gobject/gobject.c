@@ -5903,10 +5903,12 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  * Like #GValue, #GWeakRef can be statically allocated, stack- or
  * heap-allocated, or embedded in larger structures.
  *
- * Unlike g_object_weak_ref() and g_object_add_weak_pointer(), this weak
- * reference is thread-safe: converting a weak pointer to a reference is
- * atomic with respect to invalidation of weak pointers to destroyed
- * objects.
+ * A weak reference is thread-safe: converting a weak pointer to a reference is
+ * atomic with respect to invalidation of weak pointers to destroyed objects.
+ *
+ * Compare #GWeakNotify and g_object_weak_ref() which can be used together
+ * with #GWeakRef to get notification about when objects get destroyed. See
+ * notes about thread-safety in g_object_weak_ref().
  *
  * If the object's #GObjectClass.dispose method results in additional
  * references to the object being held (‘re-referencing’), any #GWeakRefs taken
@@ -5914,9 +5916,6 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  * during disposal and after re-referencing, or after disposal has returned due
  * to the re-referencing, will continue to point to the object until its refcount
  * goes back to zero, at which point they too will be invalidated.
- *
- * It is invalid to take a #GWeakRef on an object during #GObjectClass.dispose
- * without first having or creating a strong reference to the object.
  */
 
 #define WEAK_REF_LOCK_BIT 0
