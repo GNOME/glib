@@ -27,6 +27,7 @@
 
 #ifdef G_OS_UNIX
 #include <sys/resource.h>
+#include <unistd.h>
 #endif
 
 #ifdef HAVE_PRLIMIT
