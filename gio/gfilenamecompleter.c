@@ -211,7 +211,7 @@ got_more_files (GObject *source_object,
 	  if (append_slash)
 	    {
 	      t = basename;
-	      basename = g_strconcat (basename, "/", NULL);
+	      basename = g_strconcat (basename, G_DIR_SEPARATOR_S, NULL);
 	      g_free (t);
 	    }
 	  
