@@ -985,7 +985,7 @@ g_array_sort_with_data (GArray           *farray,
  *
  * Checks whether @target exists in @array by performing a binary
  * search based on the given comparison function @compare_func which
- * get pointers to items as arguments. If the element is found, %TRUE
+ * gets pointers to items as arguments. If the element is found, %TRUE
  * is returned and the element’s index is returned in @out_match_index
  * (if non-%NULL). Otherwise, %FALSE is returned and @out_match_index
  * is undefined. If @target exists multiple times in @array, the index
@@ -993,7 +993,7 @@ g_array_sort_with_data (GArray           *farray,
  * search, so the @array must absolutely be sorted to return a correct
  * result (if not, the function may produce false-negative).
  *
- * This example defines a comparison function and search an element in a #GArray:
+ * This example defines a comparison function and searches an element in a #GArray:
  * |[<!-- language="C" -->
  * static gint
  * cmpint (gconstpointer a, gconstpointer b)
@@ -1382,7 +1382,7 @@ g_ptr_array_new_from_array (gpointer       *data,
  * This avoids having to manually add each element one by one.
  * If @copy_func is provided, then it is used to copy the data in the new
  * array.
- * It also set @element_free_func for freeing each element when the array is
+ * It also sets @element_free_func for freeing each element when the array is
  * destroyed either via g_ptr_array_unref(), when g_ptr_array_free() is called
  * with @free_segment set to %TRUE or when removing elements.
  *
@@ -1581,7 +1581,7 @@ g_ptr_array_sized_new (guint reserved_size)
  * g_array_copy:
  * @array: A #GArray.
  *
- * Create a shallow copy of a #GArray. If the array elements consist of
+ * Creates a shallow copy of a #GArray. If the array elements consist of
  * pointers to data, the pointers are copied but the actual data is not.
  *
  * Returns: (transfer container): A copy of @array.
@@ -1637,7 +1637,7 @@ g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
  * Creates a new #GPtrArray with @reserved_size pointers preallocated
  * and a reference count of 1. This avoids frequent reallocation, if
  * you are going to add many pointers to the array. Note however that
- * the size of the array is still 0. It also set @element_free_func
+ * the size of the array is still 0. It also sets @element_free_func
  * for freeing each element when the array is destroyed either via
  * g_ptr_array_unref(), when g_ptr_array_free() is called with
  * @free_segment set to %TRUE or when removing elements.
@@ -1659,8 +1659,8 @@ g_ptr_array_new_full (guint          reserved_size,
  *     If @null_terminated is %TRUE, the actually allocated
  *     buffer size is @reserved_size plus 1, unless @reserved_size
  *     is zero, in which case no initial buffer gets allocated.
- * @element_free_func: (nullable): A function to free elements with
- *     destroy @array or %NULL
+ * @element_free_func: (nullable): A function to free elements during
+ *     destruction of @array or %NULL
  * @null_terminated: whether to make the array as %NULL terminated.
  *
  * Like g_ptr_array_new_full() but also allows to set the array to
@@ -1694,8 +1694,8 @@ g_ptr_array_new_null_terminated (guint          reserved_size,
 /**
  * g_ptr_array_set_free_func:
  * @array: A #GPtrArray
- * @element_free_func: (nullable): A function to free elements with
- *     destroy @array or %NULL
+ * @element_free_func: (nullable): A function to free elements during
+ *     destruction of @array or %NULL
  *
  * Sets a function for freeing each element when @array is destroyed
  * either via g_ptr_array_unref(), when g_ptr_array_free() is called
@@ -1718,7 +1718,7 @@ g_ptr_array_set_free_func (GPtrArray      *array,
  * g_ptr_array_is_null_terminated:
  * @array: the #GPtrArray
  *
- * Gets whether the @array was constructed as %NULL-terminated.
+ * Checks whether the @array was constructed as %NULL-terminated.
  *
  * This will only return %TRUE for arrays constructed by passing %TRUE to the
  * `null_terminated` argument of g_ptr_array_new_null_terminated(). It will not
@@ -2809,8 +2809,8 @@ g_byte_array_free (GByteArray *array,
  * Transfers the data from the #GByteArray into a new immutable #GBytes.
  *
  * The #GByteArray is freed unless the reference count of @array is greater
- * than one, the #GByteArray wrapper is preserved but the size of @array
- * will be set to zero.
+ * than one, in which case the #GByteArray wrapper is preserved but the size of
+ * @array will be set to zero.
  *
  * This is identical to using g_bytes_new_take() and g_byte_array_free()
  * together.
