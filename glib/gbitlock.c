@@ -312,7 +312,7 @@ g_bit_lock (volatile gint *address,
 
 /**
  * g_bit_trylock:
- * @address: (type gpointer) a pointer to an integer
+ * @address: (type gpointer): a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
  *
  * Sets the indicated @lock_bit in @address, returning %TRUE if
@@ -402,16 +402,16 @@ g_bit_unlock (volatile gint *address,
  * g_bit_unlock_and_set:
  * @address: (type gpointer): a pointer to an integer
  * @lock_bit: a bit value between 0 and 31
- * @val: the new value to set
+ * @new_val: the new value to set
  * @preserve_mask: mask for bits from @address to preserve
  *
- * This is like [func@GLib.bit_unlock]() but also atomically sets @address to
+ * This is like [func@GLib.bit_unlock] but also atomically sets @address to
  * @val.
  *
  * If @preserve_mask is not zero, then the @preserve_mask bits will be
  * preserved in @address and are not set to @val.
  *
- * Note that the @lock_bit bit will be always unset regardless of
+ * Note that the @lock_bit bit will always be unset regardless of
  * @val, @preserve_mask and the currently set value in @address.
  *
  * Since: 2.86
