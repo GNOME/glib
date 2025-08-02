@@ -2316,6 +2316,9 @@ g_ptr_array_extend_and_steal (GPtrArray  *array_to_extend,
 {
   gpointer *pdata;
 
+  g_return_if_fail (array_to_extend != NULL);
+  g_return_if_fail (array != NULL);
+
   g_ptr_array_extend (array_to_extend, array, NULL, NULL);
 
   /* Get rid of @array without triggering the GDestroyNotify attached

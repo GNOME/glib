@@ -2299,6 +2299,23 @@ pointer_array_extend_and_steal (void)
   const gsize array_size = 100;
   guintptr *array_test = g_malloc (array_size * sizeof (guintptr));
 
+  if (g_test_undefined ())
+    {
+      /* Testing degenerated cases */
+      ptr_array = g_ptr_array_sized_new (0);
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_ptr_array_extend_and_steal (NULL, ptr_array);
+      g_test_assert_expected_messages ();
+
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion*!= NULL*");
+      g_ptr_array_extend_and_steal (ptr_array, NULL);
+      g_test_assert_expected_messages ();
+
+      g_ptr_array_unref (ptr_array);
+    }
+
   /* Initializing array_test */
   for (i = 0; i < array_size; i++)
     array_test[i] = i;
