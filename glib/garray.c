@@ -56,7 +56,7 @@ typedef struct _GRealArray  GRealArray;
  * @data: a pointer to the element data. The data may be moved as
  *     elements are added to the #GArray.
  * @len: the number of elements in the #GArray not including the
- *     possible terminating zero element.
+ *     possible terminating zero element
  *
  * Contains the public fields of a GArray.
  */
@@ -74,7 +74,7 @@ struct _GRealArray
 
 /**
  * g_array_index:
- * @a: a #GArray
+ * @a: an array
  * @t: the type of the elements
  * @i: the index of the element to return
  *
@@ -104,7 +104,7 @@ struct _GRealArray
  *   *my_int = *my_int - 1;
  * ]|
  *
- * Returns: the element of the #GArray at the index given by @i
+ * Returns: The element of the #GArray at the index given by @i
  */
 
 #define g_array_elt_len(array,i) ((gsize)(array)->elt_size * (i))
@@ -121,15 +121,15 @@ static void  g_array_maybe_expand (GRealArray *array,
 
 /**
  * g_array_new:
- * @zero_terminated: %TRUE if the array should have an extra element at
+ * @zero_terminated: if true, the array should have an extra element at
  *     the end which is set to 0
- * @clear_: %TRUE if #GArray elements should be automatically cleared
+ * @clear_: if true, #GArray elements should be automatically cleared
  *     to 0 when they are allocated
  * @element_size: the size of each element in bytes
  *
  * Creates a new #GArray with a reference count of 1.
  *
- * Returns: the new #GArray
+ * Returns: The new #GArray
  */
 GArray*
 g_array_new (gboolean zero_terminated,
@@ -147,9 +147,9 @@ g_array_new (gboolean zero_terminated,
 /**
  * g_array_new_take: (skip)
  * @data: (array length=len) (transfer full) (nullable): an array of
- *   elements of @element_size, or %NULL for an empty array
+ *   elements of @element_size
  * @len: the number of elements in @data
- * @clear: %TRUE if #GArray elements should be automatically cleared
+ * @clear: if true, #GArray elements should be automatically cleared
  *     to 0 when they are allocated
  * @element_size: the size of each element in bytes
  *
@@ -170,7 +170,7 @@ g_array_new (gboolean zero_terminated,
  * #GArray stores the length of its data in #guint, which may be shorter
  * than #gsize.
  *
- * Returns: (transfer full): A new #GArray
+ * Returns: (transfer full): The new #GArray
  *
  * Since: 2.76
  */
@@ -199,9 +199,8 @@ g_array_new_take (gpointer  data,
 /**
  * g_array_new_take_zero_terminated: (skip)
  * @data: (array zero-terminated=1) (transfer full) (nullable): an array
- *     of elements of @element_size, %NULL terminated,
- *     or %NULL for an empty array
- * @clear: %TRUE if #GArray elements should be automatically cleared
+ *     of elements of @element_size, %NULL terminated
+ * @clear: if true, #GArray elements should be automatically cleared
  *     to 0 when they are allocated
  * @element_size: the size of each element in bytes
  *
@@ -225,7 +224,7 @@ g_array_new_take (gpointer  data,
  * #GArray stores the length of its data in #guint, which may be shorter
  * than #gsize.
  *
- * Returns: (transfer full): A new #GArray
+ * Returns: (transfer full): The new #GArray
  *
  * Since: 2.76
  */
@@ -269,8 +268,8 @@ g_array_new_take_zero_terminated (gpointer  data,
 
 /**
  * g_array_steal:
- * @array: a #GArray.
- * @len: (optional) (out): pointer to retrieve the number of
+ * @array: an array
+ * @len: (optional) (out): a pointer to retrieve the number of
  *    elements of the original array
  *
  * Frees the data in the array and resets the size to zero, while
@@ -293,7 +292,7 @@ g_array_new_take_zero_terminated (gpointer  data,
  * ...
  * ]|
 
- * Returns: (transfer full): the element data, which should be
+ * Returns: (transfer full): The element data, which should be
  *     freed using g_free().
  *
  * Since: 2.64
@@ -321,19 +320,19 @@ g_array_steal (GArray *array,
 
 /**
  * g_array_sized_new:
- * @zero_terminated: %TRUE if the array should have an extra element at
+ * @zero_terminated: if true, the array should have an extra element at
  *     the end with all bits cleared
- * @clear_: %TRUE if all bits in the array should be cleared to 0 on
+ * @clear_: if true, all bits in the array should be cleared to 0 on
  *     allocation
- * @element_size: size of each element in the array
- * @reserved_size: number of elements preallocated
+ * @element_size: the size of each element in the array
+ * @reserved_size: the number of elements preallocated
  *
  * Creates a new #GArray with @reserved_size elements preallocated and
  * a reference count of 1. This avoids frequent reallocation, if you
  * are going to add many elements to the array. Note however that the
  * size of the array is still 0.
  *
- * Returns: the new #GArray
+ * Returns: The new #GArray
  */
 GArray*
 g_array_sized_new (gboolean zero_terminated,
@@ -372,7 +371,7 @@ g_array_sized_new (gboolean zero_terminated,
 
 /**
  * g_array_set_clear_func:
- * @array: A #GArray
+ * @array: an array
  * @clear_func: a function to clear an element of @array
  *
  * Sets a function to clear an element of @array.
@@ -422,7 +421,7 @@ g_array_set_clear_func (GArray         *array,
 
 /**
  * g_array_ref:
- * @array: A #GArray
+ * @array: an array
  *
  * Atomically increments the reference count of @array by one.
  * This function is thread-safe and may be called from any thread.
@@ -452,7 +451,7 @@ static gchar *array_free (GRealArray *, ArrayFreeFlags);
 
 /**
  * g_array_unref:
- * @array: A #GArray
+ * @array: an array
  *
  * Atomically decrements the reference count of @array by one. If the
  * reference count drops to 0, the effect is the same as calling
@@ -473,11 +472,11 @@ g_array_unref (GArray *array)
 
 /**
  * g_array_get_element_size:
- * @array: A #GArray
+ * @array: an array
  *
  * Gets the size of the elements in @array.
  *
- * Returns: Size of each element, in bytes
+ * Returns: The size of each element, in bytes
  *
  * Since: 2.22
  */
@@ -493,8 +492,8 @@ g_array_get_element_size (GArray *array)
 
 /**
  * g_array_free:
- * @array: a #GArray
- * @free_segment: if %TRUE the actual element data is freed as well
+ * @array: an array
+ * @free_segment: if true, the actual element data is freed as well
  *
  * Frees the memory allocated for the #GArray. If @free_segment is
  * %TRUE it frees the memory block holding the elements as well. Pass
@@ -511,7 +510,7 @@ g_array_get_element_size (GArray *array)
  * threads, use only the atomic g_array_ref() and g_array_unref()
  * functions.
  *
- * Returns: the element data if @free_segment is %FALSE, otherwise
+ * Returns: The element data if @free_segment is %FALSE, otherwise
  *     %NULL. The element data should be freed using g_free().
  */
 gchar*
@@ -570,17 +569,17 @@ array_free (GRealArray     *array,
 
 /**
  * g_array_append_vals:
- * @array: a #GArray
+ * @array: an array
  * @data: (not nullable): a pointer to the elements to append to the end of the array
  * @len: the number of elements to append
  *
  * Adds @len elements onto the end of the array.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 /**
  * g_array_append_val:
- * @a: a #GArray
+ * @a: an array
  * @v: the value to append to the #GArray
  *
  * Adds the value on to the end of the array. The array will grow in
@@ -590,7 +589,7 @@ array_free (GRealArray     *array,
  * parameter @v. This means that you cannot use it with literal values
  * such as "27". You must use variables.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 GArray*
 g_array_append_vals (GArray       *farray,
@@ -618,7 +617,7 @@ g_array_append_vals (GArray       *farray,
 
 /**
  * g_array_prepend_vals:
- * @array: a #GArray
+ * @array: an array
  * @data: (nullable): a pointer to the elements to prepend to the start of the array
  * @len: the number of elements to prepend, which may be zero
  *
@@ -631,11 +630,11 @@ g_array_append_vals (GArray       *farray,
  * existing elements in the array have to be moved to make space for
  * the new elements.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 /**
  * g_array_prepend_val:
- * @a: a #GArray
+ * @a: an array
  * @v: the value to prepend to the #GArray
  *
  * Adds the value on to the start of the array. The array will grow in
@@ -649,7 +648,7 @@ g_array_append_vals (GArray       *farray,
  * parameter @v. This means that you cannot use it with literal values
  * such as "27". You must use variables.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 GArray*
 g_array_prepend_vals (GArray        *farray,
@@ -679,7 +678,7 @@ g_array_prepend_vals (GArray        *farray,
 
 /**
  * g_array_insert_vals:
- * @array: a #GArray
+ * @array: an array
  * @index_: the index to place the elements at
  * @data: (nullable): a pointer to the elements to insert
  * @len: the number of elements to insert
@@ -698,11 +697,11 @@ g_array_prepend_vals (GArray        *farray,
  * @data may be %NULL if (and only if) @len is zero. If @len is zero, this
  * function is a no-op.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 /**
  * g_array_insert_val:
- * @a: a #GArray
+ * @a: an array
  * @i: the index to place the element at
  * @v: the value to insert into the array
  *
@@ -712,7 +711,7 @@ g_array_prepend_vals (GArray        *farray,
  * parameter @v. This means that you cannot use it with literal values
  * such as "27". You must use variables.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 GArray*
 g_array_insert_vals (GArray        *farray,
@@ -752,13 +751,13 @@ g_array_insert_vals (GArray        *farray,
 
 /**
  * g_array_set_size:
- * @array: a #GArray
+ * @array: an array
  * @length: the new size of the #GArray
  *
  * Sets the size of the array, expanding it if necessary. If the array
  * was created with @clear_ set to %TRUE, the new elements are set to 0.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 GArray*
 g_array_set_size (GArray *farray,
@@ -788,13 +787,13 @@ g_array_set_size (GArray *farray,
 
 /**
  * g_array_remove_index:
- * @array: a #GArray
+ * @array: an array
  * @index_: the index of the element to remove
  *
  * Removes the element at the given index from a #GArray. The following
  * elements are moved down one place.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 GArray*
 g_array_remove_index (GArray *farray,
@@ -826,7 +825,7 @@ g_array_remove_index (GArray *farray,
 
 /**
  * g_array_remove_index_fast:
- * @array: a @GArray
+ * @array: an array
  * @index_: the index of the element to remove
  *
  * Removes the element at the given index from a #GArray. The last
@@ -834,7 +833,7 @@ g_array_remove_index (GArray *farray,
  * does not preserve the order of the #GArray. But it is faster than
  * g_array_remove_index().
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  */
 GArray*
 g_array_remove_index_fast (GArray *farray,
@@ -866,14 +865,14 @@ g_array_remove_index_fast (GArray *farray,
 
 /**
  * g_array_remove_range:
- * @array: a @GArray
+ * @array: an array
  * @index_: the index of the first element to remove
  * @length: the number of elements to remove
  *
  * Removes the given number of elements starting at the given index
  * from a #GArray.  The following elements are moved to close the gap.
  *
- * Returns: the #GArray
+ * Returns: The #GArray
  *
  * Since: 2.4
  */
@@ -916,8 +915,8 @@ g_array_remove_range (GArray *farray,
 
 /**
  * g_array_sort:
- * @array: a #GArray
- * @compare_func: comparison function
+ * @array: an array
+ * @compare_func: a comparison function
  *
  * Sorts a #GArray using @compare_func which should be a qsort()-style
  * comparison function (returns less than zero for first arg is less
@@ -945,9 +944,9 @@ g_array_sort (GArray       *farray,
 
 /**
  * g_array_sort_with_data:
- * @array: a #GArray
- * @compare_func: comparison function
- * @user_data: data to pass to @compare_func
+ * @array: an array
+ * @compare_func: a comparison function
+ * @user_data: the data to pass to @compare_func
  *
  * Like g_array_sort(), but the comparison function receives an extra
  * user data argument.
@@ -977,11 +976,11 @@ g_array_sort_with_data (GArray           *farray,
 
 /**
  * g_array_binary_search:
- * @array: a #GArray.
- * @target: a pointer to the item to look up.
- * @compare_func: A #GCompareFunc used to locate @target.
- * @out_match_index: (optional) (out): return location
- *    for the index of the element, if found.
+ * @array: an array
+ * @target: a pointer to the item to look up
+ * @compare_func: a comparison function to locate @target
+ * @out_match_index: (optional) (out): the return location
+ *    for the index of the element, if found
  *
  * Checks whether @target exists in @array by performing a binary
  * search based on the given comparison function @compare_func which
@@ -1010,7 +1009,7 @@ g_array_sort_with_data (GArray           *farray,
  * ...
  * ]|
  *
- * Returns: %TRUE if @target is one of the elements of @array, %FALSE otherwise.
+ * Returns: true if @target is one of the elements of @array; false otherwise
  *
  * Since: 2.62
  */
@@ -1096,9 +1095,9 @@ typedef struct _GRealPtrArray  GRealPtrArray;
 
 /**
  * GPtrArray:
- * @pdata: points to the array of pointers, which may be moved when the
+ * @pdata: a pointer to the array of pointers, which may be moved when the
  *     array grows
- * @len: number of pointers in the array
+ * @len: the number of pointers in the array
  *
  * Contains the public fields of a pointer array.
  */
@@ -1114,7 +1113,7 @@ struct _GRealPtrArray
 
 /**
  * g_ptr_array_index:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @index_: the index of the pointer to return
  *
  * Returns the pointer at the given index of the pointer array.
@@ -1122,7 +1121,7 @@ struct _GRealPtrArray
  * This does not perform bounds checking on the given @index_,
  * so you are responsible for checking it against the array length.
  *
- * Returns: the pointer at the given index
+ * Returns: The pointer at the given index
  */
 
 static void g_ptr_array_maybe_expand (GRealPtrArray *array,
@@ -1174,7 +1173,7 @@ ptr_array_new (guint reserved_size,
  *
  * Creates a new #GPtrArray with a reference count of 1.
  *
- * Returns: the new #GPtrArray
+ * Returns: The new #GPtrArray
  */
 GPtrArray*
 g_ptr_array_new (void)
@@ -1184,11 +1183,10 @@ g_ptr_array_new (void)
 
 /**
  * g_ptr_array_new_take: (skip)
- * @data: (array length=len) (transfer full) (nullable): an array of pointers,
- *    or %NULL for an empty array
+ * @data: (array length=len) (transfer full) (nullable): an array of pointers
  * @len: the number of pointers in @data
- * @element_free_func: (nullable): A function to free elements on @array
- *   destruction or %NULL
+ * @element_free_func: (nullable): a function to free elements on @array
+ *   destruction
  *
  * Creates a new #GPtrArray with @data as pointers, @len as length and a
  * reference count of 1.
@@ -1206,7 +1204,7 @@ g_ptr_array_new (void)
  * stores the length of its data in #guint, which may be shorter than
  * #gsize.
  *
- * Returns: (transfer full): A new #GPtrArray
+ * Returns: (transfer full): The new #GPtrArray
  *
  * Since: 2.76
  */
@@ -1234,9 +1232,9 @@ g_ptr_array_new_take (gpointer       *data,
 /**
  * g_ptr_array_new_take_null_terminated: (skip)
  * @data: (array zero-terminated=1) (transfer full) (nullable): an array
- *  of pointers, %NULL terminated, or %NULL for an empty array
+ *  of pointers, %NULL terminated
  * @element_free_func: (nullable): a function to free elements on @array
- *   destruction or %NULL
+ *   destruction
  *
  * Creates a new #GPtrArray with @data as pointers, computing the length of it
  * and setting the reference count to 1.
@@ -1257,7 +1255,7 @@ g_ptr_array_new_take (gpointer       *data,
  * stores the length of its data in #guint, which may be shorter than
  * #gsize.
  *
- * Returns: (transfer full): A new #GPtrArray
+ * Returns: (transfer full): The new #GPtrArray
  *
  * Since: 2.76
  */
@@ -1323,14 +1321,13 @@ ptr_array_new_from_array (gpointer       *data,
 
 /**
  * g_ptr_array_new_from_array: (skip)
- * @data: (array length=len) (transfer none) (nullable): an array of pointers,
- * or %NULL for an empty array
+ * @data: (array length=len) (transfer none) (nullable): an array of pointers
  * @len: the number of pointers in @data
  * @copy_func: (nullable): a copy function used to copy every element in the
- *   array or %NULL.
- * @copy_func_user_data: user data passed to @copy_func, or %NULL
+ *   array
+ * @copy_func_user_data: the user data passed to @copy_func
  * @element_free_func: (nullable): a function to free elements on @array
- *   destruction or %NULL
+ *   destruction
  *
  * Creates a new #GPtrArray, copying @len pointers from @data, and setting
  * the array’s reference count to 1.
@@ -1349,7 +1346,7 @@ ptr_array_new_from_array (gpointer       *data,
  * stores the length of its data in #guint, which may be shorter than
  * #gsize.
  *
- * Returns: (transfer full): A new #GPtrArray
+ * Returns: (transfer full): The new #GPtrArray
  *
  * Since: 2.76
  */
@@ -1370,12 +1367,12 @@ g_ptr_array_new_from_array (gpointer       *data,
 /**
  * g_ptr_array_new_from_null_terminated_array: (skip)
  * @data: (array zero-terminated=1) (transfer none) (nullable): an array of
- *   pointers, %NULL terminated; or %NULL for an empty array
+ *   pointers, %NULL terminated
  * @copy_func: (nullable): a copy function used to copy every element in the
- *   array or %NULL.
- * @copy_func_user_data: user data passed to @copy_func, or %NULL
+ *   array
+ * @copy_func_user_data: the user data passed to @copy_func
  * @element_free_func: (nullable): a function to free elements on @array
- *   destruction or %NULL
+ *   destruction
  *
  * Creates a new #GPtrArray copying the pointers from @data after having
  * computed the length of it and with a reference count of 1.
@@ -1390,7 +1387,7 @@ g_ptr_array_new_from_array (gpointer       *data,
  * stores the length of its data in #guint, which may be shorter than
  * #gsize.
  *
- * Returns: (transfer full): A new #GPtrArray
+ * Returns: (transfer full): The new #GPtrArray
  *
  * Since: 2.76
  */
@@ -1417,8 +1414,8 @@ g_ptr_array_new_from_null_terminated_array (gpointer       *data,
 
 /**
  * g_ptr_array_steal:
- * @array: a #GPtrArray.
- * @len: (optional) (out): pointer to retrieve the number of
+ * @array: a pointer array
+ * @len: (optional) (out): a pointer to retrieve the number of
  *    elements of the original array
  *
  * Frees the data in the array and resets the size to zero, while
@@ -1466,7 +1463,7 @@ g_ptr_array_new_from_null_terminated_array (gpointer       *data,
  * g_assert (chunk_buffer->len == 0);
  * ]|
  *
- * Returns: (transfer full) (nullable) (array length=len): the element data,
+ * Returns: (transfer full) (nullable) (array length=len): The element data,
  *   which should be freed using g_free(). This may be %NULL if the array
  *   doesn’t have any elements (i.e. if `*len` is zero).
  *
@@ -1495,9 +1492,9 @@ g_ptr_array_steal (GPtrArray *array,
 
 /**
  * g_ptr_array_copy:
- * @array: #GPtrArray to duplicate
+ * @array: a pointer array to duplicate
  * @func: (nullable): a copy function used to copy every element in the array
- * @user_data: user data passed to the copy function @func, or %NULL
+ * @user_data: the user data passed to the copy function @func
  *
  * Makes a full (deep) copy of a #GPtrArray.
  *
@@ -1514,7 +1511,7 @@ g_ptr_array_steal (GPtrArray *array,
  * @array. The copy will also be %NULL terminated if (and only if) the source
  * array is.
  *
- * Returns: (transfer full): a deep copy of the initial #GPtrArray.
+ * Returns: (transfer full): The deep copy of the initial #GPtrArray
  *
  * Since: 2.62
  **/
@@ -1562,14 +1559,14 @@ g_ptr_array_copy (GPtrArray *array,
 
 /**
  * g_ptr_array_sized_new:
- * @reserved_size: number of pointers preallocated
+ * @reserved_size: the number of pointers preallocated
  *
  * Creates a new #GPtrArray with @reserved_size pointers preallocated
  * and a reference count of 1. This avoids frequent reallocation, if
  * you are going to add many pointers to the array. Note however that
  * the size of the array is still 0.
  *
- * Returns: the new #GPtrArray
+ * Returns: The new #GPtrArray
  */
 GPtrArray*
 g_ptr_array_sized_new (guint reserved_size)
@@ -1579,12 +1576,12 @@ g_ptr_array_sized_new (guint reserved_size)
 
 /**
  * g_array_copy:
- * @array: A #GArray.
+ * @array: an array
  *
  * Creates a shallow copy of a #GArray. If the array elements consist of
  * pointers to data, the pointers are copied but the actual data is not.
  *
- * Returns: (transfer container): A copy of @array.
+ * Returns: (transfer container): The copy of @array
  *
  * Since: 2.62
  **/
@@ -1610,15 +1607,15 @@ g_array_copy (GArray *array)
 
 /**
  * g_ptr_array_new_with_free_func:
- * @element_free_func: (nullable): A function to free elements with
- *     destroy @array or %NULL
+ * @element_free_func: (nullable): a function to free elements with
+ *     destroy @array
  *
  * Creates a new #GPtrArray with a reference count of 1 and use
  * @element_free_func for freeing each element when the array is destroyed
  * either via g_ptr_array_unref(), when g_ptr_array_free() is called with
  * @free_segment set to %TRUE or when removing elements.
  *
- * Returns: (transfer full): A new #GPtrArray
+ * Returns: (transfer full): The new #GPtrArray
  *
  * Since: 2.22
  */
@@ -1630,9 +1627,9 @@ g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
 
 /**
  * g_ptr_array_new_full:
- * @reserved_size: number of pointers preallocated
- * @element_free_func: (nullable): A function to free elements with
- *     destroy @array or %NULL
+ * @reserved_size: the number of pointers preallocated
+ * @element_free_func: (nullable): a function to free elements with
+ *     destroy @array
  *
  * Creates a new #GPtrArray with @reserved_size pointers preallocated
  * and a reference count of 1. This avoids frequent reallocation, if
@@ -1642,7 +1639,7 @@ g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
  * g_ptr_array_unref(), when g_ptr_array_free() is called with
  * @free_segment set to %TRUE or when removing elements.
  *
- * Returns: (transfer full): A new #GPtrArray
+ * Returns: (transfer full): The new #GPtrArray
  *
  * Since: 2.30
  */
@@ -1655,13 +1652,13 @@ g_ptr_array_new_full (guint          reserved_size,
 
 /**
  * g_ptr_array_new_null_terminated:
- * @reserved_size: number of pointers preallocated.
+ * @reserved_size: the number of pointers preallocated.
  *     If @null_terminated is %TRUE, the actually allocated
  *     buffer size is @reserved_size plus 1, unless @reserved_size
  *     is zero, in which case no initial buffer gets allocated.
- * @element_free_func: (nullable): A function to free elements during
- *     destruction of @array or %NULL
- * @null_terminated: whether to make the array as %NULL terminated.
+ * @element_free_func: (nullable): a function to free elements during
+ *     destruction of @array
+ * @null_terminated: if true, make the array %NULL terminated
  *
  * Like g_ptr_array_new_full() but also allows to set the array to
  * be %NULL terminated. A %NULL terminated pointer array has an
@@ -1679,7 +1676,7 @@ g_ptr_array_new_full (guint          reserved_size,
  * then pdata may either point to a %NULL terminated array of length
  * zero or be %NULL.
  *
- * Returns: (transfer full): A new #GPtrArray
+ * Returns: (transfer full): The new #GPtrArray
  *
  * Since: 2.74
  */
@@ -1693,9 +1690,9 @@ g_ptr_array_new_null_terminated (guint          reserved_size,
 
 /**
  * g_ptr_array_set_free_func:
- * @array: A #GPtrArray
- * @element_free_func: (nullable): A function to free elements during
- *     destruction of @array or %NULL
+ * @array: a pointer array
+ * @element_free_func: (nullable): a function to free elements during
+ *     destruction of @array
  *
  * Sets a function for freeing each element when @array is destroyed
  * either via g_ptr_array_unref(), when g_ptr_array_free() is called
@@ -1716,7 +1713,7 @@ g_ptr_array_set_free_func (GPtrArray      *array,
 
 /**
  * g_ptr_array_is_null_terminated:
- * @array: the #GPtrArray
+ * @array: a pointer array
  *
  * Checks whether the @array was constructed as %NULL-terminated.
  *
@@ -1725,7 +1722,7 @@ g_ptr_array_set_free_func (GPtrArray      *array,
  * return %TRUE for normal arrays which have had a %NULL element appended to
  * them.
  *
- * Returns: %TRUE if the array is made to be %NULL terminated.
+ * Returns: true if the array is made to be %NULL terminated; false otherwise
  *
  * Since: 2.74
  */
@@ -1739,7 +1736,7 @@ g_ptr_array_is_null_terminated (GPtrArray *array)
 
 /**
  * g_ptr_array_ref:
- * @array: a #GPtrArray
+ * @array: a pointer array
  *
  * Atomically increments the reference count of @array by one.
  * This function is thread-safe and may be called from any thread.
@@ -1764,7 +1761,7 @@ static gpointer *ptr_array_free (GPtrArray *, ArrayFreeFlags);
 
 /**
  * g_ptr_array_unref:
- * @array: A #GPtrArray
+ * @array: a pointer array
  *
  * Atomically decrements the reference count of @array by one. If the
  * reference count drops to 0, the effect is the same as calling
@@ -1786,8 +1783,8 @@ g_ptr_array_unref (GPtrArray *array)
 
 /**
  * g_ptr_array_free:
- * @array: a #GPtrArray
- * @free_segment: if %TRUE the actual pointer array is freed as well
+ * @array: a pointer array
+ * @free_segment: if true, the actual pointer array is freed as well
  *
  * Frees the memory allocated for the #GPtrArray. If @free_segment is %TRUE
  * it frees the memory block holding the elements as well. Pass %FALSE
@@ -1808,7 +1805,7 @@ g_ptr_array_unref (GPtrArray *array)
  * threads, use only the atomic g_ptr_array_ref() and g_ptr_array_unref()
  * functions.
  *
- * Returns: (transfer full) (array) (nullable): the pointer array if
+ * Returns: (transfer full) (array) (nullable): The pointer array if
  *   @free_segment is %FALSE, otherwise %NULL. The pointer array should
  *   be freed using g_free().
  */
@@ -1918,7 +1915,7 @@ g_ptr_array_maybe_expand (GRealPtrArray *array,
 
 /**
  * g_ptr_array_set_size:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @length: the new length of the pointer array
  *
  * Sets the size of the array. When making the array larger,
@@ -1997,7 +1994,7 @@ ptr_array_remove_index (GPtrArray *array,
 
 /**
  * g_ptr_array_remove_index:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @index_: the index of the pointer to remove
  *
  * Removes the pointer at the given index from the pointer array.
@@ -2006,7 +2003,7 @@ ptr_array_remove_index (GPtrArray *array,
  * element. If so, the return value from this function will potentially point
  * to freed memory (depending on the #GDestroyNotify implementation).
  *
- * Returns: (nullable): the pointer which was removed
+ * Returns: (nullable): The pointer which was removed
  */
 gpointer
 g_ptr_array_remove_index (GPtrArray *array,
@@ -2017,7 +2014,7 @@ g_ptr_array_remove_index (GPtrArray *array,
 
 /**
  * g_ptr_array_remove_index_fast:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @index_: the index of the pointer to remove
  *
  * Removes the pointer at the given index from the pointer array.
@@ -2028,7 +2025,7 @@ g_ptr_array_remove_index (GPtrArray *array,
  * return value from this function will potentially point to freed memory
  * (depending on the #GDestroyNotify implementation).
  *
- * Returns: (nullable): the pointer which was removed
+ * Returns: (nullable): The pointer which was removed
  */
 gpointer
 g_ptr_array_remove_index_fast (GPtrArray *array,
@@ -2039,7 +2036,7 @@ g_ptr_array_remove_index_fast (GPtrArray *array,
 
 /**
  * g_ptr_array_steal_index:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @index_: the index of the pointer to steal
  *
  * Removes the pointer at the given index from the pointer array.
@@ -2047,7 +2044,7 @@ g_ptr_array_remove_index_fast (GPtrArray *array,
  * @array is *not* called on the removed element; ownership is transferred to
  * the caller of this function.
  *
- * Returns: (transfer full) (nullable): the pointer which was removed
+ * Returns: (transfer full) (nullable): The pointer which was removed
  * Since: 2.58
  */
 gpointer
@@ -2059,7 +2056,7 @@ g_ptr_array_steal_index (GPtrArray *array,
 
 /**
  * g_ptr_array_steal_index_fast:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @index_: the index of the pointer to steal
  *
  * Removes the pointer at the given index from the pointer array.
@@ -2069,7 +2066,7 @@ g_ptr_array_steal_index (GPtrArray *array,
  * *not* called on the removed element; ownership is transferred to the caller
  * of this function.
  *
- * Returns: (transfer full) (nullable): the pointer which was removed
+ * Returns: (transfer full) (nullable): The pointer which was removed
  * Since: 2.58
  */
 gpointer
@@ -2081,7 +2078,7 @@ g_ptr_array_steal_index_fast (GPtrArray *array,
 
 /**
  * g_ptr_array_remove_range:
- * @array: a @GPtrArray
+ * @array: a pointer array
  * @index_: the index of the first pointer to remove
  * @length: the number of pointers to remove
  *
@@ -2090,7 +2087,7 @@ g_ptr_array_steal_index_fast (GPtrArray *array,
  * gap. If @array has a non-%NULL #GDestroyNotify function it is
  * called for the removed elements.
  *
- * Returns: the @array
+ * Returns: The @array
  *
  * Since: 2.4
  */
@@ -2138,7 +2135,7 @@ g_ptr_array_remove_range (GPtrArray *array,
 
 /**
  * g_ptr_array_remove:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @data: the pointer to remove
  *
  * Removes the first occurrence of the given pointer from the pointer
@@ -2149,8 +2146,7 @@ g_ptr_array_remove_range (GPtrArray *array,
  * It returns %TRUE if the pointer was removed, or %FALSE if the
  * pointer was not found.
  *
- * Returns: %TRUE if the pointer is removed, %FALSE if the pointer
- *     is not found in the array
+ * Returns: true if the pointer is found and removed; false otherwise
  */
 gboolean
 g_ptr_array_remove (GPtrArray *array,
@@ -2175,7 +2171,7 @@ g_ptr_array_remove (GPtrArray *array,
 
 /**
  * g_ptr_array_remove_fast:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @data: the pointer to remove
  *
  * Removes the first occurrence of the given pointer from the pointer
@@ -2187,7 +2183,7 @@ g_ptr_array_remove (GPtrArray *array,
  * It returns %TRUE if the pointer was removed, or %FALSE if the
  * pointer was not found.
  *
- * Returns: %TRUE if the pointer was found in the array
+ * Returns: true if the pointer is found and removed; false otherwise
  */
 gboolean
 g_ptr_array_remove_fast (GPtrArray *array,
@@ -2213,7 +2209,7 @@ g_ptr_array_remove_fast (GPtrArray *array,
 
 /**
  * g_ptr_array_add:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @data: the pointer to add
  *
  * Adds a pointer to the end of the pointer array. The array will grow
@@ -2237,10 +2233,10 @@ g_ptr_array_add (GPtrArray *array,
 
 /**
  * g_ptr_array_extend:
- * @array_to_extend: a #GPtrArray.
- * @array: (transfer none): a #GPtrArray to add to the end of @array_to_extend.
+ * @array_to_extend: a pointer array
+ * @array: (transfer none): a pointer array to add to the end of @array_to_extend
  * @func: (nullable): a copy function used to copy every element in the array
- * @user_data: user data passed to the copy function @func, or %NULL
+ * @user_data: the user data passed to the copy function @func
  *
  * Adds all pointers of @array to the end of the array @array_to_extend.
  * The array will grow in size automatically if needed. @array_to_extend is
@@ -2296,9 +2292,9 @@ g_ptr_array_extend (GPtrArray  *array_to_extend,
 
 /**
  * g_ptr_array_extend_and_steal:
- * @array_to_extend: (transfer none): a #GPtrArray.
- * @array: (transfer container): a #GPtrArray to add to the end of
- *     @array_to_extend.
+ * @array_to_extend: (transfer none): a pointer array
+ * @array: (transfer container): a pointer array to add to the end of
+ *     @array_to_extend
  *
  * Adds all the pointers in @array to the end of @array_to_extend, transferring
  * ownership of each element from @array to @array_to_extend and modifying
@@ -2332,9 +2328,9 @@ g_ptr_array_extend_and_steal (GPtrArray  *array_to_extend,
 
 /**
  * g_ptr_array_insert:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @index_: the index to place the new element at, or -1 to append
- * @data: the pointer to add.
+ * @data: the pointer to add
  *
  * Inserts an element into the pointer array at the given index. The 
  * array will grow in size automatically if necessary.
@@ -2372,8 +2368,8 @@ g_ptr_array_insert (GPtrArray *array,
  * in glib/tests/array-test.c */
 /**
  * g_ptr_array_sort:
- * @array: a #GPtrArray
- * @compare_func: comparison function
+ * @array: a pointer array
+ * @compare_func: a comparison function
  *
  * Sorts the array, using @compare_func which should be a qsort()-style
  * comparison function (returns less than zero for first arg is less
@@ -2433,9 +2429,9 @@ g_ptr_array_sort (GPtrArray    *array,
  * pointer_array_sort_with_data_example() in glib/tests/array-test.c */
 /**
  * g_ptr_array_sort_with_data:
- * @array: a #GPtrArray
- * @compare_func: comparison function
- * @user_data: data to pass to @compare_func
+ * @array: a pointer array
+ * @compare_func: a comparison function
+ * @user_data: the data to pass to @compare_func
  *
  * Like g_ptr_array_sort(), but the comparison function has an extra
  * user data argument.
@@ -2521,8 +2517,8 @@ compare_ptr_array_values (gconstpointer a, gconstpointer b, gpointer user_data)
 
 /**
  * g_ptr_array_sort_values:
- * @array: a #GPtrArray
- * @compare_func: a #GCompareFunc comparison function
+ * @array: a pointer array
+ * @compare_func: a comparison function
  *
  * Sorts the array, using @compare_func which should be a qsort()-style
  * comparison function (returns less than zero for first arg is less
@@ -2560,9 +2556,9 @@ compare_ptr_array_values_with_data (gconstpointer a,
 
 /**
  * g_ptr_array_sort_values_with_data:
- * @array: a #GPtrArray
- * @compare_func: a #GCompareDataFunc comparison function
- * @user_data: data to pass to @compare_func
+ * @array: a pointer array
+ * @compare_func: a comparison function
+ * @user_data: the data to pass to @compare_func
  *
  * Like g_ptr_array_sort_values(), but the comparison function has an extra
  * user data argument.
@@ -2585,9 +2581,9 @@ g_ptr_array_sort_values_with_data (GPtrArray        *array,
 
 /**
  * g_ptr_array_foreach:
- * @array: a #GPtrArray
+ * @array: a pointer array
  * @func: the function to call for each array element
- * @user_data: user data to pass to the function
+ * @user_data: the user data to pass to the function
  * 
  * Calls a function for each element of a #GPtrArray. @func must not
  * add elements to or remove elements from the array.
@@ -2609,9 +2605,9 @@ g_ptr_array_foreach (GPtrArray *array,
 
 /**
  * g_ptr_array_find: (skip)
- * @haystack: pointer array to be searched
- * @needle: pointer to look for
- * @index_: (optional) (out): return location for the index of
+ * @haystack: the pointer array to be searched
+ * @needle: the pointer to look for
+ * @index_: (optional) (out): the return location for the index of
  *    the element, if found
  *
  * Checks whether @needle exists in @haystack. If the element is found, %TRUE is
@@ -2622,7 +2618,7 @@ g_ptr_array_foreach (GPtrArray *array,
  * This does pointer comparisons only. If you want to use more complex equality
  * checks, such as string comparisons, use g_ptr_array_find_with_equal_func().
  *
- * Returns: %TRUE if @needle is one of the elements of @haystack
+ * Returns: true if @needle is one of the elements of @haystack; false otherwise
  * Since: 2.54
  */
 gboolean
@@ -2635,12 +2631,12 @@ g_ptr_array_find (GPtrArray     *haystack,
 
 /**
  * g_ptr_array_find_with_equal_func: (skip)
- * @haystack: pointer array to be searched
- * @needle: pointer to look for
+ * @haystack: the pointer array to be searched
+ * @needle: the pointer to look for
  * @equal_func: (nullable): the function to call for each element, which should
  *    return %TRUE when the desired element is found; or %NULL to use pointer
  *    equality
- * @index_: (optional) (out): return location for the index of
+ * @index_: (optional) (out): the return location for the index of
  *    the element, if found
  *
  * Checks whether @needle exists in @haystack, using the given @equal_func.
@@ -2653,7 +2649,7 @@ g_ptr_array_find (GPtrArray     *haystack,
  * and @needle as its second parameter. If @equal_func is %NULL, pointer
  * equality is used.
  *
- * Returns: %TRUE if @needle is one of the elements of @haystack
+ * Returns: true if @needle is one of the elements of @haystack; false otherwise
  * Since: 2.54
  */
 gboolean
@@ -2696,7 +2692,7 @@ g_ptr_array_find_with_equal_func (GPtrArray     *haystack,
  *
  * Creates a new #GByteArray with a reference count of 1.
  *
- * Returns: (transfer full): the new #GByteArray
+ * Returns: (transfer full): The new #GByteArray
  */
 GByteArray*
 g_byte_array_new (void)
@@ -2706,16 +2702,16 @@ g_byte_array_new (void)
 
 /**
  * g_byte_array_steal:
- * @array: a #GByteArray.
- * @len: (optional) (out): pointer to retrieve the number of
+ * @array: a byte array
+ * @len: (optional) (out): the pointer to retrieve the number of
  *    elements of the original array
  *
  * Frees the data in the array and resets the size to zero, while
  * the underlying array is preserved for use elsewhere and returned
  * to the caller.
  *
- * Returns: (transfer full) (array length=len): the element data,
- *   which should be freed using g_free().
+ * Returns: (transfer full) (array length=len): The element data,
+ *   which should be freed using g_free()
  *
  * Since: 2.64
  */
@@ -2728,8 +2724,8 @@ g_byte_array_steal (GByteArray *array,
 
 /**
  * g_byte_array_new_take:
- * @data: (transfer full) (array length=len): byte data for the array
- * @len: length of @data
+ * @data: (transfer full) (array length=len): the byte data for the array
+ * @len: the length of @data
  *
  * Creates a byte array containing the @data.
  * After this call, @data belongs to the #GByteArray and may no longer be
@@ -2742,7 +2738,7 @@ g_byte_array_steal (GByteArray *array,
  *
  * Since: 2.32
  *
- * Returns: (transfer full): a new #GByteArray
+ * Returns: (transfer full): The new #GByteArray
  */
 GByteArray*
 g_byte_array_new_take (guint8 *data,
@@ -2766,14 +2762,14 @@ g_byte_array_new_take (guint8 *data,
 
 /**
  * g_byte_array_sized_new:
- * @reserved_size: number of bytes preallocated
+ * @reserved_size: the number of bytes preallocated
  *
  * Creates a new #GByteArray with @reserved_size bytes preallocated.
  * This avoids frequent reallocation, if you are going to add many
  * bytes to the array. Note however that the size of the array is still
  * 0.
  *
- * Returns: (transfer full): the new #GByteArray
+ * Returns: (transfer full): The new #GByteArray
  */
 GByteArray*
 g_byte_array_sized_new (guint reserved_size)
@@ -2783,15 +2779,15 @@ g_byte_array_sized_new (guint reserved_size)
 
 /**
  * g_byte_array_free:
- * @array: a #GByteArray
- * @free_segment: if %TRUE the actual byte data is freed as well
+ * @array: a byte array
+ * @free_segment: if true, the actual byte data is freed as well
  *
  * Frees the memory allocated by the #GByteArray. If @free_segment is
  * %TRUE it frees the actual byte data. If the reference count of
  * @array is greater than one, the #GByteArray wrapper is preserved but
  * the size of @array will be set to zero.
  *
- * Returns: (nullable) (array) (transfer full): the element data if
+ * Returns: (nullable) (array) (transfer full): The element data if
  *   @free_segment is %FALSE, otherwise %NULL.  The element data
  *   should be freed using g_free().
  */
@@ -2804,7 +2800,7 @@ g_byte_array_free (GByteArray *array,
 
 /**
  * g_byte_array_free_to_bytes:
- * @array: (transfer full): a #GByteArray
+ * @array: (transfer full): a byte array
  *
  * Transfers the data from the #GByteArray into a new immutable #GBytes.
  *
@@ -2817,7 +2813,7 @@ g_byte_array_free (GByteArray *array,
  *
  * Since: 2.32
  *
- * Returns: (transfer full): a new immutable #GBytes representing same
+ * Returns: (transfer full): The new immutable #GBytes representing same
  *     byte data that was in the array
  */
 GBytes*
@@ -2833,7 +2829,7 @@ g_byte_array_free_to_bytes (GByteArray *array)
 
 /**
  * g_byte_array_ref:
- * @array: A #GByteArray
+ * @array: a byte array
  *
  * Atomically increments the reference count of @array by one.
  * This function is thread-safe and may be called from any thread.
@@ -2850,7 +2846,7 @@ g_byte_array_ref (GByteArray *array)
 
 /**
  * g_byte_array_unref:
- * @array: A #GByteArray
+ * @array: a byte array
  *
  * Atomically decrements the reference count of @array by one. If the
  * reference count drops to 0, all memory allocated by the array is
@@ -2867,14 +2863,14 @@ g_byte_array_unref (GByteArray *array)
 
 /**
  * g_byte_array_append:
- * @array: a #GByteArray
+ * @array: a byte array
  * @data: (array length=len): the byte data to be added
  * @len: the number of bytes to add
  *
  * Adds the given bytes to the end of the #GByteArray.
  * The array will grow in size automatically if necessary.
  *
- * Returns: (transfer none): the #GByteArray
+ * Returns: (transfer none): The #GByteArray
  */
 GByteArray*
 g_byte_array_append (GByteArray   *array,
@@ -2886,14 +2882,14 @@ g_byte_array_append (GByteArray   *array,
 
 /**
  * g_byte_array_prepend:
- * @array: a #GByteArray
+ * @array: a byte array
  * @data: (array length=len): the byte data to be added
  * @len: the number of bytes to add
  *
  * Adds the given data to the start of the #GByteArray.
  * The array will grow in size automatically if necessary.
  *
- * Returns: (transfer none): the #GByteArray
+ * Returns: (transfer none): The #GByteArray
  */
 GByteArray*
 g_byte_array_prepend (GByteArray   *array,
@@ -2905,12 +2901,12 @@ g_byte_array_prepend (GByteArray   *array,
 
 /**
  * g_byte_array_set_size:
- * @array: a #GByteArray
+ * @array: a byte array
  * @length: the new size of the #GByteArray
  *
  * Sets the size of the #GByteArray, expanding it if necessary.
  *
- * Returns: (transfer none): the #GByteArray
+ * Returns: (transfer none): The #GByteArray
  */
 GByteArray*
 g_byte_array_set_size (GByteArray *array,
@@ -2921,13 +2917,13 @@ g_byte_array_set_size (GByteArray *array,
 
 /**
  * g_byte_array_remove_index:
- * @array: a #GByteArray
+ * @array: a byte array
  * @index_: the index of the byte to remove
  *
  * Removes the byte at the given index from a #GByteArray.
  * The following bytes are moved down one place.
  *
- * Returns: (transfer none): the #GByteArray
+ * Returns: (transfer none): The #GByteArray
  **/
 GByteArray*
 g_byte_array_remove_index (GByteArray *array,
@@ -2938,7 +2934,7 @@ g_byte_array_remove_index (GByteArray *array,
 
 /**
  * g_byte_array_remove_index_fast:
- * @array: a #GByteArray
+ * @array: a byte array
  * @index_: the index of the byte to remove
  *
  * Removes the byte at the given index from a #GByteArray. The last
@@ -2946,7 +2942,7 @@ g_byte_array_remove_index (GByteArray *array,
  * does not preserve the order of the #GByteArray. But it is faster
  * than g_byte_array_remove_index().
  *
- * Returns: (transfer none): the #GByteArray
+ * Returns: (transfer none): The #GByteArray
  */
 GByteArray*
 g_byte_array_remove_index_fast (GByteArray *array,
@@ -2957,14 +2953,14 @@ g_byte_array_remove_index_fast (GByteArray *array,
 
 /**
  * g_byte_array_remove_range:
- * @array: a @GByteArray
+ * @array: a byte array
  * @index_: the index of the first byte to remove
  * @length: the number of bytes to remove
  *
  * Removes the given number of bytes starting at the given index from a
  * #GByteArray.  The following elements are moved to close the gap.
  *
- * Returns: (transfer none): the #GByteArray
+ * Returns: (transfer none): The #GByteArray
  *
  * Since: 2.4
  */
@@ -2983,8 +2979,8 @@ g_byte_array_remove_range (GByteArray *array,
 
 /**
  * g_byte_array_sort:
- * @array: a #GByteArray
- * @compare_func: (scope call): comparison function
+ * @array: a byte array
+ * @compare_func: (scope call): the comparison function
  *
  * Sorts a byte array, using @compare_func which should be a
  * qsort()-style comparison function (returns less than zero for first
@@ -3006,9 +3002,9 @@ g_byte_array_sort (GByteArray   *array,
 
 /**
  * g_byte_array_sort_with_data:
- * @array: a #GByteArray
- * @compare_func: (scope call): comparison function
- * @user_data: data to pass to @compare_func
+ * @array: a byte array
+ * @compare_func: (scope call): the comparison function
+ * @user_data: the data to pass to @compare_func
  *
  * Like g_byte_array_sort(), but the comparison function takes an extra
  * user data argument.
