@@ -50,7 +50,7 @@ class TestGioTool(testprogramrunner.TestProgramRunner):
     PROGRAM_TYPE = testprogramrunner.ProgramType.NATIVE
 
     def runGio(self, *args):
-        return self.runTestProgram(args, timeout_seconds=6)
+        return self.runTestProgram(args)
 
     def test_help(self):
         """Test the --help argument and help subcommand."""
