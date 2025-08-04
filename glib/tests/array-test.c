@@ -2994,6 +2994,15 @@ byte_array_append (void)
   gint i;
   guint8 *segment;
 
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion 'array' failed");
+      g_assert_null (
+          g_byte_array_append (NULL, (guint8 *) "abcd", 4));
+      g_test_assert_expected_messages ();
+    }
+
   gbarray = g_byte_array_sized_new (1000);
   for (i = 0; i < 10000; i++)
     g_byte_array_append (gbarray, (guint8*) "abcd", 4);
@@ -3025,6 +3034,15 @@ byte_array_prepend (void)
   GByteArray *gbarray;
   gint i;
 
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion 'array' failed");
+      g_assert_null (
+          g_byte_array_prepend (NULL, (guint8 *) "abcd", 4));
+      g_test_assert_expected_messages ();
+    }
+
   gbarray = g_byte_array_new ();
   g_byte_array_set_size (gbarray, 1000);
 
@@ -3040,6 +3058,19 @@ byte_array_prepend (void)
     }
 
   g_byte_array_free (gbarray, TRUE);
+}
+
+static void
+byte_array_set_size (void)
+{
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion 'array' failed");
+      g_assert_null (
+          g_byte_array_set_size (NULL, 1));
+      g_test_assert_expected_messages ();
+    }
 }
 
 static void
@@ -3077,6 +3108,15 @@ byte_array_remove (void)
   GByteArray *gbarray;
   gint i;
 
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion 'array' failed");
+      g_assert_null (
+          g_byte_array_remove_index (NULL, 1));
+      g_test_assert_expected_messages ();
+    }
+
   gbarray = g_byte_array_new ();
   for (i = 0; i < 100; i++)
     g_byte_array_append (gbarray, (guint8*) "abcd", 4);
@@ -3106,6 +3146,15 @@ byte_array_remove_fast (void)
 {
   GByteArray *gbarray;
   gint i;
+
+  if (g_test_undefined ())
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion 'array' failed");
+      g_assert_null (
+          g_byte_array_remove_index_fast (NULL, 1));
+      g_test_assert_expected_messages ();
+    }
 
   gbarray = g_byte_array_new ();
   for (i = 0; i < 100; i++)
@@ -3387,6 +3436,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytearray/remove-fast", byte_array_remove_fast);
   g_test_add_func ("/bytearray/remove-range", byte_array_remove_range);
   g_test_add_func ("/bytearray/ref-count", byte_array_ref_count);
+  g_test_add_func ("/bytearray/set-size", byte_array_set_size);
   g_test_add_func ("/bytearray/sort", byte_array_sort);
   g_test_add_func ("/bytearray/sort-with-data", byte_array_sort_with_data);
   g_test_add_func ("/bytearray/new-take", byte_array_new_take);
