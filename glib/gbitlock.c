@@ -244,6 +244,35 @@ g_bit_lock_and_get (gint *address,
   g_assert (lock_bit < 32u);
 #endif
 
+  /* Beware: _g_bit_lock_init() relies that g_bit_lock() on a newly initialized
+   * integer (that is not yet shared between threads) is identical to just
+   * initializing the lock bit without atomic.
+   *
+   * In other words:
+   *
+   *    mystruct = g_new (MyStruct, 1);
+   *    mystruct->flags = 0;
+   *    g_bit_lock (&mystruct->flags, 13);
+   *    return mystruct; // share pointer.
+   *
+   * is effectively the same as:
+   *
+   *    mystruct = g_new (MyStruct, 1);
+   *    mystruct->flags = 0;
+   *    mystruct->flags |= (1 << 13);
+   *    return mystruct; // share pointer.
+   *
+   * and the same as:
+   *
+   *    mystruct = g_new (MyStruct, 1);
+   *    mystruct->flags = 0;
+   *    _g_bit_lock_init (&mystruct->flags, 13);
+   *    return mystruct; // share pointer.
+   *
+   * This requires that g_bit_lock() does nothing special in the uncontended
+   * case (except atomically setting the lock bit).
+   */
+
 #ifdef USE_ASM_GOTO
   if (G_LIKELY (!out_val))
     {
