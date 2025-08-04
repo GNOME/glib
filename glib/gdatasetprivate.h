@@ -59,6 +59,46 @@ G_BEGIN_DECLS
   G_STMT_END
 
 /*< private >
+ * _g_bit_lock_init:
+ * @address: (type gpointer): a pointer to an integer
+ * @lock_bit: a bit value between 0 and 31
+ *
+ * g_bit_lock() in the uncontended case merely atomically sets the bit. Most
+ * importantly, it does nothing else (of relevance).  When we initialize an
+ * object that is not shared between threads, we don't need this overhead
+ * and we can set the bit directly.
+ *
+ * This is required to have the same effect as g_bit_lock(address, lock_bit),
+ * as long as we are initializing and the address is not yet accessible to
+ * other threads.
+ */
+G_ALWAYS_INLINE static inline void
+_g_bit_lock_init (gint *address, gint lock_bit)
+{
+  *address |= (1 << lock_bit);
+}
+
+/*< private >
+ * _g_bit_lock_is_locked:
+ * @address: (type gpointer): a pointer to an integer
+ * @lock_bit: a bit value between 0 and 31
+ *
+ * Atomically checks whether the lock bit is currently set.
+ *
+ * This is only useful in special cases, because usually knowing
+ * in a multi threaded context whether the lock bit is set is
+ * irrelevant. Because you cannot know whether the bit gets locked
+ * right after the check. But there are some uses...
+ *
+ * Returns: whether the lock bit is set.
+ */
+G_ALWAYS_INLINE static inline gboolean
+_g_bit_lock_is_locked (gint *address, gint lock_bit)
+{
+  return !!(g_atomic_int_get (address) & (1 << lock_bit));
+}
+
+/*< private >
  * GDataListUpdateAtomicFunc:
  * @data: (inout) (nullable) (not optional): the existing data corresponding to
  *   the "key_id" parameter of g_datalist_id_update_atomic(), and return location
