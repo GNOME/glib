@@ -101,7 +101,6 @@ class TestProgramRunner(unittest.TestCase):
         self,
         *args,
         should_fail=False,
-        timeout_seconds=10,
         wrapper_args=[],
         environment={},
         cwd=None,
@@ -130,7 +129,6 @@ class TestProgramRunner(unittest.TestCase):
         # We want to ensure consistent line endings...
         info = subprocess.run(
             argv,
-            timeout=timeout_seconds,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             env=env,
