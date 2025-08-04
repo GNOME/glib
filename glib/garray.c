@@ -2881,9 +2881,7 @@ g_byte_array_append (GByteArray   *array,
                      const guint8 *data,
                      guint         len)
 {
-  g_array_append_vals ((GArray *)array, (guint8 *)data, len);
-
-  return array;
+  return (GByteArray *) g_array_append_vals ((GArray *) array, (guint8 *) data, len);
 }
 
 /**
@@ -2902,9 +2900,7 @@ g_byte_array_prepend (GByteArray   *array,
                       const guint8 *data,
                       guint         len)
 {
-  g_array_prepend_vals ((GArray *)array, (guint8 *)data, len);
-
-  return array;
+  return (GByteArray *) g_array_prepend_vals ((GArray *) array, (guint8 *) data, len);
 }
 
 /**
@@ -2920,9 +2916,7 @@ GByteArray*
 g_byte_array_set_size (GByteArray *array,
                        guint       length)
 {
-  g_array_set_size ((GArray *)array, length);
-
-  return array;
+  return (GByteArray *) g_array_set_size ((GArray *) array, length);
 }
 
 /**
@@ -2939,9 +2933,7 @@ GByteArray*
 g_byte_array_remove_index (GByteArray *array,
                            guint       index_)
 {
-  g_array_remove_index ((GArray *)array, index_);
-
-  return array;
+  return (GByteArray *) g_array_remove_index ((GArray *) array, index_);
 }
 
 /**
@@ -2960,9 +2952,7 @@ GByteArray*
 g_byte_array_remove_index_fast (GByteArray *array,
                                 guint       index_)
 {
-  g_array_remove_index_fast ((GArray *)array, index_);
-
-  return array;
+  return (GByteArray *) g_array_remove_index_fast ((GArray *) array, index_);
 }
 
 /**
