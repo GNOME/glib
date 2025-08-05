@@ -211,7 +211,7 @@ got_more_files (GObject *source_object,
 	  if (append_slash)
 	    {
 	      t = basename;
-	      basename = g_strconcat (basename, "/", NULL);
+	      basename = g_strconcat (basename, G_DIR_SEPARATOR_S, NULL);
 	      g_free (t);
 	    }
 	  
@@ -405,11 +405,13 @@ out:
  * @completer: the filename completer.
  * @initial_text: text to be completed.
  *
- * Obtains a completion for @initial_text from @completer.
+ * Obtains a suffix completion for @initial_text from @completer.
+ *
+ * Suffix will be an empty string if there's no shared suffix among matching
+ * completions. If there's no matching completions anyway, `NULL` is returned.
  *  
- * Returns: (nullable) (transfer full): a completed string, or %NULL if no
- *     completion exists. This string is not owned by GIO, so remember to g_free()
- *     it when finished.
+ * Returns: (nullable) (transfer full): a suffix completion string, or `NULL` if no
+ *     completion exists.
  **/
 char *
 g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
@@ -502,6 +504,9 @@ g_filename_completer_get_completions (GFilenameCompleter *completer,
  * 
  * If @dirs_only is %TRUE, @completer will only 
  * complete directory names, and not file names.
+ *
+ * This function needs to be called before waiting for results from the
+ * completer to be populated.
  **/
 void
 g_filename_completer_set_dirs_only (GFilenameCompleter *completer,
