@@ -1250,7 +1250,7 @@ g_ascii_strtoll (const gchar *nptr,
       return G_MAXINT64;
     }
   else if (negative)
-    return - (gint64) result;
+    return (result == (guint64) G_MININT64) ? G_MININT64 : -(gint64) result;
   else
     return (gint64) result;
 #endif
