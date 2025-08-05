@@ -1524,6 +1524,42 @@ g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_han
 
 /** < private >
  *
+ * g_win32_file_stream_is_console_output:
+ *
+ * @stream: a FILE stream
+ *
+ * Checks if the given FILE stream refers to a Win32 console
+ * screen buffer.
+ */
+bool
+g_win32_file_stream_is_console_output (FILE *stream)
+{
+  int fd = _fileno (stream);
+
+  if (fd < 0)
+    {
+      /* On Windows, FILE streams can be 'open' but not associated
+       * with any file descriptor. As far as I know, that can only
+       * happen for the standard streams stdin, stdout, and stderr.
+       * Window processes can have NULL standard HANDLEs, but the
+       * C standard states that standard streams must be 'open'
+       * when main is called. So, on Windows, _fileno() is expected
+       * to return values < 0 even without errors.
+       */
+      return false;
+    }
+
+  /* We call _isatty() first because it's a very fast check (just
+   * checking an internal flag). However, the _isatty check comprehends
+   * output devices like serial ports, so we check if the output is
+   * really a win32 console with g_win32_handle_is_console_output.
+   */
+  return _isatty (fd) &&
+         g_win32_handle_is_console_output ((HANDLE)_get_osfhandle (fd));
+}
+
+/** < private >
+ *
  * g_win32_handle_is_console_output:
  *
  * @handle: the given HANDLE

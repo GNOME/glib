@@ -28,7 +28,11 @@
 
 #include <windows.h>
 
+#include <stdio.h>
 #include <stdbool.h>
+
+bool
+g_win32_file_stream_is_console_output (FILE *stream);
 
 bool
 g_win32_handle_is_console_output (HANDLE handle);
