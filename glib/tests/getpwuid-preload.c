@@ -25,6 +25,7 @@
 #include <pwd.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "config.h"
 
 #ifndef __APPLE__
 
@@ -80,6 +81,7 @@ DEFINE_WRAPPER (struct passwd *, getpwuid, (uid_t uid))
   return &my_pw;
 }
 
+#ifdef HAVE_GETPWNAM_R
 DEFINE_WRAPPER (int, getpwnam_r, (const char     *name,
                                   struct passwd  *pwd,
                                   char            buf[],
@@ -91,7 +93,9 @@ DEFINE_WRAPPER (int, getpwnam_r, (const char     *name,
     pwd->pw_name = NULL;
   return code;
 }
+#endif
 
+#ifdef HAVE_GETPWUID_R
 DEFINE_WRAPPER (int, getpwuid_r, (uid_t           uid,
                                   struct passwd  *restrict pwd,
                                   char            buf[],
@@ -103,3 +107,4 @@ DEFINE_WRAPPER (int, getpwuid_r, (uid_t           uid,
     pwd->pw_name = NULL;
   return code;
 }
+#endif
