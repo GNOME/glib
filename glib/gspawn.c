@@ -49,8 +49,9 @@
  *
  * Executes a child program asynchronously.
  * 
- * See g_spawn_async_with_pipes() for a full description; this function
- * simply calls the g_spawn_async_with_pipes() without any pipes.
+ * See g_spawn_async_with_pipes_and_fds() for a full description; this function
+ * simply calls the g_spawn_async_with_pipes() without any pipes, which in turn
+ * calls g_spawn_async_with_pipes_and_fds().
  *
  * You should call g_spawn_close_pid() on the returned child process
  * reference when you don't need it any more.
