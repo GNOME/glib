@@ -70,10 +70,22 @@ value_meminit (GValue *value,
 
 /**
  * g_value_init:
- * @value: a zero-filled (uninitialized) [struct@GObject.Value] structure
+ * @value: a zero-filled (cleared) [struct@GObject.Value] structure
  * @g_type: type the [struct@GObject.Value] should hold values of
  *
- * Initializes @value with the default value of @type.
+ * Initializes @value to store values of the given @type, and sets its value
+ * to the default for @type.
+ *
+ * This must be called before any other methods on a [struct@GObject.Value], so
+ * the value knows what type it’s meant to store.
+ *
+ * ```c
+ *   GValue value = G_VALUE_INIT;
+ *
+ *   g_value_init (&value, SOME_G_TYPE);
+ *   …
+ *   g_value_unset (&value);
+ * ```
  *
  * Returns: (transfer none): the [struct@GObject.Value] structure that has been
  *   passed in
@@ -181,8 +193,8 @@ g_value_reset (GValue *value)
  * Clears the current value in @value (if any) and ‘unsets’ the type.
  *
  * This releases all resources associated with this [struct@GObject.Value]. An
- * unset value is the same as an uninitialized (zero-filled)
- * [struct@GObject.Value] structure.
+ * unset value is the same as a cleared (zero-filled)
+ * [struct@GObject.Value] structure set to `G_VALUE_INIT`.
  */
 void
 g_value_unset (GValue *value)
@@ -314,7 +326,7 @@ g_value_set_instance (GValue  *value,
 
 /**
  * g_value_init_from_instance:
- * @value: an uninitialized [struct@GObject.Value] structure
+ * @value: a zero-filled (cleared) [struct@GObject.Value] structure
  * @instance: (type GObject.TypeInstance): the instance
  *
  * Initializes and sets @value from an instantiatable type.

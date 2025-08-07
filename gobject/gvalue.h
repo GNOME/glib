@@ -110,6 +110,14 @@ typedef void (*GValueTransform) (const GValue *src_value,
  * 
  * An opaque structure used to hold different types of values.
  *
+ * Before it can be used, a `GValue` has to be initialized to a specific type by
+ * calling [method@GObject.Value.init] on it.
+ *
+ * Many types which are stored within a `GValue` need to allocate data on the
+ * heap, so [method@GObject.Value.unset] must always be called on a `GValue` to
+ * free any such data once you’re finished with the `GValue`, even if the
+ * `GValue` itself is stored on the stack.
+ *
  * The data within the structure has protected scope: it is accessible only
  * to functions within a [struct@GObject.TypeValueTable] structure, or
  * implementations of the `g_value_*()` API. That is, code which implements new
@@ -218,15 +226,23 @@ void	g_value_register_transform_func	(GType		 src_type,
 /**
  * G_VALUE_INIT:
  *
- * Initializes a [struct@GObject.Value] to zero at declaration time.
+ * Clears a [struct@GObject.Value] to zero at declaration time.
  *
- * A [struct@GObject.Value] must be initialized before it can be used. This
- * macro can be used as initializer instead of an explicit `{ 0 }` when
- * declaring a variable, but it cannot be assigned to a variable after
+ * A [struct@GObject.Value] must be cleared and then initialized before it can
+ * be used. This macro can be assigned to a variable instead of an explicit
+ * `{ 0 }` when declaring it, but it cannot be assigned to a variable after
  * declaration time.
+ *
+ * After the [struct@GObject.Value] is cleared, it must be initialized by
+ * calling [method@GObject.Value.init] on it before any other methods can be
+ * called on it.
  *
  * ```c
  *   GValue value = G_VALUE_INIT;
+ *
+ *   g_value_init (&value, SOME_G_TYPE);
+ *   …
+ *   g_value_unset (&value);
  * ```
  *
  * Since: 2.30
