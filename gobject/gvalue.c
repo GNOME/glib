@@ -70,12 +70,13 @@ value_meminit (GValue *value,
 
 /**
  * g_value_init:
- * @value: A zero-filled (uninitialized) #GValue structure.
- * @g_type: Type the #GValue should hold values of.
+ * @value: a zero-filled (uninitialized) [struct@GObject.Value] structure
+ * @g_type: type the [struct@GObject.Value] should hold values of
  *
  * Initializes @value with the default value of @type.
  *
- * Returns: (transfer none): the #GValue structure that has been passed in
+ * Returns: (transfer none): the [struct@GObject.Value] structure that has been
+ *   passed in
  */
 GValue*
 g_value_init (GValue *value,
@@ -109,8 +110,9 @@ g_value_init (GValue *value,
 
 /**
  * g_value_copy:
- * @src_value: An initialized #GValue structure.
- * @dest_value: An initialized #GValue structure of the same type as @src_value.
+ * @src_value: an initialized [struct@GObject.Value] structure
+ * @dest_value: an initialized [struct@GObject.Value] structure of the same type
+ *   as @src_value
  *
  * Copies the value of @src_value into @dest_value.
  */
@@ -141,12 +143,13 @@ g_value_copy (const GValue *src_value,
 
 /**
  * g_value_reset:
- * @value: An initialized #GValue structure.
+ * @value: an initialized [struct@GObject.Value] structure
  *
  * Clears the current value in @value and resets it to the default value
- * (as if the value had just been initialized).
+ * (as if the value had just been initialized using
+ * [method@GObject.Value.init]).
  *
- * Returns: the #GValue structure that has been passed in
+ * Returns: the [struct@GObject.Value] structure that has been passed in
  */
 GValue*
 g_value_reset (GValue *value)
@@ -173,12 +176,13 @@ g_value_reset (GValue *value)
 
 /**
  * g_value_unset:
- * @value: An initialized #GValue structure.
+ * @value: an initialized [struct@GObject.Value] structure
  *
- * Clears the current value in @value (if any) and "unsets" the type,
- * this releases all resources associated with this GValue. An unset
- * value is the same as an uninitialized (zero-filled) #GValue
- * structure.
+ * Clears the current value in @value (if any) and ‘unsets’ the type.
+ *
+ * This releases all resources associated with this [struct@GObject.Value]. An
+ * unset value is the same as an uninitialized (zero-filled)
+ * [struct@GObject.Value] structure.
  */
 void
 g_value_unset (GValue *value)
@@ -200,12 +204,13 @@ g_value_unset (GValue *value)
 
 /**
  * g_value_fits_pointer:
- * @value: An initialized #GValue structure.
+ * @value: an initialized [struct@GObject.Value] structure
  *
  * Determines if @value will fit inside the size of a pointer value.
+ *
  * This is an internal function introduced mainly for C marshallers.
  *
- * Returns: %TRUE if @value will fit inside a pointer value.
+ * Returns: true if @value will fit inside a pointer value; false otherwise
  */
 gboolean
 g_value_fits_pointer (const GValue *value)
@@ -222,13 +227,16 @@ g_value_fits_pointer (const GValue *value)
 
 /**
  * g_value_peek_pointer:
- * @value: An initialized #GValue structure
+ * @value: an initialized [struct@GObject.Value] structure
  *
- * Returns the value contents as pointer. This function asserts that
- * g_value_fits_pointer() returned %TRUE for the passed in value.
+ * Returns the value contents as a pointer.
+ *
+ * This function asserts that [method@GObject.Value.fits_pointer] returned true
+ * for the passed in value.
+ *
  * This is an internal function introduced mainly for C marshallers.
  *
- * Returns: (transfer none): the value contents as pointer
+ * Returns: (transfer none): the value contents as a pointer
  */
 gpointer
 g_value_peek_pointer (const GValue *value)
@@ -251,11 +259,13 @@ g_value_peek_pointer (const GValue *value)
 
 /**
  * g_value_set_instance:
- * @value: An initialized #GValue structure.
+ * @value: an initialized [struct@GObject.Value] structure
  * @instance: (nullable): the instance
  *
- * Sets @value from an instantiatable type via the
- * value_table's collect_value() function.
+ * Sets @value from an instantiatable type.
+ *
+ * This calls the [callback@GObject.TypeValueCollectFunc] function for the type
+ * the [struct@GObject.Value] contains.
  */
 void
 g_value_set_instance (GValue  *value,
@@ -304,16 +314,18 @@ g_value_set_instance (GValue  *value,
 
 /**
  * g_value_init_from_instance:
- * @value: An uninitialized #GValue structure.
+ * @value: an uninitialized [struct@GObject.Value] structure
  * @instance: (type GObject.TypeInstance): the instance
  *
- * Initializes and sets @value from an instantiatable type via the
- * value_table's collect_value() function.
+ * Initializes and sets @value from an instantiatable type.
+ *
+ * This calls the [callback@GObject.TypeValueCollectFunc] function for the type
+ * the [struct@GObject.Value] contains.
  *
  * Note: The @value will be initialised with the exact type of
- * @instance.  If you wish to set the @value's type to a different GType
- * (such as a parent class GType), you need to manually call
- * g_value_init() and g_value_set_instance().
+ * @instance.  If you wish to set the @value’s type to a different
+ * [type@GObject.Type] (such as a parent class type), you need to manually call
+ * [method@GObject.Value.init] and [method@GObject.Value.set_instance].
  *
  * Since: 2.42
  */
@@ -425,14 +437,16 @@ transform_entries_cmp (gconstpointer bsearch_node1,
 
 /**
  * g_value_register_transform_func: (skip)
- * @src_type: Source type.
- * @dest_type: Target type.
+ * @src_type: source type
+ * @dest_type: target type
  * @transform_func: a function which transforms values of type @src_type
- *  into value of type @dest_type
+ *   into values of type @dest_type
  *
- * Registers a value transformation function for use in g_value_transform().
- * A previously registered transformation function for @src_type and @dest_type
- * will be replaced.
+ * Registers a value transformation function for use in
+ * [method@GObject.Value.transform].
+ *
+ * Any previously registered transformation function for @src_type and
+ * @dest_type will be replaced.
  */
 void
 g_value_register_transform_func (GType           src_type,
@@ -464,15 +478,17 @@ g_value_register_transform_func (GType           src_type,
 
 /**
  * g_value_type_transformable:
- * @src_type: Source type.
- * @dest_type: Target type.
+ * @src_type: source type
+ * @dest_type: target type
  *
- * Check whether g_value_transform() is able to transform values
- * of type @src_type into values of type @dest_type. Note that for
- * the types to be transformable, they must be compatible or a
- * transformation function must be registered.
+ * Checks whether [method@GObject.Value.transform] is able to transform values
+ * of type @src_type into values of type @dest_type.
  *
- * Returns: %TRUE if the transformation is possible, %FALSE otherwise.
+ * Note that for the types to be transformable, they must be compatible or a
+ * transformation function must be registered using
+ * [func@GObject.Value.register_transform_func].
+ *
+ * Returns: true if the transformation is possible; false otherwise
  */
 gboolean
 g_value_type_transformable (GType src_type,
@@ -487,13 +503,13 @@ g_value_type_transformable (GType src_type,
 
 /**
  * g_value_type_compatible:
- * @src_type: source type to be copied.
- * @dest_type: destination type for copying.
+ * @src_type: source type to be copied
+ * @dest_type: destination type for copying
  *
- * Returns whether a #GValue of type @src_type can be copied into
- * a #GValue of type @dest_type.
+ * Checks whether a [method@GObject.Value.copy] is able to copy values of type
+ * @src_type into values of type @dest_type.
  *
- * Returns: %TRUE if g_value_copy() is possible with @src_type and @dest_type.
+ * Returns: true if the copy is possible; false otherwise
  */
 gboolean
 g_value_type_compatible (GType src_type,
@@ -512,19 +528,23 @@ g_value_type_compatible (GType src_type,
 
 /**
  * g_value_transform:
- * @src_value: Source value.
- * @dest_value: Target value.
+ * @src_value: source value
+ * @dest_value: target value
  *
  * Tries to cast the contents of @src_value into a type appropriate
- * to store in @dest_value, e.g. to transform a %G_TYPE_INT value
- * into a %G_TYPE_FLOAT value. Performing transformations between
- * value types might incur precision lossage. Especially
- * transformations into strings might reveal seemingly arbitrary
- * results and shouldn't be relied upon for production code (such
- * as rcfile value or object property serialization).
+ * to store in @dest_value.
  *
- * Returns: Whether a transformation rule was found and could be applied.
- *  Upon failing transformations, @dest_value is left untouched.
+ * If a transformation is not possible, @dest_value is not modified.
+ *
+ * For example, this could transform a `G_TYPE_INT` value into a `G_TYPE_FLOAT`
+ * value.
+ *
+ * Performing transformations between value types might incur precision loss.
+ * Especially transformations into strings might reveal seemingly arbitrary
+ * results and the format of particular transformations to strings is not
+ * guaranteed over time.
+ *
+ * Returns: true on success; false otherwise
  */
 gboolean
 g_value_transform (const GValue *src_value,
