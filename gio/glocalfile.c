@@ -1268,7 +1268,8 @@ g_local_file_query_info (GFile                *file,
  * so we have to use the fallback path. See
  * https://cs.android.com/android/_/android/platform/bionic/+/35778253a5ed71e87a608ca590b63729d9f88567
  */
-#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__) && !defined(__ANDROID__)
+#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__) && !defined(__ANDROID__) && \
+    !defined(__OpenBSD__)
 static gboolean
 g_local_file_query_exists (GFile        *file,
                            GCancellable *cancellable)
@@ -3253,7 +3254,8 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->monitor_dir = g_local_file_monitor_dir;
   iface->monitor_file = g_local_file_monitor_file;
   iface->measure_disk_usage = g_local_file_measure_disk_usage;
-#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__) && !defined(__ANDROID__)
+#if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__) && !defined(__ANDROID__) && \
+    !defined(__OpenBSD__)
   iface->query_exists = g_local_file_query_exists;
 #endif
 
