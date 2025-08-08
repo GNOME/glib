@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.84.4, 2025-08-08
+==============================================
+
+* Bugs fixed:
+  - #3716 (CVE-2025-7039) (#YWH-PGM9867-104) Buffer Under-read on GLib through
+    glib/gfileutils.c via get_tmp_file() (Michael Catanzaro)
+  - #3721 GFile leak in g_local_file_set_display_name during error handling
+    (Philip Withnall, Michael Catanzaro)
+  - !4668 Backport !4667 “Incorrect output parameter handling in closure helper
+    of g_settings_bind_with_mapping_closures” to glib-2-84
+  - !4675 Backport !4674 “gfileutils: fix computation of temporary file name” to
+    glib-2-84
+  - !4679 Backport !4677 and !4678 “Fix GFile leak in
+    g_local_file_set_display_name()” to glib-2-84
+  - !4697 Backport !4696 “gthreadpool: Catch pool_spawner creation failure” to
+    glib-2-84
+  - !4705 Backport !4702 “gio/filenamecompleter: Fix leaks” to glib-2-84
+  - !4711 Backport !4708 “gfilenamecompleter: Fix g_object_unref() of undefined
+    value” to glib-2-84
+
+
 Overview of changes in GLib 2.84.3, 2025-06-13
 ==============================================
 
