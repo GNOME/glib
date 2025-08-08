@@ -48,14 +48,13 @@
 
 #include "galloca.h"
 #include "gbacktrace.h"
-#include "gcharset.h"
-#include "gconvert.h"
 #include "genviron.h"
 #include "glib-init.h"
 #include "glib-private.h"
 #include "gmain.h"
 #include "gmem.h"
 #include "gpattern.h"
+#include "gprintprivate.h"
 #include "gprintfint.h"
 #include "gstrfuncs.h"
 #include "gstring.h"
@@ -944,55 +943,6 @@ g_log_remove_handler (const gchar *log_domain,
   g_mutex_unlock (&g_messages_lock);
   g_warning ("%s: could not find handler with id '%d' for domain \"%s\"",
 	     G_STRLOC, handler_id, log_domain);
-}
-
-#define CHAR_IS_SAFE(wc) (!((wc < 0x20 && wc != '\t' && wc != '\n' && wc != '\r') || \
-			    (wc == 0x7f) || \
-			    (wc >= 0x80 && wc < 0xa0)))
-     
-static gchar*
-strdup_convert (const gchar *string,
-		const gchar *charset)
-{
-  if (!g_utf8_validate (string, -1, NULL))
-    {
-      GString *gstring = g_string_new ("[Invalid UTF-8] ");
-      guchar *p;
-
-      for (p = (guchar *)string; *p; p++)
-	{
-	  if (CHAR_IS_SAFE(*p) &&
-	      !(*p == '\r' && *(p + 1) != '\n') &&
-	      *p < 0x80)
-	    g_string_append_c (gstring, *p);
-	  else
-	    g_string_append_printf (gstring, "\\x%02x", (guint)(guchar)*p);
-	}
-      
-      return g_string_free (gstring, FALSE);
-    }
-  else
-    {
-      GError *err = NULL;
-      
-      gchar *result = g_convert_with_fallback (string, -1, charset, "UTF-8", "?", NULL, NULL, &err);
-      if (result)
-	return result;
-      else
-	{
-	  /* Not thread-safe, but doesn't matter if we print the warning twice
-	   */
-	  static gboolean warned = FALSE; 
-	  if (!warned)
-	    {
-	      warned = TRUE;
-	      _g_fprintf (stderr, "GLib: Cannot convert message: %s\n", err->message);
-	    }
-	  g_error_free (err);
-	  
-	  return g_strdup (string);
-	}
-    }
 }
 
 /* For a radix of 8 we need at most 3 output bytes for 1 input
@@ -2179,38 +2129,18 @@ g_log_writer_is_journald (gint output_fd)
 
 static void escape_string (GString *string);
 
-/**
- * g_log_writer_format_fields:
- * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
- *    level
- * @fields: (array length=n_fields): key–value pairs of structured data forming
- *    the log message
- * @n_fields: number of elements in the @fields array
- * @use_color: `TRUE` to use
- *   [ANSI color escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
- *   when formatting the message, `FALSE` to not
- *
- * Format a structured log message as a string suitable for outputting to the
- * terminal (or elsewhere).
- *
- * This will include the values of all fields it knows
- * how to interpret, which includes `MESSAGE` and `GLIB_DOMAIN` (see the
- * documentation for [func@GLib.log_structured]). It does not include values from
- * unknown fields.
- *
- * The returned string does **not** have a trailing new-line character. It is
- * encoded in the character set of the current locale, which is not necessarily
- * UTF-8.
- *
- * Returns: (transfer full): string containing the formatted log message, in
- *    the character set of the current locale
- * Since: 2.50
- */
-gchar *
-g_log_writer_format_fields (GLogLevelFlags   log_level,
-                            const GLogField *fields,
-                            gsize            n_fields,
-                            gboolean         use_color)
+struct LogFormatted {
+  GString *gstring;
+  const char *message;
+  gssize message_length;
+};
+
+static void
+log_writer_format_fields_internal (struct LogFormatted *ctx,
+                                   GLogLevelFlags       log_level,
+                                   const GLogField     *fields,
+                                   gsize                n_fields,
+                                   gboolean             use_color)
 {
   gsize i;
   const gchar *message = NULL;
@@ -2284,34 +2214,117 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
                           time_buf, (gint) ((now / 1000) % 1000),
                           color_reset (use_color));
 
-  if (message == NULL)
+  ctx->gstring = gstring;
+  ctx->message = message;
+  ctx->message_length = message_length;
+}
+
+static char *
+log_writer_format_fields_utf8 (GLogLevelFlags   log_level,
+                               const GLogField *fields,
+                               gsize            n_fields,
+                               gboolean         use_color,
+                               gboolean         add_trailing_newline)
+{
+  struct LogFormatted ctx;
+
+  log_writer_format_fields_internal (&ctx,
+                                     log_level,
+                                     fields,
+                                     n_fields,
+                                     use_color);
+
+  if (ctx.message == NULL)
     {
-      g_string_append (gstring, "(NULL) message");
+      g_string_append (ctx.gstring, "(NULL) message");
+    }
+  else
+    {
+      GString *msg;
+
+      msg = g_string_new_len (ctx.message, ctx.message_length);
+      escape_string (msg);
+
+      g_string_append (ctx.gstring, msg->str);
+
+      g_string_free (msg, TRUE);
+    }
+
+  if (add_trailing_newline)
+    g_string_append (ctx.gstring, "\n");
+
+  return g_string_free (ctx.gstring, FALSE);
+}
+
+/**
+ * g_log_writer_format_fields:
+ * @log_level: log level, either from [type@GLib.LogLevelFlags], or a user-defined
+ *    level
+ * @fields: (array length=n_fields): key–value pairs of structured data forming
+ *    the log message
+ * @n_fields: number of elements in the @fields array
+ * @use_color: `TRUE` to use
+ *   [ANSI color escape sequences](https://en.wikipedia.org/wiki/ANSI_escape_code)
+ *   when formatting the message, `FALSE` to not
+ *
+ * Format a structured log message as a string suitable for outputting to the
+ * terminal (or elsewhere).
+ *
+ * This will include the values of all fields it knows
+ * how to interpret, which includes `MESSAGE` and `GLIB_DOMAIN` (see the
+ * documentation for [func@GLib.log_structured]). It does not include values from
+ * unknown fields.
+ *
+ * The returned string does **not** have a trailing new-line character. It is
+ * encoded in the character set of the current locale, which is not necessarily
+ * UTF-8.
+ *
+ * Returns: (transfer full): string containing the formatted log message, in
+ *    the character set of the current locale
+ * Since: 2.50
+ */
+gchar *
+g_log_writer_format_fields (GLogLevelFlags   log_level,
+                            const GLogField *fields,
+                            gsize            n_fields,
+                            gboolean         use_color)
+{
+  struct LogFormatted ctx;
+
+  log_writer_format_fields_internal (&ctx,
+                                     log_level,
+                                     fields,
+                                     n_fields,
+                                     use_color);
+
+  if (ctx.message == NULL)
+    {
+      g_string_append (ctx.gstring, "(NULL) message");
     }
   else
     {
       GString *msg;
       const gchar *charset;
 
-      msg = g_string_new_len (message, message_length);
+      msg = g_string_new_len (ctx.message, ctx.message_length);
       escape_string (msg);
 
       if (g_get_console_charset (&charset))
         {
           /* charset is UTF-8 already */
-          g_string_append (gstring, msg->str);
+          g_string_append (ctx.gstring, msg->str);
         }
       else
         {
-          gchar *lstring = strdup_convert (msg->str, charset);
-          g_string_append (gstring, lstring);
+          char *lstring = g_print_convert (msg->str, charset);
+          g_string_append (ctx.gstring, lstring);
           g_free (lstring);
         }
 
       g_string_free (msg, TRUE);
     }
 
-  return g_string_free (gstring, FALSE);
+  return g_string_free (ctx.gstring, FALSE);
 }
 
 /**
@@ -2663,7 +2676,7 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
                                gpointer         user_data)
 {
   FILE *stream;
-  gchar *out = NULL;  /* in the current locale’s character set */
+  char *out;
 
   g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
@@ -2672,9 +2685,10 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
   if (!stream || fileno (stream) < 0)
     return G_LOG_WRITER_UNHANDLED;
 
-  out = g_log_writer_format_fields (log_level, fields, n_fields,
-                                    g_log_writer_supports_color (fileno (stream)));
-  _g_fprintf (stream, "%s\n", out);
+  out = log_writer_format_fields_utf8 (log_level, fields, n_fields,
+                                       g_log_writer_supports_color (fileno (stream)),
+                                       TRUE);
+  g_fputs (out, stream);
   fflush (stream);
   g_free (out);
 
@@ -3346,6 +3360,10 @@ _g_log_fallback_handler (const gchar   *log_domain,
   write_string (stream, "\n");
 }
 
+#define CHAR_IS_SAFE(wc) (!((wc < 0x20 && wc != '\t' && wc != '\n' && wc != '\r') || \
+                            (wc == 0x7f) || \
+                            (wc >= 0x80 && wc < 0xa0)))
+
 static void
 escape_string (GString *string)
 {
@@ -3537,21 +3555,7 @@ static void
 print_string (FILE        *stream,
               const gchar *string)
 {
-  const gchar *charset;
-  int ret;
-
-  if (g_get_console_charset (&charset))
-    {
-      /* charset is UTF-8 already */
-      ret = fputs (string, stream);
-    }
-  else
-    {
-      gchar *converted_string = strdup_convert (string, charset);
-
-      ret = fputs (converted_string, stream);
-      g_free (converted_string);
-    }
+  int ret = g_fputs (string, stream);
 
   /* In case of failure we can just return early, but there's nothing else
    * we can do at this level

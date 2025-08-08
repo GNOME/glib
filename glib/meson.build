@@ -347,6 +347,7 @@ glib_sources += files(
   'gvarianttype.c',
   'gversion.c',
   'gwakeup.c',
+  'gprint.c',
   'gprintf.c',
 )
 

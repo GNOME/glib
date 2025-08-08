@@ -73,6 +73,7 @@
 #include "gwin32.h"
 #include "gwin32private.h"
 #include "gthreadprivate.h"
+#include "gwin32private.h"
 #include "glib-init.h"
 
 #ifdef G_WITH_CYGWIN
@@ -1521,6 +1522,76 @@ g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_han
   return executable_path;
 }
 
+/** < private >
+ *
+ * g_win32_file_stream_is_console_output:
+ *
+ * @stream: a FILE stream
+ *
+ * Checks if the given FILE stream refers to a Win32 console
+ * screen buffer.
+ */
+bool
+g_win32_file_stream_is_console_output (FILE *stream)
+{
+  int fd = _fileno (stream);
+
+  if (fd < 0)
+    {
+      /* On Windows, FILE streams can be 'open' but not associated
+       * with any file descriptor. As far as I know, that can only
+       * happen for the standard streams stdin, stdout, and stderr.
+       * Window processes can have NULL standard HANDLEs, but the
+       * C standard states that standard streams must be 'open'
+       * when main is called. So, on Windows, _fileno() is expected
+       * to return values < 0 even without errors.
+       */
+      return false;
+    }
+
+  /* We call _isatty() first because it's a very fast check (just
+   * checking an internal flag). However, the _isatty check comprehends
+   * output devices like serial ports, so we check if the output is
+   * really a win32 console with g_win32_handle_is_console_output.
+   */
+  return _isatty (fd) &&
+         g_win32_handle_is_console_output ((HANDLE)_get_osfhandle (fd));
+}
+
+/** < private >
+ *
+ * g_win32_handle_is_console_output:
+ *
+ * @handle: the given HANDLE
+ *
+ * Checks if the given HANDLE refers to a Win32 console screen
+ * buffer (output HANDLE).
+ */
+bool
+g_win32_handle_is_console_output (HANDLE handle)
+{
+  /* MSDN suggests using GetConsoleMode() to check if a HANDLE refers to
+   * the console. However GetConsoleMode() requires read access rights
+   * (FILE_READ_DATA | FILE_READ_ATTRIBUTES | FILE_READ_EA on Windows 10),
+   * and output HANDLEs may have been opened with write rights only. To
+   * overcome that, we use WriteConsole() with a zero characters count.
+   */
+  const wchar_t *dummy = L"";
+  if (!WriteConsole (handle, dummy, 0, NULL, NULL))
+    {
+      DWORD code = GetLastError ();
+
+      if (code != ERROR_INVALID_FUNCTION && code != ERROR_INVALID_HANDLE)
+        {
+          WIN32_API_FAILED ("WriteConsole");
+        }
+
+      return false;
+    }
+
+  return true;
+}
+
 /*
  * g_win32_handle_is_socket:
  * @h: a win32 HANDLE
@@ -1629,4 +1700,73 @@ g_win32_reopen_noninherited (int fd,
     }
 
   return dupfd;
+}
+
+bool
+g_win32_error_message_in_place (DWORD    code,
+                                wchar_t *buffer,
+                                size_t   wchars_count)
+{
+  const DWORD flags = FORMAT_MESSAGE_FROM_SYSTEM |
+                      FORMAT_MESSAGE_IGNORE_INSERTS;
+  DWORD wchars_written;
+
+  g_assert (wchars_count > 0);
+
+  wchars_written = FormatMessage (flags, NULL, code, 0, buffer, wchars_count - 1, NULL);
+  if (wchars_written == 0)
+    return false;
+
+  g_assert (wchars_written < wchars_count);
+
+  if (wchars_written >= 2)
+    {
+      wchars_written -= (buffer[wchars_written - 1] == L'\n') +
+                        (buffer[wchars_written - 2] == L'\r');
+    }
+
+  buffer[wchars_written] = L'\0';
+
+  return true;
+}
+
+/** < private >
+ *
+ * g_win32_api_failed:
+ *
+ * @where: location in the source code
+ * @api: name of the failing API
+ * @code: a Windows error code or a failing HRESULT
+ *
+ * Prints a warning about the failing API with an extended
+ * error description (see g_win32_error_message).
+ */
+void
+g_win32_api_failed_with_code (const char *where,
+                              const char *api,
+                              DWORD       code)
+{
+  wchar_t description[500];
+
+  if (g_win32_error_message_in_place (code, description, G_N_ELEMENTS (description)))
+    g_warning ("%s failed: %S", api, description);
+  else
+    g_warning ("%s failed with error code %u", api, (unsigned int) code);
+}
+
+/** < private >
+ *
+ * g_win32_api_failed:
+ *
+ * @where: location in the source code
+ * @api: name of the failing API
+ *
+ * Prints a warning about the failing API with an extended
+ * error description (see g_win32_error_message).
+ */
+void
+g_win32_api_failed (const char *where,
+                    const char *api)
+{
+  g_win32_api_failed_with_code (where, api, GetLastError ());
 }

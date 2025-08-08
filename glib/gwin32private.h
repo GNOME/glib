@@ -27,7 +27,32 @@
 #include "config.h"
 
 #include <windows.h>
+
+#include <stdio.h>
 #include <stdbool.h>
+
+bool
+g_win32_file_stream_is_console_output (FILE *stream);
+
+bool
+g_win32_handle_is_console_output (HANDLE handle);
+
+void
+g_win32_api_failed_with_code (const char *where,
+                              const char *api,
+                              DWORD       code);
+
+void
+g_win32_api_failed (const char *where,
+                    const char *api);
+
+#define WIN32_API_FAILED_WITH_CODE(api, code) do { g_win32_api_failed_with_code (G_STRLOC, api, code); } while (0)
+#define WIN32_API_FAILED(api) do { g_win32_api_failed (G_STRLOC, api); } while (0)
+
+bool
+g_win32_error_message_in_place   (DWORD          code,
+                                  wchar_t       *buffer,
+                                  size_t         wchars_count);
 
 bool
 g_win32_substitute_pid_and_event (wchar_t       *local_debugger,
@@ -35,7 +60,6 @@ g_win32_substitute_pid_and_event (wchar_t       *local_debugger,
                                   const wchar_t *cmdline,
                                   DWORD          pid,
                                   guintptr       event);
-
 
 #endif /* G_PLATFORM_WIN32 */
 
