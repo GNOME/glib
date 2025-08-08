@@ -26,8 +26,9 @@
 
 #include "config.h"
 
-#include <string.h>
 #include <signal.h>
+#include <stdint.h>
+#include <string.h>
 
 #include "gsignal.h"
 #include "gtype-private.h"
@@ -1694,7 +1695,7 @@ g_signal_newv (const gchar       *signal_name,
       key.quark = g_quark_from_string (name);
       g_signal_key_bsa = g_bsearch_array_insert (g_signal_key_bsa, &g_signal_key_bconfig, &key);
 
-      TRACE(GOBJECT_SIGNAL_NEW(signal_id, name, itype));
+      TRACE (GOBJECT_SIGNAL_NEW (signal_id, name, (uintmax_t) itype));
     }
   node->destroyed = FALSE;
 
@@ -3415,12 +3416,12 @@ signal_emit_valist_unlocked (gpointer instance,
 
 	  if (closure != NULL)
 	    {
-	  TRACE(GOBJECT_SIGNAL_EMIT(signal_id, detail, instance, instance_type));
+              TRACE (GOBJECT_SIGNAL_EMIT (signal_id, detail, instance, (uintmax_t) instance_type));
 
-	      SIGNAL_UNLOCK ();
+              SIGNAL_UNLOCK ();
 
-	  if (rtype != G_TYPE_NONE)
-	    g_value_init (&emission_return, rtype);
+              if (rtype != G_TYPE_NONE)
+                g_value_init (&emission_return, rtype);
 
               if (node_copy.accumulator)
                 g_value_init (&accu, rtype);
@@ -3484,8 +3485,8 @@ signal_emit_valist_unlocked (gpointer instance,
 		   */
 		}
 	    }
-	  
-	  TRACE(GOBJECT_SIGNAL_EMIT_END(signal_id, detail, instance, instance_type));
+
+          TRACE (GOBJECT_SIGNAL_EMIT_END (signal_id, detail, instance, (uintmax_t) instance_type));
 
           /* See comment above paired ref above */
 #ifndef __COVERITY__

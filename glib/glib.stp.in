@@ -16,7 +16,7 @@ probe glib.quark_new = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_C
 {
   str = user_string ($arg1); 
   quark = $arg2; 
-  probestr = sprintf("glib.quark_new(%s) -> %d", str, quark);
+  probestr = sprintf("glib.quark_new(%s) -> %u", str, quark);
 }
 
 /**
@@ -32,7 +32,7 @@ probe glib.mem_alloc = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_C
   n_bytes = $arg2; 
   zeroed = $arg3; 
   failable = $arg4; 
-  probestr = sprintf("glib.mem_alloc(n_bytes=%d) -> %p", n_bytes, mem);
+  probestr = sprintf("glib.mem_alloc(n_bytes=%u) -> %p", n_bytes, mem);
 }
 
 /**
@@ -57,7 +57,7 @@ probe glib.mem_realloc = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT
   old_mem = $arg2; 
   n_bytes = $arg3;  
   failable = $arg4; 
-  probestr = sprintf("glib.mem_realloc(old_mem=%p, n_bytes=%d) -> %p", old_mem, n_bytes, mem);
+  probestr = sprintf("glib.mem_realloc(old_mem=%p, n_bytes=%u) -> %p", old_mem, n_bytes, mem);
 }
 
 /**
@@ -69,7 +69,7 @@ probe glib.slice_alloc = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT
 {
   mem = $arg1; 
   n_bytes = $arg2; 
-  probestr = sprintf("glib.slice_alloc(n_bytes=%d) -> %p", n_bytes, mem);
+  probestr = sprintf("glib.slice_alloc(n_bytes=%u) -> %p", n_bytes, mem);
 }
 
 /**
@@ -81,7 +81,7 @@ probe glib.slice_free = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_
 {
   mem = $arg1; 
   n_bytes = $arg2; 
-  probestr = sprintf("glib.slice_free(n_bytes=%d) -> %p", n_bytes, mem);
+  probestr = sprintf("glib.slice_free(n_bytes=%u) -> %p", n_bytes, mem);
 }
 
 /**
@@ -95,7 +95,7 @@ probe glib.main_after_prepare = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.s
   source = $arg1;
   prepare = $arg2;
   source_timeout = $arg3;
-  probestr = sprintf("glib.main_after_prepare(source=%p, prepare=%p) -> %u", source, prepare, source_timeout);
+  probestr = sprintf("glib.main_after_prepare(source=%p, prepare=%p) -> %d", source, prepare, source_timeout);
 }
 
 /**
@@ -109,7 +109,7 @@ probe glib.main_after_check = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.
   source = $arg1;
   check = $arg2;
   result = $arg3;
-  probestr = sprintf("glib.main_after_check(source=%p, check=%p) -> %u", source, check, result);
+  probestr = sprintf("glib.main_after_check(source=%p, check=%p) -> %d", source, check, result);
 }
 
 /**
@@ -143,7 +143,7 @@ probe glib.main_after_dispatch = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.
   source_ptr = $arg2;
   dispatch = $arg3;
   need_destroy = $arg4;
-  probestr = sprintf("glib.main_after_dispatch(source=%s(%p), dispatch=%p) -> %u", source, source_ptr, dispatch, need_destroy);
+  probestr = sprintf("glib.main_after_dispatch(source=%s(%p), dispatch=%p) -> %d", source, source_ptr, dispatch, need_destroy);
 }
 
 /**
@@ -205,7 +205,7 @@ probe glib.main_context_acquire = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0
 {
   context = $arg1;
   success = $arg2;
-  probestr = sprintf("glib.main_context_acquire(context=%p) -> %u", context, success);
+  probestr = sprintf("glib.main_context_acquire(context=%p) -> %d", context, success);
 }
 
 /**
@@ -269,7 +269,7 @@ probe glib.main_context_after_prepare = process("@ABS_GLIB_RUNTIME_LIBDIR@/libgl
   context = $arg1;
   priority = $arg2;
   n_ready = $arg3;
-  probestr = sprintf("glib.main_context_after_prepare(context=%p) -> priority=%i,n_ready=%u", context, priority, n_ready);
+  probestr = sprintf("glib.main_context_after_prepare(context=%p) -> priority=%i,n_ready=%i", context, priority, n_ready);
 }
 
 /**
@@ -297,7 +297,7 @@ probe glib.main_context_after_query = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib
   timeout = $arg2;
   fds = $arg3;
   n_fds = $arg4;
-  probestr = sprintf("glib.main_context_after_query(context=%p) -> timeout=%u,fds=%p,n_fds=%u", context, timeout, fds, n_fds);
+  probestr = sprintf("glib.main_context_after_query(context=%p) -> timeout=%u,fds=%p,n_fds=%d", context, timeout, fds, n_fds);
 }
 
 /**
@@ -313,7 +313,7 @@ probe glib.main_context_before_check = process("@ABS_GLIB_RUNTIME_LIBDIR@/libgli
   max_priority = $arg2;
   fds = $arg3;
   n_fds = $arg4;
-  probestr = sprintf("glib.main_context_before_check(context=%p, max_priority=%i, fds=%p, n_fds=%u)", context, max_priority, fds, n_fds);
+  probestr = sprintf("glib.main_context_before_check(context=%p, max_priority=%i, fds=%p, n_fds=%i)", context, max_priority, fds, n_fds);
 }
 
 /**
@@ -325,7 +325,7 @@ probe glib.main_context_after_check = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib
 {
   context = $arg1;
   n_ready = $arg2;
-  probestr = sprintf("glib.main_context_after_check(context=%p) -> %u", context, n_ready);
+  probestr = sprintf("glib.main_context_after_check(context=%p) -> %d", context, n_ready);
 }
 
 /**
@@ -425,7 +425,7 @@ probe glib.idle_dispatch = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@
   func = $arg3;
   data = $arg4;
   again = $arg5;
-  probestr = sprintf("glib.idle_dispatch(%p) -> %p, %p, %p, %u", source, context, func, data, again);
+  probestr = sprintf("glib.idle_dispatch(%p) -> %p, %p, %p, %d", source, context, func, data, again);
 }
 
 /**
@@ -465,7 +465,7 @@ probe glib.timeout_dispatch = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.
   func = $arg3;
   data = $arg4;
   again = $arg5;
-  probestr = sprintf("glib.timeout_dispatch(%p) -> %p, %p, %p, %u", source, context, func, data, again);
+  probestr = sprintf("glib.timeout_dispatch(%p) -> %p, %p, %p, %d", source, context, func, data, again);
 }
 
 /**
@@ -613,7 +613,7 @@ probe glib.rcbox_alloc = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT
   n_bytes = $arg2;
   atomic = $arg3;
   zeroed = $arg4;
-  probestr = sprintf("glib.rcbox_alloc(n_bytes=%d) -> %p", n_bytes, mem);
+  probestr = sprintf("glib.rcbox_alloc(n_bytes=%u) -> %p", n_bytes, mem);
 }
 
 /**

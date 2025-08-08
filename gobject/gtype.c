@@ -481,7 +481,7 @@ type_node_any_new_W (TypeNode             *pnode,
       pnode->children[i] = type;
     }
 
-  TRACE(GOBJECT_TYPE_NEW(name, node->supers[1], type));
+  TRACE (GOBJECT_TYPE_NEW (name, node->supers[1], (uintmax_t) type));
 
   node->plugin = plugin;
   node->n_children = 0;
@@ -1906,7 +1906,7 @@ g_type_create_instance (GType type)
     }
 #endif
 
-  TRACE(GOBJECT_OBJECT_NEW(instance, type));
+  TRACE (GOBJECT_OBJECT_NEW (instance, (uintmax_t) type));
 
   return instance;
 }

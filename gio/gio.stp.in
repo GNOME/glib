@@ -79,7 +79,7 @@ probe gio.task_propagate = process("@ABS_GLIB_RUNTIME_LIBDIR@/libgio-2.0.so.0.@L
 {
   task = $arg1;
   error_set = $arg2;
-  probestr = sprintf("gio.task_propagate(%p) -> %u", task, error_set);
+  probestr = sprintf("gio.task_propagate(%p) -> %d", task, error_set);
 }
 
 /**
@@ -103,5 +103,5 @@ probe gio.task_after_run_in_thread = process("@ABS_GLIB_RUNTIME_LIBDIR@/libgio-2
 {
   task = $arg1;
   thread_cancelled = $arg2;
-  probestr = sprintf("gio.task_after_run_in_thread(%p) -> %u", task, thread_cancelled);
+  probestr = sprintf("gio.task_after_run_in_thread(%p) -> %d", task, thread_cancelled);
 }
