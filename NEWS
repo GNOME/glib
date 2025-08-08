@@ -1,3 +1,38 @@
+Overview of changes in GLib 2.85.3, 2025-08-08
+==============================================
+
+* Fix encoding of output from `g_print()` and `g_printerr()` when locale is set
+  to `.utf8` on Windows (#3341, work by Luca Bacci)
+
+* Bugs fixed:
+  - #3341 `g_print` and `g_printerr` will cause encoding errors on Windows when
+    locale is set to `.utf8` (Luca Bacci)
+  - #3739 Crash in accept_ready() of GThreadedSocketService Under High Load
+    (Philip Withnall)
+  - #3740 Documentation of g_win32_error_message  does not contain information
+    about the behaviour when FormatMessageW failed (Philip Withnall)
+  - #3755 AIX: Unwanted symbol needs to be removed for AIX platform: getpwnam_r,
+    getpwuid_r (Parth Patel)
+  - !4706 gthreadpool: Clean up when g_thread_pool_new fails
+  - !4707 tests: Skip slow mainloop test on valgrind
+  - !4708 gfilenamecompleter: Fix g_object_unref() of undefined value
+  - !4709 tests: Connect to GMemoryMonitor signals earlier
+  - !4712 tests/thread-pool: Add a thread-pool fail test
+  - !4713 Fix test error for GMemoryMonitor
+  - !4715 gdbuserror: Reformat docs to fully use gi-docgen and match style guide
+  - !4722 tests: Add missing unistd.h header to thread-pool test
+  - !4723 tests: Add a missing poll condition to socket-listener test
+  - !4724 garray: Pass errors through GByteArray functions
+  - !4725 garray: Add checks to g_ptr_array_extend_and_steal
+  - !4726 Add a basic GFilenameCompleter test
+  - !4728 gbitlock: Fix documentation issues
+  - !4729 [RFC] Tests: do not set a timeout in Python tests
+  - !4730 gstrfuncs: Always treat G_MININT64 in g_ascii_strtoll
+  - !4731 glocalfile: Disable faccessat()-based query_exists on OpenBSD
+  - !4733 gvalue: Reformat docs to fully use gi-docgen and match style guide
+  - !4734 gspawn: Improve docstring for g_spawn_async()
+
+
 Overview of changes in GLib 2.85.2, 2025-07-21
 ==============================================
 
