@@ -1,4 +1,4 @@
-# See https://wiki.apertis.org/Guidelines/Coding_conventions#Code_formatting
+# See https://www.apertis.org/policies/coding_conventions/
 BasedOnStyle: GNU
 AlwaysBreakAfterDefinitionReturnType: All
 BreakBeforeBinaryOperators: None
