@@ -2682,8 +2682,8 @@ if enable_systemtap
   endif
   stp_cdata = configuration_data()
   stp_cdata.set('ABS_GLIB_RUNTIME_LIBDIR', glib_libdir)
-  stp_cdata.set('LT_CURRENT', minor_version * 100)
-  stp_cdata.set('LT_REVISION', micro_version)
+  stp_cdata.set('LT_CURRENT', current)
+  stp_cdata.set('LT_REVISION', interface_age)
 endif
 
 # Introspection
