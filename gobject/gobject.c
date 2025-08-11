@@ -23,8 +23,9 @@
 
 #include "config.h"
 
-#include <string.h>
 #include <signal.h>
+#include <stdint.h>
+#include <string.h>
 
 #include "../glib/glib-private.h"
 
@@ -4625,7 +4626,7 @@ retry:
       return NULL;
     }
 
-  TRACE (GOBJECT_OBJECT_REF (object, G_TYPE_FROM_INSTANCE (object), old_ref));
+  TRACE (GOBJECT_OBJECT_REF (object, (uintmax_t) G_TYPE_FROM_INSTANCE (object), old_ref));
 
   *out_toggle_notify = toggle_notify;
   *out_toggle_data = toggle_data;
@@ -4769,7 +4770,7 @@ retry_beginning:
         goto retry_beginning;
 
       /* Beware: object might be a dangling pointer. */
-      TRACE (GOBJECT_OBJECT_UNREF (object, obj_gtype, old_ref));
+      TRACE (GOBJECT_OBJECT_UNREF (object, (uintmax_t) obj_gtype, old_ref));
       return;
     }
 
@@ -4828,9 +4829,9 @@ retry_beginning:
   g_object_notify_queue_freeze (object, TRUE);
   nqueue_is_frozen = TRUE;
 
-  TRACE (GOBJECT_OBJECT_DISPOSE (object, G_TYPE_FROM_INSTANCE (object), 1));
+  TRACE (GOBJECT_OBJECT_DISPOSE (object, (uintmax_t) G_TYPE_FROM_INSTANCE (object), 1));
   G_OBJECT_GET_CLASS (object)->dispose (object);
-  TRACE (GOBJECT_OBJECT_DISPOSE_END (object, G_TYPE_FROM_INSTANCE (object), 1));
+  TRACE (GOBJECT_OBJECT_DISPOSE_END (object, (uintmax_t) G_TYPE_FROM_INSTANCE (object), 1));
 
   /* Must re-fetch old-ref. _object_unref_clear_weak_locations() relies on
    * that.  */
@@ -4899,9 +4900,9 @@ retry_decrement:
   g_signal_handlers_destroy (object);
   g_object_weak_release_all (object, TRUE);
 
-  TRACE (GOBJECT_OBJECT_FINALIZE (object, G_TYPE_FROM_INSTANCE (object)));
+  TRACE (GOBJECT_OBJECT_FINALIZE (object, (uintmax_t) G_TYPE_FROM_INSTANCE (object)));
   G_OBJECT_GET_CLASS (object)->finalize (object);
-  TRACE (GOBJECT_OBJECT_FINALIZE_END (object, G_TYPE_FROM_INSTANCE (object)));
+  TRACE (GOBJECT_OBJECT_FINALIZE_END (object, (uintmax_t) G_TYPE_FROM_INSTANCE (object)));
 
   GOBJECT_IF_DEBUG (OBJECTS,
                     {
