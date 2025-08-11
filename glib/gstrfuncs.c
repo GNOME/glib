@@ -416,6 +416,8 @@ g_strndup (const gchar *str,
 
   if (str)
     {
+      g_return_val_if_fail (n < G_MAXSIZE, NULL);
+
       new_str = g_new (gchar, n + 1);
       strncpy (new_str, str, n);
       new_str[n] = '\0';
@@ -440,6 +442,8 @@ g_strnfill (gsize length,
             gchar fill_char)
 {
   gchar *str;
+
+  g_return_val_if_fail (length < G_MAXSIZE, NULL);
 
   str = g_new (gchar, length + 1);
   memset (str, (guchar)fill_char, length);

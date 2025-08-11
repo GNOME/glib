@@ -571,6 +571,16 @@ test_strndup (void)
   g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, "aa");
   g_free (str);
+
+  if (g_test_undefined ())
+    {
+      /* Testing degenerated cases */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion* < G_MAXSIZE*");
+      g_assert_null (
+          g_strndup ("aaaa", G_MAXSIZE));
+      g_test_assert_expected_messages ();
+    }
 }
 
 /* Testing g_strdup_printf() function with various positive and negative cases */
@@ -616,6 +626,16 @@ test_strnfill (void)
   g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, "aaaaa");
   g_free (str);
+
+  if (g_test_undefined ())
+    {
+      /* Testing degenerated cases */
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                             "*assertion* < G_MAXSIZE*");
+      g_assert_null (
+          g_strnfill (G_MAXSIZE, 'a'));
+      g_test_assert_expected_messages ();
+    }
 }
 
 /* Testing g_strconcat() function with various positive and negative cases */
