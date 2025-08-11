@@ -160,6 +160,14 @@
 
   <maintainer>
     <foaf:Person>
+      <foaf:name>Thomas Haller</foaf:name>
+      <foaf:mbox rdf:resource="mailto:thaller@redhat.com"/>
+      <gnome:userid>thaller</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
       <foaf:name>Xavier Claessens</foaf:name>
       <foaf:mbox rdf:resource="mailto:xclaesse@gmail.com"/>
       <gnome:userid>xclaesse</gnome:userid>

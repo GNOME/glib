@@ -79,7 +79,7 @@ gio/gio-tool*				@oholy @alexl @pwithnall
 glib/	@ebassi @pwithnall @sdroege
 
 # GObject type system
-gobject/	@ebassi @pwithnall @sdroege
+gobject/	@ebassi @pwithnall @sdroege @thaller
 
 # GVariant
 glib/gvariant*	@pwithnall @sdroege
