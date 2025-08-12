@@ -365,7 +365,6 @@ if host_system != 'windows'
     'gunixoutputstream.c',
     'gfdonotificationbackend.c',
     'ggtknotificationbackend.c',
-    'gmemorymonitorpsi.c',
   )
 
   portal_sources = [files(
@@ -395,6 +394,10 @@ if host_system != 'windows'
     unix_sources += files(
       'gmemorymonitorpoll.c',
     )
+  endif
+  
+  if host_system != 'sunos'
+    unix_sources += files('gmemorymonitorpsi.c')
   endif
 
   if glib_have_cocoa
