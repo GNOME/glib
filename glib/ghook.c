@@ -403,7 +403,7 @@ g_hook_unref (GHookList *hook_list,
  *
  * Increments the reference count for a #GHook.
  *
- * Returns: the @hook that was passed in (since 2.6)
+ * Returns: (transfer full): the @hook that was passed in (since 2.6)
  */
 GHook *
 g_hook_ref (GHookList *hook_list,

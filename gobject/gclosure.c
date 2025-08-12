@@ -611,7 +611,7 @@ closure_ref_internal (GClosure *closure)
  * Increments the reference count on a closure to force it staying
  * alive while the caller holds a pointer to it.
  *
- * Returns: (transfer none): The @closure passed in, for convenience
+ * Returns: (transfer full): The @closure passed in, for convenience
  */
 GClosure*
 g_closure_ref (GClosure *closure)
@@ -671,7 +671,7 @@ g_closure_invalidate (GClosure *closure)
 
 /**
  * g_closure_unref:
- * @closure: #GClosure to decrement the reference count on
+ * @closure: (transfer full): #GClosure to decrement the reference count on
  *
  * Decrements the reference count of a closure after it was previously
  * incremented by the same caller.

@@ -4644,7 +4644,7 @@ retry:
  * extension), so any casting the caller needs to do on the return type must be
  * explicit.
  *
- * Returns: (type GObject.Object) (transfer none): the same @object
+ * Returns: (type GObject.Object) (transfer full): the same @object
  */
 gpointer
 (g_object_ref) (gpointer _object)
@@ -4720,7 +4720,7 @@ _object_unref_clear_weak_locations (GObject *object, gint *p_old_ref, gboolean d
 
 /**
  * g_object_unref:
- * @object: (type GObject.Object): a #GObject
+ * @object: (type GObject.Object) (transfer full):: a #GObject
  *
  * Decreases the reference count of @object. When its reference count
  * drops to 0, the object is finalized (i.e. its memory is freed).
