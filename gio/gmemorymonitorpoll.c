@@ -138,12 +138,39 @@ g_memory_monitor_poll_get_property (GObject    *object,
     }
 }
 
-static gboolean
-g_memory_monitor_mem_ratio_cb (gpointer data)
+typedef struct
 {
-  GMemoryMonitorPoll *monitor = (GMemoryMonitorPoll *) data;
+  GWeakRef monitor_weak;  /* (element-type GMemoryMonitorPoll) */
+} CallbackData;
+
+static CallbackData *
+callback_data_new (GMemoryMonitorPoll *monitor)
+{
+  CallbackData *data = g_new0 (CallbackData, 1);
+  g_weak_ref_init (&data->monitor_weak, monitor);
+  return g_steal_pointer (&data);
+}
+
+static void
+callback_data_free (CallbackData *data)
+{
+  g_weak_ref_clear (&data->monitor_weak);
+  g_free (data);
+}
+
+static gboolean
+g_memory_monitor_mem_ratio_cb (gpointer user_data)
+{
+  CallbackData *data = user_data;
+  GMemoryMonitorPoll *monitor = NULL;
   gdouble mem_ratio;
   GMemoryMonitorLowMemoryLevel warning_level = G_MEMORY_MONITOR_LOW_MEMORY_LEVEL_INVALID;
+
+  /* It’s possible for the dispatch of this callback to race with finalising
+   * the `GMemoryMonitorPoll`, hence the use of a thread-safe weak ref. */
+  monitor = g_weak_ref_get (&data->monitor_weak);
+  if (monitor == NULL)
+    return G_SOURCE_REMOVE;
 
   /* Should be executed in the worker context */
   g_assert (g_main_context_is_owner (monitor->worker));
@@ -155,10 +182,16 @@ g_memory_monitor_mem_ratio_cb (gpointer data)
     mem_ratio = monitor->mem_free_ratio;
 
   if (mem_ratio < 0.0)
-    return G_SOURCE_REMOVE;
+    {
+      g_clear_object (&monitor);
+      return G_SOURCE_REMOVE;
+    }
 
   if (mem_ratio > 0.5)
-    return G_SOURCE_CONTINUE;
+    {
+      g_clear_object (&monitor);
+      return G_SOURCE_CONTINUE;
+    }
 
   g_debug ("memory free ratio %f", mem_ratio);
 
@@ -171,6 +204,8 @@ g_memory_monitor_mem_ratio_cb (gpointer data)
 
   if (warning_level != G_MEMORY_MONITOR_LOW_MEMORY_LEVEL_INVALID)
     g_memory_monitor_base_send_event_to_user (G_MEMORY_MONITOR_BASE (monitor), warning_level);
+
+  g_clear_object (&monitor);
 
   return G_SOURCE_CONTINUE;
 }
@@ -196,7 +231,8 @@ g_memory_monitor_poll_initable_init (GInitable     *initable,
       source = g_timeout_source_new_seconds (G_MEMORY_MONITOR_PSI_DEFAULT_SEC);
     }
 
-  g_source_set_callback (source, g_memory_monitor_mem_ratio_cb, monitor, NULL);
+  g_source_set_callback (source, g_memory_monitor_mem_ratio_cb,
+                         callback_data_new (monitor), (GDestroyNotify) callback_data_free);
   monitor->worker = GLIB_PRIVATE_CALL (g_get_worker_context) ();
   g_source_attach (source, monitor->worker);
   monitor->source_timeout = g_steal_pointer (&source);
