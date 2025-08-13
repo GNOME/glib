@@ -989,10 +989,9 @@ g_array_sort_with_data (GArray           *farray,
  * gets pointers to items as arguments. If the element is found, true
  * is returned and the element’s index is returned in @out_match_index
  * (if non-`NULL`). Otherwise, false is returned and @out_match_index
- * is undefined. If @target exists multiple times in @array, the index
- * of the first instance is returned. This search is using a binary
- * search, so the @array must absolutely be sorted to return a correct
- * result (if not, the function may produce false-negative).
+ * is undefined. This search is using a binary search, so the @array must
+ * absolutely be sorted to return a correct result (if not, the function may
+ * produce false-negative).
  *
  * This example defines a comparison function and searches an element in a
  * `GArray`:
