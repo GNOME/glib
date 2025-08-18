@@ -111,7 +111,7 @@ setup (Fixture       *fixture,
 {
   const gchar *xdgdatahome;
   const gchar * const *xdgdatadirs;
-  gchar *appdir;
+  gchar *appdir_name;
   gchar *apphome;
   gchar *mimeapps;
   gchar *name;
@@ -123,12 +123,38 @@ setup (Fixture       *fixture,
   xdgdatahome = g_get_user_data_dir ();
   xdgdatadirs = g_get_system_data_dirs ();
 
-  appdir = g_build_filename (xdgdatadirs[0], "applications", NULL);
-  g_test_message ("creating '%s'", appdir);
-  res = g_mkdir_with_parents (appdir, 0700);
+  appdir_name = g_build_filename (xdgdatadirs[0], "applications", NULL);
+  g_test_message ("creating '%s'", appdir_name);
+  res = g_mkdir_with_parents (appdir_name, 0700);
   g_assert_cmpint (res, ==, 0);
 
-  name = g_build_filename (appdir, "mimeapps.list", NULL);
+  if (!GPOINTER_TO_INT (test_data))
+    {
+      name = g_build_filename (appdir_name, "mimeapps.list", NULL);
+    }
+  else
+    {
+      GFile *file_a = NULL, *file_b = NULL, *appdir = NULL;
+
+      /*
+       * Ensure mimeapps.list can be reachable via a symlink chain.
+       * See https://gitlab.gnome.org/GNOME/glib/-/issues/3579
+      */
+      appdir = g_file_new_for_path (appdir_name);
+      file_a = g_file_get_child (appdir, "mimeapps.list");
+      g_file_make_symbolic_link (file_a, "mimeapps.list.b", NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (file_a);
+
+      file_b = g_file_get_child (appdir, "mimeapps.list.b");
+      g_file_make_symbolic_link (file_b, "mimeapps.list.c", NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (file_b);
+
+      g_object_unref (appdir);
+      name = g_build_filename (appdir_name, "mimeapps.list.c", NULL);
+    }
+
   g_test_message ("creating '%s'", name);
   g_file_set_contents (name, defaults_data, -1, &error);
   g_assert_no_error (error);
@@ -186,7 +212,7 @@ setup (Fixture       *fixture,
   g_free (name);
 
   g_free (apphome);
-  g_free (appdir);
+  g_free (appdir_name);
   g_free (mimeapps);
 
   /* Pointer to one of the temporary directories. */
@@ -630,18 +656,32 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
-  g_test_add ("/appinfo/mime/api", Fixture, NULL, setup,
+  g_test_add ("/appinfo/mime/api", Fixture, GINT_TO_POINTER (FALSE), setup,
               test_mime_api, teardown);
-  g_test_add ("/appinfo/mime/default", Fixture, NULL, setup,
+  g_test_add ("/appinfo/mime/default", Fixture, GINT_TO_POINTER (FALSE), setup,
               test_mime_default, teardown);
-  g_test_add ("/appinfo/mime/file", Fixture, NULL, setup,
+  g_test_add ("/appinfo/mime/file", Fixture, GINT_TO_POINTER (FALSE), setup,
               test_mime_file, teardown);
-  g_test_add ("/appinfo/mime/scheme-handler", Fixture, NULL, setup,
+  g_test_add ("/appinfo/mime/scheme-handler", Fixture, GINT_TO_POINTER (FALSE), setup,
               test_scheme_handler, teardown);
-  g_test_add ("/appinfo/mime/default-last-used", Fixture, NULL, setup,
+  g_test_add ("/appinfo/mime/default-last-used", Fixture, GINT_TO_POINTER (FALSE), setup,
               test_mime_default_last_used, teardown);
-  g_test_add ("/appinfo/mime/ignore-nonexisting", Fixture, NULL, setup,
+  g_test_add ("/appinfo/mime/ignore-nonexisting", Fixture, GINT_TO_POINTER (FALSE), setup,
               test_mime_ignore_nonexisting, teardown);
+
+  g_test_add ("/appinfo/mime-symlinked/api", Fixture, GINT_TO_POINTER (TRUE), setup,
+              test_mime_api, teardown);
+  g_test_add ("/appinfo/mime-symlinked/default", Fixture, GINT_TO_POINTER (TRUE), setup,
+              test_mime_default, teardown);
+  g_test_add ("/appinfo/mime-symlinked/file", Fixture, GINT_TO_POINTER (TRUE), setup,
+              test_mime_file, teardown);
+  g_test_add ("/appinfo/mime-symlinked/scheme-handler", Fixture, GINT_TO_POINTER (TRUE), setup,
+              test_scheme_handler, teardown);
+  g_test_add ("/appinfo/mime-symlinked/default-last-used", Fixture, GINT_TO_POINTER (TRUE), setup,
+              test_mime_default_last_used, teardown);
+  g_test_add ("/appinfo/mime-symlinked/ignore-nonexisting", Fixture, GINT_TO_POINTER (TRUE), setup,
+              test_mime_ignore_nonexisting, teardown);
+
   g_test_add ("/appinfo/all", Fixture, NULL, setup, test_all, teardown);
 
   return g_test_run ();
