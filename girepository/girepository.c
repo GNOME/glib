@@ -2051,6 +2051,9 @@ gi_repository_require (GIRepository           *repository,
 {
   GITypelib *typelib;
 
+  g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
+  g_return_val_if_fail (namespace != NULL, NULL);
+
   typelib = require_internal (repository, namespace, version, flags,
                               (const char * const *) repository->typelib_search_path->pdata,
                               repository->typelib_search_path->len, error);
@@ -2088,6 +2091,9 @@ gi_repository_require_private (GIRepository           *repository,
                                GError                **error)
 {
   const char * const search_path[] = { typelib_dir, NULL };
+
+  g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
+  g_return_val_if_fail (namespace != NULL, NULL);
 
   return require_internal (repository, namespace, version, flags,
                            search_path, 1, error);
