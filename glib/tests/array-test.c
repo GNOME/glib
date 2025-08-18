@@ -1084,6 +1084,20 @@ test_array_binary_search (void)
   g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
 
   g_array_free (garray, TRUE);
+
+  /* Test with an array sorted in descending order (illegal input). */
+  garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 10000);
+
+  for (i = 100; i > 0; i--)
+    g_array_append_val (garray, i);
+
+  i = 100;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  i = 1;
+  g_assert_false (g_array_binary_search (garray, &i, cmpint, NULL));
+
+  g_array_free (garray, TRUE);
 }
 
 static void
