@@ -234,27 +234,6 @@ gio_gir_args = [
   '--symbol-prefix=gio',
 ]
 
-# For API compatibility reasons, Gio-2.0.gir needs to contain the platform
-# specific APIs which are also present in the (newer) GioUnix-2.0.gir and
-# GioWin32-2.0.gir repositories.
-# See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3892#note_2001361
-# These can be dropped when GIO next breaks API (i.e. with Gio-3.0.gir).
-if host_system == 'windows'
-  gio_gir_sources += [ gio_win32_include_headers, win32_sources ]
-  foreach h: gio_win32_include_headers
-    gio_gir_args += '--c-include=gio/' + fs.name(h)
-  endforeach
-  gio_gir_packages += 'gio-windows-2.0'
-  gio_gir_args += '--pkg=gio-windows-2.0'
-else
-  gio_gir_sources += [ gio_unix_include_headers, unix_sources ]
-  foreach h: gio_unix_include_headers
-    gio_gir_args += '--c-include=gio/' + fs.name(h)
-  endforeach
-  gio_gir_packages += 'gio-unix-2.0'
-  gio_gir_args += '--pkg=gio-unix-2.0'
-endif
-
 gio_gir = gnome.generate_gir(libgio,
   sources: gio_gir_sources,
   namespace: 'Gio',
