@@ -3775,7 +3775,7 @@ update_mimeapps_list (const char  *desktop_id,
                       UpdateMimeFlags flags,
                       GError     **error)
 {
-  char *dirname, *filename, *string;
+  char *dirname, *old_filename, *filename, *string;
   GKeyFile *key_file;
   gboolean load_succeeded, res;
   char **old_list, **list;
@@ -3793,6 +3793,16 @@ update_mimeapps_list (const char  *desktop_id,
     return FALSE;
 
   filename = g_build_filename (dirname, "mimeapps.list", NULL);
+
+  while (g_file_test (filename, G_FILE_TEST_IS_SYMLINK))
+    {
+      old_filename = filename;
+      filename = g_file_read_link (old_filename, error);
+      g_free (old_filename);
+      if (filename == NULL)
+        return FALSE;
+    }
+
   g_free (dirname);
 
   key_file = g_key_file_new ();
