@@ -135,6 +135,15 @@ struct _GIRepository
 
 G_DEFINE_TYPE (GIRepository, gi_repository, G_TYPE_OBJECT);
 
+static GITypelib *
+require_internal (GIRepository           *repository,
+                  const char             *namespace,
+                  const char             *version,
+                  GIRepositoryLoadFlags   flags,
+                  const char * const     *search_paths,
+                  size_t                  n_search_paths,
+                  GError                **error);
+
 #ifdef G_PLATFORM_WIN32
 #include <windows.h>
 
@@ -596,6 +605,10 @@ load_dependencies_recurse (GIRepository *repository,
     {
       int i;
 
+      const char * const *search_path =
+        (const char * const *) repository->typelib_search_path->pdata;
+      gsize search_path_len = repository->typelib_search_path->len;
+
       for (i = 0; dependencies[i]; i++)
         {
           char *dependency = dependencies[i];
@@ -608,8 +621,9 @@ load_dependencies_recurse (GIRepository *repository,
           dependency_namespace = g_strndup (dependency, (size_t) (last_dash - dependency));
           dependency_version = last_dash+1;
 
-          if (!gi_repository_require (repository, dependency_namespace, dependency_version,
-                                      0, error))
+          if (!require_internal (repository, dependency_namespace, dependency_version,
+                                 0, search_path, search_path_len,
+                                 error))
             {
               g_free (dependency_namespace);
               g_strfreev (dependencies);
