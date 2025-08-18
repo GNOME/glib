@@ -663,7 +663,7 @@ static const char *
 register_internal (GIRepository *repository,
                    const char   *source,
                    gboolean      lazy,
-                   GITypelib     *typelib,
+                   GITypelib    *typelib,
                    GError      **error)
 {
   Header *header;
@@ -2043,11 +2043,11 @@ require_internal (GIRepository           *repository,
  * Since: 2.80
  */
 GITypelib *
-gi_repository_require (GIRepository  *repository,
-                       const char    *namespace,
-                       const char    *version,
-                       GIRepositoryLoadFlags flags,
-                       GError       **error)
+gi_repository_require (GIRepository           *repository,
+                       const char             *namespace,
+                       const char             *version,
+                       GIRepositoryLoadFlags   flags,
+                       GError                **error)
 {
   GITypelib *typelib;
 
