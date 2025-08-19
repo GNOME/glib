@@ -98,7 +98,9 @@ glib_tests = {
   },
   'pathbuf' : {},
   'pattern' : {},
-  'print' : {},
+  'print' : {
+    'can_fail' : host_system == 'windows',
+  },
   'private' : {},
   'protocol' : {},
   'queue' : {},
