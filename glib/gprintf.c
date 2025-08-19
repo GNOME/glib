@@ -198,7 +198,7 @@ g_vprintf (gchar const *format,
 {
   g_return_val_if_fail (format != NULL, -1);
 
-  return g_vfprintf (stdout, format, args);
+  return _g_vprintf (format, args);
 }
 
 /**
@@ -222,19 +222,9 @@ g_vfprintf (FILE        *file,
             gchar const *format,
 	    va_list      args)
 {
-  char *result = NULL;
-  int rlength;
-
   g_return_val_if_fail (format != NULL, -1);
 
-  rlength = g_vasprintf (&result, format, args);
-  if (rlength < 0)
-    return rlength;
-
-  rlength = g_fputs (result, file);
-  g_free (result);
-
-  return rlength;
+  return _g_vfprintf (file, format, args);
 }
 
 /**
