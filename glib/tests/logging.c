@@ -1,5 +1,10 @@
+#include "config.h"
+
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #define G_LOG_USE_STRUCTURED 1
 #include <glib.h>
 
@@ -1146,6 +1151,58 @@ test_structured_logging_set_writer_func_twice (void)
     }
 }
 
+static GLogWriterOutput
+n_fields_log_writer (GLogLevelFlags log_level, const GLogField *fields, gsize n_fields, gpointer user_data)
+{
+  size_t expected_n_fields = *(size_t *) user_data;
+
+  /* Let process exit successfully for g_test_trap_assert_passed(). */
+  if (n_fields == expected_n_fields)
+    _exit (0);
+
+  return G_LOG_WRITER_HANDLED;
+}
+
+static void
+test_structured_logging_recursion_overflow (void)
+{
+  g_test_summary ("Test that g_log_structured always sets n_fields correctly.");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3760");
+
+  if (g_test_subprocess ())
+    {
+      size_t expected_n_fields = 16;
+      const int log_level = G_LOG_LEVEL_MESSAGE | G_LOG_FLAG_RECURSION;
+
+      g_log_set_writer_func (n_fields_log_writer, &expected_n_fields, NULL);
+      g_log_structured (G_LOG_DOMAIN, log_level,
+                        "key01", "value",
+                        "key02", "value",
+                        "key03", "value",
+                        "key04", "value",
+                        "key05", "value",
+                        "key06", "value",
+                        "key07", "value",
+                        "key08", "value",
+                        "key09", "value",
+                        "key10", "value",
+                        "key11", "value",
+                        "key12", "value",
+                        "key13", "value",
+                        "key14", "value",
+                        "key15", "value",
+                        "key16", "value",
+                        "key17", "value",
+                        "key18", "value",
+                        "MESSAGE", "Triggered segmentation fault in the past");
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_passed ();
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1187,6 +1244,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/gibberish", test_gibberish);
   g_test_add_func ("/structured-logging/no-state", test_structured_logging_no_state);
   g_test_add_func ("/structured-logging/some-state", test_structured_logging_some_state);
+  g_test_add_func ("/structured-logging/recursion-overflow", test_structured_logging_recursion_overflow);
   g_test_add_func ("/structured-logging/robustness", test_structured_logging_robustness);
   g_test_add_func ("/structured-logging/roundtrip1", test_structured_logging_roundtrip1);
   g_test_add_func ("/structured-logging/roundtrip2", test_structured_logging_roundtrip2);

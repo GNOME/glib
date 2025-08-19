@@ -1618,7 +1618,7 @@ g_log_structured (const gchar    *log_domain,
 
   for (p = va_arg (args, gchar *), i = n_fields;
        strcmp (p, "MESSAGE") != 0;
-       p = va_arg (args, gchar *), i++)
+       p = va_arg (args, gchar *))
     {
       GLogField field;
       const gchar *key = p;
@@ -1647,6 +1647,8 @@ g_log_structured (const gchar    *log_domain,
 
           g_array_append_val (array, field);
         }
+
+      i++;
     }
 
   n_fields = i;
