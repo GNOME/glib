@@ -925,7 +925,7 @@ g_main_context_get_thread_default (void)
  * [struct@GLib.MainContext] (with a ref added to it) rather than returning
  * %NULL.
  *
- * Returns: (transfer full): the thread-default #GMainContext. Unref
+ * Returns: (transfer full) (not nullable): the thread-default #GMainContext. Unref
  *     with [method@GLib.MainContext.unref] when you are done with it.
  *
  * Since: 2.32
