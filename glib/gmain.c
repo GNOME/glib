@@ -2551,7 +2551,7 @@ g_main_context_find_source_by_id (GMainContext *context,
  * multiple sources exist with the same source function and user data,
  * the first one found will be returned.
  * 
- * Returns: (transfer none): the source, if one was found, otherwise %NULL
+ * Returns: (transfer none) (nullable): the source, if one was found, otherwise %NULL
  **/
 GSource *
 g_main_context_find_source_by_funcs_user_data (GMainContext *context,
@@ -2601,7 +2601,7 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
  * multiple sources exist with the same user data, the first
  * one found will be returned.
  * 
- * Returns: (transfer none): the source, if one was found, otherwise %NULL
+ * Returns: (transfer none) (nullable): the source, if one was found, otherwise %NULL
  **/
 GSource *
 g_main_context_find_source_by_user_data (GMainContext *context,
