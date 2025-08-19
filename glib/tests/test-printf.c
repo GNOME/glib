@@ -26,6 +26,9 @@
 #include <string.h>
 #include "glib.h"
 #include "gstdio.h"
+#ifdef G_OS_UNIX
+#include <glib-unix.h>
+#endif
 #ifdef G_OS_WIN32
 #include <io.h>
 #include <fcntl.h>
@@ -876,6 +879,110 @@ test_64bit2 (void)
 #endif
 }
 
+static void
+test_produce_embedded_nulls (void)
+{
+  char buf[4];
+  int length;
+  unsigned int i = 0;
+
+  length = g_snprintf (buf, sizeof (buf), "%s%c%s", "a", '\0', "b");
+  g_assert_cmpint (length, ==, 3);
+  g_assert_cmpint (buf[i++], ==, 'a');
+  g_assert_cmpint (buf[i++], ==, '\0');
+  g_assert_cmpint (buf[i++], ==, 'b');
+  g_assert_cmpint (buf[i++], ==, '\0');
+}
+
+typedef struct
+{
+  FILE *stream;
+  size_t written;
+} TestProduceEmbeddedNulls2ThreadData;
+
+static gpointer
+test_produce_embedded_nulls2_writing_thread (gpointer user_data)
+{
+  TestProduceEmbeddedNulls2ThreadData *data;
+
+  data = (TestProduceEmbeddedNulls2ThreadData *) user_data;
+  data->written = g_fprintf (data->stream, "%s%c%s", "a", '\0', "b");
+
+  g_assert_false (ferror (data->stream));
+  g_assert_no_errno (fclose (data->stream));
+
+  return NULL;
+}
+
+static void
+test_produce_embedded_nulls2 (void)
+{
+  int fds[2] = { -1, -1 };
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3761");
+  g_test_summary ("printf() functions can produce strings with embedded null "
+                  "characters. That happens when passing individual characters "
+                  "(%c) with value '\0'. Test that printing such strings via "
+                  "g_fprintf() works as expected.");
+
+#ifdef G_OS_UNIX
+  GError *error = NULL;
+  g_unix_open_pipe (fds, O_CLOEXEC, &error);
+  g_assert_no_error (error);
+#else
+  g_assert_no_errno (_pipe (fds, 0, _O_BINARY | _O_NOINHERIT));
+#endif
+
+#ifdef G_OS_UNIX
+#define MODE_EXTRA ""
+#else
+#define MODE_EXTRA "b"
+#endif
+
+  FILE *streams[2] = { NULL, NULL };
+  streams[0] = fdopen (fds[0], "r" MODE_EXTRA);
+  streams[1] = fdopen (fds[1], "w" MODE_EXTRA);
+  g_assert_nonnull (streams[0]);
+  g_assert_nonnull (streams[1]);
+
+  TestProduceEmbeddedNulls2ThreadData data = { streams[1], 3 };
+
+  /* Do the writing on a separate thread to avoid any
+   * possibility of deadlocks */
+  GThread *writing_thread = g_thread_new ("pipe writing thread",
+                                          test_produce_embedded_nulls2_writing_thread,
+                                          &data);
+
+  char buf[3];
+  char *iter = buf;
+  size_t size = sizeof (buf);
+  size_t read_bytes;
+  do
+    {
+      read_bytes = fread (iter, 1, size, streams[0]);
+      g_assert_cmpint (read_bytes, >, 0);
+      g_assert_cmpint (read_bytes, <=, size);
+      iter += read_bytes;
+      size -= read_bytes;
+    }
+  while (size > 0);
+
+  char dummy;
+  read_bytes = fread (&dummy, 1, 1, streams[0]);
+  g_assert_cmpint (read_bytes, ==, 0);
+
+  g_assert_false (ferror (streams[0]));
+
+  g_thread_join (g_steal_pointer (&writing_thread));
+
+  g_assert_cmpint (data.written, ==, 3);
+  g_assert_cmpint (buf[0], ==, 'a');
+  g_assert_cmpint (buf[1], ==, '\0');
+  g_assert_cmpint (buf[2], ==, 'b');
+
+  g_assert_no_errno (fclose (streams[0]));
+}
+
 G_GNUC_PRINTF(1, 2)
 static gsize
 upper_bound (const gchar *format, ...)
@@ -1000,6 +1107,7 @@ main (int   argc,
   g_test_add_func ("/snprintf/test-percent", test_percent);
   g_test_add_func ("/snprintf/test-positional-params", test_positional_params);
   g_test_add_func ("/snprintf/test-64bit", test_64bit);
+  g_test_add_func ("/snprintf/produce-embedded-nulls", test_produce_embedded_nulls);
 
   g_test_add_func ("/printf/test-percent", test_percent2);
   g_test_add_func ("/printf/test-positional-params", test_positional_params2);
@@ -1008,6 +1116,8 @@ main (int   argc,
 #ifdef G_OS_WIN32
   g_test_add_func ("/printf/test-64bit/subprocess/win32", test_64bit2_win32);
 #endif
+
+  g_test_add_func ("/fprintf/produce-embedded-nulls", test_produce_embedded_nulls2);
 
   g_test_add_func ("/sprintf/test-positional-params", test_positional_params3);
   g_test_add_func ("/sprintf/upper-bound", test_upper_bound);
