@@ -960,8 +960,8 @@ test_produce_embedded_nulls2 (void)
   do
     {
       read_bytes = fread (iter, 1, size, streams[0]);
-      g_assert_cmpint (read_bytes, >, 0);
-      g_assert_cmpint (read_bytes, <=, size);
+      g_assert_cmpuint (read_bytes, >, 0U);
+      g_assert_cmpuint (read_bytes, <=, size);
       iter += read_bytes;
       size -= read_bytes;
     }
@@ -969,13 +969,13 @@ test_produce_embedded_nulls2 (void)
 
   char dummy;
   read_bytes = fread (&dummy, 1, 1, streams[0]);
-  g_assert_cmpint (read_bytes, ==, 0);
+  g_assert_cmpuint (read_bytes, ==, 0U);
 
   g_assert_false (ferror (streams[0]));
 
   g_thread_join (g_steal_pointer (&writing_thread));
 
-  g_assert_cmpint (data.written, ==, 3);
+  g_assert_cmpuint (data.written, ==, 3U);
   g_assert_cmpint (buf[0], ==, 'a');
   g_assert_cmpint (buf[1], ==, '\0');
   g_assert_cmpint (buf[2], ==, 'b');
