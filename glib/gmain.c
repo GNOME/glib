@@ -651,7 +651,7 @@ g_main_context_new_with_next_id (guint next_id)
  *
  * Creates a new [struct@GLib.MainContext] structure.
  *
- * Returns: the new #GMainContext
+ * Returns: (transfer full): the new #GMainContext
  **/
 GMainContext *
 g_main_context_new (void)
@@ -958,7 +958,7 @@ g_main_context_ref_thread_default (void)
  * and must be added to one with [method@GLib.Source.attach] before it will be
  * executed.
  * 
- * Returns: the newly-created #GSource.
+ * Returns: (transfer full): the newly-created #GSource.
  **/
 GSource *
 g_source_new (GSourceFuncs *source_funcs,
@@ -4518,7 +4518,7 @@ g_main_context_iteration (GMainContext *context, gboolean may_block)
  * 
  * Creates a new [struct@GLib.MainLoop] structure.
  * 
- * Returns: a new #GMainLoop.
+ * Returns: (transfer full): a new #GMainLoop.
  **/
 GMainLoop *
 g_main_loop_new (GMainContext *context,
@@ -5275,7 +5275,7 @@ timeout_source_new (guint    interval,
  * The interval given is in terms of monotonic time, not wall clock
  * time.  See [func@GLib.get_monotonic_time].
  * 
- * Returns: the newly-created timeout source
+ * Returns: (transfer full): the newly-created timeout source
  **/
 GSource *
 g_timeout_source_new (guint interval)
@@ -5299,7 +5299,7 @@ g_timeout_source_new (guint interval)
  * The interval given is in terms of monotonic time, not wall clock time.
  * See [func@GLib.get_monotonic_time].
  *
- * Returns: the newly-created timeout source
+ * Returns: (transfer full): the newly-created timeout source
  *
  * Since: 2.14	
  **/
@@ -6187,7 +6187,7 @@ g_unix_signal_handler (int signum)
  * Calling `waitpid` for specific processes other than @pid remains a
  * valid thing to do.
  *
- * Returns: the newly-created child watch source
+ * Returns: (transfer full): the newly-created child watch source
  *
  * Since: 2.4
  **/
@@ -6447,7 +6447,7 @@ idle_source_new (gboolean one_shot)
  * compared to other sources which have a default priority of
  * [const@GLib.PRIORITY_DEFAULT].
  *
- * Returns: the newly-created idle source
+ * Returns: (transfer full): the newly-created idle source
  **/
 GSource *
 g_idle_source_new (void)
