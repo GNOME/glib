@@ -248,7 +248,7 @@ main (int argc, char **argv)
   ADD_REPOSITORY_TEST ("/callable-info/static-vfunc", test_callable_info_static_vfunc, &typelib_load_spec_gio);
 
 #ifdef G_OS_UNIX
-  ADD_REPOSITORY_TEST ("/callable-info/platform/unix/is-method", test_callable_info_platform_unix_is_method, &typelib_load_spec_gio_platform);
+  ADD_REPOSITORY_TEST ("/callable-info/platform/unix/is-method", test_callable_info_platform_unix_is_method, &typelib_load_spec_gio);
 #endif
 
   return g_test_run ();
