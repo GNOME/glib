@@ -60,7 +60,7 @@ __pragma (comment (linker, "/INCLUDE:" G_MSVC_SYMBOL_PREFIX "_ptr_" #func))
 static void NTAPI func (PVOID, DWORD, PVOID);          \
                                                        \
 G_BEGIN_DECLS                                          \
-__attribute__ ((section (".CRT$XLCE")))                \
+__attribute__ ((section (".CRT$XLCE"), used))          \
 G_EXTERN_CONST PIMAGE_TLS_CALLBACK _ptr_##func = func; \
 G_END_DECLS
 
