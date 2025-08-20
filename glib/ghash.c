@@ -323,7 +323,7 @@ g_hash_table_set_shift_from_size (GHashTable *hash_table, gint size)
 }
 
 static inline gpointer
-g_hash_table_realloc_key_or_value_array (gpointer a, guint size, G_GNUC_UNUSED gboolean is_big)
+g_hash_table_realloc_key_or_value_array (gpointer a, size_t size, G_GNUC_UNUSED gboolean is_big)
 {
 #ifdef USE_SMALL_ARRAYS
   return g_realloc (a, size * (is_big ? BIG_ENTRY_SIZE : SMALL_ENTRY_SIZE));
