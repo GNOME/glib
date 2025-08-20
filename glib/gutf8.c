@@ -2226,7 +2226,7 @@ out:
  * g_utf8_validate:
  * @str: (array length=max_len) (element-type guint8): a pointer to character data
  * @max_len: max bytes to validate, or `-1` to go until nul
- * @end: (out) (optional) (transfer none): return location for end of valid data
+ * @end: (out) (optional) (transfer none) (array zero-terminated=1) (element-type guint8): return location for end of valid data
  * 
  * Validates UTF-8 encoded text.
  *
@@ -2262,7 +2262,7 @@ g_utf8_validate (const char   *str,
  * g_utf8_validate_len:
  * @str: (array length=max_len) (element-type guint8): a pointer to character data
  * @max_len: max bytes to validate
- * @end: (out) (optional) (transfer none): return location for end of valid data
+ * @end: (out) (optional) (transfer none) (array zero-terminated=1) (element-type guint8): return location for end of valid data
  *
  * Validates UTF-8 encoded text.
  *
