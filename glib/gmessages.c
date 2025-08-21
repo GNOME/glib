@@ -1618,7 +1618,7 @@ g_log_structured (const gchar    *log_domain,
 
   for (p = va_arg (args, gchar *), i = n_fields;
        strcmp (p, "MESSAGE") != 0;
-       p = va_arg (args, gchar *), i++)
+       p = va_arg (args, gchar *))
     {
       GLogField field;
       const gchar *key = p;
@@ -1628,7 +1628,7 @@ g_log_structured (const gchar    *log_domain,
       field.value = value;
       field.length = -1;
 
-      if (i < 16)
+      if (i < G_N_ELEMENTS (stack_fields))
         stack_fields[i] = field;
       else
         {
@@ -1639,14 +1639,17 @@ g_log_structured (const gchar    *log_domain,
           if (log_level & G_LOG_FLAG_RECURSION)
             continue;
 
-          if (i == 16)
+          if (i == G_N_ELEMENTS (stack_fields))
             {
-              array = g_array_sized_new (FALSE, FALSE, sizeof (GLogField), 32);
-              g_array_append_vals (array, stack_fields, 16);
+              array = g_array_sized_new (FALSE, FALSE, sizeof (GLogField),
+                                         G_N_ELEMENTS (stack_fields) * 2);
+              g_array_append_vals (array, stack_fields, G_N_ELEMENTS (stack_fields));
             }
 
           g_array_append_val (array, field);
         }
+
+      i++;
     }
 
   n_fields = i;
