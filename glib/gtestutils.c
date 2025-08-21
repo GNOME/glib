@@ -4097,7 +4097,7 @@ g_test_trap_subprocess (const char           *test_path,
  *       }
  *
  *     // Reruns this same test in a subprocess
- *     g_autoptr(GStrv) envp = g_get_environ ();
+ *     g_auto(GStrv) envp = g_get_environ ();
  *     envp = g_environ_setenv (g_steal_pointer (&envp), "USER", "charlie", TRUE);
  *     g_test_trap_subprocess_with_envp (NULL, envp, 0, G_TEST_SUBPROCESS_DEFAULT);
  *     g_test_trap_assert_passed ();
