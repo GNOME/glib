@@ -25,14 +25,6 @@
 #include <gio/gio.h>
 #include <stdint.h>
 
-#ifdef HAVE_RTLD_NEXT
-#include <dlfcn.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <netinet/ip.h>
-#include <sys/socket.h>
-#endif
-
 /* Override the socket(), bind(), listen() and getsockopt() functions from libc
  * so that we can mock results from them in the tests. The libc implementations
  * are used by default (via `dlsym()`) unless a test sets a callback
@@ -58,7 +50,12 @@
  * mocking arbitrary syscalls using dlsym(RTLD_NEXT) should probably be factored
  * out into a set of internal helpers, because various tests do it for various
  * syscalls. */
-#if defined(HAVE_RTLD_NEXT) && !defined(__APPLE__)
+#if defined(HAVE_RTLD_NEXT) && !defined(__APPLE__) && !defined(G_OS_WIN32)
+#include <dlfcn.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <netinet/ip.h>
+#include <sys/socket.h>
 #define MOCK_SOCKET_SUPPORTED
 #endif
 
