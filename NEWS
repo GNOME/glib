@@ -1,3 +1,39 @@
+Overview of changes in GLib 2.85.4, 2025-08-22
+==============================================
+
+* Follow symlink (instead of overwriting it) when updating `mimeapps.list`
+  (#3579, work by Rafael Girão)
+
+* Bugs fixed:
+  - #3579 mimeapps.list is overwritten if it is a symlink (Rafael Girão)
+  - #3724 Crash in g_hash_table_add after 252645135 elements (Tobias Stoeckmann)
+  - #3743 g_utf8_validate out parameter has wrong type (two)
+  - #3751 meta: clang-format refers to a broken link (Rafael Girão)
+  - #3758 Out-of-bounds read in GMemoryMonitorPoll (Philip Withnall)
+  - #3760 Stack overflow when recursing within g_log_structured() with
+    `G_LOG_FLAG_RECURSION` (Tobias Stoeckmann)
+  - #3761 Regression in g_printf() - can no longer output formatted values
+    containing NUL bytes (Luca Bacci)
+  - #3766 Update sl.po (Slovenian) (Martin)
+  - !4714 gmain: Reformat docs to fully use gi-docgen and match style guide
+  - !4720 Disable GMemoryMonitorPsi on Solaris
+  - !4727 garray: Improve and migrate documentation to gi-docgen
+  - !4735 build: Fix stp files for development versions
+  - !4736 systemtap: Use correct formatters/types
+  - !4738 docs: Add Thomas Haller as a co-maintainer of GObject
+  - !4739 Annotate ref/unref functions as transfer full
+  - !4740 gstrfuncs: Check parameter validity
+  - !4742 garray: Fix g_array_binary_search description
+  - !4743 Update Russian translation
+  - !4744 tests/gio: skip Unix socket-mock tests on Windows
+  - !4747 tests/printf: Use proper compare helper for unsigned types
+  - !4748 gconstructor: Add attribute used for TLS callback pointer
+
+* Translation updates:
+  - Russian (jtux270)
+  - Slovenian (Martin)
+
+
 Overview of changes in GLib 2.85.3, 2025-08-08
 ==============================================
 
