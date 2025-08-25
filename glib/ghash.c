@@ -873,7 +873,7 @@ g_hash_table_maybe_resize (GHashTable *hash_table)
 static inline gboolean
 entry_is_big (gpointer v)
 {
-  return (((guintptr) v) >> ((BIG_ENTRY_SIZE - SMALL_ENTRY_SIZE) * 8)) != 0;
+  return (((guintptr) v) >> (SMALL_ENTRY_SIZE * 8)) != 0;
 }
 
 static inline gboolean
