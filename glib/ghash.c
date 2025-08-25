@@ -298,7 +298,7 @@ g_hash_table_set_shift (GHashTable *hash_table, gint shift)
   if (shift > 31)
     g_error ("adding more entries to hash table would overflow");
 
-  hash_table->size = 1 << shift;
+  hash_table->size = 1u << shift;
   hash_table->mod  = prime_mod [shift];
 
   /* hash_table->size is always a power of two, so we can calculate the mask
