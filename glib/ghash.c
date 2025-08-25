@@ -189,6 +189,12 @@
 #define HASH_IS_TOMBSTONE(h_) ((h_) == TOMBSTONE_HASH_VALUE)
 #define HASH_IS_REAL(h_) ((h_) >= 2)
 
+/* The hash table can never have this as a valid position, as
+ * hash tables are allocated as a power of two, and the allocation
+ * required for this position would overflow. So we’re safe to use
+ * it to represent an invalid iter position. */
+#define ITER_POSITION_INVALID G_MAXUINT
+
 /* If int is smaller than void * on our arch, we start out with
  * int-sized keys and values and resize to pointer-sized entries as
  * needed. This saves a good amount of memory when the HT is being
@@ -237,7 +243,7 @@ typedef struct
   GHashTable  *hash_table;
   gpointer     dummy1;
   gpointer     dummy2;
-  gint         position;
+  guint        position;
   gboolean     dummy3;
   gintptr      version;
 } RealIter;
@@ -1100,7 +1106,7 @@ g_hash_table_iter_init (GHashTableIter *iter,
   g_return_if_fail (hash_table != NULL);
 
   ri->hash_table = hash_table;
-  ri->position = -1;
+  ri->position = ITER_POSITION_INVALID;
 #ifndef G_DISABLE_ASSERT
   ri->version = hash_table->version;
 #endif
@@ -1126,20 +1132,20 @@ g_hash_table_iter_next (GHashTableIter *iter,
                         gpointer       *value)
 {
   RealIter *ri = (RealIter *) iter;
-  gint position;
+  guint position;
 
   g_return_val_if_fail (iter != NULL, FALSE);
 #ifndef G_DISABLE_ASSERT
   g_return_val_if_fail (ri->version == ri->hash_table->version, FALSE);
 #endif
-  g_return_val_if_fail (ri->position < (gssize) ri->hash_table->size, FALSE);
+  g_return_val_if_fail (ri->position < ri->hash_table->size || ri->position == ITER_POSITION_INVALID, FALSE);
 
   position = ri->position;
 
   do
     {
       position++;
-      if (position >= (gssize) ri->hash_table->size)
+      if (position >= ri->hash_table->size)
         {
           ri->position = position;
           return FALSE;
@@ -1181,7 +1187,7 @@ iter_remove_or_steal (RealIter *ri, gboolean notify)
 #ifndef G_DISABLE_ASSERT
   g_return_if_fail (ri->version == ri->hash_table->version);
 #endif
-  g_return_if_fail (ri->position >= 0);
+  g_return_if_fail (ri->position != ITER_POSITION_INVALID);
   g_return_if_fail ((gsize) ri->position < ri->hash_table->size);
 
   g_hash_table_remove_node (ri->hash_table, ri->position, notify);
@@ -1365,7 +1371,7 @@ g_hash_table_iter_replace (GHashTableIter *iter,
 #ifndef G_DISABLE_ASSERT
   g_return_if_fail (ri->version == ri->hash_table->version);
 #endif
-  g_return_if_fail (ri->position >= 0);
+  g_return_if_fail (ri->position != ITER_POSITION_INVALID);
   g_return_if_fail ((gsize) ri->position < ri->hash_table->size);
 
   node_hash = ri->hash_table->hashes[ri->position];
