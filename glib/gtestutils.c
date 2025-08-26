@@ -4177,7 +4177,7 @@ g_test_trap_subprocess_with_envp (const char           *test_path,
   flags = G_SPAWN_DO_NOT_REAP_CHILD;
   if (test_log_fd != -1)
     flags |= G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
-  if (test_flags & G_TEST_TRAP_INHERIT_STDIN)
+  if (test_flags & G_TEST_SUBPROCESS_INHERIT_STDIN)
     flags |= G_SPAWN_CHILD_INHERITS_STDIN;
 
   if (!g_spawn_async_with_pipes (test_initial_cwd,
