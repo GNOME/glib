@@ -9,7 +9,6 @@ tags
 *.pc
 .*.swp
 .sw?
-*.rc
 *.gcno
 *.gcda
 *.gcov
