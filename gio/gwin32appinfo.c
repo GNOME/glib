@@ -27,6 +27,7 @@
 #define COBJMACROS
 
 #include <string.h>
+#include <stdbool.h>
 
 #include "gcontenttype.h"
 #include "gappinfoprivate.h"
@@ -4890,6 +4891,56 @@ emit_launch_failed (GAppLaunchContext *context,
                                   g_steal_pointer (&data),
                                   (GDestroyNotify) emit_launch_failed_data_free);
     }
+}
+
+typedef struct
+{
+  /* Allow steal focus */
+  bool foreground_window;
+} ContextOptions;
+
+ContextOptions context_options_default = {
+  false,
+};
+
+G_GNUC_UNUSED
+static ContextOptions
+startup_notify_id_to_context_options (const char *startup_notify_id)
+{
+  ContextOptions context_options = context_options_default;
+
+  if (startup_notify_id)
+    {
+      char **tokens;
+
+      if (!g_str_has_prefix (startup_notify_id, "win32-startup-notify,"))
+        {
+          g_warning_once ("Unknown startup-notify-id format");
+          return context_options;
+        }
+
+      tokens = g_strsplit (startup_notify_id, ",", 0);
+
+      typedef const char * const * const_iter_t;
+
+      for (const_iter_t iter = (const_iter_t) (tokens + 1); *iter != NULL; iter++)
+        {
+          const char *token = *iter;
+
+          if (g_strcmp0 (token, "foreground-window") == 0)
+            {
+              context_options.foreground_window = true;
+            }
+          else
+            {
+              g_debug ("Unknown token in startup-notify-id");
+            }
+        }
+
+      g_strfreev (tokens);
+    }
+
+  return context_options;
 }
 
 typedef enum
