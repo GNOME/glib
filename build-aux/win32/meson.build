@@ -12,3 +12,12 @@ if host_system == 'windows'
 else
   app_profile_dep = declare_dependency()
 endif
+
+rc_conf_base = configuration_data({
+  'MAJOR': major_version,
+  'MINOR': minor_version,
+  'MICRO': micro_version,
+  'COPYRIGHTYEAR': '2025',
+})
+
+lib_rc_in = files('lib.rc.in')
