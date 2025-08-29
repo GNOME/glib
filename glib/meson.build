@@ -355,14 +355,23 @@ platform_deps = []
 
 if host_system == 'windows'
   if glib_build_shared
-    glib_win_rc = configure_file(
-      input: 'glib.rc.in',
+    glib_rc_conf = configuration_data({
+      'NAME': 'GLib',
+      'FILENAME': (cc.get_argument_syntax() == 'msvc' ? '' : 'lib') + 'glib-' + glib_api_version + '-' + soversion.to_string() + '.dll',
+      'DESCRIPTION': 'GLib is a general-purpose, portable utility library',
+    })
+    glib_rc_conf.merge_from(rc_conf_base)
+    lib_rc = configure_file(
+      input: lib_rc_in,
       output: 'glib.rc',
-      configuration: glibconfig_conf,
+      configuration: glib_rc_conf,
     )
-    glib_win_res = windows.compile_resources(glib_win_rc)
-    glib_sources += [glib_win_res]
+    glib_sources += [windows.compile_resources(lib_rc,
+      # Workaround for https://github.com/llvm/llvm-project/issues/63426
+      args: ['-c', '65001'],
+    )]
   endif
+
   glib_sources += files('gwin32.c', 'gspawn-win32.c', 'giowin32.c')
   platform_deps = [winsock2, cc.find_library('winmm')]
   if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl'

@@ -474,13 +474,21 @@ else
   )
 
   if glib_build_shared
-    gio_win_rc = configure_file(
-      input: 'gio.rc.in',
+    gio_rc_conf = configuration_data({
+      'NAME': 'GIO',
+      'FILENAME': (cc.get_argument_syntax() == 'msvc' ? '' : 'lib') + 'gio-' + glib_api_version + '-' + soversion.to_string() + '.dll',
+      'DESCRIPTION': 'Gio is a library providing general purpose I/O, networking, IPC, settings, and other high level application functionality',
+    })
+    gio_rc_conf.merge_from(rc_conf_base)
+    lib_rc = configure_file(
+      input: lib_rc_in,
       output: 'gio.rc',
-      configuration: glibconfig_conf,
+      configuration: gio_rc_conf,
     )
-    gio_win_res = windows.compile_resources(gio_win_rc)
-    win32_sources += [gio_win_res]
+    win32_sources += [windows.compile_resources(lib_rc,
+      # Workaround for https://github.com/llvm/llvm-project/issues/63426
+      args: ['-c', '65001'],
+    )]
   endif
 
   gio_win32_include_headers = files(
