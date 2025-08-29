@@ -135,6 +135,15 @@ struct _GIRepository
 
 G_DEFINE_TYPE (GIRepository, gi_repository, G_TYPE_OBJECT);
 
+static GITypelib *
+require_internal (GIRepository           *repository,
+                  const char             *namespace,
+                  const char             *version,
+                  GIRepositoryLoadFlags   flags,
+                  const char * const     *search_paths,
+                  size_t                  n_search_paths,
+                  GError                **error);
+
 #ifdef G_PLATFORM_WIN32
 #include <windows.h>
 
@@ -596,6 +605,10 @@ load_dependencies_recurse (GIRepository *repository,
     {
       int i;
 
+      const char * const *search_path =
+        (const char * const *) repository->typelib_search_path->pdata;
+      gsize search_path_len = repository->typelib_search_path->len;
+
       for (i = 0; dependencies[i]; i++)
         {
           char *dependency = dependencies[i];
@@ -608,8 +621,9 @@ load_dependencies_recurse (GIRepository *repository,
           dependency_namespace = g_strndup (dependency, (size_t) (last_dash - dependency));
           dependency_version = last_dash+1;
 
-          if (!gi_repository_require (repository, dependency_namespace, dependency_version,
-                                      0, error))
+          if (!require_internal (repository, dependency_namespace, dependency_version,
+                                 0, search_path, search_path_len,
+                                 error))
             {
               g_free (dependency_namespace);
               g_strfreev (dependencies);
@@ -649,7 +663,7 @@ static const char *
 register_internal (GIRepository *repository,
                    const char   *source,
                    gboolean      lazy,
-                   GITypelib     *typelib,
+                   GITypelib    *typelib,
                    GError      **error)
 {
   Header *header;
@@ -2009,6 +2023,54 @@ require_internal (GIRepository           *repository,
   return ret;
 }
 
+static GITypelib *
+require_internal_with_platform_data (GIRepository           *repository,
+                                     const char             *namespace,
+                                     const char             *version,
+                                     GIRepositoryLoadFlags   flags,
+                                     const char * const     *search_paths,
+                                     size_t                  search_paths_len,
+                                     GError                **error)
+{
+  GITypelib *typelib;
+
+  typelib = require_internal (repository, namespace, version, flags,
+                              search_paths, search_paths_len,
+                              error);
+  if (!typelib)
+    return NULL;
+
+#if defined (G_OS_UNIX) || defined (G_OS_WIN32)
+  /* Backward compatibility hack: if we're loading Gio-2.0, we automatically
+   * load the platform specific introspection data that used to exist inside
+   * Gio-2.0
+   */
+  if (g_str_equal (namespace, "Gio") &&
+      (!version || g_str_equal (version, "2.0")))
+    {
+      GError *local_error = NULL;
+      const char *platform_namespace;
+
+#  if defined (G_OS_UNIX)
+      platform_namespace = "GioUnix";
+#  elif defined (G_OS_WIN32)
+      platform_namespace = "GioWin32";
+#  endif /* defined (G_OS_LINUX) */
+
+      if (!require_internal (repository, platform_namespace, version, flags,
+                             search_paths, search_paths_len,
+                             &local_error))
+        {
+          g_critical ("Unable to load platform-specific GIO introspection data: %s",
+                      local_error->message);
+          g_error_free (local_error);
+        }
+    }
+#endif /* defined(G_OS_UNIX) || defined(G_OS_WIN32) */
+
+  return typelib;
+}
+
 /**
  * gi_repository_require:
  * @repository: A #GIRepository
@@ -2029,19 +2091,24 @@ require_internal (GIRepository           *repository,
  * Since: 2.80
  */
 GITypelib *
-gi_repository_require (GIRepository  *repository,
-                       const char    *namespace,
-                       const char    *version,
-                       GIRepositoryLoadFlags flags,
-                       GError       **error)
+gi_repository_require (GIRepository           *repository,
+                       const char             *namespace,
+                       const char             *version,
+                       GIRepositoryLoadFlags   flags,
+                       GError                **error)
 {
-  GITypelib *typelib;
+  const char * const *search_paths;
+  size_t search_paths_len;
 
-  typelib = require_internal (repository, namespace, version, flags,
-                              (const char * const *) repository->typelib_search_path->pdata,
-                              repository->typelib_search_path->len, error);
+  g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
+  g_return_val_if_fail (namespace != NULL, NULL);
 
-  return typelib;
+  search_paths = (const char * const *) repository->typelib_search_path->pdata;
+  search_paths_len = repository->typelib_search_path->len;
+
+  return require_internal_with_platform_data (repository, namespace, version, flags,
+                                              search_paths, search_paths_len,
+                                              error);
 }
 
 /**
@@ -2075,8 +2142,12 @@ gi_repository_require_private (GIRepository           *repository,
 {
   const char * const search_path[] = { typelib_dir, NULL };
 
-  return require_internal (repository, namespace, version, flags,
-                           search_path, 1, error);
+  g_return_val_if_fail (GI_IS_REPOSITORY (repository), NULL);
+  g_return_val_if_fail (namespace != NULL, NULL);
+
+  return require_internal_with_platform_data (repository, namespace, version, flags,
+                                              search_path, 1,
+                                              error);
 }
 
 static gboolean
