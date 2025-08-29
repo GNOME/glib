@@ -210,6 +210,32 @@ test_callable_info_static_vfunc (RepositoryFixture *fx,
   gi_base_info_unref ((GIBaseInfo *) vfunc_info);
 }
 
+#ifdef G_OS_UNIX
+static void
+test_callable_info_platform_unix_is_method (RepositoryFixture *fx,
+                                            const void *unused)
+{
+  GIBaseInfo *info;
+  GIFunctionInfo *func_info;
+
+  g_test_message ("Checking DesktopAppInfo in Gio");
+  info = gi_repository_find_by_name (fx->repository, "Gio", "DesktopAppInfo");
+  g_assert_null (info);
+
+  g_test_message ("Checking DesktopAppInfo in GioUnix");
+  info = gi_repository_find_by_name (fx->repository, "GioUnix", "DesktopAppInfo");
+  g_assert_nonnull (info);
+
+  /* Must provide Gio.DesktopAppInfo methods */
+  func_info = gi_object_info_find_method (GI_OBJECT_INFO (info), "has_key");
+  g_assert_true (gi_callable_info_is_method (GI_CALLABLE_INFO (func_info)));
+  g_assert_nonnull (func_info);
+  g_clear_pointer (&func_info, gi_base_info_unref);
+
+  gi_base_info_unref (info);
+}
+#endif
+
 int
 main (int argc, char **argv)
 {
@@ -220,6 +246,10 @@ main (int argc, char **argv)
   ADD_REPOSITORY_TEST ("/callable-info/is-method", test_callable_info_is_method, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/callable-info/static-method", test_callable_info_static_method, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/callable-info/static-vfunc", test_callable_info_static_vfunc, &typelib_load_spec_gio);
+
+#ifdef G_OS_UNIX
+  ADD_REPOSITORY_TEST ("/callable-info/platform/unix/is-method", test_callable_info_platform_unix_is_method, &typelib_load_spec_gio_platform);
+#endif
 
   return g_test_run ();
 }
