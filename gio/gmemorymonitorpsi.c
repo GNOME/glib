@@ -281,7 +281,6 @@ g_memory_monitor_psi_calculate_mem_pressure_path (GMemoryMonitorPsi  *monitor,
   pid_t pid;
   gchar *path_read = NULL;
   gchar *replacement = NULL;
-  GRegex *regex = NULL;
 
   if (!monitor->proc_override)
     {
@@ -297,25 +296,19 @@ g_memory_monitor_psi_calculate_mem_pressure_path (GMemoryMonitorPsi  *monitor,
 
   /* cgroupv2 is only supportted and the format is shown as follows:
    * ex: 0::/user.slice/user-0.slice/session-c3.scope */
-  regex = g_regex_new ("^0::", G_REGEX_DEFAULT, G_REGEX_MATCH_DEFAULT, error);
-
-  if (!g_regex_match (regex, path_read, G_REGEX_MATCH_DEFAULT, NULL))
+  if (!g_str_has_prefix (path_read, "0::"))
     {
       g_debug ("Unsupported cgroup path information.");
       g_free (path_read);
-      g_regex_unref (regex);
       return FALSE;
     }
 
   /* drop "0::" */
-  replacement = g_regex_replace (regex, path_read,
-                                 -1, 0,
-                                 "", G_REGEX_MATCH_DEFAULT, error);
+  replacement = g_strdup (path_read + strlen ("0::"));
+  g_free (path_read);
   if (replacement == NULL)
     {
       g_debug ("Unsupported cgroup path format.");
-      g_free (path_read);
-      g_regex_unref (regex);
       return FALSE;
     }
 
@@ -324,17 +317,13 @@ g_memory_monitor_psi_calculate_mem_pressure_path (GMemoryMonitorPsi  *monitor,
   if (monitor->proc_override)
     {
       monitor->cg_path = g_steal_pointer (&replacement);
-      g_free (path_read);
-      g_regex_unref (regex);
       return TRUE;
     }
 
   monitor->cg_path = g_build_filename ("/sys/fs/cgroup", replacement, "memory.pressure", NULL);
   g_debug ("cgroup path is %s", monitor->cg_path);
 
-  g_free (path_read);
   g_free (replacement);
-  g_regex_unref (regex);
   return g_file_test (monitor->cg_path, G_FILE_TEST_EXISTS);
 }
 
