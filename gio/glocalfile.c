@@ -1267,9 +1267,13 @@ g_local_file_query_info (GFile                *file,
  * On Android (bionic as of 2015-02-24), faccess() returns EINVAL if any flags are set,
  * so we have to use the fallback path. See
  * https://cs.android.com/android/_/android/platform/bionic/+/35778253a5ed71e87a608ca590b63729d9f88567
+ * 
+ * On Solaris, combining AT_EACCESS and AT_SYMLINK_NOFOLLOW results in EINVAL,
+ * since only AT_EACCESS is supported for faccessat()
+ * https://docs.oracle.com/cd/E86824_01/html/E54765/faccessat-2.html
  */
 #if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__) && !defined(__ANDROID__) && \
-    !defined(__OpenBSD__)
+    !defined(__OpenBSD__) && !defined(__sun__)
 static gboolean
 g_local_file_query_exists (GFile        *file,
                            GCancellable *cancellable)
@@ -3255,7 +3259,7 @@ g_local_file_file_iface_init (GFileIface *iface)
   iface->monitor_file = g_local_file_monitor_file;
   iface->measure_disk_usage = g_local_file_measure_disk_usage;
 #if defined(HAVE_FACCESSAT) && !defined(__FreeBSD__) && !defined(__ANDROID__) && \
-    !defined(__OpenBSD__)
+    !defined(__OpenBSD__) && !defined(__sun__)
   iface->query_exists = g_local_file_query_exists;
 #endif
 
