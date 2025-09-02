@@ -718,6 +718,9 @@ register_internal (GIRepository *repository,
   /* These types might be resolved now, clear the cache */
   g_hash_table_remove_all (repository->unknown_gtypes);
 
+  /* Success */
+  g_assert (namespace != NULL);
+
   return namespace;
 }
 
