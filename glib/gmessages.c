@@ -432,7 +432,7 @@ _g_log_abort (gboolean breakpoint)
     g_abort ();
 }
 
-#ifdef G_OS_WIN32
+#if defined(G_OS_WIN32) && (defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP))
 static gboolean win32_keep_fatal_message = FALSE;
 
 /* This default message will usually be overwritten. */
@@ -1109,7 +1109,7 @@ mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
   if (log_level & ALERT_LEVELS)
     strcat (level_prefix, " **");
 
-#ifdef G_OS_WIN32
+#if defined(G_OS_WIN32) && (defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP))
   if ((log_level & G_LOG_FLAG_FATAL) != 0 && !g_test_initialized ())
     win32_keep_fatal_message = TRUE;
 #endif
