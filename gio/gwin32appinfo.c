@@ -4903,7 +4903,6 @@ ContextOptions context_options_default = {
   false,
 };
 
-G_GNUC_UNUSED
 static ContextOptions
 startup_notify_id_to_context_options (const char *startup_notify_id)
 {
@@ -5097,6 +5096,8 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
   IApplicationActivationManager *paam = NULL;
   gboolean com_initialized = FALSE;
   gboolean result = FALSE;
+  char *startup_notify_id = NULL;
+  ContextOptions context_options;
   HRESULT hr;
 
   /* ApplicationActivationManager threading model is both,
@@ -5137,6 +5138,20 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Failed to create ApplicationActivationManager: 0x%lx", hr);
       goto cleanup;
+    }
+
+  startup_notify_id = g_app_launch_context_get_startup_notify_id (launch_context,
+                                                                  G_APP_INFO (info),
+                                                                  NULL);
+  context_options = startup_notify_id_to_context_options (startup_notify_id);
+
+  if (context_options.foreground_window)
+    {
+      hr = CoAllowSetForegroundWindow ((IUnknown*)paam, NULL);
+#ifdef G_ENABLE_DEBUG
+      if (FAILED (hr) && hr != E_ACCESSDENIED)
+        g_debug ("%s failed with HRESULT %lx", "CoAllowSetForegroundWindow", hr);
+#endif
     }
 
   if (!objs)
@@ -5211,6 +5226,8 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
     }
 
 cleanup:
+
+  g_free (startup_notify_id);
 
   if (paam)
     {
