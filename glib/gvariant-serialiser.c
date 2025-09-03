@@ -1620,7 +1620,7 @@ g_variant_serialised_get_child (GVariantSerialised serialised,
  * memory region large enough to serialize into (ie: at least as big as
  * the size field).
  *
- * This function is only resonsible for serializing the top-level
+ * This function is only responsible for serializing the top-level
  * container.  @gvs_filler is called on each child of the container in
  * order for all of the data of that child to be filled in.
  */

@@ -1685,7 +1685,7 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
 
   num_interfaces_to_remove = g_strv_length ((gchar **) interface_names);
 
-  /* see if we are going to completety remove the object */
+  /* see if we are going to completely remove the object */
   g_object_ref (manager);
   if (num_interfaces_to_remove == num_interfaces)
     {

@@ -4,7 +4,7 @@
 #    
 # Which was created by   Markus Kuhn <mkuhn@acm.org> - 2000-09-02 
 #
-# lines begining with # and blank lines are ignored
+# lines beginning with # and blank lines are ignored
 #
 # Beyond that, this file consists of a series of test cases. Each test case consists of
 # 2 or 3 lines:

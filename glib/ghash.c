@@ -1909,7 +1909,7 @@ g_hash_table_steal_all (GHashTable *hash_table)
  * destroy function.
  *
  * Returns: (transfer container): a #GPtrArray containing each key of
- * the table. Unref with with g_ptr_array_unref() when done.
+ * the table. Unref with g_ptr_array_unref() when done.
  *
  * Since: 2.76
  */
@@ -1946,7 +1946,7 @@ g_hash_table_steal_all_keys (GHashTable *hash_table)
  * destroy function.
  *
  * Returns: (transfer container): a #GPtrArray containing each value of
- * the table. Unref with with g_ptr_array_unref() when done.
+ * the table. Unref with g_ptr_array_unref() when done.
  *
  * Since: 2.76
  */
@@ -2318,7 +2318,7 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
  * You should always unref the returned array with g_ptr_array_unref().
  *
  * Returns: (transfer container): a #GPtrArray containing each key from
- * the table. Unref with with g_ptr_array_unref() when done.
+ * the table. Unref with g_ptr_array_unref() when done.
  *
  * Since: 2.76
  **/
@@ -2393,7 +2393,7 @@ g_hash_table_get_values (GHashTable *hash_table)
  * You should always unref the returned array with g_ptr_array_unref().
  *
  * Returns: (transfer container): a #GPtrArray containing each value from
- * the table. Unref with with g_ptr_array_unref() when done.
+ * the table. Unref with g_ptr_array_unref() when done.
  *
  * Since: 2.76
  **/

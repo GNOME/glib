@@ -4398,7 +4398,7 @@ expand_macro (char               macro,
 Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%28v=vs.85%29.aspx)
 %* - replace with all parameters
 %~ - replace with all parameters starting with and following the second parameter
-%0 or %1 the first file parameter. For example "C:\\Users\\Eric\\Destop\\New Text Document.txt". Generally this should be in quotes and the applications command line parsing should accept quotes to disambiguate files with spaces in the name and different command line parameters (this is a security best practice and I believe mentioned in MSDN).
+%0 or %1 the first file parameter. For example "C:\\Users\\Eric\\Desktop\\New Text Document.txt". Generally this should be in quotes and the applications command line parsing should accept quotes to disambiguate files with spaces in the name and different command line parameters (this is a security best practice and I believe mentioned in MSDN).
 %<n> (where N is 2 - 9), replace with the nth parameter
 %s - show command
 %h - hotkey value
@@ -4975,7 +4975,7 @@ g_win32_app_info_launch_uwp_single (IApplicationActivationManager  *app_activati
        * ApplicationActivationManager methods return a process ID, but it
        * keeps no open HANDLE to the spawned process internally (tested
        * on Windows 10 21H2). So we cannot guarantee that by the time
-       * OpenProcess is called, process ID still referes to the spawned
+       * OpenProcess is called, process ID still refers to the spawned
        * process. Anyway hitting such case is extremely unlikely.
        *
        * https://docs.microsoft.com/en-us/answers/questions/942879/

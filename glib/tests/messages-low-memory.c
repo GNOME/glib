@@ -78,7 +78,7 @@ main (int   argc,
 #ifndef __linux__
   if (!our_malloc_called)
     {
-      /* For some reasons this doesn't work darwin systems, so ignore the result
+      /* For some reasons this doesn't work on darwin systems, so ignore the result
        * for non-linux, while we want to ensure the test is valid at least there
        */
       g_message ("Our malloc implementation has not been called, the test "

@@ -727,7 +727,7 @@ validate_param_type_blob (GITypelib     *typelib,
       g_set_error (error,
                    GI_TYPELIB_ERROR,
                    GI_TYPELIB_ERROR_INVALID_BLOB,
-                   "Pointer type exected for tag %d", blob->tag);
+                   "Pointer type expected for tag %d", blob->tag);
       return FALSE;
     }
 
@@ -768,7 +768,7 @@ validate_error_type_blob (GITypelib     *typelib,
       g_set_error (error,
                    GI_TYPELIB_ERROR,
                    GI_TYPELIB_ERROR_INVALID_BLOB,
-                   "Pointer type exected for tag %d", blob->tag);
+                   "Pointer type expected for tag %d", blob->tag);
       return FALSE;
     }
 
@@ -806,7 +806,7 @@ validate_type_blob (GITypelib     *typelib,
           g_set_error (error,
                        GI_TYPELIB_ERROR,
                        GI_TYPELIB_ERROR_INVALID_BLOB,
-                       "Pointer type exected for tag %d", simple->flags.tag);
+                       "Pointer type expected for tag %d", simple->flags.tag);
           return FALSE;
         }
 

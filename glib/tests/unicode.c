@@ -1697,7 +1697,7 @@ test_canonical_decomposition (void)
 #undef TEST_DECOMP
 }
 
-/* Test that g_unichar_decompose() whenever encouttering a char ch
+/* Test that g_unichar_decompose() whenever encountering a char ch
  * decomposes into a and b, b itself won't decompose any further. */
 static void
 test_decompose_tail (void)

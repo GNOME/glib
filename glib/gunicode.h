@@ -864,7 +864,7 @@ gchar   *g_utf8_truncate_middle   (const gchar *string,
                                    gsize        truncate_length);
 
 /* Find the UTF-8 character corresponding to ch, in string p. These
-   functions are equivalants to strchr and strrchr */
+   functions are equivalents to strchr and strrchr */
 GLIB_AVAILABLE_IN_ALL
 gchar* g_utf8_strchr  (const gchar *p,
                        gssize       len,

@@ -900,7 +900,7 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
 		   GLocalFileStat        *statbuf,
 		   GLocalParentFileInfo  *parent_info)
 {
-  /* FIXME: Windows: The underlyin _waccess() is mostly pointless */
+  /* FIXME: Windows: The underlying _waccess() is mostly pointless */
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_ACCESS_CAN_READ))
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_READ,

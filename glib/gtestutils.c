@@ -2874,7 +2874,7 @@ g_test_add_data_func (const char     *testpath,
  *
  * Creates a new test case.
  *
- * In constract to [func@GLib.test_add_data_func], this function
+ * In contrast to [func@GLib.test_add_data_func], this function
  * is freeing @test_data after the test run is complete.
  *
  * Since: 2.34
