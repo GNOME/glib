@@ -5260,6 +5260,8 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
   const gchar *command;
   gchar *apppath;
   GWin32AppInfoShellVerb *shverb;
+  char *startup_notify_id = NULL;
+  ContextOptions context_options;
   GPid pid = NULL;
 
   g_return_val_if_fail (info != NULL, FALSE);
@@ -5351,6 +5353,11 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
         }
     }
 
+  startup_notify_id = g_app_launch_context_get_startup_notify_id (launch_context,
+                                                                  G_APP_INFO (info),
+                                                                  NULL);
+  context_options = startup_notify_id_to_context_options (startup_notify_id);
+
   do
     {
       if (from_task && g_task_return_error_if_cancelled (from_task))
@@ -5380,8 +5387,19 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
 
           goto out;
         }
-      else if (launch_context)
-        emit_launched (launch_context, info, &pid, from_task);
+
+      if (context_options.foreground_window)
+        {
+          DWORD id = GetProcessId ((HANDLE)pid);
+
+          if (id != 0)
+            AllowSetForegroundWindow (id);
+        }
+
+      if (launch_context)
+        {
+          emit_launched (launch_context, info, &pid, from_task);
+        }
 
       g_spawn_close_pid (pid);
       pid = NULL;
@@ -5396,6 +5414,7 @@ out:
   g_spawn_close_pid (pid);
   g_strfreev (argv);
   g_strfreev (envp);
+  g_free (startup_notify_id);
 
   return completed;
 }
