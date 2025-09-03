@@ -411,7 +411,7 @@ GType	g_param_type_register_static	(const gchar		  *name,
 GOBJECT_AVAILABLE_IN_2_66
 gboolean g_param_spec_is_valid_name    (const gchar              *name);
 
-/* For registering builting types */
+/* For registering builtin types */
 GType  _g_param_type_register_static_constant (const gchar              *name,
 					       const GParamSpecTypeInfo *pspec_info,
 					       GType                     opt_type);

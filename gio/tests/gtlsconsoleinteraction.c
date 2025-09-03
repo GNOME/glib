@@ -73,7 +73,7 @@ static_getpass (const gchar *prompt)
 }
 #undef getpass
 #define getpass static_getpass /* avoid overloading a potential
-                                  build environment defintion of getpass */
+                                  build environment definition of getpass */
 #endif
 
 static GTlsInteractionResult

@@ -3932,7 +3932,7 @@ g_dbus_message_print (GDBusMessage *message,
  * @message: A #GDBusMessage.
  *
  * Checks whether @message is locked. To monitor changes to this
- * value, conncet to the #GObject::notify signal to listen for changes
+ * value, connect to the #GObject::notify signal to listen for changes
  * on the #GDBusMessage:locked property.
  *
  * Returns: %TRUE if @message is locked, %FALSE otherwise.

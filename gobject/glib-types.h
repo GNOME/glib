@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-/* A hack necesssary to preprocess this file with g-ir-scanner */
+/* A hack necessary to preprocess this file with g-ir-scanner */
 #ifdef __GI_SCANNER__
 typedef gsize GType;
 #endif

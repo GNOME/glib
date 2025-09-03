@@ -338,7 +338,7 @@ get_bundle_for_id (CFStringRef bundle_id)
           g_free (id_str);
         }
       else
-        g_debug ("Application not found for unconvertable bundle id.");
+        g_debug ("Application not found for unconvertible bundle id.");
 #endif
       return NULL;
     }

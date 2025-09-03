@@ -1078,7 +1078,7 @@ cancelled_toggle_reference_cb (gpointer data,
                          "*has no handler with id*");
 
   /* We try resetting the a signal that isn't connected, since we don't care
-   * about anything but checking wether this would deadlock
+   * about anything but checking whether this would deadlock
    */
   g_cancellable_disconnect (cancellable, G_MAXULONG);
 
@@ -1142,7 +1142,7 @@ connect_data_destroy (gpointer user_data)
   g_assert_true (g_cancellable_is_cancelled (cancellable));
 
   /* We try resetting the cancellable, since we don't care
-   * about anything but checking wether this would deadlock
+   * about anything but checking whether this would deadlock
    */
   g_cancellable_reset (cancellable);
   g_object_unref (cancellable);

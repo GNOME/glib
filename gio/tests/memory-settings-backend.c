@@ -25,7 +25,7 @@
 #include <gio/gsettingsbackend.h>
 
 /* Test that the "gsettings-backend" extension point has been registered.
- * Must be run first and separetly from other GSettingsBackend,
+ * Must be run first and separately from other GSettingsBackend,
  * as they will register the extension point making the test useless.
  */
 static void

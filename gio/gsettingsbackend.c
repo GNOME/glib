@@ -403,7 +403,7 @@ g_settings_backend_changed (GSettingsBackend *backend,
  * end with '/' and must not contain '//').
  *
  * The meaning of this signal is that any of the key names resulting
- * from the contatenation of @path with each item in @items may have
+ * from the concatenation of @path with each item in @items may have
  * changed.
  *
  * The same rules for when notifications must occur apply as per

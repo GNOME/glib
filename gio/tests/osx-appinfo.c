@@ -53,7 +53,7 @@ test_launch_async (GList *uris)
   while (result == NULL)
     g_main_context_iteration (NULL, TRUE);
 
-  // Locally, the result is TRUE, but in CI it's FALSE, due to the absense of a GUI(?)
+  // Locally, the result is TRUE, but in CI it's FALSE, due to the absence of a GUI(?)
   if (g_app_info_launch_uris_finish (G_APP_INFO (app_info), result, &error))
     g_assert_no_error (error);
   else

@@ -519,7 +519,7 @@ typedef struct {
  * @caller_owns_return_value: If set, the caller is responsible for freeing
  *   the return value if it is no longer needed.
  * @caller_owns_return_container: This flag is only relevant if the return type
- *   is a container type. If the flag is set, the caller is resonsible for
+ *   is a container type. If the flag is set, the caller is responsible for
  *   freeing the container, but not its contents.
  * @skip_return: Indicates that the return value is only useful in C and should
  *   be skipped.
@@ -1020,7 +1020,7 @@ typedef struct {
  *   things.
  * @setter: the index of the setter function for this property, if @writable
  *   is set; if the method is not known, the value will be set to %ACCESSOR_SENTINEL
- * @getter: ths index of the getter function for this property, if @readable
+ * @getter: the index of the getter function for this property, if @readable
  *   is set; if the method is not known, the value will be set to %ACCESSOR_SENTINEL
  * @reserved: Reserved for future use.
  * @reserved2: Reserved for future use.

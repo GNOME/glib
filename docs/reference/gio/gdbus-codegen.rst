@@ -576,7 +576,7 @@ instantiatable types with the same name but suffixed with ``Proxy`` and
                                     const gchar *greeting,
                                     GCancellable *cancellable,
                                     GAsyncReadyCallback callback,
-                                    gp ointer user_data);
+                                    gpointer user_data);
    gboolean
    my_app_frobber_call_hello_world_finish (MyAppFrobber *proxy,
                                            gchar **out_response,

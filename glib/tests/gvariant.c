@@ -5722,7 +5722,7 @@ test_normal_checking_tuple_offsets5 (void)
    *  - The offset of the first `s` in the tuple is always 0.
    *
    * See §2.5.4 (Structures) of the GVariant specification for details, noting
-   * that the table is only layed out this way because all three members of the
+   * that the table is only laid out this way because all three members of the
    * tuple have non-fixed sizes.
    *
    * It’s not clear whether the 0xaa data of this variant is part of the strings

@@ -227,7 +227,7 @@ error:
  * Perform a diff on lists.
  *
  * This function performs something like a set intersection. The same items
- * will be removed from the both lists. Items are comapred by a filename.
+ * will be removed from the both lists. Items are compared by a filename.
  * 
  * @param[in,out] before A pointer to a pointer to a list. Will contain items
  *     which were not found in the 'after' list.

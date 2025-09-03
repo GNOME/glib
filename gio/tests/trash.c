@@ -99,7 +99,7 @@ test_trash_not_supported (void)
   g_object_unref (file);
 }
 
-/* Test that symlinks are properly expaned when looking for topdir (e.g. for trash folder). */
+/* Test that symlinks are properly expanded when looking for topdir (e.g. for trash folder). */
 static void
 test_trash_symlinks (void)
 {

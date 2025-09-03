@@ -294,7 +294,7 @@ g_memory_monitor_psi_calculate_mem_pressure_path (GMemoryMonitorPsi  *monitor,
       return FALSE;
     }
 
-  /* cgroupv2 is only supportted and the format is shown as follows:
+  /* cgroupv2 is only supported and the format is shown as follows:
    * ex: 0::/user.slice/user-0.slice/session-c3.scope */
   if (!g_str_has_prefix (path_read, "0::"))
     {

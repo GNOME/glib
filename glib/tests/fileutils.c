@@ -2642,7 +2642,7 @@ test_clear_fd_ebadf (void)
   gboolean ret;
   GWin32InvalidParameterHandler handler;
 
-  /* We're going to trigger a programming error: attmpting to close a
+  /* We're going to trigger a programming error: attempting to close a
    * fd that was already closed. Make criticals non-fatal. */
   g_assert_true (g_test_undefined ());
   g_log_set_always_fatal (G_LOG_FATAL_MASK);

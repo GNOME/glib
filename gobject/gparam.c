@@ -1191,7 +1191,7 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
           type = g_type_from_name (buffer);
           if (l >= 32)
             g_free (buffer);
-          if (type)         /* type==0 isn't a valid type pefix */
+          if (type)         /* type==0 isn't a valid type prefix */
             {
               /* sanity check, these cases don't make a whole lot of sense */
               if ((!walk_ancestors && type != owner_type) || !g_type_is_a (owner_type, type))

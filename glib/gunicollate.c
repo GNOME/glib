@@ -229,7 +229,7 @@ collate_key_to_string (UCCollationValue *key,
    *
    * UCCollateOptions (32/64 bits)
    * SizeInBytes      (32/64 bits)
-   * Value            (8 bits arrey)
+   * Value            (8 bits array)
    *
    * UCCollateOptions: ordering option mask of the collator
    * used to create the key. Size changes on 32-bit / 64-bit

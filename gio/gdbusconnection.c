@@ -2866,7 +2866,7 @@ initable_init (GInitable     *initable,
   /* Because of init_lock, we can't get here twice in different threads */
   g_assert (connection->initialization_error == NULL);
 
-  /* The user can pass multiple (but mutally exclusive) construct
+  /* The user can pass multiple (but mutually exclusive) construct
    * properties:
    *
    *  - stream (of type GIOStream)
