@@ -154,7 +154,7 @@ g_string_new (const gchar *init)
  * Creates a new #GString, initialized with the given string.
  *
  * After this call, @init belongs to the #GString and may no longer be
- * modified by the caller. The memory of @data has to be dynamically
+ * modified by the caller. The memory of @init has to be dynamically
  * allocated and will eventually be freed with g_free().
  *
  * Returns: (transfer full): the new #GString
