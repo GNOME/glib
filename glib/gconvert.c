@@ -809,7 +809,7 @@ typedef enum
 
 /*
  * Convert from @string in the encoding identified by @from_codeset,
- * returning a string in the encoding identifed by @to_codeset.
+ * returning a string in the encoding identified by @to_codeset.
  * @len can be negative if @string is nul-terminated, or a non-negative
  * value in bytes. Flags defined in #ConvertCheckFlags can be set in @flags
  * to check the input, the output, or both, for embedded nul bytes.

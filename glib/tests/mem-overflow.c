@@ -1,4 +1,4 @@
-/* Unit tests for g
+/* Unit tests for gmem
  * Copyright (C) 2010 Red Hat, Inc.
  *
  * SPDX-License-Identifier: LicenseRef-old-glib-tests

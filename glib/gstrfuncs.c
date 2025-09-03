@@ -1022,7 +1022,7 @@ g_parse_long_long (const gchar  *nptr,
                    guint         base,
                    gboolean     *negative)
 {
-  /* this code is based on on the strtol(3) code from GNU libc released under
+  /* this code is based on the strtol(3) code from GNU libc released under
    * the GNU Lesser General Public License.
    *
    * Copyright (C) 1991,92,94,95,96,97,98,99,2000,01,02

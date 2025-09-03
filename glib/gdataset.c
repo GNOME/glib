@@ -169,7 +169,7 @@ g_datalist_unlock_and_set (GData **datalist, gpointer ptr)
 static gsize
 datalist_alloc_size (guint32 alloc)
 {
-  /* GDataElt also contains pointer. It thus is suitable aligned for pointers,
+  /* GDataElt also contains pointer. It thus is suitably aligned for pointers,
    * and we can just append the pointer for the index at the end. */
   return G_STRUCT_OFFSET (GData, data) +
          (((gsize) alloc) * sizeof (GDataElt)) +
@@ -411,7 +411,7 @@ datalist_shrink (GData **data, GData **d_to_free)
   if (v != alloc_by_4)
     {
       /* d->alloc is a power of two (unless it's G_MAXUINT32). Usually, we
-       * remove one element at a time, then we will just reach reach a quarter
+       * remove one element at a time, then we will just reach a quarter
        * of that.
        *
        * However, with g_datalist_id_remove_multiple(), len can be smaller

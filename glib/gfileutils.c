@@ -2026,7 +2026,7 @@ g_build_path_va (const gchar  *separator,
 
 /**
  * g_build_pathv:
- * @separator: a string used to separator the elements of the path.
+ * @separator: a string used to separate the elements of the path.
  * @args: (array zero-terminated=1) (element-type filename): %NULL-terminated
  *   array of strings containing the path elements.
  * 
@@ -2053,7 +2053,7 @@ g_build_pathv (const gchar  *separator,
 
 /**
  * g_build_path:
- * @separator: (type filename): a string used to separator the elements of the path.
+ * @separator: (type filename): a string used to separate the elements of the path.
  * @first_element: (type filename): the first element in the path
  * @...: remaining elements in path, terminated by %NULL
  * 

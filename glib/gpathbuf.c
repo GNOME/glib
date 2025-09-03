@@ -560,7 +560,7 @@ g_path_buf_to_path (GPathBuf *buf)
  * Compares two path buffers for equality and returns `TRUE`
  * if they are equal.
  *
- * The path inside the paths buffers are not going to be normalized,
+ * The paths inside the path buffers are not going to be normalized,
  * so `X/Y/Z/A/..`, `X/./Y/Z` and `X/Y/Z` are not going to be considered
  * equal.
  *
