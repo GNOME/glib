@@ -209,6 +209,7 @@ typedef enum
  * @G_UNICODE_BREAK_AKSARA_START: Aksara Start (AS). Since: 2.80
  * @G_UNICODE_BREAK_VIRAMA_FINAL: Virama Final (VF). Since: 2.80
  * @G_UNICODE_BREAK_VIRAMA: Virama (VI). Since: 2.80
+ * @G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN: Unambiguous Hyphen (HH). Since: 2.88
  *
  * These are the possible line break classifications.
  *
@@ -267,7 +268,8 @@ typedef enum
   G_UNICODE_BREAK_AKSARA_PRE_BASE,
   G_UNICODE_BREAK_AKSARA_START,
   G_UNICODE_BREAK_VIRAMA_FINAL,
-  G_UNICODE_BREAK_VIRAMA
+  G_UNICODE_BREAK_VIRAMA,
+  G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN GLIB_AVAILABLE_ENUMERATOR_IN_2_88,
 } GUnicodeBreakType;
 
 /**
@@ -457,6 +459,10 @@ typedef enum
  * @G_UNICODE_SCRIPT_GURUNG_KHEMA:         Gurung Khema. Since: 2.84
  * @G_UNICODE_SCRIPT_KIRAT_RAI:            Kirat Rai. Since: 2.84
  * @G_UNICODE_SCRIPT_OL_ONAL:              Ol Onal. Since: 2.84
+ * @G_UNICODE_SCRIPT_SIDETIC:              Sidetic. Since: 2.88
+ * @G_UNICODE_SCRIPT_TOLONG_SIKI:          Tolong Siki. Since: 2.88
+ * @G_UNICODE_SCRIPT_TAI_YO:               Tai Yo. Since: 2.88
+ * @G_UNICODE_SCRIPT_BERIA_ERFE:           Beria Erfe. Since: 2.88
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the
@@ -678,6 +684,12 @@ typedef enum
   G_UNICODE_SCRIPT_GURUNG_KHEMA GLIB_AVAILABLE_ENUMERATOR_IN_2_84,   /* Gukh */
   G_UNICODE_SCRIPT_KIRAT_RAI GLIB_AVAILABLE_ENUMERATOR_IN_2_84,      /* Krai */
   G_UNICODE_SCRIPT_OL_ONAL GLIB_AVAILABLE_ENUMERATOR_IN_2_84,        /* Onao */
+
+  /* Unicode 17.0 additions */
+  G_UNICODE_SCRIPT_SIDETIC GLIB_AVAILABLE_ENUMERATOR_IN_2_88,                /* Sidt */
+  G_UNICODE_SCRIPT_TOLONG_SIKI GLIB_AVAILABLE_ENUMERATOR_IN_2_88,            /* Tols */
+  G_UNICODE_SCRIPT_TAI_YO GLIB_AVAILABLE_ENUMERATOR_IN_2_88,                 /* Tayo */
+  G_UNICODE_SCRIPT_BERIA_ERFE GLIB_AVAILABLE_ENUMERATOR_IN_2_88,             /* Berf */
 } GUnicodeScript;
 
 GLIB_AVAILABLE_IN_ALL
