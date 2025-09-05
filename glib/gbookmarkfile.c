@@ -485,17 +485,25 @@ bookmark_metadata_dump (BookmarkMetadata *metadata)
   /* icon */
   if (metadata->icon_href)
     {
+      gchar *href, *mime;
+
       if (!metadata->icon_mime)
         metadata->icon_mime = g_strdup ("application/octet-stream");
 
+      href = g_markup_escape_text (metadata->icon_href, -1);
+      mime = g_markup_escape_text (metadata->icon_mime, -1);
+
       buffer = g_strconcat ("       "
-			    "<" BOOKMARK_NAMESPACE_NAME
-			    ":" BOOKMARK_ICON_ELEMENT
-			    " " BOOKMARK_HREF_ATTRIBUTE "=\"", metadata->icon_href,
-			    "\" " BOOKMARK_TYPE_ATTRIBUTE "=\"", metadata->icon_mime, "\"/>\n", NULL);
+                            "<" BOOKMARK_NAMESPACE_NAME
+                            ":" BOOKMARK_ICON_ELEMENT
+                            " " BOOKMARK_HREF_ATTRIBUTE "=\"",
+                            href,
+                            "\" " BOOKMARK_TYPE_ATTRIBUTE "=\"", mime, "\"/>\n", NULL);
       g_string_append (retval, buffer);
 
       g_free (buffer);
+      g_free (mime);
+      g_free (href);
     }
 
   /* private hint */
