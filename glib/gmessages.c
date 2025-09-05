@@ -432,8 +432,9 @@ _g_log_abort (gboolean breakpoint)
     g_abort ();
 }
 
-#ifdef G_OS_WIN32
+#if defined(G_OS_WIN32) && (defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP))
 static gboolean win32_keep_fatal_message = FALSE;
+static gboolean fatal_msg_append = FALSE;
 
 /* This default message will usually be overwritten. */
 /* Yes, a fixed size buffer is bad. So sue me. But g_error() is never
@@ -453,6 +454,17 @@ write_string (FILE        *stream,
        * so let's just continue without the compiler blaming us
        */
     }
+#if defined(G_OS_WIN32) && (defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP))
+  if (win32_keep_fatal_message)
+    {
+      if (!fatal_msg_append)
+        {
+          fatal_msg_buf[0] = '\0';
+          fatal_msg_append = TRUE;
+        }
+      g_strlcat (fatal_msg_buf, string, sizeof (fatal_msg_buf));
+    }
+#endif
 }
 
 static void
@@ -1109,7 +1121,7 @@ mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
   if (log_level & ALERT_LEVELS)
     strcat (level_prefix, " **");
 
-#ifdef G_OS_WIN32
+#if defined(G_OS_WIN32) && (defined(_DEBUG) || !defined(G_WINAPI_ONLY_APP))
   if ((log_level & G_LOG_FLAG_FATAL) != 0 && !g_test_initialized ())
     win32_keep_fatal_message = TRUE;
 #endif
