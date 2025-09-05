@@ -1,3 +1,44 @@
+Overview of changes in GLib 2.86.0, 2025-09-05
+==============================================
+
+* Rework how platform-specific introspected GIO APIs have to be imported to fix
+  problems with backwards-compatibility provision for it, by removing duplicate
+  platform-specific symbols from `Gio-2.0`. Users of platform-specific GIO APIs
+  should be unaffected, as `GIRepository` will now automatically import
+  `GioWin32-2.0` or `GioUnix-2.0` when asked to import `Gio-2.0`. However,
+  projects generating introspection data which depends on types from either of
+  those platform-specific GIRs must make sure they depend on those GIRs
+  explicitly, rather than just transitively depending on them through `Gio-2.0`
+  (#3744, work by Emmanuele Bassi, Marco Trevisan, Florian Müllner, and others)
+
+* Fix file existence queries on Solaris, broken due to unexpected flags handling
+  within `faccessat()` (#3770, work by Niveditha Rau)
+
+* Bugs fixed:
+  - #3744 GDesktopAppInfo API disappeared after girepository-2.0 port (Emmanuele
+    Bassi)
+  - #3768 g_test_trap_subprocess does not check G_TEST_SUBPROCESS_INHERIT_STDIN
+    (Philip Withnall)
+  - !4751 gtestutils: Fix a slightly broken example in a doc comment
+  - !4754 Update Polish translation 250825
+  - !4758 Update Swedish translation
+  - !4762 gio: gmemorymonitorpsi: Replace GRegex with g_str_has_prefix()
+  - !4765 girepository: Add an assertion to help scan-build
+  - !4767 glocalfile: Disable faccessat()-based query_exists on Solaris
+  - !4768 gmessages: Fix win32_keep_fatal_message regression
+  - !4769 docs: Fix typos
+  - !4770 Update Chinese translation
+  - !4771 Update Georgian translation
+  - !4772 po: Update Persian translation.
+
+* Translation updates:
+  - Chinese (China) (lumingzh)
+  - Georgian (NorwayFun)
+  - Persian (Danial Behzadi)
+  - Polish (Piotr Drąg)
+  - Swedish (Anders Jonsson)
+
+
 Overview of changes in GLib 2.85.4, 2025-08-22
 ==============================================
 
