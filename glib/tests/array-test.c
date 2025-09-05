@@ -978,11 +978,13 @@ test_array_binary_search (void)
       garray = g_array_sized_new (FALSE, FALSE, sizeof (guint), 0);
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*");
+      i = 1;
       g_assert_false (g_array_binary_search (NULL, &i, cmpint, NULL));
       g_test_assert_expected_messages ();
 
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
                              "*assertion*!= NULL*");
+      i = 1;
       g_assert_false (g_array_binary_search (garray, &i, NULL, NULL));
       g_test_assert_expected_messages ();
       g_array_free (garray, TRUE);
