@@ -1471,7 +1471,7 @@ test_new_similar (void)
 
 struct _GHashTable
 {
-  gsize            size;
+  guint            size;
   gint             mod;
   guint            mask;
   gint             nnodes;
