@@ -211,7 +211,7 @@
 struct _GHashTable
 {
   guint            size;
-  gint             mod;
+  guint            mod;
   guint            mask;
   guint            nnodes;
   guint            noccupied;  /* nnodes + tombstones */
@@ -256,8 +256,7 @@ G_STATIC_ASSERT (G_ALIGNOF (GHashTableIter) >= G_ALIGNOF (RealIter));
  * then works modulo 2^n. The prime modulo is necessary to get a
  * good distribution with poor hash functions.
  */
-static const gint prime_mod [] =
-{
+static const guint prime_mod[] = {
   1,          /* For 1 << 0 */
   2,
   3,
