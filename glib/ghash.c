@@ -293,7 +293,7 @@ static const gint prime_mod [] =
 };
 
 static void
-g_hash_table_set_shift (GHashTable *hash_table, gint shift)
+g_hash_table_set_shift (GHashTable *hash_table, guint shift)
 {
   if (shift > 31)
     g_error ("adding more entries to hash table would overflow");
@@ -309,10 +309,10 @@ g_hash_table_set_shift (GHashTable *hash_table, gint shift)
   hash_table->mask = hash_table->size - 1;
 }
 
-static gint
-g_hash_table_find_closest_shift (gint n)
+static guint
+g_hash_table_find_closest_shift (guint n)
 {
-  gint i;
+  guint i;
 
   for (i = 0; n; i++)
     n >>= 1;
@@ -321,9 +321,9 @@ g_hash_table_find_closest_shift (gint n)
 }
 
 static void
-g_hash_table_set_shift_from_size (GHashTable *hash_table, gint size)
+g_hash_table_set_shift_from_size (GHashTable *hash_table, guint size)
 {
-  gint shift;
+  guint shift;
 
   shift = g_hash_table_find_closest_shift (size);
   shift = MAX (shift, HASH_TABLE_MIN_SHIFT);
@@ -827,7 +827,7 @@ g_hash_table_resize (GHashTable *hash_table)
    * Immediately after growing, the load factor will be in the range
    * .375 .. .469. After shrinking, it will be exactly .5. */
 
-  g_hash_table_set_shift_from_size (hash_table, (gint) (hash_table->nnodes + hash_table->nnodes / 3));
+  g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes + hash_table->nnodes / 3);
 
   if (hash_table->size > old_size)
     {
