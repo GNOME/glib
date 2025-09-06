@@ -232,7 +232,7 @@ struct _GHashTable
    * incremented when a node is added or removed (is not incremented
    * when the key or data of a node is modified).
    */
-  int              version;
+  guintptr         version;
 #endif
   GDestroyNotify   key_destroy_func;
   GDestroyNotify   value_destroy_func;
@@ -245,7 +245,7 @@ typedef struct
   gpointer     dummy2;
   guint        position;
   gboolean     dummy3;
-  gintptr      version;
+  guintptr     version;
 } RealIter;
 
 G_STATIC_ASSERT (sizeof (GHashTableIter) == sizeof (RealIter));
@@ -2003,7 +2003,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
   guint deleted = 0;
   guint i;
 #ifndef G_DISABLE_ASSERT
-  gint version = hash_table->version;
+  guintptr version = hash_table->version;
 #endif
 
   for (i = 0; i < hash_table->size; i++)
@@ -2115,7 +2115,7 @@ g_hash_table_foreach (GHashTable *hash_table,
 {
   guint i;
 #ifndef G_DISABLE_ASSERT
-  gint version;
+  guintptr version;
 #endif
 
   g_return_if_fail (hash_table != NULL);
@@ -2173,7 +2173,7 @@ g_hash_table_find (GHashTable *hash_table,
 {
   guint i;
 #ifndef G_DISABLE_ASSERT
-  gint version;
+  guintptr version;
 #endif
   gboolean match;
 

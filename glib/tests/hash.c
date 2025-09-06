@@ -1489,7 +1489,7 @@ struct _GHashTable
   gint             ref_count;  /* (atomic) */
 
 #ifndef G_DISABLE_ASSERT
-  int              version;
+  guintptr         version;
 #endif
   GDestroyNotify   key_destroy_func;
   GDestroyNotify   value_destroy_func;
