@@ -869,7 +869,7 @@ g_hash_table_maybe_resize (GHashTable *hash_table)
   gsize noccupied = hash_table->noccupied;
   gsize size = hash_table->size;
 
-  if ((size > hash_table->nnodes * 4 && size > 1 << HASH_TABLE_MIN_SHIFT) ||
+  if ((size > 1 << HASH_TABLE_MIN_SHIFT && (size - 1) / 4 >= hash_table->nnodes) ||
       (size <= noccupied + (noccupied / 16)))
     g_hash_table_resize (hash_table);
 }
