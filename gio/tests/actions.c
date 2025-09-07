@@ -411,7 +411,7 @@ test_entries (void)
   const GActionEntry entries2[] = {
     { "foo",    activate_foo, NULL, NULL,    NULL,                { 0 } },
     { "bar",    activate_bar, "s",  NULL,    NULL,                { 0 } },
-    { NULL },
+    { NULL,     NULL,         NULL, NULL,    NULL,                { 0 } },
   };
   GSimpleActionGroup *actions;
   GVariant *state;
