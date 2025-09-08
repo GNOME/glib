@@ -141,7 +141,7 @@ test_unichar_break_type (void)
     { G_UNICODE_BREAK_NON_BREAKING_GLUE,   0x00A0 },
     { G_UNICODE_BREAK_CONTINGENT,          0xFFFC },
     { G_UNICODE_BREAK_SPACE,               0x0020 },
-    { G_UNICODE_BREAK_AFTER,               0x05BE },
+    { G_UNICODE_BREAK_AFTER,               0x1680 },
     { G_UNICODE_BREAK_BEFORE,              0x02C8 },
     { G_UNICODE_BREAK_BEFORE_AND_AFTER,    0x2014 },
     { G_UNICODE_BREAK_HYPHEN,              0x002D },
@@ -179,6 +179,7 @@ test_unichar_break_type (void)
     { G_UNICODE_BREAK_AKSARA_START,        0x11F50 },
     { G_UNICODE_BREAK_VIRAMA_FINAL,        0x1BF3 },
     { G_UNICODE_BREAK_VIRAMA,              0xA9C0 },
+    { G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN,  0x05BE },
   };
 
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
