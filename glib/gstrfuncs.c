@@ -2214,6 +2214,7 @@ gchar *
 g_strescape (const gchar *source,
              const gchar *exceptions)
 {
+  size_t len;
   const guchar *p;
   gchar *dest;
   gchar *q;
@@ -2223,7 +2224,13 @@ g_strescape (const gchar *source,
 
   p = (guchar *) source;
   /* Each source byte needs maximally four destination chars (\777) */
-  q = dest = g_malloc (strlen (source) * 4 + 1);
+  if (!g_size_checked_mul (&len, strlen (source), 4) ||
+      !g_size_checked_add (&len, len, 1))
+    {
+      g_error ("%s: overflow allocating %" G_GSIZE_FORMAT "*4+1 bytes",
+               G_STRLOC, strlen (source));
+    }
+  q = dest = g_malloc (len);
 
   memset (excmap, 0, 256);
   if (exceptions)
