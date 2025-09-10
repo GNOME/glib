@@ -199,6 +199,13 @@ gchar *** g_desktop_app_info_search (const gchar *search_string);
 
 GIO_AVAILABLE_IN_2_42
 GList *g_desktop_app_info_get_implementations (const gchar *interface);
+GIO_AVAILABLE_IN_2_92
+GAppInfo **g_desktop_app_info_get_for_intent (const char *interface,
+                                              const char *scope,
+                                              size_t     *out_n_results);
+GIO_AVAILABLE_IN_2_92
+GAppInfo *g_desktop_app_info_get_default_for_intent (const char *interface,
+                                                     const char *scope);
 
 G_END_DECLS
 
