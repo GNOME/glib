@@ -62,6 +62,11 @@ GIO_AVAILABLE_IN_2_30
 const char *     g_desktop_app_info_get_categories    (GDesktopAppInfo *info);
 GIO_AVAILABLE_IN_2_30
 const char * const *g_desktop_app_info_get_keywords   (GDesktopAppInfo *info);
+GIO_AVAILABLE_IN_2_92
+const char * const *g_desktop_app_info_get_intents    (GDesktopAppInfo *info);
+GIO_AVAILABLE_IN_2_92
+gboolean         g_desktop_app_info_has_intent        (GDesktopAppInfo *info,
+                                                       const char      *intent);
 GIO_AVAILABLE_IN_2_30
 gboolean         g_desktop_app_info_get_nodisplay     (GDesktopAppInfo *info);
 GIO_AVAILABLE_IN_2_30

@@ -119,6 +119,7 @@ struct _GDesktopAppInfo
   char *startup_wm_class;
   char **mime_types;
   char **actions;
+  char **intents;  /* (nullable) (owned) */
 
   guint nodisplay       : 1;
   guint hidden          : 1;
@@ -1742,6 +1743,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_strfreev (info->mime_types);
   g_free (info->app_id);
   g_strfreev (info->actions);
+  g_strfreev (info->intents);
 
   G_OBJECT_CLASS (g_desktop_app_info_parent_class)->finalize (object);
 }
@@ -2038,6 +2040,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->mime_types = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL, NULL);
   bus_activatable = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE, NULL);
   info->actions = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ACTIONS, NULL, NULL);
+  info->intents = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS, NULL, NULL);
 
   /* Remove the special-case: no Actions= key just means 0 extra actions */
   if (info->actions == NULL)
@@ -2261,6 +2264,7 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->hidden = info->hidden;
   new_info->terminal = info->terminal;
   new_info->startup_notify = info->startup_notify;
+  new_info->intents = g_strdupv (info->intents);
 
   return G_APP_INFO (new_info);
 }
@@ -2417,6 +2421,54 @@ g_desktop_app_info_get_keywords (GDesktopAppInfo *info)
   g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
 
   return (const char * const *)info->keywords;
+}
+
+/**
+ * g_desktop_app_info_get_intents:
+ * @info: an app info
+ *
+ * Gets the implemented intents from the desktop file.
+ *
+ * As per the specification, this is the list of intents that are
+ * explicitly listed in the [`Implements` key](https://specifications.freedesktop.org/desktop-entry/latest/recognized-keys.html) of the `Desktop Entry` group.
+ *
+ * Returns: (array zero-terminated=1) (element-type utf8) (transfer none): a
+ * list of strings, always non-`NULL`
+ *
+ * Since: 2.92
+ */
+const char * const *
+g_desktop_app_info_get_intents (GDesktopAppInfo *info)
+{
+  static const char *empty_strv[1] = { NULL, };
+
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
+
+  return (info->intents != NULL) ? (const char * const *)info->intents : empty_strv;
+}
+
+/**
+ * g_desktop_app_info_has_intent:
+ * @info: an app info
+ * @intent: the intent to look up
+ *
+ * Returns whether @intent is implemented by the application.
+ *
+ * As per specification, an intent implemented by the application is listed in
+ * the [`Implements` key](https://specifications.freedesktop.org/desktop-entry/latest/recognized-keys.html) of the `Desktop Entry` group.
+ *
+ * Returns: true if the @intent is implemented by the application
+ *
+ * Since: 2.92
+ */
+gboolean
+g_desktop_app_info_has_intent (GDesktopAppInfo *info,
+                               const char      *intent)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), FALSE);
+
+  return (info->intents != NULL &&
+          g_strv_contains ((const char * const *)info->intents, intent));
 }
 
 /**
