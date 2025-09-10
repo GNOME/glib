@@ -154,7 +154,6 @@ typedef struct
   GHashTable                 *mime_tweaks;
   GHashTable                 *intent_tweaks;  /* (owned) (nullable) (element-type utf8 UnindexedIntentTweaks); maps intent interface name to UnindexedIntentTweaks instance; NULL before intents are read */
   GHashTable                 *memory_index;
-  GHashTable                 *memory_implementations;
 } DesktopFileDir;
 
 static GPtrArray      *desktop_file_dirs = NULL;
@@ -1381,7 +1380,6 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
   gpointer app, path;
 
   dir->memory_index = memory_index_new ();
-  dir->memory_implementations = memory_index_new ();
 
   /* Nothing to search? */
   if (dir->app_names == NULL)
@@ -1401,7 +1399,6 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
           !g_key_file_get_boolean (key_file, "Desktop Entry", "Hidden", NULL))
         {
           /* Index the interesting keys... */
-          gchar **implements;
           gsize i;
 
           for (i = 0; i < G_N_ELEMENTS (desktop_key_match_category); i++)
@@ -1439,15 +1436,6 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
 
               g_free (raw);
             }
-
-          /* Make note of the Implements= line */
-          implements = g_key_file_get_string_list (key_file,
-                                                   "Desktop Entry",
-                                                   G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS,
-                                                   NULL, NULL);
-          for (i = 0; implements && implements[i]; i++)
-            memory_index_add_token (dir->memory_implementations, implements[i], i, 0, app);
-          g_strfreev (implements);
         }
 
       g_key_file_free (key_file);
@@ -1565,20 +1553,6 @@ desktop_file_dir_unindexed_mime_lookup_default (DesktopFileDir *dir,
       if (!array_contains (results, app_name))
         g_ptr_array_add (results, app_name);
     }
-}
-
-static void
-desktop_file_dir_unindexed_get_implementations (DesktopFileDir  *dir,
-                                                GList          **results,
-                                                const gchar     *interface)
-{
-  MemoryIndexEntry *mie;
-
-  if (!dir->memory_index)
-    desktop_file_dir_unindexed_setup_search (dir);
-
-  for (mie = g_hash_table_lookup (dir->memory_implementations, interface); mie; mie = mie->next)
-    *results = g_list_prepend (*results, g_strdup (mie->app_name));
 }
 
 static void
@@ -1715,11 +1689,6 @@ desktop_file_dir_reset (DesktopFileDir *dir)
       dir->mime_tweaks = NULL;
     }
 
-  if (dir->memory_implementations)
-    {
-      g_hash_table_unref (dir->memory_implementations);
-      dir->memory_implementations = NULL;
-    }
   g_clear_pointer (&dir->intent_tweaks, g_hash_table_unref);
 
   dir->is_setup = FALSE;
@@ -1896,14 +1865,6 @@ desktop_file_dir_search (DesktopFileDir *dir,
                          const gchar    *search_token)
 {
   desktop_file_dir_unindexed_search (dir, search_token);
-}
-
-static void
-desktop_file_dir_get_implementations (DesktopFileDir  *dir,
-                                      GList          **results,
-                                      const gchar     *interface)
-{
-  desktop_file_dir_unindexed_get_implementations (dir, results, interface);
 }
 
 /* Lock/unlock and global setup API {{{2 */
@@ -5431,33 +5392,18 @@ g_desktop_app_info_get_for_intent (const char *interface,
 GList *
 g_desktop_app_info_get_implementations (const gchar *interface)
 {
+  GAppInfo **infos;
+  size_t n_infos;
   GList *result = NULL;
-  GList **ptr;
-  guint i;
 
-  desktop_file_dirs_lock ();
+  infos = g_desktop_app_info_get_for_intent (interface, NULL, &n_infos);
 
-  for (i = 0; i < desktop_file_dirs->len; i++)
-    desktop_file_dir_get_implementations (g_ptr_array_index (desktop_file_dirs, i), &result, interface);
-
-  desktop_file_dirs_unlock ();
-
-  ptr = &result;
-  while (*ptr)
+  if (infos)
     {
-      gchar *name = (*ptr)->data;
-      GDesktopAppInfo *app;
-
-      app = g_desktop_app_info_new (name);
-      g_free (name);
-
-      if (app)
-        {
-          (*ptr)->data = app;
-          ptr = &(*ptr)->next;
-        }
-      else
-        *ptr = g_list_delete_link (*ptr, *ptr);
+      for (size_t i = 0; i < n_infos; i++)
+        result = g_list_prepend (result, infos[i]);
+      result = g_list_reverse (result);
+      g_free (infos);
     }
 
   return result;

@@ -101,7 +101,9 @@ main (int argc, char **argv)
     {
       GList *results;
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       results = g_desktop_app_info_get_implementations (argv[2]);
+      G_GNUC_END_IGNORE_DEPRECATIONS
       print_app_list (results);
     }
   else if (g_str_equal (argv[1], "show-info"))

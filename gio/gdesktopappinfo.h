@@ -197,7 +197,7 @@ gboolean    g_desktop_app_info_launch_uris_as_manager_with_fds (GDesktopAppInfo 
 GIO_AVAILABLE_IN_2_40
 gchar *** g_desktop_app_info_search (const gchar *search_string);
 
-GIO_AVAILABLE_IN_2_42
+GIO_DEPRECATED_IN_2_92_FOR (g_desktop_app_info_get_for_intent)
 GList *g_desktop_app_info_get_implementations (const gchar *interface);
 GIO_AVAILABLE_IN_2_92
 GAppInfo **g_desktop_app_info_get_for_intent (const char *interface,
