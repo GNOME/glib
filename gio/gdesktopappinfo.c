@@ -1246,7 +1246,10 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
             }
 
           /* Make note of the Implements= line */
-          implements = g_key_file_get_string_list (key_file, "Desktop Entry", "Implements", NULL, NULL);
+          implements = g_key_file_get_string_list (key_file,
+                                                   "Desktop Entry",
+                                                   G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS,
+                                                   NULL, NULL);
           for (i = 0; implements && implements[i]; i++)
             memory_index_add_token (dir->memory_implementations, implements[i], i, 0, app);
           g_strfreev (implements);
