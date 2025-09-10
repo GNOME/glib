@@ -42,6 +42,12 @@ if [[ $(vercmp "$(pacman -Qi "${MINGW_PACKAGE_PREFIX}"-gobject-introspection | g
     meson install -C gobject-introspection/build
 fi
 
+if [[ -v COVERAGE ]]; then
+  coverage=true
+else
+  coverage=false
+fi
+
 # FIXME: We can’t use ${MESON_COMMON_OPTIONS} here because this script installs
 # Meson 1.3. See the comment in .gitlab-ci.yml about the same problem on
 # FreeBSD.
@@ -50,6 +56,7 @@ meson setup \
     --buildtype=debug \
     --wrap-mode=nodownload \
     --werror \
+    -Db_coverage=$coverage \
     -Ddocumentation=true \
     -Dintrospection=enabled \
     -Dman-pages=enabled \
@@ -57,7 +64,7 @@ meson setup \
 
 meson compile -C _build
 
-if [[ "$CFLAGS" == *"-coverage"* ]]; then
+if [[ -v COVERAGE ]]; then
     lcov \
         --quiet \
         --config-file "${DIR}"/.lcovrc \
@@ -71,7 +78,7 @@ meson test -C _build -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}"
 meson test -C _build -v --timeout-multiplier "${MESON_TEST_TIMEOUT_MULTIPLIER}" \
     --setup=unstable_tests --suite=failing --suite=flaky || true
 
-if [[ "$CFLAGS" == *"-coverage"* ]]; then
+if [[ -v COVERAGE ]]; then
     lcov \
         --quiet \
         --config-file "${DIR}"/.lcovrc \
