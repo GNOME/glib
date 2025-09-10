@@ -1830,6 +1830,239 @@ test_launch_uris_with_invalid_terminal (void)
   g_free (old_path);
 }
 
+static GDBusNodeInfo *introspection_data = NULL;
+static const char introspection_xml[] =
+    "<node>"
+    "    <interface name='org.freedesktop.Terminal1'>"
+    "        <method name='LaunchCommand'>"
+    "            <arg type='aa{sv}' name='commands' direction='in' />"
+    "            <arg type='ay' name='desktop_entry' direction='in' />"
+    "            <arg type='a{sv}' name='options' direction='in' />"
+    "            <arg type='a{sv}' name='platform_data' direction='in' />"
+    "        </method>"
+    "    </interface>"
+    "</node>";
+
+typedef struct
+{
+  gboolean acquired;
+  gboolean success;
+  GMainContext *main_context;  /* (unowned) */
+} OwnNameData;
+
+static void
+incoming_method_call (GDBusConnection       *connection,
+                      const char            *sender,
+                      const char            *object_path,
+                      const char            *interface_name,
+                      const char            *method_name,
+                      GVariant              *parameters,
+                      GDBusMethodInvocation *invocation,
+                      void                  *user_data)
+{
+  OwnNameData *data = user_data;
+
+  if (g_strcmp0 (method_name, "LaunchCommand") == 0)
+    {
+      g_test_message ("LaunchCommand called");
+      data->success = TRUE;
+      g_dbus_method_invocation_return_value (invocation, NULL);
+      g_main_context_wakeup (data->main_context);
+    }
+}
+
+static const GDBusInterfaceVTable interface_vtable = {
+  incoming_method_call,
+  NULL,
+  NULL,
+  { 0 }
+};
+
+static void
+on_bus_acquired (GDBusConnection *connection,
+                 const char      *name,
+                 void            *user_data)
+{
+  OwnNameData *data = user_data;
+  unsigned int registration_id;
+  GError *error = NULL;
+
+  registration_id = g_dbus_connection_register_object (connection,
+                                                       "/org/freedesktop/SuperTerm",
+                                                       introspection_data->interfaces[0],
+                                                       &interface_vtable,
+                                                       user_data,
+                                                       NULL, /* user_data_free_func */
+                                                       &error);
+  g_assert_no_error (error);
+  g_assert (registration_id > 0);
+
+  data->acquired = TRUE;
+  g_main_context_wakeup (data->main_context);
+}
+
+static void
+async_result_cb (GObject      *source_object,
+                 GAsyncResult *result,
+                 void         *user_data);
+
+const char *superterm_data =
+  "[Desktop Entry]\n"
+  "Encoding=UTF-8\n"
+  "Version=1.0\n"
+  "Type=Application\n"
+  "Exec=true %f\n"
+  "Name=SuperTerm\n"
+  "DBusActivatable=true\n"
+  "Implements=org.freedesktop.Terminal1\n";
+
+const char *intentcache_data =
+  "[Intent Cache]\n"
+  "org.freedesktop.Terminal1=org.freedesktop.SuperTerm.desktop\n";
+
+static void
+test_launch_uris_with_terminal1 (void)
+{
+  GAppLaunchContext *launch_context;
+  char *apphome, *name;
+  int res;
+  OwnNameData own_data;
+  int id;
+  GMainContext *main_context = NULL;
+  GKeyFile *key_file;
+  GAppInfo *app_info;
+  GError *error = NULL;
+  GAsyncResult *result = NULL;
+
+  session_bus_up ();
+
+  launch_context = g_app_launch_context_new ();
+
+  apphome = g_build_filename (g_get_user_data_dir (), "applications", NULL);
+  res = g_mkdir_with_parents (apphome, 0700);
+  g_assert_cmpint (res, ==, 0);
+
+  name = g_build_filename (apphome, "org.freedesktop.SuperTerm.desktop", NULL);
+  g_file_set_contents (name, superterm_data, -1, &error);
+  g_assert_no_error (error);
+  g_free (name);
+
+  name = g_build_filename (apphome, "intent.cache", NULL);
+  g_file_set_contents (name, intentcache_data, -1, &error);
+  g_assert_no_error (error);
+  g_free (name);
+
+  g_free (apphome);
+
+  introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
+  g_assert (introspection_data != NULL);
+
+  own_data.acquired = FALSE;
+  own_data.success = FALSE;
+  own_data.main_context = main_context;
+  id = g_bus_own_name (G_BUS_TYPE_SESSION,
+                       "org.freedesktop.SuperTerm",
+                       G_BUS_NAME_OWNER_FLAGS_NONE,
+                       on_bus_acquired,
+                       NULL,
+                       NULL,
+                       &own_data,
+                       NULL);
+
+  while (!own_data.acquired)
+    g_main_context_iteration (main_context, TRUE);
+
+  const char key_file_contents[] =
+    "[Desktop Entry]\n"
+    "Type=Application\n"
+    "Name=Test App on Terminal\n"
+    "Terminal=true\n"
+    "Path=some/path\n"
+    "Exec=true\n";
+
+  const char key_file_contents_no_exec[] =
+    "[Desktop Entry]\n"
+    "Type=Application\n"
+    "Name=Test App on Terminal\n"
+    "Terminal=true\n"
+    "Path=some/path\n";
+
+  key_file = g_key_file_new ();
+  g_assert_true (
+    g_key_file_load_from_data (key_file, key_file_contents, -1, G_KEY_FILE_NONE, NULL));
+
+  app_info = G_APP_INFO (g_desktop_app_info_new_from_keyfile (key_file));
+  g_assert_true (G_IS_DESKTOP_APP_INFO (app_info));
+  g_assert_true (
+    g_desktop_app_info_get_boolean (G_DESKTOP_APP_INFO (app_info), "Terminal"));
+
+  g_key_file_free (key_file);
+
+  g_app_info_launch_uris (app_info, NULL, launch_context, &error);
+  g_assert_no_error (error);
+
+  while (!own_data.acquired)
+    g_main_context_iteration (main_context, TRUE);
+
+  g_app_info_launch_uris_async (app_info, NULL, launch_context, NULL, async_result_cb, &result);
+
+  while (result == NULL)
+    g_main_context_iteration (main_context, TRUE);
+
+  g_assert_true (g_app_info_launch_uris_finish (G_APP_INFO (app_info), result, &error));
+  g_assert_no_error (error);
+
+  g_clear_object (&app_info);
+  g_clear_object (&result);
+
+  key_file = g_key_file_new ();
+  g_assert_true (
+    g_key_file_load_from_data (key_file, key_file_contents_no_exec, -1, G_KEY_FILE_NONE, NULL));
+
+  app_info = G_APP_INFO (g_desktop_app_info_new_from_keyfile (key_file));
+  g_assert_true (G_IS_DESKTOP_APP_INFO (app_info));
+
+  g_key_file_free (key_file);
+
+  g_app_info_launch_uris (app_info, NULL, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_clear_error (&error);
+
+  g_app_info_launch_uris_async (app_info, NULL, NULL, NULL, async_result_cb, &result);
+
+  while (result == NULL)
+    g_main_context_iteration (main_context, TRUE);
+
+  g_assert_false (g_app_info_launch_uris_finish (G_APP_INFO (app_info), result, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_clear_error (&error);
+
+  g_clear_object (&app_info);
+
+  own_data.success = FALSE;
+
+  app_info = g_app_info_create_from_commandline ("true",
+                                                 "Test Command on Terminal",
+                                                 G_APP_INFO_CREATE_NEEDS_TERMINAL,
+                                                 &error);
+  g_assert_no_error (error);
+
+  g_app_info_launch_uris (app_info, NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  while (!own_data.success)
+    g_main_context_iteration (main_context, TRUE);
+
+  g_clear_object (&app_info);
+
+  g_bus_unown_name (id);
+
+  session_bus_down ();
+
+  g_clear_object (&result);
+  g_clear_object (&launch_context);
+}
+
 static void
 test_app_path (void)
 {
@@ -2308,6 +2541,9 @@ main (int   argc,
 
   g_test_add_func ("/desktop-app-info/launch-uris-with-terminal/invalid-glib-terminal",
                    test_launch_uris_with_invalid_terminal);
+
+  g_test_add_func ("/desktop-app-info/launch-uris-with-terminal/terminal1-intent",
+                   test_launch_uris_with_terminal1);
 
   return g_test_run ();
 }
