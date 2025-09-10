@@ -1,0 +1,3 @@
+[Intent Cache]
+org.freedesktop.ImageProvider=cheese.desktop;
+org.gnome.Shell.SearchProvider2=eog.desktop;gnome-contacts.desktop;gnome-music.desktop;
