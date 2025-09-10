@@ -3867,17 +3867,32 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
   if (session_bus && info->app_id)
-    /* This is non-blocking API. Similar to launching via fork()/exec()
-     * we don't wait around to see if the program crashed during startup.
-     * This is what startup-notification's job is...
-     */
-    g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context,
-                                              NULL, NULL, NULL);
+    {
+      /* This is non-blocking API. Similar to launching via fork()/exec()
+       * we don't wait around to see if the program crashed during startup.
+       * This is what startup-notification's job is...
+       */
+      g_desktop_app_info_launch_uris_with_dbus (info,
+                                                session_bus,
+                                                uris,
+                                                launch_context,
+                                                NULL, NULL, NULL);
+    }
   else
-    success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec, uris, launch_context,
-                                                         spawn_flags, user_setup, user_setup_data,
-                                                         pid_callback, pid_callback_data,
-                                                         stdin_fd, stdout_fd, stderr_fd, error);
+    {
+      success = g_desktop_app_info_launch_uris_with_spawn (info,
+                                                           session_bus,
+                                                           info->exec,
+                                                           uris,
+                                                           launch_context,
+                                                           spawn_flags,
+                                                           user_setup,
+                                                           user_setup_data,
+                                                           pid_callback,
+                                                           pid_callback_data,
+                                                           stdin_fd, stdout_fd, stderr_fd,
+                                                           error);
+    }
 
   g_clear_object (&session_bus);
 
@@ -3972,8 +3987,11 @@ launch_uris_bus_get_cb (GObject      *object,
        * from the g_desktop_app_info_launch_uris_with_dbus() function, still
        * uses blocking calls.
        */
-      g_desktop_app_info_launch_uris_with_dbus (info, session_bus,
-                                                data->uris, data->context,
+
+      g_desktop_app_info_launch_uris_with_dbus (info,
+                                                session_bus,
+                                                data->uris,
+                                                data->context,
                                                 cancellable,
                                                 launch_uris_with_dbus_cb,
                                                 g_steal_pointer (&task));
