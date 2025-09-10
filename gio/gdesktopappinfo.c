@@ -3800,19 +3800,19 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
   g_variant_dict_clear (&dict);
 }
 
-static gboolean
-g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
-                                          GDBusConnection    *session_bus,
-                                          GList              *uris,
-                                          GAppLaunchContext  *launch_context,
-                                          GCancellable       *cancellable,
-                                          GAsyncReadyCallback callback,
-                                          gpointer            user_data)
+static void
+g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo     *info,
+                                          GDBusConnection     *session_bus,
+                                          GList               *uris,
+                                          GAppLaunchContext   *launch_context,
+                                          GCancellable        *cancellable,
+                                          GAsyncReadyCallback  callback,
+                                          void                *user_data)
 {
   GList *ruris = uris;
   char *app_id = NULL;
 
-  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_if_fail (info != NULL);
 
 #ifdef G_OS_UNIX
   app_id = g_desktop_app_info_get_string (info, "X-Flatpak");
@@ -3844,8 +3844,6 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
 
   if (ruris != uris)
     g_list_free_full (ruris, g_free);
-
-  return TRUE;
 }
 
 static gboolean
