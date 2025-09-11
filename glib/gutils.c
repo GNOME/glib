@@ -2293,7 +2293,7 @@ load_user_special_dirs (void)
     {
       gchar *buffer = lines[i];
       gchar *d, *p;
-      gint len;
+      size_t len;
       gboolean is_relative = FALSE;
       GUserDirectory directory;
 
