@@ -97,7 +97,7 @@ g_dbus_error_quark (void)
 /**
  * g_dbus_error_register_error_domain:
  * @error_domain_quark_name: the error domain name
- * @quark_volatile: return location for the [type@GLib.Quark] representing the
+ * @quark_volatile: (out): return location for the [type@GLib.Quark] representing the
  *   error domain
  * @entries: (array length=num_entries): items to register
  * @num_entries: number of items to register
