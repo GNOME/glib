@@ -2364,12 +2364,14 @@ load_user_special_dirs (void)
       p++;
 
       if (strncmp (p, "$HOME", 5) == 0)
-	{
-	  p += 5;
-	  is_relative = TRUE;
-	}
+        {
+          p += 5;
+          if (*p != '/' && *p != '"')
+            continue;
+          is_relative = TRUE;
+        }
       else if (*p != '/')
-	continue;
+        continue;
 
       d = strrchr (p, '"');
       if (!d)
