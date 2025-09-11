@@ -210,7 +210,8 @@ test_load_user_special_dirs (void)
                                     "XDG_DESKTOP_DIR = \"/root\"\nXDG_DESKTOP_DIR = \"$HOMER/Desktop\"\n"
                                     "XDG_DOCUMENTS_DIR = \"$HOME\"\n"
                                     "XDG_DOWNLOAD_DIR = \"$HOME/Downloads\"\n"
-                                    "XDG_MUSIC_DIR = \"///\"\n",
+                                    "XDG_MUSIC_DIR = \"///\"\n"
+                                    "XDG_PICTURES_DIR = \"/\"\nXDG_DOWNLOAD_DIR = \"/dev/null\n",
                                     -1, NULL);
       g_assert_true (result);
       g_free (user_dirs_file);
@@ -229,6 +230,9 @@ test_load_user_special_dirs (void)
       g_free (expected);
 
       dir = g_get_user_special_dir (G_USER_DIRECTORY_MUSIC);
+      g_assert_cmpstr (dir, ==, "/");
+
+      dir = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
       g_assert_cmpstr (dir, ==, "/");
     }
   else

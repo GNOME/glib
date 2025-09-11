@@ -2374,7 +2374,7 @@ load_user_special_dirs (void)
         continue;
 
       d = strrchr (p, '"');
-      if (!d)
+      if (d < p)
         continue;
       *d = 0;
 
