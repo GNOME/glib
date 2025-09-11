@@ -129,7 +129,9 @@ gio_tests = {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
     'can_fail' : host_system in ['darwin', 'gnu'],
   },
-  'socket-listener' : {},
+  'socket-listener' : {
+    'dependencies': libdl_dep,
+  },
   'socket-service' : {},
   'srvtarget' : {},
   'task' : {},
