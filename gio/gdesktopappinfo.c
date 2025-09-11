@@ -1348,9 +1348,9 @@ desktop_file_dir_unindexed_mime_lookup (DesktopFileDir *dir,
 }
 
 static void
-desktop_file_dir_unindexed_default_lookup (DesktopFileDir *dir,
-                                           const gchar    *mime_type,
-                                           GPtrArray      *results)
+desktop_file_dir_unindexed_mime_lookup_default (DesktopFileDir *dir,
+                                                const char     *mime_type,
+                                                GPtrArray      *results)
 {
   UnindexedMimeTweaks *tweaks;
   gint i;
@@ -1581,7 +1581,7 @@ desktop_file_dir_mime_lookup (DesktopFileDir *dir,
 }
 
 /*< internal >
- * desktop_file_dir_default_lookup:
+ * desktop_file_dir_mime_lookup_default:
  * @dir: a #DesktopFileDir
  * @mime_type: the mime type to look up
  * @results: an array to store the results in
@@ -1589,11 +1589,11 @@ desktop_file_dir_mime_lookup (DesktopFileDir *dir,
  * Collects the "default" applications for a given mime type from @dir.
  */
 static void
-desktop_file_dir_default_lookup (DesktopFileDir *dir,
-                                 const gchar    *mime_type,
-                                 GPtrArray      *results)
+desktop_file_dir_mime_lookup_default (DesktopFileDir *dir,
+                                      const char     *mime_type,
+                                      GPtrArray      *results)
 {
-  desktop_file_dir_unindexed_default_lookup (dir, mime_type, results);
+  desktop_file_dir_unindexed_mime_lookup_default (dir, mime_type, results);
 }
 
 /*< internal >
@@ -4860,7 +4860,7 @@ g_app_info_get_default_for_type_impl (const char *content_type,
     {
       /* Collect all the default apps for this type */
       for (j = 0; j < desktop_file_dirs->len; j++)
-        desktop_file_dir_default_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], results);
+        desktop_file_dir_mime_lookup_default (g_ptr_array_index (desktop_file_dirs, j), types[i], results);
 
       /* Consider the associations as well... */
       for (j = 0; j < desktop_file_dirs->len; j++)
