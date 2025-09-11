@@ -7,9 +7,9 @@
 
 #define G_UNICODE_MAX_TABLE_INDEX (0x110000 / 256)
 
-#define G_UNICODE_LAST_CHAR_PART1 0x323FF
+#define G_UNICODE_LAST_CHAR_PART1 0x334FF
 
-#define G_UNICODE_LAST_PAGE_PART1 803
+#define G_UNICODE_LAST_PAGE_PART1 820
 
 #define G_UNICODE_NOT_PRESENT_OFFSET 65535
 
@@ -267,9 +267,10 @@ static const guchar cclass_data[][256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230, 230, 230, 230, 230, 220, 220,
     220, 220, 220, 220, 230, 230, 220, 0, 220, 220, 230, 230, 220, 220, 230,
-    230, 230, 230, 230, 220, 230, 230, 230, 230, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    230, 230, 230, 230, 220, 230, 230, 230, 230, 230, 230, 230, 230, 230,
+    230, 230, 230, 230, 230, 230, 230, 230, 230, 220, 0, 0, 230, 230, 230,
+    230, 230, 230, 220, 230, 230, 230, 230, 234, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
   },
   { /* page 27, index 19 */
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -537,7 +538,7 @@ static const guchar cclass_data[][256] = {
     0, 0, 0, 230, 230, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 220, 220, 220
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 220, 220, 0, 220, 220, 220
   },
   { /* page 271, index 39 */
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -893,7 +894,20 @@ static const guchar cclass_data[][256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230,
     220, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
   },
-  { /* page 488, index 66 */
+  { /* page 486, index 66 */
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230, 0, 0, 230, 0, 0, 0, 0, 0, 0, 0,
+    230, 230, 0, 0, 0, 0, 0, 230, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+  },
+  { /* page 488, index 67 */
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -906,7 +920,7 @@ static const guchar cclass_data[][256] = {
     220, 220, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
   },
-  { /* page 489, index 67 */
+  { /* page 489, index 68 */
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 230, 230,
@@ -921,7 +935,7 @@ static const guchar cclass_data[][256] = {
   }
 };
 
-static const gint16 combining_class_table_part1[804] = {
+static const gint16 combining_class_table_part1[821] = {
   0 + G_UNICODE_MAX_TABLE_INDEX,
   0 + G_UNICODE_MAX_TABLE_INDEX,
   0 + G_UNICODE_MAX_TABLE_INDEX,
@@ -1408,10 +1422,27 @@ static const gint16 combining_class_table_part1[804] = {
   0 + G_UNICODE_MAX_TABLE_INDEX,
   64 /* page 484 */,
   65 /* page 485 */,
+  66 /* page 486 */,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  67 /* page 488 */,
+  68 /* page 489 */,
   0 + G_UNICODE_MAX_TABLE_INDEX,
   0 + G_UNICODE_MAX_TABLE_INDEX,
-  66 /* page 488 */,
-  67 /* page 489 */,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
+  0 + G_UNICODE_MAX_TABLE_INDEX,
   0 + G_UNICODE_MAX_TABLE_INDEX,
   0 + G_UNICODE_MAX_TABLE_INDEX,
   0 + G_UNICODE_MAX_TABLE_INDEX,
@@ -4847,6 +4878,7 @@ static const decomposition decomp_table[] =
   { 0xa69c, G_UNICODE_NOT_PRESENT_OFFSET, 10883 },
   { 0xa69d, G_UNICODE_NOT_PRESENT_OFFSET, 10886 },
   { 0xa770, G_UNICODE_NOT_PRESENT_OFFSET, 10889 },
+  { 0xa7f1, G_UNICODE_NOT_PRESENT_OFFSET, 6133 },
   { 0xa7f2, G_UNICODE_NOT_PRESENT_OFFSET, 5292 },
   { 0xa7f3, G_UNICODE_NOT_PRESENT_OFFSET, 5336 },
   { 0xa7f4, G_UNICODE_NOT_PRESENT_OFFSET, 5319 },

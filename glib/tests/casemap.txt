@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 16.0.0 data
+# Test cases generated from Unicode 17.0.0 data
 # by gen-casemap-txt.py. Do not edit.
 #
 # Some special hand crafted tests
@@ -559,7 +559,6 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ʑ	ʑ			#  291
 	ʒ	ʒ	Ʒ	Ʒ	#  292
 	ʓ	ʓ			#  293
-	ʕ	ʕ			#  295
 	ʖ	ʖ			#  296
 	ʗ	ʗ			#  297
 	ʘ	ʘ			#  298
@@ -2445,10 +2444,14 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	Ɤ	ɤ		Ɤ	# A7CB
 	Ꟍ	ꟍ		Ꟍ	# A7CC
 	ꟍ	ꟍ	Ꟍ	Ꟍ	# A7CD
+	꟎	꟏		꟎	# A7CE
+	꟏	꟏	꟎	꟎	# A7CF
 	Ꟑ	ꟑ		Ꟑ	# A7D0
 	ꟑ	ꟑ	Ꟑ	Ꟑ	# A7D1
-	ꟓ	ꟓ			# A7D3
-	ꟕ	ꟕ			# A7D5
+	꟒	ꟓ		꟒	# A7D2
+	ꟓ	ꟓ	꟒	꟒	# A7D3
+	꟔	ꟕ		꟔	# A7D4
+	ꟕ	ꟕ	꟔	꟔	# A7D5
 	Ꟗ	ꟗ		Ꟗ	# A7D6
 	ꟗ	ꟗ	Ꟗ	Ꟗ	# A7D7
 	Ꟙ	ꟙ		Ꟙ	# A7D8
@@ -3151,6 +3154,56 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	𖹽	𖹽	𖹝	𖹝	# 16E7D
 	𖹾	𖹾	𖹞	𖹞	# 16E7E
 	𖹿	𖹿	𖹟	𖹟	# 16E7F
+	𖺠	𖺻		𖺠	# 16EA0
+	𖺡	𖺼		𖺡	# 16EA1
+	𖺢	𖺽		𖺢	# 16EA2
+	𖺣	𖺾		𖺣	# 16EA3
+	𖺤	𖺿		𖺤	# 16EA4
+	𖺥	𖻀		𖺥	# 16EA5
+	𖺦	𖻁		𖺦	# 16EA6
+	𖺧	𖻂		𖺧	# 16EA7
+	𖺨	𖻃		𖺨	# 16EA8
+	𖺩	𖻄		𖺩	# 16EA9
+	𖺪	𖻅		𖺪	# 16EAA
+	𖺫	𖻆		𖺫	# 16EAB
+	𖺬	𖻇		𖺬	# 16EAC
+	𖺭	𖻈		𖺭	# 16EAD
+	𖺮	𖻉		𖺮	# 16EAE
+	𖺯	𖻊		𖺯	# 16EAF
+	𖺰	𖻋		𖺰	# 16EB0
+	𖺱	𖻌		𖺱	# 16EB1
+	𖺲	𖻍		𖺲	# 16EB2
+	𖺳	𖻎		𖺳	# 16EB3
+	𖺴	𖻏		𖺴	# 16EB4
+	𖺵	𖻐		𖺵	# 16EB5
+	𖺶	𖻑		𖺶	# 16EB6
+	𖺷	𖻒		𖺷	# 16EB7
+	𖺸	𖻓		𖺸	# 16EB8
+	𖺻	𖺻	𖺠	𖺠	# 16EBB
+	𖺼	𖺼	𖺡	𖺡	# 16EBC
+	𖺽	𖺽	𖺢	𖺢	# 16EBD
+	𖺾	𖺾	𖺣	𖺣	# 16EBE
+	𖺿	𖺿	𖺤	𖺤	# 16EBF
+	𖻀	𖻀	𖺥	𖺥	# 16EC0
+	𖻁	𖻁	𖺦	𖺦	# 16EC1
+	𖻂	𖻂	𖺧	𖺧	# 16EC2
+	𖻃	𖻃	𖺨	𖺨	# 16EC3
+	𖻄	𖻄	𖺩	𖺩	# 16EC4
+	𖻅	𖻅	𖺪	𖺪	# 16EC5
+	𖻆	𖻆	𖺫	𖺫	# 16EC6
+	𖻇	𖻇	𖺬	𖺬	# 16EC7
+	𖻈	𖻈	𖺭	𖺭	# 16EC8
+	𖻉	𖻉	𖺮	𖺮	# 16EC9
+	𖻊	𖻊	𖺯	𖺯	# 16ECA
+	𖻋	𖻋	𖺰	𖺰	# 16ECB
+	𖻌	𖻌	𖺱	𖺱	# 16ECC
+	𖻍	𖻍	𖺲	𖺲	# 16ECD
+	𖻎	𖻎	𖺳	𖺳	# 16ECE
+	𖻏	𖻏	𖺴	𖺴	# 16ECF
+	𖻐	𖻐	𖺵	𖺵	# 16ED0
+	𖻑	𖻑	𖺶	𖺶	# 16ED1
+	𖻒	𖻒	𖺷	𖺷	# 16ED2
+	𖻓	𖻓	𖺸	𖺸	# 16ED3
 	𝐀			𝐀	# 1D400
 	𝐁			𝐁	# 1D401
 	𝐂			𝐂	# 1D402
