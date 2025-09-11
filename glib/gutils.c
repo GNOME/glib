@@ -2379,12 +2379,11 @@ load_user_special_dirs (void)
       *d = 0;
 
       d = p;
-      
+
       /* remove trailing slashes */
-      len = strlen (d);
-      if (d[len - 1] == '/')
+      for (len = strlen (d); len > 1 && d[len - 1] == '/'; len--)
         d[len - 1] = 0;
-      
+
       if (is_relative)
         {
           const gchar *home_dir = g_get_home_dir_unlocked ();
