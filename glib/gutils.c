@@ -899,6 +899,12 @@ g_build_home_dir (void)
   return g_steal_pointer (&home_dir);
 }
 
+static const gchar *
+g_get_home_dir_unlocked (void)
+{
+  return g_home_dir == NULL ? g_build_home_dir () : g_home_dir;
+}
+
 /**
  * g_get_home_dir:
  *
@@ -932,9 +938,7 @@ g_get_home_dir (void)
 
   G_LOCK (g_utils_global);
 
-  if (g_home_dir == NULL)
-    g_home_dir = g_build_home_dir ();
-  home_dir = g_home_dir;
+  home_dir = g_get_home_dir_unlocked ();
 
   G_UNLOCK (g_utils_global);
 
@@ -1953,6 +1957,12 @@ g_build_user_config_dir (void)
   return g_steal_pointer (&config_dir);
 }
 
+static const char *
+g_get_user_config_dir_unlocked (void)
+{
+  return g_user_config_dir == NULL ? g_build_user_config_dir () : g_user_config_dir;
+}
+
 /**
  * g_get_user_config_dir:
  * 
@@ -1985,9 +1995,7 @@ g_get_user_config_dir (void)
 
   G_LOCK (g_utils_global);
 
-  if (g_user_config_dir == NULL)
-    g_user_config_dir = g_build_user_config_dir ();
-  user_config_dir = g_user_config_dir;
+  user_config_dir = g_get_user_config_dir_unlocked ();
 
   G_UNLOCK (g_utils_global);
 
@@ -2260,17 +2268,16 @@ load_user_special_dirs (void)
 static void
 load_user_special_dirs (void)
 {
-  gchar *config_dir = NULL;
+  const gchar *config_dir = NULL;
   gchar *config_file;
   gchar *data;
   gchar **lines;
   gint n_lines, i;
   
-  config_dir = g_build_user_config_dir ();
+  config_dir = g_get_user_config_dir_unlocked ();
   config_file = g_build_filename (config_dir,
                                   "user-dirs.dirs",
                                   NULL);
-  g_free (config_dir);
 
   if (!g_file_get_contents (config_file, &data, NULL, NULL))
     {
@@ -2378,9 +2385,8 @@ load_user_special_dirs (void)
       
       if (is_relative)
         {
-          gchar *home_dir = g_build_home_dir ();
+          const gchar *home_dir = g_get_home_dir_unlocked ();
           g_user_special_dirs[directory] = g_build_filename (home_dir, d, NULL);
-          g_free (home_dir);
         }
       else
 	g_user_special_dirs[directory] = g_strdup (d);
