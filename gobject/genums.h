@@ -148,7 +148,7 @@ typedef struct _GFlagsValue GFlagsValue;
  * @minimum: the smallest possible value.
  * @maximum: the largest possible value.
  * @n_values: the number of possible values.
- * @values: an array of #GEnumValue structs describing the 
+ * @values: (array length=n_values): an array of #GEnumValue structs describing the 
  *  individual values.
  * 
  * The class of an enumeration type holds information about its 
@@ -169,7 +169,7 @@ struct	_GEnumClass
  * @g_type_class: the parent class
  * @mask: a mask covering all possible values.
  * @n_values: the number of possible values.
- * @values: an array of #GFlagsValue structs describing the 
+ * @values: (array length=n_values): an array of #GFlagsValue structs describing the 
  *  individual values.
  * 
  * The class of a flags type holds information about its 
