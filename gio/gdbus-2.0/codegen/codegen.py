@@ -144,6 +144,7 @@ class HeaderCodeGenerator:
         self.glib_min_required = glib_min_required
         self.symbol_decorator = symbol_decorator
         self.symbol_decorator_header = symbol_decorator_header
+        self.skeleton_type_camel = "GDBusInterfaceSkeleton"
         self.outfile = outfile
         self.ext = ExtensionHeaderCodeGenerator(ext, self)
 
@@ -643,13 +644,13 @@ class HeaderCodeGenerator:
             self.outfile.write("struct _%sSkeleton\n" % (i.camel_name))
             self.outfile.write("{\n")
             self.outfile.write("  /*< private >*/\n")
-            self.outfile.write("  GDBusInterfaceSkeleton parent_instance;\n")
+            self.outfile.write("  %s parent_instance;\n" % self.skeleton_type_camel)
             self.outfile.write("  %sSkeletonPrivate *priv;\n" % (i.camel_name))
             self.outfile.write("};\n")
             self.outfile.write("\n")
             self.outfile.write("struct _%sSkeletonClass\n" % (i.camel_name))
             self.outfile.write("{\n")
-            self.outfile.write("  GDBusInterfaceSkeletonClass parent_class;\n")
+            self.outfile.write("  %sClass parent_class;\n" % self.skeleton_type_camel)
             self.outfile.write("};\n")
             self.outfile.write("\n")
             if self.symbol_decorator is not None:
@@ -1521,6 +1522,7 @@ class CodeGenerator:
         self.docbook_gen = docbook_gen
         self.glib_min_required = glib_min_required
         self.symbol_decoration_define = symbol_decoration_define
+        self.skeleton_type_upper = "G_TYPE_DBUS_INTERFACE_SKELETON"
         self.outfile = outfile
         self.marshallers = set()
         self.ext = ExtensionCodeGenerator(ext, self)
@@ -4147,8 +4149,8 @@ class CodeGenerator:
 
         self.outfile.write("#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38\n")
         self.outfile.write(
-            "G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n"
-            % (i.camel_name, i.name_lower)
+            "G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, %s,\n"
+            % (i.camel_name, i.name_lower, self.skeleton_type_upper)
         )
         self.outfile.write(
             "                         G_ADD_PRIVATE (%sSkeleton)\n" % (i.camel_name)
@@ -4159,8 +4161,8 @@ class CodeGenerator:
         )
         self.outfile.write("#else\n")
         self.outfile.write(
-            "G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n"
-            % (i.camel_name, i.name_lower)
+            "G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, %s,\n"
+            % (i.camel_name, i.name_lower, self.skeleton_type_upper)
         )
         self.outfile.write(
             "                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init))\n\n"
