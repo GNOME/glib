@@ -689,7 +689,7 @@ g_app_info_remove_supports_type (GAppInfo    *appinfo,
  * [method@Gio.AppInfo.add_supports_type], but only those exported directly by
  * the application.
  *
- * Returns: (transfer none) (array zero-terminated=1) (element-type utf8):
+ * Returns: (transfer none) (nullable) (array zero-terminated=1) (element-type utf8):
  *   a list of content types.
  *
  * Since: 2.34
