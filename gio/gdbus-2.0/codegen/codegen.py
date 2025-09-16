@@ -41,6 +41,54 @@ LICENSE_STR = """/*
 # flake8: noqa: E501
 
 
+def extensionpoint(func):
+    def wrapper(self, *args, **kwargs):
+        # ensures same signature
+        func(*args, **kwargs)
+        if not self._ext:
+            return
+        method = getattr(self._ext, func.__name__, None)
+        if not method:
+            return
+        method(*args, **kwargs)
+
+    return wrapper
+
+
+class ExtensionGenerator:
+    def __init__(self, ext, generator):
+        if self.extending != generator.__class__.__name__:
+            raise Exception("Trying to extend wrong class")
+        self._ext = None
+        klass = getattr(ext, self.extending, None)
+        if klass:
+            self._ext = klass(generator)
+
+
+class ExtensionHeaderCodeGenerator(ExtensionGenerator):
+    extending = "HeaderCodeGenerator"
+
+    @extensionpoint
+    def generate_includes():
+        pass
+
+    @extensionpoint
+    def declare_types():
+        pass
+
+
+class ExtensionCodeGenerator(ExtensionGenerator):
+    extending = "CodeGenerator"
+
+    @extensionpoint
+    def generate_body_preamble():
+        pass
+
+    @extensionpoint
+    def generate():
+        pass
+
+
 def generate_namespace(namespace):
     ns = namespace
     if len(namespace) > 0:
@@ -84,6 +132,7 @@ class HeaderCodeGenerator:
         symbol_decorator,
         symbol_decorator_header,
         outfile,
+        ext,
     ):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
@@ -96,6 +145,7 @@ class HeaderCodeGenerator:
         self.symbol_decorator = symbol_decorator
         self.symbol_decorator_header = symbol_decorator_header
         self.outfile = outfile
+        self.ext = ExtensionHeaderCodeGenerator(ext, self)
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -116,6 +166,7 @@ class HeaderCodeGenerator:
 
         self.outfile.write("\n")
         self.outfile.write("#include <gio/gio.h>\n")
+        self.ext.generate_includes()
         self.outfile.write("\n")
         self.outfile.write("G_BEGIN_DECLS\n")
         self.outfile.write("\n")
@@ -360,6 +411,7 @@ class HeaderCodeGenerator:
                         "    GError **error);\n"
                     )
                     self.outfile.write("\n")
+
                 self.outfile.write("\n")
 
             # Then the property accessor declarations
@@ -1014,6 +1066,7 @@ class HeaderCodeGenerator:
     def generate(self):
         self.generate_header_preamble()
         self.declare_types()
+        self.ext.declare_types()
         self.generate_header_postamble()
 
 
@@ -1458,6 +1511,7 @@ class CodeGenerator:
         glib_min_required,
         symbol_decoration_define,
         outfile,
+        ext,
     ):
         self.ifaces = ifaces
         self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
@@ -1469,6 +1523,7 @@ class CodeGenerator:
         self.symbol_decoration_define = symbol_decoration_define
         self.outfile = outfile
         self.marshallers = set()
+        self.ext = ExtensionCodeGenerator(ext, self)
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -5478,6 +5533,7 @@ class CodeGenerator:
 
     def generate(self):
         self.generate_body_preamble()
+        self.ext.generate_body_preamble()
         for i in self.ifaces:
             self.generate_generic_marshallers(i)
         for i in self.ifaces:
@@ -5496,3 +5552,4 @@ class CodeGenerator:
         if self.generate_objmanager:
             self.generate_object()
             self.generate_object_manager_client()
+        self.ext.generate()

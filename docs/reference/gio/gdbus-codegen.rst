@@ -47,6 +47,7 @@ SYNOPSIS
 |    [--annotate *ELEMENT* *KEY* *VALUE*]…
 |    [--glib-min-required *VERSION*]
 |    [--glib-max-allowed *VERSION*]
+|    [--extension-path *EXTENSION_PATH*]
 |    *FILE*…
 
 DESCRIPTION
@@ -391,6 +392,20 @@ The following options are supported:
   are integers. ``MINOR`` and ``MICRO`` are optional. The version number must be
   greater than or equal to that passed to ``--glib-min-required``.
   It defaults to the version of GLib which provides this ``gdbus-codegen``.
+
+``--extension-path`` *EXTENSION_PATH*
+
+  Used to load an extension to the codegen. The *EXTENSION_PATH* is a path to
+  a Python file that will be loaded as a module. The extension needs to define
+  at least the function ``def init(args, options)`` where ``args`` is a
+  ``argparse.Namespace`` and ``options`` is a dict containing the key
+  ``version``.
+
+  All other API the extension can use are internal and thus unstable, but effort
+  is made to increase the ``version`` field when those internals change. If you
+  want to use this mechanism, please get in touch by
+  `filing an issue <https://gitlab.gnome.org/GNOME/glib/-/issues>`_. with your
+  use case.
 
 SUPPORTED D-BUS ANNOTATIONS
 ---------------------------
