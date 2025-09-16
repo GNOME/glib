@@ -1884,6 +1884,14 @@ g_desktop_app_info_get_desktop_id_for_filename (GDesktopAppInfo *self)
 }
 
 static gboolean
+is_invalid_key_error (const GError *error)
+{
+  return (error != NULL &&
+          !g_error_matches (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND) &&
+          !g_error_matches (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_KEY_NOT_FOUND));
+}
+
+static gboolean
 g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                       GKeyFile        *key_file)
 {
@@ -1893,6 +1901,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   char *exec;
   char *path;
   gboolean bus_activatable;
+  GError *local_error = NULL;
 
   start_group = g_key_file_get_start_group (key_file);
   if (start_group == NULL || strcmp (start_group, G_KEY_FILE_DESKTOP_GROUP) != 0)
@@ -1915,12 +1924,27 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
 
   path = g_key_file_get_string (key_file,
                                 G_KEY_FILE_DESKTOP_GROUP,
-                                G_KEY_FILE_DESKTOP_KEY_PATH, NULL);
+                                G_KEY_FILE_DESKTOP_KEY_PATH,
+                                &local_error);
+  if (is_invalid_key_error (local_error))
+    {
+      g_error_free (local_error);
+      return FALSE;
+    }
+  g_clear_error (&local_error);
 
   try_exec = g_key_file_get_string (key_file,
                                     G_KEY_FILE_DESKTOP_GROUP,
                                     G_KEY_FILE_DESKTOP_KEY_TRY_EXEC,
-                                    NULL);
+                                    &local_error);
+  if (is_invalid_key_error (local_error))
+    {
+      g_free (path);
+      g_error_free (local_error);
+      return FALSE;
+    }
+  g_clear_error (&local_error);
+
   if (try_exec && try_exec[0] != '\0')
     {
       char *t;
@@ -1938,7 +1962,16 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   exec = g_key_file_get_string (key_file,
                                 G_KEY_FILE_DESKTOP_GROUP,
                                 G_KEY_FILE_DESKTOP_KEY_EXEC,
-                                NULL);
+                                &local_error);
+  if (is_invalid_key_error (local_error))
+    {
+      g_free (path);
+      g_free (try_exec);
+      g_error_free (local_error);
+      return FALSE;
+    }
+  g_clear_error (&local_error);
+
   if (exec && exec[0] != '\0')
     {
       gint argc;

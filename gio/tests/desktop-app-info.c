@@ -1785,6 +1785,56 @@ test_app_path_wrong (void)
 }
 
 static void
+test_invalid_key_file (void)
+{
+  const char *vectors[] =
+    {
+      /* This .desktop file has invalid escaping in its Exec= line; `\"` is an
+       * invalid escape sequence in the Desktop Entry Spec
+       * (https://specifications.freedesktop.org/desktop-entry-spec/latest/value-types.html): */
+      "[Desktop Entry]\n"
+      "Type=Application\n"
+      "Name=Example2\n"
+      "Exec=gedit \"/home/dkondor/program/file with \\\"weird\\\" name\"\n",
+      /* This one has invalid escaping at the end of its Path= line: */
+      "[Desktop Entry]\n"
+      "Type=Application\n"
+      "Name=Example2\n"
+      "Path=some/path\\\n"
+      "Exec=gedit",
+      /* This one has invalid UTF-8 in its TryExec= line: */
+      "[Desktop Entry]\n"
+      "Type=Application\n"
+      "Name=Example2\n"
+      "TryExec=gedit \"\xc3\x28\"\n",
+    };
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3771");
+  g_test_summary ("Test that loading invalid key files does not succeed");
+
+  for (size_t i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      int fd = -1;
+      char *tmp_filename = NULL;
+      GError *local_error = NULL;
+
+      /* Create a temp desktop file containing the invalid key file data */
+      fd = g_file_open_tmp ("desktop-app-info-test-XXXXXX.desktop", &tmp_filename, NULL);
+      g_assert_cmpint (fd, >, -1);
+      g_close (fd, NULL);
+
+      g_file_set_contents (tmp_filename, vectors[i], -1, &local_error);
+      g_assert_no_error (local_error);
+
+      /* Try loading the desktop file; it should fail */
+      g_assert_null (g_desktop_app_info_new_from_filename (tmp_filename));
+
+      g_unlink (tmp_filename);
+      g_free (tmp_filename);
+    }
+}
+
+static void
 test_launch_startup_notify_fail (void)
 {
   GAppInfo *app_info;
@@ -1972,6 +2022,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/show-in", test_show_in);
   g_test_add_func ("/desktop-app-info/app-path", test_app_path);
   g_test_add_func ("/desktop-app-info/app-path/wrong", test_app_path_wrong);
+  g_test_add_func ("/desktop-app-info/invalid-key-file", test_invalid_key_file);
   g_test_add_func ("/desktop-app-info/launch/fail", test_launch_fail);
   g_test_add_func ("/desktop-app-info/launch/fail-absolute-path", test_launch_fail_absolute_path);
   g_test_add_func ("/desktop-app-info/launch/fail-startup-notify", test_launch_startup_notify_fail);
