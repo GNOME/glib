@@ -902,7 +902,10 @@ g_build_home_dir (void)
 static const gchar *
 g_get_home_dir_unlocked (void)
 {
-  return g_home_dir == NULL ? g_build_home_dir () : g_home_dir;
+  if (g_home_dir == NULL)
+    g_home_dir = g_build_home_dir ();
+
+  return g_home_dir;
 }
 
 /**
@@ -1960,7 +1963,10 @@ g_build_user_config_dir (void)
 static const char *
 g_get_user_config_dir_unlocked (void)
 {
-  return g_user_config_dir == NULL ? g_build_user_config_dir () : g_user_config_dir;
+  if (g_user_config_dir == NULL)
+    g_user_config_dir = g_build_user_config_dir ();
+
+  return g_user_config_dir;
 }
 
 /**
