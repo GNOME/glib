@@ -26,10 +26,13 @@ int
 LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
 {
   gchar *special_dirs[G_USER_N_DIRECTORIES] = { 0 };
+  unsigned char *nul_terminated_data = NULL;
 
   fuzz_set_logging_func ();
 
-  load_user_special_dirs_from_data ((const gchar *) data, "/dev/null", special_dirs);
+  nul_terminated_data = (unsigned char *) g_strndup ((const char *) data, size);
+
+  load_user_special_dirs_from_string ((const gchar *) nul_terminated_data, "/dev/null", special_dirs);
 
   /* Test directories and make sure that, if they exist, they are absolute. */
   for (GUserDirectory dir_type = G_USER_DIRECTORY_DESKTOP; dir_type < G_USER_N_DIRECTORIES; dir_type++)
@@ -38,6 +41,8 @@ LLVMFuzzerTestOneInput (const unsigned char *data, size_t size)
       g_assert_true (dir == NULL || g_path_is_absolute (dir));
       g_free (dir);
     }
+
+  g_free (nul_terminated_data);
 
   return 0;
 }

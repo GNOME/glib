@@ -23,12 +23,12 @@
  * SOFTWARE.
  */
 static void
-load_user_special_dirs_from_data (const gchar *data, const gchar *home_dir, gchar **special_dirs)
+load_user_special_dirs_from_string (const gchar *string, const gchar *home_dir, gchar **special_dirs)
 {
   gchar **lines;
   gint n_lines, i;
 
-  lines = g_strsplit (data, "\n", -1);
+  lines = g_strsplit (string, "\n", -1);
   n_lines = g_strv_length (lines);
 
   for (i = 0; i < n_lines; i++)
