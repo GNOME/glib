@@ -468,6 +468,7 @@ class HeaderCodeGenerator:
                 )
                 self.outfile.write("#endif\n")
                 self.outfile.write("\n")
+            # async begin
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
             if i.deprecated:
@@ -482,6 +483,7 @@ class HeaderCodeGenerator:
                 "    GAsyncReadyCallback  callback,\n"
                 "    gpointer             user_data);\n" % (i.name_lower)
             )
+            # async finish
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
             if i.deprecated:
@@ -491,6 +493,7 @@ class HeaderCodeGenerator:
                 "    GAsyncResult        *res,\n"
                 "    GError             **error);\n" % (i.camel_name, i.name_lower)
             )
+            # sync
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
             if i.deprecated:
@@ -3486,6 +3489,7 @@ class CodeGenerator:
         self.outfile.write("}\n" "\n")
 
         # constructors
+        # async begin
         self.outfile.write(
             self.docbook_gen.expand(
                 "/**\n"
@@ -3524,6 +3528,7 @@ class CodeGenerator:
             "}\n"
             "\n" % (i.name_lower, i.ns_upper, i.name_upper, i.name)
         )
+        # async finish
         self.outfile.write(
             "/**\n"
             " * %s_proxy_new_finish:\n"
@@ -3554,6 +3559,7 @@ class CodeGenerator:
             "}\n"
             "\n" % (i.camel_name, i.name_lower, i.ns_upper, i.name_upper)
         )
+        # sync
         self.outfile.write(
             self.docbook_gen.expand(
                 "/**\n"
