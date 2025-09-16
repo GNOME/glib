@@ -2287,7 +2287,7 @@ load_user_special_dirs (void)
     }
 
   home_dir = g_get_home_dir_unlocked ();
-  load_user_special_dirs_from_data ((const gchar *) data, home_dir, g_user_special_dirs);
+  load_user_special_dirs_from_string (data, home_dir, g_user_special_dirs);
 
   g_free (data);
   g_free (config_file);
