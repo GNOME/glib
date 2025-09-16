@@ -2213,7 +2213,7 @@ g_get_user_runtime_dir (void)
 
 #ifdef HAVE_COCOA
 
-/* Implemented in gutils-macos.m */
+/* Implemented in gosxutils.m */
 void load_user_special_dirs_macos (gchar **table);
 
 static void
