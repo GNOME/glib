@@ -27,6 +27,7 @@
 #define COBJMACROS
 
 #include <string.h>
+#include <stdbool.h>
 
 #include "gcontenttype.h"
 #include "gappinfoprivate.h"
@@ -4892,6 +4893,55 @@ emit_launch_failed (GAppLaunchContext *context,
     }
 }
 
+typedef struct
+{
+  /* Allow steal focus */
+  bool foreground_window;
+} ContextOptions;
+
+ContextOptions context_options_default = {
+  false,
+};
+
+static ContextOptions
+startup_notify_id_to_context_options (const char *startup_notify_id)
+{
+  ContextOptions context_options = context_options_default;
+
+  if (startup_notify_id)
+    {
+      char **tokens;
+
+      if (!g_str_has_prefix (startup_notify_id, "win32-startup-notify,"))
+        {
+          g_warning_once ("Unknown startup-notify-id format");
+          return context_options;
+        }
+
+      tokens = g_strsplit (startup_notify_id, ",", 0);
+
+      typedef const char * const * const_iter_t;
+
+      for (const_iter_t iter = (const_iter_t) (tokens + 1); *iter != NULL; iter++)
+        {
+          const char *token = *iter;
+
+          if (g_strcmp0 (token, "foreground-window") == 0)
+            {
+              context_options.foreground_window = true;
+            }
+          else
+            {
+              g_debug ("Unknown token in startup-notify-id");
+            }
+        }
+
+      g_strfreev (tokens);
+    }
+
+  return context_options;
+}
+
 typedef enum
 {
   /* PLAIN: just open the application, without arguments of any kind
@@ -5046,6 +5096,8 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
   IApplicationActivationManager *paam = NULL;
   gboolean com_initialized = FALSE;
   gboolean result = FALSE;
+  char *startup_notify_id = NULL;
+  ContextOptions context_options;
   HRESULT hr;
 
   /* ApplicationActivationManager threading model is both,
@@ -5086,6 +5138,20 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Failed to create ApplicationActivationManager: 0x%lx", hr);
       goto cleanup;
+    }
+
+  startup_notify_id = g_app_launch_context_get_startup_notify_id (launch_context,
+                                                                  G_APP_INFO (info),
+                                                                  NULL);
+  context_options = startup_notify_id_to_context_options (startup_notify_id);
+
+  if (context_options.foreground_window)
+    {
+      hr = CoAllowSetForegroundWindow ((IUnknown*)paam, NULL);
+#ifdef G_ENABLE_DEBUG
+      if (FAILED (hr) && hr != E_ACCESSDENIED)
+        g_debug ("%s failed with HRESULT %lx", "CoAllowSetForegroundWindow", hr);
+#endif
     }
 
   if (!objs)
@@ -5161,6 +5227,8 @@ g_win32_app_info_launch_uwp_internal (GWin32AppInfo           *info,
 
 cleanup:
 
+  g_free (startup_notify_id);
+
   if (paam)
     {
       IApplicationActivationManager_Release (paam);
@@ -5192,6 +5260,8 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
   const gchar *command;
   gchar *apppath;
   GWin32AppInfoShellVerb *shverb;
+  char *startup_notify_id = NULL;
+  ContextOptions context_options;
   GPid pid = NULL;
 
   g_return_val_if_fail (info != NULL, FALSE);
@@ -5283,6 +5353,11 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
         }
     }
 
+  startup_notify_id = g_app_launch_context_get_startup_notify_id (launch_context,
+                                                                  G_APP_INFO (info),
+                                                                  NULL);
+  context_options = startup_notify_id_to_context_options (startup_notify_id);
+
   do
     {
       if (from_task && g_task_return_error_if_cancelled (from_task))
@@ -5312,8 +5387,19 @@ g_win32_app_info_launch_internal (GWin32AppInfo      *info,
 
           goto out;
         }
-      else if (launch_context)
-        emit_launched (launch_context, info, &pid, from_task);
+
+      if (context_options.foreground_window)
+        {
+          DWORD id = GetProcessId ((HANDLE)pid);
+
+          if (id != 0)
+            AllowSetForegroundWindow (id);
+        }
+
+      if (launch_context)
+        {
+          emit_launched (launch_context, info, &pid, from_task);
+        }
 
       g_spawn_close_pid (pid);
       pid = NULL;
@@ -5328,6 +5414,7 @@ out:
   g_spawn_close_pid (pid);
   g_strfreev (argv);
   g_strfreev (envp);
+  g_free (startup_notify_id);
 
   return completed;
 }
