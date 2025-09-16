@@ -89,7 +89,11 @@ static void     skeleton_intercept_handle_method_call              (GDBusConnect
                                                                     GVariant               *parameters,
                                                                     GDBusMethodInvocation  *invocation,
                                                                     gpointer                user_data);
-
+static void g_dbus_interface_skeleton_method_dispatch_real         (GDBusInterfaceSkeleton       *interface,
+                                                                    GDBusInterfaceMethodCallFunc  method_call_func,
+                                                                    GDBusMethodInvocation        *invocation,
+                                                                    GDBusInterfaceSkeletonFlags   flags,
+                                                                    GDBusObject                  *object);
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GDBusInterfaceSkeleton, g_dbus_interface_skeleton, G_TYPE_OBJECT,
                                   G_ADD_PRIVATE (GDBusInterfaceSkeleton)
@@ -182,6 +186,7 @@ g_dbus_interface_skeleton_class_init (GDBusInterfaceSkeletonClass *klass)
   gobject_class->get_property = g_dbus_interface_skeleton_get_property;
 
   klass->g_authorize_method = g_dbus_interface_skeleton_g_authorize_method_default;
+  klass->method_dispatch = g_dbus_interface_skeleton_method_dispatch_real;
 
   /**
    * GDBusInterfaceSkeleton:g-flags:
@@ -571,27 +576,20 @@ dispatch_in_thread_func (GTask        *task,
 }
 
 static void
-g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface,
-                                         GDBusInterfaceMethodCallFunc  method_call_func,
-                                         GDBusMethodInvocation        *invocation)
+g_dbus_interface_skeleton_method_dispatch_real (GDBusInterfaceSkeleton       *interface,
+                                                GDBusInterfaceMethodCallFunc  method_call_func,
+                                                GDBusMethodInvocation        *invocation,
+                                                GDBusInterfaceSkeletonFlags   flags,
+                                                GDBusObject                  *object)
 {
   gboolean has_handlers;
   gboolean has_default_class_handler;
   gboolean emit_authorized_signal;
   gboolean run_in_thread;
-  GDBusInterfaceSkeletonFlags flags;
-  GDBusObject *object;
 
   g_return_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface));
   g_return_if_fail (method_call_func != NULL);
   g_return_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation));
-
-  g_mutex_lock (&interface->priv->lock);
-  flags = interface->priv->flags;
-  object = interface->priv->object;
-  if (object != NULL)
-    g_object_ref (object);
-  g_mutex_unlock (&interface->priv->lock);
 
   /* optimization for the common case where
    *
@@ -635,15 +633,12 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
       data->ref_count = 1;
 
       task = g_task_new (interface, NULL, NULL, NULL);
-      g_task_set_source_tag (task, g_dbus_interface_method_dispatch_helper);
+      g_task_set_source_tag (task, g_dbus_interface_skeleton_method_dispatch_real);
       g_task_set_name (task, "[gio] D-Bus interface method dispatch");
       g_task_set_task_data (task, data, (GDestroyNotify) dispatch_data_unref);
       g_task_run_in_thread (task, dispatch_in_thread_func);
       g_object_unref (task);
     }
-
-  if (object != NULL)
-    g_object_unref (object);
 }
 
 static void
@@ -657,9 +652,22 @@ skeleton_intercept_handle_method_call (GDBusConnection       *connection,
                                        gpointer               user_data)
 {
   GDBusInterfaceSkeleton *interface = G_DBUS_INTERFACE_SKELETON (user_data);
-  g_dbus_interface_method_dispatch_helper (interface,
-                                           g_dbus_interface_skeleton_get_vtable (interface)->method_call,
-                                           invocation);
+  GDBusInterfaceSkeletonFlags flags;
+  GDBusObject *object = NULL;
+
+  g_mutex_lock (&interface->priv->lock);
+  flags = interface->priv->flags;
+  g_set_object (&object, interface->priv->object);
+  g_mutex_unlock (&interface->priv->lock);
+
+  G_DBUS_INTERFACE_SKELETON_GET_CLASS (interface)->method_dispatch (
+      interface,
+      g_dbus_interface_skeleton_get_vtable (interface)->method_call,
+      invocation,
+      flags,
+      object);
+
+  g_clear_object (&object);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
