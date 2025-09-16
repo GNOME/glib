@@ -187,7 +187,7 @@ test_cleanup_doesnt_follow_symlinks (void)
 }
 
 static void
-test_load_user_special_dirs (void)
+test_load_user_special_dirs_unlocked (void)
 {
 #if defined(HAVE_COCOA) || defined(G_OS_WIN32)
   g_test_skip ("The user-dirs.dirs parser is not used on this platform.");
@@ -255,7 +255,7 @@ main (int   argc,
 
   g_test_add_func ("/utils-isolated/tmp-dir", test_tmp_dir);
   g_test_add_func ("/utils-isolated/home-dir", test_home_dir);
-  g_test_add_func ("/utils-isolated/load-user-special-dirs", test_load_user_special_dirs);
+  g_test_add_func ("/utils-isolated/load-user-special-dirs-unlocked", test_load_user_special_dirs_unlocked);
   g_test_add_func ("/utils-isolated/user-cache-dir", test_user_cache_dir);
   g_test_add_func ("/utils-isolated/system-config-dirs", test_system_config_dirs);
   g_test_add_func ("/utils-isolated/user-config-dir", test_user_config_dir);
