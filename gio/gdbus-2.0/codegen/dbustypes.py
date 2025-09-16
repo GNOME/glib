@@ -448,6 +448,7 @@ class Method:
                 name = overridden_name
             self.name_lower = utils.camel_case_to_uscore(name).lower().replace("-", "_")
         self.name_hyphen = self.name_lower.replace("_", "-")
+        self.name_upper = self.name_lower.upper()
 
         arg_count = 0
         for a in self.in_args:
@@ -664,6 +665,7 @@ class Interface:
             self.name_without_prefix = name
             self.camel_name = name_with_ns
             self.ns_upper = cns_upper
+            self.ns_lower = cns_lower
             self.name_lower = cns_lower + overridden_name.lower()
             self.name_upper = overridden_name.upper()
 
@@ -680,6 +682,7 @@ class Interface:
             name_with_ns = utils.strip_dots(cns + "." + name)
             self.camel_name = name_with_ns
             self.ns_upper = cns_upper
+            self.ns_lower = cns_lower
             self.name_lower = cns_lower + utils.camel_case_to_uscore(name)
             self.name_upper = utils.camel_case_to_uscore(name).upper()
 
