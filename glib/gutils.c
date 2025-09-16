@@ -2217,7 +2217,7 @@ g_get_user_runtime_dir (void)
 void load_user_special_dirs_macos (gchar **table);
 
 static void
-load_user_special_dirs (void)
+load_user_special_dirs_unlocked (void)
 {
   load_user_special_dirs_macos (g_user_special_dirs);
 }
@@ -2225,7 +2225,7 @@ load_user_special_dirs (void)
 #elif defined(G_OS_WIN32)
 
 static void
-load_user_special_dirs (void)
+load_user_special_dirs_unlocked (void)
 {
   g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = get_special_folder (&FOLDERID_Desktop);
   g_user_special_dirs[G_USER_DIRECTORY_DOCUMENTS] = get_special_folder (&FOLDERID_Documents);
@@ -2274,7 +2274,7 @@ load_user_special_dirs (void)
  * SOFTWARE.
  */
 static void
-load_user_special_dirs (void)
+load_user_special_dirs_unlocked (void)
 {
   const gchar *config_dir = NULL;
   const gchar *home_dir;
@@ -2331,7 +2331,7 @@ g_reload_user_special_dirs_cache (void)
 
       /* recreate and reload our cache */
       g_user_special_dirs = g_new0 (gchar *, G_USER_N_DIRECTORIES);
-      load_user_special_dirs ();
+      load_user_special_dirs_unlocked ();
 
       /* only leak changed directories */
       for (i = 0; i < G_USER_N_DIRECTORIES; i++)
@@ -2393,7 +2393,7 @@ g_get_user_special_dir (GUserDirectory directory)
     {
       g_user_special_dirs = g_new0 (gchar *, G_USER_N_DIRECTORIES);
 
-      load_user_special_dirs ();
+      load_user_special_dirs_unlocked ();
 
       /* Special-case desktop for historical compatibility */
       if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
