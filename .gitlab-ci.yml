@@ -570,7 +570,7 @@ msys2-mingw32:
   variables:
     MSYSTEM: "MINGW32"
     CHERE_INVOKING: "yes"
-    CFLAGS: -coverage -ftest-coverage -fprofile-arcs
+    COVERAGE: "1"
     PYTHONUTF8: "1"
     G_DEBUGGER: 'gdb.exe -batch -ex "set logging enabled on" -ex "attach %p" -ex "signal-event %e" -ex "c" -ex "thread apply all bt full" -ex "k"'
   script:
