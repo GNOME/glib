@@ -1055,7 +1055,12 @@ g_string_erase (GString *string,
  * (beginning of string, end of string and between characters). This did
  * not work correctly in earlier versions.
  *
- * Returns: the number of find and replace operations performed.
+ * If @limit is zero and more than `G_MAXUINT` instances of @find are in
+ * the input string, they will all be replaced, but the return value will
+ * be capped at `G_MAXUINT`.
+ *
+ * Returns: the number of find and replace operations performed,
+ *   up to `G_MAXUINT`
  *
  * Since: 2.68
  */
@@ -1087,36 +1092,38 @@ g_string_replace (GString     *string,
    * handle the case of an empty @find string separately. */
   if (G_UNLIKELY (f_len == 0))
     {
-      if (limit == 0 || limit > string->len)
+      size_t r_limit = limit;
+
+      if (r_limit == 0 || r_limit > string->len)
         {
           if (string->len > G_MAXSIZE - 1)
             g_error ("inserting in every position in string would overflow");
 
-          limit = string->len + 1;
+          r_limit = string->len + 1;
         }
 
       if (r_len > 0 &&
-          (limit > G_MAXSIZE / r_len ||
-           limit * r_len > G_MAXSIZE - string->len))
+          (r_limit > G_MAXSIZE / r_len ||
+           r_limit * r_len > G_MAXSIZE - string->len))
         g_error ("inserting in every position in string would overflow");
 
-      new_len = string->len + limit * r_len;
+      new_len = string->len + r_limit * r_len;
       new_string = g_string_sized_new (new_len);
-      for (size_t i = 0; i < limit; i++)
+      for (size_t i = 0; i < r_limit; i++)
         {
           g_string_append_len (new_string, replace, r_len);
           if (i < string->len)
             g_string_append_c (new_string, string->str[i]);
         }
-      if (limit < string->len)
-        g_string_append_len (new_string, string->str + limit, string->len - limit);
+      if (r_limit < string->len)
+        g_string_append_len (new_string, string->str + r_limit, string->len - r_limit);
 
       g_free (string->str);
       string->allocated_len = new_string->allocated_len;
       string->len = new_string->len;
       string->str = g_string_free_and_steal (g_steal_pointer (&new_string));
 
-      return limit;
+      return r_limit > G_MAXUINT ? G_MAXUINT : (guint) r_limit;
     }
 
   /* Potentially do two passes: the first to calculate the length of the new string,
@@ -1137,7 +1144,8 @@ g_string_replace (GString     *string,
       n = 0;
       while ((next = strstr (cur, find)) != NULL)
         {
-          n++;
+          if (n < G_MAXUINT)
+            n++;
 
           if (r_len <= f_len)
             {
