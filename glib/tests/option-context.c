@@ -2238,6 +2238,100 @@ test_help_deprecated (void)
 }
 
 static void
+test_get_help_format (void)
+{
+  GOptionContext *context = NULL;
+  GOptionGroup *group = NULL;
+  char *str = NULL;
+  char *arg = NULL;
+  GOptionEntry entries[] = {
+    { "test", 't', 0, G_OPTION_ARG_STRING, &arg, "Test flag", "ARG" },
+    { "other", 'o', 0, G_OPTION_ARG_NONE, NULL, "Another flag", NULL },
+    G_OPTION_ENTRY_NULL
+  };
+
+  GOptionEntry group_entries[] = {
+    { "group-flag-with-a-really-long-name", 'g', 0, G_OPTION_ARG_STRING, &arg, "Group test", "GROUP_ARG" },
+    { "other-flag-with-an-even-longer-name-somehow", 'o', G_OPTION_FLAG_NOALIAS, G_OPTION_ARG_NONE, NULL, "Group flag", NULL },
+    G_OPTION_ENTRY_NULL
+  };
+
+  context = g_option_context_new ("main");
+  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_set_summary (context, "Summary");
+  g_option_context_set_description (context, "Description");
+  g_option_context_set_help_enabled (context, FALSE);
+
+  group = g_option_group_new ("really-long-group-name", "Group1-description", "Group1-help", NULL, NULL);
+  g_option_group_add_entries (group, group_entries);
+
+  g_option_context_add_group (context, g_steal_pointer (&group));
+
+  str = g_option_context_get_help (context, TRUE, NULL);
+  g_assert_nonnull (strstr (str, "test=ARG"));
+  g_assert_null (strstr (str, "group-name"));
+  g_assert_null (strstr (str, "longer-name-somehow"));
+
+  /* Measure distance between columns */
+  const char *options = strstr (str, "test=ARG");
+  const char *descriptions = strstr (str, "Test flag");
+  g_assert_cmpint (descriptions - options, <, 20);
+
+  g_free (str);
+  g_free (arg);
+  g_option_context_free (context);
+}
+
+static void
+test_group_get_help_format (void)
+{
+  GOptionContext *context = NULL;
+  GOptionGroup *group = NULL;
+  char *str = NULL;
+  char *arg = NULL;
+  GOptionEntry entries[] = {
+    { "test", 't', 0, G_OPTION_ARG_STRING, &arg, "Test flag", "ARG" },
+    { "other", 'o', 0, G_OPTION_ARG_NONE, NULL, "Another flag", NULL },
+    G_OPTION_ENTRY_NULL
+  };
+
+  GOptionEntry group_entries[] = {
+    { "group-flag-with-a-really-long-name", 'g', 0, G_OPTION_ARG_STRING, &arg, "Group test", "GROUP_ARG" },
+    { "other-flag-with-an-even-longer-name-somehow", 'o', G_OPTION_FLAG_NOALIAS, G_OPTION_ARG_NONE, NULL, "Group flag", NULL },
+    G_OPTION_ENTRY_NULL
+  };
+
+  context = g_option_context_new ("main");
+  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_set_summary (context, "Summary");
+  g_option_context_set_description (context, "Description");
+  g_option_context_set_help_enabled (context, FALSE);
+
+  group = g_option_group_new ("really-long-group-name", "Group1-description", "Group1-help", NULL, NULL);
+  g_option_group_add_entries (group, group_entries);
+
+  g_option_context_add_group (context, group);
+
+  str = g_option_context_get_help (context, FALSE, group);
+  g_assert_null (strstr (str, "test=ARG"));
+  g_assert_nonnull (strstr (str, "--group-flag-with"));
+  g_assert_nonnull (strstr (str, "--other-flag-with"));
+  g_assert_nonnull (strstr (str, "=GROUP_ARG"));
+  g_assert_nonnull (strstr (str, "Group test"));
+
+  /* Measure distance between columns */
+  const char *options_start = strstr (str, "--group-flag-with");
+  const char *options_end = strstr (str, "=GROUP_ARG");
+  const char *descriptions = strstr (str, "Group test");
+  g_assert_cmpint (descriptions - options_start, >, 50);
+  g_assert_cmpint (descriptions - options_end, <, 20);
+
+  g_free (str);
+  g_free (arg);
+  g_option_context_free (context);
+}
+
+static void
 set_bool (gpointer data)
 {
   gboolean *b = data;
@@ -2692,6 +2786,8 @@ main (int   argc,
   g_test_add_func ("/option/help/no-options", test_help_no_options);
   g_test_add_func ("/option/help/no-help-options", test_help_no_help_options);
   g_test_add_func ("/option/help/deprecated", test_help_deprecated);
+  g_test_add_func ("/option/help/main-get_help-format", test_get_help_format);
+  g_test_add_func ("/option/help/group-get_help-format", test_group_get_help_format);
 
   g_test_add_func ("/option/basic", test_basic);
   g_test_add_func ("/option/translate", test_translate);

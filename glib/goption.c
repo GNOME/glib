@@ -816,16 +816,22 @@ g_option_context_get_help (GOptionContext *context,
     {
       GOptionGroup *g = list->data;
 
-      if (context->help_enabled)
+      if (!group || group == g)
         {
-          /* First, we check the --help-<groupname> options */
-          len = _g_utf8_strwidth ("--help-") + _g_utf8_strwidth (g->name);
-          max_length = MAX (max_length, len);
-        }
+          if (context->help_enabled)
+            {
+              /* First, we check the --help-<groupname> options */
+              len = _g_utf8_strwidth ("--help-") + _g_utf8_strwidth (g->name);
+              max_length = MAX (max_length, len);
+            }
 
-      /* Then we go through the entries */
-      len = calculate_max_length (g, aliases);
-      max_length = MAX (max_length, len);
+          /* Then we go through the entries */
+          if (group_has_visible_entries (context, g, main_help))
+            {
+              len = calculate_max_length (g, aliases);
+              max_length = MAX (max_length, len);
+            }
+        }
 
       list = list->next;
     }
