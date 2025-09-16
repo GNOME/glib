@@ -325,7 +325,7 @@ class HeaderCodeGenerator:
                         "    %s *proxy" % (i.name_lower, m.name_lower, i.camel_name)
                     )
                     for a in m.out_args:
-                        self.outfile.write(",\n    %sout_%s" % (a.ctype_out, a.name))
+                        self.outfile.write(",\n    %s* out_%s" % (a.ctype_out, a.name))
                     if m.unix_fd:
                         self.outfile.write(",\n    GUnixFDList **out_fd_list")
                     self.outfile.write(
@@ -351,7 +351,7 @@ class HeaderCodeGenerator:
                     if m.unix_fd:
                         self.outfile.write(",\n    GUnixFDList  *fd_list")
                     for a in m.out_args:
-                        self.outfile.write(",\n    %sout_%s" % (a.ctype_out, a.name))
+                        self.outfile.write(",\n    %s* out_%s" % (a.ctype_out, a.name))
                     if m.unix_fd:
                         self.outfile.write(",\n    GUnixFDList **out_fd_list")
                     self.outfile.write(
@@ -2856,7 +2856,7 @@ class CodeGenerator:
                 "    %s *proxy" % (i.name_lower, m.name_lower, i.camel_name)
             )
             for a in m.out_args:
-                self.outfile.write(",\n    %sout_%s" % (a.ctype_out, a.name))
+                self.outfile.write(",\n    %s* out_%s" % (a.ctype_out, a.name))
             if m.unix_fd:
                 self.outfile.write(",\n    GUnixFDList **out_fd_list")
             self.outfile.write(
@@ -2944,7 +2944,7 @@ class CodeGenerator:
             if m.unix_fd:
                 self.outfile.write(",\n    GUnixFDList  *fd_list")
             for a in m.out_args:
-                self.outfile.write(",\n    %sout_%s" % (a.ctype_out, a.name))
+                self.outfile.write(",\n    %s* out_%s" % (a.ctype_out, a.name))
             if m.unix_fd:
                 self.outfile.write(",\n    GUnixFDList **out_fd_list")
             self.outfile.write(
