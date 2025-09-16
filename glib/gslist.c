@@ -152,7 +152,7 @@ g_slist_free_full (GSList         *list,
 
 /**
  * g_slist_append:
- * @list: a #GSList
+ * @list: (nullable): a #GSList
  * @data: the data for the new element
  *
  * Adds a new element on to the end of the list.
@@ -205,7 +205,7 @@ g_slist_append (GSList   *list,
 
 /**
  * g_slist_prepend:
- * @list: a #GSList
+ * @list: (nullable): a #GSList
  * @data: the data for the new element
  *
  * Adds a new element on to the start of the list.
@@ -238,7 +238,7 @@ g_slist_prepend (GSList   *list,
 
 /**
  * g_slist_insert:
- * @list: a #GSList
+ * @list: (nullable): a #GSList
  * @data: the data for the new element
  * @position: the position to insert the element.
  *     If this is negative, or is larger than the number
@@ -289,7 +289,7 @@ g_slist_insert (GSList   *list,
 
 /**
  * g_slist_insert_before:
- * @slist: a #GSList
+ * @slist: (nullable): a #GSList
  * @sibling: node to insert @data before
  * @data: data to put in the newly-inserted node
  *
