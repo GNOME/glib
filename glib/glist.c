@@ -165,7 +165,7 @@ g_list_free_full (GList          *list,
 
 /**
  * g_list_append:
- * @list: a pointer to a #GList
+ * @list: (nullable): a pointer to a #GList
  * @data: the data for the new element
  *
  * Adds a new element on to the end of the list.
@@ -222,7 +222,7 @@ g_list_append (GList    *list,
 
 /**
  * g_list_prepend:
- * @list: a pointer to a #GList, this must point to the top of the list
+ * @list: (nullable): a pointer to a #GList, this must point to the top of the list
  * @data: the data for the new element
  *
  * Prepends a new element on to the start of the list.
@@ -269,7 +269,7 @@ g_list_prepend (GList    *list,
 
 /**
  * g_list_insert:
- * @list: a pointer to a #GList, this must point to the top of the list
+ * @list: (nullable): a pointer to a #GList, this must point to the top of the list
  * @data: the data for the new element
  * @position: the position to insert the element. If this is 
  *     negative, or is larger than the number of elements in the 
@@ -366,7 +366,7 @@ g_list_insert_before_link (GList *list,
 
 /**
  * g_list_insert_before:
- * @list: a pointer to a #GList, this must point to the top of the list
+ * @list: (nullable): a pointer to a #GList, this must point to the top of the list
  * @sibling: the list element before which the new element 
  *     is inserted or %NULL to insert at the end of the list
  * @data: the data for the new element
