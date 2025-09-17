@@ -783,9 +783,17 @@ g_file_hash (gconstpointer file)
  *
  * Checks if the two given #GFiles refer to the same file.
  *
+ * This function can be used with [method@Gio.File.hash] to insert
+ * [iface@Gio.File]s efficiently in a hash table.
+ *
  * Note that two #GFiles that differ can still refer to the same
  * file on the filesystem due to various forms of filename
- * aliasing.
+ * aliasing. For local files, this function essentially compares the file paths,
+ * so two [iface@Gio.File]s which point to different hard or soft links will not
+ * be considered equal, despite pointing to the same content.
+ *
+ * For determining whether two files are hardlinked, see
+ * [const@Gio.FILE_ATTRIBUTE_ID_FILE].
  *
  * This call does no blocking I/O.
  *
