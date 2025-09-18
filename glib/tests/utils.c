@@ -820,7 +820,7 @@ test_hostname (void)
 }
 
 static void
-test_special_dir (void)
+test_user_special_dirs (void)
 {
   const gchar *dir, *dir2;
 
@@ -832,7 +832,7 @@ test_special_dir (void)
 }
 
 static void
-test_desktop_special_dir (void)
+test_user_special_dirs_desktop (void)
 {
   const gchar *dir, *dir2;
 
@@ -1365,8 +1365,8 @@ main (int   argc,
   g_test_add_func ("/utils/username", test_username);
   g_test_add_func ("/utils/realname", test_realname);
   g_test_add_func ("/utils/hostname", test_hostname);
-  g_test_add_func ("/utils/specialdir", test_special_dir);
-  g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
+  g_test_add_func ("/utils/user-special-dirs", test_user_special_dirs);
+  g_test_add_func ("/utils/user-special-dirs/desktop", test_user_special_dirs_desktop);
   g_test_add_func ("/utils/user-special-dirs/load-unlocked", test_user_special_dirs_load_unlocked);
   g_test_add_func ("/utils/os-info", test_os_info);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
