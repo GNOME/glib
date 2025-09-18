@@ -856,6 +856,7 @@ test_user_special_dirs_load_unlocked (void)
   if (g_test_subprocess ())
     {
       gchar *user_dirs_file;
+      char *user_dirs_parent = NULL;
       const gchar *config_dir;
       const gchar *dir;
       gchar *expected;
@@ -863,7 +864,8 @@ test_user_special_dirs_load_unlocked (void)
 
       config_dir = g_get_user_config_dir ();
       user_dirs_file = g_build_filename (config_dir, "user-dirs.dirs", NULL);
-      g_mkdir_with_parents (g_path_get_dirname (user_dirs_file), 0700);
+      user_dirs_parent = g_path_get_dirname (user_dirs_file);
+      g_mkdir_with_parents (user_dirs_parent, 0700);
       result = g_file_set_contents (user_dirs_file,
                                     "XDG_DESKTOP_DIR = \"/root\"\nXDG_DESKTOP_DIR = \"$HOMER/Desktop\"\n"
                                     "XDG_DOCUMENTS_DIR = \"$HOME\"\n"
@@ -873,6 +875,7 @@ test_user_special_dirs_load_unlocked (void)
                                     -1, NULL);
       g_assert_true (result);
       g_free (user_dirs_file);
+      g_free (user_dirs_parent);
 
       g_reload_user_special_dirs_cache ();
 
