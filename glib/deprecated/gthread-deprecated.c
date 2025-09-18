@@ -1196,7 +1196,7 @@ g_static_rw_lock_free (GStaticRWLock* lock)
 /* GPrivate {{{1 ------------------------------------------------------ */
 
 /**
- * g_private_new: (skip):
+ * g_private_new: (skip) (constructor) (not method):
  * @notify: a #GDestroyNotify
  *
  * Creates a new #GPrivate.
@@ -1204,7 +1204,7 @@ g_static_rw_lock_free (GStaticRWLock* lock)
  * Deprecated:2.32: dynamic allocation of #GPrivate is a bad idea.  Use
  *                  static storage and G_PRIVATE_INIT() instead.
  *
- * Returns: a newly allocated #GPrivate (which can never be destroyed)
+ * Returns: (transfer full): a newly allocated #GPrivate (which can never be destroyed)
  */
 GPrivate *
 g_private_new (GDestroyNotify notify)
@@ -1443,11 +1443,11 @@ g_static_private_free (GStaticPrivate *private_key)
 /* GMutex {{{1 ------------------------------------------------------ */
 
 /**
- * g_mutex_new: (skip):
+ * g_mutex_new: (skip) (constructor) (not method):
  *
  * Allocates and initializes a new #GMutex.
  *
- * Returns: a newly allocated #GMutex. Use g_mutex_free() to free
+ * Returns: (transfer full): a newly allocated #GMutex. Use g_mutex_free() to free
  *
  * Deprecated: 2.32: GMutex can now be statically allocated, or embedded
  * in structures and initialised with g_mutex_init().
@@ -1485,11 +1485,11 @@ g_mutex_free (GMutex *mutex)
 /* GCond {{{1 ------------------------------------------------------ */
 
 /**
- * g_cond_new: (skip):
+ * g_cond_new: (skip) (constructor) (not method):
  *
  * Allocates and initializes a new #GCond.
  *
- * Returns: a newly allocated #GCond. Free with g_cond_free()
+ * Returns: (transfer full): a newly allocated #GCond. Free with g_cond_free()
  *
  * Deprecated: 2.32: GCond can now be statically allocated, or embedded
  * in structures and initialised with g_cond_init().

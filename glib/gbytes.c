@@ -240,7 +240,7 @@ g_bytes_new_with_free_func (gconstpointer  data,
 }
 
 /**
- * g_bytes_new_from_bytes:
+ * g_bytes_new_from_bytes: (constructor) (not method):
  * @bytes: a [struct@GLib.Bytes]
  * @offset: offset which subsection starts at
  * @length: length of subsection
