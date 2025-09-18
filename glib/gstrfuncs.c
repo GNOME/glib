@@ -581,7 +581,8 @@ g_strconcat (const gchar *string1, ...)
   s = va_arg (args, gchar*);
   while (s)
     {
-      l += strlen (s);
+      if (!g_size_checked_add (&l, l, strlen (s)))
+        g_error ("%s: overflow concatenating strings", G_STRLOC);
       s = va_arg (args, gchar*);
     }
   va_end (args);
@@ -2645,13 +2646,18 @@ g_strjoinv (const gchar  *separator,
       gsize i;
       gsize len;
       gsize separator_len;
+      gsize separators_len;
 
       separator_len = strlen (separator);
       /* First part, getting length */
       len = 1 + strlen (str_array[0]);
       for (i = 1; str_array[i] != NULL; i++)
-        len += strlen (str_array[i]);
-      len += separator_len * (i - 1);
+        if (!g_size_checked_add (&len, len, strlen (str_array[i])))
+          g_error ("%s: overflow joining strings", G_STRLOC);
+
+      if (!g_size_checked_mul (&separators_len, separator_len, (i - 1)) ||
+          !g_size_checked_add (&len, len, separators_len))
+        g_error ("%s: overflow joining strings", G_STRLOC);
 
       /* Second part, building string */
       string = g_new (gchar, len);
@@ -2706,7 +2712,9 @@ g_strjoin (const gchar *separator,
       s = va_arg (args, gchar*);
       while (s)
         {
-          len += separator_len + strlen (s);
+          if (!g_size_checked_add (&len, len, separator_len) ||
+              !g_size_checked_add (&len, len, strlen (s)))
+            g_error ("%s: overflow joining strings", G_STRLOC);
           s = va_arg (args, gchar*);
         }
       va_end (args);
