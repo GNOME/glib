@@ -126,10 +126,15 @@ load_user_special_dirs_from_string (const gchar *string, const gchar *home_dir, 
       for (len = strlen (d); len > 1 && d[len - 1] == '/'; len--)
         d[len - 1] = 0;
 
+      /* Duplicates override the previous value. This is not explicit in the
+       * spec, but given that the spec[1] is designed to allow user-dirs.dirs to
+       * be sourced in a shell, overriding is the behaviour that would imply.
+       *
+       * [1]: https://www.freedesktop.org/wiki/Software/xdg-user-dirs/ */
+      g_clear_pointer (&special_dirs[directory], g_free);
+
       if (is_relative)
-        {
-          special_dirs[directory] = g_build_filename (home_dir, d, NULL);
-        }
+        special_dirs[directory] = g_build_filename (home_dir, d, NULL);
       else
         special_dirs[directory] = g_strdup (d);
     }

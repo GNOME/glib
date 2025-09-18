@@ -871,6 +871,7 @@ test_user_special_dirs_load_unlocked (void)
                                     "XDG_DOCUMENTS_DIR = \"$HOME\"\n"
                                     "XDG_DOWNLOAD_DIR = \"$HOME/Downloads\"\n"
                                     "XDG_MUSIC_DIR = \"///\"\n"
+                                    "XDG_PICTURES_DIR = \"$HOME/Pictures\"\n"
                                     "XDG_PICTURES_DIR = \"/\"\nXDG_DOWNLOAD_DIR = \"/dev/null\n",
                                     -1, NULL);
       g_assert_true (result);
