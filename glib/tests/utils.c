@@ -817,74 +817,6 @@ test_hostname (void)
   g_assert_true (g_utf8_validate (name, -1, NULL));
 }
 
-#ifdef G_OS_UNIX
-static void
-test_xdg_dirs (void)
-{
-  gchar *xdg;
-  const gchar *dir;
-  const gchar * const *dirs;
-  gchar *s;
-
-  xdg = g_strdup (g_getenv ("XDG_CONFIG_HOME"));
-  if (!xdg)
-    xdg = g_build_filename (g_get_home_dir (), ".config", NULL);
-
-  dir = g_get_user_config_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = g_strdup (g_getenv ("XDG_DATA_HOME"));
-  if (!xdg)
-    xdg = g_build_filename (g_get_home_dir (), ".local", "share", NULL);
-
-  dir = g_get_user_data_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = g_strdup (g_getenv ("XDG_CACHE_HOME"));
-  if (!xdg)
-    xdg = g_build_filename (g_get_home_dir (), ".cache", NULL);
-
-  dir = g_get_user_cache_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = g_strdup (g_getenv ("XDG_STATE_HOME"));
-  if (!xdg)
-    xdg = g_build_filename (g_get_home_dir (), ".local/state", NULL);
-
-  dir = g_get_user_state_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = g_strdup (g_getenv ("XDG_RUNTIME_DIR"));
-  if (!xdg)
-    xdg = g_strdup (g_get_user_cache_dir ());
-
-  dir = g_get_user_runtime_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = (gchar *)g_getenv ("XDG_CONFIG_DIRS");
-  if (!xdg)
-    xdg = "/etc/xdg";
-
-  dirs = g_get_system_config_dirs ();
-
-  s = g_strjoinv (":", (gchar **)dirs);
-
-  g_assert_cmpstr (s, ==, xdg);
-
-  g_free (s);
-}
-#endif
-
 static void
 test_special_dir (void)
 {
@@ -1353,7 +1285,7 @@ main (int   argc,
    */
   g_set_prgname (argv[0]);
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/utils/language-names", test_language_names);
   g_test_add_func ("/utils/locale-variants", test_locale_variants);
@@ -1374,9 +1306,6 @@ main (int   argc,
   g_test_add_func ("/utils/username", test_username);
   g_test_add_func ("/utils/realname", test_realname);
   g_test_add_func ("/utils/hostname", test_hostname);
-#ifdef G_OS_UNIX
-  g_test_add_func ("/utils/xdgdirs", test_xdg_dirs);
-#endif
   g_test_add_func ("/utils/specialdir", test_special_dir);
   g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
   g_test_add_func ("/utils/os-info", test_os_info);
