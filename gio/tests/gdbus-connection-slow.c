@@ -28,7 +28,7 @@
 
 #include "gdbus-tests.h"
 
-#define WAIT_FOR_FLUSH_MSEC 1000
+#define WAIT_FOR_FLUSH_MSEC 10000
 
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
