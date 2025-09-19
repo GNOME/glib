@@ -844,10 +844,42 @@ test_user_special_dirs_desktop (void)
   g_assert_nonnull (dir2);
 }
 
+#if !defined(HAVE_COCOA) && !defined(G_OS_WIN32)
+#define USES_USER_DIRS_DIRS 1
+#endif
+
+/* Write a mock user-dirs.dirs file with the given @content. This must be used
+ * with `G_TEST_OPTION_ISOLATE_DIRS`. See
+ * [`xdg-user-dirs-update(1)`](man:xdg-user-dirs-update(1)) for the specification. */
+#ifdef USES_USER_DIRS_DIRS
+static void
+set_mock_user_dirs_dirs_file (const char *content)
+{
+  char *user_dirs_file = NULL;
+  char *user_dirs_parent = NULL;
+  const char *config_dir;
+  GError *local_error = NULL;
+
+  config_dir = g_get_user_config_dir ();
+
+  /* Double check we’re running under G_TEST_OPTION_ISOLATE_DIRS and not about
+   * to overwrite actual user data. */
+  g_assert (g_str_has_prefix (config_dir, g_get_tmp_dir ()));
+
+  user_dirs_file = g_build_filename (config_dir, "user-dirs.dirs", NULL);
+  user_dirs_parent = g_path_get_dirname (user_dirs_file);
+  g_mkdir_with_parents (user_dirs_parent, 0700);
+  g_file_set_contents (user_dirs_file, content, -1, &local_error);
+  g_assert_no_error (local_error);
+  g_free (user_dirs_file);
+  g_free (user_dirs_parent);
+}
+#endif  /* USES_USER_DIRS_DIRS */
+
 static void
 test_user_special_dirs_load_unlocked (void)
 {
-#if defined(HAVE_COCOA) || defined(G_OS_WIN32)
+#ifndef USES_USER_DIRS_DIRS
   g_test_skip ("The user-dirs.dirs parser is not used on this platform.");
 #else
   g_test_summary ("Tests error and corner cases of user-dirs.dirs content.");
@@ -855,28 +887,15 @@ test_user_special_dirs_load_unlocked (void)
 
   if (g_test_subprocess ())
     {
-      gchar *user_dirs_file;
-      char *user_dirs_parent = NULL;
-      const gchar *config_dir;
       const gchar *dir;
       gchar *expected;
-      gboolean result;
 
-      config_dir = g_get_user_config_dir ();
-      user_dirs_file = g_build_filename (config_dir, "user-dirs.dirs", NULL);
-      user_dirs_parent = g_path_get_dirname (user_dirs_file);
-      g_mkdir_with_parents (user_dirs_parent, 0700);
-      result = g_file_set_contents (user_dirs_file,
-                                    "XDG_DESKTOP_DIR = \"/root\"\nXDG_DESKTOP_DIR = \"$HOMER/Desktop\"\n"
+      set_mock_user_dirs_dirs_file ("XDG_DESKTOP_DIR = \"/root\"\nXDG_DESKTOP_DIR = \"$HOMER/Desktop\"\n"
                                     "XDG_DOCUMENTS_DIR = \"$HOME\"\n"
                                     "XDG_DOWNLOAD_DIR = \"$HOME/Downloads\"\n"
                                     "XDG_MUSIC_DIR = \"///\"\n"
                                     "XDG_PICTURES_DIR = \"$HOME/Pictures\"\n"
-                                    "XDG_PICTURES_DIR = \"/\"\nXDG_DOWNLOAD_DIR = \"/dev/null\n",
-                                    -1, NULL);
-      g_assert_true (result);
-      g_free (user_dirs_file);
-      g_free (user_dirs_parent);
+                                    "XDG_PICTURES_DIR = \"/\"\nXDG_DOWNLOAD_DIR = \"/dev/null\n");
 
       g_reload_user_special_dirs_cache ();
 
