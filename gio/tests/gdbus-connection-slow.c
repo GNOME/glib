@@ -82,6 +82,16 @@ test_connection_flush (void)
                                                           NULL);
   g_assert_cmpint (signal_handler_id, !=, 0);
 
+  /* We need to wait for the subscription to have actually taken effect
+   * before forking the subprocess, otherwise there is a race condition
+   * between the message bus adding the match rule and the subprocess
+   * sending the signal. If the message bus wins the race, then the test
+   * passes, but if the subprocess wins the race, it will be too late
+   * for this process to receive the signal because it already happened.
+   * The easiest way to avoid this race is to do a round-trip to the
+   * message bus and back. */
+  connection_wait_for_bus (connection);
+
   flush_helper = g_test_get_filename (G_TEST_BUILT, "gdbus-connection-flush-helper", NULL);
   for (n = 0; n < 50; n++)
     {
