@@ -28,6 +28,8 @@
 
 #include "gdbus-tests.h"
 
+#define WAIT_FOR_FLUSH_MSEC 1000
+
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
 
@@ -49,7 +51,7 @@ static gboolean
 test_connection_flush_on_timeout (gpointer user_data)
 {
   guint iteration = GPOINTER_TO_UINT (user_data);
-  g_printerr ("Timeout waiting 1000 msec on iteration %d\n", iteration);
+  g_printerr ("Timeout waiting %d msec on iteration %d\n", WAIT_FOR_FLUSH_MSEC, iteration);
   g_assert_not_reached ();
   return G_SOURCE_REMOVE;
 }
@@ -118,7 +120,7 @@ test_connection_flush (void)
       g_assert_no_error (error);
       g_assert_true (ret);
 
-      timeout_mainloop_id = g_timeout_add (1000, test_connection_flush_on_timeout, GUINT_TO_POINTER (n));
+      timeout_mainloop_id = g_timeout_add (WAIT_FOR_FLUSH_MSEC, test_connection_flush_on_timeout, GUINT_TO_POINTER (n));
       g_main_loop_run (loop);
       g_source_remove (timeout_mainloop_id);
     }
