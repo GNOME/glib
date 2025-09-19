@@ -119,6 +119,8 @@ GDBusConnection *_g_bus_get_priv (GBusType            bus_type,
 void ensure_gdbus_testserver_up (GDBusConnection *connection,
                                  GMainContext    *context);
 
+void connection_wait_for_bus (GDBusConnection *conn);
+
 G_END_DECLS
 
 #endif /* __TESTS_H__ */
