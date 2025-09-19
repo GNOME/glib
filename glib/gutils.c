@@ -2337,18 +2337,18 @@ g_reload_user_special_dirs_cache (void)
       for (i = 0; i < G_USER_N_DIRECTORIES; i++)
         {
           old_val = old_g_user_special_dirs[i];
-          if (g_user_special_dirs[i] == NULL)
+
+          if (g_user_special_dirs[i] == NULL ||
+              g_strcmp0 (old_val, g_user_special_dirs[i]) != 0)
             {
-              g_user_special_dirs[i] = old_val;
+              g_ignore_leak (old_val);
             }
-          else if (g_strcmp0 (old_val, g_user_special_dirs[i]) == 0)
+          else
             {
               /* don't leak */
               g_free (g_user_special_dirs[i]);
               g_user_special_dirs[i] = old_val;
             }
-          else
-            g_free (old_val);
         }
 
       /* free the old array */
