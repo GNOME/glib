@@ -2279,21 +2279,20 @@ load_user_special_dirs_unlocked (void)
   const gchar *config_dir = NULL;
   const gchar *home_dir;
   gchar *config_file;
-  gchar *data;
+  char *data = NULL;
 
   config_dir = g_get_user_config_dir_unlocked ();
   config_file = g_build_filename (config_dir,
                                   "user-dirs.dirs",
                                   NULL);
-
-  if (!g_file_get_contents (config_file, &data, NULL, NULL))
-    {
-      g_free (config_file);
-      return;
-    }
-
   home_dir = g_get_home_dir_unlocked ();
-  load_user_special_dirs_from_string (data, home_dir, g_user_special_dirs);
+
+  if (g_file_get_contents (config_file, &data, NULL, NULL))
+    load_user_special_dirs_from_string (data, home_dir, g_user_special_dirs);
+
+  /* Special-case desktop for historical compatibility */
+  if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
+    g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (home_dir, "Desktop", NULL);
 
   g_free (data);
   g_free (config_file);
@@ -2392,16 +2391,7 @@ g_get_user_special_dir (GUserDirectory directory)
   if (G_UNLIKELY (g_user_special_dirs == NULL))
     {
       g_user_special_dirs = g_new0 (gchar *, G_USER_N_DIRECTORIES);
-
       load_user_special_dirs_unlocked ();
-
-      /* Special-case desktop for historical compatibility */
-      if (g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] == NULL)
-        {
-          gchar *home_dir = g_build_home_dir ();
-          g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = g_build_filename (home_dir, "Desktop", NULL);
-          g_free (home_dir);
-        }
     }
   user_special_dir = g_user_special_dirs[directory];
 
