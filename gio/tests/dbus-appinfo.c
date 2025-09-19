@@ -291,15 +291,15 @@ test_dbus_appinfo (void)
   g_object_unref (app);
 }
 
-static GType test_flatpak_application_get_type (void);
-typedef GApplication TestFlatpakApplication;
-typedef GApplicationClass TestFlatpakApplicationClass;
-G_DEFINE_TYPE (TestFlatpakApplication, test_flatpak_application, G_TYPE_APPLICATION)
+static GType test_sandboxed_application_get_type (void);
+typedef GApplication TestSandboxedApplication;
+typedef GApplicationClass TestSandboxedApplicationClass;
+G_DEFINE_TYPE (TestSandboxedApplication, test_sandboxed_application, G_TYPE_APPLICATION)
 
 static void
-on_flatpak_launch_uris_finish (GObject *object,
-                               GAsyncResult *result,
-                               gpointer user_data)
+on_sandboxed_app_launch_uris_finish (GObject *object,
+                                     GAsyncResult *result,
+                                     gpointer user_data)
 {
   GApplication *app = user_data;
   GError *error = NULL;
@@ -313,60 +313,64 @@ on_flatpak_launch_uris_finish (GObject *object,
 }
 
 static void
-on_flatpak_activate (GApplication *app,
-                     gpointer user_data)
+on_sandboxed_app_activate (GApplication *app,
+                           gpointer user_data)
 {
   GAppLaunchContext *ctx;
-  GDesktopAppInfo *flatpak_appinfo = user_data;
+  GDesktopAppInfo *sandboxed_app_appinfo = user_data;
   char *uri;
   GList *uris;
 
-  /* The app will be released in on_flatpak_launch_uris_finish */
+  /* The app will be released in on_sandboxed_app_launch_uris_finish */
   g_application_hold (app);
 
-  uri = g_filename_to_uri (g_desktop_app_info_get_filename (flatpak_appinfo), NULL, NULL);
+  uri = g_filename_to_uri (g_desktop_app_info_get_filename (sandboxed_app_appinfo), NULL, NULL);
   g_assert_nonnull (uri);
   uris = g_list_prepend (NULL, uri);
   ctx = g_object_new (test_app_launch_context_get_type (), NULL);
   requested_startup_id = FALSE;
   saw_startup_id = FALSE;
-  g_app_info_launch_uris_async (G_APP_INFO (flatpak_appinfo), uris, ctx,
-                                NULL, on_flatpak_launch_uris_finish, app);
+  g_app_info_launch_uris_async (G_APP_INFO (sandboxed_app_appinfo), uris, ctx,
+                                NULL, on_sandboxed_app_launch_uris_finish, app);
   g_object_unref (ctx);
   g_list_free (uris);
   g_free (uri);
 }
 
 static void
-on_flatpak_open (GApplication  *app,
-                 GFile        **files,
-                 gint           n_files,
-                 const char    *hint,
-                 gpointer       user_data)
+on_sandboxed_app_open (GApplication  *app,
+                       GFile        **files,
+                       gint           n_files,
+                       const char    *hint,
+                       gpointer       user_data)
 {
   GFakeDocumentPortalThread *portal = user_data;
   GFile *f;
+  char *desktop_id;
 
   g_assert_cmpint (n_files, ==, 1);
-  g_test_message ("on_flatpak_open received file '%s'", g_file_peek_path (files[0]));
+  g_test_message ("on_sandboxed_app_open received file '%s'", g_file_peek_path (files[0]));
+
+  desktop_id = g_strconcat (g_application_get_application_id (app), ".desktop", NULL);
 
   /* The file has been exported via the document portal */
   f = g_file_new_build_filename (g_fake_document_portal_thread_get_mount_point (portal),
                                  "document-id-0",
-                                 "org.gtk.test.dbusappinfo.flatpak.desktop",
+                                 desktop_id,
                                  NULL);
   g_assert_cmpstr (g_file_peek_path (files[0]), == , g_file_peek_path (f));
   g_assert_true (g_file_equal (files[0], f));
   g_object_unref (f);
+  g_free (desktop_id);
 }
 
 static void
-test_flatpak_application_init (TestApplication *app)
+test_sandboxed_application_init (TestSandboxedApplication *app)
 {
 }
 
 static void
-test_flatpak_application_class_init (GApplicationClass *class)
+test_sandboxed_application_class_init (GApplicationClass *class)
 {
   class->before_emit = test_application_before_emit;
 }
@@ -381,7 +385,7 @@ test_flatpak_doc_export (void)
   int status;
   GFakeDocumentPortalThread *thread = NULL;
 
-  g_test_summary ("Test that files launched via Flatpak apps are made available via the document portal.");
+  g_test_summary ("Test that files launched via flatpak apps are made available via the document portal.");
 
   /* Run a fake-document-portal */
   thread = g_fake_document_portal_thread_new (session_bus_get_address (),
@@ -395,14 +399,14 @@ test_flatpak_doc_export (void)
   g_assert_nonnull (flatpak_appinfo);
   g_free (desktop_file);
 
-  app = g_object_new (test_flatpak_application_get_type (),
+  app = g_object_new (test_sandboxed_application_get_type (),
                       "application-id", "org.gtk.test.dbusappinfo.flatpak",
                       "flags", G_APPLICATION_HANDLES_OPEN,
                       NULL);
-  g_signal_connect (app, "activate", G_CALLBACK (on_flatpak_activate),
+  g_signal_connect (app, "activate", G_CALLBACK (on_sandboxed_app_activate),
                     flatpak_appinfo);
-  g_signal_connect_object (app, "open", G_CALLBACK (on_flatpak_open), thread,
-                           G_CONNECT_DEFAULT);
+  g_signal_connect_object (app, "open", G_CALLBACK (on_sandboxed_app_open),
+                           thread, G_CONNECT_DEFAULT);
 
   status = g_application_run (app, 1, (gchar **) argv);
   g_assert_cmpint (status, ==, 0);
@@ -414,9 +418,9 @@ test_flatpak_doc_export (void)
 }
 
 static void
-on_flatpak_launch_invalid_uri_finish (GObject *object,
-                                      GAsyncResult *result,
-                                      gpointer user_data)
+on_sandboxed_app_launch_invalid_uri_finish (GObject *object,
+                                            GAsyncResult *result,
+                                            gpointer user_data)
 {
   GApplication *app = user_data;
   GError *error = NULL;
@@ -430,39 +434,40 @@ on_flatpak_launch_invalid_uri_finish (GObject *object,
 }
 
 static void
-on_flatpak_activate_invalid_uri (GApplication *app,
-                                 gpointer user_data)
+on_sandboxed_app_activate_invalid_uri (GApplication *app,
+                                       gpointer user_data)
 {
   GAppLaunchContext *ctx;
-  GDesktopAppInfo *flatpak_appinfo = user_data;
+  GDesktopAppInfo *sandboxed_app_appinfo = user_data;
   GList *uris;
 
-  /* The app will be released in on_flatpak_launch_uris_finish */
+  /* The app will be released in on_sandboxed_app_launch_uris_finish */
   g_application_hold (app);
 
   uris = g_list_prepend (NULL, "file:///hopefully/an/invalid/path.desktop");
   ctx = g_object_new (test_app_launch_context_get_type (), NULL);
   requested_startup_id = FALSE;
   saw_startup_id = FALSE;
-  g_app_info_launch_uris_async (G_APP_INFO (flatpak_appinfo), uris, ctx,
-                                NULL, on_flatpak_launch_invalid_uri_finish, app);
+  g_app_info_launch_uris_async (G_APP_INFO (sandboxed_app_appinfo), uris, ctx,
+                                NULL, on_sandboxed_app_launch_invalid_uri_finish, app);
   g_object_unref (ctx);
   g_list_free (uris);
 }
 
 static void
-on_flatpak_open_invalid_uri (GApplication  *app,
-                             GFile        **files,
-                             gint           n_files,
-                             const char    *hint)
+on_sandboxed_app_open_invalid_uri (GApplication  *app,
+                                    GFile        **files,
+                                    gint           n_files,
+                                    const char    *hint)
 {
   GFile *f;
 
   g_assert_cmpint (n_files, ==, 1);
-  g_test_message ("on_flatpak_open received file '%s'", g_file_peek_path (files[0]));
+  g_test_message ("on_sandboxed_app_open received file '%s'", g_file_peek_path (files[0]));
 
   /* The file has been exported via the document portal */
   f = g_file_new_for_uri ("file:///hopefully/an/invalid/path.desktop");
+  g_assert_cmpstr (g_file_peek_path (files[0]), == , g_file_peek_path (f));
   g_assert_true (g_file_equal (files[0], f));
   g_object_unref (f);
 }
@@ -490,13 +495,13 @@ test_flatpak_missing_doc_export (void)
   flatpak_appinfo = g_desktop_app_info_new_from_filename (desktop_file);
   g_assert_nonnull (flatpak_appinfo);
 
-  app = g_object_new (test_flatpak_application_get_type (),
+  app = g_object_new (test_sandboxed_application_get_type (),
                       "application-id", "org.gtk.test.dbusappinfo.flatpak",
                       "flags", G_APPLICATION_HANDLES_OPEN,
                       NULL);
-  g_signal_connect (app, "activate", G_CALLBACK (on_flatpak_activate_invalid_uri),
+  g_signal_connect (app, "activate", G_CALLBACK (on_sandboxed_app_activate_invalid_uri),
                     flatpak_appinfo);
-  g_signal_connect (app, "open", G_CALLBACK (on_flatpak_open_invalid_uri), NULL);
+  g_signal_connect (app, "open", G_CALLBACK (on_sandboxed_app_open_invalid_uri), NULL);
 
   status = g_application_run (app, 1, (gchar **) argv);
   g_assert_cmpint (status, ==, 0);
