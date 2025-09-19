@@ -820,18 +820,6 @@ test_hostname (void)
 }
 
 static void
-test_user_special_dirs (void)
-{
-  const gchar *dir, *dir2;
-
-  dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-  g_reload_user_special_dirs_cache ();
-  dir2 = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-
-  g_assert_cmpstr (dir, ==, dir2);
-}
-
-static void
 test_user_special_dirs_desktop (void)
 {
   const gchar *dir, *dir2;
@@ -915,6 +903,81 @@ test_user_special_dirs_load_unlocked (void)
 
       dir = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
       g_assert_cmpstr (dir, ==, "/");
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_passed ();
+    }
+#endif
+}
+
+static void
+test_user_special_dirs_reload_leaks (void)
+{
+#ifndef USES_USER_DIRS_DIRS
+  g_test_skip ("The user-dirs.dirs parser is not used on this platform.");
+#else
+  g_test_summary ("Tests that old user special dirs values are deliberately leaked on reload.");
+
+  if (g_test_subprocess ())
+    {
+      const char *original_special_dirs[G_USER_N_DIRECTORIES] = { NULL, };
+      const char *new_special_dirs[G_USER_N_DIRECTORIES] = { NULL, };
+      size_t i;
+
+      /* Set some original values for the variables and store them all. */
+      set_mock_user_dirs_dirs_file ("XDG_DESKTOP_DIR = \"/original/desktop/dir\"\n"
+                                    "XDG_DOCUMENTS_DIR = \"/original/documents/dir\"\n"
+                                    "XDG_DOWNLOAD_DIR = \"/original/download/dir\"\n");
+      g_reload_user_special_dirs_cache ();
+
+      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+        original_special_dirs[(GUserDirectory) i] = g_get_user_special_dir ((GUserDirectory) i);
+
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DESKTOP], ==, "/original/desktop/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DOCUMENTS], ==, "/original/documents/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DOWNLOAD], ==, "/original/download/dir");
+
+      /* Update the values and reload them. Change some, keep others the same, drop some. */
+      set_mock_user_dirs_dirs_file ("XDG_DESKTOP_DIR = \"/new/desktop/dir\"\n"
+                                    "XDG_DOCUMENTS_DIR = \"/original/documents/dir\"\n"
+                                    "XDG_MUSIC_DIR = \"/new/music/dir\"\n");
+      g_reload_user_special_dirs_cache ();
+
+      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+        new_special_dirs[(GUserDirectory) i] = g_get_user_special_dir ((GUserDirectory) i);
+
+      /* We expect all the original strings to still be accessible. Those which
+       * have the same string values as the new ones will not have changed. The
+       * ones which have changed string value should have their original values
+       * deliberately leaked so that const pointers in the program don’t break.
+       * See the documentation for g_reload_user_special_dirs_cache(). */
+      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+        g_test_message ("Special dir %" G_GSIZE_FORMAT ", original value %s, new value %s",
+                        i, original_special_dirs[(GUserDirectory) i],
+                        new_special_dirs[(GUserDirectory) i]);
+
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DESKTOP], ==, "/original/desktop/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DOCUMENTS], ==, "/original/documents/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DOWNLOAD], ==, "/original/download/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_MUSIC], ==, NULL);
+      g_assert_cmpstr (new_special_dirs[G_USER_DIRECTORY_DESKTOP], ==, "/new/desktop/dir");
+      g_assert_cmpstr (new_special_dirs[G_USER_DIRECTORY_DOCUMENTS], ==, "/original/documents/dir");
+      g_assert_cmpstr (new_special_dirs[G_USER_DIRECTORY_DOWNLOAD], ==, NULL);
+      g_assert_cmpstr (new_special_dirs[G_USER_DIRECTORY_MUSIC], ==, "/new/music/dir");
+
+      /* We expect exactly these two strings to leak. Rather than mark them as
+       * leaked (which we can do for asan, but not for valgrind at runtime), go
+       * ahead and free them. This means we can catch unexpected additional
+       * leaks, and also unexpected double-frees.
+       *
+       * This is definitely *not* something that production code should be doing.
+       *
+       * We can (relatively) safely do it here because this test is running in
+       * a subprocess which is about to terminate. */
+      g_free ((char *) original_special_dirs[G_USER_DIRECTORY_DESKTOP]);
+      g_free ((char *) original_special_dirs[G_USER_DIRECTORY_DOWNLOAD]);
     }
   else
     {
@@ -1388,9 +1451,9 @@ main (int   argc,
   g_test_add_func ("/utils/username", test_username);
   g_test_add_func ("/utils/realname", test_realname);
   g_test_add_func ("/utils/hostname", test_hostname);
-  g_test_add_func ("/utils/user-special-dirs", test_user_special_dirs);
   g_test_add_func ("/utils/user-special-dirs/desktop", test_user_special_dirs_desktop);
   g_test_add_func ("/utils/user-special-dirs/load-unlocked", test_user_special_dirs_load_unlocked);
+  g_test_add_func ("/utils/user-special-dirs/reload-leaks", test_user_special_dirs_reload_leaks);
   g_test_add_func ("/utils/os-info", test_os_info);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
   g_test_add_func ("/utils/clear-pointer-cast", test_clear_pointer_cast);
