@@ -4128,12 +4128,23 @@ class CodeGenerator:
         self.outfile.write(
             "  g_list_free_full (skeleton->priv->changed_properties, (GDestroyNotify) _changed_property_free);\n"
         )
+
+        self.outfile.write("#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38\n")
+        self.outfile.write("  /* coverity[missing_lock : SUPPRESS] */\n")
+        self.outfile.write(
+            "  g_clear_pointer (&skeleton->priv->changed_properties_idle_source, g_source_destroy);\n"
+        )
+        self.outfile.write("#else\n")
+
         self.outfile.write(
             "  if (skeleton->priv->changed_properties_idle_source != NULL)\n"
         )
         self.outfile.write(
             "    g_source_destroy (skeleton->priv->changed_properties_idle_source);\n"
         )
+        self.outfile.write("skeleton->priv->changed_properties_idle_source = NULL;\n")
+
+        self.outfile.write("#endif\n")
         self.outfile.write("  g_main_context_unref (skeleton->priv->context);\n")
         self.outfile.write("  g_mutex_clear (&skeleton->priv->lock);\n")
         self.outfile.write(
