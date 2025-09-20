@@ -36,11 +36,13 @@ test_document_portal_add_uri (void)
   GList *portal_uris = NULL;  /* (element-type utf8) */
   GFileIOStream *iostream = NULL;
   GError *error = NULL;
+  const char *app_id;
   char *basename;
   char *expected_name;
 
   /* Run a fake-document-portal */
-  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  app_id = "org.gnome.glib.gio";
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (), app_id);
   g_fake_document_portal_thread_run (thread);
 
   file = g_file_new_tmp ("test_document_portal_add_uri_XXXXXX",
@@ -51,7 +53,7 @@ test_document_portal_add_uri (void)
   g_object_unref (iostream);
 
   uris = g_list_append (uris, g_file_get_uri (file));
-  portal_uris = g_document_portal_add_documents (uris, "org.gnome.glib.gio", &error);
+  portal_uris = g_document_portal_add_documents (uris, app_id, &error);
   g_assert_no_error (error);
 
   basename = g_file_get_basename (file);
@@ -76,15 +78,17 @@ test_document_portal_add_not_existent_uri (void)
   GList *uris = NULL;  /* (element-type const char*) */
   GList *portal_uris = NULL;  /* (element-type utf8) */
   GError *error = NULL;
+  const char *app_id;
   const char *uri;
 
   /* Run a fake-document-portal */
-  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  app_id = "org.gnome.glib.gio.not-existent-uri";
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (), app_id);
   g_fake_document_portal_thread_run (thread);
 
   uri = "file:/no-existent-path-really!";
   uris = g_list_append (uris, (char *) uri);
-  portal_uris = g_document_portal_add_documents (uris, "org.gnome.glib.gio", &error);
+  portal_uris = g_document_portal_add_documents (uris, app_id, &error);
   g_assert_no_error (error);
 
   g_assert_cmpuint (g_list_length (portal_uris), ==, 1);
@@ -105,13 +109,15 @@ test_document_portal_add_existent_and_not_existent_uris (void)
   GList *portal_uris = NULL;  /* (element-type utf8) */
   GFileIOStream *iostream = NULL;
   GError *error = NULL;
+  const char *app_id;
   const char *invalid_uri;
   char *basename;
   char *expected_name0;
   char *expected_name1;
 
   /* Run a fake-document-portal */
-  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  app_id = "org.gnome.glib.gio.mixed-uris";
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (), app_id);
   g_fake_document_portal_thread_run (thread);
 
   file = g_file_new_tmp ("test_document_portal_add_existent_and_not_existent_uris_XXXXXX",
@@ -128,7 +134,7 @@ test_document_portal_add_existent_and_not_existent_uris (void)
   uris = g_list_append (uris, g_file_get_uri (file));
   uris = g_list_append (uris, g_strdup (invalid_uri));
 
-  portal_uris = g_document_portal_add_documents (uris, "org.gnome.glib.gio", &error);
+  portal_uris = g_document_portal_add_documents (uris, app_id, &error);
   g_assert_no_error (error);
 
   basename = g_file_get_basename (file);
@@ -163,12 +169,14 @@ test_document_portal_add_symlink_uri (void)
   GList *portal_uris = NULL;  /* (element-type utf8) */
   GFileIOStream *iostream = NULL;
   GError *error = NULL;
+  const char *app_id;
   char *tmpdir_path;
   char *basename;
   char *expected_name;
 
   /* Run a fake-document-portal */
-  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  app_id = "org.gnome.glib.gio.symlinks";
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (), app_id);
   g_fake_document_portal_thread_run (thread);
 
   target = g_file_new_tmp ("test_document_portal_add_symlink_uri_XXXXXX",
@@ -203,7 +211,7 @@ test_document_portal_add_symlink_uri (void)
   uris = g_list_append (uris, g_file_get_uri (link1));
   uris = g_list_append (uris, g_file_get_uri (link2));
 
-  portal_uris = g_document_portal_add_documents (uris, "org.gnome.glib.gio", &error);
+  portal_uris = g_document_portal_add_documents (uris, app_id, &error);
   g_assert_no_error (error);
 
   basename = g_file_get_basename (target);

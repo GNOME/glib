@@ -34,6 +34,7 @@ struct _GFakeDocumentPortalThread
   GObject parent_instance;
 
   char *address;  /* (not nullable) */
+  char *app_id; /* (nullable) */
   GCancellable *cancellable;  /* (not nullable) (owned) */
   GThread *thread;  /* (not nullable) (owned) */
   GCond cond;  /* (mutex mutex) */
@@ -72,6 +73,7 @@ g_fake_document_portal_thread_finalize (GObject *object)
   g_cond_clear (&self->cond);
   g_clear_object (&self->cancellable);
   g_clear_pointer (&self->address, g_free);
+  g_clear_pointer (&self->app_id, g_free);
 
   G_OBJECT_CLASS (g_fake_document_portal_thread_parent_class)->finalize (object);
 }
@@ -97,6 +99,7 @@ on_handle_add_full (FakeDocuments         *object,
                     const gchar * const   *permissions,
                     gpointer               user_data)
 {
+  GFakeDocumentPortalThread *self = G_FAKE_DOCUMENT_PORTAL_THREAD (user_data);
   gchar **doc_ids = NULL;
   GVariant *extra_out = NULL;
   gsize length, i;
@@ -105,6 +108,9 @@ on_handle_add_full (FakeDocuments         *object,
     length = g_unix_fd_list_get_length (o_path_fds);
   else
     length = 0;
+
+  if (self->app_id)
+    g_assert_cmpstr (self->app_id, ==, app_id);
 
   doc_ids = g_new0 (gchar *, length + 1  /* NULL terminator */);
   for (i = 0; i < length; i++)
@@ -192,10 +198,10 @@ fake_document_portal_thread_cb (gpointer user_data)
                     "handle-get-mount-point",
                     G_CALLBACK (on_handle_get_mount_point),
                     NULL);
-  g_signal_connect (interface,
-                    "handle-add-full",
-                    G_CALLBACK (on_handle_add_full),
-                    NULL);
+  g_signal_connect_object (interface,
+                           "handle-add-full",
+                           G_CALLBACK (on_handle_add_full),
+                           self, G_CONNECT_DEFAULT);
 
   g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (interface),
                                     connection,
@@ -233,10 +239,12 @@ fake_document_portal_thread_cb (gpointer user_data)
  * Returns: (transfer full): the new fake document portal wrapper
  */
 GFakeDocumentPortalThread *
-g_fake_document_portal_thread_new (const char *address)
+g_fake_document_portal_thread_new (const char *address,
+                                   const char *app_id)
 {
   GFakeDocumentPortalThread *self = g_object_new (G_TYPE_FAKE_DOCUMENT_PORTAL_THREAD, NULL);
   self->address = g_strdup (address);
+  self->app_id = g_strdup (app_id);
   return g_steal_pointer (&self);
 }
 

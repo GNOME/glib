@@ -378,7 +378,8 @@ test_flatpak_doc_export (void)
   g_test_summary ("Test that files launched via Flatpak apps are made available via the document portal.");
 
   /* Run a fake-document-portal */
-  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (),
+                                              "org.gtk.test.dbusappinfo.flatpak");
   g_fake_document_portal_thread_run (thread);
 
   desktop_file = g_test_build_filename (G_TEST_DIST,
@@ -472,7 +473,8 @@ test_flatpak_missing_doc_export (void)
   g_test_summary ("Test that files launched via Flatpak apps are made available via the document portal.");
 
   /* Run a fake-document-portal */
-  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (),
+                                              "NO_PORTAL_CALLED");
   g_fake_document_portal_thread_run (thread);
 
   desktop_file = g_test_build_filename (G_TEST_DIST,
