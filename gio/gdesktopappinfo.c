@@ -2951,6 +2951,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
   gboolean completed = FALSE;
   GList *old_uris;
   GList *dup_uris;
+  GList *ruris = NULL;
 
   char **argv, **envp;
   int argc;
@@ -2963,6 +2964,30 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
     envp = g_app_launch_context_get_environment (launch_context);
   else
     envp = g_get_environ ();
+
+#ifdef G_OS_UNIX
+  if (uris && info->keyfile)
+    {
+      char *snap_instance;
+      char *app_id = NULL;
+
+      snap_instance = g_desktop_app_info_get_string (info, "X-SnapInstanceName");
+
+      if (snap_instance && *snap_instance)
+        app_id = g_strconcat ("snap.", snap_instance, NULL);
+
+      g_free (snap_instance);
+
+      if (app_id)
+        {
+          ruris = g_document_portal_add_documents (uris, app_id, NULL);
+          if (ruris != NULL)
+            uris = ruris;
+        }
+
+      g_clear_pointer (&app_id, g_free);
+    }
+#endif
 
   /* The GList* passed to expand_application_parameters() will be modified
    * internally by expand_macro(), so we need to pass a copy of it instead,
@@ -3153,6 +3178,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
  out:
   g_strfreev (argv);
   g_strfreev (envp);
+  g_list_free_full (ruris, g_free);
 
   return completed;
 }
