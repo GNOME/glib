@@ -291,8 +291,13 @@ test_dbus_appinfo (void)
   g_object_unref (app);
 }
 
+typedef struct {
+  GApplication parent;
+
+  gboolean opened;
+} TestSandboxedApplication;
+
 static GType test_sandboxed_application_get_type (void);
-typedef GApplication TestSandboxedApplication;
 typedef GApplicationClass TestSandboxedApplicationClass;
 G_DEFINE_TYPE (TestSandboxedApplication, test_sandboxed_application, G_TYPE_APPLICATION)
 
@@ -345,6 +350,7 @@ on_sandboxed_app_open (GApplication  *app,
                        gpointer       user_data)
 {
   GFakeDocumentPortalThread *portal = user_data;
+  TestSandboxedApplication *sandboxed_app = (TestSandboxedApplication *) app;
   GFile *f;
   char *desktop_id;
 
@@ -360,6 +366,8 @@ on_sandboxed_app_open (GApplication  *app,
                                  NULL);
   g_assert_cmpstr (g_file_peek_path (files[0]), == , g_file_peek_path (f));
   g_assert_true (g_file_equal (files[0], f));
+  sandboxed_app->opened = TRUE;
+
   g_object_unref (f);
   g_free (desktop_id);
 }
@@ -408,8 +416,10 @@ test_flatpak_doc_export (void)
   g_signal_connect_object (app, "open", G_CALLBACK (on_sandboxed_app_open),
                            thread, G_CONNECT_DEFAULT);
 
+  g_assert_false (((TestSandboxedApplication *) app)->opened);
   status = g_application_run (app, 1, (gchar **) argv);
   g_assert_cmpint (status, ==, 0);
+  g_assert_true (((TestSandboxedApplication *) app)->opened);
 
   g_object_unref (app);
   g_object_unref (flatpak_appinfo);
@@ -503,8 +513,10 @@ test_flatpak_missing_doc_export (void)
                     flatpak_appinfo);
   g_signal_connect (app, "open", G_CALLBACK (on_sandboxed_app_open_invalid_uri), NULL);
 
+  g_assert_false (((TestSandboxedApplication *) app)->opened);
   status = g_application_run (app, 1, (gchar **) argv);
   g_assert_cmpint (status, ==, 0);
+  g_assert_false (((TestSandboxedApplication *) app)->opened);
 
   g_object_unref (app);
   g_object_unref (flatpak_appinfo);
