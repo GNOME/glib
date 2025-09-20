@@ -96,7 +96,7 @@ on_handle_add_full (FakeDocuments         *object,
                     const gchar * const   *permissions,
                     gpointer               user_data)
 {
-  const gchar **doc_ids = NULL;
+  gchar **doc_ids = NULL;
   GVariant *extra_out = NULL;
   gsize length, i;
 
@@ -105,20 +105,20 @@ on_handle_add_full (FakeDocuments         *object,
   else
     length = 0;
 
-  doc_ids = g_new0 (const gchar *, length + 1  /* NULL terminator */);
+  doc_ids = g_new0 (gchar *, length + 1  /* NULL terminator */);
   for (i = 0; i < length; i++)
     {
-      doc_ids[i] = "document-id";
+      doc_ids[i] = g_strdup_printf ("document-id-%" G_GSIZE_FORMAT, i);
     }
   extra_out = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), NULL, 0);
 
   fake_documents_complete_add_full (object,
                                     invocation,
                                     NULL,
-                                    doc_ids,
+                                    (const char **) doc_ids,
                                     extra_out);
 
-  g_free (doc_ids);
+  g_strfreev (doc_ids);
 
   return TRUE;
 }

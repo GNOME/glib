@@ -349,7 +349,7 @@ on_flatpak_open (GApplication  *app,
   g_test_message ("on_flatpak_open received file '%s'", g_file_peek_path (files[0]));
 
   /* The file has been exported via the document portal */
-  f = g_file_new_for_uri ("file:///document-portal/document-id/org.gtk.test.dbusappinfo.flatpak.desktop");
+  f = g_file_new_for_uri ("file:///document-portal/document-id-0/org.gtk.test.dbusappinfo.flatpak.desktop");
   g_assert_true (g_file_equal (files[0], f));
   g_object_unref (f);
 }
