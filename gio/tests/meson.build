@@ -789,6 +789,7 @@ if installed_tests_enabled
     'file.c',
     'org.gtk.test.dbusappinfo.desktop',
     'org.gtk.test.dbusappinfo.flatpak.desktop',
+    'org.gtk.test.dbusappinfo.snap.desktop',
     'test1.overlay',
     install_dir : installed_tests_execdir,
     install_tag : 'tests',

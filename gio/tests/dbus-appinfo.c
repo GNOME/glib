@@ -384,35 +384,35 @@ test_sandboxed_application_class_init (GApplicationClass *class)
 }
 
 static void
-test_flatpak_doc_export (void)
+test_sandboxed_application_doc_export (const char *app_id,
+                                       const char *expected_portal_app_id)
 {
   const gchar *argv[] = { "myapp", NULL };
   gchar *desktop_file = NULL;
-  GDesktopAppInfo *flatpak_appinfo;
+  gchar *desktop_id;
+  GDesktopAppInfo *appinfo;
   GApplication *app;
-  int status;
   GFakeDocumentPortalThread *thread = NULL;
-
-  g_test_summary ("Test that files launched via flatpak apps are made available via the document portal.");
+  int status;
 
   /* Run a fake-document-portal */
   thread = g_fake_document_portal_thread_new (session_bus_get_address (),
-                                              "org.gtk.test.dbusappinfo.flatpak");
+                                              expected_portal_app_id);
   g_fake_document_portal_thread_run (thread);
 
-  desktop_file = g_test_build_filename (G_TEST_DIST,
-                                        "org.gtk.test.dbusappinfo.flatpak.desktop",
-                                        NULL);
-  flatpak_appinfo = g_desktop_app_info_new_from_filename (desktop_file);
-  g_assert_nonnull (flatpak_appinfo);
+  desktop_id = g_strconcat (app_id, ".desktop", NULL);
+  desktop_file = g_test_build_filename (G_TEST_DIST, desktop_id, NULL);
+  appinfo = g_desktop_app_info_new_from_filename (desktop_file);
+  g_assert_nonnull (appinfo);
   g_free (desktop_file);
+  g_free (desktop_id);
 
   app = g_object_new (test_sandboxed_application_get_type (),
-                      "application-id", "org.gtk.test.dbusappinfo.flatpak",
+                      "application-id", app_id,
                       "flags", G_APPLICATION_HANDLES_OPEN,
                       NULL);
   g_signal_connect (app, "activate", G_CALLBACK (on_sandboxed_app_activate),
-                    flatpak_appinfo);
+                    appinfo);
   g_signal_connect_object (app, "open", G_CALLBACK (on_sandboxed_app_open),
                            thread, G_CONNECT_DEFAULT);
 
@@ -422,9 +422,29 @@ test_flatpak_doc_export (void)
   g_assert_true (((TestSandboxedApplication *) app)->opened);
 
   g_object_unref (app);
-  g_object_unref (flatpak_appinfo);
+  g_object_unref (appinfo);
   g_fake_document_portal_thread_stop (thread);
   g_clear_object (&thread);
+}
+
+static void
+test_flatpak_doc_export (void)
+{
+  g_test_summary ("Test that files opened by launching flatpak apps are made "
+                  "available via the document portal.");
+
+  test_sandboxed_application_doc_export ("org.gtk.test.dbusappinfo.flatpak",
+                                         "org.gtk.test.dbusappinfo.flatpak");
+}
+
+static void
+test_snap_doc_export (void)
+{
+  g_test_summary ("Test that files opened by launching snap apps are made "
+                  "available via the document portal.");
+
+  test_sandboxed_application_doc_export ("org.gtk.test.dbusappinfo.snap",
+                                         "snap.snap-app");
 }
 
 static void
@@ -483,34 +503,32 @@ on_sandboxed_app_open_invalid_uri (GApplication  *app,
 }
 
 static void
-test_flatpak_missing_doc_export (void)
+test_sandboxed_app_missing_doc_export (const char *app_id)
 {
   const gchar *argv[] = { "myapp", NULL };
   gchar *desktop_file = NULL;
-  GDesktopAppInfo *flatpak_appinfo;
+  gchar *desktop_id;
+  GDesktopAppInfo *appinfo;
   GApplication *app;
   int status;
   GFakeDocumentPortalThread *thread = NULL;
 
-  g_test_summary ("Test that files launched via Flatpak apps are made available via the document portal.");
-
   /* Run a fake-document-portal */
   thread = g_fake_document_portal_thread_new (session_bus_get_address (),
-                                              "NO_PORTAL_CALLED");
+                                              "%%_NO_PORTAL_CALLED_%%");
   g_fake_document_portal_thread_run (thread);
 
-  desktop_file = g_test_build_filename (G_TEST_DIST,
-                                        "org.gtk.test.dbusappinfo.flatpak.desktop",
-                                        NULL);
-  flatpak_appinfo = g_desktop_app_info_new_from_filename (desktop_file);
-  g_assert_nonnull (flatpak_appinfo);
+  desktop_id = g_strconcat (app_id, ".desktop", NULL);
+  desktop_file = g_test_build_filename (G_TEST_DIST, desktop_id, NULL);
+  appinfo = g_desktop_app_info_new_from_filename (desktop_file);
+  g_assert_nonnull (appinfo);
 
   app = g_object_new (test_sandboxed_application_get_type (),
-                      "application-id", "org.gtk.test.dbusappinfo.flatpak",
+                      "application-id", app_id,
                       "flags", G_APPLICATION_HANDLES_OPEN,
                       NULL);
   g_signal_connect (app, "activate", G_CALLBACK (on_sandboxed_app_activate_invalid_uri),
-                    flatpak_appinfo);
+                    appinfo);
   g_signal_connect (app, "open", G_CALLBACK (on_sandboxed_app_open_invalid_uri), NULL);
 
   g_assert_false (((TestSandboxedApplication *) app)->opened);
@@ -519,10 +537,29 @@ test_flatpak_missing_doc_export (void)
   g_assert_false (((TestSandboxedApplication *) app)->opened);
 
   g_object_unref (app);
-  g_object_unref (flatpak_appinfo);
+  g_object_unref (appinfo);
   g_free (desktop_file);
+  g_free (desktop_id);
   g_fake_document_portal_thread_stop (thread);
   g_clear_object (&thread);
+}
+
+static void
+test_flatpak_missing_doc_export (void)
+{
+  g_test_summary ("Test that files opened by launching flatpak apps are not made "
+                  "available via the document portal.");
+
+  test_sandboxed_app_missing_doc_export ("org.gtk.test.dbusappinfo.flatpak");
+}
+
+static void
+test_snap_missing_doc_export (void)
+{
+  g_test_summary ("Test that files opened by launching snap apps are not made "
+                  "available via the document portal.");
+
+  test_sandboxed_app_missing_doc_export ("org.gtk.test.dbusappinfo.snap");
 }
 
 static void
@@ -730,6 +767,8 @@ main (int argc, char **argv)
   g_test_add_func ("/appinfo/dbusappinfo", test_dbus_appinfo);
   g_test_add_func ("/appinfo/flatpak-doc-export", test_flatpak_doc_export);
   g_test_add_func ("/appinfo/flatpak-missing-doc-export", test_flatpak_missing_doc_export);
+  g_test_add_func ("/appinfo/snap-doc-export", test_snap_doc_export);
+  g_test_add_func ("/appinfo/snap-missing-doc-export", test_snap_missing_doc_export);
   g_test_add_func ("/appinfo/portal-open-file", test_portal_open_file);
   g_test_add_func ("/appinfo/portal-open-uri", test_portal_open_uri);
   g_test_add_func ("/appinfo/portal-open-file-async", test_portal_open_file_async);

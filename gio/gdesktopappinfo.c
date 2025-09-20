@@ -461,6 +461,7 @@ const char * const exec_key_match_blocklist[] = {
   "bash",
   "env",
   "flatpak",
+  "snap",
   "gjs",
   "pkexec",
   "python",
@@ -3337,12 +3338,27 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
 
 #ifdef G_OS_UNIX
   app_id = g_desktop_app_info_get_string (info, "X-Flatpak");
+
+  if (!app_id)
+    {
+      char *snap_instance;
+
+      snap_instance = g_desktop_app_info_get_string (info, "X-SnapInstanceName");
+
+      if (snap_instance && *snap_instance)
+        app_id = g_strconcat ("snap.", snap_instance, NULL);
+
+      g_free (snap_instance);
+    }
+
   if (app_id && *app_id)
     {
       ruris = g_document_portal_add_documents (uris, app_id, NULL);
       if (ruris == NULL)
         ruris = uris;
     }
+
+  g_clear_pointer (&app_id, g_free);
 #endif
 
   launch_uris_with_dbus (info, session_bus, ruris, launch_context,
@@ -3350,8 +3366,6 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
 
   if (ruris != uris)
     g_list_free_full (ruris, g_free);
-
-  g_free (app_id);
 
   return TRUE;
 }
