@@ -91,6 +91,7 @@ static gboolean
 on_handle_add_full (FakeDocuments         *object,
                     GDBusMethodInvocation *invocation,
                     GUnixFDList           *o_path_fds,
+                    GVariant              *o_path_fd,
                     guint                  flags,
                     const gchar           *app_id,
                     const gchar * const   *permissions,
