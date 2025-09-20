@@ -127,6 +127,7 @@ g_document_portal_add_documents (GList       *uris,
   int length;
   GList *ruris = NULL;
   gboolean *as_is;
+  char **basenames;
   GVariantBuilder builder;
   GUnixFDList *fd_list = NULL;
   GList *l;
@@ -142,6 +143,7 @@ g_document_portal_add_documents (GList       *uris,
 
   length = g_list_length (uris);
   as_is = g_new0 (gboolean, length);
+  basenames = g_new0 (char *, length);
 
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("ah"));
 
@@ -167,9 +169,28 @@ g_document_portal_add_documents (GList       *uris,
             }
           if (fd >= 0)
             {
+              char *fd_path;
+              char *filename;
+              char *basename;
+
 #ifndef HAVE_O_CLOEXEC
               fcntl (fd, F_SETFD, FD_CLOEXEC);
 #endif
+              fd_path = g_strdup_printf ("/proc/self/fd/%d", fd);
+
+              if ((filename = g_file_read_link (fd_path, NULL)))
+                {
+                  basename = g_path_get_basename (filename);
+                  g_clear_pointer (&filename, g_free);
+                }
+              else
+                {
+                  basename = g_path_get_basename (uri + strlen ("file:"));
+                }
+
+              basenames[i] = g_steal_pointer (&basename);
+              g_clear_pointer (&fd_path, g_free);
+
               idx = g_unix_fd_list_append (fd_list, fd, NULL);
               close (fd);
             }
@@ -201,6 +222,7 @@ g_document_portal_add_documents (GList       *uris,
       for (l = uris, i = 0, j = 0; l; l = l->next, i++)
         {
           const char *uri = l->data;
+          char *basename = g_steal_pointer (&basenames[i]);
           char *ruri;
 
           if (as_is[i]) /* use as-is, not a file uri */
@@ -214,15 +236,16 @@ g_document_portal_add_documents (GList       *uris,
             }
           else
             {
-              char *basename = g_path_get_basename (uri + strlen ("file:"));
-              char *doc_path = g_build_filename (documents_mountpoint, doc_ids[j], basename, NULL);
+              char *doc_path = g_build_filename (documents_mountpoint, doc_ids[j],
+                                                 basename, NULL);
               ruri = g_strconcat ("file:", doc_path, NULL);
-              g_free (basename);
               g_free (doc_path);
               j++;
             }
 
           ruris = g_list_prepend (ruris, ruri);
+
+          g_free (basename);
         }
 
       ruris = g_list_reverse (ruris);
@@ -239,6 +262,7 @@ out:
   g_clear_object (&fd_list);
   g_clear_pointer (&extra_out, g_variant_unref);
   g_clear_pointer (&doc_ids, g_strfreev);
+  g_clear_pointer (&basenames, g_free);
   g_free (as_is);
 
   return ruris;

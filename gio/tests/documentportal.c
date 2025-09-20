@@ -101,8 +101,8 @@ test_document_portal_add_existent_and_not_existent_uris (void)
 {
   GFakeDocumentPortalThread *thread = NULL;
   GFile *file;
-  GList *uris = NULL;   /* (element-type utf8) */
-  GList *portal_uris = NULL;   /* (element-type utf8) */
+  GList *uris = NULL;  /* (element-type utf8) */
+  GList *portal_uris = NULL;  /* (element-type utf8) */
   GFileIOStream *iostream = NULL;
   GError *error = NULL;
   const char *invalid_uri;
@@ -151,6 +151,85 @@ test_document_portal_add_existent_and_not_existent_uris (void)
   g_clear_list (&portal_uris, g_free);
 }
 
+static void
+test_document_portal_add_symlink_uri (void)
+{
+  GFakeDocumentPortalThread *thread = NULL;
+  GFile *target;
+  GFile *link1;
+  GFile *link2;
+  GFile *parent_dir;
+  GList *uris = NULL;  /* (element-type utf8) */
+  GList *portal_uris = NULL;  /* (element-type utf8) */
+  GFileIOStream *iostream = NULL;
+  GError *error = NULL;
+  char *tmpdir_path;
+  char *basename;
+  char *expected_name;
+
+  /* Run a fake-document-portal */
+  thread = g_fake_document_portal_thread_new (session_bus_get_address ());
+  g_fake_document_portal_thread_run (thread);
+
+  target = g_file_new_tmp ("test_document_portal_add_symlink_uri_XXXXXX",
+                           &iostream, NULL);
+  g_assert_no_error (error);
+  g_io_stream_close ((GIOStream *) iostream, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (iostream);
+
+  tmpdir_path = g_dir_make_tmp ("g_file_symlink_XXXXXX", &error);
+  g_assert_no_error (error);
+
+  parent_dir = g_file_new_for_path (tmpdir_path);
+  g_assert_true (g_file_query_exists (parent_dir, NULL));
+
+  link1 = g_file_get_child (parent_dir, "symlink");
+  g_assert_false (g_file_query_exists (link1, NULL));
+
+  g_file_make_symbolic_link (link1, g_file_peek_path (target), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (g_file_query_exists (link1, NULL));
+
+  link2 = g_file_get_child (parent_dir, "symlink-of-symlink");
+  g_assert_false (g_file_query_exists (link2, NULL));
+
+  basename = g_file_get_basename (link1);
+  g_file_make_symbolic_link (link2, basename, NULL, &error);
+  g_clear_pointer (&basename, g_free);
+  g_assert_true (g_file_query_exists (link2, NULL));
+  g_assert_no_error (error);
+
+  uris = g_list_append (uris, g_file_get_uri (link1));
+  uris = g_list_append (uris, g_file_get_uri (link2));
+
+  portal_uris = g_document_portal_add_documents (uris, "org.gnome.glib.gio", &error);
+  g_assert_no_error (error);
+
+  basename = g_file_get_basename (target);
+  g_assert_cmpuint (g_list_length (portal_uris), ==, 2);
+
+  expected_name = g_strdup_printf ("file:/document-portal/document-id-0/%s", basename);
+  g_assert_cmpstr (g_list_nth_data (portal_uris, 0), ==, expected_name);
+  g_clear_pointer (&expected_name, g_free);
+
+  expected_name = g_strdup_printf ("file:/document-portal/document-id-1/%s", basename);
+  g_assert_cmpstr (g_list_nth_data (portal_uris, 1), ==, expected_name);
+  g_clear_pointer (&expected_name, g_free);
+
+  g_fake_document_portal_thread_stop (thread);
+  g_clear_object (&thread);
+  g_clear_object (&target);
+  g_clear_object (&link1);
+  g_clear_object (&link2);
+  g_clear_object (&parent_dir);
+  g_clear_pointer (&expected_name, g_free);
+  g_clear_pointer (&basename, g_free);
+  g_clear_pointer (&tmpdir_path, g_free);
+  g_clear_list (&uris, g_free);
+  g_clear_list (&portal_uris, g_free);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -161,6 +240,7 @@ main (int   argc,
   g_test_add_func ("/document-portal/add-uri", test_document_portal_add_uri);
   g_test_add_func ("/document-portal/add-not-existent-uri", test_document_portal_add_not_existent_uri);
   g_test_add_func ("/document-portal/add-existent-and-not-existent-uri", test_document_portal_add_existent_and_not_existent_uris);
+  g_test_add_func ("/document-portal/add-symlink-uri", test_document_portal_add_symlink_uri);
 
   return session_bus_run ();
 }
