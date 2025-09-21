@@ -56,7 +56,8 @@
 #define PUNYCODE_INITIAL_BIAS  72
 #define PUNYCODE_INITIAL_N   0x80
 
-#define PUNYCODE_IS_BASIC(cp) ((guint)(cp) < 0x80)
+#define IS_ASCII(cp) ((guint) (cp) < 0x80)
+#define PUNYCODE_IS_BASIC(cp) IS_ASCII (cp)
 
 /* Encode/decode a single base-36 digit */
 static inline gchar
@@ -258,8 +259,8 @@ contains_non_ascii (const gchar *str,
 
   for (p = str; len == -1 ? *p : p < str + len; p++)
     {
-      if ((guchar)*p > 0x80)
-	return TRUE;
+      if (!IS_ASCII (*p))
+        return TRUE;
     }
   return FALSE;
 }
@@ -505,9 +506,9 @@ g_hostname_to_ascii (const gchar *hostname)
       unicode = FALSE;
       for (p = label; *p && !idna_is_dot (p); p++)
 	{
-	  if ((guchar)*p > 0x80)
-	    unicode = TRUE;
-	}
+          if (!IS_ASCII (*p))
+            unicode = TRUE;
+        }
 
       oldlen = out->len;
       llen = p - label;
