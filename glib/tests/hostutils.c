@@ -72,6 +72,7 @@ static const gint num_non_round_trip_names = G_N_ELEMENTS (non_round_trip_names)
 static const gchar *bad_names[] = {
   "disallowed\xef\xbf\xbd" "character",
   "non-utf\x88",
+  "smallest-non-utf-char\x80",
   "xn--mixed-\xc3\xbcp",
   "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
   "verylongverylongverylongverylongverylongverylongverylongverylongverylong"
@@ -331,6 +332,30 @@ test_is_ip_addr (void)
     }
 }
 
+static const gchar *ascii_names[] = {
+  "ascii-\x7F",
+};
+
+static const gchar *non_ascii_names[] = {
+  "disallowed\x80" "character",
+};
+
+static void
+test_hostname_is_non_ascii (void)
+{
+  for (size_t i = 0; i < G_N_ELEMENTS (ascii_names); i++)
+    g_assert_false (g_hostname_is_non_ascii (ascii_names[i]));
+
+  for (size_t i = 0; i < G_N_ELEMENTS (idn_test_domains); i++)
+    g_assert_false (g_hostname_is_non_ascii (idn_test_domains[i].ascii_name));
+
+  for (size_t i = 0; i < G_N_ELEMENTS (non_ascii_names); i++)
+    g_assert_true (g_hostname_is_non_ascii (non_ascii_names[i]));
+
+  for (size_t i = 0; i < G_N_ELEMENTS (idn_test_domains); i++)
+    g_assert_true (g_hostname_is_non_ascii (idn_test_domains[i].unicode_name));
+}
+
 /* FIXME: test names with both unicode and ACE-encoded labels */
 /* FIXME: test invalid unicode names */
 
@@ -362,6 +387,7 @@ main (int   argc,
       return 0;
     }
 
+  g_test_add_func ("/hostutils/hostname_is_non_ascii", test_hostname_is_non_ascii);
   g_test_add_func ("/hostutils/to_ascii", test_to_ascii);
   g_test_add_func ("/hostutils/to_unicode", test_to_unicode);
   g_test_add_func ("/hostutils/is_ip_addr", test_is_ip_addr);
