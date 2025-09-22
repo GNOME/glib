@@ -97,7 +97,17 @@ G_STATIC_ASSERT (!G_C_STD_CHECK_VERSION (99));
 
 #if G_CXX_STD_VERSION == 202002L
   G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (23));
-  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (202300L));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (202302L));
+#endif
+
+#if G_CXX_STD_VERSION >= 202302L
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (23));
+  G_STATIC_ASSERT (G_CXX_STD_CHECK_VERSION (202302L));
+#endif
+
+#if G_CXX_STD_VERSION == 202302L
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (26));
+  G_STATIC_ASSERT (!G_CXX_STD_CHECK_VERSION (202600L));
 #endif
 
 #ifdef _G_EXPECTED_CXX_STANDARD
@@ -118,6 +128,15 @@ test_cpp_standard (void)
   if (std_version >= 20)
     {
       // See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93821
+      g_test_skip ("Expected standard version is not properly supported by compiler");
+      return;
+    }
+#endif
+
+#if !G_GNUC_CHECK_VERSION(14, 0)
+  if (std_version >= 23)
+    {
+      // See: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=5388a43f6a3f348929292998bd6d0c1da6f006de
       g_test_skip ("Expected standard version is not properly supported by compiler");
       return;
     }
