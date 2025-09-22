@@ -455,6 +455,8 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 #define _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
 #elif g_macro__has_builtin(__builtin_add_overflow)
 #define _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
+#elif defined(G_OS_WIN32) && defined(HAVE_INTSAFE_H)
+#define _GLIB_HAVE_INTSAFE_OVERFLOW_CHECKS
 #endif
 #endif
 
@@ -493,6 +495,25 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
     (!__builtin_add_overflow(a, b, dest))
 #define g_size_checked_mul(dest, a, b) \
     (!__builtin_mul_overflow(a, b, dest))
+
+#elif defined(_GLIB_HAVE_INTSAFE_OVERFLOW_CHECKS)
+
+#include <intsafe.h>
+
+#define g_uint_checked_add(dest, a, b) \
+  (!UIntAdd (a, b, dest))
+#define g_uint_checked_mul(dest, a, b) \
+  (!UIntMult (a, b, dest))
+
+#define g_uint64_checked_add(dest, a, b) \
+  (!ULongLongAdd (a, b, dest))
+#define g_uint64_checked_mul(dest, a, b) \
+  (!ULongLongMult (a, b, dest))
+
+#define g_size_checked_add(dest, a, b) \
+  (!SizeTAdd (a, b, dest))
+#define g_size_checked_mul(dest, a, b) \
+  (!SizeTMult (a, b, dest))
 
 #else /* !_GLIB_HAVE_STD_OVERFLOW_CHECKS */
 

@@ -409,6 +409,7 @@ headers = [
   'fstab.h',
   'ftw.h',
   'grp.h',
+  'intsafe.h',
   'inttypes.h',
   'libproc.h',
   'limits.h',
