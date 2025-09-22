@@ -448,15 +448,36 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 /* Overflow-checked unsigned integer arithmetic
  */
 #ifndef _GLIB_TEST_OVERFLOW_FALLBACK
+#if defined(HAVE_STDCKDINT_H)
+#define _GLIB_HAVE_STD_OVERFLOW_CHECKS
 /* https://bugzilla.gnome.org/show_bug.cgi?id=769104 */
-#if __GNUC__ >= 5 && !defined(__INTEL_COMPILER)
+#elif __GNUC__ >= 5 && !defined(__INTEL_COMPILER)
 #define _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
 #elif g_macro__has_builtin(__builtin_add_overflow)
 #define _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
 #endif
 #endif
 
-#ifdef _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
+#ifdef _GLIB_HAVE_STD_OVERFLOW_CHECKS
+
+#include <stdckdint.h>
+
+#define g_uint_checked_add(dest, a, b) \
+  (!ckd_add (dest, a, b))
+#define g_uint_checked_mul(dest, a, b) \
+  (!ckd_mul (dest, a, b))
+
+#define g_uint64_checked_add(dest, a, b) \
+  (!ckd_add (dest, a, b))
+#define g_uint64_checked_mul(dest, a, b) \
+  (!ckd_mul (dest, a, b))
+
+#define g_size_checked_add(dest, a, b) \
+  (!ckd_add (dest, a, b))
+#define g_size_checked_mul(dest, a, b) \
+  (!ckd_mul (dest, a, b))
+
+#elif defined(_GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS)
 
 #define g_uint_checked_add(dest, a, b) \
     (!__builtin_add_overflow(a, b, dest))
@@ -473,7 +494,7 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 #define g_size_checked_mul(dest, a, b) \
     (!__builtin_mul_overflow(a, b, dest))
 
-#else  /* !_GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS */
+#else /* !_GLIB_HAVE_STD_OVERFLOW_CHECKS */
 
 /* The names of the following inlines are private.  Use the macro
  * definitions above.
@@ -506,7 +527,7 @@ static inline gboolean _GLIB_CHECKED_MUL_SIZE (gsize *dest, gsize a, gsize b) {
 #define g_size_checked_mul(dest, a, b) \
     _GLIB_CHECKED_MUL_SIZE(dest, a, b)
 
-#endif  /* !_GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS */
+#endif /* !_GLIB_HAVE_STD_OVERFLOW_CHECKS */
 
 /* IEEE Standard 754 Single Precision Storage Format (gfloat):
  *

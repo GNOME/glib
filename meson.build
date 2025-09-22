@@ -424,6 +424,7 @@ headers = [
   'sched.h',
   'spawn.h',
   'stdatomic.h',
+  'stdckdint.h',
   'stdint.h',
   'stdlib.h',
   'string.h',
