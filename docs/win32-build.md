@@ -59,9 +59,9 @@ MinGW](https://mingwpy.github.io/ucrt.html) too.
 GLib is not actively tested with the static versions of the UCRT, but if you
 need to use those, patches are welcome.
 
-# Building software that use GLib or GTK
+# Building software that uses GLib or GTK
 
-Building software that just *uses* GLib or GTK also require to have
+Building software that just *uses* GLib or GTK also requires to have
 the right compiler set up the right way. If you intend to use MinGW-GCC,
 follow the relevant instructions below in that case, too.
 
@@ -132,7 +132,7 @@ To do a build using Meson, do the following:
  Please see [the Meson docs](https://mesonbuild.com/Builtin-options.html#core-options)
  for an explanation for `--buildtype`.
 
- The path passed for `--prefix` need not to be on the same drive as where the
+ The path passed for `--prefix` does not need to be on the same drive as where the
  build is carried out, but it is recommended to use forward slashes for this
  path.  The `--backend=vs` option can be used if the Visual Studio project
  generator is preferred over using Ninja.
@@ -164,5 +164,5 @@ normally.
 
 This release of GLib requires at least the Windows 8 SDK in order to be built
 successfully using Visual Studio, which means that it is no longer supported to
-build GLib with Visual Studio 2008 nor 2010.  People that still need to use
-Visual Studio 2008 or 2010 should continue to use glib-2.66.x.
+build GLib with Visual Studio 2008 nor 2010.  People who still need to use
+Visual Studio 2008 or 2010 should continue using glib-2.66.x.
