@@ -23,6 +23,9 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#define G_FAKE_DOCUMENT_PORTAL_NO_CREATE_DIR_APP_ID "org.gnome.glib.gio.no-fake-dirs"
+#define G_FAKE_DOCUMENT_PORTAL_NO_CREATE_FILE_APP_ID "org.gnome.glib.gio.no-fake-files"
+
 G_BEGIN_DECLS
 
 #define G_TYPE_FAKE_DOCUMENT_PORTAL_THREAD (g_fake_document_portal_thread_get_type ())

@@ -260,6 +260,78 @@ test_document_portal_add_symlink_uri (void)
   g_clear_list (&portal_uris, g_free);
 }
 
+static void
+test_document_portal_add_uri_with_missing_doc_id_path (void)
+{
+  GFakeDocumentPortalThread *thread = NULL;
+  GFile *file;
+  GList *uris = NULL;  /* (element-type utf8) */
+  GList *portal_uris = NULL;  /* (element-type utf8) */
+  GFileIOStream *iostream = NULL;
+  GError *error = NULL;
+  const char *app_id;
+
+  /* Run a fake-document-portal */
+  app_id = G_FAKE_DOCUMENT_PORTAL_NO_CREATE_DIR_APP_ID;
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (), app_id);
+  g_fake_document_portal_thread_run (thread);
+
+  file = g_file_new_tmp ("test_document_portal_add_uri_with_missing_doc_id_path_XXXXXX",
+                         &iostream, NULL);
+  g_assert_no_error (error);
+  g_io_stream_close ((GIOStream *) iostream, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (iostream);
+
+  uris = g_list_append (uris, g_file_get_uri (file));
+  portal_uris = g_document_portal_add_documents (uris, app_id, &error);
+  g_assert_null (portal_uris);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND);
+
+  g_fake_document_portal_thread_stop (thread);
+  g_clear_object (&thread);
+  g_clear_object (&file);
+  g_clear_list (&uris, g_free);
+  g_clear_error (&error);
+  g_clear_list (&portal_uris, g_free);
+}
+
+static void
+test_document_portal_add_uri_with_missing_doc_file (void)
+{
+  GFakeDocumentPortalThread *thread = NULL;
+  GFile *file;
+  GList *uris = NULL;  /* (element-type utf8) */
+  GList *portal_uris = NULL;  /* (element-type utf8) */
+  GFileIOStream *iostream = NULL;
+  GError *error = NULL;
+  const char *app_id;
+
+  /* Run a fake-document-portal */
+  app_id = G_FAKE_DOCUMENT_PORTAL_NO_CREATE_FILE_APP_ID;
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (), app_id);
+  g_fake_document_portal_thread_run (thread);
+
+  file = g_file_new_tmp ("test_document_portal_add_uri_with_missing_doc_file_XXXXXX",
+                         &iostream, NULL);
+  g_assert_no_error (error);
+  g_io_stream_close ((GIOStream *) iostream, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (iostream);
+
+  uris = g_list_append (uris, g_file_get_uri (file));
+  portal_uris = g_document_portal_add_documents (uris, app_id, &error);
+  g_assert_null (portal_uris);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND);
+
+  g_fake_document_portal_thread_stop (thread);
+  g_clear_object (&thread);
+  g_clear_object (&file);
+  g_clear_list (&uris, g_free);
+  g_clear_error (&error);
+  g_clear_list (&portal_uris, g_free);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -271,6 +343,8 @@ main (int   argc,
   g_test_add_func ("/document-portal/add-not-existent-uri", test_document_portal_add_not_existent_uri);
   g_test_add_func ("/document-portal/add-existent-and-not-existent-uri", test_document_portal_add_existent_and_not_existent_uris);
   g_test_add_func ("/document-portal/add-symlink-uri", test_document_portal_add_symlink_uri);
+  g_test_add_func ("/document-portal/add-uri-with-missing-doc-id-path", test_document_portal_add_uri_with_missing_doc_id_path);
+  g_test_add_func ("/document-portal/add-uri-with-missing-doc-file", test_document_portal_add_uri_with_missing_doc_file);
 
   return session_bus_run ();
 }

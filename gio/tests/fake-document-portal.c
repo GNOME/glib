@@ -133,6 +133,21 @@ on_handle_add_full (FakeDocuments         *object,
 
       doc_ids[i] = g_strdup_printf ("document-id-%" G_GSIZE_FORMAT, i);
 
+      if (g_str_equal (self->app_id, G_FAKE_DOCUMENT_PORTAL_NO_CREATE_DIR_APP_ID))
+        continue;
+
+      g_test_message ("Creating Document ID %s folder", doc_ids[i]);
+
+      file_dir = g_file_new_build_filename (self->mount_point, doc_ids[i], NULL);
+      g_file_make_directory (file_dir, self->cancellable, &local_error);
+      g_assert_no_error (local_error);
+
+      if (g_str_equal (self->app_id, G_FAKE_DOCUMENT_PORTAL_NO_CREATE_FILE_APP_ID))
+        {
+          g_clear_object (&file_dir);
+          continue;
+        }
+
       fd = g_unix_fd_list_get (o_path_fds, i, &local_error);
       g_assert_no_error (local_error);
 
@@ -146,10 +161,6 @@ on_handle_add_full (FakeDocuments         *object,
 
       basename = g_path_get_basename (filename);
       g_clear_pointer (&filename, g_free);
-
-      file_dir = g_file_new_build_filename (self->mount_point, doc_ids[i], NULL);
-      g_file_make_directory (file_dir, self->cancellable, &local_error);
-      g_assert_no_error (local_error);
 
       file = g_file_get_child (file_dir, basename);
       stream = g_file_create_readwrite (file, G_FILE_CREATE_NONE,
