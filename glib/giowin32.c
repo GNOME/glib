@@ -1820,7 +1820,7 @@ g_io_win32_console_get_flags_internal (GIOChannel  *channel)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *) channel;
   HANDLE handle = (HANDLE) _get_osfhandle (win32_channel->fd);
-  gchar c;
+  gchar c = 0;
   DWORD count;
   INPUT_RECORD record;
 
