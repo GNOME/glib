@@ -341,15 +341,21 @@ static void
 on_flatpak_open (GApplication  *app,
                  GFile        **files,
                  gint           n_files,
-                 const char    *hint)
+                 const char    *hint,
+                 gpointer       user_data)
 {
+  GFakeDocumentPortalThread *portal = user_data;
   GFile *f;
 
   g_assert_cmpint (n_files, ==, 1);
   g_test_message ("on_flatpak_open received file '%s'", g_file_peek_path (files[0]));
 
   /* The file has been exported via the document portal */
-  f = g_file_new_for_uri ("file:///document-portal/document-id-0/org.gtk.test.dbusappinfo.flatpak.desktop");
+  f = g_file_new_build_filename (g_fake_document_portal_thread_get_mount_point (portal),
+                                 "document-id-0",
+                                 "org.gtk.test.dbusappinfo.flatpak.desktop",
+                                 NULL);
+  g_assert_cmpstr (g_file_peek_path (files[0]), == , g_file_peek_path (f));
   g_assert_true (g_file_equal (files[0], f));
   g_object_unref (f);
 }
@@ -395,7 +401,8 @@ test_flatpak_doc_export (void)
                       NULL);
   g_signal_connect (app, "activate", G_CALLBACK (on_flatpak_activate),
                     flatpak_appinfo);
-  g_signal_connect (app, "open", G_CALLBACK (on_flatpak_open), NULL);
+  g_signal_connect_object (app, "open", G_CALLBACK (on_flatpak_open), thread,
+                           G_CONNECT_DEFAULT);
 
   status = g_application_run (app, 1, (gchar **) argv);
   g_assert_cmpint (status, ==, 0);

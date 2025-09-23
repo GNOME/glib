@@ -32,6 +32,7 @@ GFakeDocumentPortalThread *g_fake_document_portal_thread_new (const char *addres
                                                               const char *app_id);
 void g_fake_document_portal_thread_run (GFakeDocumentPortalThread *self);
 void g_fake_document_portal_thread_stop (GFakeDocumentPortalThread *self);
+const char *g_fake_document_portal_thread_get_mount_point (GFakeDocumentPortalThread *self);
 
 G_END_DECLS
 
