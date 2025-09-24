@@ -23,6 +23,8 @@
  * Author: Matthias Clasen
  */
 
+#include "config.h"
+
 #ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 #endif
@@ -817,88 +819,8 @@ test_hostname (void)
   g_assert_true (g_utf8_validate (name, -1, NULL));
 }
 
-#ifdef G_OS_UNIX
 static void
-test_xdg_dirs (void)
-{
-  gchar *xdg;
-  const gchar *dir;
-  const gchar * const *dirs;
-  gchar *s;
-
-  xdg = g_strdup (g_getenv ("XDG_CONFIG_HOME"));
-  if (!xdg)
-    xdg = g_build_filename (g_get_home_dir (), ".config", NULL);
-
-  dir = g_get_user_config_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = g_strdup (g_getenv ("XDG_DATA_HOME"));
-  if (!xdg)
-    xdg = g_build_filename (g_get_home_dir (), ".local", "share", NULL);
-
-  dir = g_get_user_data_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = g_strdup (g_getenv ("XDG_CACHE_HOME"));
-  if (!xdg)
-    xdg = g_build_filename (g_get_home_dir (), ".cache", NULL);
-
-  dir = g_get_user_cache_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = g_strdup (g_getenv ("XDG_STATE_HOME"));
-  if (!xdg)
-    xdg = g_build_filename (g_get_home_dir (), ".local/state", NULL);
-
-  dir = g_get_user_state_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = g_strdup (g_getenv ("XDG_RUNTIME_DIR"));
-  if (!xdg)
-    xdg = g_strdup (g_get_user_cache_dir ());
-
-  dir = g_get_user_runtime_dir ();
-
-  g_assert_cmpstr (dir, ==, xdg);
-  g_free (xdg);
-
-  xdg = (gchar *)g_getenv ("XDG_CONFIG_DIRS");
-  if (!xdg)
-    xdg = "/etc/xdg";
-
-  dirs = g_get_system_config_dirs ();
-
-  s = g_strjoinv (":", (gchar **)dirs);
-
-  g_assert_cmpstr (s, ==, xdg);
-
-  g_free (s);
-}
-#endif
-
-static void
-test_special_dir (void)
-{
-  const gchar *dir, *dir2;
-
-  dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-  g_reload_user_special_dirs_cache ();
-  dir2 = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-
-  g_assert_cmpstr (dir, ==, dir2);
-}
-
-static void
-test_desktop_special_dir (void)
+test_user_special_dirs_desktop (void)
 {
   const gchar *dir, *dir2;
 
@@ -908,6 +830,161 @@ test_desktop_special_dir (void)
   g_reload_user_special_dirs_cache ();
   dir2 = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
   g_assert_nonnull (dir2);
+}
+
+#if !defined(HAVE_COCOA) && !defined(G_OS_WIN32)
+#define USES_USER_DIRS_DIRS 1
+#endif
+
+/* Write a mock user-dirs.dirs file with the given @content. This must be used
+ * with `G_TEST_OPTION_ISOLATE_DIRS`. See
+ * [`xdg-user-dirs-update(1)`](man:xdg-user-dirs-update(1)) for the specification. */
+#ifdef USES_USER_DIRS_DIRS
+static void
+set_mock_user_dirs_dirs_file (const char *content)
+{
+  char *user_dirs_file = NULL;
+  char *user_dirs_parent = NULL;
+  const char *config_dir;
+  GError *local_error = NULL;
+
+  config_dir = g_get_user_config_dir ();
+
+  /* Double check we’re running under G_TEST_OPTION_ISOLATE_DIRS and not about
+   * to overwrite actual user data. */
+  g_assert (g_str_has_prefix (config_dir, g_get_tmp_dir ()));
+
+  user_dirs_file = g_build_filename (config_dir, "user-dirs.dirs", NULL);
+  user_dirs_parent = g_path_get_dirname (user_dirs_file);
+  g_mkdir_with_parents (user_dirs_parent, 0700);
+  g_file_set_contents (user_dirs_file, content, -1, &local_error);
+  g_assert_no_error (local_error);
+  g_free (user_dirs_file);
+  g_free (user_dirs_parent);
+}
+#endif  /* USES_USER_DIRS_DIRS */
+
+static void
+test_user_special_dirs_load_unlocked (void)
+{
+#ifndef USES_USER_DIRS_DIRS
+  g_test_skip ("The user-dirs.dirs parser is not used on this platform.");
+#else
+  g_test_summary ("Tests error and corner cases of user-dirs.dirs content.");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/merge_requests/4800");
+
+  if (g_test_subprocess ())
+    {
+      const gchar *dir;
+      gchar *expected;
+
+      set_mock_user_dirs_dirs_file ("XDG_DESKTOP_DIR = \"/root\"\nXDG_DESKTOP_DIR = \"$HOMER/Desktop\"\n"
+                                    "XDG_DOCUMENTS_DIR = \"$HOME\"\n"
+                                    "XDG_DOWNLOAD_DIR = \"$HOME/Downloads\"\n"
+                                    "XDG_MUSIC_DIR = \"///\"\n"
+                                    "XDG_PICTURES_DIR = \"$HOME/Pictures\"\n"
+                                    "XDG_PICTURES_DIR = \"/\"\nXDG_DOWNLOAD_DIR = \"/dev/null\n");
+
+      g_reload_user_special_dirs_cache ();
+
+      dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+      g_assert_cmpstr (dir, ==, "/root");
+
+      dir = g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS);
+      g_assert_cmpstr (dir, ==, g_get_home_dir ());
+
+      expected = g_build_filename (g_get_home_dir (), "Downloads", NULL);
+      dir = g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD);
+      g_assert_cmpstr (dir, ==, expected);
+      g_free (expected);
+
+      dir = g_get_user_special_dir (G_USER_DIRECTORY_MUSIC);
+      g_assert_cmpstr (dir, ==, "/");
+
+      dir = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
+      g_assert_cmpstr (dir, ==, "/");
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_passed ();
+    }
+#endif
+}
+
+static void
+test_user_special_dirs_reload_leaks (void)
+{
+#ifndef USES_USER_DIRS_DIRS
+  g_test_skip ("The user-dirs.dirs parser is not used on this platform.");
+#else
+  g_test_summary ("Tests that old user special dirs values are deliberately leaked on reload.");
+
+  if (g_test_subprocess ())
+    {
+      const char *original_special_dirs[G_USER_N_DIRECTORIES] = { NULL, };
+      const char *new_special_dirs[G_USER_N_DIRECTORIES] = { NULL, };
+      size_t i;
+
+      /* Set some original values for the variables and store them all. */
+      set_mock_user_dirs_dirs_file ("XDG_DESKTOP_DIR = \"/original/desktop/dir\"\n"
+                                    "XDG_DOCUMENTS_DIR = \"/original/documents/dir\"\n"
+                                    "XDG_DOWNLOAD_DIR = \"/original/download/dir\"\n");
+      g_reload_user_special_dirs_cache ();
+
+      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+        original_special_dirs[(GUserDirectory) i] = g_get_user_special_dir ((GUserDirectory) i);
+
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DESKTOP], ==, "/original/desktop/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DOCUMENTS], ==, "/original/documents/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DOWNLOAD], ==, "/original/download/dir");
+
+      /* Update the values and reload them. Change some, keep others the same, drop some. */
+      set_mock_user_dirs_dirs_file ("XDG_DESKTOP_DIR = \"/new/desktop/dir\"\n"
+                                    "XDG_DOCUMENTS_DIR = \"/original/documents/dir\"\n"
+                                    "XDG_MUSIC_DIR = \"/new/music/dir\"\n");
+      g_reload_user_special_dirs_cache ();
+
+      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+        new_special_dirs[(GUserDirectory) i] = g_get_user_special_dir ((GUserDirectory) i);
+
+      /* We expect all the original strings to still be accessible. Those which
+       * have the same string values as the new ones will not have changed. The
+       * ones which have changed string value should have their original values
+       * deliberately leaked so that const pointers in the program don’t break.
+       * See the documentation for g_reload_user_special_dirs_cache(). */
+      for (i = 0; i < G_USER_N_DIRECTORIES; i++)
+        g_test_message ("Special dir %" G_GSIZE_FORMAT ", original value %s, new value %s",
+                        i, original_special_dirs[(GUserDirectory) i],
+                        new_special_dirs[(GUserDirectory) i]);
+
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DESKTOP], ==, "/original/desktop/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DOCUMENTS], ==, "/original/documents/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_DOWNLOAD], ==, "/original/download/dir");
+      g_assert_cmpstr (original_special_dirs[G_USER_DIRECTORY_MUSIC], ==, NULL);
+      g_assert_cmpstr (new_special_dirs[G_USER_DIRECTORY_DESKTOP], ==, "/new/desktop/dir");
+      g_assert_cmpstr (new_special_dirs[G_USER_DIRECTORY_DOCUMENTS], ==, "/original/documents/dir");
+      g_assert_cmpstr (new_special_dirs[G_USER_DIRECTORY_DOWNLOAD], ==, NULL);
+      g_assert_cmpstr (new_special_dirs[G_USER_DIRECTORY_MUSIC], ==, "/new/music/dir");
+
+      /* We expect exactly these two strings to leak. Rather than mark them as
+       * leaked (which we can do for asan, but not for valgrind at runtime), go
+       * ahead and free them. This means we can catch unexpected additional
+       * leaks, and also unexpected double-frees.
+       *
+       * This is definitely *not* something that production code should be doing.
+       *
+       * We can (relatively) safely do it here because this test is running in
+       * a subprocess which is about to terminate. */
+      g_free ((char *) original_special_dirs[G_USER_DIRECTORY_DESKTOP]);
+      g_free ((char *) original_special_dirs[G_USER_DIRECTORY_DOWNLOAD]);
+    }
+  else
+    {
+      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_passed ();
+    }
+#endif
 }
 
 static void
@@ -1353,7 +1430,7 @@ main (int   argc,
    */
   g_set_prgname (argv[0]);
 
-  g_test_init (&argc, &argv, NULL);
+  g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/utils/language-names", test_language_names);
   g_test_add_func ("/utils/locale-variants", test_locale_variants);
@@ -1374,11 +1451,9 @@ main (int   argc,
   g_test_add_func ("/utils/username", test_username);
   g_test_add_func ("/utils/realname", test_realname);
   g_test_add_func ("/utils/hostname", test_hostname);
-#ifdef G_OS_UNIX
-  g_test_add_func ("/utils/xdgdirs", test_xdg_dirs);
-#endif
-  g_test_add_func ("/utils/specialdir", test_special_dir);
-  g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
+  g_test_add_func ("/utils/user-special-dirs/desktop", test_user_special_dirs_desktop);
+  g_test_add_func ("/utils/user-special-dirs/load-unlocked", test_user_special_dirs_load_unlocked);
+  g_test_add_func ("/utils/user-special-dirs/reload-leaks", test_user_special_dirs_reload_leaks);
   g_test_add_func ("/utils/os-info", test_os_info);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
   g_test_add_func ("/utils/clear-pointer-cast", test_clear_pointer_cast);

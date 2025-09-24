@@ -186,63 +186,6 @@ test_cleanup_doesnt_follow_symlinks (void)
 #endif
 }
 
-static void
-test_load_user_special_dirs (void)
-{
-#if defined(HAVE_COCOA) || defined(G_OS_WIN32)
-  g_test_skip ("The user-dirs.dirs parser is not used on this platform.");
-#else
-  g_test_summary ("Tests error and corner cases of user-dirs.dirs content.");
-  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/merge_requests/4800");
-
-  if (g_test_subprocess ())
-    {
-      gchar *user_dirs_file;
-      const gchar *config_dir;
-      const gchar *dir;
-      gchar *expected;
-      gboolean result;
-
-      config_dir = g_get_user_config_dir ();
-      user_dirs_file = g_build_filename (config_dir, "user-dirs.dirs", NULL);
-      g_mkdir_with_parents (g_path_get_dirname (user_dirs_file), 0700);
-      result = g_file_set_contents (user_dirs_file,
-                                    "XDG_DESKTOP_DIR = \"/root\"\nXDG_DESKTOP_DIR = \"$HOMER/Desktop\"\n"
-                                    "XDG_DOCUMENTS_DIR = \"$HOME\"\n"
-                                    "XDG_DOWNLOAD_DIR = \"$HOME/Downloads\"\n"
-                                    "XDG_MUSIC_DIR = \"///\"\n"
-                                    "XDG_PICTURES_DIR = \"/\"\nXDG_DOWNLOAD_DIR = \"/dev/null\n",
-                                    -1, NULL);
-      g_assert_true (result);
-      g_free (user_dirs_file);
-
-      g_reload_user_special_dirs_cache ();
-
-      dir = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
-      g_assert_cmpstr (dir, ==, "/root");
-
-      dir = g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS);
-      g_assert_cmpstr (dir, ==, g_get_home_dir ());
-
-      expected = g_build_filename (g_get_home_dir (), "Downloads", NULL);
-      dir = g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD);
-      g_assert_cmpstr (dir, ==, expected);
-      g_free (expected);
-
-      dir = g_get_user_special_dir (G_USER_DIRECTORY_MUSIC);
-      g_assert_cmpstr (dir, ==, "/");
-
-      dir = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
-      g_assert_cmpstr (dir, ==, "/");
-    }
-  else
-    {
-      g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
-      g_test_trap_assert_passed ();
-    }
-#endif
-}
-
 int
 main (int   argc,
       char *argv[])
@@ -255,7 +198,6 @@ main (int   argc,
 
   g_test_add_func ("/utils-isolated/tmp-dir", test_tmp_dir);
   g_test_add_func ("/utils-isolated/home-dir", test_home_dir);
-  g_test_add_func ("/utils-isolated/load-user-special-dirs", test_load_user_special_dirs);
   g_test_add_func ("/utils-isolated/user-cache-dir", test_user_cache_dir);
   g_test_add_func ("/utils-isolated/system-config-dirs", test_system_config_dirs);
   g_test_add_func ("/utils-isolated/user-config-dir", test_user_config_dir);
