@@ -185,6 +185,7 @@ glib_tests = {
     'c_standards': c_standards.keys(),
   },
   'utils-isolated' : {},
+  'utils-unisolated' : {},
   'unicode' : {},
   'unicode-encoding' : {},
   'unicode-normalize': {},
