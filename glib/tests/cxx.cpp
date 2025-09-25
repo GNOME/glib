@@ -563,6 +563,7 @@ g_likely_test_expr (void)
     {
       return TRUE;
     }
+  return FALSE;
 }
 
 static void
