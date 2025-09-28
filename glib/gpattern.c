@@ -292,7 +292,7 @@ g_pattern_spec_new (const gchar *pattern)
   size_t hw_pos = 0, tw_pos = 0, hj_pos = 0, tj_pos = 0;
   gboolean hw_pos_set = FALSE, hj_pos_set = FALSE;
   gboolean follows_wildcard = FALSE;
-  guint pending_jokers = 0;
+  size_t pending_jokers = 0;
   const gchar *s;
   gchar *d;
   size_t i;
