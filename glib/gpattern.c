@@ -361,7 +361,7 @@ g_pattern_spec_new (const gchar *pattern)
   seen_wildcard = hw_pos_set;
   more_wildcards = seen_wildcard && hw_pos != tw_pos;
   if (seen_wildcard)
-    pspec->max_length = G_MAXUINT;
+    pspec->max_length = G_MAXSIZE;
 
   /* special case sole head/tail wildcard or exact matches */
   if (!seen_joker && !more_wildcards)
