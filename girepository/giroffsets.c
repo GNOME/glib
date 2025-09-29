@@ -465,6 +465,8 @@ compute_union_field_offsets (GIIrTypelibBuild *build,
                 {
                   size = MAX (size, member_size);
                   alignment = MAX (alignment, member_alignment);
+                  field->offset = 0;
+                  field->offset_state = GI_IR_OFFSETS_COMPUTED;
                 }
               else
                 have_error = TRUE;
