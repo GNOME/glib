@@ -311,6 +311,13 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  *
  * An example use would be during listing files, to avoid recursive
  * directory scanning.
+ *
+ * For local files on Linux, this is a combination of the file’s device number
+ * and inode, so is invariant with respect to hard linking. The format used by
+ * other VFS implementations may vary, and some VFS backends may not set it.
+ *
+ * For simply seeing if two [iface@Gio.File] instances refer to the same path
+ * on disk, see [method@Gio.File.equal].
  **/
 #define G_FILE_ATTRIBUTE_ID_FILE "id::file"                     /* string */
 
