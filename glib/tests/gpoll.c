@@ -293,7 +293,7 @@ test_gpoll (void)
 
   for (i = 0; i < REPEAT; i++)
     {
-      gint r, s, v, t;
+      gint r, s, v, t = 0;
       gint64 diff;
       MSG msg;
       gboolean found_app;
@@ -348,7 +348,7 @@ test_gpoll (void)
 
   for (i = 0; i < REPEAT; i++)
     {
-      gint r, s, v, t;
+      gint r, s, v, t = 0;
       gint64 diff;
 
       reset_fds (fds, NUM_POLLEES);
@@ -394,7 +394,7 @@ test_gpoll (void)
 
   for (i = 0; i < REPEAT; i++)
     {
-      gint r, s, v, t;
+      gint r, s, v, t = 0;
       gint64 diff;
       gint j;
 
@@ -443,7 +443,7 @@ test_gpoll (void)
 
   for (i = 0; i < REPEAT; i++)
     {
-      gint r, s, v, t;
+      gint r, s, v, t = 0;
       gint64 diff;
       gint j;
       MSG msg;
@@ -501,7 +501,7 @@ test_gpoll (void)
 
   for (i = 0; i < REPEAT; i++)
     {
-      gint r, s, v, t;
+      gint r, s, v, t = 0;
       gint64 diff;
       gint j;
 
@@ -551,7 +551,7 @@ test_gpoll (void)
 
   for (i = 0; i < REPEAT; i++)
     {
-      gint r, s, v, t;
+      gint r, s, v, t = 0;
       gint64 diff;
       gint j;
       MSG msg;
