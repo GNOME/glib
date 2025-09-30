@@ -2360,6 +2360,7 @@ g_local_file_trash (GFile         *file,
               if (basename_len <= strlen (".trashinfo"))
                 break; /* fail with ENAMETOOLONG */
               basename_len -= strlen (".trashinfo");
+              memmove (basename, basename + strlen (".trashinfo"), basename_len);
               basename[basename_len] = '\0';
               i = 1;
               continue;
@@ -2383,6 +2384,7 @@ g_local_file_trash (GFile         *file,
               if (basename_len <= strlen (".XXXXXX"))
                 break; /* fail with ENAMETOOLONG */
               basename_len -= strlen (".XXXXXX");
+              memmove (basename, basename + strlen (".XXXXXX"), basename_len);
               basename[basename_len] = '\0';
               i = 1;
               g_clear_error (&my_error);
