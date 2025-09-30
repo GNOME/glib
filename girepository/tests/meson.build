@@ -46,6 +46,9 @@ if enable_gir
     'callable-info' : {
       'depends': gio_gir_testing_dep,
     },
+    'field-info' : {
+      'depends': glib_gir_testing_dep,
+    },
     'function-info' : {
       'dependencies': [libffi_dep],
       'depends': glib_gir_testing_dep,
