@@ -103,6 +103,7 @@
 #include <gio/gioscheduler.h>
 #include <gio/giostream.h>
 #include <gio/giptosmessage.h>
+#include <gio/gipv6tclassmessage.h>
 #include <gio/glistmodel.h>
 #include <gio/gliststore.h>
 #include <gio/gloadableicon.h>
