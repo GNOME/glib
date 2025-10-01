@@ -664,7 +664,7 @@ test_strconcat (void)
 static void
 test_strjoinv_overflow (void)
 {
-#if G_MAXSIZE > G_MAXUINT
+#if GLIB_SIZEOF_SIZE_T > (UINT_WIDTH / 8)
   g_test_skip ("Overflow joining strings requires G_MAXSIZE <= G_MAXUINT.");
 #else
   if (!g_test_undefined ())
