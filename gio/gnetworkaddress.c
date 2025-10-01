@@ -40,6 +40,23 @@
 
 #include <string.h>
 
+#ifndef __GLIBC__
+/* Due to an internal detail of glibc there is no value in
+ * doing DNS lookups in parallel.
+ *
+ * For a brief overview glibc loads NSS modules which expose
+ * a gethostbyname4_r function. This function returns the list
+ * of addresses in the response. However, due to a historical
+ * oversight, you cannot specify a family and it returns all
+ * addresses. The previous gethostbyname3_r function did specify
+ * families but could not return IPv6 information such as the
+ * scope-id.
+ *
+ * Some more details: https://sourceware.org/pipermail/libc-alpha/2025-October/170864.html
+ */
+#define USE_HAPPYEYEBALLS
+#endif
+
 /* As recommended by RFC 8305 this is the time it waits for a following
    DNS response to come in (ipv4 waiting on ipv6 generally)
  */
@@ -630,11 +647,13 @@ g_network_address_get_scheme (GNetworkAddress *addr)
 #define G_TYPE_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (_g_network_address_address_enumerator_get_type ())
 #define G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_NETWORK_ADDRESS_ADDRESS_ENUMERATOR, GNetworkAddressAddressEnumerator))
 
+#ifdef USE_HAPPYEYEBALLS
 typedef enum {
   RESOLVE_STATE_NONE = 0,
   RESOLVE_STATE_WAITING_ON_IPV4 = 1 << 0,
   RESOLVE_STATE_WAITING_ON_IPV6 = 1 << 1,
 } ResolveState;
+#endif
 
 typedef struct {
   GSocketAddressEnumerator parent_instance;
@@ -643,11 +662,13 @@ typedef struct {
   GList *addresses; /* (owned) (nullable) */
   GList *current_item; /* (unowned) (nullable) */
   GTask *queued_task; /* (owned) (nullable) */
-  GTask *waiting_task; /* (owned) (nullable) */
-  GError *last_error; /* (owned) (nullable) */
-  GSource *wait_source; /* (owned) (nullable) */
   GMainContext *context; /* (owned) (nullable) */
+#ifdef USE_HAPPYEYEBALLS
+  GTask *waiting_task; /* (owned) (nullable) */
+  GSource *wait_source; /* (owned) (nullable) */
+  GError *last_error; /* (owned) (nullable) */
   ResolveState state;
+#endif
 } GNetworkAddressAddressEnumerator;
 
 typedef struct {
@@ -664,14 +685,17 @@ g_network_address_address_enumerator_finalize (GObject *object)
   GNetworkAddressAddressEnumerator *addr_enum =
     G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (object);
 
+#ifdef USE_HAPPYEYEBALLS
   if (addr_enum->wait_source)
     {
       g_source_destroy (addr_enum->wait_source);
       g_clear_pointer (&addr_enum->wait_source, g_source_unref);
     }
-  g_clear_object (&addr_enum->queued_task);
   g_clear_object (&addr_enum->waiting_task);
   g_clear_error (&addr_enum->last_error);
+#endif
+
+  g_clear_object (&addr_enum->queued_task);
   g_object_unref (addr_enum->addr);
   g_clear_pointer (&addr_enum->context, g_main_context_unref);
   g_list_free_full (addr_enum->addresses, g_object_unref);
@@ -808,9 +832,11 @@ maybe_update_address_cache (GNetworkAddressAddressEnumerator *addr_enum,
 {
   GList *addresses, *p;
 
+#ifdef USE_HAPPYEYEBALLS
   /* Only cache complete results */
   if (addr_enum->state & RESOLVE_STATE_WAITING_ON_IPV4 || addr_enum->state & RESOLVE_STATE_WAITING_ON_IPV6)
     return;
+#endif
 
   /* The enumerators list will not necessarily be fully sorted */
   addresses = list_copy_interleaved (addr_enum->addresses);
@@ -928,6 +954,28 @@ complete_queued_task (GNetworkAddressAddressEnumerator *addr_enum,
     }
   g_object_unref (task);
 }
+
+#ifndef USE_HAPPYEYEBALLS
+
+static void
+got_all_addresses (GObject      *source_object,
+                    GAsyncResult *result,
+                    gpointer      user_data)
+{
+  GNetworkAddressAddressEnumerator *addr_enum = user_data;
+  GResolver *resolver = G_RESOLVER (source_object);
+  GList *addresses;
+  GError *error = NULL;
+
+  addresses = g_resolver_lookup_by_name_with_flags_finish (resolver, result, &error);
+  if (!error)
+      g_network_address_address_enumerator_add_addresses (addr_enum, g_steal_pointer (&addresses), resolver);
+
+    complete_queued_task (addr_enum, g_steal_pointer (&addr_enum->queued_task), g_steal_pointer (&error));
+    g_object_unref (addr_enum);
+}
+
+#else
 
 static int
 on_address_timeout (gpointer user_data)
@@ -1060,6 +1108,8 @@ got_ipv4_addresses (GObject      *source_object,
   g_object_unref (addr_enum);
 }
 
+#endif
+
 static void
 g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enumerator,
                                                  GCancellable              *cancellable,
@@ -1074,7 +1124,11 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
   task = g_task_new (addr_enum, cancellable, callback, user_data);
   g_task_set_source_tag (task, g_network_address_address_enumerator_next_async);
 
-  if (addr_enum->addresses == NULL && addr_enum->state == RESOLVE_STATE_NONE)
+  if (addr_enum->addresses == NULL
+#ifdef USE_HAPPYEYEBALLS
+    && addr_enum->state == RESOLVE_STATE_NONE
+#endif
+  )
     {
       GNetworkAddress *addr = addr_enum->addr;
       GResolver *resolver = g_resolver_get_default ();
@@ -1098,6 +1152,14 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
                * times before the initial callback has been called */
               g_assert (addr_enum->queued_task == NULL);
 
+#ifndef USE_HAPPYEYEBALLS
+              addr_enum->queued_task = g_steal_pointer (&task);
+              g_resolver_lookup_by_name_with_flags_async (resolver,
+                                                          addr->priv->hostname,
+                                                          G_RESOLVER_NAME_LOOKUP_FLAGS_DEFAULT,
+                                                          cancellable,
+                                                          got_all_addresses, g_object_ref (addr_enum));
+#else
               addr_enum->state = RESOLVE_STATE_WAITING_ON_IPV4 | RESOLVE_STATE_WAITING_ON_IPV6;
               addr_enum->queued_task = g_steal_pointer (&task);
               /* Look up in parallel as per RFC 8305 */
@@ -1111,6 +1173,7 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
                                                           G_RESOLVER_NAME_LOOKUP_FLAGS_IPV4_ONLY,
                                                           cancellable,
                                                           got_ipv4_addresses, g_object_ref (addr_enum));
+#endif
             }
           g_object_unref (resolver);
           return;
@@ -1120,12 +1183,14 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
     }
 
   sockaddr = init_and_query_next_address (addr_enum);
+#ifdef USE_HAPPYEYEBALLS
   if (sockaddr == NULL && (addr_enum->state & RESOLVE_STATE_WAITING_ON_IPV4 ||
                            addr_enum->state & RESOLVE_STATE_WAITING_ON_IPV6))
     {
       addr_enum->waiting_task = task;
     }
   else
+#endif
     {
       g_task_return_pointer (task, sockaddr, g_object_unref);
       g_object_unref (task);
