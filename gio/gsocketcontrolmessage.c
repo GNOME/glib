@@ -50,7 +50,8 @@
 #include "gunixcredentialsmessage.h"
 #include "gunixfdmessage.h"
 #endif
-
+#include "giptosmessage.h"
+#include "gipv6tclassmessage.h"
 
 G_DEFINE_ABSTRACT_TYPE (GSocketControlMessage, g_socket_control_message, G_TYPE_OBJECT)
 
@@ -145,6 +146,18 @@ g_socket_control_message_class_init (GSocketControlMessageClass *class)
 {
 }
 
+static GSocketControlMessage *
+try_deserialize_message_type (GType msgtype, int level, int type, gsize size, gpointer data)
+{
+  GSocketControlMessage *message;
+
+  GSocketControlMessageClass *class = g_type_class_ref (msgtype);
+  message = class->deserialize (level, type, size, data);
+  g_type_class_unref (class);
+
+  return message;
+}
+
 /**
  * g_socket_control_message_deserialize:
  * @level: a socket level
@@ -175,28 +188,78 @@ g_socket_control_message_deserialize (int      level,
   guint n_message_types;
   guint i;
 
-  /* Ensure we know about the built in types */
+  static gsize builtin_messages_initialized = FALSE;
+  static GType builtin_messages[5];
+  static guint n_builtin_messages = 0;
+
+  if (g_once_init_enter (&builtin_messages_initialized))
+    {
+      i = 0;
+
 #ifndef G_OS_WIN32
-  g_type_ensure (G_TYPE_UNIX_CREDENTIALS_MESSAGE);
-  g_type_ensure (G_TYPE_UNIX_FD_MESSAGE);
+      builtin_messages[i++] = G_TYPE_UNIX_CREDENTIALS_MESSAGE;
+      builtin_messages[i++] = G_TYPE_UNIX_FD_MESSAGE;
 #endif
+      builtin_messages[i++] = G_TYPE_IP_TOS_MESSAGE;
+      builtin_messages[i++] = G_TYPE_IPV6_TCLASS_MESSAGE;
+
+      n_builtin_messages = i;
+
+      /* Ensure we know about the built in types */
+      for (i = 0; builtin_messages[i]; ++i)
+        {
+          g_type_ensure (builtin_messages[i]);
+        }
+
+      g_once_init_leave (&builtin_messages_initialized, TRUE);
+    }
 
   message_types = g_type_children (G_TYPE_SOCKET_CONTROL_MESSAGE, &n_message_types);
 
   message = NULL;
-  for (i = 0; i < n_message_types; i++)
+
+  /* First try to deserialize using message types registered by application. */
+  if (n_message_types > n_builtin_messages)
     {
-      GSocketControlMessageClass *class;
+      for (i = 0; i < n_message_types; i++)
+        {
+          guint j;
+          gboolean is_builtin = FALSE;
 
-      class = g_type_class_ref (message_types[i]);
-      message = class->deserialize (level, type, size, data);
-      g_type_class_unref (class);
+          for (j = 0; builtin_messages[j]; ++j)
+            {
+              if (message_types[i] == builtin_messages[j])
+                {
+                  is_builtin = TRUE;
+                  break;
+                }
+            }
 
-      if (message != NULL)
-        break;
+          if (!is_builtin)
+            {
+              message = try_deserialize_message_type (message_types[i], level,
+                                                      type, size, data);
+
+              if (message != NULL)
+                break;
+            }
+        }
     }
 
   g_free (message_types);
+
+  /* Fallback to builtin message types. */
+  if (message == NULL)
+    {
+      for (i = 0; builtin_messages[i]; i++)
+        {
+          message = try_deserialize_message_type (builtin_messages[i], level,
+                                                  type, size, data);
+
+          if (message != NULL)
+            break;
+        }
+    }
 
   /* It's not a bug if we can't deserialize the control message - for
    * example, the control message may be be discarded if it is deemed
