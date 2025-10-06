@@ -93,7 +93,8 @@ content_files = [
   "threads-deprecated.md",
 ]
 content_images = [
-  "file-name-encodings.png",
+  "file-name-encodings-light.svg",
+  "file-name-encodings-dark.svg",
   "mainloop-states.gif",
   "Sorted_binary_tree_breadth-first_traversal.svg",
   "Sorted_binary_tree_inorder.svg",
