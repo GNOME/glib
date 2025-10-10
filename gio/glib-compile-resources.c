@@ -1070,10 +1070,11 @@ main (int argc, char **argv)
     {
       if (generate_source)
 	{
-	  int fd = g_file_open_tmp (NULL, &binary_target, NULL);
+	  int fd = g_file_open_tmp (NULL, &binary_target, &error);
 	  if (fd == -1)
 	    {
-	      g_printerr ("Can't open temp file\n");
+	      g_printerr ("Can't open temp file: %s\n", error->message);
+              g_error_free (error);
 	      g_free (c_name);
               g_hash_table_unref (files);
 	      return 1;
