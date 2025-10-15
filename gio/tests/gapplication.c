@@ -1784,15 +1784,75 @@ test_dbus_command_line_done (void)
   g_clear_object (&bus);
 }
 
+typedef struct _ActivationData {
+  unsigned n_activations;
+  GVariant *parameter;
+} ActivationData;
+
 static void
 dbus_activate_action_cb (GSimpleAction *action,
                          GVariant      *parameter,
                          gpointer       user_data)
 {
-  guint *n_activations = user_data;
+  ActivationData *activation_data = user_data;
 
-  *n_activations = *n_activations + 1;
+  activation_data->n_activations++;
+
+  if (parameter)
+    {
+      char *parameter_str = g_variant_print (parameter, TRUE);
+
+      activation_data->parameter = g_variant_ref (parameter);
+      g_test_message ("Activating action '%s' with parameter: %s",
+                      g_action_get_name (G_ACTION (action)), parameter_str);
+      g_clear_pointer (&parameter_str, g_free);
+    }
+  else
+    {
+      g_test_message ("Activating action '%s' with no parameter",
+                      g_action_get_name (G_ACTION (action)));
+    }
+
   g_main_context_wakeup (NULL);
+}
+
+static GVariant *
+get_expected_action_parameter (GVariant *parameters)
+{
+  GVariant *parameter = NULL;
+  guint n_children;
+
+  g_assert_true (g_variant_is_of_type (parameters, G_VARIANT_TYPE ("av")));
+
+  if ((n_children = g_variant_n_children (parameters)) > 1)
+    {
+      GPtrArray *children;
+
+      children = g_ptr_array_new_full (n_children,
+                                       (GDestroyNotify) g_variant_unref);
+
+      for (guint i = 0; i < n_children; ++i)
+        {
+          GVariant *variant;
+
+          variant = g_variant_get_child_value (parameters, i);
+          g_ptr_array_add (children, g_variant_get_variant (variant));
+          g_clear_pointer (&variant, g_variant_unref);
+        }
+
+      parameter = g_variant_new_tuple ((GVariant **) children->pdata, n_children);
+      g_clear_pointer (&children, g_ptr_array_unref);
+    }
+  else if (n_children > 0)
+    {
+      GVariant *variant;
+
+      variant = g_variant_get_child_value (parameters, 0);
+      parameter = g_variant_get_variant (variant);
+      g_clear_pointer (&variant, g_variant_unref);
+    }
+
+  return g_steal_pointer (&parameter);
 }
 
 static void
@@ -1800,11 +1860,13 @@ test_dbus_activate_action (void)
 {
   GTestDBus *bus = NULL;
   GVariantBuilder builder;
+  GVariant *parameter;
   struct
     {
       GDBusMessage *message;  /* (not nullable) (owned) */
       guint n_expected_activations;
-    } messages[12];
+      GVariant *expected_parameter;
+    } messages[12] = {0};
   gsize i;
 
   g_test_summary ("Test that calling the ActivateAction D-Bus method works");
@@ -1825,8 +1887,11 @@ test_dbus_activate_action (void)
                                                         "/org/gtk/TestApplication/ActivateAction",
                                                         "org.freedesktop.Application",
                                                         "ActivateAction");
-  g_dbus_message_set_body (messages[1].message, g_variant_new ("(sava{sv})", "lang", &builder, NULL));
+  parameter = g_variant_ref_sink (g_variant_builder_end (&builder));
+  g_dbus_message_set_body (messages[1].message, g_variant_new ("(s@ava{sv})", "lang", parameter, NULL));
   messages[1].n_expected_activations = 1;
+  messages[1].expected_parameter = get_expected_action_parameter (parameter);
+  g_clear_pointer (&parameter, g_variant_unref);
 
   /* Action with unexpected parameter */
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
@@ -1838,6 +1903,7 @@ test_dbus_activate_action (void)
                                                         "ActivateAction");
   g_dbus_message_set_body (messages[2].message, g_variant_new ("(sava{sv})", "undo", &builder, NULL));
   messages[2].n_expected_activations = 0;
+  messages[2].expected_parameter = NULL;
 
   /* Action without required parameter */
   messages[3].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
@@ -1846,6 +1912,7 @@ test_dbus_activate_action (void)
                                                         "ActivateAction");
   g_dbus_message_set_body (messages[3].message, g_variant_new ("(sava{sv})", "lang", NULL, NULL));
   messages[3].n_expected_activations = 0;
+  messages[3].expected_parameter = NULL;
 
   /* Action with wrong parameter type */
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
@@ -1857,6 +1924,7 @@ test_dbus_activate_action (void)
                                                         "ActivateAction");
   g_dbus_message_set_body (messages[4].message, g_variant_new ("(sava{sv})", "lang", &builder, NULL));
   messages[4].n_expected_activations = 0;
+  messages[4].expected_parameter = NULL;
 
   /* Nonexistent action */
   messages[5].message = g_dbus_message_new_method_call ("org.gtk.TestApplication.ActivateAction",
@@ -1865,6 +1933,7 @@ test_dbus_activate_action (void)
                                                         "ActivateAction");
   g_dbus_message_set_body (messages[5].message, g_variant_new ("(sava{sv})", "nonexistent", NULL, NULL));
   messages[5].n_expected_activations = 0;
+  messages[5].expected_parameter = NULL;
 
   /* Action with tuple as parameter given as two items to the interface */
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
@@ -1876,8 +1945,11 @@ test_dbus_activate_action (void)
                                                         "org.freedesktop.Application",
                                                         "ActivateAction");
 
-  g_dbus_message_set_body (messages[6].message, g_variant_new ("(sava{sv})", "multi", &builder, NULL));
+  parameter = g_variant_ref_sink (g_variant_builder_end (&builder));
+  g_dbus_message_set_body (messages[6].message, g_variant_new ("(s@ava{sv})", "multi", parameter, NULL));
   messages[6].n_expected_activations = 1;
+  messages[6].expected_parameter = get_expected_action_parameter (parameter);
+  g_clear_pointer (&parameter, g_variant_unref);
 
   /* Action with tuple as parameter given as two items to the interface but with a wrong type */
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
@@ -1890,6 +1962,7 @@ test_dbus_activate_action (void)
                                                         "ActivateAction");
   g_dbus_message_set_body (messages[7].message, g_variant_new ("(sava{sv})", "multi", &builder, NULL));
   messages[7].n_expected_activations = 0;
+  messages[7].expected_parameter = NULL;
 
   /* Action with tuple as parameter given as a single item to the interface */
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
@@ -1899,8 +1972,11 @@ test_dbus_activate_action (void)
                                                         "/org/gtk/TestApplication/ActivateAction",
                                                         "org.freedesktop.Application",
                                                         "ActivateAction");
-  g_dbus_message_set_body (messages[8].message, g_variant_new ("(sava{sv})", "multi", &builder, NULL));
+  parameter = g_variant_ref_sink (g_variant_builder_end (&builder));
+  g_dbus_message_set_body (messages[8].message, g_variant_new ("(s@ava{sv})", "multi", parameter, NULL));
   messages[8].n_expected_activations = 1;
+  messages[8].expected_parameter = get_expected_action_parameter (parameter);
+  g_clear_pointer (&parameter, g_variant_unref);
 
   /* Action with tuple as parameter given as a single item to the interface but with additional items */
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
@@ -1914,6 +1990,7 @@ test_dbus_activate_action (void)
                                                         "ActivateAction");
   g_dbus_message_set_body (messages[9].message, g_variant_new ("(sava{sv})", "multi", &builder, NULL));
   messages[9].n_expected_activations = 0;
+  messages[9].expected_parameter = NULL;
 
   /* Action with tuple with single item as parameter */
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
@@ -1923,8 +2000,11 @@ test_dbus_activate_action (void)
                                                         "/org/gtk/TestApplication/ActivateAction",
                                                         "org.freedesktop.Application",
                                                         "ActivateAction");
-  g_dbus_message_set_body (messages[10].message, g_variant_new ("(sava{sv})", "single", &builder, NULL));
+  parameter = g_variant_ref_sink (g_variant_builder_end (&builder));
+  g_dbus_message_set_body (messages[10].message, g_variant_new ("(s@ava{sv})", "single", parameter, NULL));
   messages[10].n_expected_activations = 1;
+  messages[10].expected_parameter = get_expected_action_parameter (parameter);
+  g_clear_pointer (&parameter, g_variant_unref);
 
   /* Action with tuple with single item as parameter with additional items */
   g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("av"));
@@ -1938,6 +2018,7 @@ test_dbus_activate_action (void)
                                                         "ActivateAction");
   g_dbus_message_set_body (messages[11].message, g_variant_new ("(sava{sv})", "single", &builder, NULL));
   messages[11].n_expected_activations = 0;
+  messages[11].expected_parameter = NULL;
 
   /* Try each message */
   bus = g_test_dbus_new (G_TEST_DBUS_NONE);
@@ -1954,7 +2035,7 @@ test_dbus_activate_action (void)
           { "single", dbus_activate_action_cb,  "(s)",  NULL, NULL, { 0 } },
           { "multi", dbus_activate_action_cb,  "(ss)",  NULL, NULL, { 0 } },
         };
-      guint n_activations = 0;
+      ActivationData activation_data = {0};
 
       g_test_message ("Message %" G_GSIZE_FORMAT, i);
 
@@ -1963,16 +2044,23 @@ test_dbus_activate_action (void)
       startup_id = g_signal_connect (app, "startup", G_CALLBACK (dbus_startup_cb), messages[i].message);
 
       /* Export some actions. */
-      g_action_map_add_action_entries (G_ACTION_MAP (app), entries, G_N_ELEMENTS (entries), &n_activations);
+      g_action_map_add_action_entries (G_ACTION_MAP (app), entries, G_N_ELEMENTS (entries), &activation_data);
 
       g_application_hold (app);
       g_application_run (app, 0, NULL);
 
-      g_assert_cmpuint (n_activations, ==, messages[i].n_expected_activations);
+      g_assert_cmpuint (activation_data.n_activations, ==, messages[i].n_expected_activations);
+
+      if (messages[i].expected_parameter)
+        g_assert_cmpvariant (activation_data.parameter, messages[i].expected_parameter);
+      else
+        g_assert_null (activation_data.parameter);
 
       g_signal_handler_disconnect (app, startup_id);
       g_signal_handler_disconnect (app, activate_id);
       g_clear_object (&app);
+      g_clear_pointer (&activation_data.parameter, g_variant_unref);
+      g_clear_pointer (&messages[i].expected_parameter, g_variant_unref);
       g_clear_object (&messages[i].message);
     }
 
