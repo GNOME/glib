@@ -759,7 +759,6 @@ functions = [
   'strtoll_l',
   'strtoull_l',
   'symlink',
-  'sysinfo',
   'timegm',
   'unsetenv',
   'uselocale',
@@ -821,6 +820,11 @@ endif
 # AIX splice is something else
 if host_system != 'aix'
   functions += ['splice']
+endif
+
+# SVR4 sysinfo() does not behave the same as sysinfo() on other Unixes
+if host_system != 'sunos'
+  functions += ['sysinfo']
 endif
 
 foreach f : functions
