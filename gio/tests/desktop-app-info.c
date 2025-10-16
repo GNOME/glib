@@ -1127,6 +1127,22 @@ on_launch_failed (GAppLaunchContext *context, const char *startup_notify_id, gpo
   *invoked = TRUE;
 }
 
+static void
+wait_child_completed (GDesktopAppInfo *appinfo,
+                      GPid             pid,
+                      gpointer         user_data)
+{
+  gboolean *child_waited = user_data;
+  int wait_status = 0;
+  GError *error = NULL;
+
+  while (waitpid (pid, &wait_status, 0) != pid);
+  g_spawn_check_wait_status (wait_status, &error);
+  g_assert_no_error (error);
+  g_clear_error (&error);
+  *child_waited = TRUE;
+}
+
 /* Test g_desktop_app_info_launch_uris_as_manager() and
  * g_desktop_app_info_launch_uris_as_manager_with_fds()
  */
@@ -1140,6 +1156,7 @@ test_launch_as_manager (void)
   gboolean invoked = FALSE;
   gboolean launched = FALSE;
   gboolean failed = FALSE;
+  gboolean child_waited = FALSE;
   GAppLaunchContext *context;
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
@@ -1156,29 +1173,38 @@ test_launch_as_manager (void)
   g_signal_connect (context, "launch-failed",
                     G_CALLBACK (on_launch_failed),
                     &failed);
-  retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, context, 0,
-                                                      NULL, NULL,
-                                                      NULL, NULL,
+  retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, context,
+                                                      G_SPAWN_DO_NOT_REAP_CHILD,
+                                                      NULL,
+                                                      NULL,
+                                                      wait_child_completed,
+                                                      &child_waited,
                                                       &error);
   g_assert_no_error (error);
   g_assert_true (retval);
   g_assert_true (invoked);
   g_assert_true (launched);
+  g_assert_true (child_waited);
   g_assert_false (failed);
 
   invoked = FALSE;
   launched = FALSE;
   failed = FALSE;
+  child_waited = FALSE;
   retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
-                                                               NULL, context, 0,
-                                                               NULL, NULL,
-                                                               NULL, NULL,
+                                                               NULL, context,
+                                                               G_SPAWN_DO_NOT_REAP_CHILD,
+                                                               NULL,
+                                                               NULL,
+                                                               wait_child_completed,
+                                                               &child_waited,
                                                                -1, -1, -1,
                                                                &error);
   g_assert_no_error (error);
   g_assert_true (retval);
   g_assert_true (invoked);
   g_assert_true (launched);
+  g_assert_true (child_waited);
   g_assert_false (failed);
 
   g_object_unref (appinfo);
@@ -1196,6 +1222,7 @@ test_launch_as_manager_fail (void)
   gboolean launch_started = FALSE;
   gboolean launched = FALSE;
   gboolean failed = FALSE;
+  gboolean child_waited = FALSE;
 
   g_test_summary ("Tests that launch-errors are properly handled, we force " \
                   "this by using invalid FD's values when launching as manager");
@@ -1216,15 +1243,19 @@ test_launch_as_manager_fail (void)
                     &failed);
 
   retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
-                                                               NULL, context, 0,
-                                                               NULL, NULL,
-                                                               NULL, NULL,
+                                                               NULL, context,
+                                                               G_SPAWN_DO_NOT_REAP_CHILD,
+                                                               NULL,
+                                                               NULL,
+                                                               wait_child_completed,
+                                                               &child_waited,
                                                                3000, 3001, 3002,
                                                                &error);
   g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED);
   g_assert_false (retval);
   g_assert_true (launch_started);
   g_assert_false (launched);
+  g_assert_false (child_waited);
   g_assert_true (failed);
 
   g_clear_error (&error);
