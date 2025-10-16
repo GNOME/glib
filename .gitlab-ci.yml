@@ -791,6 +791,9 @@ freebsd-13-x86_64:
       - "_build/meson-logs"
 
 macos-arm64:
+  # FIXME: Temporarily disabled as the worker has issues creating temporary files
+  # See https://gitlab.gnome.org/Infrastructure/Infrastructure/-/issues/2091
+  when: manual
   extends: .only-default
   stage: build
   tags:
