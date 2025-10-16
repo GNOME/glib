@@ -194,7 +194,7 @@ g_rand_new (void)
 	      errno = 0;
 	      r = fread (seed, sizeof (seed), 1, dev_urandom);
 	    }
-	  while G_UNLIKELY (errno == EINTR);
+	  while G_UNLIKELY (r != 1 && errno == EINTR);
 
 	  if (r != 1)
 	    dev_urandom_exists = FALSE;
