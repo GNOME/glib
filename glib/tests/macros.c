@@ -110,6 +110,9 @@ test_c_standard (void)
 
   if (std_version >= 90)
     g_assert_cmpuint (G_C_STD_VERSION, >=, (std_version + 1900) * 100);
+  else if (std_version == 23)
+    /* see comment in the definition of G_C_STD_CHECK_VERSION */
+    g_assert_cmpuint (G_C_STD_VERSION, >=, 202000L);
   else
     g_assert_cmpuint (G_C_STD_VERSION, >=, (std_version + 2000) * 100);
 }
