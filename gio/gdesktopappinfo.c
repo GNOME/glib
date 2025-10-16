@@ -2388,7 +2388,7 @@ g_desktop_app_info_get_categories (GDesktopAppInfo *info)
  *
  * Gets the keywords from the desktop file.
  *
- * Returns: (transfer none): The value of the
+ * Returns: (nullable) (array zero-terminated=1) (transfer none): The value of the
  *   [`Keywords` key](https://specifications.freedesktop.org/desktop-entry-spec/latest/ar01s06.html#key-keywords)
  *
  * Since: 2.32
@@ -5078,7 +5078,7 @@ g_desktop_app_info_get_boolean (GDesktopAppInfo *info,
  *
  * The @key is looked up in the `Desktop Entry` group.
  *
- * Returns: (array zero-terminated=1 length=length) (element-type utf8) (transfer full):
+ * Returns: (nullable) (array zero-terminated=1 length=length) (element-type utf8) (transfer full):
  *   a `NULL`-terminated string array or `NULL` if the specified
  *   key cannot be found. The array should be freed with [func@GLib.strfreev].
  *

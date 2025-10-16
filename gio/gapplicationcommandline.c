@@ -630,7 +630,7 @@ g_application_command_line_get_cwd (GApplicationCommandLine *cmdline)
  * See g_application_command_line_getenv() if you are only interested
  * in the value of a single environment variable.
  *
- * Returns: (array zero-terminated=1) (element-type filename) (transfer none):
+ * Returns: (nullable) (array zero-terminated=1) (element-type filename) (transfer none):
  *     the environment strings, or %NULL if they were not sent
  *
  * Since: 2.28
