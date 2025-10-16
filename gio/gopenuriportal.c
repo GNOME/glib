@@ -352,10 +352,13 @@ g_openuri_portal_open_file_async (GFile               *file,
       errsv = errno;
       if (fd == -1)
         {
-          g_clear_object (&task);
-          g_task_report_new_error (NULL, callback, user_data, NULL,
+          g_task_return_new_error (task,
                                    G_IO_ERROR, g_io_error_from_errno (errsv),
                                    "Failed to open ‘%s’: %s", path, g_strerror (errsv));
+
+          if (call_data != NULL)
+            g_dbus_connection_signal_unsubscribe (connection, g_steal_handle_id (&call_data->response_signal_id));
+          g_clear_object (&task);
           g_clear_object (&openuri);
           return;
         }
