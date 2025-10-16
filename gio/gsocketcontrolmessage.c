@@ -29,7 +29,7 @@
  * These messages are sent with [method@Gio.Socket.send_message] and received
  * with [method@Gio.Socket.receive_message].
  *
- * To extend the set of control message that can be sent, subclass this
+ * To extend the set of control messages that can be sent, subclass this
  * class and override the `get_size`, `get_level`, `get_type` and `serialize`
  * methods.
  *
