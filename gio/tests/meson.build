@@ -602,15 +602,25 @@ if host_machine.system() != 'windows'
                    '--c-namespace', 'Fake',
                    '@INPUT@'])
 
+    fake_document_portal_sources = [
+      'fake-document-portal.c',
+      fake_document_portal_generated,
+      'fake-desktop-portal.c',
+      fake_openuri_portal_generated,
+      fake_request_portal_generated,
+    ]
+
     if not glib_have_cocoa
       gio_tests += {
+        'documentportal' : {
+          'extra_sources' : [
+            extra_sources,
+            document_portal_sources,
+            fake_document_portal_sources,
+          ],
+        },
         'dbus-appinfo' : {
-          'extra_sources' : [extra_sources,
-                             'fake-document-portal.c',
-                             fake_document_portal_generated,
-                             'fake-desktop-portal.c',
-                             fake_openuri_portal_generated,
-                             fake_request_portal_generated],
+          'extra_sources' : [extra_sources, fake_document_portal_sources],
         },
       }
     endif

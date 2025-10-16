@@ -367,6 +367,12 @@ if host_system != 'windows'
     'ggtknotificationbackend.c',
   )
 
+  document_portal_sources = [files(
+      'gdocumentportal.c',
+    ),
+    xdp_dbus_generated,
+  ]
+
   portal_sources = [files(
       'gdocumentportal.c',
       'gopenuriportal.c',
@@ -379,7 +385,7 @@ if host_system != 'windows'
       'gportalnotificationbackend.c',
       'gsandbox.c',
     ),
-    xdp_dbus_generated
+    document_portal_sources,
   ]
 
   gio_unix_include_headers = files(

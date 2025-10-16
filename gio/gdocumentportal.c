@@ -214,11 +214,45 @@ g_document_portal_add_documents (GList       *uris,
             }
           else
             {
-              char *basename = g_path_get_basename (uri + strlen ("file:"));
-              char *doc_path = g_build_filename (documents_mountpoint, doc_ids[j], basename, NULL);
-              ruri = g_strconcat ("file:", doc_path, NULL);
-              g_free (basename);
-              g_free (doc_path);
+              const char *doc_name;
+              char *doc_path;
+              GDir *doc_dir;
+              GError *local_error = NULL;
+
+              doc_path = g_build_filename (documents_mountpoint, doc_ids[j], NULL);
+              doc_dir = g_dir_open (doc_path, 0, &local_error);
+              g_clear_pointer (&doc_path, g_free);
+
+              if (!doc_dir)
+                {
+                  g_set_error_literal (error, G_IO_ERROR,
+                                       g_io_error_from_file_error (local_error->code),
+                                       local_error->message);
+
+                  g_clear_error (&local_error);
+                  g_clear_list (&ruris, g_free);
+                  goto out;
+                }
+
+              doc_name = g_dir_read_name (doc_dir);
+
+              if (!doc_name)
+                {
+                  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                               "Failed to read %s" G_DIR_SEPARATOR_S "%s",
+                               documents_mountpoint, doc_ids[j]);
+
+                  g_clear_pointer (&doc_dir, g_dir_close);
+                  g_clear_list (&ruris, g_free);
+                  goto out;
+                }
+
+              ruri = g_strconcat ("file:",
+                                  documents_mountpoint, G_DIR_SEPARATOR_S,
+                                  doc_ids[j], G_DIR_SEPARATOR_S,
+                                  doc_name, NULL);
+
+              g_clear_pointer (&doc_dir, g_dir_close);
               j++;
             }
 

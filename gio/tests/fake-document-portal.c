@@ -23,6 +23,7 @@
  * support g_document_portal_add_documents */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gunixfdlist.h>
 
@@ -34,6 +35,9 @@ struct _GFakeDocumentPortalThread
   GObject parent_instance;
 
   char *address;  /* (not nullable) */
+  char *app_id; /* (nullable) */
+  char *mount_point;  /* (not nullable) */
+  GList *fake_documents; /* (nullable) (owned) (element-type Gio.File) */
   GCancellable *cancellable;  /* (not nullable) (owned) */
   GThread *thread;  /* (not nullable) (owned) */
   GCond cond;  /* (mutex mutex) */
@@ -71,7 +75,10 @@ g_fake_document_portal_thread_finalize (GObject *object)
   g_mutex_clear (&self->mutex);
   g_cond_clear (&self->cond);
   g_clear_object (&self->cancellable);
+  g_clear_pointer (&self->mount_point, g_free);
   g_clear_pointer (&self->address, g_free);
+  g_clear_pointer (&self->app_id, g_free);
+  g_clear_list (&self->fake_documents, g_object_unref);
 
   G_OBJECT_CLASS (g_fake_document_portal_thread_parent_class)->finalize (object);
 }
@@ -81,9 +88,11 @@ on_handle_get_mount_point (FakeDocuments         *object,
                            GDBusMethodInvocation *invocation,
                            gpointer               user_data)
 {
+  GFakeDocumentPortalThread *self = G_FAKE_DOCUMENT_PORTAL_THREAD (user_data);
+
   fake_documents_complete_get_mount_point (object,
                                            invocation,
-                                           "/document-portal");
+                                           self->mount_point);
   return TRUE;
 }
 
@@ -91,12 +100,14 @@ static gboolean
 on_handle_add_full (FakeDocuments         *object,
                     GDBusMethodInvocation *invocation,
                     GUnixFDList           *o_path_fds,
+                    GVariant              *o_path_fd,
                     guint                  flags,
                     const gchar           *app_id,
                     const gchar * const   *permissions,
                     gpointer               user_data)
 {
-  const gchar **doc_ids = NULL;
+  GFakeDocumentPortalThread *self = G_FAKE_DOCUMENT_PORTAL_THREAD (user_data);
+  gchar **doc_ids = NULL;
   GVariant *extra_out = NULL;
   gsize length, i;
 
@@ -105,20 +116,78 @@ on_handle_add_full (FakeDocuments         *object,
   else
     length = 0;
 
-  doc_ids = g_new0 (const gchar *, length + 1  /* NULL terminator */);
+  if (self->app_id)
+    g_assert_cmpstr (self->app_id, ==, app_id);
+
+  doc_ids = g_new0 (gchar *, length + 1  /* NULL terminator */);
   for (i = 0; i < length; i++)
     {
-      doc_ids[i] = "document-id";
+      GFile *file;
+      GFile *file_dir;
+      GError *local_error = NULL;
+      GFileIOStream *stream;
+      char *fd_path;
+      char *filename;
+      char *basename;
+      int fd;
+
+      doc_ids[i] = g_strdup_printf ("document-id-%" G_GSIZE_FORMAT, i);
+
+      if (g_str_equal (self->app_id, G_FAKE_DOCUMENT_PORTAL_NO_CREATE_DIR_APP_ID))
+        continue;
+
+      g_test_message ("Creating Document ID %s folder", doc_ids[i]);
+
+      file_dir = g_file_new_build_filename (self->mount_point, doc_ids[i], NULL);
+      g_file_make_directory (file_dir, self->cancellable, &local_error);
+      g_assert_no_error (local_error);
+
+      if (g_str_equal (self->app_id, G_FAKE_DOCUMENT_PORTAL_NO_CREATE_FILE_APP_ID))
+        {
+          g_clear_object (&file_dir);
+          continue;
+        }
+
+      fd = g_unix_fd_list_get (o_path_fds, i, &local_error);
+      g_assert_no_error (local_error);
+
+      fd_path = g_strdup_printf ("/proc/self/fd/%d", fd);
+
+      filename = g_file_read_link (fd_path, &local_error);
+      g_assert_no_error (local_error);
+
+      g_test_message ("Creating Document ID %s mapped to FD %d (%s)",
+                      doc_ids[i], fd, filename);
+
+      basename = g_path_get_basename (filename);
+      g_clear_pointer (&filename, g_free);
+
+      file = g_file_get_child (file_dir, basename);
+      stream = g_file_create_readwrite (file, G_FILE_CREATE_NONE,
+                                        self->cancellable, &local_error);
+      g_assert_no_error (local_error);
+
+      g_io_stream_close (G_IO_STREAM (stream), self->cancellable, &local_error);
+      g_assert_no_error (local_error);
+
+      self->fake_documents = g_list_prepend (self->fake_documents,
+                                             g_steal_pointer (&file));
+
+      g_clear_error (&local_error);
+      g_clear_object (&file_dir);
+      g_clear_object (&stream);
+      g_clear_pointer (&fd_path, g_free);
+      g_clear_pointer (&basename, g_free);
     }
   extra_out = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), NULL, 0);
 
   fake_documents_complete_add_full (object,
                                     invocation,
                                     NULL,
-                                    doc_ids,
+                                    (const char **) doc_ids,
                                     extra_out);
 
-  g_free (doc_ids);
+  g_strfreev (doc_ids);
 
   return TRUE;
 }
@@ -164,6 +233,13 @@ fake_document_portal_thread_cb (gpointer user_data)
   guint id;
   FakeDocuments *interface = NULL;
   GError *local_error = NULL;
+  char *tmpdir;
+
+  tmpdir = g_dir_make_tmp ("fake-document-portal-XXXXXXX", &local_error);
+  self->mount_point = g_build_filename (tmpdir, "documents", NULL);
+  g_mkdir (self->mount_point, 0700);
+  g_assert_no_error (local_error);
+  g_test_message ("Created mount point %s", self->mount_point);
 
   context = g_main_context_new ();
   g_main_context_push_thread_default (context);
@@ -187,14 +263,14 @@ fake_document_portal_thread_cb (gpointer user_data)
   g_test_message ("Acquired a message bus connection");
 
   interface = fake_documents_skeleton_new ();
-  g_signal_connect (interface,
-                    "handle-get-mount-point",
-                    G_CALLBACK (on_handle_get_mount_point),
-                    NULL);
-  g_signal_connect (interface,
-                    "handle-add-full",
-                    G_CALLBACK (on_handle_add_full),
-                    NULL);
+  g_signal_connect_object (interface,
+                           "handle-get-mount-point",
+                           G_CALLBACK (on_handle_get_mount_point),
+                           self, G_CONNECT_DEFAULT);
+  g_signal_connect_object (interface,
+                           "handle-add-full",
+                           G_CALLBACK (on_handle_add_full),
+                           self, G_CONNECT_DEFAULT);
 
   g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (interface),
                                     connection,
@@ -215,12 +291,30 @@ fake_document_portal_thread_cb (gpointer user_data)
   while (!g_cancellable_is_cancelled (self->cancellable))
     g_main_context_iteration (context, TRUE);
 
+  // Remove the stuff we've created.
+  for (GList *l = self->fake_documents; l; l = l->next)
+    {
+      GFile *file = G_FILE (l->data);
+      GFile *parent_dir = g_file_get_parent (file);
+
+      g_file_delete (file, NULL, &local_error);
+      g_assert_no_error (local_error);
+
+      g_file_delete (parent_dir, NULL, &local_error);
+      g_assert_no_error (local_error);
+
+      g_clear_object (&parent_dir);
+    }
+  g_rmdir (self->mount_point);
+  g_assert_no_errno (errno);
+
   g_bus_unown_name (id);
   g_dbus_interface_skeleton_unexport (G_DBUS_INTERFACE_SKELETON (interface));
   g_clear_object (&interface);
   g_clear_object (&connection);
   g_main_context_pop_thread_default (context);
   g_clear_pointer (&context, g_main_context_unref);
+  g_free (tmpdir);
 
   return NULL;
 }
@@ -232,10 +326,12 @@ fake_document_portal_thread_cb (gpointer user_data)
  * Returns: (transfer full): the new fake document portal wrapper
  */
 GFakeDocumentPortalThread *
-g_fake_document_portal_thread_new (const char *address)
+g_fake_document_portal_thread_new (const char *address,
+                                   const char *app_id)
 {
   GFakeDocumentPortalThread *self = g_object_new (G_TYPE_FAKE_DOCUMENT_PORTAL_THREAD, NULL);
   self->address = g_strdup (address);
+  self->app_id = g_strdup (app_id);
   return g_steal_pointer (&self);
 }
 
@@ -276,4 +372,23 @@ g_fake_document_portal_thread_stop (GFakeDocumentPortalThread *self)
 
   g_cancellable_cancel (self->cancellable);
   g_thread_join (g_steal_pointer (&self->thread));
+}
+
+/* Gets the thread mount point, this is valid only after the thread has been
+ * started. We do not care about thread-safety here since this is a value
+ * that is set on thread start-up.
+ */
+const char *
+g_fake_document_portal_thread_get_mount_point (GFakeDocumentPortalThread *self)
+{
+  const char *mount_point;
+
+  g_return_val_if_fail (G_IS_FAKE_DOCUMENT_PORTAL_THREAD (self), NULL);
+  g_return_val_if_fail (self->thread != NULL, NULL);
+
+  g_mutex_lock (&self->mutex);
+  mount_point = self->mount_point;
+  g_mutex_unlock (&self->mutex);
+
+  return mount_point;
 }
