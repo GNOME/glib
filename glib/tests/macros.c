@@ -101,6 +101,8 @@ test_c_standard (void)
       return;
     }
 
+  g_test_message ("G_C_STD_VERSION is %lu", G_C_STD_VERSION);
+
   g_assert_true (G_C_STD_CHECK_VERSION (std_version));
 
   if (std_version > 80 && std_version < 99)
