@@ -917,9 +917,10 @@ do_exec (gint                  child_err_report_fd,
                */
               if (target_fds[i] == child_err_report_fd)
                 {
-                  child_err_report_fd = dupfd_cloexec (child_err_report_fd, max_target_fd + 1);
-                  if (child_err_report_fd < 0)
+                  int new_child_err_report_fd = dupfd_cloexec (child_err_report_fd, max_target_fd + 1);
+                  if (new_child_err_report_fd < 0)
                     write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
+                  child_err_report_fd = new_child_err_report_fd;
                 }
 
               if (safe_dup2 (source_fds[i], target_fds[i]) < 0)
