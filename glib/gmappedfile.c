@@ -155,6 +155,13 @@ mapped_file_new_from_fd (int           fd,
       file->contents = NULL;
       return file;
     }
+  else if (st.st_size == 0)
+    {
+      errno = EINVAL;
+      file->length = 0;
+      file->contents = MAP_FAILED;
+      goto error;
+    }
 
   file->contents = MAP_FAILED;
 
@@ -192,7 +199,7 @@ mapped_file_new_from_fd (int           fd,
     }
 #endif
 
-  
+error:
   if (file->contents == MAP_FAILED)
     {
       if (error != NULL)
