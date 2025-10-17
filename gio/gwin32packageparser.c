@@ -32,17 +32,15 @@
 #include <windows.h>
 #include <winstring.h>
 #include <roapi.h>
-#include <stdio.h>
 #include <shlwapi.h>
-
-#include "gwin32api-storage.h"
-#include "gwin32api-misc.h"
-#include "gwin32api-iterator.h"
-#include "gwin32api-package.h"
-
 #include <xmllite.h>
 
+#include <windows.storage.h>
+#include <windows.applicationmodel.core.h>
+#include <windows.management.deployment.h>
+
 #include <glib.h>
+#include <stdio.h>
 
 #include "gwin32file-sync-stream.h"
 #include "gwin32packageparser.h"
@@ -63,6 +61,11 @@ typedef HRESULT (STDAPICALLTYPE *CreateXmlReader_func)(REFIID riid, void **ppvOb
 #define sax_WindowsGetStringRawBuffer sax->WindowsGetStringRawBuffer
 #define sax_CreateXmlReader sax->CreateXmlReader
 #endif
+
+DEFINE_GUID(IID_IPackageManager, 0x9A7D4B65, 0x5E8F, 0x4FC7, 0xA2, 0xE5, 0x7F, 0x69, 0x25, 0xCB, 0x8B, 0x53);
+DEFINE_GUID(IID_IPackage, 0x163C792F, 0xBD75, 0x413C, 0xBF, 0x23, 0xB1, 0xFE, 0x7B, 0x95, 0xD8, 0x25);
+DEFINE_GUID(IID_IPackage2, 0xA6612fb6, 0x7688, 0x4ACE, 0x95, 0xFB, 0x35, 0x95, 0x38, 0xE7, 0xAA, 0x01);
+DEFINE_GUID(IID_IStorageItem, 0x4207a996, 0xca2f, 0x42f7, 0xbd,0xe8, 0x8b,0x10,0x45,0x7a,0x7f,0x30);
 
 static gsize
 g_utf16_len (const gunichar2 *str)
@@ -184,10 +187,10 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
   HSTRING_HEADER packageanager_name_header;
   const wchar_t *packman_id = L"Windows.Management.Deployment.PackageManager";
   IInspectable *ii_pm = NULL;
-  IPackageManager *pm = NULL;
-  IIterable *packages_iterable = NULL;
-  IIterator *packages_iterator = NULL;
-  CHAR has_current;
+  __x_ABI_CWindows_CManagement_CDeployment_CIPackageManager *pm = NULL;
+  __FIIterable_1_Windows__CApplicationModel__CPackage *packages_iterable = NULL;
+  __FIIterator_1_Windows__CApplicationModel__CPackage *packages_iterator = NULL;
+  boolean has_current;
   gsize package_index;
   const wchar_t *bslash_appmanifest = L"\\AppxManifest.xml";
   struct _xml_sax_state sax_stack;
@@ -310,23 +313,22 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
   hr = IInspectable_QueryInterface (ii_pm, &IID_IPackageManager, (void**) &pm);
   canned_com_error_handler ("IInspectable_QueryInterface()", cleanup);
 
-  hr = IPackageManager_FindPackagesByUserSecurityId (pm, 0, &packages_iterable);
+  hr = __x_ABI_CWindows_CManagement_CDeployment_CIPackageManager_FindPackagesByUserSecurityId (pm, 0, &packages_iterable);
   canned_com_error_handler ("IPackageManager_FindPackagesByUserSecurityId()", cleanup);
 
-  hr = IIterable_First (packages_iterable, &packages_iterator);
+  hr = __FIIterable_1_Windows__CApplicationModel__CPackage_First (packages_iterable, &packages_iterator);
   canned_com_error_handler ("IIterable_First()", cleanup);
 
-  hr = IIterator_get_HasCurrent (packages_iterator, &has_current);
+  hr = __FIIterator_1_Windows__CApplicationModel__CPackage_get_HasCurrent (packages_iterator, &has_current);
   canned_com_error_handler ("IIterator_get_HasCurrent()", cleanup);
 
   for (package_index = 0; SUCCEEDED (hr) && has_current; package_index++)
     {
-      IUnknown *item = NULL;
-      IPackage *ipackage = NULL;
-      IPackage2 *ipackage2 = NULL;
-      IPackageId *ipackageid = NULL;
-      IUnknown *package_install_location = NULL;
-      IStorageItem *storage_item = NULL;
+      __x_ABI_CWindows_CApplicationModel_CIPackage *ipackage = NULL;
+      __x_ABI_CWindows_CApplicationModel_CIPackage2 *ipackage2 = NULL;
+      __x_ABI_CWindows_CApplicationModel_CIPackageId *ipackageid = NULL;
+      __x_ABI_CWindows_CStorage_CIStorageFolder *package_install_location = NULL;
+      __x_ABI_CWindows_CStorage_CIStorageItem *storage_item = NULL;
       HSTRING path = NULL;
       HSTRING name = NULL;
       HSTRING full_name = NULL;
@@ -351,25 +353,22 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
           } \
       } while (0)
 
-      hr = IIterator_get_Current (packages_iterator, &item);
+      hr = __FIIterator_1_Windows__CApplicationModel__CPackage_get_Current (packages_iterator, &ipackage);
       canned_com_error_handler_pkg ("IIterator_get_Current()", package_cleanup);
 
-      hr = IUnknown_QueryInterface (item, &IID_IPackage, (void **) &ipackage);
-      canned_com_error_handler_pkg ("IUnknown_QueryInterface(IID_IPackage)", package_cleanup);
+      hr = __x_ABI_CWindows_CApplicationModel_CIPackage_QueryInterface (ipackage, &IID_IPackage2, (void **) &ipackage2);
+      canned_com_error_handler_pkg ("IPackage_QueryInterface(IID_IPackage2)", package_cleanup);
 
-      hr = IUnknown_QueryInterface (item, &IID_IPackage2, (void **) &ipackage2);
-      canned_com_error_handler_pkg ("IUnknown_QueryInterface(IID_IPackage2)", package_cleanup);
-
-      hr = IPackage_get_Id (ipackage, &ipackageid);
+      hr = __x_ABI_CWindows_CApplicationModel_CIPackage_get_Id (ipackage, &ipackageid);
       canned_com_error_handler_pkg ("IPackage_get_Id()", package_cleanup);
 
-      hr = IPackageId_get_FullName (ipackageid, &full_name);
+      hr = __x_ABI_CWindows_CApplicationModel_CIPackageId_get_FullName (ipackageid, &full_name);
       canned_com_error_handler_pkg ("IPackageId_get_FullName()", package_cleanup);
 
-      hr = IPackageId_get_Name (ipackageid, &name);
+      hr = __x_ABI_CWindows_CApplicationModel_CIPackageId_get_Name (ipackageid, &name);
       canned_com_error_handler_pkg ("IPackageId_get_Name()", package_cleanup);
 
-      hr = IPackage2_get_DisplayName (ipackage2, &display_name);
+      hr = __x_ABI_CWindows_CApplicationModel_CIPackage2_get_DisplayName (ipackage2, &display_name);
       canned_com_error_handler_pkg ("IPackage2_get_DisplayName()", package_cleanup);
 
       wcs_full_name = LoadedWindowsGetStringRawBuffer (full_name, NULL);
@@ -388,16 +387,16 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
           } \
       } while (0)
 
-      hr = IPackage_get_InstalledLocation (ipackage, &package_install_location);
+      hr = __x_ABI_CWindows_CApplicationModel_CIPackage_get_InstalledLocation (ipackage, &package_install_location);
       canned_com_error_handler_pkg_named ("IPackage_get_InstalledLocation()", package_cleanup);
 
       hr = IUnknown_QueryInterface (package_install_location, &IID_IStorageItem, (void **) &storage_item);
       canned_com_error_handler_pkg_named ("IUnknown_QueryInterface(IID_IStorageItem)", package_cleanup);
 
-      hr = IPackageId_get_FamilyName (ipackageid, &package_family);
+      hr = __x_ABI_CWindows_CApplicationModel_CIPackageId_get_FamilyName (ipackageid, &package_family);
       canned_com_error_handler_pkg_named ("IPackageId_get_FamilyName()", package_cleanup);
 
-      hr = IStorageItem_get_Path (storage_item, &path);
+      hr = __x_ABI_CWindows_CStorage_CIStorageItem_get_Path (storage_item, &path);
       canned_com_error_handler_pkg_named ("IStorageItem_get_Path()", package_cleanup);
 
       wcs_path = LoadedWindowsGetStringRawBuffer (path, NULL);
@@ -426,7 +425,7 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
        */
       parse_manifest_file (sax);
 
-      hr = IIterator_MoveNext (packages_iterator, &has_current);
+      hr = __FIIterator_1_Windows__CApplicationModel__CPackage_MoveNext (packages_iterator, &has_current);
       canned_com_error_handler_pkg_named ("IIterator_MoveNext()", package_cleanup);
 
 #undef canned_com_error_handler_pkg_named
@@ -448,29 +447,27 @@ g_win32_package_parser_enum_packages (GWin32PackageParserCallback   callback,
         LoadedWindowsDeleteString (full_name);
 
       if (storage_item)
-        (void) IStorageItem_Release (storage_item);
+        (void) __x_ABI_CWindows_CStorage_CIStorageItem_Release (storage_item);
       if (package_install_location)
-        (void) IUnknown_Release (package_install_location);
+        (void) __x_ABI_CWindows_CStorage_CIStorageFolder_Release (package_install_location);
       if (ipackage2)
-        (void) IPackage2_Release (ipackage2);
+        (void) __x_ABI_CWindows_CApplicationModel_CIPackage2_Release (ipackage2);
       if (ipackage)
-        (void) IPackage_Release (ipackage);
-      if (item)
-        (void) IUnknown_Release (item);
+        (void) __x_ABI_CWindows_CApplicationModel_CIPackage_Release (ipackage);
 
       if (ipackageid)
-        (void) IPackageId_Release (ipackageid);
+        (void) __x_ABI_CWindows_CApplicationModel_CIPackageId_Release (ipackageid);
       if (sax->exit_early)
         break;
     }
 
   cleanup:
   if (packages_iterator)
-    (void) IIterator_Release (packages_iterator);
+    (void) __FIIterator_1_Windows__CApplicationModel__CPackage_Release (packages_iterator);
   if (packages_iterable)
-    (void) IIterable_Release (packages_iterable);
+    (void) __FIIterable_1_Windows__CApplicationModel__CPackage_Release (packages_iterable);
   if (pm)
-    (void) IPackageManager_Release (pm);
+    (void) __x_ABI_CWindows_CManagement_CDeployment_CIPackageManager_Release (pm);
   if (ii_pm)
     (void) IInspectable_Release (ii_pm);
 

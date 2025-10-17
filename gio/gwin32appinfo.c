@@ -22,6 +22,12 @@
  *          Руслан Ижбулатов  <lrn1986@gmail.com>
  */
 
+#ifdef NTDDI_VERSION
+#undef NTDDI_VERSION
+#endif
+
+#define NTDDI_VERSION NTDDI_WIN8
+
 #include "config.h"
 
 #define COBJMACROS
@@ -39,11 +45,7 @@
 #include "glibintl.h"
 #include <gio/gwin32registrykey.h>
 #include <shlobj.h>
-/* Contains the definitions from shlobj.h that are
- * guarded as Windows8-or-newer and are unavailable
- * to GLib, being only Windows7-or-newer.
- */
-#include "gwin32api-application-activation-manager.h"
+#include <shobjidl.h>
 
 #include <windows.h>
 /* For SHLoadIndirectString() */
