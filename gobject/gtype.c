@@ -2775,7 +2775,7 @@ g_type_class_get (GType type)
  *
  * This function will demand-create the class if it doesn't exist already.
  *
- * Returns: (type GObject.TypeClass) (transfer full): the #GTypeClass
+ * Returns: (type GObject.TypeClass) (transfer none): the #GTypeClass
  *   structure for the given type ID
  *
  * Deprecated: 2.84: Use g_type_class_get() instead
@@ -2788,7 +2788,7 @@ g_type_class_ref (GType type)
 
 /**
  * g_type_class_unref:
- * @g_class: (type GObject.TypeClass) (transfer full): a #GTypeClass structure to unref
+ * @g_class: (type GObject.TypeClass): a #GTypeClass structure to unref
  *
  * Decrements the reference count of the class structure being passed in.
  *
@@ -3028,7 +3028,7 @@ g_type_interface_peek_parent (gpointer g_iface)
  *
  * Deprecated: 2.84: Use g_type_default_interface_get() instead
  *
- * Returns: (type GObject.TypeInterface) (transfer full): the default
+ * Returns: (type GObject.TypeInterface) (transfer none): the default
  *   vtable for the interface; call g_type_default_interface_unref()
  *   when you are done using the interface.
  */
@@ -3125,7 +3125,7 @@ g_type_default_interface_peek (GType g_type)
 
 /**
  * g_type_default_interface_unref:
- * @g_iface: (type GObject.TypeInterface) (transfer full): the default vtable
+ * @g_iface: (type GObject.TypeInterface): the default vtable
  *     structure for an interface, as returned by g_type_default_interface_ref()
  *
  * Decrements the reference count for the type corresponding to the
