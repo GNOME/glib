@@ -3991,7 +3991,12 @@ _resolve_dev_root (void)
                     }
                 }
 
+              /* endmntent() calls fclose() for us, but scan-build doesn’t know that */
+#if !G_ANALYZER_ANALYZING
               endmntent (f);
+#else
+              fclose (f);
+#endif
 
 #ifndef HAVE_GETMNTENT_R
 	      G_UNLOCK (getmntent);

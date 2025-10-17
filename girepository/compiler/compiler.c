@@ -53,7 +53,7 @@ static gboolean
 write_out_typelib (gchar     *prefix,
                    GITypelib *typelib)
 {
-  FILE *file;
+  FILE *file, *file_owned = NULL;
   gsize written;
   GFile *file_obj;
   gchar *filename;
@@ -86,7 +86,7 @@ write_out_typelib (gchar     *prefix,
       file_obj = g_file_new_for_path (filename);
       tmp_filename = g_strdup_printf ("%s.tmp", filename);
       tmp_file_obj = g_file_new_for_path (tmp_filename);
-      file = g_fopen (tmp_filename, "wbe");
+      file = file_owned = g_fopen (tmp_filename, "wbe");
 
       if (file == NULL)
         {
@@ -106,8 +106,8 @@ write_out_typelib (gchar     *prefix,
       goto out;
     }
 
-  if (output != NULL)
-    fclose (file);
+  if (file_owned != NULL)
+    fclose (g_steal_pointer (&file_owned));
   if (tmp_filename != NULL)
     {
       if (!g_file_move (tmp_file_obj, file_obj, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &error))
