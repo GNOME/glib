@@ -33,6 +33,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include "fake-document-portal.h"
+#include "gdbus-sessionbus.h"
+
 G_DECLARE_FINAL_TYPE (TestLaunchContext, test_launch_context, TEST,
                       LAUNCH_CONTEXT, GAppLaunchContext);
 
@@ -1127,6 +1130,22 @@ on_launch_failed (GAppLaunchContext *context, const char *startup_notify_id, gpo
   *invoked = TRUE;
 }
 
+static void
+wait_child_completed (GDesktopAppInfo *appinfo,
+                      GPid             pid,
+                      gpointer         user_data)
+{
+  gboolean *child_waited = user_data;
+  int wait_status = 0;
+  GError *error = NULL;
+
+  while (waitpid (pid, &wait_status, 0) != pid);
+  g_spawn_check_wait_status (wait_status, &error);
+  g_assert_no_error (error);
+  g_clear_error (&error);
+  *child_waited = TRUE;
+}
+
 /* Test g_desktop_app_info_launch_uris_as_manager() and
  * g_desktop_app_info_launch_uris_as_manager_with_fds()
  */
@@ -1140,6 +1159,7 @@ test_launch_as_manager (void)
   gboolean invoked = FALSE;
   gboolean launched = FALSE;
   gboolean failed = FALSE;
+  gboolean child_waited = FALSE;
   GAppLaunchContext *context;
 
   path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
@@ -1156,29 +1176,38 @@ test_launch_as_manager (void)
   g_signal_connect (context, "launch-failed",
                     G_CALLBACK (on_launch_failed),
                     &failed);
-  retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, context, 0,
-                                                      NULL, NULL,
-                                                      NULL, NULL,
+  retval = g_desktop_app_info_launch_uris_as_manager (appinfo, NULL, context,
+                                                      G_SPAWN_DO_NOT_REAP_CHILD,
+                                                      NULL,
+                                                      NULL,
+                                                      wait_child_completed,
+                                                      &child_waited,
                                                       &error);
   g_assert_no_error (error);
   g_assert_true (retval);
   g_assert_true (invoked);
   g_assert_true (launched);
+  g_assert_true (child_waited);
   g_assert_false (failed);
 
   invoked = FALSE;
   launched = FALSE;
   failed = FALSE;
+  child_waited = FALSE;
   retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
-                                                               NULL, context, 0,
-                                                               NULL, NULL,
-                                                               NULL, NULL,
+                                                               NULL, context,
+                                                               G_SPAWN_DO_NOT_REAP_CHILD,
+                                                               NULL,
+                                                               NULL,
+                                                               wait_child_completed,
+                                                               &child_waited,
                                                                -1, -1, -1,
                                                                &error);
   g_assert_no_error (error);
   g_assert_true (retval);
   g_assert_true (invoked);
   g_assert_true (launched);
+  g_assert_true (child_waited);
   g_assert_false (failed);
 
   g_object_unref (appinfo);
@@ -1196,6 +1225,7 @@ test_launch_as_manager_fail (void)
   gboolean launch_started = FALSE;
   gboolean launched = FALSE;
   gboolean failed = FALSE;
+  gboolean child_waited = FALSE;
 
   g_test_summary ("Tests that launch-errors are properly handled, we force " \
                   "this by using invalid FD's values when launching as manager");
@@ -1216,15 +1246,19 @@ test_launch_as_manager_fail (void)
                     &failed);
 
   retval = g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo,
-                                                               NULL, context, 0,
-                                                               NULL, NULL,
-                                                               NULL, NULL,
+                                                               NULL, context,
+                                                               G_SPAWN_DO_NOT_REAP_CHILD,
+                                                               NULL,
+                                                               NULL,
+                                                               wait_child_completed,
+                                                               &child_waited,
                                                                3000, 3001, 3002,
                                                                &error);
   g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED);
   g_assert_false (retval);
   g_assert_true (launch_started);
   g_assert_false (launched);
+  g_assert_false (child_waited);
   g_assert_true (failed);
 
   g_clear_error (&error);
@@ -1399,6 +1433,76 @@ test_default_uri_handler_async (void)
   g_object_unref (info);
   g_main_loop_unref (loop);
   g_free (file_path);
+}
+
+static void
+launch_snap_uris_with_portal (void)
+{
+  GDesktopAppInfo *appinfo;
+  GError *error = NULL;
+  gboolean retval;
+  const gchar *path;
+  const gchar *path2;
+  gboolean invoked = FALSE;
+  gboolean launched = FALSE;
+  gboolean failed = FALSE;
+  gboolean child_waited = FALSE;
+  GAppLaunchContext *context;
+  GList *uris = NULL;
+  GFakeDocumentPortalThread *thread = NULL;
+
+  /* Run a fake-document-portal */
+  session_bus_up ();
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (),
+                                              "snap.snap-app");
+  g_fake_document_portal_thread_run (thread);
+
+  path = g_test_get_filename (G_TEST_BUILT, "snap-app_appinfo-test.desktop", NULL);
+  appinfo = g_desktop_app_info_new_from_filename (path);
+  g_assert_true (G_IS_APP_INFO (appinfo));
+
+  path2 = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  g_assert_true (g_file_test (path2, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR));
+
+  context = g_object_new (test_launch_context_get_type (), NULL);
+  g_signal_connect (context, "launch-started",
+                    G_CALLBACK (on_launch_started),
+                    &invoked);
+  g_signal_connect (context, "launched",
+                    G_CALLBACK (on_launched),
+                    &launched);
+  g_signal_connect (context, "launch-failed",
+                    G_CALLBACK (on_launch_failed),
+                    &failed);
+  g_app_launch_context_setenv (context, "DOCUMENT_PORTAL_MOUNT_POINT",
+                               g_fake_document_portal_thread_get_mount_point (thread));
+
+  uris = g_list_append (uris, g_strconcat ("file://", path, NULL));
+  uris = g_list_append (uris, g_strconcat ("file://", path2, NULL));
+
+  retval = g_desktop_app_info_launch_uris_as_manager (appinfo, uris,
+                                                      context,
+                                                      G_SPAWN_DO_NOT_REAP_CHILD,
+                                                      NULL,
+                                                      NULL,
+                                                      wait_child_completed,
+                                                      &child_waited,
+                                                      &error);
+
+  g_assert_no_error (error);
+  g_assert_true (retval);
+  g_assert_true (invoked);
+  g_assert_true (launched);
+  g_assert_true (child_waited);
+  g_assert_false (failed);
+
+  g_clear_list (&uris, g_free);
+  g_object_unref (appinfo);
+  g_assert_finalize_object (context);
+
+  g_fake_document_portal_thread_stop (thread);
+  g_clear_object (&thread);
+  session_bus_down ();
 }
 
 /* Test if Desktop-File Id is correctly formed */
@@ -2031,6 +2135,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/launch-as-manager/fail", test_launch_as_manager_fail);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler-async", test_default_uri_handler_async);
+  g_test_add_func ("/desktop-app-info/launch-snap-uri-with-portal", launch_snap_uris_with_portal);
   g_test_add_func ("/desktop-app-info/id", test_id);
 
   for (i = 0; i < G_N_ELEMENTS (supported_terminals); i++)
