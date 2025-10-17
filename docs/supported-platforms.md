@@ -34,7 +34,7 @@ GLib is regularly built on at least the following systems:
  * FreeBSD: https://cgit.freebsd.org/ports/tree/devel/glib20
  * openSUSE: https://build.opensuse.org/package/show/GNOME:Factory/glib2
  * CI runners, https://gitlab.gnome.org/GNOME/glib/blob/main/.gitlab-ci.yml:
-   - Fedora (39, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/fedora.Dockerfile)
+   - Fedora (41, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/fedora.Dockerfile)
    - Debian (Bookworm, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/debian-stable.Dockerfile)
    - Alpine Linux (3.19 using muslc, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/alpine.Dockerfile)
    - Windows (MinGW64)

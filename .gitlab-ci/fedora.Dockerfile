@@ -1,4 +1,4 @@
-FROM fedora:39
+FROM fedora:41
 
 RUN dnf -y update \
  && dnf -y install \
@@ -55,6 +55,7 @@ RUN dnf -y update \
     python3-wheel \
     shared-mime-info \
     systemtap-sdt-devel \
+    systemtap-sdt-dtrace \
     unzip \
     valgrind \
     wget \
