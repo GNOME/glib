@@ -562,10 +562,6 @@ cross-mingw64:
 # This policy doesn’t apply to intermittent flaky test failures, only to
 # consistent build failures caused by changed dependencies or build environment.
 msys2-mingw32:
-  # FIXME: Currently disabled because it’s too flaky and keeps failing with
-  # subproject fetch errors
-  # See https://gitlab.gnome.org/GNOME/glib/-/issues/3715
-  when: manual
   extends: .only-default-and-merges
   stage: build
   tags:
