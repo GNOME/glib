@@ -56,7 +56,12 @@ g_dbus_interface_default_init (GDBusInterfaceIface *iface)
  * Gets D-Bus introspection information for the D-Bus interface
  * implemented by @interface_.
  *
- * Returns: (transfer none): A #GDBusInterfaceInfo. Do not free.
+ * This can return %NULL if no #GDBusInterfaceInfo was provided during
+ * construction of @interface_ and is also not made available otherwise.
+ * For example, #GDBusProxy implements #GDBusInterface but allows for a %NULL
+ * #GDBusInterfaceInfo.
+ *
+ * Returns: (transfer none) (nullable): A #GDBusInterfaceInfo. Do not free.
  *
  * Since: 2.30
  */
