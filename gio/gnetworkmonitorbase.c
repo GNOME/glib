@@ -443,6 +443,7 @@ emit_network_changed (gpointer user_data)
     {
       monitor->priv->is_available = is_available;
       g_object_notify (G_OBJECT (monitor), "network-available");
+      g_object_notify (G_OBJECT (monitor), "connectivity");
     }
 
   g_signal_emit (monitor, network_changed_signal, 0, is_available);
