@@ -332,6 +332,10 @@ inline static guint32   _g_stat_mtim_nsec (const GLocalFileStat *buf) { return b
 inline static guint32   _g_stat_atim_nsec (const GLocalFileStat *buf) { return buf->st_atimensec; }
 inline static guint32   _g_stat_ctim_nsec (const GLocalFileStat *buf) { return buf->st_ctimensec; }
 inline static guint32   _g_stat_mtim_nsec (const GLocalFileStat *buf) { return buf->st_mtimensec; }
+#elif defined(__APPLE__)
+inline static guint32   _g_stat_atim_nsec (const GLocalFileStat *buf) { return buf->st_atimespec.tv_nsec; }
+inline static guint32   _g_stat_ctim_nsec (const GLocalFileStat *buf) { return buf->st_ctimespec.tv_nsec; }
+inline static guint32   _g_stat_mtim_nsec (const GLocalFileStat *buf) { return buf->st_mtimespec.tv_nsec; }
 #else
 inline static guint32   _g_stat_atim_nsec (const GLocalFileStat *buf) { return 0; }
 inline static guint32   _g_stat_ctim_nsec (const GLocalFileStat *buf) { return 0; }
