@@ -23,7 +23,7 @@
  * support g_document_portal_add_documents */
 
 #include <glib.h>
-#include <glib/gstdio.h>
+#include <glib/glib-unix.h>
 #include <gio/gio.h>
 #include <gio/gunixfdlist.h>
 
@@ -126,7 +126,6 @@ on_handle_add_full (FakeDocuments         *object,
       GFile *file_dir;
       GError *local_error = NULL;
       GFileIOStream *stream;
-      char *fd_path;
       char *filename;
       char *basename;
       int fd;
@@ -151,9 +150,7 @@ on_handle_add_full (FakeDocuments         *object,
       fd = g_unix_fd_list_get (o_path_fds, i, &local_error);
       g_assert_no_error (local_error);
 
-      fd_path = g_strdup_printf ("/proc/self/fd/%d", fd);
-
-      filename = g_file_read_link (fd_path, &local_error);
+      filename = g_unix_fd_query_path (fd, &local_error);
       g_assert_no_error (local_error);
 
       g_test_message ("Creating Document ID %s mapped to FD %d (%s)",
@@ -176,7 +173,6 @@ on_handle_add_full (FakeDocuments         *object,
       g_clear_error (&local_error);
       g_clear_object (&file_dir);
       g_clear_object (&stream);
-      g_clear_pointer (&fd_path, g_free);
       g_clear_pointer (&basename, g_free);
     }
   extra_out = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), NULL, 0);
