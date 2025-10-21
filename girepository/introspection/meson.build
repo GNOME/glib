@@ -64,17 +64,6 @@ glib_gir_sources = [
   files('../../glib/docs.c'),
 ]
 
-# For API compatibility reasons, GLib-2.0.gir needs to contain the platform
-# specific APIs which are also present in the (newer) GLibUnix-2.0.gir and
-# GLibWin32-2.0.gir repositories.
-# See https://gitlab.gnome.org/GNOME/glib/-/merge_requests/3892#note_2001361
-# These can be dropped when GLib next breaks API (i.e. with GLib-3.0.gir).
-if host_system == 'windows'
-  glib_gir_sources += files('../../glib/gwin32.h')
-else
-  glib_gir_sources += files('../../glib/glib-unix.h')
-endif
-
 glib_gir = gnome.generate_gir(libglib,
   sources: glib_gir_sources,
   namespace: 'GLib',
