@@ -78,6 +78,7 @@ struct _GMarkupParseContext
 
   gint line_number;
   gint char_number;
+  gsize offset;
 
   GMarkupParseState state;
 
@@ -182,6 +183,7 @@ g_markup_parse_context_new (const GMarkupParser *parser,
 
   context->line_number = 1;
   context->char_number = 1;
+  context->offset = 0;
 
   context->partial_chunk = NULL;
   context->spare_chunks = NULL;
@@ -746,6 +748,7 @@ advance_char (GMarkupParseContext *context)
 {
   context->iter++;
   context->char_number++;
+  context->offset++;
 
   if (G_UNLIKELY (context->iter == context->current_text_end))
       return FALSE;
@@ -1919,6 +1922,29 @@ g_markup_parse_context_get_position (GMarkupParseContext *context,
 
   if (char_number)
     *char_number = context->char_number;
+}
+
+/**
+ * g_markup_parse_context_get_offset:
+ * @context: a #GMarkupParseContext
+ *
+ * Retrieves the current offset from the beginning of the document,
+ * in bytes.
+ *
+ * The information is meant to accompany the values returned by
+ * [method@GLib.MarkupParseContext.get_position], and comes with the
+ * same accuracy guarantees.
+ *
+ * Returns: the offset
+ *
+ * Since: 2.88
+ */
+gsize
+g_markup_parse_context_get_offset (GMarkupParseContext *context)
+{
+  g_return_val_if_fail (context != NULL, 0);
+
+  return context->offset;
 }
 
 /**
