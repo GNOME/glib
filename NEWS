@@ -1,3 +1,77 @@
+Overview of changes in GLib 2.86.1, 2025-10-21
+==============================================
+
+* Bugs fixed:
+  - #3745 GIRepository: union fields offsets for compiled typelibs all have
+    offset 0xffff (unknown) (Philip Chimento)
+  - #3780 `gio/tests/socket-listener` requires dlsym
+  - #3781 GLib.OptionContext's get_help() includes width of invisible options
+    (FeRD (Frank Dana))
+  - #3783 [CI] Pipeline on 'main' failed for commit c31c4a52 (Tobias Stoeckmann)
+  - #3784 Memory leak related to g_get_home_dir (Michael Catanzaro)
+  - #3798 Gio.AppInfo.launch_default_for_uri_async crashes with non-existent
+    paths (Philip Withnall)
+  - #3803 GNetworkMonitor's netlink backend doesn't notify connectivity change
+    (Philip Withnall)
+  - https://gitlab.gnome.org/Infrastructure/Infrastructure/-/issues/
+  - !4755 ghash: Fix entry_is_big for CHERI architecture
+  - !4756 ghash: Handle all table sizes in iterator
+  - !4760 gbookmarkfile: Escape icon href and mime-type
+  - !4773 docs: Add Luca Bacci as a co-maintainer of the Windows code
+  - !4775 Update Ukrainian translation
+  - !4776 Update Catalan translation
+  - !4777 Update Lithuanian translation
+  - !4778 tests: Fix clang compilation warnings
+  - !4779 gmem: Replace SIZE_OVERFLOWS with g_size_checked_mul
+  - !4780 Update Brazilian Portuguese translation
+  - !4781 Update eu translation
+  - !4782 Update Korean translation
+  - !4785 Update Japanese translation
+  - !4786 Update Galician translations
+  - !4787 Update Hungarian translation
+  - !4791 gstrfuncs: Check string length in g_strescape
+  - !4800 gutils: Improve load_user_special_dirs' user-dirs.dirs parser
+  - !4802 Update Turkish translation
+  - !4809 Trivial backport of "gutils: Handle singletons in unlocked functions"
+    to glib-2-86 branch
+  - !4814 Backport translation updates to glib-2-86
+  - !4821 Backport !4820 “gio/tests: Fix a race condition in
+    /gdbus/connection/flush” to glib-2-86
+  - !4828 Backport !4827 “ghostutils: Treat 0x80 (and above) as non-ASCII” to
+    glib-2-86
+  - !4834 Backport !4810 and !4819, various fixes to user-dirs.dirs handling in
+    gutils
+  - !4836 Backport !4835 “Update Portuguese translation” to glib-2-86
+  - !4839 Update Romanian translation
+  - !4842 Backport "girnode: Fix computation of union member offsets" to
+    glib-2-86
+  - !4848 Update British English translation (2.86)
+  - !4865 Backport !4859 “gopenuriportal: Fix a crash when the file can’t be
+    opened” to glib-2-86
+  - !4867 Backport !4792 “gtype: Use transfer none for types (un)ref functions”
+    to glib-2-86
+  - !4872 Fix macOS and msys2 CI builds on glib-2-86 branch
+  - !4873 Backport !4871 “gnetworkmonitorbase: Add missing notify::connectivity
+    signal” to glib-2-86
+
+* Translation updates:
+  - Basque (Asier Saratsua Garmendia)
+  - Catalan (Jordi Mas)
+  - English (United Kingdom) (Bruce Cowan)
+  - Esperanto (Kristjan ESPERANTO)
+  - Galician (Fran Dieguez)
+  - Hungarian (Balázs Úr)
+  - Japanese (Makoto Sakaguchi)
+  - Korean (Changwoo Ryu)
+  - Lithuanian (Aurimas Černius)
+  - Portuguese (Hugo Carvalho)
+  - Portuguese (Brazil) (Rafael Fontenelle)
+  - Romanian (Antonio Marin)
+  - Serbian (Милош Поповић)
+  - Turkish (Sabri Ünal)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.86.0, 2025-09-05
 ==============================================
 
