@@ -17,12 +17,12 @@ cache:
     - _ccache/
 
 variables:
-  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v41.0"
+  FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v41.1"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v23"
-  DEBIAN_I386_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable-i386:v3"
-  ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v7"
-  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v41.0"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v24"
+  DEBIAN_I386_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable-i386:v4"
+  ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v8"
+  MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v41.1"
   GOBJECT_INTROSPECTION_TAG: "1.80.1"
   MESON_TEST_TIMEOUT_MULTIPLIER: 4
   G_MESSAGES_DEBUG: all
