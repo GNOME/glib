@@ -923,7 +923,8 @@ do_exec (gint                  child_err_report_fd,
                   child_err_report_fd = new_child_err_report_fd;
                 }
 
-              if (safe_dup2 (source_fds[i], target_fds[i]) < 0)
+              if (target_fds[i] < 0 ||
+                  safe_dup2 (source_fds[i], target_fds[i]) < 0)
                 write_err_and_exit (child_err_report_fd, CHILD_DUPFD_FAILED);
 
               g_clear_fd (&source_fds[i], NULL);
