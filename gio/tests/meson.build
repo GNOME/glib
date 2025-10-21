@@ -85,9 +85,8 @@ gio_tests = {
   },
   'g-file' : {},
   'g-file-info' : {
-    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3070
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
-    'can_fail' : host_system in ['darwin', 'gnu'] or host_system == 'windows' and cc.get_id() != 'gcc',
+    'can_fail' : host_system in ['gnu'] or host_system == 'windows' and cc.get_id() != 'gcc',
   },
   'g-icon' : {},
   'gdbus-addresses' : {},
