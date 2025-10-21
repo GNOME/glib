@@ -41,6 +41,7 @@
 #include "glib-private.h"
 #include "glib-unix.h"
 #include "glib-unixprivate.h"
+#include "glib.h"
 #include "gmain-internal.h"
 
 #include <dirent.h>
@@ -60,10 +61,18 @@
 #include <sys/resource.h>
 #endif /* HAVE_SYS_RESOURCE_H */
 
-#if defined(__APPLE__) && defined(HAVE_LIBPROC_H)
-#include <libproc.h>
-#include <sys/proc_info.h>
-#endif
+
+#if defined (__APPLE__)
+#include <sys/param.h>
+#  if defined(HAVE_LIBPROC_H)
+#    include <libproc.h>
+#    include <sys/proc_info.h>
+#  endif /* defined(HAVE_LIBPROC_H) */
+#endif  /* defined (__APPLE__ )*/
+
+#if defined (__FreeBSD__)
+#include <sys/user.h>
+#endif  /* defined (__FreeBSD__ )*/
 
 G_STATIC_ASSERT (sizeof (ssize_t) == GLIB_SIZEOF_SSIZE_T);
 G_STATIC_ASSERT (G_ALIGNOF (gssize) == G_ALIGNOF (ssize_t));
@@ -926,5 +935,72 @@ g_closefrom (int lowfd)
   ret = safe_fdwalk (close_func_with_invalid_fds, GINT_TO_POINTER (lowfd));
 
   return ret;
+#endif
+}
+
+/**
+ * g_unix_fd_query_path:
+ * @fd: The file descriptor to query.
+ * @error: A [type@GLib.Error] for error reporting, or `NULL` to ignore.
+ *
+ * Queries the file path for the given FD opened by the current process.
+ *
+ * Returns: (transfer full): The file path, or `NULL` on error
+ * Since: 2.88
+ */
+char *
+g_unix_fd_query_path (int      fd,
+                      GError **error)
+{
+#if defined (__linux__)
+  char *path;
+  char *proc_path;
+
+  proc_path = g_strdup_printf ("/proc/self/fd/%d", fd);
+  path = g_file_read_link (proc_path, error);
+  g_free (proc_path);
+
+  return g_steal_pointer (&path);
+#elif defined (__FreeBSD__) || defined(__DragonFly__)
+  struct kinfo_file kf = {0};
+
+  kf.kf_structsize = sizeof (kf);
+  if (fcntl (fd, F_KINFO, &kf) < 0)
+    {
+      int errsv = errno;
+
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errsv),
+                   "Error querying file information for FD %d: %s",
+                   fd, g_strerror (errsv));
+      return NULL;
+    }
+
+  return g_strdup (kf.kf_path);
+#elif defined (__APPLE__) || defined (__NetBSD__) || defined (__OpenBSD__)
+  char file_path[MAXPATHLEN] = {0};
+
+  if (fcntl (fd, F_GETPATH, file_path) < 0)
+    {
+      int errsv = errno;
+
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (errsv),
+                   "Error querying file information for FD %d: %s",
+                   fd, g_strerror (errsv));
+      return NULL;
+    }
+
+  return g_strdup (file_path);
+#elif defined (__GNU__)
+  /*
+   * Hurd allows to open("/dev/fd/%u") to open the very same fd, but it's not
+   * possible to get the file name from it, see:
+   * - https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4396#note_2279923
+   * - https://gitlab.gnome.org/GNOME/glib/-/commit/8c3fda5c8d3
+   */
+  g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_NOSYS,
+               "g_unix_fd_query_path() not supported on HURD");
+  return NULL;
+#else
+  #error "g_unix_fd_query_path() not supported on this platform"
 #endif
 }

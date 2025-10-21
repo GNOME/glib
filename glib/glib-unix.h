@@ -353,6 +353,10 @@ int g_closefrom (int lowfd);
 GLIB_AVAILABLE_IN_2_80
 int g_fdwalk_set_cloexec (int lowfd);
 
+GLIB_AVAILABLE_IN_2_88
+char * g_unix_fd_query_path (int      fd,
+                             GError **error);
+
 G_GNUC_END_IGNORE_DEPRECATIONS
 
 G_END_DECLS
