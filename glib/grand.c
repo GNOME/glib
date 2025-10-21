@@ -55,6 +55,7 @@
 #include "gtimer.h"
 
 #ifdef G_OS_UNIX
+#include <fcntl.h>
 #include <unistd.h>
 #endif
 
@@ -176,30 +177,24 @@ g_rand_new (void)
 
   if (dev_urandom_exists)
     {
-      FILE* dev_urandom;
+      int dev_urandom;
 
       do
-	{
-	  dev_urandom = g_fopen ("/dev/urandom", "rbe");
-	}
-      while G_UNLIKELY (dev_urandom == NULL && errno == EINTR);
+        dev_urandom = g_open ("/dev/urandom", O_RDONLY | O_CLOEXEC);
+      while G_UNLIKELY (dev_urandom < 0 && errno == EINTR);
 
-      if (dev_urandom)
+      if (dev_urandom >= 0)
 	{
-	  size_t r;
+	  ssize_t r;
 
-	  setvbuf (dev_urandom, NULL, _IONBF, 0);
 	  do
-	    {
-	      errno = 0;
-	      r = fread (seed, sizeof (seed), 1, dev_urandom);
-	    }
-	  while G_UNLIKELY (r != 1 && errno == EINTR);
+            r = read (dev_urandom, seed, sizeof (seed));
+	  while G_UNLIKELY (r < 0 && errno == EINTR);
 
-	  if (r != 1)
+	  if (r != sizeof (seed))
 	    dev_urandom_exists = FALSE;
 
-	  fclose (dev_urandom);
+	  close (dev_urandom);
 	}	
       else
 	dev_urandom_exists = FALSE;
