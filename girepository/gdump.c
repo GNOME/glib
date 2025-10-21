@@ -68,20 +68,38 @@ write_all (FILE          *out,
 
 /* Analogue of g_data_input_stream_read_line(). */
 static char *
-read_line (FILE   *input,
-           size_t *len_out)
+read_line (FILE      *input,
+           size_t    *len_out,
+           gboolean  *out_reached_eof,
+           GError   **error)
 {
   GByteArray *buffer = g_byte_array_new ();
   const uint8_t nul = '\0';
+
+  *out_reached_eof = FALSE;
 
   while (TRUE)
     {
       size_t ret;
       uint8_t byte;
+      int saved_errno;
 
       ret = fread (&byte, 1, 1, input);
+      saved_errno = errno;
       if (ret == 0)
-        break;
+        {
+          if (ferror (input))
+            {
+              g_set_error (error, G_FILE_ERROR, (int) g_file_error_from_errno (saved_errno),
+                           "Error reading from input file: %s",
+                           g_strerror (saved_errno));
+            }
+          else if (feof (input))
+            {
+              *out_reached_eof = TRUE;
+            }
+          break;
+        }
 
       if (byte == '\n')
         break;
@@ -626,6 +644,7 @@ gi_repository_dump (const char  *input_filename,
   FILE *output;
   GModule *self;
   gboolean caught_error = FALSE;
+  gboolean reached_eof = FALSE;
 
   self = g_module_open (NULL, 0);
   if (!self)
@@ -668,19 +687,22 @@ gi_repository_dump (const char  *input_filename,
 
   output_types = g_hash_table_new (NULL, NULL);
 
-  while (TRUE)
+  while (!reached_eof)
     {
       size_t len;
-      char *line = read_line (input, &len);
+      char *line = read_line (input, &len, &reached_eof, error);
       const char *function;
 
-      if (line == NULL || *line == '\0')
+      if (line == NULL)
         {
-          g_free (line);
+          caught_error = TRUE;
           break;
         }
 
       g_strchomp (line);
+
+      if (*line == '\0')
+        goto next;
 
       if (strncmp (line, "get-type:", strlen ("get-type:")) == 0)
         {
