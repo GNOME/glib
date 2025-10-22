@@ -910,6 +910,52 @@ test_child_wait (void)
     }
 }
 
+static void
+test_fd_query_path (void)
+{
+  int fd;
+  GError *error = NULL;
+  char *fd_path;
+
+#if defined (__GNU__)
+  g_test_skip ("Querying file path from FD is not supported in GNU hurd");
+  return;
+#endif
+
+  fd = g_open ("/dev/null", O_RDONLY);
+  g_assert_no_errno (errno);
+  g_assert_cmpint (fd, >=, 0);
+
+  g_test_message ("Checking FD %d for /dev/null", fd);
+
+  fd_path = g_unix_fd_query_path (fd, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (fd_path, ==, "/dev/null");
+
+  g_clear_fd (&fd, &error);
+  g_assert_no_error (error);
+  g_clear_pointer (&fd_path, g_free);
+}
+
+static void
+test_fd_query_path_error (void)
+{
+  GError *error = NULL;
+  char *fd_path;
+
+  fd_path = g_unix_fd_query_path (G_MAXINT, &error);
+  g_assert_null (fd_path);
+  g_assert_nonnull (error);
+  g_assert_cmpint (error->domain, ==, G_FILE_ERROR);
+
+#ifdef __linux__
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+#endif
+
+  g_clear_error (&error);
+  g_clear_pointer (&fd_path, g_free);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -938,6 +984,8 @@ main (int   argc,
   g_test_add_func ("/glib-unix/get-passwd-entry/root", test_get_passwd_entry_root);
   g_test_add_func ("/glib-unix/get-passwd-entry/nonexistent", test_get_passwd_entry_nonexistent);
   g_test_add_func ("/glib-unix/child-wait", test_child_wait);
+  g_test_add_func ("/glib-unix/fd-query-path", test_fd_query_path);
+  g_test_add_func ("/glib-unix/fd-query-path-error", test_fd_query_path_error);
 
   return g_test_run();
 }

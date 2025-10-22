@@ -22,13 +22,9 @@
 
 /* A stub implementation of xdg-desktop-portal */
 
-#ifdef __FreeBSD__
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/user.h>
-#endif  /* __FreeBSD__ */
-
 #include <glib.h>
+#include <glib/gstdio.h>
+#include <glib/glib-unix.h>
 #include <gio/gio.h>
 #include <gio/gunixfdlist.h>
 
@@ -206,43 +202,6 @@ handle_request (GFakeDesktopPortalThread *self,
   return G_DBUS_METHOD_INVOCATION_HANDLED;
 }
 
-/* This is currently private as there’s only one user of it, but it could become
- * a public API in future. */
-static char *
-_g_fd_query_path (int      fd,
-                  GError **error)
-{
-#if defined(__FreeBSD__)
-  struct kinfo_file kf;
-  kf.kf_structsize = sizeof (kf);
-  if (fcntl (fd, F_KINFO, &kf) < 0)
-    {
-      int saved_errno = errno;
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Error querying file information for FD %d: %s",
-                   fd, g_strerror (saved_errno));
-      return NULL;
-    }
-
-  return g_strdup (kf.kf_path);
-#elif defined(G_OS_UNIX)
-  char *path = NULL;
-  char *proc_path = g_strdup_printf ("/proc/self/fd/%d", fd);
-  path = g_file_read_link (proc_path, error);
-  g_free (proc_path);
-  return g_steal_pointer (&path);
-#else
-  /*  - A NetBSD implementation would probably use `fcntl()` with `F_GETPATH`:
-   *    https://man.netbsd.org/fcntl.2
-   *  - A Windows implementation would probably use `GetFinalPathNameByHandleW()`:
-   *    https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlea
-   *  - A Hurd implementation could open("/dev/fd/%u"):
-   *    https://gitlab.gnome.org/GNOME/glib/-/merge_requests/4396#note_2279923
-   */
-  #error "_g_fd_query_path() not supported on this platform"
-#endif
-}
-
 static char *
 handle_to_uri (GVariant    *handle,
                GUnixFDList *fd_list)
@@ -259,7 +218,7 @@ handle_to_uri (GVariant    *handle,
   if (fd == -1)
     return NULL;
 
-  path = _g_fd_query_path (fd, &local_error);
+  path = g_unix_fd_query_path (fd, &local_error);
   g_assert_no_error (local_error);
 
   uri = g_filename_to_uri (path, NULL, NULL);
@@ -496,13 +455,30 @@ g_fake_desktop_portal_thread_stop (GFakeDesktopPortalThread *self)
 }
 
 /* Whether fake-desktop-portal is supported on this platform. This basically
- * means whether _g_fd_query_path() will work at runtime. */
+ * means whether g_unix_fd_query_path() will work at runtime. */
 gboolean
 g_fake_desktop_portal_is_supported (void)
 {
-#ifdef __GNU__
-  return FALSE;
-#else
-  return TRUE;
-#endif
+  enum {
+    UNKNOWN,
+    SUPPORTED,
+    UNSUPPORTED,
+  };
+
+  static size_t checked = UNKNOWN;
+
+  if g_once_init_enter (&checked)
+    {
+      char *fd_path;
+      int fd;
+
+      fd = g_open ("/dev/null", O_RDONLY);
+      fd_path = g_unix_fd_query_path (fd, NULL);
+      g_free (fd_path);
+      g_clear_fd (&fd, NULL);
+
+      g_once_init_leave (&checked, fd_path != NULL ? SUPPORTED : UNSUPPORTED);
+    }
+
+  return checked == SUPPORTED;
 }
