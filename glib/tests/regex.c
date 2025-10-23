@@ -131,6 +131,8 @@ test_new_fail (gconstpointer d)
 
   g_assert (regex == NULL);
   g_assert_error (error, G_REGEX_ERROR, data->expected_error);
+  g_test_message ("Compiling pattern /%s/ failed with error: %s",
+                  data->pattern, error->message);
   g_error_free (error);
 }
 
