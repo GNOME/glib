@@ -770,13 +770,16 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       *errmsg = _("inconsistent NEWLINE options");
       break;
     case PCRE2_ERROR_BACKSLASH_G_SYNTAX:
-#ifdef PCRE2_ERROR_MISSING_NUMBER_TERMINATOR
-    case PCRE2_ERROR_MISSING_NUMBER_TERMINATOR:
-#endif
       *errcode = G_REGEX_ERROR_MISSING_BACK_REFERENCE;
       *errmsg = _("\\g is not followed by a braced, angle-bracketed, or quoted name or "
                   "number, or by a plain number");
       break;
+#ifdef PCRE2_ERROR_MISSING_NUMBER_TERMINATOR
+    case PCRE2_ERROR_MISSING_NUMBER_TERMINATOR:
+      *errcode = G_REGEX_ERROR_MISSING_BACK_REFERENCE;
+      *errmsg = _("syntax error in subpattern number (missing terminator?)");
+      break;
+#endif
     case PCRE2_ERROR_VERB_ARGUMENT_NOT_ALLOWED:
       *errcode = G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_FORBIDDEN;
       *errmsg = _("an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)");
