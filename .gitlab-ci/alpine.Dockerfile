@@ -4,7 +4,9 @@ RUN apk add --no-cache \
     bash \
     build-base \
     bzip2-dev \
+    curl \
     dbus \
+    diffutils \
     desktop-file-utils \
     docbook-xml \
     docbook-xsl \
@@ -26,6 +28,7 @@ RUN apk add --no-cache \
 ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8 MUSL_LOCPATH=/usr/share/i18n/locales/musl
 
 RUN pip3 install --break-system-packages meson==1.4.2
+RUN pip3 install --break-system-packages python-gitlab==6.5.0
 
 ARG HOST_USER_ID=5555
 ENV HOST_USER_ID ${HOST_USER_ID}
