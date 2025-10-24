@@ -49,6 +49,7 @@ variables:
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
   # expected naming scheme for the release-service job
   TARBALL_ARTIFACT_PATH: "_build/meson-dist/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.tar.xz"
+  GIR_ARTIFACTS_PATH: "_build/girepository/introspection"
 
 # Default CI job setup; contrast with `.only-origin`.
 #
@@ -289,6 +290,7 @@ fedora-x86_64:
       - "_build/meson-logs"
       - "_coverage"
       - "_reference"
+      - "${GIR_ARTIFACTS_PATH}/*.gir"
 
 .build-debian:
   extends:
@@ -631,6 +633,7 @@ msys2-mingw32:
       - _build/gdb.txt
       - _coverage/
       - _reference/
+      - "${GIR_ARTIFACTS_PATH}/*.gir"
 
 # See the note about msys2 CI job failure policy above.
 msys2-clang64:
