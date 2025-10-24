@@ -27,6 +27,7 @@ load_user_special_dirs_from_string (const gchar *string, const gchar *home_dir, 
 {
   gchar **lines;
   gint n_lines, i;
+  size_t min_len;
 
   lines = g_strsplit (string, "\n", -1);
   n_lines = g_strv_length (lines);
@@ -122,8 +123,9 @@ load_user_special_dirs_from_string (const gchar *string, const gchar *home_dir, 
 
       d = p;
 
-      /* remove trailing slashes */
-      for (len = strlen (d); len > 1 && d[len - 1] == '/'; len--)
+      /* remove trailing slashes, but keep first slash in absolute path */
+      min_len = is_relative ? 0 : 1;
+      for (len = strlen (d); len > min_len && d[len - 1] == '/'; len--)
         d[len - 1] = 0;
 
       /* Duplicates override the previous value. This is not explicit in the
