@@ -952,11 +952,15 @@ char *
 g_unix_fd_query_path (int      fd,
                       GError **error)
 {
-#if defined (__linux__)
+#if defined(__linux__) || defined(__sun)
   char *path;
   char *proc_path;
 
+#ifdef __sun
+  proc_path = g_strdup_printf ("/proc/self/path/%d", fd);
+#else
   proc_path = g_strdup_printf ("/proc/self/fd/%d", fd);
+#endif
   path = g_file_read_link (proc_path, error);
   g_free (proc_path);
 
