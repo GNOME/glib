@@ -2044,20 +2044,20 @@ require_internal_with_platform_data (GIRepository           *repository,
     return NULL;
 
 #if defined (G_OS_UNIX) || defined (G_OS_WIN32)
-  /* Backward compatibility hack: if we're loading Gio-2.0, we automatically
+  /* Backward compatibility hack: if we're loading GLib/Gio-2.0, we automatically
    * load the platform specific introspection data that used to exist inside
-   * Gio-2.0
+   * GLib/Gio-2.0
    */
-  if (g_str_equal (namespace, "Gio") &&
+  if ((g_str_equal (namespace, "GLib") || g_str_equal (namespace, "Gio")) &&
       (!version || g_str_equal (version, "2.0")))
     {
       GError *local_error = NULL;
-      const char *platform_namespace;
+      char *platform_namespace = NULL;
 
 #  if defined (G_OS_UNIX)
-      platform_namespace = "GioUnix";
+      platform_namespace = g_strconcat (namespace, "Unix", NULL);
 #  elif defined (G_OS_WIN32)
-      platform_namespace = "GioWin32";
+      platform_namespace = g_strconcat (namespace, "Win32", NULL);
 #  endif /* defined (G_OS_LINUX) */
 
       if (!require_internal (repository, platform_namespace, version, flags,
@@ -2068,6 +2068,8 @@ require_internal_with_platform_data (GIRepository           *repository,
                       local_error->message);
           g_error_free (local_error);
         }
+
+      g_clear_pointer (&platform_namespace, g_free);
     }
 #endif /* defined(G_OS_UNIX) || defined(G_OS_WIN32) */
 

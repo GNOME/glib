@@ -48,7 +48,13 @@ test_repository_basic (RepositoryFixture *fx,
   const char * const * search_paths;
   char **namespaces = NULL;
   size_t n_namespaces;
+#if defined(G_OS_UNIX)
+  const char *expected_namespaces[] = { "GLib", "GLibUnix", NULL };
+#elif defined(G_OS_WIN32)
+  const char *expected_namespaces[] = { "GLib", "GLibWin32", NULL };
+#else
   const char *expected_namespaces[] = { "GLib", NULL };
+#endif
   char **versions;
   size_t n_versions;
   const char *prefix = NULL;
