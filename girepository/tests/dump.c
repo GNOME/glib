@@ -167,6 +167,22 @@ test_basic (void)
                "</dump>\n");
 }
 
+static void
+test_empty_lines (void)
+{
+  assert_dump ("get-type:test_object_get_type\n"
+               "\n"
+               "get-type:test_interface_get_type\n"
+               "\n\n",
+               "<?xml version=\"1.0\"?>\n"
+               "<dump>\n"
+               "  <class name=\"TestObject\" get-type=\"test_object_get_type\" parents=\"GObject\" final=\"1\">\n"
+               "  </class>\n"
+               "  <interface name=\"TestInterface\" get-type=\"test_interface_get_type\">\n"
+               "  </interface>\n"
+               "</dump>\n");
+}
+
 int
 main (int argc,
       char *argv[])
@@ -177,6 +193,7 @@ main (int argc,
   g_test_add_func ("/dump/missing-get-type", test_missing_get_type);
   g_test_add_func ("/dump/missing-quark", test_missing_quark);
   g_test_add_func ("/dump/basic", test_basic);
+  g_test_add_func ("/dump/empty-lines", test_empty_lines);
 
   return g_test_run ();
 }
