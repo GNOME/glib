@@ -131,6 +131,8 @@ test_new_fail (gconstpointer d)
 
   g_assert (regex == NULL);
   g_assert_error (error, G_REGEX_ERROR, data->expected_error);
+  g_test_message ("Compiling pattern /%s/ failed with error: %s",
+                  data->pattern, error->message);
   g_error_free (error);
 }
 
@@ -2642,6 +2644,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_NEW_FAIL ("\\666", G_REGEX_RAW, G_REGEX_ERROR_INVALID_OCTAL_VALUE);
   TEST_NEW_FAIL ("^(?(DEFINE) abc | xyz ) ", 0, G_REGEX_ERROR_TOO_MANY_BRANCHES_IN_DEFINE);
   TEST_NEW_FAIL ("a", G_REGEX_NEWLINE_CRLF | G_REGEX_NEWLINE_ANYCRLF, G_REGEX_ERROR_INCONSISTENT_NEWLINE_OPTIONS);
+  TEST_NEW_FAIL ("^(a)\\g\"3", 0, G_REGEX_ERROR_MISSING_BACK_REFERENCE);
   TEST_NEW_FAIL ("^(a)\\g{3", 0, G_REGEX_ERROR_MISSING_BACK_REFERENCE);
   TEST_NEW_FAIL ("^(a)\\g{0}", 0, G_REGEX_ERROR_INEXISTENT_SUBPATTERN_REFERENCE);
   TEST_NEW ("abc(*FAIL:123)xyz", 0, 0);
