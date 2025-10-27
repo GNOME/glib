@@ -177,7 +177,7 @@ variables:
 
 style-check-advisory:
   extends:
-    - .only-default
+    - .only-default-filter-rules
     - .with-git
   image: "${DEBIAN_IMAGE}"
   stage: style-check
@@ -187,6 +187,14 @@ style-check-advisory:
     - .gitlab-ci/run-style-check-diff.sh || failed=1
     - .gitlab-ci/run-check-todos.sh || failed=1
     - test -z "$failed"
+  rules:
+    - !reference [.only-default-filter-rules, rules]
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "**/*.c"
+        - "**/*.cpp"
+        - "**/*.h"
+      when: on_success
 
 sh-and-py-check:
   extends:
@@ -998,7 +1006,7 @@ scan-build:
 pages:
   extends: .only-schedules
   stage: deploy
-  needs: ['coverage', 'style-check-advisory']
+  needs: ['coverage']
   script:
     - mv _coverage/ public/
   artifacts:
