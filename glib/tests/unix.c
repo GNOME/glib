@@ -930,7 +930,16 @@ test_fd_query_path (void)
 
   fd_path = g_unix_fd_query_path (fd, &error);
   g_assert_no_error (error);
+#ifdef __sun
+  /* /dev/null is a symlink on Solaris, so follow the link */
+  char *dev_null_path = realpath ("/dev/null", NULL);
+  g_assert_no_errno (errno);
+  g_assert_nonnull (dev_null_path);
+  g_assert_cmpstr (fd_path, ==, dev_null_path);
+  g_free (dev_null_path);
+#else
   g_assert_cmpstr (fd_path, ==, "/dev/null");
+#endif
 
   g_clear_fd (&fd, &error);
   g_assert_no_error (error);
