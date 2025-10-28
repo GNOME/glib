@@ -883,7 +883,9 @@ test_user_special_dirs_load_unlocked (void)
                                     "XDG_DOWNLOAD_DIR = \"$HOME/Downloads\"\n"
                                     "XDG_MUSIC_DIR = \"///\"\n"
                                     "XDG_PICTURES_DIR = \"$HOME/Pictures\"\n"
-                                    "XDG_PICTURES_DIR = \"/\"\nXDG_DOWNLOAD_DIR = \"/dev/null\n");
+                                    "XDG_PICTURES_DIR = \"/\"\n"
+                                    "XDG_PUBLICSHARE_DIR = \"$HOME/\"\n"
+                                    "XDG_DOWNLOAD_DIR = \"/dev/null\n");
 
       g_reload_user_special_dirs_cache ();
 
@@ -903,6 +905,9 @@ test_user_special_dirs_load_unlocked (void)
 
       dir = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
       g_assert_cmpstr (dir, ==, "/");
+
+      dir = g_get_user_special_dir (G_USER_DIRECTORY_PUBLIC_SHARE);
+      g_assert_cmpstr (dir, ==, g_get_home_dir ());
     }
   else
     {
