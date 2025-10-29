@@ -1530,6 +1530,7 @@ hostname_validate (const char *hostname)
 {
   const char *p;
   gunichar c, first_char, last_char;
+  gboolean no_domain = TRUE;
 
   p = hostname;
   if (*p == '\0')
@@ -1554,7 +1555,8 @@ hostname_validate (const char *hostname)
       
       /* if that was the last label, check that it was a toplabel */
       if (c == '\0' || (c == '.' && *p == '\0'))
-	return is_asciialpha (first_char);
+	return no_domain || is_asciialpha (first_char);
+      no_domain = FALSE;
     }
   while (c == '.');
   return FALSE;
