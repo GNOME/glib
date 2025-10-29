@@ -45,12 +45,14 @@
 #include "ginputstream.h"
 #include "giostream.h"
 #include "gmarshal-internal.h"
+#include "gnetworking.h"
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
 #ifdef G_OS_WIN32
 #include <io.h>
+#include "giowin32-afunix.h"
 #endif
 
 #include "gunixsocketaddress.h"
@@ -61,6 +63,10 @@
   (G_DBUS_SERVER_FLAGS_RUN_IN_THREAD | \
    G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS | \
    G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER)
+
+#ifndef UNIX_PATH_MAX
+#define UNIX_PATH_MAX G_SIZEOF_MEMBER (struct sockaddr_un, sun_path)
+#endif
 
 /**
  * GDBusServer:
@@ -699,10 +705,12 @@ try_unix (GDBusServer  *server,
       gint n;
       GString *s;
       GError *local_error;
+      gsize orig_path_len = 0; // length before random characters are added
 
     retry:
       s = g_string_new (tmpdir != NULL ? tmpdir : dir);
       g_string_append (s, "/dbus-");
+      orig_path_len = s->len;
       for (n = 0; n < 8; n++)
         g_string_append_c (s, random_ascii ());
 
@@ -720,8 +728,11 @@ try_unix (GDBusServer  *server,
         {
           if (local_error->domain == G_IO_ERROR && local_error->code == G_IO_ERROR_ADDRESS_IN_USE)
             {
-              g_error_free (local_error);
-              goto retry;
+              if (orig_path_len < UNIX_PATH_MAX - 2) /* random_ascii + NULL byte */
+                {
+                  g_error_free (local_error);
+                  goto retry;
+                }
             }
           g_propagate_error (error, local_error);
           goto out;
