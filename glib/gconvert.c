@@ -1518,12 +1518,6 @@ is_asciialphanum (gunichar c)
   return c <= 0x7F && g_ascii_isalnum (c);
 }
 
-static gboolean
-is_asciialpha (gunichar c)
-{
-  return c <= 0x7F && g_ascii_isalpha (c);
-}
-
 /* allows an empty string */
 static gboolean
 hostname_validate (const char *hostname)
@@ -1555,7 +1549,7 @@ hostname_validate (const char *hostname)
       
       /* if that was the last label, check that it was a toplabel */
       if (c == '\0' || (c == '.' && *p == '\0'))
-	return no_domain || is_asciialpha (first_char);
+	return no_domain || is_asciialphanum (first_char);
       no_domain = FALSE;
     }
   while (c == '.');
