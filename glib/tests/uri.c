@@ -154,7 +154,8 @@ file_from_uri_tests[] = {
   { "file:///c:/foo", "/c:/foo", NULL, 0 },
   { "file:////c:/foo", "//c:/foo",  NULL, 0 },
 #endif
-  { "file://0123456789/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
+  { "file://0123456789/", "/", "0123456789", 0},
+  { "file://dev-1.2/", "/", "dev-1.2", 0},
   { "file://ABCDEFGHIJKLMNOPQRSTUVWXYZ/", "/", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0 },
   { "file://abcdefghijklmnopqrstuvwxyz/", "/", "abcdefghijklmnopqrstuvwxyz", 0 },
   { "file://-_.!~*'()/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
