@@ -954,7 +954,7 @@ scan-build:
     - true && "${HOME}"/cov-analysis-linux64-*/bin/cov-build --dir cov-int meson compile -C _coverity_build
     - tar cfz cov-int.tar.gz cov-int
     - curl "https://scan.coverity.com/builds?project=${COVERITY_SCAN_PROJECT_NAME}"
-           --form token="${COVERITY_SCAN_TOKEN}" --form email="${GITLAB_USER_EMAIL}"
+           --form token="$(cat "${COVERITY_SCAN_TOKEN_FILE}")" --form email="${GITLAB_USER_EMAIL}"
            --form file=@cov-int.tar.gz --form version="${CI_COMMIT_SHA}"
            --form description="${CI_COMMIT_SHA} / ${CI_COMMIT_TITLE} / ${CI_COMMIT_REF_NAME}:${CI_PIPELINE_ID}"
   artifacts:
@@ -1016,7 +1016,10 @@ dist-job:
 issue-bot:
   stage: report
   image: registry.gitlab.com/gitlab-org/distribution/issue-bot:latest
-  script: /issue-bot
+  script:
+    - ISSUE_BOT_API_TOKEN=$(cat "${ISSUE_BOT_API_TOKEN_FILE}")
+    - export ISSUE_BOT_API_TOKEN
+    - /issue-bot
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "schedule"
       when: on_failure
