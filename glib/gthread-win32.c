@@ -489,16 +489,19 @@ g_system_thread_new (GThreadFunc proxy,
     thread_prio = GetThreadPriority (current_thread);
   }
 
-  if (thread_prio == THREAD_PRIORITY_ERROR_RETURN)
+  if (thread_prio != THREAD_PRIORITY_ERROR_RETURN)
     {
-      message = "Error getting current thread priority";
-      goto error;
-    }
-
-  if (SetThreadPriority (thread->handle, thread_prio) == 0)
-    {
-      message = "Error setting new thread priority";
-      goto error;
+      /* GetThreadPriority() may return non-predefined priority level
+       * which is not acceptable by SetThreadPriority().
+       * Ignores any errors occurred here since it's not a critical
+       */
+      if (!SetThreadPriority (thread->handle, thread_prio))
+        {
+          gchar *win_error = g_win32_error_message (GetLastError ());
+          g_debug ("SetThreadPriority with priority %d failed: %s",
+                   thread_prio, win_error);
+          g_free (win_error);
+        }
     }
 
   if (ResumeThread (thread->handle) == (DWORD) -1)
