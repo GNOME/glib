@@ -1015,7 +1015,11 @@ dist-job:
 
 issue-bot:
   stage: report
-  image: registry.gitlab.com/gitlab-org/distribution/issue-bot:latest
+  image:
+    name: registry.gitlab.com/gitlab-org/distribution/issue-bot:latest
+    # We need to launch it manually for now, until the token file is supported:
+    #  https://gitlab.com/gitlab-org/distribution/issue-bot/-/merge_requests/27
+    entrypoint: ["/bin/sh", "-e", "-l", "-c"]
   script:
     - ISSUE_BOT_API_TOKEN=$(cat "${ISSUE_BOT_API_TOKEN_FILE}")
     - export ISSUE_BOT_API_TOKEN
