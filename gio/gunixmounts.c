@@ -1586,11 +1586,11 @@ aix_fs_get (FILE               *fd,
       aix_fs_getword (fd, value);
       
       if (strcmp (word, "dev") == 0)
-	strcpy (prop->mnt_special, value);
+	g_strlcpy (prop->mnt_special, value, sizeof (prop->mnt_special));
       else if (strcmp (word, "vfs") == 0)
-	strcpy (prop->mnt_fstype, value);
+	g_strlcpy (prop->mnt_fstype, value, sizeof (prop->mnt_fstype));
       else if (strcmp (word, "options") == 0)
-	strcpy(prop->mnt_options, value);
+	g_strlcpy (prop->mnt_options, value, sizeof (prop->mnt_options));
     }
   
   return 0;
