@@ -31,6 +31,8 @@
 
 #ifdef HAVE_SYSINFO
 #include <sys/sysinfo.h>
+#elif defined(HAVE_UNISTD_H)
+#include <unistd.h>
 #endif
 
 /**
@@ -79,6 +81,15 @@ g_memory_monitor_base_query_mem_ratio (void)
     return -1.0;
 
   return (gdouble) ((gdouble) info.freeram / (gdouble) info.totalram);
+#elif defined(_SC_PHYS_PAGES) && defined(_SC_AVPHYS_PAGES)
+  /* Implementation for Solaris, where sysinfo() does not return RAM usage information */
+  long totalram = sysconf (_SC_PHYS_PAGES);
+  long freeram = sysconf (_SC_AVPHYS_PAGES);
+
+  if (totalram <= 0 || freeram < 0)
+    return -1.0;
+
+  return (gdouble) ((gdouble) freeram / (gdouble) totalram);
 #else
   return -1.0;
 #endif
