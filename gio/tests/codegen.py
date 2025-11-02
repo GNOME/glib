@@ -75,8 +75,8 @@ class TestCodegen(testprogramrunner.TestProgramRunner):
         "asv": {"value_type": "variant", "variant_type": "a{sv}"},
     }
 
-    def runCodegen(self, *args):
-        return self.runTestProgram(args)
+    def runCodegen(self, *args, **kwargs):
+        return self.runTestProgram(args, **kwargs)
 
     def _getSubs(self):
         # Known substitutions for standard boilerplate
@@ -276,7 +276,7 @@ class TestCodegen(testprogramrunner.TestProgramRunner):
             "}",
         }
 
-    def runCodegenWithInterface(self, interface_contents, *args):
+    def runCodegenWithInterface(self, interface_contents, *args, **kwargs):
         with tempfile.NamedTemporaryFile(
             dir=self.tmpdir.name, suffix=".xml", delete=False
         ) as interface_file:
@@ -285,7 +285,12 @@ class TestCodegen(testprogramrunner.TestProgramRunner):
             print(interface_file.name + ":", interface_contents)
             interface_file.flush()
 
-            return self.runCodegen(interface_file.name, *args)
+            return self.runCodegen(interface_file.name, *args, **kwargs)
+
+    def get_codegen_ext_path(self):
+        return os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "codegen-test-extension.py"
+        )
 
     def test_help(self):
         """Test the --help argument."""
@@ -1455,6 +1460,193 @@ G_END_DECLS
             self.assertFalse(res.out)
             with open(f"test-org.project.Bar.Frobnicator.{ext}", "r") as f:
                 self.assertIn(markup_list, f.read())
+
+    def test_extension_help(self):
+        """Test the --help for the extension"""
+        result = self.runCodegen("--help")
+        self.assertIn("(unstable API)", result.out)
+
+    def test_extension_bad_file(self):
+        """Test the --help for the extension"""
+        result = self.runCodegenWithInterface(
+            "",
+            "--output",
+            "-",
+            "--header",
+            "--extension-path",
+            "/path/that/does/not/exist",
+            should_fail=True,
+        )
+        self.assertIn(
+            "ERROR: Loading extension ‘/path/that/does/not/exist’ failed", result.err
+        )
+        self.assertEqual("", result.out)
+
+    def test_extension_empty_interface_header(self):
+        """Test generating a header with an empty interface file with the test
+        extension.
+        """
+        result = self.runCodegenWithInterface(
+            "",
+            "--output",
+            "-",
+            "--header",
+            "--extension-path",
+            self.get_codegen_ext_path(),
+        )
+        self.assertEqual("", result.err)
+        self.assertEqual(
+            """{standard_top_comment}
+
+#ifndef __STDOUT__
+#define __STDOUT__
+
+#include <gio/gio.h>
+/* codegen-test-extension include */
+
+G_BEGIN_DECLS
+
+
+G_END_DECLS
+
+#endif /* __STDOUT__ */""".format(
+                **result.subs
+            ),
+            result.out.strip(),
+        )
+
+    def test_extension_empty_interface_body(self):
+        """Test generating a body with an empty interface file with the test
+        extension.
+        """
+        result = self.runCodegenWithInterface(
+            "",
+            "--output",
+            "-",
+            "--body",
+            "--extension-path",
+            self.get_codegen_ext_path(),
+        )
+        self.assertEqual("", result.err)
+        self.assertEqual(
+            """{standard_top_comment}
+
+{standard_config_h_include}
+
+{standard_header_includes}
+
+{private_gvalues_getters}
+
+{standard_typedefs_and_helpers}
+
+/* codegen-test-extension body preamble */""".format(
+                **result.subs
+            ),
+            result.out.strip(),
+        )
+
+    def test_extension_header_declare_types(self):
+        """Test generating header declarations from the test extension"""
+        interface_xml = """
+            <node>
+              <interface name="org.project.Foo">
+              </interface>
+              <interface name="org.project.Bar">
+              </interface>
+            </node>"""
+
+        result = self.runCodegenWithInterface(
+            interface_xml,
+            "--output",
+            "-",
+            "--header",
+            "--extension-path",
+            self.get_codegen_ext_path(),
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(
+            stripped_out.count(
+                "/* codegen-test-extension declare type for iface org.project.Foo */"
+            ),
+            1,
+        )
+        self.assertIs(
+            stripped_out.count(
+                "/* codegen-test-extension declare type for iface org.project.Bar */"
+            ),
+            1,
+        )
+
+    def test_extension_code_generate(self):
+        """Test code generation from the test extension"""
+        interface_xml = """
+            <node>
+              <interface name="org.project.Foo">
+              </interface>
+              <interface name="org.project.Bar">
+              </interface>
+            </node>"""
+
+        result = self.runCodegenWithInterface(
+            interface_xml,
+            "--output",
+            "-",
+            "--body",
+            "--extension-path",
+            self.get_codegen_ext_path(),
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(
+            stripped_out.count(
+                "/* codegen-test-extension generate for iface org.project.Foo */"
+            ),
+            1,
+        )
+        self.assertIs(
+            stripped_out.count(
+                "/* codegen-test-extension generate for iface org.project.Bar */"
+            ),
+            1,
+        )
+
+    def test_extension_code_generate(self):
+        """Test changing the GDBusInterfaceSkeleton subtype from the test
+        extension that skeletons derive from
+        """
+        interface_xml = """
+            <node>
+              <interface name="org.project.UsefulInterface">
+                <method name="UsefulMethod"/>
+              </interface>
+            </node>"""
+
+        result = self.runCodegenWithInterface(
+            interface_xml,
+            "--output",
+            "-",
+            "--body",
+            "--extension-path",
+            self.get_codegen_ext_path(),
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(stripped_out.count("G_TYPE_DBUS_INTERFACE_SKELETON"), 0)
+        self.assertIs(stripped_out.count("NEW_TYPE_DBUS_INTERFACE_SKELETON"), 2)
+
+        result = self.runCodegenWithInterface(
+            interface_xml,
+            "--output",
+            "-",
+            "--header",
+            "--extension-path",
+            self.get_codegen_ext_path(),
+        )
+        stripped_out = result.out.strip()
+        self.assertFalse(result.err)
+        self.assertIs(stripped_out.count("GDBusInterfaceSkeleton"), 0)
+        self.assertIs(stripped_out.count("NewDBusInterfaceSkeleton"), 2)
 
 
 if __name__ == "__main__":

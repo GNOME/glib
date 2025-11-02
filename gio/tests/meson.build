@@ -206,6 +206,7 @@ python_tests = {
   # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/2764
   'codegen.py' : {
     'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gdbus_codegen.full_path())},
+    'extra-files': ['codegen-test-extension.py'],
     'can_fail' : host_system == 'freebsd',
     'suite': ['gdbus-codegen', 'slow'],
     'timeout': 90,
@@ -1238,9 +1239,13 @@ foreach test_name, extra_args : python_tests
     suite: suite,
   )
 
+  foreach file : extra_args.get('extra-files', [])
+    fs.copyfile(file)
+  endforeach
+
   if installed_tests_enabled
     install_data(
-      files(test_name),
+      files([test_name] + extra_args.get('extra-files', [])),
       install_dir: installed_tests_execdir,
       install_tag: 'tests',
       install_mode: 'rwxr-xr-x',
