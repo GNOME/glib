@@ -1569,7 +1569,7 @@ aix_fs_get (FILE               *fd,
     }
 
   word[strlen(word) - 1] = 0;
-  strcpy (prop->mnt_mount, word);
+  g_strlcpy (prop->mnt_mount, word, sizeof (prop->mnt_mount));
   
   /* read attributes and value */
   
