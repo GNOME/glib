@@ -95,7 +95,7 @@ typedef enum
   G_IO_FLAG_MASK = (1 << 5) - 1,
   G_IO_FLAG_GET_MASK = G_IO_FLAG_MASK,
   G_IO_FLAG_SET_MASK = G_IO_FLAG_APPEND | G_IO_FLAG_NONBLOCK
-} GIOFlags;
+} G_GNUC_FLAG_ENUM GIOFlags;
 
 struct _GIOChannel
 {

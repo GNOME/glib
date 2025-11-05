@@ -94,7 +94,7 @@ typedef enum { /*< prefix=G_BINDING >*/
   G_BINDING_BIDIRECTIONAL  = 1 << 0,
   G_BINDING_SYNC_CREATE    = 1 << 1,
   G_BINDING_INVERT_BOOLEAN = 1 << 2
-} GBindingFlags;
+} G_GNUC_FLAG_ENUM GBindingFlags;
 
 GOBJECT_AVAILABLE_IN_ALL
 GType                 g_binding_flags_get_type      (void) G_GNUC_CONST;

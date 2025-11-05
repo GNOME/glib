@@ -380,7 +380,7 @@ typedef enum
   GI_FIELD_INFO_FLAGS_NONE GI_AVAILABLE_ENUMERATOR_IN_2_86 = 0,
   GI_FIELD_IS_READABLE = 1 << 0,
   GI_FIELD_IS_WRITABLE = 1 << 1
-} GIFieldInfoFlags;
+} G_GNUC_FLAG_ENUM GIFieldInfoFlags;
 
 /**
  * GIVFuncInfoFlags:
@@ -399,7 +399,7 @@ typedef enum
   GI_VFUNC_MUST_CHAIN_UP     = 1 << 0,
   GI_VFUNC_MUST_OVERRIDE     = 1 << 1,
   GI_VFUNC_MUST_NOT_OVERRIDE = 1 << 2,
-} GIVFuncInfoFlags;
+} G_GNUC_FLAG_ENUM GIVFuncInfoFlags;
 
 /**
  * GIFunctionInfoFlags:
@@ -423,6 +423,6 @@ typedef enum
   GI_FUNCTION_IS_SETTER      = 1 << 3,
   GI_FUNCTION_WRAPS_VFUNC    = 1 << 4,
   GI_FUNCTION_IS_ASYNC       = 1 << 5,
-} GIFunctionInfoFlags;
+} G_GNUC_FLAG_ENUM GIFunctionInfoFlags;
 
 G_END_DECLS

@@ -322,7 +322,7 @@ typedef enum
   G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22,
   G_REGEX_BSR_ANYCRLF       = 1 << 23,
   G_REGEX_JAVASCRIPT_COMPAT GLIB_DEPRECATED_ENUMERATOR_IN_2_74 = 1 << 25
-} GRegexCompileFlags;
+} G_GNUC_FLAG_ENUM GRegexCompileFlags;
 
 /**
  * GRegexMatchFlags:
@@ -411,7 +411,7 @@ typedef enum
   G_REGEX_MATCH_PARTIAL_SOFT     = G_REGEX_MATCH_PARTIAL,
   G_REGEX_MATCH_PARTIAL_HARD     = 1 << 27,
   G_REGEX_MATCH_NOTEMPTY_ATSTART = 1 << 28
-} GRegexMatchFlags;
+} G_GNUC_FLAG_ENUM GRegexMatchFlags;
 
 typedef struct _GRegex		GRegex;
 

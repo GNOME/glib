@@ -133,7 +133,7 @@ typedef enum {
   UPDATE_MIME_SET_NON_DEFAULT = 1 << 2,
   UPDATE_MIME_REMOVE = 1 << 3,
   UPDATE_MIME_SET_LAST_USED = 1 << 4,
-} UpdateMimeFlags;
+} G_GNUC_FLAG_ENUM UpdateMimeFlags;
 
 G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_APP_INFO, g_desktop_app_info_iface_init))

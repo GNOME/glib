@@ -41,7 +41,7 @@ typedef enum
   INTEROP_FLAGS_ABSTRACT = (1 << 5),
   INTEROP_FLAGS_REQUIRE_SAME_USER = (1 << 6),
   INTEROP_FLAGS_NONE = 0
-} InteropFlags;
+} G_GNUC_FLAG_ENUM InteropFlags;
 
 static gboolean
 allow_external_cb (G_GNUC_UNUSED GDBusAuthObserver *observer,

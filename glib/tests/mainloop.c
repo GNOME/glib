@@ -2523,7 +2523,7 @@ typedef enum
   INITIAL = 0,
   MAIN_CONTEXT_READY = (1 << 0),
   SOURCE_READY = (1 << 1),
-} SimultaneousDestructionTestState;
+} G_GNUC_FLAG_ENUM SimultaneousDestructionTestState;
 
 typedef struct
 {

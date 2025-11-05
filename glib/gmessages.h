@@ -67,7 +67,7 @@ typedef enum
   G_LOG_LEVEL_DEBUG             = 1 << 7,
 
   G_LOG_LEVEL_MASK              = ~(G_LOG_FLAG_RECURSION | G_LOG_FLAG_FATAL)
-} GLogLevelFlags;
+} G_GNUC_FLAG_ENUM GLogLevelFlags;
 
 /* GLib log levels that are considered fatal by default */
 #define G_LOG_FATAL_MASK        (G_LOG_FLAG_RECURSION | G_LOG_LEVEL_ERROR)

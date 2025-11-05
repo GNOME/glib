@@ -59,7 +59,7 @@ typedef enum {
   G_WIN32_REGISTRY_WATCH_ATTRIBUTES = 1 << 1,
   G_WIN32_REGISTRY_WATCH_VALUES = 1 << 2,
   G_WIN32_REGISTRY_WATCH_SECURITY = 1 << 3,
-} GWin32RegistryKeyWatcherFlags;
+} G_GNUC_FLAG_ENUM GWin32RegistryKeyWatcherFlags;
 
 typedef struct _GWin32RegistryKey GWin32RegistryKey;
 typedef struct _GWin32RegistryKeyClass GWin32RegistryKeyClass;

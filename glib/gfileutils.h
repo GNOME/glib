@@ -72,7 +72,7 @@ typedef enum
   G_FILE_TEST_IS_DIR        = 1 << 2,
   G_FILE_TEST_IS_EXECUTABLE = 1 << 3,
   G_FILE_TEST_EXISTS        = 1 << 4
-} GFileTest;
+} G_GNUC_FLAG_ENUM GFileTest;
 
 /**
  * GFileSetContentsFlags:
@@ -104,7 +104,7 @@ typedef enum
   G_FILE_SET_CONTENTS_CONSISTENT = 1 << 0,
   G_FILE_SET_CONTENTS_DURABLE = 1 << 1,
   G_FILE_SET_CONTENTS_ONLY_EXISTING = 1 << 2
-} GFileSetContentsFlags
+} G_GNUC_FLAG_ENUM GFileSetContentsFlags
 GLIB_AVAILABLE_ENUMERATOR_IN_2_66;
 
 GLIB_AVAILABLE_IN_ALL

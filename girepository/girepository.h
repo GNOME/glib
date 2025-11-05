@@ -73,7 +73,7 @@ typedef enum
 {
   GI_REPOSITORY_LOAD_FLAG_NONE = 0,
   GI_REPOSITORY_LOAD_FLAG_LAZY = 1 << 0
-} GIRepositoryLoadFlags;
+} G_GNUC_FLAG_ENUM GIRepositoryLoadFlags;
 
 /* Repository */
 

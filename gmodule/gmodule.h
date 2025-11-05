@@ -65,7 +65,7 @@ typedef enum
   G_MODULE_BIND_LAZY	= 1 << 0,
   G_MODULE_BIND_LOCAL	= 1 << 1,
   G_MODULE_BIND_MASK	= 0x03
-} GModuleFlags;
+} G_GNUC_FLAG_ENUM GModuleFlags;
 
 typedef	struct _GModule			 GModule;
 typedef const gchar* (*GModuleCheckInit) (GModule	*module);

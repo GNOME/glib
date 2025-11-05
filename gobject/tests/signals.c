@@ -119,7 +119,7 @@ typedef enum {
   MY_FLAGS_FIRST_BIT = (1 << 0),
   MY_FLAGS_THIRD_BIT = (1 << 2),
   MY_FLAGS_LAST_BIT = (1u << 31)
-} MyFlags;
+} G_GNUC_FLAG_ENUM MyFlags;
 
 static const GFlagsValue my_flag_values[] =
 {

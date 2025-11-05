@@ -38,7 +38,7 @@ typedef enum {
   NO_FLAG      = 0,
   LOWEST_FLAG  = 1,
   HIGHEST_FLAG = 1 << 31
-} MyFlagsEnum;
+} G_GNUC_FLAG_ENUM MyFlagsEnum;
 
 struct _GTest {
   GObject object;

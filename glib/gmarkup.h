@@ -102,7 +102,7 @@ typedef enum
   G_MARKUP_TREAT_CDATA_AS_TEXT              = 1 << 1,
   G_MARKUP_PREFIX_ERROR_POSITION            = 1 << 2,
   G_MARKUP_IGNORE_QUALIFIED                 = 1 << 3
-} GMarkupParseFlags;
+} G_GNUC_FLAG_ENUM GMarkupParseFlags;
 
 /**
  * GMarkupParseContext:

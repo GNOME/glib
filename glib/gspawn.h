@@ -214,7 +214,7 @@ typedef enum
    * Since: 2.74
    */
   G_SPAWN_STDIN_FROM_DEV_NULL    = 1 << 11
-} GSpawnFlags;
+} G_GNUC_FLAG_ENUM GSpawnFlags;
 
 GLIB_AVAILABLE_IN_ALL
 GQuark g_spawn_error_quark (void);

@@ -462,7 +462,7 @@ g_io_channel_new_file (const gchar *filename,
     MODE_R_PLUS = MODE_R | MODE_PLUS,
     MODE_W_PLUS = MODE_W | MODE_PLUS,
     MODE_A_PLUS = MODE_A | MODE_PLUS
-  } mode_num;
+  } G_GNUC_FLAG_ENUM mode_num;
   struct stat buffer;
 
   g_return_val_if_fail (filename != NULL, NULL);
