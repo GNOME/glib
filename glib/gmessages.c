@@ -2712,8 +2712,10 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
                                gsize            n_fields,
                                gpointer         user_data)
 {
+  gboolean use_color;
   FILE *stream;
   char *out;
+  const char *no_color_env;
 
   g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
@@ -2722,9 +2724,15 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
   if (!stream || fileno (stream) < 0)
     return G_LOG_WRITER_UNHANDLED;
 
-  out = log_writer_format_fields_utf8 (log_level, fields, n_fields,
-                                       g_log_writer_supports_color (fileno (stream)),
-                                       TRUE);
+  /* Honor NO_COLOR environment variable (https://no-color.org) */
+  no_color_env = g_getenv ("NO_COLOR");
+  if (no_color_env && *no_color_env != '\0')
+    use_color = FALSE;
+  else
+    use_color = g_log_writer_supports_color (fileno (stream));
+
+  out = log_writer_format_fields_utf8 (log_level, fields, n_fields, use_color, TRUE);
+
   g_fputs (out, stream);
   fflush (stream);
   g_free (out);
