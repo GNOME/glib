@@ -33,10 +33,7 @@ glib_tests = {
     'can_fail' : host_system == 'darwin' or linux_libc == 'musl',
   },
   'dir' : {},
-  'environment' : {
-    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system == 'darwin',
-  },
+  'environment' : {},
   'error' : {},
   'fileutils' : {},
   'gdatetime' : {
