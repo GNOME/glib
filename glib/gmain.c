@@ -4197,7 +4197,10 @@ g_main_context_check (GMainContext *context,
 		      gint          n_fds)
 {
   gboolean ready;
-   
+
+  if (context == NULL)
+    context = g_main_context_default ();
+
   LOCK_CONTEXT (context);
 
   ready = g_main_context_check_unlocked (context, max_priority, fds, n_fds);
@@ -4219,9 +4222,6 @@ g_main_context_check_unlocked (GMainContext *context,
   gint n_ready = 0;
   gint i;
 
-  if (context == NULL)
-    context = g_main_context_default ();
-   
   if (context->in_check_or_prepare)
     {
       g_warning ("g_main_context_check() called recursively from within a source's check() or "
