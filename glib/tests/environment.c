@@ -127,10 +127,14 @@ test_getenv (void)
   g_assert_true (g_setenv ("foo", "bar=baz", TRUE));
 
   /* Different OSs return different values; some return NULL because the key
-   * is invalid, but some are happy to return what we set above. */
+   * is invalid, but some are happy to return what we set above. macOS clips
+   * the key when it contains `=` */
   data = g_getenv ("foo=bar");
   if (data != NULL)
-    g_assert_cmpstr (data, ==, "baz");
+    {
+      g_assert_true (g_strcmp0 (data, "bar=baz") == 0 ||
+                     g_strcmp0 (data, "baz") == 0);
+    }
   else
     {
       data = g_getenv ("foo");
