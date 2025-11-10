@@ -139,8 +139,6 @@ gio_tests = {
   'glistmodel' : {},
   'testfilemonitor' : {
     'suite' : ['slow'],
-    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
-    'can_fail' : host_system in ['darwin'],
   },
   'thumbnail-verification' : {},
   'tls-certificate' : {'extra_sources' : ['gtesttlsbackend.c']},

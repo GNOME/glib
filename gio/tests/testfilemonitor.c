@@ -237,6 +237,17 @@ check_expected_events (RecordedEvent *expected,
               li++, l = l->next;
               continue;
             }
+          /* The ordering of 'CHANGES_DONE_HINT' can not be guaranteed
+           * so treat it as optional. */
+          else if (e1->event_type == G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT &&
+                   e2->event_type != G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT)
+            {
+              g_test_message ("Skipping expected 'CHANGES_DONE_HINT' "
+                              "at index %" G_GSIZE_FORMAT,
+                              i);
+              i++;
+              continue;
+            }
           /* If an event is marked as optional in the current environment and
            * the event doesn't match, it means the expected event has lost. */
           else if (env & e1->optional)
