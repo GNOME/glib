@@ -728,7 +728,7 @@ typedef enum	/*< skip >*/
   G_TYPE_DEBUG_SIGNALS	= 1 << 1,
   G_TYPE_DEBUG_INSTANCE_COUNT = 1 << 2,
   G_TYPE_DEBUG_MASK	= 0x07
-} GTypeDebugFlags GOBJECT_DEPRECATED_TYPE_IN_2_36;
+} G_GNUC_FLAG_ENUM GTypeDebugFlags GOBJECT_DEPRECATED_TYPE_IN_2_36;
 
 
 /* --- prototypes --- */
@@ -1067,7 +1067,7 @@ typedef enum    /*< skip >*/
   G_TYPE_FLAG_INSTANTIATABLE    = (1 << 1),
   G_TYPE_FLAG_DERIVABLE         = (1 << 2),
   G_TYPE_FLAG_DEEP_DERIVABLE    = (1 << 3)
-} GTypeFundamentalFlags;
+} G_GNUC_FLAG_ENUM GTypeFundamentalFlags;
 /**
  * GTypeFlags:
  * @G_TYPE_FLAG_NONE: No special flags. Since: 2.74
@@ -1091,7 +1091,7 @@ typedef enum    /*< skip >*/
   G_TYPE_FLAG_VALUE_ABSTRACT = (1 << 5),
   G_TYPE_FLAG_FINAL GOBJECT_AVAILABLE_ENUMERATOR_IN_2_70 = (1 << 6),
   G_TYPE_FLAG_DEPRECATED GOBJECT_AVAILABLE_ENUMERATOR_IN_2_76 = (1 << 7)
-} GTypeFlags;
+} G_GNUC_FLAG_ENUM GTypeFlags;
 /**
  * GTypeInfo:
  * @class_size: Size of the class structure (required for interface, classed and instantiatable types)

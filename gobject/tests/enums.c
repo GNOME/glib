@@ -195,7 +195,7 @@ typedef enum {
   TEST_FLAGS_FIRST   = 1 << 0,
   TEST_FLAGS_SECOND  = 1 << 1,
   TEST_FLAGS_THIRD   = 1 << 2
-} TestFlags;
+} G_GNUC_FLAG_ENUM TestFlags;
 
 GType test_flags_get_type (void);
 

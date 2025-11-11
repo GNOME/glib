@@ -111,7 +111,7 @@ typedef enum
   G_OPTION_FLAG_OPTIONAL_ARG    = 1 << 5,
   G_OPTION_FLAG_NOALIAS	        = 1 << 6,
   G_OPTION_FLAG_DEPRECATED GLIB_AVAILABLE_ENUMERATOR_IN_2_84 = 1 << 7
-} GOptionFlags;
+} G_GNUC_FLAG_ENUM GOptionFlags;
 
 /**
  * GOptionArg:

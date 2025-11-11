@@ -57,7 +57,7 @@ typedef enum {
   NONE      = 0,
   INOTIFY   = (1 << 1),
   KQUEUE    = (1 << 2)
-} Environment;
+} G_GNUC_FLAG_ENUM Environment;
 
 typedef struct
 {

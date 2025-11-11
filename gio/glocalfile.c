@@ -766,7 +766,7 @@ static guint64 mount_info_hash_cache_time = 0;
 
 typedef enum {
   MOUNT_INFO_READONLY = 1<<0
-} MountInfo;
+} G_GNUC_FLAG_ENUM MountInfo;
 
 static gboolean
 device_equal (gconstpointer v1,

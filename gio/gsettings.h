@@ -308,7 +308,7 @@ typedef enum
   G_SETTINGS_BIND_NO_SENSITIVITY = (1<<2),
   G_SETTINGS_BIND_GET_NO_CHANGES = (1<<3),
   G_SETTINGS_BIND_INVERT_BOOLEAN = (1<<4)
-} GSettingsBindFlags;
+} G_GNUC_FLAG_ENUM GSettingsBindFlags;
 
 GIO_AVAILABLE_IN_ALL
 void                    g_settings_bind                                 (GSettings               *settings,

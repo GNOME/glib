@@ -634,7 +634,7 @@ typedef enum {
   RESOLVE_STATE_NONE = 0,
   RESOLVE_STATE_WAITING_ON_IPV4 = 1 << 0,
   RESOLVE_STATE_WAITING_ON_IPV6 = 1 << 1,
-} ResolveState;
+} G_GNUC_FLAG_ENUM ResolveState;
 
 typedef struct {
   GSocketAddressEnumerator parent_instance;

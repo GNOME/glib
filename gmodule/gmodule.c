@@ -409,7 +409,7 @@ enum
 {
   G_MODULE_DEBUG_RESIDENT_MODULES = 1 << 0,
   G_MODULE_DEBUG_BIND_NOW_MODULES = 1 << 1
-};
+} G_GNUC_FLAG_ENUM;
 
 static void
 _g_module_debug_init (void)

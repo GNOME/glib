@@ -922,7 +922,7 @@ enum {
   CANCEL_BEFORE     = (1 << 1),
   CANCEL_AFTER      = (1 << 2),
   CHECK_CANCELLABLE = (1 << 3)
-};
+} G_GNUC_FLAG_ENUM;
 #define NUM_CANCEL_TESTS (CANCEL_BEFORE | CANCEL_AFTER | CHECK_CANCELLABLE)
 
 static void

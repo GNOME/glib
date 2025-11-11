@@ -444,7 +444,7 @@ typedef enum
 {
   FREE_SEGMENT = 1 << 0,
   PRESERVE_WRAPPER = 1 << 1
-} ArrayFreeFlags;
+} G_GNUC_FLAG_ENUM ArrayFreeFlags;
 
 static gchar *array_free (GRealArray *, ArrayFreeFlags);
 

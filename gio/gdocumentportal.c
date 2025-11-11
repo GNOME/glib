@@ -88,7 +88,7 @@ enum {
   XDP_ADD_FLAGS_PERSISTENT                 =  (1 << 1),
   XDP_ADD_FLAGS_AS_NEEDED_BY_APP           =  (1 << 2),
   XDP_ADD_FLAGS_FLAGS_ALL                  = ((1 << 3) - 1)
-};
+} G_GNUC_FLAG_ENUM;
 
 /*
  * Assume that opening a file read/write failed with @saved_errno,

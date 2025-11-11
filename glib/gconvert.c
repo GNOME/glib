@@ -805,7 +805,7 @@ typedef enum
 {
   CONVERT_CHECK_NO_NULS_IN_INPUT  = 1 << 0,
   CONVERT_CHECK_NO_NULS_IN_OUTPUT = 1 << 1
-} ConvertCheckFlags;
+} G_GNUC_FLAG_ENUM ConvertCheckFlags;
 
 /*
  * Convert from @string in the encoding identified by @from_codeset,

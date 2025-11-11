@@ -41,7 +41,7 @@ typedef enum
 {
   G_BSEARCH_ARRAY_ALIGN_POWER2  = 1 << 0, /* align memory to power2 sizes */
   G_BSEARCH_ARRAY_AUTO_SHRINK  = 1 << 1   /* shrink array upon removal */
-} GBSearchArrayFlags;
+} G_GNUC_FLAG_ENUM GBSearchArrayFlags;
 
 
 /* --- structures --- */

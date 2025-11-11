@@ -299,7 +299,7 @@ typedef enum
   G_FORMAT_SIZE_BITS        = 1 << 2,
   G_FORMAT_SIZE_ONLY_VALUE GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 1 << 3,
   G_FORMAT_SIZE_ONLY_UNIT GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 1 << 4
-} GFormatSizeFlags;
+} G_GNUC_FLAG_ENUM GFormatSizeFlags;
 
 GLIB_AVAILABLE_IN_2_30
 gchar *g_format_size_full   (guint64          size,

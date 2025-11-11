@@ -90,7 +90,7 @@ typedef enum {
   G_URI_FLAGS_ENCODED_PATH    = 1 << 6,
   G_URI_FLAGS_ENCODED_FRAGMENT = 1 << 7,
   G_URI_FLAGS_SCHEME_NORMALIZE GLIB_AVAILABLE_ENUMERATOR_IN_2_68 = 1 << 8,
-} GUriFlags;
+} G_GNUC_FLAG_ENUM GUriFlags;
 
 GLIB_AVAILABLE_IN_2_66
 gboolean     g_uri_split            (const gchar  *uri_ref,
@@ -211,7 +211,7 @@ typedef enum {
   G_URI_HIDE_AUTH_PARAMS = 1 << 2,
   G_URI_HIDE_QUERY       = 1 << 3,
   G_URI_HIDE_FRAGMENT    = 1 << 4,
-} GUriHideFlags;
+} G_GNUC_FLAG_ENUM GUriHideFlags;
 
 GLIB_AVAILABLE_IN_2_66
 char *       g_uri_to_string         (GUri          *uri);
@@ -261,7 +261,7 @@ typedef enum {
   G_URI_PARAMS_CASE_INSENSITIVE = 1 << 0,
   G_URI_PARAMS_WWW_FORM         = 1 << 1,
   G_URI_PARAMS_PARSE_RELAXED    = 1 << 2,
-} GUriParamsFlags;
+} G_GNUC_FLAG_ENUM GUriParamsFlags;
 
 GLIB_AVAILABLE_IN_2_66
 GHashTable *g_uri_parse_params       (const gchar    *params,

@@ -207,9 +207,17 @@ def parse_entries(file, file_name):
             else:
                 continue
 
-        m = re.match(r'\s*\}\s*(\w+)', line)
+        m = re.match(r'''\s*\}\s*
+            ((?:
+                G_GNUC_FLAG_ENUM|
+                \[\[(?:.+,)*(?:gnu|clang)::flag_enum(?:,[^\]]+)*\]\]|
+                __attribute__\(\((?:.+,)*(?:flag_enum|__flag_enum__)(?:,[^)]+)*\)\)
+            )\s*)?
+            (\w+)''', line, flags=re.X)
         if m:
-            enumname = m.group(1)
+            if m.group(1) is not None:
+                flags = 1
+            enumname = m.group(2)
             enumindex += 1
             return 1
 
@@ -519,7 +527,13 @@ def process_file(curfilename):
         if re.match(r'\s*typedef\s+enum.*;', line):
             continue
 
-        m = re.match(r'''\s*typedef\s+enum\s*[_A-Za-z]*[_A-Za-z0-9]*\s*
+        m = re.match(r'''\s*typedef\s+enum\s*
+               ((?:
+                 G_GNUC_FLAG_ENUM|
+                \[\[(?:.+,)*(?:gnu|clang)::flag_enum(?:,[^\]]+)*\]\]|
+                __attribute__\(\((?:.+,)*(?:flag_enum|__flag_enum__)(?:,[^)]+)*\)\)
+               )\s*)?
+               [_A-Za-z]*[_A-Za-z0-9]*\s*
                ({)?\s*
                (?:/\*<
                  (([^*]|\*(?!/))*)
@@ -527,8 +541,10 @@ def process_file(curfilename):
                \s*({)?''', line, flags=re.X)
         if m:
             groups = m.groups()
-            if len(groups) >= 2 and groups[1] is not None:
-                options = parse_trigraph(groups[1])
+            if len(groups) >= 1 and groups[0] is not None:
+                flags = 1
+            if len(groups) >= 3 and groups[2] is not None:
+                options = parse_trigraph(groups[2])
                 if 'skip' in options:
                     continue
                 enum_prefix = options.get('prefix', None)
@@ -556,7 +572,7 @@ def process_file(curfilename):
                     print_warning("lowercase_name is deprecated, use underscore_name")
 
             # Didn't have trailing '{' look on next lines
-            if groups[0] is None and (len(groups) < 4 or groups[3] is None):
+            if groups[1] is None and (len(groups) < 5 or groups[4] is None):
                 while True:
                     line = curfile.readline()
                     if not line:

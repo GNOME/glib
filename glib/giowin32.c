@@ -1628,7 +1628,7 @@ g_io_channel_new_file (const gchar  *filename,
     MODE_W = 1 << 1,
     MODE_A = 1 << 2,
     MODE_PLUS = 1 << 3,
-  };
+  } G_GNUC_FLAG_ENUM;
   int mode_num, errsv;
 
   g_return_val_if_fail (filename != NULL, NULL);

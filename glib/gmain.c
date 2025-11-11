@@ -150,7 +150,7 @@ typedef enum
   G_SOURCE_READY = 1 << G_HOOK_FLAG_USER_SHIFT,
   G_SOURCE_CAN_RECURSE = 1 << (G_HOOK_FLAG_USER_SHIFT + 1),
   G_SOURCE_BLOCKED = 1 << (G_HOOK_FLAG_USER_SHIFT + 2)
-} GSourceFlags;
+} G_GNUC_FLAG_ENUM GSourceFlags;
 
 typedef struct _GSourceList GSourceList;
 

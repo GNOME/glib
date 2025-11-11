@@ -58,7 +58,7 @@ enum StructureExtraFlags
   TEST_INVALID_SYMLINK = 1 << 17,
   TEST_HIDDEN = 1 << 18,
   TEST_DOT_HIDDEN = 1 << 19,
-};
+} G_GNUC_FLAG_ENUM;
 
 struct StructureItem
 {

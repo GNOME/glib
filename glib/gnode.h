@@ -46,7 +46,7 @@ typedef enum
   G_TRAVERSE_MASK       = 0x03,
   G_TRAVERSE_LEAFS      = G_TRAVERSE_LEAVES,
   G_TRAVERSE_NON_LEAFS  = G_TRAVERSE_NON_LEAVES
-} GTraverseFlags;
+} G_GNUC_FLAG_ENUM GTraverseFlags;
 
 /* Tree traverse orders */
 typedef enum

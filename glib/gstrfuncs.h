@@ -54,7 +54,7 @@ typedef enum {
   G_ASCII_SPACE  = 1 << 8,
   G_ASCII_UPPER  = 1 << 9,
   G_ASCII_XDIGIT = 1 << 10
-} GAsciiType;
+} G_GNUC_FLAG_ENUM GAsciiType;
 
 GLIB_VAR const guint16 * const g_ascii_table;
 

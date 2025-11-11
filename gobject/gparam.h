@@ -169,7 +169,7 @@ typedef enum
   G_PARAM_EXPLICIT_NOTIFY     = 1 << 30,
   /* Avoid warning with -Wpedantic for gcc6 */
   G_PARAM_DEPRECATED          = (gint)(1u << 31)
-} GParamFlags;
+} G_GNUC_FLAG_ENUM GParamFlags;
 
 /**
  * G_PARAM_STATIC_STRINGS:

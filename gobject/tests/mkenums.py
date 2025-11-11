@@ -710,6 +710,101 @@ comment: {standard_bottom_comment}
             "4",
         )
 
+    def test_flag_enum_annotation(self):
+        """Test use of G_GNUC_FLAG_ENUM"""
+        possible_spellings = [
+            "G_GNUC_FLAG_ENUM",
+            "__attribute__((flag_enum))",
+            "__attribute__((__flag_enum__))",
+            "__attribute__((flag_enum,deprecated))",
+            "__attribute__((deprecated,__flag_enum__))",
+            "[[gnu::flag_enum]]",
+            "[[clang::flag_enum]]",
+            "[[nodiscard,gnu::flag_enum]]",
+            "[[clang::flag_enum,nodiscard]]",
+        ]
+        for spelling in possible_spellings:
+            # Test attribute after closing brace
+            h_contents = (
+                """
+                typedef enum {
+                    SOME_FLAGS_ONE = (1 << 1),
+                } %s SomeFlags;
+                """
+                % spelling
+            )
+            result = self.runMkenumsWithHeader(h_contents)
+            self.assertEqual("", result.err)
+            self.assertSingleEnum(
+                result,
+                "SomeFlags",
+                "some_flags",
+                "SOME_FLAGS",
+                "FLAGS",
+                "SOME",
+                "",
+                "flags",
+                "Flags",
+                "FLAGS",
+                "SOME_FLAGS_ONE",
+                "one",
+                "2",
+            )
+
+            # Test attribute after enum keyword, with anonymous enum
+            h_contents = (
+                """
+                typedef enum %s {
+                    SOME_FLAGS_TWO = (1 << 2),
+                } SomeFlags;
+                """
+                % spelling
+            )
+            result = self.runMkenumsWithHeader(h_contents)
+            self.assertEqual("", result.err)
+            self.assertSingleEnum(
+                result,
+                "SomeFlags",
+                "some_flags",
+                "SOME_FLAGS",
+                "FLAGS",
+                "SOME",
+                "",
+                "flags",
+                "Flags",
+                "FLAGS",
+                "SOME_FLAGS_TWO",
+                "two",
+                "4",
+            )
+
+            # Test attribute after enum keyword, with named enum
+            h_contents = (
+                """
+                typedef enum %s _SomeFlags {
+                    SOME_FLAGS_THREE = (1 << 3),
+                } SomeFlags;
+                """
+                % spelling
+            )
+            result = self.runMkenumsWithHeader(h_contents)
+            self.assertEqual("", result.err)
+            self.assertSingleEnum(
+                result,
+                "SomeFlags",
+                "some_flags",
+                "SOME_FLAGS",
+                "FLAGS",
+                "SOME",
+                "",
+                "flags",
+                "Flags",
+                "FLAGS",
+                "SOME_FLAGS_THREE",
+                "three",
+                "8",
+            )
+
     def test_enum_symbolic_expression(self):
         """Test use of symbol in value expression."""
         h_contents = """

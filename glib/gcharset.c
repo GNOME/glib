@@ -535,7 +535,7 @@ enum
   COMPONENT_CODESET =   1 << 0,
   COMPONENT_TERRITORY = 1 << 1,
   COMPONENT_MODIFIER =  1 << 2
-};
+} G_GNUC_FLAG_ENUM;
 
 /* Break an X/Open style locale specification into components
  * e.g. `en_GB` or `uz_UZ.utf8@cyrillic`

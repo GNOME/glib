@@ -461,7 +461,7 @@ enum {
     FLAG_INITIALIZED = 1 << 0,
     FLAG_EXIT_ON_CLOSE = 1 << 1,
     FLAG_CLOSED = 1 << 2
-};
+} G_GNUC_FLAG_ENUM;
 
 struct _GDBusConnection
 {
@@ -698,7 +698,7 @@ check_initialized (GDBusConnection *connection)
 
 typedef enum {
     MAY_BE_UNINITIALIZED = (1<<1)
-} CheckUnclosedFlags;
+} G_GNUC_FLAG_ENUM CheckUnclosedFlags;
 
 /*
  * Check the same thing as check_initialized(), and also that the
