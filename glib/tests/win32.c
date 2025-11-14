@@ -27,6 +27,7 @@
 #include <gprintf.h>
 #include <stdio.h>
 #include <windows.h>
+#include <winnt.h> /* for RTL_OSVERSIONINFO */
 
 #define COBJMACROS
 #include <wincodec.h>
@@ -171,6 +172,83 @@ test_stderr_buffering_mode (void)
   g_test_trap_assert_stderr ("hello world?\n");
 }
 
+#ifndef _WIN32_WINNT_WIN10
+#define _WIN32_WINNT_WIN10 0x0A00
+#endif
+#ifndef STATUS_SUCCESS
+#define STATUS_SUCCESS 0
+#endif
+
+static void
+test_manifest_os_compatibility (void)
+{
+  const WORD highest_known_major_minor_word = _WIN32_WINNT_WIN10;
+
+  HMODULE module_handle = LoadLibraryEx (L"NTDLL.DLL", NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
+  if (module_handle == NULL)
+    {
+      g_error ("%s (%s) failed: %s",
+               "LoadLibraryEx", "NTDLL.DLL",
+               g_win32_error_message (GetLastError ()));
+    }
+
+  typedef NTSTATUS (WINAPI *ptr_RtlGetVersion_t) (RTL_OSVERSIONINFOW *);
+
+  ptr_RtlGetVersion_t ptr_RtlGetVersion =
+    (ptr_RtlGetVersion_t) GetProcAddress (module_handle, "RtlGetVersion");
+  if (ptr_RtlGetVersion == NULL)
+    {
+      g_error ("%s (%s, %s) failed: %s",
+               "GetProcAddress", "NTDLL.DLL", "RtlGetVersion",
+               g_win32_error_message (GetLastError ()));
+    }
+
+  /* RtlGetVersion is not subject to compatibility settings
+   * present in the activation context, it always returns
+   * the real OS version.
+   */
+  RTL_OSVERSIONINFOW rtl_os_version_info;
+  rtl_os_version_info.dwOSVersionInfoSize = sizeof (rtl_os_version_info);
+
+  NTSTATUS status = ptr_RtlGetVersion (&rtl_os_version_info);
+  if (status != STATUS_SUCCESS)
+    {
+      g_error ("%s failed",
+               "RtlGetVersion");
+    }
+
+  /* Now verify if the activation context contains up-to-date
+   * compatibility info.
+   */
+  OSVERSIONINFO os_version_info;
+  os_version_info.dwOSVersionInfoSize = sizeof (os_version_info);
+
+  BOOL success = GetVersionEx (&os_version_info);
+  if (!success)
+    {
+      g_error ("%s failed: %s",
+               "GetVersionEx",
+               g_win32_error_message (GetLastError ()));
+    }
+
+  if (rtl_os_version_info.dwMajorVersion != os_version_info.dwMajorVersion ||
+      rtl_os_version_info.dwMinorVersion != os_version_info.dwMinorVersion ||
+      rtl_os_version_info.dwBuildNumber != os_version_info.dwBuildNumber)
+    {
+      WORD rtl_major_minor_word = MAKEWORD ((BYTE)rtl_os_version_info.dwMinorVersion,
+                                            (BYTE)rtl_os_version_info.dwMajorVersion);
+
+      if (rtl_major_minor_word > highest_known_major_minor_word)
+        g_error ("Please, update the manifest XML and the test's constant");
+
+      g_assert_cmpuint (rtl_os_version_info.dwMajorVersion, ==, os_version_info.dwMajorVersion);
+      g_assert_cmpuint (rtl_os_version_info.dwMinorVersion, ==, os_version_info.dwMinorVersion);
+      g_assert_cmpuint (rtl_os_version_info.dwBuildNumber, ==, os_version_info.dwBuildNumber);
+    }
+
+  FreeLibrary (module_handle);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -196,6 +274,7 @@ main (int   argc,
 
   g_test_add_func ("/win32/subprocess/stderr-buffering-mode", test_subprocess_stderr_buffering_mode);
   g_test_add_func ("/win32/stderr-buffering-mode", test_stderr_buffering_mode);
+  g_test_add_func ("/win32/manifest-os-compatibility", test_manifest_os_compatibility);
 
   return g_test_run();
 }
