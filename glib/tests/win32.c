@@ -138,6 +138,39 @@ test_clear_com (void)
   CoUninitialize ();
 }
 
+static void
+test_subprocess_stderr_buffering_mode (void)
+{
+  int ret = fprintf (stderr, "hello world\n");
+  g_assert_cmpint (ret, >, 0);
+
+  /* We want to exit without flushing stdio streams. We could
+   * use _Exit here, but the C standard doesn't specify whether
+   * _Exit flushes stdio streams or not.
+   * The Windows C RunTime library doesn't flush streams, but
+   * we should not rely on implementation details which may
+   * change in the future. Use TerminateProcess.
+   */
+  TerminateProcess (GetCurrentProcess (), 0);
+}
+
+static void
+test_stderr_buffering_mode (void)
+{
+  /* MSVCRT.DLL can open stderr in full-buffering mode.
+   * This can cause loss of important messages before
+   * a crash. Additionally, POSIX disallows full buffering
+   * of stderr, so this is not good for portability.
+   * We have a workaround in the app-profile dependency
+   * that we add to each executable.
+   */
+  g_test_trap_subprocess ("/win32/subprocess/stderr-buffering-mode",
+                          0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stderr ("hello world?\n");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -160,6 +193,9 @@ main (int   argc,
   g_test_add_func ("/win32/subprocess/access_violation", test_access_violation);
   g_test_add_func ("/win32/subprocess/illegal_instruction", test_illegal_instruction);
   g_test_add_func ("/win32/com/clear", test_clear_com);
+
+  g_test_add_func ("/win32/subprocess/stderr-buffering-mode", test_subprocess_stderr_buffering_mode);
+  g_test_add_func ("/win32/stderr-buffering-mode", test_stderr_buffering_mode);
 
   return g_test_run();
 }
