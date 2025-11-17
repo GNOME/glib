@@ -109,7 +109,7 @@ __gsettings() {
 
   local IFS=$'\n'
   # shellcheck disable=SC2207
-  COMPREPLY=($(compgen -W "${choices}" -- "${COMP_WORDS[${COMP_CWORD}]}"))
+  COMPREPLY=($(compgen -W "${choices-}" -- "${COMP_WORDS[${COMP_CWORD}]}"))
 }
 
 ####################################################################################################
