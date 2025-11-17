@@ -1280,7 +1280,19 @@ g_local_file_query_exists (GFile        *file,
 {
   GLocalFile *local = G_LOCAL_FILE (file);
 
-  return faccessat (0, local->filename, F_OK, AT_EACCESS | AT_SYMLINK_NOFOLLOW) == 0;
+  if (faccessat (AT_FDCWD, local->filename, F_OK, AT_EACCESS | AT_SYMLINK_NOFOLLOW) == 0)
+    return TRUE;
+
+  if G_UNLIKELY (errno == EBADF)
+    {
+      g_critical ("g_local_file_query_exists: faccessat didn't accept supplied dirfd");
+    }
+  else if G_UNLIKELY (errno == EINVAL)
+    {
+      g_critical ("g_local_file_query_exists: faccessat doesn't support supplied flags");
+    }
+
+  return FALSE;
 }
 #endif
 
