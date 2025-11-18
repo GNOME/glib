@@ -1,3 +1,22 @@
+Overview of changes in GLib 2.86.2, 2025-11-18
+==============================================
+
+* Fix tests when run against pcre2 10.47 (#3809, work by Marco Trevisan and
+  others)
+
+* Bugs fixed:
+  - #3809 GRegex tests fail with pcre2 10.47: different error for ^(a)\g{3
+    (Marco Trevisan (Treviño))
+  - #3811 g_get_user_special_dir doesn't strip trailing slash from $HOME/
+    (Tobias Stoeckmann)
+  - !4878 Backport "gresolver: Fix loopback detection of IPv6 addresses"
+  - !4888 Backport !4884 “gregex: Handle PCRE2_ERROR_MISSING_NUMBER_TERMINATOR
+    if defined” to glib-2-86
+  - !4889 Backport !4860 “Fix g_memory_monitor_base_query_mem_ratio on Solaris”
+    to glib-2-86
+  - !4890 Backport !4886 “gutils: Strip all trailing slashes” to glib-2-86
+
+
 Overview of changes in GLib 2.86.1, 2025-10-21
 ==============================================
 
