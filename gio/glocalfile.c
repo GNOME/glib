@@ -99,6 +99,9 @@
 #ifndef ECANCELED
 #define ECANCELED 105
 #endif
+#ifndef ERROR_CANCELLED
+#define ERROR_CANCELLED 1223
+#endif
 #endif
 
 
@@ -2553,6 +2556,7 @@ g_local_file_trash (GFile         *file,
   gboolean success;
   wchar_t *wfilename;
   long len;
+  int errcode;
 
   wfilename = g_utf8_to_utf16 (local->filename, -1, NULL, &len, NULL);
   /* SHFILEOPSTRUCT.pFrom is double-zero-terminated */
@@ -2563,9 +2567,10 @@ g_local_file_trash (GFile         *file,
   op.pFrom = wfilename;
   op.fFlags = FOF_ALLOWUNDO;
 
-  success = SHFileOperationW (&op) == 0;
+  errcode = SHFileOperationW (&op);
+  success = errcode == 0;
 
-  if (success && op.fAnyOperationsAborted)
+  if ((success || errcode == ERROR_CANCELLED) && op.fAnyOperationsAborted)
     {
       if (cancellable && !g_cancellable_is_cancelled (cancellable))
 	g_cancellable_cancel (cancellable);
