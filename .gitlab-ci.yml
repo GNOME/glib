@@ -4,6 +4,26 @@ include:
       dist-job-name: "dist-job"
       tarball-artifact-path: "${TARBALL_ARTIFACT_PATH}"
 
+# This is based on GNOME/citemplates default-rules, but we only apply the
+# settings that make sense for glib
+default:
+  interruptible: true
+  # Auto-retry jobs in case of infra failures
+  retry:
+    max: 1
+    when:
+      - "runner_system_failure"
+      - "stuck_or_timeout_failure"
+      - "scheduler_failure"
+      - "api_failure"
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH
+
 stages:
   - style-check
   - build
@@ -34,42 +54,50 @@ variables:
 #
 # Don’t execute the pipeline when a merge request is merged into `origin/main`,
 # as it will have already been tested
+.only-default-filter-rules:
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push" &&
+          $CI_PROJECT_NAMESPACE == "GNOME" &&
+          $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: never
+
 .only-default:
-  only:
-    - branches
-  except:
-    refs:
-      - tags
-    variables:
-      - $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PROJECT_NAMESPACE == "GNOME"
+  rules:
+    - !reference [.only-default-filter-rules, rules]
+    - if: $CI_COMMIT_BRANCH
+      when: on_success
 
 # As above, but does get executed on merge into `origin/main`. For use with
 # updating code coverage results and docs builds.
 .only-default-and-merges:
-  only:
-    - branches
-  except:
-    refs:
-      - tags
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_BRANCH
+      when: on_success
 
 # Some jobs run on CI runners which don’t have good isolation between CI jobs,
 # and don’t have much available resource. Limit those jobs to only ones on the
 # origin repository (GNOME/glib), rather than people’s forks. Code in the origin
 # repository can be trusted.
 .only-origin:
-  only:
-    - branches@GNOME/glib
-  except:
-    - tags
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_PROJECT_PATH == "GNOME/glib" && $CI_COMMIT_BRANCH
+      when: on_success
+    - when: never
 
 # Some jobs take a long time and are unlikely to find failures (or will find
 # failures which are not merge-blockers to fix), so they’re executed on a weekly
 # schedule in order to save CI resources and speed up branch pipelines.
 .only-schedules:
-  only:
-    - schedules
-  except:
-    - tags
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+    - when: never
 
 # Some jobs take a long time and are unlikely to find failures (or will find
 # failures which are not merge-blockers to fix), so they’re executed on a weekly
@@ -149,7 +177,7 @@ variables:
 
 style-check-advisory:
   extends:
-    - .only-default
+    - .only-default-filter-rules
     - .with-git
   image: "${DEBIAN_IMAGE}"
   stage: style-check
@@ -159,10 +187,18 @@ style-check-advisory:
     - .gitlab-ci/run-style-check-diff.sh || failed=1
     - .gitlab-ci/run-check-todos.sh || failed=1
     - test -z "$failed"
+  rules:
+    - !reference [.only-default-filter-rules, rules]
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "**/*.c"
+        - "**/*.cpp"
+        - "**/*.h"
+      when: on_success
 
 sh-and-py-check:
   extends:
-    - .only-default
+    - .only-default-filter-rules
     - .with-git
   image: "${DEBIAN_IMAGE}"
   stage: style-check
@@ -175,10 +211,13 @@ sh-and-py-check:
     - test -z "$failed"
   variables:
     LINT_WARNINGS_ARE_ERRORS: '1'
-  only:
-    changes:
-      - "**/*.py"
-      - "**/*.sh"
+  rules:
+    - !reference [.only-default-filter-rules, rules]
+    - if: $CI_COMMIT_BRANCH
+      changes:
+        - "**/*.py"
+        - "**/*.sh"
+      when: on_success
 
 style-check-mandatory:
   extends:
@@ -967,7 +1006,7 @@ scan-build:
 pages:
   extends: .only-schedules
   stage: deploy
-  needs: ['coverage', 'style-check-advisory']
+  needs: ['coverage']
   script:
     - mv _coverage/ public/
   artifacts:
@@ -986,9 +1025,12 @@ dist-job:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
     - !reference [".build-gobject-introspection", "before_script"]
-  only:
-    - schedules
-    - tags
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+    - if: $CI_COMMIT_TAG
+      when: on_success
+    - when: never
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --buildtype release
