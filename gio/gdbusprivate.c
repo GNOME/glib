@@ -2329,7 +2329,16 @@ _g_dbus_win32_get_session_address_dbus_launch (GError **error)
 
   if (address == NULL && !autolaunch_binary_absent)
     {
-      wchar_t *dbus_path = find_dbus_process_path ();
+      wchar_t *dbus_path;
+      size_t dbus_path_len;
+      PROCESS_INFORMATION pi = { 0 };
+      STARTUPINFOW si = { 0 };
+      BOOL res = FALSE;
+      wchar_t args[MAX_PATH * 2 + 100] = { 0 };
+      wchar_t working_dir[MAX_PATH + 2] = { 0 };
+      wchar_t *p;
+
+      dbus_path = find_dbus_process_path ();
       if (dbus_path == NULL)
         {
           /* warning won't be raised another time
@@ -2337,52 +2346,44 @@ _g_dbus_win32_get_session_address_dbus_launch (GError **error)
            */
           autolaunch_binary_absent = TRUE;
           g_warning ("win32 session dbus binary not found");
+          goto out;
         }
-      else
+
+      dbus_path_len = wcslen (dbus_path);
+      if (dbus_path_len + 1 > sizeof (working_dir))
         {
-          PROCESS_INFORMATION pi = { 0 };
-          STARTUPINFOW si = { 0 };
-          BOOL res = FALSE;
-          wchar_t args[MAX_PATH * 2 + 100] = { 0 };
-          wchar_t working_dir[MAX_PATH + 2] = { 0 };
-          wchar_t *p;
-          size_t dbus_path_len = wcslen (dbus_path);
+          g_warning ("Path to win32 session dbus binary is too long");
+          goto out;
+        }
 
-          if (dbus_path_len + 1 > sizeof (working_dir))
-            {
-              g_warning ("Path to win32 session dbus binary is too long");
-              goto out;
-            }
+      wcscpy (working_dir, dbus_path);
+      p = wcsrchr (working_dir, L'\\');
+      if (p != NULL)
+        *p = L'\0';
 
-          wcscpy (working_dir, dbus_path);
-          p = wcsrchr (working_dir, L'\\');
-          if (p != NULL)
-            *p = L'\0';
-
-          wcscpy (args, L"\"");
-          wcscat (args, dbus_path);
-          wcscat (args, L"\" ");
+      wcscpy (args, L"\"");
+      wcscat (args, dbus_path);
+      wcscat (args, L"\" ");
 #define _L_PREFIX_FOR_EXPANDED(arg) L##arg
 #define _L_PREFIX(arg) _L_PREFIX_FOR_EXPANDED (arg)
-          wcscat (args, _L_PREFIX (_GDBUS_ARG_WIN32_RUN_SESSION_BUS));
+      wcscat (args, _L_PREFIX (_GDBUS_ARG_WIN32_RUN_SESSION_BUS));
 #undef _L_PREFIX
 #undef _L_PREFIX_FOR_EXPANDED
 
-          res = CreateProcessW (dbus_path, args,
-                                0, 0, FALSE,
-                                NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW | DETACHED_PROCESS,
-                                0, working_dir,
-                                &si, &pi);
+      res = CreateProcessW (dbus_path, args,
+                            0, 0, FALSE,
+                            NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW | DETACHED_PROCESS,
+                            0, working_dir,
+                            &si, &pi);
 
-          if (res)
-            {
-              address = read_shm (DBUS_DAEMON_ADDRESS_INFO);
-              if (address == NULL)
-                g_warning ("%S dbus binary failed to launch bus, maybe incompatible version", dbus_path);
-            }
-
-          g_free (dbus_path);
+      if (res)
+        {
+          address = read_shm (DBUS_DAEMON_ADDRESS_INFO);
+          if (address == NULL)
+            g_warning ("%S dbus binary failed to launch bus, maybe incompatible version", dbus_path);
         }
+
+      g_free (dbus_path);
     }
 out:
   release_mutex (autolaunch_mutex);
