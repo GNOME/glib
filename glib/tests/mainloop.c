@@ -1176,6 +1176,24 @@ test_unref_while_pending (void)
   g_assert_cmpint (n_finalized, ==, 1);
 }
 
+static void
+test_null_default_context (void)
+{
+  int n_poll_fds;
+  GPollFD poll_fds[10];
+
+  g_test_message ("Test that the global default main context is used if NULL is passed to various methods");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3818");
+
+  g_assert_true (g_main_context_acquire (NULL));
+  g_assert_false (g_main_context_prepare (NULL, NULL));
+  n_poll_fds = g_main_context_query (NULL, 0, NULL, poll_fds, G_N_ELEMENTS (poll_fds));
+  g_assert_cmpint (n_poll_fds, ==, 1);  /* one pollfd always exists for gwakeup */
+  g_assert_false (g_main_context_check (NULL, 1000, poll_fds, n_poll_fds));
+  g_main_context_dispatch (NULL);
+  g_main_context_release (NULL);
+}
+
 typedef struct {
   GSource parent;
   GMainLoop *loop;
@@ -2731,6 +2749,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/wakeup", test_wakeup);
   g_test_add_func ("/mainloop/remove-invalid", test_remove_invalid);
   g_test_add_func ("/mainloop/unref-while-pending", test_unref_while_pending);
+  g_test_add_func ("/mainloop/null-default-context", test_null_default_context);
 #ifdef G_OS_UNIX
   g_test_add_func ("/mainloop/unix-fd", test_unix_fd);
   g_test_add_func ("/mainloop/unix-fd-source", test_unix_fd_source);
