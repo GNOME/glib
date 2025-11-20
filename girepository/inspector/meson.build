@@ -19,6 +19,7 @@ giinspecttypelib = executable('gi-inspect-typelib', 'inspector.c',
   dependencies: [
     libgirepository_dep,
     libgio_dep,
+    app_profile_dep,
   ],
   install: true,
   c_args: custom_c_args,

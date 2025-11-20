@@ -3,13 +3,21 @@
 
 gthread_sources = ['gthread-impl.c']
 if host_system == 'windows' and glib_build_shared
-  gthread_win_rc = configure_file(
-    input: 'gthread.rc.in',
+  gthread_rc_conf = configuration_data({
+    'NAME': 'GThread',
+    'FILENAME': (cc.get_argument_syntax() == 'msvc' ? '' : 'lib') + 'gthread-' + glib_api_version + '-' + soversion.to_string() + '.dll',
+    'DESCRIPTION': 'Portable threading API',
+  })
+  gthread_rc_conf.merge_from(rc_conf_base)
+  lib_rc = configure_file(
+    input: lib_rc_in,
     output: 'gthread.rc',
-    configuration: glibconfig_conf,
+    configuration: gthread_rc_conf,
   )
-  gthread_win_res = windows.compile_resources(gthread_win_rc)
-  gthread_sources += [gthread_win_res]
+  gthread_sources += [windows.compile_resources(lib_rc,
+    # Workaround for https://github.com/llvm/llvm-project/issues/63426
+    args: ['-c', '65001'],
+  )]
 endif
 
 libgthread = library('gthread-2.0',

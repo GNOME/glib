@@ -79,13 +79,21 @@ gmodule_visibility_h = custom_target(
 gmodule_sources = [gmodule_c, gmodule_visibility_h, gmodule_deprecated_c]
 
 if host_system == 'windows' and glib_build_shared
-  gmodule_win_rc = configure_file(
-    input: 'gmodule.rc.in',
+  gmodule_rc_conf = configuration_data({
+    'NAME': 'GModule',
+    'FILENAME': (cc.get_argument_syntax() == 'msvc' ? '' : 'lib') + 'gmodule-' + glib_api_version + '-' + soversion.to_string() + '.dll',
+    'DESCRIPTION': 'Portable API for dynamically loading modules',
+  })
+  gmodule_rc_conf.merge_from(rc_conf_base)
+  lib_rc = configure_file(
+    input: lib_rc_in,
     output: 'gmodule.rc',
-    configuration: glibconfig_conf,
+    configuration: gmodule_rc_conf,
   )
-  gmodule_win_res = windows.compile_resources(gmodule_win_rc)
-  gmodule_sources += [gmodule_win_res]
+  gmodule_sources += [windows.compile_resources(lib_rc,
+    # Workaround for https://github.com/llvm/llvm-project/issues/63426
+    args: ['-c', '65001'],
+  )]
 endif
 
 libgmodule = library('gmodule-2.0',

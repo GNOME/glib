@@ -225,7 +225,8 @@ executable('gi-dump-types',
   dependencies: [
     libgirepository_dep,
     libgiounix_dep,
-    libgiowin32_dep
+    libgiowin32_dep,
+    app_profile_dep,
   ],
 )
 

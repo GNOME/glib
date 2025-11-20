@@ -47,7 +47,7 @@ fuzz_targets = [
   'fuzz_variant_text',
 ]
 
-deps = [libgmodule_dep, libgio_dep, libglib_dep, libgobject_dep]
+deps = [libgmodule_dep, libgio_dep, libglib_dep, libgobject_dep, app_profile_dep]
 
 extra_sources = []
 extra_c_args = cc.get_supported_arguments('-Werror=unused-function')

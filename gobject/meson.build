@@ -61,13 +61,21 @@ gobject_sources += files(
 )
 
 if host_system == 'windows' and glib_build_shared
-  gobject_win_rc = configure_file(
-    input: 'gobject.rc.in',
+  gobject_rc_conf = configuration_data({
+    'NAME': 'GObject',
+    'FILENAME': (cc.get_argument_syntax() == 'msvc' ? '' : 'lib') + 'gobject-' + glib_api_version + '-' + soversion.to_string() + '.dll',
+    'DESCRIPTION': 'The base type system and object class',
+  })
+  gobject_rc_conf.merge_from(rc_conf_base)
+  lib_rc = configure_file(
+    input: lib_rc_in,
     output: 'gobject.rc',
-    configuration: glibconfig_conf,
+    configuration: gobject_rc_conf,
   )
-  gobject_win_res = windows.compile_resources(gobject_win_rc)
-  gobject_sources += [gobject_win_res]
+  gobject_sources += [windows.compile_resources(lib_rc,
+    # Workaround for https://github.com/llvm/llvm-project/issues/63426
+    args: ['-c', '65001'],
+  )]
 endif
 
 if enable_dtrace
@@ -171,7 +179,7 @@ meson.override_dependency('gobject-2.0', libgobject_dep)
 gobject_query = executable('gobject-query', 'gobject-query.c',
   install : true,
   install_tag : 'bin-devel',
-  dependencies : [libglib_dep, libgobject_dep])
+  dependencies : [libglib_dep, libgobject_dep, app_profile_dep])
 
 install_data('gobject_gdb.py',
   install_dir : glib_pkgdatadir / 'gdb',

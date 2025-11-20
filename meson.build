@@ -2717,6 +2717,7 @@ pkg = import('pkgconfig')
 windows = import('windows')
 gnome = import('gnome')
 
+subdir('build-aux')
 subdir('tools')
 subdir('glib')
 subdir('gobject')

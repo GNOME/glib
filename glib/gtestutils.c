@@ -205,6 +205,8 @@
  *   process will inherit the parent's stderr. Otherwise, the child's
  *   stderr will not be visible, but it will be captured to allow
  *   later tests with [func@GLib.test_trap_assert_stderr].
+ * @G_TEST_SUBPROCESS_INHERIT_DESCRIPTORS: If this flag is given, the
+ *   child process will inherit the parent’s open file descriptors.
  *
  * Flags to pass to [func@GLib.test_trap_subprocess] to control input and output.
  *
@@ -4175,7 +4177,7 @@ g_test_trap_subprocess_with_envp (const char           *test_path,
   g_ptr_array_add (argv, NULL);
 
   flags = G_SPAWN_DO_NOT_REAP_CHILD;
-  if (test_log_fd != -1)
+  if ((test_flags & G_TEST_SUBPROCESS_INHERIT_DESCRIPTORS) || test_log_fd != -1)
     flags |= G_SPAWN_LEAVE_DESCRIPTORS_OPEN;
   if (test_flags & G_TEST_SUBPROCESS_INHERIT_STDIN)
     flags |= G_SPAWN_CHILD_INHERITS_STDIN;
