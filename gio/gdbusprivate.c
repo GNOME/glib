@@ -2346,6 +2346,13 @@ _g_dbus_win32_get_session_address_dbus_launch (GError **error)
           wchar_t args[MAX_PATH * 2 + 100] = { 0 };
           wchar_t working_dir[MAX_PATH + 2] = { 0 };
           wchar_t *p;
+          size_t dbus_path_len = wcslen (dbus_path);
+
+          if (dbus_path_len + 1 > sizeof (working_dir))
+            {
+              g_warning ("Path to win32 session dbus binary is too long");
+              goto out;
+            }
 
           wcscpy (working_dir, dbus_path);
           p = wcsrchr (working_dir, L'\\');
@@ -2377,7 +2384,7 @@ _g_dbus_win32_get_session_address_dbus_launch (GError **error)
           g_free (dbus_path);
         }
     }
-
+out:
   release_mutex (autolaunch_mutex);
 
   if (address == NULL)
