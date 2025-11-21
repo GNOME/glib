@@ -1336,8 +1336,9 @@ static const gchar hex[] = "0123456789ABCDEF";
 /* Note: This escape function works on file: URIs, but if you want to
  * escape something else, please read RFC-2396 */
 static gchar *
-g_escape_uri_string (const gchar *string, 
-		     UnsafeCharacterSet mask)
+g_escape_uri_string (const gchar         *string,
+                     UnsafeCharacterSet   mask,
+                     GError             **error)
 {
 #define ACCEPTABLE(a) ((a)>=32 && (a)<128 && (acceptable[(a)-32] & use_mask))
 
@@ -1345,7 +1346,7 @@ g_escape_uri_string (const gchar *string,
   gchar *q;
   gchar *result;
   int c;
-  gint unacceptable;
+  size_t unacceptable;
   UnsafeCharacterSet use_mask;
   
   g_return_val_if_fail (mask == UNSAFE_ALL
@@ -1362,7 +1363,14 @@ g_escape_uri_string (const gchar *string,
       if (!ACCEPTABLE (c)) 
 	unacceptable++;
     }
-  
+
+  if (unacceptable >= (G_MAXSIZE - (p - string)) / 2)
+    {
+      g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
+                           _("The URI is too long"));
+      return NULL;
+    }
+
   result = g_malloc (p - string + unacceptable * 2 + 1);
   
   use_mask = mask;
@@ -1387,12 +1395,13 @@ g_escape_uri_string (const gchar *string,
 
 
 static gchar *
-g_escape_file_uri (const gchar *hostname,
-		   const gchar *pathname)
+g_escape_file_uri (const gchar  *hostname,
+                   const gchar  *pathname,
+                   GError      **error)
 {
   char *escaped_hostname = NULL;
-  char *escaped_path;
-  char *res;
+  char *escaped_path = NULL;
+  char *res = NULL;
 
 #ifdef G_OS_WIN32
   char *p, *backslash;
@@ -1413,10 +1422,14 @@ g_escape_file_uri (const gchar *hostname,
 
   if (hostname && *hostname != '\0')
     {
-      escaped_hostname = g_escape_uri_string (hostname, UNSAFE_HOST);
+      escaped_hostname = g_escape_uri_string (hostname, UNSAFE_HOST, error);
+      if (escaped_hostname == NULL)
+        goto out;
     }
 
-  escaped_path = g_escape_uri_string (pathname, UNSAFE_PATH);
+  escaped_path = g_escape_uri_string (pathname, UNSAFE_PATH, error);
+  if (escaped_path == NULL)
+    goto out;
 
   res = g_strconcat ("file://",
 		     (escaped_hostname) ? escaped_hostname : "",
@@ -1424,6 +1437,7 @@ g_escape_file_uri (const gchar *hostname,
 		     escaped_path,
 		     NULL);
 
+out:
 #ifdef G_OS_WIN32
   g_free ((char *) pathname);
 #endif
@@ -1753,7 +1767,7 @@ g_filename_to_uri (const gchar *filename,
     hostname = NULL;
 #endif
 
-  escaped_uri = g_escape_file_uri (hostname, filename);
+  escaped_uri = g_escape_file_uri (hostname, filename, error);
 
   return escaped_uri;
 }
