@@ -320,6 +320,8 @@ g_unix_is_system_fs_type (const char *fs_type)
     "auto",
     "autofs",
     "autofs4",
+    "binfmt_misc",
+    "bpf",
     "cgroup",
     "configfs",
     "cxfs",
@@ -328,6 +330,7 @@ g_unix_is_system_fs_type (const char *fs_type)
     "devpts",
     "devtmpfs",
     "ecryptfs",
+    "efivarfs",
     "fdescfs",
     "fusectl",
     "gfs",
@@ -356,6 +359,7 @@ g_unix_is_system_fs_type (const char *fs_type)
     "selinuxfs",
     "sysfs",
     "tmpfs",
+    "tracefs",
     "usbfs",
     NULL
   };
