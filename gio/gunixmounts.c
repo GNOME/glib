@@ -41,6 +41,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <errno.h>
+#include <stdlib.h>
 #include <string.h>
 #include <signal.h>
 #include <gstdio.h>
@@ -217,16 +218,17 @@ static struct libmnt_monitor *proc_mounts_monitor = NULL;
 static guint64 get_mounts_timestamp (void);
 static guint64 get_mount_points_timestamp (void);
 
-static gboolean
-is_in (const char *value, const char *set[])
+static int
+compare_str (const char * key,
+             const char * const *element)
 {
-  int i;
-  for (i = 0; set[i] != NULL; i++)
-    {
-      if (strcmp (set[i], value) == 0)
-	return TRUE;
-    }
-  return FALSE;
+  return strcmp (key, *element);
+}
+
+static gboolean
+is_in (const char *value, const char *set[], gsize set_size)
+{
+  return bsearch (value, set, set_size, sizeof (char *), (GCompareFunc)compare_str) != NULL;
 }
 
 /* Marked as unused because these are only used on some platform variants, but
@@ -285,11 +287,12 @@ unix_mount_point_array_free_to_list (GUnixMountPoint **points,
 gboolean
 g_unix_is_mount_path_system_internal (const char *mount_path)
 {
+  /* keep sorted for bsearch */
   const char *ignore_mountpoints[] = {
     /* Includes all FHS 2.3 toplevel dirs and other specialized
      * directories that we want to hide from the user.
      */
-    "/",              /* we already have "Filesystem root" in Nautilus */ 
+    "/",              /* we already have "Filesystem root" in Nautilus */
     "/bin",
     "/boot",
     "/boot/efi",
@@ -305,11 +308,15 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
     "/live/image",
     "/media",
     "/mnt",
+    "/net",
     "/opt",
+    "/proc",
     "/rescue",
     "/root",
     "/sbin",
+    "/sbin",
     "/srv",
+    "/sys",
     "/tmp",
     "/usr",
     "/usr/X11R6",
@@ -321,23 +328,21 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
     "/var",
     "/var/crash",
     "/var/local",
-    GLIB_LOCALSTATEDIR,
     "/var/log",
     "/var/log/audit", /* https://bugzilla.redhat.com/show_bug.cgi?id=333041 */
     "/var/mail",
     "/var/run",
-    GLIB_RUNSTATEDIR,
     "/var/tmp",       /* https://bugzilla.redhat.com/show_bug.cgi?id=335241 */
-    "/proc",
-    "/sbin",
-    "/net",
-    "/sys",
-    NULL
   };
 
-  if (is_in (mount_path, ignore_mountpoints))
+  if (is_in (mount_path, ignore_mountpoints, G_N_ELEMENTS (ignore_mountpoints)))
     return TRUE;
-  
+
+  /* Kept separate from sorted list as they may vary */
+  if (g_str_equal (GLIB_LOCALSTATEDIR, mount_path) ||
+      g_str_equal (GLIB_RUNSTATEDIR, mount_path))
+    return TRUE;
+
   if (g_str_has_prefix (mount_path, "/dev/") ||
       g_str_has_prefix (mount_path, "/proc/") ||
       g_str_has_prefix (mount_path, "/sys/"))
@@ -370,14 +375,13 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
 gboolean
 g_unix_is_system_fs_type (const char *fs_type)
 {
+  /* keep sorted for bsearch */
   const char *ignore_fs[] = {
     "adfs",
     "afs",
     "auto",
     "autofs",
     "autofs4",
-    "binfmt_misc",
-    "bpf",
     "cgroup",
     "cgroup2",
     "configfs",
@@ -387,7 +391,6 @@ g_unix_is_system_fs_type (const char *fs_type)
     "devpts",
     "devtmpfs",
     "ecryptfs",
-    "efivarfs",
     "fdescfs",
     "fuse.gvfsd-fuse",
     "fuse.portal",
@@ -418,14 +421,12 @@ g_unix_is_system_fs_type (const char *fs_type)
     "selinuxfs",
     "sysfs",
     "tmpfs",
-    "tracefs",
     "usbfs",
-    NULL
   };
 
   g_return_val_if_fail (fs_type != NULL && *fs_type != '\0', FALSE);
 
-  return is_in (fs_type, ignore_fs);
+  return is_in (fs_type, ignore_fs, G_N_ELEMENTS (ignore_fs));
 }
 
 /**
@@ -449,19 +450,19 @@ g_unix_is_system_fs_type (const char *fs_type)
 gboolean
 g_unix_is_system_device_path (const char *device_path)
 {
+  /* keep sorted for bsearch */
   const char *ignore_devices[] = {
-    "none",
-    "sunrpc",
-    "devpts",
-    "nfsd",
     "/dev/loop",
     "/dev/vn",
-    NULL
+    "devpts",
+    "nfsd",
+    "none",
+    "sunrpc",
   };
 
   g_return_val_if_fail (device_path != NULL && *device_path != '\0', FALSE);
 
-  return is_in (device_path, ignore_devices);
+  return is_in (device_path, ignore_devices, G_N_ELEMENTS (ignore_devices));
 }
 
 static gboolean
