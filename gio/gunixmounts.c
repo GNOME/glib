@@ -217,18 +217,6 @@ static struct libmnt_monitor *proc_mounts_monitor = NULL;
 static guint64 get_mounts_timestamp (void);
 static guint64 get_mount_points_timestamp (void);
 
-static gboolean
-is_in (const char *value, const char *set[])
-{
-  int i;
-  for (i = 0; set[i] != NULL; i++)
-    {
-      if (strcmp (set[i], value) == 0)
-	return TRUE;
-    }
-  return FALSE;
-}
-
 /* Marked as unused because these are only used on some platform variants, but
  * working out the #if sequence for that would be too much for my little brain. */
 static GList *unix_mount_entry_array_free_to_list (GUnixMountEntry **entries,
@@ -268,6 +256,27 @@ unix_mount_point_array_free_to_list (GUnixMountPoint **points,
   return g_list_reverse (l);
 }
 
+static inline gboolean
+set_contains (const char *set,
+              gsize       set_len,
+              const char *string,
+              gsize       string_len)
+{
+  const char *match = memmem (set, set_len, string, string_len + 1);
+
+  if (match == NULL)
+    return FALSE;
+
+  if (match == set || match[-1] == '\0')
+    return TRUE;
+
+  match += string_len + 1;
+  set_len -= (match - set);
+  set = match;
+
+  return set_contains (set, set_len, string, string_len);
+}
+
 /**
  * g_unix_is_mount_path_system_internal:
  * @mount_path: (type filename): a mount path, e.g. `/media/disk` or `/usr`
@@ -285,58 +294,56 @@ unix_mount_point_array_free_to_list (GUnixMountPoint **points,
 gboolean
 g_unix_is_mount_path_system_internal (const char *mount_path)
 {
-  const char *ignore_mountpoints[] = {
+  static const char *ignore_mountpoints =
     /* Includes all FHS 2.3 toplevel dirs and other specialized
      * directories that we want to hide from the user.
      */
-    "/",              /* we already have "Filesystem root" in Nautilus */ 
-    "/bin",
-    "/boot",
-    "/compat/linux/proc",
-    "/compat/linux/sys",
-    "/dev",
-    "/etc",
-    "/home",
-    "/lib",
-    "/lib64",
-    "/libexec",
-    "/live/cow",
-    "/live/image",
-    "/media",
-    "/mnt",
-    "/opt",
-    "/rescue",
-    "/root",
-    "/sbin",
-    "/srv",
-    "/tmp",
-    "/usr",
-    "/usr/X11R6",
-    "/usr/local",
-    "/usr/obj",
-    "/usr/ports",
-    "/usr/src",
-    "/usr/xobj",
-    "/var",
-    "/var/crash",
-    "/var/local",
-    GLIB_LOCALSTATEDIR,
-    "/var/log",
-    "/var/log/audit", /* https://bugzilla.redhat.com/show_bug.cgi?id=333041 */
-    "/var/mail",
-    "/var/run",
-    GLIB_RUNSTATEDIR,
-    "/var/tmp",       /* https://bugzilla.redhat.com/show_bug.cgi?id=335241 */
-    "/proc",
-    "/sbin",
-    "/net",
-    "/sys",
-    NULL
-  };
+    "/\0"             /* we already have "Filesystem root" in Nautilus */
+    "/bin\0"
+    "/boot\0"
+    "/compat/linux/proc\0"
+    "/compat/linux/sys\0"
+    "/dev\0"
+    "/etc\0"
+    "/home\0"
+    "/lib\0"
+    "/lib64\0"
+    "/libexec\0"
+    "/live/cow\0"
+    "/live/image\0"
+    "/media\0"
+    "/mnt\0"
+    "/opt\0"
+    "/rescue\0"
+    "/root\0"
+    "/sbin\0"
+    "/srv\0"
+    "/tmp\0"
+    "/usr\0"
+    "/usr/X11R6\0"
+    "/usr/local\0"
+    "/usr/obj\0"
+    "/usr/ports\0"
+    "/usr/src\0"
+    "/usr/xobj\0"
+    "/var\0"
+    "/var/crash\0"
+    "/var/local\0"
+    GLIB_LOCALSTATEDIR "\0"
+    "/var/log\0"
+    "/var/log/audit\0" /* https://bugzilla.redhat.com/show_bug.cgi?id=333041 */
+    "/var/mail\0"
+    "/var/run\0"
+    GLIB_RUNSTATEDIR "\0"
+    "/var/tmp\0"      /* https://bugzilla.redhat.com/show_bug.cgi?id=335241 */
+    "/proc\0"
+    "/sbin\0"
+    "/net\0"
+    "/sys\0";
 
-  if (is_in (mount_path, ignore_mountpoints))
+  if (set_contains (ignore_mountpoints, sizeof ignore_mountpoints, mount_path, strlen (mount_path)))
     return TRUE;
-  
+
   if (g_str_has_prefix (mount_path, "/dev/") ||
       g_str_has_prefix (mount_path, "/proc/") ||
       g_str_has_prefix (mount_path, "/sys/"))
@@ -369,59 +376,57 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
 gboolean
 g_unix_is_system_fs_type (const char *fs_type)
 {
-  const char *ignore_fs[] = {
-    "adfs",
-    "afs",
-    "auto",
-    "autofs",
-    "autofs4",
-    "binfmt_misc",
-    "bpf",
-    "cgroup",
-    "configfs",
-    "cxfs",
-    "debugfs",
-    "devfs",
-    "devpts",
-    "devtmpfs",
-    "ecryptfs",
-    "efivarfs",
-    "fdescfs",
-    "fusectl",
-    "gfs",
-    "gfs2",
-    "gpfs",
-    "hugetlbfs",
-    "kernfs",
-    "linprocfs",
-    "linsysfs",
-    "lustre",
-    "lustre_lite",
-    "mfs",
-    "mqueue",
-    "ncpfs",
-    "nfsd",
-    "nullfs",
-    "ocfs2",
-    "overlay",
-    "proc",
-    "procfs",
-    "pstore",
-    "ptyfs",
-    "rootfs",
-    "rpc_pipefs",
-    "securityfs",
-    "selinuxfs",
-    "sysfs",
-    "tmpfs",
-    "tracefs",
-    "usbfs",
-    NULL
-  };
+  static const char *ignore_fs =
+    "adfs\0"
+    "afs\0"
+    "auto\0"
+    "autofs\0"
+    "autofs4\0"
+    "binfmt_misc\0"
+    "bpf\0"
+    "cgroup\0"
+    "configfs\0"
+    "cxfs\0"
+    "debugfs\0"
+    "devfs\0"
+    "devpts\0"
+    "devtmpfs\0"
+    "ecryptfs\0"
+    "efivarfs\0"
+    "fdescfs\0"
+    "fusectl\0"
+    "gfs\0"
+    "gfs2\0"
+    "gpfs\0"
+    "hugetlbfs\0"
+    "kernfs\0"
+    "linprocfs\0"
+    "linsysfs\0"
+    "lustre\0"
+    "lustre_lite\0"
+    "mfs\0"
+    "mqueue\0"
+    "ncpfs\0"
+    "nfsd\0"
+    "nullfs\0"
+    "ocfs2\0"
+    "overlay\0"
+    "proc\0"
+    "procfs\0"
+    "pstore\0"
+    "ptyfs\0"
+    "rootfs\0"
+    "rpc_pipefs\0"
+    "securityfs\0"
+    "selinuxfs\0"
+    "sysfs\0"
+    "tmpfs\0"
+    "tracefs\0"
+    "usbfs\0";
 
   g_return_val_if_fail (fs_type != NULL && *fs_type != '\0', FALSE);
 
-  return is_in (fs_type, ignore_fs);
+  return set_contains (ignore_fs, sizeof ignore_fs, fs_type, strlen (fs_type));
 }
 
 /**
@@ -445,19 +450,17 @@ g_unix_is_system_fs_type (const char *fs_type)
 gboolean
 g_unix_is_system_device_path (const char *device_path)
 {
-  const char *ignore_devices[] = {
-    "none",
-    "sunrpc",
-    "devpts",
-    "nfsd",
-    "/dev/loop",
-    "/dev/vn",
-    NULL
-  };
+  static const char *ignore_devices =
+    "none\0"
+    "sunrpc\0"
+    "devpts\0"
+    "nfsd\0"
+    "/dev/loop\0"
+    "/dev/vn\0";
 
   g_return_val_if_fail (device_path != NULL && *device_path != '\0', FALSE);
 
-  return is_in (device_path, ignore_devices);
+  return set_contains (ignore_devices, sizeof ignore_devices, device_path, strlen (device_path));
 }
 
 static gboolean
