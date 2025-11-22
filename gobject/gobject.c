@@ -4663,6 +4663,51 @@ gpointer
   return object;
 }
 
+/**
+ * g_object_ref_nonnull:
+ * @object: (nullable) (type GObject.Object): a #GObject
+ *
+ * Increases the reference count of @object if non-%NULL.
+ * Does nothing otherwise.
+ *
+ * If `GLIB_VERSION_MAX_ALLOWED` is 2.56 or greater, the type of @object will
+ * be propagated to the return type (using the GCC typeof() extension), so any
+ * casting the caller needs to do on the return type must be explicit.
+ *
+ * One convenient usage is to return references to values that can be NULL:
+ * |[
+ *   GObject *
+ *   foo_get_bar (Foo *foo)
+ *   {
+ *     g_return_val_if_fail (IS_FOO (foo), NULL);
+ *
+ *     // foo->bar sometimes is NULL
+ *     return g_ref_object_nonnull (foo->bar);
+ *   }
+ * ]|
+ *
+ * Returns: (type GObject.Object) (transfer full): the same @object
+ *
+ * Since: 2.88
+ */
+gpointer
+(g_object_ref_nonnull) (gpointer _object)
+{
+  GObject *object = _object;
+  GToggleNotify toggle_notify;
+  gpointer toggle_data;
+
+  if (object == NULL)
+    return object;
+
+  object = object_ref (object, &toggle_notify, &toggle_data);
+
+  if (toggle_notify)
+    toggle_notify (toggle_data, object, FALSE);
+
+  return object;
+}
+
 static gboolean
 _object_unref_clear_weak_locations (GObject *object, gint *p_old_ref, gboolean do_unref)
 {

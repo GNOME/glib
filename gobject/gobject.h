@@ -511,6 +511,8 @@ GOBJECT_AVAILABLE_IN_2_70
 gpointer    g_object_take_ref                 (gpointer        object);
 GOBJECT_AVAILABLE_IN_ALL
 gpointer    g_object_ref                      (gpointer        object);
+GOBJECT_AVAILABLE_IN_2_88
+gpointer    g_object_ref_nonnull              (gpointer        object);
 GOBJECT_AVAILABLE_IN_ALL
 void        g_object_unref                    (gpointer        object);
 GOBJECT_AVAILABLE_IN_ALL
