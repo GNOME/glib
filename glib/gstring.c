@@ -284,6 +284,22 @@ gchar *
 }
 
 /**
+ * g_string_free_full:
+ * @string: (nullable) (transfer full): a #GString
+ *
+ * Frees the memory allocated for the #GString together the character data.
+ */
+void
+(g_string_free_full) (GString  *string)
+{
+  if (string == NULL)
+    return;
+
+  g_free (string->str);
+  g_slice_free (GString, string);
+}
+
+/**
  * g_string_free_and_steal:
  * @string: (transfer full): a #GString
  *

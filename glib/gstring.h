@@ -63,6 +63,8 @@ GString     *g_string_copy              (GString         *string);
 GLIB_AVAILABLE_IN_ALL
 gchar*      (g_string_free)             (GString         *string,
                                          gboolean         free_segment);
+GLIB_AVAILABLE_IN_2_88
+void        (g_string_free_full)        (GString         *string);
 GLIB_AVAILABLE_IN_2_76
 gchar*       g_string_free_and_steal    (GString         *string) G_GNUC_WARN_UNUSED_RESULT;
 
