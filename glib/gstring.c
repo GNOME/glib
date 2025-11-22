@@ -259,6 +259,10 @@ g_string_copy (GString *string)
  * Instead of passing %FALSE to this function, consider using
  * g_string_free_and_steal().
  *
+ * Similarly, instead of passing `TRUE` to this function,
+ * [method@GLib.String.free_deep] can be used. In particular, it can be used
+ * with [func@GLib.clear_pointer].
+ *
  * Returns: (nullable): the character data of @string
  *          (i.e. %NULL if @free_segment is %TRUE)
  */
@@ -281,6 +285,28 @@ gchar *
   g_slice_free (GString, string);
 
   return segment;
+}
+
+/**
+ * g_string_free_deep:
+ * @string: (transfer full): a string
+ *
+ * Frees the memory allocated for the [struct@GLib.String] together with its
+ * character data.
+ *
+ * This is equivalent to calling `g_string_free (string, TRUE)`, but it can
+ * be used with [func@GLib.clear_pointer]:
+ *
+ * ```c
+ * g_clear_pointer (&my_string, g_string_free_deep);
+ * ```
+ *
+ * Since: 2.90
+ */
+void
+(g_string_free_deep) (GString *string)
+{
+  g_string_free (string, TRUE);
 }
 
 /**
