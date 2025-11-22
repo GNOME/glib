@@ -756,6 +756,57 @@ static inline gboolean
   return TRUE;
 }
 
+/**
+ * g_take_object: (skip)
+ * @object_ptr: (inout) (not optional) (nullable): a pointer to a #GObject reference
+ * @new_object_ptr: (inout) (nullable) (transfer full): a pointer to a #GObject
+ *   reference to assign to @object_ptr, or %NULL to clear the pointer
+ *
+ * Updates a #GObject pointer to refer to @new_object.
+ *
+ * This is similar to `g_set_object` but does not increment the assigned
+ * value of @new_object_ptr's reference count.
+ *
+ * It decrements the reference count of the current value of @object_ptr
+ * (if non-%NULL), assigns the value of @new_object_ptr to @object_ptr and
+ * clears @new_object_ptr (if non-%NULL). The assignment is not atomic.
+ *
+ * @object_ptr must not be %NULL, but can point to a %NULL value.
+ *
+ * A macro is also included that allows this function to be used without
+ * pointer casts. The function itself is static inline, so its address may vary
+ * between compilation units.
+ *
+ * Returns: %TRUE if the value of @object_ptr changed, %FALSE otherwise
+ *
+ * Since: 2.88
+ */
+static inline gboolean
+(g_take_object) (GObject **object_ptr,
+                 GObject **new_object_ptr)
+{
+  GObject *old_object = *object_ptr;
+  GObject *new_object = *new_object_ptr;
+
+  g_return_val_if_fail (new_object == NULL || G_IS_OBJECT (new_object), FALSE);
+
+  /* Rely on g_object_unref() to check `old_object` is actually a GObject.
+   * Omit (object_ptr != NULL) and (new_object_ptr != NULL) checks because most
+   * of the time we will be operating on struct members with a constant offset,
+   * so a NULL check would not catch bugs.
+   */
+
+  gboolean assign_new_value = (old_object != new_object);
+
+  *object_ptr = new_object;
+  *new_object_ptr = NULL;
+
+  if (old_object != NULL)
+    g_object_unref (old_object);
+
+  return assign_new_value;
+}
+
 /* We need GCC for __extension__, which we need to sort out strict aliasing of @object_ptr */
 #if defined(__GNUC__)
 
@@ -771,12 +822,32 @@ static inline gboolean
   })) \
   GOBJECT_AVAILABLE_MACRO_IN_2_44
 
+#define g_take_object(object_ptr, new_object_ptr) \
+  (G_GNUC_EXTENSION ({ \
+    G_STATIC_ASSERT (sizeof *(object_ptr) == sizeof *(new_object_ptr)); \
+    /* Only one access, please; work around type aliasing */ \
+    union { char *in; GObject **out; } _object_ptr; \
+    union { char *in; GObject **out; } _new_object_ptr; \
+    _object_ptr.in = (char *) (object_ptr); \
+    _new_object_ptr.in = (char *) (new_object_ptr); \
+    /* Check types match */ \
+    (void) (0 ? *(object_ptr) = *(new_object_ptr), FALSE : FALSE); \
+    (g_take_object) (_object_ptr.out, _new_object_ptr.out); \
+  })) \
+  GOBJECT_AVAILABLE_MACRO_IN_2_88
+
 #else  /* if !defined(__GNUC__) */
 
 #define g_set_object(object_ptr, new_object) \
  (/* Check types match. */ \
   0 ? *(object_ptr) = (new_object), FALSE : \
   (g_set_object) ((GObject **) (object_ptr), (GObject *) (new_object)) \
+ )
+
+#define g_take_object(object_ptr, new_object_ptr) \
+ (/* Check types match. */ \
+  0 ? *(object_ptr) = *(new_object_ptr), FALSE : \
+  (g_set_object) ((GObject **) (object_ptr), (GObject **) (new_object_ptr)) \
  )
 
 #endif  /* !defined(__GNUC__) */
