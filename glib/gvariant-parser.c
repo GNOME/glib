@@ -597,7 +597,7 @@ ast_resolve (AST     *ast,
 {
   GVariant *value;
   gchar *pattern;
-  gint i, j = 0;
+  size_t i, j = 0;
 
   pattern = ast_get_pattern (ast, error);
 
@@ -1621,9 +1621,9 @@ string_free (AST *ast)
  * No leading/trailing space allowed. */
 static gboolean
 unicode_unescape (const gchar  *src,
-                  gint         *src_ofs,
+                  size_t       *src_ofs,
                   gchar        *dest,
-                  gint         *dest_ofs,
+                  size_t       *dest_ofs,
                   gsize         length,
                   SourceRef    *ref,
                   GError      **error)
@@ -1684,7 +1684,7 @@ string_parse (TokenStream  *stream,
   gsize length;
   gchar quote;
   gchar *str;
-  gint i, j;
+  size_t i, j;
 
   token_stream_start_ref (stream, &ref);
   token = token_stream_get (stream);
@@ -1814,7 +1814,7 @@ bytestring_parse (TokenStream  *stream,
   gsize length;
   gchar quote;
   gchar *str;
-  gint i, j;
+  size_t i, j;
 
   token_stream_start_ref (stream, &ref);
   token = token_stream_get (stream);
