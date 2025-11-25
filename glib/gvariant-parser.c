@@ -662,9 +662,9 @@ static AST *parse (TokenStream  *stream,
                    GError      **error);
 
 static void
-ast_array_append (AST  ***array,
-                  gint   *n_items,
-                  AST    *ast)
+ast_array_append (AST    ***array,
+                  size_t   *n_items,
+                  AST      *ast)
 {
   if ((*n_items & (*n_items - 1)) == 0)
     *array = g_renew (AST *, *array, *n_items ? 2 ** n_items : 1);
@@ -673,10 +673,10 @@ ast_array_append (AST  ***array,
 }
 
 static void
-ast_array_free (AST  **array,
-                gint   n_items)
+ast_array_free (AST    **array,
+                size_t   n_items)
 {
-  gint i;
+  size_t i;
 
   for (i = 0; i < n_items; i++)
     ast_free (array[i]);
@@ -685,11 +685,11 @@ ast_array_free (AST  **array,
 
 static gchar *
 ast_array_get_pattern (AST    **array,
-                       gint     n_items,
+                       size_t   n_items,
                        GError **error)
 {
   gchar *pattern;
-  gint i;
+  size_t i;
 
   /* Find the pattern which applies to all children in the array, by l-folding a
    * coalesce operation.
@@ -721,7 +721,7 @@ ast_array_get_pattern (AST    **array,
          * pair of values.
          */
         {
-          int j = 0;
+          size_t j = 0;
 
           while (TRUE)
             {
@@ -969,7 +969,7 @@ typedef struct
   AST ast;
 
   AST **children;
-  gint n_children;
+  size_t n_children;
 } Array;
 
 static gchar *
@@ -1002,7 +1002,7 @@ array_get_value (AST                 *ast,
   Array *array = (Array *) ast;
   const GVariantType *childtype;
   GVariantBuilder builder;
-  gint i;
+  size_t i;
 
   if (!g_variant_type_is_array (type))
     return ast_type_error (ast, type, error);
@@ -1088,7 +1088,7 @@ typedef struct
   AST ast;
 
   AST **children;
-  gint n_children;
+  size_t n_children;
 } Tuple;
 
 static gchar *
@@ -1098,7 +1098,7 @@ tuple_get_pattern (AST     *ast,
   Tuple *tuple = (Tuple *) ast;
   gchar *result = NULL;
   gchar **parts;
-  gint i;
+  size_t i;
 
   parts = g_new (gchar *, tuple->n_children + 4);
   parts[tuple->n_children + 1] = (gchar *) ")";
@@ -1128,7 +1128,7 @@ tuple_get_value (AST                 *ast,
   Tuple *tuple = (Tuple *) ast;
   const GVariantType *childtype;
   GVariantBuilder builder;
-  gint i;
+  size_t i;
 
   if (!g_variant_type_is_tuple (type))
     return ast_type_error (ast, type, error);
@@ -1320,8 +1320,15 @@ typedef struct
 
   AST **keys;
   AST **values;
-  gint n_children;
+
+  /* Iff this is DICTIONARY_N_CHILDREN_FREESTANDING_ENTRY then this struct
+   * represents a single freestanding dict entry (`{1, "one"}`) rather than a
+   * full dict. In the freestanding case, @keys and @values have exactly one
+   * member each. */
+  size_t n_children;
 } Dictionary;
+
+#define DICTIONARY_N_CHILDREN_FREESTANDING_ENTRY ((size_t) -1)
 
 static gchar *
 dictionary_get_pattern (AST     *ast,
@@ -1337,7 +1344,7 @@ dictionary_get_pattern (AST     *ast,
     return g_strdup ("Ma{**}");
 
   key_pattern = ast_array_get_pattern (dict->keys,
-                                       abs (dict->n_children),
+                                       (dict->n_children == DICTIONARY_N_CHILDREN_FREESTANDING_ENTRY) ? 1 : dict->n_children,
                                        error);
 
   if (key_pattern == NULL)
@@ -1368,7 +1375,7 @@ dictionary_get_pattern (AST     *ast,
     return NULL;
 
   result = g_strdup_printf ("M%s{%c%s}",
-                            dict->n_children > 0 ? "a" : "",
+                            (dict->n_children > 0 && dict->n_children != DICTIONARY_N_CHILDREN_FREESTANDING_ENTRY) ? "a" : "",
                             key_char, value_pattern);
   g_free (value_pattern);
 
@@ -1382,7 +1389,7 @@ dictionary_get_value (AST                 *ast,
 {
   Dictionary *dict = (Dictionary *) ast;
 
-  if (dict->n_children == -1)
+  if (dict->n_children == DICTIONARY_N_CHILDREN_FREESTANDING_ENTRY)
     {
       const GVariantType *subtype;
       GVariantBuilder builder;
@@ -1415,7 +1422,7 @@ dictionary_get_value (AST                 *ast,
     {
       const GVariantType *entry, *key, *val;
       GVariantBuilder builder;
-      gint i;
+      size_t i;
 
       if (!g_variant_type_is_subtype_of (type, G_VARIANT_TYPE_DICTIONARY))
         return ast_type_error (ast, type, error);
@@ -1456,12 +1463,12 @@ static void
 dictionary_free (AST *ast)
 {
   Dictionary *dict = (Dictionary *) ast;
-  gint n_children;
+  size_t n_children;
 
-  if (dict->n_children > -1)
-    n_children = dict->n_children;
-  else
+  if (dict->n_children == DICTIONARY_N_CHILDREN_FREESTANDING_ENTRY)
     n_children = 1;
+  else
+    n_children = dict->n_children;
 
   ast_array_free (dict->keys, n_children);
   ast_array_free (dict->values, n_children);
@@ -1479,7 +1486,7 @@ dictionary_parse (TokenStream  *stream,
     maybe_wrapper, dictionary_get_value,
     dictionary_free
   };
-  gint n_keys, n_values;
+  size_t n_keys, n_values;
   gboolean only_one;
   Dictionary *dict;
   AST *first;
@@ -1522,7 +1529,7 @@ dictionary_parse (TokenStream  *stream,
         goto error;
 
       g_assert (n_keys == 1 && n_values == 1);
-      dict->n_children = -1;
+      dict->n_children = DICTIONARY_N_CHILDREN_FREESTANDING_ENTRY;
 
       return (AST *) dict;
     }
@@ -1555,6 +1562,7 @@ dictionary_parse (TokenStream  *stream,
     }
 
   g_assert (n_keys == n_values);
+  g_assert (n_keys != DICTIONARY_N_CHILDREN_FREESTANDING_ENTRY);
   dict->n_children = n_keys;
 
   return (AST *) dict;
