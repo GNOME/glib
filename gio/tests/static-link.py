@@ -46,8 +46,8 @@ with tempfile.TemporaryDirectory() as builddir:
     sourcedir = os.path.join(test_dir, "static-link")
 
     # Ensure we can static link and run a test app
-    subprocess.check_call(["meson", sourcedir, builddir], env=env)
-    subprocess.check_call(["ninja", "-C", builddir, "test"], env=env)
+    subprocess.check_call(["meson", "setup", sourcedir, builddir], env=env)
+    subprocess.check_call(["meson", "test", "-C", builddir], env=env)
     # FIXME: This probably only works on Linux
     out = subprocess.check_output(
         ["ldd", os.path.join(builddir, "test-static-link")], env=env
