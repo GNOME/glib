@@ -1427,6 +1427,40 @@ test_wide (void)
     }
 };
 
+/* Test g_unichar_to_utf8(). */
+static void
+test_unichar_to_utf8 (void)
+{
+  const struct
+    {
+      gunichar unichar;
+      int expected_length;
+      const char *expected_output;  /* must be of length `expected_length` */
+    }
+  vectors[] =
+    {
+      { 0x21, 1, "!" },
+      { 0x00A1, 2, "\xc2\xa1" },
+      { 0x0800, 3, "\xe0\xa0\x80" },
+      { 0x10000, 4, "\xf0\x90\x80\x80" },
+      { 0x200000, 5, "\xf8\x88\x80\x80\x80" },
+      { 0x4000000, 6, "\xfc\x84\x80\x80\x80\x80" },
+    };
+
+  for (size_t i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      int length;
+      char output[6];
+
+      length = g_unichar_to_utf8 (vectors[i].unichar, NULL);
+      g_assert_cmpint (length, ==, vectors[i].expected_length);
+
+      length = g_unichar_to_utf8 (vectors[i].unichar, output);
+      g_assert_cmpint (length, ==, vectors[i].expected_length);
+      g_assert_cmpmem (output, length, vectors[i].expected_output, vectors[i].expected_length);
+    }
+}
+
 /* Test that g_unichar_compose() returns the correct value for various
  * ASCII and Unicode alphabetic, numeric, and other, codepoints. */
 static void
@@ -2109,6 +2143,7 @@ main (int   argc,
   g_test_add_func ("/unicode/upper", test_upper);
   g_test_add_func ("/unicode/validate", test_unichar_validate);
   g_test_add_func ("/unicode/wide", test_wide);
+  g_test_add_func ("/unicode/unichar-to-utf8", test_unichar_to_utf8);
   g_test_add_func ("/unicode/xdigit", test_xdigit);
   g_test_add_func ("/unicode/xdigit-value", test_xdigit_value);
   g_test_add_func ("/unicode/zero-width", test_zerowidth);

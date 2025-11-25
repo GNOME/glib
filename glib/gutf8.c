@@ -542,16 +542,16 @@ g_utf8_truncate_middle (const gchar *string,
  * 
  * Converts a single character to UTF-8.
  * 
- * Returns: number of bytes written
+ * Returns: number of bytes written, guaranteed to be in the range [1, 6]
  */
 int
 g_unichar_to_utf8 (gunichar c,
 		   gchar   *outbuf)
 {
   /* If this gets modified, also update the copy in g_string_insert_unichar() */
-  guint len = 0;    
-  int first;
-  int i;
+  size_t len = 0;
+  char first;
+  size_t i;
 
   if (c < 0x80)
     {
