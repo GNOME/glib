@@ -86,7 +86,9 @@ g_variant_parser_get_error_quark (void)
 
 typedef struct
 {
-  gint start, end;
+  /* Offsets from the start of the input, in bytes. Can be equal when referring
+   * to a point rather than a range. The invariant `end >= start` always holds. */
+  size_t start, end;
 } SourceRef;
 
 G_GNUC_PRINTF(5, 0)
@@ -101,14 +103,16 @@ parser_set_error_va (GError      **error,
   GString *msg = g_string_new (NULL);
 
   if (location->start == location->end)
-    g_string_append_printf (msg, "%d", location->start);
+    g_string_append_printf (msg, "%" G_GSIZE_FORMAT, location->start);
   else
-    g_string_append_printf (msg, "%d-%d", location->start, location->end);
+    g_string_append_printf (msg, "%" G_GSIZE_FORMAT "-%" G_GSIZE_FORMAT,
+                            location->start, location->end);
 
   if (other != NULL)
     {
       g_assert (other->start != other->end);
-      g_string_append_printf (msg, ",%d-%d", other->start, other->end);
+      g_string_append_printf (msg, ",%" G_GSIZE_FORMAT "-%" G_GSIZE_FORMAT,
+                              other->start, other->end);
     }
   g_string_append_c (msg, ':');
 
@@ -135,11 +139,15 @@ parser_set_error (GError      **error,
 
 typedef struct
 {
+  /* We should always have the following ordering constraint:
+   *   start <= this <= stream <= end
+   * Additionally, unless in an error or EOF state, `this < stream`.
+   */
   const gchar *start;
   const gchar *stream;
   const gchar *end;
 
-  const gchar *this;
+  const gchar *this;  /* (nullable) */
 } TokenStream;
 
 
@@ -170,7 +178,7 @@ token_stream_set_error (TokenStream  *stream,
 static gboolean
 token_stream_prepare (TokenStream *stream)
 {
-  gint brackets = 0;
+  gssize brackets = 0;
   const gchar *end;
 
   if (stream->this != NULL)
@@ -395,7 +403,7 @@ static void
 pattern_copy (gchar       **out,
               const gchar **in)
 {
-  gint brackets = 0;
+  gssize brackets = 0;
 
   while (**in == 'a' || **in == 'm' || **in == 'M')
     *(*out)++ = *(*in)++;
@@ -2592,7 +2600,7 @@ g_variant_builder_add_parsed (GVariantBuilder *builder,
 static gboolean
 parse_num (const gchar *num,
            const gchar *limit,
-           gint        *result)
+           size_t      *result)
 {
   gchar *endptr;
   gint64 bignum;
@@ -2602,10 +2610,12 @@ parse_num (const gchar *num,
   if (endptr != limit)
     return FALSE;
 
+  /* The upper bound here is more restrictive than it technically needs to be,
+   * but should be enough for any practical situation: */
   if (bignum < 0 || bignum > G_MAXINT)
     return FALSE;
 
-  *result = bignum;
+  *result = (size_t) bignum;
 
   return TRUE;
 }
@@ -2616,7 +2626,7 @@ add_last_line (GString     *err,
 {
   const gchar *last_nl;
   gchar *chomped;
-  gint i;
+  size_t i;
 
   /* This is an error at the end of input.  If we have a file
    * with newlines, that's probably the empty string after the
@@ -2761,7 +2771,7 @@ g_variant_parse_error_print_context (GError      *error,
 
   if (dash == NULL || colon < dash)
     {
-      gint point;
+      size_t point;
 
       /* we have a single point */
       if (!parse_num (error->message, colon, &point))
@@ -2779,7 +2789,7 @@ g_variant_parse_error_print_context (GError      *error,
       /* We have one or two ranges... */
       if (comma && comma < colon)
         {
-          gint start1, end1, start2, end2;
+          size_t start1, end1, start2, end2;
           const gchar *dash2;
 
           /* Two ranges */
@@ -2795,7 +2805,7 @@ g_variant_parse_error_print_context (GError      *error,
         }
       else
         {
-          gint start, end;
+          size_t start, end;
 
           /* One range */
           if (!parse_num (error->message, dash, &start) || !parse_num (dash + 1, colon, &end))
