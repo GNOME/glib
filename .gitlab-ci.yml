@@ -39,8 +39,8 @@ cache:
 variables:
   FEDORA_IMAGE: "registry.gitlab.gnome.org/gnome/glib/fedora:v41.1"
   COVERITY_IMAGE: "registry.gitlab.gnome.org/gnome/glib/coverity:v7"
-  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v24"
-  DEBIAN_I386_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable-i386:v4"
+  DEBIAN_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable:v25"
+  DEBIAN_I386_IMAGE: "registry.gitlab.gnome.org/gnome/glib/debian-stable-i386:v5"
   ALPINE_IMAGE: "registry.gitlab.gnome.org/gnome/glib/alpine:v8"
   MINGW_IMAGE: "registry.gitlab.gnome.org/gnome/glib/mingw:v41.1"
   GOBJECT_INTROSPECTION_TAG: "1.80.1"
@@ -295,6 +295,7 @@ fedora-x86_64:
 
 .build-debian:
   extends:
+    - .build-gobject-introspection
     - .build-linux
     - .with-git
   stage: build
@@ -302,6 +303,7 @@ fedora-x86_64:
   before_script:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
+    - !reference [".build-gobject-introspection", "before_script"]
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --werror
@@ -311,6 +313,7 @@ fedora-x86_64:
             --libdir=lib
             -Dsystemtap=enabled
             -Ddtrace=enabled
+            -Dintrospection=enabled
             _build
     - meson compile -C _build
     - .gitlab-ci/run-tests.sh
