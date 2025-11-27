@@ -152,7 +152,7 @@ variables:
       if ! pkg-config --atleast-version "${GOBJECT_INTROSPECTION_TAG}" gobject-introspection-1.0; then
         mkdir -p gobject-introspection
         git clone --branch "${GOBJECT_INTROSPECTION_TAG}" https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
-        meson gobject-introspection gobject-introspection/build --prefix=/usr
+        meson setup gobject-introspection gobject-introspection/build --prefix=/usr
         sudo meson install -C gobject-introspection/build
       fi
   artifacts:
