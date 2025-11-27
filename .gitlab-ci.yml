@@ -154,11 +154,8 @@ variables:
         git clone --branch "${GOBJECT_INTROSPECTION_TAG}" https://gitlab.gnome.org/GNOME/gobject-introspection.git gobject-introspection
         meson setup gobject-introspection gobject-introspection/build --prefix=/usr
         sudo meson install -C gobject-introspection/build
+        rm -rf gobject-introspection
       fi
-  artifacts:
-    expire_in: 3 days
-    paths:
-      - gobject-introspection
 
 .build-linux:
   before_script:
