@@ -615,7 +615,7 @@ msys2-mingw32:
     PYTHONUTF8: "1"
     G_DEBUGGER: 'gdb.exe -batch -ex "set logging enabled on" -ex "attach %p" -ex "signal-event %e" -ex "c" -ex "thread apply all bt full" -ex "k"'
   script:
-    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
+    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu
     - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
@@ -646,7 +646,7 @@ msys2-clang64:
     CHERE_INVOKING: "yes"
     PYTHONUTF8: "1"
   script:
-    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
+    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu
     - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
   artifacts:
