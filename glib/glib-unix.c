@@ -952,12 +952,14 @@ char *
 g_unix_fd_query_path (int      fd,
                       GError **error)
 {
-#if defined(__linux__) || defined(__sun)
+#if defined(__linux__) || defined(__sun) || defined(_AIX)
   char *path;
   char *proc_path;
 
 #ifdef __sun
   proc_path = g_strdup_printf ("/proc/self/path/%d", fd);
+#elif _AIX
+  proc_path = g_strdup_printf ("/proc/%ld/fd/%d", (long) getpid (), fd);
 #else
   proc_path = g_strdup_printf ("/proc/self/fd/%d", fd);
 #endif
