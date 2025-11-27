@@ -143,6 +143,19 @@ test_version (void)
 static const gchar *argv0;
 
 static void
+test_toplevel (void)
+{
+  const char *toplevel = g_get_process_executable_dir ();
+  char *argv0_dirname = g_path_get_dirname (argv0);
+  char *argv0_toplevel = g_canonicalize_filename (argv0_dirname, "/");
+  g_free (argv0_dirname);
+
+  g_assert_cmpstr (toplevel, ==, argv0_toplevel);
+
+  g_free (argv0_toplevel);
+}
+
+static void
 test_appname (void)
 {
   const gchar *prgname;
@@ -1440,6 +1453,7 @@ main (int   argc,
   g_test_add_func ("/utils/language-names", test_language_names);
   g_test_add_func ("/utils/locale-variants", test_locale_variants);
   g_test_add_func ("/utils/version", test_version);
+  g_test_add_func ("/utils/toplevel", test_toplevel);
   g_test_add_func ("/utils/appname", test_appname);
   g_test_add_func ("/utils/prgname-thread-safety", test_prgname_thread_safety);
   g_test_add_func ("/utils/tmpdir", test_tmpdir);

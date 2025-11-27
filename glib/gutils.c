@@ -1127,6 +1127,61 @@ g_get_host_name (void)
   return hostname;
 }
 
+/**
+ * g_get_process_executable_dir:
+ *
+ * Gets the absolute path to the directory containing the currently running
+ * executable.
+ *
+ * This is useful for locating application resources relative to the
+ * installation directory.
+ *
+ * The returned path is cached on first call and remains constant for the
+ * lifetime of the program. So, it must not be freed or modified.
+ *
+ * Returns: (transfer none) (nullable) (type filename): the absolute path
+ *   to the directory containing the program's executable, or `NULL` if
+ *   not found
+ * Since: 2.92
+ */
+const char *
+g_get_process_executable_dir (void)
+{
+  static char *toplevel = NULL;
+
+  if (toplevel == NULL)
+    {
+#if defined(G_OS_WIN32)
+      toplevel = g_win32_get_package_installation_directory_of_module (NULL);
+#elif defined(__APPLE__)
+      char pathbuf[PATH_MAX + 1];
+      uint32_t bufsize = sizeof (pathbuf);
+      char *bin_dir;
+
+      _NSGetExecutablePath (pathbuf, &bufsize);
+      bin_dir = g_path_get_dirname (pathbuf);
+      toplevel = g_build_path (G_DIR_SEPARATOR_S, bin_dir, NULL);
+      g_free (bin_dir);
+#elif defined(__linux__) || defined(__MINGW32__)
+      gchar *exe_path, *bin_dir;
+
+      exe_path = g_file_read_link ("/proc/self/exe", NULL);
+      if (exe_path == NULL)
+        return NULL;
+
+      bin_dir = g_path_get_dirname (exe_path);
+      toplevel = g_build_filename (bin_dir, NULL);
+      g_free (exe_path);
+      g_free (bin_dir);
+#else
+    /* Relocations not currently supported for this platform */
+    return NULL;
+#endif
+    }
+
+  return toplevel;
+}
+
 static const gchar *g_prgname = NULL; /* always a quark */
 
 /**

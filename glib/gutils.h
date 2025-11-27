@@ -46,6 +46,8 @@ GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_tmp_dir          (void);
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_host_name	     (void);
+GLIB_AVAILABLE_IN_2_92
+const char *          g_get_process_executable_dir (void);
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_prgname          (void);
 GLIB_AVAILABLE_IN_ALL
