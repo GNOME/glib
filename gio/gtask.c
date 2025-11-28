@@ -1551,22 +1551,22 @@ static void
 g_task_thread_cleanup (void)
 {
   gint tasks_pending;
+  gint max_threads;
 
   g_mutex_lock (&task_pool_mutex);
   tasks_pending = g_thread_pool_unprocessed (task_pool);
-
-  if (tasks_running > G_TASK_POOL_SIZE)
-    {
-      g_thread_pool_set_max_threads (task_pool, tasks_running - 1, NULL);
-      g_trace_set_int64_counter (task_pool_max_counter, tasks_running - 1);
-    }
-  else if (tasks_running + tasks_pending < G_TASK_POOL_SIZE)
-    g_source_set_ready_time (task_pool_manager, -1);
 
   if (tasks_running > G_TASK_POOL_SIZE && tasks_running < G_TASK_WAIT_TIME_MAX_POOL_SIZE)
     task_wait_time = (guint64) (task_wait_time / G_TASK_WAIT_TIME_MULTIPLIER);
 
   tasks_running--;
+
+  max_threads = MAX (G_TASK_POOL_SIZE, tasks_running + 1);
+  g_thread_pool_set_max_threads (task_pool, max_threads, NULL);
+  g_trace_set_int64_counter (task_pool_max_counter, max_threads);
+
+  if (tasks_running + tasks_pending < G_TASK_POOL_SIZE)
+    g_source_set_ready_time (task_pool_manager, -1);
 
   g_trace_set_int64_counter (tasks_running_counter, tasks_running);
 
