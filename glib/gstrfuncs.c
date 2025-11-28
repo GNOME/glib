@@ -2108,7 +2108,7 @@ g_strcanon (gchar       *string,
  * - `\r` → [U+000D Carriage Return](https://en.wikipedia.org/wiki/Carriage_return)
  * - `\t` → [U+0009 Horizontal Tabulation](https://en.wikipedia.org/wiki/Tab_character)
  * - `\v` → [U+000B Vertical Tabulation](https://en.wikipedia.org/wiki/Vertical_Tab)
- * - `\` followed by one to three octal digits → the numeric value (mod 255)
+ * - `\` followed by one to three octal digits → the numeric value (mod 256)
  * - `\` followed by any other character → the character as is.
  *   For example, `\\` will turn into a backslash (`\`) and `\"` into a double quote (`"`).
  *
