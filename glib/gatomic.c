@@ -624,6 +624,7 @@ gint
 (g_atomic_int_get) (const volatile gint *atomic)
 {
   int result = *atomic;
+  _ReadWriteBarrier ();
   MemoryBarrier ();
 
   return result;
@@ -634,6 +635,7 @@ void
                     gint           newval)
 {
   MemoryBarrier ();
+  _ReadWriteBarrier ();
   *atomic = newval;
 }
 
@@ -721,6 +723,7 @@ gpointer
   const gpointer *ptr = atomic;
 
   gpointer result = *ptr;
+  _ReadWriteBarrier ();
   MemoryBarrier ();
 
   return result;
@@ -733,6 +736,7 @@ void
   gpointer *ptr = atomic;
 
   MemoryBarrier ();
+  _ReadWriteBarrier ();
   *ptr = newval;
 }
 
