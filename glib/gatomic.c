@@ -617,9 +617,43 @@ guintptr
 #include <intrin.h>
 #endif
 
+#if defined (_MSC_VER) && \
+    ((!defined (_M_IX86) && !defined (_M_AMD64)) || _MSC_VER >= 1920) /* VS2019 */
+  /* VS2017 and earlier do not provide __iso_volatile intrinsics
+   * on Intel targets.
+   */
+# define HAVE_ISO_VOLATILE_INTRINSICS
+#endif
+
 /*
  * http://msdn.microsoft.com/en-us/library/ms684122(v=vs.85).aspx
  */
+
+#if defined(HAVE_ISO_VOLATILE_INTRINSICS)
+
+G_STATIC_ASSERT (sizeof (int) == sizeof (__int32));
+
+gint
+(g_atomic_int_get) (const volatile gint *atomic)
+{
+  int result = __iso_volatile_load32 (atomic);
+  _ReadWriteBarrier ();
+  MemoryBarrier ();
+
+  return result;
+}
+
+void
+(g_atomic_int_set) (volatile gint *atomic,
+                    gint           newval)
+{
+  MemoryBarrier ();
+  _ReadWriteBarrier ();
+  __iso_volatile_store32 (atomic, newval);
+}
+
+#else /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
+
 gint
 (g_atomic_int_get) (const volatile gint *atomic)
 {
@@ -638,6 +672,8 @@ void
   _ReadWriteBarrier ();
   *atomic = newval;
 }
+
+#endif /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
 
 void
 (g_atomic_int_inc) (volatile gint *atomic)
@@ -716,6 +752,48 @@ guint
 #endif
 }
 
+#if defined(HAVE_ISO_VOLATILE_INTRINSICS)
+
+gpointer
+(g_atomic_pointer_get) (const volatile void *atomic)
+{
+#if GLIB_SIZEOF_VOID_P == 8
+  const __int64 volatile *p = (const __int64 volatile *) atomic;
+#else
+  const __int32 volatile *p = (const __int32 volatile *) atomic;
+#endif
+
+#if GLIB_SIZEOF_VOID_P == 8
+  gpointer result = (gpointer) __iso_volatile_load64 (p);
+#else
+  gpointer result = (gpointer) __iso_volatile_load32 (p);
+#endif
+  _ReadWriteBarrier ();
+  MemoryBarrier ();
+
+  return result;
+}
+
+void
+(g_atomic_pointer_set) (volatile void *atomic,
+                        gpointer       newval)
+{
+#if GLIB_SIZEOF_VOID_P == 8
+  __int64 volatile *p = (__int64 volatile *) atomic;
+#else
+  __int32 volatile *p = (__int32 volatile *) atomic;
+#endif
+
+  MemoryBarrier ();
+  _ReadWriteBarrier ();
+#if GLIB_SIZEOF_VOID_P == 8
+  __iso_volatile_store64 (p, newval);
+#else
+  __iso_volatile_store32 (p, newval);
+#endif
+}
+
+#else /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
 
 gpointer
 (g_atomic_pointer_get) (const volatile void *atomic)
@@ -739,6 +817,8 @@ void
   _ReadWriteBarrier ();
   *p = newval;
 }
+
+#endif /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
 
 gboolean
 (g_atomic_pointer_compare_and_exchange) (volatile void *atomic,
