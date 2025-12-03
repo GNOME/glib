@@ -623,16 +623,18 @@ guintptr
 gint
 (g_atomic_int_get) (const volatile gint *atomic)
 {
+  int result = *atomic;
   MemoryBarrier ();
-  return *atomic;
+
+  return result;
 }
 
 void
 (g_atomic_int_set) (volatile gint *atomic,
                     gint           newval)
 {
-  *atomic = newval;
   MemoryBarrier ();
+  *atomic = newval;
 }
 
 void
@@ -718,8 +720,10 @@ gpointer
 {
   const gpointer *ptr = atomic;
 
+  gpointer result = *ptr;
   MemoryBarrier ();
-  return *ptr;
+
+  return result;
 }
 
 void
@@ -728,8 +732,8 @@ void
 {
   gpointer *ptr = atomic;
 
-  *ptr = newval;
   MemoryBarrier ();
+  *ptr = newval;
 }
 
 gboolean
