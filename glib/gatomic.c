@@ -606,10 +606,15 @@ guintptr
 #elif defined (G_PLATFORM_WIN32)
 
 #include <windows.h>
-#if !defined(_M_AMD64) && !defined (_M_IA64) && !defined(_M_X64) && !(defined _MSC_VER && _MSC_VER <= 1200)
-#define InterlockedAnd _InterlockedAnd
-#define InterlockedOr _InterlockedOr
-#define InterlockedXor _InterlockedXor
+
+#if defined (_M_IX86) && defined (_MSC_VER) && _MSC_VER <= 1800 /* VS2013 */
+/* Older Windows SDKs did not provide definitions of InterlockedAnd,
+ * InterlockedOr, and InterlockedXor on x86. This is also stated on
+ * MSDN: "for the x86 architecture, use the compiler intrinsic directly".
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=652000
+ */
+#include <intrin.h>
 #endif
 
 /*
@@ -678,21 +683,33 @@ guint
 (g_atomic_int_and) (volatile guint *atomic,
                     guint           val)
 {
+#if defined (_M_IX86) && defined (_MSC_VER) && _MSC_VER <= 1800 /* VS2013 */
+  return _InterlockedAnd (atomic, val);
+#else
   return InterlockedAnd (atomic, val);
+#endif
 }
 
 guint
 (g_atomic_int_or) (volatile guint *atomic,
                    guint           val)
 {
+#if defined (_M_IX86) && defined (_MSC_VER) && _MSC_VER <= 1800 /* VS2013 */
+  return _InterlockedOr (atomic, val);
+#else
   return InterlockedOr (atomic, val);
+#endif
 }
 
 guint
 (g_atomic_int_xor) (volatile guint *atomic,
                     guint           val)
 {
+#if defined (_M_IX86) && defined (_MSC_VER) && _MSC_VER <= 1800 /* VS2013 */
+  return _InterlockedXor (atomic, val);
+#else
   return InterlockedXor (atomic, val);
+#endif
 }
 
 
@@ -760,6 +777,8 @@ guintptr
 {
 #if GLIB_SIZEOF_VOID_P == 8
   return InterlockedAnd64 (atomic, val);
+#elif defined (_M_IX86) && defined (_MSC_VER) && _MSC_VER <= 1800 /* VS2013 */
+  return _InterlockedAnd (atomic, val);
 #else
   return InterlockedAnd (atomic, val);
 #endif
@@ -771,6 +790,8 @@ guintptr
 {
 #if GLIB_SIZEOF_VOID_P == 8
   return InterlockedOr64 (atomic, val);
+#elif defined (_M_IX86) && defined (_MSC_VER) && _MSC_VER <= 1800 /* VS2013 */
+  return _InterlockedOr (atomic, val);
 #else
   return InterlockedOr (atomic, val);
 #endif
@@ -782,6 +803,8 @@ guintptr
 {
 #if GLIB_SIZEOF_VOID_P == 8
   return InterlockedXor64 (atomic, val);
+#elif defined (_M_IX86) && defined (_MSC_VER) && _MSC_VER <= 1800 /* VS2013 */
+  return _InterlockedXor (atomic, val);
 #else
   return InterlockedXor (atomic, val);
 #endif
