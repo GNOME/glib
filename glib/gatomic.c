@@ -720,9 +720,9 @@ guint
 gpointer
 (g_atomic_pointer_get) (const volatile void *atomic)
 {
-  const gpointer *ptr = atomic;
+  const void * volatile *p = (const void * volatile *) atomic;
 
-  gpointer result = *ptr;
+  gpointer result = *p;
   _ReadWriteBarrier ();
   MemoryBarrier ();
 
@@ -733,11 +733,11 @@ void
 (g_atomic_pointer_set) (volatile void *atomic,
                         gpointer       newval)
 {
-  gpointer *ptr = atomic;
+  void * volatile *p = (void * volatile *) atomic;
 
   MemoryBarrier ();
   _ReadWriteBarrier ();
-  *ptr = newval;
+  *p = newval;
 }
 
 gboolean
