@@ -612,56 +612,6 @@ guintptr
 #define InterlockedXor _InterlockedXor
 #endif
 
-#if !defined (_MSC_VER) || _MSC_VER <= 1200
-#include "gmessages.h"
-/* Inlined versions for older compiler */
-static LONG
-_gInterlockedAnd (volatile guint *atomic,
-                  guint           val)
-{
-  LONG i, j;
-
-  j = *atomic;
-  do {
-    i = j;
-    j = InterlockedCompareExchange(atomic, i & val, i);
-  } while (i != j);
-
-  return j;
-}
-#define InterlockedAnd(a,b) _gInterlockedAnd(a,b)
-static LONG
-_gInterlockedOr (volatile guint *atomic,
-                 guint           val)
-{
-  LONG i, j;
-
-  j = *atomic;
-  do {
-    i = j;
-    j = InterlockedCompareExchange(atomic, i | val, i);
-  } while (i != j);
-
-  return j;
-}
-#define InterlockedOr(a,b) _gInterlockedOr(a,b)
-static LONG
-_gInterlockedXor (volatile guint *atomic,
-                  guint           val)
-{
-  LONG i, j;
-
-  j = *atomic;
-  do {
-    i = j;
-    j = InterlockedCompareExchange(atomic, i ^ val, i);
-  } while (i != j);
-
-  return j;
-}
-#define InterlockedXor(a,b) _gInterlockedXor(a,b)
-#endif
-
 /*
  * http://msdn.microsoft.com/en-us/library/ms684122(v=vs.85).aspx
  */
