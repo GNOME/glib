@@ -271,7 +271,7 @@ g_bytes_new_from_bytes (GBytes  *bytes,
   /* Note that length may be 0. */
   g_return_val_if_fail (bytes != NULL, NULL);
   g_return_val_if_fail (offset <= bytes->size, NULL);
-  g_return_val_if_fail (offset + length <= bytes->size, NULL);
+  g_return_val_if_fail (length <= bytes->size - offset, NULL);
 
   /* Avoid an extra GBytes if all bytes were requested */
   if (offset == 0 && length == bytes->size)
@@ -288,7 +288,7 @@ g_bytes_new_from_bytes (GBytes  *bytes,
   g_return_val_if_fail (bytes != NULL, NULL);
   g_return_val_if_fail (base >= (gchar *)bytes->data, NULL);
   g_return_val_if_fail (base <= (gchar *)bytes->data + bytes->size, NULL);
-  g_return_val_if_fail (base + length <= (gchar *)bytes->data + bytes->size, NULL);
+  g_return_val_if_fail (length <= (gsize) (((gchar *)bytes->data + bytes->size) - base), NULL);
 
   return g_bytes_new_with_free_func (base, length,
                                      (GDestroyNotify)g_bytes_unref, g_bytes_ref (bytes));
