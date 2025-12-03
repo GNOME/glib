@@ -291,8 +291,8 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
      */
     "/",              /* we already have "Filesystem root" in Nautilus */ 
     "/bin",
-    "/bin/efi",
     "/boot",
+    "/boot/efi",
     "/compat/linux/proc",
     "/compat/linux/sys",
     "/dev",
