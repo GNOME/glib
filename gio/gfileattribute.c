@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include <stdint.h>
 #include <string.h>
 
 #include "gfileattribute.h"
@@ -166,11 +167,12 @@ valid_char (char c)
   return c >= 32 && c <= 126 && c != '\\';
 }
 
+/* Returns NULL on error */
 static char *
 escape_byte_string (const char *str)
 {
   size_t i, len;
-  int num_invalid;
+  size_t num_invalid;
   char *escaped_val, *p;
   unsigned char c;
   const char hex_digits[] = "0123456789abcdef";
@@ -188,7 +190,12 @@ escape_byte_string (const char *str)
     return g_strdup (str);
   else
     {
-      escaped_val = g_malloc (len + num_invalid*3 + 1);
+      /* Check for overflow. We want to check the inequality:
+       * !(len + num_invalid * 3 + 1 > SIZE_MAX) */
+      if (num_invalid >= (SIZE_MAX - len) / 3)
+        return NULL;
+
+      escaped_val = g_malloc (len + num_invalid * 3 + 1);
 
       p = escaped_val;
       for (i = 0; i < len; i++)
