@@ -208,9 +208,9 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * supported.
  *
  * Substitutions must start with a slash, and must not contain a trailing slash
- * before the `=`.  The path after the slash should ideally be absolute, but
- * this is not strictly required.  It is possible to overlay the location of a
- * single resource with an individual file.
+ * before the `=`.  The filesystem path after the `=` should ideally be absolute,
+ * but this is not strictly required.  It is possible to overlay the location of
+ * a single resource with an individual file.
  *
  * Since: 2.32
  */
