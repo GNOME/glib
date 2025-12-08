@@ -1,3 +1,25 @@
+Overview of changes in GLib 2.86.3, 2025-12-08
+==============================================
+
+* Fix several security vulnerabilities of varying severity (see below for
+  details)
+
+* Bugs fixed:
+  - #3827 (CVE-2025-13601) (#YWH-PGM9867-134) Incorrect calculation of buffer
+    size in g_escape_uri_string() (Philip Withnall)
+  - #3834 (#YWH-PGM9867-145) Buffer underflow on Glib through glib/gvariant via
+    bytestring_parse() or string_parse() leads to OOB Write (Philip Withnall)
+  - #3845 GIO: Integer overflow in file attribute escaping (Philip Withnall)
+  - !4912 Backport !4901 “Issue #3819: G_FILE_MONITOR_WATCH_HARD_LINK does not
+    monitor files on Windows.” to glib-2-86
+  - !4915 Backport !4914 “gconvert: Error out if g_escape_uri_string() would
+    overflow” to glib-2-86
+  - !4934 Backport !4933 “gvariant-parser: Fix potential integer overflow
+    parsing (byte)strings” to glib-2-86
+  - !4936 Backport !4935 “gfileattribute: Fix integer overflow calculating
+    escaping for byte strings” to glib-2-86
+
+
 Overview of changes in GLib 2.86.2, 2025-11-18
 ==============================================
 
