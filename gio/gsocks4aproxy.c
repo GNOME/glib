@@ -268,6 +268,7 @@ static void
 free_connect_data (ConnectAsyncData *data)
 {
   g_object_unref (data->io_stream);
+  g_free (data->buffer);
   g_slice_free (ConnectAsyncData, data);
 }
 
