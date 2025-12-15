@@ -687,6 +687,8 @@ get_fs_type (long f_type)
       return "nsfs";
     case 0x5346544e:
       return "ntfs";
+    case 0x7366746e:
+      return "ntfs3";
     case 0x7461636f:
       return "ocfs2";
     case 0x9fa1:
