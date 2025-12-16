@@ -26,6 +26,7 @@
 
 #include <glib/glib.h>
 #include <gio/gio.h>
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -498,6 +499,51 @@ test_emblemed_icon (void)
 }
 
 static void
+test_emblem_parsing (void)
+{
+  struct
+    {
+      const char *input_string;
+      int expected_error_code;
+      GEmblemOrigin expected_origin;
+    }
+  vectors[] =
+    {
+      { ".GEmblem avatar-default-symbolic 0", G_IO_ERROR_INVALID_ARGUMENT, G_EMBLEM_ORIGIN_UNKNOWN },
+      { ". GEmblem avatar-default-symbolic 0", 0, G_EMBLEM_ORIGIN_UNKNOWN },
+      { ". GEmblem avatar-default-symbolic 1", 0, G_EMBLEM_ORIGIN_DEVICE },
+      { ". GEmblem avatar-default-symbolic 2", 0, G_EMBLEM_ORIGIN_LIVEMETADATA },
+      { ". GEmblem avatar-default-symbolic 3", 0, G_EMBLEM_ORIGIN_TAG },
+      { ". GEmblem avatar-default-symbolic 4", G_IO_ERROR_INVALID_ARGUMENT, G_EMBLEM_ORIGIN_UNKNOWN },
+      { ". GEmblem avatar-default-symbolic not-a-number", G_IO_ERROR_INVALID_ARGUMENT, G_EMBLEM_ORIGIN_UNKNOWN },
+    };
+
+  for (size_t i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      GIcon *icon = NULL;
+      GError *local_error = NULL;
+
+      icon = g_icon_new_for_string (vectors[i].input_string, &local_error);
+
+      if (vectors[i].expected_error_code == 0)
+        {
+          g_assert_no_error (local_error);
+          g_assert_nonnull (icon);
+          g_assert_true (G_IS_EMBLEM (icon));
+          g_assert_cmpint (g_emblem_get_origin (G_EMBLEM (icon)), ==, vectors[i].expected_origin);
+        }
+      else
+        {
+          g_assert_error (local_error, G_IO_ERROR, vectors[i].expected_error_code);
+          g_assert_null (icon);
+        }
+
+      g_clear_error (&local_error);
+      g_clear_object (&icon);
+    }
+}
+
+static void
 load_cb (GObject      *source_object,
          GAsyncResult *res,
          gpointer      data)
@@ -611,12 +657,15 @@ int
 main (int   argc,
       char *argv[])
 {
+  setlocale (LC_ALL, "");
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/icons/to-string", test_g_icon_to_string);
   g_test_add_func ("/icons/serialize", test_g_icon_serialize);
   g_test_add_func ("/icons/themed", test_themed_icon);
   g_test_add_func ("/icons/emblemed", test_emblemed_icon);
+  g_test_add_func ("/icons/emblem/parsing", test_emblem_parsing);
   g_test_add_func ("/icons/file", test_file_icon);
   g_test_add_func ("/icons/bytes", test_bytes_icon);
 
