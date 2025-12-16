@@ -2686,8 +2686,10 @@ g_settings_binding_free (gpointer data)
 
   if (g_signal_handler_is_connected (binding->object,
                                      binding->property_handler_id))
-  g_signal_handler_disconnect (binding->object,
-                               binding->property_handler_id);
+    {
+      g_signal_handler_disconnect (binding->object,
+                                   binding->property_handler_id);
+    }
 
   g_settings_schema_key_clear (&binding->key);
 
