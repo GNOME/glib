@@ -457,7 +457,7 @@ handler_lookup (gpointer  instance,
           Handler *handler;
           
           for (handler = hlist->handlers; handler; handler = handler->next)
-            if (closure ? (handler->closure == closure) : (handler->sequential_number == handler_id))
+            if (handler->closure == closure)
               {
                 if (signal_id_p)
                   *signal_id_p = hlist->signal_id;
