@@ -482,7 +482,7 @@ ip_event_dispatch (GList      *dir_list,
 	   */
 	  if (sub->hardlinks)
 	    {
-	      event->mask &= ~IP_INOTIFY_FILE_MASK;
+	      event->mask &= (guint32) ~IP_INOTIFY_FILE_MASK;
 	      if (!event->mask)
 		continue;
 	    }

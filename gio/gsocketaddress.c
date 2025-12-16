@@ -208,9 +208,13 @@ GSocketAddress *
 g_socket_address_new_from_native (gpointer native,
 				  gsize    len)
 {
-  gshort family;
+#ifdef G_OS_WIN32
+  ADDRESS_FAMILY family;
+#else
+  sa_family_t family;
+#endif
 
-  if (len < sizeof (gshort))
+  if (len < sizeof (family))
     return NULL;
 
   family = ((struct sockaddr *) native)->sa_family;

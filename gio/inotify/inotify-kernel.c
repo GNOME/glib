@@ -144,7 +144,7 @@ ik_source_can_dispatch_now (InotifyKernelSource *iks,
   return 0 <= dispatch_time && dispatch_time <= now;
 }
 
-static gsize
+static size_t
 ik_source_read_some_events (InotifyKernelSource *iks,
                             gchar               *buffer,
                             gsize                buffer_len)
@@ -169,7 +169,7 @@ again:
   else if (result == 0)
     g_error ("inotify unexpectedly hit eof");
 
-  return result;
+  return (size_t) result;
 }
 
 static gchar *
@@ -428,8 +428,9 @@ ik_source_dispatch (GSource     *source,
     }
   else
     {
-      guint64 dispatch_time = ik_source_get_dispatch_time (iks);
-      guint64 boredom_time = now + BOREDOM_SLEEP_TIME;
+      int64_t dispatch_time = ik_source_get_dispatch_time (iks);
+      int64_t boredom_time = now + BOREDOM_SLEEP_TIME;
+      int64_t ready_time;
 
       if (!iks->is_bored)
         {
@@ -437,7 +438,12 @@ ik_source_dispatch (GSource     *source,
           iks->is_bored = TRUE;
         }
 
-      g_source_set_ready_time (source, MIN (dispatch_time, boredom_time));
+      if (dispatch_time < 0)
+        ready_time = boredom_time;
+      else
+        ready_time = MIN (dispatch_time, boredom_time);
+
+      g_source_set_ready_time (source, ready_time);
     }
 
   return TRUE;

@@ -101,7 +101,7 @@ is_valid_connectivity (guint32 value)
   GEnumClass *enum_klass;
 
   enum_klass = g_type_class_ref (G_TYPE_NETWORK_CONNECTIVITY);
-  enum_value = g_enum_get_value (enum_klass, value);
+  enum_value = g_enum_get_value (enum_klass, (int) value);
 
   g_type_class_unref (enum_klass);
 

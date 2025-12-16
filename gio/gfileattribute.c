@@ -174,7 +174,7 @@ escape_byte_string (const char *str)
   size_t i, len;
   size_t num_invalid;
   char *escaped_val, *p;
-  unsigned char c;
+  char c;
   const char hex_digits[] = "0123456789abcdef";
 
   len = strlen (str);
@@ -690,7 +690,12 @@ static void
 list_update_public (GFileAttributeInfoListPriv *priv)
 {
   priv->public.infos = (GFileAttributeInfo *)priv->array->data;
-  priv->public.n_infos = priv->array->len;
+
+  /* The `n_infos` member should really have type `size_t`, but by a historical
+   * accident it has type `int` and we can’t change it now because it’s public
+   * API. It should never end up with a negative value at runtime. */
+  g_assert (priv->array->len <= INT_MAX);
+  priv->public.n_infos = (int) priv->array->len;
 }
 
 /**
@@ -735,7 +740,7 @@ g_file_attribute_info_list_dup (GFileAttributeInfoList *list)
   new->ref_count = 1;
   new->array = g_array_new (TRUE, FALSE, sizeof (GFileAttributeInfo));
 
-  g_array_set_size (new->array, list->n_infos);
+  g_array_set_size (new->array, (unsigned int) list->n_infos);
   list_update_public (new);
   for (i = 0; i < list->n_infos; i++)
     {
@@ -875,10 +880,12 @@ g_file_attribute_info_list_add (GFileAttributeInfoList *list,
       return;
     }
 
+  g_assert (i >= 0);
+
   info.name = g_strdup (name);
   info.type = type;
   info.flags = flags;
-  g_array_insert_vals (priv->array, i, &info, 1);
+  g_array_insert_vals (priv->array, (unsigned int) i, &info, 1);
 
   list_update_public (priv);
 }

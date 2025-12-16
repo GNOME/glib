@@ -558,7 +558,7 @@ g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,
 gsize
 g_buffered_input_stream_get_available (GBufferedInputStream *stream)
 {
-  g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), -1);
+  g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), 0);
 
   return stream->priv->end - stream->priv->pos;
 }
@@ -585,8 +585,8 @@ g_buffered_input_stream_peek (GBufferedInputStream *stream,
   gsize available;
   gsize end;
 
-  g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), -1);
-  g_return_val_if_fail (buffer != NULL, -1);
+  g_return_val_if_fail (G_IS_BUFFERED_INPUT_STREAM (stream), 0);
+  g_return_val_if_fail (buffer != NULL, 0);
 
   available = g_buffered_input_stream_get_available (stream);
 

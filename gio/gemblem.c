@@ -26,6 +26,7 @@
 #include "gioenums.h"
 #include "gioenumtypes.h"
 #include "gioerror.h"
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -81,7 +82,7 @@ g_emblem_get_property (GObject    *object,
 	break;
 
       case PROP_ORIGIN:
-        g_value_set_enum (value, emblem->origin);
+        g_value_set_enum (value, (int) emblem->origin);
         break;
 
       default:
@@ -105,7 +106,7 @@ g_emblem_set_property (GObject      *object,
         break;
 
       case PROP_ORIGIN:
-        emblem->origin = g_value_get_enum (value);
+        emblem->origin = (GEmblemOrigin) g_value_get_enum (value);
         break;
 
       default:
@@ -321,6 +322,7 @@ g_emblem_from_tokens (gchar  **tokens,
   GEmblem *emblem;
   GIcon *icon;
   GEmblemOrigin origin;
+  uint64_t origin_parsed;
 
   emblem = NULL;
 
@@ -349,7 +351,23 @@ g_emblem_from_tokens (gchar  **tokens,
   if (icon == NULL)
     return NULL;
 
-  origin = atoi (tokens[1]);
+  if (!g_ascii_string_to_unsigned (tokens[1], 10, G_EMBLEM_ORIGIN_UNKNOWN, G_EMBLEM_ORIGIN_TAG,
+                                   &origin_parsed, NULL) ||
+      (origin_parsed != G_EMBLEM_ORIGIN_UNKNOWN &&
+       origin_parsed != G_EMBLEM_ORIGIN_DEVICE &&
+       origin_parsed != G_EMBLEM_ORIGIN_LIVEMETADATA &&
+       origin_parsed != G_EMBLEM_ORIGIN_TAG))
+    {
+      g_object_unref (icon);
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Malformed origin (%s) in GEmblem encoding"),
+                   tokens[1]);
+      return NULL;
+    }
+
+  origin = (GEmblemOrigin) origin_parsed;
 
   emblem = g_emblem_new_with_origin (icon, origin);
   g_object_unref (icon);
@@ -369,7 +387,7 @@ g_emblem_serialize (GIcon *icon)
   if (!icon_data)
     return NULL;
 
-  origin = g_enum_get_value (g_type_class_peek (G_TYPE_EMBLEM_ORIGIN), emblem->origin);
+  origin = g_enum_get_value (g_type_class_peek (G_TYPE_EMBLEM_ORIGIN), (int) emblem->origin);
   result = g_variant_new_parsed ("('emblem', <(%v, {'origin': <%s>})>)",
                                  icon_data, origin ? origin->value_nick : "unknown");
   g_variant_unref (icon_data);

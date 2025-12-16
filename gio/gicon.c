@@ -282,15 +282,19 @@ g_icon_new_from_tokens (char   **tokens,
   GIconIface *icon_iface;
   gint version;
   char *endp;
-  int num_tokens;
-  int i;
+  unsigned int num_tokens;
+  unsigned int i;
 
   icon = NULL;
   klass = NULL;
 
   num_tokens = g_strv_length (tokens);
 
-  if (num_tokens < 1)
+  /* Unfortunately we have to set an upper bound on `num_tokens`, as
+   * `GIcon.from_tokens()` takes the number of tokens as an `int` (for
+   * historical reasons), and that can’t be changed (e.g. to `size_t`) without
+   * breaking API. */
+  if (num_tokens < 1 || num_tokens > INT_MAX)
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -378,7 +382,7 @@ g_icon_new_from_tokens (char   **tokens,
       g_free (escaped);
     }
   
-  icon = icon_iface->from_tokens (tokens + 1, num_tokens - 1, version, error);
+  icon = icon_iface->from_tokens (tokens + 1, (int) num_tokens - 1, version, error);
 
  out:
   if (klass != NULL)
@@ -496,7 +500,7 @@ g_icon_deserialize_emblem (GVariant *value)
           origin_class = g_type_class_ref (G_TYPE_EMBLEM_ORIGIN);
           origin_value = g_enum_get_value_by_nick (origin_class, origin_nick);
           if (origin_value)
-            emblem = g_emblem_new_with_origin (emblem_icon, origin_value->value);
+            emblem = g_emblem_new_with_origin (emblem_icon, (GEmblemOrigin) origin_value->value);
           g_type_class_unref (origin_class);
         }
 

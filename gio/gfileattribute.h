@@ -57,7 +57,7 @@ struct _GFileAttributeInfo
 struct _GFileAttributeInfoList
 {
   GFileAttributeInfo *infos;
-  int                 n_infos;
+  int                 n_infos;  /* will never be negative; it’s a historical accident that this isn’t a size_t */
 };
 
 #define G_TYPE_FILE_ATTRIBUTE_INFO_LIST (g_file_attribute_info_list_get_type ())

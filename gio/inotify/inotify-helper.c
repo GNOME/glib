@@ -260,7 +260,7 @@ ih_not_missing_callback (inotify_sub *sub)
 static GFileMonitorEvent
 ih_mask_to_EventFlags (guint32 mask)
 {
-  mask &= ~IN_ISDIR;
+  mask &= (guint32) ~IN_ISDIR;
   switch (mask)
     {
     case IN_MODIFY:
@@ -287,6 +287,6 @@ ih_mask_to_EventFlags (guint32 mask)
     case IN_ACCESS:
     case IN_IGNORED:
     default:
-      return -1;
+      return (GFileMonitorEvent) -1;
     }
 }
