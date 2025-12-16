@@ -174,7 +174,7 @@ escape_byte_string (const char *str)
   size_t i, len;
   size_t num_invalid;
   char *escaped_val, *p;
-  unsigned char c;
+  char c;
   const char hex_digits[] = "0123456789abcdef";
 
   len = strlen (str);
