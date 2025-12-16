@@ -184,7 +184,7 @@ g_buffered_output_stream_class_init (GBufferedOutputStreamClass *klass)
 gsize
 g_buffered_output_stream_get_buffer_size (GBufferedOutputStream *stream)
 {
-  g_return_val_if_fail (G_IS_BUFFERED_OUTPUT_STREAM (stream), -1);
+  g_return_val_if_fail (G_IS_BUFFERED_OUTPUT_STREAM (stream), 0);
 
   return stream->priv->len;
 }

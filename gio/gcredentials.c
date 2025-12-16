@@ -521,8 +521,8 @@ g_credentials_get_unix_user (GCredentials    *credentials,
 {
   uid_t ret;
 
-  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), -1);
-  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+  g_return_val_if_fail (G_IS_CREDENTIALS (credentials), (uid_t) -1);
+  g_return_val_if_fail (error == NULL || *error == NULL, (uid_t) -1);
 
 #if G_CREDENTIALS_USE_LINUX_UCRED
   if (linux_ucred_check_valid (&credentials->native, error))
