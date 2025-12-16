@@ -86,7 +86,8 @@ g_native_socket_address_get_native_size (GSocketAddress *address)
 
   addr = G_NATIVE_SOCKET_ADDRESS (address);
 
-  return addr->priv->sockaddr_len;
+  g_assert (addr->priv->sockaddr_len <= G_MAXSSIZE);
+  return (gssize) addr->priv->sockaddr_len;
 }
 
 static gboolean
