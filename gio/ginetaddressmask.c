@@ -312,7 +312,7 @@ g_inet_address_mask_new_from_string (const gchar  *mask_string,
 	  return NULL;
 	}
 
-      address = g_strndup (mask_string, slash - mask_string);
+      address = g_strndup (mask_string, (size_t) (slash - mask_string));
       addr = g_inet_address_new_from_string (address);
       g_free (address);
 
@@ -433,7 +433,7 @@ g_inet_address_mask_matches (GInetAddressMask *mask,
 			     GInetAddress     *address)
 {
   const guint8 *maskbytes, *addrbytes;
-  int nbytes, nbits;
+  size_t nbytes, nbits;
 
   g_return_val_if_fail (G_IS_INET_ADDRESS_MASK (mask), FALSE);
   g_return_val_if_fail (G_IS_INET_ADDRESS (address), FALSE);
