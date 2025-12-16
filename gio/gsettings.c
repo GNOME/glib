@@ -2660,10 +2660,10 @@ typedef struct
   gpointer user_data;
   GDestroyNotify destroy;
 
-  guint writable_handler_id;
-  guint property_handler_id;
+  gulong writable_handler_id;
+  gulong property_handler_id;
   const GParamSpec *property;
-  guint key_handler_id;
+  gulong key_handler_id;
 
   /* prevent recursion */
   gboolean running;
@@ -2676,13 +2676,8 @@ g_settings_binding_free (gpointer data)
 
   g_assert (!binding->running);
 
-  if (binding->writable_handler_id)
-    g_signal_handler_disconnect (binding->settings,
-                                 binding->writable_handler_id);
-
-  if (binding->key_handler_id)
-    g_signal_handler_disconnect (binding->settings,
-                                 binding->key_handler_id);
+  g_clear_signal_handler (&binding->writable_handler_id, binding->settings);
+  g_clear_signal_handler (&binding->key_handler_id, binding->settings);
 
   if (g_signal_handler_is_connected (binding->object,
                                      binding->property_handler_id))
