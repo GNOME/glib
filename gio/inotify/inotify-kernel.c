@@ -144,7 +144,7 @@ ik_source_can_dispatch_now (InotifyKernelSource *iks,
   return 0 <= dispatch_time && dispatch_time <= now;
 }
 
-static gsize
+static size_t
 ik_source_read_some_events (InotifyKernelSource *iks,
                             gchar               *buffer,
                             gsize                buffer_len)
@@ -169,7 +169,7 @@ again:
   else if (result == 0)
     g_error ("inotify unexpectedly hit eof");
 
-  return result;
+  return (size_t) result;
 }
 
 static gchar *
