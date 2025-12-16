@@ -2718,6 +2718,9 @@ g_signal_handler_is_connected (gpointer instance,
 
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
 
+  if (handler_id == 0)
+    return FALSE;
+
   SIGNAL_LOCK ();
   handler = handler_lookup (instance, handler_id, NULL, NULL);
   connected = handler != NULL;
