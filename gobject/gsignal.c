@@ -441,6 +441,25 @@ handler_lookup_by_id (gpointer instance,
   return g_hash_table_lookup (g_handlers, &key);
 }
 
+static Handler *
+handler_steal_by_id (gpointer instance,
+                     gulong   handler_id)
+{
+  Handler key;
+  Handler *handler = NULL;
+
+  g_assert (handler_id != 0);
+
+  key.sequential_number = handler_id;
+  key.instance = instance;
+
+  if (!g_hash_table_steal_extended (g_handlers, &key,
+                                    (gpointer *) &handler, NULL))
+    return NULL;
+
+  return handler;
+}
+
 static Handler*
 handler_lookup_by_closure (gpointer  instance,
                            GClosure *closure,
@@ -2692,10 +2711,9 @@ signal_handler_disconnect_unlocked (gpointer instance,
 {
   Handler *handler;
 
-  handler = handler_lookup_by_id (instance, handler_id);
+  handler = handler_steal_by_id (instance, handler_id);
   if (handler)
     {
-      g_hash_table_remove (g_handlers, handler);
       handler->sequential_number = 0;
       handler->block_count = 1;
       remove_invalid_closure_notify (handler, instance);
