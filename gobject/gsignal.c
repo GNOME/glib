@@ -72,10 +72,9 @@ static inline Handler*		handler_new		(guint            signal_id,
 static	      void		handler_insert		(guint		  signal_id,
 							 gpointer	  instance,
 							 Handler	 *handler);
-static	      Handler*		handler_lookup		(gpointer	  instance,
-							 gulong		  handler_id,
-							 GClosure        *closure,
-							 guint		 *signal_id_p);
+static	      Handler *         handler_lookup_by_closure (gpointer       instance,
+                                                           GClosure      *closure,
+                                                           guint         *signal_id_p);
 static inline HandlerMatch*	handler_match_prepend	(HandlerMatch	 *list,
 							 Handler	 *handler,
 							 guint		  signal_id);
@@ -428,22 +427,47 @@ handler_equal (gconstpointer a, gconstpointer b)
       (ha->instance  == hb->instance);
 }
 
+static Handler *
+handler_lookup_by_id (gpointer instance,
+                      gulong   handler_id)
+{
+  Handler key;
+
+  g_assert (handler_id != 0);
+
+  key.sequential_number = handler_id;
+  key.instance = instance;
+
+  return g_hash_table_lookup (g_handlers, &key);
+}
+
+static Handler *
+handler_steal_by_id (gpointer instance,
+                     gulong   handler_id)
+{
+  Handler key;
+  Handler *handler = NULL;
+
+  g_assert (handler_id != 0);
+
+  key.sequential_number = handler_id;
+  key.instance = instance;
+
+  if (!g_hash_table_steal_extended (g_handlers, &key,
+                                    (gpointer *) &handler, NULL))
+    return NULL;
+
+  return handler;
+}
+
 static Handler*
-handler_lookup (gpointer  instance,
-		gulong    handler_id,
-		GClosure *closure,
-		guint    *signal_id_p)
+handler_lookup_by_closure (gpointer  instance,
+                           GClosure *closure,
+                           guint    *signal_id_p)
 {
   GBSearchArray *hlbsa;
 
-  if (handler_id)
-    {
-      Handler key;
-      key.sequential_number = handler_id;
-      key.instance = instance;
-      return g_hash_table_lookup (g_handlers, &key);
-
-    }
+  g_assert (closure != NULL);
 
   hlbsa = g_hash_table_lookup (g_handler_list_bsa_ht, instance);
   
@@ -457,7 +481,7 @@ handler_lookup (gpointer  instance,
           Handler *handler;
           
           for (handler = hlist->handlers; handler; handler = handler->next)
-            if (closure ? (handler->closure == closure) : (handler->sequential_number == handler_id))
+            if (handler->closure == closure)
               {
                 if (signal_id_p)
                   *signal_id_p = hlist->signal_id;
@@ -2587,7 +2611,7 @@ signal_handler_block_unlocked (gpointer instance,
 {
   Handler *handler;
 
-  handler = handler_lookup (instance, handler_id, NULL, NULL);
+  handler = handler_lookup_by_id (instance, handler_id);
   if (handler)
     {
 #ifndef G_DISABLE_CHECKS
@@ -2641,7 +2665,7 @@ signal_handler_unblock_unlocked (gpointer instance,
 {
   Handler *handler;
 
-  handler = handler_lookup (instance, handler_id, NULL, NULL);
+  handler = handler_lookup_by_id (instance, handler_id);
   if (handler)
     {
       if (handler->block_count)
@@ -2687,10 +2711,9 @@ signal_handler_disconnect_unlocked (gpointer instance,
 {
   Handler *handler;
 
-  handler = handler_lookup (instance, handler_id, 0, 0);
+  handler = handler_steal_by_id (instance, handler_id);
   if (handler)
     {
-      g_hash_table_remove (g_handlers, handler);
       handler->sequential_number = 0;
       handler->block_count = 1;
       remove_invalid_closure_notify (handler, instance);
@@ -2718,8 +2741,11 @@ g_signal_handler_is_connected (gpointer instance,
 
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
 
+  if (handler_id == 0)
+    return FALSE;
+
   SIGNAL_LOCK ();
-  handler = handler_lookup (instance, handler_id, NULL, NULL);
+  handler = handler_lookup_by_id (instance, handler_id);
   connected = handler != NULL;
   SIGNAL_UNLOCK ();
 
@@ -4079,7 +4105,7 @@ invalid_closure_notify (gpointer  instance,
 
   SIGNAL_LOCK ();
 
-  handler = handler_lookup (instance, 0, closure, &signal_id);
+  handler = handler_lookup_by_closure (instance, closure, &signal_id);
   /* See https://bugzilla.gnome.org/show_bug.cgi?id=730296 for discussion about this... */
   g_assert (handler != NULL);
   g_assert (handler->closure == closure);

@@ -1088,6 +1088,30 @@ test_connect (void)
 }
 
 static void
+test_is_connected (void)
+{
+  GObject *test;
+  gulong handler_id;
+
+  test = g_object_new (test_get_type (), NULL);
+
+  handler_id = g_signal_connect (test, "generic-marshaller-int-return",
+                                 G_CALLBACK (test_is_connected),
+                                 NULL);
+
+  g_assert_true (g_signal_handler_is_connected (test, handler_id));
+
+  g_signal_handler_disconnect (test, handler_id);
+
+  g_assert_false (g_signal_handler_is_connected (test, handler_id));
+
+  g_assert_false (g_signal_handler_is_connected (test, 0));
+  g_assert_false (g_signal_handler_is_connected (test, handler_id + 1));
+
+  g_object_unref (test);
+}
+
+static void
 simple_handler1 (GObject *sender,
                  GObject *target)
 {
@@ -1665,6 +1689,8 @@ test_signal_disconnect_wrong_object (void)
                                 G_CALLBACK (simple_handler1),
                                 NULL);
 
+  g_assert_true (g_signal_handler_is_connected (object, signal_id));
+
   /* disconnect from the wrong object (same type), should warn */
   g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
                          "*: instance '*' has no handler with id '*'");
@@ -2103,6 +2129,7 @@ main (int argc,
   g_test_add_func ("/gobject/signals/generic-marshaller-interface-return", test_generic_marshaller_signal_interface_return);
   g_test_add_func ("/gobject/signals/custom-marshaller", test_custom_marshaller);
   g_test_add_func ("/gobject/signals/connect", test_connect);
+  g_test_add_func ("/gobject/signals/is-connected", test_is_connected);
   g_test_add_func ("/gobject/signals/emission-hook", test_emission_hook);
   g_test_add_func ("/gobject/signals/emitv", test_emitv);
   g_test_add_func ("/gobject/signals/accumulator", test_accumulator);
