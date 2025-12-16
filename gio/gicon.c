@@ -496,7 +496,7 @@ g_icon_deserialize_emblem (GVariant *value)
           origin_class = g_type_class_ref (G_TYPE_EMBLEM_ORIGIN);
           origin_value = g_enum_get_value_by_nick (origin_class, origin_nick);
           if (origin_value)
-            emblem = g_emblem_new_with_origin (emblem_icon, origin_value->value);
+            emblem = g_emblem_new_with_origin (emblem_icon, (GEmblemOrigin) origin_value->value);
           g_type_class_unref (origin_class);
         }
 

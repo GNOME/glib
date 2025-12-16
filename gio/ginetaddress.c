@@ -97,7 +97,7 @@ g_inet_address_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_FAMILY:
-      address->priv->family = g_value_get_enum (value);
+      address->priv->family = (GSocketFamily) g_value_get_enum (value);
       break;
 
     case PROP_BYTES:
@@ -143,7 +143,7 @@ g_inet_address_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_FAMILY:
-      g_value_set_enum (value, address->priv->family);
+      g_value_set_enum (value, (int) address->priv->family);
       break;
 
     case PROP_BYTES:

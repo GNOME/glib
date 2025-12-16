@@ -100,7 +100,7 @@ g_inet_address_mask_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_FAMILY:
-      g_value_set_enum (value, g_inet_address_get_family (mask->priv->addr));
+      g_value_set_enum (value, (int) g_inet_address_get_family (mask->priv->addr));
       break;
 
     case PROP_ADDRESS:

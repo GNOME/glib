@@ -114,7 +114,7 @@ g_data_output_stream_set_property (GObject     *object,
   switch (prop_id) 
     {
     case PROP_BYTE_ORDER:
-      g_data_output_stream_set_byte_order (dstream, g_value_get_enum (value));
+      g_data_output_stream_set_byte_order (dstream, (GDataStreamByteOrder) g_value_get_enum (value));
       break;
 
     default:
@@ -138,7 +138,7 @@ g_data_output_stream_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_BYTE_ORDER:
-      g_value_set_enum (value, priv->byte_order);
+      g_value_set_enum (value, (int) priv->byte_order);
       break;
 
     default:

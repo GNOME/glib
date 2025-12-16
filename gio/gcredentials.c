@@ -406,7 +406,7 @@ credentials_native_type_check (GCredentialsType  requested_type,
 #endif
 
   enum_class = g_type_class_ref (g_credentials_type_get_type ());
-  requested = g_enum_get_value (enum_class, requested_type);
+  requested = g_enum_get_value (enum_class, (int) requested_type);
 
 #if G_CREDENTIALS_SUPPORTED
   supported = g_enum_get_value (enum_class, G_CREDENTIALS_NATIVE_TYPE);

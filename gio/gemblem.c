@@ -81,7 +81,7 @@ g_emblem_get_property (GObject    *object,
 	break;
 
       case PROP_ORIGIN:
-        g_value_set_enum (value, emblem->origin);
+        g_value_set_enum (value, (int) emblem->origin);
         break;
 
       default:
@@ -105,7 +105,7 @@ g_emblem_set_property (GObject      *object,
         break;
 
       case PROP_ORIGIN:
-        emblem->origin = g_value_get_enum (value);
+        emblem->origin = (GEmblemOrigin) g_value_get_enum (value);
         break;
 
       default:
@@ -369,7 +369,7 @@ g_emblem_serialize (GIcon *icon)
   if (!icon_data)
     return NULL;
 
-  origin = g_enum_get_value (g_type_class_peek (G_TYPE_EMBLEM_ORIGIN), emblem->origin);
+  origin = g_enum_get_value (g_type_class_peek (G_TYPE_EMBLEM_ORIGIN), (int) emblem->origin);
   result = g_variant_new_parsed ("('emblem', <(%v, {'origin': <%s>})>)",
                                  icon_data, origin ? origin->value_nick : "unknown");
   g_variant_unref (icon_data);

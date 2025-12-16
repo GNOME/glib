@@ -130,7 +130,7 @@ g_mount_operation_set_property (GObject      *object,
 
     case PROP_PASSWORD_SAVE:
       g_mount_operation_set_password_save (operation, 
-                                           g_value_get_enum (value));
+                                           (GPasswordSave) g_value_get_enum (value));
       break;
 
     case PROP_CHOICE:
@@ -191,7 +191,7 @@ g_mount_operation_get_property (GObject    *object,
       break;
 
     case PROP_PASSWORD_SAVE:
-      g_value_set_enum (value, priv->password_save);
+      g_value_set_enum (value, (int) priv->password_save);
       break;
 
     case PROP_CHOICE:
