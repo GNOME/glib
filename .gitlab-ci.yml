@@ -63,6 +63,8 @@ variables:
   rules:
     - if: $CI_COMMIT_TAG
       when: never
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+      when: never
     - if: $CI_PIPELINE_SOURCE == "push" &&
           $CI_PROJECT_NAMESPACE == "GNOME" &&
           $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -71,8 +73,6 @@ variables:
 .only-default:
   rules:
     - !reference [.only-default-filter-rules, rules]
-    - if: $CI_PIPELINE_SOURCE == "trigger"
-      when: never
     - if: $CI_COMMIT_BRANCH
       when: on_success
 
