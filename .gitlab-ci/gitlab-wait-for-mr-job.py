@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileCopyrightText: 2025 Marco Trevisan (Treviño)
+
+import argparse
+import gitlab
+import os
+import time
+import sys
+
+
+def has_self_mr_note(mr, current_user_id, contents):
+    for note in mr.notes.list(get_all=True):
+        if note.author["id"] == current_user_id:
+            if contents in note.body:
+                return True
+    return False
+
+
+if __name__ == "__main__":
+    server_uri = os.environ["CI_SERVER_URL"]
+    project_path = os.environ["CI_PROJECT_PATH"]
+    token_file = os.environ["GIR_CHECK_TOKEN_FILE"]
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mr", required=True)
+    parser.add_argument("--job", required=True)
+    parser.add_argument("--sha")
+    parser.add_argument("--job-id-output")
+    parser.add_argument("--last-target-job-id-output")
+    parser.add_argument("--skip-if-mr-contains-our-comment-text")
+    args = parser.parse_args()
+
+    with open(token_file, mode="rt", encoding="utf-8") as tf:
+        token = tf.read().strip()
+
+    gl = gitlab.Gitlab(server_uri, private_token=token)
+    project = gl.projects.get(project_path)
+
+    [mr] = project.mergerequests.list(iids=[args.mr])
+
+    if args.sha and not mr.sha.startswith(args.sha):
+        print(f"MR !{mr.iid} not matching SHA {args.sha}", flush=True)
+        sys.exit(1)
+
+    if args.skip_if_mr_contains_our_comment_text:
+        print(
+            f"Checking comment on MR {server_uri}/{project_path}/-/"
+            + f"merge_requests/{mr.iid}",
+            flush=True,
+        )
+
+        if has_self_mr_note(
+            mr,
+            gl.http_get("/user")["id"],
+            args.skip_if_mr_contains_our_comment_text,
+        ):
+            print(
+                f"MR !{mr.iid} contains already a matching comment, skipping!",
+                flush=True,
+            )
+            sys.exit(77)
+
+    try:
+        pipelines = project.pipelines.list(sha=mr.sha, ref=mr.source_branch)
+        ci_pipeline_id = os.environ.get("CI_PIPELINE_ID")
+        [pipeline] = [
+            p for p in pipelines if p.source != "trigger" and p.id != ci_pipeline_id
+        ]
+    except ValueError:
+        print(
+            f"No unique pipeline found for {server_uri}/{project_path}/-/"
+            + f"commit/{mr.sha}",
+            flush=True,
+        )
+        sys.exit(1)
+
+    print(
+        f"Found matching pipeline {server_uri}/{project_path}/-/"
+        + f"pipelines/{pipeline.id}",
+        flush=True,
+    )
+
+    try:
+        [job] = [
+            j
+            for j in pipeline.jobs.list(all=True)
+            if j.name == args.job and j.commit["id"] == mr.sha
+        ]
+    except ValueError:
+        print(
+            f"No unique '{args.job}' job found for {server_uri}/{project_path}"
+            + f"/-/commit/{mr.sha}",
+            flush=True,
+        )
+        sys.exit(1)
+
+    print(
+        f"Found matching job {server_uri}/{project_path}/-/jobs/{job.id}",
+        flush=True,
+    )
+
+    if args.job_id_output:
+        with open(args.job_id_output, "wt", encoding="utf-8") as f:
+            f.write(f"{job.id}\n")
+
+    waiting = False
+    while job.status != "success":
+        if job.status in (
+            "pending",
+            "running",
+            "created",
+            "preparing",
+            "waiting_for_resource",
+        ):
+            if not waiting:
+                print("Waiting for the job to complete...", flush=True)
+                job = project.jobs.get(job.id)
+                waiting = True
+
+            time.sleep(5)
+            job.refresh()
+            continue
+
+        if job.status == "canceled":
+            print(f"Job {job.id} was cancelled", file=sys.stderr, flush=True)
+            sys.exit(77)
+
+        print(f"Job {job.id} did not succeed", file=sys.stderr, flush=True)
+        sys.exit(1)
+
+    print(f"Job {job.id} completed!", flush=True)
+
+    if args.last_target_job_id_output:
+        job = None
+        pipelines = project.pipelines.list(
+            ref=mr.target_branch,
+            per_page=25,
+            get_all=False,
+            order_by="id",
+            sort="desc",
+        )
+
+        for pipeline in pipelines:
+            jobs = pipeline.jobs.list(all=True)
+
+            for j in jobs:
+                if j.status == "success" and j.name == args.job:
+                    job = j
+                    break
+
+            if job:
+                break
+
+        if job is None:
+            print(
+                f"Impossible to find a valid job for branch {mr.target_branch}",
+                file=sys.stderr,
+                flush=True,
+            )
+            sys.exit(77)
+
+        with open(args.last_target_job_id_output, "wt", encoding="utf-8") as f:
+            f.write(f"{job.id}\n")

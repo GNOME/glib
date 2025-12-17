@@ -23,6 +23,10 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "trigger" &&
+          $CI_GLIB_HOOK_EVENT_TYPE != ""
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+      when: never
 
 stages:
   - style-check
@@ -49,6 +53,7 @@ variables:
   MESON_COMMON_OPTIONS: "--buildtype debug --wrap-mode=nodownload --fatal-meson-warnings"
   # expected naming scheme for the release-service job
   TARBALL_ARTIFACT_PATH: "_build/meson-dist/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.tar.xz"
+  GIR_ARTIFACTS_PATH: "_build/girepository/introspection"
 
 # Default CI job setup; contrast with `.only-origin`.
 #
@@ -66,6 +71,8 @@ variables:
 .only-default:
   rules:
     - !reference [.only-default-filter-rules, rules]
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+      when: never
     - if: $CI_COMMIT_BRANCH
       when: on_success
 
@@ -74,6 +81,8 @@ variables:
 .only-default-and-merges:
   rules:
     - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "trigger"
       when: never
     - if: $CI_COMMIT_BRANCH
       when: on_success
@@ -85,6 +94,8 @@ variables:
 .only-origin:
   rules:
     - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "trigger"
       when: never
     - if: $CI_PROJECT_PATH == "GNOME/glib" && $CI_COMMIT_BRANCH
       when: on_success
@@ -107,6 +118,8 @@ variables:
 .only-schedules-or-manual:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "trigger"
       when: never
     # As per rule before, the following rules will only apply to non MR events
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -136,6 +149,8 @@ variables:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "trigger"
       when: never
     - if: $CI_PROJECT_NAMESPACE == "GNOME"
       when: always
@@ -289,6 +304,7 @@ fedora-x86_64:
       - "_build/meson-logs"
       - "_coverage"
       - "_reference"
+      - "${GIR_ARTIFACTS_PATH}/*.gir"
 
 .build-debian:
   extends:
@@ -631,6 +647,7 @@ msys2-mingw32:
       - _build/gdb.txt
       - _coverage/
       - _reference/
+      - "${GIR_ARTIFACTS_PATH}/*.gir"
 
 # See the note about msys2 CI job failure policy above.
 msys2-clang64:
@@ -912,6 +929,78 @@ coverage:
   script:
     - bash -x ./.gitlab-ci/coverage-docker.sh
   coverage: '/^\s+lines\.+:\s+([\d.]+\%)\s+/'
+
+# Only run events triggered by webhooks with such parameters as configured
+# in the repository WebHook settings.
+# This allows to safely run pipelines in main branch with access to the CI/CD
+# protected variables while acting on the MRs, without exposing any private
+# token.
+.only-on-mr-token-update:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "trigger" &&
+          $CI_GLIB_HOOK_EVENT_TYPE == "merge_request" &&
+          $CI_GLIB_MR_TARGET_PROJECT_ID == $CI_PROJECT_ID &&
+          $CI_GLIB_MR_TARGET_BRANCH == $CI_DEFAULT_BRANCH &&
+          ($CI_GLIB_MR_ACTION == "open" || $CI_GLIB_MR_ACTION == "update") &&
+          $CI_GLIB_MR_STATE == "opened"
+      when: delayed
+      start_in: '3 minutes'
+    - when: never
+
+# This job is triggered by a MR webhook by default, but is running in a
+# protected branch (main by default).
+# As per this we cannot directly acces to the jobs artifacts that the MR
+# pipeline generated, but rather we need to manually wait for that to complete
+# and then to access the data.
+.check-introspection:
+  extends:
+    - .with-git
+    - .only-on-mr-token-update
+  variables:
+    CI_GLIB_MR_COVERAGE_COMMENT_STAMP: "${CI_GLIB_MR_LAST_COMMIT}-${JOB_NAME}"
+  stage: analysis
+  image: "${ALPINE_IMAGE}"
+  before_script:
+    - bash .gitlab-ci/show-execution-environment.sh
+    - !reference [".with-git", "before_script"]
+    - .gitlab-ci/gitlab-wait-for-mr-job.py
+        --mr="$CI_GLIB_MR_MERGE_REQUEST_IID"
+        --sha="$CI_GLIB_MR_LAST_COMMIT"
+        --job="$JOB_NAME"
+        --skip-if-mr-contains-our-comment-text="$CI_GLIB_MR_COVERAGE_COMMENT_STAMP"
+        --job-id-output=/tmp/job-id
+        --last-target-job-id-output=/tmp/target-job-id
+        || exit_code=$?
+    - if [ ${exit_code:-0} != 0 ]; then exit $exit_code; fi
+    - >
+      curl --fail-with-body \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/$(cat /tmp/job-id)/artifacts" \
+        -o job-artifacts.zip
+    - unzip job-artifacts.zip ${GIR_ARTIFACTS_PATH}/*.gir -d $JOB_NAME/
+    - >
+      curl --fail-with-body \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/$(cat /tmp/target-job-id)/artifacts" \
+        -o baseline-artifacts.zip
+    - unzip baseline-artifacts.zip ${GIR_ARTIFACTS_PATH}/*.gir -d baseline/
+  script:
+    - env .gitlab-ci/check-gir-diff.py
+        baseline/${GIR_ARTIFACTS_PATH}
+        $JOB_NAME/${GIR_ARTIFACTS_PATH}
+        --mr="$CI_GLIB_MR_MERGE_REQUEST_IID"
+        --job="$JOB_NAME"
+        --comment-stamp="${CI_GLIB_MR_COVERAGE_COMMENT_STAMP}"
+  allow_failure:
+    exit_codes: 77
+
+check-introspection-fedora-x86_64:
+  variables:
+    JOB_NAME: fedora-x86_64
+  extends: .check-introspection
+
+check-introspection-msys2-mingw32:
+  variables:
+    JOB_NAME: msys2-mingw32
+  extends: .check-introspection
 
 scan-build:
   extends:
