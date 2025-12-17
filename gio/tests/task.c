@@ -1351,19 +1351,19 @@ test_run_in_thread_priority (void)
   g_task_set_task_data (task, &seq_a, NULL);
   g_task_run_in_thread (task, set_sequence_number_thread);
   g_object_unref (task);
-  
+
   task = g_task_new (NULL, NULL, quit_main_loop_callback, NULL);
   g_task_set_task_data (task, &seq_b, NULL);
   g_task_set_priority (task, G_PRIORITY_LOW);
   g_task_run_in_thread (task, set_sequence_number_thread);
   g_object_unref (task);
-  
+
   task = g_task_new (NULL, NULL, NULL, NULL);
   g_task_set_task_data (task, &seq_c, NULL);
   g_task_set_priority (task, G_PRIORITY_HIGH);
   g_task_run_in_thread (task, set_sequence_number_thread);
   g_object_unref (task);
-  
+
   cancellable = g_cancellable_new ();
   task = g_task_new (NULL, cancellable, NULL, NULL);
   g_task_set_task_data (task, &seq_d, NULL);
@@ -2100,7 +2100,7 @@ test_return_pointer (void)
 
   g_assert_null (task);
   g_assert_null (object);
-  
+
   /* If we read back the return value, we steal its ref */
   object = (GObject *)g_dummy_object_new ();
   g_assert_cmpint (object->ref_count, ==, 1);
