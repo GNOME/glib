@@ -61,22 +61,28 @@ if __name__ == "__main__":
             )
             sys.exit(77)
 
+    # Find the project that is associated to the merge request's source branch
+    if mr.source_project_id != project.id:
+        source_project = gl.projects.get(mr.source_project_id)
+    else:
+        source_project = project
+
     try:
-        pipelines = project.pipelines.list(sha=mr.sha, ref=mr.source_branch)
+        pipelines = source_project.pipelines.list(sha=mr.sha, ref=mr.source_branch)
         ci_pipeline_id = os.environ.get("CI_PIPELINE_ID")
         [pipeline] = [
             p for p in pipelines if p.source != "trigger" and p.id != ci_pipeline_id
         ]
     except ValueError:
         print(
-            f"No unique pipeline found for {server_uri}/{project_path}/-/"
+            f"No unique pipeline found for {server_uri}/{source_project.path_with_namespace}/-/"
             + f"commit/{mr.sha}",
             flush=True,
         )
         sys.exit(1)
 
     print(
-        f"Found matching pipeline {server_uri}/{project_path}/-/"
+        f"Found matching pipeline {server_uri}/{source_project.path_with_namespace}/-/"
         + f"pipelines/{pipeline.id}",
         flush=True,
     )
@@ -89,14 +95,14 @@ if __name__ == "__main__":
         ]
     except ValueError:
         print(
-            f"No unique '{args.job}' job found for {server_uri}/{project_path}"
+            f"No unique '{args.job}' job found for {server_uri}/{source_project.path_with_namespace}"
             + f"/-/commit/{mr.sha}",
             flush=True,
         )
         sys.exit(1)
 
     print(
-        f"Found matching job {server_uri}/{project_path}/-/jobs/{job.id}",
+        f"Found matching job {server_uri}/{source_project.path_with_namespace}/-/jobs/{job.id}",
         flush=True,
     )
 
@@ -115,7 +121,7 @@ if __name__ == "__main__":
         ):
             if not waiting:
                 print("Waiting for the job to complete...", flush=True)
-                job = project.jobs.get(job.id)
+                job = source_project.jobs.get(job.id)
                 waiting = True
 
             time.sleep(5)

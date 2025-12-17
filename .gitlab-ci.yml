@@ -974,7 +974,7 @@ coverage:
     - if [ ${exit_code:-0} != 0 ]; then exit $exit_code; fi
     - >
       curl --fail-with-body \
-        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/jobs/$(cat /tmp/job-id)/artifacts" \
+        "${CI_API_V4_URL}/projects/${CI_GLIB_MR_SOURCE_PROJECT_ID}/jobs/$(cat /tmp/job-id)/artifacts" \
         -o job-artifacts.zip
     - unzip job-artifacts.zip ${GIR_ARTIFACTS_PATH}/*.gir -d $JOB_NAME/
     - >
