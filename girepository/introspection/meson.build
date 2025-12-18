@@ -92,6 +92,7 @@ if host_system == 'windows'
     sources: [
       gi_gen_shared_sources,
       glib_win32_headers,
+      glib_win32_sources,
     ],
     namespace: 'GLibWin32',
     nsversion: '2.0',
@@ -121,6 +122,7 @@ else
     sources: [
       gi_gen_shared_sources,
       glib_unix_headers,
+      glib_unix_sources,
     ],
     namespace: 'GLibUnix',
     nsversion: '2.0',
