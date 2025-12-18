@@ -60,6 +60,16 @@ test_peek (void)
   g_assert_cmpint (npeek, ==, 0);
   g_free (buffer);
 
+  buffer = g_new0 (char, 64);
+  npeek = g_buffered_input_stream_peek (G_BUFFERED_INPUT_STREAM (in), buffer, 8, 0);
+  g_assert_cmpint (npeek, ==, 0);
+  g_free (buffer);
+
+  buffer = g_new0 (char, 64);
+  npeek = g_buffered_input_stream_peek (G_BUFFERED_INPUT_STREAM (in), buffer, 5, G_MAXSIZE);
+  g_assert_cmpint (npeek, ==, 0);
+  g_free (buffer);
+
   g_object_unref (in);
   g_object_unref (base);
 }

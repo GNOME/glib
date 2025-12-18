@@ -591,7 +591,7 @@ g_buffered_input_stream_peek (GBufferedInputStream *stream,
 
   available = g_buffered_input_stream_get_available (stream);
 
-  if (offset > available)
+  if (offset > available || offset > G_MAXSIZE - count)
     return 0;
 
   end = MIN (offset + count, available);
