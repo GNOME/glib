@@ -1351,19 +1351,19 @@ test_run_in_thread_priority (void)
   g_task_set_task_data (task, &seq_a, NULL);
   g_task_run_in_thread (task, set_sequence_number_thread);
   g_object_unref (task);
-  
+
   task = g_task_new (NULL, NULL, quit_main_loop_callback, NULL);
   g_task_set_task_data (task, &seq_b, NULL);
   g_task_set_priority (task, G_PRIORITY_LOW);
   g_task_run_in_thread (task, set_sequence_number_thread);
   g_object_unref (task);
-  
+
   task = g_task_new (NULL, NULL, NULL, NULL);
   g_task_set_task_data (task, &seq_c, NULL);
   g_task_set_priority (task, G_PRIORITY_HIGH);
   g_task_run_in_thread (task, set_sequence_number_thread);
   g_object_unref (task);
-  
+
   cancellable = g_cancellable_new ();
   task = g_task_new (NULL, cancellable, NULL, NULL);
   g_task_set_task_data (task, &seq_d, NULL);
@@ -2100,7 +2100,7 @@ test_return_pointer (void)
 
   g_assert_null (task);
   g_assert_null (object);
-  
+
   /* If we read back the return value, we steal its ref */
   object = (GObject *)g_dummy_object_new ();
   g_assert_cmpint (object->ref_count, ==, 1);
@@ -2566,6 +2566,137 @@ test_finalize_without_return (void)
   g_test_assert_expected_messages ();
 }
 
+/* Thread pool stress test that creates new threads when existing ones are blocked */
+/* Thread pool stress test that creates new threads when existing ones are blocked */
+#define STRESS_POOL_SIZE 10
+#define STRESS_FAST_TASKS 10
+#define STRESS_FAST_TASK_DURATION_USEC 200000
+#define STRESS_TASKS_CREATE_TIMEOUT_MSEC 1000
+#define STRESS_TASKS_END_TIMEOUT_MSEC 5000
+
+static gint stress_fast_created = 0;
+static gint stress_fast_completed = 0;
+static guint stress_task_end_timeout_id = 0;
+
+static void
+stress_blocking_thread (GTask *task,
+                        gpointer source_object,
+                        gpointer task_data,
+                        GCancellable *cancellable)
+{
+  g_test_message ("Blocking task started");
+  g_usleep (60 * G_USEC_PER_SEC);
+  g_task_return_boolean (task, TRUE);
+}
+
+static void
+stress_fast_thread (GTask *task,
+                    gpointer source_object,
+                    gpointer task_data,
+                    GCancellable *cancellable)
+{
+  gint64 start_time = GPOINTER_TO_INT (task_data);
+  guint elapsed_ms = (guint)(g_get_monotonic_time () - start_time) / 1000;
+
+  g_test_message ("Fast task started in %u ms", elapsed_ms);
+  g_usleep (STRESS_FAST_TASK_DURATION_USEC);
+
+  g_task_return_int (task, elapsed_ms);
+}
+
+static gboolean
+on_stress_task_end_timeout (gpointer user_data)
+{
+  stress_task_end_timeout_id = 0;
+
+  g_warning ("FAILED: Only %d fast tasks completed!", stress_fast_completed);
+  g_main_loop_quit (loop);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+stress_fast_callback (GObject *source,
+                      GAsyncResult *result,
+                      gpointer user_data)
+{
+  GError *error = NULL;
+
+  stress_fast_completed++;
+
+  g_task_propagate_int (G_TASK (result), &error);
+  g_assert_no_error (error);
+
+  g_test_message ("Fast tasks completed: %d/%d", stress_fast_completed, STRESS_FAST_TASKS);
+  g_clear_handle_id (&stress_task_end_timeout_id, g_source_remove);
+
+  if (stress_fast_completed >= STRESS_FAST_TASKS)
+    {
+      g_test_message ("SUCCESS: All %d fast tasks completed!", stress_fast_completed);
+      g_main_loop_quit (loop);
+    }
+  else
+    {
+      stress_task_end_timeout_id = g_timeout_add (STRESS_TASKS_END_TIMEOUT_MSEC,
+                                                  on_stress_task_end_timeout,
+                                                  GINT_TO_POINTER (STRESS_FAST_TASKS));
+    }
+}
+
+static gboolean
+on_stress_task_create_timeout (gpointer user_data)
+{
+  GTask *task;
+
+  stress_fast_created++;
+  g_test_message ("Creating fast tasks %d/%d...", stress_fast_created, STRESS_FAST_TASKS);
+
+  task = g_task_new (NULL, NULL, stress_fast_callback, NULL);
+
+  g_task_set_task_data (task, GINT_TO_POINTER (g_get_monotonic_time ()), NULL);
+  g_task_run_in_thread (task, stress_fast_thread);
+  g_object_unref (task);
+
+  if (stress_task_end_timeout_id == 0)
+    {
+      stress_task_end_timeout_id = g_timeout_add (STRESS_TASKS_END_TIMEOUT_MSEC,
+                                                  on_stress_task_end_timeout,
+                                                  GINT_TO_POINTER (STRESS_FAST_TASKS));
+    }
+
+  return stress_fast_created < STRESS_FAST_TASKS ? G_SOURCE_CONTINUE : G_SOURCE_REMOVE;
+}
+
+static void
+test_thread_pool_stress (void)
+{
+  gint i;
+
+  if (!g_test_thorough ())
+    {
+      g_test_skip ("Skipping thread pool stress test in non-thorough mode");
+      return;
+    }
+
+  g_test_message ("Creating %d blocking tasks...", STRESS_POOL_SIZE);
+  for (i = 0; i < STRESS_POOL_SIZE; i++)
+    {
+      GTask *task = g_task_new (NULL, NULL, NULL, NULL);
+      g_task_run_in_thread (task, stress_blocking_thread);
+      g_object_unref (task);
+    }
+
+  g_timeout_add (STRESS_TASKS_CREATE_TIMEOUT_MSEC,
+                 on_stress_task_create_timeout,
+                 GINT_TO_POINTER (STRESS_FAST_TASKS));
+
+  g_debug ("Running main loop...");
+
+  g_main_loop_run (loop);
+
+  g_assert_cmpint (stress_fast_completed, >=, STRESS_FAST_TASKS);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -2613,6 +2744,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/return/value-first", test_return_value_first);
   g_test_add_func ("/gtask/attach-source/set-name", test_attach_source_set_name);
   g_test_add_func ("/gtask/finalize-without-return", test_finalize_without_return);
+  g_test_add_func ("/gtask/thread-pool-stress", test_thread_pool_stress);
 
   ret = g_test_run();
 
