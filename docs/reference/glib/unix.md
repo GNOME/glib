@@ -16,6 +16,7 @@ To use these functions, you must explicitly include the
 
  * [func@GLibUnix.open_pipe]
  * [func@GLibUnix.set_fd_nonblocking]
+ * [func@GLibUnix.fd_query_path]
 
 ## Pipes
 
