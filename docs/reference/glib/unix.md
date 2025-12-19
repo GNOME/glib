@@ -22,14 +22,13 @@ To use these functions, you must explicitly include the
 The [struct@GLibUnix.Pipe] structure can be used to conveniently open and
 manipulate a Unix pipe.
 
-<!-- FIXME: https://gitlab.gnome.org/GNOME/gi-docgen/-/issues/173 -->
 The methods for it are all static inline for efficiency. They are:
 
- * `g_unix_pipe_open()`
- * `g_unix_pipe_get()`
- * `g_unix_pipe_steal()`
- * `g_unix_pipe_close()`
- * `g_unix_pipe_clear()`
+ * [method@GLibUnix.Pipe.open]
+ * [method@GLibUnix.Pipe.get]
+ * [method@GLibUnix.Pipe.steal]
+ * [method@GLibUnix.Pipe.close]
+ * [method@GLibUnix.Pipe.clear]
 
 ## Signals
 

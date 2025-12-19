@@ -1,5 +1,5 @@
 if get_option('documentation') and enable_gir
-  gidocgen_dep = dependency('gi-docgen', version: '>= 2024.1',
+  gidocgen_dep = dependency('gi-docgen', version: '>= 2026.1',
                           fallback: ['gi-docgen', 'dummy_dep'],
                           native: true,
                           required: true)
