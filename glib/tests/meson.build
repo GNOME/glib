@@ -261,6 +261,7 @@ if host_machine.system() == 'windows'
 else
   glib_tests += {
     'include' : {},
+    'poll-fdset' : {},
     'unix' : {},
   }
   if have_rtld_next and glib_build_shared
