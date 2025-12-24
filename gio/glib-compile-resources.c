@@ -754,7 +754,16 @@ get_compiler_id (const char *compiler)
 #endif
 
 #ifdef G_OS_WIN32
-      if (g_getenv ("MSYSTEM") != NULL)
+      /* For Visual Studio builds: if a developer shell is detected,
+         immediately assume MSVC so we don't DoS the user with octal
+         strings.
+         See https://developercommunity.visualstudio.com/t/Long-octal-formatted-strings-DoS-the-use/11021201
+       */
+      if (g_getenv ("VCINSTALLDIR") != NULL)
+        {
+          compiler = "msvc"; 
+        }
+      else if (g_getenv ("MSYSTEM") != NULL)
         {
           const char *compiler_env = g_getenv ("CC");
 
