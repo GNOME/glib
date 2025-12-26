@@ -1514,7 +1514,7 @@ g_unescape_uri_string (const char *escaped,
       *out++ = c;
     }
   
-  g_assert (out - result <= len);
+  g_assert (out >= result && (size_t) (out - result) <= len);
   *out = '\0';
 
   if (in != in_end)
