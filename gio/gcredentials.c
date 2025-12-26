@@ -528,7 +528,7 @@ g_credentials_get_unix_user (GCredentials    *credentials,
   if (linux_ucred_check_valid (&credentials->native, error))
     ret = credentials->native.uid;
   else
-    ret = -1;
+    ret = (uid_t) -1;
 #elif G_CREDENTIALS_USE_APPLE_XUCRED
   if (credentials->native.cr_version == XUCRED_VERSION)
     {
