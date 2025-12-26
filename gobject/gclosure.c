@@ -484,7 +484,7 @@ g_closure_add_finalize_notifier (GClosure      *closure,
 				 gpointer       notify_data,
 				 GClosureNotify notify_func)
 {
-  guint i;
+  size_t i;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (notify_func != NULL);
@@ -520,7 +520,7 @@ g_closure_add_invalidate_notifier (GClosure      *closure,
 				   GClosureNotify notify_func)
 {
   GClosureFlags old_flags;
-  guint i;
+  size_t i;
 
   g_return_if_fail (closure != NULL);
   g_return_if_fail (notify_func != NULL);
@@ -1618,7 +1618,9 @@ g_cclosure_marshal_generic (GClosure     *closure,
                                      &tmpval_used);
     }
 
-  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) != FFI_OK)
+  g_assert (n_args <= UINT_MAX);
+
+  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, (unsigned int) n_args, rtype, atypes) != FFI_OK)
     return;
 
   ffi_call (&cif, marshal_data ? marshal_data : cc->callback, rvalue, args);
@@ -1736,8 +1738,10 @@ g_cclosure_marshal_generic_va (GClosure *closure,
     }
 
   va_end (args_copy);
-  
-  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) != FFI_OK)
+
+  g_assert (n_args <= UINT_MAX);
+
+  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, (unsigned int) n_args, rtype, atypes) != FFI_OK)
     return;
 
   ffi_call (&cif, marshal_data ? marshal_data : cc->callback, rvalue, args);
