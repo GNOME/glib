@@ -3855,7 +3855,6 @@ update_mimeapps_list (const char  *desktop_id,
   char **old_list, **list;
   gsize length, data_size;
   char *data;
-  int i, j, k;
   char **content_types;
 
   /* Don't add both at start and end */
@@ -3901,7 +3900,7 @@ update_mimeapps_list (const char  *desktop_id,
       content_types = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP, NULL, NULL);
     }
 
-  for (k = 0; content_types && content_types[k]; k++)
+  for (size_t k = 0; content_types && content_types[k]; k++)
     {
       /* set as default, if requested so */
       string = g_key_file_get_string (key_file,
@@ -3943,8 +3942,10 @@ update_mimeapps_list (const char  *desktop_id,
       content_types = g_key_file_get_keys (key_file, ADDED_ASSOCIATIONS_GROUP, NULL, NULL);
     }
 
-  for (k = 0; content_types && content_types[k]; k++)
+  for (size_t k = 0; content_types && content_types[k]; k++)
     {
+      size_t i = 0;
+
       /* Add to the right place in the list */
 
       length = 0;
@@ -3952,8 +3953,6 @@ update_mimeapps_list (const char  *desktop_id,
                                              content_types[k], &length, NULL);
 
       list = g_new (char *, 1 + length + 1);
-
-      i = 0;
 
       /* if we're adding a last-used hint, just put the application in front of the list */
       if (flags & UPDATE_MIME_SET_LAST_USED)
@@ -3967,7 +3966,7 @@ update_mimeapps_list (const char  *desktop_id,
 
       if (old_list)
         {
-          for (j = 0; old_list[j] != NULL; j++)
+          for (size_t j = 0; old_list[j] != NULL; j++)
             {
               if (g_strcmp0 (old_list[j], desktop_id) != 0)
                 {
@@ -4017,8 +4016,10 @@ update_mimeapps_list (const char  *desktop_id,
       content_types = g_key_file_get_keys (key_file, REMOVED_ASSOCIATIONS_GROUP, NULL, NULL);
     }
 
-  for (k = 0; content_types && content_types[k]; k++)
+  for (size_t k = 0; content_types && content_types[k]; k++)
     {
+      size_t i = 0;
+
       /* Remove from removed associations group (unless remove) */
 
       length = 0;
@@ -4027,12 +4028,11 @@ update_mimeapps_list (const char  *desktop_id,
 
       list = g_new (char *, 1 + length + 1);
 
-      i = 0;
       if (flags & UPDATE_MIME_REMOVE)
         list[i++] = g_strdup (desktop_id);
       if (old_list)
         {
-          for (j = 0; old_list[j] != NULL; j++)
+          for (size_t j = 0; old_list[j] != NULL; j++)
             {
               if (g_strcmp0 (old_list[j], desktop_id) != 0)
                 list[i++] = g_strdup (old_list[j]);
