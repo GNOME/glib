@@ -1467,7 +1467,7 @@ unescape_character (const char *scanner)
 
 static gchar *
 g_unescape_uri_string (const char *escaped,
-		       int         len,
+		       size_t      len,
 		       const char *illegal_escaped_characters,
 		       gboolean    ascii_must_not_be_escaped)
 {
@@ -1477,9 +1477,6 @@ g_unescape_uri_string (const char *escaped,
   
   if (escaped == NULL)
     return NULL;
-
-  if (len < 0)
-    len = strlen (escaped);
 
   result = g_malloc (len + 1);
   
@@ -1667,7 +1664,7 @@ g_filename_from_uri (const gchar *uri,
 	g_free (unescaped_hostname);
     }
 
-  filename = g_unescape_uri_string (past_scheme, -1, "/", FALSE);
+  filename = g_unescape_uri_string (past_scheme, strlen (past_scheme), "/", FALSE);
 
   if (filename == NULL)
     {
