@@ -985,10 +985,10 @@ g_data_input_stream_read_complete (GTask *task,
 
       /* we already checked the buffer.  this shouldn't fail. */
       bytes = g_input_stream_read (stream, line, read_length, NULL, NULL);
-      g_assert_cmpint (bytes, ==, read_length);
+      g_assert (bytes >= 0 && (size_t) bytes == read_length);
 
       bytes = g_input_stream_skip (stream, skip_length, NULL, NULL);
-      g_assert_cmpint (bytes, ==, skip_length);
+      g_assert (bytes >= 0 && (size_t) bytes == skip_length);
     }
 
   g_task_return_pointer (task, line, g_free);

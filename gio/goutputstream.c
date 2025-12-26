@@ -1129,7 +1129,7 @@ write_all_callback (GObject      *stream,
           return;
         }
 
-      g_assert_cmpint (nwritten, <=, data->to_write);
+      g_assert ((size_t) nwritten <= data->to_write);
       g_warn_if_fail (nwritten > 0);
 
       data->to_write -= nwritten;

@@ -855,7 +855,11 @@ client_new (GDBusDaemon *daemon, GDBusConnection *connection)
 
   g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (daemon), connection,
 				    DBUS_PATH_DBUS, &error);
-  g_assert_no_error (error);
+  if (error != NULL)
+    {
+      g_error ("Error exporting D-Bus interface: %s", error->message);
+      g_clear_error (&error);
+    }
 
   g_signal_connect (connection, "closed", G_CALLBACK (connection_closed), client);
   g_dbus_connection_add_filter (connection,

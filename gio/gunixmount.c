@@ -290,7 +290,12 @@ eject_unmount_do_cb (gpointer user_data)
     }
 
   subprocess = g_subprocess_newv (argv, G_SUBPROCESS_FLAGS_STDOUT_SILENCE | G_SUBPROCESS_FLAGS_STDERR_PIPE, &error);
-  g_assert_no_error (error);
+  if (error != NULL)
+    {
+      g_task_return_error (task, g_steal_pointer (&error));
+      g_object_unref (task);
+      return G_SOURCE_REMOVE;
+    }
 
   g_subprocess_communicate_utf8_async (subprocess, NULL,
                                        g_task_get_cancellable (task),

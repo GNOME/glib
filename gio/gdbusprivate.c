@@ -1008,7 +1008,7 @@ write_message_continue_writing (MessageToWriteData *data)
 #endif
 
   g_assert (!g_output_stream_has_pending (ostream));
-  g_assert_cmpint (data->total_written, <, data->blob_size);
+  g_assert (data->total_written < data->blob_size);
 
   if (FALSE)
     {

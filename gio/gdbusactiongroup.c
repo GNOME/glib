@@ -305,7 +305,7 @@ g_dbus_action_group_list_actions (GActionGroup *g_group)
       g_hash_table_iter_init (&iter, group->actions);
       while (g_hash_table_iter_next (&iter, &key, NULL))
         keys[i++] = g_strdup (key);
-      g_assert_cmpint (i, ==, n);
+      g_assert (i == n);
       keys[n] = NULL;
     }
   else
