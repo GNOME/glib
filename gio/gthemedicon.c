@@ -390,11 +390,11 @@ g_themed_icon_new_from_names (char **iconnames,
   if (len >= 0)
     {
       char **names;
-      int i;
+      size_t i;
 
-      names = g_new (char *, len + 1);
+      names = g_new (char *, (size_t) len + 1);
 
-      for (i = 0; i < len; i++)
+      for (i = 0; i < (size_t) len; i++)
         names[i] = iconnames[i];
 
       names[i] = NULL;
