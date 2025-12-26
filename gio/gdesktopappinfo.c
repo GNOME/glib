@@ -541,14 +541,14 @@ struct search_result
 };
 
 static struct search_result *static_token_results;
-static gint                  static_token_results_size;
-static gint                  static_token_results_allocated;
+static size_t                static_token_results_size;
+static size_t                static_token_results_allocated;
 static struct search_result *static_search_results;
-static gint                  static_search_results_size;
-static gint                  static_search_results_allocated;
+static size_t                static_search_results_size;
+static size_t                static_search_results_allocated;
 static struct search_result *static_total_results;
-static gint                  static_total_results_size;
-static gint                  static_total_results_allocated;
+static size_t                static_total_results_size;
+static size_t                static_total_results_allocated;
 
 /* And some functions for performing nice operations against it */
 static gint
@@ -633,7 +633,6 @@ merge_token_results (gboolean first)
   if (first)
     {
       const gchar *last_name = NULL;
-      gint i;
 
       /* We must de-duplicate, but we do so by taking the best category
        * in each case.
@@ -650,7 +649,7 @@ merge_token_results (gboolean first)
                                            static_search_results_allocated);
         }
 
-      for (i = 0; i < static_token_results_size; i++)
+      for (size_t i = 0; i < static_token_results_size; i++)
         {
           /* The list is sorted so that the best match for a given id
            * will be at the front, so once we have copied an id, skip
@@ -667,13 +666,12 @@ merge_token_results (gboolean first)
   else
     {
       const gchar *last_name = NULL;
-      gint i, j = 0;
-      gint k = 0;
+      size_t j = 0, k = 0;
 
       /* We only ever remove items from the results list, so no need to
        * resize to ensure that we have enough room.
        */
-      for (i = 0; i < static_token_results_size; i++)
+      for (size_t i = 0; i < static_token_results_size; i++)
         {
           if (static_token_results[i].app_name == last_name)
             continue;
@@ -4846,9 +4844,9 @@ g_desktop_app_info_search (const gchar *search_string)
   gint last_match_type = -1;
   gint last_token_pos = -1;
   gchar ***results;
-  gint n_groups = 0;
-  gint start_of_group;
-  gint i, j;
+  size_t n_groups = 0;
+  size_t start_of_group;
+  size_t i;
   guint k;
 
   search_tokens = g_str_tokenize_and_fold (search_string, NULL, NULL);
@@ -4859,7 +4857,7 @@ g_desktop_app_info_search (const gchar *search_string)
 
   for (k = 0; k < desktop_file_dirs->len; k++)
     {
-      for (j = 0; search_tokens[j]; j++)
+      for (size_t j = 0; search_tokens[j]; j++)
         {
           desktop_file_dir_search (g_ptr_array_index (desktop_file_dirs, k), search_tokens[j]);
           merge_token_results (j == 0);
@@ -4887,11 +4885,11 @@ g_desktop_app_info_search (const gchar *search_string)
   start_of_group = 0;
   for (i = 0; i < n_groups; i++)
     {
-      gint n_items_in_group = 0;
+      size_t n_items_in_group = 0;
       gint this_category;
       gint this_match_type;
       gint this_token_pos;
-      gint j;
+      size_t j;
 
       this_category = static_total_results[start_of_group].category;
       this_match_type = static_total_results[start_of_group].match_type;
