@@ -295,7 +295,7 @@ g_themed_icon_update_names (GThemedIcon *themed)
               gchar *tmp = last;
               gchar *fallback;
 
-              last = g_strndup (last, dashp - last);
+              last = g_strndup (last, (size_t) (dashp - last));
               if (is_symbolic)
                 {
                   g_free (tmp);
