@@ -296,7 +296,7 @@ g_dbus_action_group_list_actions (GActionGroup *g_group)
   if (group->actions != NULL)
     {
       GHashTableIter iter;
-      gint n, i = 0;
+      unsigned int n, i = 0;
       gpointer key;
 
       n = g_hash_table_size (group->actions);
