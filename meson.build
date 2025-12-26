@@ -667,6 +667,10 @@ endif
 # removed. See https://gitlab.gnome.org/GNOME/glib/-/issues/3405
 warning_sign_conversion_args = cc.get_supported_arguments(['-Wsign-conversion'])
 
+# FIXME: As above
+# See https://gitlab.gnome.org/GNOME/glib/-/issues/3527
+warning_shorten_64_to_32_args = cc.get_supported_arguments(['-Wshorten-64-to-32'])
+
 # FIXME: We cannot build some of the GResource tests with -z nodelete, which
 # means we cannot use that flag in add_project_link_arguments(), and must add
 # it to the relevant targets manually. We do the same with -Bsymbolic-functions
