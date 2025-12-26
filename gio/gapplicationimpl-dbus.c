@@ -211,7 +211,7 @@ g_application_impl_method_call (GDBusConnection       *connection,
       const gchar *hint;
       GVariant *array;
       GFile **files;
-      gint n, i;
+      size_t n, i;
 
       flags = g_application_get_flags (impl->app);
       if ((flags & G_APPLICATION_HANDLES_OPEN) == 0)
