@@ -2780,6 +2780,7 @@ prepend_terminal_to_vector (int          *argc,
       for ((*argc) = 0; the_argv[*argc] != NULL; (*argc)++)
         ;
     }
+  g_assert (*argc >= 0);
 
   for (i = 0, found_terminal = NULL; i < G_N_ELEMENTS (known_terminals); i++)
     {
@@ -2801,7 +2802,7 @@ prepend_terminal_to_vector (int          *argc,
   /* check if the terminal require an option */
   term_argc = term_arg ? 2 : 1;
 
-  real_argc = term_argc + *argc;
+  real_argc = term_argc + (size_t) *argc;
   real_argv = g_new (char *, real_argc + 1);
 
   i = 0;
@@ -2999,7 +3000,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       GList *iter;
       char *sn_id = NULL;
       char **wrapped_argv;
-      int i;
+      size_t i;
 
       old_uris = dup_uris;
       if (!expand_application_parameters (info, exec_line, &dup_uris, &argc, &argv, error))
@@ -3107,10 +3108,10 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           g_once_init_leave_pointer (&gio_launch_desktop_path, tmp);
         }
 
-      wrapped_argv = g_new (char *, argc + 2);
+      wrapped_argv = g_new (char *, (size_t) argc + 2);
       wrapped_argv[0] = g_strdup (gio_launch_desktop_path);
 
-      for (i = 0; i < argc; i++)
+      for (i = 0; i < (size_t) argc; i++)
         wrapped_argv[i + 1] = g_steal_pointer (&argv[i]);
 
       wrapped_argv[i + 1] = NULL;
