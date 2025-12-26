@@ -1181,7 +1181,7 @@ g_application_real_local_command_line (GApplication   *application,
       if ((*exit_status = n_args > 1))
         {
           g_printerr ("GApplication service mode takes no arguments.\n");
-          application->priv->flags &= ~G_APPLICATION_IS_SERVICE;
+          application->priv->flags &= (unsigned int) ~G_APPLICATION_IS_SERVICE;
           *exit_status = 1;
         }
       else
