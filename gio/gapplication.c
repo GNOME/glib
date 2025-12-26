@@ -2625,6 +2625,7 @@ g_application_run (GApplication  *application,
 
   g_return_val_if_fail (G_IS_APPLICATION (application), 1);
   g_return_val_if_fail (argc == 0 || argv != NULL, 1);
+  g_return_val_if_fail (argc >= 0, 1);
   g_return_val_if_fail (!application->priv->must_quit_now, 1);
 
 #ifdef G_OS_WIN32
@@ -2682,7 +2683,7 @@ g_application_run (GApplication  *application,
   {
     gint i;
 
-    arguments = g_new (gchar *, argc + 1);
+    arguments = g_new (gchar *, (unsigned int) argc + 1);
     for (i = 0; i < argc; i++)
       arguments[i] = g_strdup (argv[i]);
     arguments[i] = NULL;
