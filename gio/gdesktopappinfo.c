@@ -4061,7 +4061,16 @@ update_mimeapps_list (const char  *desktop_id,
   data = g_key_file_to_data (key_file, &data_size, error);
   g_key_file_free (key_file);
 
-  res = g_file_set_contents_full (filename, data, data_size,
+  if (data_size > G_MAXSSIZE)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("MIME apps information is too long"));
+      g_free (filename);
+      g_free (data);
+      return FALSE;
+    }
+
+  res = g_file_set_contents_full (filename, data, (gssize) data_size,
                                   G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING,
                                   0600, error);
 
