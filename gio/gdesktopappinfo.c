@@ -1829,7 +1829,7 @@ binary_from_exec (const char *exec)
   while (*p != ' ' && *p != 0)
     p++;
 
-  return g_strndup (start, p - start);
+  return g_strndup (start, (size_t) (p - start));
 }
 
 /*< internal >
