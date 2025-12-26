@@ -284,7 +284,7 @@ g_dbus_menu_path_signal (GDBusConnection *connection,
     {
       GDBusMenuGroup *group;
 
-      group = g_hash_table_lookup (path->groups, GINT_TO_POINTER (group_id));
+      group = g_hash_table_lookup (path->groups, GUINT_TO_POINTER (group_id));
 
       if (group != NULL)
         g_dbus_menu_group_changed (group, menu_id, position, removes, adds);
@@ -379,7 +379,7 @@ g_dbus_menu_group_unref (GDBusMenuGroup *group)
       g_assert (group->state == GROUP_OFFLINE);
       g_assert (group->active == 0);
 
-      g_hash_table_remove (group->path->groups, GINT_TO_POINTER (group->id));
+      g_hash_table_remove (group->path->groups, GUINT_TO_POINTER (group->id));
       g_hash_table_unref (group->proxies);
       g_hash_table_unref (group->menus);
 
@@ -609,12 +609,12 @@ g_dbus_menu_group_changed (GDBusMenuGroup *group,
   if (group->state != GROUP_ONLINE)
     return;
 
-  items = g_hash_table_lookup (group->menus, GINT_TO_POINTER (menu_id));
+  items = g_hash_table_lookup (group->menus, GUINT_TO_POINTER (menu_id));
 
   if (items == NULL)
     {
       items = g_sequence_new (g_dbus_menu_model_item_free);
-      g_hash_table_insert (group->menus, GINT_TO_POINTER (menu_id), items);
+      g_hash_table_insert (group->menus, GUINT_TO_POINTER (menu_id), items);
     }
 
   /* Don’t need to worry about overflow due to the low value of
@@ -643,11 +643,11 @@ g_dbus_menu_group_changed (GDBusMenuGroup *group,
 
   if (g_sequence_is_empty (items))
     {
-      g_hash_table_remove (group->menus, GINT_TO_POINTER (menu_id));
+      g_hash_table_remove (group->menus, GUINT_TO_POINTER (menu_id));
       items = NULL;
     }
 
-  if ((proxy = g_hash_table_lookup (group->proxies, GINT_TO_POINTER (menu_id))))
+  if ((proxy = g_hash_table_lookup (group->proxies, GUINT_TO_POINTER (menu_id))))
     g_dbus_menu_model_changed (proxy, items, position, removed, n_added);
 }
 
@@ -657,7 +657,7 @@ g_dbus_menu_group_get_from_path (GDBusMenuPath *path,
 {
   GDBusMenuGroup *group;
 
-  group = g_hash_table_lookup (path->groups, GINT_TO_POINTER (group_id));
+  group = g_hash_table_lookup (path->groups, GUINT_TO_POINTER (group_id));
 
   if (group == NULL)
     {
@@ -670,7 +670,7 @@ g_dbus_menu_group_get_from_path (GDBusMenuPath *path,
       group->active = 0;
       group->ref_count = 0;
 
-      g_hash_table_insert (path->groups, GINT_TO_POINTER (group->id), group);
+      g_hash_table_insert (path->groups, GUINT_TO_POINTER (group->id), group);
     }
 
   return g_dbus_menu_group_ref (group);
@@ -810,7 +810,7 @@ g_dbus_menu_model_finalize (GObject *object)
   if (proxy->active)
     g_dbus_menu_group_deactivate (proxy->group);
 
-  g_hash_table_remove (proxy->group->proxies, GINT_TO_POINTER (proxy->id));
+  g_hash_table_remove (proxy->group->proxies, GUINT_TO_POINTER (proxy->id));
   g_dbus_menu_group_unref (proxy->group);
 
   G_OBJECT_CLASS (g_dbus_menu_model_parent_class)
@@ -854,15 +854,15 @@ g_dbus_menu_model_get_from_group (GDBusMenuGroup *group,
 {
   GDBusMenuModel *proxy;
 
-  proxy = g_hash_table_lookup (group->proxies, GINT_TO_POINTER (menu_id));
+  proxy = g_hash_table_lookup (group->proxies, GUINT_TO_POINTER (menu_id));
   if (proxy)
     g_object_ref (proxy);
 
   if (proxy == NULL)
     {
       proxy = g_object_new (G_TYPE_DBUS_MENU_MODEL, NULL);
-      proxy->items = g_hash_table_lookup (group->menus, GINT_TO_POINTER (menu_id));
-      g_hash_table_insert (group->proxies, GINT_TO_POINTER (menu_id), proxy);
+      proxy->items = g_hash_table_lookup (group->menus, GUINT_TO_POINTER (menu_id));
+      g_hash_table_insert (group->proxies, GUINT_TO_POINTER (menu_id), proxy);
       proxy->group = g_dbus_menu_group_ref (group);
       proxy->id = menu_id;
     }
