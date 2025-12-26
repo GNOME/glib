@@ -135,7 +135,7 @@ value_flags_enum_lcopy_value (const GValue *value,
 
   g_return_val_if_fail (int_p != NULL, g_strdup_printf ("value location for '%s' passed as NULL", G_VALUE_TYPE_NAME (value)));
 
-  *int_p = value->data[0].v_long;
+  *int_p = (int) value->data[0].v_long;
   
   return NULL;
 }
@@ -717,7 +717,7 @@ g_value_get_enum (const GValue *value)
 {
   g_return_val_if_fail (G_VALUE_HOLDS_ENUM (value), 0);
   
-  return value->data[0].v_long;
+  return (int) value->data[0].v_long;
 }
 
 /**
@@ -749,5 +749,5 @@ g_value_get_flags (const GValue *value)
 {
   g_return_val_if_fail (G_VALUE_HOLDS_FLAGS (value), 0);
   
-  return value->data[0].v_ulong;
+  return (unsigned int) value->data[0].v_ulong;
 }
