@@ -578,7 +578,10 @@ g_themed_icon_from_tokens (gchar  **tokens,
 {
   GIcon *icon;
   gchar **names;
-  int n;
+  size_t n;
+
+  /* This is guaranteed by the GIcon interface */
+  g_assert (num_tokens >= 0);
 
   icon = NULL;
 
@@ -592,8 +595,8 @@ g_themed_icon_from_tokens (gchar  **tokens,
       goto out;
     }
   
-  names = g_new0 (gchar *, num_tokens + 1);
-  for (n = 0; n < num_tokens; n++)
+  names = g_new0 (gchar *, (size_t) num_tokens + 1);
+  for (n = 0; n < (size_t) num_tokens; n++)
     names[n] = tokens[n];
   names[n] = NULL;
 

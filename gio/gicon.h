@@ -86,7 +86,7 @@ struct _GIconIface
   /**
    * GIconIface::from_tokens:
    * @tokens: (array length=num_tokens): An array of tokens
-   * @num_tokens: The number of tokens in @tokens
+   * @num_tokens: The number of tokens in @tokens (guaranteed to be non-negative)
    * @version: Version of the serialized tokens
    * @error: Return location for errors, or %NULL to ignore
    *

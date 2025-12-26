@@ -356,6 +356,9 @@ g_emblemed_icon_from_tokens (gchar  **tokens,
   GEmblemedIcon *emblemed_icon;
   int n;
 
+  /* This is guaranteed by the GIcon interface */
+  g_assert (num_tokens >= 0);
+
   emblemed_icon = NULL;
 
   if (version != 0)
