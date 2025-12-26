@@ -210,7 +210,7 @@ static GQuark	            quark_weak_notifies = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
 static GParamSpecPool      *pspec_pool = NULL; /* atomic */
-static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
+static unsigned int         gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
 static GQuark	            quark_weak_locations = 0;
 
