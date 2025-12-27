@@ -437,10 +437,16 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
  * @callable_info: a callable info from a typelib
  * @closure: ffi closure
  *
- * Gets callable code from `ffi_closure` prepared by
+ * Gets a function pointer from `closure`, which must have been prepared by
  * [method@GIRepository.CallableInfo.create_closure].
+ * This function pointer is the address of the closure in executable memory.
+ * Before calling it, it must be cast to the correct function pointer type,
+ * matching the C type of `callable_info`.
+ * Calling this function pointer will cause the `callback` passed to
+ * [method@GIRepository.CallableInfo.create_closure] to be called with the
+ * appropriate arguments.
  *
- * Returns: (transfer none): native address
+ * Returns: (transfer none): a function pointer
  * Since: 2.80
  */
 void *
