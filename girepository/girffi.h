@@ -119,8 +119,8 @@ ffi_closure * gi_callable_info_create_closure (GICallableInfo       *callable_in
                                                void                 *user_data);
 
 GI_AVAILABLE_IN_ALL
-void **    gi_callable_info_get_closure_native_address (GICallableInfo       *callable_info,
-                                                        ffi_closure          *closure);
+void *gi_callable_info_get_closure_native_address (GICallableInfo *callable_info,
+                                                   ffi_closure *closure);
 
 GI_AVAILABLE_IN_ALL
 void          gi_callable_info_destroy_closure (GICallableInfo       *callable_info,

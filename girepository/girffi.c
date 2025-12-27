@@ -443,9 +443,9 @@ gi_callable_info_create_closure (GICallableInfo       *callable_info,
  * Returns: (transfer none): native address
  * Since: 2.80
  */
-void **
+void *
 gi_callable_info_get_closure_native_address (GICallableInfo *callable_info,
-                                             ffi_closure    *closure)
+                                             ffi_closure *closure)
 {
   GIClosureWrapper *wrapper = (GIClosureWrapper *)closure;
   return wrapper->native_address;
