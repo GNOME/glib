@@ -18,9 +18,11 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
  * Author: Evan Welsh <contact@evanwelsh.com>
+ * Author: Philip Chimento <philip.chimento@gmail.com>
  */
 
 #include "girepository.h"
+#include "girffi.h"
 #include "test-common.h"
 
 static void
@@ -210,6 +212,76 @@ test_callable_info_static_vfunc (RepositoryFixture *fx,
   gi_base_info_unref ((GIBaseInfo *) vfunc_info);
 }
 
+static ffi_cif cif;
+
+static void
+compare_func_callback (ffi_cif *passed_cif,
+                       void *ret,
+                       void **args,
+                       void *user_data)
+{
+  int *return_location = ret;
+  unsigned *call_count = user_data;
+  int arg1 = GPOINTER_TO_INT (*(int *) args[0]);
+  int arg2 = GPOINTER_TO_INT (*(int *) args[1]);
+
+  /* cif is not needed in this simple test, but check that it is what the
+   * documentation says it is */
+  g_assert_true (passed_cif == &cif);
+
+  *return_location = arg1 - arg2;
+  ++*call_count;
+}
+
+static void
+test_callable_info_native_address (RepositoryFixture *fx,
+                                   const void *unused)
+{
+  GICallableInfo *compare_func_info;
+  GList *list = NULL;
+  ffi_closure *closure;
+  unsigned call_count = 0;
+  void *compare_func;
+  int raw_result;
+
+  compare_func_info = GI_CALLABLE_INFO (gi_repository_find_by_name (fx->repository, "GLib", "CompareFunc"));
+  g_assert_true (GI_IS_CALLBACK_INFO (compare_func_info));
+
+  /* Create an unsorted list */
+  list = g_list_prepend (list, GINT_TO_POINTER (1));
+  list = g_list_prepend (list, GINT_TO_POINTER (3));
+  list = g_list_prepend (list, GINT_TO_POINTER (2));
+
+  closure = gi_callable_info_create_closure (compare_func_info, &cif, compare_func_callback, &call_count);
+
+  /* Check that FFI closure information is prepared correctly */
+  g_assert_true (cif.rtype == &ffi_type_sint);
+  g_assert_cmpuint (cif.nargs, ==, 2);
+  g_assert_true (cif.arg_types[0] == &ffi_type_pointer);
+  g_assert_true (cif.arg_types[1] == &ffi_type_pointer);
+
+  compare_func = gi_callable_info_get_closure_native_address (compare_func_info, closure);
+
+  /* Sort the list, passing the generated closure as the callback function pointer */
+  list = g_list_sort (list, compare_func);
+
+  g_assert_cmpuint (call_count, >, 0);
+
+  /* Check that the list is now sorted */
+  g_assert_cmpint (GPOINTER_TO_INT (list->data), ==, 1);
+  g_assert_cmpint (GPOINTER_TO_INT (list->next->data), ==, 2);
+  g_assert_cmpint (GPOINTER_TO_INT (list->next->next->data), ==, 3);
+  g_assert_null (list->next->next->next);
+
+  /* Test invoking the closure directly */
+  raw_result = ((int (*) (const void *, const void *)) compare_func) (GINT_TO_POINTER (6), GINT_TO_POINTER (7));
+  g_assert_cmpint (raw_result, <, 0);
+
+  g_list_free (list);
+  gi_callable_info_destroy_closure (compare_func_info, closure);
+  gi_base_info_unref (GI_BASE_INFO (compare_func_info));
+}
+
 #ifdef G_OS_UNIX
 static void
 test_callable_info_platform_unix_is_method (RepositoryFixture *fx,
@@ -246,6 +318,7 @@ main (int argc, char **argv)
   ADD_REPOSITORY_TEST ("/callable-info/is-method", test_callable_info_is_method, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/callable-info/static-method", test_callable_info_static_method, &typelib_load_spec_gio);
   ADD_REPOSITORY_TEST ("/callable-info/static-vfunc", test_callable_info_static_vfunc, &typelib_load_spec_gio);
+  ADD_REPOSITORY_TEST ("/callable-info/native-address", test_callable_info_native_address, &typelib_load_spec_glib);
 
 #ifdef G_OS_UNIX
   ADD_REPOSITORY_TEST ("/callable-info/platform/unix/is-method", test_callable_info_platform_unix_is_method, &typelib_load_spec_gio);
