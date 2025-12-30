@@ -1,3 +1,90 @@
+Overview of changes in GLib 2.87.1, 2025-12-30
+==============================================
+
+* Several low-risk CVE fixes (#3827, #3834, #3845)
+
+* Fix return type of `gi_callable_info_get_closure_native_address()` (#3859,
+  work by Philip Chimento)
+
+* Tweak thread pool handling for `GTask` threads to prevent stalls (#3840, work
+  by Ignazio Pillai)
+
+* Respect `NO_COLOR` environment variable in log output (!4898, work by
+  Aaron Andersen)
+
+* Update file system type lists to mark more file system types as system ones
+  and to recognise `ntfs3` file systems (!4916 and #3828, work by
+  Christian Hergert and Alexander Schwinn)
+
+* Add `G_GNUC_FLAG_ENUM` attribute to mark enums as flags (!4900, work by
+  Philip Chimento)
+
+* Add a static CRT constructor and fusion manifest XML for GLib utilities on
+  Windows so that `stderr` can be unbuffered and streams are flushed on exit
+  (#3733, work by Luca Bacci)
+
+* Fix `G_FILE_MONITOR_WATCH_HARD_LINKS` on Windows (#3819, work by Jehan)
+
+* Bugs fixed:
+  - #74 ignore case and '-' vs '_' differences when maching on enum/flag
+    nick/name (Emmanuel Fleury)
+  - #1181 Test failure: check_expected_events
+  - #3360 msys2-mingw32 CI failure: mingw-w64-i686-gcc and mingw-w64-i686-gcc-
+    objc are in conflict
+  - #3733 gi-compile-repository.py test intermittently fails on Windows with
+    empty stderr (Luca Bacci)
+  - #3818 g_main_context_check with a NULL context crashes (Michiel Jan Laurens
+    de Hoon)
+  - #3819 G_FILE_MONITOR_WATCH_HARD_LINKS flag does not monitor files on Windows
+  - #3827 (CVE-2025-13601) (#YWH-PGM9867-134) Incorrect calculation of buffer
+    size in g_escape_uri_string() (Philip Withnall)
+  - #3828 NTFS not detected by g_file_info_get_attribute_string
+  - #3834 (CVE-2025-14087) (#YWH-PGM9867-145) Buffer underflow on Glib through
+    glib/gvariant via bytestring_parse() or string_parse() leads to OOB Write
+    (Philip Withnall)
+  - #3840 GTask: g_task_run_in_thread never starts pending tasks (Ignazio
+    Pillai)
+  - #3843 glib: Integer overflow in `g_bytes_new_from_bytes()` leads to
+    corrupted `GBytes` object (Philip Withnall)
+  - #3845 (CVE-2025-14512) GIO: Integer overflow in file attribute escaping
+    (Philip Withnall)
+  - #3851 Integer overflow in `g_buffered_input_stream_peek()` leads to
+    segmentation fault (Philip Withnall)
+  - #3859 Return type of gi_callable_info_get_closure_native_address() should be
+    void* (Philip Chimento)
+  - !4883 ci: Do not use anymore only/except deprecated syntax
+  - !4885 ci: Track changes to gir files using artifacts and MRs comments
+  - !4898 glog: respect NO_COLOR environment variable
+  - !4899 genvironment: consider macOS behavior when testing g_getenv
+  - !4900 Add G_GNUC_FLAG_ENUM
+  - !4904 glog: guard NO_COLOR environment variable check with a GOnce for
+    performance reasons
+  - !4907 completion: fix error on nounset mode unknown completions
+  - !4908 glocalfile: Complain if `faccessat` sets an unusual error and use
+    AT_FDCWD
+  - !4909 glocalfile: Fix trash user cancellation not reported on Windows
+  - !4910 ci: Use issue bot native support for $ISSUE_BOT_API_TOKEN_FILE
+  - !4913 gdbusprivate: check length of path to GDBus binary
+  - !4916 gio/gunixmounts: mark some file-system types as system
+  - !4920 tests: Fix static-link test when running installed
+  - !4921 gutf8: Add tests and clarify documentation for g_unichar_to_utf8()
+  - !4922 ci: Enable the gobject-introspection build for the debian-stable-i386
+    job
+  - !4923 Added AIX implementation of g_unix_fd_query_path
+  - !4926 Fix g_strcompress docs (mod 256)
+  - !4928 Update of the Occitan translation
+  - !4930 gio/gunixmounts: Mark more file systems as system internal
+  - !4931 gio/gunixmounts: Replace /bin/efi with /boot/efi
+  - !4937 docs(GResource): Tweak overlays description
+  - !4939 gsocks4aproxy: Fix a buffer leak when finishing connecting
+  - !4941 gsignal: Cleanup handler disconnection avoiding unneeded operations
+  - !4942 gio: Fix a few -Wsign-conversion warnings
+  - !4943 ci: Some fixups on the gir checker
+
+* Translation updates:
+  - Occitan (post 1500) (Mejans)
+
+
 Overview of changes in GLib 2.87.0, 2025-11-03
 ==============================================
 
