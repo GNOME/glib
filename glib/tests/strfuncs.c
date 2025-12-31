@@ -1578,6 +1578,7 @@ test_strsplit_set (void)
 
   strv_check (g_strsplit_set ("", ",/", 0), NULL);
   strv_check (g_strsplit_set (":def/ghi:", ":/", -1), "", "def", "ghi", "", NULL);
+  strv_check (g_strsplit_set (":def/ghi:/x", ":/", -1), "", "def", "ghi", "", "x", NULL);
   strv_check (g_strsplit_set ("abc:def/ghi", ":/", -1), "abc", "def", "ghi", NULL);
   strv_check (g_strsplit_set (",;,;,;,;", ",;", -1), "", "", "", "", "", "", "", "", "", NULL);
   strv_check (g_strsplit_set (",,abc.def", ".,", -1), "", "", "abc", "def", NULL);
