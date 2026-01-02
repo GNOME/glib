@@ -952,7 +952,7 @@ char *
 g_unix_fd_query_path (int      fd,
                       GError **error)
 {
-#if defined(__linux__) || defined(__sun) || defined(_AIX)
+#if defined(__linux__) || defined(__sun) || defined(_AIX) || defined (__CYGWIN__)
   char *path;
   char *proc_path;
 
