@@ -887,6 +887,13 @@ g_test_log_type_name (GTestLogType log_type)
   return "???";
 }
 
+/* Whether g_test_log_send() will do anything, or whether it’s a no-op. */
+static gboolean
+g_test_log_send_needed (void)
+{
+  return (test_log_fd >= 0 || test_debug_log);
+}
+
 static void
 g_test_log_send (guint         n_bytes,
                  const guint8 *buffer)
@@ -942,10 +949,6 @@ g_test_log (GTestLogType lbit,
 {
   GTestResult result;
   gboolean fail;
-  GTestLogMsg msg;
-  gchar *astrings[3] = { NULL, NULL, NULL };
-  guint8 *dbuffer;
-  guint32 dbufferlen;
   unsigned subtest_level;
   gdouble timing;
 
@@ -1127,16 +1130,25 @@ g_test_log (GTestLogType lbit,
     default: ;
     }
 
-  msg.log_type = lbit;
-  msg.n_strings = (string1 != NULL) + (string1 && string2);
-  msg.strings = astrings;
-  astrings[0] = (gchar*) string1;
-  astrings[1] = astrings[0] ? (gchar*) string2 : NULL;
-  msg.n_nums = n_args;
-  msg.nums = largs;
-  dbuffer = g_test_log_dump (&msg, &dbufferlen);
-  g_test_log_send (dbufferlen, dbuffer);
-  g_free (dbuffer);
+  /* Various non-default logging paths. */
+  if (g_test_log_send_needed ())
+    {
+      GTestLogMsg msg;
+      gchar *astrings[3] = { NULL, NULL, NULL };
+      guint8 *dbuffer;
+      guint32 dbufferlen;
+
+      msg.log_type = lbit;
+      msg.n_strings = (string1 != NULL) + (string1 && string2);
+      msg.strings = astrings;
+      astrings[0] = (gchar*) string1;
+      astrings[1] = astrings[0] ? (gchar*) string2 : NULL;
+      msg.n_nums = n_args;
+      msg.nums = largs;
+      dbuffer = g_test_log_dump (&msg, &dbufferlen);
+      g_test_log_send (dbufferlen, dbuffer);
+      g_free (dbuffer);
+    }
 
   switch (lbit)
     {
