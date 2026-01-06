@@ -65,6 +65,7 @@
 #endif
 
 #include "gunixmounts.h"
+#include "gunixmounts-private.h"
 #include "glocalfileprivate.h"
 #include "gfile.h"
 #include "gfilemonitor.h"
@@ -223,55 +224,7 @@ is_in (const char *value, const char *set[], gsize set_size)
 gboolean
 g_unix_is_mount_path_system_internal (const char *mount_path)
 {
-  /* keep sorted for bsearch */
-  const char *ignore_mountpoints[] = {
-    /* Includes all FHS 2.3 toplevel dirs and other specialized
-     * directories that we want to hide from the user.
-     */
-    "/",              /* we already have "Filesystem root" in Nautilus */
-    "/bin",
-    "/boot",
-    "/boot/efi",
-    "/compat/linux/proc",
-    "/compat/linux/sys",
-    "/dev",
-    "/etc",
-    "/home",
-    "/lib",
-    "/lib64",
-    "/libexec",
-    "/live/cow",
-    "/live/image",
-    "/media",
-    "/mnt",
-    "/net",
-    "/opt",
-    "/proc",
-    "/rescue",
-    "/root",
-    "/sbin",
-    "/sbin",
-    "/srv",
-    "/sys",
-    "/tmp",
-    "/usr",
-    "/usr/X11R6",
-    "/usr/local",
-    "/usr/obj",
-    "/usr/ports",
-    "/usr/src",
-    "/usr/xobj",
-    "/var",
-    "/var/crash",
-    "/var/local",
-    "/var/log",
-    "/var/log/audit", /* https://bugzilla.redhat.com/show_bug.cgi?id=333041 */
-    "/var/mail",
-    "/var/run",
-    "/var/tmp",       /* https://bugzilla.redhat.com/show_bug.cgi?id=335241 */
-  };
-
-  if (is_in (mount_path, ignore_mountpoints, G_N_ELEMENTS (ignore_mountpoints)))
+  if (is_in (mount_path, system_mount_paths, G_N_ELEMENTS (system_mount_paths)))
     return TRUE;
 
   /* Kept separate from sorted list as they may vary */
