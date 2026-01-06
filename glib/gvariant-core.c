@@ -1309,8 +1309,11 @@ g_variant_get_child_value (GVariant *value,
     child->size = s_child.size;
     g_atomic_ref_count_init (&child->ref_count);
     child->depth = value->depth + 1;
-    child->contents.serialised.bytes =
-      g_bytes_ref (value->contents.serialised.bytes);
+    if (value->contents.serialised.bytes != NULL)
+      child->contents.serialised.bytes =
+        g_bytes_ref (value->contents.serialised.bytes);
+    else
+      child->contents.serialised.bytes = NULL;
     child->contents.serialised.data = s_child.data;
     child->contents.serialised.ordered_offsets_up_to = (value->state & STATE_TRUSTED) ? G_MAXSIZE : s_child.ordered_offsets_up_to;
     child->contents.serialised.checked_offsets_up_to = (value->state & STATE_TRUSTED) ? G_MAXSIZE : s_child.checked_offsets_up_to;
