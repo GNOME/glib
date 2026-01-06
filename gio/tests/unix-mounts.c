@@ -28,6 +28,8 @@
 #include <gio/gio.h>
 #include <gio/gunixmounts.h>
 
+#include "../gunixmounts-private.h"
+
 static void
 test_is_system_fs_type (void)
 {
@@ -48,6 +50,29 @@ test_is_system_device_path (void)
   g_assert_false (g_unix_is_system_device_path ("/"));
 }
 
+static void
+test_system_mount_paths_sorted (void)
+{
+  size_t i;
+  size_t n_paths = G_N_ELEMENTS (system_mount_paths);
+
+  g_test_summary ("Verify that system_mount_paths array is sorted for bsearch");
+
+  for (i = 1; i < n_paths; i++)
+    {
+      int cmp = strcmp (system_mount_paths[i - 1], system_mount_paths[i]);
+      if (cmp > 0)
+        {
+          g_fprintf (stderr, "system_mount_paths array is not sorted: "
+                              "\"%s\" should come before \"%s\"",
+                              system_mount_paths[i - 1],
+                              system_mount_paths[i]);
+          g_test_fail ();
+          return;
+        }
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -58,6 +83,7 @@ main (int   argc,
 
   g_test_add_func ("/unix-mounts/is-system-fs-type", test_is_system_fs_type);
   g_test_add_func ("/unix-mounts/is-system-device-path", test_is_system_device_path);
+  g_test_add_func ("/unix-mounts/system-mount-paths-sorted", test_system_mount_paths_sorted);
 
   return g_test_run ();
 }
