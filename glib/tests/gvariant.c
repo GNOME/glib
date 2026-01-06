@@ -4604,6 +4604,23 @@ test_bytestring (void)
 }
 
 static void
+test_bytestring_iteration (void)
+{
+  GVariantIter iter;
+  GVariant *child;
+  GVariant *value;
+
+  value = g_variant_new_bytestring ("Foo");
+
+  g_variant_iter_init (&iter, value);
+
+  while ((child = g_variant_iter_next_value (&iter)))
+    g_variant_unref (child);
+
+  g_variant_unref (value);
+}
+
+static void
 test_lookup_value (void)
 {
   struct {
@@ -6000,6 +6017,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/parse/subprocess/bad-args", test_parse_bad_args);
   g_test_add_func ("/gvariant/floating", test_floating);
   g_test_add_func ("/gvariant/bytestring", test_bytestring);
+  g_test_add_func ("/gvariant/bytestring-iteration", test_bytestring_iteration);
   g_test_add_func ("/gvariant/lookup-value", test_lookup_value);
   g_test_add_func ("/gvariant/lookup", test_lookup);
   g_test_add_func ("/gvariant/compare", test_compare);
