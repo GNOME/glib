@@ -38,6 +38,8 @@
 #include <gio/gio.h>
 #include <gio/gunixmounts.h>
 
+#include "../gunixmounts-private.h"
+
 /* We test all of the old g_unix_mount_*() API before it was renamed to
  * g_unix_mount_entry_*(). The old API calls the new API, so both methods get
  * tested at once. */
@@ -61,6 +63,28 @@ test_is_system_device_path (void)
 {
   g_assert_true (g_unix_is_system_device_path ("devpts"));
   g_assert_false (g_unix_is_system_device_path ("/"));
+}
+
+static void
+test_system_mount_paths_sorted (void)
+{
+  size_t i;
+  size_t n_paths = G_N_ELEMENTS (system_mount_paths);
+
+  g_test_summary ("Verify that system_mount_paths array is sorted for bsearch");
+
+  for (i = 1; i < n_paths; i++)
+    {
+      int cmp = strcmp (system_mount_paths[i - 1], system_mount_paths[i]);
+      if (cmp > 0)
+        {
+          g_test_fail_printf ("system_mount_paths array is not sorted: "
+                               "\"%s\" should come before \"%s\"",
+                               system_mount_paths[i - 1],
+                               system_mount_paths[i]);
+          return;
+        }
+    }
 }
 
 static void
@@ -367,6 +391,7 @@ main (int   argc,
 
   g_test_add_func ("/unix-mounts/is-system-fs-type", test_is_system_fs_type);
   g_test_add_func ("/unix-mounts/is-system-device-path", test_is_system_device_path);
+  g_test_add_func ("/unix-mounts/system-mount-paths-sorted", test_system_mount_paths_sorted);
   g_test_add_func ("/unix-mounts/get-mount-points", test_get_mount_points);
   g_test_add_func ("/unix-mounts/get-mount-entries", test_get_mount_entries);
 
