@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     if args.sha and not mr.sha.startswith(args.sha):
         print(f"MR !{mr.iid} not matching SHA {args.sha}", flush=True)
-        sys.exit(1)
+        sys.exit(77)
 
     if args.skip_if_mr_contains_our_comment_text:
         print(
