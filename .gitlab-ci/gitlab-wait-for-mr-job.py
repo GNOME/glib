@@ -138,14 +138,22 @@ if __name__ == "__main__":
     print(f"Job {job.id} completed!", flush=True)
 
     if args.last_target_job_id_output:
+        mr_commits = mr.commits(get_all=True)
+        first_mr_commit = list(mr_commits)[-1]
+
+        pipelines = []
         job = None
-        pipelines = project.pipelines.list(
-            ref=mr.target_branch,
-            per_page=25,
-            get_all=False,
-            order_by="id",
-            sort="desc",
-        )
+
+        for parent_sha in first_mr_commit.parent_ids:
+            pipelines.extend(
+                project.pipelines.list(
+                    sha=parent_sha,
+                    ref=mr.target_branch,
+                    get_all=True,
+                    order_by="id",
+                    sort="desc",
+                )
+            )
 
         for pipeline in pipelines:
             jobs = pipeline.jobs.list(all=True)
