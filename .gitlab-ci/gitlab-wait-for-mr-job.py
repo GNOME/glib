@@ -89,6 +89,30 @@ if __name__ == "__main__":
             )
             sys.exit(77)
 
+    if args.last_target_job_id_output:
+        job = get_latest_job_for_mr_parent(project, mr, args.job)
+
+        if job is None:
+            print(
+                f"Impossible to find a valid job for branch {mr.target_branch}",
+                file=sys.stderr,
+                flush=True,
+            )
+            sys.exit(77)
+
+        if job.artifacts_expire_at:
+            artifacts_expire_date = datetime.fromisoformat(job.artifacts_expire_at)
+            if datetime.now(artifacts_expire_date.tzinfo) >= artifacts_expire_date:
+                print(
+                    f"Artifacts for job {job.id} have exipred",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                sys.exit(77)
+
+        with open(args.last_target_job_id_output, "wt", encoding="utf-8") as f:
+            f.write(f"{job.id}\n")
+
     # Find the project that is associated to the merge request's source branch
     if mr.source_project_id != project.id:
         source_project = gl.projects.get(mr.source_project_id)
@@ -164,27 +188,3 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print(f"Job {job.id} completed!", flush=True)
-
-    if args.last_target_job_id_output:
-        job = get_latest_job_for_mr_parent(project, mr, args.job)
-
-        if job is None:
-            print(
-                f"Impossible to find a valid job for branch {mr.target_branch}",
-                file=sys.stderr,
-                flush=True,
-            )
-            sys.exit(77)
-
-        if job.artifacts_expire_at:
-            artifacts_expire_date = datetime.fromisoformat(job.artifacts_expire_at)
-            if datetime.now(artifacts_expire_date.tzinfo) >= artifacts_expire_date:
-                print(
-                    f"Artifacts for job {job.id} have expired",
-                    file=sys.stderr,
-                    flush=True,
-                )
-                sys.exit(77)
-
-        with open(args.last_target_job_id_output, "wt", encoding="utf-8") as f:
-            f.write(f"{job.id}\n")
