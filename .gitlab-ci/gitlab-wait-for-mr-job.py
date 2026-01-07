@@ -8,6 +8,8 @@ import os
 import time
 import sys
 
+from datetime import datetime
+
 
 def has_self_mr_note(mr, current_user_id, contents):
     for note in mr.notes.list(get_all=True):
@@ -173,6 +175,16 @@ if __name__ == "__main__":
                 flush=True,
             )
             sys.exit(77)
+
+        if job.artifacts_expire_at:
+            artifacts_expire_date = datetime.fromisoformat(job.artifacts_expire_at)
+            if datetime.now(artifacts_expire_date.tzinfo) >= artifacts_expire_date:
+                print(
+                    f"Artifacts for job {job.id} have expired",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                sys.exit(77)
 
         with open(args.last_target_job_id_output, "wt", encoding="utf-8") as f:
             f.write(f"{job.id}\n")
