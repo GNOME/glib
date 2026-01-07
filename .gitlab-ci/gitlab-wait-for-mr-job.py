@@ -19,6 +19,32 @@ def has_self_mr_note(mr, current_user_id, contents):
     return False
 
 
+def get_latest_job_for_mr_parent(project, mr, job_name):
+    mr_commits = mr.commits(get_all=True)
+    first_mr_commit = list(mr_commits)[-1]
+
+    pipelines = []
+    job = None
+
+    for parent_sha in first_mr_commit.parent_ids:
+        pipelines.extend(
+            project.pipelines.list(
+                sha=parent_sha,
+                ref=mr.target_branch,
+                get_all=True,
+                order_by="id",
+                sort="desc",
+            )
+        )
+
+    for pipeline in pipelines:
+        jobs = pipeline.jobs.list(all=True)
+
+        for job in jobs:
+            if job.status == "success" and job.name == job_name:
+                return job
+
+
 if __name__ == "__main__":
     server_uri = os.environ["CI_SERVER_URL"]
     project_path = os.environ["CI_PROJECT_PATH"]
@@ -140,33 +166,7 @@ if __name__ == "__main__":
     print(f"Job {job.id} completed!", flush=True)
 
     if args.last_target_job_id_output:
-        mr_commits = mr.commits(get_all=True)
-        first_mr_commit = list(mr_commits)[-1]
-
-        pipelines = []
-        job = None
-
-        for parent_sha in first_mr_commit.parent_ids:
-            pipelines.extend(
-                project.pipelines.list(
-                    sha=parent_sha,
-                    ref=mr.target_branch,
-                    get_all=True,
-                    order_by="id",
-                    sort="desc",
-                )
-            )
-
-        for pipeline in pipelines:
-            jobs = pipeline.jobs.list(all=True)
-
-            for j in jobs:
-                if j.status == "success" and j.name == args.job:
-                    job = j
-                    break
-
-            if job:
-                break
+        job = get_latest_job_for_mr_parent(project, mr, args.job)
 
         if job is None:
             print(
