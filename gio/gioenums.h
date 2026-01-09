@@ -2167,6 +2167,27 @@ typedef enum {
   G_MEMORY_MONITOR_WARNING_LEVEL_CRITICAL = 255
 } GMemoryMonitorWarningLevel;
 
+/**
+ * GEcnCodePoint:
+ * @G_ECN_NO_ECN: Not ECN-capable transport
+ * @G_ECN_ECT_1: ECN Capable Transport(1)
+ * @G_ECN_ECT_0: ECN Capable Transport(0)
+ * @G_ECN_ECT_CE: Congestion Experienced
+ *
+ * Possible values of Explicit Congestion Notification code points.
+ *
+ * These appear in `TOS` (IPv4) or `TCLASS` (IPv6) packet headers and
+ * are described in [RFC 3168](https://www.rfc-editor.org/rfc/rfc3168#section-5).
+ *
+ * Since: 2.88
+ */
+typedef enum {
+  G_ECN_NO_ECN  = 0x0,
+  G_ECN_ECT_1   = 0x1,
+  G_ECN_ECT_0   = 0x2,
+  G_ECN_ECT_CE  = 0x3
+} GEcnCodePoint;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */
