@@ -157,7 +157,15 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
   g_free (title_utf16);
 
   const gchar *body_utf8 = g_notification_get_body (notification);
-  if (body_utf8)
+  if (!body_utf8 || !*body_utf8)
+    {
+      /* If you pass an empty body, Shell_NotifyIcon won't show the notification,
+       * in order to fix this, here we are setting a string with a single
+       * SPACE (' ') character, which makes the body look like empty */
+      notify_singleton.szInfo[0] = L' ';
+      notify_singleton.szInfo[1] = L'\0';
+    }
+  else
     {
       WCHAR *body_utf16 = g_utf8_to_utf16 (body_utf8, -1, NULL, &items_written, &error);
       if (error)
