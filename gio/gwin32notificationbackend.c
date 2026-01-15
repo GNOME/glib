@@ -52,9 +52,9 @@ this_module (void)
 }
 
 static HWND hwnd;
-static GMutex hwnd_mutex;
+static GMutex hwnd_mutex; /* Protects access to `hwnd`, `hwnd_refcount` and `wnd_klass` */
 static grefcount hwnd_refcount;
-static ATOM wnd_klass; /* Same lifetime and mutex as hwnd */
+static ATOM wnd_klass;
 
 typedef struct _GWin32NotificationBackend GWin32NotificationBackend;
 typedef GNotificationBackendClass         GWin32NotificationBackendClass;
@@ -73,8 +73,15 @@ G_DEFINE_TYPE_WITH_CODE (GWin32NotificationBackend, g_win32_notification_backend
   g_io_extension_point_implement (G_NOTIFICATION_BACKEND_EXTENSION_POINT_NAME,
                                   g_define_type_id, "win32", 0))
 
-#define MAX_TITLE_LEN (64 - 1) /* NUL-terminated */
-#define MAX_BODY_LEN (256 - 1) /* NUL-terminated */
+/* Maximum number of UTF-16 code units that can be written into
+ * NOTIFYICONDATA.szInfoTitle array, it does not count one element
+ * which is for the NUL-terminator */
+#define MAX_TITLE_COUNT (G_N_ELEMENTS (((NOTIFYICONDATA *) 0)->szInfoTitle) - 1)
+
+/* Maximum number of UTF-16 code units that can be written into
+ * NOTIFYICONDATA.szInfo array, it does not count one element
+ * which is for the NUL-terminator */
+#define MAX_BODY_COUNT (G_N_ELEMENTS (((NOTIFYICONDATA *) 0)->szInfo) - 1)
 
 static gboolean
 g_win32_notification_backend_is_supported (void)
@@ -89,16 +96,13 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
                                                 const gchar          *id,
                                                 GNotification        *notification)
 {
-  /* Warn unsupported GNotification features */
+  /* GIO users may expect notification actions to work, and expect the actions
+   * to be activated, but because we cannot fullfil the request, it's appropriate
+   * to warn about it at least once to let them know. */
 
   if (g_notification_get_n_buttons (notification) > 0)
     {
       g_warning_once ("Notification action buttons are unsupported in Windows");
-    }
-
-  if (g_notification_get_category (notification))
-    {
-      g_warning_once ("Notification category is unsupported in Windows");
     }
 
   /* FIXME: Couldn't make it to work, when clicking the notification no message
@@ -109,13 +113,14 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
       g_warning_once ("Notification default action is unsupported in Windows");
     }
 
-  if (g_notification_get_icon (notification))
-    {
-      g_warning_once ("Notification icon is unsupported in Windows");
-    }
+  /* NOTE: Icon is unsupported for W10 or greater, trying to set an icon will
+   * make the notification to not show up */
+  /* NOTE: There is no category */
+  /* NOTE: There is no priority */
 
   GWin32NotificationBackend *self = G_WIN32_NOTIFICATION_BACKEND (backend);
 
+  /* Return early if backend's initialization failed */
   if (!self->hwnd)
     return;
 
@@ -132,22 +137,22 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
   WCHAR *title_utf16 = g_utf8_to_utf16 (title_utf8, -1, NULL, &items_written, &error);
   if (error)
     {
-      g_warning ("g_utf8_to_utf16 failed: %s", error->message);
+      g_critical ("Invalid UTF-8 in notification: %s", error->message);
       g_error_free (error);
       return; /* Cannot show a notification without a title */
     }
 
-  if (items_written > MAX_TITLE_LEN)
+  if (items_written > MAX_TITLE_COUNT)
     {
-      g_warning ("Title too long, truncating title");
-      items_written = MAX_TITLE_LEN;
+      g_warning ("Notification title too long, truncating title");
+      items_written = MAX_TITLE_COUNT;
       if (IS_LOW_SURROGATE (title_utf16[items_written]))
         items_written--;
     }
 
   if (items_written == 0)
     {
-      g_warning ("Title is empty");
+      g_critical ("Notification title is empty");
       g_free (title_utf16);
       return; /* Cannot show a notification without a title */
     }
@@ -170,15 +175,15 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
       WCHAR *body_utf16 = g_utf8_to_utf16 (body_utf8, -1, NULL, &items_written, &error);
       if (error)
         {
-          g_warning ("g_utf8_to_utf16 failed: %s", error->message);
+          g_critical ("Invalid UTF-8 in notification: %s", error->message);
           g_clear_pointer (&error, g_error_free);
         }
       else
         {
-          if (items_written > MAX_BODY_LEN)
+          if (items_written > MAX_BODY_COUNT)
             {
-              g_warning ("Body too long, truncating body");
-              items_written = MAX_BODY_LEN;
+              g_warning ("Notification body too long, truncating body");
+              items_written = MAX_BODY_COUNT;
               if (IS_LOW_SURROGATE (body_utf16[items_written]))
                 items_written--;
             }
