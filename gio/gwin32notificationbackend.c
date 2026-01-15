@@ -142,7 +142,7 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
       return; /* Cannot show a notification without a title */
     }
 
-  if (items_written > MAX_TITLE_COUNT)
+  if (items_written > (glong) MAX_TITLE_COUNT)
     {
       g_warning ("Notification title too long, truncating title");
       items_written = MAX_TITLE_COUNT;
@@ -180,7 +180,7 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
         }
       else
         {
-          if (items_written > MAX_BODY_COUNT)
+          if (items_written > (glong) MAX_BODY_COUNT)
             {
               g_warning ("Notification body too long, truncating body");
               items_written = MAX_BODY_COUNT;
