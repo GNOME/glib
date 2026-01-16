@@ -175,8 +175,13 @@ foreach test_name, extra_args : gobject_tests
     )
   endif
 
+  c_args = test_cargs + extra_args.get('c_args', [])
+  if 'cpp' not in extra_args.get('suite', [])
+    c_args += [warning_shorten_64_to_32_args]
+  endif
+
   exe = executable(test_name, source,
-    c_args : test_cargs + extra_args.get('c_args', []),
+    c_args : c_args,
     cpp_args : test_cpp_args + extra_args.get('cpp_args', []),
     dependencies : test_deps + extra_args.get('dependencies', []),
     install_dir: installed_tests_execdir,

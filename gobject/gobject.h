@@ -356,7 +356,7 @@ struct  _GObjectClass
   /*< private >*/
   gsize		flags;
 
-  gsize         n_construct_properties;
+  gsize         n_construct_properties;  /* functionally this is limited to UINT_MAX */
 
   gpointer pspecs;
   gsize n_pspecs;

@@ -534,7 +534,7 @@ param_enum_is_valid (GParamSpec   *pspec,
   GParamSpecEnum *espec = G_PARAM_SPEC_ENUM (pspec);
   glong oval = value->data[0].v_long;
   
-  return g_enum_get_value (espec->enum_class, oval) != NULL;
+  return g_enum_get_value (espec->enum_class, (int) oval) != NULL;
 }
 
 static gboolean
@@ -545,7 +545,7 @@ param_enum_validate (GParamSpec *pspec,
   glong oval = value->data[0].v_long;
   
   if (!espec->enum_class ||
-      !g_enum_get_value (espec->enum_class, value->data[0].v_long))
+      !g_enum_get_value (espec->enum_class, (int) value->data[0].v_long))
     value->data[0].v_long = espec->default_value;
   
   return value->data[0].v_long != oval;

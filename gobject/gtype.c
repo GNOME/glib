@@ -1327,8 +1327,8 @@ type_node_add_iface_entry_W (TypeNode   *node,
   IFaceEntries *entries;
   IFaceEntry *entry;
   TypeNode *iface_node;
-  guint i, j;
-  guint num_entries;
+  size_t i, j;
+  size_t num_entries;
 
   g_assert (node->is_instantiatable);
 
@@ -1465,7 +1465,7 @@ type_iface_add_prerequisite_W (TypeNode *iface,
 {
   GType prerequisite_type = NODE_TYPE (prerequisite_node);
   GType *prerequisites, *dependants;
-  guint n_dependants, i;
+  size_t n_dependants, i;
   
   g_assert (NODE_IS_IFACE (iface) &&
 	    IFACE_NODE_N_PREREQUISITES (iface) < MAX_N_PREREQUISITES &&

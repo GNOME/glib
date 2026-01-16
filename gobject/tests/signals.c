@@ -668,7 +668,7 @@ static void
 test_generic_marshaller_signal_enum_return_signed (void)
 {
   Test *test;
-  guint id;
+  unsigned long id;
   TestEnum retval = 0;
 
   test = g_object_new (test_get_type (), NULL);
@@ -711,7 +711,7 @@ static void
 test_generic_marshaller_signal_enum_return_unsigned (void)
 {
   Test *test;
-  guint id;
+  unsigned long id;
   TestUnsignedEnum retval = 0;
 
   test = g_object_new (test_get_type (), NULL);
@@ -756,7 +756,7 @@ static void
 test_generic_marshaller_signal_int_return (void)
 {
   Test *test;
-  guint id;
+  unsigned long id;
   gint retval = 0;
 
   test = g_object_new (test_get_type (), NULL);
@@ -820,7 +820,7 @@ static void
 test_generic_marshaller_signal_uint_return (void)
 {
   Test *test;
-  guint id;
+  unsigned long id;
   guint retval = 0;
 
   test = g_object_new (test_get_type (), NULL);
@@ -874,7 +874,7 @@ static void
 test_generic_marshaller_signal_interface_return (void)
 {
   Test *test;
-  guint id;
+  unsigned long id;
   gpointer retval;
 
   test = g_object_new (test_get_type (), NULL);
@@ -1678,7 +1678,7 @@ test_signal_disconnect_wrong_object (void)
 {
   Test *object, *object2;
   Test2 *object3;
-  guint signal_id;
+  unsigned long signal_id;
 
   object = g_object_new (test_get_type (), NULL);
   object2 = g_object_new (test_get_type (), NULL);
