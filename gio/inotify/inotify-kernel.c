@@ -506,7 +506,11 @@ ik_source_new (gboolean (* callback) (ik_event_t *event))
       if (should_set_nonblock)
         {
           g_unix_set_fd_nonblocking (iks->fd, TRUE, &error);
-          g_assert_no_error (error);
+          if (error != NULL)
+            {
+              g_warning ("Error setting FD nonblocking: %s", error->message);
+              g_clear_error (&error);
+            }
         }
 #endif
 

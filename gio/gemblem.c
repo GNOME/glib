@@ -324,6 +324,9 @@ g_emblem_from_tokens (gchar  **tokens,
   GEmblemOrigin origin;
   uint64_t origin_parsed;
 
+  /* This is guaranteed by the GIcon interface */
+  g_assert (num_tokens >= 0);
+
   emblem = NULL;
 
   if (version != 0)

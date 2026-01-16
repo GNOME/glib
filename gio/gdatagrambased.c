@@ -414,9 +414,9 @@ g_datagram_based_condition_check (GDatagramBased *datagram_based,
    * G_IO_HUP are mutually exclusive. The return value must be a subset of
    * (condition | G_IO_ERR | G_IO_HUP). */
   g_return_val_if_fail ((out & (G_IO_OUT | G_IO_HUP)) != (G_IO_OUT | G_IO_HUP),
-                        out & ~G_IO_OUT);
+                        out & (GIOCondition) ~G_IO_OUT);
   g_return_val_if_fail ((out & (G_IO_IN | G_IO_HUP)) != (G_IO_IN | G_IO_HUP),
-                        out & ~G_IO_IN);
+                        out & (GIOCondition) ~G_IO_IN);
   g_return_val_if_fail ((out & ~(condition | G_IO_ERR | G_IO_HUP)) == 0,
                         out & (condition | G_IO_ERR | G_IO_HUP));
 

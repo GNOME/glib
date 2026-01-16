@@ -67,7 +67,7 @@ g_simple_action_group_list_actions (GActionGroup *group)
   g_hash_table_iter_init (&iter, simple->priv->table);
   while (g_hash_table_iter_next (&iter, &key, NULL))
     keys[i++] = g_strdup (key);
-  g_assert_cmpint (i, ==, n);
+  g_assert (i == n);
   keys[n] = NULL;
 
   return keys;

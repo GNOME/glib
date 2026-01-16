@@ -4756,7 +4756,7 @@ invoke_get_property_in_idle_cb (gpointer _data)
 
   if (value != NULL)
     {
-      g_assert_no_error (error);
+      g_assert (error == NULL);
 
       g_variant_take_ref (value);
       reply = g_dbus_message_new_method_reply (data->message);

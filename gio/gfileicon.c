@@ -238,6 +238,9 @@ g_file_icon_from_tokens (gchar  **tokens,
   GIcon *icon;
   GFile *file;
 
+  /* This is guaranteed by the GIcon interface */
+  g_assert (num_tokens >= 0);
+
   icon = NULL;
 
   if (version != 0)

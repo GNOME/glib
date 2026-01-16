@@ -1046,7 +1046,7 @@ fill_async_callback (GObject      *source_object,
       stream = g_task_get_source_object (task);
       priv = G_BUFFERED_INPUT_STREAM (stream)->priv;
 
-      g_assert_cmpint (priv->end + res, <=, priv->len);
+      g_assert (priv->end + res <= priv->len);
       priv->end += res;
 
       g_task_return_int (task, res);

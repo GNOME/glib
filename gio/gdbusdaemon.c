@@ -122,7 +122,7 @@ typedef struct {
 typedef struct {
   gboolean eavesdrop;
   GDBusMessageType type;
-  int n_elements;
+  size_t n_elements;
   MatchElement *elements;
 } Match;
 
@@ -467,8 +467,7 @@ match_new (const char *str)
 static void
 match_free (Match *match)
 {
-  int i;
-  for (i = 0; i < match->n_elements; i++)
+  for (size_t i = 0; i < match->n_elements; i++)
     g_free (match->elements[i].value);
   g_free (match->elements);
   g_free (match);
@@ -477,15 +476,13 @@ match_free (Match *match)
 static gboolean
 match_equal (Match *a, Match *b)
 {
-  int i;
-
   if (a->eavesdrop != b->eavesdrop)
     return FALSE;
   if (a->type != b->type)
     return FALSE;
  if (a->n_elements != b->n_elements)
     return FALSE;
-  for (i = 0; i < a->n_elements; i++)
+  for (size_t i = 0; i < a->n_elements; i++)
     {
       if (a->elements[i].type != b->elements[i].type ||
 	  a->elements[i].arg != b->elements[i].arg ||
@@ -496,7 +493,7 @@ match_equal (Match *a, Match *b)
 }
 
 static const gchar *
-message_get_argN (GDBusMessage *message, int n, gboolean allow_path)
+message_get_argN (GDBusMessage *message, size_t n, gboolean allow_path)
 {
   const gchar *ret;
   GVariant *body;
@@ -533,7 +530,6 @@ match_matches (GDBusDaemon *daemon,
 {
   MatchElement *element;
   Name *name;
-  int i;
   size_t len, len2;
   const char *value;
   int check_type;
@@ -545,7 +541,7 @@ match_matches (GDBusDaemon *daemon,
       g_dbus_message_get_message_type (message) != match->type)
     return FALSE;
 
-  for (i = 0; i < match->n_elements; i++)
+  for (size_t i = 0; i < match->n_elements; i++)
     {
       element = &match->elements[i];
       check_type = CHECK_TYPE_STRING;
@@ -855,7 +851,11 @@ client_new (GDBusDaemon *daemon, GDBusConnection *connection)
 
   g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (daemon), connection,
 				    DBUS_PATH_DBUS, &error);
-  g_assert_no_error (error);
+  if (error != NULL)
+    {
+      g_error ("Error exporting D-Bus interface: %s", error->message);
+      g_clear_error (&error);
+    }
 
   g_signal_connect (connection, "closed", G_CALLBACK (connection_closed), client);
   g_dbus_connection_add_filter (connection,

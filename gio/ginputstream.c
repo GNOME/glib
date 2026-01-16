@@ -734,7 +734,7 @@ read_all_callback (GObject      *stream,
           return;
         }
 
-      g_assert_cmpint (nread, <=, data->to_read);
+      g_assert ((size_t) nread <= data->to_read);
       data->to_read -= nread;
       data->bytes_read += nread;
       got_eof = (nread == 0);
