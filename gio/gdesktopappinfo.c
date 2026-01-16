@@ -541,14 +541,14 @@ struct search_result
 };
 
 static struct search_result *static_token_results;
-static gint                  static_token_results_size;
-static gint                  static_token_results_allocated;
+static size_t                static_token_results_size;
+static size_t                static_token_results_allocated;
 static struct search_result *static_search_results;
-static gint                  static_search_results_size;
-static gint                  static_search_results_allocated;
+static size_t                static_search_results_size;
+static size_t                static_search_results_allocated;
 static struct search_result *static_total_results;
-static gint                  static_total_results_size;
-static gint                  static_total_results_allocated;
+static size_t                static_total_results_size;
+static size_t                static_total_results_allocated;
 
 /* And some functions for performing nice operations against it */
 static gint
@@ -633,7 +633,6 @@ merge_token_results (gboolean first)
   if (first)
     {
       const gchar *last_name = NULL;
-      gint i;
 
       /* We must de-duplicate, but we do so by taking the best category
        * in each case.
@@ -650,7 +649,7 @@ merge_token_results (gboolean first)
                                            static_search_results_allocated);
         }
 
-      for (i = 0; i < static_token_results_size; i++)
+      for (size_t i = 0; i < static_token_results_size; i++)
         {
           /* The list is sorted so that the best match for a given id
            * will be at the front, so once we have copied an id, skip
@@ -667,13 +666,12 @@ merge_token_results (gboolean first)
   else
     {
       const gchar *last_name = NULL;
-      gint i, j = 0;
-      gint k = 0;
+      size_t j = 0, k = 0;
 
       /* We only ever remove items from the results list, so no need to
        * resize to ensure that we have enough room.
        */
-      for (i = 0; i < static_token_results_size; i++)
+      for (size_t i = 0; i < static_token_results_size; i++)
         {
           if (static_token_results[i].app_name == last_name)
             continue;
@@ -1831,7 +1829,7 @@ binary_from_exec (const char *exec)
   while (*p != ' ' && *p != 0)
     p++;
 
-  return g_strndup (start, p - start);
+  return g_strndup (start, (size_t) (p - start));
 }
 
 /*< internal >
@@ -2782,6 +2780,7 @@ prepend_terminal_to_vector (int          *argc,
       for ((*argc) = 0; the_argv[*argc] != NULL; (*argc)++)
         ;
     }
+  g_assert (*argc >= 0);
 
   for (i = 0, found_terminal = NULL; i < G_N_ELEMENTS (known_terminals); i++)
     {
@@ -2803,7 +2802,7 @@ prepend_terminal_to_vector (int          *argc,
   /* check if the terminal require an option */
   term_argc = term_arg ? 2 : 1;
 
-  real_argc = term_argc + *argc;
+  real_argc = term_argc + (size_t) *argc;
   real_argv = g_new (char *, real_argc + 1);
 
   i = 0;
@@ -3001,7 +3000,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       GList *iter;
       char *sn_id = NULL;
       char **wrapped_argv;
-      int i;
+      size_t i;
 
       old_uris = dup_uris;
       if (!expand_application_parameters (info, exec_line, &dup_uris, &argc, &argv, error))
@@ -3109,10 +3108,10 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           g_once_init_leave_pointer (&gio_launch_desktop_path, tmp);
         }
 
-      wrapped_argv = g_new (char *, argc + 2);
+      wrapped_argv = g_new (char *, (size_t) argc + 2);
       wrapped_argv[0] = g_strdup (gio_launch_desktop_path);
 
-      for (i = 0; i < argc; i++)
+      for (i = 0; i < (size_t) argc; i++)
         wrapped_argv[i + 1] = g_steal_pointer (&argv[i]);
 
       wrapped_argv[i + 1] = NULL;
@@ -3856,7 +3855,6 @@ update_mimeapps_list (const char  *desktop_id,
   char **old_list, **list;
   gsize length, data_size;
   char *data;
-  int i, j, k;
   char **content_types;
 
   /* Don't add both at start and end */
@@ -3902,7 +3900,7 @@ update_mimeapps_list (const char  *desktop_id,
       content_types = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP, NULL, NULL);
     }
 
-  for (k = 0; content_types && content_types[k]; k++)
+  for (size_t k = 0; content_types && content_types[k]; k++)
     {
       /* set as default, if requested so */
       string = g_key_file_get_string (key_file,
@@ -3944,8 +3942,10 @@ update_mimeapps_list (const char  *desktop_id,
       content_types = g_key_file_get_keys (key_file, ADDED_ASSOCIATIONS_GROUP, NULL, NULL);
     }
 
-  for (k = 0; content_types && content_types[k]; k++)
+  for (size_t k = 0; content_types && content_types[k]; k++)
     {
+      size_t i = 0;
+
       /* Add to the right place in the list */
 
       length = 0;
@@ -3953,8 +3953,6 @@ update_mimeapps_list (const char  *desktop_id,
                                              content_types[k], &length, NULL);
 
       list = g_new (char *, 1 + length + 1);
-
-      i = 0;
 
       /* if we're adding a last-used hint, just put the application in front of the list */
       if (flags & UPDATE_MIME_SET_LAST_USED)
@@ -3968,7 +3966,7 @@ update_mimeapps_list (const char  *desktop_id,
 
       if (old_list)
         {
-          for (j = 0; old_list[j] != NULL; j++)
+          for (size_t j = 0; old_list[j] != NULL; j++)
             {
               if (g_strcmp0 (old_list[j], desktop_id) != 0)
                 {
@@ -4018,8 +4016,10 @@ update_mimeapps_list (const char  *desktop_id,
       content_types = g_key_file_get_keys (key_file, REMOVED_ASSOCIATIONS_GROUP, NULL, NULL);
     }
 
-  for (k = 0; content_types && content_types[k]; k++)
+  for (size_t k = 0; content_types && content_types[k]; k++)
     {
+      size_t i = 0;
+
       /* Remove from removed associations group (unless remove) */
 
       length = 0;
@@ -4028,12 +4028,11 @@ update_mimeapps_list (const char  *desktop_id,
 
       list = g_new (char *, 1 + length + 1);
 
-      i = 0;
       if (flags & UPDATE_MIME_REMOVE)
         list[i++] = g_strdup (desktop_id);
       if (old_list)
         {
-          for (j = 0; old_list[j] != NULL; j++)
+          for (size_t j = 0; old_list[j] != NULL; j++)
             {
               if (g_strcmp0 (old_list[j], desktop_id) != 0)
                 list[i++] = g_strdup (old_list[j]);
@@ -4062,7 +4061,16 @@ update_mimeapps_list (const char  *desktop_id,
   data = g_key_file_to_data (key_file, &data_size, error);
   g_key_file_free (key_file);
 
-  res = g_file_set_contents_full (filename, data, data_size,
+  if (data_size > G_MAXSSIZE)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("MIME apps information is too long"));
+      g_free (filename);
+      g_free (data);
+      return FALSE;
+    }
+
+  res = g_file_set_contents_full (filename, data, (gssize) data_size,
                                   G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING,
                                   0600, error);
 
@@ -4846,9 +4854,9 @@ g_desktop_app_info_search (const gchar *search_string)
   gint last_match_type = -1;
   gint last_token_pos = -1;
   gchar ***results;
-  gint n_groups = 0;
-  gint start_of_group;
-  gint i, j;
+  size_t n_groups = 0;
+  size_t start_of_group;
+  size_t i;
   guint k;
 
   search_tokens = g_str_tokenize_and_fold (search_string, NULL, NULL);
@@ -4859,7 +4867,7 @@ g_desktop_app_info_search (const gchar *search_string)
 
   for (k = 0; k < desktop_file_dirs->len; k++)
     {
-      for (j = 0; search_tokens[j]; j++)
+      for (size_t j = 0; search_tokens[j]; j++)
         {
           desktop_file_dir_search (g_ptr_array_index (desktop_file_dirs, k), search_tokens[j]);
           merge_token_results (j == 0);
@@ -4887,11 +4895,11 @@ g_desktop_app_info_search (const gchar *search_string)
   start_of_group = 0;
   for (i = 0; i < n_groups; i++)
     {
-      gint n_items_in_group = 0;
+      size_t n_items_in_group = 0;
       gint this_category;
       gint this_match_type;
       gint this_token_pos;
-      gint j;
+      size_t j;
 
       this_category = static_total_results[start_of_group].category;
       this_match_type = static_total_results[start_of_group].match_type;

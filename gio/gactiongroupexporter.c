@@ -154,7 +154,7 @@ g_action_group_exporter_dispatch_events (gpointer user_data)
   g_hash_table_iter_init (&iter, exporter->pending_changes);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
-      guint events = GPOINTER_TO_INT (value);
+      guint events = GPOINTER_TO_UINT (value);
       const gchar *name = key;
 
       /* Adds and removes are incompatible with enabled or state

@@ -1130,7 +1130,7 @@ g_application_real_local_command_line (GApplication   *application,
 {
   GError *error = NULL;
   GVariantDict *options;
-  gint n_args;
+  unsigned int n_args;
   gboolean print_version = FALSE;
 
   options = g_application_parse_command_line (application, arguments, &print_version, &error);
@@ -1181,7 +1181,7 @@ g_application_real_local_command_line (GApplication   *application,
       if ((*exit_status = n_args > 1))
         {
           g_printerr ("GApplication service mode takes no arguments.\n");
-          application->priv->flags &= ~G_APPLICATION_IS_SERVICE;
+          application->priv->flags &= (unsigned int) ~G_APPLICATION_IS_SERVICE;
           *exit_status = 1;
         }
       else
@@ -1212,18 +1212,18 @@ g_application_real_local_command_line (GApplication   *application,
           else
             {
               GFile **files;
-              gint n_files;
-              gint i;
+              unsigned int n_files;
 
               n_files = n_args - 1;
+              g_assert (n_files <= INT_MAX);
               files = g_new (GFile *, n_files);
 
-              for (i = 0; i < n_files; i++)
+              for (unsigned int i = 0; i < n_files; i++)
                 files[i] = g_file_new_for_commandline_arg ((*arguments)[i + 1]);
 
-              g_application_open (application, files, n_files, "");
+              g_application_open (application, files, (int) n_files, "");
 
-              for (i = 0; i < n_files; i++)
+              for (unsigned int i = 0; i < n_files; i++)
                 g_object_unref (files[i]);
               g_free (files);
 
@@ -2625,6 +2625,7 @@ g_application_run (GApplication  *application,
 
   g_return_val_if_fail (G_IS_APPLICATION (application), 1);
   g_return_val_if_fail (argc == 0 || argv != NULL, 1);
+  g_return_val_if_fail (argc >= 0, 1);
   g_return_val_if_fail (!application->priv->must_quit_now, 1);
 
 #ifdef G_OS_WIN32
@@ -2682,7 +2683,7 @@ g_application_run (GApplication  *application,
   {
     gint i;
 
-    arguments = g_new (gchar *, argc + 1);
+    arguments = g_new (gchar *, (unsigned int) argc + 1);
     for (i = 0; i < argc; i++)
       arguments[i] = g_strdup (argv[i]);
     arguments[i] = NULL;
