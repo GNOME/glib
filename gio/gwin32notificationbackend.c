@@ -63,6 +63,8 @@ struct _GWin32NotificationBackend
 {
   GNotificationBackend parent;
 
+  /* Prevents double-frees when disposing of the backend, if it's non-NULL,
+   * we decrement `hwnd_refcount` and set this to NULL */
   HWND hwnd;
 };
 
@@ -142,7 +144,8 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
       return; /* Cannot show a notification without a title */
     }
 
-  if (items_written > (glong) MAX_TITLE_COUNT)
+  g_assert (items_written >= 0);
+  if ((size_t) items_written > MAX_TITLE_COUNT)
     {
       g_warning ("Notification title too long, truncating title");
       items_written = MAX_TITLE_COUNT;
@@ -180,7 +183,8 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
         }
       else
         {
-          if (items_written > (glong) MAX_BODY_COUNT)
+          g_assert (items_written >= 0);
+          if ((size_t) items_written > MAX_BODY_COUNT)
             {
               g_warning ("Notification body too long, truncating body");
               items_written = MAX_BODY_COUNT;
