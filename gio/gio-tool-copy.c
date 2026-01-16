@@ -72,8 +72,8 @@ show_progress (goffset current_num_bytes,
 
   current_size = g_format_size (current_num_bytes);
   total_size = g_format_size (total_num_bytes);
-  rate = g_format_size (current_num_bytes /
-                        MAX ((tv - start_time) / G_USEC_PER_SEC, 1));
+  rate = g_format_size (current_num_bytes * G_USEC_PER_SEC /
+                        MAX ((tv - start_time), 1));
   g_print ("\r\033[K");
   g_print (_("Transferred %s out of %s (%s/s)"), current_size, total_size, rate);
 
