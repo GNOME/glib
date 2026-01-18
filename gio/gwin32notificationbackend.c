@@ -162,7 +162,12 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
     {
       /* If you pass an empty body, Shell_NotifyIcon won't show the notification,
        * in order to fix this, here we are setting a string with a single
-       * SPACE (' ') character, which makes the body look like empty */
+       * SPACE (' ') character, which makes the body look like empty.
+       *
+       * > To remove the balloon notification from the UI (...)
+       * > set the `NIF_INFO` flag in `uFlags` and set `szInfo` to an empty string.
+       *
+       * https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-notifyicondataw */
       notify_singleton.szInfo[0] = L' ';
       notify_singleton.szInfo[1] = L'\0';
     }
