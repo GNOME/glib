@@ -102,17 +102,10 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
    * to be activated, but because we cannot fullfil the request, it's appropriate
    * to warn about it at least once to let them know. */
 
-  if (g_notification_get_n_buttons (notification) > 0)
+  if (g_notification_get_n_buttons (notification) > 0 ||
+      g_notification_get_default_action (notification, NULL, NULL))
     {
-      g_warning_once ("Notification action buttons are unsupported in Windows");
-    }
-
-  /* FIXME: Couldn't make it to work, when clicking the notification no message
-     is sent to the dummy_WndProc, I think MS just removed the feature and the removal
-     it's just undocumented :-( it makes sense knowing this is a legacy API */
-  if (g_notification_get_default_action (notification, NULL, NULL))
-    {
-      g_warning_once ("Notification default action is unsupported in Windows");
+      g_warning_once ("Notification actions are unsupported by this Windows backend");
     }
 
   /* NOTE: Icon is unsupported for W10 or greater, trying to set an icon will
