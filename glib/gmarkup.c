@@ -80,6 +80,10 @@ struct _GMarkupParseContext
   gint char_number;
   gsize offset;
 
+  gint tag_line;
+  gint tag_char;
+  gsize tag_offset;
+
   GMarkupParseState state;
 
   gpointer user_data;
@@ -870,9 +874,11 @@ static void
 push_partial_as_tag (GMarkupParseContext *context)
 {
   GString *str = context->partial_chunk;
+
   /* sadly, this is exported by gmarkup_get_element_stack as-is */
   context->tag_stack = g_slist_concat (get_list_node (context, str->str), context->tag_stack);
   context->tag_stack_gstr = g_slist_concat (get_list_node (context, str), context->tag_stack_gstr);
+
   context->partial_chunk = NULL;
 }
 
@@ -1016,6 +1022,7 @@ emit_start_element (GMarkupParseContext  *context,
                                         (const gchar **)attr_values,
                                         context->user_data,
                                         &tmp_error);
+
   clear_attributes (context);
 
   if (tmp_error != NULL)
@@ -1148,6 +1155,10 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
           /* Possible next states: INSIDE_OPEN_TAG_NAME,
            *  AFTER_CLOSE_TAG_SLASH, INSIDE_PASSTHROUGH
            */
+          context->tag_line = context->line_number;
+          context->tag_char = context->char_number - 1;
+          context->tag_offset = context->offset - 1;
+
           if (*context->iter == '?' ||
               *context->iter == '!')
             {
@@ -1945,6 +1956,35 @@ g_markup_parse_context_get_offset (GMarkupParseContext *context)
   g_return_val_if_fail (context != NULL, 0);
 
   return context->offset;
+}
+
+/**
+ * g_markup_parse_context_get_tag_start:
+ * @context: a #GMarkupParseContext
+ * @line_number: return location for line number
+ * @char_number: return location for char number
+ * @offset: return location for offset
+ *
+ * Retrieves the start position of the current start or end tag.
+ *
+ * This function can be used in the start_element or end_element
+ * callbacks to obtain location information for error reporting.
+ *
+ * The information is meant to accompany the values returned by
+ * [method@GLib.MarkupParseContext.get_position], and comes with the
+ * same accuracy guarantees.
+ *
+ * Since: 2.88
+ */
+void
+g_markup_parse_context_get_tag_start (GMarkupParseContext *context,
+                                      gint                *line_number,
+                                      gint                *char_number,
+                                      gsize               *offset)
+{
+  *line_number = context->tag_line;
+  *char_number = context->tag_char;
+  *offset = context->tag_offset;
 }
 
 /**
