@@ -32,18 +32,20 @@ check_positions (GMarkupParseContext *context)
 
   g_markup_parse_context_get_tag_start (context, &lines, &chars, &offset);
 
-  g_assert_true (tag_lines <= lines);
-  g_assert_true (tag_lines < lines || tag_chars <= chars);
-  g_assert_true (tag_offset <= offset);
+  g_assert_cmpint (tag_lines, <=, lines);
+  if (tag_lines == lines)
+    g_assert_cmpint (tag_chars, <=, chars);
+  g_assert_cmpint (tag_offset, <=, offset);
   tag_lines = lines;
   tag_chars = chars;
   tag_offset = offset;
 
   g_markup_parse_context_get_position (context, &lines, &chars);
   offset = g_markup_parse_context_get_offset (context);
-  g_assert_true (tag_lines <= lines);
-  g_assert_true (tag_lines < lines || tag_chars <= chars);
-  g_assert_true (tag_offset <= offset);
+  g_assert_cmpint (tag_lines, <=, lines);
+  if (tag_lines == lines)
+    g_assert_cmpint (tag_chars, <=, chars);
+  g_assert_cmpint (tag_offset, <=, offset);
 }
 
 static void

@@ -1961,9 +1961,9 @@ g_markup_parse_context_get_offset (GMarkupParseContext *context)
 /**
  * g_markup_parse_context_get_tag_start:
  * @context: a #GMarkupParseContext
- * @line_number: return location for line number
- * @char_number: return location for char number
- * @offset: return location for offset
+ * @line_number: (out): return location for line number
+ * @char_number: (out): return location for char number
+ * @offset: (out): return location for offset
  *
  * Retrieves the start position of the current start or end tag.
  *
@@ -1978,10 +1978,15 @@ g_markup_parse_context_get_offset (GMarkupParseContext *context)
  */
 void
 g_markup_parse_context_get_tag_start (GMarkupParseContext *context,
-                                      gint                *line_number,
-                                      gint                *char_number,
+                                      int                 *line_number,
+                                      int                 *char_number,
                                       gsize               *offset)
 {
+  g_return_if_fail (context != NULL);
+  g_return_if_fail (line_number != NULL);
+  g_return_if_fail (char_number != NULL);
+  g_return_if_fail (offset != NULL);
+
   *line_number = context->tag_line;
   *char_number = context->tag_char;
   *offset = context->tag_offset;
