@@ -2102,6 +2102,36 @@ test_normalize (void)
 #undef TEST
 }
 
+static void
+test_unknown_scripts (void)
+{
+  gunichar ch;
+  GUnicodeScript max_script;
+
+  max_script = G_UNICODE_SCRIPT_INVALID_CODE;
+  for (ch = 0; ch <= 0x10FFFF; ch++)
+    max_script = MAX (max_script, g_unichar_get_script (ch));
+
+#define PACK(a, b, c, d) \
+  ((guint32) ((((guint8) (a)) << 24) | (((guint8) (b)) << 16) | (((guint8) (c)) << 8) | ((guint8) (d))))
+
+  for (GUnicodeScript i = 0; i <= max_script; i++)
+    {
+      g_test_message ("Testing script %d", i);
+
+      guint32 tag = g_unicode_script_to_iso15924 (i);
+      if (i == G_UNICODE_SCRIPT_UNKNOWN)
+        g_assert_cmphex (tag, ==, PACK ('Z', 'z', 'z', 'z'));
+      else
+        g_assert_cmphex (tag, !=, PACK ('Z', 'z', 'z', 'z'));
+
+      GUnicodeScript script = g_unicode_script_from_iso15924 (tag);
+      g_assert_cmpint (script, ==, i);
+    }
+
+#undef PACK
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2148,6 +2178,7 @@ main (int   argc,
   g_test_add_func ("/unicode/xdigit-value", test_xdigit_value);
   g_test_add_func ("/unicode/zero-width", test_zerowidth);
   g_test_add_func ("/unicode/normalize", test_normalize);
+  g_test_add_func ("/unicode/unknown-scripts", test_unknown_scripts);
 
   return g_test_run();
 }

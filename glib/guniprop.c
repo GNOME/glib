@@ -1536,6 +1536,11 @@ static const guint32 iso15924_tags[] =
     PACK ('K', 'r', 'a', 'i'), /* G_UNICODE_SCRIPT_KIRAT_RAI */
     PACK ('O', 'n', 'a', 'o'), /* G_UNICODE_SCRIPT_OL_ONAL */
 
+    PACK ('S', 'i', 'd', 't'), /* G_UNICODE_SCRIPT_SIDETIC */
+    PACK ('T', 'o', 'l', 's'), /* G_UNICODE_SCRIPT_TOLONG_SIKI */
+    PACK ('T', 'a', 'y', 'o'), /* G_UNICODE_SCRIPT_TAI_YO */
+    PACK ('B', 'e', 'r', 'f'), /* G_UNICODE_SCRIPT_BERIA_ERFE */
+
 #undef PACK
 };
 
