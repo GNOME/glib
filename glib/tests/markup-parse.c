@@ -20,15 +20,15 @@ indent (int extra)
     }
 }
 
-static int tag_lines;
-static int tag_chars;
+static gsize tag_lines;
+static gsize tag_chars;
 static gsize tag_offset;
 
 static void
 check_positions (GMarkupParseContext *context)
 {
-  int chars, lines;
-  gsize offset;
+  gsize chars, lines, offset;
+  int current_lines, current_chars;
 
   g_markup_parse_context_get_tag_start (context, &lines, &chars, &offset);
 
@@ -40,8 +40,11 @@ check_positions (GMarkupParseContext *context)
   tag_chars = chars;
   tag_offset = offset;
 
-  g_markup_parse_context_get_position (context, &lines, &chars);
+  g_markup_parse_context_get_position (context, &current_lines, &current_chars);
+  lines = (gsize) current_lines;
+  chars = (gsize) current_chars;
   offset = g_markup_parse_context_get_offset (context);
+
   g_assert_cmpint (tag_lines, <=, lines);
   if (tag_lines == lines)
     g_assert_cmpint (tag_chars, <=, chars);

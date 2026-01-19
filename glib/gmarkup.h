@@ -232,8 +232,8 @@ gsize                g_markup_parse_context_get_offset   (GMarkupParseContext *c
 
 GLIB_AVAILABLE_IN_2_88
 void                 g_markup_parse_context_get_tag_start (GMarkupParseContext *context,
-                                                           int                 *line_number,
-                                                           int                 *char_number,
+                                                           gsize               *line_number,
+                                                           gsize               *char_number,
                                                            gsize               *offset);
 
 GLIB_AVAILABLE_IN_ALL
