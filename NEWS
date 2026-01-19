@@ -1,3 +1,29 @@
+Overview of changes in GLib 2.87.2, 2026-01-19
+==============================================
+
+* Add initial support for `GNotification` on Windows (#3857, work by
+  Oscar Pernia Moreno)
+
+* Bugs fixed:
+  - #3850 g_strsplit_set docs are misleading (Matthias Clasen)
+  - #3857 win32: Add support for notifications using Shell_NotifyIcon API
+  - #3858 glib-compile-resources: Incorrect compiler detection on Windows when
+    building GTK causes a DoS (L. E. Segovia)
+  - #3863 Iterating over a short (preallocated) GVariant bytestring invalidly
+    refs a NULL GBytes (Christian Hergert)
+  - #3864 gir-tracker-bot posting diffs against too-recent-`main` (Marco
+    Trevisan (Treviño))
+  - #3867 win32: Notifications without body won't show up
+  - !4918 gio/unixmounts: use bsearch() to check for set inclusion
+  - !4949 gdesktopappinfo: Fix -Wsign-conversion warnings
+  - !4950 gobject: Fix -Wshorten-64-to-32 warnings and enable warning flag
+  - !4958 gtestutils: Avoid pointless logging string handling in gtestutils
+  - !4959 glib-unix: Implement g_unix_fd_query_path for Cygwin
+  - !4964 gio: Fix some -Wsign-conversion warnings
+  - !4965 gmodule: Enable -Wshorten-64-to-32 warnings for gmodule
+  - !4967 Fixup unicode 17
+
+
 Overview of changes in GLib 2.87.1, 2025-12-30
 ==============================================
 
