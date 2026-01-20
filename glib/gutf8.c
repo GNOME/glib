@@ -816,7 +816,7 @@ g_utf8_to_ucs4_fast (const gchar *str,
 		     glong       *items_written)    
 {
   gunichar *result;
-  gint n_chars, i;
+  size_t n_chars, i;
   const gchar *p;
 
   g_return_val_if_fail (str != NULL, NULL);
@@ -944,7 +944,7 @@ g_utf8_to_ucs4 (const gchar *str,
 		GError     **error)
 {
   gunichar *result = NULL;
-  gint n_chars, i;
+  size_t n_chars, i;
   const gchar *in;
   
   in = str;
@@ -1027,13 +1027,13 @@ g_ucs4_to_utf8 (const gunichar *str,
 		glong          *items_written,    
 		GError        **error)
 {
-  gint result_length;
+  size_t result_length;
   gchar *result = NULL;
   gchar *p;
-  gint i;
+  size_t i;
 
   result_length = 0;
-  for (i = 0; len < 0 || i < len ; i++)
+  for (i = 0; len < 0 || i < (size_t) len ; i++)
     {
       if (!str[i])
 	break;
@@ -1120,7 +1120,7 @@ g_utf16_to_utf8 (const gunichar2  *str,
   const gunichar2 *in;
   gchar *out;
   gchar *result = NULL;
-  gint n_bytes;
+  size_t n_bytes;
   gunichar high_surrogate;
 
   g_return_val_if_fail (str != NULL, NULL);
@@ -1397,9 +1397,9 @@ g_utf8_to_utf16 (const gchar *str,
 		 GError     **error)
 {
   gunichar2 *result = NULL;
-  gint n16;
+  size_t n16;
   const gchar *in;
-  gint i;
+  size_t i;
 
   g_return_val_if_fail (str != NULL, NULL);
 
@@ -1513,12 +1513,12 @@ g_ucs4_to_utf16 (const gunichar  *str,
 		 GError         **error)
 {
   gunichar2 *result = NULL;
-  gint n16;
-  gint i, j;
+  size_t n16;
+  size_t i, j;
 
   n16 = 0;
   i = 0;
-  while ((len < 0 || i < len) && str[i])
+  while ((len < 0 || i < (size_t) len) && str[i])
     {
       gunichar wc = str[i];
 
