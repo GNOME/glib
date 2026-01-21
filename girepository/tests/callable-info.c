@@ -220,10 +220,10 @@ compare_func_callback (ffi_cif *passed_cif,
                        void **args,
                        void *user_data)
 {
-  int *return_location = ret;
+  ffi_sarg *return_location = ret;
   unsigned *call_count = user_data;
-  int arg1 = GPOINTER_TO_INT (*(int *) args[0]);
-  int arg2 = GPOINTER_TO_INT (*(int *) args[1]);
+  int arg1 = GPOINTER_TO_INT (*(void **) args[0]);
+  int arg2 = GPOINTER_TO_INT (*(void **) args[1]);
 
   /* cif is not needed in this simple test, but check that it is what the
    * documentation says it is */
