@@ -817,7 +817,7 @@ tree_match_free (TreeMatch *match)
 static TreeMatch *
 parse_header (gchar *line)
 {
-  gint len;
+  size_t len;
   gchar *s;
   TreeMatch *match;
 
