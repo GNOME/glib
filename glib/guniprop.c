@@ -798,7 +798,7 @@ output_marks (const char **p_inout,
   return len;
 }
 
-static gint
+static size_t
 output_special_case (gchar *out_buffer,
 		     int    offset,
 		     int    type,
