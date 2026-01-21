@@ -544,8 +544,13 @@ g_module_open_full (const gchar   *file_name,
         suffixes[suffix_idx++] = ".dll";
 #else
   #ifdef __CYGWIN__
+    #ifdef __MSYS__
+      if (!g_str_has_prefix (basename, "msys-"))
+        prefixes[prefix_idx++] = "msys-";
+    #else
       if (!g_str_has_prefix (basename, "cyg"))
         prefixes[prefix_idx++] = "cyg";
+    #endif
   #else
       if (!g_str_has_prefix (basename, "lib"))
         prefixes[prefix_idx++] = "lib";
