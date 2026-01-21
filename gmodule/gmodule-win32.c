@@ -35,12 +35,7 @@
 #include <glib.h>
 #include <stdio.h>
 #include <windows.h>
-
 #include <tlhelp32.h>
-
-#ifdef G_WITH_CYGWIN
-#include <sys/cygwin.h>
-#endif
 
 static void G_GNUC_PRINTF (2, 3)
 set_error (GError      **error,
@@ -79,12 +74,6 @@ _g_module_open (const gchar *file_name,
   wchar_t *wfilename;
   DWORD old_mode;
   BOOL success;
-#ifdef G_WITH_CYGWIN
-  gchar tmp[MAX_PATH];
-
-  cygwin_conv_to_win32_path(file_name, tmp);
-  file_name = tmp;
-#endif
   wfilename = g_utf8_to_utf16 (file_name, -1, NULL, NULL, NULL);
 
   /* suppress error dialog */
@@ -201,28 +190,18 @@ _g_module_build_path (const gchar *directory,
   if (directory && *directory)
     if (k > 4 && g_ascii_strcasecmp (module_name + k - 4, ".dll") == 0)
       return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, NULL);
-#ifdef G_WITH_CYGWIN
-    else if (strncmp (module_name, "lib", 3) == 0 || strncmp (module_name, "cyg", 3) == 0)
-      return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, ".dll", NULL);
-    else
-      return g_strconcat (directory, G_DIR_SEPARATOR_S, "cyg", module_name, ".dll", NULL);
-#else
     else if (strncmp (module_name, "lib", 3) == 0)
       return g_strconcat (directory, G_DIR_SEPARATOR_S, module_name, ".dll", NULL);
     else
       return g_strconcat (directory, G_DIR_SEPARATOR_S, "lib", module_name, ".dll", NULL);
-#endif
   else if (k > 4 && g_ascii_strcasecmp (module_name + k - 4, ".dll") == 0)
     return g_strdup (module_name);
-#ifdef G_WITH_CYGWIN
-  else if (strncmp (module_name, "lib", 3) == 0 || strncmp (module_name, "cyg", 3) == 0)
-    return g_strconcat (module_name, ".dll", NULL);
-  else
-    return g_strconcat ("cyg", module_name, ".dll", NULL);
-#else
   else if (strncmp (module_name, "lib", 3) == 0)
     return g_strconcat (module_name, ".dll", NULL);
   else
     return g_strconcat ("lib", module_name, ".dll", NULL);
-#endif
 }
+
+#ifdef __CYGWIN__
+#error "gmodule-win32.c does not support Cygwin since GLib 2.88; use gmodule-dl.c instead"
+#endif
