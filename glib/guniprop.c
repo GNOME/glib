@@ -772,13 +772,13 @@ get_locale_type (void)
   return LOCALE_NORMAL;
 }
 
-static gint
+static size_t
 output_marks (const char **p_inout,
 	      char        *out_buffer,
 	      gboolean     remove_dot)
 {
   const char *p = *p_inout;
-  gint len = 0;
+  size_t len = 0;
   
   while (*p)
     {
