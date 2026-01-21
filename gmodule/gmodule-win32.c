@@ -128,7 +128,7 @@ _g_module_close (gpointer handle)
 }
 
 static gpointer
-find_in_any_module_using_toolhelp (const gchar *symbol_name)
+find_in_any_module (const gchar *symbol_name)
 {
   HANDLE snapshot; 
   MODULEENTRY32 me32;
@@ -168,17 +168,6 @@ find_in_any_module_using_toolhelp (const gchar *symbol_name)
 #endif
 
   return p;
-}
-
-static gpointer
-find_in_any_module (const gchar *symbol_name)
-{
-  gpointer result;
-
-  if ((result = find_in_any_module_using_toolhelp (symbol_name)) == NULL)
-    return NULL;
-  else
-    return result;
 }
 
 static gpointer
