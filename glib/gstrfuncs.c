@@ -2447,7 +2447,8 @@ g_strsplit (const gchar *string,
 /**
  * g_strsplit_set:
  * @string: a string to split
- * @delimiters: a nul-terminated byte array containing bytes that are used to
+ * @delimiters: (array zero-terminated=1) (element-type guint8): a
+ *   nul-terminated byte array containing bytes that are used to
  *   split the string; can be empty (just a nul byte), which will result in no
  *   string splitting
  * @max_tokens: the maximum number of tokens to split @string into.
