@@ -558,10 +558,14 @@ resolve_symlink_to_zoneinfo (const char *initial_path, const char *zoneinfo)
 static const gchar *
 zone_info_base_dir (void)
 {
-  if (g_file_test ("/usr/share/zoneinfo", G_FILE_TEST_IS_DIR))
+  GStatBuf buf;
+
+  if (g_lstat ("/usr/share/zoneinfo", &buf) == 0 && S_ISDIR (buf.st_mode))
     return "/usr/share/zoneinfo";     /* Most distros */
   else if (g_file_test ("/usr/share/lib/zoneinfo", G_FILE_TEST_IS_DIR))
     return "/usr/share/lib/zoneinfo"; /* Illumos distros */
+  else if (g_file_test ("/var/db/timezone/zoneinfo", G_FILE_TEST_IS_DIR))
+    return "/var/db/timezone/zoneinfo"; /* macOS */
 
   /* need a better fallback case */
   return "/usr/share/zoneinfo";
