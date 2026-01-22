@@ -1072,7 +1072,7 @@ viewer_file_constructed (GObject *obj)
   /* update the object state depending on constructor properties */
 
   /* Always chain up to the parent constructed function to complete object
-   * initialisation. */
+   * initialization. */
   G_OBJECT_CLASS (viewer_file_parent_class)->constructed (obj);
 }
 
