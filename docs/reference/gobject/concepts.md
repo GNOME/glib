@@ -554,7 +554,7 @@ Upon the first call to `viewer_file_get_type`, the type named `ViewerFile` will 
 
 Every object must define two structures: its class structure and its instance structure. All class structures must contain as first member a `GTypeClass` structure. All instance structures must contain as first member a `GTypeInstance` structure. The declaration of these C types, coming from `gtype.h` is shown below:
 
-```
+```c
 struct _GTypeClass
 {
   GType g_type;
