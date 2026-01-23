@@ -623,6 +623,7 @@ test_casemap_and_casefold (void)
   const char *locale;
   const char *test;
   const char *expected;
+  size_t line = 0;
   char *convert;
   char *current_locale = setlocale (LC_CTYPE, NULL);
   char *old_lc_all, *old_lc_messages, *old_lang;
@@ -643,6 +644,7 @@ test_casemap_and_casefold (void)
 
   while (fgets (buffer, sizeof (buffer), infile))
     {
+      line++;
       if (buffer[0] == '#')
         continue;
 
@@ -685,6 +687,9 @@ test_casemap_and_casefold (void)
 
       convert = g_utf8_strup (test, -1);
       expected = strings[4][0] ? strings[4] : test;
+      g_test_message ("Converting '%s' => '%s' (line %" G_GSIZE_FORMAT ")",
+                      test, expected, line);
+
       g_assert_cmpstr (convert, ==, expected);
       g_free (convert);
 
@@ -704,9 +709,11 @@ test_casemap_and_casefold (void)
 
   infile = g_fopen (filename, "re");
   g_assert (infile != NULL);
+  line = 0;
 
   while (fgets (buffer, sizeof (buffer), infile))
     {
+      line++;
       if (buffer[0] == '#')
         continue;
 
@@ -716,6 +723,9 @@ test_casemap_and_casefold (void)
       test = strings[0];
 
       convert = g_utf8_casefold (test, -1);
+      g_test_message ("Converting '%s' => '%s' (line %" G_GSIZE_FORMAT ")",
+                      test, strings[1], line);
+
       g_assert_cmpstr (convert, ==, strings[1]);
       g_free (convert);
 
