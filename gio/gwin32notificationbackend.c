@@ -226,23 +226,22 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
       if (error)
         {
           g_critical ("Invalid UTF-8 in notification: %s", error->message);
-          g_clear_pointer (&error, g_error_free);
+          g_error_free (error);
+          goto err_out; /* Cannot show a notification without a body */
         }
-      else
-        {
-          g_assert (items_written >= 0);
-          if ((size_t) items_written > MAX_BODY_COUNT)
-            {
-              g_warning ("Notification body too long, truncating body");
-              items_written = MAX_BODY_COUNT;
-              if (IS_LOW_SURROGATE (body_utf16[items_written]))
-                items_written--;
-            }
 
-          memcpy (&notify_singleton.szInfo, body_utf16, items_written * sizeof (WCHAR));
-          notify_singleton.szInfo[items_written] = L'\0';
-          g_free (body_utf16);
+      g_assert (items_written >= 0);
+      if ((size_t) items_written > MAX_BODY_COUNT)
+        {
+          g_warning ("Notification body too long, truncating body");
+          items_written = MAX_BODY_COUNT;
+          if (IS_LOW_SURROGATE (body_utf16[items_written]))
+            items_written--;
         }
+
+      memcpy (&notify_singleton.szInfo, body_utf16, items_written * sizeof (WCHAR));
+      notify_singleton.szInfo[items_written] = L'\0';
+      g_free (body_utf16);
     }
 
   BOOL ret;
