@@ -240,8 +240,9 @@ g_base64_encode (const guchar *data,
                  gsize         len)
 {
   gchar *out;
-  gint state = 0, outlen;
+  gint state = 0;
   gint save = 0;
+  gsize outlen;
 
   g_return_val_if_fail (data != NULL || len == 0, NULL);
 
