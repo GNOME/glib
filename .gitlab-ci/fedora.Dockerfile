@@ -20,6 +20,7 @@ RUN dnf -y update \
     glibc-devel \
     glibc-gconv-extra \
     glibc-headers \
+    glibc-langpack-az \
     glibc-langpack-de \
     glibc-langpack-el \
     glibc-langpack-en \

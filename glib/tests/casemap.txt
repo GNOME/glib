@@ -3,12 +3,20 @@
 #
 # Some special hand crafted tests
 #
+# Turkish dotted and dotless I
 tr_TR	i	i	İ	İ	# i => LATIN CAPITAL LETTER I WITH DOT ABOVE
 tr_TR	I	ı	I	I	# I => LATIN SMALL LETTER DOTLESS I
 tr_TR	İ	i	İ	İ	# I => LATIN SMALL LETTER DOTLESS I
 tr_TR.UTF-8	i	i	İ	İ	# i => LATIN CAPITAL LETTER I WITH DOT ABOVE
 tr_TR.UTF-8	I	ı	I	I	# I => LATIN SMALL LETTER DOTLESS I
 tr_TR.UTF-8	İ	i	İ	İ	# I => LATIN SMALL LETTER DOTLESS I
+# Azerbaijani dotted and dotless I
+az_AZ	i	i	İ	İ	# i => LATIN CAPITAL LETTER I WITH DOT ABOVE
+az_AZ	I	ı	I	I	# I => LATIN SMALL LETTER DOTLESS I
+az_AZ	İ	i	İ	İ	# I => LATIN SMALL LETTER DOTLESS I
+az_AZ.UTF-8	i	i	İ	İ	# i => LATIN CAPITAL LETTER I WITH DOT ABOVE
+az_AZ.UTF-8	I	ı	I	I	# I => LATIN SMALL LETTER DOTLESS I
+az_AZ.UTF-8	İ	i	İ	İ	# I => LATIN SMALL LETTER DOTLESS I
 # Test reordering of YPOGEGRAMMENI across other accents
 	ᾁ	ᾁ	ᾉ	ἉΙ	
 	ᾁ	ᾁ	ᾉ	ἉΙ	
