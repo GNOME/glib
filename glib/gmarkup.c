@@ -189,6 +189,10 @@ g_markup_parse_context_new (const GMarkupParser *parser,
   context->char_number = 1;
   context->offset = 0;
 
+  context->tag_line = 1;
+  context->tag_char = 1;
+  context->tag_offset = 0;
+
   context->partial_chunk = NULL;
   context->spare_chunks = NULL;
   context->spare_list_nodes = NULL;
