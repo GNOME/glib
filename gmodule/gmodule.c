@@ -30,6 +30,12 @@
 
 #include "config.h"
 
+/* For the G_MODULE_SUFFIX macro; since macro deprecation is implemented
+ * in the preprocessor, we need to define this before including glib.h */
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
+
 #include "glib.h"
 #include "gmodule.h"
 
