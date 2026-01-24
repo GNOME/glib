@@ -1885,7 +1885,7 @@ glibconfig_conf.set('gsizebits', sizet_size * 8)
 glibconfig_conf.set('gssizebits', ssizet_size * 8)
 
 # XXX: https://gitlab.gnome.org/GNOME/glib/issues/1413
-if host_system == 'windows'
+if host_system == 'windows' or host_system == 'cygwin'
   g_module_suffix = 'dll'
 else
   g_module_suffix = 'so'
