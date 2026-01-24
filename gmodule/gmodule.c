@@ -30,6 +30,12 @@
 
 #include "config.h"
 
+/* For the G_MODULE_SUFFIX macro; since macro deprecation is implemented
+ * in the preprocessor, we need to define this before including glib.h */
+#ifndef GLIB_DISABLE_DEPRECATION_WARNINGS
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
+#endif
+
 #include "glib.h"
 #include "gmodule.h"
 
@@ -544,8 +550,13 @@ g_module_open_full (const gchar   *file_name,
         suffixes[suffix_idx++] = ".dll";
 #else
   #ifdef __CYGWIN__
+    #ifdef __MSYS__
+      if (!g_str_has_prefix (basename, "msys-"))
+        prefixes[prefix_idx++] = "msys-";
+    #else
       if (!g_str_has_prefix (basename, "cyg"))
         prefixes[prefix_idx++] = "cyg";
+    #endif
   #else
       if (!g_str_has_prefix (basename, "lib"))
         prefixes[prefix_idx++] = "lib";
@@ -555,7 +566,10 @@ g_module_open_full (const gchar   *file_name,
          * .dylib and .dll in those cases. */
         prefixes[prefix_idx++] = "";
   #endif
-  #ifdef __APPLE__
+  #ifdef __CYGWIN__
+      if (!g_str_has_suffix (basename, ".dll"))
+        suffixes[suffix_idx++] = ".dll";
+  #elif defined (__APPLE__)
       if (!g_str_has_suffix (basename, ".dylib") &&
           !g_str_has_suffix (basename, ".so"))
         {

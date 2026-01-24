@@ -254,6 +254,9 @@ test_local_binding (void)
 #if defined(G_PLATFORM_WIN32)
   g_test_skip ("G_MODULE_BIND_LOCAL is not supported on Windows.");
   return;
+#elif defined(__CYGWIN__)
+  g_test_skip ("G_MODULE_BIND_LOCAL is not supported on Cygwin.");
+  return;
 #endif
 
   /* Run the actual test in a subprocess to avoid symbol table changes from
