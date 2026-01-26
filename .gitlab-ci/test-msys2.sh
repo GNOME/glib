@@ -42,6 +42,12 @@ if [[ $(vercmp "$(pacman -Qi "${MINGW_PACKAGE_PREFIX}"-gobject-introspection | g
     meson install -C gobject-introspection/build
 fi
 
+# If msys2 doesn’t provide a new enough gi-docgen package, download the subproject
+GI_DOCGEN_TAG=$(grep "^revision[[:space:]]*=" subprojects/gi-docgen.wrap | tr -d ' ' | cut -d'=' -f2)
+if [[ $(vercmp "$(pacman -Qi "${MINGW_PACKAGE_PREFIX}"-gi-docgen | grep -Po '^Version\s*: \K.+')" "${GI_DOCGEN_TAG}") -lt 0 ]]; then
+    meson subprojects download gi-docgen
+fi
+
 if [[ -v COVERAGE ]]; then
   coverage=true
 else

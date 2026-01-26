@@ -2,7 +2,7 @@
 directory = gi-docgen
 url = https://gitlab.gnome.org/GNOME/gi-docgen.git
 push-url = ssh://git@ssh.gitlab.gnome.org:GNOME/gi-docgen.git
-revision = 2024.1
+revision = 2026.1
 depth = 1
 
 [provide]
