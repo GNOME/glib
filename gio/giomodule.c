@@ -77,13 +77,9 @@
 #ifdef __APPLE__
 #include <AvailabilityMacros.h>
 #include <TargetConditionals.h>
-
-#if (defined (TARGET_OS_OSX) && TARGET_OS_OSX) || \
-     (!defined (TARGET_OS_OSX) && defined (TARGET_OS_MAC) && TARGET_OS_MAC)
-#define HAVE_MACOS
+#if TARGET_OS_OSX
 #include <dlfcn.h>
 #endif
-
 #endif
 
 #define __GLIB_H_INSIDE__
@@ -1275,7 +1271,7 @@ static inline gchar *
 get_gio_module_dir_darwin (void)
 {
 /* Only auto-relocate on macOS, not watchOS etc; older macOS SDKs only define TARGET_OS_MAC */
-#ifdef HAVE_MACOS
+#if TARGET_OS_OSX
   g_autofree gchar *path = NULL;
   g_autofree gchar *possible_dir = NULL;
   Dl_info info;
