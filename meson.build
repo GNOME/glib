@@ -71,16 +71,6 @@ endif
 host_system = host_machine.system()
 subsystem = ''
 
-if host_system == 'darwin'
-  ios_test_code = '''#include <TargetConditionals.h>
-  #if ! TARGET_OS_IPHONE
-  #error "Not iOS/tvOS/watchOS/iPhoneSimulator"
-  #endif'''
-  if cc.compiles(ios_test_code, name : 'building for iOS')
-    host_system = 'ios'
-  endif
-endif
-
 linux_libc = ''
 if host_system == 'linux'
   musl_test_code = '''#include <stdlib.h>
@@ -92,6 +82,10 @@ if host_system == 'linux'
   endif
 elif host_system == 'darwin'
   subsystem = host_machine.subsystem()
+elif host_system == 'ios'
+  warning('Setting system = \'ios\' in cross files is deprecated, please use subsystem names')
+  host_system = 'darwin'
+  subsystem = 'ios'
 endif
 
 glib_version = meson.project_version()
@@ -1239,7 +1233,7 @@ if host_system == 'windows' and (cc.get_id() == 'msvc' or cc.get_id() == 'clang-
   glib_conf.set('HAVE_C99_SNPRINTF', false)
   glib_conf.set('HAVE_C99_VSNPRINTF', false)
   glib_conf.set('HAVE_UNIX98_PRINTF', false)
-elif not cc_can_run and host_system in ['ios', 'darwin']
+elif not cc_can_run and host_system == 'darwin'
   # All these are true when compiling natively on macOS, so we should use good
   # defaults when building for iOS and tvOS.
   glib_conf.set('HAVE_C99_SNPRINTF', true)
@@ -2590,7 +2584,7 @@ if host_system == 'windows'
   export_dynamic_ldflags = []
 elif host_system == 'cygwin'
   export_dynamic_ldflags = ['-Wl,--export-all-symbols']
-elif host_system in ['darwin', 'ios']
+elif host_system == 'darwin'
   export_dynamic_ldflags = []
 elif host_system == 'sunos'
   export_dynamic_ldflags = []
