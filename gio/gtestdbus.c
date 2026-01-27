@@ -153,6 +153,7 @@ _g_test_watcher_remove_pid (GPid pid)
 #define ADD_PID_FORMAT "add pid %d\n"
 #define REMOVE_PID_FORMAT "remove pid %d\n"
 
+#if !defined(__APPLE__) || (!TARGET_OS_TV && !TARGET_OS_WATCH)
 static void
 watch_parent (gint fd)
 {
@@ -323,6 +324,11 @@ watcher_send_command (const gchar *command)
       g_clear_error (&error);
     }
 }
+#else
+#define watcher_send_command(x) \
+  g_error("GTestDBus spawns processes which is not allowed on tvOS and " \
+      "watchOS");
+#endif
 
 /* This could be interesting to expose in public API */
 static void
