@@ -66,7 +66,7 @@ test_incremental (gboolean line_break,
 static void
 test_incremental_break (gconstpointer d)
 {
-  gint length = GPOINTER_TO_INT (d);
+  gsize length = GPOINTER_TO_UINT (d);
 
   test_incremental (TRUE, length);
 }
@@ -74,7 +74,7 @@ test_incremental_break (gconstpointer d)
 static void
 test_incremental_nobreak (gconstpointer d)
 {
-  gint length = GPOINTER_TO_INT (d);
+  gsize length = GPOINTER_TO_UINT (d);
 
   test_incremental (FALSE, length);
 }
@@ -82,7 +82,7 @@ test_incremental_nobreak (gconstpointer d)
 static void
 test_full (gconstpointer d)
 {
-  gint length = GPOINTER_TO_INT (d);
+  gsize length = GPOINTER_TO_UINT (d);
   char *text;
   guchar *data2;
   gsize len;
@@ -98,7 +98,7 @@ test_full (gconstpointer d)
 
 struct MyRawData
 {
-  gint length;   /* of data */
+  gsize length;   /* of data */
   guchar data[DATA_SIZE];
 };
 
@@ -220,7 +220,7 @@ static void
 test_base64_encode (void)
 {
   int i;
-  gint length = 1;
+  gsize length = 1;
   char *text;
   struct MyRawData myraw;
 
