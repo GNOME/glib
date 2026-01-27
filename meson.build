@@ -295,6 +295,11 @@ glib_conf.set('ENABLE_NLS', 1)
 # used by the .rc.in files
 glibconfig_conf.set('LT_CURRENT_MINUS_AGE', soversion)
 
+process_spawn_allowed = true
+if subsystem.startswith('tvos') or subsystem.startswith('watchos')
+  process_spawn_allowed = false
+endif
+
 glib_conf.set('_GNU_SOURCE', 1)
 
 if host_system in ['windows', 'darwin']
