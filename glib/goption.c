@@ -68,7 +68,7 @@ typedef struct
     gchar *str;
     struct
     {
-      gint len;
+      size_t len;
       gchar **data;
     } array;
   } allocated;
