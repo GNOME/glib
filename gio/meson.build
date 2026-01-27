@@ -419,21 +419,24 @@ if host_system != 'windows'
     contenttype_sources += files('gcontenttype-fdo.c')
     unix_sources += files('gdesktopappinfo.c')
     gio_unix_include_headers += files('gdesktopappinfo.h')
-    launch_desktop_sources = files('gio-launch-desktop.c')
 
-    if host_system == 'linux'
-      launch_desktop_sources += files('../glib/gjournal-private.c')
+    if process_spawn_allowed
+      launch_desktop_sources = files('gio-launch-desktop.c')
+
+      if host_system == 'linux'
+        launch_desktop_sources += files('../glib/gjournal-private.c')
+      endif
+
+      gio_launch_desktop = executable('gio-launch-desktop', launch_desktop_sources,
+        dependencies: [app_profile_dep],
+        include_directories : glibinc,
+        install : true,
+        install_dir : multiarch_libexecdir,
+        install_tag : 'bin',
+        c_args : gio_c_args,
+        # intl.lib is not compatible with SAFESEH
+        link_args : noseh_link_args)
     endif
-
-    gio_launch_desktop = executable('gio-launch-desktop', launch_desktop_sources,
-      dependencies: [app_profile_dep],
-      include_directories : glibinc,
-      install : true,
-      install_dir : multiarch_libexecdir,
-      install_tag : 'bin',
-      c_args : gio_c_args,
-      # intl.lib is not compatible with SAFESEH
-      link_args : noseh_link_args)
   endif
 
   subdir('xdgmime')
