@@ -977,7 +977,7 @@ g_data_input_stream_read_complete (GTask *task,
 
   if (read_length || skip_length)
     {
-      gssize bytes;
+      G_GNUC_UNUSED gssize bytes;
 
       data->length = read_length;
       line = g_malloc (read_length + 1);
