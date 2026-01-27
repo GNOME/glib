@@ -82,8 +82,8 @@ static gboolean g_settings_has_backend;
 static gboolean
 is_key (const gchar *key)
 {
-  gint length;
-  gint i;
+  size_t length;
+  size_t i;
 
   g_return_val_if_fail (key != NULL, FALSE);
   g_return_val_if_fail (key[0] == '/', FALSE);
@@ -101,8 +101,8 @@ is_key (const gchar *key)
 static gboolean
 is_path (const gchar *path)
 {
-  gint length;
-  gint i;
+  size_t length;
+  size_t i;
 
   g_return_val_if_fail (path != NULL, FALSE);
   g_return_val_if_fail (path[0] == '/', FALSE);
