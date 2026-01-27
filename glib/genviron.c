@@ -154,7 +154,7 @@ g_environ_setenv (gchar       **envp,
     }
   else
     {
-      gint length;
+      guint length;
 
       length = envp ? g_strv_length (envp) : 0;
       envp = g_renew (gchar *, envp, length + 2);
@@ -404,7 +404,7 @@ gchar **
 g_listenv (void)
 {
   gchar **result, *eq;
-  gint len, i, j;
+  guint len, i, j;
 
   len = g_strv_length (environ);
   result = g_new0 (gchar *, len + 1);
@@ -636,7 +636,7 @@ gchar **
 g_listenv (void)
 {
   gchar **result, *eq;
-  gint len = 0, j;
+  size_t len = 0, j;
   wchar_t *p, *q;
 
   p = (wchar_t *) GetEnvironmentStringsW ();
