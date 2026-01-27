@@ -76,6 +76,10 @@
 
 #ifdef __APPLE__
 #include <AvailabilityMacros.h>
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+#include <dlfcn.h>
+#endif
 #endif
 
 #define __GLIB_H_INSIDE__
@@ -1246,12 +1250,9 @@ _g_io_modules_ensure_extension_points_registered (void)
     }
 }
 
-static gchar *
-get_gio_module_dir (void)
+static inline gchar *
+get_gio_module_dir_env (void)
 {
-  gchar *module_dir;
-  gboolean is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
-
   /* If running as setuid, loading modules from an arbitrary directory
    * controlled by the unprivileged user who is running the program could allow
    * for execution of arbitrary code (in constructors in modules).
@@ -1259,7 +1260,44 @@ get_gio_module_dir (void)
    *
    * If a setuid program somehow needs to load additional GIO modules, it should
    * explicitly call g_io_modules_scan_all_in_directory(). */
-  module_dir = !is_setuid ? g_strdup (g_getenv ("GIO_MODULE_DIR")) : NULL;
+  if (GLIB_PRIVATE_CALL (g_check_setuid) ())
+    return NULL;
+
+  return g_strdup (g_getenv ("GIO_MODULE_DIR"));
+}
+
+#ifdef __APPLE__
+static inline gchar *
+get_gio_module_dir_darwin (void)
+{
+/* Only auto-relocate on macOS, not watchOS etc; older macOS SDKs only define TARGET_OS_MAC */
+#if TARGET_OS_OSX
+  g_autofree gchar *path = NULL;
+  g_autofree gchar *possible_dir = NULL;
+  Dl_info info;
+
+  if (dladdr (get_gio_module_dir_darwin, &info))
+    {
+      /* Gets path to the PREFIX/lib directory */
+      path = g_path_get_dirname (info.dli_fname);
+      possible_dir = g_build_filename (path, "gio", "modules", NULL);
+      if (g_file_test (possible_dir, G_FILE_TEST_IS_DIR))
+        {
+          return g_steal_pointer (&possible_dir);
+        }
+    }
+  return g_strdup (GIO_MODULE_DIR);
+#else
+  return NULL;
+#endif
+}
+#endif
+
+static gchar *
+get_gio_module_dir (void)
+{
+  gchar *module_dir = get_gio_module_dir_env ();
+
   if (module_dir == NULL)
     {
 #ifdef G_OS_WIN32
@@ -1270,33 +1308,10 @@ get_gio_module_dir (void)
                                      "lib", "gio", "modules",
                                      NULL);
       g_free (install_dir);
+#elif defined(__APPLE__)
+      module_dir = get_gio_module_dir_darwin ();
 #else
       module_dir = g_strdup (GIO_MODULE_DIR);
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-/* Only auto-relocate on macOS, not watchOS etc; older macOS SDKs only define TARGET_OS_MAC */
-#if (defined (TARGET_OS_OSX) && TARGET_OS_OSX) || \
-     (!defined (TARGET_OS_OSX) && defined (TARGET_OS_MAC) && TARGET_OS_MAC)
-#include <dlfcn.h>
-      {
-        g_autofree gchar *path = NULL;
-        g_autofree gchar *possible_dir = NULL;
-        Dl_info info;
-
-        if (dladdr (get_gio_module_dir, &info))
-          {
-            /* Gets path to the PREFIX/lib directory */
-            path = g_path_get_dirname (info.dli_fname);
-            possible_dir = g_build_filename (path, "gio", "modules", NULL);
-            if (g_file_test (possible_dir, G_FILE_TEST_IS_DIR))
-              {
-                g_free (module_dir);
-                module_dir = g_steal_pointer (&possible_dir);
-              }
-          }
-      }
-#endif
-#endif
 #endif
     }
 
