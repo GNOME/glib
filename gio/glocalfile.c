@@ -1573,7 +1573,7 @@ static char *
 strip_trailing_slashes (const char *path)
 {
   char *path_copy;
-  int len;
+  size_t len;
 
   path_copy = g_strdup (path);
   len = strlen (path_copy);
@@ -2724,7 +2724,7 @@ g_local_file_move (GFile                  *source,
 	  return FALSE;
 	}
     }
-  
+
   if (flags & G_FILE_COPY_BACKUP && destination_exist)
     {
       backup_name = g_strconcat (local_destination->filename, "~", NULL);
