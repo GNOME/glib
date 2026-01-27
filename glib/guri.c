@@ -430,7 +430,7 @@ _uri_encoder (GString      *out,
       if (multibyte_utf8_char > 0 &&
           multibyte_utf8_char != (gunichar) -1 && multibyte_utf8_char != (gunichar) -2)
         {
-          gint len = g_utf8_skip [*p];
+          unsigned int len = g_utf8_skip [*p];
           g_string_append_len (out, (gchar *)p, len);
           p += len;
         }
