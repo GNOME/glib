@@ -49,6 +49,8 @@ G_BEGIN_DECLS
 typedef struct _GSocketControlMessagePrivate                GSocketControlMessagePrivate;
 typedef struct _GSocketControlMessageClass                  GSocketControlMessageClass;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GSocketControlMessage, g_object_unref)
+
 /**
  * GSocketControlMessageClass:
  * @get_size: gets the size of the message.

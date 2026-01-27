@@ -101,6 +101,7 @@ gio_tests = {
   'file-enumerator' : {},
   'inet-address' : {},
   'io-stream' : {},
+  'iptosmessage' : {},
   'max-version' : {'install' : false},
   'memory-input-stream' : {},
   'memory-monitor' : {},
