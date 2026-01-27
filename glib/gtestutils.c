@@ -668,6 +668,7 @@ GLIB_VAR char *__glib_assert_msg;
 char *__glib_assert_msg = NULL;
 
 /* --- constants --- */
+#define G_TEST_STATUS_SKIPPED 77
 #define G_TEST_STATUS_TIMED_OUT 1024
 
 /* --- structures --- */
@@ -2414,7 +2415,7 @@ g_test_run (void)
 
   if (test_run_count > 0 && test_run_count == test_skipped_count)
     {
-      ret = 77;
+      ret = G_TEST_STATUS_SKIPPED;
       goto out;
     }
   else
@@ -4244,6 +4245,26 @@ g_test_trap_has_passed (void)
       WEXITSTATUS (test_trap_last_status) == 0);
 #else
   return test_trap_last_status == 0;
+#endif
+}
+
+/**
+ * g_test_trap_has_skipped:
+ *
+ * Checks the result of the last [func@GLib.test_trap_subprocess] call.
+ *
+ * Returns: true if the last test subprocess was skipped
+ *
+ * Since: 2.88
+ */
+gboolean
+g_test_trap_has_skipped (void)
+{
+#ifdef G_OS_UNIX
+  return (WIFEXITED (test_trap_last_status) &&
+      WEXITSTATUS (test_trap_last_status) == G_TEST_STATUS_SKIPPED);
+#else
+  return test_trap_last_status == G_TEST_STATUS_SKIPPED;
 #endif
 }
 

@@ -556,6 +556,8 @@ void     g_test_trap_subprocess_with_envp (const char           *test_path,
 
 GLIB_AVAILABLE_IN_ALL
 gboolean g_test_trap_has_passed         (void);
+GLIB_AVAILABLE_IN_2_88
+gboolean g_test_trap_has_skipped        (void);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_test_trap_reached_timeout    (void);
 #define  g_test_trap_assert_passed()                      g_test_trap_assertions (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, 0, 0)
