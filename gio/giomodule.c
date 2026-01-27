@@ -1290,8 +1290,10 @@ get_gio_module_dir_darwin (void)
           return g_steal_pointer (&possible_dir);
         }
     }
-#endif
   return g_strdup (GIO_MODULE_DIR);
+#else
+  return NULL;
+#endif
 }
 #endif
 
