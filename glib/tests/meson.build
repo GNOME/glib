@@ -400,8 +400,8 @@ test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 
-test_deps = [libm, thread_dep, libglib_dep, app_profile_dep]
-test_deps_static = [libm, thread_dep, libglib_static_dep, app_profile_dep]
+test_deps = [libm, thread_dep, libglib_dep, test_profile_dep]
+test_deps_static = [libm, thread_dep, libglib_static_dep, test_profile_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GLib"', '-UG_DISABLE_ASSERT']
 test_cpp_args = test_cargs
 

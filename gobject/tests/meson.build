@@ -153,7 +153,7 @@ test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 
-test_deps = [libm, thread_dep, libglib_dep, libgobject_dep, app_profile_dep]
+test_deps = [libm, thread_dep, libglib_dep, libgobject_dep, test_profile_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GLib-GObject"', '-UG_DISABLE_ASSERT', warning_sign_conversion_args]
 test_cpp_args = test_cargs
 

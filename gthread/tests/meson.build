@@ -6,7 +6,7 @@ test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 
-test_deps = [thread_dep, libglib_dep, libgthread_dep, app_profile_dep]
+test_deps = [thread_dep, libglib_dep, libgthread_dep, test_profile_dep]
 test_cargs = ['-DG_LOG_DOMAIN="GLib-GThread"', '-UG_DISABLE_ASSERT', warning_sign_conversion_args, warning_shorten_64_to_32_args]
 test_cpp_args = test_cargs
 
