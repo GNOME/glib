@@ -32,6 +32,13 @@
 #include <vcruntime.h>
 #endif
 
+#ifdef __MINGW64_VERSION_MAJOR
+# if __MINGW64_VERSION_MAJOR > 14 || \
+     (__MINGW64_VERSION_MAJOR == 14 && __MINGW64_VERSION_MINOR >= 1)
+#   define HAVE_MINGW_W64_14_1
+# endif
+#endif
+
 static void
 set_process_wide_settings (void)
 {
@@ -84,13 +91,18 @@ set_stderr_unbuffered_mode (void)
    *
    * References:
    *
-   * - https://sourceforge.net/p/mingw/mailman/message/27121137/
+   *  - https://sourceforge.net/p/mingw-w64/mailman/message/59272395/
+   *  - https://github.com/mingw-w64/mingw-w64/commit/b30a91ac
    */
+#if !defined (HAVE_MINGW_W64_14_1)
 #if !defined (_UCRT)
   int ret = setvbuf (stderr, NULL, _IONBF, 0);
   assert (ret == 0);
 #endif
+#endif
 }
+
+#if !defined (HAVE_MINGW_W64_14_1)
 
 static void
 early_flush_exit_handler (void)
@@ -103,6 +115,8 @@ early_flush_exit_handler (void)
    */
   fflush (NULL);
 }
+
+#endif
 
 static void
 register_early_flush_at_exit (void)
@@ -125,12 +139,13 @@ register_early_flush_at_exit (void)
    *
    * References:
    *
-   * - https://devblogs.microsoft.com/oldnewthing/20070503-00/?p=27003
-   * - https://devblogs.microsoft.com/oldnewthing/20100122-00/?p=15193
-   * - https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-best-practices
+   *  - https://sourceforge.net/p/mingw-w64/mailman/message/59272390/
+   *  - https://github.com/mingw-w64/mingw-w64/commit/96d60fc3
    */
+#if !defined (HAVE_MINGW_W64_14_1)
   int ret = atexit (early_flush_exit_handler);
   assert (ret == 0);
+#endif
 }
 
 /* Boilerplate for CRT constructor */
