@@ -670,6 +670,8 @@ test_casemap_and_casefold (void)
         SetThreadLocale (MAKELCID (MAKELANGID (LANG_LITHUANIAN, SUBLANG_LITHUANIAN), SORT_DEFAULT));
       else if (strstr (locale, "tr_TR"))
         SetThreadLocale (MAKELCID (MAKELANGID (LANG_TURKISH, SUBLANG_TURKISH_TURKEY), SORT_DEFAULT));
+      else if (strstr (locale, "az_AZ"))
+        SetThreadLocale (MAKELCID (MAKELANGID (LANG_AZERBAIJANI, SUBLANG_AZERBAIJANI_AZERBAIJAN_LATIN), SORT_DEFAULT));
       else
         SetThreadLocale (old_lcid);
 #endif
