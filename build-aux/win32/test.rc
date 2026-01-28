@@ -1,0 +1,6 @@
+#pragma code_page(65001)
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "test.manifest.xml"
