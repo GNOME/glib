@@ -324,6 +324,11 @@ if installed_tests_enabled
     install_dir : installed_tests_execdir,
     install_tag : 'tests',
   )
+  install_subdir('localtime',
+    install_dir : installed_tests_execdir,
+    install_tag : 'tests',
+    follow_symlinks : false,
+  )
 endif
 
 test_extra_programs = {

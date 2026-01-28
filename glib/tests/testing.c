@@ -365,6 +365,20 @@ test_subprocess_fail (void)
 }
 
 static void
+test_subprocess_skip (void)
+{
+  if (g_test_subprocess ())
+    {
+      g_test_skip ("");
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_assert_true (g_test_trap_has_skipped ());
+  g_assert_true (!g_test_trap_has_passed ());
+}
+
+static void
 test_subprocess_no_such_test (void)
 {
   if (g_test_subprocess ())
@@ -2970,6 +2984,7 @@ main (int   argc,
 #endif
 
   g_test_add_func ("/trap_subprocess/fail", test_subprocess_fail);
+  g_test_add_func ("/trap_subprocess/skip", test_subprocess_skip);
   g_test_add_func ("/trap_subprocess/no-such-test", test_subprocess_no_such_test);
   g_test_add_func ("/trap_subprocess/timeout", test_subprocess_timeout);
   g_test_add_func ("/trap_subprocess/envp", test_subprocess_envp);

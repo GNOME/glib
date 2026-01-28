@@ -44,6 +44,11 @@
 #endif
 #endif
 
+#ifdef HAVE_UNSHARE
+#include <sched.h>
+#include <unistd.h>
+#endif
+
 #define ASSERT_DATE(dt,y,m,d) G_STMT_START { \
   g_assert_nonnull ((dt)); \
   g_assert_cmpint ((y), ==, g_date_time_get_year ((dt))); \
@@ -3478,6 +3483,82 @@ test_date_time_unix_usec (void)
   g_date_time_unref (local);
 }
 
+typedef struct
+{
+  const char *rootdir;
+  gboolean expect_null;
+} LocaltimeTestData;
+
+static const LocaltimeTestData localtime_regular = {
+  .rootdir = "regular",
+  .expect_null = FALSE,
+};
+
+static const LocaltimeTestData localtime_symlink = {
+  .rootdir = "symlink",
+  .expect_null = FALSE
+};
+
+static const LocaltimeTestData localtime_symlink_loop = {
+  .rootdir = "symlink_loop",
+  .expect_null = TRUE
+};
+
+static const LocaltimeTestData localtime_not_a_symlink = {
+  .rootdir = "not_a_symlink",
+  .expect_null = TRUE
+};
+
+static void
+test_unix_localtime (gconstpointer data)
+{
+#ifndef G_OS_UNIX
+  g_test_skip ("unix specific behaviour, skipping test on non-unix");
+  return;
+#elif !defined(HAVE_UNSHARE)
+  g_test_skip ("requires Linux unshare() syscall, skipping test");
+  return;
+#else
+  if (g_test_subprocess ())
+    {
+      const LocaltimeTestData *test_data;
+      int ret;
+      char *path;
+      GTimeZone *tz;
+
+      ret = unshare (CLONE_NEWUSER);
+      if (ret != 0)
+        {
+          g_test_skip ("" /* message from subprocess is not visible*/);
+          return;
+        }
+
+      test_data = (LocaltimeTestData *) data;
+      path = g_test_build_filename (G_TEST_DIST, "localtime", test_data->rootdir, NULL);
+      g_assert_true (g_path_is_absolute (path));
+
+      ret = chroot (path);
+      if (ret != 0)
+        {
+          g_test_skip ("" /* message from subprocess is not visible*/);
+          g_clear_pointer (&path, g_free);
+          return;
+        }
+      g_clear_pointer (&path, g_free);
+
+      tz = g_time_zone_new_identifier (NULL);
+      g_assert_cmpint ((tz == NULL), ==, test_data->expect_null);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_INHERIT_DESCRIPTORS);
+  if (g_test_trap_has_skipped ())
+    g_test_skip ("Could not create user namespace, skipping test");
+  else
+    g_test_trap_assert_passed ();
+#endif
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -3573,6 +3654,10 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/new-offset", test_new_offset);
   g_test_add_func ("/GTimeZone/parse-rfc8536", test_time_zone_parse_rfc8536);
   g_test_add_func ("/GTimeZone/caching", test_time_zone_caching);
+  g_test_add_data_func ("/GTimeZone/unix_localtime/regular", &localtime_regular, test_unix_localtime);
+  g_test_add_data_func ("/GTimeZone/unix_localtime/symlink", &localtime_symlink, test_unix_localtime);
+  g_test_add_data_func ("/GTimeZone/unix_localtime/symlink-loop", &localtime_symlink_loop, test_unix_localtime);
+  g_test_add_data_func ("/GTimeZone/unix_localtime/not-a-symlink", &localtime_not_a_symlink, test_unix_localtime);
 
   return g_test_run ();
 }
