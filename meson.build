@@ -69,6 +69,7 @@ else
 endif
 
 host_system = host_machine.system()
+subsystem = ''
 
 if host_system == 'darwin'
   ios_test_code = '''#include <TargetConditionals.h>
@@ -89,6 +90,8 @@ if host_system == 'linux'
   if cc.compiles(musl_test_code, name : 'building for musl libc')
     linux_libc = 'musl'
   endif
+elif host_system == 'darwin'
+  subsystem = host_machine.subsystem()
 endif
 
 glib_version = meson.project_version()
@@ -1004,7 +1007,7 @@ endif
 osx_ldflags = []
 glib_have_carbon = false
 glib_have_cocoa = false
-if host_system == 'darwin'
+if host_system == 'darwin' and subsystem == 'macos'
   add_languages('objc', native: false, required: true)
   objcc = meson.get_compiler('objc')
   if not objcc.compiles('''#include <AvailabilityMacros.h>
