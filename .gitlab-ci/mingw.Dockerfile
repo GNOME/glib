@@ -1,4 +1,4 @@
-FROM registry.gitlab.gnome.org/gnome/glib/fedora:v41.1
+FROM registry.gitlab.gnome.org/gnome/glib/fedora:v41.2
 
 USER root
 
