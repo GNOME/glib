@@ -2016,7 +2016,7 @@ poll_defines = [
 
 if has_syspoll and has_systypes
   foreach d : poll_defines
-    val = cc.compute_int(d[0], prefix: poll_includes)
+    val = cc.compute_int(d[0], prefix: poll_includes, guess: d[2])
     glibconfig_conf.set(d[1], val)
   endforeach
 elif has_winsock2
@@ -2043,15 +2043,15 @@ else
 endif
 
 inet_defines = [
-  [ 'AF_UNIX', 'g_af_unix' ],
-  [ 'AF_INET', 'g_af_inet' ],
-  [ 'AF_INET6', 'g_af_inet6' ],
-  [ 'MSG_OOB', 'g_msg_oob' ],
-  [ 'MSG_PEEK', 'g_msg_peek' ],
-  [ 'MSG_DONTROUTE', 'g_msg_dontroute' ],
+  [ 'AF_UNIX', 'g_af_unix', 1 ],
+  [ 'AF_INET', 'g_af_inet', 2 ],
+  [ 'AF_INET6', 'g_af_inet6', 30 ],
+  [ 'MSG_OOB', 'g_msg_oob', 1 ],
+  [ 'MSG_PEEK', 'g_msg_peek', 2 ],
+  [ 'MSG_DONTROUTE', 'g_msg_dontroute', 4 ],
 ]
 foreach d : inet_defines
-  val = cc.compute_int(d[0], prefix: inet_includes)
+  val = cc.compute_int(d[0], prefix: inet_includes, guess: d[2])
   glibconfig_conf.set(d[1], val)
 endforeach
 
