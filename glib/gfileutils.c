@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -2619,8 +2620,8 @@ g_basename (const gchar *file_name)
 gchar *
 g_path_get_basename (const gchar *file_name)
 {
-  gssize base;
-  gssize last_nonslash;
+  size_t base;
+  size_t last_nonslash;
   gsize len;
   gchar *retval;
 
@@ -2631,10 +2632,10 @@ g_path_get_basename (const gchar *file_name)
 
   last_nonslash = strlen (file_name) - 1;
 
-  while (last_nonslash >= 0 && G_IS_DIR_SEPARATOR (file_name [last_nonslash]))
+  while (last_nonslash > 0 && G_IS_DIR_SEPARATOR (file_name[last_nonslash]))
     last_nonslash--;
 
-  if (last_nonslash == -1)
+  if (last_nonslash == 0 && G_IS_DIR_SEPARATOR (file_name[0]))
     /* string only containing slashes */
     return g_strdup (G_DIR_SEPARATOR_S);
 
@@ -2647,20 +2648,22 @@ g_path_get_basename (const gchar *file_name)
 #endif
   base = last_nonslash;
 
-  while (base >=0 && !G_IS_DIR_SEPARATOR (file_name [base]))
+  while (base > 0 && !G_IS_DIR_SEPARATOR (file_name[base]))
     base--;
 
 #ifdef G_OS_WIN32
-  if (base == -1 &&
+  if (base == 0 &&
+      !G_IS_DIR_SEPARATOR (file_name[0]) &&
       g_ascii_isalpha (file_name[0]) &&
       file_name[1] == ':')
     base = 1;
 #endif /* G_OS_WIN32 */
 
   len = last_nonslash - base;
+  g_assert (len < SIZE_MAX);
   retval = g_malloc (len + 1);
   memcpy (retval, file_name + (base + 1), len);
-  retval [len] = '\0';
+  retval[len] = '\0';
 
   return retval;
 }
