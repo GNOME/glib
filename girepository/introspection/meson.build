@@ -64,27 +64,70 @@ glib_gir_sources = [
   files('../../glib/docs.c'),
 ]
 
-glib_gir = gnome.generate_gir(libglib,
-  sources: glib_gir_sources,
-  namespace: 'GLib',
-  nsversion: '2.0',
-  identifier_prefix: gi_identifier_prefix,
-  symbol_prefix: gi_symbol_prefix,
-  export_packages: 'glib-2.0',
-  header: 'glib.h',
-  install: true,
-  install_dir_gir: glib_girdir,
-  dependencies: gi_gen_shared_dependencies + [
-    libgobject_dep,
+glib_gi_libdir = meson.project_build_root() / 'glib'
+gobject_gi_libdir = meson.project_build_root() / 'gobject'
+gmodule_gi_libdir = meson.project_build_root() / 'gmodule'
+gio_gi_libdir = meson.project_build_root() / 'gio'
+
+glib_gi_libpaths = [
+  '-L' + glib_gi_libdir,
+  '-L' + gobject_gi_libdir,
+  '-L' + gmodule_gi_libdir,
+  '-L' + gio_gi_libdir,
+]
+# Includes that will be used to compile the scanner executable
+glib_gi_incdir = meson.project_source_root() / 'glib'
+gobject_gi_incdir = meson.project_source_root() / 'gobject'
+gmodule_gi_incdir = meson.project_source_root() / 'gmodule'
+gio_gi_incdir = meson.project_source_root() / 'gio'
+
+glib_gi_includes = [
+  '-I' + meson.project_source_root(),
+  '-I' + meson.project_build_root(),
+  '-I' + glib_gi_libdir,
+  '-I' + glib_gi_incdir,
+  '-I' + gobject_gi_incdir,
+  '-I' + gmodule_gi_incdir,
+  '-I' + gio_gi_incdir,
+]
+
+giscanner_common_args = [
+    '--identifier-prefix=G',
+    '--symbol-prefix=g',
+]
+
+glib_gir = []
+
+glib_typelib = []
+
+glib_gir += custom_target('glib-gir',
+  input: [ glib_gir_sources ],
+  output: 'GLib-2.0.gir',
+  depends: [
+    giscanner_pymod,
   ],
-  env: gi_gen_env_variables,
-  extra_args: gir_args + [
-    '-DGLIB_COMPILATION',
-    '-DGETTEXT_PACKAGE="dummy"',
+  command: [
+    giscanner_bin,
+    giscanner_common_args,
     '--symbol-prefix=glib',
-    '--library-path=' + meson.current_build_dir(),
+    '--c-include=glib.h',
+    '--namespace=GLib',
+    '--nsversion=2.0',
+    '--library=glib-2.0',
     '--library=gobject-2.0',
+    '--pkg=glib-2.0',
+    glib_gi_libpaths,
+    '--cflags-begin',
+    glib_gi_includes,
+    '-DGLIB_COMPILATION',
+    '-DGOBJECT_COMPILATION',
+    '-D__G_I18N_LIB_H__',
+    '-DGETTEXT_PACKAGE=dummy',
+    '--cflags-end',
+    '@INPUT@',
   ],
+  install: true,
+  install_dir: glib_girdir,
 )
 
 if host_system == 'windows'
@@ -100,11 +143,12 @@ if host_system == 'windows'
     symbol_prefix: gi_symbol_prefix,
     export_packages: 'glib-2.0',
     header: 'glib.h',
-    includes: [ glib_gir[0] ],
+    includes: ['GLib-2.0'],
     install: true,
     install_dir_gir: glib_girdir,
     dependencies: gi_gen_shared_dependencies + [
       libgobject_dep,
+      glib_gir,
     ],
     env: gi_gen_env_variables,
     extra_args: gir_args + [
@@ -130,11 +174,12 @@ else
     symbol_prefix: gi_symbol_prefix,
     export_packages: 'glib-2.0',
     header: 'glib.h',
-    includes: [ glib_gir[0] ],
+    includes: ['GLib-2.0'],
     install: true,
     install_dir_gir: glib_girdir,
     dependencies: gi_gen_shared_dependencies + [
       libgobject_dep,
+      glib_gir,
     ],
     env: gi_gen_env_variables,
     extra_args: gir_args + [
@@ -164,10 +209,10 @@ gobject_gir = gnome.generate_gir(libgobject,
   symbol_prefix: gi_symbol_prefix,
   export_packages: 'gobject-2.0',
   header: 'glib-object.h',
-  includes: [ glib_gir[0] ],
+  includes: ['GLib-2.0'],
   install: true,
   install_dir_gir: glib_girdir,
-  dependencies: gi_gen_shared_dependencies,
+  dependencies: [gi_gen_shared_dependencies, glib_gir],
   env: gi_gen_env_variables,
   extra_args: gir_args + [
       '-DGOBJECT_COMPILATION',
@@ -191,11 +236,12 @@ gmodule_gir = gnome.generate_gir(libgmodule,
   symbol_prefix: gi_symbol_prefix,
   export_packages: 'gmodule-2.0',
   header: 'gmodule.h',
-  includes: [ glib_gir[0] ],
+  includes: ['GLib-2.0'],
   install: true,
   install_dir_gir: glib_girdir,
   dependencies: gi_gen_shared_dependencies + [
     libglib_dep,
+    glib_gir,
   ],
   env: gi_gen_env_variables,
   extra_args: gir_args + [
@@ -233,13 +279,14 @@ gio_gir = gnome.generate_gir(libgio,
   symbol_prefix: gi_symbol_prefix,
   export_packages: gio_gir_packages,
   header: 'gio/gio.h',
-  includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0] ],
+  includes: [ gmodule_gir[0], gobject_gir[0] ],
   install: true,
   install_dir_gir: glib_girdir,
   dependencies: gi_gen_shared_dependencies + [
     libglib_dep,
     libgobject_dep,
     libgmodule_dep,
+    glib_gir,
   ],
   env: gi_gen_env_variables,
   extra_args: gir_args + gio_gir_args,
@@ -259,13 +306,14 @@ if host_system == 'windows'
     symbol_prefix: gi_symbol_prefix,
     export_packages: [ 'gio-windows-2.0' ],
     header: 'gio/gio.h',
-    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+    includes: [ gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
     install: true,
     install_dir_gir: glib_girdir,
     dependencies: gi_gen_shared_dependencies + [
       libglib_dep,
       libgobject_dep,
       libgmodule_dep,
+      glib_gir,
     ],
     env: gi_gen_env_variables,
     extra_args: gir_args + gio_gir_args + gio_win32_gir_c_includes + [
@@ -289,13 +337,14 @@ else
     symbol_prefix: gi_symbol_prefix,
     export_packages: [ 'gio-unix-2.0' ],
     header: 'gio/gio.h',
-    includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+    includes: [ gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
     install: true,
     install_dir_gir: glib_girdir,
     dependencies: gi_gen_shared_dependencies + [
       libglib_dep,
       libgobject_dep,
       libgmodule_dep,
+      glib_gir,
     ],
     env: gi_gen_env_variables,
     extra_args: gir_args + gio_gir_args + gio_unix_gir_c_includes + [
@@ -334,7 +383,7 @@ girepository_gir = gnome.generate_gir(libgirepository,
   symbol_prefix: 'gi',
   export_packages: libgirepository_gir_packages,
   header: 'girepository/girepository.h',
-  includes: [ glib_gir[0], gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
+  includes: [ gmodule_gir[0], gobject_gir[0], gio_gir[0] ],
   install: true,
   install_dir_gir: glib_girdir,
   dependencies: gi_gen_shared_dependencies + [
@@ -342,8 +391,24 @@ girepository_gir = gnome.generate_gir(libgirepository,
     libgobject_dep,
     libgmodule_dep,
     libgio_dep,
+    glib_gir,
   ],
   extra_args: gir_args + libgirepository_gir_args,
   env: gi_libgirepository_gen_env_variables,
 )
 
+foreach gir: glib_gir
+  glib_typelib += custom_target(
+    input: gir,
+    output: '@BASENAME@.typelib',
+    command: [
+      gicompilerepository,
+      '-o', '@OUTPUT@',
+      '@INPUT@',
+      '--includedir', meson.current_build_dir(),
+      '--includedir', meson.current_source_dir(),
+    ],
+    install: true,
+    install_dir: get_option('libdir') / 'girepository-1.0',
+  )
+endforeach

@@ -2703,10 +2703,10 @@ endif
 # gobject-introspection). However, we use Meson’s gnome.generate_gir() function,
 # which adds a hard dependency on gobject-introspection-1.0, so we’d better
 # check for that here.
-gobject_introspection_required_version = '>= 1.80.0'
-gir_scanner = find_program('g-ir-scanner', required: get_option('introspection'), version: gobject_introspection_required_version)
-gobject_introspection = dependency('gobject-introspection-1.0', required: get_option('introspection'), version: gobject_introspection_required_version)
-enable_gir = get_option('introspection').allowed() and gir_scanner.found() and gobject_introspection.found() and meson.can_run_host_binaries()
+#gobject_introspection_required_version = '>= 1.80.0'
+#gir_scanner = find_program('g-ir-scanner', required: get_option('introspection'), version: gobject_introspection_required_version)
+#gobject_introspection = dependency('gobject-introspection-1.0', required: get_option('introspection'), version: gobject_introspection_required_version)
+enable_gir = get_option('introspection').allowed() and meson.can_run_host_binaries()
 
 if get_option('introspection').enabled() and not meson.can_run_host_binaries()
   error('Running binaries on the build host needs to be supported to build with -Dintrospection=enabled')
@@ -2714,12 +2714,8 @@ endif
 
 gir_args = [
   '--quiet',
+  '--doc-format=gi-docgen',
 ]
-if gobject_introspection.version().version_compare('>=1.83.2')
-  gir_args += [
-    '--doc-format=gi-docgen',
-  ]
-endif
 
 pkg = import('pkgconfig')
 windows = import('windows')

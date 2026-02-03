@@ -248,6 +248,7 @@ pkg.generate(libgirepository,
 )
 
 subdir('compiler')
+subdir('scanner')
 
 if enable_gir
   subdir('introspection')
