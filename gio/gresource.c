@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include <stdint.h>
 #include <string.h>
 
 #include "gresource.h"
@@ -488,6 +489,10 @@ g_resource_find_overlay (const gchar    *path,
        *
        *    dst + remaining_path + nul
        */
+      if (path_len - src_len > SIZE_MAX - 1 ||
+          dst_len > SIZE_MAX - 1 - (path_len - src_len))
+        continue;
+
       candidate = g_malloc (dst_len + (path_len - src_len) + 1);
       memcpy (candidate, dst, dst_len);
       memcpy (candidate + dst_len, path + src_len, path_len - src_len);
