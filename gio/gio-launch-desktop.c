@@ -40,6 +40,7 @@
 #if defined(__linux__) && !defined(__ANDROID__)
 #include <alloca.h>
 #include <errno.h>
+#include <limits.h>
 #include <stddef.h>
 #include <string.h>
 #include <syslog.h>
@@ -150,6 +151,12 @@ journal_stream_fd (const char *identifier,
     priority = 7;
 
   l = strlen (identifier);
+  if (l > PATH_MAX)
+    {
+      errno = EINVAL;
+      goto fail;
+    }
+
   header = alloca (l + 1  /* identifier, newline */
                    + 1    /* empty unit ID, newline */
                    + 2    /* priority, newline */

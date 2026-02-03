@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include <stdint.h>
 #include <string.h>
 
 #include "gresource.h"
@@ -353,7 +354,6 @@ g_resource_find_overlay (const gchar    *path,
   static const gchar * const *overlay_dirs;
   gboolean res = FALSE;
   size_t path_len = 0;
-  gint i;
 
   /* We try to be very fast in case there are no overlays.  Otherwise,
    * we can take a bit more time...
@@ -371,14 +371,14 @@ g_resource_find_overlay (const gchar    *path,
       if (envvar != NULL)
         {
           gchar **parts;
-          gint j;
+          size_t j = 0;
 
           parts = g_strsplit (envvar, G_SEARCHPATH_SEPARATOR_S, 0);
 
           /* Sanity check the parts, dropping those that are invalid.
            * 'i' may grow faster than 'j'.
            */
-          for (i = j = 0; parts[i]; i++)
+          for (size_t i = 0; parts[i]; i++)
             {
               gchar *part = parts[i];
               gchar *eq;
@@ -446,7 +446,7 @@ g_resource_find_overlay (const gchar    *path,
       g_once_init_leave_pointer (&overlay_dirs, result);
     }
 
-  for (i = 0; overlay_dirs[i]; i++)
+  for (size_t i = 0; overlay_dirs[i]; i++)
     {
       const gchar *src;
       size_t src_len;
@@ -488,6 +488,10 @@ g_resource_find_overlay (const gchar    *path,
        *
        *    dst + remaining_path + nul
        */
+      if (path_len - src_len > SIZE_MAX - 1 ||
+          dst_len > SIZE_MAX - 1 - (path_len - src_len))
+        continue;
+
       candidate = g_malloc (dst_len + (path_len - src_len) + 1);
       memcpy (candidate, dst, dst_len);
       memcpy (candidate + dst_len, path + src_len, path_len - src_len);
