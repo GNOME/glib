@@ -23,5 +23,5 @@ GitLab CI jobs run in a Docker image, defined here. To update that image
 1. Edit `.gitlab-ci.yml` (in the root of this repository) to use your new
    image
 
-[pat]: https://gitlab.gnome.org/-/profile/personal_access_tokens
+[pat]: https://gitlab.gnome.org/-/user_settings/personal_access_tokens
 [cs]: https://scan.coverity.com/
