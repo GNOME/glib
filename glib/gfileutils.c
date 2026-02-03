@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <stdint.h>
 #include <string.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -2659,9 +2660,10 @@ g_path_get_basename (const gchar *file_name)
 #endif /* G_OS_WIN32 */
 
   len = last_nonslash - base;
+  g_assert (len < SIZE_MAX);
   retval = g_malloc (len + 1);
   memcpy (retval, file_name + (base + 1), len);
-  retval [len] = '\0';
+  retval[len] = '\0';
 
   return retval;
 }
