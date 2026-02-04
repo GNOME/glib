@@ -28,7 +28,7 @@
 #include <assert.h>
 #include <crtdbg.h>
 
-#ifdef _MSC_VER
+#ifdef HAVE_VCRUNTIME_H
 #include <vcruntime.h>
 #endif
 

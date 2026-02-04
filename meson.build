@@ -460,6 +460,7 @@ headers = [
   'termios.h',
   'unistd.h',
   'values.h',
+  'vcruntime.h',
   'wchar.h',
   'xlocale.h',
 ]
