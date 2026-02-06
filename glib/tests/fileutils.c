@@ -89,6 +89,8 @@ test_paths (void)
     { "a/b", "a", "b" },
     { "a/b/", "a/b", "b" },
     { "c///", "c", "c" },
+    { "OSTree-1.0.gir", ".", "OSTree-1.0.gir" },
+    { "/some/multi/part/path", "/some/multi/part", "path" },
 #ifdef G_OS_WIN32
     { "\\", "\\", "\\" },
     { ".\\\\\\\\", ".", "." },
