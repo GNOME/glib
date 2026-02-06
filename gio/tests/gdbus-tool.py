@@ -94,6 +94,24 @@ try:
             )
             self.assertIn("'org.freedesktop.DBus'", result.out)
 
+        def test_call_invalid_method(self):
+            """Test running `gdbus` with an invalid method name."""
+            with self.assertRaises(subprocess.CalledProcessError):
+                result = self.runGdbus(
+                    "call",
+                    "--session",
+                    "--dest",
+                    "org.freedesktop.DBus",
+                    "--object-path",
+                    "/org/freedesktop/DBus",
+                    "--method",
+                    "org.freedesktop.DBus/ListNames",
+                )
+                self.assertIn(
+                    "Error: Method name “org.freedesktop.DBus/ListNames” is invalid",
+                    result.err,
+                )
+
 except ImportError as e:
 
     @unittest.skip("Cannot import %s" % e.name)
