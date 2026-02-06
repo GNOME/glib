@@ -1118,7 +1118,7 @@ install_data(['gschema.loc', 'gschema.its'],
   install_tag : 'devel',
 )
 
-executable('gdbus', 'gdbus-tool.c',
+gdbus_tool = executable('gdbus', 'gdbus-tool.c',
   install : true,
   install_tag : 'bin',
   c_args : gio_c_args,
