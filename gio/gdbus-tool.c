@@ -2528,7 +2528,8 @@ main (gint argc, gchar *argv[])
 
  again:
   command = argv[1];
-  if (g_strcmp0 (command, "help") == 0)
+  if (g_strcmp0 (command, "help") == 0 ||
+      g_strcmp0 (command, "--help") == 0)
     {
       if (request_completion)
         {
