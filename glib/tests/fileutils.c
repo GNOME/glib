@@ -77,34 +77,43 @@ test_paths (void)
 {
   struct
   {
-    gchar *filename;
-    gchar *dirname;
+    const char *filename;
+    const char *expected_dirname;
+    const char *expected_basename;
   } dirname_checks[] = {
-    { "/", "/" },
-    { "////", "/" },
-    { ".////", "." },
-    { "../", ".." },
-    { "..////", ".." },
-    { "a/b", "a" },
-    { "a/b/", "a/b" },
-    { "c///", "c" },
+    { "/", "/", G_DIR_SEPARATOR_S },
+    { "////", "/", G_DIR_SEPARATOR_S },
+    { ".////", ".", "." },
+    { "../", "..", ".." },
+    { "..////", "..", ".." },
+    { "a/b", "a", "b" },
+    { "a/b/", "a/b", "b" },
+    { "c///", "c", "c" },
+    { "OSTree-1.0.gir", ".", "OSTree-1.0.gir" },
+    { "/some/multi/part/path", "/some/multi/part", "path" },
 #ifdef G_OS_WIN32
-    { "\\", "\\" },
-    { ".\\\\\\\\", "." },
-    { "..\\", ".." },
-    { "..\\\\\\\\", ".." },
-    { "a\\b", "a" },
-    { "a\\b/", "a\\b" },
-    { "a/b\\", "a/b" },
-    { "c\\\\/", "c" },
-    { "//\\", "/" },
+    { "\\", "\\", "\\" },
+    { ".\\\\\\\\", ".", "." },
+    { "..\\", "..", ".." },
+    { "..\\\\\\\\", "..", ".." },
+    { "a\\b", "a", "b" },
+    { "a\\b/", "a\\b", "b" },
+    { "a/b\\", "a/b", "b" },
+    { "c\\\\/", "c", "c" },
+    { "//\\", "/", G_DIR_SEPARATOR_S },
 #endif
 #ifdef G_WITH_CYGWIN
-    { "//server/share///x", "//server/share" },
+    { "//server/share///x", "//server/share", "x" },
 #endif
-    { ".", "." },
-    { "..", "." },
-    { "", "." },
+    { ".", ".", "." },
+    { "..", ".", ".." },
+    { "", ".", "." },  /* note this is different from what the `basename` command does */
+    { G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "dir" G_DIR_SEPARATOR_S, G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "dir", "dir" },
+    { G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "file", G_DIR_SEPARATOR_S "foo", "file" },
+#ifdef G_OS_WIN32
+    { "/foo/dir/", "/foo/dir", "dir" },
+    { "/foo/file", "/foo", "file" },
+#endif
   };
   const guint n_dirname_checks = G_N_ELEMENTS (dirname_checks);
   struct
@@ -224,30 +233,19 @@ test_paths (void)
 #endif
   };
   const guint n_canonicalize_filename_checks = G_N_ELEMENTS (canonicalize_filename_checks);
-  gchar *string;
   guint i;
-
-  string = g_path_get_basename (G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "dir" G_DIR_SEPARATOR_S);
-  g_assert_cmpstr (string, ==, "dir");
-  g_free (string);
-  string = g_path_get_basename (G_DIR_SEPARATOR_S "foo" G_DIR_SEPARATOR_S "file");
-  g_assert_cmpstr (string, ==, "file");
-  g_free (string);
-
-#ifdef G_OS_WIN32
-  string = g_path_get_basename ("/foo/dir/");
-  g_assert_cmpstr (string, ==, "dir");
-  g_free (string);
-  string = g_path_get_basename ("/foo/file");
-  g_assert_cmpstr (string, ==, "file");
-  g_free (string);
-#endif
 
   for (i = 0; i < n_dirname_checks; i++)
     {
-      gchar *dirname = g_path_get_dirname (dirname_checks[i].filename);
-      g_assert_cmpstr (dirname, ==, dirname_checks[i].dirname);
+      gchar *dirname = NULL, *basename = NULL;
+
+      dirname = g_path_get_dirname (dirname_checks[i].filename);
+      g_assert_cmpstr (dirname, ==, dirname_checks[i].expected_dirname);
       g_free (dirname);
+
+      basename = g_path_get_basename (dirname_checks[i].filename);
+      g_assert_cmpstr (basename, ==, dirname_checks[i].expected_basename);
+      g_free (basename);
     }
 
   for (i = 0; i < n_skip_root_checks; i++)

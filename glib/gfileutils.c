@@ -2651,18 +2651,32 @@ g_path_get_basename (const gchar *file_name)
   while (base > 0 && !G_IS_DIR_SEPARATOR (file_name[base]))
     base--;
 
-#ifdef G_OS_WIN32
-  if (base == 0 &&
-      !G_IS_DIR_SEPARATOR (file_name[0]) &&
-      g_ascii_isalpha (file_name[0]) &&
-      file_name[1] == ':')
-    base = 1;
-#endif /* G_OS_WIN32 */
+  /* Does the file_name start without a directory separator, with the only
+   * directory separators being at the end of the string? e.g. `dir/` */
+  if (base == 0 && !G_IS_DIR_SEPARATOR (file_name[0]))
+    {
+      base = 0;
 
-  len = last_nonslash - base;
+#ifdef G_OS_WIN32
+      /* Does it start with a drive letter? e.g. `C:dir/`
+       * If so, skip that. */
+      if (g_ascii_isalpha (file_name[0]) &&
+          file_name[1] == ':')
+        base = 2;
+#endif /* G_OS_WIN32 */
+    }
+  else
+    {
+      /* Otherwise, `base` now points at the last directory separator character
+       * before the component we want as the basename, so increase the index
+       * again. */
+      base += 1;
+    }
+
+  len = last_nonslash - base + 1;
   g_assert (len < SIZE_MAX);
   retval = g_malloc (len + 1);
-  memcpy (retval, file_name + (base + 1), len);
+  memcpy (retval, file_name + base, len);
   retval[len] = '\0';
 
   return retval;
