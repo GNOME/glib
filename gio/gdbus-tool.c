@@ -1149,6 +1149,12 @@ handle_call (gint        *argc,
     }
   method_name = g_strdup (s + 1);
   interface_name = g_strndup (opt_call_method, s - opt_call_method);
+  if (!request_completion &&
+      (!g_dbus_is_interface_name (interface_name) || !g_dbus_is_member_name (method_name)))
+    {
+      g_printerr (_("Error: Method name “%s” is invalid\n"), opt_call_method);
+      goto out;
+    }
 
   /* All done with completion now */
   if (request_completion)
@@ -2528,7 +2534,8 @@ main (gint argc, gchar *argv[])
 
  again:
   command = argv[1];
-  if (g_strcmp0 (command, "help") == 0)
+  if (g_strcmp0 (command, "help") == 0 ||
+      g_strcmp0 (command, "--help") == 0)
     {
       if (request_completion)
         {

@@ -210,6 +210,10 @@ python_tests = {
     'suite': ['gdbus-codegen', 'slow'],
     'timeout': 90,
   },
+  'gdbus-tool.py' : {
+    'depends' : gdbus_tool,
+    'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gdbus_tool.full_path())},
+  },
   'gio-tool.py' : {
     'depends' : gio_tool,
     'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gio_tool.full_path())},
