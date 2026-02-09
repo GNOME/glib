@@ -55,6 +55,10 @@
 #endif /* HAVE_SYS_SELECT_H */
 #include <glib/gstdio.h>
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
+
 #include "gmain.h"
 #include "gpattern.h"
 #include "grand.h"
@@ -3945,7 +3949,7 @@ gboolean
 g_test_trap_fork (guint64        usec_timeout,
                   GTestTrapFlags test_trap_flags)
 {
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && (!defined(__APPLE__) || (!TARGET_OS_TV && !TARGET_OS_WATCH))
   int stdout_pipe[2] = { -1, -1 };
   int stderr_pipe[2] = { -1, -1 };
   int errsv;

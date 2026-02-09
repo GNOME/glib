@@ -70,12 +70,9 @@
 #include "gunicode.h"
 #include "gutils.h"
 
-#ifndef G_OS_WIN32
-static void stack_trace (const char * const *args);
-#endif
-
 /* Default to using LLDB for backtraces on macOS. */
 #ifdef __APPLE__
+#include <TargetConditionals.h>
 #define USE_LLDB
 #endif
 
@@ -83,6 +80,11 @@ static void stack_trace (const char * const *args);
 #define DEBUGGER "lldb"
 #else
 #define DEBUGGER "gdb"
+#endif
+
+#if defined(G_OS_UNIX) && (!defined(__APPLE__) || TARGET_OS_OSX)
+#define HAVE_STACK_TRACE
+static void stack_trace (const char * const *args);
 #endif
 
 /* People want to hit this from their debugger... */
@@ -248,7 +250,7 @@ g_on_error_query (const gchar *prg_name)
 void
 g_on_error_stack_trace (const gchar *prg_name)
 {
-#if defined(G_OS_UNIX)
+#ifdef HAVE_STACK_TRACE
   pid_t pid;
   gchar buf[16];
   gchar buf2[64];
@@ -300,14 +302,16 @@ g_on_error_stack_trace (const gchar *prg_name)
         break;
     }
 #else
+#ifdef G_OS_WIN32
   if (IsDebuggerPresent ())
     G_BREAKPOINT ();
   else
+#endif
     g_abort ();
 #endif
 }
 
-#ifndef G_OS_WIN32
+#ifdef HAVE_STACK_TRACE
 
 static gboolean stack_trace_done = FALSE;
 

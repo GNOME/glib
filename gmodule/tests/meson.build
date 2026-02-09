@@ -26,7 +26,7 @@ endif
 module_suffix = []
 # Keep the autotools convention for shared module suffix because GModule
 # depends on it: https://gitlab.gnome.org/GNOME/glib/issues/520
-if ['darwin', 'ios'].contains(host_machine.system())
+if host_system == 'darwin'
   module_suffix = 'so'
 endif
 
