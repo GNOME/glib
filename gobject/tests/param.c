@@ -1436,8 +1436,7 @@ test_param_implement (void)
             test_path = g_strdup_printf ("/param/implement/subprocess/%u-%u-%u-%" G_GSIZE_FORMAT,
                                          change_this_flag, change_this_type,
                                          use_this_flag, use_this_type_index);
-            g_test_trap_subprocess (test_path, G_TIME_SPAN_SECOND,
-                                    G_TEST_SUBPROCESS_DEFAULT);
+            g_test_trap_subprocess (test_path, 0, G_TEST_SUBPROCESS_DEFAULT);
             g_free (test_path);
 
             /* We want to ensure that any flags mismatch problems are reported first. */
