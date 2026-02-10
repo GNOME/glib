@@ -32,6 +32,7 @@
 #include "gnotificationbackend.h"
 
 #include "giomodule-priv.h"
+#include "glib-private.h"
 #include "gnotification-private.h"
 
 #define G_TYPE_WIN32_NOTIFICATION_BACKEND  (g_win32_notification_backend_get_type ())
@@ -52,9 +53,32 @@ this_module (void)
 }
 
 static HWND hwnd;
-static GMutex hwnd_mutex; /* Protects access to `hwnd`, `hwnd_refcount` and `wnd_klass` */
+static GMutex hwnd_mutex; /* Protects access to `hwnd`, `hwnd_refcount`, `hwnd_state` and `wnd_klass` */
 static grefcount hwnd_refcount;
 static ATOM wnd_klass;
+
+typedef enum
+{
+  HWND_STATE_READY,
+  HWND_STATE_FAILED,
+  HWND_STATE_UNINITIALIZED,
+  HWND_STATE_INITIALIZING,
+  HWND_STATE_DESTROYING,
+
+  /* Should set this state if Shell_NotifyIcon(NIM_MODIFY (or NIM_ADD on init method), ...)
+   * failed. If this is the state set, the calling thread should wait on `hwnd_cond`
+   * for `hwnd_state` to change.
+   *
+   * Should go back to READY after dummy_WndProc got TaskBarCreated message and succesfully called
+   * Shell_NotifyIcon(NIM_ADD, ...), if that call also failed, the state changes to FAILED instead. */
+  HWND_STATE_INITIALIZING_NOTIFY_ICON,
+} HwndState;
+
+/* Specifies the state in which `hwnd` initialization is in. */
+static HwndState hwnd_state = HWND_STATE_UNINITIALIZED;
+
+/* Condition variable for changes in `hwnd_state`. */
+static GCond hwnd_cond;
 
 typedef struct _GWin32NotificationBackend GWin32NotificationBackend;
 typedef GNotificationBackendClass         GWin32NotificationBackendClass;
@@ -84,6 +108,26 @@ G_DEFINE_TYPE_WITH_CODE (GWin32NotificationBackend, g_win32_notification_backend
  * NOTIFYICONDATA.szInfo array, it does not count one element
  * which is for the NUL-terminator */
 #define MAX_BODY_COUNT (G_N_ELEMENTS (((NOTIFYICONDATA *) 0)->szInfo) - 1)
+
+/* Initializes `out` with a NOTIFYICONDATA struct, to be passed to
+ * Shell_NotifyIcon (NIM_ADD, ...) calls. */
+#define G_NOTIFYICONDATA_INIT(out)                            \
+  G_STMT_START                                                \
+  {                                                           \
+    *(out) = (NOTIFYICONDATA){                                \
+      .cbSize = sizeof (NOTIFYICONDATA),                      \
+      .hWnd = hwnd,                                           \
+      .uFlags = NIF_ICON,                                     \
+      .hIcon = LoadIcon (exe_module (), MAKEINTRESOURCE (1)), \
+    };                                                        \
+                                                              \
+    if (!(out)->hIcon)                                        \
+      {                                                       \
+        /* Fallback if the application has no icon */         \
+        (out)->hIcon = LoadIcon (NULL, IDI_APPLICATION);      \
+      }                                                       \
+  }                                                           \
+  G_STMT_END
 
 static gboolean
 g_win32_notification_backend_is_supported (void)
@@ -115,9 +159,14 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
 
   GWin32NotificationBackend *self = G_WIN32_NOTIFICATION_BACKEND (backend);
 
+  g_mutex_lock (&hwnd_mutex);
+
   /* Return early if backend's initialization failed */
-  if (!self->hwnd)
-    return;
+  if (hwnd_state != HWND_STATE_READY &&
+      hwnd_state != HWND_STATE_INITIALIZING_NOTIFY_ICON)
+    {
+      goto err_out;
+    }
 
   NOTIFYICONDATA notify_singleton = {
     .cbSize = sizeof (NOTIFYICONDATA),
@@ -134,7 +183,7 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
     {
       g_critical ("Invalid UTF-8 in notification: %s", error->message);
       g_error_free (error);
-      return; /* Cannot show a notification without a title */
+      goto err_out; /* Cannot show a notification without a title */
     }
 
   g_assert (items_written >= 0);
@@ -150,7 +199,7 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
     {
       g_critical ("Notification title is empty");
       g_free (title_utf16);
-      return; /* Cannot show a notification without a title */
+      goto err_out; /* Cannot show a notification without a title */
     }
 
   memcpy (&notify_singleton.szInfoTitle, title_utf16, items_written * sizeof (WCHAR));
@@ -177,32 +226,83 @@ g_win32_notification_backend_send_notification (GNotificationBackend *backend,
       if (error)
         {
           g_critical ("Invalid UTF-8 in notification: %s", error->message);
-          g_clear_pointer (&error, g_error_free);
+          g_error_free (error);
+          goto err_out; /* Cannot show a notification without a body */
         }
-      else
-        {
-          g_assert (items_written >= 0);
-          if ((size_t) items_written > MAX_BODY_COUNT)
-            {
-              g_warning ("Notification body too long, truncating body");
-              items_written = MAX_BODY_COUNT;
-              if (IS_LOW_SURROGATE (body_utf16[items_written]))
-                items_written--;
-            }
 
-          memcpy (&notify_singleton.szInfo, body_utf16, items_written * sizeof (WCHAR));
-          notify_singleton.szInfo[items_written] = L'\0';
-          g_free (body_utf16);
+      g_assert (items_written >= 0);
+      if ((size_t) items_written > MAX_BODY_COUNT)
+        {
+          g_warning ("Notification body too long, truncating body");
+          items_written = MAX_BODY_COUNT;
+          if (IS_LOW_SURROGATE (body_utf16[items_written]))
+            items_written--;
         }
+
+      memcpy (&notify_singleton.szInfo, body_utf16, items_written * sizeof (WCHAR));
+      notify_singleton.szInfo[items_written] = L'\0';
+      g_free (body_utf16);
     }
 
-  Shell_NotifyIcon (NIM_MODIFY, &notify_singleton);
+  BOOL ret;
+
+  /* Loops until Shell_NotifyIcon call reports success, the worker thread
+   * failed to create the notification icon or it timed out waiting for it. */
+  do
+    {
+      gint64 end_time = g_get_monotonic_time () + 5 * G_TIME_SPAN_SECOND;
+
+      /* Wait until notification icon is initialized */
+      while (hwnd_state == HWND_STATE_INITIALIZING_NOTIFY_ICON)
+        if (!g_cond_wait_until (&hwnd_cond, &hwnd_mutex, end_time))
+          {
+            /* Timeout has passed */
+            g_debug ("Timeout in send_notification while waiting for the notification icon to be created");
+            goto err_out;
+          }
+
+      if (hwnd_state == HWND_STATE_FAILED)
+        {
+          goto err_out;
+        }
+
+      if (!(ret = Shell_NotifyIcon (NIM_MODIFY, &notify_singleton)))
+        {
+          /* Assume shell's task bar is still not ready, set INITIALIZING_NOTIFY_ICON state
+           * and wait until dummy_WndProc receives TaskBarCreated message */
+          hwnd_state = HWND_STATE_INITIALIZING_NOTIFY_ICON;
+        }
+    }
+  while (!ret);
+
+err_out:
+  g_mutex_unlock (&hwnd_mutex);
 }
 
 static void
 g_win32_notification_backend_withdraw_notification (GNotificationBackend *backend,
                                                     const gchar          *id)
 {
+}
+
+/* Runs on GLib worker thread */
+static gboolean
+destroy_window_worker (void)
+{
+  g_mutex_lock (&hwnd_mutex);
+
+  g_assert (hwnd_state == HWND_STATE_DESTROYING);
+
+  DestroyWindow (hwnd);
+  hwnd = NULL;
+  UnregisterClass (MAKEINTATOM (wnd_klass), this_module ());
+  wnd_klass = 0;
+  hwnd_state = HWND_STATE_UNINITIALIZED;
+
+  g_cond_broadcast (&hwnd_cond);
+  g_mutex_unlock (&hwnd_mutex);
+
+  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -214,10 +314,17 @@ g_win32_notification_backend_dispose (GObject *self)
 
   if (backend->hwnd && g_ref_count_dec (&hwnd_refcount))
     {
-      DestroyWindow (hwnd);
-      hwnd = NULL;
-      UnregisterClass (MAKEINTATOM (wnd_klass), this_module ());
-      wnd_klass = 0;
+      /* Window must be destroyed by the same thread that created it.
+       *
+       * https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-destroywindow#remarks */
+
+      hwnd_state = HWND_STATE_DESTROYING;
+
+      g_main_context_invoke (GLIB_PRIVATE_CALL (g_get_worker_context) (),
+                             G_SOURCE_FUNC (destroy_window_worker), NULL);
+
+      /* NOTE: threads that call *_init method wait for DESTROYING state to change to UNINITIALIZED,
+       * there is no need to do that here. */
     }
 
   backend->hwnd = NULL;
@@ -227,81 +334,255 @@ g_win32_notification_backend_dispose (GObject *self)
   G_OBJECT_CLASS (g_win32_notification_backend_parent_class)->dispose (self);
 }
 
+/* Not dummy anymore... */
 static LRESULT CALLBACK
-dummy_WndProc (HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
+dummy_WndProc (HWND _hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 {
-  return DefWindowProc (hwnd, message, wparam, lparam);
+  /* FIXME: We could add some nice features:
+   *
+   * - If we got notification icon click event, activate the application. */
+
+  static UINT msg_TaskbarCreated;
+
+  switch (message)
+    {
+    case WM_CREATE:
+      {
+        msg_TaskbarCreated = RegisterWindowMessage (L"TaskbarCreated");
+        if (msg_TaskbarCreated == 0)
+          {
+            g_warning ("win32-notification: RegisterWindowMessage failed: '%ld'", GetLastError ());
+          }
+        break;
+      }
+    case WM_NULL:
+      {
+        break;
+      }
+    default:
+      {
+        if (message == msg_TaskbarCreated)
+          {
+            g_mutex_lock (&hwnd_mutex);
+
+            if (hwnd_state != HWND_STATE_READY &&
+                hwnd_state != HWND_STATE_INITIALIZING_NOTIFY_ICON)
+              {
+                g_mutex_unlock (&hwnd_mutex);
+                break;
+              }
+
+            NOTIFYICONDATA notify_singleton;
+            G_NOTIFYICONDATA_INIT (&notify_singleton);
+
+            if (!Shell_NotifyIcon (NIM_ADD, &notify_singleton))
+              {
+                hwnd_state = HWND_STATE_FAILED;
+              }
+            else
+              {
+                hwnd_state = HWND_STATE_READY;
+                Shell_NotifyIcon (NIM_SETVERSION, &notify_singleton);
+              }
+
+            g_cond_broadcast (&hwnd_cond);
+            g_mutex_unlock (&hwnd_mutex);
+          }
+      }
+    }
+
+  return DefWindowProc (_hwnd, message, wparam, lparam);
 }
+
+/* Runs on GLib worker thread */
+static gboolean
+create_window_worker (void)
+{
+  g_mutex_lock (&hwnd_mutex);
+
+  g_assert (hwnd_state == HWND_STATE_INITIALIZING);
+
+  WNDCLASS wclass = {
+    .lpszClassName = L"GWin32NotificationBackend",
+    .hInstance = this_module (),
+    .lpfnWndProc = dummy_WndProc,
+  };
+
+  wnd_klass = RegisterClass (&wclass);
+  if (!wnd_klass)
+    {
+      g_critical ("win32-notification: RegisterClass failed: %ld", GetLastError ());
+      hwnd_state = HWND_STATE_FAILED;
+      goto err_out;
+    }
+
+  hwnd = CreateWindow (MAKEINTATOM (wnd_klass), NULL, WS_POPUP,
+                       0, 0, 0, 0, NULL, NULL, this_module (), NULL);
+
+  if (!hwnd)
+    {
+      g_critical ("win32-notification: CreateWindow failed: %ld", GetLastError ());
+      UnregisterClass (MAKEINTATOM (wnd_klass), this_module ());
+      wnd_klass = 0;
+      hwnd_state = HWND_STATE_FAILED;
+      goto err_out;
+    }
+
+  g_ref_count_init (&hwnd_refcount);
+
+  /* Create the notification icon for the first time */
+
+  NOTIFYICONDATA notify_singleton;
+  G_NOTIFYICONDATA_INIT (&notify_singleton);
+
+  if (!Shell_NotifyIcon (NIM_ADD, &notify_singleton))
+    {
+      /* Assume shell's task bar is still not ready, set INITIALIZING_NOTIFY_ICON state
+       * and wait until dummy_WndProc receives TaskbarCreated message */
+      hwnd_state = HWND_STATE_INITIALIZING_NOTIFY_ICON;
+    }
+  else
+    {
+      Shell_NotifyIcon (NIM_SETVERSION, &notify_singleton);
+      hwnd_state = HWND_STATE_READY;
+    }
+
+err_out:
+  g_cond_broadcast (&hwnd_cond);
+  g_mutex_unlock (&hwnd_mutex);
+
+  return G_SOURCE_REMOVE;
+}
+
+/* {{{ GWin32MessageSource
+ *
+ * Copied from https://gitlab.gnome.org/GNOME/gtk/-/blob/main/gdk/win32/gdkwin32messagesource.c
+ *
+ * FIXME: Move all of this code to centralized module. */
+
+typedef struct
+{
+  GSource source;
+  GPollFD poll_fd;
+} GWin32MessageSource;
+
+/* Runs on GLib worker thread */
+static gboolean
+g_win32_message_source_prepare (GSource *source,
+                                int *timeout)
+{
+  *timeout = -1;
+
+  return GetQueueStatus (QS_ALLINPUT) != 0;
+}
+
+/* Runs on GLib worker thread */
+static gboolean
+g_win32_message_source_check (GSource *source)
+{
+  GWin32MessageSource *self = (GWin32MessageSource *) source;
+
+  self->poll_fd.revents = 0;
+
+  return GetQueueStatus (QS_ALLINPUT) != 0;
+}
+
+/* Runs on GLib worker thread */
+static gboolean
+g_win32_message_source_dispatch (GSource *source,
+                                 GSourceFunc callback,
+                                 gpointer user_data)
+{
+  MSG msg;
+
+  /* Message loop with upper limit, prevents GSource loop starvation and
+   * allows to process big batches of messages in a single dispatch. */
+  for (int i = 0; i < 100 && PeekMessage (&msg, NULL, 0, 0, PM_REMOVE); i++)
+    {
+      TranslateMessage (&msg);
+      DispatchMessage (&msg);
+    }
+
+  return G_SOURCE_CONTINUE;
+}
+
+static void
+g_win32_message_source_ensure_running (void)
+{
+  static gsize message_source_initialized = 0;
+
+  if (g_once_init_enter (&message_source_initialized))
+    {
+      static GSourceFuncs source_funcs = {
+        .prepare = g_win32_message_source_prepare,
+        .check = g_win32_message_source_check,
+        .dispatch = g_win32_message_source_dispatch,
+        /* No finalize, the worker thread lasts until the end of the program,
+         * so the worker's GMainContext isn't going to be unref-ed.
+         * We don't return G_SOURCE_REMOVE from dispatch as well. */
+        .finalize = NULL,
+      };
+
+      GSource *source = g_source_new (&source_funcs, sizeof (GWin32MessageSource));
+      GWin32MessageSource *message_source = (GWin32MessageSource *) source;
+
+      g_source_set_static_name (source, "GLib Win32 worker message source");
+      g_source_set_priority (source, G_PRIORITY_DEFAULT);
+      g_source_set_can_recurse (source, TRUE);
+
+      message_source->poll_fd.events = G_IO_IN;
+#if defined(G_WITH_CYGWIN)
+      message_source->poll_fd.fd = open ("/dev/windows", O_RDONLY);
+      if (message_source->poll_fd.fd == -1)
+        g_error ("can't open \"/dev/windows\": %s", g_strerror (errno));
+#else
+      message_source->poll_fd.fd = G_WIN32_MSG_HANDLE;
+#endif
+
+      g_source_add_poll (source, &message_source->poll_fd);
+      g_source_attach (source, GLIB_PRIVATE_CALL (g_get_worker_context) ());
+      g_source_unref (source);
+
+      g_once_init_leave (&message_source_initialized, 1);
+    }
+}
+
+/* }}} */
 
 static void
 g_win32_notification_backend_init (GWin32NotificationBackend *backend)
 {
+  /* FIXME: Move this to centralized module */
+  g_win32_message_source_ensure_running ();
+
+  /* Don't increment on UNINITIALIZED or if `hwnd` is NULL, at every other case,
+   * it should increment. */
+  gboolean needs_inc = TRUE;
+
   g_mutex_lock (&hwnd_mutex);
+
+  while (hwnd_state == HWND_STATE_DESTROYING)
+    g_cond_wait (&hwnd_cond, &hwnd_mutex);
+
+  if (hwnd_state == HWND_STATE_UNINITIALIZED)
+    {
+      hwnd_state = HWND_STATE_INITIALIZING;
+      needs_inc = FALSE; /* Alredy incremented in worker */
+      g_main_context_invoke (GLIB_PRIVATE_CALL (g_get_worker_context) (),
+                             G_SOURCE_FUNC (create_window_worker), NULL);
+    }
+
+  while (hwnd_state == HWND_STATE_INITIALIZING)
+    g_cond_wait (&hwnd_cond, &hwnd_mutex);
 
   if (hwnd)
     {
-      g_ref_count_inc (&hwnd_refcount);
-    }
-  else
-    {
-      /* Shell_NotifyIcon API requires a window, we create a hidden one */
-      WNDCLASS wclass = {
-        .lpszClassName = L"GWin32NotificationBackend",
-        .hInstance = this_module (),
-        .lpfnWndProc = dummy_WndProc,
-      };
+      backend->hwnd = hwnd;
 
-      wnd_klass = RegisterClass (&wclass);
-      if (!wnd_klass)
-        {
-          g_critical ("win32-notification: RegisterClass failed: %ld", GetLastError ());
-          goto err_out;
-        }
-
-      hwnd = CreateWindow (MAKEINTATOM (wnd_klass), NULL, WS_POPUP,
-                           0, 0, 0, 0, NULL, NULL, this_module (), NULL);
-
-      if (!hwnd)
-        {
-          g_critical ("win32-notification: CreateWindow failed: %ld", GetLastError ());
-          UnregisterClass (MAKEINTATOM (wnd_klass), this_module ());
-          wnd_klass = 0;
-          goto err_out;
-        }
-
-      NOTIFYICONDATA notify_singleton = {
-        .cbSize = sizeof (NOTIFYICONDATA),
-        .hWnd = hwnd,
-        .uVersion = NOTIFYICON_VERSION_4,
-        .uFlags = NIF_ICON,
-        .hIcon = LoadIcon (exe_module (), MAKEINTRESOURCE (1))
-      };
-
-      if (!notify_singleton.hIcon)
-        {
-          /* Fallback if the application has no icon */
-          notify_singleton.hIcon = LoadIcon (NULL, IDI_APPLICATION);
-        }
-
-      if (!Shell_NotifyIcon (NIM_ADD, &notify_singleton))
-        {
-          g_critical ("win32-notification: Failed to create NotifyIcon singleton");
-          DestroyWindow (hwnd);
-          hwnd = NULL;
-          UnregisterClass (MAKEINTATOM (wnd_klass), this_module ());
-          wnd_klass = 0;
-          goto err_out;
-        }
-
-      /* FIXME: This also may fail, but currently we are not using VERSION_4 or greater features */
-      Shell_NotifyIcon (NIM_SETVERSION, &notify_singleton);
-
-      g_ref_count_init (&hwnd_refcount);
+      if (needs_inc)
+        g_ref_count_inc (&hwnd_refcount);
     }
 
-  backend->hwnd = hwnd;
-
-err_out:
   g_mutex_unlock (&hwnd_mutex);
 }
 
