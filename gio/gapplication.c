@@ -3128,8 +3128,11 @@ g_application_send_notification (GApplication  *application,
   g_return_if_fail (!g_application_get_is_remote (application));
   g_return_if_fail (g_application_get_application_id (application) != NULL);
 
-  if (application->priv->notifications == NULL)
-    application->priv->notifications = g_notification_backend_new_default (application);
+  if (g_once_init_enter_pointer (&application->priv->notifications))
+    {
+      g_once_init_leave_pointer (&application->priv->notifications,
+                                 g_notification_backend_new_default (application));
+    }
 
   if (id == NULL)
     {
@@ -3170,8 +3173,11 @@ g_application_withdraw_notification (GApplication *application,
   g_return_if_fail (G_IS_APPLICATION (application));
   g_return_if_fail (id != NULL);
 
-  if (application->priv->notifications == NULL)
-    application->priv->notifications = g_notification_backend_new_default (application);
+  if (g_once_init_enter_pointer (&application->priv->notifications))
+    {
+      g_once_init_leave_pointer (&application->priv->notifications,
+                                 g_notification_backend_new_default (application));
+    }
 
   g_notification_backend_withdraw_notification (application->priv->notifications, id);
 }
