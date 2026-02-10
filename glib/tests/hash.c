@@ -909,8 +909,8 @@ test_recursive_remove_all_subprocess (void)
 static void
 test_recursive_remove_all (void)
 {
-  g_test_trap_subprocess ("/hash/recursive-remove-all/subprocess", 1000000,
-                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_subprocess ("/hash/recursive-remove-all/subprocess",
+                          0, G_TEST_SUBPROCESS_DEFAULT);
   g_test_trap_assert_passed ();
 }
 
