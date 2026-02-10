@@ -16,17 +16,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2025-08-12 19:48+0000\n"
-"PO-Revision-Date: 2025-08-14 14:44+0300\n"
-"Last-Translator: Дронова Юлия <juliette.tux@gmail.com>\n"
+"POT-Creation-Date: 2026-02-07 01:11+0000\n"
+"PO-Revision-Date: 2026-02-08 18:18+0300\n"
+"Last-Translator: Artur So <arturios2005@mail.ru>\n"
 "Language-Team: RU\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
-"4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 25.04.3\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.8\n"
 
 #: gio/gappinfo.c:374
 msgid "Setting default applications not supported yet"
@@ -137,7 +137,7 @@ msgid "APPID"
 msgstr "ID_ПРИЛОЖЕНИЯ"
 
 #: gio/gapplication-tool.c:74 gio/gapplication-tool.c:137 gio/gdbus-tool.c:110
-#: gio/gio-tool.c:259 gio/glib-compile-resources.c:834
+#: gio/gio-tool.c:259 gio/glib-compile-resources.c:843
 msgid "COMMAND"
 msgstr "КОМАНДА"
 
@@ -150,8 +150,8 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Идентификатор приложения в формате D-Bus (напр.: org.example.viewer)"
 
 #. Translators: commandline placeholder
-#: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:822
-#: gio/glib-compile-resources.c:828 gio/glib-compile-resources.c:858
+#: gio/gapplication-tool.c:76 gio/glib-compile-resources.c:831
+#: gio/glib-compile-resources.c:837 gio/glib-compile-resources.c:867
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 #: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
 #: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
@@ -254,6 +254,7 @@ msgid "error sending %s message to application: %s\n"
 msgstr "ошибка отправки сообщения %s приложению: %s\n"
 
 #: gio/gapplication-tool.c:324
+#, c-format
 msgid "action name must be given after application id\n"
 msgstr "имя действия должно указываться после идентификатора приложения\n"
 
@@ -272,10 +273,12 @@ msgid "error parsing action parameter: %s\n"
 msgstr "ошибка при анализе параметра действия: %s\n"
 
 #: gio/gapplication-tool.c:363
+#, c-format
 msgid "actions accept a maximum of one parameter\n"
 msgstr "действия принимают максимум один параметр\n"
 
 #: gio/gapplication-tool.c:418
+#, c-format
 msgid "list-actions command takes only the application id"
 msgstr "команда list-actions принимает только идентификатор приложения"
 
@@ -286,9 +289,6 @@ msgstr "невозможно найти файл desktop для приложен
 
 #: gio/gapplication-tool.c:473
 #, c-format
-#| msgid ""
-#| "unrecognised command: %s\n"
-#| "\n"
 msgid ""
 "unrecognized command: %s\n"
 "\n"
@@ -304,16 +304,16 @@ msgstr ""
 msgid "Too large count value passed to %s"
 msgstr "Для %s передано слишком высокое значение счёта"
 
-#: gio/gbufferedinputstream.c:893 gio/gbufferedoutputstream.c:579
+#: gio/gbufferedinputstream.c:894 gio/gbufferedoutputstream.c:579
 #: gio/gdataoutputstream.c:557
 msgid "Seek not supported on base stream"
 msgstr "Позиционирование не поддерживается в базовом потоке"
 
-#: gio/gbufferedinputstream.c:940
+#: gio/gbufferedinputstream.c:941
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Нельзя усечь GBufferedInputStream"
 
-#: gio/gbufferedinputstream.c:985 gio/ginputstream.c:1246 gio/giostream.c:317
+#: gio/gbufferedinputstream.c:986 gio/ginputstream.c:1246 gio/giostream.c:317
 #: gio/goutputstream.c:2208
 msgid "Stream is already closed"
 msgstr "Поток уже закрыт"
@@ -332,38 +332,38 @@ msgstr "Операция была отменена"
 msgid "Invalid object, not initialized"
 msgstr "Недействительный объект, не инициализирован"
 
-#: gio/gcharsetconverter.c:293 gio/gcharsetconverter.c:321
+#: gio/gcharsetconverter.c:293 gio/gcharsetconverter.c:324
 msgid "Incomplete multibyte sequence in input"
 msgstr "Неполная многобайтовая последовательность во входных данных"
 
-#: gio/gcharsetconverter.c:327 gio/gcharsetconverter.c:336
+#: gio/gcharsetconverter.c:330 gio/gcharsetconverter.c:339
 msgid "Not enough space in destination"
 msgstr "Недостаточно места в целевом расположении"
 
-#: gio/gcharsetconverter.c:354 gio/gdatainputstream.c:842
+#: gio/gcharsetconverter.c:357 gio/gdatainputstream.c:842
 #: gio/gdatainputstream.c:1276 glib/gconvert.c:358 glib/gconvert.c:790
 #: glib/giochannel.c:1571 glib/giochannel.c:1613 glib/giochannel.c:2473
-#: glib/gutf8.c:967 glib/gutf8.c:1423
+#: glib/gutf8.c:966 glib/gutf8.c:1423
 msgid "Invalid byte sequence in conversion input"
 msgstr ""
 "Недопустимая последовательность байтов в вводных данных для преобразования"
 
-#: gio/gcharsetconverter.c:359 glib/gconvert.c:366 glib/gconvert.c:704
+#: gio/gcharsetconverter.c:362 glib/gconvert.c:366 glib/gconvert.c:704
 #: glib/giochannel.c:1578 glib/giochannel.c:2488
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Ошибка во время преобразования: %s"
 
-#: gio/gcharsetconverter.c:457 gio/gsocket.c:1217
+#: gio/gcharsetconverter.c:460 gio/gsocket.c:1217
 msgid "Cancellable initialization not supported"
 msgstr "Прерываемая инициализация не поддерживается"
 
-#: gio/gcharsetconverter.c:468 glib/gconvert.c:231 glib/giochannel.c:1399
+#: gio/gcharsetconverter.c:471 glib/gconvert.c:231 glib/giochannel.c:1399
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "Преобразование набора символов «%s» в «%s» не поддерживается"
 
-#: gio/gcharsetconverter.c:472 glib/gconvert.c:235
+#: gio/gcharsetconverter.c:475 glib/gconvert.c:235
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Не удалось открыть преобразователь из «%s» в «%s»"
@@ -383,7 +383,6 @@ msgid "%s filetype"
 msgstr "Тип файлов %s"
 
 #: gio/gconverteroutputstream.c:427
-#| msgid "Unrepresentable character in conversion input"
 msgid "Unexpected data after end of conversion"
 msgstr "Непредвиденные данные после окончания преобразования"
 
@@ -391,19 +390,19 @@ msgstr "Непредвиденные данные после окончания 
 msgid "GCredentials contains invalid data"
 msgstr "GCredentials содержит недействительные данные"
 
-#: gio/gcredentials.c:387 gio/gcredentials.c:678
+#: gio/gcredentials.c:387 gio/gcredentials.c:682
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials не поддерживается в этой ОС"
 
-#: gio/gcredentials.c:542 gio/gcredentials.c:560
+#: gio/gcredentials.c:546 gio/gcredentials.c:564
 msgid "There is no GCredentials support for your platform"
 msgstr "Поддержка GCredentials для данной платформы отсутствует"
 
-#: gio/gcredentials.c:618
+#: gio/gcredentials.c:622
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials не содержит идентификаторов процессов в этой ОС"
 
-#: gio/gcredentials.c:672
+#: gio/gcredentials.c:676
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Спуфинг учётных данных невозможен в этой ОС"
 
@@ -491,7 +490,6 @@ msgstr ""
 #.
 #: gio/gdbusaddress.c:619 gio/gdbusaddress.c:634 gio/gdbusaddress.c:649
 #, c-format
-#| msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgid "Error in address “%s” — the %s attribute is missing or malformed"
 msgstr ""
 "Ошибка в адресе «%s»: атрибут %s отсутствует или имеет неправильный формат"
@@ -617,13 +615,13 @@ msgstr ""
 msgid "Error creating directory “%s”: %s"
 msgstr "Ошибка создания каталога “%s”: %s"
 
-#: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1105 gio/gfile.c:1363
-#: gio/gfile.c:1501 gio/gfile.c:1738 gio/gfile.c:1793 gio/gfile.c:1851
-#: gio/gfile.c:1935 gio/gfile.c:1992 gio/gfile.c:2056 gio/gfile.c:2111
-#: gio/gfile.c:4106 gio/gfile.c:4285 gio/gfile.c:4692 gio/gfile.c:5160
-#: gio/gfile.c:5572 gio/gfile.c:5657 gio/gfile.c:5747 gio/gfile.c:5844
-#: gio/gfile.c:5931 gio/gfile.c:6030 gio/gfile.c:9207 gio/gfile.c:9297
-#: gio/gfile.c:9381 gio/win32/gwinhttpfile.c:453
+#: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1112 gio/gfile.c:1370
+#: gio/gfile.c:1508 gio/gfile.c:1745 gio/gfile.c:1800 gio/gfile.c:1858
+#: gio/gfile.c:1942 gio/gfile.c:1999 gio/gfile.c:2063 gio/gfile.c:2118
+#: gio/gfile.c:4113 gio/gfile.c:4292 gio/gfile.c:4699 gio/gfile.c:5167
+#: gio/gfile.c:5579 gio/gfile.c:5664 gio/gfile.c:5754 gio/gfile.c:5851
+#: gio/gfile.c:5938 gio/gfile.c:6037 gio/gfile.c:9214 gio/gfile.c:9304
+#: gio/gfile.c:9388 gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Операция не поддерживается"
 
@@ -805,9 +803,6 @@ msgstr "Сообщение %s: предоставлено НЕДЕЙСТВИТЕ
 #. * a value that is reserved for the given field.
 #: gio/gdbusmessage.c:1434 gio/gdbusmessage.c:1458
 #, c-format
-#| msgid ""
-#| "%s message: PATH header field is using the reserved value /org/"
-#| "freedesktop/DBus/Local"
 msgid "%s message: %s header field is using the reserved value %s"
 msgstr ""
 "сообщение %s: в поле заголовка %s используется зарезервированное значение %s"
@@ -1016,18 +1011,18 @@ msgstr "Ошибка возврата с пустым телом"
 msgid "(Type any character to close this window)\n"
 msgstr "(Чтобы закрыть это окно, введите любой символ)\n"
 
-#: gio/gdbusprivate.c:2387
+#: gio/gdbusprivate.c:2395
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Сеанс dbus не запущен, и автозапуск выполнить не удалось"
 
-#: gio/gdbusprivate.c:2410
+#: gio/gdbusprivate.c:2418
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Не удалось получить аппаратный профиль: %s"
 
 #. Translators: Both placeholders are file paths
-#: gio/gdbusprivate.c:2466
+#: gio/gdbusprivate.c:2474
 #, c-format
 msgid "Unable to load %s or %s: "
 msgstr "Не удалось загрузить %s или %s: "
@@ -1051,25 +1046,25 @@ msgstr ""
 "Невозможно вызвать метод; прокси создан для хорошо известного имени %s без "
 "владельца, и был создан с флагом G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_STAR"
 
-#: gio/gdbusserver.c:739
+#: gio/gdbusserver.c:750
 msgid "Abstract namespace not supported"
 msgstr "Абстрактное пространство имён не поддерживается"
 
-#: gio/gdbusserver.c:831
+#: gio/gdbusserver.c:842
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Невозможно указать файл nonce во время создания сервера"
 
-#: gio/gdbusserver.c:913
+#: gio/gdbusserver.c:924
 #, c-format
 msgid "Error writing nonce file at “%s”: %s"
 msgstr "Ошибка записи файла nonce в «%s»: %s"
 
-#: gio/gdbusserver.c:1088
+#: gio/gdbusserver.c:1099
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
 msgstr "Строка «%s» не является допустимым GUID D-Bus"
 
-#: gio/gdbusserver.c:1126
+#: gio/gdbusserver.c:1137
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
 msgstr "Невозможно прослушивать неподдерживаемый транспорт «%s»"
@@ -1098,13 +1093,13 @@ msgstr ""
 "Для получения справки по каждой команде используйте «%s КОМАНДА --help».\n"
 
 #: gio/gdbus-tool.c:206 gio/gdbus-tool.c:278 gio/gdbus-tool.c:349
-#: gio/gdbus-tool.c:373 gio/gdbus-tool.c:918 gio/gdbus-tool.c:1295
-#: gio/gdbus-tool.c:1782
+#: gio/gdbus-tool.c:373 gio/gdbus-tool.c:918 gio/gdbus-tool.c:1301
+#: gio/gdbus-tool.c:1788
 #, c-format
 msgid "Error: %s\n"
 msgstr "Ошибка: %s\n"
 
-#: gio/gdbus-tool.c:217 gio/gdbus-tool.c:291 gio/gdbus-tool.c:1798
+#: gio/gdbus-tool.c:217 gio/gdbus-tool.c:291 gio/gdbus-tool.c:1804
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Ошибка при анализе файла XML интроспекции: %s\n"
@@ -1115,7 +1110,7 @@ msgid "Error: %s is not a valid name\n"
 msgstr "Ошибка: %s не является действительным именем\n"
 
 #: gio/gdbus-tool.c:260 gio/gdbus-tool.c:804 gio/gdbus-tool.c:1121
-#: gio/gdbus-tool.c:1948 gio/gdbus-tool.c:2185
+#: gio/gdbus-tool.c:1954 gio/gdbus-tool.c:2191
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Ошибка: %s не является действительным путём объекта\n"
@@ -1191,8 +1186,8 @@ msgstr "Название сигнала и интерфейса"
 msgid "Emit a signal."
 msgstr "Отправить сигнал."
 
-#: gio/gdbus-tool.c:742 gio/gdbus-tool.c:1058 gio/gdbus-tool.c:1885
-#: gio/gdbus-tool.c:2114 gio/gdbus-tool.c:2334
+#: gio/gdbus-tool.c:742 gio/gdbus-tool.c:1058 gio/gdbus-tool.c:1891
+#: gio/gdbus-tool.c:2120 gio/gdbus-tool.c:2340
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Ошибка подключения: %s\n"
@@ -1202,11 +1197,13 @@ msgstr "Ошибка подключения: %s\n"
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Ошибка: %s не является действительным уникальным именем шины.\n"
 
-#: gio/gdbus-tool.c:781 gio/gdbus-tool.c:1101 gio/gdbus-tool.c:1928
+#: gio/gdbus-tool.c:781 gio/gdbus-tool.c:1101 gio/gdbus-tool.c:1934
+#, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Ошибка: не указан путь к объекту\n"
 
 #: gio/gdbus-tool.c:824
+#, c-format
 msgid "Error: Signal name is not specified\n"
 msgstr "Ошибка: не указано имя сигнала\n"
 
@@ -1226,7 +1223,7 @@ msgid "Error: %s is not a valid member name\n"
 msgstr "Ошибка: %s не является действительным именем участника\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:893 gio/gdbus-tool.c:1233
+#: gio/gdbus-tool.c:893 gio/gdbus-tool.c:1239
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Ошибка при анализе параметра %d: %s\n"
@@ -1260,74 +1257,77 @@ msgstr "Разрешить интерактивную авторизацию"
 msgid "Invoke a method on a remote object."
 msgstr "Вызвать метод на удалённом объекте."
 
-#: gio/gdbus-tool.c:1075 gio/gdbus-tool.c:1902 gio/gdbus-tool.c:2139
+#: gio/gdbus-tool.c:1075 gio/gdbus-tool.c:1908 gio/gdbus-tool.c:2145
+#, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Ошибка: не указано назначение\n"
 
-#: gio/gdbus-tool.c:1086 gio/gdbus-tool.c:1919 gio/gdbus-tool.c:2150
+#: gio/gdbus-tool.c:1086 gio/gdbus-tool.c:1925 gio/gdbus-tool.c:2156
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Ошибка: %s не является действительным именем шины\n"
 
 #: gio/gdbus-tool.c:1136
+#, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Ошибка: не указано имя метода\n"
 
-#: gio/gdbus-tool.c:1147
+#: gio/gdbus-tool.c:1147 gio/gdbus-tool.c:1155
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Ошибка: недействительное имя метода «%s»\n"
 
-#: gio/gdbus-tool.c:1225
+#: gio/gdbus-tool.c:1231
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Ошибка при анализе параметра %d типа «%s»: %s\n"
 
-#: gio/gdbus-tool.c:1744
+#: gio/gdbus-tool.c:1750
 msgid "Destination name to introspect"
 msgstr "Целевое имя для выполнения интроспекции"
 
-#: gio/gdbus-tool.c:1745
+#: gio/gdbus-tool.c:1751
 msgid "Object path to introspect"
 msgstr "Путь к объекту для выполнения интроспекции"
 
-#: gio/gdbus-tool.c:1746
+#: gio/gdbus-tool.c:1752
 msgid "Print XML"
 msgstr "Показать XML"
 
-#: gio/gdbus-tool.c:1747
+#: gio/gdbus-tool.c:1753
 msgid "Introspect children"
 msgstr "Выполнить интроспекцию потомков"
 
-#: gio/gdbus-tool.c:1748
+#: gio/gdbus-tool.c:1754
 msgid "Only print properties"
 msgstr "Показать только свойства"
 
-#: gio/gdbus-tool.c:1837
+#: gio/gdbus-tool.c:1843
 msgid "Introspect a remote object."
 msgstr "Выполнить интроспекцию удалённого объекта."
 
-#: gio/gdbus-tool.c:2040
+#: gio/gdbus-tool.c:2046
 msgid "Destination name to monitor"
 msgstr "Целевое имя для наблюдения"
 
-#: gio/gdbus-tool.c:2041
+#: gio/gdbus-tool.c:2047
 msgid "Object path to monitor"
 msgstr "Путь к объекту для наблюдения"
 
-#: gio/gdbus-tool.c:2066
+#: gio/gdbus-tool.c:2072
 msgid "Monitor a remote object."
 msgstr "Наблюдать за удалённым объектом"
 
-#: gio/gdbus-tool.c:2124
+#: gio/gdbus-tool.c:2130
+#, c-format
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr "Ошибка: наблюдать за подключениями non-message-bus невозможно\n"
 
-#: gio/gdbus-tool.c:2248
+#: gio/gdbus-tool.c:2254
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr "Служба, активируемая перед ожиданием другой (хорошо известное имя)"
 
-#: gio/gdbus-tool.c:2251
+#: gio/gdbus-tool.c:2257
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1335,27 +1335,30 @@ msgstr ""
 "Время ожидания до окончания работы с ошибкой (в сек.); значение 0 (по "
 "умолчанию) — без времени ожидания."
 
-#: gio/gdbus-tool.c:2299
+#: gio/gdbus-tool.c:2305
 msgid "[OPTION…] BUS-NAME"
 msgstr "[ПАРАМЕТР…] ИМЯ-ШИНЫ"
 
-#: gio/gdbus-tool.c:2300
+#: gio/gdbus-tool.c:2306
 msgid "Wait for a bus name to appear."
 msgstr "Дождаться появления имени шины."
 
-#: gio/gdbus-tool.c:2376
+#: gio/gdbus-tool.c:2382
+#, c-format
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Ошибка: необходимо указать активируемую службу.\n"
 
-#: gio/gdbus-tool.c:2381
+#: gio/gdbus-tool.c:2387
+#, c-format
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Ошибка: необходимо указать службу, которую нужно подождать.\n"
 
-#: gio/gdbus-tool.c:2386
+#: gio/gdbus-tool.c:2392
+#, c-format
 msgid "Error: Too many arguments.\n"
 msgstr "Ошибка: слишком много аргументов.\n"
 
-#: gio/gdbus-tool.c:2394 gio/gdbus-tool.c:2401
+#: gio/gdbus-tool.c:2400 gio/gdbus-tool.c:2407
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Ошибка: %s не является действительным хорошо известным именем шины\n"
@@ -1365,45 +1368,49 @@ msgstr "Ошибка: %s не является действительным хо
 msgid "Not authorized to change debug settings"
 msgstr "Не авторизован для изменения параметров отладки"
 
-#: gio/gdesktopappinfo.c:2253 gio/gdesktopappinfo.c:5151
-#: gio/gwin32appinfo.c:4254
+#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5245
+#: gio/gwin32appinfo.c:4257
 msgid "Unnamed"
 msgstr "Без имени"
 
-#: gio/gdesktopappinfo.c:2670
+#: gio/gdesktopappinfo.c:2704
 msgid "Desktop file didn’t specify Exec field"
 msgstr "В файле desktop не указано поле Exec"
 
-#: gio/gdesktopappinfo.c:2960
+#: gio/gdesktopappinfo.c:3020
 msgid "Unable to find terminal required for application"
 msgstr "Не удалось найти терминал, требуемый для приложения"
 
-#: gio/gdesktopappinfo.c:3020
+#: gio/gdesktopappinfo.c:3080
 #, c-format
 msgid "Program ‘%s’ not found in $PATH"
 msgstr "Программа '%s' не найдена в $PATH"
 
-#: gio/gdesktopappinfo.c:3759
+#: gio/gdesktopappinfo.c:3833
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Не удалось создать пользовательскую папку с конфигурацией приложения %s: %s"
 
-#: gio/gdesktopappinfo.c:3763
+#: gio/gdesktopappinfo.c:3837
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Не удалось создать пользовательскую с конфигурацией MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:4005 gio/gdesktopappinfo.c:4029
+#: gio/gdesktopappinfo.c:4067
+msgid "MIME apps information is too long"
+msgstr "Информация о приложениях MIME слишком длинная"
+
+#: gio/gdesktopappinfo.c:4098 gio/gdesktopappinfo.c:4122
 msgid "Application information lacks an identifier"
 msgstr "В информации о приложении отсутствует идентификатор"
 
-#: gio/gdesktopappinfo.c:4265
+#: gio/gdesktopappinfo.c:4358
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Не удалось создать пользовательский файл desktop %s"
 
-#: gio/gdesktopappinfo.c:4385
+#: gio/gdesktopappinfo.c:4478
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Пользовательское определение для %s"
@@ -1444,27 +1451,32 @@ msgstr "Поддержка TLS недоступна"
 msgid "DTLS support is not available"
 msgstr "Поддержка DTLS недоступна"
 
-#: gio/gemblem.c:332
+#: gio/gemblem.c:337
 #, c-format
 msgid "Can’t handle version %d of GEmblem encoding"
 msgstr "Невозможно обработать версию %d кодировки GEmblem"
 
-#: gio/gemblem.c:342
+#: gio/gemblem.c:347
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Неправильный формат количества лексем (%d) в кодировке GEmblem"
 
-#: gio/gemblemedicon.c:366
+#: gio/gemblem.c:368
+#, c-format
+msgid "Malformed origin (%s) in GEmblem encoding"
+msgstr "Неправильное происхождение (%s) в кодировке GEmblem"
+
+#: gio/gemblemedicon.c:369
 #, c-format
 msgid "Can’t handle version %d of GEmblemedIcon encoding"
 msgstr "Невозможно обработать версию %d кодировки GEmblemedIcon"
 
-#: gio/gemblemedicon.c:376
+#: gio/gemblemedicon.c:379
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "Неправильный формат количества лексем (%d) в кодировке GEmblemedIcon"
 
-#: gio/gemblemedicon.c:399
+#: gio/gemblemedicon.c:402
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Для GEmblemedIcon ожидался GEmblem"
 
@@ -1472,89 +1484,89 @@ msgstr "Для GEmblemedIcon ожидался GEmblem"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#: gio/gfile.c:1624
+#: gio/gfile.c:1631
 msgid "Containing mount does not exist"
 msgstr "Смонтированный ресурс, содержащий этот файл, не существует"
 
-#: gio/gfile.c:2670 gio/glocalfile.c:2690
+#: gio/gfile.c:2677 gio/glocalfile.c:2715
 msgid "Can’t copy over directory"
 msgstr "Невозможно копировать поверх каталога"
 
-#: gio/gfile.c:2730
+#: gio/gfile.c:2737
 msgid "Can’t copy directory over directory"
 msgstr "Невозможно копировать каталог поверх каталога"
 
-#: gio/gfile.c:2738
+#: gio/gfile.c:2745
 msgid "Target file exists"
 msgstr "Целевой файл существует"
 
-#: gio/gfile.c:2757
+#: gio/gfile.c:2764
 msgid "Can’t recursively copy directory"
 msgstr "Невозможно копировать каталог рекурсивно"
 
-#: gio/gfile.c:3070 gio/gfile.c:3118
+#: gio/gfile.c:3077 gio/gfile.c:3125
 #, c-format
 msgid "Copy file range not supported"
 msgstr "Диапазон копируемых файлов не поддерживается"
 
-#: gio/gfile.c:3076 gio/gfile.c:3187
+#: gio/gfile.c:3083 gio/gfile.c:3194
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Ошибка выполнения splice для файла: %s"
 
-#: gio/gfile.c:3183
+#: gio/gfile.c:3190
 msgid "Splice not supported"
 msgstr "Операции splice не поддерживаются"
 
-#: gio/gfile.c:3347
+#: gio/gfile.c:3354
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "Копирование (reflink/clone) между точками монтирования не поддерживается"
 
-#: gio/gfile.c:3351
+#: gio/gfile.c:3358
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Копирование (reflink/clone) не поддерживается или недействительно"
 
-#: gio/gfile.c:3356
+#: gio/gfile.c:3363
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Копирование (reflink/clone) не поддерживается или не сработало"
 
-#: gio/gfile.c:3404 gio/gfile.c:3415
+#: gio/gfile.c:3411 gio/gfile.c:3422
 #, c-format
 msgid "Cannot retrieve attribute %s"
 msgstr "Невозможно получить атрибут %s"
 
-#: gio/gfile.c:3435
+#: gio/gfile.c:3442
 msgid "Can’t copy special file"
 msgstr "Нельзя копировать специальный файл"
 
-#: gio/gfile.c:4509
+#: gio/gfile.c:4516
 msgid "Invalid symlink value given"
 msgstr "Дано недействительное значение символьной ссылки"
 
-#: gio/gfile.c:4519 glib/gfileutils.c:2434
+#: gio/gfile.c:4526 glib/gfileutils.c:2435
 msgid "Symbolic links not supported"
 msgstr "Символьные ссылки не поддерживаются"
 
-#: gio/gfile.c:4803
+#: gio/gfile.c:4810
 msgid "Trash not supported"
 msgstr "Корзина не поддерживается"
 
-#: gio/gfile.c:4913
+#: gio/gfile.c:4920
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Имена файлов не могут содержать «%c»"
 
-#: gio/gfile.c:7339 gio/gfile.c:7465
+#: gio/gfile.c:7346 gio/gfile.c:7472
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Не удалось создать временный каталог для шаблона \"%s\": %s"
 
-#: gio/gfile.c:7783 gio/gvolume.c:368
+#: gio/gfile.c:7790 gio/gvolume.c:368
 msgid "volume doesn’t implement mount"
 msgstr "том не поддерживает монтирование"
 
-#: gio/gfile.c:7897 gio/gfile.c:7974
+#: gio/gfile.c:7904 gio/gfile.c:7981
 msgid "No application is registered as handling this file"
 msgstr "Нет зарегистрированного приложения для обработки данного файла"
 
@@ -1571,12 +1583,12 @@ msgstr "У перечислителя файлов есть операция, о
 msgid "File enumerator is already closed"
 msgstr "Перечислитель файлов уже закрыт"
 
-#: gio/gfileicon.c:248
+#: gio/gfileicon.c:251
 #, c-format
 msgid "Can’t handle version %d of GFileIcon encoding"
 msgstr "Невозможно обработать версию %d кодировки GFileIcon"
 
-#: gio/gfileicon.c:258
+#: gio/gfileicon.c:261
 msgid "Malformed input data for GFileIcon"
 msgstr "Неправильный формат вводных данных для GFileIcon"
 
@@ -1600,7 +1612,7 @@ msgid "Truncate not supported on stream"
 msgstr "Усечение не поддерживается на потоке"
 
 #: gio/ghttpproxy.c:93 gio/gresolver.c:529 gio/gresolver.c:682
-#: glib/gconvert.c:1750
+#: glib/gconvert.c:1757
 msgid "Invalid hostname"
 msgstr "Недействительное имя хоста"
 
@@ -1633,37 +1645,37 @@ msgstr "Слишком длинный ответ HTTP-прокси"
 msgid "HTTP proxy server closed connection unexpectedly."
 msgstr "Сервер HTTP-прокси неожиданно прервал подключение."
 
-#: gio/gicon.c:298
+#: gio/gicon.c:302
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Неверное количество лексем (%d)"
 
-#: gio/gicon.c:318
+#: gio/gicon.c:322
 #, c-format
 msgid "No type for class name %s"
 msgstr "Нет типа для имени класса %s"
 
-#: gio/gicon.c:328
+#: gio/gicon.c:332
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "Тип %s не поддерживает интерфейс GIcon"
 
-#: gio/gicon.c:339
+#: gio/gicon.c:343
 #, c-format
 msgid "Type %s is not classed"
 msgstr "Тип %s не классифицирован"
 
-#: gio/gicon.c:353
+#: gio/gicon.c:357
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Неправильный формат номера версии: %s"
 
-#: gio/gicon.c:367
+#: gio/gicon.c:371
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Тип %s не поддерживает функцию from_tokens() на интерфейсе GIcon"
 
-#: gio/gicon.c:469
+#: gio/gicon.c:473
 msgid "Can’t handle the supplied version of the icon encoding"
 msgstr "Невозможно обработать указанную версию кодировки значка"
 
@@ -1686,7 +1698,7 @@ msgid "Could not parse “%s” as IP address mask"
 msgstr "Не удалось проанализировать “%s” как маску адреса IP"
 
 #: gio/ginetsocketaddress.c:199 gio/ginetsocketaddress.c:216
-#: gio/gnativesocketaddress.c:107 gio/gunixsocketaddress.c:222
+#: gio/gnativesocketaddress.c:108 gio/gunixsocketaddress.c:222
 msgid "Not enough space for socket address"
 msgstr "Недостаточно места для адреса сокета"
 
@@ -1815,7 +1827,7 @@ msgstr "Ошибка записи в stdout"
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
 #: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1236 gio/gio-tool-open.c:72
 #: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
-#: gio/gio-tool-trash.c:225 gio/gio-tool-tree.c:246
+#: gio/gio-tool-trash.c:262 gio/gio-tool-tree.c:246
 msgid "LOCATION"
 msgstr "МЕСТОПОЛОЖЕНИЕ"
 
@@ -1836,7 +1848,7 @@ msgstr ""
 
 #: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:414 gio/gio-tool-mkdir.c:78
 #: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1287 gio/gio-tool-open.c:98
-#: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:306
+#: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:348
 msgid "No locations given"
 msgstr "Местоположения не указаны"
 
@@ -1934,6 +1946,7 @@ msgid "Don’t follow symbolic links"
 msgstr "Не переходить по символьным ссылкам"
 
 #: gio/gio-tool-info.c:105
+#, c-format
 msgid "attributes:\n"
 msgstr "атрибуты:\n"
 
@@ -1960,10 +1973,12 @@ msgid "type: %s\n"
 msgstr "тип: %s\n"
 
 #: gio/gio-tool-info.c:198
+#, c-format
 msgid "size: "
 msgstr "размер: "
 
 #: gio/gio-tool-info.c:204
+#, c-format
 msgid "hidden\n"
 msgstr "скрытый\n"
 
@@ -1983,10 +1998,12 @@ msgid "unix mount: %s%s %s %s %s\n"
 msgstr "unix mount: %s%s %s %s %s\n"
 
 #: gio/gio-tool-info.c:329
+#, c-format
 msgid "Settable attributes:\n"
 msgstr "Настраиваемые атрибуты:\n"
 
 #: gio/gio-tool-info.c:353
+#, c-format
 msgid "Writable attribute namespaces:\n"
 msgstr "Пространства имён записываемых атрибутов:\n"
 
@@ -2034,13 +2051,11 @@ msgstr ""
 
 #: gio/gio-tool-launch.c:100
 #, c-format
-#| msgid "Unable to load ‘%s‘: %s"
 msgid "Unable to load ‘%s’: %s"
 msgstr "Не удалось загрузить «%s»: %s"
 
 #: gio/gio-tool-launch.c:109
 #, c-format
-#| msgid "Unable to load application information for ‘%s‘"
 msgid "Unable to load application information for ‘%s’"
 msgstr "Не удалось загрузить сведения о приложении для «%s»"
 
@@ -2120,18 +2135,22 @@ msgid "Default application for “%s”: %s\n"
 msgstr "Приложение по умолчанию для «%s»: %s\n"
 
 #: gio/gio-tool-mime.c:129
+#, c-format
 msgid "Registered applications:\n"
 msgstr "Зарегистрированные приложения:\n"
 
 #: gio/gio-tool-mime.c:131
+#, c-format
 msgid "No registered applications\n"
 msgstr "Нет зарегистрированных приложений\n"
 
 #: gio/gio-tool-mime.c:142
+#, c-format
 msgid "Recommended applications:\n"
 msgstr "Рекомендуемые приложения:\n"
 
 #: gio/gio-tool-mime.c:144
+#, c-format
 msgid "No recommended applications\n"
 msgstr "Нет рекомендуемых приложений\n"
 
@@ -2246,14 +2265,14 @@ msgstr "Использовать анонимного пользователя �
 #: gio/gio-tool-mount.c:74
 msgid "List user-interesting volumes, drives and mounts"
 msgstr ""
-"Показать список томов, дисков и монтируемых ресурсов, интересных для пользоват"
-"еля"
+"Показать список томов, дисков и монтируемых ресурсов, интересных для "
+"пользователя"
 
 #: gio/gio-tool-mount.c:75
 msgid "Monitor user-interesting volume, drive and mount events"
 msgstr ""
-"Следить за томами, дисками и событиями монтируемых ресурсов, интересными для п"
-"ользователя"
+"Следить за томами, дисками и событиями монтируемых ресурсов, интересными для "
+"пользователя"
 
 #: gio/gio-tool-mount.c:76
 msgid "Show extra information"
@@ -2389,6 +2408,7 @@ msgstr "Ошибка чтения стандартного ввода"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: gio/gio-tool-save.c:141
+#, c-format
 msgid "Etag not available\n"
 msgstr "Etag недоступен\n"
 
@@ -2457,23 +2477,23 @@ msgstr ""
 "Восстановить файл из корзины в его изначальном местоположении (с возможным "
 "повторным созданием каталогов)"
 
-#: gio/gio-tool-trash.c:108
+#: gio/gio-tool-trash.c:145
 msgid "Unable to find original path"
 msgstr "Не удалось найти изначальный путь"
 
-#: gio/gio-tool-trash.c:124
+#: gio/gio-tool-trash.c:161
 msgid "Unable to recreate original location: "
 msgstr "Не удалось повторно создать исходное местоположение: "
 
-#: gio/gio-tool-trash.c:137
+#: gio/gio-tool-trash.c:174
 msgid "Unable to move file to its original location: "
 msgstr "Не удалось переместить файл в изначальное местоположение: "
 
-#: gio/gio-tool-trash.c:230
+#: gio/gio-tool-trash.c:267
 msgid "Move/Restore files or directories to the trash."
 msgstr "Переместить/восстановить файлы или каталоги в корзину."
 
-#: gio/gio-tool-trash.c:232
+#: gio/gio-tool-trash.c:269
 msgid ""
 "Note: for --restore switch, if the original location of the trashed file \n"
 "already exists, it will not be overwritten unless --force is set."
@@ -2482,7 +2502,7 @@ msgstr ""
 "то при использовании переключателя «--restore» это местоположение будет\n"
 "перезаписано только при использовании флага «--force»."
 
-#: gio/gio-tool-trash.c:263
+#: gio/gio-tool-trash.c:300
 msgid "Location given doesn't start with trash:///"
 msgstr "Указанное местоположение не начинается с trash:///"
 
@@ -2551,15 +2571,15 @@ msgstr "Ошибка сжатия файла %s"
 msgid "text may not appear inside <%s>"
 msgstr "текст не может быть внутри <%s>"
 
-#: gio/glib-compile-resources.c:821 gio/glib-compile-schemas.c:2172
+#: gio/glib-compile-resources.c:830 gio/glib-compile-schemas.c:2172
 msgid "Show program version and exit"
 msgstr "Показать версию программы и выйти"
 
-#: gio/glib-compile-resources.c:822
+#: gio/glib-compile-resources.c:831
 msgid "Name of the output file"
 msgstr "Имя файла вывода"
 
-#: gio/glib-compile-resources.c:823
+#: gio/glib-compile-resources.c:832
 msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
@@ -2567,47 +2587,47 @@ msgstr ""
 "Каталоги загружаемых файлов, указанные в ФАЙЛЕ (по умолчанию: текущий "
 "каталог)"
 
-#: gio/glib-compile-resources.c:823 gio/glib-compile-schemas.c:2173
+#: gio/glib-compile-resources.c:832 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
 #: girepository/decompiler/decompiler.c:53
 msgid "DIRECTORY"
 msgstr "КАТАЛОГ"
 
-#: gio/glib-compile-resources.c:824
+#: gio/glib-compile-resources.c:833
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Создать вывод в формате, выбранном согласно расширению целевого файла"
 
-#: gio/glib-compile-resources.c:825
+#: gio/glib-compile-resources.c:834
 msgid "Generate source header"
 msgstr "Создать заголовок источника"
 
-#: gio/glib-compile-resources.c:826
+#: gio/glib-compile-resources.c:835
 msgid "Generate source code used to link in the resource file into your code"
 msgstr ""
 "Создать исходный код, используемый для привязки файла ресурса к вашему коду"
 
-#: gio/glib-compile-resources.c:827
+#: gio/glib-compile-resources.c:836
 msgid "Generate dependency list"
 msgstr "Создать список зависимостей"
 
-#: gio/glib-compile-resources.c:828
+#: gio/glib-compile-resources.c:837
 msgid "Name of the dependency file to generate"
 msgstr "Имя создаваемого файла зависимостей"
 
-#: gio/glib-compile-resources.c:829
+#: gio/glib-compile-resources.c:838
 msgid "Include phony targets in the generated dependency file"
 msgstr "Включить фиктивные цели в созданный файл зависимостей"
 
-#: gio/glib-compile-resources.c:830
+#: gio/glib-compile-resources.c:839
 msgid "Don’t automatically create and register resource"
 msgstr "Не создавать и не регистрировать ресурс автоматически"
 
-#: gio/glib-compile-resources.c:831
+#: gio/glib-compile-resources.c:840
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Не экспортировать функции; объявить их как G_GNUC_INTERNAL"
 
-#: gio/glib-compile-resources.c:832
+#: gio/glib-compile-resources.c:841
 msgid ""
 "Don’t embed resource data in the C file; assume it's linked externally "
 "instead"
@@ -2615,19 +2635,19 @@ msgstr ""
 "Не встраивать данные ресурсов в файл C; предполагать, что существует ссылка "
 "на внешние ресурсы"
 
-#: gio/glib-compile-resources.c:833
+#: gio/glib-compile-resources.c:842
 msgid "C identifier name used for the generated source code"
 msgstr "Имя идентификатора C, используемое для созданного исходного кода"
 
-#: gio/glib-compile-resources.c:833
+#: gio/glib-compile-resources.c:842
 msgid "IDENTIFIER"
 msgstr "ИДЕНТИФИКАТОР"
 
-#: gio/glib-compile-resources.c:834
+#: gio/glib-compile-resources.c:843
 msgid "The target C compiler (default: the CC environment variable)"
 msgstr "Целевой компилятор языка C (по умолчанию: переменная окружения CC)"
 
-#: gio/glib-compile-resources.c:861
+#: gio/glib-compile-resources.c:870
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2637,7 +2657,8 @@ msgstr ""
 "Файлы спецификации ресурсов имеют расширение .gresource.xml,\n"
 "а файл ресурса имеет расширение .gresource."
 
-#: gio/glib-compile-resources.c:893
+#: gio/glib-compile-resources.c:902
+#, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Должно быть указано ровно одно имя имя файла\n"
 
@@ -3122,12 +3143,12 @@ msgstr "Файлы схемы не найдены: ничего не выпол�
 msgid "No schema files found: removed existing output file."
 msgstr "Файлы схемы не найдены: существующий файл вывода удалён"
 
-#: gio/glocalfile.c:570 gio/win32/gwinhttpfile.c:436
+#: gio/glocalfile.c:573 gio/win32/gwinhttpfile.c:436
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Недействительное имя файла %s"
 
-#: gio/glocalfile.c:1012
+#: gio/glocalfile.c:1017
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Ошибка получения сведений о файловой системе %s: %s"
@@ -3136,133 +3157,132 @@ msgstr "Ошибка получения сведений о файловой с�
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
 #.
-#: gio/glocalfile.c:1150
+#: gio/glocalfile.c:1155
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "Смонтированный ресурс, содержащий файл %s, не найден"
 
-#: gio/glocalfile.c:1173
+#: gio/glocalfile.c:1178
 msgid "Can’t rename root directory"
 msgstr "Невозможно переименовать корневой каталог"
 
-#: gio/glocalfile.c:1191 gio/glocalfile.c:1216
+#: gio/glocalfile.c:1196 gio/glocalfile.c:1221
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "Ошибка переименования файла %s: %s"
 
-#: gio/glocalfile.c:1199
+#: gio/glocalfile.c:1204
 msgid "Can’t rename file, filename already exists"
 msgstr "Невозможно переименовать файл, имя файла уже существует"
 
-#: gio/glocalfile.c:1213 gio/glocalfile.c:2584 gio/glocalfile.c:2612
-#: gio/glocalfile.c:2751 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1218 gio/glocalfile.c:2609 gio/glocalfile.c:2637
+#: gio/glocalfile.c:2776 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "Недействительное имя файла"
 
-#: gio/glocalfile.c:1400 gio/glocalfile.c:1411
+#: gio/glocalfile.c:1421 gio/glocalfile.c:1432
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Ошибка открытия файла %s: %s"
 
-#: gio/glocalfile.c:1536
+#: gio/glocalfile.c:1557
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Ошибка удаления файла %s: %s"
 
-#: gio/glocalfile.c:2050
+#: gio/glocalfile.c:2071
 #, c-format
-#| msgid "Unable to trash file %s"
 msgid "Unable to trash child file %s"
 msgstr "Не удалось удалить в корзину дочерний файл %s"
 
-#: gio/glocalfile.c:2110 gio/glocalfile.c:2121 gio/glocalfile.c:2151
+#: gio/glocalfile.c:2131 gio/glocalfile.c:2142 gio/glocalfile.c:2172
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Ошибка перемещения файла в корзину %s: %s"
 
-#: gio/glocalfile.c:2172
+#: gio/glocalfile.c:2193
 #, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "Не удалось создать каталог корзины %s: %s"
 
-#: gio/glocalfile.c:2193
+#: gio/glocalfile.c:2214
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr ""
 "Не удалось найти каталог самого верхнего уровня для перемещения %s в корзину"
 
-#: gio/glocalfile.c:2201
+#: gio/glocalfile.c:2222
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr ""
 "Перемещение в корзину на внутренних смонтированных ресурсах системы не "
 "поддерживается"
 
-#: gio/glocalfile.c:2287 gio/glocalfile.c:2315
+#: gio/glocalfile.c:2308 gio/glocalfile.c:2336
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr "Не удалось найти или создать каталог корзины %s для удаления %s"
 
-#: gio/glocalfile.c:2410
+#: gio/glocalfile.c:2433
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Не удалось создать файл сведений о помещении в корзину для %s: %s"
 
-#: gio/glocalfile.c:2498
+#: gio/glocalfile.c:2521
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Невозможно поместить в корзину файл %s из смонтированного ресурса"
 
-#: gio/glocalfile.c:2502 gio/glocalfile.c:2555
+#: gio/glocalfile.c:2525 gio/glocalfile.c:2580
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Не удалось удалить файл в корзину %s: %s"
 
-#: gio/glocalfile.c:2561
+#: gio/glocalfile.c:2586
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Не удалось удалить в корзину файл %s"
 
-#: gio/glocalfile.c:2587
+#: gio/glocalfile.c:2612
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Ошибка создания каталога %s: %s"
 
-#: gio/glocalfile.c:2616
+#: gio/glocalfile.c:2641
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Файловая система не поддерживает символьные ссылки"
 
-#: gio/glocalfile.c:2619
+#: gio/glocalfile.c:2644
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Ошибка создания символьной ссылки %s: %s"
 
-#: gio/glocalfile.c:2662 gio/glocalfile.c:2697 gio/glocalfile.c:2754
+#: gio/glocalfile.c:2687 gio/glocalfile.c:2722 gio/glocalfile.c:2779
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Ошибка перемещения файла %s: %s"
 
-#: gio/glocalfile.c:2685
+#: gio/glocalfile.c:2710
 msgid "Can’t move directory over directory"
 msgstr "Невозможно переместить каталог поверх каталога"
 
-#: gio/glocalfile.c:2711 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2736 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
-#: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1170
+#: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1176
 msgid "Backup file creation failed"
 msgstr "Не удалось создать резервный файл"
 
-#: gio/glocalfile.c:2730
+#: gio/glocalfile.c:2755
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Ошибка удаления целевого файла: %s"
 
-#: gio/glocalfile.c:2744
+#: gio/glocalfile.c:2769
 msgid "Move between mounts not supported"
 msgstr "Перемещение между смонтированными ресурсами не поддерживается"
 
-#: gio/glocalfile.c:2920
+#: gio/glocalfile.c:2945
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Не удалось определить используемый объём диска для %s: %s"
@@ -3417,7 +3437,7 @@ msgid "Error closing file: %s"
 msgstr "Ошибка закрытия файла: %s"
 
 #: gio/glocalfileinputstream.c:274 gio/glocalfileoutputstream.c:565
-#: gio/glocalfileoutputstream.c:1188
+#: gio/glocalfileoutputstream.c:1194
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Ошибка позиционирования в файле: %s"
@@ -3447,13 +3467,13 @@ msgstr "Ошибка создания резервной копии: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Ошибка переименования временного файла: %s"
 
-#: gio/glocalfileoutputstream.c:611 gio/glocalfileoutputstream.c:1242
+#: gio/glocalfileoutputstream.c:611 gio/glocalfileoutputstream.c:1247
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Ошибка усечения файла: %s"
 
 #: gio/glocalfileoutputstream.c:664 gio/glocalfileoutputstream.c:909
-#: gio/glocalfileoutputstream.c:1223 gio/gsubprocess.c:233
+#: gio/glocalfileoutputstream.c:1228 gio/gsubprocess.c:233
 #, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "Ошибка открытия файла «%s»: %s"
@@ -3470,7 +3490,7 @@ msgstr "Целевой файл не является обычным файло�
 msgid "The file was externally modified"
 msgstr "Файл был изменён извне"
 
-#: gio/glocalfileoutputstream.c:1205
+#: gio/glocalfileoutputstream.c:1210
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Ошибка удаления старого файла: %s"
@@ -3623,9 +3643,9 @@ msgstr "Неопределённый сбой поиска прокси-серв
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
-#: gio/gresolver.c:472 gio/gthreadedresolver.c:428 gio/gthreadedresolver.c:449
-#: gio/gthreadedresolver.c:1094 gio/gthreadedresolver.c:1118
-#: gio/gthreadedresolver.c:1143 gio/gthreadedresolver.c:1158
+#: gio/gresolver.c:472 gio/gthreadedresolver.c:436 gio/gthreadedresolver.c:457
+#: gio/gthreadedresolver.c:1102 gio/gthreadedresolver.c:1126
+#: gio/gthreadedresolver.c:1151 gio/gthreadedresolver.c:1166
 #, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "Ошибка разрешения «%s»: %s"
@@ -3640,13 +3660,13 @@ msgstr "%s не реализован"
 msgid "Invalid domain"
 msgstr "Недействительный домен"
 
-#: gio/gresource.c:688 gio/gresourcefile.c:475 gio/gresourcefile.c:599
+#: gio/gresource.c:692 gio/gresourcefile.c:475 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:760
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Ресурс с местоположением «%s» не существует"
 
-#: gio/gresource.c:911
+#: gio/gresource.c:915
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "Не удалось распаковать ресурс по местоположению «%s»"
@@ -3802,26 +3822,32 @@ msgid "Schema “%s” is relocatable (path must be specified)\n"
 msgstr "Схема «%s» является перемещаемой (необходимо указать путь)\n"
 
 #: gio/gsettings-tool.c:92
+#, c-format
 msgid "Empty path given.\n"
 msgstr "Указан пустой путь.\n"
 
 #: gio/gsettings-tool.c:98
+#, c-format
 msgid "Path must begin with a slash (/)\n"
 msgstr "Путь должен начинаться символом косой черты (/)\n"
 
 #: gio/gsettings-tool.c:104
+#, c-format
 msgid "Path must end with a slash (/)\n"
 msgstr "Путь должен заканчиваться символом косой черты (/)\n"
 
 #: gio/gsettings-tool.c:110
+#, c-format
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "В пути не должно быть две стоящих рядом косых черты (//)\n"
 
 #: gio/gsettings-tool.c:560
+#, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Предоставленное значение лежит вне действительного диапазона\n"
 
 #: gio/gsettings-tool.c:567
+#, c-format
 msgid "The key is not writable\n"
 msgstr "Ключ недоступен для записи\n"
 
@@ -4002,10 +4028,12 @@ msgid "Could not load schemas from %s: %s\n"
 msgstr "Не удалось загрузить схемы из «%s»: %s\n"
 
 #: gio/gsettings-tool.c:809
+#, c-format
 msgid "No schemas installed\n"
 msgstr "Схемы не установлены\n"
 
 #: gio/gsettings-tool.c:888
+#, c-format
 msgid "Empty schema name given\n"
 msgstr "Указано пустое имя схемы\n"
 
@@ -4028,7 +4056,7 @@ msgid "Socket is already closed"
 msgstr "Сокет уже закрыт"
 
 #: gio/gsocket.c:465 gio/gsocket.c:3333 gio/gsocket.c:4705 gio/gsocket.c:4763
-#: gio/gthreadedresolver.c:1564
+#: gio/gthreadedresolver.c:1572
 msgid "Socket I/O timed out"
 msgstr "Истекло время ожидания I/O сокета"
 
@@ -4315,61 +4343,61 @@ msgstr "Прокси SOCKSv5 не поддерживает указанный т
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Неизвестная ошибка прокси SOCKSv5."
 
-#: gio/gtestdbus.c:608 glib/gspawn-win32.c:411
+#: gio/gtestdbus.c:634 glib/gspawn-win32.c:411
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Не удалось создать канал для обмена данными с процессом-потомком (%s)"
 
-#: gio/gtestdbus.c:615
+#: gio/gtestdbus.c:641
 #, c-format
 msgid "Pipes are not supported in this platform"
 msgstr "На этой платформе каналы не поддерживаются"
 
-#: gio/gthemedicon.c:590
+#: gio/gthemedicon.c:593
 #, c-format
 msgid "Can’t handle version %d of GThemedIcon encoding"
 msgstr "Невозможно обработать версию %d кодировки GThemedIcon"
 
-#: gio/gthreadedresolver.c:430
+#: gio/gthreadedresolver.c:438
 msgid "No valid addresses were found"
 msgstr "Действительные адреса не найдены"
 
-#: gio/gthreadedresolver.c:625
+#: gio/gthreadedresolver.c:633
 #, c-format
 msgid "Error reverse-resolving “%s”: %s"
 msgstr "Ошибка обратного разрешения «%s»: %s"
 
 #. Translators: the placeholder is a DNS record type, such as ‘MX’ or ‘SRV’
-#: gio/gthreadedresolver.c:848 gio/gthreadedresolver.c:870
-#: gio/gthreadedresolver.c:924 gio/gthreadedresolver.c:971
-#: gio/gthreadedresolver.c:1000 gio/gthreadedresolver.c:1012
+#: gio/gthreadedresolver.c:856 gio/gthreadedresolver.c:878
+#: gio/gthreadedresolver.c:932 gio/gthreadedresolver.c:979
+#: gio/gthreadedresolver.c:1008 gio/gthreadedresolver.c:1020
 #, c-format
 msgid "Error parsing DNS %s record: malformed DNS packet"
 msgstr "Ошибка анализа записи DNS с типом %s: неправильный формат пакета DNS"
 
-#: gio/gthreadedresolver.c:1070 gio/gthreadedresolver.c:1207
-#: gio/gthreadedresolver.c:1305 gio/gthreadedresolver.c:1355
+#: gio/gthreadedresolver.c:1078 gio/gthreadedresolver.c:1215
+#: gio/gthreadedresolver.c:1313 gio/gthreadedresolver.c:1363
 #, c-format
 msgid "No DNS record of the requested type for “%s”"
 msgstr "Запись DNS с запрошенными типом для “%s” отсутствует"
 
-#: gio/gthreadedresolver.c:1075 gio/gthreadedresolver.c:1310
+#: gio/gthreadedresolver.c:1083 gio/gthreadedresolver.c:1318
 #, c-format
 msgid "Temporarily unable to resolve “%s”"
 msgstr "Временно невозможно разрешить «%s»"
 
-#: gio/gthreadedresolver.c:1080 gio/gthreadedresolver.c:1315
-#: gio/gthreadedresolver.c:1411
+#: gio/gthreadedresolver.c:1088 gio/gthreadedresolver.c:1323
+#: gio/gthreadedresolver.c:1419
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Ошибка при разрешении «%s»"
 
-#: gio/gthreadedresolver.c:1094 gio/gthreadedresolver.c:1118
-#: gio/gthreadedresolver.c:1143 gio/gthreadedresolver.c:1158
+#: gio/gthreadedresolver.c:1102 gio/gthreadedresolver.c:1126
+#: gio/gthreadedresolver.c:1151 gio/gthreadedresolver.c:1166
 msgid "Malformed DNS packet"
 msgstr "Неправильный формат пакета DNS"
 
-#: gio/gthreadedresolver.c:1200
+#: gio/gthreadedresolver.c:1208
 #, c-format
 msgid "Failed to parse DNS response for “%s”: "
 msgstr "Не удалось проанализировать ответ DNS для \"%s\": "
@@ -4498,7 +4526,7 @@ msgstr "Ошибка чтения файлового дескриптора: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Ошибка закрытия файлового дескриптора: %s"
 
-#: gio/gunixmounts.c:3555 gio/gunixmounts.c:3639
+#: gio/gunixmounts.c:3518 gio/gunixmounts.c:3602
 msgid "Filesystem root"
 msgstr "Корень файловой системы"
 
@@ -4525,12 +4553,12 @@ msgstr "том не поддерживает операцию eject"
 msgid "volume doesn’t implement eject or eject_with_operation"
 msgstr "том не поддерживает eject или eject_with_operation"
 
-#: gio/gwin32appinfo.c:5214
+#: gio/gwin32appinfo.c:5286
 #, c-format
 msgid "The app ‘%s’ in the application object has no verbs"
 msgstr "У приложения '%s' в объекте приложения нет глаголов"
 
-#: gio/gwin32appinfo.c:5218
+#: gio/gwin32appinfo.c:5290
 #, c-format
 msgid ""
 "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
@@ -4589,6 +4617,7 @@ msgid "Run a dbus service"
 msgstr "Запустить службу dbus"
 
 #: gio/tests/gdbus-daemon.c:42
+#, c-format
 msgid "Wrong args\n"
 msgstr "Неверные аргументы\n"
 
@@ -4730,77 +4759,77 @@ msgstr "Укажите ровно одно пространство имён"
 msgid "Please specify --print-shlibs, --print-typelibs or both"
 msgstr "Укажите «--print-shlibs», «--print-typelibs» или оба этих варианта"
 
-#: glib/gbookmarkfile.c:816
+#: glib/gbookmarkfile.c:824
 #, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
 msgstr "Непредвиденный атрибут «%s» для элемента «%s»"
 
-#: glib/gbookmarkfile.c:827 glib/gbookmarkfile.c:907 glib/gbookmarkfile.c:917
-#: glib/gbookmarkfile.c:1030
+#: glib/gbookmarkfile.c:835 glib/gbookmarkfile.c:915 glib/gbookmarkfile.c:925
+#: glib/gbookmarkfile.c:1038
 #, c-format
 msgid "Attribute “%s” of element “%s” not found"
 msgstr "Атрибут «%s» элемента «%s» не найден"
 
-#: glib/gbookmarkfile.c:1239 glib/gbookmarkfile.c:1304
-#: glib/gbookmarkfile.c:1368 glib/gbookmarkfile.c:1378
+#: glib/gbookmarkfile.c:1247 glib/gbookmarkfile.c:1312
+#: glib/gbookmarkfile.c:1376 glib/gbookmarkfile.c:1386
 #, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "Непредвиденный тег «%s», ожидался тег «%s»"
 
-#: glib/gbookmarkfile.c:1264 glib/gbookmarkfile.c:1278
-#: glib/gbookmarkfile.c:1346 glib/gbookmarkfile.c:1392
+#: glib/gbookmarkfile.c:1272 glib/gbookmarkfile.c:1286
+#: glib/gbookmarkfile.c:1354 glib/gbookmarkfile.c:1400
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
 msgstr "Непредвиденный тег «%s» внутри «%s»"
 
-#: glib/gbookmarkfile.c:1672
+#: glib/gbookmarkfile.c:1680
 #, c-format
 msgid "Invalid date/time ‘%s’ in bookmark file"
 msgstr "Недействительные дата и время ‘%s’ в файле закладок"
 
-#: glib/gbookmarkfile.c:1911
+#: glib/gbookmarkfile.c:1919
 msgid "No valid bookmark file found in data dirs"
 msgstr "Не удалось найти действительный файл закладок в каталогах данных"
 
-#: glib/gbookmarkfile.c:2112
+#: glib/gbookmarkfile.c:2120
 #, c-format
 msgid "A bookmark for URI “%s” already exists"
 msgstr "Закладка для URI «%s» уже существует"
 
-#: glib/gbookmarkfile.c:2161 glib/gbookmarkfile.c:2319
-#: glib/gbookmarkfile.c:2404 glib/gbookmarkfile.c:2484
-#: glib/gbookmarkfile.c:2569 glib/gbookmarkfile.c:2703
-#: glib/gbookmarkfile.c:2836 glib/gbookmarkfile.c:2971
-#: glib/gbookmarkfile.c:3013 glib/gbookmarkfile.c:3110
-#: glib/gbookmarkfile.c:3231 glib/gbookmarkfile.c:3425
-#: glib/gbookmarkfile.c:3566 glib/gbookmarkfile.c:3785
-#: glib/gbookmarkfile.c:3874 glib/gbookmarkfile.c:3963
-#: glib/gbookmarkfile.c:4082
+#: glib/gbookmarkfile.c:2169 glib/gbookmarkfile.c:2327
+#: glib/gbookmarkfile.c:2412 glib/gbookmarkfile.c:2492
+#: glib/gbookmarkfile.c:2577 glib/gbookmarkfile.c:2711
+#: glib/gbookmarkfile.c:2844 glib/gbookmarkfile.c:2979
+#: glib/gbookmarkfile.c:3021 glib/gbookmarkfile.c:3118
+#: glib/gbookmarkfile.c:3239 glib/gbookmarkfile.c:3433
+#: glib/gbookmarkfile.c:3574 glib/gbookmarkfile.c:3793
+#: glib/gbookmarkfile.c:3882 glib/gbookmarkfile.c:3971
+#: glib/gbookmarkfile.c:4090
 #, c-format
 msgid "No bookmark found for URI “%s”"
 msgstr "Для URI «%s» закладок не найдено"
 
-#: glib/gbookmarkfile.c:2493
+#: glib/gbookmarkfile.c:2501
 #, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
 msgstr "В закладке для URI «%s» не определён тип MIME"
 
-#: glib/gbookmarkfile.c:2578
+#: glib/gbookmarkfile.c:2586
 #, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
 msgstr "Флаг конфиденциальности данных в закладке для URI «%s» не был настроен"
 
-#: glib/gbookmarkfile.c:3119
+#: glib/gbookmarkfile.c:3127
 #, c-format
 msgid "No groups set in bookmark for URI “%s”"
 msgstr "В закладке для URI «%s» не настроены группы"
 
-#: glib/gbookmarkfile.c:3587 glib/gbookmarkfile.c:3795
+#: glib/gbookmarkfile.c:3595 glib/gbookmarkfile.c:3803
 #, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
 msgstr "Нет приложения с именем «%s», создавшего закладку для «%s»"
 
-#: glib/gbookmarkfile.c:3818
+#: glib/gbookmarkfile.c:3826
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Не удалось расширить строку выполнения «%s» на URI «%s»"
@@ -4809,7 +4838,7 @@ msgstr "Не удалось расширить строку выполнения
 msgid "Unrepresentable character in conversion input"
 msgstr "Непредставимый символ в вводных данных для преобразования"
 
-#: glib/gconvert.c:404 glib/gutf8.c:963 glib/gutf8.c:1178 glib/gutf8.c:1315
+#: glib/gconvert.c:404 glib/gutf8.c:962 glib/gutf8.c:1176 glib/gutf8.c:1314
 #: glib/gutf8.c:1419
 msgid "Partial character sequence at end of input"
 msgstr "Неполная символьная последовательность в конце вводимых данных"
@@ -4827,27 +4856,31 @@ msgstr "Встроенный нулевой байт в вводных данн�
 msgid "Embedded NUL byte in conversion output"
 msgstr "Встроенный нулевой байт в преобразованных данных на выходе"
 
-#: glib/gconvert.c:1606
+#: glib/gconvert.c:1370
+msgid "The URI is too long"
+msgstr "URI слишком длинный"
+
+#: glib/gconvert.c:1613
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "URI “%s” не является абсолютным URI, использующим схему “file”"
 
-#: glib/gconvert.c:1636
+#: glib/gconvert.c:1643
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "Недействительный URI «%s»"
 
-#: glib/gconvert.c:1649
+#: glib/gconvert.c:1656
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Недействительное имя хоста в адресе URI “%s”"
 
-#: glib/gconvert.c:1666
+#: glib/gconvert.c:1673
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI «%s» содержит недопустимо экранированные символы"
 
-#: glib/gconvert.c:1740
+#: glib/gconvert.c:1747
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Имя пути «%s» не является абсолютным путём"
@@ -5273,90 +5306,89 @@ msgstr "Ошибка при открытии каталога «%s»: %s"
 #. Translators: the first %s contains the file size
 #. * (already formatted with units), and the second %s
 #. * contains the file name
-#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#: glib/gfileutils.c:721 glib/gfileutils.c:830
 #, c-format
 msgid "Could not allocate %s to read file “%s”"
 msgstr "Не удалось зарезервировать %s для чтения файла «%s»"
 
-#: glib/gfileutils.c:738
+#: glib/gfileutils.c:739
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Ошибка при чтении файла «%s»: %s"
 
-#: glib/gfileutils.c:774 glib/gfileutils.c:808
+#: glib/gfileutils.c:775 glib/gfileutils.c:809
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Файл «%s» слишком велик"
 
-#: glib/gfileutils.c:855
+#: glib/gfileutils.c:856
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Не удалось прочитать из файла «%s»: %s"
 
-#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1508
+#: glib/gfileutils.c:906 glib/gfileutils.c:981 glib/gfileutils.c:1509
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Не удалось открыть файл «%s»: %s"
 
-#: glib/gfileutils.c:918
+#: glib/gfileutils.c:919
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Не удалось получить атрибуты файла «%s»: сбой в функции fstat(): %s"
 
-#: glib/gfileutils.c:949
+#: glib/gfileutils.c:950
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Не удалось открыть файл «%s»: сбой в функции fdopen(): %s"
 
-#: glib/gfileutils.c:1050
+#: glib/gfileutils.c:1051
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr ""
 "Не удалось переименовать файл «%s» в «%s»: сбой в функции g_rename(): %s"
 
-#: glib/gfileutils.c:1149
+#: glib/gfileutils.c:1150
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции ftruncate(): %s"
 
-#: glib/gfileutils.c:1194
+#: glib/gfileutils.c:1195
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции write(): %s"
 
-#: glib/gfileutils.c:1215
+#: glib/gfileutils.c:1216
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Не удалось записать файл «%s»: сбой в функции fsync(): %s"
 
-#: glib/gfileutils.c:1377 glib/gfileutils.c:1818
+#: glib/gfileutils.c:1378 glib/gfileutils.c:1819
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Не удалось создать файл «%s»: %s"
 
-#: glib/gfileutils.c:1395
+#: glib/gfileutils.c:1396
 #, c-format
-#| msgid "Failed to open file “%s”: %s"
 msgid "Failed to set permissions of “%s”: %s"
 msgstr "Не удалось настроить полномочия для «%s»: %s"
 
-#: glib/gfileutils.c:1442
+#: glib/gfileutils.c:1443
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Не удалось удалить существующий файл «%s»: сбой в функции g_unlink(): %s"
 
-#: glib/gfileutils.c:1783
+#: glib/gfileutils.c:1784
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Недействительный шаблон «%s», он не должен содержать «%s»"
 
-#: glib/gfileutils.c:1796
+#: glib/gfileutils.c:1797
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Шаблон «%s» не содержит XXXXXX"
 
-#: glib/gfileutils.c:2390 glib/gfileutils.c:2419
+#: glib/gfileutils.c:2391 glib/gfileutils.c:2420
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Не удалось прочитать символьную ссылку «%s»: %s"
@@ -5496,42 +5528,42 @@ msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
 msgstr ""
 "Не удалось получить атрибуты файла «%s%s%s%s»: сбой в функции fstat(): %s"
 
-#: glib/gmappedfile.c:206
+#: glib/gmappedfile.c:213
 #, c-format
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "Не удалось отобразить %s%s%s%s: сбой в функции mmap(): %s"
 
-#: glib/gmappedfile.c:276
+#: glib/gmappedfile.c:283
 #, c-format
 msgid "Failed to open file “%s”: open() failed: %s"
 msgstr "Не удалось открыть файл «%s»: сбой в функции open(): %s"
 
-#: glib/gmarkup.c:344 glib/gmarkup.c:386
+#: glib/gmarkup.c:354 glib/gmarkup.c:396
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Ошибка в строке %d на символе %d: "
 
-#: glib/gmarkup.c:408 glib/gmarkup.c:491
+#: glib/gmarkup.c:418 glib/gmarkup.c:501
 #, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
 msgstr "Недействительный текст в формате UTF-8 в имени: недействительный «%s»"
 
-#: glib/gmarkup.c:419
+#: glib/gmarkup.c:429
 #, c-format
 msgid "“%s” is not a valid name"
 msgstr "“%s” не является действительным именем"
 
-#: glib/gmarkup.c:435
+#: glib/gmarkup.c:445
 #, c-format
 msgid "“%s” is not a valid name: “%c”"
 msgstr "“%s” не является действительным именем: “%c”"
 
-#: glib/gmarkup.c:559
+#: glib/gmarkup.c:569
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Ошибка в строке %d: %s"
 
-#: glib/gmarkup.c:636
+#: glib/gmarkup.c:646
 #, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
@@ -5541,7 +5573,7 @@ msgstr ""
 "цифру внутри кода символа (например: &#234;). Возможно, цифра слишком "
 "большая."
 
-#: glib/gmarkup.c:648
+#: glib/gmarkup.c:658
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
@@ -5550,24 +5582,24 @@ msgstr ""
 "Код символа не оканчивается точкой с запятой; похоже, символ «&» был "
 "использован не для обозначения начала конструкции — экранируйте его как &amp;"
 
-#: glib/gmarkup.c:674
+#: glib/gmarkup.c:684
 #, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "Код «%-.*s» не определяет допустимый символ"
 
-#: glib/gmarkup.c:712
+#: glib/gmarkup.c:722
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Обнаружена пустая конструкция «&;»; допустимыми конструкциями являются: "
 "&amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:720
+#: glib/gmarkup.c:730
 #, c-format
 msgid "Entity name “%-.*s” is not known"
 msgstr "Имя конструкции «%-.*s» неизвестно"
 
-#: glib/gmarkup.c:725
+#: glib/gmarkup.c:735
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
@@ -5575,11 +5607,11 @@ msgstr ""
 "Конструкция не заканчивается точкой с запятой; похоже, что символ «&» был "
 "использован не для обозначения начала конструкции — экранируйте его как &amp;"
 
-#: glib/gmarkup.c:1139
+#: glib/gmarkup.c:1153
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документ должен начинаться с элемента (например <book>)"
 
-#: glib/gmarkup.c:1179
+#: glib/gmarkup.c:1197
 #, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
@@ -5588,7 +5620,7 @@ msgstr ""
 "Символ «%s» не является допустимым символом, следующим за символом «<»; имя "
 "элемента не может начинаться с этого символа"
 
-#: glib/gmarkup.c:1222
+#: glib/gmarkup.c:1240
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
@@ -5597,19 +5629,19 @@ msgstr ""
 "Странный символ «%s». Для завершения тега пустого элемента «%s» ожидался "
 "символ «>»."
 
-#: glib/gmarkup.c:1292
+#: glib/gmarkup.c:1310
 #, c-format
 msgid "Too many attributes in element “%s”"
 msgstr "Слишком много атрибутов в элементе «%s»"
 
-#: glib/gmarkup.c:1312
+#: glib/gmarkup.c:1330
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
 msgstr ""
 "Странный символ “%s”. После имени атрибута “%s” элемента “%s” ожидался «=»"
 
-#: glib/gmarkup.c:1354
+#: glib/gmarkup.c:1372
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
@@ -5620,7 +5652,7 @@ msgstr ""
 "символ «>» или «/», или, необязательно, атрибут; возможно, в имени атрибута "
 "вы использовали недействительный символ."
 
-#: glib/gmarkup.c:1399
+#: glib/gmarkup.c:1417
 #, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
@@ -5629,7 +5661,7 @@ msgstr ""
 "Странный символ “%s”. При указании значения атрибута “%s” элемента “%s” "
 "после знака равенства ожидалось открытие кавычек"
 
-#: glib/gmarkup.c:1533
+#: glib/gmarkup.c:1551
 #, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
@@ -5638,7 +5670,7 @@ msgstr ""
 "«%s» не является допустимым символом, следующим за символами «</». Имена "
 "элементов не должны начинаться с «%s»."
 
-#: glib/gmarkup.c:1571
+#: glib/gmarkup.c:1589
 #, c-format
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
@@ -5647,26 +5679,26 @@ msgstr ""
 "“%s” не является допустимым символом, следующим за именем ближнего элемента "
 "“%s”; допустимый символ: «>»."
 
-#: glib/gmarkup.c:1583
+#: glib/gmarkup.c:1601
 #, c-format
 msgid "Element “%s” was closed, no element is currently open"
 msgstr "Элемент «%s» был закрыт, ни один элемент в настоящий момент не открыт"
 
-#: glib/gmarkup.c:1592
+#: glib/gmarkup.c:1610
 #, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr "Элемент «%s» был закрыт, но текущий открытый элемент — «%s»"
 
-#: glib/gmarkup.c:1745
+#: glib/gmarkup.c:1763
 msgid "Document was empty or contained only whitespace"
 msgstr "Документ был пуст или содержал только пробелы"
 
-#: glib/gmarkup.c:1759
+#: glib/gmarkup.c:1777
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr ""
 "Непредвиденное завершение документа после открывающей угловой скобки «<»"
 
-#: glib/gmarkup.c:1767 glib/gmarkup.c:1812
+#: glib/gmarkup.c:1785 glib/gmarkup.c:1830
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
@@ -5675,7 +5707,7 @@ msgstr ""
 "Непредвиденное завершение документа с ещё открытыми элементами, последним "
 "открытым элементом был “%s”"
 
-#: glib/gmarkup.c:1775
+#: glib/gmarkup.c:1793
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -5684,19 +5716,19 @@ msgstr ""
 "Непредвиденное завершение документа, ожидалась угловая скобка, закрывающая "
 "тег <%s/>"
 
-#: glib/gmarkup.c:1781
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Непредвиденное завершение документа внутри имени элемента"
 
-#: glib/gmarkup.c:1787
+#: glib/gmarkup.c:1805
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Непредвиденное завершение документа внутри имени атрибута"
 
-#: glib/gmarkup.c:1792
+#: glib/gmarkup.c:1810
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Непредвиденное завершение документа внутри тега, открывающего элемент"
 
-#: glib/gmarkup.c:1798
+#: glib/gmarkup.c:1816
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -5704,24 +5736,24 @@ msgstr ""
 "Непредвиденное завершение документа после знака равенства, следующего за "
 "именем атрибута; значение атрибута отсутствует"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1823
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Непредвиденное завершение документа внутри значения атрибута"
 
-#: glib/gmarkup.c:1822
+#: glib/gmarkup.c:1840
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr ""
 "Непредвиденное завершение документа внутри закрывающего тега элемента “%s”"
 
-#: glib/gmarkup.c:1826
+#: glib/gmarkup.c:1844
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr ""
 "Непредвиденное завершение документа внутри закрывающего тега неоткрытого "
 "элемента"
 
-#: glib/gmarkup.c:1832
+#: glib/gmarkup.c:1850
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Непредвиденное завершение документа внутри комментария или инструкции по "
@@ -5735,58 +5767,58 @@ msgstr "является устаревшим"
 msgid "[OPTION…]"
 msgstr "[ПАРАМЕТР…]"
 
-#: glib/goption.c:845
+#: glib/goption.c:851
 msgid "Help Options:"
 msgstr "Параметры справки:"
 
-#: glib/goption.c:846
+#: glib/goption.c:852
 msgid "Show help options"
 msgstr "Показать параметры справки"
 
-#: glib/goption.c:852
+#: glib/goption.c:858
 msgid "Show all help options"
 msgstr "Показать все параметры справки"
 
-#: glib/goption.c:915
+#: glib/goption.c:921
 msgid "Application Options:"
 msgstr "Параметры приложения:"
 
-#: glib/goption.c:917
+#: glib/goption.c:923
 msgid "Options:"
 msgstr "Параметры:"
 
-#: glib/goption.c:981 glib/goption.c:1051
+#: glib/goption.c:987 glib/goption.c:1057
 #, c-format
 msgid "Cannot parse integer value “%s” for %s"
 msgstr "Не удалось проанализировать целочисленное значение «%s» для %s"
 
-#: glib/goption.c:991 glib/goption.c:1059
+#: glib/goption.c:997 glib/goption.c:1065
 #, c-format
 msgid "Integer value “%s” for %s out of range"
 msgstr "Целочисленное значение «%s» для %s находится вне диапазона"
 
-#: glib/goption.c:1016
+#: glib/goption.c:1022
 #, c-format
 msgid "Cannot parse double value “%s” for %s"
 msgstr ""
 "Не удалось проанализировать дробное значение двойной точности «%s» для %s"
 
-#: glib/goption.c:1024
+#: glib/goption.c:1030
 #, c-format
 msgid "Double value “%s” for %s out of range"
 msgstr "Дробное значение двойной точности «%s» для %s находится вне диапазона"
 
-#: glib/goption.c:1316 glib/goption.c:1395
+#: glib/goption.c:1322 glib/goption.c:1401
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Ошибка при анализе параметра %s"
 
-#: glib/goption.c:1417 glib/goption.c:1530
+#: glib/goption.c:1423 glib/goption.c:1536
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Отсутствует аргумент для %s"
 
-#: glib/goption.c:2038
+#: glib/goption.c:2044
 #, c-format
 msgid "Unknown option %s"
 msgstr "Неизвестный параметр %s"
@@ -5831,7 +5863,7 @@ msgstr "зацикливание рекурсии"
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr "запрошен режим согласования, не скомпилированный для JIT"
 
-#: glib/gregex.c:616 glib/gregex.c:2139
+#: glib/gregex.c:616 glib/gregex.c:2145
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
@@ -5975,117 +6007,121 @@ msgstr ""
 "за \\g не следует имя или число в скобках, угловых скобках или кавычках, или "
 "просто число"
 
-#: glib/gregex.c:779
+#: glib/gregex.c:780
+msgid "syntax error in subpattern number (missing terminator?)"
+msgstr "синтаксическая ошибка в номере подшаблона (отсутствует терминатор?)"
+
+#: glib/gregex.c:785
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr "для (*ACCEPT), (*FAIL) или (*COMMIT) аргументы не допускаются"
 
-#: glib/gregex.c:783
+#: glib/gregex.c:789
 msgid "(*VERB) not recognized"
 msgstr "(*VERB) не распознан"
 
-#: glib/gregex.c:787
+#: glib/gregex.c:793
 msgid "number is too big"
 msgstr "слишком большое число"
 
-#: glib/gregex.c:791
+#: glib/gregex.c:797
 msgid "missing subpattern name after (?&"
 msgstr "после (?& отсутствует имя подшаблона"
 
-#: glib/gregex.c:795
+#: glib/gregex.c:801
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "для подшаблонов одного и того же числа различные имена не допускаются"
 
-#: glib/gregex.c:799
+#: glib/gregex.c:805
 msgid "(*MARK) must have an argument"
 msgstr "(*MARK) должен иметь аргумент"
 
-#: glib/gregex.c:803
+#: glib/gregex.c:809
 msgid "\\c must be followed by an ASCII character"
 msgstr "после \\c должен следовать символ ASCII"
 
-#: glib/gregex.c:807
+#: glib/gregex.c:813
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr "за \\k не следует имя в скобках, угловых скобках или кавычках"
 
-#: glib/gregex.c:811
+#: glib/gregex.c:817
 msgid "\\N is not supported in a class"
 msgstr "\\N в классе не поддерживается"
 
-#: glib/gregex.c:815
+#: glib/gregex.c:821
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "слишком длинное имя в (*MARK), (*PRUNE), (*SKIP) или (*THEN)"
 
-#: glib/gregex.c:819 glib/gregex.c:955
+#: glib/gregex.c:825 glib/gregex.c:961
 msgid "code overflow"
 msgstr "переполнение кода"
 
-#: glib/gregex.c:823
+#: glib/gregex.c:829
 msgid "unrecognized character after (?P"
 msgstr "неопознанный символ после (?P"
 
-#: glib/gregex.c:827
+#: glib/gregex.c:833
 msgid "overran compiling workspace"
 msgstr "переполнение рабочей области компиляции"
 
-#: glib/gregex.c:831
+#: glib/gregex.c:837
 msgid "previously-checked referenced subpattern not found"
 msgstr "не найден ранее проверенный подшаблон со ссылкой"
 
-#: glib/gregex.c:954 glib/gregex.c:1228 glib/gregex.c:2745
+#: glib/gregex.c:960 glib/gregex.c:1234 glib/gregex.c:2751
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Ошибка во время поиска совпадений для регулярного выражения %s: %s"
 
-#: glib/gregex.c:2023
+#: glib/gregex.c:2029
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Библиотека PCRE собрана без поддержки UTF-8"
 
-#: glib/gregex.c:2031
+#: glib/gregex.c:2037
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Библиотека PCRE собрана с несовместимыми параметрами"
 
-#: glib/gregex.c:2148
+#: glib/gregex.c:2154
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "Ошибка при компиляции регулярного выражения '%s', символ %s: %s"
 
-#: glib/gregex.c:3188
+#: glib/gregex.c:3194
 msgid "hexadecimal digit or “}” expected"
 msgstr "ожидалась шестнадцатеричная цифра или символ «}»"
 
-#: glib/gregex.c:3204
+#: glib/gregex.c:3210
 msgid "hexadecimal digit expected"
 msgstr "ожидалась шестнадцатеричная цифра"
 
-#: glib/gregex.c:3244
+#: glib/gregex.c:3250
 msgid "missing “<” in symbolic reference"
 msgstr "в символьной ссылке отсутствует «<»"
 
-#: glib/gregex.c:3253
+#: glib/gregex.c:3259
 msgid "unfinished symbolic reference"
 msgstr "незаконченная символьная ссылка"
 
-#: glib/gregex.c:3260
+#: glib/gregex.c:3266
 msgid "zero-length symbolic reference"
 msgstr "символьная ссылка нулевой длины"
 
-#: glib/gregex.c:3271
+#: glib/gregex.c:3277
 msgid "digit expected"
 msgstr "ожидалась цифра"
 
-#: glib/gregex.c:3289
+#: glib/gregex.c:3295
 msgid "illegal symbolic reference"
 msgstr "недопустимая символьная ссылка"
 
-#: glib/gregex.c:3352
+#: glib/gregex.c:3358
 msgid "stray final “\\”"
 msgstr "нераспознанный «\\» в конце"
 
-#: glib/gregex.c:3356
+#: glib/gregex.c:3362
 msgid "unknown escape sequence"
 msgstr "неизвестная экранирующая последовательность"
 
-#: glib/gregex.c:3366
+#: glib/gregex.c:3372
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Ошибка при анализе текста замены «%s», символ %lu: %s"
@@ -6152,58 +6188,58 @@ msgstr "Дочерний процесс остановлен по сигналу
 msgid "Child process exited abnormally"
 msgstr "Дочерний процесс аварийно завершил работу"
 
-#: glib/gspawn-posix.c:982 glib/gspawn-win32.c:450 glib/gspawn-win32.c:458
+#: glib/gspawn-posix.c:984 glib/gspawn-win32.c:450 glib/gspawn-win32.c:458
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Не удалось выполнить чтение из дочернего канала (%s)"
 
-#: glib/gspawn-posix.c:1363
+#: glib/gspawn-posix.c:1365
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Не удалось запустить дочерний процесс \"%s\" (%s)"
 
-#: glib/gspawn-posix.c:1487
+#: glib/gspawn-posix.c:1489
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Не удалось выполнить fork (%s)"
 
-#: glib/gspawn-posix.c:1648 glib/gspawn-win32.c:481
+#: glib/gspawn-posix.c:1650 glib/gspawn-win32.c:481
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Не удалось сменить каталог на «%s» (%s)"
 
-#: glib/gspawn-posix.c:1658
+#: glib/gspawn-posix.c:1660
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Не удалось выполнить дочерний процесс \"%s\" (%s)"
 
-#: glib/gspawn-posix.c:1668
+#: glib/gspawn-posix.c:1670
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
 "Не удалось открыть файл для изменения отображения дескриптора файла (%s)"
 
-#: glib/gspawn-posix.c:1676
+#: glib/gspawn-posix.c:1678
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Не удалось продублировать дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn-posix.c:1685
+#: glib/gspawn-posix.c:1687
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Не удалось выполнить fork для дочернего процесса (%s)"
 
-#: glib/gspawn-posix.c:1693
+#: glib/gspawn-posix.c:1695
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Не удалось закрыть дескриптор файла для дочернего процесса (%s)"
 
-#: glib/gspawn-posix.c:1701
+#: glib/gspawn-posix.c:1703
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Неизвестная ошибка при выполнении дочернего процесса «%s»"
 
-#: glib/gspawn-posix.c:1725
+#: glib/gspawn-posix.c:1727
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -6262,21 +6298,21 @@ msgstr ""
 "Непредвиденная ошибка в функции g_io_channel_win32_poll() при чтении данных "
 "из процесса-потомка"
 
-#: glib/gstrfuncs.c:3358 glib/gstrfuncs.c:3460
+#: glib/gstrfuncs.c:3378 glib/gstrfuncs.c:3480
 msgid "Empty string is not a number"
 msgstr "Пустая строка не является числом"
 
-#: glib/gstrfuncs.c:3382
+#: glib/gstrfuncs.c:3402
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "«%s» не является числом со знаком"
 
-#: glib/gstrfuncs.c:3392 glib/gstrfuncs.c:3496
+#: glib/gstrfuncs.c:3412 glib/gstrfuncs.c:3516
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Число «%s» находится вне границ [%s, %s]"
 
-#: glib/gstrfuncs.c:3486
+#: glib/gstrfuncs.c:3506
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "«%s» не является числом без знака"
@@ -6341,11 +6377,11 @@ msgstr "Не хватает символа «=» и значения парам�
 msgid "Failed to allocate memory"
 msgstr "Не удалось зарезервировать память"
 
-#: glib/gutf8.c:1044
+#: glib/gutf8.c:1042
 msgid "Character out of range for UTF-8"
 msgstr "Символ находится вне диапазона для UTF-8"
 
-#: glib/gutf8.c:1146 glib/gutf8.c:1155 glib/gutf8.c:1285 glib/gutf8.c:1294
+#: glib/gutf8.c:1144 glib/gutf8.c:1153 glib/gutf8.c:1284 glib/gutf8.c:1293
 #: glib/gutf8.c:1433 glib/gutf8.c:1530
 msgid "Invalid sequence in conversion input"
 msgstr ""
@@ -6356,133 +6392,133 @@ msgid "Character out of range for UTF-16"
 msgstr "Символ находится вне диапазона для UTF-16"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kB"
-#: glib/gutils.c:2974
+#: glib/gutils.c:2873
 msgid "kB"
 msgstr "КБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MB"
-#: glib/gutils.c:2976
+#: glib/gutils.c:2875
 msgid "MB"
 msgstr "МБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GB"
-#: glib/gutils.c:2978
+#: glib/gutils.c:2877
 msgid "GB"
 msgstr "ГБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TB"
-#: glib/gutils.c:2980
+#: glib/gutils.c:2879
 msgid "TB"
 msgstr "ТБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PB"
-#: glib/gutils.c:2982
+#: glib/gutils.c:2881
 msgid "PB"
 msgstr "ПБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EB"
-#: glib/gutils.c:2984
+#: glib/gutils.c:2883
 msgid "EB"
 msgstr "ЭБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 KiB"
-#: glib/gutils.c:2988
+#: glib/gutils.c:2887
 msgid "KiB"
 msgstr "КиБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MiB"
-#: glib/gutils.c:2990
+#: glib/gutils.c:2889
 msgid "MiB"
 msgstr "МиБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
-#: glib/gutils.c:2992
+#: glib/gutils.c:2891
 msgid "GiB"
 msgstr "ГиБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
-#: glib/gutils.c:2994
+#: glib/gutils.c:2893
 msgid "TiB"
 msgstr "ТиБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PiB"
-#: glib/gutils.c:2996
+#: glib/gutils.c:2895
 msgid "PiB"
 msgstr "ПиБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EiB"
-#: glib/gutils.c:2998
+#: glib/gutils.c:2897
 msgid "EiB"
 msgstr "ЭиБ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kbit"
-#: glib/gutils.c:3002
+#: glib/gutils.c:2901
 msgid "kbit"
 msgstr "Кбит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mbit"
-#: glib/gutils.c:3004
+#: glib/gutils.c:2903
 msgid "Mbit"
 msgstr "Мбит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gbit"
-#: glib/gutils.c:3006
+#: glib/gutils.c:2905
 msgid "Gbit"
 msgstr "Гбит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tbit"
-#: glib/gutils.c:3008
+#: glib/gutils.c:2907
 msgid "Tbit"
 msgstr "Тбит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pbit"
-#: glib/gutils.c:3010
+#: glib/gutils.c:2909
 msgid "Pbit"
 msgstr "Пбит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Ebit"
-#: glib/gutils.c:3012
+#: glib/gutils.c:2911
 msgid "Ebit"
 msgstr "Эбит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Kibit"
-#: glib/gutils.c:3016
+#: glib/gutils.c:2915
 msgid "Kibit"
 msgstr "Кибит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mibit"
-#: glib/gutils.c:3018
+#: glib/gutils.c:2917
 msgid "Mibit"
 msgstr "Мибит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gibit"
-#: glib/gutils.c:3020
+#: glib/gutils.c:2919
 msgid "Gibit"
 msgstr "Гибит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tibit"
-#: glib/gutils.c:3022
+#: glib/gutils.c:2921
 msgid "Tibit"
 msgstr "Тибит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pibit"
-#: glib/gutils.c:3024
+#: glib/gutils.c:2923
 msgid "Pibit"
 msgstr "Пибит"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Eibit"
-#: glib/gutils.c:3026
+#: glib/gutils.c:2925
 msgid "Eibit"
 msgstr "Эибит"
 
-#: glib/gutils.c:3064
+#: glib/gutils.c:2963
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "байт"
 msgstr[1] "байта"
 msgstr[2] "байт"
 
-#: glib/gutils.c:3068
+#: glib/gutils.c:2967
 msgid "bit"
 msgid_plural "bits"
 msgstr[0] "бит"
@@ -6491,7 +6527,7 @@ msgstr[2] "бит"
 
 #. Translators: The "%u" is replaced with the size value, like "13"; it could
 #. * be part of "13 bytes", but only the number is requested this time.
-#: glib/gutils.c:3076
+#: glib/gutils.c:2975
 #, c-format
 msgctxt "format-size"
 msgid "%u"
@@ -6499,7 +6535,7 @@ msgstr "%u"
 
 #. Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1u". An example: "13 bytes"
-#: glib/gutils.c:3081
+#: glib/gutils.c:2980
 #, c-format
 msgctxt "format-size"
 msgid "%u %s"
@@ -6507,7 +6543,7 @@ msgstr "%u %s"
 
 #. Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
 #. * be part of "13.0 MB", but only the number is requested this time.
-#: glib/gutils.c:3117
+#: glib/gutils.c:3016
 #, c-format
 msgctxt "format-size"
 msgid "%.1f"
@@ -6516,14 +6552,14 @@ msgstr "%.1f"
 #. Translators: The first "%.1f" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1.1f". Keep the no-break space between the value and
 #. * the unit symbol. An example: "13.0 MB"
-#: glib/gutils.c:3123
+#: glib/gutils.c:3022
 #, c-format
 msgctxt "format-size"
 msgid "%.1f %s"
 msgstr "%.1f %s"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:3163
+#: glib/gutils.c:3062
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6532,7 +6568,7 @@ msgstr[1] "%s байта"
 msgstr[2] "%s байт"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:3168
+#: glib/gutils.c:3067
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6540,7 +6576,7 @@ msgstr[0] "%s бит"
 msgstr[1] "%s бита"
 msgstr[2] "%s бит"
 
-#: glib/gutils.c:3209
+#: glib/gutils.c:3108
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6553,32 +6589,32 @@ msgstr[2] "%u байт"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3222
+#: glib/gutils.c:3121
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
-#: glib/gutils.c:3227
+#: glib/gutils.c:3126
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
-#: glib/gutils.c:3232
+#: glib/gutils.c:3131
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
-#: glib/gutils.c:3237
+#: glib/gutils.c:3136
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
-#: glib/gutils.c:3242
+#: glib/gutils.c:3141
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
-#: glib/gutils.c:3247
+#: glib/gutils.c:3146
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЭБ"
