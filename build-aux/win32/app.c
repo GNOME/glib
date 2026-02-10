@@ -28,7 +28,7 @@
 #include <assert.h>
 #include <crtdbg.h>
 
-#ifdef _MSC_VER
+#ifdef HAVE_VCRUNTIME_H
 #include <vcruntime.h>
 #endif
 
@@ -156,7 +156,7 @@ static void startup (void);
 __pragma (section (".CRT$XCT", long, read))
 
 __declspec (allocate (".CRT$XCT"))
-const void (*ptr_startup) (void) = startup;
+void (* const ptr_startup) (void) = startup;
 
 #ifdef _M_IX86
 __pragma (comment (linker, "/INCLUDE:" "_ptr_startup"))

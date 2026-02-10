@@ -556,6 +556,10 @@ test_string_free (void)
 }
 
 #if G_CXX_STD_CHECK_VERSION(14)
+#if !defined (_MSC_VER) || _MSC_VER >= 1910 /* VS2017 */
+/* N3652 Extended Constexpr is not supported in VS2015
+ * https://learn.microsoft.com/en-us/cpp/overview/visual-cpp-language-conformance
+ */
 static constexpr gboolean
 g_likely_test_expr (void)
 {
@@ -573,6 +577,7 @@ test_constexpr_var_init (void)
                   "for compatibility with constexpr");
   g_assert_true (g_likely_test_expr ());
 }
+#endif
 #endif
 
 #ifdef G_OS_WIN32
@@ -635,7 +640,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/C++/string-free", test_string_free);
 
 #if G_CXX_STD_CHECK_VERSION(14)
+#if !defined (_MSC_VER) || _MSC_VER >= 1910 /* VS2017 */
   g_test_add_func ("/C++/constexpr-var-init", test_constexpr_var_init);
+#endif
 #endif
 
 #ifdef G_OS_WIN32
