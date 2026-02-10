@@ -3136,7 +3136,7 @@ g_clock_win32_init (void)
   g_monotonic_nsec_per_tick = (double) G_NSEC_PER_SEC / freq.QuadPart;
 }
 
-gint64
+uint64_t
 g_get_monotonic_time_ns (void)
 {
   if (G_LIKELY (g_monotonic_nsec_per_tick != 0))
@@ -3144,7 +3144,7 @@ g_get_monotonic_time_ns (void)
       LARGE_INTEGER ticks;
 
       if (QueryPerformanceCounter (&ticks))
-        return (gint64) (ticks.QuadPart * g_monotonic_nsec_per_tick);
+        return (uint64_t) (ticks.QuadPart * g_monotonic_nsec_per_tick);
 
       g_warning ("QueryPerformanceCounter Failed (%lu)", GetLastError ());
       g_monotonic_nsec_per_tick = 0;
@@ -3153,11 +3153,11 @@ g_get_monotonic_time_ns (void)
   return 0;
 }
 #elif defined(HAVE_MACH_MACH_TIME_H) /* Mac OS */
-gint64
+uint64_t
 g_get_monotonic_time_ns (void)
 {
   mach_timebase_info_data_t timebase_info;
-  guint64 val;
+  uint64_t val;
 
   /* we get nanoseconds from mach_absolute_time() using timebase_info */
   mach_timebase_info (&timebase_info);
@@ -3168,18 +3168,18 @@ g_get_monotonic_time_ns (void)
 #ifdef HAVE_UINT128_T
       val = ((__uint128_t) val * (__uint128_t) timebase_info.numer) / timebase_info.denom;
 #else
-      guint64 t_high, t_low;
-      guint64 result_high, result_low;
+      uint64_t t_high, t_low;
+      uint64_t result_high, result_low;
 
       /* 64 bit x 32 bit / 32 bit with 96-bit intermediate 
        * algorithm lifted from qemu */
-      t_low = (val & 0xffffffffLL) * (guint64) timebase_info.numer;
-      t_high = (val >> 32) * (guint64) timebase_info.numer;
+      t_low = (val & 0xffffffffLL) * (uint64_t) timebase_info.numer;
+      t_high = (val >> 32) * (uint64_t) timebase_info.numer;
       t_high += (t_low >> 32);
-      result_high = t_high / (guint64) timebase_info.denom;
-      result_low = (((t_high % (guint64) timebase_info.denom) << 32) +
+      result_high = t_high / (uint64_t) timebase_info.denom;
+      result_low = (((t_high % (uint64_t) timebase_info.denom) << 32) +
                     (t_low & 0xffffffff)) /
-                   (guint64) timebase_info.denom;
+                   (uint64_t) timebase_info.denom;
       val = ((result_high << 32) | result_low);
 #endif
     }
@@ -3187,18 +3187,18 @@ g_get_monotonic_time_ns (void)
   return val;
 }
 #else
-gint64
+uint64_t
 g_get_monotonic_time_ns (void)
 {
   struct timespec ts;
-  gint result;
+  int result;
 
   result = clock_gettime (CLOCK_MONOTONIC, &ts);
 
   if G_UNLIKELY (result != 0)
     g_error ("GLib requires working CLOCK_MONOTONIC");
 
-  return (((gint64) ts.tv_sec) * G_NSEC_PER_SEC) + ts.tv_nsec;
+  return (((uint64_t) ts.tv_sec) * G_NSEC_PER_SEC) + ts.tv_nsec;
 }
 #endif
 
