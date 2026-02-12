@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-01-20 09:58+0000\n"
-"PO-Revision-Date: 2026-01-20 12:05+0100\n"
+"POT-Creation-Date: 2026-02-10 19:17+0000\n"
+"PO-Revision-Date: 2026-02-11 13:49+0100\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -338,7 +338,7 @@ msgstr "Spațiu insuficient în destinație"
 #: gio/gcharsetconverter.c:357 gio/gdatainputstream.c:842
 #: gio/gdatainputstream.c:1276 glib/gconvert.c:358 glib/gconvert.c:790
 #: glib/giochannel.c:1571 glib/giochannel.c:1613 glib/giochannel.c:2473
-#: glib/gutf8.c:967 glib/gutf8.c:1423
+#: glib/gutf8.c:966 glib/gutf8.c:1423
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secvență de octeți incorectă la intrarea pentru conversie"
 
@@ -1089,13 +1089,13 @@ msgstr ""
 "Cu „%s COMANDĂ --help” se obține ajutor pentru fiecare comandă.\n"
 
 #: gio/gdbus-tool.c:206 gio/gdbus-tool.c:278 gio/gdbus-tool.c:349
-#: gio/gdbus-tool.c:373 gio/gdbus-tool.c:918 gio/gdbus-tool.c:1295
-#: gio/gdbus-tool.c:1782
+#: gio/gdbus-tool.c:373 gio/gdbus-tool.c:918 gio/gdbus-tool.c:1301
+#: gio/gdbus-tool.c:1788
 #, c-format
 msgid "Error: %s\n"
 msgstr "Eroare: %s\n"
 
-#: gio/gdbus-tool.c:217 gio/gdbus-tool.c:291 gio/gdbus-tool.c:1798
+#: gio/gdbus-tool.c:217 gio/gdbus-tool.c:291 gio/gdbus-tool.c:1804
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Eroare la analizarea introspecției XML: %s\n"
@@ -1106,7 +1106,7 @@ msgid "Error: %s is not a valid name\n"
 msgstr "Eroare: %s nu este un nume corect\n"
 
 #: gio/gdbus-tool.c:260 gio/gdbus-tool.c:804 gio/gdbus-tool.c:1121
-#: gio/gdbus-tool.c:1948 gio/gdbus-tool.c:2185
+#: gio/gdbus-tool.c:1954 gio/gdbus-tool.c:2191
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Eroare: calea %s către obiect nu este corectă\n"
@@ -1182,8 +1182,8 @@ msgstr "Numele semnalului și interfeței"
 msgid "Emit a signal."
 msgstr "Emite un semnal."
 
-#: gio/gdbus-tool.c:742 gio/gdbus-tool.c:1058 gio/gdbus-tool.c:1885
-#: gio/gdbus-tool.c:2114 gio/gdbus-tool.c:2334
+#: gio/gdbus-tool.c:742 gio/gdbus-tool.c:1058 gio/gdbus-tool.c:1891
+#: gio/gdbus-tool.c:2120 gio/gdbus-tool.c:2340
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Eroare la conectare: %s\n"
@@ -1193,7 +1193,7 @@ msgstr "Eroare la conectare: %s\n"
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Eroare: %s nu este un nume unic de magistrală corect.\n"
 
-#: gio/gdbus-tool.c:781 gio/gdbus-tool.c:1101 gio/gdbus-tool.c:1928
+#: gio/gdbus-tool.c:781 gio/gdbus-tool.c:1101 gio/gdbus-tool.c:1934
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Eroare: calea către obiect nu a fost specificată\n"
@@ -1221,7 +1221,7 @@ msgid "Error: %s is not a valid member name\n"
 msgstr "Eroare: %s nu este un nume corect de membru\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:893 gio/gdbus-tool.c:1233
+#: gio/gdbus-tool.c:893 gio/gdbus-tool.c:1239
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Eroare la analizarea parametrului %d: %s\n"
@@ -1255,12 +1255,12 @@ msgstr "Permite autorizarea interactivă"
 msgid "Invoke a method on a remote object."
 msgstr "Invocă o metodă pe un obiect la distanță."
 
-#: gio/gdbus-tool.c:1075 gio/gdbus-tool.c:1902 gio/gdbus-tool.c:2139
+#: gio/gdbus-tool.c:1075 gio/gdbus-tool.c:1908 gio/gdbus-tool.c:2145
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Eroare: destinația nu a fost specificată\n"
 
-#: gio/gdbus-tool.c:1086 gio/gdbus-tool.c:1919 gio/gdbus-tool.c:2150
+#: gio/gdbus-tool.c:1086 gio/gdbus-tool.c:1925 gio/gdbus-tool.c:2156
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Eroare: %s nu este un nume corect de magistrală\n"
@@ -1270,65 +1270,65 @@ msgstr "Eroare: %s nu este un nume corect de magistrală\n"
 msgid "Error: Method name is not specified\n"
 msgstr "Eroare: numele metodei nu a fost specificat\n"
 
-#: gio/gdbus-tool.c:1147
+#: gio/gdbus-tool.c:1147 gio/gdbus-tool.c:1155
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Eroare: numele metodei „%s” nu este corect\n"
 
-#: gio/gdbus-tool.c:1225
+#: gio/gdbus-tool.c:1231
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Eroare la analizarea parametrului %d cu tipul „%s”: %s\n"
 
-#: gio/gdbus-tool.c:1744
+#: gio/gdbus-tool.c:1750
 msgid "Destination name to introspect"
 msgstr "Numele destinației de introspectat"
 
-#: gio/gdbus-tool.c:1745
+#: gio/gdbus-tool.c:1751
 msgid "Object path to introspect"
 msgstr "Calea obiectului de introspectat"
 
-#: gio/gdbus-tool.c:1746
+#: gio/gdbus-tool.c:1752
 msgid "Print XML"
 msgstr "Afișează XML"
 
-#: gio/gdbus-tool.c:1747
+#: gio/gdbus-tool.c:1753
 msgid "Introspect children"
 msgstr "Introspectează inferiorii"
 
-#: gio/gdbus-tool.c:1748
+#: gio/gdbus-tool.c:1754
 msgid "Only print properties"
 msgstr "Afișează doar proprietățile"
 
-#: gio/gdbus-tool.c:1837
+#: gio/gdbus-tool.c:1843
 msgid "Introspect a remote object."
 msgstr "Introspectează un obiect la distanță."
 
-#: gio/gdbus-tool.c:2040
+#: gio/gdbus-tool.c:2046
 msgid "Destination name to monitor"
 msgstr "Numele destinației de monitorizat"
 
-#: gio/gdbus-tool.c:2041
+#: gio/gdbus-tool.c:2047
 msgid "Object path to monitor"
 msgstr "Calea către obiectul de monitorizat"
 
-#: gio/gdbus-tool.c:2066
+#: gio/gdbus-tool.c:2072
 msgid "Monitor a remote object."
 msgstr "Monitorizează un obiect la distanță."
 
-#: gio/gdbus-tool.c:2124
+#: gio/gdbus-tool.c:2130
 #, c-format
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr ""
 "Eroare: nu se poate monitoriza o conexiune care nu este o magistrală de "
 "mesaje\n"
 
-#: gio/gdbus-tool.c:2248
+#: gio/gdbus-tool.c:2254
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr ""
 "Serviciu de activat înainte de a-l aștepta pe celălalt (nume bine cunoscut)"
 
-#: gio/gdbus-tool.c:2251
+#: gio/gdbus-tool.c:2257
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1336,30 +1336,30 @@ msgstr ""
 "Limita de timp de așteptat înainte de a ieși cu o eroare (secunde); 0 pentru "
 "nicio limită de timp (prestabilit)"
 
-#: gio/gdbus-tool.c:2299
+#: gio/gdbus-tool.c:2305
 msgid "[OPTION…] BUS-NAME"
 msgstr "[OPȚIUNE…] NUME-MAGISTRALĂ"
 
-#: gio/gdbus-tool.c:2300
+#: gio/gdbus-tool.c:2306
 msgid "Wait for a bus name to appear."
 msgstr "Așteaptă apariția unui nume de magistrală."
 
-#: gio/gdbus-tool.c:2376
+#: gio/gdbus-tool.c:2382
 #, c-format
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Eroare: trebuie specificat un serviciu de activat.\n"
 
-#: gio/gdbus-tool.c:2381
+#: gio/gdbus-tool.c:2387
 #, c-format
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Eroare: trebuie specificat un serviciu care trebuie așteptat.\n"
 
-#: gio/gdbus-tool.c:2386
+#: gio/gdbus-tool.c:2392
 #, c-format
 msgid "Error: Too many arguments.\n"
 msgstr "Eroare: prea multe argumente.\n"
 
-#: gio/gdbus-tool.c:2394 gio/gdbus-tool.c:2401
+#: gio/gdbus-tool.c:2400 gio/gdbus-tool.c:2407
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Eroare: %s nu este un nume corect și bine cunoscut de magistrală.\n"
@@ -1546,7 +1546,7 @@ msgstr "Nu se poate copia fișierul special"
 msgid "Invalid symlink value given"
 msgstr "S-a primit o valoare incorectă pentru legătura simbolică"
 
-#: gio/gfile.c:4526 glib/gfileutils.c:2434
+#: gio/gfile.c:4526 glib/gfileutils.c:2435
 msgid "Symbolic links not supported"
 msgstr "Legăturile simbolice nu sunt implementate"
 
@@ -1888,26 +1888,31 @@ msgid "Use default file modification timestamps for the destination"
 msgstr ""
 "Folosește pentru destinație data prestabilită de modificare a fișierului"
 
-#: gio/gio-tool-copy.c:78 gio/gio-tool-move.c:69
+#: gio/gio-tool-copy.c:91
 #, c-format
-msgid "Transferred %s out of %s (%s/s)"
-msgstr "Transferat %s din %s (%s/s)"
+msgid "Copied %s (average: %s/s)"
+msgstr "S-au copiat %s (medie: %s/s)"
+
+#: gio/gio-tool-copy.c:96
+#, c-format
+msgid "Copied %s out of %s (%s/s; average: %s/s)"
+msgstr "S-au copiat %s din %s (%s/s; medie: %s/s)"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-copy.c:104 gio/gio-tool-move.c:96
+#: gio/gio-tool-copy.c:126 gio/gio-tool-move.c:118
 msgid "SOURCE"
 msgstr "SURSĂ"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-copy.c:104 gio/gio-tool-move.c:96 gio/gio-tool-save.c:162
+#: gio/gio-tool-copy.c:126 gio/gio-tool-move.c:118 gio/gio-tool-save.c:162
 msgid "DESTINATION"
 msgstr "DESTINAȚIE"
 
-#: gio/gio-tool-copy.c:109
+#: gio/gio-tool-copy.c:131
 msgid "Copy one or more files from SOURCE to DESTINATION."
 msgstr "Copiază unul sau mai multe fișiere de la SURSĂ la DESTINAȚIE."
 
-#: gio/gio-tool-copy.c:111
+#: gio/gio-tool-copy.c:133
 msgid ""
 "gio copy is similar to the traditional cp utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1919,12 +1924,12 @@ msgstr ""
 "asemănător\n"
 "cu smb://server/resource/file.txt"
 
-#: gio/gio-tool-copy.c:153
+#: gio/gio-tool-copy.c:175
 #, c-format
 msgid "Destination %s is not a directory"
 msgstr "Destinația %s nu este un dosar"
 
-#: gio/gio-tool-copy.c:202 gio/gio-tool-move.c:188
+#: gio/gio-tool-copy.c:225 gio/gio-tool-move.c:210
 #, c-format
 msgid "%s: overwrite “%s”? "
 msgstr "%s: se suprascrie „%s”? "
@@ -2316,11 +2321,21 @@ msgstr "Montează sau demontează locurile de stocare."
 msgid "Don’t use copy and delete fallback"
 msgstr "Nu utiliza opțiunile de revenire pentru copiere și ștergere"
 
-#: gio/gio-tool-move.c:101
+#: gio/gio-tool-move.c:83
+#, c-format
+msgid "Transferred %s (average: %s/s)"
+msgstr "S-au transferat %s (medie: %s/s)"
+
+#: gio/gio-tool-move.c:88
+#, c-format
+msgid "Transferred %s out of %s (%s/s; average: %s/s)"
+msgstr "S-au transferat %s din %s (%s/s; medie: %s/s)"
+
+#: gio/gio-tool-move.c:123
 msgid "Move one or more files from SOURCE to DEST."
 msgstr "Mută unul sau mai multe fișiere de la SURSĂ la DESTINAȚIE."
 
-#: gio/gio-tool-move.c:103
+#: gio/gio-tool-move.c:125
 msgid ""
 "gio move is similar to the traditional mv utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -2332,7 +2347,7 @@ msgstr ""
 "asemănător\n"
 "cu smb://server/resource/file.txt"
 
-#: gio/gio-tool-move.c:145
+#: gio/gio-tool-move.c:167
 #, c-format
 msgid "Target %s is not a directory"
 msgstr "Ținta %s nu este un dosar"
@@ -3658,13 +3673,13 @@ msgstr "%s nu este implementat"
 msgid "Invalid domain"
 msgstr "Domeniu greșit"
 
-#: gio/gresource.c:688 gio/gresourcefile.c:475 gio/gresourcefile.c:599
+#: gio/gresource.c:692 gio/gresourcefile.c:475 gio/gresourcefile.c:599
 #: gio/gresourcefile.c:760
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Resursa de la „%s” nu există"
 
-#: gio/gresource.c:911
+#: gio/gresource.c:915
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "Resursa de la „%s” nu s-a putut decomprima"
@@ -4340,13 +4355,13 @@ msgstr "Proxy-ul SOCKSv5 nu acceptă tipul de adresă furnizat."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Eroare necunoscută a proxy-ului SOCKSv5."
 
-#: gio/gtestdbus.c:634 glib/gspawn-win32.c:411
+#: gio/gtestdbus.c:640 glib/gspawn-win32.c:411
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Nu s-a putut crea conectorul „pipe” pentru comunicarea cu procesul copil (%s)"
 
-#: gio/gtestdbus.c:641
+#: gio/gtestdbus.c:647
 #, c-format
 msgid "Pipes are not supported in this platform"
 msgstr "Conductele nu sunt acceptate pe această platformă"
@@ -4838,7 +4853,7 @@ msgstr "Nu s-a putut extinde comanda „%s” cu URI-ul „%s”"
 msgid "Unrepresentable character in conversion input"
 msgstr "Caracter nereprezentabil în intrarea conversiei"
 
-#: glib/gconvert.c:404 glib/gutf8.c:963 glib/gutf8.c:1178 glib/gutf8.c:1315
+#: glib/gconvert.c:404 glib/gutf8.c:962 glib/gutf8.c:1176 glib/gutf8.c:1314
 #: glib/gutf8.c:1419
 msgid "Partial character sequence at end of input"
 msgstr "Secvență parțială de caractere la sfârșitul datelor introduse"
@@ -5306,87 +5321,87 @@ msgstr "Eroare la deschiderea dosarului „%s”: %s"
 #. Translators: the first %s contains the file size
 #. * (already formatted with units), and the second %s
 #. * contains the file name
-#: glib/gfileutils.c:720 glib/gfileutils.c:829
+#: glib/gfileutils.c:721 glib/gfileutils.c:830
 #, c-format
 msgid "Could not allocate %s to read file “%s”"
 msgstr "Nu s-a putut aloca %s pentru a citi fișierul „%s”"
 
-#: glib/gfileutils.c:738
+#: glib/gfileutils.c:739
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Eroare la citirea fișierului „%s”: %s"
 
-#: glib/gfileutils.c:774 glib/gfileutils.c:808
+#: glib/gfileutils.c:775 glib/gfileutils.c:809
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Fișierul „%s” este prea mare"
 
-#: glib/gfileutils.c:855
+#: glib/gfileutils.c:856
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Nu s-a putut citi din fișierul „%s”: %s"
 
-#: glib/gfileutils.c:905 glib/gfileutils.c:980 glib/gfileutils.c:1508
+#: glib/gfileutils.c:906 glib/gfileutils.c:981 glib/gfileutils.c:1509
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Nu s-a putut deschide fișierul „%s”: %s"
 
-#: glib/gfileutils.c:918
+#: glib/gfileutils.c:919
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Nu s-au putut obține atributele fișierului „%s”: fstat() a eșuat: %s"
 
-#: glib/gfileutils.c:949
+#: glib/gfileutils.c:950
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Nu s-a putut deschide fișierul „%s”: fdopen() a eșuat: %s"
 
-#: glib/gfileutils.c:1050
+#: glib/gfileutils.c:1051
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Nu s-a putut redenumi fișierul „%s” în „%s”: g_rename() a eșuat: %s"
 
-#: glib/gfileutils.c:1149
+#: glib/gfileutils.c:1150
 #, c-format
 msgid "Failed to write file “%s”: ftruncate() failed: %s"
 msgstr "Nu s-a putut scrie fișierul „%s”: ftruncate() a eșuat: %s"
 
-#: glib/gfileutils.c:1194
+#: glib/gfileutils.c:1195
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Nu s-a putut scrie fișierul „%s”: write() a eșuat: %s"
 
-#: glib/gfileutils.c:1215
+#: glib/gfileutils.c:1216
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Nu s-a putut scrie fișierul „%s”: fsync() a eșuat: %s"
 
-#: glib/gfileutils.c:1377 glib/gfileutils.c:1818
+#: glib/gfileutils.c:1378 glib/gfileutils.c:1819
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Nu s-a putut crea fișierul „%s”: %s"
 
-#: glib/gfileutils.c:1395
+#: glib/gfileutils.c:1396
 #, c-format
 msgid "Failed to set permissions of “%s”: %s"
 msgstr "Nu s-au putut stabili permisiunile pentru „%s”: %s"
 
-#: glib/gfileutils.c:1442
+#: glib/gfileutils.c:1443
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Fișierul existent „%s” nu a putut fi eliminat: g_unlink() a eșuat: %s"
 
-#: glib/gfileutils.c:1783
+#: glib/gfileutils.c:1784
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Modelul „%s” nu este corect, nu ar trebui să conțină un „%s”"
 
-#: glib/gfileutils.c:1796
+#: glib/gfileutils.c:1797
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Modelul „%s” nu conține XXXXXX"
 
-#: glib/gfileutils.c:2390 glib/gfileutils.c:2419
+#: glib/gfileutils.c:2391 glib/gfileutils.c:2420
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Nu s-a putut citi legătura simbolică „%s”: %s"
@@ -5532,32 +5547,32 @@ msgstr "Nu s-a putut asocia %s%s%s%s: mmap() a eșuat: %s"
 msgid "Failed to open file “%s”: open() failed: %s"
 msgstr "Nu s-a putut deschide fișierul „%s”: open() a eșuat: %s"
 
-#: glib/gmarkup.c:350 glib/gmarkup.c:392
+#: glib/gmarkup.c:354 glib/gmarkup.c:396
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Eroare pe rândul %d, caracterul %d: "
 
-#: glib/gmarkup.c:414 glib/gmarkup.c:497
+#: glib/gmarkup.c:418 glib/gmarkup.c:501
 #, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
 msgstr "Text codificat UTF-8 incorect în nume — „%s” nu este corect"
 
-#: glib/gmarkup.c:425
+#: glib/gmarkup.c:429
 #, c-format
 msgid "“%s” is not a valid name"
 msgstr "„%s” nu este un nume corect"
 
-#: glib/gmarkup.c:441
+#: glib/gmarkup.c:445
 #, c-format
 msgid "“%s” is not a valid name: “%c”"
 msgstr "„%s” nu este un nume corect: „%c”"
 
-#: glib/gmarkup.c:565
+#: glib/gmarkup.c:569
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Eroare pe rândul %d: %s"
 
-#: glib/gmarkup.c:642
+#: glib/gmarkup.c:646
 #, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
@@ -5566,7 +5581,7 @@ msgstr ""
 "Nu s-a putut analiza „%-.*s”, care ar fi trebuit să fie o cifră într-o "
 "trimitere la caracter (de exemplu &#234;) — poate cifra este prea mare"
 
-#: glib/gmarkup.c:654
+#: glib/gmarkup.c:658
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
@@ -5576,24 +5591,24 @@ msgstr ""
 "utilizat un caracter „&” fără intenția de a începe o entitate — trebuie "
 "eludat „&” ca &amp;"
 
-#: glib/gmarkup.c:680
+#: glib/gmarkup.c:684
 #, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "Trimiterea la caracter „%-.*s” nu codifică un caracter permis"
 
-#: glib/gmarkup.c:718
+#: glib/gmarkup.c:722
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "S-a depistat o entitate goală „&;”; entitățile corecte sunt: &amp; &quot; "
 "&lt; &gt; &apos;"
 
-#: glib/gmarkup.c:726
+#: glib/gmarkup.c:730
 #, c-format
 msgid "Entity name “%-.*s” is not known"
 msgstr "Numele entității „%-.*s” nu este cunoscut"
 
-#: glib/gmarkup.c:731
+#: glib/gmarkup.c:735
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
@@ -5602,11 +5617,11 @@ msgstr ""
 "caracter „&” fără intenția de a începe o entitate — trebuie eludat „&” ca "
 "&amp;"
 
-#: glib/gmarkup.c:1149
+#: glib/gmarkup.c:1153
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Documentul trebuie să înceapă cu un element (de ex. <book>)"
 
-#: glib/gmarkup.c:1193
+#: glib/gmarkup.c:1197
 #, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
@@ -5615,7 +5630,7 @@ msgstr ""
 "„%s” nu este un caracter corect după un caracter „<”; nu poate începe numele "
 "unui element"
 
-#: glib/gmarkup.c:1236
+#: glib/gmarkup.c:1240
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
@@ -5624,12 +5639,12 @@ msgstr ""
 "Caracter neobișnuit „%s”; se aștepta caracterul „>” pentru a termina "
 "eticheta goală „%s”"
 
-#: glib/gmarkup.c:1306
+#: glib/gmarkup.c:1310
 #, c-format
 msgid "Too many attributes in element “%s”"
 msgstr "Prea multe atribute în elementul „%s”"
 
-#: glib/gmarkup.c:1326
+#: glib/gmarkup.c:1330
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
@@ -5637,7 +5652,7 @@ msgstr ""
 "Caracter neobișnuit „%s”, se aștepta un caracter „=” după numele atributului "
 "„%s” al elementului „%s”"
 
-#: glib/gmarkup.c:1368
+#: glib/gmarkup.c:1372
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
@@ -5648,7 +5663,7 @@ msgstr ""
 "termina eticheta de început a elementului „%s”, sau opțional un atribut; "
 "poate s-a utilizat un caracter greșit în numele atributului"
 
-#: glib/gmarkup.c:1413
+#: glib/gmarkup.c:1417
 #, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
@@ -5657,7 +5672,7 @@ msgstr ""
 "Caracter neobișnuit „%s”, se așteptau ghilimele de deschidere după semnul "
 "egal când se dă valoarea atributului „%s” al elementului „%s”"
 
-#: glib/gmarkup.c:1547
+#: glib/gmarkup.c:1551
 #, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
@@ -5666,7 +5681,7 @@ msgstr ""
 "„%s” nu este un caracter corect după caracterele „</”; „%s” nu poate începe "
 "un nume de element"
 
-#: glib/gmarkup.c:1585
+#: glib/gmarkup.c:1589
 #, c-format
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
@@ -5675,27 +5690,27 @@ msgstr ""
 "„%s” nu este un caracter corect după numele elementului de închidere „%s”; "
 "caracterul permis este „>”"
 
-#: glib/gmarkup.c:1597
+#: glib/gmarkup.c:1601
 #, c-format
 msgid "Element “%s” was closed, no element is currently open"
 msgstr "Elementul „%s” a fost închis, nici un element nu este deschis acum"
 
-#: glib/gmarkup.c:1606
+#: glib/gmarkup.c:1610
 #, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr "Elementul „%s” a fost închis, dar elementul deschis acum este „%s”"
 
-#: glib/gmarkup.c:1759
+#: glib/gmarkup.c:1763
 msgid "Document was empty or contained only whitespace"
 msgstr "Documentul era gol sau conținea doar spațiu gol"
 
-#: glib/gmarkup.c:1773
+#: glib/gmarkup.c:1777
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat imediat după o paranteză "
 "unghiulară de deschidere „<”"
 
-#: glib/gmarkup.c:1781 glib/gmarkup.c:1826
+#: glib/gmarkup.c:1785 glib/gmarkup.c:1830
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
@@ -5704,7 +5719,7 @@ msgstr ""
 "Documentul s-a terminat în mod neașteptat cu unele elemente încă deschise — "
 "„%s” a fost ultimul element deschis"
 
-#: glib/gmarkup.c:1789
+#: glib/gmarkup.c:1793
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -5713,21 +5728,21 @@ msgstr ""
 "Documentul s-a terminat în mod neașteptat, se aștepta un caracter „>” care "
 "să încheie eticheta <%s/>"
 
-#: glib/gmarkup.c:1795
+#: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Documentul s-a terminat în mod neașteptat în numele unui element"
 
-#: glib/gmarkup.c:1801
+#: glib/gmarkup.c:1805
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Documentul s-a terminat în mod neașteptat în numele unui atribut"
 
-#: glib/gmarkup.c:1806
+#: glib/gmarkup.c:1810
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în eticheta ce deschidea un "
 "element."
 
-#: glib/gmarkup.c:1812
+#: glib/gmarkup.c:1816
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -5735,27 +5750,27 @@ msgstr ""
 "Documentul s-a terminat în mod neașteptat după semnul egal care urmează după "
 "numele unui atribut; nicio valoare pentru atribut"
 
-#: glib/gmarkup.c:1819
+#: glib/gmarkup.c:1823
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în timp ce se procesa valoarea "
 "unui atribut"
 
-#: glib/gmarkup.c:1836
+#: glib/gmarkup.c:1840
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în eticheta de închidere a "
 "elementului „%s”"
 
-#: glib/gmarkup.c:1840
+#: glib/gmarkup.c:1844
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în eticheta de închidere a unui "
 "element nedeschis"
 
-#: glib/gmarkup.c:1846
+#: glib/gmarkup.c:1850
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în interiorul unui comentariu sau "
@@ -6299,21 +6314,21 @@ msgstr ""
 "Eroare neașteptată în g_io_channel_win32_poll() la citirea datelor de la "
 "procesul copil"
 
-#: glib/gstrfuncs.c:3377 glib/gstrfuncs.c:3479
+#: glib/gstrfuncs.c:3378 glib/gstrfuncs.c:3480
 msgid "Empty string is not a number"
 msgstr "Șirul gol nu este un număr"
 
-#: glib/gstrfuncs.c:3401
+#: glib/gstrfuncs.c:3402
 #, c-format
 msgid "“%s” is not a signed number"
 msgstr "„%s” nu este un număr negativ"
 
-#: glib/gstrfuncs.c:3411 glib/gstrfuncs.c:3515
+#: glib/gstrfuncs.c:3412 glib/gstrfuncs.c:3516
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
 msgstr "Numărul „%s” se află în afara intervalului [%s, %s]"
 
-#: glib/gstrfuncs.c:3505
+#: glib/gstrfuncs.c:3506
 #, c-format
 msgid "“%s” is not an unsigned number"
 msgstr "„%s” nu este un număr pozitiv"
@@ -6378,11 +6393,11 @@ msgstr "Lipsește „=” și valoarea parametrului"
 msgid "Failed to allocate memory"
 msgstr "Nu s-a putut aloca memoria"
 
-#: glib/gutf8.c:1044
+#: glib/gutf8.c:1042
 msgid "Character out of range for UTF-8"
 msgstr "Caracter în afara limitelor standardului UTF-8"
 
-#: glib/gutf8.c:1146 glib/gutf8.c:1155 glib/gutf8.c:1285 glib/gutf8.c:1294
+#: glib/gutf8.c:1144 glib/gutf8.c:1153 glib/gutf8.c:1284 glib/gutf8.c:1293
 #: glib/gutf8.c:1433 glib/gutf8.c:1530
 msgid "Invalid sequence in conversion input"
 msgstr "Secvență incorectă la intrarea conversiei"
