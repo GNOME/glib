@@ -78,6 +78,7 @@ glib_tests = {
     'link_args' : cc.get_id() == 'gcc' and cc.version().version_compare('> 6')
       ? ['-Wno-alloc-size-larger-than'] : [],
   },
+  'monotonic-time' : {},
   'mutex' : {},
   'node' : {},
   'once' : {},
