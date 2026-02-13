@@ -1,3 +1,39 @@
+Overview of changes in GLib 2.86.4, 2026-02-13
+==============================================
+
+* Fix several security vulnerabilities of varying severity (see below for
+  details)
+
+* Bugs fixed:
+  - #3858 glib-compile-resources: Incorrect compiler detection on Windows when
+    building GTK causes a DoS (L. E. Segovia)
+  - #3863 Iterating over a short (preallocated) GVariant bytestring invalidly
+    refs a NULL GBytes (Christian Hergert)
+  - #3870 (CVE-2026-1484) (YWH-PGM9867-168) Integer Overflow -> Buffer Underflow
+    on Glib through glib/gbase64.c via g_base64_encode_close() leads to OOB
+    Write (Marco Trevisan)
+  - #3871 (CVE-2026-1485) (#YWH-PGM9867-169) Buffer underflow on Glib through
+    gio/gcontenttype-fdo.c via parse_header() lead to OOB Read/Write (Marco
+    Trevisan)
+  - #3872 (CVE-2026-1489) (#YWH-PGM9867-171) Integer Overflow on Glib through
+    glib/guniprop.c via output_marks() lead to OOB Write in
+    glib/gutf8.c:g_unichar_to_utf8() (Marco Trevisan (Treviño))
+  - !4946 Update Romanian translation glib-2-86
+  - !4955 Backport !4954 “glib-compile-resources: Always assume MSVC compiler if
+    VCINSTALLDIR is set” to glib-2-86
+  - !4961 Backport !4960 “glib/gvariant: add failing test for bytestring and fix
+    it” to glib-2-86
+  - !4979 [glib-2-86] gbase64: Use gsize to prevent potential overflow
+  - !4981 [glib-2-86] gio/gcontenttype-fdo: Do not overflow if header is longer
+    than MAXINT
+  - !4984 [glib-2-86] guniprop: Use size_t for output_marks length
+  - !5010 Update Kazakh translation
+
+* Translation updates:
+  - Kazakh (Baurzhan Muftakhidinov)
+  - Romanian (Antonio Marin)
+
+
 Overview of changes in GLib 2.86.3, 2025-12-08
 ==============================================
 
