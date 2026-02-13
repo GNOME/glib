@@ -28,6 +28,8 @@
 #include <glib/gslist.h>
 #include <glib/gthread.h>
 
+#include <stdint.h>
+
 G_BEGIN_DECLS
 
 typedef enum /*< flags >*/
@@ -830,6 +832,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 GLIB_AVAILABLE_IN_ALL
 gint64 g_get_monotonic_time               (void);
+GLIB_AVAILABLE_IN_2_88
+uint64_t g_get_monotonic_time_ns          (void);
 GLIB_AVAILABLE_IN_ALL
 gint64 g_get_real_time                    (void);
 

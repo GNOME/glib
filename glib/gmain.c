@@ -3071,7 +3071,7 @@ g_get_real_time (void)
 /**
  * g_get_monotonic_time:
  *
- * Queries the system monotonic time.
+ * Queries the system monotonic time in microseconds.
  *
  * The monotonic clock will always increase and doesn’t suffer
  * discontinuities when the user (or NTP) changes the system time.  It
@@ -3083,18 +3083,43 @@ g_get_real_time (void)
  * [`poll()`](man:poll(2)) but it
  * may not always be possible to do this.
  *
+ * A more accurate version of this function exists.
+ * [func@GLib.get_monotonic_time_ns] returns the time in nanoseconds.
+ *
  * Returns: the monotonic time, in microseconds
  * Since: 2.28
  **/
+/**
+ * g_get_monotonic_time_ns:
+ *
+ * Queries the system monotonic time in nanoseconds.
+ *
+ * The monotonic clock will always increase and doesn’t suffer
+ * discontinuities when the user (or NTP) changes the system time.  It
+ * may or may not continue to tick during times where the machine is
+ * suspended.
+ *
+ * We try to use the clock that corresponds as closely as possible to
+ * the passage of time as measured by system calls such as
+ * [`poll()`](man:poll(2)) but it
+ * may not always be possible to do this.
+ *
+ * Another version of this function exists.
+ * [func@GLib.get_monotonic_time] returns the time in microseconds.
+ * If you want to support older GLib versions, it is an alternative.
+ *
+ * Returns: the monotonic time, in nanoseconds
+ * Since: 2.88
+ **/
 #if defined (G_OS_WIN32)
 /* NOTE:
- * time_usec = ticks_since_boot * usec_per_sec / ticks_per_sec
+ * time_usec = ticks_since_boot * nsec_per_sec / ticks_per_sec
  *
- * Doing (ticks_since_boot * usec_per_sec) before the division can overflow 64 bits
+ * Doing (ticks_since_boot * nsec_per_sec) before the division can overflow 64 bits
  * (ticks_since_boot  / ticks_per_sec) and then multiply would not be accurate enough.
- * So for now we calculate (usec_per_sec / ticks_per_sec) and use floating point
+ * So for now we calculate (nsec_per_sec / ticks_per_sec) and use floating point
  */
-static gdouble g_monotonic_usec_per_tick = 0;
+static double g_monotonic_nsec_per_tick = 0;
 
 void
 g_clock_win32_init (void)
@@ -3108,31 +3133,31 @@ g_clock_win32_init (void)
       return;
     }
 
-  g_monotonic_usec_per_tick = (gdouble)G_USEC_PER_SEC / freq.QuadPart;
+  g_monotonic_nsec_per_tick = (double) G_NSEC_PER_SEC / freq.QuadPart;
 }
 
-gint64
-g_get_monotonic_time (void)
+uint64_t
+g_get_monotonic_time_ns (void)
 {
-  if (G_LIKELY (g_monotonic_usec_per_tick != 0))
+  if (G_LIKELY (g_monotonic_nsec_per_tick != 0))
     {
       LARGE_INTEGER ticks;
 
       if (QueryPerformanceCounter (&ticks))
-        return (gint64)(ticks.QuadPart * g_monotonic_usec_per_tick);
+        return (uint64_t) (ticks.QuadPart * g_monotonic_nsec_per_tick);
 
       g_warning ("QueryPerformanceCounter Failed (%lu)", GetLastError ());
-      g_monotonic_usec_per_tick = 0;
+      g_monotonic_nsec_per_tick = 0;
     }
 
   return 0;
 }
 #elif defined(HAVE_MACH_MACH_TIME_H) /* Mac OS */
-gint64
-g_get_monotonic_time (void)
+uint64_t
+g_get_monotonic_time_ns (void)
 {
   mach_timebase_info_data_t timebase_info;
-  guint64 val;
+  uint64_t val;
 
   /* we get nanoseconds from mach_absolute_time() using timebase_info */
   mach_timebase_info (&timebase_info);
@@ -3141,46 +3166,47 @@ g_get_monotonic_time (void)
   if (timebase_info.numer != timebase_info.denom)
     {
 #ifdef HAVE_UINT128_T
-      val = ((__uint128_t) val * (__uint128_t) timebase_info.numer) / timebase_info.denom / 1000;
+      val = ((__uint128_t) val * (__uint128_t) timebase_info.numer) / timebase_info.denom;
 #else
-      guint64 t_high, t_low;
-      guint64 result_high, result_low;
+      uint64_t t_high, t_low;
+      uint64_t result_high, result_low;
 
       /* 64 bit x 32 bit / 32 bit with 96-bit intermediate 
        * algorithm lifted from qemu */
-      t_low = (val & 0xffffffffLL) * (guint64) timebase_info.numer;
-      t_high = (val >> 32) * (guint64) timebase_info.numer;
+      t_low = (val & 0xffffffffLL) * (uint64_t) timebase_info.numer;
+      t_high = (val >> 32) * (uint64_t) timebase_info.numer;
       t_high += (t_low >> 32);
-      result_high = t_high / (guint64) timebase_info.denom;
-      result_low = (((t_high % (guint64) timebase_info.denom) << 32) +
+      result_high = t_high / (uint64_t) timebase_info.denom;
+      result_low = (((t_high % (uint64_t) timebase_info.denom) << 32) +
                     (t_low & 0xffffffff)) /
-                   (guint64) timebase_info.denom;
-      val = ((result_high << 32) | result_low) / 1000;
+                   (uint64_t) timebase_info.denom;
+      val = ((result_high << 32) | result_low);
 #endif
-    }
-  else
-    {
-      /* nanoseconds to microseconds */
-      val = val / 1000;
     }
 
   return val;
 }
 #else
-gint64
-g_get_monotonic_time (void)
+uint64_t
+g_get_monotonic_time_ns (void)
 {
   struct timespec ts;
-  gint result;
+  int result;
 
   result = clock_gettime (CLOCK_MONOTONIC, &ts);
 
   if G_UNLIKELY (result != 0)
     g_error ("GLib requires working CLOCK_MONOTONIC");
 
-  return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
+  return (((uint64_t) ts.tv_sec) * G_NSEC_PER_SEC) + ts.tv_nsec;
 }
 #endif
+
+gint64
+g_get_monotonic_time (void)
+{
+  return g_get_monotonic_time_ns () / 1000;
+}
 
 static void
 g_main_dispatch_free (gpointer dispatch)

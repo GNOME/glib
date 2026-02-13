@@ -119,6 +119,15 @@
  */
 
 /**
+ * G_NSEC_PER_SEC:
+ *
+ * Number of nanoseconds in one second (1 billion).
+ * This macro is provided for code readability.
+ *
+ * Since: 2.88
+ */
+
+/**
  * GTimeVal:
  * @tv_sec: seconds
  * @tv_usec: microseconds

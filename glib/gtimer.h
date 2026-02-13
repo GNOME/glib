@@ -42,6 +42,7 @@ G_BEGIN_DECLS
 typedef struct _GTimer		GTimer;
 
 #define G_USEC_PER_SEC 1000000
+#define G_NSEC_PER_SEC G_GUINT64_CONSTANT(1000000000) GLIB_AVAILABLE_MACRO_IN_2_88
 
 GLIB_AVAILABLE_IN_ALL
 GTimer*  g_timer_new	         (void);
