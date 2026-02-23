@@ -643,15 +643,6 @@ gint
   return result;
 }
 
-void
-(g_atomic_int_set) (volatile gint *atomic,
-                    gint           newval)
-{
-  MemoryBarrier ();
-  _ReadWriteBarrier ();
-  __iso_volatile_store32 (atomic, newval);
-}
-
 #else /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
 
 gint
@@ -664,16 +655,14 @@ gint
   return result;
 }
 
+#endif /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
+
 void
 (g_atomic_int_set) (volatile gint *atomic,
                     gint           newval)
 {
-  MemoryBarrier ();
-  _ReadWriteBarrier ();
-  *atomic = newval;
+  (void) InterlockedExchange (atomic, newval);
 }
-
-#endif /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
 
 void
 (g_atomic_int_inc) (volatile gint *atomic)
@@ -774,25 +763,6 @@ gpointer
   return result;
 }
 
-void
-(g_atomic_pointer_set) (volatile void *atomic,
-                        gpointer       newval)
-{
-#if GLIB_SIZEOF_VOID_P == 8
-  __int64 volatile *p = (__int64 volatile *) atomic;
-#else
-  __int32 volatile *p = (__int32 volatile *) atomic;
-#endif
-
-  MemoryBarrier ();
-  _ReadWriteBarrier ();
-#if GLIB_SIZEOF_VOID_P == 8
-  __iso_volatile_store64 (p, newval);
-#else
-  __iso_volatile_store32 (p, newval);
-#endif
-}
-
 #else /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
 
 gpointer
@@ -807,18 +777,15 @@ gpointer
   return result;
 }
 
+#endif /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
+
 void
 (g_atomic_pointer_set) (volatile void *atomic,
                         gpointer       newval)
 {
   void * volatile *p = (void * volatile *) atomic;
-
-  MemoryBarrier ();
-  _ReadWriteBarrier ();
-  *p = newval;
+  (void) InterlockedExchangePointer (p, newval);
 }
-
-#endif /* ! defined(HAVE_ISO_VOLATILE_INTRINSICS) */
 
 gboolean
 (g_atomic_pointer_compare_and_exchange) (volatile void *atomic,
