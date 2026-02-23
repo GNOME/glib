@@ -294,7 +294,7 @@ g_inet_address_mask_new_from_string (const gchar  *mask_string,
 {
   GInetAddressMask *mask;
   GInetAddress *addr;
-  gchar *slash;
+  const gchar *slash;
   guint length;
 
   slash = strchr (mask_string, '/');

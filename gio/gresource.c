@@ -455,7 +455,7 @@ g_resource_find_overlay (const gchar    *path,
       gchar *candidate;
 
       {
-        gchar *eq;
+        const gchar *eq;
 
         /* split the overlay into src/dst */
         src = overlay_dirs[i];
