@@ -74,7 +74,7 @@ value_meminit (GValue *value,
  * @g_type: type the [struct@GObject.Value] should hold values of
  *
  * Initializes @value to store values of the given @type, and sets its value
- * to the default for @type.
+ * to the initial value for @type.
  *
  * This must be called before any other methods on a [struct@GObject.Value], so
  * the value knows what type it’s meant to store.
@@ -157,7 +157,7 @@ g_value_copy (const GValue *src_value,
  * g_value_reset:
  * @value: an initialized [struct@GObject.Value] structure
  *
- * Clears the current value in @value and resets it to the default value
+ * Clears the current value in @value and resets it to the initial value
  * (as if the value had just been initialized using
  * [method@GObject.Value.init]).
  *
