@@ -65,6 +65,7 @@
 #include <langinfo.h>
 #endif
 
+#include "glib-private.h"
 #include "gatomic.h"
 #include "gcharset.h"
 #include "gcharsetprivate.h"
@@ -2981,14 +2982,14 @@ date_time_lookup_era (GDateTime *datetime,
 {
   static GMutex era_mutex;
   static GPtrArray *static_era_description = NULL;  /* (mutex era_mutex) (element-type GEraDescriptionSegment) */
-  static const char *static_era_description_locale = NULL;  /* (mutex era_mutex) */
+  static char *static_era_description_locale = NULL;  /* (mutex era_mutex) (owned) */
   const char *current_lc_time = setlocale (LC_TIME, NULL);
   GPtrArray *local_era_description;  /* (element-type GEraDescriptionSegment) */
   GEraDate datetime_date;
 
   g_mutex_lock (&era_mutex);
 
-  if (static_era_description_locale != current_lc_time)
+  if (g_strcmp0 (static_era_description_locale, current_lc_time) != 0)
     {
       const char *era_description_str;
       size_t era_description_str_len;
@@ -3061,7 +3062,9 @@ date_time_lookup_era (GDateTime *datetime,
 
       g_free (tmp);
 
-      static_era_description_locale = current_lc_time;
+      g_free (static_era_description_locale);
+      static_era_description_locale = g_strdup (current_lc_time);
+      g_ignore_leak (static_era_description_locale);
     }
 
   if (static_era_description == NULL)
