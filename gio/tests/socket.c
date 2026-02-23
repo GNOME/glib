@@ -1361,7 +1361,8 @@ static void
 bind_win32_unixfd (int fd)
 {
 #ifdef G_OS_WIN32
-  gint len, ret;
+  gsize len;
+  int ret;
   struct sockaddr_un addr;
 
   memset (&addr, 0, sizeof addr);

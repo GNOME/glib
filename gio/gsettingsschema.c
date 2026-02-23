@@ -1160,8 +1160,8 @@ g_settings_schema_list (GSettingsSchema *schema,
       GHashTableIter iter;
       GHashTable *items;
       gpointer name;
-      gint len;
-      gint i;
+      size_t len;
+      size_t i;
 
       items = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 

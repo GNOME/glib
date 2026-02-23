@@ -1131,7 +1131,7 @@ must_use_null_useddefaultchar(int codepage)
 static char *
 strrstr(const char *str, const char *token)
 {
-    int len = strlen(token);
+    size_t len = strlen(token);
     const char *p = str + strlen(str);
 
     while (str <= --p)

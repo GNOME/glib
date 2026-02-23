@@ -124,7 +124,7 @@ g_document_portal_add_documents (GList       *uris,
 {
   GXdpDocuments *documents = NULL;
   char *documents_mountpoint = NULL;
-  int length;
+  unsigned int length;
   GList *ruris = NULL;
   gboolean *as_is;
   GVariantBuilder builder;
