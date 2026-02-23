@@ -897,7 +897,7 @@ g_uri_split_internal (const gchar  *uri_string,
         {
           if (flags & G_URI_FLAGS_PARSE_RELAXED)
             {
-              gchar *next_at;
+              const gchar *next_at;
 
               /* Any "@"s in the userinfo must be %-encoded, but
                * people get this wrong sometimes. Since "@"s in the

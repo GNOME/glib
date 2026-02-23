@@ -683,7 +683,8 @@ parse_type_internal (GIIrModule  *module,
 
       if (*str == '<')
         {
-          char *tmp, *end;
+          const char *end;
+          char *tmp;
           (str)++;
 
           end = strchr (str, '>');
@@ -1781,7 +1782,7 @@ start_property (GMarkupParseContext  *context,
 static int64_t
 parse_value (const char *str)
 {
-  char *shift_op;
+  const char *shift_op;
 
   /* FIXME just a quick hack */
   shift_op = strstr (str, "<<");

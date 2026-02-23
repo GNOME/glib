@@ -3006,6 +3006,7 @@ date_time_lookup_era (GDateTime *datetime,
                * of whether it uses nuls or semicolons as separators. */
               int n_entries = ERA_DESCRIPTION_N_SEGMENTS;
               const char *s = era_description_str;
+              char *s2;
 
               for (int i = 1; i < n_entries; i++)
                 {
@@ -3021,19 +3022,20 @@ date_time_lookup_era (GDateTime *datetime,
               era_description_str_len = strlen (s) + (s - era_description_str);
 
               /* Replace all the nuls with semicolons. */
-              era_description_str = tmp = g_memdup2 (era_description_str, era_description_str_len + 1);
-              s = era_description_str;
+              s2 = tmp = g_memdup2 (era_description_str, era_description_str_len + 1);
 
               for (int i = 1; i < n_entries; i++)
                 {
-                  char *next_nul = strchr (s, '\0');
+                  char *next_nul = strchr (s2, '\0');
 
-                  if ((size_t) (next_nul - era_description_str) >= era_description_str_len)
+                  if ((size_t) (next_nul - tmp) >= era_description_str_len)
                     break;
 
                   *next_nul = ';';
-                  s = next_nul + 1;
+                  s2 = next_nul + 1;
                 }
+
+              era_description_str = tmp;
             }
 
           /* Convert from the LC_TIME encoding to UTF-8 if needed. */

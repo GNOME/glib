@@ -2577,7 +2577,7 @@ g_path_skip_root (const gchar *file_name)
 const gchar *
 g_basename (const gchar *file_name)
 {
-  gchar *base;
+  const gchar *base;
 
   g_return_val_if_fail (file_name != NULL, NULL);
 
@@ -2585,7 +2585,7 @@ g_basename (const gchar *file_name)
 
 #ifdef G_OS_WIN32
   {
-    gchar *q;
+    const gchar *q;
     q = strrchr (file_name, '/');
     if (base == NULL || (q != NULL && q > base))
       base = q;
@@ -2712,7 +2712,8 @@ g_path_get_basename (const gchar *file_name)
 gchar *
 g_path_get_dirname (const gchar *file_name)
 {
-  gchar *base;
+  const gchar *base;
+  gchar *base_p;
   gsize len;
 
   g_return_val_if_fail (file_name != NULL, NULL);
@@ -2721,7 +2722,7 @@ g_path_get_dirname (const gchar *file_name)
 
 #ifdef G_OS_WIN32
   {
-    gchar *q;
+    const gchar *q;
     q = strrchr (file_name, '/');
     if (base == NULL || (q != NULL && q > base))
       base = q;
@@ -2778,11 +2779,11 @@ g_path_get_dirname (const gchar *file_name)
       if (p == base + 1)
         {
           len = (guint) strlen (file_name) + 1;
-          base = g_new (gchar, len + 1);
-          strcpy (base, file_name);
-          base[len-1] = G_DIR_SEPARATOR;
-          base[len] = 0;
-          return base;
+          base_p = g_new (gchar, len + 1);
+          strcpy (base_p, file_name);
+          base_p[len-1] = G_DIR_SEPARATOR;
+          base_p[len] = 0;
+          return base_p;
         }
       if (G_IS_DIR_SEPARATOR (*p))
         {
@@ -2796,11 +2797,11 @@ g_path_get_dirname (const gchar *file_name)
 #endif
 
   len = (guint) 1 + base - file_name;
-  base = g_new (gchar, len + 1);
-  memmove (base, file_name, len);
-  base[len] = 0;
+  base_p = g_new (gchar, len + 1);
+  memmove (base_p, file_name, len);
+  base_p[len] = 0;
 
-  return base;
+  return base_p;
 }
 
 /**

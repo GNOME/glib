@@ -215,8 +215,8 @@ g_dpgettext (const gchar *domain,
              const gchar *msgctxtid,
              gsize        msgidoffset)
 {
+  const gchar *sep;
   const gchar *translation;
-  gchar *sep;
 
   translation = g_dgettext (domain, msgctxtid);
 

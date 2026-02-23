@@ -2402,7 +2402,7 @@ g_strsplit (const gchar *string,
             const gchar *delimiter,
             gint         max_tokens)
 {
-  char *s;
+  const char *s;
   const gchar *remainder;
   GPtrArray *string_list;
 
@@ -2778,7 +2778,7 @@ g_strstr_len (const gchar *haystack,
   g_return_val_if_fail (needle != NULL, NULL);
 
   if (haystack_len < 0)
-    return strstr (haystack, needle);
+    return (gchar *)strstr (haystack, needle);
   else
     {
       const gchar *p = haystack;

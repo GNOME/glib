@@ -1592,12 +1592,12 @@ g_filename_from_uri (const gchar *uri,
 		     gchar      **hostname,
 		     GError     **error)
 {
-  const char *past_scheme;
   const char *host_part;
   char *unescaped_hostname;
   char *result;
   char *filename;
   char *past_path;
+  char *past_scheme;
   char *temp_uri;
   int offs;
 #ifdef G_OS_WIN32

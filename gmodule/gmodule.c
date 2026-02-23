@@ -612,8 +612,8 @@ g_module_open_full (const gchar   *file_name,
    */
   if (!name)
     {
-      gchar *dot = strrchr (file_name, '.');
-      gchar *slash = strrchr (file_name, G_DIR_SEPARATOR);
+      const gchar *dot = strrchr (file_name, '.');
+      const gchar *slash = strrchr (file_name, G_DIR_SEPARATOR);
 
       /* we make sure the name has a suffix using the deprecated
        * G_MODULE_SUFFIX for backward-compat */

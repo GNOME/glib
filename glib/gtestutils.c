@@ -2918,7 +2918,7 @@ g_test_suite_case_exists (GTestSuite *suite,
                           const char *test_path)
 {
   GSList *iter;
-  char *slash;
+  const char *slash;
   GTestCase *tc;
 
   test_path++;

@@ -1385,7 +1385,8 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
 				 gsize         length,
 				 GError      **error)
 {
-  gchar *key, *key_end, *value_start;
+  gchar *key;
+  const gchar *key_end, *value_start;
   const gchar *locale;
   gsize locale_len;
   gsize key_len, value_len;
