@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-02-03 18:13+0000\n"
-"PO-Revision-Date: 2026-02-07 19:59+0500\n"
+"POT-Creation-Date: 2026-02-23 16:35+0000\n"
+"PO-Revision-Date: 2026-02-24 06:41+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -69,8 +69,7 @@ msgstr "Орындалып тұрған данасын алмастыру"
 msgid "Print help"
 msgstr "Көмекті шығару"
 
-#: gio/gapplication-tool.c:49 gio/gresource-tool.c:498
-#: gio/gresource-tool.c:566
+#: gio/gapplication-tool.c:49 gio/gresource-tool.c:498 gio/gresource-tool.c:566
 msgid "[COMMAND]"
 msgstr "[КОМАНДА]"
 
@@ -146,8 +145,7 @@ msgstr "D-Bus пішіміндегі қолданба идентификатор
 #: gio/glib-compile-resources.c:837 gio/glib-compile-resources.c:867
 #: gio/gresource-tool.c:504 gio/gresource-tool.c:570
 #: girepository/compiler/compiler.c:148 girepository/compiler/compiler.c:149
-#: girepository/compiler/compiler.c:168
-#: girepository/decompiler/decompiler.c:52
+#: girepository/compiler/compiler.c:168 girepository/decompiler/decompiler.c:52
 #: girepository/decompiler/decompiler.c:65
 msgid "FILE"
 msgstr "ФАЙЛ"
@@ -155,8 +153,7 @@ msgstr "ФАЙЛ"
 #: gio/gapplication-tool.c:76
 msgid "Optional relative or absolute filenames, or URIs to open"
 msgstr ""
-"Ашуға арналған қосымша салыстырмалы немесе абсолютті файл атаулары, немесе "
-"URI"
+"Ашуға арналған қосымша салыстырмалы немесе абсолютті файл атаулары, немесе URI"
 
 #: gio/gapplication-tool.c:77
 msgid "ACTION"
@@ -174,8 +171,7 @@ msgstr "ПАРАМЕТР"
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Әрекетті шақыруға арналған қосымша параметр, GVariant пішімінде"
 
-#: gio/gapplication-tool.c:100 gio/gresource-tool.c:535
-#: gio/gsettings-tool.c:683
+#: gio/gapplication-tool.c:100 gio/gresource-tool.c:535 gio/gsettings-tool.c:683
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -188,8 +184,7 @@ msgstr ""
 msgid "Usage:\n"
 msgstr "Қолданылуы:\n"
 
-#: gio/gapplication-tool.c:118 gio/gresource-tool.c:560
-#: gio/gsettings-tool.c:718
+#: gio/gapplication-tool.c:118 gio/gresource-tool.c:560 gio/gsettings-tool.c:718
 msgid "Arguments:\n"
 msgstr "Аргументтер:\n"
 
@@ -431,8 +426,7 @@ msgstr "“%s” адресінде қате бар — “%s” атрибут�
 #: gio/gdbusaddress.c:414 gio/gdbusaddress.c:679
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
-msgstr ""
-"“%s” адресі үшін белгісіз немесе қолдау көрсетілмейтін “%s” тасымалдауы"
+msgstr "“%s” адресі үшін белгісіз немесе қолдау көрсетілмейтін “%s” тасымалдауы"
 
 #: gio/gdbusaddress.c:458
 #, c-format
@@ -447,8 +441,7 @@ msgstr "“%s” адрес элементіндегі тасымалдау ат
 #: gio/gdbusaddress.c:488
 #, c-format
 msgid ""
-"Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
-"sign"
+"Key/Value pair %d, “%s”, in address element “%s” does not contain an equal sign"
 msgstr "%d кілт/мән жұбы, “%s”, “%s” адрес элементінде теңдік белгісі жоқ"
 
 #: gio/gdbusaddress.c:499
@@ -460,8 +453,8 @@ msgstr "%d кілт/мән жұбы, “%s”, “%s” адрес элемен�
 #: gio/gdbusaddress.c:513
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, “%s”, in address "
-"element “%s”"
+"Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
+"“%s”"
 msgstr ""
 "%d кілт/мән жұбында, “%s”, “%s” адрес элементінде кілтті немесе мәнді "
 "экрандаудан босату қатесі"
@@ -538,8 +531,8 @@ msgstr ""
 #: gio/gdbusaddress.c:1377 gio/gdbusconnection.c:7934
 #, c-format
 msgid ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment "
-"variable — unknown value “%s”"
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable — "
+"unknown value “%s”"
 msgstr ""
 "DBUS_STARTER_BUS_TYPE орта айнымалысынан шина адресін анықтау мүмкін емес — "
 "белгісіз мән “%s”"
@@ -568,8 +561,7 @@ msgstr "Жолды (қауіпсіз) оқу кезінде күтпеген м�
 #: gio/gdbusauth.c:480
 #, c-format
 msgid ""
-"Exhausted all available authentication mechanisms (tried: %s) (available: "
-"%s)"
+"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
 "Барлық қолжетімді аутентификация механизмі таусылды (қолданылғаны: %s) "
 "(қолжетімдісі: %s)"
@@ -593,10 +585,8 @@ msgstr "“%s” бумасы үшін ақпарат алу қатесі: %s"
 
 #: gio/gdbusauthmechanismsha1.c:322
 #, c-format
-msgid ""
-"Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
-msgstr ""
-"“%s” бумасындағы рұқсаттар дұрыс емес. 0700 режимі күтілді, 0%o алынды"
+msgid "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
+msgstr "“%s” бумасындағы рұқсаттар дұрыс емес. 0700 режимі күтілді, 0%o алынды"
 
 #: gio/gdbusauthmechanismsha1.c:355 gio/gdbusauthmechanismsha1.c:366
 #, c-format
@@ -634,8 +624,7 @@ msgstr ""
 #: gio/gdbusauthmechanismsha1.c:462 gio/gdbusauthmechanismsha1.c:803
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at “%s” with content “%s” is "
-"malformed"
+"Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "%d-жолының (“%s” жеріндегі кілттер бауында және “%s” мазмұны бар) екінші "
 "токені дұрыс емес"
@@ -684,8 +673,7 @@ msgid "Timeout was reached"
 msgstr "Күту уақыты бітті"
 
 #: gio/gdbusconnection.c:2889
-msgid ""
-"Unsupported flags encountered when constructing a client-side connection"
+msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Клиенттік жақтағы байланысты құру кезінде қолдау көрсетілмейтін жалаушалар "
 "кездесті"
@@ -805,8 +793,7 @@ msgstr "%s хабары: MEMBER тақырыптама өрісінде жара
 
 #: gio/gdbusmessage.c:1486
 #, c-format
-msgid ""
-"%s message: ERROR_NAME header field does not contain a valid error name"
+msgid "%s message: ERROR_NAME header field does not contain a valid error name"
 msgstr "%s хабары: ERROR_NAME тақырыптама өрісінде жарамды қате атауы жоқ"
 
 #: gio/gdbusmessage.c:1525
@@ -827,12 +814,11 @@ msgstr "“%s” жолынан кейін NUL байты күтілді, бір
 #: gio/gdbusmessage.c:1628
 #, c-format
 msgid ""
-"Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was "
-"“%s”"
+"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length "
+"of string is %d). The valid UTF-8 string up until that point was “%s”"
 msgstr ""
-"Жарамды UTF-8 жолы күтілді, бірақ %d байт ығысуында жарамсыз байттар "
-"табылды (жол ұзындығы %d). Сол жерге дейінгі жарамды UTF-8 жолы “%s” болды"
+"Жарамды UTF-8 жолы күтілді, бірақ %d байт ығысуында жарамсыз байттар табылды "
+"(жол ұзындығы %d). Сол жерге дейінгі жарамды UTF-8 жолы “%s” болды"
 
 #: gio/gdbusmessage.c:1692 gio/gdbusmessage.c:1968 gio/gdbusmessage.c:2179
 msgid "Value nested too deeply"
@@ -853,8 +839,7 @@ msgstr "Талданған “%s” мәні жарамды D-Bus қолтаңб
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
-"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 "
-"MiB)."
+"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
 "Ұзындығы %u байт массив кездесті. Максималды ұзындық 2<<26 байт (64 MiB)."
 
@@ -879,8 +864,7 @@ msgstr "Вариант үшін талданған “%s” мәні жарам�
 #: gio/gdbusmessage.c:2204
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string “%s” from the D-Bus wire "
-"format"
+"Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
 "GVariant-ты D-Bus сымдық пішімінен “%s” түр жолымен десериализациялау қатесі"
 
@@ -925,15 +909,13 @@ msgstr "Хабарламаны десериализациялау мүмкін �
 
 #: gio/gdbusmessage.c:2889
 #, c-format
-msgid ""
-"Error serializing GVariant with type string “%s” to the D-Bus wire format"
+msgid "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr ""
 "GVariant-ты D-Bus сымдық пішіміне “%s” түр жолымен сериализациялау қатесі"
 
 #: gio/gdbusmessage.c:3026
 #, c-format
-msgid ""
-"Number of file descriptors in message (%d) differs from header field (%d)"
+msgid "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr ""
 "Хабардағы файл дескрипторларының саны (%d) тақырыптама өрісінен (%d) өзгеше"
 
@@ -949,11 +931,10 @@ msgstr "Хабар денесінде “%s” қолтаңбасы бар, бі
 #: gio/gdbusmessage.c:3097
 #, c-format
 msgid ""
-"Message body has type signature “%s” but signature in the header field is "
-"“%s”"
+"Message body has type signature “%s” but signature in the header field is “%s”"
 msgstr ""
-"Хабар денесінде “%s” түр қолтаңбасы бар, бірақ тақырыптама өрісіндегі "
-"қолтаңба “%s”"
+"Хабар денесінде “%s” түр қолтаңбасы бар, бірақ тақырыптама өрісіндегі қолтаңба "
+"“%s”"
 
 #: gio/gdbusmessage.c:3113
 #, c-format
@@ -977,8 +958,7 @@ msgstr "(Бұл терезені жабу үшін кез келген таңб�
 #: gio/gdbusprivate.c:2395
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
-msgstr ""
-"Сессия dbus орындалып тұрған жоқ және автоматты жөнелту сәтсіз аяқталды"
+msgstr "Сессия dbus орындалып тұрған жоқ және автоматты жөнелту сәтсіз аяқталды"
 
 #: gio/gdbusprivate.c:2418
 #, c-format
@@ -1057,13 +1037,13 @@ msgstr ""
 "Әр команда туралы көмек алу үшін “%s КОМАНДА --help” пайдаланыңыз.\n"
 
 #: gio/gdbus-tool.c:206 gio/gdbus-tool.c:278 gio/gdbus-tool.c:349
-#: gio/gdbus-tool.c:373 gio/gdbus-tool.c:918 gio/gdbus-tool.c:1295
-#: gio/gdbus-tool.c:1782
+#: gio/gdbus-tool.c:373 gio/gdbus-tool.c:918 gio/gdbus-tool.c:1301
+#: gio/gdbus-tool.c:1788
 #, c-format
 msgid "Error: %s\n"
 msgstr "Қате: %s\n"
 
-#: gio/gdbus-tool.c:217 gio/gdbus-tool.c:291 gio/gdbus-tool.c:1798
+#: gio/gdbus-tool.c:217 gio/gdbus-tool.c:291 gio/gdbus-tool.c:1804
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Интроспекция XML-ін талдау қатесі: %s\n"
@@ -1074,7 +1054,7 @@ msgid "Error: %s is not a valid name\n"
 msgstr "Қате: %s - жарамды атау емес\n"
 
 #: gio/gdbus-tool.c:260 gio/gdbus-tool.c:804 gio/gdbus-tool.c:1121
-#: gio/gdbus-tool.c:1948 gio/gdbus-tool.c:2185
+#: gio/gdbus-tool.c:1954 gio/gdbus-tool.c:2191
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Қате: %s - жарамды объект жолы емес\n"
@@ -1115,8 +1095,7 @@ msgstr "Бірнеше байланыс соңғы нүктесі көрсеті
 
 #: gio/gdbus-tool.c:526
 #, c-format
-msgid ""
-"Warning: According to introspection data, interface “%s” does not exist\n"
+msgid "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "Ескерту: Интроспекция деректеріне сәйкес, “%s” интерфейсі жоқ\n"
 
 #: gio/gdbus-tool.c:535
@@ -1125,8 +1104,7 @@ msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
 "interface “%s”\n"
 msgstr ""
-"Ескерту: Интроспекция деректеріне сәйкес, “%s” әдісі “%s” интерфейсінде "
-"жоқ\n"
+"Ескерту: Интроспекция деректеріне сәйкес, “%s” әдісі “%s” интерфейсінде жоқ\n"
 
 #: gio/gdbus-tool.c:627
 #, c-format
@@ -1149,8 +1127,8 @@ msgstr "Сигнал және интерфейс атауы"
 msgid "Emit a signal."
 msgstr "Сигналды шығару."
 
-#: gio/gdbus-tool.c:742 gio/gdbus-tool.c:1058 gio/gdbus-tool.c:1885
-#: gio/gdbus-tool.c:2114 gio/gdbus-tool.c:2334
+#: gio/gdbus-tool.c:742 gio/gdbus-tool.c:1058 gio/gdbus-tool.c:1891
+#: gio/gdbus-tool.c:2120 gio/gdbus-tool.c:2340
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Байланысу қатесі: %s\n"
@@ -1160,7 +1138,7 @@ msgstr "Байланысу қатесі: %s\n"
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Қате: %s - жарамды бірегей шина атауы емес.\n"
 
-#: gio/gdbus-tool.c:781 gio/gdbus-tool.c:1101 gio/gdbus-tool.c:1928
+#: gio/gdbus-tool.c:781 gio/gdbus-tool.c:1101 gio/gdbus-tool.c:1934
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Қате: Объект жолы көрсетілмеген\n"
@@ -1186,7 +1164,7 @@ msgid "Error: %s is not a valid member name\n"
 msgstr "Қате: %s - жарамды мүше атауы емес\n"
 
 #. Use the original non-"parse-me-harder" error
-#: gio/gdbus-tool.c:893 gio/gdbus-tool.c:1233
+#: gio/gdbus-tool.c:893 gio/gdbus-tool.c:1239
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "%d параметрін талдау қатесі: %s\n"
@@ -1220,12 +1198,12 @@ msgstr "Интерактивті авторизацияға рұқсат ету"
 msgid "Invoke a method on a remote object."
 msgstr "Қашықтағы объектіде әдісті шақыру."
 
-#: gio/gdbus-tool.c:1075 gio/gdbus-tool.c:1902 gio/gdbus-tool.c:2139
+#: gio/gdbus-tool.c:1075 gio/gdbus-tool.c:1908 gio/gdbus-tool.c:2145
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Қате: Мақсат көрсетілмеген\n"
 
-#: gio/gdbus-tool.c:1086 gio/gdbus-tool.c:1919 gio/gdbus-tool.c:2150
+#: gio/gdbus-tool.c:1086 gio/gdbus-tool.c:1925 gio/gdbus-tool.c:2156
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Қате: %s - жарамды шина атауы емес\n"
@@ -1235,92 +1213,92 @@ msgstr "Қате: %s - жарамды шина атауы емес\n"
 msgid "Error: Method name is not specified\n"
 msgstr "Қате: Әдіс атауы көрсетілмеген\n"
 
-#: gio/gdbus-tool.c:1147
+#: gio/gdbus-tool.c:1147 gio/gdbus-tool.c:1155
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Қате: “%s” әдіс атауы жарамсыз\n"
 
-#: gio/gdbus-tool.c:1225
+#: gio/gdbus-tool.c:1231
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "%d параметрін (“%s” түріндегі) талдау қатесі: %s\n"
 
-#: gio/gdbus-tool.c:1744
+#: gio/gdbus-tool.c:1750
 msgid "Destination name to introspect"
 msgstr "Интроспекцияланатын мақсат атауы"
 
-#: gio/gdbus-tool.c:1745
+#: gio/gdbus-tool.c:1751
 msgid "Object path to introspect"
 msgstr "Интроспекцияланатын объект жолы"
 
-#: gio/gdbus-tool.c:1746
+#: gio/gdbus-tool.c:1752
 msgid "Print XML"
 msgstr "XML шығару"
 
-#: gio/gdbus-tool.c:1747
+#: gio/gdbus-tool.c:1753
 msgid "Introspect children"
 msgstr "Еншілес элементтерді интроспекциялау"
 
-#: gio/gdbus-tool.c:1748
+#: gio/gdbus-tool.c:1754
 msgid "Only print properties"
 msgstr "Тек қасиеттерді шығару"
 
-#: gio/gdbus-tool.c:1837
+#: gio/gdbus-tool.c:1843
 msgid "Introspect a remote object."
 msgstr "Қашықтағы объектіні интроспекциялау."
 
-#: gio/gdbus-tool.c:2040
+#: gio/gdbus-tool.c:2046
 msgid "Destination name to monitor"
 msgstr "Бақыланатын мақсат атауы"
 
-#: gio/gdbus-tool.c:2041
+#: gio/gdbus-tool.c:2047
 msgid "Object path to monitor"
 msgstr "Бақыланатын объект жолы"
 
-#: gio/gdbus-tool.c:2066
+#: gio/gdbus-tool.c:2072
 msgid "Monitor a remote object."
 msgstr "Қашықтағы объектіні бақылау."
 
-#: gio/gdbus-tool.c:2124
+#: gio/gdbus-tool.c:2130
 #, c-format
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr "Қате: хабар шинасы емес байланысты бақылау мүмкін емес\n"
 
-#: gio/gdbus-tool.c:2248
+#: gio/gdbus-tool.c:2254
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr "Басқасын күтпес бұрын белсендірілетін қызмет (белгілі атау)"
 
-#: gio/gdbus-tool.c:2251
+#: gio/gdbus-tool.c:2257
 msgid ""
-"Timeout to wait for before exiting with an error (seconds); 0 for no "
-"timeout (default)"
+"Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
+"(default)"
 msgstr ""
 "Қатемен шықпас бұрын күтетін уақыт (секунд); 0 - күту уақыты жоқ (негізгі)"
 
-#: gio/gdbus-tool.c:2299
+#: gio/gdbus-tool.c:2305
 msgid "[OPTION…] BUS-NAME"
 msgstr "[ОПЦИЯ…] ШИНА-АТАУЫ"
 
-#: gio/gdbus-tool.c:2300
+#: gio/gdbus-tool.c:2306
 msgid "Wait for a bus name to appear."
 msgstr "Шина атауының пайда болуын күту."
 
-#: gio/gdbus-tool.c:2376
+#: gio/gdbus-tool.c:2382
 #, c-format
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Қате: Белсендіру үшін қызмет көрсетілуі керек.\n"
 
-#: gio/gdbus-tool.c:2381
+#: gio/gdbus-tool.c:2387
 #, c-format
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Қате: Күту үшін қызмет көрсетілуі керек.\n"
 
-#: gio/gdbus-tool.c:2386
+#: gio/gdbus-tool.c:2392
 #, c-format
 msgid "Error: Too many arguments.\n"
 msgstr "Қате: Аргументтер тым көп.\n"
 
-#: gio/gdbus-tool.c:2394 gio/gdbus-tool.c:2401
+#: gio/gdbus-tool.c:2400 gio/gdbus-tool.c:2407
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Қате: %s - жарамды белгілі шина атауы емес.\n"
@@ -1330,8 +1308,7 @@ msgstr "Қате: %s - жарамды белгілі шина атауы еме�
 msgid "Not authorized to change debug settings"
 msgstr "Түзету баптауларын өзгертуге рұқсат етілмеген"
 
-#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5245
-#: gio/gwin32appinfo.c:4257
+#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5245 gio/gwin32appinfo.c:4257
 msgid "Unnamed"
 msgstr "Атаусыз"
 
@@ -1534,8 +1511,8 @@ msgstr "Бұл файлды өңдеу үшін ешқандай қолданб�
 msgid "Enumerator is closed"
 msgstr "Санауыш жабық"
 
-#: gio/gfileenumerator.c:212 gio/gfileenumerator.c:271
-#: gio/gfileenumerator.c:416 gio/gfileenumerator.c:516
+#: gio/gfileenumerator.c:212 gio/gfileenumerator.c:271 gio/gfileenumerator.c:416
+#: gio/gfileenumerator.c:516
 msgid "File enumerator has outstanding operation"
 msgstr "Файл санауышында орындалмаған операция бар"
 
@@ -1552,14 +1529,12 @@ msgstr "GFileIcon кодтауының %d нұсқасын өңдеу мүмкі
 msgid "Malformed input data for GFileIcon"
 msgstr "GFileIcon үшін кіріс деректері дұрыс емес"
 
-#: gio/gfileinputstream.c:148 gio/gfileinputstream.c:394
-#: gio/gfileiostream.c:166 gio/gfileoutputstream.c:163
-#: gio/gfileoutputstream.c:497
+#: gio/gfileinputstream.c:148 gio/gfileinputstream.c:394 gio/gfileiostream.c:166
+#: gio/gfileoutputstream.c:163 gio/gfileoutputstream.c:497
 msgid "Stream doesn’t support query_info"
 msgstr "Ағын query_info қолдамайды"
 
-#: gio/gfileinputstream.c:325 gio/gfileiostream.c:380
-#: gio/gfileoutputstream.c:371
+#: gio/gfileinputstream.c:325 gio/gfileiostream.c:380 gio/gfileoutputstream.c:371
 msgid "Seek not supported on stream"
 msgstr "Ағында позицияны ауыстыруға қолдау көрсетілмейді"
 
@@ -1784,10 +1759,10 @@ msgstr "stdout-қа жазу қатесі "
 #. Translators: commandline placeholder
 #: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:383 gio/gio-tool-list.c:178
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
-#: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
-#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1236 gio/gio-tool-open.c:72
-#: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
-#: gio/gio-tool-trash.c:262 gio/gio-tool-tree.c:246
+#: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45 gio/gio-tool-monitor.c:206
+#: gio/gio-tool-mount.c:1236 gio/gio-tool-open.c:72 gio/gio-tool-remove.c:50
+#: gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95 gio/gio-tool-trash.c:262
+#: gio/gio-tool-tree.c:246
 msgid "LOCATION"
 msgstr "ОРНАЛАСУ"
 
@@ -1801,8 +1776,7 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
-"gio cat дәстүрлі cat утилитасы сияқты жұмыс істейді, бірақ жергілікті "
-"файлдар\n"
+"gio cat дәстүрлі cat утилитасы сияқты жұмыс істейді, бірақ жергілікті файлдар\n"
 "орнына GIO орналасуларын пайдаланады: мысалы, орналасу ретінде\n"
 "smb://server/resource/file.txt сияқты нәрсені пайдалануға болады."
 
@@ -1844,26 +1818,31 @@ msgstr "Мақсатты орын үшін негізгі рұқсаттарды
 msgid "Use default file modification timestamps for the destination"
 msgstr "Мақсатты орын үшін файлдың негізгі өзгерту уақыт белгілерін пайдалану"
 
-#: gio/gio-tool-copy.c:78 gio/gio-tool-move.c:69
+#: gio/gio-tool-copy.c:91
 #, c-format
-msgid "Transferred %s out of %s (%s/s)"
-msgstr "%s / %s тасымалданды (%s/с)"
+msgid "Copied %s (average: %s/s)"
+msgstr "%s көшірілді (орташа: %s/с)"
+
+#: gio/gio-tool-copy.c:96
+#, c-format
+msgid "Copied %s out of %s (%s/s; average: %s/s)"
+msgstr "%s / %s көшірілді (%s/с; орташа: %s/с)"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-copy.c:104 gio/gio-tool-move.c:96
+#: gio/gio-tool-copy.c:126 gio/gio-tool-move.c:118
 msgid "SOURCE"
-msgstr "БАСТАУЫ"
+msgstr "ДЕРЕККӨЗ"
 
 #. Translators: commandline placeholder
-#: gio/gio-tool-copy.c:104 gio/gio-tool-move.c:96 gio/gio-tool-save.c:162
+#: gio/gio-tool-copy.c:126 gio/gio-tool-move.c:118 gio/gio-tool-save.c:162
 msgid "DESTINATION"
 msgstr "МАҚСАТЫ"
 
-#: gio/gio-tool-copy.c:109
+#: gio/gio-tool-copy.c:131
 msgid "Copy one or more files from SOURCE to DESTINATION."
-msgstr "Бір немесе бірнеше файлды БАСТАУЫНАН МАҚСАТЫНА көшіру."
+msgstr "Бір немесе бірнеше файлды ДЕРЕККӨЗДЕН МАҚСАТЫНА көшіру."
 
-#: gio/gio-tool-copy.c:111
+#: gio/gio-tool-copy.c:133
 msgid ""
 "gio copy is similar to the traditional cp utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1873,12 +1852,12 @@ msgstr ""
 "GIO орналасуларын пайдаланады: мысалы, орналасу ретінде\n"
 "smb://server/resource/file.txt сияқты нәрсені пайдалануға болады."
 
-#: gio/gio-tool-copy.c:153
+#: gio/gio-tool-copy.c:175
 #, c-format
 msgid "Destination %s is not a directory"
 msgstr "%s мақсаты бума емес"
 
-#: gio/gio-tool-copy.c:202 gio/gio-tool-move.c:188
+#: gio/gio-tool-copy.c:225 gio/gio-tool-move.c:210
 #, c-format
 msgid "%s: overwrite “%s”? "
 msgstr "%s: “%s” үстіне жазу керек пе? "
@@ -1991,8 +1970,8 @@ msgstr "DESKTOP-ФАЙЛЫ [ФАЙЛ-АРГ …]"
 
 #: gio/gio-tool-launch.c:59
 msgid ""
-"Launch an application from a desktop file, passing optional filename "
-"arguments to it."
+"Launch an application from a desktop file, passing optional filename arguments "
+"to it."
 msgstr ""
 "Қолданбаны desktop файлынан жөнелту, оған қосымша файл атау аргументтерін "
 "өткізу."
@@ -2003,8 +1982,7 @@ msgstr "Desktop файлы берілмеген"
 
 #: gio/gio-tool-launch.c:87
 msgid "The launch command is not currently supported on this platform"
-msgstr ""
-"Жөнелту командасына қазіргі уақытта бұл платформада қолдау көрсетілмейді"
+msgstr "Жөнелту командасына қазіргі уақытта бұл платформада қолдау көрсетілмейді"
 
 #: gio/gio-tool-launch.c:100
 #, c-format
@@ -2051,8 +2029,7 @@ msgstr ""
 "gio list дәстүрлі ls утилитасына ұқсас, бірақ жергілікті файлдар орнына\n"
 "GIO орналасуларын пайдаланады: мысалы, орналасу ретінде\n"
 "smb://server/resource/file.txt сияқты нәрсені пайдалануға болады.\n"
-"Файл атрибуттарын олардың GIO атауымен, мысалы standard::icon, көрсетуге "
-"болады"
+"Файл атрибуттарын олардың GIO атауымен, мысалы standard::icon, көрсетуге болады"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-mime.c:73
@@ -2120,8 +2097,7 @@ msgstr "“%s” өңдеушісі үшін ақпаратты жүктеу с�
 #, c-format
 msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
 msgstr ""
-"“%s” қолданбасын “%s” үшін негізгі өңдеуші ретінде орнату сәтсіз аяқталды: "
-"%s\n"
+"“%s” қолданбасын “%s” үшін негізгі өңдеуші ретінде орнату сәтсіз аяқталды: %s\n"
 
 #: gio/gio-tool-mkdir.c:33
 msgid "Create parent directories"
@@ -2137,8 +2113,7 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/mydir as location."
 msgstr ""
-"gio mkdir дәстүрлі mkdir утилитасына ұқсас, бірақ жергілікті файлдар "
-"орнына\n"
+"gio mkdir дәстүрлі mkdir утилитасына ұқсас, бірақ жергілікті файлдар орнына\n"
 "GIO орналасуларын пайдаланады: мысалы, орналасу ретінде\n"
 "smb://server/resource/mydir сияқты нәрсені пайдалануға болады."
 
@@ -2153,8 +2128,7 @@ msgstr "Файлды бақылау (негізгі: түріне байланы
 #: gio/gio-tool-monitor.c:43
 msgid "Monitor a file directly (notices changes made via hardlinks)"
 msgstr ""
-"Файлды тікелей бақылау (қатты сілтемелер арқылы жасалған өзгерістерді "
-"байқайды)"
+"Файлды тікелей бақылау (қатты сілтемелер арқылы жасалған өзгерістерді байқайды)"
 
 #: gio/gio-tool-monitor.c:45
 msgid "Monitors a file directly, but doesn’t report changes"
@@ -2213,8 +2187,7 @@ msgstr "СХЕМА"
 #: gio/gio-tool-mount.c:71
 msgid "Ignore outstanding file operations when unmounting or ejecting"
 msgstr ""
-"Тіркеуден босату немесе шығару кезінде орындалмаған файл операцияларын "
-"елемеу"
+"Тіркеуден босату немесе шығару кезінде орындалмаған файл операцияларын елемеу"
 
 #: gio/gio-tool-mount.c:72
 msgid "Use an anonymous user when authenticating"
@@ -2269,11 +2242,21 @@ msgstr "Орналасуларды тіркеу немесе тіркеуден 
 msgid "Don’t use copy and delete fallback"
 msgstr "Көшіру және өшіру резервтік нұсқасын пайдаланбау"
 
-#: gio/gio-tool-move.c:101
-msgid "Move one or more files from SOURCE to DEST."
-msgstr "Бір немесе бірнеше файлды БАСТАУЫНАН МАҚСАТЫНА жылжыту."
+#: gio/gio-tool-move.c:83
+#, c-format
+msgid "Transferred %s (average: %s/s)"
+msgstr "%s тасымалданды (орташа: %s/с)"
 
-#: gio/gio-tool-move.c:103
+#: gio/gio-tool-move.c:88
+#, c-format
+msgid "Transferred %s out of %s (%s/s; average: %s/s)"
+msgstr "%s / %s тасымалданды (%s/с; орташа: %s/с)"
+
+#: gio/gio-tool-move.c:123
+msgid "Move one or more files from SOURCE to DEST."
+msgstr "Бір немесе бірнеше файлды ДЕРЕККӨЗДЕН МАҚСАТЫНА жылжыту."
+
+#: gio/gio-tool-move.c:125
 msgid ""
 "gio move is similar to the traditional mv utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -2283,7 +2266,7 @@ msgstr ""
 "GIO орналасуларын пайдаланады: мысалы, орналасу ретінде\n"
 "smb://server/resource/file.txt сияқты нәрсені пайдалануға болады"
 
-#: gio/gio-tool-move.c:145
+#: gio/gio-tool-move.c:167
 #, c-format
 msgid "Target %s is not a directory"
 msgstr "%s мақсаты бума емес"
@@ -2536,8 +2519,8 @@ msgid ""
 "The directories to load files referenced in FILE from (default: current "
 "directory)"
 msgstr ""
-"FILE файлында сілтеме жасалған файлдарды жүктеуге арналған бумалар "
-"(негізгі: ағымдағы бума)"
+"FILE файлында сілтеме жасалған файлдарды жүктеуге арналған бумалар (негізгі: "
+"ағымдағы бума)"
 
 #: gio/glib-compile-resources.c:832 gio/glib-compile-schemas.c:2173
 #: gio/glib-compile-schemas.c:2203 girepository/compiler/compiler.c:147
@@ -2549,8 +2532,7 @@ msgstr "БУМА"
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
-"Мақсатты файл атының кеңейтімі бойынша таңдалған пішімде шығысты "
-"генерациялау"
+"Мақсатты файл атының кеңейтімі бойынша таңдалған пішімде шығысты генерациялау"
 
 #: gio/glib-compile-resources.c:834
 msgid "Generate source header"
@@ -2559,8 +2541,8 @@ msgstr "Бастапқы код тақырыптамасын генерация�
 #: gio/glib-compile-resources.c:835
 msgid "Generate source code used to link in the resource file into your code"
 msgstr ""
-"Ресурс файлын сіздің кодыңызға байланыстыру үшін қолданылатын бастапқы "
-"кодты генерациялау"
+"Ресурс файлын сіздің кодыңызға байланыстыру үшін қолданылатын бастапқы кодты "
+"генерациялау"
 
 #: gio/glib-compile-resources.c:836
 msgid "Generate dependency list"
@@ -2584,16 +2566,14 @@ msgstr "Функцияларды экспорттамау; оларды G_GNUC_I
 
 #: gio/glib-compile-resources.c:841
 msgid ""
-"Don’t embed resource data in the C file; assume it's linked externally "
-"instead"
+"Don’t embed resource data in the C file; assume it's linked externally instead"
 msgstr ""
 "Ресурс деректерін C файлына ендірмеу; оның орнына сырттай байланысқан деп "
 "болжау"
 
 #: gio/glib-compile-resources.c:842
 msgid "C identifier name used for the generated source code"
-msgstr ""
-"Генерацияланған бастапқы код үшін пайдаланылатын C идентификатор атауы"
+msgstr "Генерацияланған бастапқы код үшін пайдаланылатын C идентификатор атауы"
 
 #: gio/glib-compile-resources.c:842
 msgid "IDENTIFIER"
@@ -2740,8 +2720,7 @@ msgstr ""
 #: gio/glib-compile-schemas.c:583
 #, c-format
 msgid ""
-"<alias value='%s'/> given when “%s” is already a member of the enumerated "
-"type"
+"<alias value='%s'/> given when “%s” is already a member of the enumerated type"
 msgstr ""
 "<alias value='%s'/> берілген, бірақ “%s” тізімделген түрдің мүшесі болып тұр"
 
@@ -2783,8 +2762,8 @@ msgstr "Жарамсыз атау “%s”: атаулар кіші әріпте
 #: gio/glib-compile-schemas.c:819
 #, c-format
 msgid ""
-"Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
-"and hyphen (“-”) are permitted"
+"Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers and "
+"hyphen (“-”) are permitted"
 msgstr ""
 "Жарамсыз атау “%s”: жарамсыз таңба “%c”; тек кіші әріптерге, сандарға және "
 "дефиске (“-”) рұқсат етіледі"
@@ -2821,8 +2800,8 @@ msgstr "<key name='%s'> әлдеқашан көрсетілген"
 #: gio/glib-compile-schemas.c:972
 #, c-format
 msgid ""
-"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
-"to modify value"
+"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to "
+"modify value"
 msgstr ""
 "<key name='%s'> кілті <key name='%s'> кілтін <schema id='%s'> ішінде "
 "көлеңкелейді; мәнді өзгерту үшін <override> пайдаланыңыз"
@@ -2830,8 +2809,8 @@ msgstr ""
 #: gio/glib-compile-schemas.c:983
 #, c-format
 msgid ""
-"Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
-"to <key>"
+"Exactly one of “type”, “enum” or “flags” must be specified as an attribute to "
+"<key>"
 msgstr ""
 "<key> атрибуты ретінде “type”, “enum” немесе “flags” біреуі ғана көрсетілуі "
 "керек"
@@ -2896,11 +2875,11 @@ msgstr ""
 #: gio/glib-compile-schemas.c:1207
 #, c-format
 msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but "
-"“%s” does not extend “%s”"
+"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
+"does not extend “%s”"
 msgstr ""
-"<schema id='%s' list-of='%s'> схемасы <schema id='%s' list-of='%s'> "
-"схемасын кеңейтеді, бірақ “%s” “%s” схемасын кеңейтпейді"
+"<schema id='%s' list-of='%s'> схемасы <schema id='%s' list-of='%s'> схемасын "
+"кеңейтеді, бірақ “%s” “%s” схемасын кеңейтпейді"
 
 #: gio/glib-compile-schemas.c:1224
 #, c-format
@@ -2915,8 +2894,8 @@ msgstr "Тізім жолы “:/” таңбаларымен аяқталуы �
 #: gio/glib-compile-schemas.c:1240
 #, c-format
 msgid ""
-"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
-"desktop/” or “/system/” are deprecated."
+"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/desktop/” "
+"or “/system/” are deprecated."
 msgstr ""
 "Ескерту: “%s” схемасында “%s” жолы бар. “/apps/”, “/desktop/” немесе “/"
 "system/” деп басталатын жолдар ескірген."
@@ -2966,11 +2945,11 @@ msgstr "Бұл файл еленбейді."
 #: gio/glib-compile-schemas.c:1963
 #, c-format
 msgid ""
-"No such key “%s” in schema “%s” as specified in override file “%s”; "
-"ignoring override for this key."
+"No such key “%s” in schema “%s” as specified in override file “%s”; ignoring "
+"override for this key."
 msgstr ""
-"“%s” қайта анықтау файлында көрсетілгендей “%s” схемасында “%s” кілті жоқ; "
-"бұл кілт үшін қайта анықтау еленбейді."
+"“%s” қайта анықтау файлында көрсетілгендей “%s” схемасында “%s” кілті жоқ; бұл "
+"кілт үшін қайта анықтау еленбейді."
 
 #: gio/glib-compile-schemas.c:1971
 #, c-format
@@ -2978,8 +2957,8 @@ msgid ""
 "No such key “%s” in schema “%s” as specified in override file “%s” and --"
 "strict was specified; exiting."
 msgstr ""
-"“%s” қайта анықтау файлында көрсетілгендей “%s” схемасында “%s” кілті жоқ "
-"және --strict көрсетілген; шығу."
+"“%s” қайта анықтау файлында көрсетілгендей “%s” схемасында “%s” кілті жоқ және "
+"--strict көрсетілген; шығу."
 
 #: gio/glib-compile-schemas.c:1993
 #, c-format
@@ -2987,9 +2966,9 @@ msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
 "(override file “%s”); ignoring override for this key."
 msgstr ""
-"“%s” схемасындағы локализацияланған “%s” кілті үшін жұмыс үстеліне тән "
-"қайта анықтауларды ұсыну мүмкін емес (“%s” қайта анықтау файлы); бұл кілт "
-"үшін қайта анықтау еленбейді."
+"“%s” схемасындағы локализацияланған “%s” кілті үшін жұмыс үстеліне тән қайта "
+"анықтауларды ұсыну мүмкін емес (“%s” қайта анықтау файлы); бұл кілт үшін қайта "
+"анықтау еленбейді."
 
 #: gio/glib-compile-schemas.c:2002
 #, c-format
@@ -2997,27 +2976,27 @@ msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
 "(override file “%s”) and --strict was specified; exiting."
 msgstr ""
-"“%s” схемасындағы локализацияланған “%s” кілті үшін жұмыс үстеліне тән "
-"қайта анықтауларды ұсыну мүмкін емес (“%s” қайта анықтау файлы) және --"
-"strict көрсетілген; шығу."
+"“%s” схемасындағы локализацияланған “%s” кілті үшін жұмыс үстеліне тән қайта "
+"анықтауларды ұсыну мүмкін емес (“%s” қайта анықтау файлы) және --strict "
+"көрсетілген; шығу."
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
 msgid ""
-"Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
-"%s. Ignoring override for this key."
+"Error parsing key “%s” in schema “%s” as specified in override file “%s”: %s. "
+"Ignoring override for this key."
 msgstr ""
-"“%s” қайта анықтау файлында көрсетілгендей “%s” схемасында “%s” кілтін "
-"талдау қатесі: %s. Бұл кілт үшін қайта анықтау еленбейді."
+"“%s” қайта анықтау файлында көрсетілгендей “%s” схемасында “%s” кілтін талдау "
+"қатесі: %s. Бұл кілт үшін қайта анықтау еленбейді."
 
 #: gio/glib-compile-schemas.c:2038
 #, c-format
 msgid ""
-"Error parsing key “%s” in schema “%s” as specified in override file “%s”: "
-"%s. --strict was specified; exiting."
+"Error parsing key “%s” in schema “%s” as specified in override file “%s”: %s. "
+"--strict was specified; exiting."
 msgstr ""
-"“%s” қайта анықтау файлында көрсетілгендей “%s” схемасында “%s” кілтін "
-"талдау қатесі: %s. --strict көрсетілген; шығу."
+"“%s” қайта анықтау файлында көрсетілгендей “%s” схемасында “%s” кілтін талдау "
+"қатесі: %s. --strict көрсетілген; шығу."
 
 #: gio/glib-compile-schemas.c:2065
 #, c-format
@@ -3040,8 +3019,8 @@ msgstr ""
 #: gio/glib-compile-schemas.c:2101
 #, c-format
 msgid ""
-"Override for key “%s” in schema “%s” in override file “%s” is not in the "
-"list of valid choices; ignoring override for this key."
+"Override for key “%s” in schema “%s” in override file “%s” is not in the list "
+"of valid choices; ignoring override for this key."
 msgstr ""
 "“%s” қайта анықтау файлындағы “%s” схемасындағы “%s” кілтін қайта анықтау "
 "жарамды таңдаулар тізімінде жоқ; бұл кілт үшін қайта анықтау еленбейді."
@@ -3049,8 +3028,8 @@ msgstr ""
 #: gio/glib-compile-schemas.c:2111
 #, c-format
 msgid ""
-"Override for key “%s” in schema “%s” in override file “%s” is not in the "
-"list of valid choices and --strict was specified; exiting."
+"Override for key “%s” in schema “%s” in override file “%s” is not in the list "
+"of valid choices and --strict was specified; exiting."
 msgstr ""
 "“%s” қайта анықтау файлындағы “%s” схемасындағы “%s” кілтін қайта анықтау "
 "жарамды таңдаулар тізімінде жоқ және --strict көрсетілген; шығу."
@@ -3168,8 +3147,8 @@ msgstr "Жүйелік ішкі тіркеулерде қоқыс шелегін
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr ""
-"%s файлын қоқыс шелегіне тастау үшін %s қоқыс шелегі бумасын табу немесе "
-"жасау мүмкін емес"
+"%s файлын қоқыс шелегіне тастау үшін %s қоқыс шелегі бумасын табу немесе жасау "
+"мүмкін емес"
 
 #: gio/glocalfile.c:2433
 #, c-format
@@ -3298,8 +3277,7 @@ msgstr "Иесін орнату қатесі: %s"
 msgid "symlink must be non-NULL"
 msgstr "символдық сілтеме NULL емес болуы тиіс"
 
-#: gio/glocalfileinfo.c:2497 gio/glocalfileinfo.c:2516
-#: gio/glocalfileinfo.c:2527
+#: gio/glocalfileinfo.c:2497 gio/glocalfileinfo.c:2516 gio/glocalfileinfo.c:2527
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Символдық сілтемені орнату қатесі: %s"
@@ -3460,8 +3438,7 @@ msgstr "Жад шығыс ағынының өлшемін өзгерту сәт�
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
-msgstr ""
-"Жазуды өңдеу үшін қажетті жад көлемі қолжетімді адрес кеңістігінен үлкен"
+msgstr "Жазуды өңдеу үшін қажетті жад көлемі қолжетімді адрес кеңістігінен үлкен"
 
 #: gio/gmemoryoutputstream.c:761
 msgid "Requested seek before the beginning of the stream"
@@ -3498,8 +3475,7 @@ msgstr ""
 #. * don't implement any of eject or eject_with_operation.
 #: gio/gmount.c:643
 msgid "mount doesn’t implement “eject” or “eject_with_operation”"
-msgstr ""
-"тіркеу “eject” немесе “eject_with_operation” функциясын іске асырмайды"
+msgstr "тіркеу “eject” немесе “eject_with_operation” функциясын іске асырмайды"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -4020,8 +3996,7 @@ msgstr "Датаграмма емес сокетте датаграмма опе
 #: gio/gsocket.c:1260
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
-msgstr ""
-"Кідіріс орнатылған сокетте датаграмма операцияларын қолдану мүмкін емес."
+msgstr "Кідіріс орнатылған сокетте датаграмма операцияларын қолдану мүмкін емес."
 
 #: gio/gsocket.c:2067
 #, c-format
@@ -4219,8 +4194,8 @@ msgstr "SOCKSv5 проксиі аутентификацияны талап ет�
 
 #: gio/gsocks5proxy.c:193
 msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported "
-"by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
 msgstr "SOCKSv5 проксиі GLib қолдамайтын аутентификация әдісін талап етеді."
 
 #: gio/gsocks5proxy.c:227
@@ -4274,12 +4249,12 @@ msgstr "SOCKSv5 проксиі ұсынылған адрес түріне қол
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Белгісіз SOCKSv5 прокси қатесі."
 
-#: gio/gtestdbus.c:634 glib/gspawn-win32.c:411
+#: gio/gtestdbus.c:640 glib/gspawn-win32.c:411
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Еншілес процесспен байланысу үшін арнаны жасау сәтсіз аяқталды (%s)"
 
-#: gio/gtestdbus.c:641
+#: gio/gtestdbus.c:647
 #, c-format
 msgid "Pipes are not supported in this platform"
 msgstr "Бұл платформада арналарға қолдау көрсетілмейді"
@@ -4363,21 +4338,20 @@ msgstr "Бұл GTlsBackend PKCS #11 сертификаттарын жасауғ�
 
 #: gio/gtlspassword.c:104
 msgid ""
-"This is the last chance to enter the password correctly before your access "
-"is locked out."
+"This is the last chance to enter the password correctly before your access is "
+"locked out."
 msgstr ""
-"Бұл қолжетімділік құлыпталмай тұрып парольді дұрыс енгізудің соңғы "
-"мүмкіндігі."
+"Бұл қолжетімділік құлыпталмай тұрып парольді дұрыс енгізудің соңғы мүмкіндігі."
 
 #. Translators: This is not the 'This is the last chance' string. It is
 #. * displayed when more than one attempt is allowed.
 #: gio/gtlspassword.c:108
 msgid ""
-"Several passwords entered have been incorrect, and your access will be "
-"locked out after further failures."
+"Several passwords entered have been incorrect, and your access will be locked "
+"out after further failures."
 msgstr ""
-"Бірнеше енгізілген пароль қате болды және тағы қате енгізілсе, "
-"қолжетімділік құлыпталады."
+"Бірнеше енгізілген пароль қате болды және тағы қате енгізілсе, қолжетімділік "
+"құлыпталады."
 
 #: gio/gtlspassword.c:110
 msgid "The password entered is incorrect."
@@ -4427,8 +4401,7 @@ msgstr "SO_PASSCRED іске қосу қатесі: %s"
 
 #: gio/gunixconnection.c:576
 msgid ""
-"Expecting to read a single byte for receiving credentials but read zero "
-"bytes"
+"Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Тіркелгі деректерін алу үшін бір байтты оқу күтілді, бірақ нөл байт оқылды"
 
@@ -4467,8 +4440,7 @@ msgstr "Файл дескрипторына жазу қатесі: %s"
 #: gio/gunixsocketaddress.c:245
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr ""
-"Бұл жүйеде абстрактті UNIX домен сокеттерінің адрестеріне қолдау "
-"көрсетілмейді"
+"Бұл жүйеде абстрактті UNIX домен сокеттерінің адрестеріне қолдау көрсетілмейді"
 
 #: gio/gvolume.c:442
 msgid "volume doesn’t implement eject"
@@ -4488,8 +4460,7 @@ msgstr "Қолданба объектісіндегі ‘%s’ қолданба�
 
 #: gio/gwin32appinfo.c:5290
 #, c-format
-msgid ""
-"The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
+msgid "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
 msgstr ""
 "Қолданба объектісіндегі ‘%s’ қолданбасы мен ‘%s’ өңдеушісінде етістіктер жоқ"
 
@@ -4565,13 +4536,11 @@ msgstr "Қате: Толық шығысты жазу мүмкін болмады
 msgid "Error: Failed to rename ‘%s’ to ‘%s’: %s"
 msgstr "Қате: ‘%s’ атын ‘%s’ етіп өзгерту сәтсіз аяқталды: %s"
 
-#: girepository/compiler/compiler.c:147
-#: girepository/decompiler/decompiler.c:53
+#: girepository/compiler/compiler.c:147 girepository/decompiler/decompiler.c:53
 msgid "Include directories in GIR search path"
 msgstr "Бумаларды GIR іздеу жолына қосу"
 
-#: girepository/compiler/compiler.c:148
-#: girepository/decompiler/decompiler.c:52
+#: girepository/compiler/compiler.c:148 girepository/decompiler/decompiler.c:52
 msgid "Output file"
 msgstr "Шығыс файлы"
 
@@ -4587,8 +4556,7 @@ msgstr "Жөндеу хабарламаларын көрсету"
 msgid "Show verbose messages"
 msgstr "Егжей-тегжейлі хабарламаларды көрсету"
 
-#: girepository/compiler/compiler.c:152
-#: girepository/decompiler/decompiler.c:55
+#: girepository/compiler/compiler.c:152 girepository/decompiler/decompiler.c:55
 msgid "Show program’s version number and exit"
 msgstr "Бағдарламаның нұсқа нөмірін көрсету және шығу"
 
@@ -4702,14 +4670,14 @@ msgstr "Күтпеген “%s” атрибуты, “%s” элементі ү
 msgid "Attribute “%s” of element “%s” not found"
 msgstr "“%s” элементінің “%s” атрибуты табылмады"
 
-#: glib/gbookmarkfile.c:1247 glib/gbookmarkfile.c:1312
-#: glib/gbookmarkfile.c:1376 glib/gbookmarkfile.c:1386
+#: glib/gbookmarkfile.c:1247 glib/gbookmarkfile.c:1312 glib/gbookmarkfile.c:1376
+#: glib/gbookmarkfile.c:1386
 #, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "Күтпеген “%s” тегі, “%s” тегі күтілді"
 
-#: glib/gbookmarkfile.c:1272 glib/gbookmarkfile.c:1286
-#: glib/gbookmarkfile.c:1354 glib/gbookmarkfile.c:1400
+#: glib/gbookmarkfile.c:1272 glib/gbookmarkfile.c:1286 glib/gbookmarkfile.c:1354
+#: glib/gbookmarkfile.c:1400
 #, c-format
 msgid "Unexpected tag “%s” inside “%s”"
 msgstr "Күтпеген “%s” тегі, “%s” ішінде"
@@ -4728,15 +4696,12 @@ msgstr "Деректер бумаларында жарамды бетбелгі 
 msgid "A bookmark for URI “%s” already exists"
 msgstr "“%s” URI үшін бетбелгі бар"
 
-#: glib/gbookmarkfile.c:2169 glib/gbookmarkfile.c:2327
-#: glib/gbookmarkfile.c:2412 glib/gbookmarkfile.c:2492
-#: glib/gbookmarkfile.c:2577 glib/gbookmarkfile.c:2711
-#: glib/gbookmarkfile.c:2844 glib/gbookmarkfile.c:2979
-#: glib/gbookmarkfile.c:3021 glib/gbookmarkfile.c:3118
-#: glib/gbookmarkfile.c:3239 glib/gbookmarkfile.c:3433
-#: glib/gbookmarkfile.c:3574 glib/gbookmarkfile.c:3793
-#: glib/gbookmarkfile.c:3882 glib/gbookmarkfile.c:3971
-#: glib/gbookmarkfile.c:4090
+#: glib/gbookmarkfile.c:2169 glib/gbookmarkfile.c:2327 glib/gbookmarkfile.c:2412
+#: glib/gbookmarkfile.c:2492 glib/gbookmarkfile.c:2577 glib/gbookmarkfile.c:2711
+#: glib/gbookmarkfile.c:2844 glib/gbookmarkfile.c:2979 glib/gbookmarkfile.c:3021
+#: glib/gbookmarkfile.c:3118 glib/gbookmarkfile.c:3239 glib/gbookmarkfile.c:3433
+#: glib/gbookmarkfile.c:3574 glib/gbookmarkfile.c:3793 glib/gbookmarkfile.c:3882
+#: glib/gbookmarkfile.c:3971 glib/gbookmarkfile.c:4090
 #, c-format
 msgid "No bookmark found for URI “%s”"
 msgstr "“%s” URI үшін бетбелгі табылмады"
@@ -4819,25 +4784,25 @@ msgstr "“%s” жол аты абсолюттік жол емес"
 
 #. Translators: this is the preferred format for expressing the date and the
 #. time
-#: glib/gdatetime.c:195
+#: glib/gdatetime.c:196
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %b %e %H:%M:%S %Y"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:198
+#: glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%m/%d/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:201
+#: glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:204
+#: glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4857,62 +4822,62 @@ msgstr "%I:%M:%S %p"
 #. * paste here.  Note that in most of the languages (western European,
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
-#: glib/gdatetime.c:243
+#: glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "January"
 msgstr "Қаңтар"
 
-#: glib/gdatetime.c:245
+#: glib/gdatetime.c:246
 msgctxt "full month name"
 msgid "February"
 msgstr "Ақпан"
 
-#: glib/gdatetime.c:247
+#: glib/gdatetime.c:248
 msgctxt "full month name"
 msgid "March"
 msgstr "Наурыз"
 
-#: glib/gdatetime.c:249
+#: glib/gdatetime.c:250
 msgctxt "full month name"
 msgid "April"
 msgstr "Сәуір"
 
-#: glib/gdatetime.c:251
+#: glib/gdatetime.c:252
 msgctxt "full month name"
 msgid "May"
 msgstr "Мамыр"
 
-#: glib/gdatetime.c:253
+#: glib/gdatetime.c:254
 msgctxt "full month name"
 msgid "June"
 msgstr "Маусым"
 
-#: glib/gdatetime.c:255
+#: glib/gdatetime.c:256
 msgctxt "full month name"
 msgid "July"
 msgstr "Шілде"
 
-#: glib/gdatetime.c:257
+#: glib/gdatetime.c:258
 msgctxt "full month name"
 msgid "August"
 msgstr "Тамыз"
 
-#: glib/gdatetime.c:259
+#: glib/gdatetime.c:260
 msgctxt "full month name"
 msgid "September"
 msgstr "Қыркүйек"
 
-#: glib/gdatetime.c:261
+#: glib/gdatetime.c:262
 msgctxt "full month name"
 msgid "October"
 msgstr "Қазан"
 
-#: glib/gdatetime.c:263
+#: glib/gdatetime.c:264
 msgctxt "full month name"
 msgid "November"
 msgstr "Қараша"
 
-#: glib/gdatetime.c:265
+#: glib/gdatetime.c:266
 msgctxt "full month name"
 msgid "December"
 msgstr "Желтоқсан"
@@ -4933,132 +4898,132 @@ msgstr "Желтоқсан"
 #. * and paste here.  Note that this feature is not yet supported by any
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
-#: glib/gdatetime.c:297
+#: glib/gdatetime.c:298
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Қаң"
 
-#: glib/gdatetime.c:299
+#: glib/gdatetime.c:300
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Ақп"
 
-#: glib/gdatetime.c:301
+#: glib/gdatetime.c:302
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Нау"
 
-#: glib/gdatetime.c:303
+#: glib/gdatetime.c:304
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Сәу"
 
-#: glib/gdatetime.c:305
+#: glib/gdatetime.c:306
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Мам"
 
-#: glib/gdatetime.c:307
+#: glib/gdatetime.c:308
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Мау"
 
-#: glib/gdatetime.c:309
+#: glib/gdatetime.c:310
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Шіл"
 
-#: glib/gdatetime.c:311
+#: glib/gdatetime.c:312
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Там"
 
-#: glib/gdatetime.c:313
+#: glib/gdatetime.c:314
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Қыр"
 
-#: glib/gdatetime.c:315
+#: glib/gdatetime.c:316
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Қаз"
 
-#: glib/gdatetime.c:317
+#: glib/gdatetime.c:318
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Қар"
 
-#: glib/gdatetime.c:319
+#: glib/gdatetime.c:320
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Жел"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:335
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Дүйсенбі"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:337
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Сейсенбі"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:339
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Сәрсенбі"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:341
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Бейсенбі"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:343
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Жұма"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:345
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Сенбі"
 
-#: glib/gdatetime.c:346
+#: glib/gdatetime.c:347
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Жексенбі"
 
-#: glib/gdatetime.c:361
+#: glib/gdatetime.c:362
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Дүй"
 
-#: glib/gdatetime.c:363
+#: glib/gdatetime.c:364
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Сей"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:366
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Сәр"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:368
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Бей"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:370
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Жұм"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:372
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Сен"
 
-#: glib/gdatetime.c:373
+#: glib/gdatetime.c:374
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Жек"
@@ -5079,62 +5044,62 @@ msgstr "Жек"
 #. * incorrect in some languages.  Note that in most of the languages
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
-#: glib/gdatetime.c:437
+#: glib/gdatetime.c:438
 msgctxt "full month name with day"
 msgid "January"
 msgstr "Қаңтар"
 
-#: glib/gdatetime.c:439
+#: glib/gdatetime.c:440
 msgctxt "full month name with day"
 msgid "February"
 msgstr "Ақпан"
 
-#: glib/gdatetime.c:441
+#: glib/gdatetime.c:442
 msgctxt "full month name with day"
 msgid "March"
 msgstr "Наурыз"
 
-#: glib/gdatetime.c:443
+#: glib/gdatetime.c:444
 msgctxt "full month name with day"
 msgid "April"
 msgstr "Сәуір"
 
-#: glib/gdatetime.c:445
+#: glib/gdatetime.c:446
 msgctxt "full month name with day"
 msgid "May"
 msgstr "Мамыр"
 
-#: glib/gdatetime.c:447
+#: glib/gdatetime.c:448
 msgctxt "full month name with day"
 msgid "June"
 msgstr "Маусым"
 
-#: glib/gdatetime.c:449
+#: glib/gdatetime.c:450
 msgctxt "full month name with day"
 msgid "July"
 msgstr "Шілде"
 
-#: glib/gdatetime.c:451
+#: glib/gdatetime.c:452
 msgctxt "full month name with day"
 msgid "August"
 msgstr "Тамыз"
 
-#: glib/gdatetime.c:453
+#: glib/gdatetime.c:454
 msgctxt "full month name with day"
 msgid "September"
 msgstr "Қыркүйек"
 
-#: glib/gdatetime.c:455
+#: glib/gdatetime.c:456
 msgctxt "full month name with day"
 msgid "October"
 msgstr "Қазан"
 
-#: glib/gdatetime.c:457
+#: glib/gdatetime.c:458
 msgctxt "full month name with day"
 msgid "November"
 msgstr "Қараша"
 
-#: glib/gdatetime.c:459
+#: glib/gdatetime.c:460
 msgctxt "full month name with day"
 msgid "December"
 msgstr "Желтоқсан"
@@ -5155,74 +5120,74 @@ msgstr "Желтоқсан"
 #. * `locale abmon' in your native locale produces a complete list of
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
-#: glib/gdatetime.c:524
+#: glib/gdatetime.c:525
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Қаң"
 
-#: glib/gdatetime.c:526
+#: glib/gdatetime.c:527
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Ақп"
 
-#: glib/gdatetime.c:528
+#: glib/gdatetime.c:529
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Нау"
 
-#: glib/gdatetime.c:530
+#: glib/gdatetime.c:531
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Сәу"
 
-#: glib/gdatetime.c:532
+#: glib/gdatetime.c:533
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "Мам"
 
-#: glib/gdatetime.c:534
+#: glib/gdatetime.c:535
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Мау"
 
-#: glib/gdatetime.c:536
+#: glib/gdatetime.c:537
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Шіл"
 
-#: glib/gdatetime.c:538
+#: glib/gdatetime.c:539
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Там"
 
-#: glib/gdatetime.c:540
+#: glib/gdatetime.c:541
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Қыр"
 
-#: glib/gdatetime.c:542
+#: glib/gdatetime.c:543
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Қаз"
 
-#: glib/gdatetime.c:544
+#: glib/gdatetime.c:545
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Қар"
 
-#: glib/gdatetime.c:546
+#: glib/gdatetime.c:547
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Жел"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:588
+#: glib/gdatetime.c:589
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "ТД"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:591
+#: glib/gdatetime.c:592
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "ТК"
@@ -5362,80 +5327,79 @@ msgstr "Кілт файлында кілт-мән жұбы, топ немесе 
 msgid "Invalid group name: %s"
 msgstr "Топ атауы жарамсыз: %s"
 
-#: glib/gkeyfile.c:1397
+#: glib/gkeyfile.c:1398
 msgid "Key file does not start with a group"
 msgstr "Кілт файлы топпен басталмайды"
 
-#: glib/gkeyfile.c:1421
+#: glib/gkeyfile.c:1422
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Кілт атауы жарамсыз: %.*s"
 
-#: glib/gkeyfile.c:1449
+#: glib/gkeyfile.c:1450
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Кілт файлында қолдау көрсетілмейтін “%s” кодтауы бар"
 
-#: glib/gkeyfile.c:1696 glib/gkeyfile.c:1870 glib/gkeyfile.c:3346
-#: glib/gkeyfile.c:3448 glib/gkeyfile.c:3558 glib/gkeyfile.c:3687
-#: glib/gkeyfile.c:3831 glib/gkeyfile.c:4081 glib/gkeyfile.c:4155
+#: glib/gkeyfile.c:1697 glib/gkeyfile.c:1871 glib/gkeyfile.c:3347
+#: glib/gkeyfile.c:3449 glib/gkeyfile.c:3559 glib/gkeyfile.c:3688
+#: glib/gkeyfile.c:3832 glib/gkeyfile.c:4082 glib/gkeyfile.c:4156
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Кілт файлында “%s” тобы жоқ"
 
-#: glib/gkeyfile.c:1826
+#: glib/gkeyfile.c:1827
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Кілт файлының “%s” кілті “%s” тобында жоқ"
 
-#: glib/gkeyfile.c:1987 glib/gkeyfile.c:2104
+#: glib/gkeyfile.c:1988 glib/gkeyfile.c:2105
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr "Кілт файлында UTF-8 емес “%s” мәні бар “%s” кілті бар"
 
-#: glib/gkeyfile.c:2007 glib/gkeyfile.c:2124 glib/gkeyfile.c:2586
+#: glib/gkeyfile.c:2008 glib/gkeyfile.c:2125 glib/gkeyfile.c:2587
 #, c-format
-msgid ""
-"Key file contains key “%s” which has a value that cannot be interpreted."
+msgid "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr "Кілт файлында өңдеуге келмейтін мәні бар “%s” кілті бар."
 
-#: glib/gkeyfile.c:2800 glib/gkeyfile.c:3174
+#: glib/gkeyfile.c:2801 glib/gkeyfile.c:3175
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
 "interpreted."
 msgstr "Кілт файлының “%s” кілті (“%s” тобында) өңдеуге келмейтін мәні бар."
 
-#: glib/gkeyfile.c:2881 glib/gkeyfile.c:2961
+#: glib/gkeyfile.c:2882 glib/gkeyfile.c:2962
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "“%s” кілтінің мәні (“%s” тобындағы) “%s”, бірақ %s күтілді"
 
-#: glib/gkeyfile.c:4411
+#: glib/gkeyfile.c:4412
 msgid "Key file contains escape character at end of line"
 msgstr "Кілт файлының жол соңында экрандау таңбасы бар"
 
-#: glib/gkeyfile.c:4433
+#: glib/gkeyfile.c:4434
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Кілт файлында жарамсыз “%s” экрандау тізбегі бар"
 
-#: glib/gkeyfile.c:4585
+#: glib/gkeyfile.c:4586
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "“%s” мәнін сан ретінде өңдеу мүмкін емес."
 
-#: glib/gkeyfile.c:4599
+#: glib/gkeyfile.c:4600
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "“%s” бүтін сан мәні ауқымнан тыс"
 
-#: glib/gkeyfile.c:4632
+#: glib/gkeyfile.c:4633
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "“%s” мәнін қалқымалы нүктелі сан ретінде өңдеу мүмкін емес."
 
-#: glib/gkeyfile.c:4671
+#: glib/gkeyfile.c:4672
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "“%s” мәнін логикалық мән ретінде өңдеу мүмкін емес."
@@ -5443,8 +5407,7 @@ msgstr "“%s” мәнін логикалық мән ретінде өңдеу 
 #: glib/gmappedfile.c:137
 #, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
-msgstr ""
-"“%s%s%s%s” файлының атрибуттарын алу сәтсіз аяқталды: fstat() сәтсіз: %s"
+msgstr "“%s%s%s%s” файлының атрибуттарын алу сәтсіз аяқталды: fstat() сәтсіз: %s"
 
 #: glib/gmappedfile.c:213
 #, c-format
@@ -5487,14 +5450,14 @@ msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
 "reference (&#234; for example) — perhaps the digit is too large"
 msgstr ""
-"“%-.*s” талдау сәтсіз аяқталды, ол таңба сілтемесі ішіндегі цифр болуы "
-"керек еді (мысалы, &#234;) — мүмкін цифр тым үлкен"
+"“%-.*s” талдау сәтсіз аяқталды, ол таңба сілтемесі ішіндегі цифр болуы керек "
+"еді (мысалы, &#234;) — мүмкін цифр тым үлкен"
 
 #: glib/gmarkup.c:658
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity — escape ampersand "
-"as &amp;"
+"ampersand character without intending to start an entity — escape ampersand as "
+"&amp;"
 msgstr ""
 "Таңба сілтемесі нүктелі үтірмен аяқталмады; сіз амперсанд таңбасын негізді "
 "бастау ниетінсіз қолданған сияқтысыз — амперсандты &amp; ретінде экрандаңыз"
@@ -5505,8 +5468,7 @@ msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "“%-.*s” таңба сілтемесі рұқсат етілген таңбаны кодтамайды"
 
 #: glib/gmarkup.c:722
-msgid ""
-"Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Бос “&;” негізі кездесті; жарамды негіздер: &amp; &quot; &lt; &gt; &apos;"
 
@@ -5530,8 +5492,8 @@ msgstr "Құжат элементтен басталуы тиіс (мысалы,
 #: glib/gmarkup.c:1197
 #, c-format
 msgid ""
-"“%s” is not a valid character following a “<” character; it may not begin "
-"an element name"
+"“%s” is not a valid character following a “<” character; it may not begin an "
+"element name"
 msgstr ""
 "“%s” — “<” таңбасынан кейінгі жарамды таңба емес; ол элемент атауын бастай "
 "алмайды"
@@ -5539,8 +5501,7 @@ msgstr ""
 #: glib/gmarkup.c:1240
 #, c-format
 msgid ""
-"Odd character “%s”, expected a “>” character to end the empty-element tag "
-"“%s”"
+"Odd character “%s”, expected a “>” character to end the empty-element tag “%s”"
 msgstr ""
 "Оғаш “%s” таңбасы, бос “%s” элемент тегін аяқтау үшін “>” таңбасы күтілді"
 
@@ -5554,8 +5515,7 @@ msgstr "“%s” элементінде атрибуттар тым көп"
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
 msgstr ""
-"Оғаш “%s” таңбасы, “%s” элементінің “%s” атрибутының атауынан кейін “=” "
-"күтілді"
+"Оғаш “%s” таңбасы, “%s” элементінің “%s” атрибутының атауынан кейін “=” күтілді"
 
 #: glib/gmarkup.c:1372
 #, c-format
@@ -5625,11 +5585,11 @@ msgstr ""
 #: glib/gmarkup.c:1793
 #, c-format
 msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending "
-"the tag <%s/>"
+"Document ended unexpectedly, expected to see a close angle bracket ending the "
+"tag <%s/>"
 msgstr ""
-"Құжат күтпеген жерден аяқталды, <%s/> тегін аяқтайтын жабылатын бұрыштық "
-"жақша күтілді"
+"Құжат күтпеген жерден аяқталды, <%s/> тегін аяқтайтын жабылатын бұрыштық жақша "
+"күтілді"
 
 #: glib/gmarkup.c:1799
 msgid "Document ended unexpectedly inside an element name"
@@ -5645,11 +5605,11 @@ msgstr "Құжат элементті ашатын тег ішінде күтп�
 
 #: glib/gmarkup.c:1816
 msgid ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
+"Document ended unexpectedly after the equals sign following an attribute name; "
+"no attribute value"
 msgstr ""
-"Құжат атрибут атауынан кейінгі теңдік белгісінен соң күтпеген жерден "
-"аяқталды; атрибут мәні жоқ"
+"Құжат атрибут атауынан кейінгі теңдік белгісінен соң күтпеген жерден аяқталды; "
+"атрибут мәні жоқ"
 
 #: glib/gmarkup.c:1823
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -5661,8 +5621,7 @@ msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr "Құжат “%s” элементінің жабу тегі ішінде күтпеген жерден аяқталды"
 
 #: glib/gmarkup.c:1844
-msgid ""
-"Document ended unexpectedly inside the close tag for an unopened element"
+msgid "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr "Құжат ашылмаған элементтің жабу тегі ішінде күтпеген жерден аяқталды"
 
 #: glib/gmarkup.c:1850
@@ -5910,8 +5869,8 @@ msgstr "үйлесімсіз NEWLINE опциялары"
 
 #: glib/gregex.c:774
 msgid ""
-"\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
-"or by a plain number"
+"\\g is not followed by a braced, angle-bracketed, or quoted name or number, or "
+"by a plain number"
 msgstr ""
 "\\g артынан жақшаға алынған, бұрыштық жақшаға алынған немесе тырнақшаға "
 "алынған атау немесе сан, немесе жай сан келмеген"
@@ -6044,8 +6003,8 @@ msgstr "Тырнақшаға алынған мәтін тырнақшамен б
 #: glib/gshell.c:174
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
-"Командалық жолда немесе басқа қоршамда тырнақшаға алынған мәтінде "
-"жабылмаған тырнақша"
+"Командалық жолда немесе басқа қоршамда тырнақшаға алынған мәтінде жабылмаған "
+"тырнақша"
 
 #: glib/gshell.c:580
 #, c-format
@@ -6130,8 +6089,7 @@ msgstr "Файл дескрипторын қайта бейнелеу үшін �
 #: glib/gspawn-posix.c:1678
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
-msgstr ""
-"Еншілес процесс үшін файл дескрипторын телнұсқалау сәтсіз аяқталды (%s)"
+msgstr "Еншілес процесс үшін файл дескрипторын телнұсқалау сәтсіз аяқталды (%s)"
 
 #: glib/gspawn-posix.c:1687
 #, c-format
@@ -6199,8 +6157,7 @@ msgstr "Көмекші бағдарламаны орындау сәтсіз ая
 
 #: glib/gspawn-win32.c:1208
 msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
+"Unexpected error in g_io_channel_win32_poll() reading data from a child process"
 msgstr ""
 "Еншілес процесстен деректерді оқу кезінде g_io_channel_win32_poll() ішінде "
 "күтпеген қате"
