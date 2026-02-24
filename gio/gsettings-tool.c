@@ -898,14 +898,20 @@ main (int argc, char **argv)
           if (parts[1])
             {
               if (!check_relocatable_schema (global_schema, parts[0]) || !check_path (parts[1]))
-                return 1;
+                {
+                  g_strfreev (parts);
+                  return 1;
+                }
 
               global_settings = g_settings_new_full (global_schema, NULL, parts[1]);
             }
           else
             {
               if (!check_schema (global_schema, parts[0]))
-                return 1;
+                {
+                  g_strfreev (parts);
+                  return 1;
+                }
 
               global_settings = g_settings_new_full (global_schema, NULL, NULL);
             }
@@ -921,13 +927,17 @@ main (int argc, char **argv)
           if (parts[1])
             {
               if (!check_relocatable_schema (global_schema, parts[0]) || !check_path (parts[1]))
-                return 1;
+                {
+                  g_strfreev (parts);
+                  return 1;
+                }
             }
           else
             {
               if (global_schema == NULL)
                 {
                   g_printerr (_("No such schema “%s”\n"), parts[0]);
+                  g_strfreev (parts);
                   return 1;
                 }
             }
