@@ -1,7 +1,7 @@
 include:
   - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
     inputs:
-      dist-job-name: "dist-job"
+      dist-job-name: "dist-tarball"
       tarball-artifact-path: "${TARBALL_ARTIFACT_PATH}"
 
 # This is based on GNOME/citemplates default-rules, but we only apply the
@@ -1104,7 +1104,7 @@ pages:
     paths:
       - public
 
-dist-job:
+dist-tarball:
   extends:
     - .only-schedules-or-manual
     - .build-gobject-introspection
