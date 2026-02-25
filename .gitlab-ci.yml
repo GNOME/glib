@@ -1116,12 +1116,6 @@ dist-job:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
     - !reference [".build-gobject-introspection", "before_script"]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: always
-    - if: $CI_COMMIT_TAG
-      when: on_success
-    - when: never
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --buildtype release
@@ -1129,6 +1123,7 @@ dist-job:
             -Dintrospection=enabled
             -Dman-pages=enabled
             _build
+    - git status
     - meson dist -C _build
     # Compile again to build the docs
     - meson compile -C _build
@@ -1137,14 +1132,7 @@ dist-job:
     - tar -c -J -f "_build/gobject-docs-${CI_COMMIT_TAG}.tar.xz" -C _build/docs/reference/gobject gobject-2.0
     - tar -c -J -f "_build/gio-docs-${CI_COMMIT_TAG}.tar.xz" -C _build/docs/reference/gio gio-2.0
     - tar -c -J -f "_build/girepository-docs-${CI_COMMIT_TAG}.tar.xz" -C _build/docs/reference/girepository girepository-2.0
-  artifacts:
-    paths:
-      - "${CI_PROJECT_DIR}/_build/glib-docs-${CI_COMMIT_TAG}.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gmodule-docs-${CI_COMMIT_TAG}.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gobject-docs-${CI_COMMIT_TAG}.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/gio-docs-${CI_COMMIT_TAG}.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/girepository-docs-${CI_COMMIT_TAG}.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/meson-dist/glib-*.tar.xz"
+
 
 issue-bot:
   stage: report
