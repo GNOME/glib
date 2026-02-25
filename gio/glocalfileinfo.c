@@ -2518,7 +2518,7 @@ set_symlink (char                       *filename,
       return FALSE;
     }
   
-  if (symlink (filename, val) != 0)
+  if (symlink (val, filename) != 0)
     {
       int errsv = errno;
 
