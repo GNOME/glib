@@ -32,6 +32,10 @@
  * MT safe
  */
 
+#if defined(__APPLE__) && !defined(_DARWIN_UNLIMITED_SELECT)
+#define _DARWIN_UNLIMITED_SELECT 1
+#endif
+
 #include "config.h"
 #include "glibconfig.h"
 #include "giochannel.h"
@@ -49,9 +53,10 @@
 #define G_MAIN_POLL_DEBUG
 #endif
 
+#include <limits.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <time.h>
-#include <stdlib.h>
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif /* HAVE_SYS_TIME_H */
@@ -540,53 +545,90 @@ cleanup:
 #include <sys/select.h>
 #endif /* HAVE_SYS_SELECT_H */
 
+static gsize
+g_poll_fd_set_alloc_size (int maxfd)
+{
+  gsize nfds = (gsize) maxfd + 1;
+#if defined(__APPLE__)
+  gsize nelems = __DARWIN_howmany (nfds, __DARWIN_NFDBITS);
+#else
+  const gsize bits_per_element = CHAR_BIT * sizeof (((fd_set *) 0)->fds_bits[0]);
+  gsize nelems = (nfds + bits_per_element - 1) / bits_per_element;
+#endif
+
+  return nelems * sizeof (((fd_set *) 0)->fds_bits[0]);
+}
+
 gint
 g_poll (GPollFD *fds,
 	guint    nfds,
 	gint     timeout)
 {
   struct timeval tv;
-  fd_set rset, wset, xset;
-  GPollFD *f;
+  fd_set rset_stack, wset_stack, xset_stack;
+  fd_set *rset = &rset_stack;
+  fd_set *wset = &wset_stack;
+  fd_set *xset = &xset_stack;
+  GPollFD *f, *f_end;
   int ready;
   int maxfd = 0;
+  const gushort poll_events = G_IO_IN | G_IO_OUT | G_IO_PRI;
+  gpointer heap_storage = NULL;
+  gsize fd_set_bytes = 0;
 
-  FD_ZERO (&rset);
-  FD_ZERO (&wset);
-  FD_ZERO (&xset);
+  f_end = fds + nfds;
 
-  for (f = fds; f < &fds[nfds]; ++f)
+  for (f = fds; f < f_end; ++f)
+    if (f->fd >= 0 &&
+        (f->events & poll_events) &&
+        f->fd > maxfd)
+      maxfd = f->fd;
+
+  if (G_UNLIKELY (maxfd >= FD_SETSIZE))
+    {
+      fd_set_bytes = g_poll_fd_set_alloc_size (maxfd);
+      heap_storage = g_malloc (fd_set_bytes * 3);
+      rset = heap_storage;
+      wset = (fd_set *) ((char *) heap_storage + fd_set_bytes);
+      xset = (fd_set *) ((char *) heap_storage + (fd_set_bytes * 2));
+    }
+
+  FD_ZERO (rset);
+  FD_ZERO (wset);
+  FD_ZERO (xset);
+
+  for (f = fds; f < f_end; ++f)
     if (f->fd >= 0)
       {
-	if (f->events & G_IO_IN)
-	  FD_SET (f->fd, &rset);
-	if (f->events & G_IO_OUT)
-	  FD_SET (f->fd, &wset);
-	if (f->events & G_IO_PRI)
-	  FD_SET (f->fd, &xset);
-	if (f->fd > maxfd && (f->events & (G_IO_IN|G_IO_OUT|G_IO_PRI)))
-	  maxfd = f->fd;
+        if (f->events & G_IO_IN)
+          FD_SET (f->fd, rset);
+        if (f->events & G_IO_OUT)
+          FD_SET (f->fd, wset);
+        if (f->events & G_IO_PRI)
+          FD_SET (f->fd, xset);
       }
 
   tv.tv_sec = timeout / 1000;
   tv.tv_usec = (timeout % 1000) * 1000;
 
-  ready = select (maxfd + 1, &rset, &wset, &xset,
-		  timeout == -1 ? NULL : &tv);
+  ready = select (maxfd + 1, rset, wset, xset,
+                  timeout == -1 ? NULL : &tv);
   if (ready > 0)
-    for (f = fds; f < &fds[nfds]; ++f)
+    for (f = fds; f < f_end; ++f)
       {
-	f->revents = 0;
-	if (f->fd >= 0)
-	  {
-	    if (FD_ISSET (f->fd, &rset))
-	      f->revents |= G_IO_IN;
-	    if (FD_ISSET (f->fd, &wset))
-	      f->revents |= G_IO_OUT;
-	    if (FD_ISSET (f->fd, &xset))
-	      f->revents |= G_IO_PRI;
-	  }
+        f->revents = 0;
+        if (f->fd >= 0)
+          {
+            if (FD_ISSET (f->fd, rset))
+              f->revents |= G_IO_IN;
+            if (FD_ISSET (f->fd, wset))
+              f->revents |= G_IO_OUT;
+            if (FD_ISSET (f->fd, xset))
+              f->revents |= G_IO_PRI;
+          }
       }
+
+  g_free (heap_storage);
 
   return ready;
 }

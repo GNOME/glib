@@ -879,6 +879,8 @@ macos-arm64:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
     - diskutil erasevolume APFS "RAM" $(diskutil image attach ram://1GiB)
+    # poll-fdset test scenario needs to allocate a fd >= 1024
+    - ulimit -Sn 4096
     - python3 -m venv .venv
     - ln -s /opt/ccache/ccache .venv/bin
     - source .venv/bin/activate
