@@ -1106,6 +1106,7 @@ pages:
 
 dist-job:
   extends:
+    - .only-schedules-or-manual
     - .build-gobject-introspection
     - .build-linux
     - .with-git
@@ -1117,11 +1118,9 @@ dist-job:
     - !reference [".with-git", "before_script"]
     - !reference [".build-gobject-introspection", "before_script"]
   rules:
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: always
+    - !reference [.only-schedules-or-manual, rules]
     - if: $CI_COMMIT_TAG
       when: on_success
-    - when: never
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --buildtype release
