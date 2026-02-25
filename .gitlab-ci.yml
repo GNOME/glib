@@ -55,16 +55,23 @@ variables:
   TARBALL_ARTIFACT_PATH: "_build/meson-dist/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.tar.xz"
   GIR_ARTIFACTS_PATH: "_build/girepository/introspection"
 
+
+.base-rules:
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "trigger"
+      when: never
+    - if: $CI_GLIB_JOB_FILTER != ""
+      when: never
+
 # Default CI job setup; contrast with `.only-origin`.
 #
 # Don’t execute the pipeline when a merge request is merged into `origin/main`,
 # as it will have already been tested
 .only-default-filter-rules:
   rules:
-    - if: $CI_COMMIT_TAG
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "trigger"
-      when: never
+    - !reference [.base-rules, rules]
     - if: $CI_PIPELINE_SOURCE == "push" &&
           $CI_PROJECT_NAMESPACE == "GNOME" &&
           $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -80,10 +87,7 @@ variables:
 # updating code coverage results and docs builds.
 .only-default-and-merges:
   rules:
-    - if: $CI_COMMIT_TAG
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "trigger"
-      when: never
+    - !reference [.base-rules, rules]
     - if: $CI_COMMIT_BRANCH
       when: on_success
 
@@ -93,10 +97,7 @@ variables:
 # repository can be trusted.
 .only-origin:
   rules:
-    - if: $CI_COMMIT_TAG
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "trigger"
-      when: never
+    - !reference [.base-rules, rules]
     - if: $CI_PROJECT_PATH == "GNOME/glib" && $CI_COMMIT_BRANCH
       when: on_success
     - when: never
@@ -117,9 +118,8 @@ variables:
 # possible to run them manually.
 .only-schedules-or-manual:
   rules:
+    - !reference [.base-rules, rules]
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "trigger"
       when: never
     # As per rule before, the following rules will only apply to non MR events
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -146,11 +146,10 @@ variables:
 # rather than people’s forks or if ran manually.
 .only-origin-or-manual:
   rules:
+    - !reference [.base-rules, rules]
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
     - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "trigger"
       when: never
     - if: $CI_PROJECT_NAMESPACE == "GNOME"
       when: always
@@ -1119,6 +1118,8 @@ dist-tarball:
     - !reference [".build-gobject-introspection", "before_script"]
   rules:
     - !reference [.only-schedules-or-manual, rules]
+    - if: $CI_GLIB_JOB_FILTER == "dist-tarball"
+      when: on_success
     - if: $CI_COMMIT_TAG
       when: on_success
   script:
