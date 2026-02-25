@@ -1,3 +1,147 @@
+Overview of changes in GLib 2.87.3, 2026-02-25
+==============================================
+
+* Improved support for `GNotification` on Windows (#3867, #3869, work by
+  Oscar Pernia Moreno)
+
+* Fix module lookups via `GModule` on Cygwin (#3741, work by Ailin Nemui)
+
+* Fix local timezone lookup with nested symlinks in `/etc/localtime` (#3816,
+  work by Alessandro Astone)
+
+* Fix ordering and sequential consistency of gatomic memory barriers on MSVC
+  and fallback GCC code paths (#3829, #3852, work by Luca Bacci)
+
+* Fix various integer overflow bugs (#3870, #3871, #3872, CVE-2026-1484,
+  CVE-2026-1485, CVE-2026-1489, work by Marco Trevisan)
+
+* Add `GSocketControlMessage` subclasses for receiving `IP_TOS` and
+  `IPV6_TCLASS` (!4846, work by Jakub Adam)
+
+* Support polling more than 1024 FDs on macOS (!4953, work by Ihar Hrachyshka)
+
+* Remove platform-specific backward compatibility from GLib-2.0 as it’s
+  impossible to support (#3839, !4881, work by Marco Trevisan)
+
+* Improve introspection annotations for delimiters on `g_strsplit_set()` (this
+  may require changes in introspection bindings)
+
+* Basic support for building and running some functionality on tvOS and watchOS
+  (!4992, work by Nirbheek Chauhan)
+
+* Add `g_get_monotonic_time()` variant with nanosecond precision (!5004, work
+  by Benjamin Otte)
+
+* Bugs fixed:
+  - #3628 Add test suite for gdbus tool (Philip Withnall)
+  - #3741 GModule incorrectly searches for cyg....so instead of cyg....dll on
+    Cygwin (Ailin Nemui)
+  - #3816 Local timezone wrongly considered to be UTC if timezone file in
+    /usr/share/zoneinfo is a symlink (Alessandro Astone)
+  - #3829 [RFC] gatomic: Memory barriers should be reversed (Luca Bacci)
+  - #3839 Broken Unix/Win32 specific GIRs
+  - #3852 MSVC and GCC-fallback atomics are not sequentially consistent (Luca
+    Bacci)
+  - #3863 Iterating over a short (preallocated) GVariant bytestring invalidly
+    refs a NULL GBytes (Christian Hergert)
+  - #3865 callable-info/native-address test fails on big endian (Alessandro
+    Astone)
+  - #3867 win32: Notifications without body won't show up
+  - #3869 gnotification-win32: Re-initialize tray icon if `explorer.exe` got
+    restarted
+  - #3870 (CVE-2026-1484) (YWH-PGM9867-168) Integer Overflow -> Buffer Underflow
+    on Glib through glib/gbase64.c via g_base64_encode_close() leads to OOB
+    Write (Marco Trevisan (Treviño))
+  - #3871 (CVE-2026-1485) (#YWH-PGM9867-169) Buffer underflow on Glib through
+    gio/gcontenttype-fdo.c via parse_header() lead to OOB Read/Write (Marco
+    Trevisan (Treviño))
+  - #3872 (CVE-2026-1489) (#YWH-PGM9867-171) Integer Overflow on Glib through
+    glib/guniprop.c via output_marks() lead to OOB Write in
+    glib/gutf8.c:g_unichar_to_utf8() (Marco Trevisan (Treviño))
+  - #3877 hash test failing randomly on MSYS2 (Luca Bacci)
+  - #3880 Integer overflow in gio-launch-desktop from over-long environment
+    variables (Philip Withnall)
+  - #3881 Integer overflow in g_resource_find_overlay() from over-long
+    environment variables (Philip Withnall)
+  - #3883 Integer overflow in `g_path_get_basename()` when passed an extremely
+    long path (length ≈SSIZE_MAX) (Philip Withnall)
+  - #3886 Crash in gdbus-tool on invalid --method argument format (Philip
+    Withnall)
+  - #3895 date_time_lookup_era unsafely caches `setlocale` pointer (Philip
+    Withnall)
+  - !4846 gio: Add GSocketControlMessage subclasses for receiving IP_TOS and
+    IPV6_TCLASS
+  - !4953 darwin: Support g_poll:maxfd >= FD_SETSIZE
+  - !4957 gstrfuncs: Annotate g_strsplit_set() as taking a byte array of
+    delimiters
+  - !4966 gio-tool-{copy,move}: Fix incorrect transfer rate calculation and
+    improve visualization
+  - !4968 markup: Better error reporting
+  - !4970 gutf8: Clarify docs about negative return values
+  - !4971 gutf8: Use size_t internally for some length calculations
+  - !4976 docs: Fix a typo and specify a codeblock is C
+  - !4977 gobject: Add nullable annotation to g_weak_ref_get return value
+  - !4982 markup: Initialize tag positions
+  - !4985 ci/fedora, glib/casemap: Add tests for the Azerbaijani cases
+  - !4987 giomodule: Simplify macro usage for getting the giomodule dir, don't
+    use it on iOS
+  - !4991 gio/gdatainputstream: Mark bytes as potentially unused
+  - !4992 Disable or stub out fork/execv* usage when targeting tvOS and watchOS
+  - !4993 Windows: Add test-profile
+  - !4996 Fix some small regressions in the iOS build
+  - !4997 meson: Add guesses for compute_int to speed up cross-compile setup
+  - !5002 Update Lithuanian translation
+  - !5004 Add g_get_monotonic_time() variant with nanosecond precision
+  - !5006 gfileutils: Fix a regression in `g_path_get_basename()` for plain
+    files
+  - !5008 Update Swedish translation
+  - !5009 Update Kazakh translation
+  - !5011 Update Romanian translation
+  - !5012 Compilation fixes for CLangCL and older MSVC
+  - !5013 Update Czech translation
+  - !5014 Update Russian translation
+  - !5015 GApplication: make send_notification / withdraw_notification thread-
+    safe
+  - !5018 Update Ukrainian translation
+  - !5020 Update Romanian translation
+  - !5021 Update Lithuanian translation
+  - !5023 Update Greek translation
+  - !5024 Update Chinese (China) translation
+  - !5025 Update Slovenian translation
+  - !5026 Update Brazilian Portuguese translation
+  - !5027 Update Basque translation
+  - !5028 gvalue: Update default terminology to initial
+  - !5029 Update Bulgarian translation
+  - !5031 Update Galician translation
+  - !5032 Update Hungarian translation
+  - !5034 Fix const qualifiers where discarded
+  - !5036 Address more size types issues
+  - !5038 Update Kazakh translation
+  - !5039 Update Catalan translation
+  - !5040 gsettings-tool: Fix leaks when running set commands
+  - !5041 gsettings-tool: Fix leaks when specifying invalid schemas
+  - !5042 Update Spanish translation
+
+* Translation updates:
+  - Basque (Asier Saratsua Garmendia)
+  - Bulgarian (Alexander Alexandrov Shopov)
+  - Catalan (Victor Dargallo)
+  - Chinese (China) (luming zh)
+  - Czech (Daniel Rusek)
+  - Galician (Fran Diéguez)
+  - Greek, Modern (1453-) (Efstathios Iosifidis)
+  - Hungarian (Balázs Úr)
+  - Kazakh (Baurzhan Muftakhidinov)
+  - Lithuanian (Aurimas Aurimas Černius)
+  - Portuguese (Brazil) (Juliano de Souza Camargo)
+  - Romanian (Antonio Marin)
+  - Russian (Artur S0)
+  - Slovenian (Martin)
+  - Spanish (Daniel Mustieles)
+  - Swedish (Anders Jonsson)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.87.2, 2026-01-19
 ==============================================
 
