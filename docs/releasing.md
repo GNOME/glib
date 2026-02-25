@@ -62,6 +62,15 @@ Test build the release tarball:
 meson dist -C build/
 ```
 
+To ensure the release machinery works in CI too, do:
+
+```sh
+git push --atomic origin ${branch}:dist-${new_version} -o ci.skip
+```
+
+Go to the [Gitlab pipelines](https://gitlab.gnome.org/GNOME/glib/-/pipelines)
+page and run the `dist-tarball` job and wait for it to succeed.
+
 Tag, sign and push the release, using `${new_version}` as the tag message (see below for information about `git evtag`):
 ```sh
 git evtag sign ${new_version}
