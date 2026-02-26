@@ -47,7 +47,7 @@
  * methods for all object types in GTK, Pango and other libraries
  * based on GObject. The `GObject` class provides methods for object
  * construction and destruction, property access methods, and signal
- * support. Signals are described in detail [here][gobject-Signals].
+ * support. Signals are described in detail [here](signals.html).
  *
  * For a tutorial on implementing a new `GObject` class, see [How to define and
  * implement a new GObject](tutorial.html#how-to-define-and-implement-a-new-gobject).
@@ -4152,7 +4152,7 @@ object_floating_flag_handler (GObject        *object,
  * g_object_is_floating:
  * @object: (type GObject.Object): a #GObject
  *
- * Checks whether @object has a [floating][floating-ref] reference.
+ * Checks whether @object has a [floating](floating-refs.html) reference.
  *
  * Since: 2.10
  *
@@ -4171,7 +4171,7 @@ g_object_is_floating (gpointer _object)
  * @object: (type GObject.Object): a #GObject
  *
  * Increase the reference count of @object, and possibly remove the
- * [floating][floating-ref] reference, if @object has a floating reference.
+ * [floating](floating-refs.html) reference, if @object has a floating reference.
  *
  * In other words, if the object is floating, then this call "assumes
  * ownership" of the floating reference, converting it to a normal
@@ -4261,7 +4261,7 @@ g_object_take_ref (gpointer _object)
  * @object: a #GObject
  *
  * This function is intended for #GObject implementations to re-enforce
- * a [floating][floating-ref] object reference. Doing this is seldom
+ * a [floating](floating-refs.html) object reference. Doing this is seldom
  * required: all #GInitiallyUnowneds are created with a floating reference
  * which usually just needs to be sunken by calling g_object_ref_sink().
  *
