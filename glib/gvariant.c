@@ -1010,11 +1010,11 @@ g_variant_lookup (GVariant    *dictionary,
  *
  * Looks up a value in a dictionary #GVariant.
  *
- * This function works with dictionaries of the type a{s*} (and equally
- * well with type a{o*}, but we only further discuss the string case
+ * This function works with dictionaries of the type `a{s*}` (and equally
+ * well with type `a{o*}`), but we only further discuss the string case
  * for sake of clarity).
  *
- * In the event that @dictionary has the type a{sv}, the @expected_type
+ * In the event that @dictionary has the type `a{sv}`, the @expected_type
  * string specifies what type of value is expected to be inside of the
  * variant. If the value inside the variant has a different type then
  * %NULL is returned. In the event that @dictionary has a value type other
@@ -1028,7 +1028,7 @@ g_variant_lookup (GVariant    *dictionary,
  * value will have this type.
  *
  * This function is currently implemented with a linear scan.  If you
- * plan to do many lookups then #GVariantDict may be more efficient.
+ * plan to do many lookups then [struct@VariantDict] may be more efficient.
  *
  * Returns: (transfer full): the value of the dictionary key, or %NULL
  *

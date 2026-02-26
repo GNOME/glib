@@ -1061,33 +1061,33 @@ g_file_resolve_relative_path (GFile      *file,
  * @error: #GError for error reporting
  *
  * Gets the requested information about the files in a directory.
- * The result is a #GFileEnumerator object that will give out
- * #GFileInfo objects for all the files in the directory.
+ * The result is a [class@FileEnumerator] object that will give out
+ * [class@FileInfo] objects for all the files in the directory.
  *
  * The @attributes value is a string that specifies the file
  * attributes that should be gathered. It is not an error if
  * it's not possible to read a particular requested attribute
  * from a file - it just won't be set. @attributes should
  * be a comma-separated list of attributes or attribute wildcards.
- * The wildcard "*" means all attributes, and a wildcard like
- * "standard::*" means all attributes in the standard namespace.
- * An example attribute query be "standard::*,owner::user".
+ * The wildcard `*` means all attributes, and a wildcard like
+ * `"standard::*"` means all attributes in the standard namespace.
+ * An example attribute query be `"standard::*,owner::user"`.
  * The standard attributes are available as defines, like
- * %G_FILE_ATTRIBUTE_STANDARD_NAME. %G_FILE_ATTRIBUTE_STANDARD_NAME should
- * always be specified if you plan to call g_file_enumerator_get_child() or
- * g_file_enumerator_iterate() on the returned enumerator.
+ * [const@FILE_ATTRIBUTE_STANDARD_NAME]. [const@FILE_ATTRIBUTE_STANDARD_NAME] should
+ * always be specified if you plan to call [method@FileEnumerator.get_child] or
+ * [method@FileEnumerator.iterate] on the returned enumerator.
  *
- * If @cancellable is not %NULL, then the operation can be cancelled
+ * If @cancellable is not `NULL`, then the operation can be cancelled
  * by triggering the cancellable object from another thread. If the
- * operation was cancelled, the error %G_IO_ERROR_CANCELLED will be
+ * operation was cancelled, the error [error@Gio.IOErrorEnum.CANCELLED] will be
  * returned.
  *
- * If the file does not exist, the %G_IO_ERROR_NOT_FOUND error will
- * be returned. If the file is not a directory, the %G_IO_ERROR_NOT_DIRECTORY
+ * If the file does not exist, the [error@Gio.IOErrorEnum.NOT_FOUND] error will
+ * be returned. If the file is not a directory, the [error@Gio.IOErrorEnum.NOT_DIRECTORY]
  * error will be returned. Other errors are possible too.
  *
  * Returns: (transfer full): A #GFileEnumerator if successful,
- *   %NULL on error. Free the returned object with g_object_unref().
+ *   %NULL on error. Free the returned object with [method@GObject.Object.unref].
  */
 GFileEnumerator *
 g_file_enumerate_children (GFile                *file,
@@ -1323,7 +1323,7 @@ g_file_query_file_type (GFile               *file,
  *  - [const@Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]
  *
  * @attributes should be a comma-separated list of attributes or attribute
- * wildcards. The wildcard `"*"` means all attributes, and a wildcard like
+ * wildcards. The wildcard `"\*"` means all attributes, and a wildcard like
  * `"standard::*"` means all attributes in the standard namespace.
  * An example attribute query might be `"standard::*,owner::user"`.
  * The standard attributes are available as defines, like
@@ -1466,7 +1466,7 @@ g_file_query_info_finish (GFile         *file,
  * that should be gathered. It is not an error if it's not possible
  * to read a particular requested attribute from a file - it just
  * won't be set. @attributes should be a comma-separated list of
- * attributes or attribute wildcards. The wildcard "*" means all
+ * attributes or attribute wildcards. The wildcard "\*" means all
  * attributes, and a wildcard like "filesystem::*" means all attributes
  * in the filesystem namespace. The standard namespace for filesystem
  * attributes is "filesystem". Common attributes of interest are

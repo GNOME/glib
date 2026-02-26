@@ -851,7 +851,7 @@ g_static_rec_mutex_free (GStaticRecMutex *mutex)
 /**
  * GStaticRWLock: (skip):
  *
- * The #GStaticRWLock struct represents a read-write lock. A read-write
+ * The [struct@StaticRWLock] struct represents a read-write lock. A read-write
  * lock can be used for protecting data that some portions of code only
  * read from, while others also write. In such situations it is
  * desirable that several readers can read at once, whereas of course
@@ -895,8 +895,8 @@ g_static_rec_mutex_free (GStaticRecMutex *mutex)
  * ]|
  *
  * This example shows an array which can be accessed by many readers
- * (the my_array_get() function) simultaneously, whereas the writers
- * (the my_array_set() function) will only be allowed once at a time
+ * (the `my_array_get()` function) simultaneously, whereas the writers
+ * (the `my_array_set()` function) will only be allowed once at a time
  * and only if no readers currently access the array. This is because
  * of the potentially dangerous resizing of the array. Using these
  * functions is fully multi-thread safe now.
@@ -908,23 +908,23 @@ g_static_rec_mutex_free (GStaticRecMutex *mutex)
  * to finish their operation. As soon as the last reader unlocks the
  * data, the writer will lock it.
  *
- * Even though #GStaticRWLock is not opaque, it should only be used
+ * Even though [struct@StaticRWLock] is not opaque, it should only be used
  * with the following functions.
  *
- * All of the g_static_rw_lock_* functions can be used even if
- * g_thread_init() has not been called. Then they do nothing, apart
- * from g_static_rw_lock_*_trylock, which does nothing but returning %TRUE.
+ * All of the `g_static_rw_lock_*` functions can be used even if
+ * [func@Thread.init] has not been called. Then they do nothing, apart
+ * from `g_static_rw_lock_*_trylock`, which does nothing but returning true.
  *
  * A read-write lock has a higher overhead than a mutex. For example, both
- * g_static_rw_lock_reader_lock() and g_static_rw_lock_reader_unlock() have
- * to lock and unlock a #GStaticMutex, so it takes at least twice the time
- * to lock and unlock a #GStaticRWLock that it does to lock and unlock a
- * #GStaticMutex. So only data structures that are accessed by multiple
+ * [method@StaticRWLock.reader_lock] and [method@StaticRWLock.reader_unlock] have
+ * to lock and unlock a [struct@StaticMutex], so it takes at least twice the time
+ * to lock and unlock a [struct@StaticRWLock] that it does to lock and unlock a
+ * [struct@StaticMutex]. So only data structures that are accessed by multiple
  * readers, and which keep the lock for a considerable time justify a
- * #GStaticRWLock. The above example most probably would fare better with a
- * #GStaticMutex.
+ * [struct@StaticRWLock]. The above example most probably would fare better with a
+ * [struct@StaticMutex].
  *
- * Deprecated: 2.32: Use a #GRWLock instead
+ * Deprecated: 2.32: Use a [struct@RWLock] instead
  **/
 
 /**

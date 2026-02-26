@@ -76,15 +76,16 @@
  * @key: a key
  *
  * Specifies the type of the hash function which is passed to
- * g_hash_table_new() when a #GHashTable is created.
+ * [func@HashTable.new] when a [struct@HashTable] is created.
  *
- * The function is passed a key and should return a #guint hash value.
- * The functions g_direct_hash(), g_int_hash() and g_str_hash() provide
- * hash functions which can be used when the key is a #gpointer, #gint*,
- * and #gchar* respectively.
+ * The function is passed a key and should return an `unsigned int` hash value.
+ * The functions [func@direct_hash], [func@int_hash] and [func@str_hash] provide
+ * hash functions which can be used when the key is a `void*`, `int*`,
+ * and `char*` respectively.
  *
- * g_direct_hash() is also the appropriate hash function for keys
- * of the form `GINT_TO_POINTER (n)` (or similar macros).
+ * [func@direct_hash] is also the appropriate hash function for keys
+ * of the form [`GINT_TO_POINTER (n)`](conversion-macros.html#gint-to-pointer)
+ * (or similar macros).
  *
  * A good hash functions should produce
  * hash values that are evenly distributed over a fairly large range.
@@ -95,9 +96,9 @@
  * Note that the hash functions provided by GLib have these qualities,
  * but are not particularly robust against manufactured keys that
  * cause hash collisions. Therefore, you should consider choosing
- * a more secure hash function when using a GHashTable with keys
+ * a more secure hash function when using a [struct@HashTable] with keys
  * that originate in untrusted data (such as HTTP requests).
- * Using g_str_hash() in that situation might make your application
+ * Using [func@str_hash] in that situation might make your application
  * vulnerable to
  * [Algorithmic Complexity Attacks](https://lwn.net/Articles/474912/).
  *
