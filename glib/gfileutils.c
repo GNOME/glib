@@ -1387,7 +1387,7 @@ g_file_set_contents_full (const gchar            *filename,
 #ifndef G_OS_WIN32
           if (fchmod (fd, old_stat.st_mode))
 #else  /* G_OS_WIN32 */
-          if (chmod (tmp_filename, old_stat.st_mode))
+          if (g_chmod (tmp_filename, old_stat.st_mode))
 #endif /* G_OS_WIN32 */
             {
               int saved_errno = errno;
