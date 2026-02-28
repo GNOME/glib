@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-02-10 19:17+0000\n"
-"PO-Revision-Date: 2026-02-10 22:05+0200\n"
+"POT-Creation-Date: 2026-02-27 13:37+0000\n"
+"PO-Revision-Date: 2026-02-28 20:13+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -69,7 +69,7 @@ msgid "Replace the running instance"
 msgstr "Замінити запущений екземпляр"
 
 #: gio/gapplication-tool.c:47 gio/gapplication-tool.c:48 gio/gio-tool.c:230
-#: gio/gresource-tool.c:497 gio/gsettings-tool.c:591
+#: gio/gresource-tool.c:497 gio/gsettings-tool.c:593
 msgid "Print help"
 msgstr "Надрукувати довідку"
 
@@ -81,7 +81,7 @@ msgstr "[КОМАНДА]"
 msgid "Print version"
 msgstr "Вивести номер версії"
 
-#: gio/gapplication-tool.c:52 gio/gsettings-tool.c:597
+#: gio/gapplication-tool.c:52 gio/gsettings-tool.c:599
 msgid "Print version information and exit"
 msgstr "Вивести інформацію про версію і вийти"
 
@@ -177,7 +177,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Необов'язковий параметр для виклику дії у форматі GVariant"
 
 #: gio/gapplication-tool.c:100 gio/gresource-tool.c:535
-#: gio/gsettings-tool.c:683
+#: gio/gsettings-tool.c:685
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -191,7 +191,7 @@ msgid "Usage:\n"
 msgstr "Використання:\n"
 
 #: gio/gapplication-tool.c:118 gio/gresource-tool.c:560
-#: gio/gsettings-tool.c:718
+#: gio/gsettings-tool.c:720
 msgid "Arguments:\n"
 msgstr "Аргументи:\n"
 
@@ -1896,7 +1896,6 @@ msgstr "Скопійовано %s (середня: %s/с)"
 
 #: gio/gio-tool-copy.c:96
 #, c-format
-#| msgid "Transferred %s out of %s (%s/s)"
 msgid "Copied %s out of %s (%s/s; average: %s/s)"
 msgstr "Скопійовано %s з %s (%s/с; середня: %s/с)"
 
@@ -2319,13 +2318,11 @@ msgstr "Не використовувати резервних варіанті�
 
 #: gio/gio-tool-move.c:83
 #, c-format
-#| msgid "Transferred %s out of %s (%s/s)"
 msgid "Transferred %s (average: %s/s)"
 msgstr "Перенесено %s (середня: %s/с)"
 
 #: gio/gio-tool-move.c:88
 #, c-format
-#| msgid "Transferred %s out of %s (%s/s)"
 msgid "Transferred %s out of %s (%s/s; average: %s/s)"
 msgstr "Перенесено %s з %s (%s/с; середня: %s/с)"
 
@@ -3785,7 +3782,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  РОЗДІЛ    Назва розділу elf (необов'язкова)\n"
 
-#: gio/gresource-tool.c:568 gio/gsettings-tool.c:725
+#: gio/gresource-tool.c:568 gio/gsettings-tool.c:727
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  КОМАНДА   Команда для пояснення (необов'язковий)\n"
 
@@ -3818,7 +3815,7 @@ msgstr "ШЛЯХ"
 msgid "  PATH      A resource path\n"
 msgstr "  ШЛЯХ      Шлях ресурсу\n"
 
-#: gio/gsettings-tool.c:51 gio/gsettings-tool.c:72 gio/gsettings-tool.c:930
+#: gio/gsettings-tool.c:51 gio/gsettings-tool.c:72 gio/gsettings-tool.c:941
 #, c-format
 msgid "No such schema “%s”\n"
 msgstr "Немає схеми «%s»\n"
@@ -3853,37 +3850,37 @@ msgstr "Шлях повинен закінчуватися символом ко
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "У шляху не повинно бути дві стоячих поряд косих рисок (//)\n"
 
-#: gio/gsettings-tool.c:560
+#: gio/gsettings-tool.c:561
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Надана величина лежить поза діапазоном припустимих значень\n"
 
-#: gio/gsettings-tool.c:567
+#: gio/gsettings-tool.c:568
 #, c-format
 msgid "The key is not writable\n"
 msgstr "Ключ недоступний для запису\n"
 
-#: gio/gsettings-tool.c:603
+#: gio/gsettings-tool.c:605
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Перелік встановлених (непереміщуваних) схем"
 
-#: gio/gsettings-tool.c:609
+#: gio/gsettings-tool.c:611
 msgid "List the installed relocatable schemas"
 msgstr "Перелік встановлених переміщуваних схем"
 
-#: gio/gsettings-tool.c:615
+#: gio/gsettings-tool.c:617
 msgid "List the keys in SCHEMA"
 msgstr "Перелік ключів у СХЕМІ"
 
-#: gio/gsettings-tool.c:616 gio/gsettings-tool.c:622 gio/gsettings-tool.c:665
+#: gio/gsettings-tool.c:618 gio/gsettings-tool.c:624 gio/gsettings-tool.c:667
 msgid "SCHEMA[:PATH]"
 msgstr "СХЕМА[:ШЛЯХ]"
 
-#: gio/gsettings-tool.c:621
+#: gio/gsettings-tool.c:623
 msgid "List the children of SCHEMA"
 msgstr "Перелік нащадків СХЕМИ"
 
-#: gio/gsettings-tool.c:627
+#: gio/gsettings-tool.c:629
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3891,48 +3888,48 @@ msgstr ""
 "Перерахувати ключі і значення рекурсивно\n"
 "Якщо вказана СХЕМА, то перерахувати усі ключі\n"
 
-#: gio/gsettings-tool.c:629
+#: gio/gsettings-tool.c:631
 msgid "[SCHEMA[:PATH]]"
 msgstr "[СХЕМА[:ШЛЯХ]]"
 
-#: gio/gsettings-tool.c:634
+#: gio/gsettings-tool.c:636
 msgid "Get the value of KEY"
 msgstr "Отримати значення КЛЮЧА"
 
-#: gio/gsettings-tool.c:635 gio/gsettings-tool.c:641 gio/gsettings-tool.c:647
-#: gio/gsettings-tool.c:659 gio/gsettings-tool.c:671
+#: gio/gsettings-tool.c:637 gio/gsettings-tool.c:643 gio/gsettings-tool.c:649
+#: gio/gsettings-tool.c:661 gio/gsettings-tool.c:673
 msgid "SCHEMA[:PATH] KEY"
 msgstr "СХЕМА[:ШЛЯХ] КЛЮЧ"
 
-#: gio/gsettings-tool.c:640
+#: gio/gsettings-tool.c:642
 msgid "Query the range of valid values for KEY"
 msgstr "Запитати діапазон припустимих значень КЛЮЧА"
 
-#: gio/gsettings-tool.c:646
+#: gio/gsettings-tool.c:648
 msgid "Query the description for KEY"
 msgstr "Запитати опис ключа КЛЮЧ"
 
-#: gio/gsettings-tool.c:652
+#: gio/gsettings-tool.c:654
 msgid "Set the value of KEY to VALUE"
 msgstr "Привласнити величину ЗНАЧЕННЯ КЛЮЧУ"
 
-#: gio/gsettings-tool.c:653
+#: gio/gsettings-tool.c:655
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "СХЕМА[:ШЛЯХ] КЛЮЧ ЗНАЧЕННЯ"
 
-#: gio/gsettings-tool.c:658
+#: gio/gsettings-tool.c:660
 msgid "Reset KEY to its default value"
 msgstr "Призначити КЛЮЧУ його типове значення"
 
-#: gio/gsettings-tool.c:664
+#: gio/gsettings-tool.c:666
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Скинути усі ключі у СХЕМІ у їх типові значення"
 
-#: gio/gsettings-tool.c:670
+#: gio/gsettings-tool.c:672
 msgid "Check if KEY is writable"
 msgstr "Перевірити, що КЛЮЧ доступний для запису"
 
-#: gio/gsettings-tool.c:676
+#: gio/gsettings-tool.c:678
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3942,11 +3939,11 @@ msgstr ""
 "Якщо КЛЮЧ не вказано, то стежити за усіма ключами СХЕМИ.\n"
 "Для зупинки стеження використовуйте ^C.\n"
 
-#: gio/gsettings-tool.c:679
+#: gio/gsettings-tool.c:681
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "СХЕМА[:ШЛЯХ] [КЛЮЧ]"
 
-#: gio/gsettings-tool.c:691
+#: gio/gsettings-tool.c:693
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3995,7 +3992,7 @@ msgstr ""
 "КОМАНДА».\n"
 "\n"
 
-#: gio/gsettings-tool.c:715
+#: gio/gsettings-tool.c:717
 #, c-format
 msgid ""
 "Usage:\n"
@@ -4010,11 +4007,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: gio/gsettings-tool.c:721
+#: gio/gsettings-tool.c:723
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  КАТ_СХЕМ  Каталог для пошуку додаткових схем\n"
 
-#: gio/gsettings-tool.c:729
+#: gio/gsettings-tool.c:731
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -4022,34 +4019,34 @@ msgstr ""
 "  СХЕМА     Ідентифікатор схеми\n"
 "  ШЛЯХ      Шлях, для переміщуваних схем\n"
 
-#: gio/gsettings-tool.c:734
+#: gio/gsettings-tool.c:736
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  КЛЮЧ      (Необов'язковий) ключ схеми\n"
 
-#: gio/gsettings-tool.c:738
+#: gio/gsettings-tool.c:740
 msgid "  KEY       The key within the schema\n"
 msgstr "  КЛЮЧ      Ключ схеми\n"
 
-#: gio/gsettings-tool.c:742
+#: gio/gsettings-tool.c:744
 msgid "  VALUE     The value to set\n"
 msgstr "  ЗНАЧЕННЯ  Значення, що привласнюється\n"
 
-#: gio/gsettings-tool.c:797
+#: gio/gsettings-tool.c:799
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Не вдалося завантажити схеми з «%s»: %s\n"
 
-#: gio/gsettings-tool.c:809
+#: gio/gsettings-tool.c:811
 #, c-format
 msgid "No schemas installed\n"
 msgstr "Схем не встановлено\n"
 
-#: gio/gsettings-tool.c:888
+#: gio/gsettings-tool.c:890
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Вказано порожню назву схеми\n"
 
-#: gio/gsettings-tool.c:943
+#: gio/gsettings-tool.c:955
 #, c-format
 msgid "No such key “%s”\n"
 msgstr "Немає ключа «%s»\n"
@@ -4264,6 +4261,12 @@ msgstr ""
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Підтримки протоколу проксі «%s» не передбачено."
+
+#: gio/gsocketconnection.c:342
+#, c-format
+#| msgid "No connection endpoint specified"
+msgid "Socket connection not connected"
+msgstr "З'єднання з сокетом не встановлено"
 
 #: gio/gsocketlistener.c:235
 msgid "Listener is already closed"
@@ -4912,25 +4915,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "Шлях «%s» не є абсолютним"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:195
+#: glib/gdatetime.c:196
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %b %e %H:%M:%S %Y"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:198
+#: glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%m/%d/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:201
+#: glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:204
+#: glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4951,62 +4954,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:243
+#: glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "January"
 msgstr "січень"
 
-#: glib/gdatetime.c:245
+#: glib/gdatetime.c:246
 msgctxt "full month name"
 msgid "February"
 msgstr "лютий"
 
-#: glib/gdatetime.c:247
+#: glib/gdatetime.c:248
 msgctxt "full month name"
 msgid "March"
 msgstr "березень"
 
-#: glib/gdatetime.c:249
+#: glib/gdatetime.c:250
 msgctxt "full month name"
 msgid "April"
 msgstr "квітень"
 
-#: glib/gdatetime.c:251
+#: glib/gdatetime.c:252
 msgctxt "full month name"
 msgid "May"
 msgstr "травень"
 
-#: glib/gdatetime.c:253
+#: glib/gdatetime.c:254
 msgctxt "full month name"
 msgid "June"
 msgstr "червень"
 
-#: glib/gdatetime.c:255
+#: glib/gdatetime.c:256
 msgctxt "full month name"
 msgid "July"
 msgstr "липень"
 
-#: glib/gdatetime.c:257
+#: glib/gdatetime.c:258
 msgctxt "full month name"
 msgid "August"
 msgstr "серпень"
 
-#: glib/gdatetime.c:259
+#: glib/gdatetime.c:260
 msgctxt "full month name"
 msgid "September"
 msgstr "вересень"
 
-#: glib/gdatetime.c:261
+#: glib/gdatetime.c:262
 msgctxt "full month name"
 msgid "October"
 msgstr "жовтень"
 
-#: glib/gdatetime.c:263
+#: glib/gdatetime.c:264
 msgctxt "full month name"
 msgid "November"
 msgstr "листопад"
 
-#: glib/gdatetime.c:265
+#: glib/gdatetime.c:266
 msgctxt "full month name"
 msgid "December"
 msgstr "грудень"
@@ -5028,132 +5031,132 @@ msgstr "грудень"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:297
+#: glib/gdatetime.c:298
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "січ"
 
-#: glib/gdatetime.c:299
+#: glib/gdatetime.c:300
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "лют"
 
-#: glib/gdatetime.c:301
+#: glib/gdatetime.c:302
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "бер"
 
-#: glib/gdatetime.c:303
+#: glib/gdatetime.c:304
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "кві"
 
-#: glib/gdatetime.c:305
+#: glib/gdatetime.c:306
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "тра"
 
-#: glib/gdatetime.c:307
+#: glib/gdatetime.c:308
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "чер"
 
-#: glib/gdatetime.c:309
+#: glib/gdatetime.c:310
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "лип"
 
-#: glib/gdatetime.c:311
+#: glib/gdatetime.c:312
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "серп"
 
-#: glib/gdatetime.c:313
+#: glib/gdatetime.c:314
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "вер"
 
-#: glib/gdatetime.c:315
+#: glib/gdatetime.c:316
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "жовт"
 
-#: glib/gdatetime.c:317
+#: glib/gdatetime.c:318
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "лист"
 
-#: glib/gdatetime.c:319
+#: glib/gdatetime.c:320
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "груд"
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:335
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "понеділок"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:337
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "вівторок"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:339
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "середа"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:341
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "четвер"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:343
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "п'ятниця"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:345
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "субота"
 
-#: glib/gdatetime.c:346
+#: glib/gdatetime.c:347
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "неділя"
 
-#: glib/gdatetime.c:361
+#: glib/gdatetime.c:362
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "пн"
 
-#: glib/gdatetime.c:363
+#: glib/gdatetime.c:364
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "вт"
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:366
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "ср"
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:368
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "чт"
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:370
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "пт"
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:372
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "сб"
 
-#: glib/gdatetime.c:373
+#: glib/gdatetime.c:374
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "нд"
@@ -5175,62 +5178,62 @@ msgstr "нд"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:437
+#: glib/gdatetime.c:438
 msgctxt "full month name with day"
 msgid "January"
 msgstr "січня"
 
-#: glib/gdatetime.c:439
+#: glib/gdatetime.c:440
 msgctxt "full month name with day"
 msgid "February"
 msgstr "лютого"
 
-#: glib/gdatetime.c:441
+#: glib/gdatetime.c:442
 msgctxt "full month name with day"
 msgid "March"
 msgstr "березня"
 
-#: glib/gdatetime.c:443
+#: glib/gdatetime.c:444
 msgctxt "full month name with day"
 msgid "April"
 msgstr "квітня"
 
-#: glib/gdatetime.c:445
+#: glib/gdatetime.c:446
 msgctxt "full month name with day"
 msgid "May"
 msgstr "травня"
 
-#: glib/gdatetime.c:447
+#: glib/gdatetime.c:448
 msgctxt "full month name with day"
 msgid "June"
 msgstr "червня"
 
-#: glib/gdatetime.c:449
+#: glib/gdatetime.c:450
 msgctxt "full month name with day"
 msgid "July"
 msgstr "липня"
 
-#: glib/gdatetime.c:451
+#: glib/gdatetime.c:452
 msgctxt "full month name with day"
 msgid "August"
 msgstr "серпня"
 
-#: glib/gdatetime.c:453
+#: glib/gdatetime.c:454
 msgctxt "full month name with day"
 msgid "September"
 msgstr "вересня"
 
-#: glib/gdatetime.c:455
+#: glib/gdatetime.c:456
 msgctxt "full month name with day"
 msgid "October"
 msgstr "жовтня"
 
-#: glib/gdatetime.c:457
+#: glib/gdatetime.c:458
 msgctxt "full month name with day"
 msgid "November"
 msgstr "листопада"
 
-#: glib/gdatetime.c:459
+#: glib/gdatetime.c:460
 msgctxt "full month name with day"
 msgid "December"
 msgstr "грудня"
@@ -5252,74 +5255,74 @@ msgstr "грудня"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:524
+#: glib/gdatetime.c:525
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "січ"
 
-#: glib/gdatetime.c:526
+#: glib/gdatetime.c:527
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "лют"
 
-#: glib/gdatetime.c:528
+#: glib/gdatetime.c:529
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "бер"
 
-#: glib/gdatetime.c:530
+#: glib/gdatetime.c:531
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "квіт"
 
-#: glib/gdatetime.c:532
+#: glib/gdatetime.c:533
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "трав"
 
-#: glib/gdatetime.c:534
+#: glib/gdatetime.c:535
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "черв"
 
-#: glib/gdatetime.c:536
+#: glib/gdatetime.c:537
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "лип"
 
-#: glib/gdatetime.c:538
+#: glib/gdatetime.c:539
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "серп"
 
-#: glib/gdatetime.c:540
+#: glib/gdatetime.c:541
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "вер"
 
-#: glib/gdatetime.c:542
+#: glib/gdatetime.c:543
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "жовт"
 
-#: glib/gdatetime.c:544
+#: glib/gdatetime.c:545
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "лист"
 
-#: glib/gdatetime.c:546
+#: glib/gdatetime.c:547
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "груд"
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:588
+#: glib/gdatetime.c:589
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:591
+#: glib/gdatetime.c:592
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5463,47 +5466,47 @@ msgstr ""
 msgid "Invalid group name: %s"
 msgstr "Неправильна назва групи: %s"
 
-#: glib/gkeyfile.c:1397
+#: glib/gkeyfile.c:1398
 msgid "Key file does not start with a group"
 msgstr "Ключовий файл не починається з групи"
 
-#: glib/gkeyfile.c:1421
+#: glib/gkeyfile.c:1422
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Неправильна назва ключа: %.*s"
 
-#: glib/gkeyfile.c:1449
+#: glib/gkeyfile.c:1450
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Файл ключа містить кодування, підтримки якого не передбачено — «%s»"
 
-#: glib/gkeyfile.c:1696 glib/gkeyfile.c:1870 glib/gkeyfile.c:3346
-#: glib/gkeyfile.c:3448 glib/gkeyfile.c:3558 glib/gkeyfile.c:3687
-#: glib/gkeyfile.c:3831 glib/gkeyfile.c:4081 glib/gkeyfile.c:4155
+#: glib/gkeyfile.c:1697 glib/gkeyfile.c:1871 glib/gkeyfile.c:3347
+#: glib/gkeyfile.c:3449 glib/gkeyfile.c:3559 glib/gkeyfile.c:3688
+#: glib/gkeyfile.c:3832 glib/gkeyfile.c:4082 glib/gkeyfile.c:4156
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Файл ключа не містить групи «%s»"
 
-#: glib/gkeyfile.c:1826
+#: glib/gkeyfile.c:1827
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Файл ключа не містить ключ «%s» у групі «%s»"
 
-#: glib/gkeyfile.c:1987 glib/gkeyfile.c:2104
+#: glib/gkeyfile.c:1988 glib/gkeyfile.c:2105
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "Файл ключа містить ключ «%s» зі значенням «%s», кодування якого не є "
 "кодуванням UTF-8"
 
-#: glib/gkeyfile.c:2007 glib/gkeyfile.c:2124 glib/gkeyfile.c:2586
+#: glib/gkeyfile.c:2008 glib/gkeyfile.c:2125 glib/gkeyfile.c:2587
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Ключ «%s» з файла ключів містить значення, яке не вдається проаналізувати."
 
-#: glib/gkeyfile.c:2800 glib/gkeyfile.c:3174
+#: glib/gkeyfile.c:2801 glib/gkeyfile.c:3175
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5512,36 +5515,36 @@ msgstr ""
 "Файл ключів містить ключ «%s» у групі «%s», значення якого не вдалося "
 "розпізнати."
 
-#: glib/gkeyfile.c:2881 glib/gkeyfile.c:2961
+#: glib/gkeyfile.c:2882 glib/gkeyfile.c:2962
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Значення ключа «%s» у групі «%s» дорівнює «%s», але очікувалося «%s»"
 
-#: glib/gkeyfile.c:4411
+#: glib/gkeyfile.c:4412
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовий файл містить escape-символ наприкінці рядка"
 
-#: glib/gkeyfile.c:4433
+#: glib/gkeyfile.c:4434
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Файл ключа містить неправильну послідовність екранування «%s»"
 
-#: glib/gkeyfile.c:4585
+#: glib/gkeyfile.c:4586
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Не вдалося розібрати значення «%s» як число."
 
-#: glib/gkeyfile.c:4599
+#: glib/gkeyfile.c:4600
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Числове ціле значення «%s» поза межами діапазону"
 
-#: glib/gkeyfile.c:4632
+#: glib/gkeyfile.c:4633
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Значення «%s» не вдалося перетворити на число з рухомою комою."
 
-#: glib/gkeyfile.c:4671
+#: glib/gkeyfile.c:4672
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Не вдалося обробити значення «%s» як логічне значення."
