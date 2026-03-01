@@ -68,8 +68,8 @@ g_slice_get_config_state (GSliceConfig ckey,
  * returned pointer to a pointer of the given type, avoiding a type
  * cast in the source code.
  *
- * This can never return %NULL as the minimum allocation size from
- * `sizeof (@type)` is 1 byte.
+ * This can never return %NULL. If the size of the type is 0, then 1 byte will
+ * still be allocated.
  *
  * Since GLib 2.76 this always uses the system malloc() implementation
  * internally.
@@ -91,8 +91,8 @@ g_slice_get_config_state (GSliceConfig ckey,
  * and casts the returned pointer to a pointer of the given type,
  * avoiding a type cast in the source code.
  *
- * This can never return %NULL as the minimum allocation size from
- * `sizeof (@type)` is 1 byte.
+ * This can never return %NULL. If the size of the type is 0, then 1 byte will
+ * still be allocated.
  *
  * Since GLib 2.76 this always uses the system malloc() implementation
  * internally.
