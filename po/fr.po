@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-02-27 12:12+0000\n"
-"PO-Revision-Date: 2026-02-26 12:57+0000\n"
-"Last-Translator: Vincent Chatelain <vincent_chatelain@proton.me>\n"
+"POT-Creation-Date: 2026-02-27 13:37+0000\n"
+"PO-Revision-Date: 2026-03-01 11:15+0100\n"
+"Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -4355,10 +4355,9 @@ msgid "Proxy protocol “%s” is not supported."
 msgstr "Le protocole du proxy « %s » n’est pas pris en charge."
 
 #: gio/gsocketconnection.c:342
-#, fuzzy, c-format
-#| msgid "No connection endpoint specified"
+#, c-format
 msgid "Socket connection not connected"
-msgstr "Aucun point terminal de connexion défini"
+msgstr "Le connecteur réseau n’est pas connecté"
 
 #: gio/gsocketlistener.c:235
 msgid "Listener is already closed"
