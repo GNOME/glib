@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-02-24 22:04+0000\n"
-"PO-Revision-Date: 2026-02-26 11:22+0100\n"
+"POT-Creation-Date: 2026-02-27 13:37+0000\n"
+"PO-Revision-Date: 2026-03-03 11:23+0100\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot en òc (totenoc.eu)\n"
 "Language: oc\n"
@@ -3195,7 +3195,7 @@ msgstr "Devètz indicar exactament un nom de repertòri"
 
 #: gio/glib-compile-schemas.c:2285
 msgid "No schema files found: doing nothing."
-msgstr "Cap de fichièr esquèma pas trobat : cap d’accion pas realizada"
+msgstr "Cap de fichièr esquèma pas trobat : cap d’accion pas realizada."
 
 #: gio/glib-compile-schemas.c:2287
 msgid "No schema files found: removed existing output file."
@@ -4306,6 +4306,11 @@ msgstr "L'usatge d'un proxy es pas pres en carga dins una connexion non-TCP."
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Lo protocòl del proxy « %s » es pas pres en carga."
+
+#: gio/gsocketconnection.c:342
+#, c-format
+msgid "Socket connection not connected"
+msgstr "Connector de connexion non connectat"
 
 #: gio/gsocketlistener.c:235
 msgid "Listener is already closed"
