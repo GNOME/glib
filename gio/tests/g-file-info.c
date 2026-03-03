@@ -1146,6 +1146,72 @@ test_set_modified_date_time_precision (void)
   g_clear_object (&file);
 }
 
+static void
+test_set_symlink_target (void)
+{
+  GFile *file = NULL;
+  GFileIOStream *stream = NULL;
+  GFileInfo *info = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test that g_file_info_set_symlink_target() sets symlink target correctly");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3897");
+
+  /* Create a temp file to reserve a unique filename for the test */
+  file = g_file_new_tmp ("g-file-info-test-set-symlink-XXXXXX", &stream, &local_error);
+  g_assert_no_error (local_error);
+
+  /* Remove the file and recreate it as a symlink */
+  g_file_delete (file, NULL, NULL);
+
+  if (!g_file_make_symbolic_link (file, "initial-target", NULL, &local_error) &&
+      g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED))
+    {
+      g_clear_error (&local_error);
+      g_test_skip ("Skipping testing symbolic links as they’re not supported on this system");
+      return;
+    }
+
+  g_assert_no_error (local_error);
+
+  info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
+                            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  /* Try setting the symlink target when there isn’t one already set via GIO */
+  g_file_info_set_symlink_target (info, "symlink-target");
+  g_file_set_attributes_from_info (file, info, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&info);
+
+  info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
+                            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_assert_cmpstr (g_file_info_get_symlink_target (info), ==, "symlink-target");
+
+  /* Now try setting it again when there is one already */
+  g_file_info_set_symlink_target (info, "symlink-target2");
+  g_file_set_attributes_from_info (file, info, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_object (&info);
+
+  info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
+                            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  g_assert_cmpstr (g_file_info_get_symlink_target (info), ==, "symlink-target2");
+
+  /* Clean up */
+  g_file_delete (file, NULL, NULL);
+
+  g_clear_object (&stream);
+  g_clear_object (&info);
+  g_clear_object (&file);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1161,6 +1227,7 @@ main (int   argc,
 #endif
   g_test_add_func ("/g-file-info/xattrs", test_xattrs);
   g_test_add_func ("/g-file-info/set-modified-date-time-precision", test_set_modified_date_time_precision);
+  g_test_add_func ("/g-file-info/set-symlink-target", test_set_symlink_target);
   
   return g_test_run();
 }
