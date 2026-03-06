@@ -46,7 +46,13 @@ G_DEFINE_TYPE_WITH_CODE (GInotifyFileMonitor, g_inotify_file_monitor, G_TYPE_LOC
 static gboolean
 g_inotify_file_monitor_is_supported (void)
 {
-  return _ih_startup ();
+  gboolean ret;
+
+  ret = _ih_startup ();
+  if (!ret)
+    g_warning ("Failed to initialize inotify backend (have you run out of inotify instances?)");
+
+  return ret;
 }
 
 static void
