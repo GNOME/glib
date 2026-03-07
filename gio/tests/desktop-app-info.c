@@ -2004,6 +2004,39 @@ test_launch_fail (void)
 }
 
 static void
+test_launch_fail_argument (void)
+{
+  GAppInfo *app_info;
+  GList *args = NULL;
+  GFile *file;
+  GFileIOStream *iostream;
+  GError *error = NULL;
+
+  app_info = g_app_info_create_from_commandline ("this-must-not-exist‼",
+                                                 "failing app with argument",
+                                                 G_APP_INFO_CREATE_NONE,
+                                                 &error);
+  g_assert_no_error (error);
+
+  file = g_file_new_tmp ("test_desktop_app_info_launch_fail_argument_XXXXXX",
+                         &iostream, NULL);
+  g_assert_nonnull (file);
+  g_assert_nonnull (iostream);
+  g_clear_object (&iostream);
+
+  args = g_list_prepend (args, file);
+  g_assert_false (g_app_info_launch (app_info, args, NULL, &error));
+  g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+
+  g_clear_error (&error);
+  g_clear_object (&app_info);
+
+  g_file_delete (file, NULL, NULL);
+  g_clear_object (&file);
+  g_list_free (args);
+}
+
+static void
 test_launch_fail_absolute_path (void)
 {
   GAppInfo *app_info;
@@ -2128,6 +2161,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/app-path/wrong", test_app_path_wrong);
   g_test_add_func ("/desktop-app-info/invalid-key-file", test_invalid_key_file);
   g_test_add_func ("/desktop-app-info/launch/fail", test_launch_fail);
+  g_test_add_func ("/desktop-app-info/launch/fail-argument", test_launch_fail_argument);
   g_test_add_func ("/desktop-app-info/launch/fail-absolute-path", test_launch_fail_absolute_path);
   g_test_add_func ("/desktop-app-info/launch/fail-startup-notify", test_launch_startup_notify_fail);
   g_test_add_func ("/desktop-app-info/launch/fail-dbus", test_launch_fail_dbus);
