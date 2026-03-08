@@ -128,6 +128,7 @@ handle_launch (int argc, char *argv[], gboolean do_help)
       g_clear_object (&app);
     }
   g_key_file_free (keyfile);
+  g_free (desktop_file);
 #endif
   return retval;
 }
