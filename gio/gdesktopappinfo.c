@@ -3055,7 +3055,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           !g_file_test (argv[0], G_FILE_TEST_IS_EXECUTABLE) ||
           g_file_test (argv[0], G_FILE_TEST_IS_DIR))
         {
-          char *program = g_steal_pointer (&argv[0]);
+          char *program = g_strdup (argv[0]);
           char *program_path = NULL;
 
           if (!g_path_is_absolute (program))
@@ -3069,6 +3069,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
 
           if (program_path)
             {
+              g_free (argv[0]);
               argv[0] = g_steal_pointer (&program_path);
             }
           else
