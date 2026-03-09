@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
 "POT-Creation-Date: 2026-03-03 16:09+0000\n"
-"PO-Revision-Date: 2026-03-06 20:01+0100\n"
+"PO-Revision-Date: 2026-03-09 20:01+0100\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -162,7 +162,7 @@ msgstr "FITXER"
 
 #: gio/gapplication-tool.c:76
 msgid "Optional relative or absolute filenames, or URIs to open"
-msgstr "Noms de fitxers relatius opcionals o relatius, o URI que s'han d'obrir"
+msgstr "Noms de fitxer opcionals, relatius o absoluts, o URIs per a obrir"
 
 #: gio/gapplication-tool.c:77
 msgid "ACTION"
@@ -2830,7 +2830,7 @@ msgid ""
 "<aliases> can only be specified for keys with enumerated or flags types or "
 "after <choices>"
 msgstr ""
-"<alises> només es poden especificar per a claus amb tipus enumerats o "
+"<aliases> només es poden especificar per a claus amb tipus enumerats o "
 "d'indicadors després de <choices>"
 
 #: gio/glib-compile-schemas.c:583
