@@ -1130,8 +1130,13 @@ validate_pspec_to_install (GParamSpec *pspec)
 
   g_return_val_if_fail (pspec->flags & (G_PARAM_READABLE | G_PARAM_WRITABLE), FALSE);
 
-  if (pspec->flags & G_PARAM_CONSTRUCT)
-    g_return_val_if_fail ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) == 0, FALSE);
+  if ((pspec->flags & G_PARAM_CONSTRUCT) && (pspec->flags & G_PARAM_CONSTRUCT_ONLY))
+    {
+      g_critical ("%s: property '%s' cannot have both G_PARAM_CONSTRUCT and "
+                  "G_PARAM_CONSTRUCT_ONLY flags set simultaneously",
+                  G_STRFUNC, pspec->name);
+      return FALSE;
+    }
 
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     g_return_val_if_fail (pspec->flags & G_PARAM_WRITABLE, FALSE);
