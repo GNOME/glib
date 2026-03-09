@@ -1138,8 +1138,8 @@ validate_pspec_to_install (GParamSpec *pspec)
       return FALSE;
     }
 
-  if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-    g_return_val_if_fail (pspec->flags & G_PARAM_WRITABLE, FALSE);
+  g_return_val_if_fail (!(pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) ||
+                        (pspec->flags & G_PARAM_WRITABLE), FALSE);
 
   return TRUE;
 }
@@ -1159,10 +1159,8 @@ validate_and_install_class_property (GObjectClass *class,
       return FALSE;
     }
 
-  if (pspec->flags & G_PARAM_WRITABLE)
-    g_return_val_if_fail (class->set_property != NULL, FALSE);
-  if (pspec->flags & G_PARAM_READABLE)
-    g_return_val_if_fail (class->get_property != NULL, FALSE);
+  g_return_val_if_fail (!(pspec->flags & G_PARAM_WRITABLE) || class->set_property != NULL, FALSE);
+  g_return_val_if_fail (!(pspec->flags & G_PARAM_READABLE) || class->get_property != NULL, FALSE);
 
   class->flags |= CLASS_HAS_PROPS_FLAG;
   if (install_property_internal (oclass_type, property_id, pspec))
