@@ -1654,6 +1654,11 @@ g_file_info_get_is_hidden (GFileInfo *info)
  *
  * Checks if a file is a backup file.
  *
+ * The exact semantics of what constitutes a backup file are
+ * backend-specific. For local files, a file is considered a backup
+ * if its name ends with `~` and it is a regular file. This follows
+ * the POSIX convention used by text editors such as Emacs.
+ *
  * It is an error to call this if the #GFileInfo does not contain
  * %G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP.
  *
