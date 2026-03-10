@@ -600,7 +600,7 @@ msgstr "Oczekiwano braku zawartości podczas próby odczytania bajtu"
 
 #: gio/gdbusauth.c:1193
 msgid "User IDs must be the same for peer and server"
-msgstr "Identyfikatory użytkownika muszą być takie same dla partnera i serwera"
+msgstr "Identyfikatory osoby używającej muszą być takie same dla partnera i serwera"
 
 #: gio/gdbusauth.c:1205
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -1402,14 +1402,14 @@ msgstr "Nie odnaleziono programu „%s” w $PATH"
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
-"Nie można utworzyć katalogu osoby użytkującej dla konfiguracji programu %s: "
+"Nie można utworzyć katalogu osoby używającej dla konfiguracji programu %s: "
 "%s"
 
 #: gio/gdesktopappinfo.c:3837
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr ""
-"Nie można utworzyć katalogu osoby użytkującej dla konfiguracji MIME %s: %s"
+"Nie można utworzyć katalogu osoby używającej dla konfiguracji MIME %s: %s"
 
 #: gio/gdesktopappinfo.c:4067
 msgid "MIME apps information is too long"
@@ -1422,7 +1422,7 @@ msgstr "Brak identyfikatora w informacjach o programie"
 #: gio/gdesktopappinfo.c:4358
 #, c-format
 msgid "Can’t create user desktop file %s"
-msgstr "Nie można utworzyć pliku .desktop dla użytkownika %s"
+msgstr "Nie można utworzyć pliku .desktop dla osoby używającej %s"
 
 #: gio/gdesktopappinfo.c:4478
 #, c-format
@@ -2273,20 +2273,20 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:72
 msgid "Use an anonymous user when authenticating"
-msgstr "Używa anonimowego użytkownika podczas uwierzytelniania"
+msgstr "Używa anonimowej osoby używającej podczas uwierzytelniania"
 
 #. Translator: List here is a verb as in 'List all mounts'
 #: gio/gio-tool-mount.c:74
 msgid "List user-interesting volumes, drives and mounts"
 msgstr ""
 "Wyświetla listę woluminów, napędów i punktów montowania, które interesują "
-"użytkownika"
+"osobę używającą"
 
 #: gio/gio-tool-mount.c:75
 msgid "Monitor user-interesting volume, drive and mount events"
 msgstr ""
 "Monitoruje zdarzenia woluminów, napędów i punktów montowania, które "
-"interesują użytkownika"
+"interesują osobę używającą"
 
 #: gio/gio-tool-mount.c:76
 msgid "Show extra information"
@@ -2404,7 +2404,7 @@ msgstr "Dołącza do końca pliku"
 
 #: gio/gio-tool-save.c:54
 msgid "When creating, restrict access to the current user"
-msgstr "Podczas tworzenia ogranicza dostęp do bieżącego użytkownika"
+msgstr "Podczas tworzenia ogranicza dostęp do bieżącej osoby używającej"
 
 #: gio/gio-tool-save.c:55
 msgid "When replacing, replace as if the destination did not exist"
@@ -4280,7 +4280,7 @@ msgstr "SOCKSv4 nie obsługuje adresu IPv6 „%s”"
 
 #: gio/gsocks4aproxy.c:138
 msgid "Username is too long for SOCKSv4 protocol"
-msgstr "Nazwa użytkownika jest za długa dla protokołu SOCKSv4"
+msgstr "Nazwa osoby używającej jest za długa dla protokołu SOCKSv4"
 
 #: gio/gsocks4aproxy.c:155
 #, c-format
@@ -4312,12 +4312,12 @@ msgstr ""
 
 #: gio/gsocks5proxy.c:227
 msgid "Username or password is too long for SOCKSv5 protocol."
-msgstr "Nazwa użytkownika lub hasło są za długie dla protokołu SOCKSv5."
+msgstr "Nazwa osoby używającej lub hasło są za długie dla protokołu SOCKSv5."
 
 #: gio/gsocks5proxy.c:260
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
-"Uwierzytelnienie SOCKSv5 się nie powiodło z powodu błędnej nazwy użytkownika "
+"Uwierzytelnienie SOCKSv5 się nie powiodło z powodu błędnej nazwy osoby używającej "
 "lub hasła."
 
 #: gio/gsocks5proxy.c:315
