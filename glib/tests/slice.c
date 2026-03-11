@@ -90,6 +90,41 @@ test_allocate (void)
     g_thread_join (threads[i]);
 }
 
+static void
+test_new_empty (void)
+{
+#if !defined(_MSC_VER) || defined(__clang__)
+  typedef struct {
+    /* empty */
+  } EmptyStruct;
+  EmptyStruct *p1, *p2, *p3;
+
+  g_test_summary ("Test that g_slice_new() never returns NULL, even with a zero-size allocation");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3688");
+
+  if (sizeof (EmptyStruct) > 0)
+    {
+      g_test_skip ("Compiler doesn’t support empty structs");
+      return;
+    }
+
+  p1 = g_slice_new (EmptyStruct);
+  g_assert_nonnull (p1);
+
+  p2 = g_slice_new0 (EmptyStruct);
+  g_assert_nonnull (p2);
+
+  p3 = g_slice_dup (EmptyStruct, p1);
+  g_assert_nonnull (p3);
+
+  g_free (p3);
+  g_free (p2);
+  g_free (p1);
+#else
+  g_test_skip ("MSVC requires that structs are non-empty");
+#endif
+}
+
 int
 main (int argc, char **argv)
 {
@@ -98,6 +133,7 @@ main (int argc, char **argv)
   g_test_add_func ("/slice/copy", test_slice_copy);
   g_test_add_func ("/slice/chain", test_chain);
   g_test_add_func ("/slice/allocate", test_allocate);
+  g_test_add_func ("/slice/new-empty", test_new_empty);
 
   return g_test_run ();
 }
