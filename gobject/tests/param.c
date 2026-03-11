@@ -1270,7 +1270,7 @@ static gint valid_impl_types[48][4] = {
 /* We also try to change the flags.  We must ensure that all
  * implementations provide all functionality promised by the interface.
  * We must therefore never remove readability or writability (but we can
- * add them).  Construct-only is a restrictions that applies to
+ * add them).  Construct-only is a restriction that applies to
  * writability, so we can never add it unless writability was never
  * present in the first place, in which case "writable at construct
  * only" is still better than "not writable".
@@ -1290,7 +1290,7 @@ static gint valid_impl_types[48][4] = {
  *                        rwc, wc
  *
  * We can represent this with a 16-by-16 table.  The rows represent the
- * flags of the property on the interface.  The columns is the flags to
+ * flags of the property on the interface.  The columns are the flags to
  * try to use when overriding the property.  The cell contents are:
  *
  *   - 0:   invalid because the interface property doesn't exist (invalid flags)
