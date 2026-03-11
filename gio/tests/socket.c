@@ -2738,7 +2738,7 @@ test_socket_control_message_custom (void)
   g_assert_true (H_IS_APP_MESSAGE (mv[0]));
 
   g_clear_object (&mv[0]);
-  g_clear_pointer (mv, g_free);
+  g_clear_pointer (&mv, g_free);
 
   g_clear_object (&appmsg);
   g_clear_object (&sockets[0]);
