@@ -67,6 +67,11 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  *
  * A key in the "standard" namespace for checking if a file is a backup file.
  *
+ * The exact semantics of what constitutes a backup file are backend-specific.
+ * For local files, a file is considered a backup if its name ends with `~`
+ * and it is a regular file. This follows the POSIX convention used by text
+ * editors such as Emacs.
+ *
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
  **/
 #define G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP "standard::is-backup"           /* boolean */
