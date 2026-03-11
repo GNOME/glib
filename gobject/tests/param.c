@@ -1166,8 +1166,14 @@ test_interface_default_init (TestInterfaceInterface *iface)
             /* we think that this is impossible.  make sure. */
             pspec = g_param_spec_object ("xyz", "xyz", "xyz", types[i], (GParamFlags) j);
 
-            g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                                   "*assertion*pspec->flags*failed*");
+            if ((j & (G_PARAM_READABLE | G_PARAM_WRITABLE)) &&
+                (j & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) == (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+              g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                                     "*cannot have both G_PARAM_CONSTRUCT and G_PARAM_CONSTRUCT_ONLY*");
+            else
+              g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                                     "*assertion*pspec->flags*failed*");
+
             g_object_interface_install_property (iface, pspec);
             g_test_assert_expected_messages ();
 
@@ -1451,7 +1457,11 @@ test_param_implement (void)
 
               case 'i':
                 g_test_trap_assert_failed ();
-                g_test_trap_assert_stderr ("*pspec->flags*");
+                if ((use_this_flag & (G_PARAM_READABLE | G_PARAM_WRITABLE)) &&
+                    (use_this_flag & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) == (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+                  g_test_trap_assert_stderr ("*cannot have both G_PARAM_CONSTRUCT and G_PARAM_CONSTRUCT_ONLY*");
+                else
+                  g_test_trap_assert_stderr ("*pspec->flags*");
                 continue;
 
               case 'f':
