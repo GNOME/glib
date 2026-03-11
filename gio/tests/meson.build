@@ -101,7 +101,10 @@ gio_tests = {
   'file-enumerator' : {},
   'inet-address' : {},
   'io-stream' : {},
-  'iptosmessage' : {},
+  'iptosmessage' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3906
+    'can_fail' : host_system in ['freebsd'],
+  },
   'max-version' : {'install' : false},
   'memory-input-stream' : {},
   'memory-monitor' : {},
