@@ -458,8 +458,11 @@ g_memory_monitor_psi_finalize (GObject *object)
 
   for (size_t i = 0; i < G_N_ELEMENTS (monitor->triggers); i++)
     {
-      g_source_destroy (monitor->triggers[i]);
-      g_source_unref (monitor->triggers[i]);
+      if (monitor->triggers[i])
+        {
+          g_source_destroy (monitor->triggers[i]);
+          g_source_unref (monitor->triggers[i]);
+        }
     }
 
   G_OBJECT_CLASS (g_memory_monitor_psi_parent_class)->finalize (object);
