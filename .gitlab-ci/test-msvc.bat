@@ -41,7 +41,7 @@ echo skip_sanity_check = true>>!cross_file!
 set args=%args% --cross-file=!cross_file!
 
 :continue_build
-pip3 install --upgrade --user meson==1.4.2 || goto :error
+pip3 install --upgrade --user meson==1.9.2 || goto :error
 meson setup %args% _build || goto :error
 meson compile -C _build || goto :error
 
