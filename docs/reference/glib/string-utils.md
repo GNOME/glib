@@ -57,8 +57,9 @@ which should be used instead of `%llu` or similar parameters for formatting
  * [func@GLib.str_tokenize_and_fold]
  * [func@GLib.str_match_string]
 
-For users of GLib in C, the `g_set_str()` inline function also exists to set a
-string and handle copying the new value and freeing the old one.
+For users of GLib in C, the `g_set_str()` and `g_set_strv()` inline functions
+also exist to set a string (or string array) and handle copying the new value
+and freeing the old one.
 
 ## String Copying
 

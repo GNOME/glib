@@ -2781,6 +2781,42 @@ test_set_str (void)
 }
 
 static void
+test_set_strv (void)
+{
+  char **strv = NULL;
+  const char * const empty_strv[] = { NULL };
+  const char * const values1[] = { "a", "b", NULL };
+  const char * const values2[] = { "a", "b", NULL };
+  const char * const values3[] = { "a", "c", NULL };
+
+  g_assert_false (g_set_strv (&strv, NULL));
+  g_assert_null (strv);
+
+  g_assert_true (g_set_strv (&strv, empty_strv));
+  g_assert_nonnull (strv);
+  g_assert_true ((gpointer)strv != (gpointer)empty_strv);
+  g_assert_true (g_strv_equal ((const char * const *)strv, empty_strv));
+
+  g_assert_false (g_set_strv (&strv, empty_strv));
+  g_assert_true (g_strv_equal ((const char * const *)strv, empty_strv));
+
+  g_assert_false (g_set_strv (&strv, (const char * const *)strv));
+  g_assert_true (g_strv_equal ((const char * const *)strv, empty_strv));
+
+  g_assert_true (g_set_strv (&strv, values1));
+  g_assert_true (g_strv_equal ((const char * const *)strv, values1));
+
+  g_assert_false (g_set_strv (&strv, values2));
+  g_assert_true (g_strv_equal ((const char * const *)strv, values1));
+
+  g_assert_true (g_set_strv (&strv, values3));
+  g_assert_true (g_strv_equal ((const char * const *)strv, values3));
+
+  g_assert_true (g_set_strv (&strv, NULL));
+  g_assert_null (strv);
+}
+
+static void
 test_str_is_ascii (void)
 {
   const char *ascii_strings[] = {
@@ -2821,6 +2857,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/memdup", test_memdup);
   g_test_add_func ("/strfuncs/memdup2", test_memdup2);
   g_test_add_func ("/strfuncs/set_str", test_set_str);
+  g_test_add_func ("/strfuncs/set_strv", test_set_strv);
   g_test_add_func ("/strfuncs/stpcpy", test_stpcpy);
   g_test_add_func ("/strfuncs/str_match_string", test_str_match_string);
   g_test_add_func ("/strfuncs/str_tokenize_and_fold", test_str_tokenize_and_fold);

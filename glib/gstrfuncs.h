@@ -497,6 +497,62 @@ g_set_str (char       **str_pointer,
   return TRUE;
 }
 
+/**
+ * g_set_strv: (skip)
+ * @strv_pointer: (inout) (not optional) (nullable): a pointer to either
+ *   a `NULL`-terminated string array or `NULL`
+ * @new_strv: (nullable): a NULL-terminated string array to assign to
+ *   @strv_pointer
+ *
+ * Safely replaces a string vector.
+ *
+ * Updates a pointer to a `NULL`-terminated string array to a copy of @new_strv
+ * and returns whether the value was changed.
+ *
+ * If @new_strv matches the previous array, this function is a no-op. If
+ * @new_strv is different, a copy of it will be assigned to @strv_pointer and
+ * the previous array pointed to by @strv_pointer will be freed with
+ * [func@GLib.strfreev].
+ *
+ * The contents of both string arrays are compared for equality before
+ * replacing the value. In the worst case this requires O(N) time.
+ *
+ * This function avoids a potential use-after-free when @new_strv reuses
+ * pointers from the original string array. This allows callers to build
+ * a replacement array using existing strings without needing to copy
+ * them beforehand.
+ *
+ * @strv_pointer must not be `NULL`, but can point to a `NULL` value.
+ *
+ * Returns: true if the value of @strv_pointer changed, false otherwise
+ *
+ * Since: 2.88
+ */
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_88
+static inline gboolean g_set_strv (char               ***strv_pointer,
+                                   const char * const   *new_strv);
+
+GLIB_AVAILABLE_STATIC_INLINE_IN_2_88
+static inline gboolean
+g_set_strv (char               ***strv_pointer,
+            const char * const   *new_strv)
+{
+  char **copy;
+
+  if ((const char * const *)*strv_pointer == new_strv)
+    return FALSE;
+
+  if (*strv_pointer && new_strv &&
+      g_strv_equal ((const char * const *)*strv_pointer, new_strv))
+    return FALSE;
+
+  copy = g_strdupv ((char **)new_strv);
+  g_strfreev (*strv_pointer);
+  *strv_pointer = copy;
+
+  return TRUE;
+}
+
 G_END_DECLS
 
 #endif /* __G_STRFUNCS_H__ */
