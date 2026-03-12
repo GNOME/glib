@@ -177,14 +177,15 @@ variables:
     - bash .gitlab-ci/show-execution-environment.sh
     - cp -r "${HOME}"/subprojects/* subprojects/
 
-# FIXME: Work around https://gitlab.com/gitlab-org/gitlab/-/issues/391756
+# Fix "detected dubious ownership in repository" errors caused by GitLab using
+# different users to check out the repository vs the user running the CI job
 .with-git:
   before_script:
-   - rm -rf subprojects/gvdb
    - git config --global --add safe.directory "${PWD}"
-   - git submodule update --init --depth 1
+   - git config --global --add safe.directory "${PWD}/subprojects/gvdb"
   variables:
-    GIT_SUBMODULE_STRATEGY: "none"
+    # Ensure submodules, like gvdb, are checked out
+    GIT_SUBMODULE_STRATEGY: "normal"
     GIT_SUBMODULE_DEPTH: 1
 
 style-check-advisory:
