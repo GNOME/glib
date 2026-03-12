@@ -981,6 +981,8 @@ dist-job:
   image: "${FEDORA_IMAGE}"
   stage: build
   needs: []
+  variables:
+    GIT_STRATEGY: "clone"
   before_script:
     - !reference [".build-linux", "before_script"]
     - !reference [".with-git", "before_script"]
