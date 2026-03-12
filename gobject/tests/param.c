@@ -1166,8 +1166,14 @@ test_interface_default_init (TestInterfaceInterface *iface)
             /* we think that this is impossible.  make sure. */
             pspec = g_param_spec_object ("xyz", "xyz", "xyz", types[i], (GParamFlags) j);
 
-            g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                                   "*assertion*pspec->flags*failed*");
+            if ((j & (G_PARAM_READABLE | G_PARAM_WRITABLE)) &&
+                (j & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) == (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+              g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                                     "*cannot have both G_PARAM_CONSTRUCT and G_PARAM_CONSTRUCT_ONLY*");
+            else
+              g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                                     "*assertion*pspec->flags*failed*");
+
             g_object_interface_install_property (iface, pspec);
             g_test_assert_expected_messages ();
 
@@ -1270,7 +1276,7 @@ static gint valid_impl_types[48][4] = {
 /* We also try to change the flags.  We must ensure that all
  * implementations provide all functionality promised by the interface.
  * We must therefore never remove readability or writability (but we can
- * add them).  Construct-only is a restrictions that applies to
+ * add them).  Construct-only is a restriction that applies to
  * writability, so we can never add it unless writability was never
  * present in the first place, in which case "writable at construct
  * only" is still better than "not writable".
@@ -1290,7 +1296,7 @@ static gint valid_impl_types[48][4] = {
  *                        rwc, wc
  *
  * We can represent this with a 16-by-16 table.  The rows represent the
- * flags of the property on the interface.  The columns is the flags to
+ * flags of the property on the interface.  The columns are the flags to
  * try to use when overriding the property.  The cell contents are:
  *
  *   - 0:   invalid because the interface property doesn't exist (invalid flags)
@@ -1451,7 +1457,11 @@ test_param_implement (void)
 
               case 'i':
                 g_test_trap_assert_failed ();
-                g_test_trap_assert_stderr ("*pspec->flags*");
+                if ((use_this_flag & (G_PARAM_READABLE | G_PARAM_WRITABLE)) &&
+                    (use_this_flag & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) == (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+                  g_test_trap_assert_stderr ("*cannot have both G_PARAM_CONSTRUCT and G_PARAM_CONSTRUCT_ONLY*");
+                else
+                  g_test_trap_assert_stderr ("*pspec->flags*");
                 continue;
 
               case 'f':
