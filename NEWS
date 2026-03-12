@@ -1,3 +1,90 @@
+Overview of changes in GLib 2.87.4, 2026-03-12
+==============================================
+
+* Avoid installing broken symlinks as part of the test data for the gdatetime
+  tests (!5054, work by Alessandro Astone)
+
+* Fix `g_file_set_contents()` with non-ASCII filenames on Windows (#3873, work
+  by Lukas K.)
+
+* Bugs fixed:
+  - #3688 Documentation issue with g_slice_new and g_slice_new0 (Philip
+    Withnall)
+  - #3730 Unclear assertion failure message when `G_PARAM_CONSTRUCT` and
+    `G_PARAM_CONSTRUCT_ONLY` are both specified (depuc8)
+  - #3814 vs2019-arm64 CI fails with ninja error (Philip Withnall)
+  - #3873 g_file_set_contents broken on windows for non-ASCII filenames
+  - #3885 Documentation of g_file_info_get_is_backup() doesn’t define what a
+    backup file is (depuc8)
+  - #3897 GLocalFileInfo's set_symlink() is backwards (Philip Withnall)
+  - #3905 Memory leak in g_desktop_app_info_launch_uris_with_spawn (correctmost)
+  - !5030 gsocketconnection: Set an error when closed if no address is cached
+  - !5037 minor doc fixes
+  - !5047 i18n: Update and correction for Occitan
+  - !5048 ci: Install gi-docgen in the Fedora CI image
+  - !5049 Update Serbian translation
+  - !5050 Update Swedish translation
+  - !5051 Update French translation
+  - !5052 Update Bulgarian translation
+  - !5053 Update Romanian translation
+  - !5054 tests: Create unix_localtime root directory structure at runtime
+  - !5055 Update Chinese (China) translation
+  - !5056 Update Japanese translation
+  - !5057 Update Korean translation
+  - !5058 Update Georgian translation
+  - !5059 Update Ukrainian translation
+  - !5060 Update Lithuanian translation
+  - !5061 Update French translation
+  - !5062 Update Hungarian translation
+  - !5064 Update Portuguese translation
+  - !5065 Update Nepali translation
+  - !5066 i18n: Update for Occitan
+  - !5068 Update Turkish translation
+  - !5069 Update Brazilian Portuguese translation
+  - !5070 Update Galician translation
+  - !5071 Update Kazakh translation
+  - !5075 Update Polish translation
+  - !5076 Update Catalan translation
+  - !5077 Update Slovenian translation
+  - !5078 gio-tool-launch: Fix a filename leak
+  - !5080 Update Catalan translation
+  - !5081 Update Danish translation
+  - !5082 Update Polish translation
+  - !5084 Update British English translation
+  - !5085 Update Georgian translation
+  - !5087 Update Nepali translation
+  - !5088 tests: Fix a minor memory leak in the socket test
+  - !5089 ci: Drop workaround for GitLab submodule checkout bug
+  - !5090 Prevent iptosmessage test failures on FreeBSD and Hurd
+  - !5091 gobject: Disable new construct property check with G_DISABLE_CHECKS
+
+* Translation updates:
+  - Bulgarian (Alexander Alexandrov Shopov)
+  - Catalan (Victor Dargallo, Jordi Mas)
+  - Chinese (China) (luming zh)
+  - Danish (Ask Hjorth Larsen)
+  - English (United Kingdom) (Bruce Cowan)
+  - French (Guillaume Bernard)
+  - Galician (Francisco Diéguez Souto)
+  - Georgian (Ekaterine Papava)
+  - Hungarian (Balázs Úr)
+  - Japanese (Makoto Sakaguchi)
+  - Kazakh (Baurzhan Muftakhidinov)
+  - Korean (Changwoo Ryu)
+  - Lithuanian (Aurimas Aurimas Černius)
+  - Nepali (Pawan Chitrakar)
+  - Occitan (post 1500) (Mejans)
+  - Polish (Victoria)
+  - Portuguese (Hugo Carvalho)
+  - Portuguese (Brazil) (Rafael Fontenelle)
+  - Romanian (Antonio Marin)
+  - Serbian (Miloš Popović)
+  - Slovenian (Martin)
+  - Swedish (Anders Jonsson)
+  - Turkish (Emin Tufan Çetin)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.87.3, 2026-02-25
 ==============================================
 
