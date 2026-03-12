@@ -1,3 +1,13 @@
+Overview of changes in GLib 2.87.5, 2026-03-12
+==============================================
+
+* Brown paper bag release to attempt to fix the dist-job in CI; this caused it
+  to be impossible to build a release archive for 2.87.4
+
+* Bugs fixed:
+  - !5096 ci: Force a git clone and update the index when running dist-job
+
+
 Overview of changes in GLib 2.87.4, 2026-03-12
 ==============================================
 
