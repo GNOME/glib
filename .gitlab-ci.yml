@@ -1132,6 +1132,20 @@ dist-job:
             -Dintrospection=enabled
             -Dman-pages=enabled
             _build
+    # FIXME: This workaround can be dropped once we depend on Meson 1.6.0.
+    # dist-job has a history of failing with a 'dirty tree' error for occult reasons.
+    # This might be related to Meson commits c9aa4aff66 and e9037e7b9f, which
+    # indicate that Meson’s dirty tree check can be fooled by an updated timestamp
+    # on a file in the working tree, even if its content hasn’t changed. Perhaps
+    # sometime recently, GitLab has started changing the stat of files in the
+    # git tree when it didn’t previously (as the same Meson implementation
+    # previously worked fine).
+    - git update-index -q --refresh
+    # Potentially helpful debug output related to the above workaround
+    - git diff-index HEAD
+    - git status
+    - git submodule status
+    # Actually run the dist
     - meson dist -C _build
     # Compile again to build the docs
     - meson compile -C _build
