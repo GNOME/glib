@@ -45,21 +45,29 @@ GLIB_AVAILABLE_IN_ALL
 void     g_slice_free_chain_with_offset (gsize         block_size,
 					 gpointer      mem_chain,
 					 gsize         next_offset);
-#define  g_slice_new(type)      ((type*) g_slice_alloc (MAX (sizeof (type), 1)))
+
+#ifndef __GI_SCANNER__
+/* Private helper to give the allocation size for a struct — we want to
+ * guarantee non-empty allocations, so it returns a minimum of 1B. This is
+ * necessary because some compilers do allow empty (zero size) structs. */
+#define g_slice_alloc_size(type) (sizeof (type) > 0 ? sizeof (type) : 1)
+#endif
+
+#define  g_slice_new(type)      ((type*) g_slice_alloc (g_slice_alloc_size (type)))
 
 /* Allow the compiler to inline memset(). Since the size is a constant, this
  * can significantly improve performance. */
 #if defined (__GNUC__) && (__GNUC__ >= 2) && defined (__OPTIMIZE__)
 #  define g_slice_new0(type)                                    \
   (type *) (G_GNUC_EXTENSION ({                                 \
-    gsize __s = MAX (sizeof (type), 1);                         \
+    gsize __s = g_slice_alloc_size (type);                      \
     gpointer __p;                                               \
     __p = g_slice_alloc (__s);                                  \
     memset (__p, 0, __s);                                       \
     __p;                                                        \
   }))
 #else
-#  define g_slice_new0(type)    ((type*) g_slice_alloc0 (MAX (sizeof (type), 1)))
+#  define g_slice_new0(type)    ((type*) g_slice_alloc0 (g_slice_alloc_size (type)))
 #endif
 
 /* MemoryBlockType *
@@ -76,7 +84,7 @@ void     g_slice_free_chain_with_offset (gsize         block_size,
 
 /* we go through extra hoops to ensure type safety */
 #define g_slice_dup(type, mem)                                  \
-  (1 ? (type*) g_slice_copy (MAX (sizeof (type), 1), (mem))     \
+  (1 ? (type*) g_slice_copy (g_slice_alloc_size (type), (mem))     \
      : ((void) ((type*) 0 == (mem)), (type*) 0))
 #define g_slice_free(type, mem)                                 \
 G_STMT_START {                                                  \
