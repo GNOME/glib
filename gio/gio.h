@@ -105,6 +105,7 @@
 #include <gio/giptosmessage.h>
 #include <gio/gipv6tclassmessage.h>
 #include <gio/glistmodel.h>
+#include <gio/glistmodelview.h>
 #include <gio/gliststore.h>
 #include <gio/gloadableicon.h>
 #include <gio/gmemoryinputstream.h>

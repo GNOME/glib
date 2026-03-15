@@ -38,6 +38,32 @@ list_model_get (GListModel *model,
   return g_steal_pointer (&item);
 }
 
+static void
+set_boolean (gboolean *value)
+{
+  *value = TRUE;
+}
+
+static GListStore *
+new_action_store (const gchar * const *names)
+{
+  GListStore *store;
+  guint i;
+
+  store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
+
+  for (i = 0; names[i] != NULL; i++)
+    {
+      GSimpleAction *action;
+
+      action = g_simple_action_new (names[i], NULL);
+      g_list_store_append (store, action);
+      g_object_unref (action);
+    }
+
+  return store;
+}
+
 #define assert_cmpitems(store, cmp, n_items) G_STMT_START{ \
   guint tmp; \
   g_assert_cmpuint (g_list_model_get_n_items (G_LIST_MODEL (store)), cmp, n_items); \
@@ -925,6 +951,170 @@ test_store_find (void)
   g_clear_object (&store);
 }
 
+static void
+test_view_new_takes_ownership (void)
+{
+  GListStore *store;
+  GListModelView *view;
+
+  store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
+  g_object_add_weak_pointer (G_OBJECT (store), (gpointer *) &store);
+
+  view = g_list_model_view_new (G_LIST_MODEL (store));
+  g_assert_nonnull (store);
+  g_assert_true (g_list_model_view_get_model (view) == G_LIST_MODEL (store));
+
+  g_object_unref (view);
+  g_assert_null (store);
+}
+
+static void
+test_view_properties (void)
+{
+  const gchar *names[] = { "1", "2", NULL };
+  GListStore *store;
+  GListModelView *view;
+  GListModel *model = NULL;
+  GType item_type;
+  guint n_items;
+
+  store = new_action_store (names);
+  view = g_list_model_view_new (G_LIST_MODEL (store));
+
+  g_object_get (view,
+                "item-type", &item_type,
+                "model", &model,
+                "n-items", &n_items,
+                NULL);
+
+  g_assert_cmpint (item_type, ==, G_TYPE_SIMPLE_ACTION);
+  g_assert_true (model == G_LIST_MODEL (store));
+  g_assert_cmpuint (n_items, ==, 2);
+  assert_cmpitems (view, ==, 2);
+
+  g_clear_object (&model);
+  g_object_unref (view);
+}
+
+static void
+test_view_items_changed (void)
+{
+  const gchar *names[] = { "1", NULL };
+  GListStore *store;
+  GListModel *model;
+  GSimpleAction *item;
+  struct ItemsChangedData expected = {0};
+
+  store = new_action_store (names);
+  model = G_LIST_MODEL (g_list_model_view_new (G_LIST_MODEL (store)));
+
+  g_object_connect (model, "signal::items-changed",
+                    on_items_changed, &expected, NULL);
+  g_object_connect (model, "signal::notify::n-items",
+                    on_notify_n_items, &expected, NULL);
+
+  item = list_model_get (model, 0);
+  g_assert_cmpstr (g_action_get_name (G_ACTION (item)), ==, "1");
+  g_object_unref (item);
+
+  expect_items_changed (&expected, 1, 0, 1);
+  item = g_simple_action_new ("2", NULL);
+  g_list_store_append (store, item);
+  g_object_unref (item);
+  g_assert_true (expected.called);
+  g_assert_true (expected.notified);
+  assert_cmpitems (model, ==, 2);
+
+  expect_items_changed (&expected, 0, 1, 0);
+  g_list_store_remove (store, 0);
+  g_assert_true (expected.called);
+  g_assert_true (expected.notified);
+  assert_cmpitems (model, ==, 1);
+
+  item = list_model_get (model, 0);
+  g_assert_cmpstr (g_action_get_name (G_ACTION (item)), ==, "2");
+  g_object_unref (item);
+
+  g_object_unref (model);
+}
+
+static void
+test_view_set_model (void)
+{
+  const gchar *old_names[] = { "1", "2", NULL };
+  const gchar *new_names[] = { "3", NULL };
+  GListStore *old_store;
+  GListStore *new_store;
+  GListModelView *view;
+  GObject *model = NULL;
+  GSimpleAction *item;
+  guint n_items;
+  gboolean model_notified = FALSE;
+  struct ItemsChangedData expected = {0};
+
+  old_store = new_action_store (old_names);
+  new_store = new_action_store (new_names);
+  view = g_list_model_view_new (G_LIST_MODEL (old_store));
+
+  g_signal_connect_swapped (view,
+                            "notify::model",
+                            G_CALLBACK (set_boolean),
+                            &model_notified);
+  g_object_connect (view, "signal::items-changed",
+                    on_items_changed, &expected, NULL);
+  g_object_connect (view, "signal::notify::n-items",
+                    on_notify_n_items, &expected, NULL);
+
+  expect_items_changed (&expected, 0, 2, 1);
+  g_list_model_view_set_model (view, G_LIST_MODEL (new_store));
+  g_assert_true (model_notified);
+  g_assert_true (expected.called);
+  g_assert_true (expected.notified);
+  assert_cmpitems (view, ==, 1);
+
+  g_object_get (view, "model", &model, "n-items", &n_items, NULL);
+  g_assert_true (model == G_OBJECT (new_store));
+  g_assert_cmpuint (n_items, ==, 1);
+  g_clear_object (&model);
+
+  item = list_model_get (G_LIST_MODEL (view), 0);
+  g_assert_cmpstr (g_action_get_name (G_ACTION (item)), ==, "3");
+  g_object_unref (item);
+
+  model_notified = FALSE;
+  expect_items_changed (&expected, 0, 1, 0);
+  g_list_model_view_set_model (view, NULL);
+  g_assert_true (model_notified);
+  g_assert_true (expected.called);
+  g_assert_true (expected.notified);
+  assert_cmpitems (view, ==, 0);
+
+  g_object_unref (view);
+  g_object_unref (new_store);
+}
+
+static void
+test_view_set_model_wrong_type (void)
+{
+  if (g_test_subprocess ())
+    {
+      GListStore *store;
+      GListStore *wrong_store;
+      GListModelView *view;
+
+      store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
+      wrong_store = g_list_store_new (G_TYPE_MENU_ITEM);
+      view = g_list_model_view_new (G_LIST_MODEL (store));
+
+      g_list_model_view_set_model (view, G_LIST_MODEL (wrong_store));
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion*item_type*==*self->item_type*");
+}
+
 int main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
@@ -957,6 +1147,13 @@ int main (int argc, char *argv[])
                    test_store_signal_items_changed);
   g_test_add_func ("/glistmodel/store/past-end", test_store_past_end);
   g_test_add_func ("/glistmodel/store/find", test_store_find);
+  g_test_add_func ("/glistmodel/view/new-takes-ownership",
+                   test_view_new_takes_ownership);
+  g_test_add_func ("/glistmodel/view/properties", test_view_properties);
+  g_test_add_func ("/glistmodel/view/items-changed", test_view_items_changed);
+  g_test_add_func ("/glistmodel/view/set-model", test_view_set_model);
+  g_test_add_func ("/glistmodel/view/set-model-wrong-type",
+                   test_view_set_model_wrong_type);
 
   return g_test_run ();
 }
