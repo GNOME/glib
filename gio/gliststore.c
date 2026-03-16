@@ -431,6 +431,8 @@ g_list_store_remove_all (GListStore *store)
   g_return_if_fail (G_IS_LIST_STORE (store));
 
   n_items = g_sequence_get_length (store->items);
+  if (n_items == 0)
+    return;
   g_sequence_remove_range (g_sequence_get_begin_iter (store->items),
                            g_sequence_get_end_iter (store->items));
 
@@ -476,6 +478,9 @@ g_list_store_splice (GListStore *store,
 
   n_items = g_sequence_get_length (store->items);
   g_return_if_fail (position + n_removals <= n_items);
+
+  if (n_removals == 0 && n_additions == 0)
+    return;
 
   it = g_sequence_get_iter_at_pos (store->items, position);
 
