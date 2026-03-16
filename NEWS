@@ -1,3 +1,11 @@
+Overview of changes in GLib 2.88.0, 2026-03-16
+==============================================
+
+* Bugs fixed:
+  - !5097 gslice: Factor out a size helper macro and stop using MAX in a public
+    header
+
+
 Overview of changes in GLib 2.87.5, 2026-03-12
 ==============================================
 
