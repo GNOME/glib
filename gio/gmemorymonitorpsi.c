@@ -441,7 +441,9 @@ g_memory_monitor_psi_initable_init (GInitable     *initable,
     }
   else
     {
+      g_clear_error (error);
       g_debug ("PSI is not supported.");
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "PSI is not supported.");
       return FALSE;
     }
 
