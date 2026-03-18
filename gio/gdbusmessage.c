@@ -2328,8 +2328,14 @@ g_dbus_message_bytes_needed (guchar  *blob,
  * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
  * @error: Return location for error or %NULL.
  *
- * Creates a new #GDBusMessage from the data stored at @blob. The byte
- * order that the message was in can be retrieved using
+ * Creates a new #GDBusMessage from the data stored at @blob.
+ *
+ * You must have previously called g_dbus_message_bytes_needed() on @blob, and
+ * ensure that @blob is at least as long as the return value from that function
+ * indicates. In particular, that means that @blob must be at least 16 bytes
+ * long (but will typically be much longer).
+ *
+ * The byte order that the message was in can be retrieved using
  * g_dbus_message_get_byte_order().
  *
  * If the @blob cannot be parsed, contains invalid fields, or contains invalid
@@ -2361,6 +2367,9 @@ g_dbus_message_new_from_blob (guchar                *blob,
 
   g_return_val_if_fail (blob != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  /* blob_len must actually be >= the value returned by g_dbus_message_bytes_needed(), but 16 bytes is a known minimum */
+  g_return_val_if_fail (blob_len >= 16, NULL);
 
   message = g_dbus_message_new ();
 
