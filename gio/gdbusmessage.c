@@ -603,7 +603,7 @@ g_dbus_message_init (GDBusMessage *message)
  *
  * Creates a new empty #GDBusMessage.
  *
- * Returns: A #GDBusMessage. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusMessage. Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -622,7 +622,7 @@ g_dbus_message_new (void)
  *
  * Creates a new #GDBusMessage for a method call.
  *
- * Returns: A #GDBusMessage. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusMessage. Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -660,7 +660,7 @@ g_dbus_message_new_method_call (const gchar *name,
  *
  * Creates a new #GDBusMessage for a signal emission.
  *
- * Returns: A #GDBusMessage. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusMessage. Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -723,7 +723,7 @@ g_dbus_message_new_method_reply (GDBusMessage *method_call_message)
 }
 
 /**
- * g_dbus_message_new_method_error:
+ * g_dbus_message_new_method_error: (constructor)
  * @method_call_message: A message of type %G_DBUS_MESSAGE_TYPE_METHOD_CALL to
  * create a reply message to.
  * @error_name: A valid D-Bus error name.
@@ -1082,7 +1082,7 @@ g_dbus_message_set_header (GDBusMessage             *message,
  *
  * Gets an array of all header fields on @message that are set.
  *
- * Returns: (array zero-terminated=1): An array of header fields
+ * Returns: (array zero-terminated=1) (transfer container): An array of header fields
  * terminated by %G_DBUS_MESSAGE_HEADER_FIELD_INVALID.  Each element
  * is a #guchar. Free with g_free().
  *
@@ -2341,7 +2341,7 @@ g_dbus_message_bytes_needed (guchar  *blob,
  * If the @blob cannot be parsed, contains invalid fields, or contains invalid
  * headers, %G_IO_ERROR_INVALID_ARGUMENT will be returned.
  *
- * Returns: A new #GDBusMessage or %NULL if @error is set. Free with
+ * Returns: (transfer full): A new #GDBusMessage or %NULL if @error is set. Free with
  * g_object_unref().
  *
  * Since: 2.26
@@ -2953,7 +2953,7 @@ append_body_to_blob (GVariant       *value,
 /**
  * g_dbus_message_to_blob:
  * @message: A #GDBusMessage.
- * @out_size: Return location for size of generated blob.
+ * @out_size: (out caller-allocates): Return location for size of generated blob.
  * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
  * @error: Return location for error.
  *
@@ -3489,8 +3489,8 @@ g_dbus_message_get_error_name (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_error_name:
- * @message: (nullable): A #GDBusMessage.
- * @value: The value to set.
+ * @message: A #GDBusMessage.
+ * @value: (nullable): The value to set.
  *
  * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
  *
@@ -3806,7 +3806,7 @@ _sort_keys_func (gconstpointer a,
  *   fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
  * ```
  *
- * Returns: (not nullable): A string that should be freed with [func@GLib.free].
+ * Returns: (not nullable) (transfer full): A string that should be freed with [func@GLib.free].
  *
  * Since: 2.26
  */
