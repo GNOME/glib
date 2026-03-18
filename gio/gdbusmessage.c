@@ -2250,12 +2250,13 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* message_header must be at least 16 bytes */
+#define DBUS_MESSAGE_HEADER_MINIMUM_LENGTH_BYTES 16
 
 /**
  * g_dbus_message_bytes_needed:
  * @blob: (array length=blob_len) (element-type guint8): a blob representing a
  *   binary D-Bus message.
- * @blob_len: the length of @blob (must be at least 16)
+ * @blob_len: the length of @blob (must be at least 16 bytes)
  * @error: return location for error, or `NULL`
  *
  * Utility function to calculate how many bytes are needed to
@@ -2278,7 +2279,7 @@ g_dbus_message_bytes_needed (guchar  *blob,
 
   g_return_val_if_fail (blob != NULL, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
-  g_return_val_if_fail (blob_len >= 16, -1);
+  g_return_val_if_fail (blob_len >= DBUS_MESSAGE_HEADER_MINIMUM_LENGTH_BYTES, -1);
 
   if (blob[0] == 'l')
     {
@@ -2366,8 +2367,16 @@ g_dbus_message_new_from_blob (guchar                *blob,
   g_return_val_if_fail (blob != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  /* blob_len must actually be >= the value returned by g_dbus_message_bytes_needed(), but 16 bytes is a known minimum */
-  g_return_val_if_fail (blob_len >= 16, NULL);
+  /* blob_len must actually be >= the value returned by
+   * g_dbus_message_bytes_needed(), but this is a known minimum */
+  if (blob_len < DBUS_MESSAGE_HEADER_MINIMUM_LENGTH_BYTES)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpectedly short message.");
+      return NULL;
+    }
 
   message = g_dbus_message_new ();
 
