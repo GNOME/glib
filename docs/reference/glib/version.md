@@ -35,11 +35,27 @@ defined subsets of deprecated or new GLib APIs. Define the macro
 `GLIB_VERSION_MIN_REQUIRED` to specify up to what version of GLib
 you want to receive warnings about deprecated APIs. Define the
 macro `GLIB_VERSION_MAX_ALLOWED` to specify the newest version of
-GLib whose API you want to use.
+GLib whose API you want to use — this will result in deprecation warnings for
+any use in your application of API released in later GLib versions.
 
 The macros `GLIB_VERSION_2_2`, `GLIB_VERSION_2_4`, …, `GLIB_VERSION_2_80`, etc.
 are defined automatically in each release, and can be used to set the value
 of macros like `GLIB_VERSION_MIN_REQUIRED`.
+
+The macro [func@GLib.ENCODE_VERSION] can be used to set the value of
+`GLIB_VERSION_MAX_ALLOWED`, as the relevant `GLIB_VERSION_x_y` macro will not be
+defined if building against a version of GLib which is at least
+`GLIB_VERSION_MIN_REQUIRED` but which is older than `GLIB_VERSION_MAX_ALLOWED`.
+
+A typical way to define these macros in Meson is:
+```meson
+add_project_arguments([
+    '-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_82',
+    '-DGLIB_VERSION_MAX_ALLOWED=(G_ENCODE_VERSION(2,84))',
+  ],
+  language: 'c',
+)
+```
 
 The macros `GLIB_VERSION_CUR_STABLE` and `GLIB_VERSION_PREV_STABLE` are also
 automatically defined to point to the right version definitions.
