@@ -35,7 +35,8 @@ defined subsets of deprecated or new GLib APIs. Define the macro
 `GLIB_VERSION_MIN_REQUIRED` to specify up to what version of GLib
 you want to receive warnings about deprecated APIs. Define the
 macro `GLIB_VERSION_MAX_ALLOWED` to specify the newest version of
-GLib whose API you want to use.
+GLib whose API you want to use — this will result in deprecation warnings for
+any use in your application of API released in later GLib versions.
 
 The macros `GLIB_VERSION_2_2`, `GLIB_VERSION_2_4`, …, `GLIB_VERSION_2_80`, etc.
 are defined automatically in each release, and can be used to set the value
