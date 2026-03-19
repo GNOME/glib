@@ -42,6 +42,9 @@ G_DEFINE_QUARK (g-markup-error-quark, g_markup_error)
 
 typedef enum
 {
+  STATE_INITIAL,
+  STATE_AFTER_BOM1,
+  STATE_AFTER_BOM2,
   STATE_START,
   STATE_AFTER_OPEN_ANGLE,
   STATE_AFTER_CLOSE_ANGLE,
@@ -197,7 +200,7 @@ g_markup_parse_context_new (const GMarkupParser *parser,
   context->spare_chunks = NULL;
   context->spare_list_nodes = NULL;
 
-  context->state = STATE_START;
+  context->state = STATE_INITIAL;
   context->tag_stack = NULL;
   context->tag_stack_gstr = NULL;
   context->attr_names = NULL;
@@ -1111,7 +1114,6 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
 
   context->parsing = TRUE;
 
-
   context->current_text = text;
   context->current_text_len = text_len;
   context->current_text_end = context->current_text + text_len;
@@ -1122,6 +1124,48 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
     {
       switch (context->state)
         {
+        case STATE_INITIAL:
+          if ((guchar) *context->iter == 0xef)
+            {
+              advance_char (context);
+              context->state = STATE_AFTER_BOM1;
+            }
+          else
+            {
+              context->state = STATE_START;
+            }
+          break;
+
+        case STATE_AFTER_BOM1:
+          if ((guchar) *context->iter == 0xbb)
+            {
+              advance_char (context);
+              context->state = STATE_AFTER_BOM2;
+            }
+          else
+            {
+              set_error_literal (context,
+                                 error,
+                                 G_MARKUP_ERROR_PARSE,
+                                 _("Invalid byte order mark"));
+            }
+          break;
+
+        case STATE_AFTER_BOM2:
+          if ((guchar) *context->iter == 0xbf)
+            {
+              advance_char (context);
+              context->state = STATE_START;
+            }
+          else
+            {
+              set_error_literal (context,
+                                 error,
+                                 G_MARKUP_ERROR_PARSE,
+                                 _("Invalid byte order mark"));
+            }
+          break;
+
         case STATE_START:
           /* Possible next state: AFTER_OPEN_ANGLE */
 
