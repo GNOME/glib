@@ -235,6 +235,16 @@ void                 g_markup_parse_context_get_tag_start (GMarkupParseContext *
                                                            gsize               *line_number,
                                                            gsize               *char_number,
                                                            gsize               *offset);
+GLIB_AVAILABLE_IN_2_90
+void                 g_markup_parse_context_get_attribute_position
+                                                          (GMarkupParseContext *context,
+                                                           unsigned int         attr,
+                                                           size_t              *start_lines,
+                                                           size_t              *start_chars,
+                                                           size_t              *start_offset,
+                                                           size_t              *end_lines,
+                                                           size_t              *end_chars,
+                                                           size_t              *end_offset);
 
 GLIB_AVAILABLE_IN_ALL
 gpointer             g_markup_parse_context_get_user_data (GMarkupParseContext *context);
