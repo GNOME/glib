@@ -71,6 +71,13 @@ typedef struct
   gpointer prev_user_data;
 } GMarkupRecursionTracker;
 
+typedef struct
+{
+  size_t lines; /* 1-based, in characters */
+  size_t chars; /* 1-based, in characters */
+  size_t offset; /* 0-based, in bytes */
+} MarkupLocation;
+
 struct _GMarkupParseContext
 {
   const GMarkupParser *parser;
@@ -79,13 +86,8 @@ struct _GMarkupParseContext
 
   GMarkupParseFlags flags;
 
-  gint line_number;
-  gint char_number;
-  gsize offset;
-
-  gint tag_line;
-  gint tag_char;
-  gsize tag_offset;
+  MarkupLocation pos;
+  MarkupLocation tag_start;
 
   GMarkupParseState state;
 
@@ -188,13 +190,13 @@ g_markup_parse_context_new (const GMarkupParser *parser,
   context->user_data = user_data;
   context->dnotify = user_data_dnotify;
 
-  context->line_number = 1;
-  context->char_number = 1;
-  context->offset = 0;
+  context->pos.lines = 1;
+  context->pos.chars = 1;
+  context->pos.offset = 0;
 
-  context->tag_line = 1;
-  context->tag_char = 1;
-  context->tag_offset = 0;
+  context->tag_start.lines = 1;
+  context->tag_start.chars = 1;
+  context->tag_start.offset = 0;
 
   context->partial_chunk = NULL;
   context->spare_chunks = NULL;
@@ -354,9 +356,9 @@ set_error_literal (GMarkupParseContext  *context,
   tmp_error = g_error_new_literal (G_MARKUP_ERROR, code, message);
 
   g_prefix_error (&tmp_error,
-                  _("Error on line %d char %d: "),
-                  context->line_number,
-                  context->char_number);
+                  _("Error on line %" G_GSIZE_FORMAT " char %" G_GSIZE_FORMAT ": "),
+                  context->pos.lines,
+                  context->pos.chars);
 
   mark_error (context, tmp_error);
 
@@ -396,9 +398,9 @@ propagate_error (GMarkupParseContext  *context,
 {
   if (context->flags & G_MARKUP_PREFIX_ERROR_POSITION)
     g_prefix_error (&src,
-                    _("Error on line %d char %d: "),
-                    context->line_number,
-                    context->char_number);
+                    _("Error on line %" G_GSIZE_FORMAT " char %" G_GSIZE_FORMAT ": "),
+                    context->pos.lines,
+                    context->pos.chars);
 
   mark_error (context, src);
 
@@ -569,8 +571,8 @@ set_unescape_error (GMarkupParseContext  *context,
 
   tmp_error = g_error_new (G_MARKUP_ERROR,
                            code,
-                           _("Error on line %d: %s"),
-                           context->line_number - remaining_newlines,
+                           _("Error on line %" G_GSIZE_FORMAT ": %s"),
+                           context->pos.lines - remaining_newlines,
                            s);
 
   g_free (s);
@@ -758,16 +760,16 @@ static inline gboolean
 advance_char (GMarkupParseContext *context)
 {
   context->iter++;
-  context->char_number++;
-  context->offset++;
+  context->pos.chars++;
+  context->pos.offset++;
 
   if (G_UNLIKELY (context->iter == context->current_text_end))
       return FALSE;
 
   else if (G_UNLIKELY (*context->iter == '\n'))
     {
-      context->line_number++;
-      context->char_number = 1;
+      context->pos.lines++;
+      context->pos.chars = 1;
     }
 
   return TRUE;
@@ -1203,9 +1205,9 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
           /* Possible next states: INSIDE_OPEN_TAG_NAME,
            *  AFTER_CLOSE_TAG_SLASH, INSIDE_PASSTHROUGH
            */
-          context->tag_line = context->line_number;
-          context->tag_char = context->char_number - 1;
-          context->tag_offset = context->offset - 1;
+          context->tag_start.lines = context->pos.lines;
+          context->tag_start.chars = context->pos.chars - 1;
+          context->tag_start.offset = context->pos.offset - 1;
 
           if (*context->iter == '?' ||
               *context->iter == '!')
@@ -1977,10 +1979,10 @@ g_markup_parse_context_get_position (GMarkupParseContext *context,
   g_return_if_fail (context != NULL);
 
   if (line_number)
-    *line_number = context->line_number;
+    *line_number = context->pos.lines;
 
   if (char_number)
-    *char_number = context->char_number;
+    *char_number = context->pos.chars;
 }
 
 /**
@@ -2003,7 +2005,7 @@ g_markup_parse_context_get_offset (GMarkupParseContext *context)
 {
   g_return_val_if_fail (context != NULL, 0);
 
-  return context->offset;
+  return context->pos.offset;
 }
 
 /**
@@ -2042,9 +2044,9 @@ g_markup_parse_context_get_tag_start (GMarkupParseContext *context,
   g_return_if_fail (char_number != NULL);
   g_return_if_fail (offset != NULL);
 
-  *line_number = context->tag_line;
-  *char_number = context->tag_char;
-  *offset = context->tag_offset;
+  *line_number = context->tag_start.lines;
+  *char_number = context->tag_start.chars;
+  *offset = context->tag_start.offset;
 }
 
 /**
