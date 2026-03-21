@@ -2018,6 +2018,8 @@ g_markup_parse_context_get_offset (GMarkupParseContext *context)
  * This function can be used in the `start_element` or `end_element`
  * callbacks to obtain location information for error reporting.
  *
+ * Calling it outside of these callbacks has undefined results.
+ *
  * Note that @line_number and @char_number are intended for human
  * readable error messages and are therefore 1-based and in Unicode
  * characters. @offset on the other hand is meant for programmatic
