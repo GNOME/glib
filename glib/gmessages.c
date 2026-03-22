@@ -1980,8 +1980,8 @@ g_log_structured_standard (const gchar    *log_domain,
 /**
  * g_log_set_writer_func:
  * @func: log writer function, which must not be `NULL`
- * @user_data: (closure func): user data to pass to @func
- * @user_data_free: (destroy func): function to free @user_data once it’s
+ * @user_data: user data to pass to @func
+ * @user_data_free: function to free @user_data once it’s
  *    finished with, if non-`NULL`
  *
  * Set a writer function which will be called to format and write out each log
