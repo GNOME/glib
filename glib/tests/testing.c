@@ -596,7 +596,6 @@ test_fatal_log_handler_critical_pass (void)
   g_test_log_set_fatal_handler (fatal_handler, NULL);
   g_str_has_prefix (NULL, "file://");
   g_critical ("Test passing");
-  exit (0);
 }
 
 static void
@@ -2996,6 +2995,7 @@ main (int   argc,
   g_test_add_func ("/misc/fatal-log-handler/subprocess/critical-pass", test_fatal_log_handler_critical_pass);
   g_test_add_func ("/misc/fatal-log-handler/subprocess/error-fail", test_fatal_log_handler_error_fail);
   g_test_add_func ("/misc/fatal-log-handler/subprocess/critical-fail", test_fatal_log_handler_critical_fail);
+  g_test_add_func ("/misc/fatal-log-handler/critical-pass", test_fatal_log_handler_critical_pass);
 
   g_test_add_func ("/misc/expected-messages", test_expected_messages);
   g_test_add_func ("/misc/expected-messages/subprocess/warning", test_expected_messages_warning);

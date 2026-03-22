@@ -1283,8 +1283,6 @@ g_logv (const gchar   *log_domain,
 
 	  g_private_set (&g_log_depth, GUINT_TO_POINTER (depth));
 
-          log_func (log_domain, test_level, msg, data);
-
           if ((test_level & G_LOG_FLAG_FATAL)
               && !(test_level & G_LOG_LEVEL_ERROR))
             {
@@ -1292,7 +1290,12 @@ g_logv (const gchar   *log_domain,
                 && !fatal_log_func (log_domain, test_level, msg, fatal_log_data);
             }
 
-          if ((test_level & G_LOG_FLAG_FATAL) && !masquerade_fatal)
+          if (masquerade_fatal)
+            test_level &= ~G_LOG_FLAG_FATAL;
+
+          log_func (log_domain, test_level, msg, data);
+
+          if ((test_level & G_LOG_FLAG_FATAL))
             {
               /* MessageBox is allowed on UWP apps only when building against
                * the debug CRT, which will set -D_DEBUG */
