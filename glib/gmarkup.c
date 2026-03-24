@@ -492,7 +492,7 @@ name_validate (GMarkupParseContext  *context,
 static gboolean
 text_validate (GMarkupParseContext  *context,
                const gchar          *p,
-               gint                  len,
+               gsize                 len,
                GError              **error)
 {
   if (!g_utf8_validate_len (p, len, NULL))
