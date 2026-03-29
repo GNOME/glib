@@ -43,7 +43,7 @@ GSequence *    g_sequence_new                (GDestroyNotify            data_des
 GLIB_AVAILABLE_IN_ALL
 void           g_sequence_free               (GSequence                *seq);
 GLIB_AVAILABLE_IN_ALL
-gint           g_sequence_get_length         (GSequence                *seq);
+gint           g_sequence_get_length         (GSequence                *seq) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
 void           g_sequence_foreach            (GSequence                *seq,
                                               GFunc                     func,
@@ -62,7 +62,7 @@ void           g_sequence_sort_iter          (GSequence                *seq,
                                               GSequenceIterCompareFunc  cmp_func,
                                               gpointer                  cmp_data);
 GLIB_AVAILABLE_IN_2_48
-gboolean       g_sequence_is_empty           (GSequence                *seq);
+gboolean       g_sequence_is_empty           (GSequence                *seq) G_GNUC_PURE;
 
 
 /* Getting iters */
