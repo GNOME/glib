@@ -32,6 +32,7 @@ fuzz_targets = [
   'fuzz_inet_address_new_from_string',
   'fuzz_inet_socket_address_new_from_string',
   'fuzz_key',
+  'fuzz_markup_escape_text',
   'fuzz_network_address_parse',
   'fuzz_network_address_parse_uri',
   'fuzz_paths',
