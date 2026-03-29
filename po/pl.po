@@ -8,23 +8,23 @@
 # Tomasz Dominikowski <dominikowski@gmail.com>, 2008-2009.
 # Piotr Drąg <piotrdrag@gmail.com>, 2009-2025.
 # Aviary.pl <community-poland@mozilla.org>, 2007-2025.
-# Victoria <royal.victoria@proton.me>, 2026.
+# Victoria Niedzielska <victorian@gnome.org>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
 "POT-Creation-Date: 2026-02-27 13:37+0000\n"
-"PO-Revision-Date: 2026-03-02 13:24+0100\n"
-"Last-Translator: Victoria <royal.victoria@proton.me>\n"
-"Language-Team: Polish\n"
+"PO-Revision-Date: 2026-03-28 15:33+0100\n"
+"Last-Translator: Victoria Niedzielska <victorian@gnome.org>\n"
+"Language-Team: Polish <https://l10n.gnome.org/teams/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Gtranslator 49.0\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: gio/gappinfo.c:374
 msgid "Setting default applications not supported yet"
@@ -600,7 +600,7 @@ msgstr "Oczekiwano braku zawartości podczas próby odczytania bajtu"
 
 #: gio/gdbusauth.c:1193
 msgid "User IDs must be the same for peer and server"
-msgstr "Identyfikatory osoby używającej muszą być takie same dla partnera i serwera"
+msgstr "Identyfikatory osoby muszą być takie same dla partnera i serwera"
 
 #: gio/gdbusauth.c:1205
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -1054,8 +1054,8 @@ msgid ""
 "Cannot invoke method; proxy is for the well-known name %s without an owner, "
 "and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
-"Nie można wywołać metody; pośrednik jest dla znanej nazwy %s bez "
-"właściciela, a pośrednik został utworzony za pomocą flagi "
+"Nie można wywołać metody; proxy jest dla znanej nazwy %s bez właściciela, "
+"a proxy zostało utworzone za pomocą flagi "
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
 #: gio/gdbusserver.c:750
@@ -1401,15 +1401,12 @@ msgstr "Nie odnaleziono programu „%s” w $PATH"
 #: gio/gdesktopappinfo.c:3833
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
-msgstr ""
-"Nie można utworzyć katalogu osoby używającej dla konfiguracji programu %s: "
-"%s"
+msgstr "Nie można utworzyć katalogu osoby dla konfiguracji programu %s: %s"
 
 #: gio/gdesktopappinfo.c:3837
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
-msgstr ""
-"Nie można utworzyć katalogu osoby używającej dla konfiguracji MIME %s: %s"
+msgstr "Nie można utworzyć katalogu osoby dla konfiguracji MIME %s: %s"
 
 #: gio/gdesktopappinfo.c:4067
 msgid "MIME apps information is too long"
@@ -1422,7 +1419,7 @@ msgstr "Brak identyfikatora w informacjach o programie"
 #: gio/gdesktopappinfo.c:4358
 #, c-format
 msgid "Can’t create user desktop file %s"
-msgstr "Nie można utworzyć pliku .desktop dla osoby używającej %s"
+msgstr "Nie można utworzyć pliku .desktop dla osoby %s"
 
 #: gio/gdesktopappinfo.c:4478
 #, c-format
@@ -1633,32 +1630,32 @@ msgstr "Nieprawidłowa nazwa komputera"
 
 #: gio/ghttpproxy.c:145
 msgid "Bad HTTP proxy reply"
-msgstr "Błędna odpowiedź pośrednika HTTP"
+msgstr "Błędna odpowiedź HTTP proxy"
 
 #: gio/ghttpproxy.c:161
 msgid "HTTP proxy connection not allowed"
-msgstr "Połączenie pośrednika HTTP nie jest dozwolone"
+msgstr "Połączenie HTTP proxy nie jest dozwolone"
 
 #: gio/ghttpproxy.c:166
 msgid "HTTP proxy authentication failed"
-msgstr "Uwierzytelnienie pośrednika HTTP się nie powiodło"
+msgstr "Uwierzytelnienie HTTP proxy się nie powiodło"
 
 #: gio/ghttpproxy.c:169
 msgid "HTTP proxy authentication required"
-msgstr "Wymagane jest uwierzytelnienie pośrednika HTTP"
+msgstr "Wymagane jest uwierzytelnienie HTTP proxy"
 
 #: gio/ghttpproxy.c:173
 #, c-format
 msgid "HTTP proxy connection failed: %i"
-msgstr "Połączenie pośrednika HTTP się nie powiodło: %i"
+msgstr "Połączenie HTTP proxy się nie powiodło: %i"
 
 #: gio/ghttpproxy.c:268
 msgid "HTTP proxy response too big"
-msgstr "Odpowiedź pośrednika HTTP jest za duża"
+msgstr "Odpowiedź HTTP proxy jest za duża"
 
 #: gio/ghttpproxy.c:285
 msgid "HTTP proxy server closed connection unexpectedly."
-msgstr "Serwer pośrednika HTTP nieoczekiwanie zamknął połączenie."
+msgstr "Serwer HTTP proxy nieoczekiwanie zamknął połączenie."
 
 #: gio/gicon.c:302
 #, c-format
@@ -2273,20 +2270,20 @@ msgstr ""
 
 #: gio/gio-tool-mount.c:72
 msgid "Use an anonymous user when authenticating"
-msgstr "Używa anonimowej osoby używającej podczas uwierzytelniania"
+msgstr "Używa anonimowej osoby podczas uwierzytelniania"
 
 #. Translator: List here is a verb as in 'List all mounts'
 #: gio/gio-tool-mount.c:74
 msgid "List user-interesting volumes, drives and mounts"
 msgstr ""
 "Wyświetla listę woluminów, napędów i punktów montowania, które interesują "
-"osobę używającą"
+"osobę"
 
 #: gio/gio-tool-mount.c:75
 msgid "Monitor user-interesting volume, drive and mount events"
 msgstr ""
 "Monitoruje zdarzenia woluminów, napędów i punktów montowania, które "
-"interesują osobę używającą"
+"interesują osobę"
 
 #: gio/gio-tool-mount.c:76
 msgid "Show extra information"
@@ -2404,7 +2401,7 @@ msgstr "Dołącza do końca pliku"
 
 #: gio/gio-tool-save.c:54
 msgid "When creating, restrict access to the current user"
-msgstr "Podczas tworzenia ogranicza dostęp do bieżącej osoby używającej"
+msgstr "Podczas tworzenia ogranicza dostęp do bieżącej osoby"
 
 #: gio/gio-tool-save.c:55
 msgid "When replacing, replace as if the destination did not exist"
@@ -3648,7 +3645,7 @@ msgstr "Potok źródłowy jest już zamknięty"
 
 #: gio/gproxyaddressenumerator.c:324 gio/gproxyaddressenumerator.c:344
 msgid "Unspecified proxy lookup failure"
-msgstr "Nieokreślone niepowodzenie wyszukania pośrednika"
+msgstr "Nieokreślone niepowodzenie wyszukania proxy"
 
 #. Translators: the first placeholder is a domain name, the
 #. * second is an error message
@@ -4240,7 +4237,7 @@ msgstr ""
 #: gio/gsocketclient.c:192
 #, c-format
 msgid "Could not connect to proxy server %s: "
-msgstr "Nie można połączyć z serwerem pośrednika %s: "
+msgstr "Nie można połączyć z serwerem proxy %s: "
 
 #: gio/gsocketclient.c:206
 #, c-format
@@ -4258,7 +4255,7 @@ msgstr "Pośredniczenie przez połączenie niebędące TCP nie jest obsługiwane
 #: gio/gsocketclient.c:1266 gio/gsocketclient.c:1886
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
-msgstr "Protokół pośrednika „%s” nie jest obsługiwany."
+msgstr "Protokół proxy „%s” nie jest obsługiwany."
 
 #: gio/gsocketconnection.c:342
 #, c-format
@@ -4280,7 +4277,7 @@ msgstr "SOCKSv4 nie obsługuje adresu IPv6 „%s”"
 
 #: gio/gsocks4aproxy.c:138
 msgid "Username is too long for SOCKSv4 protocol"
-msgstr "Nazwa osoby używającej jest za długa dla protokołu SOCKSv4"
+msgstr "Nazwa osoby jest za długa dla protokołu SOCKSv4"
 
 #: gio/gsocks4aproxy.c:155
 #, c-format
@@ -4289,7 +4286,7 @@ msgstr "Nazwa komputera „%s” jest za długa dla protokołu SOCKSv4"
 
 #: gio/gsocks4aproxy.c:181
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr "Serwer nie jest serwerem pośrednika SOCKSv4."
+msgstr "Serwer nie jest serwerem SOCKSv4 proxy."
 
 #: gio/gsocks4aproxy.c:188
 msgid "Connection through SOCKSv4 server was rejected"
@@ -4297,11 +4294,11 @@ msgstr "Połączenie przez serwer SOCKSv4 zostało odrzucone"
 
 #: gio/gsocks5proxy.c:155 gio/gsocks5proxy.c:356 gio/gsocks5proxy.c:366
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr "Serwer nie jest serwerem pośrednika SOCKSv5."
+msgstr "Serwer nie jest serwerem SOCKSv5 proxy."
 
 #: gio/gsocks5proxy.c:169 gio/gsocks5proxy.c:186
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr "Pośrednik SOCKSv5 wymaga uwierzytelnienia."
+msgstr "Proxy SOCKSv5 wymaga uwierzytelnienia."
 
 #: gio/gsocks5proxy.c:193
 msgid ""
@@ -4312,13 +4309,13 @@ msgstr ""
 
 #: gio/gsocks5proxy.c:227
 msgid "Username or password is too long for SOCKSv5 protocol."
-msgstr "Nazwa osoby używającej lub hasło są za długie dla protokołu SOCKSv5."
+msgstr "Nazwa osoby lub hasło są za długie dla protokołu SOCKSv5."
 
 #: gio/gsocks5proxy.c:260
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
-"Uwierzytelnienie SOCKSv5 się nie powiodło z powodu błędnej nazwy osoby używającej "
-"lub hasła."
+"Uwierzytelnienie SOCKSv5 się nie powiodło z powodu błędnej nazwy osoby lub "
+"hasła."
 
 #: gio/gsocks5proxy.c:315
 #, c-format
@@ -4327,11 +4324,11 @@ msgstr "Nazwa komputera „%s” jest za długa dla protokołu SOCKSv5"
 
 #: gio/gsocks5proxy.c:380
 msgid "The SOCKSv5 proxy server uses unknown address type."
-msgstr "Serwer pośrednika SOCKSv5 używa nieznanego typu adresu."
+msgstr "Serwer proxy SOCKSv5 używa nieznanego typu adresu."
 
 #: gio/gsocks5proxy.c:387
 msgid "Internal SOCKSv5 proxy server error."
-msgstr "Wewnętrzny błąd serwera pośrednika SOCKSv5."
+msgstr "Wewnętrzny błąd serwera proxy SOCKSv5."
 
 #: gio/gsocks5proxy.c:393
 msgid "SOCKSv5 connection not allowed by ruleset."
@@ -4347,19 +4344,19 @@ msgstr "Sieć jest niedostępna przez serwer SOCKSv5."
 
 #: gio/gsocks5proxy.c:412
 msgid "Connection refused through SOCKSv5 proxy."
-msgstr "Połączenie przez pośrednika SOCKSv5 zostało odrzucone."
+msgstr "Połączenie przez proxy SOCKSv5 zostało odrzucone."
 
 #: gio/gsocks5proxy.c:418
 msgid "SOCKSv5 proxy does not support “connect” command."
-msgstr "Pośrednik SOCKSv5 nie obsługuje polecenia „connect”."
+msgstr "Proxy SOCKSv5 nie obsługuje polecenia „connect”."
 
 #: gio/gsocks5proxy.c:424
 msgid "SOCKSv5 proxy does not support provided address type."
-msgstr "Pośrednik SOCKSv5 nie obsługuje podanego typu adresu."
+msgstr "Proxy SOCKSv5 nie obsługuje podanego typu adresu."
 
 #: gio/gsocks5proxy.c:430
 msgid "Unknown SOCKSv5 proxy error."
-msgstr "Nieznany błąd pośrednika SOCKSv5."
+msgstr "Nieznany błąd proxy SOCKSv5."
 
 #: gio/gtestdbus.c:640 glib/gspawn-win32.c:411
 #, c-format
