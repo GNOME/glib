@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-02-27 13:37+0000\n"
-"PO-Revision-Date: 2026-02-28 09:37+0800\n"
+"POT-Creation-Date: 2026-03-29 16:19+0000\n"
+"PO-Revision-Date: 2026-03-30 07:30+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -33,7 +33,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 49.0\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: gio/gappinfo.c:374
 msgid "Setting default applications not supported yet"
@@ -1300,7 +1300,7 @@ msgstr "错误：%s 不是有效的总线名称。\n"
 msgid "Not authorized to change debug settings"
 msgstr "未获认证以更改调试设置"
 
-#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5245
+#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5246
 #: gio/gwin32appinfo.c:4257
 msgid "Unnamed"
 msgstr "未命名"
@@ -1313,35 +1313,35 @@ msgstr "桌面文件未指定 Exec 字段"
 msgid "Unable to find terminal required for application"
 msgstr "无法找到应用程序需要的终端"
 
-#: gio/gdesktopappinfo.c:3080
+#: gio/gdesktopappinfo.c:3081
 #, c-format
 msgid "Program ‘%s’ not found in $PATH"
 msgstr "程序 ‘%s’ 未在 $PATH 路径中找到"
 
-#: gio/gdesktopappinfo.c:3833
+#: gio/gdesktopappinfo.c:3834
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "无法创建用户应用程序配置文件夹 %s：%s"
 
-#: gio/gdesktopappinfo.c:3837
+#: gio/gdesktopappinfo.c:3838
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "无法创建用户 MIME 配置文件夹 %s：%s"
 
-#: gio/gdesktopappinfo.c:4067
+#: gio/gdesktopappinfo.c:4068
 msgid "MIME apps information is too long"
 msgstr "MIME 应用信息太长了"
 
-#: gio/gdesktopappinfo.c:4098 gio/gdesktopappinfo.c:4122
+#: gio/gdesktopappinfo.c:4099 gio/gdesktopappinfo.c:4123
 msgid "Application information lacks an identifier"
 msgstr "应用程序信息缺少标志符"
 
-#: gio/gdesktopappinfo.c:4358
+#: gio/gdesktopappinfo.c:4359
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "无法创建用户桌面文件 %s"
 
-#: gio/gdesktopappinfo.c:4478
+#: gio/gdesktopappinfo.c:4479
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s 的自定义"
@@ -4207,12 +4207,12 @@ msgstr "SOCKSv5 代理不支持提供的地址类型。"
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "未知 SOCKSv5 代理错误。"
 
-#: gio/gtestdbus.c:640 glib/gspawn-win32.c:411
+#: gio/gtestdbus.c:641 glib/gspawn-win32.c:411
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "创建与子进程通讯的管道失败（%s）"
 
-#: gio/gtestdbus.c:647
+#: gio/gtestdbus.c:648
 #, c-format
 msgid "Pipes are not supported in this platform"
 msgstr "此平台不支持管道（pipe）"
@@ -5381,32 +5381,32 @@ msgstr "映射 %s%s%s%s 失败：mmap() 失败：%s"
 msgid "Failed to open file “%s”: open() failed: %s"
 msgstr "打开文件“%s”失败：open() 失败：%s"
 
-#: glib/gmarkup.c:354 glib/gmarkup.c:396
+#: glib/gmarkup.c:357 glib/gmarkup.c:399
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "第 %d 行第 %d 个字符出错： "
 
-#: glib/gmarkup.c:418 glib/gmarkup.c:501
+#: glib/gmarkup.c:421 glib/gmarkup.c:504
 #, c-format
 msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
 msgstr "名称包含无效的 UTF-8 编码文本——无效的“%s”"
 
-#: glib/gmarkup.c:429
+#: glib/gmarkup.c:432
 #, c-format
 msgid "“%s” is not a valid name"
 msgstr "“%s”不是有效的名称"
 
-#: glib/gmarkup.c:445
+#: glib/gmarkup.c:448
 #, c-format
 msgid "“%s” is not a valid name: “%c”"
 msgstr "“%s”不是有效的名称：“%c”"
 
-#: glib/gmarkup.c:569
+#: glib/gmarkup.c:572
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "第 %d 行出错：%s"
 
-#: glib/gmarkup.c:646
+#: glib/gmarkup.c:649
 #, c-format
 msgid ""
 "Failed to parse “%-.*s”, which should have been a digit inside a character "
@@ -5414,7 +5414,7 @@ msgid ""
 msgstr ""
 "解析“%-.*s”失败。它应该是字符引用中的数字（如 &#234;）——可能该数字太大了"
 
-#: glib/gmarkup.c:658
+#: glib/gmarkup.c:661
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity — escape ampersand "
@@ -5423,22 +5423,22 @@ msgstr ""
 "字符引用没有以分号结束。很可能您使用了与号（&）字符而又不是一个实体——将这个与"
 "号变为 &amp;"
 
-#: glib/gmarkup.c:684
+#: glib/gmarkup.c:687
 #, c-format
 msgid "Character reference “%-.*s” does not encode a permitted character"
 msgstr "字符引用“%-.*s”没有编码一个允许的字符"
 
-#: glib/gmarkup.c:722
+#: glib/gmarkup.c:725
 msgid ""
 "Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "发现空的实体“&;”。有效的实体为：&amp; &quot; &lt; &gt; &apos;"
 
-#: glib/gmarkup.c:730
+#: glib/gmarkup.c:733
 #, c-format
 msgid "Entity name “%-.*s” is not known"
 msgstr "未知的实体名“%-.*s”"
 
-#: glib/gmarkup.c:735
+#: glib/gmarkup.c:738
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity — escape ampersand as &amp;"
@@ -5446,36 +5446,40 @@ msgstr ""
 "实体没有以分号结束。很可能您使用了与号（&）字符而又不是一个实体——将这个与号变"
 "为 &amp;"
 
-#: glib/gmarkup.c:1153
+#: glib/gmarkup.c:1150 glib/gmarkup.c:1165
+msgid "Invalid byte order mark"
+msgstr "无效的字节顺序标记"
+
+#: glib/gmarkup.c:1197
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "文档必须以一个元素开始（例如 <book>）"
 
-#: glib/gmarkup.c:1197
+#: glib/gmarkup.c:1241
 #, c-format
 msgid ""
 "“%s” is not a valid character following a “<” character; it may not begin an "
 "element name"
 msgstr "“%s”出现在字符“<”后是无效字符；它不能作为元素名的开头"
 
-#: glib/gmarkup.c:1240
+#: glib/gmarkup.c:1284
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” character to end the empty-element tag "
 "“%s”"
 msgstr "字符“%s”无效，应该以字符“>”来结束空元素标记“%s”"
 
-#: glib/gmarkup.c:1310
+#: glib/gmarkup.c:1354
 #, c-format
 msgid "Too many attributes in element “%s”"
 msgstr "元素“%s”中有过多参数"
 
-#: glib/gmarkup.c:1330
+#: glib/gmarkup.c:1374
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
 msgstr "字符“%s”无效，在属性名“%s”（元素“%s”）的后应该是字符“=”"
 
-#: glib/gmarkup.c:1372
+#: glib/gmarkup.c:1416
 #, c-format
 msgid ""
 "Odd character “%s”, expected a “>” or “/” character to end the start tag of "
@@ -5485,92 +5489,92 @@ msgstr ""
 "字符“%s”无效，应该以“>”或“/”结束元素“%s”的起始标记，或紧跟该元素的属性；可能"
 "您在属性名中使用了无效字符"
 
-#: glib/gmarkup.c:1417
+#: glib/gmarkup.c:1461
 #, c-format
 msgid ""
 "Odd character “%s”, expected an open quote mark after the equals sign when "
 "giving value for attribute “%s” of element “%s”"
 msgstr "字符“%1$s”无效，在给元素“%3$s”的属性“%2$s”赋值时，等号后应该是前引号"
 
-#: glib/gmarkup.c:1551
+#: glib/gmarkup.c:1595
 #, c-format
 msgid ""
 "“%s” is not a valid character following the characters “</”; “%s” may not "
 "begin an element name"
 msgstr "“%s”出现在字符“</”后无效；“%s”不能作为元素名的开头"
 
-#: glib/gmarkup.c:1589
+#: glib/gmarkup.c:1633
 #, c-format
 msgid ""
 "“%s” is not a valid character following the close element name “%s”; the "
 "allowed character is “>”"
 msgstr "“%s”字符出现在闭合元素名“%s”后无效；允许的字符是“>”"
 
-#: glib/gmarkup.c:1601
+#: glib/gmarkup.c:1645
 #, c-format
 msgid "Element “%s” was closed, no element is currently open"
 msgstr "元素“%s”已经闭合，当前没有开放的元素"
 
-#: glib/gmarkup.c:1610
+#: glib/gmarkup.c:1654
 #, c-format
 msgid "Element “%s” was closed, but the currently open element is “%s”"
 msgstr "元素“%s”已经闭合，当前仍开放的元素是“%s”"
 
-#: glib/gmarkup.c:1763
+#: glib/gmarkup.c:1807
 msgid "Document was empty or contained only whitespace"
 msgstr "文档为空或仅含空白字符"
 
-#: glib/gmarkup.c:1777
+#: glib/gmarkup.c:1821
 msgid "Document ended unexpectedly just after an open angle bracket “<”"
 msgstr "文档在一个左尖括号“<”后意外结束"
 
-#: glib/gmarkup.c:1785 glib/gmarkup.c:1830
+#: glib/gmarkup.c:1829 glib/gmarkup.c:1874
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open — “%s” was the last "
 "element opened"
 msgstr "文档在元素仍开放处意外结束——最后未结束的元素是“%s”"
 
-#: glib/gmarkup.c:1793
+#: glib/gmarkup.c:1837
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "文档意外结束，应该以右尖括号“>”来结束标记 <%s/>"
 
-#: glib/gmarkup.c:1799
+#: glib/gmarkup.c:1843
 msgid "Document ended unexpectedly inside an element name"
 msgstr "文档在元素名中意外结束"
 
-#: glib/gmarkup.c:1805
+#: glib/gmarkup.c:1849
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "文档在属性名中意外结束"
 
-#: glib/gmarkup.c:1810
+#: glib/gmarkup.c:1854
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "文档在元素仍开放的标记中意外结束。"
 
-#: glib/gmarkup.c:1816
+#: glib/gmarkup.c:1860
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "文档在跟在属性名后的等号后意外结束；没有属性值"
 
-#: glib/gmarkup.c:1823
+#: glib/gmarkup.c:1867
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "文档在属性值中意外结束"
 
-#: glib/gmarkup.c:1840
+#: glib/gmarkup.c:1884
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element “%s”"
 msgstr "文档在元素“%s”的闭合标记中意外结束"
 
-#: glib/gmarkup.c:1844
+#: glib/gmarkup.c:1888
 msgid ""
 "Document ended unexpectedly inside the close tag for an unopened element"
 msgstr "文档在无起始元素的闭合标记中意外结束"
 
-#: glib/gmarkup.c:1850
+#: glib/gmarkup.c:1894
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "文档在注释或处理指令中意外结束"
 
