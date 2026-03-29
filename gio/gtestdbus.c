@@ -462,6 +462,7 @@ struct _GTestDBusPrivate
   GPid bus_pid;
   gchar *bus_address;
   gboolean up;
+  char *config_path;  /* (type filename) */
 };
 
 enum
@@ -654,7 +655,6 @@ start_daemon (GTestDBus *self)
 {
   const gchar *argv[] = {"dbus-daemon", "--print-address", "--config-file=foo", NULL};
   gint pipe_fds[2] = {-1, -1};
-  gchar *config_path;
   gchar *config_arg;
   gchar *print_address;
   GIOChannel *channel;
@@ -675,8 +675,8 @@ start_daemon (GTestDBus *self)
   argv[1] = print_address;
 
   /* Write config file and set its path in argv */
-  config_path = write_config_file (self);
-  config_arg = g_strdup_printf ("--config-file=%s", config_path);
+  self->priv->config_path = write_config_file (self);
+  config_arg = g_strdup_printf ("--config-file=%s", self->priv->config_path);
   argv[2] = config_arg;
 
   /* Spawn dbus-daemon */
@@ -740,12 +740,7 @@ start_daemon (GTestDBus *self)
     }
   g_io_channel_unref (channel);
 
-  /* Don't use g_file_delete since it calls into gvfs */
-  if (g_unlink (config_path) != 0)
-    g_assert_not_reached ();
-
   g_free (print_address);
-  g_free (config_path);
   g_free (config_arg);
 }
 
@@ -764,6 +759,16 @@ stop_daemon (GTestDBus *self)
 
   g_free (self->priv->bus_address);
   self->priv->bus_address = NULL;
+
+  /* Don't use g_file_delete since it calls into gvfs */
+  if (g_unlink (self->priv->config_path) != 0 && errno != ENOENT)
+    {
+      int errsv = errno;
+      g_warning ("Can’t delete dbus-daemon config file ‘%s’: %s",
+                 self->priv->config_path, g_strerror (errsv));
+    }
+
+  g_clear_pointer (&self->priv->config_path, g_free);
 }
 
 /**
