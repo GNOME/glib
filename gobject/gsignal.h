@@ -109,16 +109,16 @@ typedef gboolean (*GSignalAccumulator)	(GSignalInvocationHint *ihint,
 /* --- run, match and connect types --- */
 /**
  * GSignalFlags:
- * @G_SIGNAL_RUN_FIRST: Invoke the object method handler in the first emission stage.
- * @G_SIGNAL_RUN_LAST: Invoke the object method handler in the third emission stage.
- * @G_SIGNAL_RUN_CLEANUP: Invoke the object method handler in the last emission stage.
+ * @G_SIGNAL_RUN_FIRST: Invoke the default signal handler in the first emission stage
+ * @G_SIGNAL_RUN_LAST: Invoke the default signal handler in the third emission stage
+ * @G_SIGNAL_RUN_CLEANUP: Invoke the default signal handler in the last emission stage
  * @G_SIGNAL_NO_RECURSE: Signals being emitted for an object while currently being in
  *  emission for this very object will not be emitted recursively,
  *  but instead cause the first emission to be restarted.
- * @G_SIGNAL_DETAILED: This signal supports "::detail" appendices to the signal name
+ * @G_SIGNAL_DETAILED: This signal supports `::detail` appendices to the signal name
  *  upon handler connections and emissions.
  * @G_SIGNAL_ACTION: Action signals are signals that may freely be emitted on alive
- *  objects from user code via g_signal_emit() and friends, without
+ *  objects from user code via [func@GObject.signal_emit] and friends, without
  *  the need of being embedded into extra code that performs pre or
  *  post emission adjustments on the object. They can also be thought
  *  of as object methods which can be called generically by 

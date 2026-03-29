@@ -16,20 +16,22 @@ that is inherited.
 
 ## Handlers
 
-A signal emission mainly involves invocation of a certain set of
-callbacks in precisely defined manner. There are two main categories
-of such callbacks, per-object ones and user provided ones.
-(Although signals can deal with any kind of instantiatable type, those types are
-referred to as ‘object types’ in the following, simply
-because that is the context most users will encounter signals in.)
-The per-object callbacks are most often referred to as "object method
-handler" or "default (signal) handler", while user provided callbacks are
-usually just called "signal handler".
+A signal emission mainly involves invocation of a certain set of callbacks
+in precisely defined manner. There are two main categories of such
+callbacks, per-class ones and user provided ones. (Although signals can deal
+with any kind of instantiatable type, those types are referred to as ‘object
+types’ in the following, simply because that is the context most users will
+encounter signals in.) The per-class callbacks are most often referred to as
+"class (signal) handler" or "default (signal) handler", while user provided
+callbacks are usually just called "signal handler".
 
 The object method handler is provided at signal creation time (this most
 frequently happens at the end of an object class' creation), while user
 provided handlers are frequently connected and disconnected to/from a
-certain signal on certain object instances.
+certain signal on certain object instances. Note that it does not matter if
+a signal handler is connected within the class implementation itself: the
+default signal handler is always the one set at **signal** creation time; if
+none is set, the signal has no default handler.
 
 A handler must match the type defined by the signal in both its arguments and
 return value (which is often `void`). All handlers take a pointer to the type
@@ -50,41 +52,44 @@ passing a function which takes the user data as its first argument.
 
 A signal emission consists of five stages, unless prematurely stopped:
 
-1. Invocation of the object method handler for `G_SIGNAL_RUN_FIRST` signals
+1. Invocation of the object method handler for [`flags@GObject.SignalFlags.RUN_FIRST`] 
+   signals
 
 2. Invocation of normal user-provided signal handlers (where the `after`
    flag is not set)
 
-3. Invocation of the object method handler for `G_SIGNAL_RUN_LAST` signals
+3. Invocation of the object method handler for [`flags@GObject.SignalFlags.RUN_LAST`]
+   signals
 
 4. Invocation of user provided signal handlers (where the `after` flag is set)
 
-5. Invocation of the object method handler for `G_SIGNAL_RUN_CLEANUP` signals
+5. Invocation of the object method handler for [`flags@GObject.SignalFlags.RUN_CLEANUP`]
+   signals
 
 The user-provided signal handlers are called in the order they were
 connected in.
 
 All handlers may prematurely stop a signal emission, and any number of
-handlers may be connected, disconnected, blocked or unblocked during
-a signal emission.
+handlers may be connected, disconnected, blocked or unblocked during a
+signal emission.
 
-There are certain criteria for skipping user handlers in stages 2 and 4
-of a signal emission.
+There are certain criteria for skipping user handlers in stages 2 and 4 of a
+signal emission.
 
 First, user handlers may be blocked. Blocked handlers are omitted during
-callback invocation, to return from the blocked state, a handler has to
-get unblocked exactly the same amount of times it has been blocked before.
+callback invocation, to return from the blocked state, a handler has to get
+unblocked exactly the same amount of times it has been blocked before.
 
-Second, upon emission of a `G_SIGNAL_DETAILED` signal, an additional
-`detail` argument passed in to [func@GObject.signal_emit] has to match
-the detail argument of the signal handler currently subject to invocation.
-Specification of no detail argument for signal handlers (omission of the
-detail part of the signal specification upon connection) serves as a
-wildcard and matches any detail argument passed in to emission.
+Second, upon emission of a [`flags@GObject.SignalFlags.DETAILED`] signal, an
+additional `detail` argument passed in to [func@GObject.signal_emit] has to
+match the detail argument of the signal handler currently subject to
+invocation. Specification of no detail argument for signal handlers
+(omission of the detail part of the signal specification upon connection)
+serves as a wildcard and matches any detail argument passed in to emission.
 
-While the `detail` argument is typically used to pass an object property name
-(as with [signal@GObject.Object::notify]), no specific format is mandated for the detail
-string, other than that it must be non-empty.
+While the `detail` argument is typically used to pass an object property
+name (as with [signal@GObject.Object::notify]), no specific format is
+mandated for the detail string, other than that it must be non-empty.
 
 ## Memory management of signal handlers
 
@@ -111,4 +116,3 @@ automatically using [func@GObject.signal_connect_data].
 The first approach is recommended, as the second approach can result in
 effective memory leaks of the user data if the signal handler is never
 disconnected for some reason.
-
