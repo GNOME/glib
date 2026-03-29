@@ -39,20 +39,20 @@ subprojects/		@xclaesse @nirbheek @pwithnall
 .gitlab-ci*	@pwithnall @xclaesse @creiter @sthibaul @lantw @dehesselle
 
 # macOS support
-*osx*	@jralls @pwithnall @sdroege
-*.m	@jralls @pwithnall @sdroege
+*osx*	@jralls @pwithnall
+*.m	@jralls @pwithnall
 
 # Windows support
-*win32*	@lrn @creiter @fanc999 @pwithnall @sdroege @nirbheek @lb90
+*win32*	@lrn @creiter @fanc999 @pwithnall @nirbheek @lb90
 
 # Windows support (MSVC-specific)
-*msvc*	@fanc999 @creiter @pwithnall @sdroege @nirbheek @lb90
+*msvc*	@fanc999 @creiter @pwithnall @nirbheek @lb90
 
 # Windows support (UWP-specific)
 *uwp*   @nirbheek @lb90
 
 # Android support
-*android*	@xclaesse @pwithnall @sdroege
+*android*	@xclaesse @pwithnall
 
 # BSD support
 *bsd*		@jmatthew @ajacoutot @lantw @pwithnall
@@ -65,32 +65,32 @@ subprojects/		@xclaesse @nirbheek @pwithnall
 gio/*portal*	@matthiasc @alexl @pwithnall
 
 # Networking
-gio/g*{tcp,udp,tls,socket,resolver,proxy,network,inet,datagram}*	@mcatanzaro @pgriffis @pwithnall @sdroege
+gio/g*{tcp,udp,tls,socket,resolver,proxy,network,inet,datagram}*	@mcatanzaro @pgriffis @pwithnall
 
 # D-Bus
 gio/g*bus*	@smcv @pwithnall
 
 # I/O
-gio/g*{file,vfs,mount,drive,volume}*	@oholy @alexl @pwithnall @sdroege
-gio/g*stream*				@alexl @pwithnall @sdroege
+gio/g*{file,vfs,mount,drive,volume}*	@oholy @alexl @pwithnall
+gio/g*stream*				@alexl @pwithnall
 gio/gio-tool*				@oholy @alexl @pwithnall
 
 # Generic bits of GLib
-glib/	@ebassi @pwithnall @sdroege
+glib/	@ebassi @pwithnall
 
 # GObject type system
-gobject/	@ebassi @pwithnall @sdroege @thaller
+gobject/	@ebassi @pwithnall @thaller
 
 # GVariant
-glib/gvariant*	@pwithnall @sdroege
+glib/gvariant*	@pwithnall
 
 # grefcount, GRcBox and GRefString
-glib/gref{count,string}.[ch]	@ebassi @pwithnall @sdroege
-glib/grc*.[ch]			@ebassi @pwithnall @sdroege
-glib/garc*.[ch]			@ebassi @pwithnall @sdroege
+glib/gref{count,string}.[ch]	@ebassi @pwithnall
+glib/grc*.[ch]			@ebassi @pwithnall
+glib/garc*.[ch]			@ebassi @pwithnall
 
 # Logging
-glib/gmessages.[ch]	@pwithnall @sdroege
+glib/gmessages.[ch]	@pwithnall
 
 # Google clusterfuzz support
 fuzzing/	@pwithnall
