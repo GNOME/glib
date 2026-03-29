@@ -329,7 +329,7 @@ void g_log_structured_standard (const gchar    *log_domain,
                         g_log_structured_standard (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, \
                                                    __FILE__, G_STRINGIFY (__LINE__), \
                                                    G_STRFUNC, __VA_ARGS__); \
-                        for (;;) ;                                              \
+                        abort ();                                               \
                       } G_STMT_END
 #define g_message(...)  g_log_structured_standard (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, \
                                                    __FILE__, G_STRINGIFY (__LINE__), \
@@ -347,14 +347,11 @@ void g_log_structured_standard (const gchar    *log_domain,
                                                    __FILE__, G_STRINGIFY (__LINE__), \
                                                    G_STRFUNC, __VA_ARGS__)
 #else
-/* for(;;) ; so that GCC knows that control doesn't go past g_error().
- * Put space before ending semicolon to avoid C++ build warnings.
- */
 #define g_error(...)  G_STMT_START {                 \
                         g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_ERROR,    \
                                __VA_ARGS__);         \
-                        for (;;) ;                   \
+                        abort ();                    \
                       } G_STMT_END
 #define g_message(...)  g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_MESSAGE,  \
@@ -378,7 +375,7 @@ void g_log_structured_standard (const gchar    *log_domain,
                                g_log_structured_standard (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, \
                                                           __FILE__, G_STRINGIFY (__LINE__), \
                                                           G_STRFUNC, format); \
-                               for (;;) ;                                            \
+                               abort ();                                             \
                              } G_STMT_END
 #define g_message(format...)  g_log_structured_standard (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, \
                                                          __FILE__, G_STRINGIFY (__LINE__), \
@@ -400,7 +397,7 @@ void g_log_structured_standard (const gchar    *log_domain,
                                 g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_ERROR,    \
                                        format);              \
-                                for (;;) ;                   \
+                                abort ();                    \
                               } G_STMT_END
 
 #define g_message(format...)    g_log (G_LOG_DOMAIN,         \
@@ -432,7 +429,7 @@ g_error (const gchar *format,
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, format, args);
   va_end (args);
 
-  for(;;) ;
+  abort ();
 }
 static inline void
 g_message (const gchar *format,
