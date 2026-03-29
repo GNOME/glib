@@ -2079,7 +2079,9 @@ g_date_time_add_full (GDateTime *datetime,
   new->days = full_time / USEC_PER_DAY;
   new->usec = full_time % USEC_PER_DAY;
 
-  /* XXX validate */
+  /* Validate it’s still in the range 0001-01-01 to 9999-12-31 */
+  if (new->days < MIN_DAYS || new->days > MAX_DAYS)
+    g_clear_pointer (&new, g_date_time_unref);
 
   return new;
 }
