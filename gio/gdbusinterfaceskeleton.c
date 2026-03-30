@@ -189,7 +189,7 @@ g_dbus_interface_skeleton_class_init (GDBusInterfaceSkeletonClass *klass)
   klass->method_dispatch = g_dbus_interface_skeleton_method_dispatch_real;
 
   /**
-   * GDBusInterfaceSkeleton:g-flags:
+   * GDBusInterfaceSkeleton:g-flags: (getter get_flags) (setter set_flags)
    *
    * Flags from the #GDBusInterfaceSkeletonFlags enumeration.
    *
@@ -273,7 +273,7 @@ g_dbus_interface_skeleton_init (GDBusInterfaceSkeleton *interface)
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
- * g_dbus_interface_skeleton_get_flags:
+ * g_dbus_interface_skeleton_get_flags: (get-property g-flags)
  * @interface_: A #GDBusInterfaceSkeleton.
  *
  * Gets the #GDBusInterfaceSkeletonFlags that describes what the behavior
@@ -291,7 +291,7 @@ g_dbus_interface_skeleton_get_flags (GDBusInterfaceSkeleton  *interface_)
 }
 
 /**
- * g_dbus_interface_skeleton_set_flags:
+ * g_dbus_interface_skeleton_set_flags: (set-property g-flags)
  * @interface_: A #GDBusInterfaceSkeleton.
  * @flags: Flags from the #GDBusInterfaceSkeletonFlags enumeration.
  *

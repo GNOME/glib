@@ -340,7 +340,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * in derived classes */
 
   /**
-   * GDBusProxy:g-interface-info:
+   * GDBusProxy:g-interface-info: (getter get_interface_info) (setter set_interface_info)
    *
    * Ensure that interactions with this proxy conform to the given
    * interface. This is mainly to ensure that malformed data received
@@ -380,7 +380,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                        G_PARAM_STATIC_NICK));
 
   /**
-   * GDBusProxy:g-connection:
+   * GDBusProxy:g-connection: (getter get_connection)
    *
    * The #GDBusConnection the proxy is for.
    *
@@ -419,7 +419,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                       G_PARAM_STATIC_NICK));
 
   /**
-   * GDBusProxy:g-flags:
+   * GDBusProxy:g-flags: (getter get_flags)
    *
    * Flags from the #GDBusProxyFlags enumeration.
    *
@@ -438,7 +438,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                        G_PARAM_STATIC_NICK));
 
   /**
-   * GDBusProxy:g-name:
+   * GDBusProxy:g-name: (getter get_name)
    *
    * The well-known or unique name that the proxy is for.
    *
@@ -456,7 +456,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                         G_PARAM_STATIC_NICK));
 
   /**
-   * GDBusProxy:g-name-owner:
+   * GDBusProxy:g-name-owner: (getter get_name_owner)
    *
    * The unique name that owns #GDBusProxy:g-name or %NULL if no-one
    * currently owns that name. You may connect to #GObject::notify signal to
@@ -474,7 +474,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                         G_PARAM_STATIC_NICK));
 
   /**
-   * GDBusProxy:g-object-path:
+   * GDBusProxy:g-object-path: (getter get_object_path)
    *
    * The object path the proxy is for.
    *
@@ -492,7 +492,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                         G_PARAM_STATIC_NICK));
 
   /**
-   * GDBusProxy:g-interface-name:
+   * GDBusProxy:g-interface-name: (getter get_interface_name)
    *
    * The D-Bus interface name the proxy is for.
    *
@@ -510,7 +510,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                         G_PARAM_STATIC_NICK));
 
   /**
-   * GDBusProxy:g-default-timeout:
+   * GDBusProxy:g-default-timeout: (getter get_default_timeout) (setter set_default_timeout)
    *
    * The timeout to use if -1 (specifying default timeout) is passed
    * as @timeout_msec in the g_dbus_proxy_call() and
@@ -2230,7 +2230,7 @@ g_dbus_proxy_new_for_bus_sync (GBusType             bus_type,
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
- * g_dbus_proxy_get_connection:
+ * g_dbus_proxy_get_connection: (get-property g-connection)
  * @proxy: A #GDBusProxy.
  *
  * Gets the connection @proxy is for.
@@ -2247,7 +2247,7 @@ g_dbus_proxy_get_connection (GDBusProxy *proxy)
 }
 
 /**
- * g_dbus_proxy_get_flags:
+ * g_dbus_proxy_get_flags: (get-property g-flags)
  * @proxy: A #GDBusProxy.
  *
  * Gets the flags that @proxy was constructed with.
@@ -2264,7 +2264,7 @@ g_dbus_proxy_get_flags (GDBusProxy *proxy)
 }
 
 /**
- * g_dbus_proxy_get_name:
+ * g_dbus_proxy_get_name: (get-property g-name)
  * @proxy: A #GDBusProxy.
  *
  * Gets the name that @proxy was constructed for.
@@ -2285,7 +2285,7 @@ g_dbus_proxy_get_name (GDBusProxy *proxy)
 }
 
 /**
- * g_dbus_proxy_get_name_owner:
+ * g_dbus_proxy_get_name_owner: (get-property g-name-owner)
  * @proxy: A #GDBusProxy.
  *
  * The unique name that owns the name that @proxy is for or %NULL if
@@ -2312,7 +2312,7 @@ g_dbus_proxy_get_name_owner (GDBusProxy *proxy)
 }
 
 /**
- * g_dbus_proxy_get_object_path:
+ * g_dbus_proxy_get_object_path: (get-property g-object-path)
  * @proxy: A #GDBusProxy.
  *
  * Gets the object path @proxy is for.
@@ -2329,7 +2329,7 @@ g_dbus_proxy_get_object_path (GDBusProxy *proxy)
 }
 
 /**
- * g_dbus_proxy_get_interface_name:
+ * g_dbus_proxy_get_interface_name: (get-property g-interface-name)
  * @proxy: A #GDBusProxy.
  *
  * Gets the D-Bus interface name @proxy is for.
@@ -2346,7 +2346,7 @@ g_dbus_proxy_get_interface_name (GDBusProxy *proxy)
 }
 
 /**
- * g_dbus_proxy_get_default_timeout:
+ * g_dbus_proxy_get_default_timeout: (get-property g-default-timeout)
  * @proxy: A #GDBusProxy.
  *
  * Gets the timeout to use if -1 (specifying default timeout) is
@@ -2373,7 +2373,7 @@ g_dbus_proxy_get_default_timeout (GDBusProxy *proxy)
 }
 
 /**
- * g_dbus_proxy_set_default_timeout:
+ * g_dbus_proxy_set_default_timeout: (set-property g-default-timeout)
  * @proxy: A #GDBusProxy.
  * @timeout_msec: Timeout in milliseconds.
  *
@@ -2408,7 +2408,7 @@ g_dbus_proxy_set_default_timeout (GDBusProxy *proxy,
 }
 
 /**
- * g_dbus_proxy_get_interface_info:
+ * g_dbus_proxy_get_interface_info: (get-property g-interface-info)
  * @proxy: A #GDBusProxy
  *
  * Returns the #GDBusInterfaceInfo, if any, specifying the interface
@@ -2437,7 +2437,7 @@ g_dbus_proxy_get_interface_info (GDBusProxy *proxy)
 }
 
 /**
- * g_dbus_proxy_set_interface_info:
+ * g_dbus_proxy_set_interface_info: (set-property g-interface-info)
  * @proxy: A #GDBusProxy
  * @info: (transfer none) (nullable): Minimum interface this proxy conforms to
  *    or %NULL to unset.
