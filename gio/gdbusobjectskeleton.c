@@ -228,7 +228,7 @@ g_dbus_object_skeleton_new (const gchar *object_path)
 }
 
 /**
- * g_dbus_object_skeleton_set_object_path:
+ * g_dbus_object_skeleton_set_object_path: (set-property g-object-path)
  * @object: A #GDBusObjectSkeleton.
  * @object_path: A valid D-Bus object path.
  *
