@@ -2746,6 +2746,32 @@ test_socket_control_message_custom (void)
 }
 #endif
 
+static void
+test_unbound_from_fd (void)
+{
+  GSocket *s = NULL;
+  GError *error = NULL;
+  gint fd;
+
+  g_test_summary ("g_socket_new_from_fd() should succeed and return correct data "
+                  "regardless of the socket state");
+
+  fd = socket (AF_INET, SOCK_STREAM, 0);
+  g_assert_cmpint (fd, !=, -1);
+
+  s = g_socket_new_from_fd (fd, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_socket_get_family (s), ==, G_SOCKET_FAMILY_IPV4);
+  g_assert_cmpint (g_socket_get_socket_type (s), ==, G_SOCKET_TYPE_STREAM);
+  g_assert_cmpint (g_socket_get_protocol (s), ==, G_SOCKET_PROTOCOL_TCP);
+#ifdef G_OS_WIN32
+  g_assert_true (GLIB_PRIVATE_CALL (g_win32_handle_is_socket) ((HANDLE)(gintptr) g_socket_get_fd (s)));
+#endif
+
+  g_clear_object (&s);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2820,5 +2846,7 @@ main (int   argc,
 #ifdef G_OS_UNIX
   g_test_add_func ("/socket/control-message/custom", test_socket_control_message_custom);
 #endif
+  g_test_add_func ("/socket/new_from_fd/unbound", test_unbound_from_fd);
+
   return g_test_run();
 }
