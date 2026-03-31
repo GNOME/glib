@@ -2583,6 +2583,37 @@ test_replace_raw_change_case (void)
   g_clear_pointer (&regex, g_regex_unref);
 }
 
+static void
+test_split_raw (void)
+{
+  GError *local_error = NULL;
+  GRegex *regex = NULL;
+  char *subject = NULL;
+  char **tokens = NULL;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3919");
+  g_test_summary ("Test splitting a string in G_REGEX_RAW mode");
+
+  /* Empty pattern in RAW mode — matches at every position */
+  regex = g_regex_new ("", G_REGEX_RAW, 0, &local_error);
+  g_assert_no_error (local_error);
+
+  /*
+   * Subject: single continuation byte 0x80, heap-allocated.
+   * When split encounters empty match at position 0, if the code were to
+   * regress then PREV_CHAR would call g_utf8_prev_char(&string[0]), which
+   * would scan backwards past the allocation start.
+   */
+  subject = g_strdup ("\x80");
+
+  tokens = g_regex_split_full (regex, subject, -1, 0, 0, 0, &local_error);
+  g_assert_no_error (local_error);
+
+  g_strfreev (tokens);
+  g_free (subject);
+  g_regex_unref (regex);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2605,6 +2636,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/unmatched-named-subpattern", test_unmatched_named_subpattern);
   g_test_add_func ("/regex/compiled-regex-after-jit-failure", test_compiled_regex_after_jit_failure);
   g_test_add_func ("/regex/replace-raw-change-case", test_replace_raw_change_case);
+  g_test_add_func ("/regex/split-raw", test_split_raw);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);
