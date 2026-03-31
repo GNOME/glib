@@ -2183,6 +2183,58 @@ pcre_ge (guint64 major, guint64 minor)
     return (pcre_major > major) || (pcre_major == major && pcre_minor >= minor);
 }
 
+static void
+test_replace_raw_change_case (void)
+{
+  GError *local_error = NULL;
+  GRegex *regex = NULL;
+  char *result = NULL;
+  char subject[] = "\xf4\x80";
+  char subject2[] = "\xe6\xb0";  /* 3-byte UTF-8 lead, only 2 bytes */
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3918");
+
+  /*
+   * Match a multi-byte sequence in RAW mode. The pattern matches
+   * exactly 2 bytes. The subject contains a 4-byte UTF-8 lead (0xF4)
+   * followed by only one continuation byte, then NUL.
+   *
+   * The matched substring will be "\xf4\x80" (2 bytes, heap-allocated
+   * as 3-byte buffer with NUL). If the code regresses and tries to handle
+   * the replacement as UTF-8 then g_utf8_get_char() would see 0xF4 and try
+   * to read 4 bytes, going 1 byte past the NUL into OOB territory.
+   */
+  regex = g_regex_new ("..", G_REGEX_RAW, 0, &local_error);
+  g_assert_no_error (local_error);
+
+  /*
+   * Build a subject string with truncated UTF-8.
+   * \xF4 = 4-byte UTF-8 lead byte
+   * \x80 = continuation byte
+   * No 3rd/4th continuation bytes — the match is only 2 bytes.
+   *
+   * \U\0 = uppercase the entire match → triggers string_append()
+   * with case change on the 2-byte non-UTF-8 match.
+   */
+  result = g_regex_replace (regex, subject, -1, 0, "\\U\\0", 0, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_pointer (&result, g_free);
+  g_clear_pointer (&regex, g_regex_unref);
+
+  /*
+   * Second variant: single-char case change \u with \0 backreference.
+   */
+  regex = g_regex_new (".", G_REGEX_RAW, 0, &local_error);
+  g_assert_no_error (local_error);
+
+  result = g_regex_replace (regex, subject2, -1, 0, "\\u\\0", 0, &local_error);
+  g_assert_no_error (local_error);
+
+  g_clear_pointer (&result, g_free);
+  g_clear_pointer (&regex, g_regex_unref);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2202,6 +2254,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/multiline", test_multiline);
   g_test_add_func ("/regex/explicit-crlf", test_explicit_crlf);
   g_test_add_func ("/regex/max-lookbehind", test_max_lookbehind);
+  g_test_add_func ("/regex/replace-raw-change-case", test_replace_raw_change_case);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);
