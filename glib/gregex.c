@@ -283,10 +283,10 @@
 
 /* if the string is in UTF-8 use g_utf8_ functions, else use
  * use just +/- 1. */
-#define NEXT_CHAR(re, s) (((re)->compile_opts & G_REGEX_RAW) ? \
+#define NEXT_CHAR(re, s) (((re)->orig_compile_opts & G_REGEX_RAW) ? \
                                 ((s) + 1) : \
                                 g_utf8_next_char (s))
-#define PREV_CHAR(re, s) (((re)->compile_opts & G_REGEX_RAW) ? \
+#define PREV_CHAR(re, s) (((re)->orig_compile_opts & G_REGEX_RAW) ? \
                                 ((s) - 1) : \
                                 g_utf8_prev_char (s))
 
