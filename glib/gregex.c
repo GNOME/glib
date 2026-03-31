@@ -283,10 +283,10 @@
 
 /* if the string is in UTF-8 use g_utf8_ functions, else use
  * use just +/- 1. */
-#define NEXT_CHAR(re, s) (((re)->orig_compile_opts & G_REGEX_RAW) ? \
+#define NEXT_CHAR(re, s) (((re)->regex_compile_opts & G_REGEX_RAW) ? \
                                 ((s) + 1) : \
                                 g_utf8_next_char (s))
-#define PREV_CHAR(re, s) (((re)->orig_compile_opts & G_REGEX_RAW) ? \
+#define PREV_CHAR(re, s) (((re)->regex_compile_opts & G_REGEX_RAW) ? \
                                 ((s) - 1) : \
                                 g_utf8_prev_char (s))
 
@@ -321,8 +321,8 @@ struct _GRegex
   gint ref_count;               /* the ref count for the immutable part (atomic) */
   gchar *pattern;               /* the pattern */
   pcre2_code *pcre_re;          /* compiled form of the pattern */
-  uint32_t compile_opts;        /* options used at compile time on the pattern, pcre2 values */
-  GRegexCompileFlags orig_compile_opts; /* options used at compile time on the pattern, gregex values */
+  uint32_t pcre2_compile_opts;  /* options used at compile time on the pattern, pcre2 values */
+  GRegexCompileFlags regex_compile_opts; /* options used at compile time on the pattern, gregex values */
   uint32_t match_opts;          /* pcre2 options used at match time on the regex */
   GRegexMatchFlags orig_match_opts; /* options used as default match options, gregex values */
   uint32_t jit_options;         /* options which were enabled for jit compiler */
@@ -905,7 +905,7 @@ match_info_new (const GRegex     *regex,
   match_info->matches = PCRE2_ERROR_NOMATCH;
   match_info->pos = start_position;
   match_info->match_opts =
-    get_pcre2_match_options (match_options, regex->orig_compile_opts);
+    get_pcre2_match_options (match_options, regex->regex_compile_opts);
 
   pcre2_pattern_info (regex->pcre_re, PCRE2_INFO_CAPTURECOUNT,
                       &match_info->n_subpatterns);
@@ -985,7 +985,7 @@ enable_jit_with_match_options (GMatchInfo  *match_info,
   gint retval;
   uint32_t old_jit_options, new_jit_options;
 
-  if (!(match_info->regex->orig_compile_opts & G_REGEX_OPTIMIZE))
+  if (!(match_info->regex->regex_compile_opts & G_REGEX_OPTIMIZE))
     return JIT_STATUS_DISABLED;
 
   if (match_info->regex->jit_status == JIT_STATUS_DISABLED)
@@ -1779,7 +1779,7 @@ get_matched_substring_number (const GMatchInfo *match_info,
   PCRE2_SPTR first, last;
   guchar *entry;
 
-  if (!(match_info->regex->compile_opts & PCRE2_DUPNAMES))
+  if (!(match_info->regex->pcre2_compile_opts & PCRE2_DUPNAMES))
     return pcre2_substring_number_from_name (match_info->regex->pcre_re, (PCRE2_SPTR8) name);
 
   /* This code is analogous to code from pcre2_substring.c:
@@ -2065,8 +2065,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   regex->ref_count = 1;
   regex->pattern = g_strdup (pattern);
   regex->pcre_re = re;
-  regex->compile_opts = pcre_compile_options;
-  regex->orig_compile_opts = compile_options;
+  regex->pcre2_compile_opts = pcre_compile_options;
+  regex->regex_compile_opts = compile_options;
   regex->match_opts = pcre_match_options;
   regex->orig_match_opts = match_options;
 
@@ -2315,7 +2315,7 @@ g_regex_get_compile_flags (const GRegex *regex)
   g_return_val_if_fail (regex != NULL, 0);
 
   /* Preserve original G_REGEX_OPTIMIZE */
-  extra_flags = (regex->orig_compile_opts & G_REGEX_OPTIMIZE);
+  extra_flags = (regex->regex_compile_opts & G_REGEX_OPTIMIZE);
 
   /* Also include the newline options */
   pcre2_pattern_info (regex->pcre_re, PCRE2_INFO_NEWLINE, &info_value);
@@ -2348,7 +2348,7 @@ g_regex_get_compile_flags (const GRegex *regex)
       break;
     }
 
-  return g_regex_compile_flags_from_pcre2 (regex->compile_opts) | extra_flags;
+  return g_regex_compile_flags_from_pcre2 (regex->pcre2_compile_opts) | extra_flags;
 }
 
 /**
@@ -2688,11 +2688,11 @@ g_regex_match_all_full (const GRegex      *regex,
 
   newline_options = get_pcre2_newline_match_options (match_options);
   if (!newline_options)
-    newline_options = get_pcre2_newline_compile_options (regex->orig_compile_opts);
+    newline_options = get_pcre2_newline_compile_options (regex->regex_compile_opts);
 
   bsr_options = get_pcre2_bsr_match_options (match_options);
   if (!bsr_options)
-    bsr_options = get_pcre2_bsr_compile_options (regex->orig_compile_opts);
+    bsr_options = get_pcre2_bsr_compile_options (regex->regex_compile_opts);
 
   /* For PCRE2 we need to turn off PCRE2_NO_AUTO_POSSESS, which is an
    * optimization for normal regex matching, but results in omitting some
@@ -2701,7 +2701,7 @@ g_regex_match_all_full (const GRegex      *regex,
    * DFA matching is rather niche, and very rarely used according to
    * codesearch.debian.net, so don't bother caching the recompiled RE. */
   pcre_re = regex_compile (regex->pattern,
-                           regex->compile_opts | PCRE2_NO_AUTO_POSSESS,
+                           regex->pcre2_compile_opts | PCRE2_NO_AUTO_POSSESS,
                            newline_options, bsr_options, error);
   if (pcre_re == NULL)
     return FALSE;
@@ -3494,7 +3494,7 @@ interpolate_replacement (const GMatchInfo *match_info,
   InterpolationData *idata;
   gchar *match;
   ChangeCase change_case = CHANGE_CASE_NONE;
-  gboolean is_raw = (match_info != NULL && (match_info->regex->orig_compile_opts & G_REGEX_RAW));
+  gboolean is_raw = (match_info != NULL && (match_info->regex->regex_compile_opts & G_REGEX_RAW));
 
   for (list = data; list; list = list->next)
     {
