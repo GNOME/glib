@@ -3419,19 +3419,25 @@ split_replacement (const gchar  *replacement,
   return g_list_reverse (list);
 }
 
-/* Change the case of c based on change_case. */
-#define CHANGE_CASE(c, change_case) \
+/* Change the case of c based on change_case.
+ * g_ascii_to*() will happily pass through non-ASCII bytes unchanged. */
+#define UTF8_CHANGE_CASE(c, change_case) \
         (((change_case) & CHANGE_CASE_LOWER_MASK) ? \
                 g_unichar_tolower (c) : \
                 g_unichar_toupper (c))
+#define RAW_CHANGE_CASE(c, change_case) \
+        (((change_case) & CHANGE_CASE_LOWER_MASK) ? \
+                g_ascii_tolower (c) : \
+                g_ascii_toupper (c))
 
+/* If @text_is_raw is set, @text might not be valid UTF-8 (but will be
+ * nul-terminated). */
 static void
 string_append (GString     *string,
                const gchar *text,
+               gboolean     text_is_raw,
                ChangeCase  *change_case)
 {
-  gunichar c;
-
   if (text[0] == '\0')
     return;
 
@@ -3441,22 +3447,44 @@ string_append (GString     *string,
     }
   else if (*change_case & CHANGE_CASE_SINGLE_MASK)
     {
-      c = g_utf8_get_char (text);
-      g_string_append_unichar (string, CHANGE_CASE (c, *change_case));
-      g_string_append (string, g_utf8_next_char (text));
+      if (!text_is_raw)
+        {
+          gunichar c = g_utf8_get_char (text);
+          g_string_append_unichar (string, UTF8_CHANGE_CASE (c, *change_case));
+          g_string_append (string, g_utf8_next_char (text));
+        }
+      else
+        {
+          g_string_append_c (string, RAW_CHANGE_CASE (text[0], *change_case));
+          g_string_append (string, text + 1);
+        }
+
       *change_case = CHANGE_CASE_NONE;
     }
   else
     {
-      while (*text != '\0')
+      if (!text_is_raw)
         {
-          c = g_utf8_get_char (text);
-          g_string_append_unichar (string, CHANGE_CASE (c, *change_case));
-          text = g_utf8_next_char (text);
+          while (*text != '\0')
+            {
+              gunichar c = g_utf8_get_char (text);
+              g_string_append_unichar (string, UTF8_CHANGE_CASE (c, *change_case));
+              text = g_utf8_next_char (text);
+            }
+        }
+      else
+        {
+          while (*text != '\0')
+            {
+              char c = *text;
+              g_string_append_c (string, RAW_CHANGE_CASE (c, *change_case));
+              text++;
+            }
         }
     }
 }
 
+/* @match_info is (nullable) */
 static gboolean
 interpolate_replacement (const GMatchInfo *match_info,
                          GString          *result,
@@ -3466,6 +3494,7 @@ interpolate_replacement (const GMatchInfo *match_info,
   InterpolationData *idata;
   gchar *match;
   ChangeCase change_case = CHANGE_CASE_NONE;
+  gboolean is_raw = (match_info != NULL && (match_info->regex->orig_compile_opts & G_REGEX_RAW));
 
   for (list = data; list; list = list->next)
     {
@@ -3473,10 +3502,10 @@ interpolate_replacement (const GMatchInfo *match_info,
       switch (idata->type)
         {
         case REPL_TYPE_STRING:
-          string_append (result, idata->text, &change_case);
+          string_append (result, idata->text, is_raw, &change_case);
           break;
         case REPL_TYPE_CHARACTER:
-          g_string_append_c (result, CHANGE_CASE (idata->c, change_case));
+          g_string_append_c (result, UTF8_CHANGE_CASE (idata->c, change_case));
           if (change_case & CHANGE_CASE_SINGLE_MASK)
             change_case = CHANGE_CASE_NONE;
           break;
@@ -3484,7 +3513,7 @@ interpolate_replacement (const GMatchInfo *match_info,
           match = g_match_info_fetch (match_info, idata->num);
           if (match)
             {
-              string_append (result, match, &change_case);
+              string_append (result, match, is_raw, &change_case);
               g_free (match);
             }
           break;
@@ -3492,7 +3521,7 @@ interpolate_replacement (const GMatchInfo *match_info,
           match = g_match_info_fetch_named (match_info, idata->text);
           if (match)
             {
-              string_append (result, match, &change_case);
+              string_append (result, match, is_raw, &change_case);
               g_free (match);
             }
           break;
