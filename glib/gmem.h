@@ -86,14 +86,14 @@ GLIB_AVAILABLE_IN_ALL
 gpointer g_malloc0        (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_realloc        (gpointer	 mem,
-			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
+			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT G_GNUC_ALLOC_SIZE(2);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_try_malloc     (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_try_malloc0    (gsize	 n_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE(1);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_try_realloc    (gpointer	 mem,
-			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT;
+			   gsize	 n_bytes) G_GNUC_WARN_UNUSED_RESULT G_GNUC_ALLOC_SIZE(2);
 
 GLIB_AVAILABLE_IN_ALL
 gpointer g_malloc_n       (gsize	 n_blocks,
@@ -104,7 +104,7 @@ gpointer g_malloc0_n      (gsize	 n_blocks,
 GLIB_AVAILABLE_IN_ALL
 gpointer g_realloc_n      (gpointer	 mem,
 			   gsize	 n_blocks,
-			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
+			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT G_GNUC_ALLOC_SIZE2(2,3);
 GLIB_AVAILABLE_IN_ALL
 gpointer g_try_malloc_n   (gsize	 n_blocks,
 			   gsize	 n_block_bytes) G_GNUC_MALLOC G_GNUC_ALLOC_SIZE2(1,2);
@@ -114,7 +114,7 @@ gpointer g_try_malloc0_n  (gsize	 n_blocks,
 GLIB_AVAILABLE_IN_ALL
 gpointer g_try_realloc_n  (gpointer	 mem,
 			   gsize	 n_blocks,
-			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT;
+			   gsize	 n_block_bytes) G_GNUC_WARN_UNUSED_RESULT G_GNUC_ALLOC_SIZE2(2,3);
 
 GLIB_AVAILABLE_IN_2_72
 gpointer g_aligned_alloc  (gsize         n_blocks,
