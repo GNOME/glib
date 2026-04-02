@@ -1,3 +1,34 @@
+Overview of changes in GLib 2.86.5, 2026-04-02
+==============================================
+
+* Fix various minor security vulnerabilities (typically one-byte buffer
+  overreads with rare exploitation conditions) (#3915, #3916, #3917, #3918, #3919)
+
+* Bugs fixed:
+  - #3915 (#YWH-PGM9867-190) Buffer Over-read on GLib through glib/gvariant-
+    serialiser.c:1253 via gvs_tuple_is_normal() (Philip Withnall)
+  - #3916 (#YWH-PGM9867-187) OOB Read on GLib through
+    glib/gmarkup.c:g_markup_escape_text() via
+    glib/gmarkup.c:append_escaped_text() (Philip Withnall)
+  - #3917 (#YWH-PGM9867-191) OOB Read on GLib through
+    glib/gdatetime.c:g_date_time_get_ymd via invalid `GDateTime` (Philip
+    Withnall)
+  - #3918 (#YWH-PGM9867-193) Buffer Over-read on GLib's g_regex_replace()
+    through glib/gregex.c:string_append() via g_utf8_next_char() (Philip
+    Withnall)
+  - #3919 (#YWH-PGM9867-194) Buffer Over-read on GLib through
+    glib/gregex.c:g_regex_split_full() via glib/gutf8.c:g_utf8_prev_char()
+    (Philip Withnall)
+  - !5033 Update Hungarian translation
+  - !5108 Update German translation
+  - !5135 Backport various recent security fixes to GVariant, GMarkup, GDateTime
+    and GRegex to glib-2-86
+
+* Translation updates:
+  - German (Christian Kirbach)
+  - Hungarian (Balázs Úr)
+
+
 Overview of changes in GLib 2.86.4, 2026-02-13
 ==============================================
 
