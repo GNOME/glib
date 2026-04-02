@@ -37,6 +37,7 @@ static EscapeTest escape_tests[] =
   { "N\xc2\x80N", "N&#x80;N" },
   { "N\xc2\x79N", "N\xc2\x79N" },
   { "N\xc2\x9fN", "N&#x9f;N" },
+  { "\xc2", "\xc2" },
 
   /* As per g_markup_escape_text()'s documentation, whitespace is not escaped: */
   { "\t", "\t" },
@@ -46,13 +47,24 @@ static void
 escape_test (gconstpointer d)
 {
   const EscapeTest *test = d;
-  gchar *result;
+  char *non_nul_terminated_original = NULL;
+  size_t non_nul_terminated_original_len = 0;
+  char *result = NULL, *result2 = NULL;
 
+  /* Try once nul-terminated */
   result = g_markup_escape_text (test->original, -1);
-
   g_assert_cmpstr (result, ==, test->expected);
 
+  /* And try again with a newly allocated original without a nul-terminator,
+   * and using a fixed length. This can help catch buffer overflows. */
+  non_nul_terminated_original_len = strlen (test->original);
+  non_nul_terminated_original = (non_nul_terminated_original_len > 0) ? g_memdup2 (test->original, non_nul_terminated_original_len) : g_strdup (test->original);
+  result2 = g_markup_escape_text (non_nul_terminated_original, non_nul_terminated_original_len);
+  g_assert_cmpstr (result2, ==, test->expected);
+
   g_free (result);
+  g_free (result2);
+  g_free (non_nul_terminated_original);
 }
 
 typedef struct _UnicharTest UnicharTest;
