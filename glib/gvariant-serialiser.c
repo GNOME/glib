@@ -1250,7 +1250,7 @@ gvs_tuple_is_normal (GVariantSerialised value)
 
       while (offset & alignment)
         {
-          if (offset > value.size || value.data[offset] != '\0')
+          if (offset >= value.size || value.data[offset] != '\0')
             return FALSE;
           offset++;
         }
