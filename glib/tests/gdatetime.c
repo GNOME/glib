@@ -1146,6 +1146,24 @@ test_GDateTime_add_full (void)
   TEST_ADD_FULL (2010,  8, 25, 22, 45, 0,
                     0,  1,  6,  1, 25, 0,
                  2010, 10,  2,  0, 10, 0);
+
+#define TEST_ADD_FULL_ERROR(y,m,d,h,mi,s,ay,am,ad,ah,ami,as) G_STMT_START { \
+  GDateTime *dt; \
+  dt = g_date_time_new_utc (y, m, d, h, mi, s); \
+  g_assert_null (g_date_time_add_full (dt, ay, am, ad, ah, ami, as)); \
+  g_date_time_unref (dt); \
+} G_STMT_END
+
+  TEST_ADD_FULL_ERROR (     1, 12,  1,  0,  0, 0,
+                           -1,  0,  0,  0,  0, 0);
+  TEST_ADD_FULL_ERROR (     1, 12,  1,  0,  0, 0,
+                        10000,  0,  0,  0,  0, 0);
+  TEST_ADD_FULL_ERROR (  9999, 12,  1,  0,  0, 0,
+                       -10000,  0,  0,  0,  0, 0);
+  TEST_ADD_FULL_ERROR (     1, 12,  1,  0,  0, 0,
+                            0,  0, 3660001,  0,  0, 0);
+  TEST_ADD_FULL_ERROR (  9999, 12,  1,  0,  0, 0,
+                            0,  0, -3660001,  0,  0, 0);
 }
 
 static void
