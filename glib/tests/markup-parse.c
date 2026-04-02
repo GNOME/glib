@@ -25,17 +25,30 @@ static gsize tag_chars;
 static gsize tag_offset;
 
 static void
-check_positions (GMarkupParseContext *context)
+assert_ordered (size_t lines1, size_t chars1, size_t offset1,
+                size_t lines2, size_t chars2, size_t offset2)
+{
+  g_assert_cmpuint (lines1, <=, lines2);
+  if (lines1 == lines2)
+    g_assert_cmpuint (chars1, <=, chars2);
+  g_assert_cmpuint (offset1, <=, offset2);
+}
+
+static void
+check_positions (GMarkupParseContext  *context,
+                 const char          **attr_names,
+                 const char          **attr_values)
 {
   gsize chars, lines, offset;
   int current_lines, current_chars;
 
+  /* Just some basic sanity check that positions are increasing */
+
   g_markup_parse_context_get_tag_start (context, &lines, &chars, &offset);
 
-  g_assert_cmpint (tag_lines, <=, lines);
-  if (tag_lines == lines)
-    g_assert_cmpint (tag_chars, <=, chars);
-  g_assert_cmpint (tag_offset, <=, offset);
+  assert_ordered (tag_lines, tag_chars, tag_offset,
+                  lines, chars, offset);
+
   tag_lines = lines;
   tag_chars = chars;
   tag_offset = offset;
@@ -45,10 +58,40 @@ check_positions (GMarkupParseContext *context)
   chars = (gsize) current_chars;
   offset = g_markup_parse_context_get_offset (context);
 
-  g_assert_cmpint (tag_lines, <=, lines);
-  if (tag_lines == lines)
-    g_assert_cmpint (tag_chars, <=, chars);
-  g_assert_cmpint (tag_offset, <=, offset);
+  assert_ordered (tag_lines, tag_chars, tag_offset,
+                  lines, chars, offset);
+
+  if (attr_names && attr_values)
+    {
+      size_t start_lines, start_chars, start_offset;
+      size_t end_lines, end_chars, end_offset;
+      size_t last_lines, last_chars, last_offset;
+
+      last_lines = tag_lines;
+      last_chars = tag_chars;
+      last_offset = tag_offset;
+
+      for (size_t i = 0; attr_names[i]; i++)
+        {
+          g_markup_parse_context_get_attribute_position (context, i,
+                                                         &start_lines, &start_chars, &start_offset,
+                                                         &end_lines, &end_chars, &end_offset);
+
+          if (i == 0)
+            assert_ordered (last_lines, last_chars, last_offset,
+                            start_lines, start_chars, start_offset);
+
+          assert_ordered (start_lines, start_chars, start_offset,
+                          end_lines, end_chars, end_offset);
+
+          last_lines = end_lines;
+          last_chars = end_chars;
+          last_offset = end_offset;
+        }
+
+      assert_ordered (last_lines, last_chars, last_offset,
+                      lines, chars, offset);
+    }
 }
 
 static void
@@ -61,7 +104,7 @@ start_element_handler  (GMarkupParseContext *context,
 {
   int i;
 
-  check_positions (context);
+  check_positions (context, attribute_names, attribute_values);
 
   indent (0);
   g_string_append_printf (string, "ELEMENT '%s'\n", element_name);
@@ -87,7 +130,7 @@ end_element_handler (GMarkupParseContext *context,
                      gpointer             user_data,
                      GError             **error)
 {
-  check_positions (context);
+  check_positions (context, NULL, NULL);
 
   --depth;
   indent (0);
@@ -219,7 +262,7 @@ test_file (const gchar       *filename,
   g_assert_cmpint (line, ==, 1);
   g_assert_cmpint (col, ==, 1);
   offset = g_markup_parse_context_get_offset (context);
-  g_assert_cmpint (offset, ==, 0);
+  g_assert_cmpuint (offset, ==, 0);
 
   if (!g_markup_parse_context_parse (context, contents, -1, NULL) ||
       !g_markup_parse_context_end_parse (context, NULL))

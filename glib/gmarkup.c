@@ -71,6 +71,13 @@ typedef struct
   gpointer prev_user_data;
 } GMarkupRecursionTracker;
 
+typedef struct
+{
+  size_t lines; /* 1-based, in characters */
+  size_t chars; /* 1-based, in characters */
+  size_t offset; /* 0-based, in bytes */
+} MarkupLocation;
+
 struct _GMarkupParseContext
 {
   const GMarkupParser *parser;
@@ -79,13 +86,9 @@ struct _GMarkupParseContext
 
   GMarkupParseFlags flags;
 
-  gint line_number;
-  gint char_number;
-  gsize offset;
-
-  gint tag_line;
-  gint tag_char;
-  gsize tag_offset;
+  MarkupLocation pos;
+  MarkupLocation tag_start;
+  MarkupLocation attr_start;
 
   GMarkupParseState state;
 
@@ -105,6 +108,8 @@ struct _GMarkupParseContext
 
   GString **attr_names;
   GString **attr_values;
+  MarkupLocation *attr_pos; /* nullable, owned */
+  MarkupLocation *attr_end; /* nullable, owned */
   gint cur_attr;
   gint alloc_attrs;
 
@@ -188,13 +193,13 @@ g_markup_parse_context_new (const GMarkupParser *parser,
   context->user_data = user_data;
   context->dnotify = user_data_dnotify;
 
-  context->line_number = 1;
-  context->char_number = 1;
-  context->offset = 0;
+  context->pos.lines = 1;
+  context->pos.chars = 1;
+  context->pos.offset = 0;
 
-  context->tag_line = 1;
-  context->tag_char = 1;
-  context->tag_offset = 0;
+  context->tag_start.lines = 1;
+  context->tag_start.chars = 1;
+  context->tag_start.offset = 0;
 
   context->partial_chunk = NULL;
   context->spare_chunks = NULL;
@@ -205,6 +210,8 @@ g_markup_parse_context_new (const GMarkupParser *parser,
   context->tag_stack_gstr = NULL;
   context->attr_names = NULL;
   context->attr_values = NULL;
+  context->attr_pos = NULL;
+  context->attr_end = NULL;
   context->cur_attr = -1;
   context->alloc_attrs = 0;
 
@@ -301,6 +308,8 @@ g_markup_parse_context_free (GMarkupParseContext *context)
   clear_attributes (context);
   g_free (context->attr_names);
   g_free (context->attr_values);
+  g_free (context->attr_pos);
+  g_free (context->attr_end);
 
   g_slist_free_full (context->tag_stack_gstr, string_full_free);
   g_slist_free (context->tag_stack);
@@ -354,9 +363,9 @@ set_error_literal (GMarkupParseContext  *context,
   tmp_error = g_error_new_literal (G_MARKUP_ERROR, code, message);
 
   g_prefix_error (&tmp_error,
-                  _("Error on line %d char %d: "),
-                  context->line_number,
-                  context->char_number);
+                  _("Error on line %" G_GSIZE_FORMAT " char %" G_GSIZE_FORMAT ": "),
+                  context->pos.lines,
+                  context->pos.chars);
 
   mark_error (context, tmp_error);
 
@@ -396,9 +405,9 @@ propagate_error (GMarkupParseContext  *context,
 {
   if (context->flags & G_MARKUP_PREFIX_ERROR_POSITION)
     g_prefix_error (&src,
-                    _("Error on line %d char %d: "),
-                    context->line_number,
-                    context->char_number);
+                    _("Error on line %" G_GSIZE_FORMAT " char %" G_GSIZE_FORMAT ": "),
+                    context->pos.lines,
+                    context->pos.chars);
 
   mark_error (context, src);
 
@@ -569,8 +578,8 @@ set_unescape_error (GMarkupParseContext  *context,
 
   tmp_error = g_error_new (G_MARKUP_ERROR,
                            code,
-                           _("Error on line %d: %s"),
-                           context->line_number - remaining_newlines,
+                           _("Error on line %" G_GSIZE_FORMAT ": %s"),
+                           context->pos.lines - remaining_newlines,
                            s);
 
   g_free (s);
@@ -758,16 +767,16 @@ static inline gboolean
 advance_char (GMarkupParseContext *context)
 {
   context->iter++;
-  context->char_number++;
-  context->offset++;
+  context->pos.chars++;
+  context->pos.offset++;
 
   if (G_UNLIKELY (context->iter == context->current_text_end))
       return FALSE;
 
   else if (G_UNLIKELY (*context->iter == '\n'))
     {
-      context->line_number++;
-      context->char_number = 1;
+      context->pos.lines++;
+      context->pos.chars = 1;
     }
 
   return TRUE;
@@ -942,14 +951,18 @@ add_attribute (GMarkupParseContext *context, GString *str)
   if (context->cur_attr + 2 >= context->alloc_attrs)
     {
       context->alloc_attrs += 5; /* silly magic number */
-      context->attr_names = g_realloc (context->attr_names, sizeof(GString*)*context->alloc_attrs);
-      context->attr_values = g_realloc (context->attr_values, sizeof(GString*)*context->alloc_attrs);
+      context->attr_names = g_realloc_n (context->attr_names, sizeof(GString*), context->alloc_attrs);
+      context->attr_values = g_realloc_n (context->attr_values, sizeof(GString*), context->alloc_attrs);
+      context->attr_pos = g_realloc_n (context->attr_pos, sizeof (MarkupLocation), context->alloc_attrs);
+      context->attr_end = g_realloc_n (context->attr_end, sizeof (MarkupLocation), context->alloc_attrs);
     }
   context->cur_attr++;
   context->attr_names[context->cur_attr] = str;
   context->attr_values[context->cur_attr] = NULL;
   context->attr_names[context->cur_attr+1] = NULL;
   context->attr_values[context->cur_attr+1] = NULL;
+  context->attr_pos[context->cur_attr] = context->attr_start;
+  context->attr_end[context->cur_attr] = context->pos; /* Will be overwritten later */
 
   return TRUE;
 }
@@ -1010,6 +1023,8 @@ emit_start_element (GMarkupParseContext  *context,
 
       attr_names[j] = context->attr_names[i]->str;
       attr_values[j] = context->attr_values[i]->str;
+      context->attr_pos[j] = context->attr_pos[i];
+      context->attr_end[j] = context->attr_end[i];
       j++;
     }
   attr_names[j] = NULL;
@@ -1203,9 +1218,9 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
           /* Possible next states: INSIDE_OPEN_TAG_NAME,
            *  AFTER_CLOSE_TAG_SLASH, INSIDE_PASSTHROUGH
            */
-          context->tag_line = context->line_number;
-          context->tag_char = context->char_number - 1;
-          context->tag_offset = context->offset - 1;
+          context->tag_start.lines = context->pos.lines;
+          context->tag_start.chars = context->pos.chars - 1;
+          context->tag_start.offset = context->pos.offset - 1;
 
           if (*context->iter == '?' ||
               *context->iter == '!')
@@ -1321,6 +1336,9 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
 
         case STATE_INSIDE_ATTRIBUTE_NAME:
           /* Possible next states: AFTER_ATTRIBUTE_NAME */
+
+          if (!context->partial_chunk || context->partial_chunk->len == 0)
+            context->attr_start = context->pos;
 
           advance_to_name_end (context);
           add_to_partial (context, context->start, context->iter);
@@ -1517,6 +1535,7 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
                   context->attr_values[context->cur_attr] = context->partial_chunk;
                   context->partial_chunk = NULL;
                   advance_char (context);
+                  context->attr_end[context->cur_attr] = context->pos;
                   context->state = STATE_BETWEEN_ATTRIBUTES;
                   context->start = NULL;
                 }
@@ -1977,10 +1996,10 @@ g_markup_parse_context_get_position (GMarkupParseContext *context,
   g_return_if_fail (context != NULL);
 
   if (line_number)
-    *line_number = context->line_number;
+    *line_number = context->pos.lines;
 
   if (char_number)
-    *char_number = context->char_number;
+    *char_number = context->pos.chars;
 }
 
 /**
@@ -2003,7 +2022,7 @@ g_markup_parse_context_get_offset (GMarkupParseContext *context)
 {
   g_return_val_if_fail (context != NULL, 0);
 
-  return context->offset;
+  return context->pos.offset;
 }
 
 /**
@@ -2017,6 +2036,8 @@ g_markup_parse_context_get_offset (GMarkupParseContext *context)
  *
  * This function can be used in the `start_element` or `end_element`
  * callbacks to obtain location information for error reporting.
+ *
+ * Calling it outside of these callbacks has undefined results.
  *
  * Note that @line_number and @char_number are intended for human
  * readable error messages and are therefore 1-based and in Unicode
@@ -2040,9 +2061,67 @@ g_markup_parse_context_get_tag_start (GMarkupParseContext *context,
   g_return_if_fail (char_number != NULL);
   g_return_if_fail (offset != NULL);
 
-  *line_number = context->tag_line;
-  *char_number = context->tag_char;
-  *offset = context->tag_offset;
+  *line_number = context->tag_start.lines;
+  *char_number = context->tag_start.chars;
+  *offset = context->tag_start.offset;
+}
+
+/**
+ * g_markup_parse_context_get_attribute_position:
+ * @context: a #GMarkupParseContext
+ * @attr: the index of the attribute to query
+ * @start_lines: (out) (optional): return location for the line number of the attribute assignment start
+ * @start_chars: (out) (optional): return location for the character number of the attribute assignment start
+ * @start_offset: (out) (optional): return location for offset of the attribute assignment
+ * @end_lines: (out) (optional): return location for the line number of the attribute assignment end
+ * @end_chars: (out) (optional): return location for the character number of the attribute assignment end
+ * @end_offset: (out) (optional): return location for offset of the attribute assignment end
+ *
+ * Retrieves the start and end positions of an attribute assignment
+ * in a start tag.
+ *
+ * This function can be used in the `start_element` callback to
+ * obtain location information for error reporting.
+ *
+ * Calling it outside of the `start_element` callback
+ * has undefined results.
+ *
+ * Note that @line_number and @char_number are intended for human
+ * readable error messages and are therefore 1-based and in Unicode
+ * characters. @offset on the other hand is meant for programmatic
+ * use, and thus is 0-based and in bytes.
+ *
+ * The information is meant to accompany the values returned by
+ * [method@GLib.MarkupParseContext.get_position], and comes with the
+ * same accuracy guarantees.
+ *
+ * Since: 2.90
+ */
+void
+g_markup_parse_context_get_attribute_position (GMarkupParseContext *context,
+                                               unsigned int         attr,
+                                               size_t              *start_lines,
+                                               size_t              *start_chars,
+                                               size_t              *start_offset,
+                                               size_t              *end_lines,
+                                               size_t              *end_chars,
+                                               size_t              *end_offset)
+{
+  g_return_if_fail (context != NULL);
+  g_return_if_fail (context->cur_attr >= 0 && attr <= (unsigned int) context->cur_attr);
+
+  if (start_lines)
+    *start_lines = context->attr_pos[attr].lines;
+  if (start_chars)
+    *start_chars = context->attr_pos[attr].chars;
+  if (start_offset)
+    *start_offset = context->attr_pos[attr].offset;
+  if (end_lines)
+    *end_lines = context->attr_end[attr].lines;
+  if (end_chars)
+    *end_chars = context->attr_end[attr].chars;
+  if (end_offset)
+    *end_offset = context->attr_end[attr].offset;
 }
 
 /**
