@@ -100,7 +100,7 @@ struct _GDateTime
   gint interval;
 
   /* 1 is 0001-01-01 in Proleptic Gregorian */
-  gint32 days;
+  gint32 days;  /* in range [MIN_DAYS, MAX_DAYS] */
 
   gint ref_count;  /* (atomic) */
 };
@@ -141,6 +141,9 @@ struct _GDateTime
 #define GREGORIAN_LEAP(y)    ((((y) % 4) == 0) && (!((((y) % 100) == 0) && (((y) % 400) != 0))))
 #define JULIAN_YEAR(d)       ((d)->julian / 365.25)
 #define DAYS_PER_PERIOD      (G_GINT64_CONSTANT (2914695))
+
+#define MIN_DAYS 1  /* the days count for 0001-01-01 in Proleptic Gregorian */
+#define MAX_DAYS 3652059  /* the days count for 9999-12-31 in Proleptic Gregorian */
 
 static const guint16 days_in_months[2][13] =
 {
@@ -776,7 +779,7 @@ g_date_time_from_instant (GTimeZone *tz,
   datetime->days = instant / USEC_PER_DAY;
   datetime->usec = instant % USEC_PER_DAY;
 
-  if (datetime->days < 1 || 3652059 < datetime->days)
+  if (datetime->days < MIN_DAYS || datetime->days > MAX_DAYS)
     {
       g_date_time_unref (datetime);
       datetime = NULL;
@@ -812,7 +815,7 @@ g_date_time_deal_with_date_change (GDateTime *datetime)
   gint64 full_time;
   gint64 usec;
 
-  if (datetime->days < 1 || datetime->days > 3652059)
+  if (datetime->days < MIN_DAYS || datetime->days > MAX_DAYS)
     return FALSE;
 
   was_dst = g_time_zone_is_dst (datetime->tz, datetime->interval);
@@ -2076,7 +2079,9 @@ g_date_time_add_full (GDateTime *datetime,
   new->days = full_time / USEC_PER_DAY;
   new->usec = full_time % USEC_PER_DAY;
 
-  /* XXX validate */
+  /* Validate it’s still in the range 0001-01-01 to 9999-12-31 */
+  if (new->days < MIN_DAYS || new->days > MAX_DAYS)
+    g_clear_pointer (&new, g_date_time_unref);
 
   return new;
 }
