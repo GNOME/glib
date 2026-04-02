@@ -1777,7 +1777,7 @@ test_class (void)
 
   /* Accessing match again should not crash */
   g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL,
-                         "*match_info->pos >= 0*");
+                         "*match_info->pos_valid*");
   g_assert_false (g_match_info_next (match, NULL));
   g_test_assert_expected_messages ();
 
