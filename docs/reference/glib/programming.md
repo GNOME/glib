@@ -29,6 +29,10 @@ Similarly, output strings from functions are guaranteed to be in UTF-8,
 and this does not need to be validated by the calling function. If a function
 returns invalid UTF-8 (and is not documented as doing so), that’s a bug.
 
+This equally applies to functions which take an input length in bytes: the
+string up to that point must be valid UTF-8, which in particular means it must
+not end part-way through a character.
+
 See [func@GLib.utf8_validate] and [func@GLib.utf8_make_valid] for validating
 UTF-8 input.
 
