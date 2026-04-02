@@ -303,7 +303,7 @@ struct _GMatchInfo
   gint *workspace;              /* workspace for pcre2_dfa_match() */
   PCRE2_SIZE n_workspace;       /* number of workspace elements */
   const gchar *string;          /* string passed to the match function */
-  gssize string_len;            /* length of string, in bytes */
+  size_t string_len;            /* length of string, in bytes */
   pcre2_match_context *match_context;
   pcre2_match_data *match_data;
   pcre2_jit_stack *jit_stack;
@@ -890,15 +890,12 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
 static GMatchInfo *
 match_info_new (const GRegex     *regex,
                 const gchar      *string,
-                gint              string_len,
-                gint              start_position,
+                size_t            string_len,
+                size_t            start_position,
                 GRegexMatchFlags  match_options,
                 gboolean          is_dfa)
 {
   GMatchInfo *match_info;
-
-  if (string_len < 0)
-    string_len = strlen (string);
 
   match_info = g_new0 (GMatchInfo, 1);
   match_info->ref_count = 1;
@@ -1184,7 +1181,8 @@ g_match_info_next (GMatchInfo  *match_info,
   prev_match_start = match_info->offsets[0];
   prev_match_end = match_info->offsets[1];
 
-  if (match_info->pos > match_info->string_len)
+  /* We checked that match_info->pos is non-negative above */
+  if ((size_t) match_info->pos > match_info->string_len)
     {
       /* we have reached the end of the string */
       match_info->pos = -1;
@@ -1263,7 +1261,7 @@ g_match_info_next (GMatchInfo  *match_info,
    * equivalent */
   if (match_info->pos == match_info->offsets[1])
     {
-      if (match_info->pos > match_info->string_len)
+      if ((size_t) match_info->pos > match_info->string_len)
         {
           /* we have reached the end of the string */
           match_info->pos = -1;
@@ -2558,6 +2556,7 @@ g_regex_match_full (const GRegex      *regex,
 {
   GMatchInfo *info;
   gboolean match_ok;
+  size_t string_len_unsigned;
 
   g_return_val_if_fail (regex != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
@@ -2565,7 +2564,9 @@ g_regex_match_full (const GRegex      *regex,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
 
-  info = match_info_new (regex, string, string_len, start_position,
+  string_len_unsigned = (string_len < 0) ? strlen (string) : (size_t) string_len;
+
+  info = match_info_new (regex, string, string_len_unsigned, start_position,
                          match_options, FALSE);
   match_ok = g_match_info_next (info, error);
   if (match_info != NULL)
@@ -2682,12 +2683,15 @@ g_regex_match_all_full (const GRegex      *regex,
   gboolean retval;
   uint32_t newline_options;
   uint32_t bsr_options;
+  size_t string_len_unsigned;
 
   g_return_val_if_fail (regex != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
   g_return_val_if_fail (start_position >= 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
+
+  string_len_unsigned = (string_len < 0) ? strlen (string) : (size_t) string_len;
 
   newline_options = get_pcre2_newline_match_options (match_options);
   if (!newline_options)
@@ -2709,7 +2713,7 @@ g_regex_match_all_full (const GRegex      *regex,
   if (pcre_re == NULL)
     return FALSE;
 
-  info = match_info_new (regex, string, string_len, start_position,
+  info = match_info_new (regex, string, string_len_unsigned, start_position,
                          match_options, TRUE);
 
   done = FALSE;
@@ -2954,11 +2958,12 @@ g_regex_split_full (const GRegex      *regex,
   gint token_count;
   gboolean match_ok;
   /* position of the last separator. */
-  gint last_separator_end;
+  size_t last_separator_end;
   /* was the last match 0 bytes long? */
   gboolean last_match_is_empty;
   /* the returned array of char **s */
   gchar **string_list;
+  size_t string_len_unsigned, start_position_unsigned;
 
   g_return_val_if_fail (regex != NULL, NULL);
   g_return_val_if_fail (string != NULL, NULL);
@@ -2969,27 +2974,27 @@ g_regex_split_full (const GRegex      *regex,
   if (max_tokens <= 0)
     max_tokens = G_MAXINT;
 
-  if (string_len < 0)
-    string_len = strlen (string);
+  string_len_unsigned = (string_len < 0) ? strlen (string) : (size_t) string_len;
+  start_position_unsigned = (size_t) start_position;  /* see pre-condition above */
 
   /* zero-length string */
-  if (string_len - start_position == 0)
+  if (string_len_unsigned - start_position_unsigned == 0)
     return g_new0 (gchar *, 1);
 
   if (max_tokens == 1)
     {
       string_list = g_new0 (gchar *, 2);
-      string_list[0] = g_strndup (&string[start_position],
-                                  string_len - start_position);
+      string_list[0] = g_strndup (&string[start_position_unsigned],
+                                  string_len_unsigned - start_position_unsigned);
       return string_list;
     }
 
   list = NULL;
   token_count = 0;
-  last_separator_end = start_position;
+  last_separator_end = start_position_unsigned;
   last_match_is_empty = FALSE;
 
-  match_ok = g_regex_match_full (regex, string, string_len, start_position,
+  match_ok = g_regex_match_full (regex, string, string_len_unsigned, start_position_unsigned,
                                  match_options, &match_info, &tmp_error);
 
   while (tmp_error == NULL)
@@ -3003,7 +3008,8 @@ g_regex_split_full (const GRegex      *regex,
            * of another separator. e.g. the string is "a b" and the separator
            * is " *", so from 1 to 2 we have a match and at position 2 we have
            * an empty match. */
-          if (last_separator_end != match_info->offsets[1])
+          g_assert (match_info->offsets[1] >= 0);
+          if (last_separator_end != (size_t) match_info->offsets[1])
             {
               gchar *token;
               gint match_count;
@@ -3048,13 +3054,16 @@ g_regex_split_full (const GRegex      *regex,
                * same position. */
               match_info->pos = PREV_CHAR (regex, &string[match_info->pos]) - string;
             }
+
+          g_assert (match_info->pos >= 0);
+
           /* the if is needed in the case we have terminated the available
            * tokens, but we are at the end of the string, so there are no
            * characters left to copy. */
-          if (string_len > match_info->pos)
+          if (string_len_unsigned > (size_t) match_info->pos)
             {
               gchar *token = g_strndup (string + match_info->pos,
-                                        string_len - match_info->pos);
+                                        string_len_unsigned - match_info->pos);
               list = g_list_prepend (list, token);
             }
           /* end the loop. */
@@ -3766,9 +3775,10 @@ g_regex_replace_eval (const GRegex        *regex,
 {
   GMatchInfo *match_info;
   GString *result;
-  gint str_pos = 0;
+  size_t str_pos = 0;
   gboolean done = FALSE;
   GError *tmp_error = NULL;
+  size_t string_len_unsigned;
 
   g_return_val_if_fail (regex != NULL, NULL);
   g_return_val_if_fail (string != NULL, NULL);
@@ -3776,13 +3786,12 @@ g_regex_replace_eval (const GRegex        *regex,
   g_return_val_if_fail (eval != NULL, NULL);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, NULL);
 
-  if (string_len < 0)
-    string_len = strlen (string);
+  string_len_unsigned = (string_len < 0) ? strlen (string) : (size_t) string_len;
 
-  result = g_string_sized_new (string_len);
+  result = g_string_sized_new (string_len_unsigned);
 
   /* run down the string making matches. */
-  g_regex_match_full (regex, string, string_len, start_position,
+  g_regex_match_full (regex, string, string_len_unsigned, start_position,
                       match_options, &match_info, &tmp_error);
   while (!done && g_match_info_matches (match_info))
     {
@@ -3801,7 +3810,7 @@ g_regex_replace_eval (const GRegex        *regex,
       return NULL;
     }
 
-  g_string_append_len (result, string + str_pos, string_len - str_pos);
+  g_string_append_len (result, string + str_pos, string_len_unsigned - str_pos);
   return g_string_free (result, FALSE);
 }
 
@@ -3941,15 +3950,15 @@ g_regex_escape_string (const gchar *string,
 {
   GString *escaped;
   const char *p, *piece_start, *end;
+  size_t length_unsigned;
 
   g_return_val_if_fail (string != NULL, NULL);
 
-  if (length < 0)
-    length = strlen (string);
+  length_unsigned = (length < 0) ? strlen (string) : (size_t) length;
 
-  end = string + length;
+  end = string + length_unsigned;
   p = piece_start = string;
-  escaped = g_string_sized_new (length + 1);
+  escaped = g_string_sized_new (length_unsigned + 1);
 
   while (p < end)
     {
