@@ -951,10 +951,10 @@ add_attribute (GMarkupParseContext *context, GString *str)
   if (context->cur_attr + 2 >= context->alloc_attrs)
     {
       context->alloc_attrs += 5; /* silly magic number */
-      context->attr_names = g_realloc_n (context->attr_names, sizeof(GString*), context->alloc_attrs);
-      context->attr_values = g_realloc_n (context->attr_values, sizeof(GString*), context->alloc_attrs);
-      context->attr_pos = g_realloc_n (context->attr_pos, sizeof (MarkupLocation), context->alloc_attrs);
-      context->attr_end = g_realloc_n (context->attr_end, sizeof (MarkupLocation), context->alloc_attrs);
+      context->attr_names = g_realloc_n (context->attr_names, context->alloc_attrs, sizeof (GString*));
+      context->attr_values = g_realloc_n (context->attr_values, context->alloc_attrs, sizeof (GString*));
+      context->attr_pos = g_realloc_n (context->attr_pos, context->alloc_attrs, sizeof (MarkupLocation));
+      context->attr_end = g_realloc_n (context->attr_end, context->alloc_attrs, sizeof (MarkupLocation));
     }
   context->cur_attr++;
   context->attr_names[context->cur_attr] = str;
