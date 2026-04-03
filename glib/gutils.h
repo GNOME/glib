@@ -248,6 +248,15 @@ typedef enum {
   G_USER_DIRECTORY_TEMPLATES,
   G_USER_DIRECTORY_VIDEOS,
 
+  /**
+   * G_USER_DIRECTORY_PROJECTS:
+   *
+   * The user's Projects directory.
+   *
+   * Since: 2.90
+   */
+  G_USER_DIRECTORY_PROJECTS,
+
   G_USER_N_DIRECTORIES
 } GUserDirectory;
 

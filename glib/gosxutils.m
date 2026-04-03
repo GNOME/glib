@@ -43,7 +43,7 @@ find_folder (NSSearchPathDirectory type)
 }
 
 void
-load_user_special_dirs_macos(gchar **table)
+load_user_special_dirs_macos (gchar **table)
 {
   table[G_USER_DIRECTORY_DESKTOP] = find_folder (NSDesktopDirectory);
   table[G_USER_DIRECTORY_DOCUMENTS] = find_folder (NSDocumentDirectory);
@@ -53,4 +53,5 @@ load_user_special_dirs_macos(gchar **table)
   table[G_USER_DIRECTORY_PUBLIC_SHARE] = find_folder (NSSharedPublicDirectory);
   table[G_USER_DIRECTORY_TEMPLATES] = NULL;
   table[G_USER_DIRECTORY_VIDEOS] = find_folder (NSMoviesDirectory);
+  table[G_USER_DIRECTORY_PROJECTS] = find_folder (NSDocumentDirectory);
 }

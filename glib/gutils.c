@@ -2243,6 +2243,8 @@ load_user_special_dirs_unlocked (void)
 
   g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = get_special_folder (&FOLDERID_Templates);
   g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = get_special_folder (&FOLDERID_Videos);
+
+  g_user_special_dirs[G_USER_DIRECTORY_PROJECTS] = get_special_folder (&FOLDERID_Documents);
 }
 
 #else /* default is unix */
