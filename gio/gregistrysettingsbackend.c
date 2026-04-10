@@ -2224,12 +2224,16 @@ g_registry_settings_backend_finalize (GObject *object)
 
   g_free (self->base_path);
   g_free (self->base_pathw);
+
+  G_OBJECT_CLASS (g_registry_settings_backend_parent_class)->finalize (object);
 }
 
 static void
 g_registry_settings_backend_constructed (GObject *object)
 {
   GRegistrySettingsBackend *self = G_REGISTRY_SETTINGS_BACKEND (object);
+
+  G_OBJECT_CLASS (g_registry_settings_backend_parent_class)->constructed (object);
 
   if (self->base_key == NULL || self->base_path == NULL || self->base_pathw == NULL)
     {
