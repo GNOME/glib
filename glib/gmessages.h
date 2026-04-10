@@ -32,6 +32,7 @@
 #endif
 
 #include <stdarg.h>
+#include <stdlib.h>
 #include <glib/gatomic.h>
 #include <glib/gtypes.h>
 #include <glib/gmacros.h>
