@@ -302,7 +302,7 @@ typedef struct _GVariantType GVariantType;
 
 /* type string checking */
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_string_is_valid          (const gchar         *type_string) G_GNUC_CONST;
+gboolean                        g_variant_type_string_is_valid          (const gchar         *type_string) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_type_string_scan              (const gchar         *string,
                                                                          const gchar         *limit,
@@ -326,21 +326,21 @@ gchar *                         g_variant_type_dup_string               (const G
 
 /* classification */
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_is_definite              (const GVariantType  *type) G_GNUC_CONST;
+gboolean                        g_variant_type_is_definite              (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_is_container             (const GVariantType  *type) G_GNUC_CONST;
+gboolean                        g_variant_type_is_container             (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_is_basic                 (const GVariantType  *type) G_GNUC_CONST;
+gboolean                        g_variant_type_is_basic                 (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_is_maybe                 (const GVariantType  *type) G_GNUC_CONST;
+gboolean                        g_variant_type_is_maybe                 (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_is_array                 (const GVariantType  *type) G_GNUC_CONST;
+gboolean                        g_variant_type_is_array                 (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_is_tuple                 (const GVariantType  *type) G_GNUC_CONST;
+gboolean                        g_variant_type_is_tuple                 (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_is_dict_entry            (const GVariantType  *type) G_GNUC_CONST;
+gboolean                        g_variant_type_is_dict_entry            (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-gboolean                        g_variant_type_is_variant               (const GVariantType  *type) G_GNUC_CONST;
+gboolean                        g_variant_type_is_variant               (const GVariantType  *type) G_GNUC_PURE;
 
 /* for hash tables */
 GLIB_AVAILABLE_IN_ALL
@@ -352,21 +352,21 @@ gboolean                        g_variant_type_equal                    (gconstp
 /* subtypes */
 GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_type_is_subtype_of            (const GVariantType  *type,
-                                                                         const GVariantType  *supertype) G_GNUC_CONST;
+                                                                         const GVariantType  *supertype) G_GNUC_PURE;
 
 /* type iterator interface */
 GLIB_AVAILABLE_IN_ALL
-const GVariantType *            g_variant_type_element                  (const GVariantType  *type) G_GNUC_CONST;
+const GVariantType *            g_variant_type_element                  (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-const GVariantType *            g_variant_type_first                    (const GVariantType  *type) G_GNUC_CONST;
+const GVariantType *            g_variant_type_first                    (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-const GVariantType *            g_variant_type_next                     (const GVariantType  *type) G_GNUC_CONST;
+const GVariantType *            g_variant_type_next                     (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-gsize                           g_variant_type_n_items                  (const GVariantType  *type) G_GNUC_CONST;
+gsize                           g_variant_type_n_items                  (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-const GVariantType *            g_variant_type_key                      (const GVariantType  *type) G_GNUC_CONST;
+const GVariantType *            g_variant_type_key                      (const GVariantType  *type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
-const GVariantType *            g_variant_type_value                    (const GVariantType  *type) G_GNUC_CONST;
+const GVariantType *            g_variant_type_value                    (const GVariantType  *type) G_GNUC_PURE;
 
 /* constructors */
 GLIB_AVAILABLE_IN_ALL
