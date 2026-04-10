@@ -746,6 +746,7 @@ functions = [
   'link',
   'localtime_r',
   'lstat',
+  'malloc_trim',
   'mbrtowc',
   'memalign',
   'memmem',
