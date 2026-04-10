@@ -1,5 +1,6 @@
 provider gobject {
 	probe type__new(char *, uintmax_t, uintmax_t);
+	probe object__trim(void);
 	probe object__new(void*, uintmax_t);
 	probe object__ref(void*, uintmax_t, int);
 	probe object__unref(void*, uintmax_t, int);
