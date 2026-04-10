@@ -40,6 +40,10 @@
 #include <windows.h>
 #endif
 
+#ifdef HAVE_MALLOC_TRIM
+#include <malloc.h>
+#endif
+
 #ifdef	G_ENABLE_DEBUG
 #define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
 #endif
@@ -1816,6 +1820,8 @@ maybe_issue_deprecation_warning (GType type)
 GTypeInstance*
 g_type_create_instance (GType type)
 {
+  static gint64 last_instance_ctime = 0;
+
   TypeNode *node;
   GTypeInstance *instance;
   GTypeClass *class;
@@ -1840,6 +1846,18 @@ g_type_create_instance (GType type)
     {
       maybe_issue_deprecation_warning (type);
     }
+
+#ifdef HAVE_MALLOC_TRIM
+  if (G_UNLIKELY (last_instance_ctime == 0))
+    last_instance_ctime = g_get_monotonic_time ();
+
+  if ((g_get_monotonic_time () - last_instance_ctime) >= 15000)
+    {
+      malloc_trim (0);
+      last_instance_ctime = g_get_monotonic_time ();
+      TRACE (GOBJECT_OBJECT_TRIM ());
+    }
+#endif
 
   class = g_type_class_get (type);
 
