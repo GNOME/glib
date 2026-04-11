@@ -890,6 +890,28 @@ test_locale_string_multiple_loads (void)
 }
 
 static void
+test_locale_string_empty (void)
+{
+  GKeyFile *keyfile = NULL;
+  GError *local_error = NULL;
+  const char *data =
+    "[valid]\n"
+    "key1=\n";
+
+  g_test_summary ("Check that loading an empty translatable string works");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3930");
+
+  keyfile = g_key_file_new ();
+
+  g_key_file_load_from_data (keyfile, data, -1, G_KEY_FILE_NONE, &local_error);
+  g_assert_no_error (local_error);
+
+  check_locale_string_list_value (keyfile, "valid", "key1", NULL, NULL);
+
+  g_key_file_free (keyfile);
+}
+
+static void
 test_lists (void)
 {
   GKeyFile *keyfile;
@@ -2011,6 +2033,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/number", test_number);
   g_test_add_func ("/keyfile/locale-string", test_locale_string);
   g_test_add_func ("/keyfile/locale-string/multiple-loads", test_locale_string_multiple_loads);
+  g_test_add_func ("/keyfile/locale-string/empty", test_locale_string_empty);
   g_test_add_func ("/keyfile/lists", test_lists);
   g_test_add_func ("/keyfile/lists-set-get", test_lists_set_get);
   g_test_add_func ("/keyfile/group-remove", test_group_remove);
