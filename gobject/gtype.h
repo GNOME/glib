@@ -1574,7 +1574,7 @@ guint     g_type_get_type_registration_serial (void);
  * - the usual `my_app_window_get_type()` function is declared with a return type of #GType
  *
  * - the `MyAppWindow` type is defined as a `typedef` of `struct _MyAppWindow`.  The struct itself is not
- *   defined and should be defined from the .c file before G_DEFINE_TYPE() is used.
+ *   defined and should be defined from the `.c` file before `G_DEFINE_TYPE()` is used.
  *
  * - the `MY_APP_WINDOW()` cast is emitted as `static inline` function along with the `MY_APP_IS_WINDOW()` type
  *   checking function
@@ -1585,9 +1585,9 @@ guint     g_type_get_type_registration_serial (void);
  *   and therefore the fact that the size of the class structure is exposed is not a concern and it can be
  *   freely changed at any point in the future.
  *
- * - g_autoptr() support being added for your type, based on the type of your parent class
+ * - `g_autoptr()` support being added for your type, based on the type of your parent class
  *
- * You can only use this function if your parent type also supports g_autoptr().
+ * You can only use this function if your parent type also supports `g_autoptr()`.
  *
  * Because the type macro (`MY_APP_TYPE_WINDOW` in the above example) is not a callable, you must continue to
  * manually define this as a macro for yourself.
@@ -1595,11 +1595,11 @@ guint     g_type_get_type_registration_serial (void);
  * The declaration of the `_get_type()` function is the first thing emitted by the macro.  This allows this macro
  * to be used in the usual way with export control and API versioning macros.
  *
- * If you want to declare your own class structure, use G_DECLARE_DERIVABLE_TYPE().
+ * If you want to declare your own class structure, use [func@GObject.DECLARE_DERIVABLE_TYPE].
  *
  * If you are writing a library, it is important to note that it is possible to convert a type from using
- * G_DECLARE_FINAL_TYPE() to G_DECLARE_DERIVABLE_TYPE() without breaking API or ABI.  As a precaution, you
- * should therefore use G_DECLARE_FINAL_TYPE() until you are sure that it makes sense for your class to be
+ * `G_DECLARE_FINAL_TYPE()` to `G_DECLARE_DERIVABLE_TYPE()` without breaking API or ABI.  As a precaution, you
+ * should therefore use `G_DECLARE_FINAL_TYPE()` until you are sure that it makes sense for your class to be
  * subclassed.  Once a class structure has been exposed it is not possible to change its size or remove or
  * reorder items without breaking the API and/or ABI.
  *
@@ -1687,7 +1687,7 @@ guint     g_type_get_type_registration_serial (void);
  *
  * - g_autoptr() support being added for your type, based on the type of your parent class
  *
- * You can only use this function if your parent type also supports g_autoptr().
+ * You can only use this function if your parent type also supports `g_autoptr()`.
  *
  * Because the type macro (`GTK_TYPE_FROBBER` in the above example) is not a callable, you must continue to
  * manually define this as a macro for yourself.
@@ -1696,14 +1696,14 @@ guint     g_type_get_type_registration_serial (void);
  * to be used in the usual way with export control and API versioning macros.
  *
  * If you are writing a library, it is important to note that it is possible to convert a type from using
- * G_DECLARE_FINAL_TYPE() to G_DECLARE_DERIVABLE_TYPE() without breaking API or ABI.  As a precaution, you
- * should therefore use G_DECLARE_FINAL_TYPE() until you are sure that it makes sense for your class to be
+ * [func@GObject.DECLARE_FINAL_TYPE] to `G_DECLARE_DERIVABLE_TYPE()` without breaking API or ABI.  As a precaution, you
+ * should therefore use `G_DECLARE_FINAL_TYPE()` until you are sure that it makes sense for your class to be
  * subclassed.  Once a class structure has been exposed it is not possible to change its size or remove or
  * reorder items without breaking the API and/or ABI.  If you want to declare your own class structure, use
- * G_DECLARE_DERIVABLE_TYPE().  If you want to declare a class without exposing the class or instance
- * structures, use G_DECLARE_FINAL_TYPE().
+ * `G_DECLARE_DERIVABLE_TYPE()`.  If you want to declare a class without exposing the class or instance
+ * structures, use `G_DECLARE_FINAL_TYPE()`.
  *
- * If you must use G_DECLARE_DERIVABLE_TYPE() you should be sure to include some padding at the bottom of your
+ * If you must use `G_DECLARE_DERIVABLE_TYPE()` you should be sure to include some padding at the bottom of your
  * class structure to leave space for the addition of future virtual functions.
  *
  * Since: 2.44
@@ -1931,9 +1931,9 @@ guint     g_type_get_type_registration_serial (void);
  *
  * A convenience macro for type implementations.
  *
- * Similar to G_DEFINE_TYPE(), but defines a final type.
+ * Similar to [func@GObject.DEFINE_TYPE], but defines a final type.
  *
- * See G_DEFINE_TYPE_EXTENDED() for an example.
+ * See [func@GObject.DEFINE_TYPE_EXTENDED] for an example.
  *
  * Since: 2.70
  */
