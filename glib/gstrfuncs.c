@@ -681,8 +681,10 @@ g_strtod (const gchar *nptr,
  *
  * If the correct value would cause overflow, plus or minus `HUGE_VAL`
  * is returned (according to the sign of the value), and `ERANGE` is
- * stored in `errno`. If the correct value would cause underflow,
- * zero is returned and `ERANGE` is stored in `errno`.
+ * stored in `errno`. If the correct value would cause underflow, a value
+ * whose magnitude is no greater than the smallest normalised positive number
+ * is returned; whether `ERANGE` is set is implementation-defined (it may
+ * not be set for gradual underflow where a subnormal value is returned).
  *
  * This function resets `errno` before calling `strtod()` so that
  * you can reliably detect overflow and underflow.
