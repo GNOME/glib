@@ -1096,6 +1096,7 @@ parse_data_get_annotation (ParseData *data,
 {
   if (create_new)
     g_ptr_array_add (data->annotations, g_new0 (GDBusAnnotationInfo, 1));
+  g_assert (data->annotations->len > 0);
   return data->annotations->pdata[data->annotations->len - 1];
 }
 
@@ -1105,6 +1106,7 @@ parse_data_get_arg (ParseData *data,
 {
   if (create_new)
     g_ptr_array_add (data->args, g_new0 (GDBusArgInfo, 1));
+  g_assert (data->args->len > 0);
   return data->args->pdata[data->args->len - 1];
 }
 
@@ -1114,6 +1116,7 @@ parse_data_get_out_arg (ParseData *data,
 {
   if (create_new)
     g_ptr_array_add (data->out_args, g_new0 (GDBusArgInfo, 1));
+  g_assert (data->out_args->len > 0);
   return data->out_args->pdata[data->out_args->len - 1];
 }
 
@@ -1123,6 +1126,7 @@ parse_data_get_method (ParseData *data,
 {
   if (create_new)
     g_ptr_array_add (data->methods, g_new0 (GDBusMethodInfo, 1));
+  g_assert (data->methods->len > 0);
   return data->methods->pdata[data->methods->len - 1];
 }
 
@@ -1132,6 +1136,7 @@ parse_data_get_signal (ParseData *data,
 {
   if (create_new)
     g_ptr_array_add (data->signals, g_new0 (GDBusSignalInfo, 1));
+  g_assert (data->signals->len > 0);
   return data->signals->pdata[data->signals->len - 1];
 }
 
@@ -1141,6 +1146,7 @@ parse_data_get_property (ParseData *data,
 {
   if (create_new)
     g_ptr_array_add (data->properties, g_new0 (GDBusPropertyInfo, 1));
+  g_assert (data->properties->len > 0);
   return data->properties->pdata[data->properties->len - 1];
 }
 
@@ -1150,6 +1156,7 @@ parse_data_get_interface (ParseData *data,
 {
   if (create_new)
     g_ptr_array_add (data->interfaces, g_new0 (GDBusInterfaceInfo, 1));
+  g_assert (data->interfaces->len > 0);
   return data->interfaces->pdata[data->interfaces->len - 1];
 }
 
@@ -1159,6 +1166,7 @@ parse_data_get_node (ParseData *data,
 {
   if (create_new)
     g_ptr_array_add (data->nodes, g_new0 (GDBusNodeInfo, 1));
+  g_assert (data->nodes->len > 0);
   return data->nodes->pdata[data->nodes->len - 1];
 }
 
