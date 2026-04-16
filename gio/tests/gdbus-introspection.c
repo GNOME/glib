@@ -313,10 +313,10 @@ main (int   argc,
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  g_test_add_func ("/gdbus/introspection-parser", test_introspection_parser);
-  g_test_add_func ("/gdbus/introspection-generate", test_generate);
-  g_test_add_func ("/gdbus/introspection-default-direction", test_default_direction);
-  g_test_add_func ("/gdbus/introspection-extra-data", test_extra_data);
+  g_test_add_func ("/gdbus/introspection/parser", test_introspection_parser);
+  g_test_add_func ("/gdbus/introspection/generate", test_generate);
+  g_test_add_func ("/gdbus/introspection/default-direction", test_default_direction);
+  g_test_add_func ("/gdbus/introspection/extra-data", test_extra_data);
 
   ret = session_bus_run ();
 
