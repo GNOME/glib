@@ -1266,7 +1266,7 @@ parser_start_element (GMarkupParseContext  *context,
   /* ---------------------------------------------------------------------------------------------------- */
   if (strcmp (element_name, "node") == 0)
     {
-      if (!(g_slist_length (stack) >= 1 || strcmp (stack->next->data, "node") != 0))
+      if (stack->next != NULL && strcmp (stack->next->data, "node") != 0)
         {
           g_set_error_literal (error,
                                G_MARKUP_ERROR,
