@@ -61,6 +61,10 @@
 #include <windows.h>
 #endif /* G_OS_WIN32 */
 
+#ifdef __APPLE__
+#include <sys/sysctl.h>
+#endif /*__APPLE__*/
+
 #include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
@@ -1135,6 +1139,10 @@ g_thread_get_name (GThread *thread)
  * used as a parameter to g_thread_pool_new() for CPU bound tasks and
  * similar cases.
  *
+ * On platforms where enough information is known, this will be the number of 
+ * high performance cores and will not include low power ‘efficiency’ cores. 
+ * Use platform specific APIs to query for low power cores if needed.
+ *
  * Returns: Number of schedulable threads, always greater than 0
  *
  * Since: 2.36
@@ -1168,6 +1176,17 @@ g_get_num_processors (void)
 
   if (count > 0)
     return count;
+#elif defined(__APPLE__)
+  /* On Apple Silicon, prefer the number of performance cores to
+   * avoid scheduling work on slower efficiency cores.
+   */
+  {
+    int32_t pcore_count = 0;
+    size_t len = sizeof (pcore_count);
+    if (sysctlbyname ("hw.perflevel0.logicalcpu", &pcore_count, &len, NULL, 0) == 0 &&
+        pcore_count > 0)
+      return pcore_count;
+  }
 #elif defined(_SC_NPROCESSORS_ONLN) && defined(THREADS_POSIX) && defined(HAVE_PTHREAD_GETAFFINITY_NP)
   {
     int ncores = MIN (sysconf (_SC_NPROCESSORS_ONLN), CPU_SETSIZE);
