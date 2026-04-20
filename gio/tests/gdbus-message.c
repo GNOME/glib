@@ -185,6 +185,22 @@ message_bytes_needed (void)
           0, 0, 0, 0x08,  /* body length (128MiB) */
           1, 0, 0, 0,  /* message serial */
           7, 0, 0, 0  /* header length */}, -1 },
+      { { 'B', 0, 0, 1,  /* endianness, message type, flags, protocol version */
+          0, 0, 0, 0,  /* body length (empty) */
+          1, 0, 0, 0,  /* message serial */
+          0xff, 0xff, 0xff, 0xf0  /* header length (overflow) */}, -1 },
+      { { 'l', 0, 0, 1,  /* endianness, message type, flags, protocol version */
+          0, 0, 0, 0,  /* body length (empty) */
+          1, 0, 0, 0,  /* message serial */
+          0xf0, 0xff, 0xff, 0xff  /* header length (overflow) */}, -1 },
+      { { 'B', 0, 0, 1,  /* endianness, message type, flags, protocol version */
+          0, 0, 0, 1,  /* body length (short) */
+          1, 0, 0, 0,  /* message serial */
+          0xff, 0xff, 0xff, 0xef  /* header length (overflow once body is added) */}, -1 },
+      { { 'l', 0, 0, 1,  /* endianness, message type, flags, protocol version */
+          1, 0, 0, 0,  /* body length (short) */
+          1, 0, 0, 0,  /* message serial */
+          0xef, 0xff, 0xff, 0xff  /* header length (overflow once body is added) */}, -1 },
     };
   gsize i;
 
