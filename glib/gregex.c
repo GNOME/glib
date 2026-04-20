@@ -3608,11 +3608,11 @@ interpolation_list_needs_match (GList *list)
  *
  * There are also escapes that changes the case of the following text:
  *
- * - \l: Convert to lower case the next character
- * - \u: Convert to upper case the next character
- * - \L: Convert to lower case till \E
- * - \U: Convert to upper case till \E
- * - \E: End case modification
+ * - `\l`: Convert to lower case the next character
+ * - `\u`: Convert to upper case the next character
+ * - `\L`: Convert to lower case until the next `\E`
+ * - `\U`: Convert to upper case until the next `\E`
+ * - `\E`: End case modification
  *
  * If you do not need to use backreferences use g_regex_replace_literal().
  *
@@ -3622,7 +3622,7 @@ interpolation_list_needs_match (GList *list)
  *
  * Setting @start_position differs from just passing over a shortened
  * string and setting %G_REGEX_MATCH_NOTBOL in the case of a pattern that
- * begins with any kind of lookbehind assertion, such as "\b".
+ * begins with any kind of lookbehind assertion, such as `"\b"`.
  *
  * Returns: a newly allocated string containing the replacements
  *
