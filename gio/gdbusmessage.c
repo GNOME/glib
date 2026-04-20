@@ -467,7 +467,7 @@ typedef struct _GDBusMessageClass GDBusMessageClass;
 /**
  * GDBusMessageClass:
  *
- * Class structure for #GDBusMessage.
+ * Class structure for [class@Gio.DBusMessage].
  *
  * Since: 2.26
  */
@@ -601,10 +601,9 @@ g_dbus_message_init (GDBusMessage *message)
 /**
  * g_dbus_message_new:
  *
- * Creates a new empty #GDBusMessage.
+ * Creates a new empty D-Bus message.
  *
- * Returns: A #GDBusMessage. Free with g_object_unref().
- *
+ * Returns: (transfer full): The D-Bus message
  * Since: 2.26
  */
 GDBusMessage *
@@ -615,15 +614,15 @@ g_dbus_message_new (void)
 
 /**
  * g_dbus_message_new_method_call:
- * @name: (nullable): A valid D-Bus name or %NULL.
- * @path: A valid object path.
- * @interface_: (nullable): A valid D-Bus interface name or %NULL.
- * @method: A valid method name.
+ * @name: (nullable): a valid D-Bus name, or `NULL` if no destination is needed
+ * @path: a valid object path
+ * @interface_: (nullable): a valid D-Bus interface name, or `NULL` if none is
+ *   needed
+ * @method: a valid method name
  *
- * Creates a new #GDBusMessage for a method call.
+ * Creates a new D-Bus message for a method call.
  *
- * Returns: A #GDBusMessage. Free with g_object_unref().
- *
+ * Returns: (transfer full): The D-Bus message
  * Since: 2.26
  */
 GDBusMessage *
@@ -654,14 +653,13 @@ g_dbus_message_new_method_call (const gchar *name,
 
 /**
  * g_dbus_message_new_signal:
- * @path: A valid object path.
- * @interface_: A valid D-Bus interface name.
- * @signal: A valid signal name.
+ * @path: a valid object path
+ * @interface_: a valid D-Bus interface name
+ * @signal: a valid signal name
  *
- * Creates a new #GDBusMessage for a signal emission.
+ * Creates a new D-Bus message for a signal emission.
  *
- * Returns: A #GDBusMessage. Free with g_object_unref().
- *
+ * Returns: (transfer full): The D-Bus message
  * Since: 2.26
  */
 GDBusMessage *
@@ -689,13 +687,12 @@ g_dbus_message_new_signal (const gchar  *path,
 
 /**
  * g_dbus_message_new_method_reply:
- * @method_call_message: A message of type %G_DBUS_MESSAGE_TYPE_METHOD_CALL to
- * create a reply message to.
+ * @method_call_message: a message of type [enum@Gio.DBusMessageType.METHOD_CALL]
+ *   to create a reply message to
  *
- * Creates a new #GDBusMessage that is a reply to @method_call_message.
+ * Creates a new D-Bus message that is a reply to @method_call_message.
  *
- * Returns: (transfer full):  #GDBusMessage. Free with g_object_unref().
- *
+ * Returns: (transfer full): The D-Bus message
  * Since: 2.26
  */
 GDBusMessage *
@@ -723,17 +720,16 @@ g_dbus_message_new_method_reply (GDBusMessage *method_call_message)
 }
 
 /**
- * g_dbus_message_new_method_error:
- * @method_call_message: A message of type %G_DBUS_MESSAGE_TYPE_METHOD_CALL to
- * create a reply message to.
- * @error_name: A valid D-Bus error name.
- * @error_message_format: The D-Bus error message in a printf() format.
- * @...: Arguments for @error_message_format.
+ * g_dbus_message_new_method_error: (constructor)
+ * @method_call_message: a message of type [enum@Gio.DBusMessageType.METHOD_CALL]
+ *   to create a reply message to
+ * @error_name: a valid D-Bus error name
+ * @error_message_format: the D-Bus error message in a `printf()` format
+ * @...: arguments for @error_message_format
  *
- * Creates a new #GDBusMessage that is an error reply to @method_call_message.
+ * Creates a new D-Bus message that is an error reply to @method_call_message.
  *
- * Returns: (transfer full): A #GDBusMessage. Free with g_object_unref().
- *
+ * Returns: (transfer full): The D-Bus message
  * Since: 2.26
  */
 GDBusMessage *
@@ -757,15 +753,14 @@ g_dbus_message_new_method_error (GDBusMessage             *method_call_message,
 
 /**
  * g_dbus_message_new_method_error_literal:
- * @method_call_message: A message of type %G_DBUS_MESSAGE_TYPE_METHOD_CALL to
- * create a reply message to.
- * @error_name: A valid D-Bus error name.
- * @error_message: The D-Bus error message.
+ * @method_call_message: a message of type [enum@Gio.DBusMessageType.METHOD_CALL]
+ *   to create a reply message to
+ * @error_name: a valid D-Bus error name
+ * @error_message: the D-Bus error message
  *
- * Creates a new #GDBusMessage that is an error reply to @method_call_message.
+ * Creates a new D-Bus message that is an error reply to @method_call_message.
  *
- * Returns: (transfer full): A #GDBusMessage. Free with g_object_unref().
- *
+ * Returns: (transfer full): The D-Bus message
  * Since: 2.26
  */
 GDBusMessage *
@@ -801,16 +796,16 @@ g_dbus_message_new_method_error_literal (GDBusMessage  *method_call_message,
 
 /**
  * g_dbus_message_new_method_error_valist:
- * @method_call_message: A message of type %G_DBUS_MESSAGE_TYPE_METHOD_CALL to
- * create a reply message to.
- * @error_name: A valid D-Bus error name.
- * @error_message_format: The D-Bus error message in a printf() format.
- * @var_args: Arguments for @error_message_format.
+ * @method_call_message: a message of type [enum@Gio.DBusMessageType.METHOD_CALL]
+ *   to create a reply message to
+ * @error_name: a valid D-Bus error name
+ * @error_message_format: the D-Bus error message in a `printf()` format
+ * @var_args: arguments for @error_message_format
  *
- * Like g_dbus_message_new_method_error() but intended for language bindings.
+ * Like [ctor@Gio.DBusMessage.new_method_error] but intended for language
+ * bindings.
  *
- * Returns: (transfer full): A #GDBusMessage. Free with g_object_unref().
- *
+ * Returns: (transfer full): The D-Bus message
  * Since: 2.26
  */
 G_GNUC_PRINTF(3, 0)
@@ -834,11 +829,11 @@ g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_me
 
 /**
  * g_dbus_message_get_byte_order:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
  * Gets the byte order of @message.
  *
- * Returns: The byte order.
+ * Returns: The byte order
  */
 GDBusMessageByteOrder
 g_dbus_message_get_byte_order (GDBusMessage *message)
@@ -849,8 +844,8 @@ g_dbus_message_get_byte_order (GDBusMessage *message)
 
 /**
  * g_dbus_message_set_byte_order:
- * @message: A #GDBusMessage.
- * @byte_order: The byte order.
+ * @message: a D-Bus message
+ * @byte_order: the byte order
  *
  * Sets the byte order of @message.
  */
@@ -875,12 +870,12 @@ g_dbus_message_set_byte_order (GDBusMessage          *message,
 
 /**
  * g_dbus_message_get_message_type:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
  * Gets the type of @message.
  *
- * Returns: A 8-bit unsigned integer (typically a value from the #GDBusMessageType enumeration).
- *
+ * Returns: A 8-bit unsigned integer (typically a value from the
+ *   [enum@Gio.DBusMessageType] enumeration)
  * Since: 2.26
  */
 GDBusMessageType
@@ -892,8 +887,9 @@ g_dbus_message_get_message_type (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_message_type:
- * @message: A #GDBusMessage.
- * @type: A 8-bit unsigned integer (typically a value from the #GDBusMessageType enumeration).
+ * @message: a D-Bus message
+ * @type: a 8-bit unsigned integer (typically a value from the
+ *   [enum@Gio.DBusMessageType] enumeration)
  *
  * Sets @message to be of @type.
  *
@@ -921,12 +917,12 @@ g_dbus_message_set_message_type (GDBusMessage      *message,
 
 /**
  * g_dbus_message_get_flags:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
  * Gets the flags for @message.
  *
- * Returns: Flags that are set (typically values from the #GDBusMessageFlags enumeration bitwise ORed together).
- *
+ * Returns: Flags that are set (typically values from the
+ *   [flags@Gio.DBusMessageFlags] enumeration bitwise ORed together)
  * Since: 2.26
  */
 GDBusMessageFlags
@@ -938,9 +934,9 @@ g_dbus_message_get_flags (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_flags:
- * @message: A #GDBusMessage.
- * @flags: Flags for @message that are set (typically values from the #GDBusMessageFlags
- * enumeration bitwise ORed together).
+ * @message: a D-Bus message
+ * @flags: flags for @message that are set (typically values from the
+ *   [flags@Gio.DBusMessageFlags] enumeration bitwise ORed together)
  *
  * Sets the flags to set on @message.
  *
@@ -966,12 +962,11 @@ g_dbus_message_set_flags (GDBusMessage       *message,
 
 /**
  * g_dbus_message_get_serial:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
  * Gets the serial for @message.
  *
- * Returns: A #guint32.
- *
+ * Returns: The serial number, which should not be zero
  * Since: 2.26
  */
 guint32
@@ -983,8 +978,8 @@ g_dbus_message_get_serial (GDBusMessage *message)
 
 /**
  * g_dbus_message_set_serial:
- * @message: A #GDBusMessage.
- * @serial: A #guint32, which must not be zero.
+ * @message: a D-Bus message
+ * @serial: a serial number, which must not be zero
  *
  * Sets the serial for @message.
  *
@@ -1018,17 +1013,17 @@ g_dbus_message_set_serial (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_header:
- * @message: A #GDBusMessage.
- * @header_field: A 8-bit unsigned integer (typically a value from the #GDBusMessageHeaderField enumeration)
+ * @message: a D-Bus message
+ * @header_field: a 8-bit unsigned integer (typically a value from the
+ *   [enum@Gio.DBusMessageHeaderField] enumeration)
  *
  * Gets a header field on @message.
  *
- * The caller is responsible for checking the type of the returned #GVariant
- * matches what is expected.
+ * The caller is responsible for checking the type of the returned
+ * [type@GLib.Variant] matches what is expected.
  *
- * Returns: (transfer none) (nullable): A #GVariant with the value if the header was found, %NULL
- * otherwise. Do not free, it is owned by @message.
- *
+ * Returns: (transfer none) (nullable): A [type@GLib.Variant] with the value, or
+ *   `NULL` if the header was not found
  * Since: 2.26
  */
 GVariant *
@@ -1042,9 +1037,11 @@ g_dbus_message_get_header (GDBusMessage             *message,
 
 /**
  * g_dbus_message_set_header:
- * @message: A #GDBusMessage.
- * @header_field: A 8-bit unsigned integer (typically a value from the #GDBusMessageHeaderField enumeration)
- * @value: (nullable): A #GVariant to set the header field or %NULL to clear the header field.
+ * @message: a D-Bus message
+ * @header_field: a 8-bit unsigned integer (typically a value from the
+ *   [enum@Gio.DBusMessageHeaderField enumeration)
+ * @value: (nullable): a [type@GLib.Variant] to set the header field, or `NULL`
+ *   to clear the header field.
  *
  * Sets a header field on @message.
  *
@@ -1078,14 +1075,14 @@ g_dbus_message_set_header (GDBusMessage             *message,
 
 /**
  * g_dbus_message_get_header_fields:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
  * Gets an array of all header fields on @message that are set.
  *
- * Returns: (array zero-terminated=1): An array of header fields
- * terminated by %G_DBUS_MESSAGE_HEADER_FIELD_INVALID.  Each element
- * is a #guchar. Free with g_free().
+ * Each element in the array is an `unsigned char`.
  *
+ * Returns: (array zero-terminated=1) (transfer container): An array of header
+ *   fields terminated by [enum@Gio.DBusMessageHeaderField.INVALID]
  * Since: 2.26
  */
 guchar *
@@ -1118,13 +1115,12 @@ g_dbus_message_get_header_fields (GDBusMessage  *message)
 
 /**
  * g_dbus_message_get_body:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
  * Gets the body of a message.
  *
- * Returns: (nullable) (transfer none): A #GVariant or %NULL if the body is
- * empty. Do not free, it is owned by @message.
- *
+ * Returns: (nullable) (transfer none): A [type@GLib.Variant], or `NULL` if the
+ *   body is empty
  * Since: 2.26
  */
 GVariant *
@@ -1136,12 +1132,14 @@ g_dbus_message_get_body (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_body:
- * @message: A #GDBusMessage.
- * @body: Either %NULL or a #GVariant that is a tuple.
+ * @message: a D-Bus message
+ * @body: a [type@GLib.Variant] containing a tuple, or `NULL` if no body is
+ *   needed
  *
- * Sets the body @message. As a side-effect the
- * %G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the
- * type string of @body (or cleared if @body is %NULL).
+ * Sets the body of @message.
+ *
+ * As a side-effect the [enum@Gio.DBusMessageHeaderField.SIGNATURE] header field
+ *   is set to the type string of @body (or cleared if @body is `NULL`).
  *
  * If @body is floating, @message assumes ownership of @body.
  *
@@ -1196,21 +1194,20 @@ g_dbus_message_set_body (GDBusMessage  *message,
 #ifdef G_OS_UNIX
 /**
  * g_dbus_message_get_unix_fd_list:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
  * Gets the UNIX file descriptors associated with @message, if any.
  *
  * This method is only available on UNIX.
  *
- * The file descriptors normally correspond to %G_VARIANT_TYPE_HANDLE
- * values in the body of the message. For example,
- * if g_variant_get_handle() returns 5, that is intended to be a reference
- * to the file descriptor that can be accessed by
+ * The file descriptors normally correspond to `G_VARIANT_TYPE_HANDLE`
+ * values in the body of the message. For example, if
+ * [method@GLib.Variant.get_handle] returns 5, that is intended to be a
+ * reference to the file descriptor that can be accessed by
  * `g_unix_fd_list_get (list, 5, ...)`.
  *
- * Returns: (nullable) (transfer none): A #GUnixFDList or %NULL if no file descriptors are
- * associated. Do not free, this object is owned by @message.
- *
+ * Returns: (nullable) (transfer none): A [class@Gio.UnixFDList] or `NULL` if no
+ *   file descriptors are associated
  * Since: 2.26
  */
 GUnixFDList *
@@ -1222,20 +1219,21 @@ g_dbus_message_get_unix_fd_list (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_unix_fd_list:
- * @message: A #GDBusMessage.
- * @fd_list: (nullable): A #GUnixFDList or %NULL.
+ * @message: a D-Bus message
+ * @fd_list: (nullable): A [class@Gio.UnixFDList], or `NULL` to clear
  *
- * Sets the UNIX file descriptors associated with @message. As a
- * side-effect the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header
+ * Sets the UNIX file descriptors associated with @message.
+ *
+ * As a side-effect the [enum@Gio.DBusMessageHeaderField.NUM_UNIX_FDS] header
  * field is set to the number of fds in @fd_list (or cleared if
- * @fd_list is %NULL).
+ * @fd_list is `NULL`).
  *
  * This method is only available on UNIX.
  *
  * When designing D-Bus APIs that are intended to be interoperable,
  * please note that non-GDBus implementations of D-Bus can usually only
  * access file descriptors if they are referenced by a value of type
- * %G_VARIANT_TYPE_HANDLE in the body of the message.
+ * `G_VARIANT_TYPE_HANDLE` in the body of the message.
  *
  * Since: 2.26
  */
@@ -2252,20 +2250,22 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* message_header must be at least 16 bytes */
+#define DBUS_MESSAGE_HEADER_MINIMUM_LENGTH_BYTES 16
 
 /**
  * g_dbus_message_bytes_needed:
- * @blob: (array length=blob_len) (element-type guint8): A blob representing a binary D-Bus message.
- * @blob_len: The length of @blob (must be at least 16).
- * @error: Return location for error or %NULL.
+ * @blob: (array length=blob_len) (element-type guint8): a blob representing a
+ *   binary D-Bus message.
+ * @blob_len: the length of @blob (must be at least 16 bytes)
+ * @error: return location for error, or `NULL`
  *
  * Utility function to calculate how many bytes are needed to
  * completely deserialize the D-Bus message stored at @blob.
  *
- * Returns: Number of bytes needed or -1 if @error is set (e.g. if
- * @blob contains invalid data or not enough data is available to
- * determine the size).
+ * An error will be returned if @blob contains invalid data, or if not enough
+ * data is available to determine the size.
  *
+ * Returns: Number of bytes needed or `-1` if @error is set
  * Since: 2.26
  */
 gssize
@@ -2279,7 +2279,7 @@ g_dbus_message_bytes_needed (guchar  *blob,
 
   g_return_val_if_fail (blob != NULL, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
-  g_return_val_if_fail (blob_len >= 16, -1);
+  g_return_val_if_fail (blob_len >= DBUS_MESSAGE_HEADER_MINIMUM_LENGTH_BYTES, -1);
 
   if (blob[0] == 'l')
     {
@@ -2323,21 +2323,26 @@ g_dbus_message_bytes_needed (guchar  *blob,
 
 /**
  * g_dbus_message_new_from_blob:
- * @blob: (array length=blob_len) (element-type guint8): A blob representing a binary D-Bus message.
- * @blob_len: The length of @blob.
- * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
- * @error: Return location for error or %NULL.
+ * @blob: (array length=blob_len) (element-type guint8): a blob representing a
+ *   binary D-Bus message
+ * @blob_len: the length of @blob, in bytes
+ * @capabilities: flags describing what protocol features are supported
+ * @error: return location for error, or `NULL`
  *
- * Creates a new #GDBusMessage from the data stored at @blob. The byte
- * order that the message was in can be retrieved using
- * g_dbus_message_get_byte_order().
+ * Creates a new D-Bus message from the data stored at @blob.
+ *
+ * You must have previously called [func@Gio.DBusMessage.bytes_needed] on @blob,
+ * and ensure that @blob is at least as long as the return value from that
+ * function indicates. In particular, that means that @blob must be at least 16
+ * bytes long (but will typically be much longer).
+ *
+ * The byte order that the message was in can be retrieved using
+ * [method@Gio.DBusMessage.get_byte_order].
  *
  * If the @blob cannot be parsed, contains invalid fields, or contains invalid
- * headers, %G_IO_ERROR_INVALID_ARGUMENT will be returned.
+ * headers, [error@Gio.IOErrorEnum.INVALID_ARGUMENT] will be returned.
  *
- * Returns: A new #GDBusMessage or %NULL if @error is set. Free with
- * g_object_unref().
- *
+ * Returns: (transfer full): The D-Bus message
  * Since: 2.26
  */
 GDBusMessage *
@@ -2361,6 +2366,17 @@ g_dbus_message_new_from_blob (guchar                *blob,
 
   g_return_val_if_fail (blob != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  /* blob_len must actually be >= the value returned by
+   * g_dbus_message_bytes_needed(), but this is a known minimum */
+  if (blob_len < DBUS_MESSAGE_HEADER_MINIMUM_LENGTH_BYTES)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   "Unexpectedly short message.");
+      return NULL;
+    }
 
   message = g_dbus_message_new ();
 
@@ -2943,18 +2959,18 @@ append_body_to_blob (GVariant       *value,
 
 /**
  * g_dbus_message_to_blob:
- * @message: A #GDBusMessage.
- * @out_size: Return location for size of generated blob.
- * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
- * @error: Return location for error.
+ * @message: a D-Bus message
+ * @out_size: (out caller-allocates): return location for size of generated blob, in bytes
+ * @capabilities: flags describing what protocol features are supported
+ * @error: return location for error
  *
- * Serializes @message to a blob. The byte order returned by
- * g_dbus_message_get_byte_order() will be used.
+ * Serializes @message to a blob.
+ *
+ * The byte order returned by [method@Gio.DBusMessage.get_byte_order] will be
+ * used.
  *
  * Returns: (array length=out_size) (transfer full): A pointer to a
- * valid binary D-Bus message of @out_size bytes generated by @message
- * or %NULL if @error is set. Free with g_free().
- *
+ *   valid binary D-Bus message of @out_size bytes generated by @message
  * Since: 2.26
  */
 guchar *
@@ -3242,12 +3258,12 @@ set_signature_header (GDBusMessage             *message,
 
 /**
  * g_dbus_message_get_reply_serial:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.REPLY_SERIAL]
+ * header field.
  *
- * Returns: The value.
- *
+ * Returns: The value
  * Since: 2.26
  */
 guint32
@@ -3259,10 +3275,11 @@ g_dbus_message_get_reply_serial (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_reply_serial:
- * @message: A #GDBusMessage.
- * @value: The value to set.
+ * @message: a D-Bus message
+ * @value: the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.REPLY_SERIAL]
+ * header field.
  *
  * Since: 2.26
  */
@@ -3278,12 +3295,12 @@ g_dbus_message_set_reply_serial (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_interface:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.INTERFACE] header
+ * field.
  *
- * Returns: (nullable): The value.
- *
+ * Returns: (nullable): The value
  * Since: 2.26
  */
 const gchar *
@@ -3295,10 +3312,11 @@ g_dbus_message_get_interface (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_interface:
- * @message: A #GDBusMessage.
- * @value: (nullable): The value to set.
+ * @message: a D-Bus message
+ * @value: (nullable): the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.INTERFACE] header
+ * field.
  *
  * Since: 2.26
  */
@@ -3315,12 +3333,12 @@ g_dbus_message_set_interface (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_member:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.MEMBER] header
+ * field.
  *
- * Returns: (nullable): The value.
- *
+ * Returns: (nullable): The value
  * Since: 2.26
  */
 const gchar *
@@ -3332,10 +3350,11 @@ g_dbus_message_get_member (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_member:
- * @message: A #GDBusMessage.
- * @value: (nullable): The value to set.
+ * @message: a D-Bus message
+ * @value: (nullable): the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_MEMBER header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.MEMBER] header
+ * field.
  *
  * Since: 2.26
  */
@@ -3352,12 +3371,12 @@ g_dbus_message_set_member (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_path:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_PATH header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.PATH] header
+ * field.
  *
- * Returns: (nullable): The value.
- *
+ * Returns: (nullable): The value
  * Since: 2.26
  */
 const gchar *
@@ -3369,10 +3388,11 @@ g_dbus_message_get_path (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_path:
- * @message: A #GDBusMessage.
- * @value: (nullable): The value to set.
+ * @message: a D-Bus message
+ * @value: (nullable): the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_PATH header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.PATH] header
+ * field.
  *
  * Since: 2.26
  */
@@ -3389,12 +3409,12 @@ g_dbus_message_set_path (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_sender:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.SENDER] header
+ * field.
  *
- * Returns: (nullable): The value.
- *
+ * Returns: (nullable): The value
  * Since: 2.26
  */
 const gchar *
@@ -3406,10 +3426,11 @@ g_dbus_message_get_sender (GDBusMessage *message)
 
 /**
  * g_dbus_message_set_sender:
- * @message: A #GDBusMessage.
- * @value: (nullable): The value to set.
+ * @message: a D-Bus message
+ * @value: (nullable): the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_SENDER header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.SENDER] header
+ * field.
  *
  * Since: 2.26
  */
@@ -3426,12 +3447,12 @@ g_dbus_message_set_sender (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_destination:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.DESTINATION]
+ * header field.
  *
- * Returns: (nullable): The value.
- *
+ * Returns: (nullable): The value
  * Since: 2.26
  */
 const gchar *
@@ -3443,10 +3464,11 @@ g_dbus_message_get_destination (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_destination:
- * @message: A #GDBusMessage.
- * @value: (nullable): The value to set.
+ * @message: a D-Bus message
+ * @value: (nullable): the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.DESTINATION]
+ * header field.
  *
  * Since: 2.26
  */
@@ -3463,12 +3485,12 @@ g_dbus_message_set_destination (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_error_name:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.ERROR_NAME]
+ * header field.
  *
- * Returns: (nullable): The value.
- *
+ * Returns: (nullable): The value
  * Since: 2.26
  */
 const gchar *
@@ -3480,10 +3502,11 @@ g_dbus_message_get_error_name (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_error_name:
- * @message: (nullable): A #GDBusMessage.
- * @value: The value to set.
+ * @message: a D-Bus message
+ * @value: (nullable): the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.ERROR_NAME]
+ * header field.
  *
  * Since: 2.26
  */
@@ -3500,14 +3523,14 @@ g_dbus_message_set_error_name (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_signature:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.SIGNATURE header
+ * field.
  *
- * This will always be non-%NULL, but may be an empty string.
+ * This will always be non-`NULL`, but may be an empty string.
  *
- * Returns: (not nullable): The value.
- *
+ * Returns: (not nullable): The value
  * Since: 2.26
  */
 const gchar *
@@ -3523,10 +3546,11 @@ g_dbus_message_get_signature (GDBusMessage  *message)
 
 /**
  * g_dbus_message_set_signature:
- * @message: A #GDBusMessage.
- * @value: (nullable): The value to set.
+ * @message: a D-Bus message
+ * @value: (nullable): the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.SIGNATURE] header
+ * field.
  *
  * Since: 2.26
  */
@@ -3543,16 +3567,15 @@ g_dbus_message_set_signature (GDBusMessage  *message,
 
 /**
  * g_dbus_message_get_arg0:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
  * Convenience to get the first item in the body of @message.
  *
  * See [method@Gio.DBusMessage.get_arg0_path] for returning object-path-typed
  * arg0 values.
  *
- * Returns: (nullable): The string item or %NULL if the first item in the body of
- * @message is not a string.
- *
+ * Returns: (nullable): The string item, or `NULL` if the first item in the body
+ *   of @message is not a string
  * Since: 2.26
  */
 const gchar *
@@ -3569,15 +3592,14 @@ g_dbus_message_get_arg0 (GDBusMessage  *message)
 
 /**
  * g_dbus_message_get_arg0_path:
- * @message: A `GDBusMessage`.
+ * @message: a D-Bus message
  *
  * Convenience to get the first item in the body of @message.
  *
  * See [method@Gio.DBusMessage.get_arg0] for returning string-typed arg0 values.
  *
- * Returns: (nullable): The object path item or `NULL` if the first item in the
- *   body of @message is not an object path.
- *
+ * Returns: (nullable): The object path item, or `NULL` if the first item in the
+ *   body of @message is not an object path
  * Since: 2.80
  */
 const gchar *
@@ -3596,12 +3618,12 @@ g_dbus_message_get_arg0_path (GDBusMessage  *message)
 
 /**
  * g_dbus_message_get_num_unix_fds:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Convenience getter for the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
+ * Convenience getter for the [enum@Gio.DBusMessageHeaderField.NUM_UNIX_FDS]
+ * header field.
  *
- * Returns: The value.
- *
+ * Returns: The value
  * Since: 2.26
  */
 guint32
@@ -3613,10 +3635,11 @@ g_dbus_message_get_num_unix_fds (GDBusMessage *message)
 
 /**
  * g_dbus_message_set_num_unix_fds:
- * @message: A #GDBusMessage.
- * @value: The value to set.
+ * @message: a D-Bus message
+ * @value: the value to set
  *
- * Convenience setter for the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
+ * Convenience setter for the [enum@Gio.DBusMessageHeaderField.NUM_UNIX_FDS]
+ * header field.
  *
  * Since: 2.26
  */
@@ -3632,19 +3655,20 @@ g_dbus_message_set_num_unix_fds (GDBusMessage  *message,
 
 /**
  * g_dbus_message_to_gerror:
- * @message: A #GDBusMessage.
- * @error: The #GError to set.
+ * @message: a D-Bus message
+ * @error: the [type@GLib.Error] to set
  *
- * If @message is not of type %G_DBUS_MESSAGE_TYPE_ERROR does
- * nothing and returns %FALSE.
+ * Encodes the error in @message as a [type@GLib.Error].
  *
- * Otherwise this method encodes the error in @message as a #GError
- * using g_dbus_error_set_dbus_error() using the information in the
- * %G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of @message as
- * well as the first string item in @message's body.
+ * If @message is of type [enum@Gio.DBusMessageType.ERROR], this function
+ * calls [func@Gio.DBusError.set_dbus_error] using the information in the
+ * [enum@Gio.DBusMessageHeaderField.ERROR_NAME] header field of @message as
+ * well as the first string item in @message’s body.
  *
- * Returns: %TRUE if @error was set, %FALSE otherwise.
+ * If @message is not of type [enum@Gio.DBusMessageType.ERROR], this function
+ * does nothing and returns false.
  *
+ * Returns: true if @error was set, false otherwise
  * Since: 2.26
  */
 gboolean
@@ -3759,14 +3783,13 @@ _sort_keys_func (gconstpointer a,
 
 /**
  * g_dbus_message_print:
- * @message: A #GDBusMessage.
- * @indent: Indentation level.
+ * @message: a D-Bus message
+ * @indent: indentation level
  *
  * Produces a human-readable multi-line description of @message.
  *
- * The contents of the description has no ABI guarantees, the contents
- * and formatting is subject to change at any time. Typical output
- * looks something like this:
+ * The contents and formatting are subject to change at any time and no ABI
+ * guarantees are given. Typical output looks something like this:
  * ```
  * Type:    method-call
  * Flags:   none
@@ -3797,8 +3820,8 @@ _sort_keys_func (gconstpointer a,
  *   fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
  * ```
  *
- * Returns: (not nullable): A string that should be freed with [func@GLib.free].
- *
+ * Returns: (not nullable) (transfer full): Human readable description
+ *   of @message
  * Since: 2.26
  */
 gchar *
@@ -3929,14 +3952,15 @@ g_dbus_message_print (GDBusMessage *message,
 
 /**
  * g_dbus_message_get_locked:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * Checks whether @message is locked. To monitor changes to this
- * value, connect to the #GObject::notify signal to listen for changes
- * on the #GDBusMessage:locked property.
+ * Checks whether @message is locked.
  *
- * Returns: %TRUE if @message is locked, %FALSE otherwise.
+ * To monitor changes to this value, connect to the
+ * [signal@GObject.Object::notify] signal to listen for changes on the
+ * [property@Gio.DBusMessage:locked] property.
  *
+ * Returns: true if @message is locked, false otherwise
  * Since: 2.26
  */
 gboolean
@@ -3948,9 +3972,11 @@ g_dbus_message_get_locked (GDBusMessage *message)
 
 /**
  * g_dbus_message_lock:
- * @message: A #GDBusMessage.
+ * @message: a D-Bus message
  *
- * If @message is locked, does nothing. Otherwise locks the message.
+ * Locks the message.
+ *
+ * If @message is locked already, this does nothing.
  *
  * Since: 2.26
  */
@@ -3971,19 +3997,18 @@ g_dbus_message_lock (GDBusMessage *message)
 
 /**
  * g_dbus_message_copy:
- * @message: A #GDBusMessage.
- * @error: Return location for error or %NULL.
+ * @message: a D-Bus message
+ * @error: return location for error or `NULL`
  *
- * Copies @message. The copy is a deep copy and the returned
- * #GDBusMessage is completely identical except that it is guaranteed
- * to not be locked.
+ * Copies @message with a deep copy.
  *
- * This operation can fail if e.g. @message contains file descriptors
+ * The returned D-Bus message is completely identical to @message except that it
+ * is guaranteed to not be locked.
+ *
+ * This operation can fail if (for example) @message contains file descriptors
  * and the per-process or system-wide open files limit is reached.
  *
- * Returns: (transfer full): A new #GDBusMessage or %NULL if @error is set.
- *     Free with g_object_unref().
- *
+ * Returns: (transfer full): A new D-Bus message
  * Since: 2.26
  */
 GDBusMessage *
