@@ -25,6 +25,7 @@ fuzz_targets = [
   'fuzz_date_parse',
   'fuzz_date_time_new_from_iso8601',
   'fuzz_dbus_message',
+  'fuzz_dbus_node_info_new_for_xml',
   'fuzz_filename_from_uri',
   'fuzz_filename_to_uri',
   'fuzz_get_locale_variants',
