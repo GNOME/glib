@@ -406,10 +406,7 @@ struct _GDBusInterfaceVTable
   GDBusInterfaceSetPropertyFunc set_property;
 
   /*< private >*/
-  /* Padding for future expansion - also remember to update
-   * gdbusconnection.c:_g_dbus_interface_vtable_copy() when
-   * changing this.
-   */
+  /* Padding for future expansion */
   gpointer padding[8];
 };
 
@@ -552,10 +549,7 @@ struct _GDBusSubtreeVTable
   GDBusSubtreeDispatchFunc   dispatch;
 
   /*< private >*/
-  /* Padding for future expansion - also remember to update
-   * gdbusconnection.c:_g_dbus_subtree_vtable_copy() when
-   * changing this.
-   */
+  /* Padding for future expansion */
   gpointer padding[8];
 };
 

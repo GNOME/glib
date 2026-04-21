@@ -2989,7 +2989,7 @@ g_variant_iter_new (GVariant *value)
 {
   GVariantIter *iter;
 
-  iter = (GVariantIter *) (void *) g_slice_new (struct heap_iter);
+  iter = g_slice_new (GVariantIter);
   GVHI(iter)->value_ref = g_variant_ref (value);
   GVHI(iter)->magic = GVHI_MAGIC;
 

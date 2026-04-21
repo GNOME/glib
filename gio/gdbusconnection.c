@@ -4501,10 +4501,7 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
 static GDBusInterfaceVTable *
 _g_dbus_interface_vtable_copy (const GDBusInterfaceVTable *vtable)
 {
-  /* Don't waste memory by copying padding - remember to update this
-   * when changing struct _GDBusInterfaceVTable in gdbusconnection.h
-   */
-  return g_memdup2 ((gconstpointer) vtable, 3 * sizeof (gpointer));
+  return g_memdup2 ((gconstpointer) vtable, sizeof (GDBusInterfaceVTable));
 }
 
 static void
@@ -4518,10 +4515,7 @@ _g_dbus_interface_vtable_free (GDBusInterfaceVTable *vtable)
 static GDBusSubtreeVTable *
 _g_dbus_subtree_vtable_copy (const GDBusSubtreeVTable *vtable)
 {
-  /* Don't waste memory by copying padding - remember to update this
-   * when changing struct _GDBusSubtreeVTable in gdbusconnection.h
-   */
-  return g_memdup2 ((gconstpointer) vtable, 3 * sizeof (gpointer));
+  return g_memdup2 ((gconstpointer) vtable, sizeof (GDBusSubtreeVTable));
 }
 
 static void
