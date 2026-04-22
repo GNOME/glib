@@ -480,15 +480,35 @@ g_socket_details_from_fd (GSocket *socket)
   socklen_t addrlen;
   int value, family;
   int errsv;
+#ifdef G_OS_WIN32
+  WSAPROTOCOL_INFO wsa_info;
+  socklen_t wsa_info_len = sizeof (wsa_info);
+#endif
 
   memset (&address, 0, sizeof (address));
 
   fd = socket->priv->fd;
+#ifndef G_OS_WIN32
   if (!g_socket_get_option (socket, SOL_SOCKET, SO_TYPE, &value, NULL))
     {
       errsv = get_socket_errno ();
       goto err;
     }
+#else
+  /* On Windows, getsockname() fails on unbound sockets with WSAEINVAL,
+   * so the only universal way to get socket family is via SO_PROTOCOL_INFO.
+   * WSAPROTOCOL_INFO also carries socket type, so one getsockopt() call
+   * is enough for all the info.
+   */
+  if (getsockopt (fd, SOL_SOCKET, SO_PROTOCOL_INFO, &wsa_info,
+                  &wsa_info_len) == SOCKET_ERROR)
+    {
+      errsv = get_socket_errno ();
+      goto err;
+    }
+
+  value = wsa_info.iSocketType;
+#endif
 
   switch (value)
     {
@@ -509,6 +529,7 @@ g_socket_details_from_fd (GSocket *socket)
       break;
     }
 
+#ifndef G_OS_WIN32
   addrlen = sizeof address;
   if (getsockname (fd, &address.sa, &addrlen) != 0)
     {
@@ -539,12 +560,15 @@ g_socket_details_from_fd (GSocket *socket)
       goto err;
 #endif
     }
+#else  /* G_OS_WIN32 */
+  family = wsa_info.iAddressFamily;
+#endif /* G_OS_WIN32 */
 
   switch (family)
     {
      case G_SOCKET_FAMILY_IPV4:
      case G_SOCKET_FAMILY_IPV6:
-       socket->priv->family = address.storage.ss_family;
+       socket->priv->family = family;
        switch (socket->priv->type)
 	 {
 	 case G_SOCKET_TYPE_STREAM:
