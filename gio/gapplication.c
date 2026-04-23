@@ -723,6 +723,7 @@ add_packed_option (GApplication *application,
  *
  * It is important to use the proper GVariant format when retrieving
  * the options with g_variant_dict_lookup():
+ *
  * - for %G_OPTION_ARG_NONE, use `b`
  * - for %G_OPTION_ARG_STRING, use `&s`
  * - for %G_OPTION_ARG_INT, use `i`

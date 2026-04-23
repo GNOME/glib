@@ -471,6 +471,7 @@ g_win32_registry_key_dispose (GObject *object)
  *
  * Creates an object that represents a registry key specified by @path.
  * @path must start with one of the following pre-defined names:
+ *
  * - HKEY_CLASSES_ROOT
  * - HKEY_CURRENT_CONFIG
  * - HKEY_CURRENT_USER
@@ -480,6 +481,7 @@ g_win32_registry_key_dispose (GObject *object)
  * - HKEY_PERFORMANCE_NLSTEXT
  * - HKEY_PERFORMANCE_TEXT
  * - HKEY_USERS
+ *
  * @path must not end with '\\'.
  *
  * Returns: (nullable) (transfer full): a #GWin32RegistryKey or %NULL if can't
@@ -506,6 +508,7 @@ g_win32_registry_key_new (const gchar  *path,
  *
  * Creates an object that represents a registry key specified by @path.
  * @path must start with one of the following pre-defined names:
+ *
  * - HKEY_CLASSES_ROOT
  * - HKEY_CURRENT_CONFIG
  * - HKEY_CURRENT_USER
@@ -515,6 +518,7 @@ g_win32_registry_key_new (const gchar  *path,
  * - HKEY_PERFORMANCE_NLSTEXT
  * - HKEY_PERFORMANCE_TEXT
  * - HKEY_USERS
+ *
  * @path must not end with L'\\'.
  *
  * Returns: (nullable) (transfer full): a #GWin32RegistryKey or %NULL if can't

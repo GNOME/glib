@@ -233,6 +233,7 @@ g_themed_icon_init (GThemedIcon *themed)
  * construction, or later added with g_themed_icon_prepend_name() and
  * g_themed_icon_append_name()).
  * The order of the list matters, indicating priority:
+ *
  * - The first requested icon is first in priority.
  * - If "use-default-fallbacks" is #TRUE, then it is followed by all its
  *   fallbacks (starting from top to lower context levels).
