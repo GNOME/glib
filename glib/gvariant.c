@@ -1113,6 +1113,7 @@ g_variant_lookup_value (GVariant           *dictionary,
  * In particular, arrays of these fixed-sized types can be interpreted
  * as an array of the given C type, with @element_size set to the size
  * the appropriate type:
+ *
  * - %G_VARIANT_TYPE_INT16 (etc.): #gint16 (etc.)
  * - %G_VARIANT_TYPE_BOOLEAN: #guchar (not #gboolean!)
  * - %G_VARIANT_TYPE_BYTE: #guint8
