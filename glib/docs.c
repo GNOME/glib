@@ -967,6 +967,7 @@
  * The absolute value is simply the number with any negative sign taken away.
  *
  * For example,
+ *
  * - ABS(-10) is 10.
  * - ABS(10) is also 10.
  *
@@ -983,6 +984,7 @@
  * greater than @high the result is undefined.
  *
  * For example,
+ *
  * - CLAMP(5, 10, 15) is 10.
  * - CLAMP(15, 5, 10) is 10.
  * - CLAMP(20, 15, 25) is 20.
@@ -1000,6 +1002,7 @@
  * smaller than @epsilon, and to a false value otherwise.
  *
  * For example,
+ *
  * - `G_APPROX_VALUE (5, 6, 2)` evaluates to true
  * - `G_APPROX_VALUE (3.14, 3.15, 0.001)` evaluates to false
  * - `G_APPROX_VALUE (n, 0.f, FLT_EPSILON)` evaluates to true if `n` is within

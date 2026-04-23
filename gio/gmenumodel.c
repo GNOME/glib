@@ -117,6 +117,7 @@
  * While a wide variety of stateful actions is possible, the following
  * is the minimum that is expected to be supported by all users of exported
  * menu information:
+ *
  * - an action with no parameter type and no state
  * - an action with no parameter type and boolean state
  * - an action with string parameter type and string state
