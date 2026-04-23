@@ -3100,7 +3100,7 @@ g_variant_iter_free (GVariantIter *iter)
   g_variant_unref (GVHI(iter)->value_ref);
   GVHI(iter)->magic = 0;
 
-  g_slice_free (struct heap_iter, GVHI(iter));
+  g_slice_free (GVariantIter, iter);
 }
 
 /**
