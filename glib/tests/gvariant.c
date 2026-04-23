@@ -5810,6 +5810,7 @@ test_normal_checking_tuple_offsets6 (void)
 
   variant = g_variant_new_from_bytes (data_type, bytes, FALSE);
   g_assert_nonnull (variant);
+  g_clear_pointer (&bytes, g_bytes_unref);
 
   g_assert_false (g_variant_is_normal_form (variant));
 
