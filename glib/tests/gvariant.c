@@ -5806,10 +5806,11 @@ test_normal_checking_tuple_offsets6 (void)
 
   heap_data = g_malloc (1);
   heap_data[0] = 0x28;
-  bytes = g_bytes_new_take (heap_data, 1);
+  bytes = g_bytes_new_take (g_steal_pointer (&heap_data), 1);
 
   variant = g_variant_new_from_bytes (data_type, bytes, FALSE);
   g_assert_nonnull (variant);
+  g_clear_pointer (&bytes, g_bytes_unref);
 
   g_assert_false (g_variant_is_normal_form (variant));
 
