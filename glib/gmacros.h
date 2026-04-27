@@ -799,9 +799,9 @@
  * } G_GNUC_FLAG_ENUM GKeyFileFlags;
  * ]|
  *
- * (The attribute can also be placed after `enum` and before the opening brace,
+ * The attribute can also be placed after `enum` and before the opening brace,
  * but that may cause it to be misinterpreted as the name of the enum if the
- * macro is not defined.)
+ * macro is not defined.
  *
  * Since: 2.88
  */
