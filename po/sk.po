@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
 "POT-Creation-Date: 2026-04-02 16:53+0000\n"
-"PO-Revision-Date: 2026-04-23 22:13+0200\n"
+"PO-Revision-Date: 2026-04-27 13:06+0200\n"
 "Last-Translator: Jose Riha <jose1711@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -264,8 +264,7 @@ msgid ""
 "action names must consist of only alphanumerics, “-” and “.”\n"
 msgstr ""
 "neplatný názov akcie: „%s“\n"
-"názvy akcií musia pozostávať iba z alfanumerických znakov, „-“ a "
-"„.“\n"
+"názvy akcií musia pozostávať iba z alfanumerických znakov, „-“ a „.“\n"
 
 #: gio/gapplication-tool.c:351
 #, c-format
@@ -3108,8 +3107,8 @@ msgid ""
 "Cannot provide per-desktop overrides for localized key “%s” in schema “%s” "
 "(override file “%s”) and --strict was specified; exiting."
 msgstr ""
-"Nedá sa poskytnúť prepísanie podľa prostredia pre lokalizovaný kľúč „%s\" v "
-"schéme „%s\" (súbor prepísania „%s“) a bolo zadané --strict; ukončuje sa."
+"Nedá sa poskytnúť prepísanie podľa prostredia pre lokalizovaný kľúč „%s“ v "
+"schéme „%s“ (súbor prepísania „%s“) a bolo zadané --strict; ukončuje sa."
 
 #: gio/glib-compile-schemas.c:2026
 #, c-format
