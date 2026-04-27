@@ -782,7 +782,7 @@
 /**
  * G_GNUC_FLAG_ENUM:
  *
- * Expands to the GNU C `flag_enum` attribute if the compiler is gcc or clang.
+ * Expands to the GNU C `flag_enum` attribute if the compiler is `gcc` or `clang`.
  * This attribute indicates that an enumerated type is used in bitwise
  * operations.
  * It is sometimes used in static analysis.
