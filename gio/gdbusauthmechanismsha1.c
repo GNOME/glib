@@ -1198,6 +1198,34 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
   return initial_response;
 }
 
+/* Context names must be valid ASCII, nonzero length, and may not contain the
+ * characters slash ("/"), backslash ("\"), space (" "), newline ("\n"),
+ * carriage return ("\r"), tab ("\t"), or period (".").
+ *
+ * See https://dbus.freedesktop.org/doc/dbus-specification.html#auth-mechanisms-sha */
+static gboolean
+validate_cookie_context (const char *cookie_context)
+{
+  size_t i = 0;
+
+  g_return_val_if_fail (cookie_context != NULL, FALSE);
+
+  for (i = 0; cookie_context[i] != '\0'; i++)
+    {
+      if ((uint8_t) cookie_context[i] >= 128 ||
+          cookie_context[i] == '/' ||
+          cookie_context[i] == '\\' ||
+          cookie_context[i] == ' ' ||
+          cookie_context[i] == '\n' ||
+          cookie_context[i] == '\r' ||
+          cookie_context[i] == '\t' ||
+          cookie_context[i] == '.')
+        return FALSE;
+    }
+
+  return (i > 0);
+}
+
 static void
 mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
                                const gchar          *data,
@@ -1232,6 +1260,14 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
     }
 
   cookie_context = tokens[0];
+  if (!validate_cookie_context (tokens[0]))
+    {
+      g_free (m->priv->reject_reason);
+      m->priv->reject_reason = g_strdup_printf ("Malformed cookie_context '%s'", tokens[0]);
+      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
+      goto out;
+    }
+
   cookie_id = g_ascii_strtoll (tokens[1], &endp, 10);
   if (*endp != '\0')
     {
