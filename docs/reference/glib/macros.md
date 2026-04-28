@@ -596,6 +596,27 @@ by application programmers.
 
     Since: 2.32
 
+`G_GNUC_FLAG_ENUM`
+
+:   Expands to the GNU C `flag_enum` attribute if the compiler is `gcc` or `clang`.
+    This attribute indicates that an enumerated type is used in bitwise
+    operations. It is sometimes used in static analysis.
+
+    See the
+    [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Type-Attributes.html#index-flag_005fenum-type-attribute)
+    for details.
+
+        typedef enum {
+          G_KEY_FILE_NONE              = 0,
+          G_KEY_FILE_KEEP_COMMENTS     = 1 << 0,
+          G_KEY_FILE_KEEP_TRANSLATIONS = 1 << 1
+        } G_GNUC_FLAG_ENUM GKeyFileFlags;
+
+    The attribute can also be placed after `enum` and before the opening brace,
+    but that may cause it to be misinterpreted as the name of the enum if the
+    macro is not defined.
+
+    Since: 2.88
 
 `G_C_STD_VERSION`
 
