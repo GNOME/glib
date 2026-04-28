@@ -1828,7 +1828,8 @@ read_again:
         {
           if (channel->line_term)
             {
-              if (memcmp (channel->line_term, nextchar, line_term_len) == 0)
+              if ((size_t) (lastchar - nextchar) >= line_term_len &&
+                  memcmp (channel->line_term, nextchar, line_term_len) == 0)
                 {
                   line_length = nextchar - use_buf->str;
                   got_term_len = line_term_len;
