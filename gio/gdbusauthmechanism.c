@@ -324,6 +324,13 @@ _g_dbus_auth_mechanism_client_data_send (GDBusAuthMechanism *mechanism,
   return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->client_data_send (mechanism, out_data_len);
 }
 
+gchar *
+_g_dbus_auth_mechanism_client_get_reject_reason (GDBusAuthMechanism *mechanism)
+{
+  g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM (mechanism), NULL);
+  return G_DBUS_AUTH_MECHANISM_GET_CLASS (mechanism)->client_get_reject_reason (mechanism);
+}
+
 void
 _g_dbus_auth_mechanism_client_shutdown (GDBusAuthMechanism *mechanism)
 {
