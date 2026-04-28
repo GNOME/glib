@@ -1234,7 +1234,7 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   GDBusAuthMechanismSha1 *m = G_DBUS_AUTH_MECHANISM_SHA1 (mechanism);
   gchar **tokens;
   const gchar *cookie_context;
-  guint cookie_id;
+  int64_t cookie_id;
   const gchar *server_challenge;
   gchar *client_challenge;
   gchar *endp;
@@ -1269,7 +1269,7 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
     }
 
   cookie_id = g_ascii_strtoll (tokens[1], &endp, 10);
-  if (*endp != '\0')
+  if (*endp != '\0' || endp == tokens[1] || cookie_id < 0 || cookie_id > UINT32_MAX)
     {
       g_free (m->priv->reject_reason);
       m->priv->reject_reason = g_strdup_printf ("Malformed cookie_id '%s'", tokens[1]);
@@ -1279,7 +1279,7 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   server_challenge = tokens[2];
 
   error = NULL;
-  cookie = keyring_lookup_entry (cookie_context, cookie_id, &error);
+  cookie = keyring_lookup_entry (cookie_context, (unsigned int) cookie_id, &error);
   if (cookie == NULL)
     {
       g_free (m->priv->reject_reason);
