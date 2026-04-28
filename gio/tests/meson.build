@@ -474,6 +474,7 @@ if host_machine.system() != 'windows'
       },
       'fdo-notification-backend': {},
       'gdbus-auth' : {'extra_sources' : extra_sources},
+      'gdbus-auth-mechanism-sha1': {'extra_sources' : extra_sources},
       'gdbus-bz627724' : {'extra_sources' : extra_sources},
       'gdbus-close-pending' : {'extra_sources' : extra_sources},
       'gdbus-connection' : {
