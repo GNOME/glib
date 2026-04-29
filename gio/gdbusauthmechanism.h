@@ -100,6 +100,7 @@ struct _GDBusAuthMechanismClass
                                                          gsize                 data_len);
   gchar                    *(*client_data_send)         (GDBusAuthMechanism   *mechanism,
                                                          gsize                *out_data_len);
+  gchar                    *(*client_get_reject_reason) (GDBusAuthMechanism   *mechanism);
   void                      (*client_shutdown)          (GDBusAuthMechanism   *mechanism);
 };
 
@@ -148,6 +149,7 @@ void                      _g_dbus_auth_mechanism_client_data_receive      (GDBus
                                                                            gsize                 data_len);
 gchar                    *_g_dbus_auth_mechanism_client_data_send         (GDBusAuthMechanism   *mechanism,
                                                                           gsize                *out_data_len);
+gchar                    *_g_dbus_auth_mechanism_client_get_reject_reason (GDBusAuthMechanism   *mechanism);
 void                      _g_dbus_auth_mechanism_client_shutdown          (GDBusAuthMechanism   *mechanism);
 
 
