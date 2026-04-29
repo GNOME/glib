@@ -2462,7 +2462,7 @@ g_key_file_get_locale_string_list (GKeyFile     *key_file,
     }
 
   len = strlen (value);
-  if (value[len - 1] == key_file->list_separator)
+  if (len > 0 && value[len - 1] == key_file->list_separator)
     value[len - 1] = '\0';
 
   list_separator[0] = key_file->list_separator;

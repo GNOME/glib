@@ -2273,9 +2273,8 @@ g_dbus_message_bytes_needed (guchar  *blob,
                              gsize    blob_len,
                              GError **error)
 {
-  gssize ret;
-
-  ret = -1;
+  uint32_t header_len, body_len;
+  size_t ret;
 
   g_return_val_if_fail (blob != NULL, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
@@ -2283,21 +2282,13 @@ g_dbus_message_bytes_needed (guchar  *blob,
 
   if (blob[0] == 'l')
     {
-      /* core header (12 bytes) + ARRAY of STRUCT of (BYTE,VARIANT) */
-      ret = 12 + 4 + GUINT32_FROM_LE (((guint32 *) blob)[3]);
-      /* round up so it's a multiple of 8 */
-      ret = 8 * ((ret + 7)/8);
-      /* finally add the body size */
-      ret += GUINT32_FROM_LE (((guint32 *) blob)[1]);
+      header_len = GUINT32_FROM_LE (((guint32 *) blob)[3]);
+      body_len = GUINT32_FROM_LE (((guint32 *) blob)[1]);
     }
   else if (blob[0] == 'B')
     {
-      /* core header (12 bytes) + ARRAY of STRUCT of (BYTE,VARIANT) */
-      ret = 12 + 4 + GUINT32_FROM_BE (((guint32 *) blob)[3]);
-      /* round up so it's a multiple of 8 */
-      ret = 8 * ((ret + 7)/8);
-      /* finally add the body size */
-      ret += GUINT32_FROM_BE (((guint32 *) blob)[1]);
+      header_len = GUINT32_FROM_BE (((guint32 *) blob)[3]);
+      body_len = GUINT32_FROM_BE (((guint32 *) blob)[1]);
     }
   else
     {
@@ -2305,18 +2296,29 @@ g_dbus_message_bytes_needed (guchar  *blob,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
                    "Unable to determine message blob length - given blob is malformed");
+      return -1;
     }
 
-  if (ret > (1<<27))
+  /* core header (12 bytes) + array length (4 bytes) + length of array.
+   * Array elements are tuples: (byte, variant) */
+  ret = 0;
+  if (!g_size_checked_add (&ret, 12 + 4, header_len) ||
+      /* round up so it's a multiple of 8: ret = 8 * ((ret + 7)/8) */
+      !g_size_checked_add (&ret, ret, 7) ||
+      !g_size_checked_mul (&ret, 8, ret/8) ||
+      /* finally add the body size */
+      !g_size_checked_add (&ret, ret, body_len) ||
+      ret > (1 << 27))
     {
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
                    "Blob indicates that message exceeds maximum message length (128MiB)");
-      ret = -1;
+      return -1;
     }
 
-  return ret;
+  g_assert (ret <= G_MAXSSIZE);
+  return (gssize) ret;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

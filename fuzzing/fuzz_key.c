@@ -26,10 +26,19 @@ test_parse (const gchar   *data,
             GKeyFileFlags  flags)
 {
   GKeyFile *key = NULL;
+  char *comment = NULL;
+  char **list = NULL;
 
   key = g_key_file_new ();
   g_key_file_load_from_data (key, (const gchar*) data, size, G_KEY_FILE_NONE,
                              NULL);
+
+  /* Also try some additional parsing and see if it crashes */
+  comment = g_key_file_get_comment (key, "group", "key", NULL);
+  g_free (comment);
+
+  list = g_key_file_get_locale_string_list (key, "group", "key", "de", NULL, NULL);
+  g_strfreev (list);
 
   g_key_file_free (key);
 }

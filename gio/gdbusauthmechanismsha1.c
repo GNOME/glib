@@ -119,7 +119,7 @@ static void                     mechanism_server_data_receive       (GDBusAuthMe
                                                                      gsize                 data_len);
 static gchar                   *mechanism_server_data_send          (GDBusAuthMechanism   *mechanism,
                                                                      gsize                *out_data_len);
-static gchar                   *mechanism_server_get_reject_reason  (GDBusAuthMechanism   *mechanism);
+static gchar                   *mechanism_server_or_client_get_reject_reason (GDBusAuthMechanism   *mechanism);
 static void                     mechanism_server_shutdown           (GDBusAuthMechanism   *mechanism);
 static GDBusAuthMechanismState  mechanism_client_get_state          (GDBusAuthMechanism   *mechanism);
 static gchar                   *mechanism_client_initiate           (GDBusAuthMechanism   *mechanism,
@@ -172,12 +172,13 @@ _g_dbus_auth_mechanism_sha1_class_init (GDBusAuthMechanismSha1Class *klass)
   mechanism_class->server_initiate           = mechanism_server_initiate;
   mechanism_class->server_data_receive       = mechanism_server_data_receive;
   mechanism_class->server_data_send          = mechanism_server_data_send;
-  mechanism_class->server_get_reject_reason  = mechanism_server_get_reject_reason;
+  mechanism_class->server_get_reject_reason  = mechanism_server_or_client_get_reject_reason;
   mechanism_class->server_shutdown           = mechanism_server_shutdown;
   mechanism_class->client_get_state          = mechanism_client_get_state;
   mechanism_class->client_initiate           = mechanism_client_initiate;
   mechanism_class->client_data_receive       = mechanism_client_data_receive;
   mechanism_class->client_data_send          = mechanism_client_data_send;
+  mechanism_class->client_get_reject_reason  = mechanism_server_or_client_get_reject_reason;
   mechanism_class->client_shutdown           = mechanism_client_shutdown;
 }
 
@@ -1128,12 +1129,11 @@ mechanism_server_data_send (GDBusAuthMechanism   *mechanism,
 }
 
 static gchar *
-mechanism_server_get_reject_reason (GDBusAuthMechanism   *mechanism)
+mechanism_server_or_client_get_reject_reason (GDBusAuthMechanism *mechanism)
 {
   GDBusAuthMechanismSha1 *m = G_DBUS_AUTH_MECHANISM_SHA1 (mechanism);
 
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM_SHA1 (mechanism), NULL);
-  g_return_val_if_fail (m->priv->is_server && !m->priv->is_client, NULL);
   g_return_val_if_fail (m->priv->state == G_DBUS_AUTH_MECHANISM_STATE_REJECTED, NULL);
 
   return g_strdup (m->priv->reject_reason);
@@ -1198,6 +1198,34 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
   return initial_response;
 }
 
+/* Context names must be valid ASCII, nonzero length, and may not contain the
+ * characters slash ("/"), backslash ("\"), space (" "), newline ("\n"),
+ * carriage return ("\r"), tab ("\t"), or period (".").
+ *
+ * See https://dbus.freedesktop.org/doc/dbus-specification.html#auth-mechanisms-sha */
+static gboolean
+validate_cookie_context (const char *cookie_context)
+{
+  size_t i = 0;
+
+  g_return_val_if_fail (cookie_context != NULL, FALSE);
+
+  for (i = 0; cookie_context[i] != '\0'; i++)
+    {
+      if ((uint8_t) cookie_context[i] >= 128 ||
+          cookie_context[i] == '/' ||
+          cookie_context[i] == '\\' ||
+          cookie_context[i] == ' ' ||
+          cookie_context[i] == '\n' ||
+          cookie_context[i] == '\r' ||
+          cookie_context[i] == '\t' ||
+          cookie_context[i] == '.')
+        return FALSE;
+    }
+
+  return (i > 0);
+}
+
 static void
 mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
                                const gchar          *data,
@@ -1206,7 +1234,7 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   GDBusAuthMechanismSha1 *m = G_DBUS_AUTH_MECHANISM_SHA1 (mechanism);
   gchar **tokens;
   const gchar *cookie_context;
-  guint cookie_id;
+  int64_t cookie_id;
   const gchar *server_challenge;
   gchar *client_challenge;
   gchar *endp;
@@ -1232,8 +1260,16 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
     }
 
   cookie_context = tokens[0];
+  if (!validate_cookie_context (tokens[0]))
+    {
+      g_free (m->priv->reject_reason);
+      m->priv->reject_reason = g_strdup_printf ("Malformed cookie_context '%s'", tokens[0]);
+      m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
+      goto out;
+    }
+
   cookie_id = g_ascii_strtoll (tokens[1], &endp, 10);
-  if (*endp != '\0')
+  if (*endp != '\0' || endp == tokens[1] || cookie_id < 0 || cookie_id > UINT32_MAX)
     {
       g_free (m->priv->reject_reason);
       m->priv->reject_reason = g_strdup_printf ("Malformed cookie_id '%s'", tokens[1]);
@@ -1243,7 +1279,7 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   server_challenge = tokens[2];
 
   error = NULL;
-  cookie = keyring_lookup_entry (cookie_context, cookie_id, &error);
+  cookie = keyring_lookup_entry (cookie_context, (unsigned int) cookie_id, &error);
   if (cookie == NULL)
     {
       g_free (m->priv->reject_reason);
