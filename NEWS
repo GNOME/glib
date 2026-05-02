@@ -1,3 +1,70 @@
+Overview of changes in GLib 2.88.1, 2026-05-02
+==============================================
+
+* Fix miscompilation with GCC 16 due to GLib’s use of the wrong function
+  attribute (!5145, work by Sam James)
+
+* Fix flag confusion security issue when using `GRegex` with `G_REGEX_RAW` which
+  can result in unbounded out-of-bounds heap reads off the start of a regex
+  input string (#3919, work by linhlhq)
+
+* Fix various minor (low severity) security issues, typically one-to-five-byte
+  out-of-bounds reads (#3915, #3916, #3917, #3918, #3930) or ones relying on
+  very specific (and unlikely) API calls (#3925) or ones relying on
+  discouraged P2P D-Bus configurations (#3931, #3933) (work by linhlhq)
+
+* Bugs fixed:
+  - #3915 (#YWH-PGM9867-190) Buffer Over-read on GLib through glib/gvariant-
+    serialiser.c:1253 via gvs_tuple_is_normal() (Philip Withnall)
+  - #3916 (#YWH-PGM9867-187) OOB Read on GLib through
+    glib/gmarkup.c:g_markup_escape_text() via
+    glib/gmarkup.c:append_escaped_text() (Philip Withnall)
+  - #3917 (#YWH-PGM9867-191) OOB Read on GLib through
+    glib/gdatetime.c:g_date_time_get_ymd via invalid `GDateTime` (Philip
+    Withnall)
+  - #3918 (#YWH-PGM9867-193) Buffer Over-read on GLib's g_regex_replace()
+    through glib/gregex.c:string_append() via g_utf8_next_char() (Philip
+    Withnall)
+  - #3919 (#YWH-PGM9867-194) Buffer Over-read on GLib through
+    glib/gregex.c:g_regex_split_full() via glib/gutf8.c:g_utf8_prev_char()
+    (Philip Withnall)
+  - #3925 (#YWH-PGM9867-199) Buffer Over-read on GLib through glib/giochannel.c
+    via "g_io_channel_read_line_backend" (Philip Withnall)
+  - #3930 (#YWH-PGM9867-200) Off-by-one Error on GLib through glib/gkeyfile.c
+    via "g_key_file_get_locale_string_list" (Philip Withnall)
+  - #3931 (#YWH-PGM9867-203)  Path Traversal on GLib DBus through
+    glib/gio/gdbusauthmechanismsha1.c via keyring_lookup_entry,
+    mechanism_client_data_receive (COOKIE_SHA1 Client Authentication) leads to
+    Arbitrary File Read (Philip Withnall)
+  - #3933 Integer overflow in g_dbus_message_bytes_needed() bypasses 128 MiB
+    size check (pre-auth DoS on P2P connections) (Philip Withnall)
+  - !5101 Update Serbian translation
+  - !5105 docs: Expand docs for GLIB_VERSION_MAX_ALLOWED
+  - !5110 gmarkup: fix type of length parameter of text_validate()
+  - !5111 Update Russian translation
+  - !5113 Update Polish translation
+  - !5114 docs: Remove myself from CODEOWNERS
+  - !5122 Update Slovak translation
+  - !5134 Backport various recent security fixes to GVariant, GMarkup, GDateTime
+    and GRegex to glib-2-88
+  - !5150 Backport !5145 “gvarianttype: use pure attribute, not inappropriate
+    const” to glib-2-88
+  - !5152 Update Slovak translation
+  - !5154 Update German translation
+  - !5165 Update Slovak translation
+  - !5166 Update Slovak translation
+  - !5169 Update Persian translation
+  - !5174 Backport !5170 !5171 !5172 !5173 Various security fixes to glib-2-88
+
+* Translation updates:
+  - German (Christian Kirbach)
+  - Persian (Danial Behzadi)
+  - Polish (Victoria Niedzielska)
+  - Russian (Artur S0)
+  - Serbian (Марко Костић)
+  - Slovak (Jose Riha)
+
+
 Overview of changes in GLib 2.88.0, 2026-03-16
 ==============================================
 
