@@ -14,22 +14,22 @@
 # Tim Sabsch <tim@sabsch.com>, 2019-2023.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2010-2013, 2015-2018, 2020-2021.
 # Philipp Kiemle <l10n@prly.mozmail.com>, 2021-2023, 2025.
-# Jürgen Benvenuti <gastornis@posteo.org>, 2022, 2023.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2022, 2023, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-04-02 16:53+0000\n"
-"PO-Revision-Date: 2026-04-17 23:21+0200\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2026-04-29 15:51+0000\n"
+"PO-Revision-Date: 2026-05-03 19:00+0200\n"
+"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: gio/gappinfo.c:374
 msgid "Setting default applications not supported yet"
@@ -344,13 +344,13 @@ msgstr "Nicht genug Platz im Ziel"
 
 #: gio/gcharsetconverter.c:357 gio/gdatainputstream.c:842
 #: gio/gdatainputstream.c:1276 glib/gconvert.c:358 glib/gconvert.c:790
-#: glib/giochannel.c:1571 glib/giochannel.c:1613 glib/giochannel.c:2473
+#: glib/giochannel.c:1571 glib/giochannel.c:1613 glib/giochannel.c:2474
 #: glib/gutf8.c:966 glib/gutf8.c:1423
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Umwandlungseingabe"
 
 #: gio/gcharsetconverter.c:362 glib/gconvert.c:366 glib/gconvert.c:704
-#: glib/giochannel.c:1578 glib/giochannel.c:2488
+#: glib/giochannel.c:1578 glib/giochannel.c:2489
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fehler bei der Umwandlung: %s"
@@ -605,12 +605,12 @@ msgstr "Benutzerkennungen müssen für Server und Gegenstelle gleich sein"
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Abgebrochen durch GDBusAuthObserver::authorize-authenticated-peer"
 
-#: gio/gdbusauthmechanismsha1.c:307
+#: gio/gdbusauthmechanismsha1.c:308
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Fehler beim Holen der Informationen für Ordner »%s«: %s"
 
-#: gio/gdbusauthmechanismsha1.c:322
+#: gio/gdbusauthmechanismsha1.c:323
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
@@ -618,12 +618,12 @@ msgstr ""
 "Zugriffsrechte des Ordners »%s« sind inkorrekt. Erwarteter Modus ist 0700, "
 "0%o wurde erhalten"
 
-#: gio/gdbusauthmechanismsha1.c:355 gio/gdbusauthmechanismsha1.c:366
+#: gio/gdbusauthmechanismsha1.c:356 gio/gdbusauthmechanismsha1.c:367
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Fehler beim Erstellen des Ordners »%s«: %s"
 
-#: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1112 gio/gfile.c:1370
+#: gio/gdbusauthmechanismsha1.c:369 gio/gfile.c:1112 gio/gfile.c:1370
 #: gio/gfile.c:1508 gio/gfile.c:1745 gio/gfile.c:1800 gio/gfile.c:1858
 #: gio/gfile.c:1942 gio/gfile.c:1999 gio/gfile.c:2063 gio/gfile.c:2118
 #: gio/gfile.c:4113 gio/gfile.c:4292 gio/gfile.c:4699 gio/gfile.c:5167
@@ -633,17 +633,17 @@ msgstr "Fehler beim Erstellen des Ordners »%s«: %s"
 msgid "Operation not supported"
 msgstr "Vorgang wird nicht unterstützt"
 
-#: gio/gdbusauthmechanismsha1.c:411
+#: gio/gdbusauthmechanismsha1.c:412
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Fehler beim Öffnen des Schlüsselbundes »%s« zum Lesen: "
 
-#: gio/gdbusauthmechanismsha1.c:434 gio/gdbusauthmechanismsha1.c:775
+#: gio/gdbusauthmechanismsha1.c:435 gio/gdbusauthmechanismsha1.c:776
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "Zeile %d des Schlüsselbundes auf »%s« mit Inhalt »%s« ist inkorrekt"
 
-#: gio/gdbusauthmechanismsha1.c:448 gio/gdbusauthmechanismsha1.c:789
+#: gio/gdbusauthmechanismsha1.c:449 gio/gdbusauthmechanismsha1.c:790
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -651,7 +651,7 @@ msgstr ""
 "Der erste Token in Zeile %d des Schlüsselbundes bei »%s« mit dem Inhalt »%s« "
 "ist inkorrekt"
 
-#: gio/gdbusauthmechanismsha1.c:462 gio/gdbusauthmechanismsha1.c:803
+#: gio/gdbusauthmechanismsha1.c:463 gio/gdbusauthmechanismsha1.c:804
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -659,38 +659,38 @@ msgstr ""
 "Der zweite Token in Zeile %d des Schlüsselbundes bei »%s« mit dem Inhalt "
 "»%s« ist inkorrekt"
 
-#: gio/gdbusauthmechanismsha1.c:486
+#: gio/gdbusauthmechanismsha1.c:487
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr ""
 "Cookie mit Kennung %d konnte im Schlüsselbund auf »%s« nicht gefunden werden"
 
-#: gio/gdbusauthmechanismsha1.c:543
+#: gio/gdbusauthmechanismsha1.c:544
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Fehler beim Erstellen der Sperrdatei »%s«: %s"
 
-#: gio/gdbusauthmechanismsha1.c:616
+#: gio/gdbusauthmechanismsha1.c:617
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Fehler beim Löschen der alten Sperrdatei »%s«: %s"
 
-#: gio/gdbusauthmechanismsha1.c:655
+#: gio/gdbusauthmechanismsha1.c:656
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Fehler beim Schließen der entknüpften Sperrdatei »%s«: %s"
 
-#: gio/gdbusauthmechanismsha1.c:666
+#: gio/gdbusauthmechanismsha1.c:667
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Fehler beim Entknüpfen der Sperrdatei »%s«: %s"
 
-#: gio/gdbusauthmechanismsha1.c:742
+#: gio/gdbusauthmechanismsha1.c:743
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Fehler beim Öffnen des Schlüsselbundes »%s« zum Schreiben: "
 
-#: gio/gdbusauthmechanismsha1.c:936
+#: gio/gdbusauthmechanismsha1.c:937
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Außerdem schlug das Entsperren von »%s« ebenso fehl: %s) "
@@ -899,7 +899,7 @@ msgstr ""
 "Es wurde ein Feld des Typs »a%c« gefunden. Erwartet wurde als Länge ein "
 "Vielfaches von %u Byte, aber es waren %u Byte Länge"
 
-#: gio/gdbusmessage.c:2109 gio/gdbusmessage.c:2836
+#: gio/gdbusmessage.c:2109 gio/gdbusmessage.c:2838
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "Leere Strukturen (Tupel) sind in D-Bus nicht erlaubt"
 
@@ -916,7 +916,7 @@ msgstr ""
 "Fehler beim Deserialisieren von GVariant mit der Typenzeichenkette »%s« aus "
 "dem D-Bus Wire-Format"
 
-#: gio/gdbusmessage.c:2389
+#: gio/gdbusmessage.c:2391
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -925,29 +925,29 @@ msgstr ""
 "Ungültiger Wert für die Speicherreihenfolge. Es wird entweder 0x6c (»l«) "
 "oder 0x42 (»B«) erwartet, aber der Wert 0x%02x gefunden"
 
-#: gio/gdbusmessage.c:2408
+#: gio/gdbusmessage.c:2410
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Ungültige Version des Hauptprotokolls. Erwartet wurde 1, jedoch %d gefunden"
 
-#: gio/gdbusmessage.c:2466 gio/gdbusmessage.c:3072
+#: gio/gdbusmessage.c:2468 gio/gdbusmessage.c:3074
 msgid "Signature header found but is not of type signature"
 msgstr "Signatur-Kopfzeilenfeld gefunden, ist aber nicht vom Typ Signatur"
 
-#: gio/gdbusmessage.c:2478
+#: gio/gdbusmessage.c:2480
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Signatur-Kopfzeilenfeld mit Signatur »%s« gefunden, aber Nachrichtenrumpf "
 "ist leer"
 
-#: gio/gdbusmessage.c:2493
+#: gio/gdbusmessage.c:2495
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Verarbeiteter Wert »%s« ist keine gültige D-Bus-Signatur (für Rumpf)"
 
-#: gio/gdbusmessage.c:2533
+#: gio/gdbusmessage.c:2535
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -958,11 +958,11 @@ msgstr[1] ""
 "Kein Signatur-Kopfzeilenfeld in der Nachricht, aber der Nachrichtenrumpf ist "
 "%u Bytes groß"
 
-#: gio/gdbusmessage.c:2543
+#: gio/gdbusmessage.c:2545
 msgid "Cannot deserialize message: "
 msgstr "Meldung kann nicht deserialisiert werden: "
 
-#: gio/gdbusmessage.c:2889
+#: gio/gdbusmessage.c:2891
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -970,7 +970,7 @@ msgstr ""
 "Fehler beim Deserialisieren von GVariant mit der Typenzeichenkette »%s« in "
 "das D-Bus Wire-Format"
 
-#: gio/gdbusmessage.c:3026
+#: gio/gdbusmessage.c:3028
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -978,18 +978,18 @@ msgstr ""
 "Anzahl der Dateideskriptoren in Meldung (%d) und Kopfzeilenfeld (%d) ist "
 "unterschiedlich"
 
-#: gio/gdbusmessage.c:3034
+#: gio/gdbusmessage.c:3036
 msgid "Cannot serialize message: "
 msgstr "Meldung kann nicht serialisiert werden: "
 
-#: gio/gdbusmessage.c:3087
+#: gio/gdbusmessage.c:3089
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
 "Nachrichtenrumpf hat den Signaturtyp »%s«, aber es gibt keine Signatur im "
 "Kopfzeilenfeld"
 
-#: gio/gdbusmessage.c:3097
+#: gio/gdbusmessage.c:3099
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -998,18 +998,18 @@ msgstr ""
 "Nachrichtenrumpf hat den Signaturtyp »%s«, aber die Signatur im "
 "Kopfzeilenfeld ist »%s«"
 
-#: gio/gdbusmessage.c:3113
+#: gio/gdbusmessage.c:3115
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "Nachrichtenrumpf ist leer, aber die Signatur im Kopfzeilenfeld ist »(%s)«"
 
-#: gio/gdbusmessage.c:3687
+#: gio/gdbusmessage.c:3689
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Fehlerrückmeldung mit Inhalt des Typs »%s«"
 
-#: gio/gdbusmessage.c:3695
+#: gio/gdbusmessage.c:3697
 msgid "Error return with empty body"
 msgstr "Fehlerrückmeldung mit leerem Inhalt"
 
@@ -1416,7 +1416,7 @@ msgstr ""
 
 #: gio/gdesktopappinfo.c:4068
 msgid "MIME apps information is too long"
-msgstr ""
+msgstr "Die Informationen für MIME-Apps sind zu lang"
 
 #: gio/gdesktopappinfo.c:4099 gio/gdesktopappinfo.c:4123
 msgid "Application information lacks an identifier"
@@ -1479,10 +1479,9 @@ msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Ungültige Symbolanzahl (%d) in GEmblem-Kodierung"
 
 #: gio/gemblem.c:368
-#, fuzzy, c-format
-#| msgid "Malformed number of tokens (%d) in GEmblem encoding"
+#, c-format
 msgid "Malformed origin (%s) in GEmblem encoding"
-msgstr "Ungültige Symbolanzahl (%d) in GEmblem-Kodierung"
+msgstr "Ungültiger Ursprung (%s) in GEmblem-Kodierung"
 
 #: gio/gemblemedicon.c:369
 #, c-format
@@ -1906,13 +1905,12 @@ msgstr "Standard-Dateibearbeitungszeitstempel für das Ziel verwenden"
 #: gio/gio-tool-copy.c:91
 #, c-format
 msgid "Copied %s (average: %s/s)"
-msgstr ""
+msgstr "%s kopiert (Mittelwert: %s/s)"
 
 #: gio/gio-tool-copy.c:96
-#, fuzzy, c-format
-#| msgid "Transferred %s out of %s (%s/s)"
+#, c-format
 msgid "Copied %s out of %s (%s/s; average: %s/s)"
-msgstr "%s von %s übertragen (%s/s)"
+msgstr "%s von %s kopiert (%s/s; Mittelwert: %s/s)"
 
 #. Translators: commandline placeholder
 #: gio/gio-tool-copy.c:126 gio/gio-tool-move.c:118
@@ -3234,10 +3232,9 @@ msgid "Error removing file %s: %s"
 msgstr "Fehler beim Entfernen der Datei »%s«: %s"
 
 #: gio/glocalfile.c:2071
-#, fuzzy, c-format
-#| msgid "Unable to trash file %s"
+#, c-format
 msgid "Unable to trash child file %s"
-msgstr "Datei %s kann nicht in den Papierkorb verschoben werden"
+msgstr "Die Unterdatei %s kann nicht in den Papierkorb verschoben werden"
 
 #: gio/glocalfile.c:2131 gio/glocalfile.c:2142 gio/glocalfile.c:2172
 #, c-format
@@ -4612,13 +4609,15 @@ msgstr "Datenträger unterstützt weder Auswerfen noch »eject_with_operation«"
 #: gio/gwin32appinfo.c:5286
 #, c-format
 msgid "The app ‘%s’ in the application object has no verbs"
-msgstr ""
+msgstr "Die Anwendung »%s« im Anwendungsobjekt hat keine Verben"
 
 #: gio/gwin32appinfo.c:5290
 #, c-format
 msgid ""
 "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
 msgstr ""
+"Die Anwendung »%s« und der Handler »%s« im Anwendungsobjekt haben keine "
+"Verben"
 
 #: gio/gwin32inputstream.c:184
 #, c-format
@@ -5471,15 +5470,15 @@ msgstr "Konverter von »%s« in »%s« konnte nicht geöffnet werden: %s"
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "Raw-read in g_io_channel_read_line_string nicht möglich"
 
-#: glib/giochannel.c:1803 glib/giochannel.c:2061 glib/giochannel.c:2148
+#: glib/giochannel.c:1803 glib/giochannel.c:2062 glib/giochannel.c:2149
 msgid "Leftover unconverted data in read buffer"
 msgstr "Nicht konvertierte Daten befinden sich noch im Lesepuffer"
 
-#: glib/giochannel.c:1884 glib/giochannel.c:1961
+#: glib/giochannel.c:1885 glib/giochannel.c:1962
 msgid "Channel terminates in a partial character"
 msgstr "Kanal endet mit einem Teilzeichen"
 
-#: glib/giochannel.c:1947
+#: glib/giochannel.c:1948
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "Raw-read in g_io_channel_read_to_end nicht möglich"
 
@@ -6087,7 +6086,7 @@ msgstr ""
 
 #: glib/gregex.c:780
 msgid "syntax error in subpattern number (missing terminator?)"
-msgstr ""
+msgstr "Syntaxfehler in Untermuster Nummer (fehlendes Abschlusszeichen?)"
 
 #: glib/gregex.c:785
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
