@@ -240,6 +240,7 @@ if valgrind.found()
     env: common_test_env,
     timeout_multiplier: 20,
   )
+  meson.add_devenv({'VALGRIND_OPTS': '--suppressions=' + valgrind_suppression_file.full_path()}, method : 'append')
 endif
 
 add_project_arguments('-D_GNU_SOURCE', language: ['c', 'cpp', 'objc', 'objcpp'])
