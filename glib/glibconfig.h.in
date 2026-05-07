@@ -17,8 +17,6 @@
 #mesondefine GIO_STATIC_COMPILATION
 #mesondefine GMODULE_STATIC_COMPILATION
 #mesondefine GI_STATIC_COMPILATION
-#mesondefine G_INTL_STATIC_COMPILATION
-#mesondefine FFI_STATIC_BUILD
 
 /* Specifies that GLib's g_print*() functions wrap the
  * system printf functions.  This is useful to know, for example,
