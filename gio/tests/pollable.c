@@ -28,6 +28,9 @@
 #ifdef HAVE_OPENPTY
 #include <pty.h>
 #endif
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
 #endif
@@ -286,11 +289,11 @@ test_pollable_unix_nulldev (void)
   int fd = g_open ("/dev/null", O_RDWR, 0);
   g_assert_cmpint (fd, !=, -1);
 
-#ifndef __FreeBSD__
-  g_assert_not_pollable (fd);
-#else
-  /* /dev/null is actually pollable on FreeBSD with both poll(2) and kevent(2) */
+#if defined(__FreeBSD__) && __FreeBSD_version >= 1400000
+  /* /dev/null is actually pollable on FreeBSD 14+ with both poll(2) and kevent(2) */
   g_assert_pollable (fd);
+#else
+  g_assert_not_pollable (fd);
 #endif
 
   close (fd);
