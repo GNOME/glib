@@ -2493,7 +2493,7 @@ g_regex_match (const GRegex      *regex,
 /**
  * g_regex_match_full:
  * @regex: a #GRegex structure from g_regex_new()
- * @string: (array length=string_len): the string to scan for matches
+ * @string: the string to scan for matches
  * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: match options
@@ -2629,7 +2629,7 @@ g_regex_match_all (const GRegex      *regex,
 /**
  * g_regex_match_all_full:
  * @regex: a #GRegex structure from g_regex_new()
- * @string: (array length=string_len): the string to scan for matches
+ * @string: the string to scan for matches
  * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: match options
@@ -2923,7 +2923,7 @@ g_regex_split (const GRegex     *regex,
 /**
  * g_regex_split_full:
  * @regex: a #GRegex structure
- * @string: (array length=string_len): the string to split with the pattern
+ * @string: the string to split with the pattern
  * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: match time option flags
@@ -3590,7 +3590,7 @@ interpolation_list_needs_match (GList *list)
 /**
  * g_regex_replace:
  * @regex: a #GRegex structure
- * @string: (array length=string_len): the string to perform matches against
+ * @string: the string to perform matches against
  * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @replacement: text to replace each match with
@@ -3681,7 +3681,7 @@ literal_replacement (const GMatchInfo *match_info,
 /**
  * g_regex_replace_literal:
  * @regex: a #GRegex structure
- * @string: (array length=string_len): the string to perform matches against
+ * @string: the string to perform matches against
  * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @replacement: text to replace each match with
@@ -3724,7 +3724,7 @@ g_regex_replace_literal (const GRegex      *regex,
 /**
  * g_regex_replace_eval:
  * @regex: a #GRegex structure from g_regex_new()
- * @string: (array length=string_len): string to perform matches against
+ * @string: string to perform matches against
  * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: options for the match
