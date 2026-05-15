@@ -1,4 +1,5 @@
 #include <glib-object.h>
+#include "gvaluecollector.h"
 #include "marshalers.h"
 
 #define g_assert_cmpflags(type,n1, cmp, n2) G_STMT_START { \
@@ -174,6 +175,174 @@ baa_init (Baa *baa)
 static void
 baa_class_init (BaaClass *class)
 {
+}
+
+/*
+ * A new fundamental object type derived directly from GTypeInstance, rather
+ * than GObject, to test generic marshalling of custom GTypeInstance-derived
+ * types which are collected from varargs as pointers.
+ */
+typedef struct
+{
+  GTypeInstance parent_instance;
+  gint ref_count;
+} TestFundamentalObject;
+
+typedef struct
+{
+  GTypeClass parent_class;
+} TestFundamentalObjectClass;
+
+static guint test_fundamental_object_finalize_count;
+
+static gpointer
+test_fundamental_object_ref (gpointer instance)
+{
+  TestFundamentalObject *object = instance;
+
+  g_assert_nonnull (object);
+  g_assert_true (G_TYPE_CHECK_INSTANCE_TYPE (object, G_TYPE_FROM_INSTANCE (object)));
+
+  g_atomic_int_inc (&object->ref_count);
+
+  return object;
+}
+
+static void
+test_fundamental_object_unref (gpointer instance)
+{
+  TestFundamentalObject *object = instance;
+
+  g_assert_nonnull (object);
+  g_assert_true (G_TYPE_CHECK_INSTANCE_TYPE (object, G_TYPE_FROM_INSTANCE (object)));
+
+  if (g_atomic_int_dec_and_test (&object->ref_count))
+    {
+      test_fundamental_object_finalize_count++;
+      g_type_free_instance ((GTypeInstance *) object);
+    }
+}
+
+static void
+test_fundamental_object_value_init (GValue *value)
+{
+  value->data[0].v_pointer = NULL;
+}
+
+static void
+test_fundamental_object_value_free (GValue *value)
+{
+  g_clear_pointer (&value->data[0].v_pointer, test_fundamental_object_unref);
+}
+
+static void
+test_fundamental_object_value_copy (const GValue *src,
+                                    GValue       *dst)
+{
+  if (src->data[0].v_pointer != NULL)
+    dst->data[0].v_pointer = test_fundamental_object_ref (src->data[0].v_pointer);
+}
+
+static gpointer
+test_fundamental_object_value_peek_pointer (const GValue *value)
+{
+  return value->data[0].v_pointer;
+}
+
+static gchar *
+test_fundamental_object_value_collect (GValue      *value,
+                                       guint        n_collect_values,
+                                       GTypeCValue *collect_values,
+                                       guint        collect_flags)
+{
+  TestFundamentalObject *object = collect_values[0].v_pointer;
+
+  if (object != NULL)
+    object = test_fundamental_object_ref (object);
+
+  value->data[0].v_pointer = object;
+
+  return NULL;
+}
+
+static gchar *
+test_fundamental_object_value_lcopy (const GValue *value,
+                                     guint         n_collect_values,
+                                     GTypeCValue  *collect_values,
+                                     guint         collect_flags)
+{
+  TestFundamentalObject **object_p = collect_values[0].v_pointer;
+
+  if (object_p == NULL)
+    return g_strdup ("value location passed as NULL");
+
+  if (value->data[0].v_pointer == NULL)
+    *object_p = NULL;
+  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
+    *object_p = value->data[0].v_pointer;
+  else
+    *object_p = test_fundamental_object_ref (value->data[0].v_pointer);
+
+  return NULL;
+}
+
+static void
+test_fundamental_object_init (TestFundamentalObject      *object,
+                              TestFundamentalObjectClass *object_class)
+{
+  object->ref_count = 1;
+}
+
+static GType
+test_fundamental_object_get_type (void)
+{
+  static GType type = G_TYPE_INVALID;
+
+  if (g_once_init_enter_pointer (&type))
+    {
+      GType new_type;
+
+      new_type =
+        g_type_register_fundamental (g_type_fundamental_next (),
+                                     "TestFundamentalObject",
+                                     &(const GTypeInfo) {
+                                       sizeof (TestFundamentalObjectClass),
+                                       NULL,
+                                       NULL,
+                                       NULL,
+                                       NULL,
+                                       NULL,
+                                       sizeof (TestFundamentalObject),
+                                       0,
+                                       (GInstanceInitFunc) test_fundamental_object_init,
+                                       &(const GTypeValueTable) {
+                                         test_fundamental_object_value_init,
+                                         test_fundamental_object_value_free,
+                                         test_fundamental_object_value_copy,
+                                         test_fundamental_object_value_peek_pointer,
+                                         "p",
+                                         test_fundamental_object_value_collect,
+                                         "p",
+                                         test_fundamental_object_value_lcopy,
+                                       },
+                                     },
+                                     &(const GTypeFundamentalInfo) {
+                                       G_TYPE_FLAG_INSTANTIATABLE |
+                                       G_TYPE_FLAG_CLASSED |
+                                       G_TYPE_FLAG_DERIVABLE,
+                                     },
+                                     0);
+
+      g_once_init_leave_pointer (&type, new_type);
+    }
+
+  return type;
+}
+
+static TestFundamentalObject *
+test_fundamental_object_new (void)
+{
+  return (TestFundamentalObject *) g_type_create_instance (test_fundamental_object_get_type ());
 }
 
 typedef struct _Test Test;
@@ -367,6 +536,15 @@ test_class_init (TestClass *klass)
                 NULL,
                 foo_get_type (),
                 0);
+  g_signal_new ("generic-marshaller-fundamental-object",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST,
+                0,
+                NULL, NULL,
+                NULL,
+                test_fundamental_object_get_type (),
+                1,
+                test_fundamental_object_get_type ());
   s = g_signal_new ("va-marshaller-uint-return",
                 G_TYPE_FROM_CLASS (klass),
                 G_SIGNAL_RUN_LAST,
@@ -891,6 +1069,63 @@ test_generic_marshaller_signal_interface_return (void)
   g_signal_handler_disconnect (test, id);
 
   g_object_unref (test);
+}
+
+static TestFundamentalObject *
+on_generic_marshaller_fundamental_object (Test                  *test,
+                                          TestFundamentalObject *object)
+{
+  g_assert_true (G_TYPE_CHECK_INSTANCE_TYPE (object, test_fundamental_object_get_type ()));
+
+  return test_fundamental_object_new ();
+}
+
+static void
+test_generic_marshaller_signal_fundamental_object (void)
+{
+  TestFundamentalObject *argument;
+  TestFundamentalObject *retval;
+  GValue values[2] = { G_VALUE_INIT, G_VALUE_INIT };
+  GValue return_value = G_VALUE_INIT;
+  unsigned int old_finalize_count;
+  unsigned long id;
+  guint signal_id;
+  Test *test;
+
+  old_finalize_count = test_fundamental_object_finalize_count;
+  test = g_object_new (test_get_type (), NULL);
+  argument = test_fundamental_object_new ();
+  id = g_signal_connect (test,
+                         "generic-marshaller-fundamental-object",
+                         G_CALLBACK (on_generic_marshaller_fundamental_object),
+                         NULL);
+
+  retval = NULL;
+  g_signal_emit_by_name (test, "generic-marshaller-fundamental-object", argument, &retval);
+  g_assert_true (G_TYPE_CHECK_INSTANCE_TYPE (retval, test_fundamental_object_get_type ()));
+  test_fundamental_object_unref (retval);
+
+  signal_id = g_signal_lookup ("generic-marshaller-fundamental-object", test_get_type ());
+  g_assert_cmpuint (signal_id, >, 0);
+
+  g_value_init (&values[0], test_get_type ());
+  g_value_set_object (&values[0], test);
+  g_value_init (&values[1], test_fundamental_object_get_type ());
+  g_value_set_instance (&values[1], argument);
+  g_value_init (&return_value, test_fundamental_object_get_type ());
+
+  g_signal_emitv (values, signal_id, 0, &return_value);
+  retval = g_value_peek_pointer (&return_value);
+  g_assert_true (G_TYPE_CHECK_INSTANCE_TYPE (retval, test_fundamental_object_get_type ()));
+
+  g_value_unset (&return_value);
+  g_value_unset (&values[1]);
+  g_value_unset (&values[0]);
+  test_fundamental_object_unref (argument);
+  g_signal_handler_disconnect (test, id);
+  g_object_unref (test);
+
+  g_assert_cmpuint (test_fundamental_object_finalize_count, ==, old_finalize_count + 3);
 }
 
 static const GSignalInvocationHint dont_use_this = { 0, };
@@ -1506,6 +1741,7 @@ test_introspection (void)
     "va-marshaller-int-return",
     "generic-marshaller-uint-return",
     "generic-marshaller-interface-return",
+    "generic-marshaller-fundamental-object",
     "va-marshaller-uint-return",
     "variant-changed-no-slot",
     "variant-changed",
@@ -2127,6 +2363,7 @@ main (int argc,
   g_test_add_func ("/gobject/signals/generic-marshaller-int-return", test_generic_marshaller_signal_int_return);
   g_test_add_func ("/gobject/signals/generic-marshaller-uint-return", test_generic_marshaller_signal_uint_return);
   g_test_add_func ("/gobject/signals/generic-marshaller-interface-return", test_generic_marshaller_signal_interface_return);
+  g_test_add_func ("/gobject/signals/generic-marshaller-fundamental-object", test_generic_marshaller_signal_fundamental_object);
   g_test_add_func ("/gobject/signals/custom-marshaller", test_custom_marshaller);
   g_test_add_func ("/gobject/signals/connect", test_connect);
   g_test_add_func ("/gobject/signals/is-connected", test_is_connected);

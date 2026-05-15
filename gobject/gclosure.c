@@ -1275,11 +1275,50 @@ g_signal_type_cclosure_new (GType    itype,
   return closure;
 }
 
-#include <ffi.h>
+/*
+ * A custom pointer-compatible value type is an instantiatable type whose
+ * GTypeValueTable stores the value as a pointer, exposes it with
+ * value_peek_pointer(), and collects it from varargs as a gpointer.
+ *
+ * This covers custom GTypeInstance-derived fundamental types which are not
+ * GObjects, such as a library-defined object type registered with
+ * g_type_register_fundamental(). It intentionally excludes the built-in
+ * pointer-like fundamental types handled by the marshaller's normal cases.
+ */
+static gboolean
+value_type_is_custom_pointer_compatible (GType type)
+{
+  GTypeValueTable *value_table;
+
+  switch (g_type_fundamental (type))
+    {
+    case G_TYPE_STRING:
+    case G_TYPE_OBJECT:
+    case G_TYPE_BOXED:
+    case G_TYPE_PARAM:
+    case G_TYPE_POINTER:
+    case G_TYPE_INTERFACE:
+    case G_TYPE_VARIANT:
+      return FALSE;
+
+    default:
+      break;
+    }
+
+  value_table = g_type_value_table_peek (type);
+
+  return G_TYPE_IS_INSTANTIATABLE (type) &&
+         value_table != NULL &&
+         value_table->value_peek_pointer != NULL &&
+         value_table->collect_format != NULL &&
+         strcmp (value_table->collect_format, "p") == 0;
+}
+
 static ffi_type *
 value_to_ffi_type (const GValue *gvalue,
                    gpointer *value,
                    gint *enum_tmpval,
+                   gpointer *pointer_tmpval,
                    gboolean *tmpval_used)
 {
   ffi_type *rettype = NULL;
@@ -1361,8 +1400,18 @@ value_to_ffi_type (const GValue *gvalue,
       break;
     default:
       rettype = &ffi_type_pointer;
-      *value = NULL;
-      g_critical ("value_to_ffi_type: Unsupported fundamental type: %s", g_type_name (type));
+      if (value_type_is_custom_pointer_compatible (G_VALUE_TYPE (gvalue)))
+        {
+          g_assert (pointer_tmpval != NULL);
+          *pointer_tmpval = g_value_peek_pointer (gvalue);
+          *value = pointer_tmpval;
+          *tmpval_used = TRUE;
+        }
+      else
+        {
+          *value = NULL;
+          g_critical ("value_to_ffi_type: Unsupported fundamental type: %s", g_type_name (type));
+        }
       break;
     }
   return rettype;
@@ -1442,9 +1491,20 @@ restart:
         goto restart;
       G_GNUC_FALLTHROUGH;
     default:
-      g_critical ("value_from_ffi_type: Unsupported fundamental type %s for type %s",
-                  g_type_name (g_type_fundamental (G_VALUE_TYPE (gvalue))),
-                  g_type_name (G_VALUE_TYPE (gvalue)));
+      if (value_type_is_custom_pointer_compatible (G_VALUE_TYPE (gvalue)))
+        {
+          GTypeValueTable *value_table = g_type_value_table_peek (G_VALUE_TYPE (gvalue));
+
+          if (value_table->value_free != NULL)
+            value_table->value_free (gvalue);
+          gvalue->data[0].v_pointer = *(gpointer*) value;
+        }
+      else
+        {
+          g_critical ("value_from_ffi_type: Unsupported fundamental type %s for type %s",
+                      g_type_name (g_type_fundamental (G_VALUE_TYPE (gvalue))),
+                      g_type_name (G_VALUE_TYPE (gvalue)));
+        }
     }
 }
 
@@ -1521,8 +1581,13 @@ va_to_ffi_type (GType gtype,
       break;
     default:
       rettype = &ffi_type_pointer;
-      storage->_guint64  = 0;
-      g_critical ("va_to_ffi_type: Unsupported fundamental type: %s", g_type_name (type));
+      if (value_type_is_custom_pointer_compatible (gtype))
+        storage->_gpointer = va_arg (*va, gpointer);
+      else
+        {
+          storage->_guint64  = 0;
+          g_critical ("va_to_ffi_type: Unsupported fundamental type: %s", g_type_name (type));
+        }
       break;
     }
   return rettype;
@@ -1567,12 +1632,14 @@ g_cclosure_marshal_generic (GClosure     *closure,
   ffi_cif cif;
   GCClosure *cc = (GCClosure*) closure;
   gint *enum_tmpval;
+  gpointer *pointer_tmpval;
   gboolean tmpval_used = FALSE;
 
   enum_tmpval = g_alloca (sizeof (gint));
+  pointer_tmpval = g_alloca (sizeof (gpointer));
   if (return_gvalue && G_VALUE_TYPE (return_gvalue))
     {
-      rtype = value_to_ffi_type (return_gvalue, &rvalue, enum_tmpval, &tmpval_used);
+      rtype = value_to_ffi_type (return_gvalue, &rvalue, enum_tmpval, pointer_tmpval, &tmpval_used);
     }
   else
     {
@@ -1586,13 +1653,17 @@ g_cclosure_marshal_generic (GClosure     *closure,
   args =  g_alloca (sizeof (gpointer) * n_args);
 
   if (tmpval_used)
-    enum_tmpval = g_alloca (sizeof (gint));
+    {
+      enum_tmpval = g_alloca (sizeof (gint));
+      pointer_tmpval = g_alloca (sizeof (gpointer));
+    }
 
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       atypes[n_args-1] = value_to_ffi_type (param_values + 0,
                                             &args[n_args-1],
                                             enum_tmpval,
+                                            pointer_tmpval,
                                             &tmpval_used);
       atypes[0] = &ffi_type_pointer;
       args[0] = &closure->data;
@@ -1602,6 +1673,7 @@ g_cclosure_marshal_generic (GClosure     *closure,
       atypes[0] = value_to_ffi_type (param_values + 0,
                                      &args[0],
                                      enum_tmpval,
+                                     pointer_tmpval,
                                      &tmpval_used);
       atypes[n_args-1] = &ffi_type_pointer;
       args[n_args-1] = &closure->data;
@@ -1610,11 +1682,15 @@ g_cclosure_marshal_generic (GClosure     *closure,
   for (i = 1; i < n_args - 1; i++)
     {
       if (tmpval_used)
-        enum_tmpval = g_alloca (sizeof (gint));
+        {
+          enum_tmpval = g_alloca (sizeof (gint));
+          pointer_tmpval = g_alloca (sizeof (gpointer));
+        }
 
       atypes[i] = value_to_ffi_type (param_values + i,
                                      &args[i],
                                      enum_tmpval,
+                                     pointer_tmpval,
                                      &tmpval_used);
     }
 
@@ -1670,17 +1746,20 @@ g_cclosure_marshal_generic_va (GClosure *closure,
   ffi_cif cif;
   GCClosure *cc = (GCClosure*) closure;
   gint *enum_tmpval;
+  gpointer *pointer_tmpval;
   gboolean tmpval_used = FALSE;
   va_list args_copy;
+  GValue *value_storage;
 
   g_return_if_fail (n_params >= 0);
 
   unsigned_n_params = (size_t) n_params;
 
   enum_tmpval = g_alloca (sizeof (gint));
+  pointer_tmpval = g_alloca (sizeof (gpointer));
   if (return_value && G_VALUE_TYPE (return_value))
     {
-      rtype = value_to_ffi_type (return_value, &rvalue, enum_tmpval, &tmpval_used);
+      rtype = value_to_ffi_type (return_value, &rvalue, enum_tmpval, pointer_tmpval, &tmpval_used);
     }
   else
     {
@@ -1693,6 +1772,8 @@ g_cclosure_marshal_generic_va (GClosure *closure,
   atypes = g_alloca (sizeof (ffi_type *) * n_args);
   args =  g_alloca (sizeof (gpointer) * n_args);
   storage = g_alloca (sizeof (va_arg_storage) * unsigned_n_params);
+  value_storage = g_alloca (sizeof (GValue) * unsigned_n_params);
+  memset (value_storage, 0, sizeof (GValue) * unsigned_n_params);
 
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
@@ -1732,6 +1813,12 @@ g_cclosure_marshal_generic_va (GClosure *closure,
 	    storage[i]._gpointer = g_boxed_copy (type, storage[i]._gpointer);
 	  else if (fundamental == G_TYPE_VARIANT && storage[i]._gpointer != NULL)
 	    storage[i]._gpointer = g_variant_ref_sink (storage[i]._gpointer);
+	  else if (value_type_is_custom_pointer_compatible (type))
+	    {
+	      g_value_init (&value_storage[i], type);
+	      g_value_set_instance (&value_storage[i], storage[i]._gpointer);
+	      storage[i]._gpointer = g_value_peek_pointer (&value_storage[i]);
+	    }
 	}
       if (fundamental == G_TYPE_OBJECT && storage[i]._gpointer != NULL)
 	storage[i]._gpointer = g_object_ref (storage[i]._gpointer);
@@ -1762,6 +1849,8 @@ g_cclosure_marshal_generic_va (GClosure *closure,
 	    g_boxed_free (type, storage[i]._gpointer);
 	  else if (fundamental == G_TYPE_VARIANT && storage[i]._gpointer != NULL)
 	    g_variant_unref (storage[i]._gpointer);
+	  else if (G_VALUE_TYPE (&value_storage[i]) != 0)
+	    g_value_unset (&value_storage[i]);
 	}
       if (fundamental == G_TYPE_OBJECT && storage[i]._gpointer != NULL)
 	g_object_unref (storage[i]._gpointer);
