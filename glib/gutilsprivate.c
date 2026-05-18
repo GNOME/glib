@@ -89,6 +89,11 @@ load_user_special_dirs_from_string (const gchar *string, const gchar *home_dir, 
           directory = G_USER_DIRECTORY_VIDEOS;
           p += strlen ("XDG_VIDEOS_DIR");
         }
+      else if (strncmp (p, "XDG_PROJECTS_DIR", strlen ("XDG_PROJECTS_DIR")) == 0)
+        {
+          directory = G_USER_DIRECTORY_PROJECTS;
+          p += strlen ("XDG_PROJECTS_DIR");
+        }
       else
         continue;
 

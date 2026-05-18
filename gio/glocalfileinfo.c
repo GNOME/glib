@@ -1840,6 +1840,10 @@ get_icon_name (const char *path,
     {
       name = use_symbolic ? "folder-pictures-symbolic" : "folder-pictures";
     }
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_PROJECTS)) == 0)
+    {
+      name = use_symbolic ? "folder-projects-symbolic" : "folder-projects";
+    }
   else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_PUBLIC_SHARE)) == 0)
     {
       name = use_symbolic ? "folder-publicshare-symbolic" : "folder-publicshare";
