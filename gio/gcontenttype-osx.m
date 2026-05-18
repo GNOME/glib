@@ -17,6 +17,9 @@
  *
  */
 
+// TODO: Clean up deprecated APIs and remove these #pragma blocks.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include "config.h"
 
 #include "gcontenttype.h"
@@ -607,3 +610,4 @@ g_content_type_guess_for_tree_impl (GFile *root)
 {
   return NULL;
 }
+#pragma clang diagnostic pop
