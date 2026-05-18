@@ -356,7 +356,8 @@ environment.
 - `G_DBUS_COOKIE_SHA1_KEYRING_DIR`.  Can be used to override the directory
   used to store the keyring used in the `DBUS_COOKIE_SHA1` authentication
   mechanism. Normally the directory used is `.dbus-keyrings` in the user’s
-  home directory.
+  home directory. This authentication mechanism (and hence the environment
+  variable) is disabled when running in a SUID program.
 - `G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION`.  If set, the
   permissions of the directory used to store the keyring used in the
   `DBUS_COOKIE_SHA1` authentication mechanism won’t be checked. Normally the

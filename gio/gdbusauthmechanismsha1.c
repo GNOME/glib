@@ -276,12 +276,25 @@ ensure_keyring_directory (GError **error)
 {
   gchar *path;
   const gchar *e;
-  gboolean is_setuid;
 #ifdef G_OS_UNIX
   struct stat statbuf;
 #endif
 
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  /* If running as setuid, we can’t trust the environment (as it’s provided by
+   * a user running at a lower privilege level), so we can’t check
+   * $G_DBUS_COOKIE_SHA1_KEYRING_DIR *and* we can’t build it using $HOME.
+   * Just bail out in that case. */
+  if (GLIB_PRIVATE_CALL (g_check_setuid) ())
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_PERMISSION_DENIED,
+                           _("Error accessing D-Bus keyring: keyring-based "
+                             "authentication is not supported when running as setuid"));
+      return NULL;
+    }
 
   e = g_getenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR");
   if (e != NULL)
@@ -345,9 +358,7 @@ ensure_keyring_directory (GError **error)
 #endif  /* if !G_OS_UNIX */
 
   /* Only create the directory if not running as setuid */
-  is_setuid = GLIB_PRIVATE_CALL (g_check_setuid) ();
-  if (!is_setuid &&
-      g_mkdir_with_parents (path, 0700) != 0)
+  if (g_mkdir_with_parents (path, 0700) != 0)
     {
       int errsv = errno;
       g_set_error (error,
@@ -356,17 +367,6 @@ ensure_keyring_directory (GError **error)
                    _("Error creating directory “%s”: %s"),
                    path,
                    g_strerror (errsv));
-      g_clear_pointer (&path, g_free);
-      return NULL;
-    }
-  else if (is_setuid)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_PERMISSION_DENIED,
-                   _("Error creating directory “%s”: %s"),
-                   path,
-                   _("Operation not supported"));
       g_clear_pointer (&path, g_free);
       return NULL;
     }
