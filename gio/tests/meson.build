@@ -335,8 +335,6 @@ if host_machine.system() != 'windows'
     'g-file-info-filesystem-readonly' : {},
     'gschema-compile' : {'install' : false},
     'trash' : {
-      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3069
-      'can_fail' : host_system == 'darwin',
     },
   }
 

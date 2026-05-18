@@ -55,6 +55,10 @@ GFile * g_local_file_new_from_dirname_and_basename (const char *dirname,
 
 gchar *_g_local_file_find_topdir_for (const char *file_path);
 
+gboolean _g_local_file_trash_macos (const char    *path,
+                                    GCancellable  *cancellable,
+                                    GError       **error);
+
 G_END_DECLS
 
 #endif /* __G_LOCAL_FILE_H__ */

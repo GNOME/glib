@@ -49,8 +49,8 @@ class TestGioTool(testprogramrunner.TestProgramRunner):
     PROGRAM_NAME = "gio"
     PROGRAM_TYPE = testprogramrunner.ProgramType.NATIVE
 
-    def runGio(self, *args):
-        return self.runTestProgram(args)
+    def runGio(self, *args, **kwargs):
+        return self.runTestProgram(args, **kwargs)
 
     def test_help(self):
         """Test the --help argument and help subcommand."""
@@ -80,6 +80,13 @@ class TestGioTool(testprogramrunner.TestProgramRunner):
                 self.assertIn(
                     "standard::content-type: application/x-zerosize", result.out
                 )
+
+    @unittest.skipUnless(platform.system() == "Darwin", "macOS-specific trash behavior")
+    def test_trash_unsupported_modes_on_macos(self):
+        """Test macOS-specific unsupported trash sub-modes."""
+        for option in ("--restore", "--list", "--empty"):
+            result = self.runGio("trash", option, should_fail=True)
+            self.assertIn("not supported on macOS", result.err)
 
 
 @unittest.skipIf(platform.system() == "Darwin", "gio launch not supported on darwin")
