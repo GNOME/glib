@@ -2781,6 +2781,40 @@ test_set_str (void)
 }
 
 static void
+test_set_str_take (void)
+{
+  char *str = NULL;
+  const char *empty_str = "";
+
+  g_assert_false (g_set_str_take (&str, NULL));
+  g_assert_null (str);
+
+  g_assert_true (g_set_str_take (&str, g_strdup (empty_str)));
+  g_assert_false (g_set_str_take (&str, g_strdup (empty_str)));
+  g_assert_nonnull (str);
+  g_assert_true ((gpointer)str != (gpointer)empty_str);
+  g_assert_cmpstr (str, ==, empty_str);
+
+  g_assert_true (g_set_str_take (&str, NULL));
+  g_assert_null (str);
+
+  g_assert_true (g_set_str_take (&str, g_strdup (empty_str)));
+  g_assert_true (g_set_str_take (&str, g_strdup ("test")));
+  g_assert_cmpstr (str, ==, "test");
+
+  g_assert_false (g_set_str_take (&str, g_strdup (str)));
+  g_assert_cmpstr (str, ==, "test");
+
+  g_assert_false (g_set_str_take (&str, str));
+  g_assert_cmpstr (str, ==, "test");
+
+  g_assert_true (g_set_str_take (&str, g_strconcat (str, "-suffix", NULL)));
+  g_assert_cmpstr (str, ==, "test-suffix");
+
+  g_free (str);
+}
+
+static void
 test_str_is_ascii (void)
 {
   const char *ascii_strings[] = {
@@ -2821,6 +2855,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/memdup", test_memdup);
   g_test_add_func ("/strfuncs/memdup2", test_memdup2);
   g_test_add_func ("/strfuncs/set_str", test_set_str);
+  g_test_add_func ("/strfuncs/set_str_take", test_set_str_take);
   g_test_add_func ("/strfuncs/stpcpy", test_stpcpy);
   g_test_add_func ("/strfuncs/str_match_string", test_str_match_string);
   g_test_add_func ("/strfuncs/str_tokenize_and_fold", test_str_tokenize_and_fold);
