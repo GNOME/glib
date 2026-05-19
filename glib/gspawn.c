@@ -542,8 +542,9 @@ g_spawn_async_with_fds (const gchar          *working_directory,
  *
  * See g_spawn_sync() for full details.
  *
- * The @command_line argument will be parsed by g_shell_parse_argv(). Filenames
- * and potentially-untrusted input should be quoted using g_shell_quote().
+ * The @command_line argument will be parsed by [func@GLib.shell_parse_argv].
+ * Filenames and potentially untrusted input should be quoted using
+ * [func@GLib.shell_quote].
  *
  * Unlike g_spawn_sync(), the %G_SPAWN_SEARCH_PATH flag is enabled.
  * Note that %G_SPAWN_SEARCH_PATH can have security implications, so
@@ -611,8 +612,8 @@ g_spawn_command_line_sync (const gchar  *command_line,
  * A simple version of g_spawn_async() that parses a command line with
  * g_shell_parse_argv() and passes it to g_spawn_async().
  *
- * Filenames and potentially-untrusted input in @command_line should be quoted
- * using g_shell_quote().
+ * Filenames and potentially untrusted input in @command_line should be quoted
+ * using [func@GLib.shell_quote].
  *
  * Runs a command line in the background. Unlike g_spawn_async(), the
  * %G_SPAWN_SEARCH_PATH flag is enabled, other flags are not. Note
