@@ -1803,6 +1803,25 @@ test_ascii_strtod (void)
   check_strtod_number (-0.75, "%0.2f", "-0.75");
   check_strtod_number (-0.75, "%5.2f", "-0.75");
   check_strtod_number (1e99, "%.0e", "1e+99");
+
+  /* Underflow: errno is reset before the call, so a pre-existing error
+   * is cleared even for a normal conversion. */
+  errno = ERANGE;
+  d = g_ascii_strtod ("1.0", NULL);
+  g_assert_cmpfloat (d, ==, 1.0);
+  g_assert_cmpint (errno, ==, 0);
+
+  /* Underflow: result magnitude must be <= DBL_MIN (subnormals are
+   * allowed; zero is not required). errno is not checked here because
+   * whether ERANGE is set for gradual underflow is implementation-defined. */
+  {
+    gchar *end;
+    errno = 0;
+    d = g_ascii_strtod ("5e-324", &end);
+    g_assert_cmpstr (end, ==, "");
+    g_assert_cmpfloat (d, >=, 0.0);
+    g_assert_cmpfloat (d, <=, DBL_MIN);
+  }
 }
 
 static void
