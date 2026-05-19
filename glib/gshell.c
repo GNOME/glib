@@ -183,8 +183,11 @@ unquote_string_inplace (gchar* str, gchar** end, GError** err)
  * Quotes a string so that the shell (/bin/sh) will interpret the
  * quoted string to mean @unquoted_string.
  *
- * If you pass a filename to the shell, for example, you should first
- * quote it with this function.
+ * If you pass a filename or other untrusted input to [func@GLib.shell_parse_argv],
+ * you should first quote it with this function. This is sufficient to ensure
+ * untrusted input cannot ‘break out’ of the quotes. Beware: this only works
+ * because [func@GLib.shell_parse_argv] is not a real Unix shell. Quoting untrusted
+ * input is not an adequate security mechanism when using a real shell.
  *
  * The return value must be freed with g_free().
  *
@@ -643,6 +646,9 @@ tokenize_command_line (const gchar *command_line,
  * only whitespace), %G_SHELL_ERROR_EMPTY_STRING will be returned. It’s
  * guaranteed that @argvp will be a non-empty array if this function returns
  * successfully.
+ *
+ * When constructing @command_line, quote any filenames or potentially
+ * untrusted input using [func@GLib.shell_quote].
  *
  * Free the returned vector with g_strfreev().
  * 
