@@ -1694,6 +1694,7 @@ get_parent (const char *path,
   return res;
 }
 
+#ifndef HAVE_COCOA
 static char *
 expand_all_symlinks (const char *path)
 {
@@ -1720,6 +1721,7 @@ expand_all_symlinks (const char *path)
 
   return res;
 }
+#endif /* HAVE_COCOA */
 
 static char *
 find_mountpoint_for (const char *file,
@@ -1779,6 +1781,7 @@ _g_local_file_find_topdir_for (const char *file)
   return mountpoint;
 }
 
+#ifndef HAVE_COCOA
 static char *
 get_unique_filename (const char *basename, 
                      int         id)
@@ -1794,6 +1797,7 @@ get_unique_filename (const char *basename,
   else
     return g_strdup_printf ("%s.%d", basename, id);
 }
+#endif /* HAVE_COCOA */
 
 static gboolean
 path_has_prefix (const char *path, 
@@ -1816,6 +1820,7 @@ path_has_prefix (const char *path,
   return FALSE;
 }
 
+#ifndef HAVE_COCOA
 static char *
 try_make_relative (const char *path, 
                    const char *base)
@@ -1843,6 +1848,7 @@ try_make_relative (const char *path,
   /* Failed, use abs path */
   return g_strdup (path);
 }
+#endif /* HAVE_COCOA */
 
 static gboolean
 ignore_trash_mount (GUnixMountEntry *mount)
@@ -2030,6 +2036,7 @@ _g_local_file_is_lost_found_dir (const char *path, dev_t path_dev)
  * a file to allow it to be deleted, so checking the permissions bitfield isn’t
  * relevant.
  */
+#ifndef HAVE_COCOA
 static gboolean
 check_removing_recursively (GFile        *file,
                             gboolean      user_owned,
@@ -2093,6 +2100,7 @@ check_removing_recursively (GFile        *file,
   g_object_unref (enumerator);
   return TRUE;
 }
+#endif /* HAVE_COCOA */
 
 static gboolean
 g_local_file_trash (GFile         *file,
@@ -2100,6 +2108,9 @@ g_local_file_trash (GFile         *file,
 		    GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
+#ifdef HAVE_COCOA
+  return _g_local_file_trash_macos (local->filename, cancellable, error);
+#else
   GStatBuf file_stat, home_stat;
   dev_t checked_st_dev;
   const char *homedir;
@@ -2540,6 +2551,7 @@ g_local_file_trash (GFile         *file,
   g_free (trashname);
   
   return TRUE;
+#endif
 }
 #else /* G_OS_WIN32 */
 gboolean
