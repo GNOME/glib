@@ -59,7 +59,8 @@ which should be used instead of `%llu` or similar parameters for formatting
 
 For users of GLib in C, the [func@GLib.set_str] and [func@GLib.set_str_take]
 inline functions also exist to set a string and handle copying the new value
-and freeing the old one.
+and freeing the old one. Similarly, [func@GLib.set_strv] and
+[func@GLib.set_strv_take] exist to set a string array.
 
 ## String Copying
 
