@@ -1,3 +1,142 @@
+Overview of changes in GLib 2.89.0, 2026-05-20
+==============================================
+
+* Fix miscompilation with GCC 16 due to GLib’s use of the wrong function
+  attribute (!5145, work by Sam James)
+
+* Integrate better with the System Trash on macOS (#1161, work by Byoungchan Lee)
+
+* Add `g_set_strv()`, `g_set_strv_take()` and `g_set_str_take()` convenience
+  functions (#3907, !5118, work by Christian Hergert and Philip Withnall)
+
+* Fix flag confusion security issue when using `GRegex` with `G_REGEX_RAW` which
+  can result in unbounded out-of-bounds heap reads off the start of a regex
+  input string (#3919, work by linhlhq)
+
+* Fix various minor (low severity) security issues, typically one-to-five-byte
+  out-of-bounds reads (#3915, #3916, #3917, #3918, #3930) or ones relying on
+  very specific (and unlikely) API calls (#3925) or ones relying on
+  discouraged P2P D-Bus configurations (#3931, #3933) (work by linhlhq)
+
+* Add support for `GTypeInstance`-derived types in generic marshaller (#3954,
+  work by Christian Hergert)
+
+* Change `g_get_num_processors()` to report number of performance cores, rather
+  than number of performance+low-power cores on macOS (!5153, work by John Cupitt)
+
+* Add support for `XDG_PROJECTS_DIR` special directory (!5141, work by
+  Emmanuele Bassi and Jakub Steiner)
+
+* Bugs fixed:
+  - #1161 g_file_trash() Files not moved to System Trash on Mac OSX
+  - #1853 DBus activated GApplications and G_APPLICATION_HANDLES_OPEN (Guido
+    Günther)
+  - #2173 g_ascii_strtod() spec doesn't match C99/C11 standard for underflow
+    behavior (depuc8)
+  - #3069 gio/trash test fails on macOS
+  - #3791 g_error causes -Wanalyzer-infinite-loop warnings in downstream code
+    (correctmost)
+  - #3854 GRegex uses int for string length (Philip Withnall)
+  - #3907 Add g_set_strv() helper similar to g_set_str() (Christian Hergert)
+  - #3911 GMarkup chokes on BOM
+  - #3915 (#YWH-PGM9867-190) Buffer Over-read on GLib through glib/gvariant-
+    serialiser.c:1253 via gvs_tuple_is_normal() (Philip Withnall)
+  - #3916 (#YWH-PGM9867-187) OOB Read on GLib through
+    glib/gmarkup.c:g_markup_escape_text() via
+    glib/gmarkup.c:append_escaped_text() (Philip Withnall)
+  - #3917 (#YWH-PGM9867-191) OOB Read on GLib through
+    glib/gdatetime.c:g_date_time_get_ymd via invalid `GDateTime` (Philip
+    Withnall)
+  - #3918 (#YWH-PGM9867-193) Buffer Over-read on GLib's g_regex_replace()
+    through glib/gregex.c:string_append() via g_utf8_next_char() (Philip
+    Withnall)
+  - #3919 (#YWH-PGM9867-194) Buffer Over-read on GLib through
+    glib/gregex.c:g_regex_split_full() via glib/gutf8.c:g_utf8_prev_char()
+    (Philip Withnall)
+  - #3925 (#YWH-PGM9867-199) Buffer Over-read on GLib through glib/giochannel.c
+    via "g_io_channel_read_line_backend" (Philip Withnall)
+  - #3930 (#YWH-PGM9867-200) Off-by-one Error on GLib through glib/gkeyfile.c
+    via "g_key_file_get_locale_string_list" (Philip Withnall)
+  - #3931 (#YWH-PGM9867-203)  Path Traversal on GLib DBus through
+    glib/gio/gdbusauthmechanismsha1.c via keyring_lookup_entry,
+    mechanism_client_data_receive (COOKIE_SHA1 Client Authentication) leads to
+    Arbitrary File Read (Philip Withnall)
+  - #3932 (#YWH-PGM9867-204) Integer Underflow (CWE-191) on GLib through
+    gio/gdbusintrospection.c via "g_dbus_node_info_new_for_xml" (Philip
+    Withnall)
+  - #3933 Integer overflow in g_dbus_message_bytes_needed() bypasses 128 MiB
+    size check (pre-auth DoS on P2P connections) (Philip Withnall)
+  - #3954 Generic marshaller lacks support for GTypeInstance derived types
+    (Christian Hergert)
+  - #3958 FTBFS for vs2019-arm64 in libcharset due to undefined _CountOneBits64
+  - !4990 gdbusauthmechanismsha1: Ignore G_DBUS_COOKIE_SHA1_KEYRING_DIR when
+    suid
+  - !5094 gtestdbus: Keep config file around until bus daemon exits
+  - !5099 liststore: Micro-optimize no-op bulk operations
+  - !5101 Update Serbian translation
+  - !5102 g_base64_decode_step: fix documented type of in
+  - !5103 gdbusmessage: Documentation improvements
+  - !5105 docs: Expand docs for GLIB_VERSION_MAX_ALLOWED
+  - !5106 gmarkup: Add api to get attribute locations
+  - !5107 gmessages: Remove incorrect callback annotations
+  - !5110 gmarkup: fix type of length parameter of text_validate()
+  - !5111 Update Russian translation
+  - !5112 docs: Clarify default/user signal handlers
+  - !5113 Update Polish translation
+  - !5114 docs: Remove myself from CODEOWNERS
+  - !5115 build: Post-release version bump
+  - !5116 Update Slovenian translation
+  - !5117 fuzzing: Add a fuzz test for g_markup_escape_text()
+  - !5118 gstrfuncs: Add g_set_str_take() helper function
+  - !5119 tests: Check that g_markup_escape_text() returns something parseable
+  - !5120 Update Chinese (China) translation
+  - !5121 gio: Apply property accessor annotations to GDBus types
+  - !5123 Update Romanian translation
+  - !5124 gvariant: Tweak GVariantIter heap allocation casting
+  - !5125 gregex: Fix some missing Markdown formatting in docs
+  - !5126 Add missing annotations
+  - !5127 libffi: don't build testsuite when building as subproject
+  - !5128 gmarkup: Swap the argument order for g_realloc_n()
+  - !5136 docs: Clarify UTF-8 validity for functions which accept a length
+  - !5138 Update Slovenian translation
+  - !5140 Update Romanian translation
+  - !5141 Support XDG_PROJECTS_DIR
+  - !5142 gsocketconnection: Fix annotations for get_socket()
+  - !5145 gvarianttype: use pure attribute, not inappropriate const
+  - !5146 gmessages: Add missing stdlib.h include for abort()
+  - !5148 registrysettingsbackend: Chain up vfuncs
+  - !5149 gtype: Improve G_DEFINE and G_DECLARE docs
+  - !5153 g_get_num_processors(): on macOS, report n_pcore
+  - !5155 Update German translation
+  - !5157 Update Dutch translation
+  - !5158 gsocket: Fix g_socket_new_from_fd() on unbound sockets on windows
+  - !5159 gvariant: Tweak GVariantIter heap allocation size
+  - !5161 [docs] Gio.MenuModel: Fix bulleted list
+  - !5162 gvariant: Match allocation size of g_slice_new to g_slice_free
+  - !5163 gvariant test: Fix a leak
+  - !5164 tests: Avoid undefined signed left-shift in bitlock test
+  - !5167 docs: Add docs for G_GNUC_FLAG_ENUM
+  - !5176 gnulib: Fix unused flags variable warning
+  - !5177 gio/tests/pollable.c: Fix test on FreeBSD
+  - !5180 meson: Add valgrind suppression file to VALGRIND_OPTS in devenv
+  - !5182 Meson: Don't hardcode FFI_STATIC_BUILD / G_INTL_STATIC_COMPILATION
+  - !5183 gio/tests/pollable.c: Conditionalize on FreeBSD version in the
+    /dev/null test case
+  - !5185 gio/gdesktopappinfo: Add precondition assertions
+  - !5187 Add safety documentation regarding use of g_shell_quote()
+  - !5188 Improve performance of g_array_maybe_expand()
+
+* Translation updates:
+  - Chinese (China) (luming zh)
+  - Dutch (Nathan Follens)
+  - German (Christian Kirbach)
+  - Polish (Victoria Niedzielska)
+  - Romanian (Antonio Marin)
+  - Russian (Artur S0)
+  - Serbian (Марко Костић)
+  - Slovenian (Martin)
+
+
 Overview of changes in GLib 2.88.0, 2026-03-16
 ==============================================
 
