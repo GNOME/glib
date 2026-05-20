@@ -68,6 +68,7 @@ struct _GRealArray
   guint   elt_size;
   guint   zero_terminated : 1;
   guint   clear : 1;
+  guint   max_len;
   gatomicrefcount ref_count;
   GDestroyNotify clear_func;
 };
@@ -355,6 +356,13 @@ g_array_sized_new (gboolean zero_terminated,
   array->clear           = (clear ? 1 : 0);
   array->elt_size        = elt_size;
   array->clear_func      = NULL;
+
+  /* The maximum array length is derived from following constraints:
+   * - The number of bytes must fit into a gsize / 2.
+   * - The number of elements must fit into guint.
+   * - zero terminated arrays must leave space for the terminating element
+   */
+  array->max_len = MIN (G_MAXSIZE / 2 / elt_size, G_MAXUINT) - array->zero_terminated;
 
   g_atomic_ref_count_init (&array->ref_count);
 
@@ -1063,17 +1071,10 @@ static void
 g_array_maybe_expand (GRealArray *array,
                       guint       len)
 {
-  guint max_len, want_len;
- 
-  /* The maximum array length is derived from following constraints:
-   * - The number of bytes must fit into a gsize / 2.
-   * - The number of elements must fit into guint.
-   * - zero terminated arrays must leave space for the terminating element
-   */
-  max_len = MIN (G_MAXSIZE / 2 / array->elt_size, G_MAXUINT) - array->zero_terminated;
+  guint want_len;
 
   /* Detect potential overflow */
-  if G_UNLIKELY ((max_len - array->len) < len)
+  if G_UNLIKELY ((array->max_len - array->len) < len)
     g_error ("adding %u to array would overflow", len);
 
   want_len = array->len + len + array->zero_terminated;
