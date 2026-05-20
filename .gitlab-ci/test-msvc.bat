@@ -4,6 +4,7 @@
 setlocal enabledelayedexpansion
 set args=
 set stash_plat=0
+set extra_args=
 
 for %%x in (%*) do (
   if "%%x" == "--plat" set stash_plat=1
@@ -13,9 +14,13 @@ for %%x in (%*) do (
 set args=%args:~1%
 if "!plat!" == "" set plat=x64
 
+:: Remove these lines if the CI is updated to use VS2022 or later
+:: Visual Studio 2019 ARM64 builds can only use the 10.0.22621.0 or earlier SDKs
+if "!plat!" == "x64_arm64" set extra_args=10.0.22621.0
+
 :: vcvarsall.bat sets various env vars like PATH, INCLUDE, LIB, LIBPATH for the
 :: specified build architecture
-call "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" !plat!
+call "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" !extra_args! !plat!
 
 :: Setup and write a cross-compilation file for ARM64 builds
 if not "!plat!" == "x64_arm64" goto :continue_build
