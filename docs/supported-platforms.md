@@ -16,7 +16,7 @@ their vendor.
  * macOS: minimum version macOS 11.
    * [No support for universal binaries ](https://bugzilla.gnome.org/show_bug.cgi?id=780238);
    * macOS 10.13 support is maintained on a best-effort basis.
- * Windows: minimum version is Windows 10.
+ * Windows: [minimum version is Windows 10](https://gitlab.gnome.org/GNOME/glib/-/work_items/3889),
    minimum build chain is Visual Studio 2019 16.8.x
    * Visual Studio 2015/2017 support is maintained on a best-effort basis; not recommended
    for introspection.
