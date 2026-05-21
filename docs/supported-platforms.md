@@ -16,9 +16,10 @@ their vendor.
  * macOS: minimum version macOS 11.
    * [No support for universal binaries ](https://bugzilla.gnome.org/show_bug.cgi?id=780238);
    * macOS 10.13 support is maintained on a best-effort basis.
- * Windows:
-   [minimum version is Windows 8](https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1970),
-   minimum build chain is Visual Studio 2012
+ * Windows: [minimum version is Windows 10](https://gitlab.gnome.org/GNOME/glib/-/work_items/3889),
+   minimum build chain is Visual Studio 2019 16.8.x
+   * Visual Studio 2015/2017 support is maintained on a best-effort basis; not recommended
+   for introspection.
  * Android: [minimum NDK version 15](https://gitlab.gnome.org/GNOME/glib/issues/1113)
  * Linux: glibc newer than 2.5 (if using glibc; other forms of libc are supported)
 
@@ -39,7 +40,7 @@ GLib is regularly built on at least the following systems:
    - Alpine Linux (3.19 using muslc, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/alpine.Dockerfile)
    - Windows (MinGW64)
    - Windows (msys2-mingw32 and msys2-clang64; msys2 is a rolling release distribution)
-   - Windows (Visual Studio 2019 x64, a static linking version on x64, and an x86 version)
+   - Windows (Visual Studio 2019 x64, a static linking version on x64, and an x86 and an ARM64 version)
    - Android (NDK r23b, API 31, arm64, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/android-ndk.sh)
    - FreeBSD (13)
    - macOS (arm64, SDK 11.3)

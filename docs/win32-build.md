@@ -2,7 +2,7 @@ Chun-wei Fan `<fanc999@yahoo.com.tw>`
 Philip Withnall `<withnall@endlessm.com>`
 Nirbheek Chauhan `<nirbheek@centricular.com>`
 
-This document was last updated in 2019. You're reading this in the future, and
+This document was last updated in 2026. You're reading this in the future, and
 lots of information might be misleading or outdated in your age. You have been
 warned.
 
@@ -15,8 +15,8 @@ Windows meaning they use the Win32 API and Microsoft C runtime library
 only. No POSIX (Unix) emulation layer like Cygwin is involved.
 
 To build GLib on Win32, you can use either GCC ("MinGW") or the Microsoft
-Visual Studio toolchain. For the latter, Visual Studio 2019 and later are
-recommended. For older Visual Studio versions, see below.
+Visual Studio toolchain. For the latter, Visual Studio 2019 16.8.x and
+later are recommended. For older Visual Studio versions, see below.
 
 You can also cross-compile GLib for Windows from Linux using the
 cross-compiling mingw packages for your distro.
@@ -91,11 +91,11 @@ please do not come to us for help if you choose to do this.
 
 # Building GLib
 
-You can build GLib with MinGW-GCC, MSVC, or (experimentally) with Clang-CL.
+You can build GLib with MinGW-GCC, MSVC 2019 16.8.x+, or (experimentally) with Clang-CL.
 
 For all compilers, you will need the following:
 
-- Install Python 3.6.x or newer, either 32-bit or 64-bit. We recommend enabling
+- Install Python 3.7.x or newer, either 32-bit or 64-bit. We recommend enabling
   the option to add it to your `PATH`.
 - [Install Meson](https://mesonbuild.com/Getting-meson.html)
 - Install the [Ninja build tool](https://github.com/ninja-build/ninja/releases), which can also be
@@ -110,7 +110,7 @@ Open your MSYS or [MSYS2](https://www.msys2.org/) shell where you have the
 MinGW-GCC toolchain installed, and build GLib [like any other Meson
 project](https://mesonbuild.com/Quick-guide.html#compiling-a-meson-project).
 
-## Building with Visual Studio 2015 or newer
+## Building with Visual Studio 2019 16.8.x or newer
 
 Meson is now the only supported method of building GLib using Visual Studio.
 
@@ -119,6 +119,16 @@ To do a build using Meson, do the following:
 - Open a Visual Studio (or SDK) command prompt that matches the Visual Studio
   version and build platform (Win32/x86, x64, etc.) that will be used in all
   the following steps.
+
+- If cross-building for ARM64, run `"%VCInstallDir%\auxiliary\build\vcvarsall" amd64_arm64`
+  to set up a build environment to build for ARM64. You will need to
+  setup a cross-build file for Meson-see `.gitlab-ci/test-msvc.bat` under the
+  section `:: Setup and write a cross-compilation file for ARM64 builds` to have
+  a guide on how to setup that file. If building with Visual Studio 2019 and
+  if you have both the `10.0.22621.0` and `10.0.26100.0` Windows SDKs installed,
+  use `"%VCInstallDir%\auxiliary\build\vcvarsall" 10.0.22621.0 amd64_arm64` instead
+  to set up your ARM64 build environment, as Windows SDKs at or after `10.0.26100.0` does
+  not work with Visual Studio 2019 ARM64 builds but will work with 2022 or later.
 
 - Create an empty directory/folder for the build inside your GLib sources
   directory, say, `_builddir`, and `cd` into it.
@@ -160,9 +170,11 @@ To overcome this problem, please set your system's locale setting for non-Unicod
 English (United States), reboot, and restart the build, and the code should build
 normally.
 
-### Support for pre-2012 Visual Studio
+### Support for pre-2019 16.8.x Visual Studio
 
-This release of GLib requires at least the Windows 8 SDK in order to be built
-successfully using Visual Studio, which means that it is no longer supported to
-build GLib with Visual Studio 2008 nor 2010.  People who still need to use
-Visual Studio 2008 or 2010 should continue using glib-2.66.x.
+Building with Visual Studio 2019 16.8.x or later is highly recommended. Using Visual
+Studio 2015 or 2017 may work but is currently untested nor supported, and is not
+recommended for building introspection. Building with Visual Studio 2013 or earlier
+is no longer supported.
+
+
