@@ -145,6 +145,28 @@ test_GDateTime_now (void)
 }
 
 static void
+test_GDateTime_set_date_time (void)
+{
+  GDateTime *now = g_date_time_new_now_local ();
+  GDateTime *future = g_date_time_add_months (now, 1);
+  GDateTime *test = NULL;
+
+  g_set_date_time (&test, now);
+  g_assert_true (g_date_time_equal (test, now));
+  g_assert_false (g_date_time_equal (test, future));
+
+  g_set_date_time (&test, future);
+  g_assert_false (g_date_time_equal (test, now));
+  g_assert_true (g_date_time_equal (test, future));
+
+  g_set_date_time (&test, NULL);
+  g_assert_null (test);
+
+  g_date_time_unref (now);
+  g_date_time_unref (future);
+}
+
+static void
 test_GDateTime_new_from_unix (void)
 {
   GDateTime *dt;
@@ -3767,6 +3789,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/new_from_iso8601/2", test_GDateTime_new_from_iso8601_2);
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
+  g_test_add_func ("/GDateTime/set_date_time", test_GDateTime_set_date_time);
   g_test_add_func ("/GDateTime/test-6-days-until-end-of-the-month", test_6_days_until_end_of_the_month);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
