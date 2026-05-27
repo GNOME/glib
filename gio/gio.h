@@ -175,6 +175,7 @@
 #include <gio/gunixcredentialsmessage.h>
 #include <gio/gunixfdlist.h>
 #include <gio/gunixsocketaddress.h>
+#include <gio/gvsocksocketaddress.h>
 #include <gio/gvfs.h>
 #include <gio/gvolume.h>
 #include <gio/gvolumemonitor.h>

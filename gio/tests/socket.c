@@ -18,6 +18,8 @@
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <gio/gio.h>
 #include <glib/gstdio.h>
 #include "glib-private.h"
@@ -31,6 +33,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <gio/gnetworking.h>
+#endif
+
+#ifdef HAVE_LINUX_VM_SOCKETS_H
+#include <linux/vm_sockets.h>
 #endif
 
 #ifdef G_OS_WIN32
@@ -1435,6 +1441,246 @@ test_unix_connection (void)
   g_object_unref (s);
 }
 
+static gboolean
+vsock_error_is_skip (const GError *error)
+{
+  return g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED) ||
+         g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED) ||
+         g_error_matches (error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED) ||
+         g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CONNECTION_REFUSED) ||
+         g_error_matches (error, G_IO_ERROR, G_IO_ERROR_ADDRESS_IN_USE) ||
+         g_error_matches (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+}
+
+static void
+skip_vsock_error (const char   *operation,
+                  const GError *error)
+{
+  char *message = g_strdup_printf ("AF_VSOCK %s unavailable: %s",
+                                   operation,
+                                   error->message);
+
+  g_test_skip (message);
+  g_free (message);
+}
+
+static void
+test_vsock_new (void)
+{
+  GSocket *socket = NULL;
+  GError *error = NULL;
+
+  socket = g_socket_new (G_SOCKET_FAMILY_VSOCK,
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
+
+  if (socket == NULL)
+    {
+      g_assert_true (vsock_error_is_skip (error));
+      skip_vsock_error ("socket creation", error);
+      g_clear_error (&error);
+      return;
+    }
+
+  g_assert_cmpint (g_socket_get_family (socket), ==, G_SOCKET_FAMILY_VSOCK);
+  g_assert_cmpint (g_socket_get_socket_type (socket), ==, G_SOCKET_TYPE_STREAM);
+  g_assert_cmpint (g_socket_get_protocol (socket), ==, G_SOCKET_PROTOCOL_DEFAULT);
+
+  g_object_unref (socket);
+}
+
+static void
+test_vsock_new_from_fd (void)
+{
+#ifdef HAVE_LINUX_VM_SOCKETS_H
+  GSocket *sock = NULL;
+  GError *error = NULL;
+  int fd;
+
+  fd = socket (AF_VSOCK, SOCK_STREAM, 0);
+  if (fd == -1)
+    {
+      g_test_skip ("AF_VSOCK socket creation unavailable");
+      return;
+    }
+
+  sock = g_socket_new_from_fd (fd, &error);
+  if (sock == NULL)
+    {
+      int saved_fd = fd;
+
+      g_assert_true (vsock_error_is_skip (error));
+      skip_vsock_error ("fd introspection", error);
+      g_clear_error (&error);
+      g_close (saved_fd, NULL);
+      return;
+    }
+
+  g_assert_cmpint (g_socket_get_family (sock), ==, G_SOCKET_FAMILY_VSOCK);
+  g_assert_cmpint (g_socket_get_socket_type (sock), ==, G_SOCKET_TYPE_STREAM);
+  g_assert_cmpint (g_socket_get_protocol (sock), ==, G_SOCKET_PROTOCOL_DEFAULT);
+
+  g_object_unref (sock);
+#else
+  g_test_skip ("AF_VSOCK not available at compile time");
+#endif
+}
+
+typedef struct
+{
+  GMainLoop *loop;
+  GSocketListener *listener;
+  GSocketConnection *client_connection;
+  GSocketConnection *server_connection;
+  GError *client_error;
+  GError *server_error;
+  guint pending;
+} VsockAsyncData;
+
+static void
+vsock_async_done (VsockAsyncData *data)
+{
+  data->pending--;
+
+  if (data->pending == 0)
+    g_main_loop_quit (data->loop);
+}
+
+static void
+vsock_client_connected_cb (GObject      *object,
+                           GAsyncResult *result,
+                           gpointer      user_data)
+{
+  VsockAsyncData *data = user_data;
+
+  data->client_connection = g_socket_client_connect_finish (G_SOCKET_CLIENT (object),
+                                                            result,
+                                                            &data->client_error);
+  if (data->client_connection == NULL)
+    g_socket_listener_close (data->listener);
+
+  vsock_async_done (data);
+}
+
+static void
+vsock_listener_accepted_cb (GObject      *object,
+                            GAsyncResult *result,
+                            gpointer      user_data)
+{
+  VsockAsyncData *data = user_data;
+
+  data->server_connection = g_socket_listener_accept_finish (G_SOCKET_LISTENER (object),
+                                                             result,
+                                                             NULL,
+                                                             &data->server_error);
+  vsock_async_done (data);
+}
+
+static gboolean
+vsock_async_timeout_cb (gpointer user_data)
+{
+  VsockAsyncData *data = user_data;
+
+  g_socket_listener_close (data->listener);
+  g_main_loop_quit (data->loop);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_vsock_listener_client_loopback (void)
+{
+#ifdef HAVE_LINUX_VM_SOCKETS_H
+  GSocketListener *listener = NULL;
+  GSocketClient *client = NULL;
+  GSocketAddress *address = NULL;
+  GSocketAddress *effective_address = NULL;
+  GSocketConnection *connection = NULL;
+  GSocketConnection *accepted_connection = NULL;
+  GError *error = NULL;
+  VsockAsyncData data = { 0 };
+  guint timeout_id;
+
+  listener = g_socket_listener_new ();
+  address = g_vsock_socket_address_new (G_VSOCK_SOCKET_ADDRESS_CID_LOCAL,
+                                        G_VSOCK_SOCKET_ADDRESS_PORT_ANY);
+
+  if (!g_socket_listener_add_address (listener,
+                                      address,
+                                      G_SOCKET_TYPE_STREAM,
+                                      G_SOCKET_PROTOCOL_DEFAULT,
+                                      NULL,
+                                      &effective_address,
+                                      &error))
+    {
+      g_assert_true (vsock_error_is_skip (error));
+      skip_vsock_error ("loopback listen", error);
+      g_clear_error (&error);
+      g_object_unref (address);
+      g_object_unref (listener);
+      return;
+    }
+
+  client = g_socket_client_new ();
+  connection = g_socket_client_connect (client,
+                                        G_SOCKET_CONNECTABLE (effective_address),
+                                        NULL,
+                                        &error);
+  if (connection == NULL)
+    {
+      g_assert_true (vsock_error_is_skip (error));
+      skip_vsock_error ("loopback connect", error);
+      g_clear_error (&error);
+      g_object_unref (effective_address);
+      g_object_unref (address);
+      g_object_unref (client);
+      g_object_unref (listener);
+      return;
+    }
+
+  g_assert_true (G_IS_SOCKET_CONNECTION (connection));
+  accepted_connection = g_socket_listener_accept (listener, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (G_IS_SOCKET_CONNECTION (accepted_connection));
+  g_clear_object (&accepted_connection);
+  g_clear_object (&connection);
+
+  data.loop = g_main_loop_new (NULL, FALSE);
+  data.listener = listener;
+  data.pending = 2;
+
+  g_socket_listener_accept_async (listener,
+                                  NULL,
+                                  vsock_listener_accepted_cb,
+                                  &data);
+  g_socket_client_connect_async (client,
+                                 G_SOCKET_CONNECTABLE (effective_address),
+                                 NULL,
+                                 vsock_client_connected_cb,
+                                 &data);
+
+  timeout_id = g_timeout_add_seconds (5, vsock_async_timeout_cb, &data);
+  g_main_loop_run (data.loop);
+  g_clear_handle_id (&timeout_id, g_source_remove);
+
+  g_assert_no_error (data.client_error);
+  g_assert_no_error (data.server_error);
+  g_assert_true (G_IS_SOCKET_CONNECTION (data.client_connection));
+  g_assert_true (G_IS_SOCKET_CONNECTION (data.server_connection));
+
+  g_clear_object (&data.client_connection);
+  g_clear_object (&data.server_connection);
+  g_main_loop_unref (data.loop);
+  g_object_unref (effective_address);
+  g_object_unref (address);
+  g_object_unref (client);
+  g_object_unref (listener);
+#else
+  g_test_skip ("AF_VSOCK not available at compile time");
+#endif
+}
+
 #ifdef G_OS_UNIX
 static GSocketConnection *
 create_connection_for_fd (int fd)
@@ -2813,6 +3059,10 @@ main (int   argc,
   g_test_add_func ("/socket/address", test_sockaddr);
   g_test_add_func ("/socket/unix-from-fd", test_unix_from_fd);
   g_test_add_func ("/socket/unix-connection", test_unix_connection);
+  g_test_add_func ("/socket/vsock-new", test_vsock_new);
+  g_test_add_func ("/socket/vsock-new-from-fd", test_vsock_new_from_fd);
+  g_test_add_func ("/socket/vsock-listener-client-loopback",
+                   test_vsock_listener_client_loopback);
 #ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-connection-ancillary-data", test_unix_connection_ancillary_data);
 #endif

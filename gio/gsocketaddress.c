@@ -34,10 +34,15 @@
 #include "gproxyaddressenumerator.h"
 #include "gsocketaddressenumerator.h"
 #include "gsocketconnectable.h"
+#include "gvsocksocketaddress.h"
 #include "glibintl.h"
 #include "gioenumtypes.h"
 
 #include "gunixsocketaddress.h"
+
+#ifdef HAVE_LINUX_VM_SOCKETS_H
+#include <linux/vm_sockets.h>
+#endif
 
 #ifdef G_OS_WIN32
 #include "giowin32-afunix.h"
@@ -301,6 +306,20 @@ g_socket_address_new_from_native (gpointer native,
       else
 	return g_unix_socket_address_new (addr->sun_path);
     }
+
+#ifdef HAVE_LINUX_VM_SOCKETS_H
+  if (family == AF_VSOCK)
+    {
+      struct sockaddr_vm *addr = (struct sockaddr_vm *) native;
+
+      if (len < sizeof (*addr))
+        return NULL;
+
+      return g_vsock_socket_address_new_with_flags (addr->svm_cid,
+                                                    addr->svm_port,
+                                                    addr->svm_flags);
+    }
+#endif
 
   return g_native_socket_address_new (native, len);
 }

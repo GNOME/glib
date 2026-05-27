@@ -2056,6 +2056,13 @@ foreach d : inet_defines
   val = cc.compute_int(d[0], prefix: inet_includes, guess: d[2])
   glibconfig_conf.set(d[1], val)
 endforeach
+if host_system == 'linux' and cc.has_header_symbol('sys/socket.h', 'AF_VSOCK')
+  glibconfig_conf.set('g_af_vsock', cc.compute_int('AF_VSOCK',
+                                                   prefix: inet_includes,
+                                                   guess: 40))
+else
+  glibconfig_conf.set('g_af_vsock', -1)
+endif
 
 if host_system == 'windows'
   have_ipv6 = true

@@ -201,6 +201,7 @@ typedef @g_pid_type@ GPid;
 #define GLIB_SYSDEF_AF_UNIX @g_af_unix@
 #define GLIB_SYSDEF_AF_INET @g_af_inet@
 #define GLIB_SYSDEF_AF_INET6 @g_af_inet6@
+#define GLIB_SYSDEF_AF_VSOCK @g_af_vsock@
 
 #define GLIB_SYSDEF_MSG_OOB @g_msg_oob@
 #define GLIB_SYSDEF_MSG_PEEK @g_msg_peek@

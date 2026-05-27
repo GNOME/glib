@@ -706,6 +706,7 @@ list_split_families (GList  *list,
             break;
           case G_SOCKET_FAMILY_INVALID:
           case G_SOCKET_FAMILY_UNIX:
+          case G_SOCKET_FAMILY_VSOCK:
             g_assert_not_reached ();
         }
 

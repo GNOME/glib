@@ -79,6 +79,14 @@ if host_system != 'windows'
     endif
   endif
 
+  if host_system == 'linux' and cc.has_header('linux/vm_sockets.h')
+    if cc.has_type('struct sockaddr_vm',
+                   prefix : '''#include <sys/socket.h>
+                               #include <linux/vm_sockets.h>''')
+      glib_conf.set('HAVE_LINUX_VM_SOCKETS_H', 1)
+    endif
+  endif
+
   # dn_comp()
   if cc.links('''#include <resolv.h>
                  int main (int argc, char ** argv) {
@@ -629,6 +637,7 @@ gio_base_sources = files(
   'gunixfdlist.c',
   'gunixcredentialsmessage.c',
   'gunixsocketaddress.c',
+  'gvsocksocketaddress.c',
   'gvfs.c',
   'gvolume.c',
   'gvolumemonitor.c',
@@ -776,6 +785,7 @@ gio_headers = files(
   'gunixcredentialsmessage.h',
   'gunixfdlist.h',
   'gunixsocketaddress.h',
+  'gvsocksocketaddress.h',
   'gvfs.h',
   'gvolume.h',
   'gvolumemonitor.h',

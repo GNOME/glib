@@ -593,6 +593,13 @@ g_socket_details_from_fd (GSocket *socket)
        socket->priv->protocol = G_SOCKET_PROTOCOL_DEFAULT;
        break;
 
+#ifdef HAVE_LINUX_VM_SOCKETS_H
+     case G_SOCKET_FAMILY_VSOCK:
+       socket->priv->family = G_SOCKET_FAMILY_VSOCK;
+       socket->priv->protocol = G_SOCKET_PROTOCOL_DEFAULT;
+       break;
+#endif
+
      default:
        socket->priv->family = G_SOCKET_FAMILY_INVALID;
        break;
@@ -750,6 +757,13 @@ g_socket_create_socket (GSocketFamily   family,
 
   if (family <= 0)
     {
+      if (family == G_SOCKET_FAMILY_VSOCK)
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               _("Vsock sockets not supported on this system"));
+          return -1;
+        }
+
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
                    _("Unable to create socket: %s"), _("Unknown family was specified"));
       return -1;

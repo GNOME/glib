@@ -825,10 +825,11 @@ typedef enum /*< flags >*/ {
  * @G_SOCKET_FAMILY_IPV4: the IPv4 family
  * @G_SOCKET_FAMILY_IPV6: the IPv6 family
  * @G_SOCKET_FAMILY_UNIX: the UNIX domain family
+ * @G_SOCKET_FAMILY_VSOCK: the Linux virtio-vsock family. Since 2.90
  *
  * The protocol family of a #GSocketAddress. (These values are
- * identical to the system defines %AF_INET, %AF_INET6 and %AF_UNIX,
- * if available.)
+ * identical to the system defines %AF_INET, %AF_INET6, %AF_UNIX, and
+ * %AF_VSOCK, if available.)
  *
  * Since: 2.22
  */
@@ -836,7 +837,8 @@ typedef enum {
   G_SOCKET_FAMILY_INVALID,
   G_SOCKET_FAMILY_UNIX = GLIB_SYSDEF_AF_UNIX,
   G_SOCKET_FAMILY_IPV4 = GLIB_SYSDEF_AF_INET,
-  G_SOCKET_FAMILY_IPV6 = GLIB_SYSDEF_AF_INET6
+  G_SOCKET_FAMILY_IPV6 = GLIB_SYSDEF_AF_INET6,
+  G_SOCKET_FAMILY_VSOCK GIO_AVAILABLE_ENUMERATOR_IN_2_90 = GLIB_SYSDEF_AF_VSOCK
 } GSocketFamily;
 
 /**
