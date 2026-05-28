@@ -544,6 +544,67 @@ test_g_file_info_creation_time (void)
   g_date_time_unref (dt_before_epoch_returned);
 }
 
+static void
+test_g_file_info_icons (void)
+{
+  GFile *file = NULL;
+  GFileIOStream *io_stream = NULL;
+  GError *error = NULL;
+  GFileInfo *info, *fast_info;
+  GIcon *icon, *symbolic_icon;
+  GIcon *fast_icon, *fast_symbolic_icon;
+
+  g_test_summary ("Test fetching icons for a file.");
+
+  file = g_file_new_tmp ("g-file-info-test-XXXXXX", &io_stream, &error);
+  g_assert_no_error (error);
+
+  info = g_file_query_info (file,
+                            G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                            G_FILE_ATTRIBUTE_STANDARD_ICON ","
+                            G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_ICON));
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON));
+
+  icon = g_file_info_get_icon (info);
+  symbolic_icon = g_file_info_get_symbolic_icon (info);
+
+  g_assert_nonnull (icon);
+  g_assert_nonnull (symbolic_icon);
+
+  /* Query icons with fast content type to skip implicit normal content type */
+  fast_info = g_file_query_info (file,
+                                 G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE ","
+                                 G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                 G_FILE_ATTRIBUTE_STANDARD_ICON ","
+                                 G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON,
+                                 G_FILE_QUERY_INFO_NONE,
+                                 NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_false (g_file_info_has_attribute (fast_info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE));
+  g_assert_true (g_file_info_has_attribute (fast_info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE));
+  g_assert_true (g_file_info_has_attribute (fast_info, G_FILE_ATTRIBUTE_STANDARD_ICON));
+  g_assert_true (g_file_info_has_attribute (fast_info, G_FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON));
+
+  fast_icon = g_file_info_get_icon (fast_info);
+  fast_symbolic_icon = g_file_info_get_symbolic_icon (fast_info);
+
+  g_assert_nonnull (fast_icon);
+  g_assert_nonnull (fast_symbolic_icon);
+
+  /* Clean up. */
+  g_clear_object (&io_stream);
+  g_file_delete (file, NULL, NULL);
+  g_clear_object (&file);
+  g_clear_object (&info);
+  g_clear_object (&fast_info);
+}
+
 #ifdef G_OS_WIN32
 static void
 test_internal_enhanced_stdio (void)
@@ -1222,6 +1283,7 @@ main (int   argc,
   g_test_add_func ("/g-file-info/test_g_file_info/modification-time", test_g_file_info_modification_time);
   g_test_add_func ("/g-file-info/test_g_file_info/access-time", test_g_file_info_access_time);
   g_test_add_func ("/g-file-info/test_g_file_info/creation-time", test_g_file_info_creation_time);
+  g_test_add_func ("/g-file-info/test_g_file_info/icons", test_g_file_info_icons);
 #ifdef G_OS_WIN32
   g_test_add_func ("/g-file-info/internal-enhanced-stdio", test_internal_enhanced_stdio);
 #endif

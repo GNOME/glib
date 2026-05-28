@@ -1913,6 +1913,8 @@ _g_local_file_info_get (const char             *basename,
   GVfs *vfs;
   GVfsClass *class;
   guint64 device;
+  gboolean query_full_content_type, query_fast_content_type, query_icons;
+  char *icon_content_type;
 
   info = g_file_info_new ();
 
@@ -2047,12 +2049,18 @@ _g_local_file_info_get (const char             *basename,
         g_file_info_set_symlink_target (info, symlink_target);
     }
 
-  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_STANDARD_CONTENT_TYPE) ||
-      _g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_STANDARD_ICON) ||
-      _g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_STANDARD_SYMBOLIC_ICON))
+  query_full_content_type = _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                                                  G_FILE_ATTRIBUTE_ID_STANDARD_CONTENT_TYPE);
+  query_fast_content_type = _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                                                  G_FILE_ATTRIBUTE_ID_STANDARD_FAST_CONTENT_TYPE);
+  query_icons = _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                                      G_FILE_ATTRIBUTE_ID_STANDARD_ICON) ||
+                _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                                      G_FILE_ATTRIBUTE_ID_STANDARD_SYMBOLIC_ICON);
+  icon_content_type = NULL;
+
+  if (query_full_content_type ||
+      (query_icons && !query_fast_content_type))
     {
       char *content_type = get_content_type (basename, path, stat_ok ? &statbuf : NULL, is_symlink, symlink_broken, flags, FALSE);
 
@@ -2060,45 +2068,49 @@ _g_local_file_info_get (const char             *basename,
 	{
 	  g_file_info_set_content_type (info, content_type);
 
-	  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
-                                                     G_FILE_ATTRIBUTE_ID_STANDARD_ICON)
-               || _g_file_attribute_matcher_matches_id (attribute_matcher,
-                                                        G_FILE_ATTRIBUTE_ID_STANDARD_SYMBOLIC_ICON))
-	    {
-	      GIcon *icon;
+          if (query_icons && (query_full_content_type || !query_fast_content_type))
+            icon_content_type = g_steal_pointer (&content_type);
 
-              /* non symbolic icon */
-              icon = get_icon (path, content_type, FALSE);
-              if (icon != NULL)
-                {
-                  g_file_info_set_icon (info, icon);
-                  g_object_unref (icon);
-                }
-
-              /* symbolic icon */
-              icon = get_icon (path, content_type, TRUE);
-              if (icon != NULL)
-                {
-                  g_file_info_set_symbolic_icon (info, icon);
-                  g_object_unref (icon);
-                }
-
-	    }
-	  
-	  g_free (content_type);
-	}
+          g_free (content_type);
+        }
     }
 
-  if (_g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_STANDARD_FAST_CONTENT_TYPE))
+  if (query_fast_content_type)
     {
       char *content_type = get_content_type (basename, path, stat_ok ? &statbuf : NULL, is_symlink, symlink_broken, flags, TRUE);
       
       if (content_type)
 	{
 	  _g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_FAST_CONTENT_TYPE, content_type);
-	  g_free (content_type);
-	}
+
+          if (query_icons && icon_content_type == NULL)
+            icon_content_type = g_steal_pointer (&content_type);
+
+          g_free (content_type);
+        }
+    }
+
+  if (icon_content_type != NULL)
+    {
+      GIcon *icon;
+
+      /* non symbolic icon */
+      icon = get_icon (path, icon_content_type, FALSE);
+      if (icon != NULL)
+        {
+          g_file_info_set_icon (info, icon);
+          g_object_unref (icon);
+        }
+
+      /* symbolic icon */
+      icon = get_icon (path, icon_content_type, TRUE);
+      if (icon != NULL)
+        {
+          g_file_info_set_symbolic_icon (info, icon);
+          g_object_unref (icon);
+        }
+
+      g_free (icon_content_type);
     }
 
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
