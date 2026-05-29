@@ -64,6 +64,10 @@
 /* See https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-signature
  * This is 64 containers plus 1 value within them. */
 #define G_DBUS_MAX_TYPE_DEPTH (64 + 1)
+/* The D-Bus specification limits signatures to 255 bytes. */
+#define G_DBUS_MAX_SIGNATURE_LENGTH_BYTES 255
+/* Add two tuple brackets and a terminating nul byte. */
+#define G_DBUS_TUPLED_SIGNATURE_BUFFER_SIZE (G_DBUS_MAX_SIGNATURE_LENGTH_BYTES + 3)
 
 typedef struct _GMemoryBuffer GMemoryBuffer;
 struct _GMemoryBuffer
@@ -72,17 +76,46 @@ struct _GMemoryBuffer
   gsize valid_len;
   gsize pos;
   gchar *data;
-  GDataStreamByteOrder byte_order;
+  gboolean byteswapped;
 };
 
-static gboolean
-g_memory_buffer_is_byteswapped (GMemoryBuffer *mbuf)
+static void
+g_memory_buffer_set_byte_order (GMemoryBuffer        *mbuf,
+                                GDataStreamByteOrder  byte_order)
 {
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
-  return mbuf->byte_order == G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
+  mbuf->byteswapped = byte_order == G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
 #else
-  return mbuf->byte_order == G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
+  mbuf->byteswapped = byte_order == G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
 #endif
+}
+
+static inline gboolean
+g_memory_buffer_is_byteswapped (GMemoryBuffer *mbuf)
+{
+  return mbuf->byteswapped;
+}
+
+static inline gboolean
+g_memory_buffer_has_available (GMemoryBuffer *mbuf,
+                               gsize          count)
+{
+  return mbuf->pos <= mbuf->valid_len && count <= mbuf->valid_len - mbuf->pos;
+}
+
+static gboolean
+validate_signature_length (gsize    signature_len,
+                           GError **error)
+{
+  if (signature_len <= G_DBUS_MAX_SIGNATURE_LENGTH_BYTES)
+    return TRUE;
+
+  g_set_error (error,
+               G_IO_ERROR,
+               G_IO_ERROR_INVALID_ARGUMENT,
+               _("D-Bus signature exceeds maximum length of %u bytes"),
+               G_DBUS_MAX_SIGNATURE_LENGTH_BYTES);
+  return FALSE;
 }
 
 static guchar
@@ -110,7 +143,7 @@ g_memory_buffer_read_int16 (GMemoryBuffer  *mbuf,
 
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
-  if (mbuf->pos > mbuf->valid_len - 2)
+  if (!g_memory_buffer_has_available (mbuf, 2))
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -136,7 +169,7 @@ g_memory_buffer_read_uint16 (GMemoryBuffer  *mbuf,
 
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
 
-  if (mbuf->pos > mbuf->valid_len - 2)
+  if (!g_memory_buffer_has_available (mbuf, 2))
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -162,7 +195,7 @@ g_memory_buffer_read_int32 (GMemoryBuffer  *mbuf,
 
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
-  if (mbuf->pos > mbuf->valid_len - 4)
+  if (!g_memory_buffer_has_available (mbuf, 4))
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -188,7 +221,7 @@ g_memory_buffer_read_uint32 (GMemoryBuffer  *mbuf,
 
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
 
-  if (mbuf->pos > mbuf->valid_len - 4)
+  if (!g_memory_buffer_has_available (mbuf, 4))
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -214,7 +247,7 @@ g_memory_buffer_read_int64 (GMemoryBuffer  *mbuf,
 
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
-  if (mbuf->pos > mbuf->valid_len - 8)
+  if (!g_memory_buffer_has_available (mbuf, 8))
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -240,7 +273,7 @@ g_memory_buffer_read_uint64 (GMemoryBuffer  *mbuf,
 
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
 
-  if (mbuf->pos > mbuf->valid_len - 8)
+  if (!g_memory_buffer_has_available (mbuf, 8))
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -261,26 +294,17 @@ g_memory_buffer_read_uint64 (GMemoryBuffer  *mbuf,
 #define MIN_ARRAY_SIZE  128
 
 static void
-array_resize (GMemoryBuffer  *mbuf,
-              gsize           size)
+g_memory_buffer_grow (GMemoryBuffer *mbuf,
+                      gsize          size)
 {
   gpointer data;
-  gsize len;
 
-  if (mbuf->len == size)
-    return;
+  g_assert (size > mbuf->len);
 
-  len = mbuf->len;
   data = g_realloc (mbuf->data, size);
-
-  if (size > len)
-    memset ((guint8 *)data + len, 0, size - len);
 
   mbuf->data = data;
   mbuf->len = size;
-
-  if (mbuf->len < mbuf->valid_len)
-    mbuf->valid_len = mbuf->len;
 }
 
 static gboolean
@@ -313,7 +337,7 @@ g_memory_buffer_write (GMemoryBuffer  *mbuf,
         return FALSE;
 
       new_size = MAX (new_size, MIN_ARRAY_SIZE);
-      array_resize (mbuf, new_size);
+      g_memory_buffer_grow (mbuf, new_size);
     }
 
   dest = (guint8 *)mbuf->data + mbuf->pos;
@@ -337,18 +361,8 @@ static gboolean
 g_memory_buffer_put_int16 (GMemoryBuffer  *mbuf,
 			   gint16          data)
 {
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      data = GINT16_TO_BE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      data = GINT16_TO_LE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+  if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
+    data = (gint16) GUINT16_SWAP_LE_BE (data);
   
   return g_memory_buffer_write (mbuf, &data, 2);
 }
@@ -357,18 +371,8 @@ static gboolean
 g_memory_buffer_put_uint16 (GMemoryBuffer  *mbuf,
 			    guint16         data)
 {
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      data = GUINT16_TO_BE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      data = GUINT16_TO_LE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+  if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
+    data = GUINT16_SWAP_LE_BE (data);
   
   return g_memory_buffer_write (mbuf, &data, 2);
 }
@@ -377,18 +381,8 @@ static gboolean
 g_memory_buffer_put_int32 (GMemoryBuffer  *mbuf,
 			   gint32          data)
 {
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      data = GINT32_TO_BE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      data = GINT32_TO_LE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+  if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
+    data = (gint32) GUINT32_SWAP_LE_BE (data);
   
   return g_memory_buffer_write (mbuf, &data, 4);
 }
@@ -397,18 +391,8 @@ static gboolean
 g_memory_buffer_put_uint32 (GMemoryBuffer  *mbuf,
 			    guint32         data)
 {
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      data = GUINT32_TO_BE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      data = GUINT32_TO_LE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+  if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
+    data = GUINT32_SWAP_LE_BE (data);
   
   return g_memory_buffer_write (mbuf, &data, 4);
 }
@@ -417,18 +401,8 @@ static gboolean
 g_memory_buffer_put_int64 (GMemoryBuffer  *mbuf,
 			   gint64          data)
 {
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      data = GINT64_TO_BE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      data = GINT64_TO_LE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+  if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
+    data = (gint64) GUINT64_SWAP_LE_BE (data);
   
   return g_memory_buffer_write (mbuf, &data, 8);
 }
@@ -437,18 +411,8 @@ static gboolean
 g_memory_buffer_put_uint64 (GMemoryBuffer  *mbuf,
 			    guint64         data)
 {
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      data = GUINT64_TO_BE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      data = GUINT64_TO_LE (data);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+  if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
+    data = GUINT64_SWAP_LE_BE (data);
   
   return g_memory_buffer_write (mbuf, &data, 8);
 }
@@ -1499,8 +1463,15 @@ validate_headers (GDBusMessage  *message,
             goto out;
           break;
         case G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE:
-          if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_SIGNATURE, error))
-            goto out;
+          {
+            gsize signature_len;
+
+            if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_SIGNATURE, error))
+              goto out;
+            g_variant_get_string (header_value, &signature_len);
+            if (!validate_signature_length (signature_len, error))
+              goto out;
+          }
           break;
         case G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS:
           if (!validate_header (message, field_type, header_value, G_VARIANT_TYPE_UINT32, error))
@@ -2393,11 +2364,11 @@ g_dbus_message_new_from_blob (guchar                *blob,
   switch (endianness)
     {
     case 'l':
-      mbuf.byte_order = G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
+      g_memory_buffer_set_byte_order (&mbuf, G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN);
       message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN;
       break;
     case 'B':
-      mbuf.byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
+      g_memory_buffer_set_byte_order (&mbuf, G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN);
       message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN;
       break;
     default:
@@ -2730,7 +2701,9 @@ append_value_to_blob (GVariant            *value,
           gsize len;
           const gchar *v = g_variant_get_string (value, &len);
           g_assert (g_variant_is_signature (v));
-          g_memory_buffer_put_byte (mbuf, len);
+          if (!validate_signature_length (len, error))
+            goto fail;
+          g_memory_buffer_put_byte (mbuf, (guchar) len);
           g_memory_buffer_put_string (mbuf, v);
           g_memory_buffer_put_byte (mbuf, '\0');
         }
@@ -2796,7 +2769,7 @@ append_value_to_blob (GVariant            *value,
               {
                 GVariant *use_value;
 
-                if (g_memory_buffer_is_byteswapped (mbuf))
+                if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
                   use_value = g_variant_byteswap (value);
                 else
                   use_value = g_variant_ref (value);
@@ -2882,9 +2855,17 @@ append_value_to_blob (GVariant            *value,
             {
               GVariant *child;
               const gchar *signature;
+              gsize signature_len;
+
               child = g_variant_get_child_value (value, 0);
               signature = g_variant_get_type_string (child);
-              g_memory_buffer_put_byte (mbuf, (guint8) strlen (signature));  /* signature is already validated to be this short */
+              signature_len = strlen (signature);
+              if (!validate_signature_length (signature_len, error))
+                {
+                  g_variant_unref (child);
+                  goto fail;
+                }
+              g_memory_buffer_put_byte (mbuf, (guchar) signature_len);
               g_memory_buffer_put_string (mbuf, signature);
               g_memory_buffer_put_byte (mbuf, '\0');
               if (!append_value_to_blob (child,
@@ -3009,14 +2990,14 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   mbuf.len = MIN_ARRAY_SIZE;
   mbuf.data = g_malloc (mbuf.len);
 
-  mbuf.byte_order = G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN;
+  g_memory_buffer_set_byte_order (&mbuf, G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN);
   switch (message->byte_order)
     {
     case G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN:
-      mbuf.byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
+      g_memory_buffer_set_byte_order (&mbuf, G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN);
       break;
     case G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN:
-      mbuf.byte_order = G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
+      g_memory_buffer_set_byte_order (&mbuf, G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN);
       break;
     }
 
@@ -3096,7 +3077,10 @@ g_dbus_message_to_blob (GDBusMessage          *message,
       signature_str = g_variant_get_string (signature, NULL);
   if (message->body != NULL)
     {
-      gchar *tupled_signature_str;
+      const gchar *body_type_string;
+      gsize signature_str_len;
+      gchar tupled_signature_str[G_DBUS_TUPLED_SIGNATURE_BUFFER_SIZE];
+
       if (signature == NULL)
         {
           g_set_error (error,
@@ -3106,18 +3090,27 @@ g_dbus_message_to_blob (GDBusMessage          *message,
                        g_variant_get_type_string (message->body));
           goto out;
         }
-      tupled_signature_str = g_strdup_printf ("(%s)", signature_str);
-      if (g_strcmp0 (tupled_signature_str, g_variant_get_type_string (message->body)) != 0)
+
+      /* Essentially `printf ("(%s)", signature_str)` but optimised to avoid
+       * the allocation since we're on a fast path. */
+      signature_str_len = strlen (signature_str);
+      g_assert (signature_str_len <= G_DBUS_MAX_SIGNATURE_LENGTH_BYTES);
+
+      memcpy (tupled_signature_str + 1, signature_str, signature_str_len);
+      tupled_signature_str[0] = '(';
+      tupled_signature_str[signature_str_len + 1] = ')';
+      tupled_signature_str[signature_str_len + 2] = '\0';
+
+      body_type_string = g_variant_get_type_string (message->body);
+      if (strcmp (tupled_signature_str, body_type_string) != 0)
         {
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Message body has type signature “%s” but signature in the header field is “%s”"),
-                       g_variant_get_type_string (message->body), tupled_signature_str);
-          g_free (tupled_signature_str);
+                       body_type_string, tupled_signature_str);
           goto out;
         }
-      g_free (tupled_signature_str);
       if (!append_body_to_blob (message->body, &mbuf, error))
         goto out;
     }
