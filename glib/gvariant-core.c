@@ -287,6 +287,12 @@ g_variant_unlock (GVariant *value)
   g_bit_unlock (&value->state, 0);
 }
 
+static inline gboolean
+g_variant_is_serialised (GVariant *value)
+{
+  return (g_atomic_int_get (&value->state) & STATE_SERIALISED) != 0;
+}
+
 /* < private >
  * g_variant_release_children:
  * @value: a #GVariant
@@ -1075,6 +1081,9 @@ g_variant_is_floating (GVariant *value)
 gsize
 g_variant_get_size (GVariant *value)
 {
+  if (g_variant_is_serialised (value))
+    return value->size;
+
   g_variant_lock (value);
   g_variant_ensure_size (value);
   g_variant_unlock (value);
@@ -1119,6 +1128,9 @@ g_variant_get_size (GVariant *value)
 gconstpointer
 g_variant_get_data (GVariant *value)
 {
+  if (g_variant_is_serialised (value))
+    return value->contents.serialised.data;
+
   g_variant_lock (value);
   g_variant_ensure_serialised (value);
   g_variant_unlock (value);
@@ -1147,9 +1159,12 @@ g_variant_get_data_as_bytes (GVariant *value)
   gsize bytes_size = 0;
   gsize size;
 
-  g_variant_lock (value);
-  g_variant_ensure_serialised (value);
-  g_variant_unlock (value);
+  if (!g_variant_is_serialised (value))
+    {
+      g_variant_lock (value);
+      g_variant_ensure_serialised (value);
+      g_variant_unlock (value);
+    }
 
   if (value->contents.serialised.bytes != NULL)
     bytes_data = g_bytes_get_data (value->contents.serialised.bytes, &bytes_size);
@@ -1199,6 +1214,9 @@ gsize
 g_variant_n_children (GVariant *value)
 {
   gsize n_children;
+
+  if (g_variant_is_serialised (value))
+    return g_variant_serialised_n_children (g_variant_to_serialised (value));
 
   g_variant_lock (value);
 
@@ -1419,6 +1437,15 @@ g_variant_store (GVariant *value,
                  gpointer  data)
 {
   g_return_if_fail (data != NULL);
+
+  if (g_variant_is_serialised (value))
+    {
+      if (value->contents.serialised.data != NULL)
+        memcpy (data, value->contents.serialised.data, value->size);
+      else
+        memset (data, 0, value->size);
+      return;
+    }
 
   g_variant_lock (value);
 
