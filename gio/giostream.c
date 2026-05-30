@@ -839,7 +839,7 @@ splice_cancelled_cb (GCancellable *cancellable,
 }
 
 /**
- * g_io_stream_splice_async:
+ * g_io_stream_splice_async: (finish-func splice_finish):
  * @stream1: a #GIOStream.
  * @stream2: a #GIOStream.
  * @flags: a set of #GIOStreamSpliceFlags.
