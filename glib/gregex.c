@@ -1399,6 +1399,10 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  * There were formerly some restrictions on the pattern for partial matching.
  * The restrictions no longer apply.
  *
+ * If the match was partial g_match_info_fetch(), g_match_info_fetch_pos()
+ * and g_match_info_fetch_all() can be called to retrieve the text and positions
+ * of the entire match, i.e. only for sub expression `0`.
+ *
  * See pcrepartial(3) for more information on partial matching.
  *
  * Returns: %TRUE if the match was partial, %FALSE otherwise
@@ -1488,6 +1492,8 @@ g_match_info_expand_references (const GMatchInfo  *match_info,
  * If @match_num is a valid sub pattern but it didn't match anything
  * (e.g. sub pattern 1, matching "b" against "(a)?b") then an empty
  * string is returned.
+ * When a partial match is reported via g_match_info_is_partial_match()
+ * only the full text of the match can be queried (@match_num must be `0`).
  *
  * If the match was obtained using the DFA algorithm, that is using
  * g_regex_match_all() or g_regex_match_all_full(), the retrieved
@@ -1539,6 +1545,8 @@ g_match_info_fetch (const GMatchInfo *match_info,
  * 
  * Valid values for @match_num are `0` for the full text of the match,
  * `1` for the first paren set, `2` for the second, and so on.
+ * When a partial match is reported via g_match_info_is_partial_match()
+ * only the full text of the match can be queried (@match_num must be `0`).
  *
  * As @end_pos is set to the byte after the final byte of the match (on success),
  * the length of the match can be calculated as `end_pos - start_pos`.
@@ -1753,6 +1761,7 @@ g_match_info_fetch_pos (const GMatchInfo *match_info,
                         gint             *end_pos)
 {
   size_t match_num_unsigned;
+  gint matches;
 
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (match_num >= 0, FALSE);
@@ -1760,20 +1769,29 @@ g_match_info_fetch_pos (const GMatchInfo *match_info,
   match_num_unsigned = (size_t) match_num;
 
   /* check whether there was an error */
-  if (match_info->matches < 0)
-    return FALSE;
-
-  /* make sure the sub expression number they're requesting is less than
-   * the total number of sub expressions in the regex. When matching all
-   * (g_regex_match_all()), also compare against the number of matches */
-  if (match_num_unsigned >= MAX ((size_t) match_info->n_subpatterns + 1, (size_t) match_info->matches))
-    return FALSE;
+  if (match_info->matches == PCRE2_ERROR_PARTIAL)
+    {
+      if (match_num_unsigned >= 1)
+        return FALSE;
+      matches = 1;
+    }
+  else
+    {
+      matches = match_info->matches;
+      if (matches < 0)
+        return FALSE;
+      /* make sure the sub expression number they're requesting is less than
+       * the total number of sub expressions in the regex. When matching all
+       * (g_regex_match_all()), also compare against the number of matches */
+      if (match_num_unsigned >= MAX ((size_t) match_info->n_subpatterns + 1, (size_t) matches))
+        return FALSE;
+    }
 
   if (start_pos != NULL)
-    *start_pos = (match_num_unsigned < (size_t) match_info->matches) ? match_info->offsets[2 * match_num_unsigned] : -1;
+    *start_pos = (match_num_unsigned < (size_t) matches) ? match_info->offsets[2 * match_num_unsigned] : -1;
 
   if (end_pos != NULL)
-    *end_pos = (match_num_unsigned < (size_t) match_info->matches) ? match_info->offsets[2 * match_num_unsigned + 1] : -1;
+    *end_pos = (match_num_unsigned < (size_t) matches) ? match_info->offsets[2 * match_num_unsigned + 1] : -1;
 
   return TRUE;
 }
@@ -1904,6 +1922,9 @@ g_match_info_fetch_named_pos (const GMatchInfo *match_info,
  * If a sub pattern didn't match anything (e.g. sub pattern 1, matching
  * "b" against "(a)?b") then an empty string is inserted.
  *
+ * When a partial match is reported via g_match_info_is_partial_match()
+ * only the full text of the match will be returned, i.e. an array of size 1.
+ *
  * If the last match was obtained using the DFA algorithm, that is using
  * g_regex_match_all() or g_regex_match_all_full(), the retrieved
  * strings are not that matched by sets of parentheses but that of the
@@ -1923,15 +1944,16 @@ gchar **
 g_match_info_fetch_all (const GMatchInfo *match_info)
 {
   gchar **result;
-  gint i;
+  gint matches, i;
 
   g_return_val_if_fail (match_info != NULL, NULL);
 
-  if (match_info->matches < 0)
+  matches = (match_info->matches == PCRE2_ERROR_PARTIAL) ? 1 : match_info->matches;
+  if (matches < 0)
     return NULL;
 
-  result = g_new (gchar *, match_info->matches + 1);
-  for (i = 0; i < match_info->matches; i++)
+  result = g_new (gchar *, matches + 1);
+  for (i = 0; i < matches; i++)
     result[i] = g_match_info_fetch (match_info, i);
   result[i] = NULL;
 
