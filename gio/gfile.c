@@ -8792,7 +8792,7 @@ g_file_replace_contents_async  (GFile               *file,
 }
 
 /**
- * g_file_replace_contents_bytes_async:
+ * g_file_replace_contents_bytes_async: (finish-func replace_contents_finish):
  * @file: input #GFile
  * @contents: a #GBytes
  * @etag: (nullable): a new [entity tag](#entity-tags) for the @file, or %NULL
