@@ -378,7 +378,7 @@ To print or scan values of this type, use
 A signed integer guaranteed to be 32 bits on all platforms.
 
 The `int32_t` type should be preferred in new code, unless
-consistency with pre-existing APIs requires use of `gint16`
+consistency with pre-existing APIs requires use of `gint32`
 (see [`gsize`](#gsize) for more details).
 
 Values of this type can range from `G_MININT32` (= -2,147,483,648)
