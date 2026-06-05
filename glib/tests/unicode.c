@@ -542,8 +542,7 @@ test_turkish_strupdown (void)
   if (oldlocale == NULL)
     {
       g_test_skip ("locale tr_TR not available");
-      g_free (old_lang);
-      return;
+      goto out;
     }
 
 #ifdef G_OS_WIN32
@@ -568,9 +567,12 @@ test_turkish_strupdown (void)
   g_free (str_up);
   g_free (str_down);
 
-  setlocale (LC_ALL, oldlocale);
+out:
+  if (oldlocale != NULL)
+    setlocale (LC_ALL, oldlocale);
 #ifdef G_OS_WIN32
-  SetThreadLocale (old_lcid);
+  if (oldlocale != NULL)
+    SetThreadLocale (old_lcid);
 #endif
   g_free (oldlocale);
   if (old_lc_all)
