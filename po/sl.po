@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-05-19 16:57+0000\n"
-"PO-Revision-Date: 2026-05-28 09:33+0200\n"
+"POT-Creation-Date: 2026-06-04 18:14+0000\n"
+"PO-Revision-Date: 2026-06-05 10:10+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -771,18 +771,23 @@ msgstr "Podrejeno drevo je že izvoženo za %s"
 msgid "Object does not exist at path “%s”"
 msgstr "Predmeta na poti »%s« ni mogoče najti."
 
-#: gio/gdbusmessage.c:1356
+#: gio/gdbusmessage.c:116
+#, c-format
+msgid "D-Bus signature exceeds maximum length of %u bytes"
+msgstr "Podpis D-Bus presega največjo dolžino %u bajtov"
+
+#: gio/gdbusmessage.c:1320
 #, c-format
 msgid "%s message: %s header field is invalid; expected a value of type ‘%s’"
 msgstr ""
 "Sporočilo %s: polje glave %s ni veljavno; pričakovana je vrednost vrste »%s«"
 
-#: gio/gdbusmessage.c:1379
+#: gio/gdbusmessage.c:1343
 #, c-format
 msgid "%s message: %s header field is missing or invalid"
 msgstr "Sporočilo %s: manjka ali pa ni vpisane vrednosti polja glave %s"
 
-#: gio/gdbusmessage.c:1418
+#: gio/gdbusmessage.c:1382
 #, c-format
 msgid "%s message: INVALID header field supplied"
 msgstr "Sporočilo %s: podano je napačno polje glave INVALID"
@@ -790,35 +795,35 @@ msgstr "Sporočilo %s: podano je napačno polje glave INVALID"
 #. Translators: The first placeholder is a D-Bus message type,
 #. * the second is the name of a header field and the third is
 #. * a value that is reserved for the given field.
-#: gio/gdbusmessage.c:1432 gio/gdbusmessage.c:1456
+#: gio/gdbusmessage.c:1396 gio/gdbusmessage.c:1420
 #, c-format
 msgid "%s message: %s header field is using the reserved value %s"
 msgstr "Sporočilo %s: polje glave %s uporablja zadržano vrednost %s"
 
-#: gio/gdbusmessage.c:1447
+#: gio/gdbusmessage.c:1411
 #, c-format
 msgid ""
 "%s message: INTERFACE header field does not contain a valid interface name"
 msgstr ""
 "Sporočilo %s: polje glave INTERFACE nima vpisanega veljavnega imena vmesnika"
 
-#: gio/gdbusmessage.c:1471
+#: gio/gdbusmessage.c:1435
 #, c-format
 msgid "%s message: MEMBER header field does not contain a valid member name"
 msgstr "Sporočilo %s: polje glave MEMBER nima vpisanega veljavnega imena"
 
-#: gio/gdbusmessage.c:1484
+#: gio/gdbusmessage.c:1448
 #, c-format
 msgid "%s message: ERROR_NAME header field does not contain a valid error name"
 msgstr ""
 "Sporočilo %s: polje glave ERROR_NAME nima vpisanega veljavnega naziva napake"
 
-#: gio/gdbusmessage.c:1523
+#: gio/gdbusmessage.c:1494
 msgid "type is INVALID"
 msgstr "vrsta je neveljavna"
 
 # Double multiple plural?
-#: gio/gdbusmessage.c:1593 gio/gdbusmessage.c:1653
+#: gio/gdbusmessage.c:1564 gio/gdbusmessage.c:1624
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
@@ -827,12 +832,12 @@ msgstr[1] "Med poskusom branja %lu bajtov je bil prejet le %lu"
 msgstr[2] "Med poskusom branja %lu bajtov sta bila prejeta le %lu"
 msgstr[3] "Med poskusom branja %lu bajtov so bili prejeti le %lu"
 
-#: gio/gdbusmessage.c:1607
+#: gio/gdbusmessage.c:1578
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "Po nizu »%s« je pričakovan bajt NUL, vendar je bil zaznan %d"
 
-#: gio/gdbusmessage.c:1626
+#: gio/gdbusmessage.c:1597
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -842,21 +847,21 @@ msgstr ""
 "bajtov na bajtnem odmiku %d (dolžina niza %d). Do takrat veljaven UTF-8 niz "
 "je »%s«"
 
-#: gio/gdbusmessage.c:1690 gio/gdbusmessage.c:1966 gio/gdbusmessage.c:2177
+#: gio/gdbusmessage.c:1661 gio/gdbusmessage.c:1937 gio/gdbusmessage.c:2148
 msgid "Value nested too deeply"
 msgstr "Vrednost je gnezdene pregloboko"
 
-#: gio/gdbusmessage.c:1858
+#: gio/gdbusmessage.c:1829
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Razčlenjena vrednost »%s« ni veljavna pot predmeta vodila D-Bus"
 
-#: gio/gdbusmessage.c:1882
+#: gio/gdbusmessage.c:1853
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Razčlenjena vrednost »%s« ni veljaven podpis vodila D-Bus"
 
-#: gio/gdbusmessage.c:1933
+#: gio/gdbusmessage.c:1904
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -875,7 +880,7 @@ msgstr[3] ""
 "Najdeno je polje dolžine %u bajtov, največja dovoljena pa je 2<<26 bajtov "
 "(64 MiB)."
 
-#: gio/gdbusmessage.c:1953
+#: gio/gdbusmessage.c:1924
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -884,16 +889,16 @@ msgstr ""
 "Zaznano je polje vrste »'a%c«, pričakovana pa je vrednost večkratnika %u "
 "bajtov, zaznanih pa je %u bajtov dolžine"
 
-#: gio/gdbusmessage.c:2107 gio/gdbusmessage.c:2854
+#: gio/gdbusmessage.c:2078 gio/gdbusmessage.c:2827
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "V vodilu D-Bus prazne vrednosti niso dovoljene"
 
-#: gio/gdbusmessage.c:2161
+#: gio/gdbusmessage.c:2132
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Razčlenjena vrednost »%s« ni veljaven podpis vodila D-Bus"
 
-#: gio/gdbusmessage.c:2202
+#: gio/gdbusmessage.c:2173
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -901,7 +906,7 @@ msgstr ""
 "Napaka med ločevanjem GVariant iz zaporedja z vrsto niza »%s« iz D-Bus žične "
 "oblike"
 
-#: gio/gdbusmessage.c:2407
+#: gio/gdbusmessage.c:2378
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -910,29 +915,29 @@ msgstr ""
 "Neveljavna vrednost vrstnega reda zlogov. Pričakovana je ali vrednost 0x6c "
 "(» l «) ali 0x42 (» B «), najdena pa je vrednost 0x%02x"
 
-#: gio/gdbusmessage.c:2426
+#: gio/gdbusmessage.c:2397
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Neveljavna večja različica protokola. Pričakovana je 1, najdenih pa jih je "
 "več (%d)"
 
-#: gio/gdbusmessage.c:2484 gio/gdbusmessage.c:3090
+#: gio/gdbusmessage.c:2455 gio/gdbusmessage.c:3071
 msgid "Signature header found but is not of type signature"
 msgstr "Glava podpisa je najdena, vendar ni ustrezno oblikovana"
 
-#: gio/gdbusmessage.c:2496
+#: gio/gdbusmessage.c:2467
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Glava podpisa s podpisom »%s« je najdena, vendar je telo sporočila prazno"
 
-#: gio/gdbusmessage.c:2511
+#: gio/gdbusmessage.c:2482
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Razčlenjena vrednost »%s« ni veljaven podpis vodila D-Bus (za telo)"
 
-#: gio/gdbusmessage.c:2551
+#: gio/gdbusmessage.c:2522
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -945,11 +950,11 @@ msgstr[2] ""
 msgstr[3] ""
 "V sporočilu ni glave podpisa, vendar je telo sporočila dolgo %u bajte"
 
-#: gio/gdbusmessage.c:2561
+#: gio/gdbusmessage.c:2532
 msgid "Cannot deserialize message: "
 msgstr "Sporočila ni mogoče ločiti iz zaporedja: "
 
-#: gio/gdbusmessage.c:2907
+#: gio/gdbusmessage.c:2888
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -957,22 +962,22 @@ msgstr ""
 "Napaka pri združevanju GVariant v zaporedje z vrsto niza »%s« v D-Bus žično "
 "obliko"
 
-#: gio/gdbusmessage.c:3044
+#: gio/gdbusmessage.c:3025
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr "Število opisnikov v sporočilu (%d) se razlikuje od polja glave (%d)"
 
-#: gio/gdbusmessage.c:3052
+#: gio/gdbusmessage.c:3033
 msgid "Cannot serialize message: "
 msgstr "Sporočila ni bilo mogoče združiti v zaporedje: "
 
-#: gio/gdbusmessage.c:3105
+#: gio/gdbusmessage.c:3089
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Telo sporočila ima podpis »%s«, vendar v glavi ni podpisa"
 
-#: gio/gdbusmessage.c:3115
+#: gio/gdbusmessage.c:3110
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -980,17 +985,17 @@ msgid ""
 msgstr ""
 "Telo sporočila ima podpis vrste »%s«, vendar je podpis v polju glave »%s«"
 
-#: gio/gdbusmessage.c:3131
+#: gio/gdbusmessage.c:3124
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Telo sporočila je prazno, vendar je v polju glave podpis »(%s)«"
 
-#: gio/gdbusmessage.c:3713
+#: gio/gdbusmessage.c:3706
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Napaka vrnjena s telesom vrste »%s«"
 
-#: gio/gdbusmessage.c:3721
+#: gio/gdbusmessage.c:3714
 msgid "Error return with empty body"
 msgstr "Napaka vrnjena s praznim telesom"
 
@@ -3318,113 +3323,113 @@ msgstr "Napaka med določanjem razširjenega atributa »%s«: %s"
 msgid " (invalid encoding)"
 msgstr " (neveljavni nabor znakov)"
 
-#: gio/glocalfileinfo.c:1946 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1948 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Napaka med pridobivanjem podatkov za datoteko »%s«: %s"
 
-#: gio/glocalfileinfo.c:2253
+#: gio/glocalfileinfo.c:2265
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Napaka med potrjevanjem opisovalnika datoteke: %s"
 
-#: gio/glocalfileinfo.c:2298
+#: gio/glocalfileinfo.c:2310
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Neveljavna vrsta atributa (pričakovan uint32)"
 
-#: gio/glocalfileinfo.c:2316
+#: gio/glocalfileinfo.c:2328
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Neveljavna vrsta atributa (pričakovan uint64)"
 
-#: gio/glocalfileinfo.c:2335 gio/glocalfileinfo.c:2354
+#: gio/glocalfileinfo.c:2347 gio/glocalfileinfo.c:2366
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Neveljavna vrsta atributa (pričakovan bitni niz)"
 
-#: gio/glocalfileinfo.c:2401
+#: gio/glocalfileinfo.c:2413
 msgid "Cannot set permissions on symlinks"
 msgstr "Ni mogoče določiti dovoljenj simbolnih povezav"
 
-#: gio/glocalfileinfo.c:2417
+#: gio/glocalfileinfo.c:2429
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Napaka med določanjem dovoljenj: %s"
 
-#: gio/glocalfileinfo.c:2468
+#: gio/glocalfileinfo.c:2480
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Napaka med določanjem lastnika: %s"
 
-#: gio/glocalfileinfo.c:2491
+#: gio/glocalfileinfo.c:2503
 msgid "symlink must be non-NULL"
 msgstr "Simbolna povezava ne sme biti določena kot NULL"
 
-#: gio/glocalfileinfo.c:2501 gio/glocalfileinfo.c:2520
-#: gio/glocalfileinfo.c:2531
+#: gio/glocalfileinfo.c:2513 gio/glocalfileinfo.c:2532
+#: gio/glocalfileinfo.c:2543
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Napaka med določanjem simbolne povezave: %s"
 
-#: gio/glocalfileinfo.c:2510
+#: gio/glocalfileinfo.c:2522
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Napaka med določevanjem simbolne povezave; datoteka ni simbolna povezava"
 
-#: gio/glocalfileinfo.c:2602
+#: gio/glocalfileinfo.c:2614
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "Dodatne nanosekunde %d za časovni žig UNIX %lld so negativne"
 
-#: gio/glocalfileinfo.c:2611
+#: gio/glocalfileinfo.c:2623
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "Dodatne nanosekunde %d za časovni žig UNIX %lld so dosegle 1 sekundo"
 
-#: gio/glocalfileinfo.c:2621
+#: gio/glocalfileinfo.c:2633
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "Časovni žig UNIX %lld je prevelik za 64-bitni zapis"
 
-#: gio/glocalfileinfo.c:2632
+#: gio/glocalfileinfo.c:2644
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr ""
 "Časovni žig UNIX %lld je izven obsega, ki je podprt na sistemih MS Windows"
 
-#: gio/glocalfileinfo.c:2764
+#: gio/glocalfileinfo.c:2776
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Imena datoteke »%s« ni mogoče pretvoriti v zapis UTF-16"
 
-#: gio/glocalfileinfo.c:2783
+#: gio/glocalfileinfo.c:2795
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Datoteke »%s« ni mogoče odpreti: napaka Windows %lu"
 
-#: gio/glocalfileinfo.c:2796
+#: gio/glocalfileinfo.c:2808
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr "Napaka med določanjem sprememb ali časa dostopa za datoteko »%s«: %lu"
 
-#: gio/glocalfileinfo.c:2973
+#: gio/glocalfileinfo.c:2985
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Napaka med določanjem sprememb ali časa dostopa: %s"
 
-#: gio/glocalfileinfo.c:2996
+#: gio/glocalfileinfo.c:3008
 msgid "SELinux context must be non-NULL"
 msgstr "Atributa SELinux ni mogoče določiti kot NULL"
 
-#: gio/glocalfileinfo.c:3003
+#: gio/glocalfileinfo.c:3015
 msgid "SELinux is not enabled on this system"
 msgstr "Na tem sistemu SELinux ni omogočen"
 
-#: gio/glocalfileinfo.c:3013
+#: gio/glocalfileinfo.c:3025
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Napaka nastavitve vsebine SELinux: %s"
 
-#: gio/glocalfileinfo.c:3110
+#: gio/glocalfileinfo.c:3122
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Določanje atributa %s ni podprto"
