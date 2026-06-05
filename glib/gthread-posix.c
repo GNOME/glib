@@ -781,7 +781,11 @@ g_system_thread_new (GThreadFunc proxy,
 G_ALWAYS_INLINE static inline void
 g_thread_yield_impl (void)
 {
-  sched_yield ();
+#ifdef HAVE_CLOCK_NANOSLEEP
+  clock_nanosleep (CLOCK_MONOTONIC, 0, &(struct timespec){ 0, 1 }, NULL);
+#else
+  nanosleep (&(struct timespec){ 0, 1 }, NULL);
+#endif
 }
 
 void

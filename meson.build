@@ -1126,6 +1126,10 @@ elif cc.links(clock_gettime_test_code, args : '-lrt', name : 'clock_gettime in l
   librt = cc.find_library('rt')
 endif
 
+if cc.has_function('clock_nanosleep', prefix : '#include <time.h>')
+  glib_conf.set('HAVE_CLOCK_NANOSLEEP', 1)
+endif
+
 dlopen_dlsym_test_code = '''
 #include <dlfcn.h>
 #include <stdio.h>
