@@ -2586,10 +2586,12 @@ static gpointer
 source_create_unref_thread_func (gpointer data)
 {
   SimultaneousDestructionTest *test = data;
+  GMainContext *main_context;
 
   g_mutex_lock (&test->lock);
   test->source = g_timeout_source_new_seconds (100);
-  g_source_attach (test->source, test->main_context);
+  main_context = g_main_context_ref (test->main_context);
+  g_source_attach (test->source, main_context);
   test->state |= SOURCE_READY;
   g_cond_broadcast (&test->cond);
   while ((test->state & MAIN_CONTEXT_READY) == 0)
@@ -2604,6 +2606,7 @@ source_create_unref_thread_func (gpointer data)
   test->source = NULL;
   g_cond_broadcast (&test->cond);
   g_mutex_unlock (&test->lock);
+  g_main_context_unref (main_context);
 
   return NULL;
 }
