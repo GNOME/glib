@@ -11,8 +11,8 @@
 msgid ""
 msgstr "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-02-13 20:23+0000\n"
-"PO-Revision-Date: 2026-02-16 10:00+0100\n"
+"POT-Creation-Date: 2026-04-29 15:51+0000\n"
+"PO-Revision-Date: 2026-06-05 10:00+0100\n"
 "Last-Translator: Asier Saratsua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -64,7 +64,7 @@ msgid "Replace the running instance"
 msgstr "Ordeztu exekuzioan dagoen instantzia"
 
 #: gio/gapplication-tool.c:47 gio/gapplication-tool.c:48 gio/gio-tool.c:230
-#: gio/gresource-tool.c:497 gio/gsettings-tool.c:591
+#: gio/gresource-tool.c:497 gio/gsettings-tool.c:593
 msgid "Print help"
 msgstr "Erakutsi laguntza"
 
@@ -76,7 +76,7 @@ msgstr "[KOMANDOA]"
 msgid "Print version"
 msgstr "Bistaratu bertsioa"
 
-#: gio/gapplication-tool.c:52 gio/gsettings-tool.c:597
+#: gio/gapplication-tool.c:52 gio/gsettings-tool.c:599
 msgid "Print version information and exit"
 msgstr "Erakutsi bertsioaren informazioa eta irten"
 
@@ -168,7 +168,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Ekintza deitzean emango zaion parametroa, GVariant formatuan"
 
 #: gio/gapplication-tool.c:100 gio/gresource-tool.c:535
-#: gio/gsettings-tool.c:683
+#: gio/gsettings-tool.c:685
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -181,7 +181,7 @@ msgid "Usage:\n"
 msgstr "Erabilera:\n"
 
 #: gio/gapplication-tool.c:118 gio/gresource-tool.c:560
-#: gio/gsettings-tool.c:718
+#: gio/gsettings-tool.c:720
 msgid "Arguments:\n"
 msgstr "Argumentuak:\n"
 
@@ -323,13 +323,13 @@ msgstr "Ez dago nahikoa lekurik helburuan"
 
 #: gio/gcharsetconverter.c:357 gio/gdatainputstream.c:842
 #: gio/gdatainputstream.c:1276 glib/gconvert.c:358 glib/gconvert.c:790
-#: glib/giochannel.c:1571 glib/giochannel.c:1613 glib/giochannel.c:2473
+#: glib/giochannel.c:1571 glib/giochannel.c:1613 glib/giochannel.c:2474
 #: glib/gutf8.c:966 glib/gutf8.c:1423
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byteen sekuentzia baliogabea bihurketa-sarreran"
 
 #: gio/gcharsetconverter.c:362 glib/gconvert.c:366 glib/gconvert.c:704
-#: glib/giochannel.c:1578 glib/giochannel.c:2488
+#: glib/giochannel.c:1578 glib/giochannel.c:2489
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errorea bihurtzean: %s"
@@ -559,23 +559,23 @@ msgstr "Erabiltzailearen IDak ID bera izan behar du parekoan eta zerbitzarian"
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Bertan behera utzita GDBusAuthObserver::authorize-authenticated-peer erabiliz"
 
-#: gio/gdbusauthmechanismsha1.c:307
+#: gio/gdbusauthmechanismsha1.c:308
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "Errorea “%s” direktorioaren informazioa eskuratzean: %s"
 
-#: gio/gdbusauthmechanismsha1.c:322
+#: gio/gdbusauthmechanismsha1.c:323
 #, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr "“%s” direktorioko baimenak gaizki osatuta. 0700 modua espero zen, baina 0%o lortuta"
 
-#: gio/gdbusauthmechanismsha1.c:355 gio/gdbusauthmechanismsha1.c:366
+#: gio/gdbusauthmechanismsha1.c:356 gio/gdbusauthmechanismsha1.c:367
 #, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "Errorea “%s” direktorioa sortzean: %s"
 
-#: gio/gdbusauthmechanismsha1.c:368 gio/gfile.c:1112 gio/gfile.c:1370
+#: gio/gdbusauthmechanismsha1.c:369 gio/gfile.c:1112 gio/gfile.c:1370
 #: gio/gfile.c:1508 gio/gfile.c:1745 gio/gfile.c:1800 gio/gfile.c:1858
 #: gio/gfile.c:1942 gio/gfile.c:1999 gio/gfile.c:2063 gio/gfile.c:2118
 #: gio/gfile.c:4113 gio/gfile.c:4292 gio/gfile.c:4699 gio/gfile.c:5167
@@ -585,59 +585,59 @@ msgstr "Errorea “%s” direktorioa sortzean: %s"
 msgid "Operation not supported"
 msgstr "Eragiketa ez dago onartuta"
 
-#: gio/gdbusauthmechanismsha1.c:411
+#: gio/gdbusauthmechanismsha1.c:412
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Errorea “%s” gako sorta irakurtzeko irekitzean: "
 
-#: gio/gdbusauthmechanismsha1.c:434 gio/gdbusauthmechanismsha1.c:775
+#: gio/gdbusauthmechanismsha1.c:435 gio/gdbusauthmechanismsha1.c:776
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "“%2$s”(e)ngo gako sortako %1$d. lerroa (“%3$s” edukiarekin) gaizki osatuta dago"
 
-#: gio/gdbusauthmechanismsha1.c:448 gio/gdbusauthmechanismsha1.c:789
+#: gio/gdbusauthmechanismsha1.c:449 gio/gdbusauthmechanismsha1.c:790
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "“%2$s”(e)ngo gako sortako %1$d. lerroko aurreneko tokena (“%3$s” edukiarekin) gaizki osatuta dago"
 
-#: gio/gdbusauthmechanismsha1.c:462 gio/gdbusauthmechanismsha1.c:803
+#: gio/gdbusauthmechanismsha1.c:463 gio/gdbusauthmechanismsha1.c:804
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "“%2$s”(e)ngo gako sortako %1$d. lerroko bigarren tokena (“%3$s” edukiarekin) gaizki osatuta dago"
 
-#: gio/gdbusauthmechanismsha1.c:486
+#: gio/gdbusauthmechanismsha1.c:487
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Ez da %d IDko cookie-rik aurkitu “%s”(e)ngo gako sortan"
 
-#: gio/gdbusauthmechanismsha1.c:543
+#: gio/gdbusauthmechanismsha1.c:544
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Errorea blokeoko “%s” fitxategia sortzean: %s"
 
-#: gio/gdbusauthmechanismsha1.c:616
+#: gio/gdbusauthmechanismsha1.c:617
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Errorea blokeoaren “%s” fitxategi zaharkitua ezabatzean: %s"
 
-#: gio/gdbusauthmechanismsha1.c:655
+#: gio/gdbusauthmechanismsha1.c:656
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Errorea blokeoko (estekatu gabeko) “%s” fitxategia ixtean: %s"
 
-#: gio/gdbusauthmechanismsha1.c:666
+#: gio/gdbusauthmechanismsha1.c:667
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Errorea blokeoko “%s” fitxategia desestekatzean: %s"
 
-#: gio/gdbusauthmechanismsha1.c:742
+#: gio/gdbusauthmechanismsha1.c:743
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Errorea “%s” gako sorta idazteko irekitzean: "
 
-#: gio/gdbusauthmechanismsha1.c:936
+#: gio/gdbusauthmechanismsha1.c:937
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Gainera, “%s”(r)en blokeoa askatzeak ere huts egin du: %s) "
@@ -826,7 +826,7 @@ msgid ""
 "bytes, but found to be %u bytes in length"
 msgstr "“a%c' motako matrizea aurkitu da, expected to have a length a multiple of %u byteko multiploko luzera edukitzea espero zen, baina %u byteko luzera du"
 
-#: gio/gdbusmessage.c:2109 gio/gdbusmessage.c:2836
+#: gio/gdbusmessage.c:2109 gio/gdbusmessage.c:2838
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "D-Bus-en ez dira hutsik dauden egiturak (tuplak) onartzen"
 
@@ -841,82 +841,82 @@ msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr "Errorea GVariant deserializatzean “%s” kate motarekin D-Bus konexioko formatutik"
 
-#: gio/gdbusmessage.c:2389
+#: gio/gdbusmessage.c:2391
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
 msgstr "Baliogabeko endian balioa. 0x6c (“l“) edo 0x42 (“B“) espero zen, baina 0x%02x balioa aurkitu da."
 
-#: gio/gdbusmessage.c:2408
+#: gio/gdbusmessage.c:2410
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Protokoloaren bertsio nagusia baliogabea. 1 espero zen, baina %d aurkitu da"
 
-#: gio/gdbusmessage.c:2466 gio/gdbusmessage.c:3072
+#: gio/gdbusmessage.c:2468 gio/gdbusmessage.c:3074
 msgid "Signature header found but is not of type signature"
 msgstr "Sinaduraren goiburua aurkitu da, baina ez da sinadura motakoa"
 
-#: gio/gdbusmessage.c:2478
+#: gio/gdbusmessage.c:2480
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr "Sinaduraren goiburua “%s” sinadurarekin aurkitu da, baina gorputza hutsik dago"
 
-#: gio/gdbusmessage.c:2493
+#: gio/gdbusmessage.c:2495
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Analizatutako “%s” balioa ez da baliozko D-Bus sinadura (gorputzarentzako)"
 
-#: gio/gdbusmessage.c:2533
+#: gio/gdbusmessage.c:2535
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "Ez dago sinaduraren goibururik mezuan, baina mezuaren gorputzak %u byte du"
 msgstr[1] "Ez dago sinaduraren goibururik mezuan, baina mezuaren gorputzak %u byte ditu"
 
-#: gio/gdbusmessage.c:2543
+#: gio/gdbusmessage.c:2545
 msgid "Cannot deserialize message: "
 msgstr "Ezin da mezua deserializatu: "
 
-#: gio/gdbusmessage.c:2889
+#: gio/gdbusmessage.c:2891
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr "Errorea GVariant serializatzean “%s” kate motarekin D-Bus konexioaren formatura"
 
-#: gio/gdbusmessage.c:3026
+#: gio/gdbusmessage.c:3028
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr "Mezuko fitxategi-deskriptoreen kopurua (%d) goiburu-eremukoaren (%d) desberdina da"
 
-#: gio/gdbusmessage.c:3034
+#: gio/gdbusmessage.c:3036
 msgid "Cannot serialize message: "
 msgstr "Ezin da mezua serializatu: "
 
-#: gio/gdbusmessage.c:3087
+#: gio/gdbusmessage.c:3089
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Mezuaren gorputzak “%s” sinadura du, baina ez dago sinaduraren goibururik"
 
-#: gio/gdbusmessage.c:3097
+#: gio/gdbusmessage.c:3099
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
 msgstr "Mezuaren gorputzak “%s” sinadura mota du, baina goiburuaren eremuko sinadura “%s” da"
 
-#: gio/gdbusmessage.c:3113
+#: gio/gdbusmessage.c:3115
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Mezuaren gorputza hutsik dago, baina goiburuaren eremuko sinadura “(%s)“ da"
 
-#: gio/gdbusmessage.c:3687
+#: gio/gdbusmessage.c:3689
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Errorearen itzulera “'%s” motako gorputzarekin"
 
-#: gio/gdbusmessage.c:3695
+#: gio/gdbusmessage.c:3697
 msgid "Error return with empty body"
 msgstr "Errorearen itzulera gorputz hutsarekin"
 
@@ -1274,7 +1274,7 @@ msgstr "Errorea: %s ez da bus-aren izen ezagun bat\n"
 msgid "Not authorized to change debug settings"
 msgstr "Ez duzu arazketa-ezarpenak aldatzeko baimenik"
 
-#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5245
+#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5246
 #: gio/gwin32appinfo.c:4257
 msgid "Unnamed"
 msgstr "Izengabea"
@@ -1287,35 +1287,35 @@ msgstr "Mahaigaineko fitxategiak ez du Exec eremua zehaztu"
 msgid "Unable to find terminal required for application"
 msgstr "Ezin izan da aplikazioak eskatzen duen terminala aurkitu"
 
-#: gio/gdesktopappinfo.c:3080
+#: gio/gdesktopappinfo.c:3081
 #, c-format
 msgid "Program ‘%s’ not found in $PATH"
 msgstr "Ez da aurkitu ‘%s’ programa $PATH bidean"
 
-#: gio/gdesktopappinfo.c:3833
+#: gio/gdesktopappinfo.c:3834
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Ezin da erabiltzailearen aplikazioaren %s konfigurazio-karpeta sortu: %s"
 
-#: gio/gdesktopappinfo.c:3837
+#: gio/gdesktopappinfo.c:3838
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Ezin da erabiltzailearen MIMEren %s konfigurazio-karpeta sortu: %s"
 
-#: gio/gdesktopappinfo.c:4067
+#: gio/gdesktopappinfo.c:4068
 msgid "MIME apps information is too long"
 msgstr "Aplikazioen MIME informazioa luzeegia da"
 
-#: gio/gdesktopappinfo.c:4098 gio/gdesktopappinfo.c:4122
+#: gio/gdesktopappinfo.c:4099 gio/gdesktopappinfo.c:4123
 msgid "Application information lacks an identifier"
 msgstr "Aplikazioaren informazioari identifikatzaile bat falta zaio"
 
-#: gio/gdesktopappinfo.c:4358
+#: gio/gdesktopappinfo.c:4359
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Ezin da erabiltzailearen mahaigaineko %s fitxategia sortu"
 
-#: gio/gdesktopappinfo.c:4478
+#: gio/gdesktopappinfo.c:4479
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s(r)en definizio pertsonalizatua"
@@ -1368,7 +1368,6 @@ msgstr "Gaizki osatutako token kopurua (%d) GEmblem kodeketan"
 
 #: gio/gemblem.c:368
 #, c-format
-#| msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgid "Malformed origin (%s) in GEmblem encoding"
 msgstr "Gaizki osatutako jatorria (%s) GEmblem kodeketan"
 
@@ -1793,7 +1792,6 @@ msgstr "Kopiatua: %s (batez bestekoa: %s/s)"
 
 #: gio/gio-tool-copy.c:96
 #, c-format
-#| msgid "Transferred %s out of %s (%s/s)"
 msgid "Copied %s out of %s (%s/s; average: %s/s)"
 msgstr "Kopiatua: %s / %s (%s/s; batez bestekoa: %s/s)"
 
@@ -2196,13 +2194,11 @@ msgstr "Ez erabili ordezkoaren kopia eta ezabatzea"
 
 #: gio/gio-tool-move.c:83
 #, c-format
-#| msgid "Transferred %s out of %s (%s/s)"
 msgid "Transferred %s (average: %s/s)"
 msgstr "Transferitua: %s (batez bestekoa: %s/s)"
 
 #: gio/gio-tool-move.c:88
 #, c-format
-#| msgid "Transferred %s out of %s (%s/s)"
 msgid "Transferred %s out of %s (%s/s; average: %s/s)"
 msgstr "Transferitua: %s / %s (%s/s; batez bestekoa: %s/s)"
 
@@ -3583,7 +3579,7 @@ msgstr "Erabilera:\n"
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  ATALA   elf atalaren izena (aukerakoa)\n"
 
-#: gio/gresource-tool.c:568 gio/gsettings-tool.c:725
+#: gio/gresource-tool.c:568 gio/gsettings-tool.c:727
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMANDOA   (aukerako) komandoa deskribatzeko\n"
 
@@ -3614,7 +3610,7 @@ msgstr "BIDE-IZENA"
 msgid "  PATH      A resource path\n"
 msgstr "  BIDE-IZENA      Baliabidearen bide-izena\n"
 
-#: gio/gsettings-tool.c:51 gio/gsettings-tool.c:72 gio/gsettings-tool.c:930
+#: gio/gsettings-tool.c:51 gio/gsettings-tool.c:72 gio/gsettings-tool.c:941
 #, c-format
 msgid "No such schema “%s”\n"
 msgstr "Ez dago “%s” bezalako eskemarik\n"
@@ -3649,85 +3645,85 @@ msgstr "Bide-izena barra batekin (/) amaitu behar da\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Bide-izenak ezin ditu bi barra jarraian eduki (//)\n"
 
-#: gio/gsettings-tool.c:560
+#: gio/gsettings-tool.c:561
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Emandako balioa baliozko barrutitik kanpo dago\n"
 
-#: gio/gsettings-tool.c:567
+#: gio/gsettings-tool.c:568
 #, c-format
 msgid "The key is not writable\n"
 msgstr "Gakoa ez da idazgarria\n"
 
-#: gio/gsettings-tool.c:603
+#: gio/gsettings-tool.c:605
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Zerrendatu instalatutako eskemak (lekuz ezin direnak aldatu)"
 
-#: gio/gsettings-tool.c:609
+#: gio/gsettings-tool.c:611
 msgid "List the installed relocatable schemas"
 msgstr "Zerrendatu instalatutako eskemak (lekuz alda daitezkeenak)"
 
-#: gio/gsettings-tool.c:615
+#: gio/gsettings-tool.c:617
 msgid "List the keys in SCHEMA"
 msgstr "Zerrendatu ESKEMAko gakoak"
 
-#: gio/gsettings-tool.c:616 gio/gsettings-tool.c:622 gio/gsettings-tool.c:665
+#: gio/gsettings-tool.c:618 gio/gsettings-tool.c:624 gio/gsettings-tool.c:667
 msgid "SCHEMA[:PATH]"
 msgstr "ESKEMA[:bide-izena]"
 
-#: gio/gsettings-tool.c:621
+#: gio/gsettings-tool.c:623
 msgid "List the children of SCHEMA"
 msgstr "Zerrendatu ESKEMAren haurrak"
 
-#: gio/gsettings-tool.c:627
+#: gio/gsettings-tool.c:629
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
 msgstr "Zerrendatu gako eta balioak, errekurtsiboki\n"
 "Ez bada ESKEMArik ematen, zerrendatu gako guztiak\n"
 
-#: gio/gsettings-tool.c:629
+#: gio/gsettings-tool.c:631
 msgid "[SCHEMA[:PATH]]"
 msgstr "[ESKEMA[:BIDE-IZENA]]"
 
-#: gio/gsettings-tool.c:634
+#: gio/gsettings-tool.c:636
 msgid "Get the value of KEY"
 msgstr "Lortu GAKOAren balioa"
 
-#: gio/gsettings-tool.c:635 gio/gsettings-tool.c:641 gio/gsettings-tool.c:647
-#: gio/gsettings-tool.c:659 gio/gsettings-tool.c:671
+#: gio/gsettings-tool.c:637 gio/gsettings-tool.c:643 gio/gsettings-tool.c:649
+#: gio/gsettings-tool.c:661 gio/gsettings-tool.c:673
 msgid "SCHEMA[:PATH] KEY"
 msgstr "ESKEMA[:BIDE-IZENA] GAKOA"
 
-#: gio/gsettings-tool.c:640
+#: gio/gsettings-tool.c:642
 msgid "Query the range of valid values for KEY"
 msgstr "Kontsultatu GAKOAren baliozko balioen barrutiari buruz"
 
-#: gio/gsettings-tool.c:646
+#: gio/gsettings-tool.c:648
 msgid "Query the description for KEY"
 msgstr "Kontsultatu GAKOAren azalpena"
 
-#: gio/gsettings-tool.c:652
+#: gio/gsettings-tool.c:654
 msgid "Set the value of KEY to VALUE"
 msgstr "Ezarri GAKOAren balioa BALIOArekin"
 
-#: gio/gsettings-tool.c:653
+#: gio/gsettings-tool.c:655
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "ESKEMA[:BIDE-IZENA] GAKOA BALIOA"
 
-#: gio/gsettings-tool.c:658
+#: gio/gsettings-tool.c:660
 msgid "Reset KEY to its default value"
 msgstr "Berrezarri GAKOA bere balio lehenetsira"
 
-#: gio/gsettings-tool.c:664
+#: gio/gsettings-tool.c:666
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Berrezarri ESKEMAko gako guztiak beraien balio lehenetsietara"
 
-#: gio/gsettings-tool.c:670
+#: gio/gsettings-tool.c:672
 msgid "Check if KEY is writable"
 msgstr "Begiratu GAKOA idazgarria den edo ez"
 
-#: gio/gsettings-tool.c:676
+#: gio/gsettings-tool.c:678
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3736,11 +3732,11 @@ msgstr "Monitorizatu GAKOAren aldaketak.\n"
 "Ez bada GAKOA zehazten, ESKEMAko gako guztiak monitorizatuko ditu.\n"
 "Erabili ^C monitorizazioa gelditzeko.\n"
 
-#: gio/gsettings-tool.c:679
+#: gio/gsettings-tool.c:681
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ESKEMA[:BIDE-IZENA] GAKOA"
 
-#: gio/gsettings-tool.c:691
+#: gio/gsettings-tool.c:693
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3787,7 +3783,7 @@ msgstr "Erabilera:\n"
 "Erabili “gsettings help COMMAND” laguntza xehea jasotzeko.\n"
 "\n"
 
-#: gio/gsettings-tool.c:715
+#: gio/gsettings-tool.c:717
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3801,45 +3797,45 @@ msgstr "Erabilera:\n"
 "%s\n"
 "\n"
 
-#: gio/gsettings-tool.c:721
+#: gio/gsettings-tool.c:723
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  ESKEMA-DIREKTORIOA    Eskema gehigarriak bilatzeko direkotrioa\n"
 
-#: gio/gsettings-tool.c:729
+#: gio/gsettings-tool.c:731
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 msgstr "  ESKEMA            Eskemaren izena\n"
 "  BIDE-IZENA       Bide-izena, lekuz alda daitezkeen eskementzako\n"
 
-#: gio/gsettings-tool.c:734
+#: gio/gsettings-tool.c:736
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  GAKOA       Eskema barruko (aukerako) gakoa\n"
 
-#: gio/gsettings-tool.c:738
+#: gio/gsettings-tool.c:740
 msgid "  KEY       The key within the schema\n"
 msgstr "  GAKOA       Eskema barruko gakoa\n"
 
-#: gio/gsettings-tool.c:742
+#: gio/gsettings-tool.c:744
 msgid "  VALUE     The value to set\n"
 msgstr "  BALIOA     Ezarriko den balioa\n"
 
-#: gio/gsettings-tool.c:797
+#: gio/gsettings-tool.c:799
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Ezin izan dira eskemarik '%s'(e)ndik kargatu : %s\n"
 
-#: gio/gsettings-tool.c:809
+#: gio/gsettings-tool.c:811
 #, c-format
 msgid "No schemas installed\n"
 msgstr "Ez dago eskemarik instalatuta\n"
 
-#: gio/gsettings-tool.c:888
+#: gio/gsettings-tool.c:890
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Eskemaren izen hutsa eman da\n"
 
-#: gio/gsettings-tool.c:943
+#: gio/gsettings-tool.c:955
 #, c-format
 msgid "No such key “%s”\n"
 msgstr "Ez dago “%s” bezalako gakorik\n"
@@ -4045,6 +4041,12 @@ msgstr "TCP motakoak ez diren konexioen gainean proxya egitea ez dago onartuta."
 #, c-format
 msgid "Proxy protocol “%s” is not supported."
 msgstr "Proxy-aren “%s” protokoloa ez dago onartuta."
+
+#: gio/gsocketconnection.c:342
+#, c-format
+#| msgid "No connection endpoint specified"
+msgid "Socket connection not connected"
+msgstr "Socket-konexioa ez dago konektatuta"
 
 #: gio/gsocketlistener.c:235
 msgid "Listener is already closed"
@@ -4674,25 +4676,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "“%s” bide-izena ez da bide-izen absolutua"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: glib/gdatetime.c:195
+#: glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%y-%m-%d %T %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: glib/gdatetime.c:198
+#: glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%y/%m/%d"
 
 #. Translators: this is the preferred format for expressing the time
-#: glib/gdatetime.c:201
+#: glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: glib/gdatetime.c:204
+#: glib/gdatetime.c:208
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
@@ -4713,62 +4715,62 @@ msgstr "%I:%M:%S %p"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: glib/gdatetime.c:243
+#: glib/gdatetime.c:247
 msgctxt "full month name"
 msgid "January"
 msgstr "Urtarrila"
 
-#: glib/gdatetime.c:245
+#: glib/gdatetime.c:249
 msgctxt "full month name"
 msgid "February"
 msgstr "Otsaila"
 
-#: glib/gdatetime.c:247
+#: glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "March"
 msgstr "Martxoa"
 
-#: glib/gdatetime.c:249
+#: glib/gdatetime.c:253
 msgctxt "full month name"
 msgid "April"
 msgstr "Apirila"
 
-#: glib/gdatetime.c:251
+#: glib/gdatetime.c:255
 msgctxt "full month name"
 msgid "May"
 msgstr "Maiatza"
 
-#: glib/gdatetime.c:253
+#: glib/gdatetime.c:257
 msgctxt "full month name"
 msgid "June"
 msgstr "Ekaina"
 
-#: glib/gdatetime.c:255
+#: glib/gdatetime.c:259
 msgctxt "full month name"
 msgid "July"
 msgstr "Uztaila"
 
-#: glib/gdatetime.c:257
+#: glib/gdatetime.c:261
 msgctxt "full month name"
 msgid "August"
 msgstr "Abuztua"
 
-#: glib/gdatetime.c:259
+#: glib/gdatetime.c:263
 msgctxt "full month name"
 msgid "September"
 msgstr "Iraila"
 
-#: glib/gdatetime.c:261
+#: glib/gdatetime.c:265
 msgctxt "full month name"
 msgid "October"
 msgstr "Urria"
 
-#: glib/gdatetime.c:263
+#: glib/gdatetime.c:267
 msgctxt "full month name"
 msgid "November"
 msgstr "Azaroa"
 
-#: glib/gdatetime.c:265
+#: glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "December"
 msgstr "Abendua"
@@ -4790,132 +4792,132 @@ msgstr "Abendua"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: glib/gdatetime.c:297
+#: glib/gdatetime.c:301
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Urt."
 
-#: glib/gdatetime.c:299
+#: glib/gdatetime.c:303
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Ots."
 
-#: glib/gdatetime.c:301
+#: glib/gdatetime.c:305
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar."
 
-#: glib/gdatetime.c:303
+#: glib/gdatetime.c:307
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr."
 
-#: glib/gdatetime.c:305
+#: glib/gdatetime.c:309
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Maiatza"
 
-#: glib/gdatetime.c:307
+#: glib/gdatetime.c:311
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Eka."
 
-#: glib/gdatetime.c:309
+#: glib/gdatetime.c:313
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Uzt."
 
-#: glib/gdatetime.c:311
+#: glib/gdatetime.c:315
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Abu."
 
-#: glib/gdatetime.c:313
+#: glib/gdatetime.c:317
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Ira."
 
-#: glib/gdatetime.c:315
+#: glib/gdatetime.c:319
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Urr."
 
-#: glib/gdatetime.c:317
+#: glib/gdatetime.c:321
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Aza."
 
-#: glib/gdatetime.c:319
+#: glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Abe."
 
-#: glib/gdatetime.c:334
+#: glib/gdatetime.c:338
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Astelehena"
 
-#: glib/gdatetime.c:336
+#: glib/gdatetime.c:340
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Asteartea"
 
-#: glib/gdatetime.c:338
+#: glib/gdatetime.c:342
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Asteazkena"
 
-#: glib/gdatetime.c:340
+#: glib/gdatetime.c:344
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Osteguna"
 
-#: glib/gdatetime.c:342
+#: glib/gdatetime.c:346
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Ostirala"
 
-#: glib/gdatetime.c:344
+#: glib/gdatetime.c:348
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Larunbata"
 
-#: glib/gdatetime.c:346
+#: glib/gdatetime.c:350
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Igandea"
 
-#: glib/gdatetime.c:361
+#: glib/gdatetime.c:365
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Al."
 
-#: glib/gdatetime.c:363
+#: glib/gdatetime.c:367
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Ar."
 
-#: glib/gdatetime.c:365
+#: glib/gdatetime.c:369
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Az."
 
-#: glib/gdatetime.c:367
+#: glib/gdatetime.c:371
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Og."
 
-#: glib/gdatetime.c:369
+#: glib/gdatetime.c:373
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Or."
 
-#: glib/gdatetime.c:371
+#: glib/gdatetime.c:375
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Lr."
 
-#: glib/gdatetime.c:373
+#: glib/gdatetime.c:377
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Ig."
@@ -4937,62 +4939,62 @@ msgstr "Ig."
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: glib/gdatetime.c:437
+#: glib/gdatetime.c:441
 msgctxt "full month name with day"
 msgid "January"
 msgstr "Urtarrila"
 
-#: glib/gdatetime.c:439
+#: glib/gdatetime.c:443
 msgctxt "full month name with day"
 msgid "February"
 msgstr "Otsaila"
 
-#: glib/gdatetime.c:441
+#: glib/gdatetime.c:445
 msgctxt "full month name with day"
 msgid "March"
 msgstr "Martxoa"
 
-#: glib/gdatetime.c:443
+#: glib/gdatetime.c:447
 msgctxt "full month name with day"
 msgid "April"
 msgstr "Apirila"
 
-#: glib/gdatetime.c:445
+#: glib/gdatetime.c:449
 msgctxt "full month name with day"
 msgid "May"
 msgstr "Maiatza"
 
-#: glib/gdatetime.c:447
+#: glib/gdatetime.c:451
 msgctxt "full month name with day"
 msgid "June"
 msgstr "Ekaina"
 
-#: glib/gdatetime.c:449
+#: glib/gdatetime.c:453
 msgctxt "full month name with day"
 msgid "July"
 msgstr "Uztaila"
 
-#: glib/gdatetime.c:451
+#: glib/gdatetime.c:455
 msgctxt "full month name with day"
 msgid "August"
 msgstr "Abuztua"
 
-#: glib/gdatetime.c:453
+#: glib/gdatetime.c:457
 msgctxt "full month name with day"
 msgid "September"
 msgstr "Iraila"
 
-#: glib/gdatetime.c:455
+#: glib/gdatetime.c:459
 msgctxt "full month name with day"
 msgid "October"
 msgstr "Urria"
 
-#: glib/gdatetime.c:457
+#: glib/gdatetime.c:461
 msgctxt "full month name with day"
 msgid "November"
 msgstr "Azaroa"
 
-#: glib/gdatetime.c:459
+#: glib/gdatetime.c:463
 msgctxt "full month name with day"
 msgid "December"
 msgstr "Abendua"
@@ -5014,74 +5016,74 @@ msgstr "Abendua"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: glib/gdatetime.c:524
+#: glib/gdatetime.c:528
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Urt."
 
-#: glib/gdatetime.c:526
+#: glib/gdatetime.c:530
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Ots."
 
-#: glib/gdatetime.c:528
+#: glib/gdatetime.c:532
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Mar."
 
-#: glib/gdatetime.c:530
+#: glib/gdatetime.c:534
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Apr."
 
-#: glib/gdatetime.c:532
+#: glib/gdatetime.c:536
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "Mai."
 
-#: glib/gdatetime.c:534
+#: glib/gdatetime.c:538
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Eka."
 
-#: glib/gdatetime.c:536
+#: glib/gdatetime.c:540
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Uzt."
 
-#: glib/gdatetime.c:538
+#: glib/gdatetime.c:542
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Abu."
 
-#: glib/gdatetime.c:540
+#: glib/gdatetime.c:544
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Ira."
 
-#: glib/gdatetime.c:542
+#: glib/gdatetime.c:546
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Urr."
 
-#: glib/gdatetime.c:544
+#: glib/gdatetime.c:548
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Aza."
 
-#: glib/gdatetime.c:546
+#: glib/gdatetime.c:550
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Abe."
 
 #. Translators: 'before midday' indicator
-#: glib/gdatetime.c:588
+#: glib/gdatetime.c:592
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: glib/gdatetime.c:591
+#: glib/gdatetime.c:595
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -5188,15 +5190,15 @@ msgstr "Ezin izan da “%s”(e)tik “%s”(e)rako bihurtzailea ireki: %s"
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "Ezin dira datu gordinak irakurri “g_io_channel_read_line_string“-en"
 
-#: glib/giochannel.c:1803 glib/giochannel.c:2061 glib/giochannel.c:2148
+#: glib/giochannel.c:1803 glib/giochannel.c:2062 glib/giochannel.c:2149
 msgid "Leftover unconverted data in read buffer"
 msgstr "Irakurketa-bufferrean geratu diren bihurtu gabeko datuak"
 
-#: glib/giochannel.c:1884 glib/giochannel.c:1961
+#: glib/giochannel.c:1885 glib/giochannel.c:1962
 msgid "Channel terminates in a partial character"
 msgstr "Kanala karaktere partzial batean bukatzen da"
 
-#: glib/giochannel.c:1947
+#: glib/giochannel.c:1948
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "Ezin dira datu gordinak irakurri “g_io_channel_read_to_end“-etik"
 
@@ -5220,81 +5222,81 @@ msgstr "Gako-fitxategiak “%s” lerroa du, gako-balioa bikotea, taldea edo iru
 msgid "Invalid group name: %s"
 msgstr "Taldearen izen baliogabea: %s"
 
-#: glib/gkeyfile.c:1397
+#: glib/gkeyfile.c:1398
 msgid "Key file does not start with a group"
 msgstr "Gako-fitxategiak ez da talde batekin hasten"
 
 #
-#: glib/gkeyfile.c:1421
+#: glib/gkeyfile.c:1422
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Gakoaren izen baliogabea: %.*s"
 
-#: glib/gkeyfile.c:1449
+#: glib/gkeyfile.c:1450
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Gako-fitxategiak onartzen ez den “%s” kodeketa du"
 
-#: glib/gkeyfile.c:1696 glib/gkeyfile.c:1870 glib/gkeyfile.c:3346
-#: glib/gkeyfile.c:3448 glib/gkeyfile.c:3558 glib/gkeyfile.c:3687
-#: glib/gkeyfile.c:3831 glib/gkeyfile.c:4081 glib/gkeyfile.c:4155
+#: glib/gkeyfile.c:1697 glib/gkeyfile.c:1871 glib/gkeyfile.c:3347
+#: glib/gkeyfile.c:3449 glib/gkeyfile.c:3559 glib/gkeyfile.c:3688
+#: glib/gkeyfile.c:3832 glib/gkeyfile.c:4082 glib/gkeyfile.c:4156
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Gako-fitxategiak ez dauka “%s” taldea"
 
-#: glib/gkeyfile.c:1826
+#: glib/gkeyfile.c:1827
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Gako-fitxategiak ez dauka “%s” gakoa (“%s” taldean)"
 
-#: glib/gkeyfile.c:1987 glib/gkeyfile.c:2104
+#: glib/gkeyfile.c:1988 glib/gkeyfile.c:2105
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr "Gako-fitxategiak “%s” gakoa dauka (%s balioduna) baina ez da UTF-8"
 
-#: glib/gkeyfile.c:2007 glib/gkeyfile.c:2124 glib/gkeyfile.c:2586
+#: glib/gkeyfile.c:2008 glib/gkeyfile.c:2125 glib/gkeyfile.c:2587
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr "Gako-fitxategiak “%s” gakoa dauka, baina ezin den interpretatu balio bat dauka."
 
-#: glib/gkeyfile.c:2800 glib/gkeyfile.c:3174
+#: glib/gkeyfile.c:2801 glib/gkeyfile.c:3175
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
 "interpreted."
 msgstr "Gako-fitxategiak “%s” gakoa dauka ('%s taldean), baina dagokion balioa ezin da interpretatu."
 
-#: glib/gkeyfile.c:2881 glib/gkeyfile.c:2961
+#: glib/gkeyfile.c:2882 glib/gkeyfile.c:2962
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "“%s” gakoaren balioa “%s” taldean “%s” da, “%s” izan ordez."
 
-#: glib/gkeyfile.c:4411
+#: glib/gkeyfile.c:4412
 msgid "Key file contains escape character at end of line"
 msgstr "Gako-fitxategiak ihes-karakterea dauka lerro amaieran"
 
-#: glib/gkeyfile.c:4433
+#: glib/gkeyfile.c:4434
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Gako-fitxategiak “%s” ihes-sekuentzia baliogabea dauka"
 
-#: glib/gkeyfile.c:4585
+#: glib/gkeyfile.c:4586
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "“%s” balioa ezin da zenbaki gisa interpretatu"
 
-#: glib/gkeyfile.c:4599
+#: glib/gkeyfile.c:4600
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "“%s” osoko balioa barrutitik kanpo"
 
-#: glib/gkeyfile.c:4632
+#: glib/gkeyfile.c:4633
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "“%s” balioa ezin da zenbaki mugikor gisa interpretatu."
 
-#: glib/gkeyfile.c:4671
+#: glib/gkeyfile.c:4672
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "“%s” balioa ezin da boolear gisa interpretatu"
