@@ -16,13 +16,25 @@ girepository_tests = {
 # Some tests require GIR files to have been generated
 if enable_gir
   glib_gir_testing_dep = glib_gir
+  if host_system == 'windows'
+    glib_platform_gir_testing_dep = [
+      glib_gir_testing_dep,
+      glib_win32_gir,
+    ]
+  else
+    glib_platform_gir_testing_dep = [
+      glib_gir_testing_dep,
+      glib_unix_gir,
+    ]
+  endif
+
   gobject_gir_testing_dep = [
-    glib_gir_testing_dep,
+    glib_platform_gir_testing_dep,
     gobject_gir,
   ]
 
   gmodule_gir_testing_dep = [
-    glib_gir_testing_dep,
+    glib_platform_gir_testing_dep,
     gmodule_gir,
   ]
 
@@ -48,11 +60,11 @@ if enable_gir
       'depends': gio_gir_testing_dep,
     },
     'field-info' : {
-      'depends': glib_gir_testing_dep,
+      'depends': glib_platform_gir_testing_dep,
     },
     'function-info' : {
       'dependencies': [libffi_dep],
-      'depends': glib_gir_testing_dep,
+      'depends': glib_platform_gir_testing_dep,
     },
     'ir-parser' : {
       'dependencies': [libgirepository_internals_dep],
@@ -69,7 +81,7 @@ if enable_gir
     },
     'repository-search-paths' : {
       'c_args': '-DGOBJECT_INTROSPECTION_LIBDIR="@0@"'.format(glib_libdir),
-      'depends': glib_gir_testing_dep,
+      'depends': glib_platform_gir_testing_dep,
     },
     'struct-info' : {
       'depends': gobject_gir_testing_dep,
@@ -78,7 +90,7 @@ if enable_gir
       'depends': gio_gir_testing_dep,
     },
     'union-info' : {
-      'depends': glib_gir_testing_dep,
+      'depends': glib_platform_gir_testing_dep,
     },
   }
 
