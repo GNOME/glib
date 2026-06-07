@@ -34,6 +34,7 @@
 
 static gsize a = G_MAXSIZE / 10 + 10;
 static gsize b = 10;
+static gsize c = 0;
 typedef char X[10];
 
 #define MEM_OVERFLOW_TEST(name, code) MEM_OVERFLOW_TEST_FULL(name, code, g_free)
@@ -106,6 +107,9 @@ mem_overflow (void)
 #define CHECK_PASS(P)	p = (P); g_assert (p == NULL);
 #define CHECK_FAIL(P)	p = (P); g_assert (p != NULL);
 
+  /* CHECK if return value is NULL for adhering to API... */
+#define CHECK_NULL(P)	p = (P); g_assert (p == NULL);
+
   CHECK_PASS (g_try_malloc_n (a, a));
   CHECK_PASS (g_try_malloc_n (a, b));
   CHECK_PASS (g_try_malloc_n (b, a));
@@ -128,6 +132,8 @@ mem_overflow (void)
   CHECK_PASS (g_try_new (X, a));
   CHECK_FAIL (g_try_new (X, b));
   g_free (p);
+
+  CHECK_NULL (g_try_new (X, c));
 
   CHECK_PASS (g_try_new0 (X, a));
   CHECK_FAIL (g_try_new0 (X, b));
