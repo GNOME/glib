@@ -185,7 +185,7 @@ g_cancellable_new (void)
 
 /**
  * g_cancellable_push_current:
- * @cancellable: a #GCancellable object
+ * @cancellable: (not nullable): a #GCancellable object
  *
  * Pushes @cancellable onto the cancellable stack. The current
  * cancellable can then be received using g_cancellable_get_current().
@@ -210,7 +210,7 @@ g_cancellable_push_current (GCancellable *cancellable)
 
 /**
  * g_cancellable_pop_current:
- * @cancellable: a #GCancellable object
+ * @cancellable: (not nullable): a #GCancellable object
  *
  * Pops @cancellable off the cancellable stack (verifying that @cancellable
  * is on the top of the stack).
@@ -251,7 +251,7 @@ g_cancellable_get_current  (void)
 
 /**
  * g_cancellable_reset:
- * @cancellable: a #GCancellable object.
+ * @cancellable: (not nullable): a #GCancellable object.
  * 
  * Resets @cancellable to its uncancelled state.
  *
@@ -333,7 +333,7 @@ g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
 
 /**
  * g_cancellable_get_fd:
- * @cancellable: a #GCancellable.
+ * @cancellable: (nullable): a #GCancellable.
  * 
  * Gets the file descriptor for a cancellable job. This can be used to
  * implement cancellable operations on Unix systems. The returned fd will
@@ -439,7 +439,7 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 
 /**
  * g_cancellable_release_fd:
- * @cancellable: a #GCancellable
+ * @cancellable: (nullable): a #GCancellable
  *
  * Releases a resources previously allocated by g_cancellable_get_fd()
  * or g_cancellable_make_pollfd().
@@ -551,7 +551,7 @@ g_cancellable_cancel (GCancellable *cancellable)
 
 /**
  * g_cancellable_connect:
- * @cancellable: A #GCancellable.
+ * @cancellable: (not nullable): A #GCancellable.
  * @callback: The #GCallback to connect.
  * @data: Data to pass to @callback.
  * @data_destroy_func: (nullable): Free function for @data or %NULL.
