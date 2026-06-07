@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-05-19 16:57+0000\n"
-"PO-Revision-Date: 2026-05-21 12:28+0200\n"
+"POT-Creation-Date: 2026-06-04 18:14+0000\n"
+"PO-Revision-Date: 2026-06-06 11:51+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -780,19 +780,24 @@ msgstr "Un subarbore este deja exportat pentru %s"
 msgid "Object does not exist at path “%s”"
 msgstr "Obiectul nu există pe calea „%s”"
 
-#: gio/gdbusmessage.c:1356
+#: gio/gdbusmessage.c:116
+#, c-format
+msgid "D-Bus signature exceeds maximum length of %u bytes"
+msgstr "Semnătura D-Bus depășește lungimea maximă de %u octeți"
+
+#: gio/gdbusmessage.c:1320
 #, c-format
 msgid "%s message: %s header field is invalid; expected a value of type ‘%s’"
 msgstr ""
 "Mesaj %s: rubrica antetului %s este incorectă; se aștepta o valoare de tipul "
 "„%s”"
 
-#: gio/gdbusmessage.c:1379
+#: gio/gdbusmessage.c:1343
 #, c-format
 msgid "%s message: %s header field is missing or invalid"
 msgstr "Mesaj %s: rubrica antetului %s lipsește sau este greșită"
 
-#: gio/gdbusmessage.c:1418
+#: gio/gdbusmessage.c:1382
 #, c-format
 msgid "%s message: INVALID header field supplied"
 msgstr "Mesaj %s: rubrica antetului furnizată este INVALID"
@@ -800,34 +805,34 @@ msgstr "Mesaj %s: rubrica antetului furnizată este INVALID"
 #. Translators: The first placeholder is a D-Bus message type,
 #. * the second is the name of a header field and the third is
 #. * a value that is reserved for the given field.
-#: gio/gdbusmessage.c:1432 gio/gdbusmessage.c:1456
+#: gio/gdbusmessage.c:1396 gio/gdbusmessage.c:1420
 #, c-format
 msgid "%s message: %s header field is using the reserved value %s"
 msgstr "Mesaj %s: rubrica antetului %s utilizează valoarea rezervată %s"
 
-#: gio/gdbusmessage.c:1447
+#: gio/gdbusmessage.c:1411
 #, c-format
 msgid ""
 "%s message: INTERFACE header field does not contain a valid interface name"
 msgstr ""
 "Mesaj %s: rubrica antetului INTERFACE nu conține un nume corect de interfață"
 
-#: gio/gdbusmessage.c:1471
+#: gio/gdbusmessage.c:1435
 #, c-format
 msgid "%s message: MEMBER header field does not contain a valid member name"
 msgstr "Mesaj %s: rubrica antetului MEMBER nu conține un nume corect de membru"
 
-#: gio/gdbusmessage.c:1484
+#: gio/gdbusmessage.c:1448
 #, c-format
 msgid "%s message: ERROR_NAME header field does not contain a valid error name"
 msgstr ""
 "Mesaj %s: rubrica antetului ERROR_NAME nu conține un nume corect de eroare"
 
-#: gio/gdbusmessage.c:1523
+#: gio/gdbusmessage.c:1494
 msgid "type is INVALID"
 msgstr "tipul este INVALID"
 
-#: gio/gdbusmessage.c:1593 gio/gdbusmessage.c:1653
+#: gio/gdbusmessage.c:1564 gio/gdbusmessage.c:1624
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
@@ -835,12 +840,12 @@ msgstr[0] "S-a încercat să se citească %lu octet, dar s-a primit doar %lu"
 msgstr[1] "S-a încercat să se citească %lu octeți, dar s-au primit doar %lu"
 msgstr[2] "S-a încercat să se citească %lu de octeți, dar s-au primit doar %lu"
 
-#: gio/gdbusmessage.c:1607
+#: gio/gdbusmessage.c:1578
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "S-a așteptat un octet NUL după șirul „%s”, dar s-a găsit octetul %d"
 
-#: gio/gdbusmessage.c:1626
+#: gio/gdbusmessage.c:1597
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -850,21 +855,21 @@ msgstr ""
 "%d (lungimea șirului este %d). Șirul UTF-8 corect până la acel punct a fost "
 "„%s”"
 
-#: gio/gdbusmessage.c:1690 gio/gdbusmessage.c:1966 gio/gdbusmessage.c:2177
+#: gio/gdbusmessage.c:1661 gio/gdbusmessage.c:1937 gio/gdbusmessage.c:2148
 msgid "Value nested too deeply"
 msgstr "Valoare intercalată prea adânc"
 
-#: gio/gdbusmessage.c:1858
+#: gio/gdbusmessage.c:1829
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Valoarea analizată „%s” nu este o cale de obiect D-Bus corectă"
 
-#: gio/gdbusmessage.c:1882
+#: gio/gdbusmessage.c:1853
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Valoarea analizată „%s” nu este o semnătură D-Bus corectă"
 
-#: gio/gdbusmessage.c:1933
+#: gio/gdbusmessage.c:1904
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -880,7 +885,7 @@ msgstr[2] ""
 "S-a întâlnit un șir cu lungimea de %u de octeți. Lungimea maximă este de "
 "2<<26 octeți (64 MiB)."
 
-#: gio/gdbusmessage.c:1953
+#: gio/gdbusmessage.c:1924
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -889,17 +894,17 @@ msgstr ""
 "S-a întâlnit un șir de tipul „a%c”, se aștepta să aibă ca lungime un "
 "multiplu de %u octeți, dar s-a constatat că are o lungime de %u octeți"
 
-#: gio/gdbusmessage.c:2107 gio/gdbusmessage.c:2854
+#: gio/gdbusmessage.c:2078 gio/gdbusmessage.c:2827
 msgid "Empty structures (tuples) are not allowed in D-Bus"
 msgstr "Structuri goale (tuple) nu sunt permise în D-Bus"
 
-#: gio/gdbusmessage.c:2161
+#: gio/gdbusmessage.c:2132
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr ""
 "Valoarea analizată „%s” pentru variantă nu este o semnătură D-Bus corectă"
 
-#: gio/gdbusmessage.c:2202
+#: gio/gdbusmessage.c:2173
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -907,7 +912,7 @@ msgstr ""
 "Eroare la deserializarea GVariant cu șirul de tipul „%s” din formatul de "
 "rețea D-Bus"
 
-#: gio/gdbusmessage.c:2407
+#: gio/gdbusmessage.c:2378
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -916,28 +921,28 @@ msgstr ""
 "Valoare endianness greșită. Se aștepta 0x6c („l”) sau 0x42 („B”), dar s-a "
 "găsit valoarea 0x%02x"
 
-#: gio/gdbusmessage.c:2426
+#: gio/gdbusmessage.c:2397
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versiune majoră de protocol greșită. Se aștepta 1 dar s-a găsit %d"
 
-#: gio/gdbusmessage.c:2484 gio/gdbusmessage.c:3090
+#: gio/gdbusmessage.c:2455 gio/gdbusmessage.c:3071
 msgid "Signature header found but is not of type signature"
 msgstr "Antet de semnătură găsit, dar nu este de tipul semnătură"
 
-#: gio/gdbusmessage.c:2496
+#: gio/gdbusmessage.c:2467
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "S-a găsit un antet de semnătură cu semnătura „%s”, dar mesajul nu există"
 
-#: gio/gdbusmessage.c:2511
+#: gio/gdbusmessage.c:2482
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr ""
 "Valoarea analizată „%s” nu este o semnătură D-Bus corectă (pentru conținut)"
 
-#: gio/gdbusmessage.c:2551
+#: gio/gdbusmessage.c:2522
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -948,11 +953,11 @@ msgstr[1] ""
 msgstr[2] ""
 "Nu există niciun antet de semnătură în mesaj, dar mesajul are %u de octeți"
 
-#: gio/gdbusmessage.c:2561
+#: gio/gdbusmessage.c:2532
 msgid "Cannot deserialize message: "
 msgstr "Nu se poate deserializa mesajul: "
 
-#: gio/gdbusmessage.c:2907
+#: gio/gdbusmessage.c:2888
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -960,7 +965,7 @@ msgstr ""
 "Eroare la serializarea GVariant cu șirul de tipul „%s” în formatul de rețea "
 "D-Bus"
 
-#: gio/gdbusmessage.c:3044
+#: gio/gdbusmessage.c:3025
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
@@ -968,16 +973,16 @@ msgstr ""
 "Numărul de descriptori de fișier în mesaj (%d) diferă de rubrica antetului "
 "(%d)"
 
-#: gio/gdbusmessage.c:3052
+#: gio/gdbusmessage.c:3033
 msgid "Cannot serialize message: "
 msgstr "Nu se poate serializa mesajul: "
 
-#: gio/gdbusmessage.c:3105
+#: gio/gdbusmessage.c:3089
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Mesajul are semnătura „%s”, dar nu există antet de semnătură"
 
-#: gio/gdbusmessage.c:3115
+#: gio/gdbusmessage.c:3110
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -985,17 +990,17 @@ msgid ""
 msgstr ""
 "Mesajul are semnătura „%s”, dar semnătura din rubrica antetului este „%s”"
 
-#: gio/gdbusmessage.c:3131
+#: gio/gdbusmessage.c:3124
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Mesajul nu există, dar semnătura din rubrica antetului este „(%s)”"
 
-#: gio/gdbusmessage.c:3713
+#: gio/gdbusmessage.c:3706
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Eroare cu mesaj de tipul „%s”"
 
-#: gio/gdbusmessage.c:3721
+#: gio/gdbusmessage.c:3714
 msgid "Error return with empty body"
 msgstr "Eroare fără mesaj"
 
@@ -3365,116 +3370,116 @@ msgstr "Eroare la stabilirea atributului extins „%s”: %s"
 msgid " (invalid encoding)"
 msgstr " (codare incorectă)"
 
-#: gio/glocalfileinfo.c:1946 gio/glocalfileoutputstream.c:945
+#: gio/glocalfileinfo.c:1948 gio/glocalfileoutputstream.c:945
 #: gio/glocalfileoutputstream.c:997
 #, c-format
 msgid "Error when getting information for file “%s”: %s"
 msgstr "Eroare în timpul obținerii de informații pentru fișierul „%s”: %s"
 
-#: gio/glocalfileinfo.c:2253
+#: gio/glocalfileinfo.c:2265
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr ""
 "Eroare în timpul obținerii de informații pentru descriptorul de fișier: %s"
 
-#: gio/glocalfileinfo.c:2298
+#: gio/glocalfileinfo.c:2310
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tip incorect de atribut (se aștepta o valoare uint32)"
 
-#: gio/glocalfileinfo.c:2316
+#: gio/glocalfileinfo.c:2328
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tip incorect de atribut (se aștepta o valoare uint64)"
 
-#: gio/glocalfileinfo.c:2335 gio/glocalfileinfo.c:2354
+#: gio/glocalfileinfo.c:2347 gio/glocalfileinfo.c:2366
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tip incorect de atribut (se aștepta un șir de octeți)"
 
-#: gio/glocalfileinfo.c:2401
+#: gio/glocalfileinfo.c:2413
 msgid "Cannot set permissions on symlinks"
 msgstr "Nu se pot defini drepturi pentru legături simbolice"
 
-#: gio/glocalfileinfo.c:2417
+#: gio/glocalfileinfo.c:2429
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Eroare la definirea drepturilor: %s"
 
-#: gio/glocalfileinfo.c:2468
+#: gio/glocalfileinfo.c:2480
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Eroare la definirea deținătorului: %s"
 
-#: gio/glocalfileinfo.c:2491
+#: gio/glocalfileinfo.c:2503
 msgid "symlink must be non-NULL"
 msgstr "legătura simbolică trebuie să fie diferită de NULL"
 
-#: gio/glocalfileinfo.c:2501 gio/glocalfileinfo.c:2520
-#: gio/glocalfileinfo.c:2531
+#: gio/glocalfileinfo.c:2513 gio/glocalfileinfo.c:2532
+#: gio/glocalfileinfo.c:2543
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Eroare la definirea legăturii simbolice: %s"
 
-#: gio/glocalfileinfo.c:2510
+#: gio/glocalfileinfo.c:2522
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Eroare la definirea legăturii simbolice: fișierul nu este o legătură "
 "simbolică"
 
-#: gio/glocalfileinfo.c:2602
+#: gio/glocalfileinfo.c:2614
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld are negative"
 msgstr "Nanosecundele extra %d pentru datarea UNIX %lld sunt negative"
 
-#: gio/glocalfileinfo.c:2611
+#: gio/glocalfileinfo.c:2623
 #, c-format
 msgid "Extra nanoseconds %d for UNIX timestamp %lld reach 1 second"
 msgstr "Nanosecundele extra %d pentru datarea UNIX %lld au ajuns la 1 secundă"
 
-#: gio/glocalfileinfo.c:2621
+#: gio/glocalfileinfo.c:2633
 #, c-format
 msgid "UNIX timestamp %lld does not fit into 64 bits"
 msgstr "Datarea UNIVX %lld nu se potrivește pe 64 de biți"
 
-#: gio/glocalfileinfo.c:2632
+#: gio/glocalfileinfo.c:2644
 #, c-format
 msgid "UNIX timestamp %lld is outside of the range supported by Windows"
 msgstr "Datarea UNIX %lld este în afara intervalului acceptat de Windows"
 
-#: gio/glocalfileinfo.c:2764
+#: gio/glocalfileinfo.c:2776
 #, c-format
 msgid "File name “%s” cannot be converted to UTF-16"
 msgstr "Numele de fișier „%s” nu poate fi convertit la UTF-16"
 
-#: gio/glocalfileinfo.c:2783
+#: gio/glocalfileinfo.c:2795
 #, c-format
 msgid "File “%s” cannot be opened: Windows Error %lu"
 msgstr "Fișierul „%s” nu poate fi deschis: eroare Windows %lu"
 
-#: gio/glocalfileinfo.c:2796
+#: gio/glocalfileinfo.c:2808
 #, c-format
 msgid "Error setting modification or access time for file “%s”: %lu"
 msgstr ""
 "Eroare la stabilirea modificării sau timpului de acces pentru fișierul „%s”: "
 "%lu"
 
-#: gio/glocalfileinfo.c:2973
+#: gio/glocalfileinfo.c:2985
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Eroare la schimbarea datei de acces ori modificare: %s"
 
-#: gio/glocalfileinfo.c:2996
+#: gio/glocalfileinfo.c:3008
 msgid "SELinux context must be non-NULL"
 msgstr "Contextul SELinux trebuie să fie diferit de NULL"
 
-#: gio/glocalfileinfo.c:3003
+#: gio/glocalfileinfo.c:3015
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nu este activat pentru acest sistem"
 
-#: gio/glocalfileinfo.c:3013
+#: gio/glocalfileinfo.c:3025
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Eroare la definirea contextului SELinux: %s"
 
-#: gio/glocalfileinfo.c:3110
+#: gio/glocalfileinfo.c:3122
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Definirea atributului %s nu este implementată"
