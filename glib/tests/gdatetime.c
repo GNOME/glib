@@ -3524,7 +3524,7 @@ mkdir_localtime_root (GError **error)
 {
   size_t len;
   char *root, *path;
-  char *contents;
+  char *contents = NULL;
 
   root = g_dir_make_tmp ("glib-localtime-root-XXXXXXX", error);
   if (!root)
@@ -3566,10 +3566,12 @@ mkdir_localtime_root (GError **error)
   path = g_build_filename (root, "usr", "share", "zoneinfo", "Europe", "Zurich", NULL);
   if (!g_file_set_contents (path, contents, len, error))
     {
+      g_free (contents);
       g_free (path);
       g_free (root);
       return NULL;
     }
+  g_free (contents);
   g_free (path);
 
   return root;
