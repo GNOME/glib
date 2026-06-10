@@ -109,8 +109,6 @@ test_receive_signals (SetupData *setup, gconstpointer data)
 int
 main (int argc, char **argv)
 {
-  g_setenv ("GIO_USE_MEMORY_MONITOR", "psi", TRUE);
-
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
   g_test_add ("/memory-monitor-psi/receive-signal", SetupData, NULL,
               tests_setup, test_receive_signals, tests_teardown);
