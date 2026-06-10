@@ -618,7 +618,7 @@ cross-mingw64:
 # This policy doesn’t apply to intermittent flaky test failures, only to
 # consistent build failures caused by changed dependencies or build environment.
 msys2-mingw32:
-  extends: .only-default-and-merges
+  extends: .only-schedules-or-manual
   stage: build
   tags:
     - win32-ps
@@ -627,6 +627,36 @@ msys2-mingw32:
     GIT_SUBMODULE_STRATEGY: recursive
     GIT_SUBMODULE_DEPTH: 1
     MSYSTEM: "MINGW32"
+    CHERE_INVOKING: "yes"
+    PYTHONUTF8: "1"
+    G_DEBUGGER: 'gdb.exe -batch -ex "set logging enabled on" -ex "attach %p" -ex "signal-event %e" -ex "c" -ex "thread apply all bt full" -ex "k"'
+  script:
+    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu
+    - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
+    - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
+  artifacts:
+    reports:
+      junit:
+        - _build/meson-logs/testlog.junit.xml
+        - _build/meson-logs/testlog-*.junit.xml
+    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
+    when: always
+    expire_in: 1 week
+    paths:
+      - _build/meson-logs
+      - _build/gdb.txt
+
+# See the note about msys2 CI job failure policy above.
+msys2-clang64:
+  extends: .only-default-and-merges
+  stage: build
+  tags:
+    - win32-ps
+  needs: []
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    GIT_SUBMODULE_DEPTH: 1
+    MSYSTEM: "CLANG64"
     CHERE_INVOKING: "yes"
     COVERAGE: "1"
     PYTHONUTF8: "1"
@@ -649,32 +679,6 @@ msys2-mingw32:
       - _coverage/
       - _reference/
       - "${GIR_ARTIFACTS_PATH}/*.gir"
-
-# See the note about msys2 CI job failure policy above.
-msys2-clang64:
-  extends: .only-schedules-or-manual
-  stage: build
-  tags:
-    - win32-ps
-  needs: []
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
-    GIT_SUBMODULE_DEPTH: 1
-    MSYSTEM: "CLANG64"
-    CHERE_INVOKING: "yes"
-    PYTHONUTF8: "1"
-  script:
-    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu
-    - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
-    - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
-  artifacts:
-    reports:
-      junit: "_build/meson-logs/testlog.junit.xml"
-    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
-    when: always
-    expire_in: 1 week
-    paths:
-      - _build/meson-logs
 
 vs2019-x64:
   extends: .only-default
@@ -915,7 +919,7 @@ coverage:
   extends: .only-default
   image: "${FEDORA_IMAGE}"
   stage: coverage
-  needs: ['fedora-x86_64', 'msys2-mingw32']
+  needs: ['fedora-x86_64', 'msys2-clang64']
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     expire_in: 1 week
@@ -1000,9 +1004,9 @@ check-introspection-fedora-x86_64:
     JOB_NAME: fedora-x86_64
   extends: .check-introspection
 
-check-introspection-msys2-mingw32:
+check-introspection-msys2-clang64:
   variables:
-    JOB_NAME: msys2-mingw32
+    JOB_NAME: msys2-clang64
   extends: .check-introspection
 
 scan-build:
