@@ -629,7 +629,6 @@ msys2-mingw32:
     MSYSTEM: "MINGW32"
     CHERE_INVOKING: "yes"
     PYTHONUTF8: "1"
-    G_DEBUGGER: 'gdb.exe -batch -ex "set logging enabled on" -ex "attach %p" -ex "signal-event %e" -ex "c" -ex "thread apply all bt full" -ex "k"'
   script:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu
     - C:\msys64\usr\bin\bash .gitlab-ci/show-execution-environment.sh
@@ -659,6 +658,8 @@ msys2-clang64:
     MSYSTEM: "CLANG64"
     CHERE_INVOKING: "yes"
     COVERAGE: "1"
+    INTROSPECTION: "1"
+    DOCUMENTATION: "1"
     PYTHONUTF8: "1"
     G_DEBUGGER: 'gdb.exe -batch -ex "set logging enabled on" -ex "attach %p" -ex "signal-event %e" -ex "c" -ex "thread apply all bt full" -ex "k"'
   script:
