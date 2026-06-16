@@ -303,8 +303,9 @@ g_utf8_substring (const gchar *str,
 
   if (end_pos == -1)
     {
-      glong length = g_utf8_strlen (start, -1);
-      end = g_utf8_offset_to_pointer (start, length);
+      end = start;
+      while (*end)
+        end = g_utf8_next_char (end);
     }
   else
     {
