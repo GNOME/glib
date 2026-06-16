@@ -118,17 +118,21 @@ acquired are released on the same thread.
 If you need thread safe reference counting, you should use the
 `g_atomic_rc_*` API:
 
-| Operation                 | Atomic equivalent                |
-|---------------------------|----------------------------------|
-| `g_rc_box_alloc()`        | `g_atomic_rc_box_alloc()`        |
-| `g_rc_box_new()`          | `g_atomic_rc_box_new()`          |
-| `g_rc_box_dup()`          | `g_atomic_rc_box_dup()`          |
-| `g_rc_box_acquire()`      | `g_atomic_rc_box_acquire()`      |
-| `g_rc_box_release()`      | `g_atomic_rc_box_release()`      |
-| `g_rc_box_release_full()` | `g_atomic_rc_box_release_full()` |
+| Operation                       | Atomic equivalent                      |
+|---------------------------------|----------------------------------------|
+| [func@GLib.rc_box_alloc]        | [func@GLib.atomic_rc_box_alloc]        |
+| [func@GLib.rc_box_alloc0]       | [func@GLib.atomic_rc_box_alloc0]       |
+| [func@GLib.rc_box_new]          | [func@GLib.atomic_rc_box_new]          |
+| [func@GLib.rc_box_new0]         | [func@GLib.atomic_rc_box_new0]         |
+| [func@GLib.rc_box_dup]          | [func@GLib.atomic_rc_box_dup]          |
+| [func@GLib.rc_box_acquire]      | [func@GLib.atomic_rc_box_acquire]      |
+| [func@GLib.rc_box_release]      | [func@GLib.atomic_rc_box_release]      |
+| [func@GLib.rc_box_release_full] | [func@GLib.atomic_rc_box_release_full] |
+| [func@GLib.rc_box_get_size]     | [func@GLib.atomic_rc_box_get_size]     |
 
 The reference counting operations on data allocated using
-`g_atomic_rc_box_alloc()`, `g_atomic_rc_box_new()`, and
+`g_atomic_rc_box_alloc()`, `g_atomic_rc_box_alloc0()`,
+`g_atomic_rc_box_new()`, `g_atomic_rc_box_new0` and
 `g_atomic_rc_box_dup()` are guaranteed to be atomic, and thus can be safely
 be performed by different threads. It is important to note that only the
 reference acquisition and release are atomic; changes to the content of the
