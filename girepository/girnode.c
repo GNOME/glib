@@ -2575,7 +2575,7 @@ gi_ir_write_string (const char  *str,
   start = *offset;
   *offset = ALIGN_VALUE (start + strlen (str) + 1, 4);
 
-  strcpy ((char *)&data[start], str);
+  memcpy ((char *)&data[start], str, strlen (str) + 1);
 
   return start;
 }
