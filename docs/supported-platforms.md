@@ -39,7 +39,7 @@ GLib is regularly built on at least the following systems:
    - Debian (Bookworm, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/debian-stable.Dockerfile)
    - Alpine Linux (3.19 using muslc, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/alpine.Dockerfile)
    - Windows (MinGW64)
-   - Windows (msys2-mingw32 and msys2-clang64; msys2 is a rolling release distribution)
+   - Windows (msys2-clang64 and msys2-mingw32; msys2 is a rolling release distribution)
    - Windows (Visual Studio 2019 x64, a static linking version on x64, and an x86 and an ARM64 version)
    - Android (NDK r23b, API 31, arm64, https://gitlab.gnome.org/GNOME/glib/-/blob/main/.gitlab-ci/android-ndk.sh)
    - FreeBSD (13)
