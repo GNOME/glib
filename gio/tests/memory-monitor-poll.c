@@ -118,7 +118,6 @@ main (int argc, char **argv)
       return 0;
     }
 
-  g_setenv ("GIO_USE_MEMORY_MONITOR", "poll", TRUE);
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/memory-monitor-poll/dup-default", test_dup_default);

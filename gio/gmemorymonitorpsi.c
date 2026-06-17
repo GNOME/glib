@@ -441,8 +441,9 @@ g_memory_monitor_psi_initable_init (GInitable     *initable,
     }
   else
     {
+      g_clear_error (error);
       g_debug ("PSI is not supported.");
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "PSI is not supported.");
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "PSI is not supported.");
       return FALSE;
     }
 
@@ -459,8 +460,11 @@ g_memory_monitor_psi_finalize (GObject *object)
 
   for (size_t i = 0; i < G_N_ELEMENTS (monitor->triggers); i++)
     {
-      g_source_destroy (monitor->triggers[i]);
-      g_source_unref (monitor->triggers[i]);
+      if (monitor->triggers[i])
+        {
+          g_source_destroy (monitor->triggers[i]);
+          g_source_unref (monitor->triggers[i]);
+        }
     }
 
   G_OBJECT_CLASS (g_memory_monitor_psi_parent_class)->finalize (object);

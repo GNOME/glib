@@ -22,11 +22,15 @@
 
 #include "gmemorymonitor.h"
 #include "gmemorymonitordbus.h"
+#ifdef __linux__
+#include "gmemorymonitorpoll.h"
+#include "gmemorymonitorpsi.h"
+#endif
+#include "gdbusconnection.h"
 #include "gioerror.h"
 #include "ginitable.h"
 #include "giomodule-priv.h"
 #include "glibintl.h"
-#include "glib/gstdio.h"
 #include "gcancellable.h"
 #include "gdbusproxy.h"
 #include "gdbusnamewatching.h"
@@ -44,6 +48,12 @@ struct _GMemoryMonitorDBus
   GCancellable *cancellable;
   GDBusProxy *proxy;
   gulong signal_id;
+
+  GDBusConnection *connection;
+#ifdef __linux__
+  GMemoryMonitorPoll *poll_backend;
+  GMemoryMonitorPsi *psi_backend;
+#endif
 };
 
 G_DEFINE_TYPE_WITH_CODE (GMemoryMonitorDBus, g_memory_monitor_dbus, G_TYPE_OBJECT,
@@ -134,6 +144,112 @@ lmm_vanished_cb (GDBusConnection *connection,
   g_clear_object (&dbus->proxy);
 }
 
+static void
+lmm_wait_for_bus (GMemoryMonitorDBus *dbus)
+{
+  dbus->watch_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
+                                     "org.freedesktop.LowMemoryMonitor",
+                                     G_BUS_NAME_WATCHER_FLAGS_AUTO_START,
+                                     lmm_appeared_cb,
+                                     lmm_vanished_cb,
+                                     dbus,
+                                     NULL);
+}
+
+static void
+lmm_start_fallback_backends (GMemoryMonitorDBus *dbus)
+{
+#ifdef __linux__
+  GError *error = NULL;
+
+  g_debug ("LowMemoryMonitor was not found, starting fallback backends.");
+
+  dbus->psi_backend = g_object_new (G_TYPE_MEMORY_MONITOR_PSI,
+                                    NULL);
+  g_initable_init (G_INITABLE (dbus->psi_backend), dbus->cancellable, &error);
+  if (error)
+    {
+      g_debug ("Failed to initialize PSI backend: %s", error->message);
+      g_clear_object (&dbus->psi_backend);
+      g_clear_error (&error);
+
+      dbus->poll_backend = g_object_new (G_TYPE_MEMORY_MONITOR_POLL,
+                                         NULL);
+      g_initable_init (G_INITABLE (dbus->poll_backend), dbus->cancellable, &error);
+      g_debug ("Start poll backend.");
+      g_clear_error (&error);
+    }
+#else
+  /* waiting for the D-Bus name to appear, if the system isn't Linux or the
+   * fallback backends are not available */
+  lmm_wait_for_bus (dbus);
+#endif
+}
+
+static void
+lmm_list_names_cb (GDBusConnection *connection,
+                   GAsyncResult *res,
+                   gpointer user_data)
+{
+  GMemoryMonitorDBus *dbus = user_data;
+  GVariant *result;
+  GVariantIter *iter;
+  gboolean found_lmm = FALSE;
+  const gchar *str = NULL;
+
+  result = g_dbus_connection_call_finish (connection, res, NULL);
+  if (result)
+    {
+      g_variant_get (result, "(as)", &iter);
+      while (g_variant_iter_loop (iter, "&s", &str))
+        {
+          if (g_strcmp0 (str, "org.freedesktop.LowMemoryMonitor") == 0)
+            {
+              g_debug ("found low memory monitor");
+              lmm_wait_for_bus (dbus);
+              found_lmm = TRUE;
+              break;
+            }
+        }
+      g_variant_iter_free (iter);
+    }
+  g_variant_unref (result);
+
+  if (!found_lmm)
+    lmm_start_fallback_backends (dbus);
+}
+
+static void
+lmm_connection_get_cb (GObject *source_object,
+                       GAsyncResult *res,
+                       gpointer user_data)
+{
+  GMemoryMonitorDBus *dbus = user_data;
+
+  dbus->connection = g_bus_get_finish (res, NULL);
+
+  if (dbus->connection == NULL)
+    {
+      g_debug ("Failed to get LowMemoryMonitor D-Bus connection.");
+      /* fallback to the fallback backends if DBus is not available */
+      lmm_start_fallback_backends (dbus);
+      return;
+    }
+
+  g_dbus_connection_call (dbus->connection,
+                          "org.freedesktop.DBus",
+                          "/org/freedesktop/DBus",
+                          "org.freedesktop.DBus",
+                          "ListNames",
+                          NULL,
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL,
+                          (GAsyncReadyCallback) lmm_list_names_cb,
+                          dbus);
+}
+
 static gboolean
 g_memory_monitor_dbus_initable_init (GInitable     *initable,
                                      GCancellable  *cancellable,
@@ -142,13 +258,8 @@ g_memory_monitor_dbus_initable_init (GInitable     *initable,
   GMemoryMonitorDBus *dbus = G_MEMORY_MONITOR_DBUS (initable);
 
   dbus->cancellable = g_cancellable_new ();
-  dbus->watch_id = g_bus_watch_name (G_BUS_TYPE_SYSTEM,
-                                     "org.freedesktop.LowMemoryMonitor",
-                                     G_BUS_NAME_WATCHER_FLAGS_AUTO_START,
-                                     lmm_appeared_cb,
-                                     lmm_vanished_cb,
-                                     dbus,
-                                     NULL);
+
+  g_bus_get (G_BUS_TYPE_SYSTEM, dbus->cancellable, lmm_connection_get_cb, dbus);
 
   return TRUE;
 }
@@ -163,6 +274,11 @@ g_memory_monitor_dbus_finalize (GObject *object)
   g_clear_signal_handler (&dbus->signal_id, dbus->proxy);
   g_clear_object (&dbus->proxy);
   g_clear_handle_id (&dbus->watch_id, g_bus_unwatch_name);
+#ifdef __linux__
+  g_clear_object (&dbus->poll_backend);
+  g_clear_object (&dbus->psi_backend);
+#endif
+  g_clear_object (&dbus->connection);
 
   G_OBJECT_CLASS (g_memory_monitor_dbus_parent_class)->finalize (object);
 }
