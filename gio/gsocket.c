@@ -2038,15 +2038,18 @@ g_socket_get_protocol (GSocket *socket)
 
 /**
  * g_socket_get_fd:
- * @socket: a #GSocket.
+ * @socket: a socket
  *
- * Returns the underlying OS socket object. On unix this
- * is a socket file descriptor, and on Windows this is
- * a Winsock2 SOCKET handle. This may be useful for
- * doing platform specific or otherwise unusual operations
- * on the socket.
+ * Gets the underlying OS socket descriptor.
  *
- * Returns: the file descriptor of the socket.
+ * On Unix this is a socket file descriptor, and on Windows this is
+ * a Winsock2 `SOCKET` handle.
+ *
+ * This may be useful for doing platform specific or otherwise unusual
+ * operations on the socket.
+ *
+ * Returns: the file descriptor of the socket, or `-1` if the socket has not yet
+ *   been initialised or has been closed
  *
  * Since: 2.22
  */
