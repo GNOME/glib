@@ -655,8 +655,8 @@ g_prefix_error_literal (GError      **err,
 
 /**
  * g_propagate_prefixed_error:
- * @dest: error return location
- * @src: error to move into the return location
+ * @dest: (out callee-allocates) (optional) (nullable): error return location
+ * @src: (transfer full): error to move into the return location
  * @format: printf()-style format string
  * @...: arguments to @format
  *
