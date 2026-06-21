@@ -836,7 +836,6 @@ freebsd-13-x86_64:
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --localstatedir=/var
-            -Db_lundef=false
             -Dxattr=false
             -Dsystemtap=disabled
             -Ddtrace=disabled

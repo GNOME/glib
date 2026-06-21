@@ -100,6 +100,13 @@
 
 #ifdef HAVE__NSGETENVIRON
 #define environ (*_NSGetEnviron())
+#elif defined(__FreeBSD__)
+/* FreeBSD has environ in crt rather than libc. Using "extern char** environ"
+ * in the code of a shared library makes it fail to link with -Wl,--no-undefined
+ * See https://reviews.freebsd.org/D30842#840642
+ */
+#include <dlfcn.h>
+#define environ (*((char***)dlsym(RTLD_DEFAULT, "environ")))
 #else
 extern char **environ;
 #endif

@@ -15,7 +15,6 @@ On FreeBSD, you will need something more complex:
     > meson setup \
     > -Dxattr=false \
     > -Dinstalled_tests=true \
-    > -Db_lundef=false \
     > _build
     $ meson compile -C _build
 
