@@ -4877,6 +4877,23 @@ test_fixed_array (void)
   for (i = 0; i < 5; i++)
     g_assert_cmpint (elts[i], ==, i + 1);
   g_variant_unref (a);
+
+  if (g_test_undefined ())
+    {
+      do_failed_test ("/gvariant/fixed-array/subprocess/overflow",
+                      "*n_elements <= G_MAXSIZE / element_size*");
+    }
+}
+
+static void
+test_fixed_array_overflow_subprocess (void)
+{
+  gint32 value = 0;
+
+  g_variant_new_fixed_array (G_VARIANT_TYPE_INT32, &value,
+                             G_MAXSIZE, sizeof (gint32));
+
+  g_assert_not_reached ();
 }
 
 static void
@@ -6070,6 +6087,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/compare", test_compare);
   g_test_add_func ("/gvariant/equal", test_equal);
   g_test_add_func ("/gvariant/fixed-array", test_fixed_array);
+  g_test_add_func ("/gvariant/fixed-array/subprocess/overflow", test_fixed_array_overflow_subprocess);
   g_test_add_func ("/gvariant/check-format-string", test_check_format_string);
 
   g_test_add_func ("/gvariant/checksum-basic", test_checksum_basic);

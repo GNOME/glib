@@ -1217,9 +1217,13 @@ g_variant_new_fixed_array (const GVariantType  *element_type,
   GVariantTypeInfo *array_info;
   GVariant *value;
   gpointer data;
+  gsize total_size;
 
   g_return_val_if_fail (g_variant_type_is_definite (element_type), NULL);
   g_return_val_if_fail (element_size > 0, NULL);
+  g_return_val_if_fail (n_elements <= G_MAXSIZE / element_size, NULL);
+
+  total_size = n_elements * element_size;
 
   array_type = g_variant_type_new_array (element_type);
   array_info = g_variant_type_info_get (array_type);
@@ -1235,9 +1239,9 @@ g_variant_new_fixed_array (const GVariantType  *element_type,
       return NULL;
     }
 
-  data = g_memdup2 (elements, n_elements * element_size);
+  data = g_memdup2 (elements, total_size);
   value = g_variant_new_from_data (array_type, data,
-                                   n_elements * element_size,
+                                   total_size,
                                    FALSE, g_free, data);
 
   g_variant_type_free (array_type);
