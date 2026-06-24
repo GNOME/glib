@@ -219,6 +219,7 @@ libgirepository_dep = declare_dependency(
     'typelibdir': meson.current_build_dir() / 'introspection',
   },
 )
+meson.override_dependency('girepository-2.0', libgirepository_dep)
 
 executable('gi-dump-types',
   sources: 'gi-dump-types.c',
