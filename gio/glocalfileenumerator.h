@@ -44,7 +44,7 @@ struct _GLocalFileEnumeratorClass
   GFileEnumeratorClass parent_class;
 };
 
-GType             _g_local_file_enumerator_get_type (void) G_GNUC_CONST;
+GType             _g_local_file_enumerator_get_type (void);
 
 GFileEnumerator * _g_local_file_enumerator_new      (GLocalFile           *file,
                                                      const char           *attributes,

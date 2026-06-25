@@ -47,7 +47,7 @@ struct _GZlibCompressorClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType            g_zlib_compressor_get_type (void) G_GNUC_CONST;
+GType            g_zlib_compressor_get_type (void);
 
 GIO_AVAILABLE_IN_ALL
 GZlibCompressor *g_zlib_compressor_new (GZlibCompressorFormat format,

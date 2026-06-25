@@ -61,7 +61,7 @@ struct _GFilterOutputStreamClass
 
 
 GIO_AVAILABLE_IN_ALL
-GType           g_filter_output_stream_get_type              (void) G_GNUC_CONST;
+GType           g_filter_output_stream_get_type              (void);
 GIO_AVAILABLE_IN_ALL
 GOutputStream * g_filter_output_stream_get_base_stream       (GFilterOutputStream *stream);
 GIO_AVAILABLE_IN_ALL

@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 typedef struct _GFileIconClass   GFileIconClass;
 
 GIO_AVAILABLE_IN_ALL
-GType   g_file_icon_get_type (void) G_GNUC_CONST;
+GType   g_file_icon_get_type (void);
 
 GIO_AVAILABLE_IN_ALL
 GIcon * g_file_icon_new      (GFile     *file);

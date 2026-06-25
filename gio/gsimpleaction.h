@@ -37,7 +37,7 @@ G_BEGIN_DECLS
                                                              G_TYPE_SIMPLE_ACTION))
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_simple_action_get_type                        (void) G_GNUC_CONST;
+GType                   g_simple_action_get_type                        (void);
 
 GIO_AVAILABLE_IN_ALL
 GSimpleAction *         g_simple_action_new                             (const gchar        *name,

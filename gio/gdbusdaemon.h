@@ -33,7 +33,7 @@ typedef struct _GDBusDaemonClass GDBusDaemonClass;
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GDBusDaemon, g_object_unref)
 
-GType _g_dbus_daemon_get_type (void) G_GNUC_CONST;
+GType _g_dbus_daemon_get_type (void);
 
 GDBusDaemon *_g_dbus_daemon_new (const char *address,
 				 GCancellable *cancellable,

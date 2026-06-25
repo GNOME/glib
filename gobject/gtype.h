@@ -2393,7 +2393,7 @@ type_name##_get_type (void) \
  *
  * |[<!-- language="C" -->
  * #define MY_TYPE_STRUCT my_struct_get_type ()
- * GType my_struct_get_type (void) G_GNUC_CONST;
+ * GType my_struct_get_type (void);
  *
  * MyStruct *    my_struct_new (void);
  * void          my_struct_free (MyStruct *self);

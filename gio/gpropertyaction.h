@@ -37,7 +37,7 @@ G_BEGIN_DECLS
                                                              G_TYPE_PROPERTY_ACTION))
 
 GIO_AVAILABLE_IN_2_38
-GType                   g_property_action_get_type                      (void) G_GNUC_CONST;
+GType                   g_property_action_get_type                      (void);
 
 GIO_AVAILABLE_IN_2_38
 GPropertyAction *       g_property_action_new                           (const gchar *name,

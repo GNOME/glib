@@ -74,7 +74,7 @@ struct _GSocketAddressEnumeratorClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType           g_socket_address_enumerator_get_type        (void) G_GNUC_CONST;
+GType           g_socket_address_enumerator_get_type        (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketAddress *g_socket_address_enumerator_next        (GSocketAddressEnumerator  *enumerator,

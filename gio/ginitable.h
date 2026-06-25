@@ -62,7 +62,7 @@ struct _GInitableIface
 
 
 GIO_AVAILABLE_IN_ALL
-GType    g_initable_get_type   (void) G_GNUC_CONST;
+GType    g_initable_get_type   (void);
 
 GIO_AVAILABLE_IN_ALL
 gboolean g_initable_init       (GInitable     *initable,

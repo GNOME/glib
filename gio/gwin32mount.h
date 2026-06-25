@@ -44,7 +44,7 @@ struct _GWin32MountClass
   GObjectClass parent_class;
 };
 
-GType         _g_win32_mount_get_type     (void) G_GNUC_CONST;
+GType         _g_win32_mount_get_type     (void);
 
 GWin32Mount * _g_win32_mount_new          (GVolumeMonitor *volume_monitor,
                                            const char     *path,

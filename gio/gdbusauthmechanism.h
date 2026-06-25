@@ -110,7 +110,7 @@ struct _GDBusAuthMechanism
   GDBusAuthMechanismPrivate *priv;
 };
 
-GType                     _g_dbus_auth_mechanism_get_type                 (void) G_GNUC_CONST;
+GType                     _g_dbus_auth_mechanism_get_type                 (void);
 
 gint                      _g_dbus_auth_mechanism_get_priority             (GType                 mechanism_type);
 const gchar              *_g_dbus_auth_mechanism_get_name                 (GType                 mechanism_type);

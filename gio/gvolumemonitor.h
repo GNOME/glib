@@ -126,7 +126,7 @@ struct _GVolumeMonitorClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType           g_volume_monitor_get_type             (void) G_GNUC_CONST;
+GType           g_volume_monitor_get_type             (void);
 
 GIO_AVAILABLE_IN_ALL
 GVolumeMonitor *g_volume_monitor_get                  (void);

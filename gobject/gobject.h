@@ -427,7 +427,7 @@ GParamSpec**g_object_interface_list_properties  (gpointer     g_iface,
 						 guint       *n_properties_p);
 
 GOBJECT_AVAILABLE_IN_ALL
-GType       g_object_get_type                 (void) G_GNUC_CONST;
+GType       g_object_get_type                 (void);
 GOBJECT_AVAILABLE_IN_ALL
 gpointer    g_object_new                      (GType           object_type,
 					       const gchar    *first_property_name,

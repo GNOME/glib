@@ -63,7 +63,7 @@ struct _GDataInputStreamClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                  g_data_input_stream_get_type             (void) G_GNUC_CONST;
+GType                  g_data_input_stream_get_type             (void);
 GIO_AVAILABLE_IN_ALL
 GDataInputStream *     g_data_input_stream_new                  (GInputStream            *base_stream);
 

@@ -52,7 +52,7 @@ struct _GValueArray
 
 /* --- prototypes --- */
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GType           g_value_array_get_type       (void) G_GNUC_CONST;
+GType           g_value_array_get_type       (void);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
 GValue*		g_value_array_get_nth	     (GValueArray	*value_array,

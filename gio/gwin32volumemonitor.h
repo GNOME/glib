@@ -54,7 +54,7 @@ struct _GWin32VolumeMonitorClass
   GNativeVolumeMonitorClass parent_class;
 };
 
-GType            _g_win32_volume_monitor_get_type                     (void) G_GNUC_CONST;
+GType            _g_win32_volume_monitor_get_type                     (void);
 
 GVolumeMonitor * _g_win32_volume_monitor_new                          (void);
 GWin32Volume   * _g_win32_volume_monitor_lookup_volume_for_mount_path (GWin32VolumeMonitor *monitor,

@@ -84,7 +84,7 @@ struct _GFileInputStreamClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType      g_file_input_stream_get_type          (void) G_GNUC_CONST;
+GType      g_file_input_stream_get_type          (void);
 
 GIO_AVAILABLE_IN_ALL
 GFileInfo *g_file_input_stream_query_info        (GFileInputStream     *stream,

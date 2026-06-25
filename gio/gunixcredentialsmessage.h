@@ -65,7 +65,7 @@ struct _GUnixCredentialsMessage
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                  g_unix_credentials_message_get_type             (void) G_GNUC_CONST;
+GType                  g_unix_credentials_message_get_type             (void);
 GIO_AVAILABLE_IN_ALL
 GSocketControlMessage *g_unix_credentials_message_new                  (void);
 GIO_AVAILABLE_IN_ALL

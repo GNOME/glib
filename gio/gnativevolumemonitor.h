@@ -56,7 +56,7 @@ struct _GNativeVolumeMonitorClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType g_native_volume_monitor_get_type (void) G_GNUC_CONST;
+GType g_native_volume_monitor_get_type (void);
 
 G_END_DECLS
 

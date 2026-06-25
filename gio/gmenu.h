@@ -42,7 +42,7 @@ typedef struct _GMenuItem GMenuItem;
 typedef struct _GMenu     GMenu;
 
 GIO_AVAILABLE_IN_2_32
-GType       g_menu_get_type                         (void) G_GNUC_CONST;
+GType       g_menu_get_type                         (void);
 GIO_AVAILABLE_IN_2_32
 GMenu *     g_menu_new                              (void);
 
@@ -110,7 +110,7 @@ void        g_menu_append_submenu                   (GMenu       *menu,
 
 
 GIO_AVAILABLE_IN_2_32
-GType       g_menu_item_get_type                    (void) G_GNUC_CONST;
+GType       g_menu_item_get_type                    (void);
 GIO_AVAILABLE_IN_2_32
 GMenuItem * g_menu_item_new                         (const gchar *label,
                                                      const gchar *detailed_action);

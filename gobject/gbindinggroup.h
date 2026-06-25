@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 typedef struct _GBindingGroup GBindingGroup;
 
 GOBJECT_AVAILABLE_IN_2_72
-GType          g_binding_group_get_type           (void) G_GNUC_CONST;
+GType          g_binding_group_get_type           (void);
 GOBJECT_AVAILABLE_IN_2_72
 GBindingGroup *g_binding_group_new                (void);
 GOBJECT_AVAILABLE_IN_2_72

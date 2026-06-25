@@ -87,7 +87,7 @@ struct _GDBusInterfaceSkeletonClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                        g_dbus_interface_skeleton_get_type        (void) G_GNUC_CONST;
+GType                        g_dbus_interface_skeleton_get_type        (void);
 GIO_AVAILABLE_IN_ALL
 GDBusInterfaceSkeletonFlags  g_dbus_interface_skeleton_get_flags       (GDBusInterfaceSkeleton      *interface_);
 GIO_AVAILABLE_IN_ALL

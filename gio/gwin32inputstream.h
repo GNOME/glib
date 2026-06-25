@@ -63,7 +63,7 @@ struct _GWin32InputStreamClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType          g_win32_input_stream_get_type         (void) G_GNUC_CONST;
+GType          g_win32_input_stream_get_type         (void);
 
 GIO_AVAILABLE_IN_ALL
 GInputStream * g_win32_input_stream_new              (void              *handle,

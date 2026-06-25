@@ -46,7 +46,7 @@ struct _GCharsetConverterClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType              g_charset_converter_get_type      (void) G_GNUC_CONST;
+GType              g_charset_converter_get_type      (void);
 
 GIO_AVAILABLE_IN_ALL
 GCharsetConverter *g_charset_converter_new            (const gchar  *to_charset,

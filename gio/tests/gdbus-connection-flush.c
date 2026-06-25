@@ -56,7 +56,7 @@ typedef struct {
     GFilterOutputStreamClass parent;
 } MyOutputStreamClass;
 
-static GType my_output_stream_get_type (void) G_GNUC_CONST;
+static GType my_output_stream_get_type (void);
 
 G_DEFINE_TYPE (MyOutputStream, my_output_stream, G_TYPE_FILTER_OUTPUT_STREAM)
 

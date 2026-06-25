@@ -46,7 +46,7 @@ struct _GDesktopAppInfoClass
 
 
 GIO_AVAILABLE_IN_ALL
-GType            g_desktop_app_info_get_type          (void) G_GNUC_CONST;
+GType            g_desktop_app_info_get_type          (void);
 
 GIO_AVAILABLE_IN_ALL
 GDesktopAppInfo *g_desktop_app_info_new_from_filename (const char      *filename);
@@ -144,7 +144,7 @@ struct _GDesktopAppInfoLookupIface
 };
 
 GIO_DEPRECATED
-GType     g_desktop_app_info_lookup_get_type                   (void) G_GNUC_CONST;
+GType     g_desktop_app_info_lookup_get_type                   (void);
 
 GIO_DEPRECATED
 GAppInfo *g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,

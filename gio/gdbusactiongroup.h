@@ -44,7 +44,7 @@ G_BEGIN_DECLS
                                                              G_TYPE_DBUS_ACTION_GROUP, GDBusActionGroupClass))
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_dbus_action_group_get_type                  (void) G_GNUC_CONST;
+GType                   g_dbus_action_group_get_type                  (void);
 
 GIO_AVAILABLE_IN_2_32
 GDBusActionGroup *      g_dbus_action_group_get                       (GDBusConnection        *connection,

@@ -62,7 +62,7 @@ struct _GAsyncResultIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType    g_async_result_get_type          (void) G_GNUC_CONST;
+GType    g_async_result_get_type          (void);
 
 GIO_AVAILABLE_IN_ALL
 gpointer g_async_result_get_user_data     (GAsyncResult *res);

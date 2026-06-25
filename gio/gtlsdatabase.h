@@ -146,7 +146,7 @@ struct _GTlsDatabaseClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                g_tls_database_get_type                              (void) G_GNUC_CONST;
+GType                g_tls_database_get_type                              (void);
 
 GIO_AVAILABLE_IN_ALL
 GTlsCertificateFlags g_tls_database_verify_chain                          (GTlsDatabase            *self,

@@ -80,7 +80,7 @@ struct _GBufferedInputStreamClass
 
 
 GIO_AVAILABLE_IN_ALL
-GType         g_buffered_input_stream_get_type        (void) G_GNUC_CONST;
+GType         g_buffered_input_stream_get_type        (void);
 GIO_AVAILABLE_IN_ALL
 GInputStream* g_buffered_input_stream_new             (GInputStream          *base_stream);
 GIO_AVAILABLE_IN_ALL

@@ -58,7 +58,7 @@ struct _GEmblemedIconClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType  g_emblemed_icon_get_type    (void) G_GNUC_CONST;
+GType  g_emblemed_icon_get_type    (void);
 
 GIO_AVAILABLE_IN_ALL
 GIcon *g_emblemed_icon_new         (GIcon         *icon,

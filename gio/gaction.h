@@ -59,7 +59,7 @@ struct _GActionInterface
 };
 
 GIO_AVAILABLE_IN_2_30
-GType                   g_action_get_type                               (void) G_GNUC_CONST;
+GType                   g_action_get_type                               (void);
 
 GIO_AVAILABLE_IN_ALL
 const gchar *           g_action_get_name                               (GAction            *action);

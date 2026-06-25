@@ -61,7 +61,7 @@ struct _GDBusObjectProxyClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType             g_dbus_object_proxy_get_type       (void) G_GNUC_CONST;
+GType             g_dbus_object_proxy_get_type       (void);
 GIO_AVAILABLE_IN_ALL
 GDBusObjectProxy *g_dbus_object_proxy_new            (GDBusConnection   *connection,
                                                       const gchar       *object_path);

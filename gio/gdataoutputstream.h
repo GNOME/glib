@@ -65,7 +65,7 @@ struct _GDataOutputStreamClass
 
 
 GIO_AVAILABLE_IN_ALL
-GType                g_data_output_stream_get_type       (void) G_GNUC_CONST;
+GType                g_data_output_stream_get_type       (void);
 GIO_AVAILABLE_IN_ALL
 GDataOutputStream *  g_data_output_stream_new            (GOutputStream         *base_stream);
 

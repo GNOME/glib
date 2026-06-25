@@ -36,7 +36,7 @@ G_BEGIN_DECLS
 #define G_IS_SUBPROCESS(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_SUBPROCESS))
 
 GIO_AVAILABLE_IN_2_40
-GType            g_subprocess_get_type                  (void) G_GNUC_CONST;
+GType            g_subprocess_get_type                  (void);
 
 /**** Core API ****/
 

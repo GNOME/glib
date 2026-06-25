@@ -51,7 +51,7 @@ struct _GDtlsServerConnectionInterface
 };
 
 GIO_AVAILABLE_IN_2_48
-GType           g_dtls_server_connection_get_type (void) G_GNUC_CONST;
+GType           g_dtls_server_connection_get_type (void);
 
 GIO_AVAILABLE_IN_2_48
 GDatagramBased *g_dtls_server_connection_new      (GDatagramBased   *base_socket,

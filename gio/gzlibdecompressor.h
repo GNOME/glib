@@ -47,7 +47,7 @@ struct _GZlibDecompressorClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType              g_zlib_decompressor_get_type (void) G_GNUC_CONST;
+GType              g_zlib_decompressor_get_type (void);
 
 GIO_AVAILABLE_IN_ALL
 GZlibDecompressor *g_zlib_decompressor_new (GZlibCompressorFormat format);

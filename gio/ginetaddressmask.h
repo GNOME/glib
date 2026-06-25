@@ -54,7 +54,7 @@ struct _GInetAddressMaskClass
 };
 
 GIO_AVAILABLE_IN_2_32
-GType g_inet_address_mask_get_type (void) G_GNUC_CONST;
+GType g_inet_address_mask_get_type (void);
 
 GIO_AVAILABLE_IN_2_32
 GInetAddressMask *g_inet_address_mask_new             (GInetAddress      *addr,
