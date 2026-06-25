@@ -71,7 +71,7 @@ G_BEGIN_DECLS
 #define G_DBUS_METHOD_INVOCATION_UNHANDLED FALSE GIO_AVAILABLE_MACRO_IN_2_68
 
 GIO_AVAILABLE_IN_ALL
-GType                  g_dbus_method_invocation_get_type             (void) G_GNUC_CONST;
+GType                  g_dbus_method_invocation_get_type             (void);
 GIO_AVAILABLE_IN_ALL
 const gchar           *g_dbus_method_invocation_get_sender           (GDBusMethodInvocation *invocation);
 GIO_AVAILABLE_IN_ALL

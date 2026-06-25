@@ -42,7 +42,7 @@ typedef struct _GSimpleAsyncResultClass   GSimpleAsyncResultClass;
 
 
 GIO_AVAILABLE_IN_ALL
-GType               g_simple_async_result_get_type         (void) G_GNUC_CONST;
+GType               g_simple_async_result_get_type         (void);
 
 GIO_DEPRECATED_IN_2_46_FOR(g_task_new)
 GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,

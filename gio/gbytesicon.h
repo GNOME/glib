@@ -36,7 +36,7 @@ G_BEGIN_DECLS
 #define G_IS_BYTES_ICON(inst)     (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_BYTES_ICON))
 
 GIO_AVAILABLE_IN_2_38
-GType   g_bytes_icon_get_type   (void) G_GNUC_CONST;
+GType   g_bytes_icon_get_type   (void);
 
 GIO_AVAILABLE_IN_2_38
 GIcon * g_bytes_icon_new        (GBytes     *bytes);

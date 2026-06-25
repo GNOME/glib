@@ -49,7 +49,7 @@ struct _AccountsUserClass
   void (*changed) (AccountsUser *user);
 };
 
-GType        accounts_user_get_type            (void) G_GNUC_CONST;
+GType        accounts_user_get_type            (void);
 
 const gchar *accounts_user_get_user_name       (AccountsUser        *user);
 const gchar *accounts_user_get_real_name       (AccountsUser        *user);

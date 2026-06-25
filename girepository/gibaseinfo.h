@@ -86,7 +86,7 @@ typedef struct {
 #define GI_IS_BASE_INFO(info)    (G_TYPE_CHECK_INSTANCE_TYPE ((info), GI_TYPE_BASE_INFO))
 
 GI_AVAILABLE_IN_ALL
-GType                  gi_base_info_get_type         (void) G_GNUC_CONST;
+GType                  gi_base_info_get_type         (void);
 
 GI_AVAILABLE_IN_ALL
 GIBaseInfo *           gi_base_info_ref              (void         *info);

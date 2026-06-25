@@ -51,7 +51,7 @@ struct _GTlsServerConnectionInterface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                 g_tls_server_connection_get_type                 (void) G_GNUC_CONST;
+GType                 g_tls_server_connection_get_type                 (void);
 
 GIO_AVAILABLE_IN_ALL
 GIOStream *           g_tls_server_connection_new                      (GIOStream        *base_io_stream,

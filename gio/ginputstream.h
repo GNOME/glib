@@ -107,7 +107,7 @@ struct _GInputStreamClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType    g_input_stream_get_type      (void) G_GNUC_CONST;
+GType    g_input_stream_get_type      (void);
 
 GIO_AVAILABLE_IN_ALL
 gssize   g_input_stream_read          (GInputStream          *stream,

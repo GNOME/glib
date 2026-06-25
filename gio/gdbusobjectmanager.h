@@ -78,7 +78,7 @@ struct _GDBusObjectManagerIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType            g_dbus_object_manager_get_type        (void) G_GNUC_CONST;
+GType            g_dbus_object_manager_get_type        (void);
 GIO_AVAILABLE_IN_ALL
 const gchar     *g_dbus_object_manager_get_object_path (GDBusObjectManager    *manager);
 GIO_AVAILABLE_IN_ALL

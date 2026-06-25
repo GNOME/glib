@@ -55,7 +55,7 @@ struct _GDBusAuthMechanismExternal
   GDBusAuthMechanismExternalPrivate *priv;
 };
 
-GType _g_dbus_auth_mechanism_external_get_type (void) G_GNUC_CONST;
+GType _g_dbus_auth_mechanism_external_get_type (void);
 
 
 G_END_DECLS

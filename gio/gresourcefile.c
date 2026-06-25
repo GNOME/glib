@@ -107,7 +107,7 @@ static GFileEnumerator *_g_resource_file_enumerator_new (GResourceFile *file,
 							 GError              **error);
 
 
-static GType              _g_resource_file_input_stream_get_type (void) G_GNUC_CONST;
+static GType              _g_resource_file_input_stream_get_type (void);
 
 static GFileInputStream *_g_resource_file_input_stream_new (GInputStream *stream, GFile *file);
 

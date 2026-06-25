@@ -97,7 +97,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                 g_tls_connection_get_type                    (void) G_GNUC_CONST;
+GType                 g_tls_connection_get_type                    (void);
 
 GIO_DEPRECATED
 void                  g_tls_connection_set_use_system_certdb       (GTlsConnection       *conn,

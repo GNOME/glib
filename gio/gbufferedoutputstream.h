@@ -61,7 +61,7 @@ struct _GBufferedOutputStreamClass
 
 
 GIO_AVAILABLE_IN_ALL
-GType          g_buffered_output_stream_get_type        (void) G_GNUC_CONST;
+GType          g_buffered_output_stream_get_type        (void);
 GIO_AVAILABLE_IN_ALL
 GOutputStream* g_buffered_output_stream_new             (GOutputStream         *base_stream);
 GIO_AVAILABLE_IN_ALL

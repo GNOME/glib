@@ -68,7 +68,7 @@ struct _GLocalFileMonitorClass
 #ifdef G_OS_UNIX
 GIO_AVAILABLE_IN_ALL
 #endif
-GType           g_local_file_monitor_get_type (void) G_GNUC_CONST;
+GType           g_local_file_monitor_get_type (void);
 
 /* for glocalfile.c */
 GFileMonitor *

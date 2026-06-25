@@ -97,7 +97,7 @@ struct _GActionGroupInterface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_action_group_get_type                         (void) G_GNUC_CONST;
+GType                   g_action_group_get_type                         (void);
 
 GIO_AVAILABLE_IN_ALL
 gboolean                g_action_group_has_action                       (GActionGroup *action_group,

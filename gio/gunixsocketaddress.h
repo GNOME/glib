@@ -55,7 +55,7 @@ struct _GUnixSocketAddressClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType           g_unix_socket_address_get_type    (void) G_GNUC_CONST;
+GType           g_unix_socket_address_get_type    (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketAddress *g_unix_socket_address_new             (const gchar        *path);

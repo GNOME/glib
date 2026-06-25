@@ -53,7 +53,7 @@ struct _GWinHttpFileClass
   GObjectClass parent_class;
 };
 
-GType _g_winhttp_file_get_type (void) G_GNUC_CONST;
+GType _g_winhttp_file_get_type (void);
   
 GFile * _g_winhttp_file_new (GWinHttpVfs *vfs, const char *uri);
 

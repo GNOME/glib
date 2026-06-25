@@ -36,7 +36,7 @@ G_BEGIN_DECLS
 #define G_IS_DBUS_CONNECTION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_CONNECTION))
 
 GIO_AVAILABLE_IN_ALL
-GType            g_dbus_connection_get_type                   (void) G_GNUC_CONST;
+GType            g_dbus_connection_get_type                   (void);
 
 /* ---------------------------------------------------------------------------------------------------- */
 

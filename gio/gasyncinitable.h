@@ -68,7 +68,7 @@ struct _GAsyncInitableIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType    g_async_initable_get_type    (void) G_GNUC_CONST;
+GType    g_async_initable_get_type    (void);
 
 
 GIO_AVAILABLE_IN_ALL

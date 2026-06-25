@@ -52,7 +52,7 @@ struct _GUnixVolumeMonitorClass
   GNativeVolumeMonitorClass parent_class;
 };
 
-GType            _g_unix_volume_monitor_get_type                     (void) G_GNUC_CONST;
+GType            _g_unix_volume_monitor_get_type                     (void);
 
 GVolumeMonitor * _g_unix_volume_monitor_new                          (void);
 GUnixVolume    * _g_unix_volume_monitor_lookup_volume_for_mount_path (GUnixVolumeMonitor *monitor,

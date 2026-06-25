@@ -82,7 +82,7 @@ struct _GSocketListener
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_socket_listener_get_type                      (void) G_GNUC_CONST;
+GType                   g_socket_listener_get_type                      (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketListener *       g_socket_listener_new                           (void);

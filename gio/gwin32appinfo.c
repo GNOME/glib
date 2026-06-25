@@ -372,11 +372,11 @@ struct _GWin32AppInfoApplication {
 #define G_TYPE_WIN32_APPINFO_SHELL_VERB           (g_win32_appinfo_shell_verb_get_type ())
 #define G_WIN32_APPINFO_SHELL_VERB(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_WIN32_APPINFO_SHELL_VERB, GWin32AppInfoShellVerb))
 
-GType g_win32_appinfo_url_schema_get_type (void) G_GNUC_CONST;
-GType g_win32_appinfo_file_extension_get_type (void) G_GNUC_CONST;
-GType g_win32_appinfo_shell_verb_get_type (void) G_GNUC_CONST;
-GType g_win32_appinfo_handler_get_type (void) G_GNUC_CONST;
-GType g_win32_appinfo_application_get_type (void) G_GNUC_CONST;
+GType g_win32_appinfo_url_schema_get_type (void);
+GType g_win32_appinfo_file_extension_get_type (void);
+GType g_win32_appinfo_shell_verb_get_type (void);
+GType g_win32_appinfo_handler_get_type (void);
+GType g_win32_appinfo_application_get_type (void);
 
 G_DEFINE_TYPE (GWin32AppInfoURLSchema, g_win32_appinfo_url_schema, G_TYPE_OBJECT)
 G_DEFINE_TYPE (GWin32AppInfoFileExtension, g_win32_appinfo_file_extension, G_TYPE_OBJECT)

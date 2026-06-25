@@ -97,9 +97,9 @@ typedef enum { /*< prefix=G_BINDING >*/
 } G_GNUC_FLAG_ENUM GBindingFlags;
 
 GOBJECT_AVAILABLE_IN_ALL
-GType                 g_binding_flags_get_type      (void) G_GNUC_CONST;
+GType                 g_binding_flags_get_type      (void);
 GOBJECT_AVAILABLE_IN_ALL
-GType                 g_binding_get_type            (void) G_GNUC_CONST;
+GType                 g_binding_get_type            (void);
 
 GOBJECT_AVAILABLE_IN_ALL
 GBindingFlags         g_binding_get_flags           (GBinding *binding);

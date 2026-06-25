@@ -47,7 +47,7 @@ struct _GTlsConsoleInteractionClass
   GTlsInteractionClass parent_class;
 };
 
-GType                  g_tls_console_interaction_get_type    (void) G_GNUC_CONST;
+GType                  g_tls_console_interaction_get_type    (void);
 
 GTlsInteraction *      g_tls_console_interaction_new         (void);
 

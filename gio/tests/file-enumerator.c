@@ -35,7 +35,7 @@ typedef struct
   GFileEnumeratorClass parent_class;
 } TestFileEnumeratorClass;
 
-GType test_file_enumerator_get_type (void) G_GNUC_CONST;
+GType test_file_enumerator_get_type (void);
 
 G_DEFINE_TYPE (TestFileEnumerator, test_file_enumerator, G_TYPE_FILE_ENUMERATOR)
 

@@ -36,7 +36,7 @@ G_BEGIN_DECLS
 #define G_IS_SIMPLE_IO_STREAM(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_SIMPLE_IO_STREAM))
 
 GIO_AVAILABLE_IN_2_44
-GType                g_simple_io_stream_get_type         (void) G_GNUC_CONST;
+GType                g_simple_io_stream_get_type         (void);
 
 GIO_AVAILABLE_IN_2_44
 GIOStream           *g_simple_io_stream_new              (GInputStream  *input_stream,

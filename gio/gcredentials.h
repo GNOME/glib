@@ -47,7 +47,7 @@ G_BEGIN_DECLS
 typedef struct _GCredentialsClass   GCredentialsClass;
 
 GIO_AVAILABLE_IN_ALL
-GType            g_credentials_get_type           (void) G_GNUC_CONST;
+GType            g_credentials_get_type           (void);
 
 GIO_AVAILABLE_IN_ALL
 GCredentials    *g_credentials_new                (void);

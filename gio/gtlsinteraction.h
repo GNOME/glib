@@ -92,7 +92,7 @@ struct _GTlsInteractionClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                  g_tls_interaction_get_type            (void) G_GNUC_CONST;
+GType                  g_tls_interaction_get_type            (void);
 
 GIO_AVAILABLE_IN_ALL
 GTlsInteractionResult  g_tls_interaction_invoke_ask_password (GTlsInteraction    *interaction,

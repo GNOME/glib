@@ -1300,7 +1300,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 #define G_FILE_ATTRIBUTE_RECENT_MODIFIED "recent::modified"          /* int64 (time_t) */
 
 GIO_AVAILABLE_IN_ALL
-GType              g_file_info_get_type                  (void) G_GNUC_CONST;
+GType              g_file_info_get_type                  (void);
 
 GIO_AVAILABLE_IN_ALL
 GFileInfo *        g_file_info_new                       (void);
@@ -1523,7 +1523,7 @@ void              g_file_info_set_sort_order         (GFileInfo         *info,
 
 #define G_TYPE_FILE_ATTRIBUTE_MATCHER (g_file_attribute_matcher_get_type ())
 GIO_AVAILABLE_IN_ALL
-GType g_file_attribute_matcher_get_type (void) G_GNUC_CONST;
+GType g_file_attribute_matcher_get_type (void);
 
 GIO_AVAILABLE_IN_ALL
 GFileAttributeMatcher *g_file_attribute_matcher_new            (const char            *attributes);

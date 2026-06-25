@@ -75,7 +75,7 @@ struct _GPollableInputStreamInterface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType    g_pollable_input_stream_get_type         (void) G_GNUC_CONST;
+GType    g_pollable_input_stream_get_type         (void);
 
 GIO_AVAILABLE_IN_ALL
 gboolean g_pollable_input_stream_can_poll         (GPollableInputStream  *stream);

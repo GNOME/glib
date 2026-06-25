@@ -69,7 +69,7 @@ struct _GConverterIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType            g_converter_get_type     (void) G_GNUC_CONST;
+GType            g_converter_get_type     (void);
 
 GIO_AVAILABLE_IN_ALL
 GConverterResult g_converter_convert (GConverter       *converter,

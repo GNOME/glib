@@ -115,7 +115,7 @@ struct _GMountOperationClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType             g_mount_operation_get_type      (void) G_GNUC_CONST;
+GType             g_mount_operation_get_type      (void);
 GIO_AVAILABLE_IN_ALL
 GMountOperation * g_mount_operation_new           (void);
 
