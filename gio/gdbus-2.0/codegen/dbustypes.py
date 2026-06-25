@@ -595,7 +595,7 @@ class Property:
             self.name_lower = utils.camel_case_to_uscore(name).lower().replace("-", "_")
         self.name_hyphen = self.name_lower.replace("_", "-")
         # don't clash with the GType getter, e.g.:
-        # GType foo_bar_get_type (void); G_GNUC_CONST
+        # GType foo_bar_get_type (void);
         if self.name_lower == "type":
             self.name_lower = "type_"
 
