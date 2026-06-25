@@ -46,7 +46,7 @@ GQuark                g_quark_from_static_string (const gchar *string);
 GLIB_AVAILABLE_IN_ALL
 GQuark                g_quark_from_string        (const gchar *string);
 GLIB_AVAILABLE_IN_ALL
-const gchar *         g_quark_to_string          (GQuark       quark) G_GNUC_CONST;
+const gchar *         g_quark_to_string          (GQuark       quark) G_GNUC_PURE;
 
 #define G_DEFINE_QUARK(QN, q_n)                                         \
 GQuark                                                                  \
