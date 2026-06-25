@@ -52,6 +52,8 @@ struct _GNetworkMonitorNetlinkClass {
 
 GType _g_network_monitor_netlink_get_type (void);
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (GNetworkMonitorNetlink, g_object_unref)
+
 G_END_DECLS
 
 #endif /* __G_NETWORK_MONITOR_NETLINK_H__ */

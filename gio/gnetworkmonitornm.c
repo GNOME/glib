@@ -237,21 +237,29 @@ sync_properties (GNetworkMonitorNM *nm,
       return;
     }
 
+  gboolean changed = FALSE;
+
   if (new_network_available != nm->priv->network_available)
     {
       nm->priv->network_available = new_network_available;
       g_object_notify (G_OBJECT (nm), "network-available");
+      changed = TRUE;
     }
   if (new_network_metered != nm->priv->network_metered)
     {
       nm->priv->network_metered = new_network_metered;
       g_object_notify (G_OBJECT (nm), "network-metered");
+      changed = TRUE;
     }
   if (new_connectivity != nm->priv->connectivity)
     {
       nm->priv->connectivity = new_connectivity;
       g_object_notify (G_OBJECT (nm), "connectivity");
+      changed = TRUE;
     }
+
+  if (changed)
+    g_signal_emit_by_name (nm, "network-changed", new_network_available);
 }
 
 static void
