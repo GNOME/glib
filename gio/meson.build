@@ -449,6 +449,7 @@ if host_system != 'windows'
     unix_sources += files(
       'gnetworkmonitornetlink.c',
       'gnetworkmonitornm.c',
+      'gnetworkmonitorsystemd.c',
     )
   endif
 else
