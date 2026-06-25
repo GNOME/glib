@@ -1,3 +1,44 @@
+Overview of changes in GLib 2.89.1, 2026-06-25
+==============================================
+
+* Bugs fixed:
+  - #3972 g_thread_yield() may not yield control to another thread as expected
+    on Linux.
+  - !5086 gio: gmemorymonitordbus: Fix fallback backends can't be properly
+    loaded when...
+  - !5184 gregex: Remove "array length" annotations
+  - !5190 win32-build.md: Update Visual Studio build info
+  - !5191 Don't use slow content type for icons when only fast content is
+    queried
+  - !5192 Update Romanian translation
+  - !5195 Update Slovenian translation
+  - !5196 Performance improvements to GVariant/GDBusMessage
+  - !5197 docs: fix wrong reference to gint16 for gint32 types in glib/types.md
+  - !5198 Add missing finish-func annotations
+  - !5199 gregex: g_match_info_fetch_pos() and g_match_info_fetch_all() will now
+    work after partial matches as well
+  - !5200 gdatetime: Clarify docs around comparisons across time zones
+  - !5201 docs: GI annotation fixes for GCancellable
+  - !5202 Update Slovenian translation
+  - !5205 tests: Fix various leaks spotted by ASAN
+  - !5206 docs + tests: fix docs and add unit test about g_try_new with zero
+    n_structs
+  - !5207 Update Romanian translation
+  - !5209 CI: Set msys2-clang64 as default job for merges
+  - !5210 docs: add missing reference to g_rc_box_new0 and g_atomic_rc_box_new0
+    and others in Reference Counting page
+  - !5211 gutf8: Eliminate redundant double-traversal in g_utf8_substring
+  - !5213 gsocket: Improve docs for g_socket_get_fd()
+  - !5214 gerror: Add missing introspection annotations
+  - !5216 Use dlopen to access environ on FreeBSD
+  - !5218 gvariant: Check for overflow in g_variant_new_fixed_array()
+  - !5221 meson: Override girepository-2.0 when glib is used as subproject
+
+* Translation updates:
+  - Romanian (Antonio Marin)
+  - Slovenian (Martin)
+
+
 Overview of changes in GLib 2.89.0, 2026-05-20
 ==============================================
 
