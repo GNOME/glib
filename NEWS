@@ -1,3 +1,25 @@
+Overview of changes in GLib 2.88.2, 2026-06-25
+==============================================
+
+* Bugs fixed:
+  - !5178 Backport !5176 “gnulib: Fix unused flags variable warning” to
+    glib-2-88
+  - !5179 Update German translation
+  - !5181 Update Thai translation
+  - !5203 Update Basque translation
+  - !5208 Update Italian translation
+  - !5219 Backport !5209 “CI: set msys2-clang64 as default job for merges” to
+    glib-2-88
+  - !5220 Update Polish translation
+
+* Translation updates:
+  - Basque (Asier Saratsua Garmendia)
+  - German (Jürgen Benvenuti)
+  - Italian (Davide Ferracin)
+  - Polish (Victoria Niedzielska)
+  - Thai (Aefgh Threenine)
+
+
 Overview of changes in GLib 2.88.1, 2026-05-02
 ==============================================
 
