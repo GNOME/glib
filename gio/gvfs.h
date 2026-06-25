@@ -124,7 +124,7 @@ struct _GVfsClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                 g_vfs_get_type                  (void) G_GNUC_CONST;
+GType                 g_vfs_get_type                  (void);
 
 GIO_AVAILABLE_IN_ALL
 gboolean              g_vfs_is_active                 (GVfs       *vfs);

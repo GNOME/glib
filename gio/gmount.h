@@ -164,7 +164,7 @@ struct _GMountIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType       g_mount_get_type                  (void) G_GNUC_CONST;
+GType       g_mount_get_type                  (void);
 
 GIO_AVAILABLE_IN_ALL
 GFile     * g_mount_get_root                  (GMount              *mount);

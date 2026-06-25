@@ -59,7 +59,7 @@ struct _GDBusInterfaceIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                 g_dbus_interface_get_type         (void) G_GNUC_CONST;
+GType                 g_dbus_interface_get_type         (void);
 GIO_AVAILABLE_IN_ALL
 GDBusInterfaceInfo   *g_dbus_interface_get_info         (GDBusInterface      *interface_);
 GIO_AVAILABLE_IN_ALL

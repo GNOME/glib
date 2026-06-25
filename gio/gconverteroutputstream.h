@@ -64,7 +64,7 @@ struct _GConverterOutputStreamClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_converter_output_stream_get_type      (void) G_GNUC_CONST;
+GType                   g_converter_output_stream_get_type      (void);
 GIO_AVAILABLE_IN_ALL
 GOutputStream          *g_converter_output_stream_new           (GOutputStream         *base_stream,
                                                                  GConverter            *converter);

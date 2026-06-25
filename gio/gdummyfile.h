@@ -42,7 +42,7 @@ struct _GDummyFileClass
   GObjectClass parent_class;
 };
 
-GType   _g_dummy_file_get_type (void) G_GNUC_CONST;
+GType   _g_dummy_file_get_type (void);
 
 GFile * _g_dummy_file_new      (const char *uri);
 

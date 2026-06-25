@@ -58,7 +58,7 @@ struct _GRemoteActionGroupInterface
 };
 
 GIO_AVAILABLE_IN_2_32
-GType                   g_remote_action_group_get_type                  (void) G_GNUC_CONST;
+GType                   g_remote_action_group_get_type                  (void);
 
 GIO_AVAILABLE_IN_2_32
 void                    g_remote_action_group_activate_action_full      (GRemoteActionGroup *remote,

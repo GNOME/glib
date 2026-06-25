@@ -277,7 +277,7 @@ typedef GObjectClass ManyPropsClass;
 
 static GParamSpec *props[16];
 
-GType many_props_get_type (void) G_GNUC_CONST;
+GType many_props_get_type (void);
 
 G_DEFINE_TYPE(ManyProps, many_props, G_TYPE_OBJECT)
 

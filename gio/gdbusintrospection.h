@@ -308,19 +308,19 @@ void                 g_dbus_annotation_info_unref          (GDBusAnnotationInfo 
 #define G_TYPE_DBUS_ANNOTATION_INFO (g_dbus_annotation_info_get_type ())
 
 GIO_AVAILABLE_IN_ALL
-GType g_dbus_node_info_get_type       (void) G_GNUC_CONST;
+GType g_dbus_node_info_get_type       (void);
 GIO_AVAILABLE_IN_ALL
-GType g_dbus_interface_info_get_type  (void) G_GNUC_CONST;
+GType g_dbus_interface_info_get_type  (void);
 GIO_AVAILABLE_IN_ALL
-GType g_dbus_method_info_get_type     (void) G_GNUC_CONST;
+GType g_dbus_method_info_get_type     (void);
 GIO_AVAILABLE_IN_ALL
-GType g_dbus_signal_info_get_type     (void) G_GNUC_CONST;
+GType g_dbus_signal_info_get_type     (void);
 GIO_AVAILABLE_IN_ALL
-GType g_dbus_property_info_get_type   (void) G_GNUC_CONST;
+GType g_dbus_property_info_get_type   (void);
 GIO_AVAILABLE_IN_ALL
-GType g_dbus_arg_info_get_type        (void) G_GNUC_CONST;
+GType g_dbus_arg_info_get_type        (void);
 GIO_AVAILABLE_IN_ALL
-GType g_dbus_annotation_info_get_type (void) G_GNUC_CONST;
+GType g_dbus_annotation_info_get_type (void);
 
 G_END_DECLS
 

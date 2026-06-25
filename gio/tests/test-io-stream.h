@@ -39,7 +39,7 @@ typedef struct
   GIOStreamClass parent_class;
 } TestIOStreamClass;
 
-GType test_io_stream_get_type (void) G_GNUC_CONST;
+GType test_io_stream_get_type (void);
 
 #define TEST_TYPE_IO_STREAM  (test_io_stream_get_type ())
 #define TEST_IO_STREAM(o)    (G_TYPE_CHECK_INSTANCE_CAST ((o), \

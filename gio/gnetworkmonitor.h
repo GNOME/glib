@@ -67,7 +67,7 @@ struct _GNetworkMonitorInterface {
 };
 
 GIO_AVAILABLE_IN_2_32
-GType                 g_network_monitor_get_type              (void) G_GNUC_CONST;
+GType                 g_network_monitor_get_type              (void);
 GIO_AVAILABLE_IN_2_32
 GNetworkMonitor      *g_network_monitor_get_default           (void);
 

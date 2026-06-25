@@ -90,7 +90,7 @@ struct _GProxyInterface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType      g_proxy_get_type                 (void) G_GNUC_CONST;
+GType      g_proxy_get_type                 (void);
 
 GIO_AVAILABLE_IN_ALL
 GProxy    *g_proxy_get_default_for_protocol (const gchar *protocol);

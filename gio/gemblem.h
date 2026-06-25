@@ -41,7 +41,7 @@ typedef struct _GEmblem        GEmblem;
 typedef struct _GEmblemClass   GEmblemClass;
 
 GIO_AVAILABLE_IN_ALL
-GType          g_emblem_get_type        (void) G_GNUC_CONST;
+GType          g_emblem_get_type        (void);
 
 GIO_AVAILABLE_IN_ALL
 GEmblem       *g_emblem_new             (GIcon         *icon);

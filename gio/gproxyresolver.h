@@ -69,7 +69,7 @@ struct _GProxyResolverInterface {
 };
 
 GIO_AVAILABLE_IN_ALL
-GType		g_proxy_resolver_get_type       (void) G_GNUC_CONST;
+GType		g_proxy_resolver_get_type       (void);
 GIO_AVAILABLE_IN_ALL
 GProxyResolver *g_proxy_resolver_get_default    (void);
 

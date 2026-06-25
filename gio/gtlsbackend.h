@@ -80,7 +80,7 @@ struct _GTlsBackendInterface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType          g_tls_backend_get_type                   (void) G_GNUC_CONST;
+GType          g_tls_backend_get_type                   (void);
 
 GIO_AVAILABLE_IN_ALL
 GTlsBackend *  g_tls_backend_get_default                (void);

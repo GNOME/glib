@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 #define G_IS_SUBPROCESS_LAUNCHER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_SUBPROCESS_LAUNCHER))
 
 GIO_AVAILABLE_IN_2_40
-GType                   g_subprocess_launcher_get_type                  (void) G_GNUC_CONST;
+GType                   g_subprocess_launcher_get_type                  (void);
 
 GIO_AVAILABLE_IN_2_40
 GSubprocessLauncher *   g_subprocess_launcher_new                       (GSubprocessFlags       flags);

@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 typedef struct _GSignalGroup GSignalGroup;
 
 GOBJECT_AVAILABLE_IN_2_72
-GType         g_signal_group_get_type        (void) G_GNUC_CONST;
+GType         g_signal_group_get_type        (void);
 GOBJECT_AVAILABLE_IN_2_72
 GSignalGroup *g_signal_group_new             (GType           target_type);
 GOBJECT_AVAILABLE_IN_2_72

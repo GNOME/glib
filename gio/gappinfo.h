@@ -155,7 +155,7 @@ struct _GAppInfoIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType       g_app_info_get_type                     (void) G_GNUC_CONST;
+GType       g_app_info_get_type                     (void);
 GIO_AVAILABLE_IN_ALL
 GAppInfo *  g_app_info_create_from_commandline      (const char           *commandline,
                                                      const char           *application_name,
@@ -332,7 +332,7 @@ struct _GAppLaunchContextClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType              g_app_launch_context_get_type              (void) G_GNUC_CONST;
+GType              g_app_launch_context_get_type              (void);
 GIO_AVAILABLE_IN_ALL
 GAppLaunchContext *g_app_launch_context_new                   (void);
 

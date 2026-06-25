@@ -144,7 +144,7 @@ GIO_AVAILABLE_IN_2_46
 void                      g_win32_registry_subkey_iter_assign   (GWin32RegistrySubkeyIter       *iter,
                                                                  const GWin32RegistrySubkeyIter *other);
 GIO_AVAILABLE_IN_2_46
-GType                     g_win32_registry_subkey_iter_get_type (void) G_GNUC_CONST;
+GType                     g_win32_registry_subkey_iter_get_type (void);
 
 
 GIO_AVAILABLE_IN_2_46
@@ -155,7 +155,7 @@ GIO_AVAILABLE_IN_2_46
 void                      g_win32_registry_value_iter_assign    (GWin32RegistryValueIter       *iter,
                                                                  const GWin32RegistryValueIter *other);
 GIO_AVAILABLE_IN_2_46
-GType                     g_win32_registry_value_iter_get_type  (void) G_GNUC_CONST;
+GType                     g_win32_registry_value_iter_get_type  (void);
 
 
 GIO_AVAILABLE_IN_2_46

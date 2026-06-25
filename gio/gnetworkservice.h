@@ -54,7 +54,7 @@ struct _GNetworkServiceClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                g_network_service_get_type      (void) G_GNUC_CONST;
+GType                g_network_service_get_type      (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketConnectable  *g_network_service_new           (const gchar     *service,

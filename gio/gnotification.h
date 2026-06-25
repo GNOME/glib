@@ -36,7 +36,7 @@ G_BEGIN_DECLS
 #define G_IS_NOTIFICATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_NOTIFICATION))
 
 GIO_AVAILABLE_IN_2_40
-GType                   g_notification_get_type                         (void) G_GNUC_CONST;
+GType                   g_notification_get_type                         (void);
 
 GIO_AVAILABLE_IN_2_40
 GNotification *         g_notification_new                              (const gchar *title);

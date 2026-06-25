@@ -109,7 +109,7 @@ struct _GTypePluginClass
 
 /* --- prototypes --- */
 GOBJECT_AVAILABLE_IN_ALL
-GType	g_type_plugin_get_type			(void)	G_GNUC_CONST;
+GType	g_type_plugin_get_type			(void);
 GOBJECT_AVAILABLE_IN_ALL
 void	g_type_plugin_use			(GTypePlugin	 *plugin);
 GOBJECT_AVAILABLE_IN_ALL

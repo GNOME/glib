@@ -64,7 +64,7 @@ struct _GUnixFDMessage
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_unix_fd_message_get_type                      (void) G_GNUC_CONST;
+GType                   g_unix_fd_message_get_type                      (void);
 GIO_AVAILABLE_IN_ALL
 GSocketControlMessage * g_unix_fd_message_new_with_fd_list              (GUnixFDList     *fd_list);
 GIO_AVAILABLE_IN_ALL

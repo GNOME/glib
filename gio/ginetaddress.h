@@ -59,7 +59,7 @@ struct _GInetAddressClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                 g_inet_address_get_type             (void) G_GNUC_CONST;
+GType                 g_inet_address_get_type             (void);
 
 GIO_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_from_string      (const gchar          *string);

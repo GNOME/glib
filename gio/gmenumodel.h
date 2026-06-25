@@ -183,7 +183,7 @@ struct _GMenuModelClass
 };
 
 GIO_AVAILABLE_IN_2_32
-GType                   g_menu_model_get_type                           (void) G_GNUC_CONST;
+GType                   g_menu_model_get_type                           (void);
 
 GIO_AVAILABLE_IN_2_32
 gboolean                g_menu_model_is_mutable                         (GMenuModel         *model);
@@ -247,7 +247,7 @@ struct _GMenuAttributeIterClass
 };
 
 GIO_AVAILABLE_IN_2_32
-GType                   g_menu_attribute_iter_get_type                  (void) G_GNUC_CONST;
+GType                   g_menu_attribute_iter_get_type                  (void);
 
 GIO_AVAILABLE_IN_2_32
 gboolean                g_menu_attribute_iter_get_next                  (GMenuAttributeIter  *iter,
@@ -289,7 +289,7 @@ struct _GMenuLinkIterClass
 };
 
 GIO_AVAILABLE_IN_2_32
-GType                   g_menu_link_iter_get_type                       (void) G_GNUC_CONST;
+GType                   g_menu_link_iter_get_type                       (void);
 
 GIO_AVAILABLE_IN_2_32
 gboolean                g_menu_link_iter_get_next                       (GMenuLinkIter  *iter,

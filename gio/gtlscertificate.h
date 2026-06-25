@@ -59,7 +59,7 @@ struct _GTlsCertificateClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                 g_tls_certificate_get_type           (void) G_GNUC_CONST;
+GType                 g_tls_certificate_get_type           (void);
 
 GIO_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_certificate_new_from_pem       (const gchar         *data,

@@ -54,7 +54,7 @@ struct _GDBusAuth
   GDBusAuthPrivate *priv;
 };
 
-GType       _g_dbus_auth_get_type (void) G_GNUC_CONST;
+GType       _g_dbus_auth_get_type (void);
 GDBusAuth  *_g_dbus_auth_new      (GIOStream *stream);
 
 /* TODO: need a way to set allowed authentication mechanisms */

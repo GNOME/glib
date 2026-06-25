@@ -52,7 +52,7 @@ void               g_io_module_scope_block   (GIOModuleScope      *scope,
 typedef struct _GIOModuleClass GIOModuleClass;
 
 GIO_AVAILABLE_IN_ALL
-GType              g_io_module_get_type                       (void) G_GNUC_CONST;
+GType              g_io_module_get_type                       (void);
 GIO_AVAILABLE_IN_ALL
 GIOModule         *g_io_module_new                            (const gchar       *filename);
 
