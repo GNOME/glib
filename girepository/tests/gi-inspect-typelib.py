@@ -74,6 +74,7 @@ class TestGIInspectTypelibForGLibTypelib(TestGIInspectTypelibBase):
     TYPELIB_NAMESPACE = "GLib"
     TYPELIB_VERSION = "2.0"
     LIB_SONAME = "0"
+    shlib_prefix = ""
 
     @classmethod
     def setUpClass(cls):
@@ -83,6 +84,8 @@ class TestGIInspectTypelibForGLibTypelib(TestGIInspectTypelibBase):
             os.environ["GI_TYPELIB_PATH"] = os.path.join(
                 os.environ["G_TEST_BUILDDIR"], "..", "introspection"
             )
+        if "_GI_TYPELIB_HAS_LIB_PREFIX" in os.environ:
+            self.shlib_prefix = "lib"
 
     def runTestProgram(self, *args, **kwargs):
         argv = list(args)
@@ -103,7 +106,7 @@ class TestGIInspectTypelibForGLibTypelib(TestGIInspectTypelibBase):
 
     def check_shlib(self, out):
         self.assertIn(
-            f"lib{self.TYPELIB_NAMESPACE.lower()}-{self.TYPELIB_VERSION}"
+            f"{self.shlib_prefix}{self.TYPELIB_NAMESPACE.lower()}-{self.TYPELIB_VERSION}"
             + f"{self.get_shlib_ext()}",
             out,
         )

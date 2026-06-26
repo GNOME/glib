@@ -172,6 +172,16 @@ endforeach
 python_tests = {}
 
 if enable_gir
+  # Visual Studio-style builds do not produce DLLs with a 'lib' prefix
+  gi_inspect_typelib_env = {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(giinspecttypelib.full_path())}
+  shlib_has_lib_prefix = false
+  if cc.get_argument_syntax() != 'msvc'
+    shlib_has_lib_prefix = true
+  endif
+  if shlib_has_lib_prefix
+    gi_inspect_typelib_env += {'_GI_TYPELIB_HAS_LIB_PREFIX': '1'}
+  endif
+
   python_tests += {
     'gi-compile-repository.py': {
       'depends': [gicompilerepository, glib_gir[0], gobject_gir[0], gio_gir[0]],
@@ -182,7 +192,7 @@ if enable_gir
     },
     'gi-inspect-typelib.py': {
       'depends': [giinspecttypelib, glib_gir[1], gobject_gir[1], gio_gir[1]],
-      'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(giinspecttypelib.full_path())},
+      'env': gi_inspect_typelib_env,
       'suite': ['inspector'],
     },
   }
