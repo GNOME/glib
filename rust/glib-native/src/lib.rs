@@ -1,21 +1,38 @@
 //! Native Rust reimplementation of GLib.
 //!
 //! See [`docs/rust-migration.md`](../../docs/rust-migration.md) for the phased
-//! migration plan. Phase 1 covers endian helpers, checked arithmetic,
-//! reference counting, and [`Bytes`].
+//! migration plan. Phases 0–1 cover endian helpers, checked arithmetic,
+//! reference counting, and [`Bytes`]. Phase 2 adds atomics, memory, and strings.
 
 #![deny(unsafe_op_in_unsafe_fn)]
 #![warn(missing_docs)]
 
+pub mod atomic;
 pub mod bytes;
 pub mod checked;
 pub mod endian;
+pub mod gstring;
+pub mod mem;
 pub mod refcount;
+pub mod strfuncs;
 
+pub use atomic::{AtomicInt, AtomicPointer, AtomicUInt};
 pub use bytes::Bytes;
-pub use checked::{checked_add_size, checked_mul_size, checked_add_u32, checked_mul_u32};
-pub use endian::{g_htonl, g_htons, g_ntohl, g_ntohs, swap_u16_le_be, swap_u32_le_be, swap_u64_le_be};
+pub use checked::{checked_add_size, checked_add_u32, checked_mul_size, checked_mul_u32};
+pub use endian::{
+    g_htonl, g_htons, g_ntohl, g_ntohs, swap_u16_le_be, swap_u32_le_be, swap_u64_le_be,
+};
+pub use gstring::GString;
+pub use mem::{
+    aligned_alloc, aligned_alloc0, clear, clear_with, free, malloc, malloc0, malloc0_n, malloc_n,
+    memdup, memdup2, realloc, realloc_n, steal, try_aligned_alloc, try_malloc, try_malloc0,
+    try_malloc0_n, try_malloc_n, try_realloc, try_realloc_n, AlignedBuffer, MEM_ALIGN,
+};
 pub use refcount::{AtomicRefCount, RefCount};
+pub use strfuncs::{
+    ascii_strcasecmp, str_has_prefix, str_has_suffix, strcasecmp, strchomp, strchug, strcmp,
+    strconcat, strdup, strjoin, strjoinv, strlen, strndup, strstrip,
+};
 
 /// Alias matching GLib's `gboolean`: `true` or `false`.
 pub type Bool = bool;

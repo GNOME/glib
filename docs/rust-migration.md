@@ -40,7 +40,7 @@ The crate is named `glib-native` to avoid confusion with the existing
 |-------|-------|---------------|--------|
 | **0** | Tooling: Cargo workspace, `cargo test` in CI, migration docs | — | **Done** |
 | **1** | Foundation types: endian swaps, checked arithmetic, refcounts, `GBytes` | `gtypes.h`, `grefcount.*`, `gbytes.*` | **Done** |
-| **2** | Atomics, memory helpers, strings | `gatomic.*`, `gmem.*`, `gstrfuncs.*`, `gstring.*` | Planned |
+| **2** | Atomics, memory helpers, strings | `gatomic.*`, `gmem.*`, `gstrfuncs.*`, `gstring.*` | **Done** |
 | **3** | Sequential containers | `garray.*`, `glist.*`, `gslist.*`, `gqueue.*`, `gptrarray.*` | Planned |
 | **4** | Associative containers & datasets | `ghash.*`, `gtree.*`, `gdataset.*`, `gquark.*` | Planned |
 | **5** | Errors, logging, options | `gerror.*`, `gmessages.*`, `goption.*` | Planned |
@@ -53,7 +53,25 @@ The crate is named `glib-native` to avoid confusion with the existing
 | **12** | GObject Introspection & tools | `girepository/*`, `tools/*` | Planned |
 | **13** | Remove C implementations; expose stable C ABI from Rust via `extern "C"` | all | Planned |
 
-## Phase 1 detail (current)
+## Phase 2 detail (current)
+
+### Modules
+
+- **`atomic`** — `AtomicInt`, `AtomicUInt`, `AtomicPointer` matching `g_atomic_*`.
+- **`mem`** — `malloc`/`realloc`/`memdup` family, aligned alloc, `clear`/`steal`.
+- **`strfuncs`** — non-printf string helpers (`strdup`, `strjoin`, ASCII compare, strip).
+- **`gstring`** — growable `GString` buffer with GLib length/nul semantics.
+
+### Exit criteria
+
+- `cargo test` passes (62+ unit tests in `rust/`).
+- Tests mirror `glib/tests/atomic.c`, `mem-overflow.c`, `strfuncs.c`, `string.c`.
+
+### Next (Phase 3)
+
+Port `garray`, `glist`, `gslist`, `gqueue`, and `gptrarray`.
+
+## Phase 1 detail
 
 ### Modules
 
@@ -70,12 +88,6 @@ The crate is named `glib-native` to avoid confusion with the existing
 - Rust tests cover refcount and bytes cases from `glib/tests/refcount.c` and
   `glib/tests/bytes.c`.
 - CI job `rust-check` runs on merge requests.
-
-### Next (Phase 2)
-
-Port `gatomic.c`, `gmem.c`, and the non-printf subset of `gstrfuncs.c` / `gstring.c`.
-Introduce a `glib-native-sys` crate with `#[no_mangle]` shims only when C callers
-need the new implementations.
 
 ## Running Rust tests
 

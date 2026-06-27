@@ -154,7 +154,10 @@ impl Bytes {
     pub fn hash(&self) -> u32 {
         let mut h: u32 = 5381;
         for byte in self.as_ref() {
-            h = h.wrapping_shl(5).wrapping_add(h).wrapping_add(u32::from(*byte));
+            h = h
+                .wrapping_shl(5)
+                .wrapping_add(h)
+                .wrapping_add(u32::from(*byte));
         }
         h
     }
