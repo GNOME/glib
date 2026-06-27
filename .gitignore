@@ -23,6 +23,9 @@ tags
 /glib-lcov.info
 /glib-lcov/
 
+# Rust
+/rust/target/
+
 # Meson
 /meson-build/
 /subprojects/*/

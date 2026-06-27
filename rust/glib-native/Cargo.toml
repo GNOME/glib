@@ -1,0 +1,11 @@
+[package]
+name = "glib-native"
+version = "0.1.0"
+description = "Native Rust reimplementation of GLib (phased migration)"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+
+[dev-dependencies]

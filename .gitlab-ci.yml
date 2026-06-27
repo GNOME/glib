@@ -1176,3 +1176,13 @@ issue-bot:
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "schedule"
       when: on_failure
+
+# Rust migration (Phase 0/1): run glib-native unit tests
+rust-check:
+  stage: build
+  image: rust:1.83-bookworm
+  script:
+    - cd rust && cargo test --all-features
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH

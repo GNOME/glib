@@ -1,0 +1,8 @@
+[workspace]
+resolver = "2"
+members = ["glib-native"]
+
+[workspace.package]
+edition = "2021"
+license = "LGPL-2.1-or-later"
+repository = "https://github.com/vzwjustin/glib"
