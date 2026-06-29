@@ -494,27 +494,21 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
   guint32 table, metric, oif;
   gboolean have_nexthop;
 
-  iv.buffer = NULL;
-  iv.size = 0;
-
-  flags = MSG_PEEK | MSG_TRUNC;
-  len = g_socket_receive_message (nl->priv->monitor_sock, NULL, &iv, 1,
+  /* The kernel is aware of the read buffer size, so a larger buffer lets it
+   * deliver more data per datagram. */
+  iv.buffer = g_malloc (NETLINK_MESSAGE_MAX_SIZE);
+  iv.size = NETLINK_MESSAGE_MAX_SIZE;
+  flags = 0;
+  len = g_socket_receive_message (nl->priv->monitor_sock, &addr, &iv, 1,
                                   NULL, NULL, &flags, NULL, &local_error);
   if (len < 0)
     goto done;
-  if (len == 0 || len > NETLINK_MESSAGE_MAX_SIZE)
+  if (len == 0 || (flags & MSG_TRUNC))
     {
       g_set_error_literal (&local_error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
                            "netlink message length is invalid");
       goto done;
     }
-
-  iv.buffer = g_malloc (len);
-  iv.size = len;
-  len = g_socket_receive_message (nl->priv->monitor_sock, &addr, &iv, 1,
-                                  NULL, NULL, NULL, NULL, &local_error);
-  if (len < 0)
-    goto done;
 
   if (!g_socket_address_to_native (addr, &source_sockaddr, sizeof (source_sockaddr), &local_error))
     goto done;
