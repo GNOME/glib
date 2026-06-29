@@ -50,6 +50,11 @@
 #ifdef HAVE_LINUX_NETLINK_H
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
+/* <linux/netlink.h> defines NETLINK_GET_STRICT_CHK but not its setsockopt
+ * level SOL_NETLINK. */
+#ifndef SOL_NETLINK
+#define SOL_NETLINK 270
+#endif
 #endif
 #if defined(HAVE_NETLINK_NETLINK_H) && defined(HAVE_NETLINK_NETLINK_ROUTE_H)
 #include <netlink/netlink.h>
@@ -267,17 +272,30 @@ request_dump (GNetworkMonitorNetlink  *nl,
               GError                 **error)
 {
   struct nlmsghdr *n;
-  struct rtgenmsg *gen;
-  gchar buf[NLMSG_SPACE (sizeof (*gen))];
+  struct rtmsg *rtm;
+  gchar buf[NLMSG_SPACE (sizeof (*rtm))];
+
+#ifdef NETLINK_GET_STRICT_CHK
+  /* Strict checking with rtm_flags == 0 lets the kernel dump faster by
+   * skipping unnecessary data, e.g. the route-cache exceptions. */
+  {
+    const int strict = 1;
+    if (setsockopt (g_socket_get_fd (nl->priv->monitor_sock), SOL_NETLINK,
+                    NETLINK_GET_STRICT_CHK, &strict, sizeof (strict)) != 0)
+      g_debug ("Could not set NETLINK_GET_STRICT_CHK: %s", g_strerror (errno));
+  }
+#endif
 
   memset (buf, 0, sizeof (buf));
   n = (struct nlmsghdr*) buf;
-  n->nlmsg_len = NLMSG_LENGTH (sizeof (*gen));
+  n->nlmsg_len = NLMSG_LENGTH (sizeof (*rtm));
   n->nlmsg_type = RTM_GETROUTE;
   n->nlmsg_flags = NLM_F_REQUEST | NLM_F_DUMP;
   n->nlmsg_pid = 0;
-  gen = NLMSG_DATA (n);
-  gen->rtgen_family = AF_UNSPEC;
+  rtm = NLMSG_DATA (n);
+  rtm->rtm_family = AF_UNSPEC;
+  /* Keep this request minimal: a strict dump requires the selector fields to
+   * stay zero, and extra attributes can also hurt dump performance. */
 
   if (g_socket_send (nl->priv->monitor_sock, buf, sizeof (buf),
                      NULL, error) < 0)
