@@ -69,19 +69,22 @@ else
   extra_sources += 'driver.c'
 endif
 
-foreach target_name : fuzz_targets
-  exe = executable(target_name, [extra_sources, target_name + '.c'],
-    c_args : extra_c_args,
-    dependencies : deps,
-  )
-
-  # If the FuzzingEngine isn’t available, build some unit tests to check that
-  # the fuzzing files do basically work. This doesn’t do any actual fuzzing though.
-  # Pass in the README as an arbitrary fuzzing input, just so we have something.
-  if build_tests and not have_fuzzing_engine
-    test(target_name, exe,
-      args : files('README.md'),
-      suite : 'fuzzing',
+if have_fuzzing_engine or build_tests
+  foreach target_name : fuzz_targets
+    exe = executable(target_name, [extra_sources, target_name + '.c'],
+      c_args : extra_c_args,
+      dependencies : deps,
     )
-  endif
-endforeach
+
+    # If the FuzzingEngine isn’t available, build some unit tests to check
+    # that the fuzzing files do basically work.  This doesn’t do any actual
+    # fuzzing though.  Pass in the README as an arbitrary fuzzing input,
+    # just so we have something.
+    if not have_fuzzing_engine
+      test(target_name, exe,
+        args : files('README.md'),
+        suite : 'fuzzing',
+      )
+    endif
+  endforeach
+endif
