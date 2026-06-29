@@ -141,6 +141,7 @@ create_netlink_socket (guint32   groups,
   gint sockfd;
   struct sockaddr_nl snl;
   GSocket *sock;
+  const int rcvbuf = 1024 * 1024;
 
   /* We create the socket the old-school way because sockaddr_netlink
    * can't be represented as a GSocketAddress
@@ -154,6 +155,12 @@ create_netlink_socket (guint32   groups,
                    g_strerror (errsv));
       return NULL;
     }
+
+  /* A host running dynamic routing protocols such as BGP can generate many
+   * route events in a short time; a larger buffer reduces ENOBUFS overflows
+   * that force running the full route enumeration again. */
+  if (setsockopt (sockfd, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof (rcvbuf)) != 0)
+    g_debug ("Could not enlarge netlink receive buffer: %s", g_strerror (errno));
 
   snl.nl_family = AF_NETLINK;
   snl.nl_pid = snl.nl_pad = 0;
