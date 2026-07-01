@@ -65,8 +65,6 @@ struct _GDBusActionGroup
   gboolean         strict;
 };
 
-typedef GObjectClass GDBusActionGroupClass;
-
 typedef struct
 {
   gchar        *name;
