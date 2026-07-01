@@ -52,11 +52,6 @@ struct _GEmblem
   GEmblemOrigin origin;
 };
 
-struct _GEmblemClass
-{
-  GObjectClass parent_class;
-};
-
 enum
 {
   PROP_0_GEMBLEM,
