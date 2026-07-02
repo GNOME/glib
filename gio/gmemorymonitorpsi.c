@@ -23,18 +23,22 @@
 #include "gcancellable.h"
 #include "gdbusnamewatching.h"
 #include "gdbusproxy.h"
+#include "gfile.h"
 #include "ginitable.h"
 #include "gioerror.h"
 #include "giomodule-priv.h"
-#include "glibintl.h"
 #include "glib/glib-private.h"
 #include "glib/gstdio.h"
+#include "glibintl.h"
 #include "gmemorymonitor.h"
 #include "gmemorymonitorbase.h"
 #include "gmemorymonitorpsi.h"
+#include "gsocket.h"
+#include "gunixsocketaddress.h"
 
 #include <errno.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 /**
@@ -104,6 +108,14 @@ struct _GMemoryMonitorPsi
 
   char *cg_path;
   char *proc_path;
+
+  gboolean mem_pressure_watch_override;
+  char *mem_pressure_write;
+  size_t mem_pressure_write_len;
+
+  /* if the cg_path is a unix socket */
+  GSocket *socket;
+  GSocketAddress *socket_addr;
 
   gboolean proc_override;
 };
@@ -288,6 +300,10 @@ g_memory_monitor_psi_calculate_mem_pressure_path (GMemoryMonitorPsi  *monitor,
       monitor->proc_path = g_strdup_printf ("/proc/%d/cgroup", pid);
     }
 
+  /* if $MEMORY_PRESSURE_WATCH is set, use the user defined PSI path and return TRUE */
+  if (monitor->cg_path && monitor->mem_pressure_watch_override)
+    return TRUE;
+
   if (!g_file_get_contents (monitor->proc_path, &path_read, NULL, error))
     {
       g_free (path_read);
@@ -327,28 +343,136 @@ g_memory_monitor_psi_calculate_mem_pressure_path (GMemoryMonitorPsi  *monitor,
   return g_file_test (monitor->cg_path, G_FILE_TEST_EXISTS);
 }
 
+static gboolean
+g_memory_monitor_psi_is_socket (const gchar *path)
+{
+  GStatBuf statbuf;
+
+  if (g_stat (path, &statbuf) != 0)
+    return FALSE;
+
+  if ((statbuf.st_mode & S_IFMT) == S_IFSOCK)
+    return TRUE;
+
+  return FALSE;
+}
+
+static int
+g_memory_monitor_psi_new_socket_fd (GMemoryMonitorPsi *monitor,
+                                    const gchar *trigger,
+                                    size_t len,
+                                    GError **error)
+{
+  int fd = -1;
+
+  monitor->socket = g_socket_new (G_SOCKET_FAMILY_UNIX, G_SOCKET_TYPE_STREAM, 0, error);
+  if (!monitor->socket)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Socket creation failed");
+      return -1;
+    }
+
+  monitor->socket_addr = g_unix_socket_address_new (monitor->cg_path);
+  if (!g_socket_connect (monitor->socket, monitor->socket_addr, NULL, error))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Connection failed");
+      g_socket_close (monitor->socket, NULL);
+      g_clear_object (&monitor->socket);
+      g_clear_object (&monitor->socket_addr);
+      return -1;
+    }
+
+  fd = g_socket_get_fd (monitor->socket);
+  g_assert (fd >= 0);
+
+  return fd;
+}
+
 static GSource *
-g_memory_monitor_psi_setup_trigger (GMemoryMonitorPsi             *monitor,
-                                    GMemoryMonitorLowMemoryLevel   level_type,
-                                    int                            threshold_us,
-                                    int                            window_us,
-                                    GError                       **error)
+g_memory_monitor_psi_write (GMemoryMonitorPsi *monitor,
+                            const gchar *trigger,
+                            GMemoryMonitorLowMemoryLevel level_type,
+                            size_t len,
+                            GError **error)
 {
   GSource *source;
   int fd;
-  int ret;
   size_t wlen;
-  gchar *trigger = NULL;
+  int ret;
 
-  fd = g_open (monitor->cg_path, O_RDWR | O_NONBLOCK | O_CLOEXEC);
-  if (fd < 0)
+  if (g_memory_monitor_psi_is_socket (monitor->cg_path))
     {
-      int errsv = errno;
-      g_debug ("Error on opening %s: %s", monitor->cg_path, g_strerror (errsv));
-      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-                   "Error on opening ‘%s’: %s", monitor->cg_path, g_strerror (errsv));
-      return NULL;
+      fd = g_memory_monitor_psi_new_socket_fd (monitor, trigger, len, error);
+      if (fd < 0)
+        return NULL;
     }
+  else
+    {
+      fd = g_open (monitor->cg_path, O_RDWR | O_NONBLOCK | O_CLOEXEC);
+      if (fd < 0)
+        {
+          int errsv = errno;
+          g_debug ("Error on opening %s: %s", monitor->cg_path, g_strerror (errsv));
+          g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
+                       "Error on opening ‘%s’: %s", monitor->cg_path, g_strerror (errsv));
+          return NULL;
+        }
+    }
+
+  errno = 0;
+
+  wlen = len;
+
+  while (wlen > 0)
+    {
+      int errsv;
+      ret = write (fd, trigger, wlen);
+      errsv = errno;
+      if (ret < 0)
+        {
+          if (errsv == EINTR)
+            {
+              /* interrupted by signal, retry */
+              continue;
+            }
+          else
+            {
+              g_set_error (error,
+                           G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Error on setting PSI configurations: %s",
+                           g_strerror (errsv));
+              if (monitor->socket != NULL)
+                {
+                  g_socket_close (monitor->socket, NULL);
+                  g_clear_object (&monitor->socket);
+                  g_clear_object (&monitor->socket_addr);
+                }
+              else
+                {
+                  close (fd);
+                }
+              return NULL;
+            }
+        }
+      wlen -= ret;
+    }
+
+  g_debug ("Create source for low memory level %d", level_type);
+  source = g_memory_monitor_create_source (monitor, fd, level_type, monitor->proc_override);
+  g_source_set_callback (source, G_SOURCE_FUNC (g_memory_monitor_low_trigger_cb), NULL, NULL);
+
+  return g_steal_pointer (&source);
+}
+
+static GSource *
+g_memory_monitor_psi_setup_trigger (GMemoryMonitorPsi *monitor,
+                                    GMemoryMonitorLowMemoryLevel level_type,
+                                    int threshold_us,
+                                    int window_us,
+                                    GError **error)
+{
+  GSource *source;
+  gchar *trigger = NULL;
 
   /* The kernel PSI [1] trigger format is:
    * <some|full> <stall amount in us> <time window in us>
@@ -365,40 +489,21 @@ g_memory_monitor_psi_setup_trigger (GMemoryMonitorPsi             *monitor,
                              threshold_us,
                              window_us);
 
-  errno = 0;
-  wlen = strlen (trigger) + 1;
-  while (wlen > 0)
-    {
-      int errsv;
-      g_debug ("Write trigger %s", trigger);
-      ret = write (fd, trigger, wlen);
-      errsv = errno;
-      if (ret < 0)
-        {
-          if (errsv == EINTR)
-            {
-              /* interrupted by signal, retry */
-              continue;
-            }
-          else
-            {
-              g_set_error (error,
-                           G_IO_ERROR, G_IO_ERROR_FAILED,
-                           "Error on setting PSI configurations: %s",
-                           g_strerror (errsv));
-              g_free (trigger);
-              close (fd);
-              return NULL;
-            }
-        }
-      wlen -= ret;
-    }
+  source = g_memory_monitor_psi_write (monitor, trigger, level_type, strlen (trigger) + 1, error);
+
   g_free (trigger);
 
-  source = g_memory_monitor_create_source (monitor, fd, level_type, monitor->proc_override);
-  g_source_set_callback (source, G_SOURCE_FUNC (g_memory_monitor_low_trigger_cb), NULL, NULL);
-
   return g_steal_pointer (&source);
+}
+
+static GSource *
+g_memory_monitor_psi_setup_trigger_data (GMemoryMonitorPsi *monitor,
+                                         const gchar *trigger,
+                                         GMemoryMonitorLowMemoryLevel level_type,
+                                         size_t len,
+                                         GError **error)
+{
+  return g_memory_monitor_psi_write (monitor, trigger, level_type, len, error);
 }
 
 static gboolean
@@ -408,9 +513,25 @@ g_memory_monitor_setup_psi (GMemoryMonitorPsi  *monitor,
   if (!g_memory_monitor_psi_calculate_mem_pressure_path (monitor, error))
     return FALSE;
 
+  /* If $MEMORY_PRESSURE_WRITE is set, write the user defined configurations to the
+   * user defined PSI path. */
+  if (monitor->mem_pressure_watch_override)
+    {
+      /* The G_MEMORY_MONITOR_LOW_MEMORY_LEVEL_LOW trigger is used to monitor the user defined PSI event. */
+      monitor->triggers[G_MEMORY_MONITOR_LOW_MEMORY_LEVEL_LOW] = g_memory_monitor_psi_setup_trigger_data (monitor,
+                                                                                                          monitor->mem_pressure_write,
+                                                                                                          G_MEMORY_MONITOR_LOW_MEMORY_LEVEL_LOW,
+                                                                                                          monitor->mem_pressure_write_len,
+                                                                                                          error);
+      if (monitor->triggers[G_MEMORY_MONITOR_LOW_MEMORY_LEVEL_LOW] == NULL)
+        return FALSE;
+
+      return TRUE;
+    }
+
   for (size_t i = 0; i < G_N_ELEMENTS (triggers); i++)
     {
-      /* the user defined PSI is estimated per second and the unit is in micro second(us). */
+      /* The user defined PSI is estimated per second and the unit is in micro second(us). */
       monitor->triggers[i] = g_memory_monitor_psi_setup_trigger (monitor,
                                                                  i,
                                                                  triggers[i].threshold_ms * 1000,
@@ -428,15 +549,50 @@ g_memory_monitor_psi_initable_init (GInitable     *initable,
                                     GCancellable  *cancellable,
                                     GError       **error)
 {
+  const gchar *memory_pressure_watch = NULL;
+  const gchar *memory_pressure_write = NULL;
+
   GMemoryMonitorPsi *monitor = G_MEMORY_MONITOR_PSI (initable);
 
   monitor->worker = GLIB_PRIVATE_CALL (g_get_worker_context) ();
 
+  /* Skip if the process was executed as setuid */
+  if (!GLIB_PRIVATE_CALL (g_check_setuid) ())
+    {
+      /* check environment variables MEMORY_PRESSURE_WATCH and MEMORY_PRESSURE_WRITE
+       * See https://systemd.io/MEMORY_PRESSURE/ for details */
+      memory_pressure_watch = g_getenv ("MEMORY_PRESSURE_WATCH");
+      memory_pressure_write = g_getenv ("MEMORY_PRESSURE_WRITE");
+    }
+
+  if (memory_pressure_watch)
+    {
+      g_debug ("MEMORY_PRESSURE_WATCH is %s", memory_pressure_watch);
+      if (g_file_test (memory_pressure_watch, G_FILE_TEST_EXISTS))
+        {
+          monitor->cg_path = g_strdup (memory_pressure_watch);
+          monitor->mem_pressure_watch_override = TRUE;
+        }
+    }
+
+  if (memory_pressure_write && monitor->mem_pressure_watch_override)
+    monitor->mem_pressure_write = (gchar *) g_base64_decode (memory_pressure_write,
+                                                             &monitor->mem_pressure_write_len);
+
   if (g_memory_monitor_setup_psi (monitor, error))
     {
-      for (size_t i = 0; i < G_N_ELEMENTS (monitor->triggers); i++)
+      /* If $MEMORY_PRESSURE_WATCH is set, only watch the
+       * G_MEMORY_MONITOR_LOW_MEMORY_LEVEL_LOW trigger array index */
+      if (monitor->mem_pressure_watch_override)
         {
-          g_source_attach (monitor->triggers[i], monitor->worker);
+          g_source_attach (monitor->triggers[G_MEMORY_MONITOR_LOW_MEMORY_LEVEL_LOW], monitor->worker);
+        }
+      else
+        {
+          for (size_t i = 0; i < G_N_ELEMENTS (monitor->triggers); i++)
+            {
+              g_source_attach (monitor->triggers[i], monitor->worker);
+            }
         }
     }
   else
@@ -457,15 +613,23 @@ g_memory_monitor_psi_finalize (GObject *object)
 
   g_free (monitor->cg_path);
   g_free (monitor->proc_path);
+  g_free (monitor->mem_pressure_write);
 
   for (size_t i = 0; i < G_N_ELEMENTS (monitor->triggers); i++)
     {
-      if (monitor->triggers[i])
+      if (monitor->triggers[i] != NULL)
         {
           g_source_destroy (monitor->triggers[i]);
           g_source_unref (monitor->triggers[i]);
         }
     }
+
+  if (monitor->socket != NULL)
+    {
+      g_socket_close (monitor->socket, NULL);
+      g_object_unref (monitor->socket);
+    }
+  g_clear_object (&monitor->socket_addr);
 
   G_OBJECT_CLASS (g_memory_monitor_psi_parent_class)->finalize (object);
 }
