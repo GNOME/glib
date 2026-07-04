@@ -30,18 +30,9 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_EMBLEM         (g_emblem_get_type ())
-#define G_EMBLEM(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_EMBLEM, GEmblem))
-#define G_EMBLEM_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_EMBLEM, GEmblemClass))
-#define G_IS_EMBLEM(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_EMBLEM))
-#define G_IS_EMBLEM_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_EMBLEM))
-#define G_EMBLEM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_EMBLEM, GEmblemClass))
-
-typedef struct _GEmblem        GEmblem;
-typedef struct _GEmblemClass   GEmblemClass;
-
+#define G_TYPE_EMBLEM (g_emblem_get_type ())
 GIO_AVAILABLE_IN_ALL
-GType          g_emblem_get_type        (void);
+G_DECLARE_FINAL_TYPE (GEmblem, g_emblem, G, EMBLEM, GObject)
 
 GIO_AVAILABLE_IN_ALL
 GEmblem       *g_emblem_new             (GIcon         *icon);
