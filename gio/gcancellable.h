@@ -65,7 +65,7 @@ struct _GCancellableClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType         g_cancellable_get_type               (void) G_GNUC_CONST;
+GType         g_cancellable_get_type               (void);
 
 GIO_AVAILABLE_IN_ALL
 GCancellable *g_cancellable_new                    (void);

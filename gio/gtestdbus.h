@@ -42,7 +42,7 @@ G_BEGIN_DECLS
     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_TEST_DBUS))
 
 GIO_AVAILABLE_IN_2_34
-GType          g_test_dbus_get_type        (void) G_GNUC_CONST;
+GType          g_test_dbus_get_type        (void);
 
 GIO_AVAILABLE_IN_2_34
 GTestDBus *    g_test_dbus_new             (GTestDBusFlags flags);

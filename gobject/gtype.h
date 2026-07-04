@@ -2393,7 +2393,7 @@ type_name##_get_type (void) \
  *
  * |[<!-- language="C" -->
  * #define MY_TYPE_STRUCT my_struct_get_type ()
- * GType my_struct_get_type (void) G_GNUC_CONST;
+ * GType my_struct_get_type (void);
  *
  * MyStruct *    my_struct_new (void);
  * void          my_struct_free (MyStruct *self);
@@ -2639,7 +2639,7 @@ GOBJECT_AVAILABLE_IN_ALL
 gboolean         g_type_check_class_is_a        (GTypeClass         *g_class,
 						 GType               is_a_type) G_GNUC_PURE;
 GOBJECT_AVAILABLE_IN_ALL
-gboolean	 g_type_check_is_value_type     (GType		     type) G_GNUC_CONST;
+gboolean	 g_type_check_is_value_type     (GType		     type) G_GNUC_PURE;
 GOBJECT_AVAILABLE_IN_ALL
 gboolean	 g_type_check_value             (const GValue       *value) G_GNUC_PURE;
 GOBJECT_AVAILABLE_IN_ALL
@@ -2647,7 +2647,7 @@ gboolean	 g_type_check_value_holds	(const GValue	    *value,
 						 GType		     type) G_GNUC_PURE;
 GOBJECT_AVAILABLE_IN_ALL
 gboolean         g_type_test_flags              (GType               type,
-						 guint               flags) G_GNUC_CONST;
+						 guint               flags) G_GNUC_PURE;
 
 
 /* --- debugging functions --- */

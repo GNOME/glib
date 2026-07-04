@@ -184,7 +184,7 @@ struct _GResolverClass {
 };
 
 GIO_AVAILABLE_IN_ALL
-GType      g_resolver_get_type                         (void) G_GNUC_CONST;
+GType      g_resolver_get_type                         (void);
 GIO_AVAILABLE_IN_ALL
 GResolver *g_resolver_get_default                      (void);
 GIO_AVAILABLE_IN_ALL

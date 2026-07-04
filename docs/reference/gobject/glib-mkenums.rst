@@ -328,7 +328,7 @@ A C header template file will typically look like this::
    /*** END file-production ***/
 
    /*** BEGIN value-header ***/
-   GType @enum_name@_get_type (void) G_GNUC_CONST;
+   GType @enum_name@_get_type (void);
    #define @ENUMPREFIX@_TYPE_@ENUMSHORT@ (@enum_name@_get_type ())
    /*** END value-header ***/
 

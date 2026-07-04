@@ -108,7 +108,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 };
 
 GIO_AVAILABLE_IN_2_48
-GType                 g_dtls_connection_get_type                    (void) G_GNUC_CONST;
+GType                 g_dtls_connection_get_type                    (void);
 
 GIO_AVAILABLE_IN_2_48
 void                  g_dtls_connection_set_database                (GDtlsConnection       *conn,

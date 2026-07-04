@@ -63,7 +63,7 @@ typedef struct
   GIOStreamClass parent_class;
 } MyIOStreamClass;
 
-static GType my_io_stream_get_type (void) G_GNUC_CONST;
+static GType my_io_stream_get_type (void);
 
 G_DEFINE_TYPE (MyIOStream, my_io_stream, G_TYPE_IO_STREAM)
 
@@ -142,7 +142,7 @@ typedef struct
 #define MY_IS_SLOW_CLOSE_OUTPUT_STREAM(o) \
   (G_TYPE_CHECK_INSTANCE_TYPE ((o), MY_TYPE_SLOW_CLOSE_OUTPUT_STREAM))
 
-static GType my_slow_close_output_stream_get_type (void) G_GNUC_CONST;
+static GType my_slow_close_output_stream_get_type (void);
 
 G_DEFINE_TYPE (MySlowCloseOutputStream, my_slow_close_output_stream,
                G_TYPE_FILTER_OUTPUT_STREAM)

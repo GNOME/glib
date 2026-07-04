@@ -52,7 +52,7 @@ struct _GFileDescriptorBasedIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType    g_file_descriptor_based_get_type     (void) G_GNUC_CONST;
+GType    g_file_descriptor_based_get_type     (void);
 
 GIO_AVAILABLE_IN_ALL
 int      g_file_descriptor_based_get_fd       (GFileDescriptorBased *fd_based);

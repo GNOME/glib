@@ -171,7 +171,7 @@ struct _GDriveIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType    g_drive_get_type                 (void) G_GNUC_CONST;
+GType    g_drive_get_type                 (void);
 
 GIO_AVAILABLE_IN_ALL
 char *   g_drive_get_name                 (GDrive               *drive);

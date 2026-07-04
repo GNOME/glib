@@ -38,7 +38,7 @@ typedef struct _GUnixMountEntry GUnixMountEntry;
 
 #define G_TYPE_UNIX_MOUNT_ENTRY (g_unix_mount_entry_get_type ())
 GIO_AVAILABLE_IN_2_54
-GType g_unix_mount_entry_get_type (void) G_GNUC_CONST;
+GType g_unix_mount_entry_get_type (void);
 
 /**
  * GUnixMountPoint:
@@ -50,7 +50,7 @@ typedef struct _GUnixMountPoint GUnixMountPoint;
 
 #define G_TYPE_UNIX_MOUNT_POINT (g_unix_mount_point_get_type ())
 GIO_AVAILABLE_IN_2_54
-GType g_unix_mount_point_get_type (void) G_GNUC_CONST;
+GType g_unix_mount_point_get_type (void);
 
 /**
  * GUnixMountMonitor:
@@ -232,7 +232,7 @@ GIO_AVAILABLE_IN_ALL
 gboolean       g_unix_mount_points_changed_since    (guint64             time);
 
 GIO_AVAILABLE_IN_ALL
-GType              g_unix_mount_monitor_get_type       (void) G_GNUC_CONST;
+GType              g_unix_mount_monitor_get_type       (void);
 GIO_AVAILABLE_IN_2_44
 GUnixMountMonitor *g_unix_mount_monitor_get            (void);
 GIO_DEPRECATED_IN_2_44_FOR(g_unix_mount_monitor_get)

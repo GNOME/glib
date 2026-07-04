@@ -70,7 +70,7 @@ struct _GLoadableIconIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType         g_loadable_icon_get_type    (void) G_GNUC_CONST;
+GType         g_loadable_icon_get_type    (void);
 
 GIO_AVAILABLE_IN_ALL
 GInputStream *g_loadable_icon_load        (GLoadableIcon        *icon,

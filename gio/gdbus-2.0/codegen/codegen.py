@@ -278,9 +278,7 @@ class HeaderCodeGenerator:
                 self.outfile.write("\n")
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
-            self.outfile.write(
-                "GType %s_get_type (void) G_GNUC_CONST;\n" % (i.name_lower)
-            )
+            self.outfile.write("GType %s_get_type (void);\n" % (i.name_lower))
             self.outfile.write("\n")
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
@@ -509,9 +507,7 @@ class HeaderCodeGenerator:
             self.outfile.write("\n")
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
-            self.outfile.write(
-                "GType %s_proxy_get_type (void) G_GNUC_CONST;\n" % (i.name_lower)
-            )
+            self.outfile.write("GType %s_proxy_get_type (void);\n" % (i.name_lower))
             self.outfile.write("\n")
             if self.generate_autocleanup in ("objects", "all"):
                 self.outfile.write("#if GLIB_CHECK_VERSION(2, 44, 0)\n")
@@ -655,9 +651,7 @@ class HeaderCodeGenerator:
             self.outfile.write("\n")
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
-            self.outfile.write(
-                "GType %s_skeleton_get_type (void) G_GNUC_CONST;\n" % (i.name_lower)
-            )
+            self.outfile.write("GType %s_skeleton_get_type (void);\n" % (i.name_lower))
             self.outfile.write("\n")
             if self.generate_autocleanup in ("objects", "all"):
                 self.outfile.write("#if GLIB_CHECK_VERSION(2, 44, 0)\n")
@@ -714,7 +708,7 @@ class HeaderCodeGenerator:
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
             self.outfile.write(
-                "GType %sobject_get_type (void) G_GNUC_CONST;\n" "\n" % (self.ns_lower)
+                "GType %sobject_get_type (void);\n" "\n" % (self.ns_lower)
             )
             if self.generate_autocleanup == "all":
                 self.outfile.write("#if GLIB_CHECK_VERSION(2, 44, 0)\n")
@@ -806,7 +800,7 @@ class HeaderCodeGenerator:
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
             self.outfile.write(
-                "GType %sobject_proxy_get_type (void) G_GNUC_CONST;\n" % (self.ns_lower)
+                "GType %sobject_proxy_get_type (void);\n" % (self.ns_lower)
             )
             self.outfile.write("\n")
             if self.generate_autocleanup in ("objects", "all"):
@@ -877,8 +871,7 @@ class HeaderCodeGenerator:
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
             self.outfile.write(
-                "GType %sobject_skeleton_get_type (void) G_GNUC_CONST;\n"
-                % (self.ns_lower)
+                "GType %sobject_skeleton_get_type (void);\n" % (self.ns_lower)
             )
             self.outfile.write("\n")
             if self.generate_autocleanup in ("objects", "all"):
@@ -978,8 +971,7 @@ class HeaderCodeGenerator:
             if self.symbol_decorator is not None:
                 self.outfile.write("%s\n" % self.symbol_decorator)
             self.outfile.write(
-                "GType %sobject_manager_client_get_type (void) G_GNUC_CONST;\n"
-                % (self.ns_lower)
+                "GType %sobject_manager_client_get_type (void);\n" % (self.ns_lower)
             )
             self.outfile.write("\n")
             if self.symbol_decorator is not None:

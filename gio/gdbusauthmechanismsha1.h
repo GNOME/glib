@@ -55,7 +55,7 @@ struct _GDBusAuthMechanismSha1
   GDBusAuthMechanismSha1Private *priv;
 };
 
-GType _g_dbus_auth_mechanism_sha1_get_type (void) G_GNUC_CONST;
+GType _g_dbus_auth_mechanism_sha1_get_type (void);
 
 
 G_END_DECLS

@@ -56,7 +56,7 @@ struct _GNativeSocketAddressClass
 };
 
 GIO_AVAILABLE_IN_2_46
-GType           g_native_socket_address_get_type        (void) G_GNUC_CONST;
+GType           g_native_socket_address_get_type        (void);
 
 GIO_AVAILABLE_IN_2_46
 GSocketAddress *g_native_socket_address_new            (gpointer        native,

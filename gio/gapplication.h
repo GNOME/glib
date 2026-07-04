@@ -124,7 +124,7 @@ struct _GApplicationClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_application_get_type                          (void) G_GNUC_CONST;
+GType                   g_application_get_type                          (void);
 
 GIO_AVAILABLE_IN_ALL
 gboolean                g_application_id_is_valid                       (const gchar              *application_id);

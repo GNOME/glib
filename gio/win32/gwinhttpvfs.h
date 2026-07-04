@@ -79,7 +79,7 @@ struct _GWinHttpVfsClass
 };
 
 
-GType   _g_winhttp_vfs_get_type  (void) G_GNUC_CONST;
+GType   _g_winhttp_vfs_get_type  (void);
 
 GVfs *_g_winhttp_vfs_new (void);
 

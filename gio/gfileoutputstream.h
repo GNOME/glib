@@ -89,7 +89,7 @@ struct _GFileOutputStreamClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType      g_file_output_stream_get_type          (void) G_GNUC_CONST;
+GType      g_file_output_stream_get_type          (void);
 
 
 GIO_AVAILABLE_IN_ALL

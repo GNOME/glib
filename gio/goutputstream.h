@@ -142,7 +142,7 @@ struct _GOutputStreamClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType    g_output_stream_get_type      (void) G_GNUC_CONST;
+GType    g_output_stream_get_type      (void);
 
 GIO_AVAILABLE_IN_ALL
 gssize   g_output_stream_write         (GOutputStream             *stream,

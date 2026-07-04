@@ -30,7 +30,7 @@
 G_BEGIN_DECLS
 
 GIO_AVAILABLE_IN_ALL
-GType g_srv_target_get_type (void) G_GNUC_CONST;
+GType g_srv_target_get_type (void);
 #define G_TYPE_SRV_TARGET (g_srv_target_get_type ())
 
 GIO_AVAILABLE_IN_ALL

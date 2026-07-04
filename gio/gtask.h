@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 typedef struct _GTaskClass   GTaskClass;
 
 GIO_AVAILABLE_IN_2_36
-GType         g_task_get_type              (void) G_GNUC_CONST;
+GType         g_task_get_type              (void);
 
 GIO_AVAILABLE_IN_2_36
 GTask        *g_task_new                   (gpointer             source_object,

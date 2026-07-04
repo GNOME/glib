@@ -44,7 +44,7 @@ struct _GUnixVolumeClass
   GObjectClass parent_class;
 };
 
-GType         _g_unix_volume_get_type       (void) G_GNUC_CONST;
+GType         _g_unix_volume_get_type       (void);
 
 GUnixVolume * _g_unix_volume_new            (GVolumeMonitor  *volume_monitor,
                                              GUnixMountPoint *mountpoint);

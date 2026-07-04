@@ -64,7 +64,7 @@ struct _GSimpleActionGroupClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_simple_action_group_get_type                  (void) G_GNUC_CONST;
+GType                   g_simple_action_group_get_type                  (void);
 
 GIO_AVAILABLE_IN_ALL
 GSimpleActionGroup *    g_simple_action_group_new                       (void);

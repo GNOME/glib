@@ -54,7 +54,7 @@ struct _GNetworkAddressClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType               g_network_address_get_type     (void) G_GNUC_CONST;
+GType               g_network_address_get_type     (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketConnectable *g_network_address_new          (const gchar      *hostname,

@@ -67,7 +67,7 @@ struct _GDBusObjectSkeletonClass
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                g_dbus_object_skeleton_get_type                  (void) G_GNUC_CONST;
+GType                g_dbus_object_skeleton_get_type                  (void);
 GIO_AVAILABLE_IN_ALL
 GDBusObjectSkeleton *g_dbus_object_skeleton_new                       (const gchar            *object_path);
 GIO_AVAILABLE_IN_ALL

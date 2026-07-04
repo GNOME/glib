@@ -40,7 +40,7 @@ typedef struct {
   GObjectClass parent_class;
 } MyObjectClass;
 
-GType my_object_get_type (void) G_GNUC_CONST;
+GType my_object_get_type (void);
 
 G_DEFINE_TYPE (MyObject, my_object, G_TYPE_OBJECT)
 

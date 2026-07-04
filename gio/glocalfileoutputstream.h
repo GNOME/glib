@@ -51,7 +51,7 @@ struct _GLocalFileOutputStreamClass
   GFileOutputStreamClass parent_class;
 };
 
-GType               _g_local_file_output_stream_get_type (void) G_GNUC_CONST;
+GType               _g_local_file_output_stream_get_type (void);
 
 void     _g_local_file_output_stream_set_do_close (GLocalFileOutputStream *out,
 						   gboolean do_close);

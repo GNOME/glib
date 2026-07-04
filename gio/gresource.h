@@ -62,7 +62,7 @@ struct _GStaticResource {
 };
 
 GIO_AVAILABLE_IN_2_32
-GType         g_resource_get_type            (void) G_GNUC_CONST;
+GType         g_resource_get_type            (void);
 GIO_AVAILABLE_IN_2_32
 GResource *   g_resource_new_from_data       (GBytes                *data,
 					      GError               **error);

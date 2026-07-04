@@ -4825,15 +4825,18 @@ g_type_class_get_private (GTypeClass *klass,
  * Ensures that the indicated @type has been registered with the
  * type system, and its _class_init() method has been run.
  *
- * In theory, simply calling the type's _get_type() method (or using
- * the corresponding macro) is supposed take care of this. However,
- * _get_type() methods are often marked %G_GNUC_CONST for performance
- * reasons, even though this is technically incorrect (since
- * %G_GNUC_CONST requires that the function not have side effects,
- * which _get_type() methods do on the first call). As a result, if
- * you write a bare call to a _get_type() macro, it may get optimized
- * out by the compiler. Using g_type_ensure() guarantees that the
- * type's _get_type() method is called.
+ * Typically, calling the type’s `_get_type()` method (or using the
+ * corresponding macro) will take care of this. In situations where a
+ * type is looked up dynamically, however, you may need to explicitly call
+ * `g_type_ensure()` to ensure expected types are registered before the
+ * first lookup. This can happen when using custom widgets from a GTK
+ * `.ui` file, for example.
+ *
+ * Historically, `_get_type()` methods have sometimes been marked as
+ * [`G_GNUC_CONST`](macros.html#compiler). This is incorrect, as the
+ * first call to a `_get_type()` method has side-effects. These
+ * annotations should be removed, as they can cause code to be optimized
+ * out in unexpected ways by the compiler.
  *
  * Since: 2.34
  */

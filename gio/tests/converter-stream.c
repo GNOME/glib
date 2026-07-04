@@ -42,7 +42,7 @@ struct _GExpanderConverterClass
   GObjectClass parent_class;
 };
 
-GType       g_expander_converter_get_type (void) G_GNUC_CONST;
+GType       g_expander_converter_get_type (void);
 GConverter *g_expander_converter_new      (void);
 
 
@@ -158,7 +158,7 @@ struct _GCompressorConverterClass
   GObjectClass parent_class;
 };
 
-GType       g_compressor_converter_get_type (void) G_GNUC_CONST;
+GType       g_compressor_converter_get_type (void);
 GConverter *g_compressor_converter_new      (void);
 
 
@@ -582,7 +582,7 @@ struct _GLeftoverConverterClass
   GObjectClass parent_class;
 };
 
-GType       g_leftover_converter_get_type (void) G_GNUC_CONST;
+GType       g_leftover_converter_get_type (void);
 GConverter *g_leftover_converter_new      (void);
 
 

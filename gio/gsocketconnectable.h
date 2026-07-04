@@ -61,7 +61,7 @@ struct _GSocketConnectableIface
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                     g_socket_connectable_get_type  (void) G_GNUC_CONST;
+GType                     g_socket_connectable_get_type  (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketAddressEnumerator *g_socket_connectable_enumerate (GSocketConnectable *connectable);

@@ -52,7 +52,7 @@ struct _GSocketInputStream
   GSocketInputStreamPrivate *priv;
 };
 
-GType                   _g_socket_input_stream_get_type                  (void) G_GNUC_CONST;
+GType                   _g_socket_input_stream_get_type                  (void);
 GSocketInputStream *    _g_socket_input_stream_new                      (GSocket *socket);
 
 G_END_DECLS

@@ -64,7 +64,7 @@ struct _GUnixFDList
 };
 
 GIO_AVAILABLE_IN_ALL
-GType                   g_unix_fd_list_get_type                         (void) G_GNUC_CONST;
+GType                   g_unix_fd_list_get_type                         (void);
 GIO_AVAILABLE_IN_ALL
 GUnixFDList *           g_unix_fd_list_new                              (void);
 GIO_AVAILABLE_IN_ALL
