@@ -212,9 +212,13 @@ g_io_stream_class_init (GIOStreamClass *klass)
  * g_io_stream_is_closed:
  * @stream: a #GIOStream
  *
- * Checks if a stream is closed.
+ * Checks if a stream has been closed.
  *
- * Returns: %TRUE if the stream is closed.
+ * This only indicates whether the I/O stream has been closed at the top level
+ * by calling [method@Gio.IOStream.close]. If the underlying input and output
+ * streams have been closed separately, this method will still return false.
+ *
+ * Returns: true if the stream has been closed; false otherwise
  *
  * Since: 2.22
  */
