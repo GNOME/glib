@@ -33,12 +33,10 @@
 G_BEGIN_DECLS
 
 #define G_TYPE_BINDING_FLAGS    (g_binding_flags_get_type ())
+#define G_TYPE_BINDING          (GBinding_gtype())
 
-#define G_TYPE_BINDING          (g_binding_get_type ())
-#define G_BINDING(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_BINDING, GBinding))
-#define G_IS_BINDING(obj)       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_BINDING))
-
-typedef struct _GBinding        GBinding;
+GOBJECT_AVAILABLE_IN_ALL
+G_DECLARE_FINAL_TYPE (GBinding, g_binding, G, BINDING, GObject)
 
 /**
  * GBindingTransformFunc:
@@ -98,8 +96,6 @@ typedef enum { /*< prefix=G_BINDING >*/
 
 GOBJECT_AVAILABLE_IN_ALL
 GType                 g_binding_flags_get_type      (void);
-GOBJECT_AVAILABLE_IN_ALL
-GType                 g_binding_get_type            (void);
 
 GOBJECT_AVAILABLE_IN_ALL
 GBindingFlags         g_binding_get_flags           (GBinding *binding);

@@ -227,12 +227,6 @@ transform_func_unref (TransformFunc *func)
   g_atomic_rc_box_release_full (func, (GDestroyNotify) transform_func_clear);
 }
 
-#define G_BINDING_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), G_TYPE_BINDING, GBindingClass))
-#define G_IS_BINDING_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), G_TYPE_BINDING))
-#define G_BINDING_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), G_TYPE_BINDING, GBindingClass))
-
-typedef struct _GBindingClass           GBindingClass;
-
 struct _GBinding
 {
   GObject parent_instance;
@@ -262,11 +256,6 @@ struct _GBinding
 
   /* a guard, to avoid loops */
   guint is_frozen : 1;
-};
-
-struct _GBindingClass
-{
-  GObjectClass parent_class;
 };
 
 enum
@@ -664,7 +653,7 @@ g_binding_unbind_internal (GBinding *binding,
 static void
 g_binding_finalize (GObject *gobject)
 {
-  GBinding *binding = G_BINDING (gobject);
+  GBinding *binding = g_as (GBinding, gobject);
 
   g_binding_unbind_internal (binding, FALSE);
 
@@ -704,7 +693,7 @@ g_binding_set_property (GObject      *gobject,
                         const GValue *value,
                         GParamSpec   *pspec)
 {
-  GBinding *binding = G_BINDING (gobject);
+  GBinding *binding = g_as (GBinding, gobject);
 
   switch (prop_id)
     {
@@ -758,7 +747,7 @@ g_binding_get_property (GObject    *gobject,
                         GValue     *value,
                         GParamSpec *pspec)
 {
-  GBinding *binding = G_BINDING (gobject);
+  GBinding *binding = g_as (GBinding, gobject);
 
   switch (prop_id)
     {
@@ -793,7 +782,7 @@ g_binding_get_property (GObject    *gobject,
 static void
 g_binding_constructed (GObject *gobject)
 {
-  GBinding *binding = G_BINDING (gobject);
+  GBinding *binding = g_as (GBinding, gobject);
   GBindingTransformFunc transform_func = default_transform;
   GObject *source, *target;
   GQuark source_property_detail;
@@ -978,7 +967,7 @@ g_binding_init (GBinding *binding)
 GBindingFlags
 g_binding_get_flags (GBinding *binding)
 {
-  g_return_val_if_fail (G_IS_BINDING (binding), G_BINDING_DEFAULT);
+  g_return_val_if_fail (g_is_a (GBinding, binding), G_BINDING_DEFAULT);
 
   return binding->flags;
 }
@@ -1010,7 +999,7 @@ g_binding_get_source (GBinding *binding)
 {
   GObject *source;
 
-  g_return_val_if_fail (G_IS_BINDING (binding), NULL);
+  g_return_val_if_fail (g_is_a (GBinding, binding), NULL);
 
   source = g_weak_ref_get (&binding->context->source);
   /* Unref here, this API is not thread-safe
@@ -1039,7 +1028,7 @@ g_binding_get_source (GBinding *binding)
 GObject *
 g_binding_dup_source (GBinding *binding)
 {
-  g_return_val_if_fail (G_IS_BINDING (binding), NULL);
+  g_return_val_if_fail (g_is_a (GBinding, binding), NULL);
 
   return g_weak_ref_get (&binding->context->source);
 }
@@ -1071,7 +1060,7 @@ g_binding_get_target (GBinding *binding)
 {
   GObject *target;
 
-  g_return_val_if_fail (G_IS_BINDING (binding), NULL);
+  g_return_val_if_fail (g_is_a (GBinding, binding), NULL);
 
   target = g_weak_ref_get (&binding->context->target);
   /* Unref here, this API is not thread-safe
@@ -1100,7 +1089,7 @@ g_binding_get_target (GBinding *binding)
 GObject *
 g_binding_dup_target (GBinding *binding)
 {
-  g_return_val_if_fail (G_IS_BINDING (binding), NULL);
+  g_return_val_if_fail (g_is_a (GBinding, binding), NULL);
 
   return g_weak_ref_get (&binding->context->target);
 }
@@ -1119,7 +1108,7 @@ g_binding_dup_target (GBinding *binding)
 const gchar *
 g_binding_get_source_property (GBinding *binding)
 {
-  g_return_val_if_fail (G_IS_BINDING (binding), NULL);
+  g_return_val_if_fail (g_is_a (GBinding, binding), NULL);
 
   return binding->source_property;
 }
@@ -1138,7 +1127,7 @@ g_binding_get_source_property (GBinding *binding)
 const gchar *
 g_binding_get_target_property (GBinding *binding)
 {
-  g_return_val_if_fail (G_IS_BINDING (binding), NULL);
+  g_return_val_if_fail (g_is_a (GBinding, binding), NULL);
 
   return binding->target_property;
 }
@@ -1164,7 +1153,7 @@ g_binding_get_target_property (GBinding *binding)
 void
 g_binding_unbind (GBinding *binding)
 {
-  g_return_if_fail (G_IS_BINDING (binding));
+  g_return_if_fail (g_is_a (GBinding, binding));
 
   g_binding_unbind_internal (binding, TRUE);
 }
@@ -1335,7 +1324,7 @@ g_object_bind_property_full (gpointer               source,
       return NULL;
     }
 
-  binding = g_object_new (G_TYPE_BINDING,
+  binding = g_object_new (g_gtype (GBinding),
                           "source", source,
                           "source-property", source_property,
                           "target", target,
@@ -1446,7 +1435,7 @@ bind_with_closures_transform_to (GBinding     *binding,
   GValue retval = G_VALUE_INIT;
   gboolean res;
 
-  g_value_init (&params[0], G_TYPE_BINDING);
+  g_value_init (&params[0], GBinding_gtype_id);
   g_value_set_object (&params[0], binding);
 
   g_value_init (&params[1], G_TYPE_VALUE);
@@ -1489,7 +1478,7 @@ bind_with_closures_transform_from (GBinding     *binding,
   GValue retval = G_VALUE_INIT;
   gboolean res;
 
-  g_value_init (&params[0], G_TYPE_BINDING);
+  g_value_init (&params[0], GBinding_gtype_id);
   g_value_set_object (&params[0], binding);
 
   g_value_init (&params[1], G_TYPE_VALUE);
