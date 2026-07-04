@@ -933,6 +933,9 @@ GOBJECT_AVAILABLE_IN_ALL
 void     g_weak_ref_set        (GWeakRef *weak_ref,
                                 gpointer  object);
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GObject, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GInitiallyUnowned, g_object_unref)
+
 G_END_DECLS
 
 #endif /* __G_OBJECT_H__ */
