@@ -1526,6 +1526,73 @@ void      g_type_ensure                 (GType                       type);
 GOBJECT_AVAILABLE_IN_2_36
 guint     g_type_get_type_registration_serial (void);
 
+GOBJECT_AVAILABLE_STATIC_INLINE_IN_2_90
+static inline GType
+g_type_once (GType *gtype_id_ptr)
+{
+  return __atomic_load_n (gtype_id_ptr, __ATOMIC_ACQUIRE);
+}
+
+/**
+ * g_gtype:
+ * @TypeName: a type name
+ *
+ * Evaluates to the GType of @TypeName.
+ *
+ * For instance:
+ *
+ * ```c
+ * GType gtype = g_gtype (GtkButton);
+ * ```
+ *
+ * This macro can only be used with object types declared with `G_DECLARE_*`
+ * macros, and defined with `G_DEFINE_*` macros.
+ *
+ * Since: 2.90
+ */
+#define g_gtype(TypeName) (TypeName##_gtype())
+
+/**
+ * g_is_a:
+ * @TypeName: a type name
+ * @inst: the instance to check
+ *
+ * Evaluates to true if @inst is of type @TypeName.
+ *
+ * For instance:
+ *
+ * ```c
+ * if (g_is_a (GtkButton, widget)) {
+ *   // ...
+ * }
+ * ```
+ *
+ * This macro can only be used with object types declared with `G_DECLARE_*`
+ * macros, and defined with `G_DEFINE_*` macros.
+ *
+ * Since: 2.90
+ */
+#define g_is_a(TypeName, inst) (G_TYPE_CHECK_INSTANCE_TYPE ((inst), TypeName##_gtype()))
+
+/**
+ * g_as:
+ * @TypeName: a type name
+ * @ins: the instance to cast
+ *
+ * Evaluates as a safe cast of @inst to the desired type @TypeName.
+ *
+ * For instance:
+ *
+ * ```c
+ * GtkButton *button = g_as (GtkButton, widget);
+ * ```
+ *
+ * This macro can only be used with object types declared with `G_DECLARE_*`
+ * macros, and defined with `G_DEFINE_*` macros.
+ *
+ * Since: 2.90
+ */
+#define g_as(TypeName, inst) (G_TYPE_CHECK_INSTANCE_CAST ((inst), TypeName##_gtype(), TypeName))
 
 /* --- GType boilerplate --- */
 /**
@@ -1608,12 +1675,17 @@ guint     g_type_get_type_registration_serial (void);
 #define G_DECLARE_FINAL_TYPE(ModuleObjName, module_obj_name, MODULE, OBJ_NAME, ParentName) \
   GType module_obj_name##_get_type (void);                                                               \
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                       \
+  GOBJECT_VAR GType ModuleObjName##_gtype_id;                                                            \
   typedef struct _##ModuleObjName ModuleObjName;                                                         \
   typedef struct { ParentName##Class parent_class; } ModuleObjName##Class;                               \
                                                                                                          \
   _GLIB_DEFINE_AUTOPTR_CHAINUP (ModuleObjName, ParentName)                                               \
   G_DEFINE_AUTOPTR_CLEANUP_FUNC (ModuleObjName##Class, g_type_class_unref)                               \
                                                                                                          \
+  G_GNUC_UNUSED static inline GType ModuleObjName##_gtype (void) {                                       \
+    GType __gtype_id = g_type_once (&ModuleObjName##_gtype_id);                                          \
+    if (G_LIKELY (__gtype_id != G_TYPE_INVALID)) { return __gtype_id; }                                  \
+    return module_obj_name##_get_type(); }                                                               \
   G_GNUC_UNUSED static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                       \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
   G_GNUC_UNUSED static inline gboolean MODULE##_IS_##OBJ_NAME (gpointer ptr) {                           \
@@ -1711,6 +1783,7 @@ guint     g_type_get_type_registration_serial (void);
 #define G_DECLARE_DERIVABLE_TYPE(ModuleObjName, module_obj_name, MODULE, OBJ_NAME, ParentName) \
   GType module_obj_name##_get_type (void);                                                               \
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                       \
+  GOBJECT_VAR GType ModuleObjName##_gtype_id;                                                            \
   typedef struct _##ModuleObjName ModuleObjName;                                                         \
   typedef struct _##ModuleObjName##Class ModuleObjName##Class;                                           \
   struct _##ModuleObjName { ParentName parent_instance; };                                               \
@@ -1718,6 +1791,10 @@ guint     g_type_get_type_registration_serial (void);
   _GLIB_DEFINE_AUTOPTR_CHAINUP (ModuleObjName, ParentName)                                               \
   G_DEFINE_AUTOPTR_CLEANUP_FUNC (ModuleObjName##Class, g_type_class_unref)                               \
                                                                                                          \
+  G_GNUC_UNUSED static inline GType ModuleObjName##_gtype (void) {                                       \
+    GType __gtype_id = g_type_once (&ModuleObjName##_gtype_id);                                          \
+    if (G_LIKELY (__gtype_id != G_TYPE_INVALID)) { return __gtype_id; }                                  \
+    return module_obj_name##_get_type(); }                                                               \
   G_GNUC_UNUSED static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                       \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
   G_GNUC_UNUSED static inline ModuleObjName##Class * MODULE##_##OBJ_NAME##_CLASS (gpointer ptr) {        \
@@ -1803,11 +1880,16 @@ guint     g_type_get_type_registration_serial (void);
 #define G_DECLARE_INTERFACE(ModuleObjName, module_obj_name, MODULE, OBJ_NAME, PrerequisiteName) \
   GType module_obj_name##_get_type (void);                                                                 \
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                         \
+  GOBJECT_VAR GType ModuleObjName##_gtype_id;                                                              \
   typedef struct _##ModuleObjName ModuleObjName;                                                           \
   typedef struct _##ModuleObjName##Interface ModuleObjName##Interface;                                     \
                                                                                                            \
   _GLIB_DEFINE_AUTOPTR_CHAINUP (ModuleObjName, PrerequisiteName)                                           \
                                                                                                            \
+  G_GNUC_UNUSED static inline GType ModuleObjName##_gtype (void) {                                         \
+    GType __gtype_id = g_type_once (&ModuleObjName##_gtype_id);                                            \
+    if (G_LIKELY (__gtype_id != G_TYPE_INVALID)) { return __gtype_id; }                                    \
+    return module_obj_name##_get_type(); }                                                                 \
   G_GNUC_UNUSED static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                         \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }               \
   G_GNUC_UNUSED static inline gboolean MODULE##_IS_##OBJ_NAME (gpointer ptr) {                             \
@@ -2291,6 +2373,7 @@ static void     type_name##_class_init        (TypeName##Class *klass); \
 static GType    type_name##_get_type_once     (void); \
 static gpointer type_name##_parent_class = NULL; \
 static gint     TypeName##_private_offset; \
+GType           TypeName##_gtype_id = G_TYPE_INVALID; \
 \
 _G_DEFINE_TYPE_EXTENDED_CLASS_INIT(TypeName, type_name) \
 \
@@ -2312,6 +2395,7 @@ type_name##_get_type (void) \
   if (_g_type_once_init_enter (&static_g_define_type_id)) \
     { \
       GType g_define_type_id = type_name##_get_type_once (); \
+      TypeName##_gtype_id = g_define_type_id; \
       _g_type_once_init_leave (&static_g_define_type_id, g_define_type_id); \
     }					\
   return static_g_define_type_id; \
@@ -2349,6 +2433,8 @@ type_name##_get_type_once (void) \
 \
 static void     type_name##_default_init        (TypeName##Interface *klass); \
 \
+GType TypeName##_gtype_id = G_TYPE_INVALID; \
+\
 GType \
 type_name##_get_type (void) \
 { \
@@ -2363,6 +2449,7 @@ type_name##_get_type (void) \
                                        0, \
                                        (GInstanceInitFunc)NULL, \
                                        (GTypeFlags) 0); \
+      TypeName##_gtype_id = g_define_type_id; \
       if (TYPE_PREREQ != G_TYPE_INVALID) \
         g_type_interface_add_prerequisite (g_define_type_id, TYPE_PREREQ); \
       { /* custom code follows */
