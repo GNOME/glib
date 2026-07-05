@@ -257,6 +257,9 @@ if host_machine.system() == 'windows'
     'win32-private' : {
       'dependencies' : [winsock2],
     },
+    'win32-helper-path-private' : {
+      'source' : 'win32-helper-path.c',
+    },
   }
 else
   glib_tests += {
