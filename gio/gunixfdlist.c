@@ -380,7 +380,7 @@ g_unix_fd_list_get (GUnixFDList  *list,
                     GError      **error)
 {
   g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), -1);
-  g_return_val_if_fail (index_ < list->priv->nfd, -1);
+  g_return_val_if_fail (index_ >= 0 && index_ < list->priv->nfd, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   return dup_close_on_exec_fd (list->priv->fds[index_], error);
