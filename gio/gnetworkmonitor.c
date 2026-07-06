@@ -76,6 +76,12 @@ static GNetworkMonitor *network_monitor_default_singleton = NULL;  /* (owned) (a
  *
  * Gets the default #GNetworkMonitor for the system.
  *
+ * Some implementations complete their initialization asynchronously:
+ * properties such as #GNetworkMonitor:network-available may start at their
+ * default values and update shortly afterwards, with notify emissions, once
+ * the state is resolved from the thread-default main context of this first
+ * call.
+ *
  * Returns: (not nullable) (transfer none): a #GNetworkMonitor, which will be
  *     a dummy object if no network monitor is available
  *

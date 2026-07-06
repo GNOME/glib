@@ -1087,6 +1087,7 @@ extern GType g_network_monitor_base_get_type (void);
 #ifdef HAVE_NETLINK
 extern GType _g_network_monitor_netlink_get_type (void);
 extern GType _g_network_monitor_nm_get_type (void);
+extern GType g_network_monitor_systemd_get_type (void);
 #endif
 
 extern GType g_debug_controller_dbus_get_type (void);
@@ -1416,6 +1417,7 @@ _g_io_modules_ensure_loaded (void)
 #ifdef HAVE_NETLINK
       g_type_ensure (_g_network_monitor_netlink_get_type ());
       g_type_ensure (_g_network_monitor_nm_get_type ());
+      g_type_ensure (g_network_monitor_systemd_get_type ());
 #endif
 #ifdef G_OS_WIN32
       g_type_ensure (_g_win32_network_monitor_get_type ());
