@@ -76,6 +76,10 @@ int                     g_unix_fd_list_append                           (GUnixFD
                                                                          int           fd,
                                                                          GError      **error);
 
+GIO_AVAILABLE_IN_2_90
+size_t                  g_unix_fd_list_append_take                      (GUnixFDList  *list,
+                                                                         int           fd);
+
 GIO_AVAILABLE_IN_ALL
 int                     g_unix_fd_list_get_length                       (GUnixFDList  *list);
 
@@ -83,6 +87,10 @@ GIO_AVAILABLE_IN_ALL
 int                     g_unix_fd_list_get                              (GUnixFDList  *list,
                                                                          int           index_,
                                                                          GError      **error);
+
+GIO_AVAILABLE_IN_2_90
+int                     g_unix_fd_list_peek                             (GUnixFDList  *list,
+                                                                         size_t        index_);
 
 GIO_AVAILABLE_IN_ALL
 const int *             g_unix_fd_list_peek_fds                         (GUnixFDList  *list,

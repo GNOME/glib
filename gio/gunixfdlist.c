@@ -370,6 +370,50 @@ g_unix_fd_list_append (GUnixFDList  *list,
 }
 
 /**
+ * g_unix_fd_list_append_take:
+ * @list: a [class@Gio.UnixFDList]
+ * @fd: a valid open file descriptor
+ *
+ * Adds a file descriptor to @list.
+ *
+ * After this call, @fd belongs to the @list and may no longer be closed by the
+ * caller.
+ *
+ * The file descriptor @fd should be set to close-on-exec.
+ *
+ * The index of the file descriptor in the list is returned. If you use this
+ * index with [method@Gio.UnixFDList.get] then you will receive back a
+ * duplicated copy of the same file descriptor.
+ *
+ * Returns: the index of the appended @fd
+ *
+ * Since: 2.90
+ */
+size_t
+g_unix_fd_list_append_take (GUnixFDList *list,
+                            int          fd)
+{
+  size_t index_;
+
+  g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), 0);
+  g_return_val_if_fail (fd >= 0, 0);
+
+  index_ = list->priv->nfd;
+
+  /* we allocate nfd + 2 elements (fd itself and -1 terminator) */
+  g_assert (list->priv->nfd <= G_MAXSIZE - 2);
+
+  list->priv->nfd++;
+  list->priv->fds = g_realloc_n (list->priv->fds,
+                                 list->priv->nfd + 1,
+                                 sizeof (int));
+  list->priv->fds[index_] = g_steal_fd (&fd);
+  list->priv->fds[index_ + 1] = -1;
+
+  return index_;
+}
+
+/**
  * g_unix_fd_list_get:
  * @list: a [method@Gio.UnixFDList.get]
  * @index_: the index into the list
@@ -402,6 +446,36 @@ g_unix_fd_list_get (GUnixFDList  *list,
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   return dup_close_on_exec_fd (list->priv->fds[index_], error);
+}
+
+/**
+ * g_unix_fd_list_peek:
+ * @list: a [class@Gio.UnixFDList]
+ * @index_: the index into the list
+ *
+ * Gets a file descriptor out of @list.
+ *
+ * @index_ specifies the index of the file descriptor to get. It is a programmer
+ * error for @index_ to be out of range; see [method@Gio.UnixFDList.get_length].
+ *
+ * This will always return a valid (non-negative) file descriptor.
+ *
+ * After this call, the descriptor remains the property of @list. The caller
+ * must not close it. The descriptor is valid only until @list is changed in any
+ * way.
+ *
+ * Returns: the file descriptor
+ *
+ * Since: 2.90
+ **/
+int
+g_unix_fd_list_peek (GUnixFDList *list,
+                     size_t       index_)
+{
+  g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), -1);
+  g_return_val_if_fail (index_ < list->priv->nfd, -1);
+
+  return list->priv->fds[index_];
 }
 
 /**
