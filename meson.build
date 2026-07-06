@@ -7,9 +7,9 @@ project('glib', 'c',
     'warning_level=3',
     # FIXME: After https://github.com/mesonbuild/meson/issues/13639 is
     # fixed, change this to
-    # meson.version().version_compare('>=FIXED_MESON_VERSION') ? 'c_std=gnu99,c99' : 'c_std=gnu99'
+    # meson.version().version_compare('>=FIXED_MESON_VERSION') ? 'c_std=gnu11,c11' : 'c_std=gnu11'
     # to avoid a warning on MSVC.
-    'c_std=gnu99'
+    'c_std=gnu11',
   ]
 )
 
@@ -613,10 +613,6 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Werror=missing-prototypes',
     '-Werror=pointer-sign',
     '-Wno-string-plus-int',
-    # We require a compiler that supports C11 even though it's not yet a
-    # strict requirement, so allow typedef redefinition not to break clang and
-    # older gcc versions.
-    '-Wno-typedef-redefinition',
   ]
   warning_cxx_args = warning_common_args
   warning_c_link_args = [
