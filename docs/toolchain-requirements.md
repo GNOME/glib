@@ -1,8 +1,7 @@
 Toolchain/Compiler requirements
 ===
 
-GLib strongly recommends a toolchain that supports C11, and requires a toolchain
-that supports C99.
+GLib requires a toolchain that supports C11.
 
 GLib contains some fall back code that allows supporting toolchains that are not
 fully C11-compatible.
