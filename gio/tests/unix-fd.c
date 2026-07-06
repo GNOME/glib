@@ -56,6 +56,7 @@ test_fd_list (void)
   gint fd_list[40];
   gint sv[3];
   gint s;
+  gint sv0, sv1;
 
   create_fd_list (fd_list);
   sv[2] = -1;
@@ -66,11 +67,14 @@ test_fd_list (void)
   g_unix_open_pipe (sv, O_CLOEXEC, &err);
   g_assert_no_error (err);
 #endif
+  sv0 = sv[0];
+  sv1 = sv[1];
+
   list = g_unix_fd_list_new_from_array (sv, -1);
   peek = g_unix_fd_list_peek_fds (list, &s);
   g_assert_cmpint (s, ==, 2);
-  g_assert_cmpint (peek[0], ==, sv[0]);
-  g_assert_cmpint (peek[1], ==, sv[1]);
+  g_assert_cmpint (peek[0], ==, sv0);
+  g_assert_cmpint (peek[1], ==, sv1);
 
   s = g_unix_fd_list_get (list, 0, &err);
   g_assert_no_error (err);
@@ -81,13 +85,13 @@ test_fd_list (void)
   g_close (s, &err);
   g_assert_no_error (err);
 
-  s = g_unix_fd_list_append (list, sv[0], &err);
+  s = g_unix_fd_list_append (list, sv0, &err);
   g_assert_no_error (err);
   g_assert_cmpint (s, >=, 0);
   stolen = g_unix_fd_list_steal_fds (list, &s);
   g_assert_cmpint (s, ==, 3);
-  g_assert_cmpint (stolen[0], ==, sv[0]);
-  g_assert_cmpint (stolen[1], ==, sv[1]);
+  g_assert_cmpint (stolen[0], ==, sv0);
+  g_assert_cmpint (stolen[1], ==, sv1);
   g_assert_cmpint (stolen[2], >=, 0);
   g_close (stolen[0], &err);
   g_assert_no_error (err);
@@ -96,6 +100,27 @@ test_fd_list (void)
   g_close (stolen[2], &err);
   g_assert_no_error (err);
   g_free (stolen);
+
+#ifdef G_OS_WIN32
+  s = _pipe (sv, 4096, _O_NOINHERIT | _O_BINARY);
+  g_assert_cmpint (s, ==, 0);
+#else
+  g_unix_open_pipe (sv, O_CLOEXEC, &err);
+  g_assert_no_error (err);
+#endif
+  sv0 = sv[0];
+  sv1 = sv[1];
+
+  g_assert_cmpuint (g_unix_fd_list_append_take (list, g_steal_fd (&sv[0])), ==, 0);
+  g_assert_cmpuint (g_unix_fd_list_append_take (list, g_steal_fd (&sv[1])), ==, 1);
+  g_assert_cmpint (g_unix_fd_list_get_length (list), ==, 2);
+
+  g_assert_cmpint (g_unix_fd_list_peek (list, 0), ==, sv0);
+  g_assert_cmpint (g_unix_fd_list_peek (list, 1), ==, sv1);
+
+  g_assert_cmpint (g_unix_fd_list_lookup (list, 0), ==, sv0);
+  g_assert_cmpint (g_unix_fd_list_lookup (list, 1), ==, sv1);
+  g_assert_cmpint (g_unix_fd_list_lookup (list, 2), ==, -1);
 
   g_object_unref (list);
   check_fd_list (fd_list);
