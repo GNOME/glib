@@ -92,6 +92,10 @@ GIO_AVAILABLE_IN_2_90
 int                     g_unix_fd_list_peek                             (GUnixFDList  *list,
                                                                          size_t        index_);
 
+GIO_AVAILABLE_IN_2_90
+int                     g_unix_fd_list_lookup                           (GUnixFDList  *list,
+                                                                         size_t        index_);
+
 GIO_AVAILABLE_IN_ALL
 const int *             g_unix_fd_list_peek_fds                         (GUnixFDList  *list,
                                                                          int          *length);

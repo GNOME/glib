@@ -422,8 +422,9 @@ g_unix_fd_list_append_take (GUnixFDList *list,
  * Gets a file descriptor out of @list.
  *
  * @index_ specifies the index of the file descriptor to get.  It is a
- * programmer error for @index_ to be out of range; see
- * [method@Gio.UnixFDList.get_length].
+ * programmer error for @index_ to be out of range. Either use
+ * [method@Gio.UnixFDList.lookup] to do a checked lookup, or check the index
+ * against the list length using [method@Gio.UnixFDList.get_length].
  *
  * The file descriptor is duplicated using `dup()` and set as
  * close-on-exec before being returned.  You must call `close()` on it
@@ -474,6 +475,36 @@ g_unix_fd_list_peek (GUnixFDList *list,
 {
   g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), -1);
   g_return_val_if_fail (index_ < list->priv->nfd, -1);
+
+  return list->priv->fds[index_];
+}
+
+/**
+ * g_unix_fd_list_lookup:
+ * @list: a [class@Gio.UnixFDList]
+ * @index_: the file descriptor index
+ *
+ * Looks up a file descriptor in @list at position @index_.
+ *
+ * @index_ specifies the index of the file descriptor to get. If no file
+ * descriptor exists at this index, `-1` is returned.
+ *
+ * After this call, the descriptor remains the property of @list. The caller
+ * must not close it. The descriptor is valid only until @list is changed in any
+ * way.
+ *
+ * Returns: the file descriptor, or `-1` if not found
+ *
+ * Since: 2.90
+ **/
+int
+g_unix_fd_list_lookup (GUnixFDList *list,
+                       size_t       index_)
+{
+  g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), -1);
+
+  if (index_ >= list->priv->nfd)
+    return -1;
 
   return list->priv->fds[index_];
 }
