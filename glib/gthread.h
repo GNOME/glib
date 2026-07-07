@@ -46,6 +46,53 @@ typedef enum
   G_THREAD_ERROR_AGAIN /* Resource temporarily unavailable */
 } GThreadError;
 
+/* These thread safety analysis macros are copied from WebKit's ThreadSafetyAnalysis.h.
+ *
+ * See <https://clang.llvm.org/docs/ThreadSafetyAnalysis.html> for details.
+ */
+
+#if defined(__clang__)
+#define _G_THREAD_ANNOTATION_ATTRIBUTE(x)  __attribute__((x))
+#else
+#define _G_THREAD_ANNOTATION_ATTRIBUTE(x)
+#endif
+
+#define _G_ACQUIRES_CAPABILITY_IF(...) _G_THREAD_ANNOTATION_ATTRIBUTE(try_acquire_capability(__VA_ARGS__))
+#define _G_ACQUIRES_CAPABILITY(...) _G_THREAD_ANNOTATION_ATTRIBUTE(acquire_capability(__VA_ARGS__))
+#define _G_ACQUIRES_SHARED_CAPABILITY_IF(...) _G_THREAD_ANNOTATION_ATTRIBUTE(try_acquire_shared_capability(__VA_ARGS__))
+#define _G_ACQUIRES_SHARED_CAPABILITY(...) _G_THREAD_ANNOTATION_ATTRIBUTE(acquire_shared_capability(__VA_ARGS__))
+#define _G_ASSERTS_ACQUIRED_CAPABILITY(x) _G_THREAD_ANNOTATION_ATTRIBUTE(assert_capability(x))
+#define _G_ASSERTS_ACQUIRED_SHARED_CAPABILITY(x) _G_THREAD_ANNOTATION_ATTRIBUTE(assert_shared_capability(x))
+#define _G_CAPABILITY(name) _G_THREAD_ANNOTATION_ATTRIBUTE(capability(name))
+#define _G_CAPABILITY_SCOPED_LOCK _G_THREAD_ANNOTATION_ATTRIBUTE(scoped_lockable)
+#define _G_EXCLUDES_CAPABILITY(...) _G_THREAD_ANNOTATION_ATTRIBUTE(locks_excluded(__VA_ARGS__))
+#define _G_GUARDED_BY_CAPABILITY(x) _G_THREAD_ANNOTATION_ATTRIBUTE(guarded_by(x))
+#define _G_IGNORES_THREAD_SAFETY_ANALYSIS _G_THREAD_ANNOTATION_ATTRIBUTE(no_thread_safety_analysis)
+#define _G_POINTEE_GUARDED_BY_CAPABILITY(x) _G_THREAD_ANNOTATION_ATTRIBUTE(pt_guarded_by(x))
+#define _G_RELEASES_GENERIC_CAPABILITY(...) _G_THREAD_ANNOTATION_ATTRIBUTE(release_generic_capability(__VA_ARGS__))
+#define _G_RELEASES_CAPABILITY(...) _G_THREAD_ANNOTATION_ATTRIBUTE(release_capability(__VA_ARGS__))
+#define _G_RELEASES_SHARED_CAPABILITY(...) _G_THREAD_ANNOTATION_ATTRIBUTE(release_shared_capability(__VA_ARGS__))
+#define _G_REQUIRES_CAPABILITY(...) _G_THREAD_ANNOTATION_ATTRIBUTE(requires_capability(__VA_ARGS__))
+#define _G_REQUIRES_SHARED_CAPABILITY(...) _G_THREAD_ANNOTATION_ATTRIBUTE(requires_shared_capability(__VA_ARGS__))
+#define _G_RETURNS_CAPABILITY(x) _G_THREAD_ANNOTATION_ATTRIBUTE(lock_returned(x))
+
+#define _G_ACQUIRES_LOCK_IF(...) _G_ACQUIRES_CAPABILITY_IF(__VA_ARGS__)
+#define _G_ACQUIRES_LOCK(...)  _G_ACQUIRES_CAPABILITY(__VA_ARGS__)
+#define _G_ACQUIRES_SHARED_LOCK_IF(...) _G_ACQUIRES_SHARED_CAPABILITY_IF(__VA_ARGS__)
+#define _G_ACQUIRES_SHARED_LOCK(...) _G_ACQUIRES_SHARED_CAPABILITY(__VA_ARGS__)
+#define _G_ASSERTS_ACQUIRED_LOCK(x) _G_ASSERTS_ACQUIRED_CAPABILITY(x)
+#define _G_ASSERTS_ACQUIRED_SHARED_LOCK(x) _G_ASSERTS_ACQUIRED_SHARED_CAPABILITY(x)
+#define _G_CAPABILITY_LOCK _G_CAPABILITY("lock")
+#define _G_EXCLUDES_LOCK(...) _G_EXCLUDES_CAPABILITY(__VA_ARGS__)
+#define _G_GUARDED_BY_LOCK(x) _G_GUARDED_BY_CAPABILITY(x)
+#define _G_POINTEE_GUARDED_BY_LOCK(x) _G_POINTEE_GUARDED_BY_CAPABILITY(x)
+#define _G_RELEASES_GENERIC_LOCK(...) _G_RELEASES_GENERIC_CAPABILITY(__VA_ARGS__)
+#define _G_RELEASES_LOCK(...) _G_RELEASES_CAPABILITY(__VA_ARGS__)
+#define _G_RELEASES_SHARED_LOCK(...) _G_RELEASES_SHARED_CAPABILITY(__VA_ARGS__)
+#define _G_REQUIRES_LOCK(...) _G_REQUIRES_CAPABILITY(__VA_ARGS__)
+#define _G_REQUIRES_SHARED_LOCK(...) _G_REQUIRES_SHARED_CAPABILITY(__VA_ARGS__)
+#define _G_RETURNS_LOCK(x) _G_RETURNS_CAPABILITY(x)
+
 typedef gpointer (*GThreadFunc) (gpointer data);
 
 typedef struct _GThread         GThread;
@@ -57,14 +104,14 @@ typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
 typedef struct _GOnce           GOnce;
 
-union _GMutex
+union _G_CAPABILITY_LOCK _GMutex
 {
   /*< private >*/
   gpointer p;
   guint i[2];
 };
 
-struct _GRWLock
+struct _G_CAPABILITY_LOCK _GRWLock
 {
   /*< private >*/
   gpointer p;
@@ -78,7 +125,7 @@ struct _GCond
   guint i[2];
 };
 
-struct _GRecMutex
+struct _G_CAPABILITY_LOCK _GRecMutex
 {
   /*< private >*/
   gpointer p;
@@ -173,39 +220,39 @@ void            g_mutex_init                    (GMutex         *mutex);
 GLIB_AVAILABLE_IN_2_32
 void            g_mutex_clear                   (GMutex         *mutex);
 GLIB_AVAILABLE_IN_ALL
-void            g_mutex_lock                    (GMutex         *mutex);
+void            g_mutex_lock                    (GMutex         *mutex) _G_ACQUIRES_LOCK (mutex);
 GLIB_AVAILABLE_IN_ALL
-gboolean        g_mutex_trylock                 (GMutex         *mutex);
+gboolean        g_mutex_trylock                 (GMutex         *mutex) _G_ACQUIRES_LOCK_IF (TRUE, mutex);
 GLIB_AVAILABLE_IN_ALL
-void            g_mutex_unlock                  (GMutex         *mutex);
+void            g_mutex_unlock                  (GMutex         *mutex) _G_RELEASES_LOCK (mutex);
 
 GLIB_AVAILABLE_IN_2_32
 void            g_rw_lock_init                  (GRWLock        *rw_lock);
 GLIB_AVAILABLE_IN_2_32
 void            g_rw_lock_clear                 (GRWLock        *rw_lock);
 GLIB_AVAILABLE_IN_2_32
-void            g_rw_lock_writer_lock           (GRWLock        *rw_lock);
+void            g_rw_lock_writer_lock           (GRWLock        *rw_lock) _G_ACQUIRES_LOCK (rw_lock);
 GLIB_AVAILABLE_IN_2_32
-gboolean        g_rw_lock_writer_trylock        (GRWLock        *rw_lock);
+gboolean        g_rw_lock_writer_trylock        (GRWLock        *rw_lock) _G_ACQUIRES_LOCK_IF (TRUE, rw_lock);
 GLIB_AVAILABLE_IN_2_32
-void            g_rw_lock_writer_unlock         (GRWLock        *rw_lock);
+void            g_rw_lock_writer_unlock         (GRWLock        *rw_lock) _G_RELEASES_LOCK (rw_lock);
 GLIB_AVAILABLE_IN_2_32
-void            g_rw_lock_reader_lock           (GRWLock        *rw_lock);
+void            g_rw_lock_reader_lock           (GRWLock        *rw_lock) _G_ACQUIRES_SHARED_LOCK (rw_lock);
 GLIB_AVAILABLE_IN_2_32
-gboolean        g_rw_lock_reader_trylock        (GRWLock        *rw_lock);
+gboolean        g_rw_lock_reader_trylock        (GRWLock        *rw_lock) _G_ACQUIRES_SHARED_LOCK_IF (TRUE, rw_lock);
 GLIB_AVAILABLE_IN_2_32
-void            g_rw_lock_reader_unlock         (GRWLock        *rw_lock);
+void            g_rw_lock_reader_unlock         (GRWLock        *rw_lock) _G_RELEASES_SHARED_LOCK (rw_lock);
 
 GLIB_AVAILABLE_IN_2_32
 void            g_rec_mutex_init                (GRecMutex      *rec_mutex);
 GLIB_AVAILABLE_IN_2_32
 void            g_rec_mutex_clear               (GRecMutex      *rec_mutex);
 GLIB_AVAILABLE_IN_2_32
-void            g_rec_mutex_lock                (GRecMutex      *rec_mutex);
+void            g_rec_mutex_lock                (GRecMutex      *rec_mutex) _G_ACQUIRES_LOCK (rec_mutex);
 GLIB_AVAILABLE_IN_2_32
-gboolean        g_rec_mutex_trylock             (GRecMutex      *rec_mutex);
+gboolean        g_rec_mutex_trylock             (GRecMutex      *rec_mutex) _G_ACQUIRES_LOCK_IF (TRUE, rec_mutex);
 GLIB_AVAILABLE_IN_2_32
-void            g_rec_mutex_unlock              (GRecMutex      *rec_mutex);
+void            g_rec_mutex_unlock              (GRecMutex      *rec_mutex) _G_RELEASES_LOCK (rec_mutex);
 
 GLIB_AVAILABLE_IN_2_32
 void            g_cond_init                     (GCond          *cond);
@@ -365,7 +412,7 @@ typedef void GMutexLocker;
  */
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_44
 static inline GMutexLocker *
-g_mutex_locker_new (GMutex *mutex)
+g_mutex_locker_new (GMutex *mutex) _G_ACQUIRES_LOCK (mutex)
 {
   g_mutex_lock (mutex);
   return (GMutexLocker *) mutex;
@@ -383,7 +430,7 @@ g_mutex_locker_new (GMutex *mutex)
  */
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_44
 static inline void
-g_mutex_locker_free (GMutexLocker *locker)
+g_mutex_locker_free (GMutexLocker *locker) _G_RELEASES_LOCK ((GMutex *) locker)
 {
   g_mutex_unlock ((GMutex *) locker);
 }
@@ -488,7 +535,7 @@ typedef void GRecMutexLocker;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_60
 static inline GRecMutexLocker *
-g_rec_mutex_locker_new (GRecMutex *rec_mutex)
+g_rec_mutex_locker_new (GRecMutex *rec_mutex) _G_ACQUIRES_LOCK (rec_mutex)
 {
   g_rec_mutex_lock (rec_mutex);
   return (GRecMutexLocker *) rec_mutex;
@@ -508,7 +555,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_60
 static inline void
-g_rec_mutex_locker_free (GRecMutexLocker *locker)
+g_rec_mutex_locker_free (GRecMutexLocker *locker) _G_RELEASES_LOCK ((GRecMutex *) locker)
 {
   g_rec_mutex_unlock ((GRecMutex *) locker);
 }
@@ -645,7 +692,7 @@ typedef void GRWLockWriterLocker;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_62
 static inline GRWLockWriterLocker *
-g_rw_lock_writer_locker_new (GRWLock *rw_lock)
+g_rw_lock_writer_locker_new (GRWLock *rw_lock) _G_ACQUIRES_LOCK (rw_lock)
 {
   g_rw_lock_writer_lock (rw_lock);
   return (GRWLockWriterLocker *) rw_lock;
@@ -666,7 +713,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_62
 static inline void
-g_rw_lock_writer_locker_free (GRWLockWriterLocker *locker)
+g_rw_lock_writer_locker_free (GRWLockWriterLocker *locker) _G_RELEASES_LOCK ((GRWLock *) locker)
 {
   g_rw_lock_writer_unlock ((GRWLock *) locker);
 }
@@ -743,7 +790,7 @@ typedef void GRWLockReaderLocker;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_62
 static inline GRWLockReaderLocker *
-g_rw_lock_reader_locker_new (GRWLock *rw_lock)
+g_rw_lock_reader_locker_new (GRWLock *rw_lock) _G_ACQUIRES_SHARED_LOCK (rw_lock)
 {
   g_rw_lock_reader_lock (rw_lock);
   return (GRWLockReaderLocker *) rw_lock;
@@ -764,7 +811,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_AVAILABLE_STATIC_INLINE_IN_2_62
 static inline void
-g_rw_lock_reader_locker_free (GRWLockReaderLocker *locker)
+g_rw_lock_reader_locker_free (GRWLockReaderLocker *locker) _G_RELEASES_SHARED_LOCK ((GRWLock *) locker)
 {
   g_rw_lock_reader_unlock ((GRWLock *) locker);
 }

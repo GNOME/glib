@@ -43,6 +43,12 @@ g_autoptr_cleanup_gstring_free (GString *string)
  * recent GLib version than the user’s #GLIB_VERSION_MAX_ALLOWED definition. */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
+/* Always allow autocleanups of GMutexLocker and friends. */
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wthread-safety-analysis"
+#endif
+
 /* If adding a cleanup here, please also add a test case to
  * glib/tests/autoptr.c
  */
@@ -105,6 +111,10 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(GRefString, g_ref_string_release)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUri, g_uri_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (GPathBuf, g_path_buf_free)
 G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC (GPathBuf, g_path_buf_clear)
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 G_GNUC_END_IGNORE_DEPRECATIONS
 
