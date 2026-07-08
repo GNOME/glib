@@ -1203,7 +1203,7 @@ test_message_serialize_over_long_signature (void)
   GError *error = NULL;
   guchar *blob = NULL;
   gsize blob_size = 0;
-  g_autofree gchar *long_signature = NULL;
+  gchar *long_signature;
 
   long_signature = g_strnfill (256, 'y');
 
@@ -1230,6 +1230,7 @@ test_message_serialize_over_long_signature (void)
                    "D-Bus signature exceeds maximum length of 255 bytes");
   g_assert_null (blob);
 
+  g_free (long_signature);
   g_clear_error (&error);
   g_clear_object (&message);
 }
@@ -1242,9 +1243,9 @@ test_message_serialize_over_long_variant_signature (void)
   GVariantType *long_tuple_type = NULL;
   guchar *blob = NULL;
   gsize blob_size = 0;
-  g_autofree gchar *long_signature = NULL;
-  g_autofree gchar *long_tuple_type_string = NULL;
-  g_autofree guint8 *data = NULL;
+  gchar *long_signature;
+  gchar *long_tuple_type_string;
+  guint8 *data;
 
   long_signature = g_strnfill (256, 'y');
   long_tuple_type_string = g_strdup_printf ("(%s)", long_signature);
@@ -1268,6 +1269,9 @@ test_message_serialize_over_long_variant_signature (void)
                    "D-Bus signature exceeds maximum length of 255 bytes");
   g_assert_null (blob);
 
+  g_free (data);
+  g_free (long_tuple_type_string);
+  g_free (long_signature);
   g_clear_error (&error);
   g_clear_object (&message);
   g_variant_type_free (long_tuple_type);
