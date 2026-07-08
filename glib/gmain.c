@@ -32,6 +32,16 @@
  */
 
 #include "config.h"
+
+/* We need to include this as early as possible, because on some
+ * platforms like AIX, <poll.h> redefines the names we use for
+ * GPollFD struct members.
+ * See https://gitlab.gnome.org/GNOME/glib/-/issues/3500 */
+
+#ifdef HAVE_POLL_H
+#include <poll.h>
+#endif
+
 #include "glib.h"
 #include "glibconfig.h"
 #include "glib_trace.h"
@@ -49,14 +59,6 @@
 #define G_MAIN_POLL_DEBUG
 #endif
 
-/* We need to include this as early as possible, because on some
- * platforms like AIX, <poll.h> redefines the names we use for
- * GPollFD struct members.
- * See https://gitlab.gnome.org/GNOME/glib/-/issues/3500 */
-
-#ifdef HAVE_POLL_H
-#include <poll.h>
-#endif
 
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
