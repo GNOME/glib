@@ -50,6 +50,11 @@
 #ifdef HAVE_LINUX_NETLINK_H
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
+/* <linux/netlink.h> defines NETLINK_GET_STRICT_CHK but not its setsockopt
+ * level SOL_NETLINK. */
+#ifndef SOL_NETLINK
+#define SOL_NETLINK 270
+#endif
 #endif
 #if defined(HAVE_NETLINK_NETLINK_H) && defined(HAVE_NETLINK_NETLINK_ROUTE_H)
 #include <netlink/netlink.h>
@@ -141,6 +146,7 @@ create_netlink_socket (guint32   groups,
   gint sockfd;
   struct sockaddr_nl snl;
   GSocket *sock;
+  const int rcvbuf = 1024 * 1024;
 
   /* We create the socket the old-school way because sockaddr_netlink
    * can't be represented as a GSocketAddress
@@ -154,6 +160,12 @@ create_netlink_socket (guint32   groups,
                    g_strerror (errsv));
       return NULL;
     }
+
+  /* A host running dynamic routing protocols such as BGP can generate many
+   * route events in a short time; a larger buffer reduces ENOBUFS overflows
+   * that force running the full route enumeration again. */
+  if (setsockopt (sockfd, SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof (rcvbuf)) != 0)
+    g_debug ("Could not enlarge netlink receive buffer: %s", g_strerror (errno));
 
   snl.nl_family = AF_NETLINK;
   snl.nl_pid = snl.nl_pad = 0;
@@ -260,17 +272,30 @@ request_dump (GNetworkMonitorNetlink  *nl,
               GError                 **error)
 {
   struct nlmsghdr *n;
-  struct rtgenmsg *gen;
-  gchar buf[NLMSG_SPACE (sizeof (*gen))];
+  struct rtmsg *rtm;
+  gchar buf[NLMSG_SPACE (sizeof (*rtm))];
+
+#ifdef NETLINK_GET_STRICT_CHK
+  /* Strict checking with rtm_flags == 0 lets the kernel dump faster by
+   * skipping unnecessary data, e.g. the route-cache exceptions. */
+  {
+    const int strict = 1;
+    if (setsockopt (g_socket_get_fd (nl->priv->monitor_sock), SOL_NETLINK,
+                    NETLINK_GET_STRICT_CHK, &strict, sizeof (strict)) != 0)
+      g_debug ("Could not set NETLINK_GET_STRICT_CHK: %s", g_strerror (errno));
+  }
+#endif
 
   memset (buf, 0, sizeof (buf));
   n = (struct nlmsghdr*) buf;
-  n->nlmsg_len = NLMSG_LENGTH (sizeof (*gen));
+  n->nlmsg_len = NLMSG_LENGTH (sizeof (*rtm));
   n->nlmsg_type = RTM_GETROUTE;
   n->nlmsg_flags = NLM_F_REQUEST | NLM_F_DUMP;
   n->nlmsg_pid = 0;
-  gen = NLMSG_DATA (n);
-  gen->rtgen_family = AF_UNSPEC;
+  rtm = NLMSG_DATA (n);
+  rtm->rtm_family = AF_UNSPEC;
+  /* Keep this request minimal: a strict dump requires the selector fields to
+   * stay zero, and extra attributes can also hurt dump performance. */
 
   if (g_socket_send (nl->priv->monitor_sock, buf, sizeof (buf),
                      NULL, error) < 0)
@@ -494,27 +519,21 @@ read_netlink_messages (GNetworkMonitorNetlink  *nl,
   guint32 table, metric, oif;
   gboolean have_nexthop;
 
-  iv.buffer = NULL;
-  iv.size = 0;
-
-  flags = MSG_PEEK | MSG_TRUNC;
-  len = g_socket_receive_message (nl->priv->monitor_sock, NULL, &iv, 1,
+  /* The kernel is aware of the read buffer size, so a larger buffer lets it
+   * deliver more data per datagram. */
+  iv.buffer = g_malloc (NETLINK_MESSAGE_MAX_SIZE);
+  iv.size = NETLINK_MESSAGE_MAX_SIZE;
+  flags = 0;
+  len = g_socket_receive_message (nl->priv->monitor_sock, &addr, &iv, 1,
                                   NULL, NULL, &flags, NULL, &local_error);
   if (len < 0)
     goto done;
-  if (len == 0 || len > NETLINK_MESSAGE_MAX_SIZE)
+  if (len == 0 || (flags & MSG_TRUNC))
     {
       g_set_error_literal (&local_error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
                            "netlink message length is invalid");
       goto done;
     }
-
-  iv.buffer = g_malloc (len);
-  iv.size = len;
-  len = g_socket_receive_message (nl->priv->monitor_sock, &addr, &iv, 1,
-                                  NULL, NULL, NULL, NULL, &local_error);
-  if (len < 0)
-    goto done;
 
   if (!g_socket_address_to_native (addr, &source_sockaddr, sizeof (source_sockaddr), &local_error))
     goto done;
