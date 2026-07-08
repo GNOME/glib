@@ -342,9 +342,9 @@ g_unix_fd_list_append (GUnixFDList  *list,
   if ((new_fd = dup_close_on_exec_fd (fd, error)) < 0)
     return -1;
 
-  list->priv->fds = g_realloc (list->priv->fds,
-                                  sizeof (gint) *
-                                   (list->priv->nfd + 2));
+  list->priv->fds = g_realloc_n (list->priv->fds,
+                                 list->priv->nfd + 2,
+                                 sizeof (gint));
   list->priv->fds[list->priv->nfd++] = new_fd;
   list->priv->fds[list->priv->nfd] = -1;
 
