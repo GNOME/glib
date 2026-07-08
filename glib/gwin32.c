@@ -1446,36 +1446,15 @@ g_crash_handler_win32_deinit (void)
  * should be deallocated with g_free().
  */
 gchar *
-g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_handle)
+_g_win32_find_helper_walk_up (gchar *base_searching_path,
+                              const gchar *executable_name)
 {
   static const gchar *const subdirs[] = { "", "bin", "lib", "glib", "gio" };
   static const gsize nb_subdirs = G_N_ELEMENTS (subdirs);
 
-  DWORD module_path_len;
-  wchar_t module_path[MAX_PATH + 2] = { 0 };
-  gchar *base_searching_path;
   gchar *p;
-  gchar *executable_path;
+  gchar *executable_path = NULL;
   gsize i;
-
-  g_return_val_if_fail (executable_name && *executable_name, NULL);
-
-  module_path_len = GetModuleFileNameW (dll_handle, module_path, MAX_PATH + 1);
-  /* The > MAX_PATH check prevents truncated module path usage */
-  if (module_path_len == 0 || module_path_len > MAX_PATH)
-    return NULL;
-
-  base_searching_path = g_utf16_to_utf8 (module_path, -1, NULL, NULL, NULL);
-  if (base_searching_path == NULL)
-    return NULL;
-
-  p = strrchr (base_searching_path, G_DIR_SEPARATOR);
-  if (p == NULL)
-    {
-      g_free (base_searching_path);
-      return NULL;
-    }
-  *p = '\0';
 
   for (;;)
     {
@@ -1507,9 +1486,57 @@ g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_han
       if (p == NULL)
         break;
 
+      /* Don't strip past the root of a UNC path ("\\\\server\\share").
+       * For drive-letter paths ("C:") the strrchr() == NULL check above
+       * already prevents over-stripping. UNC paths start with a
+       * separator, so without this guard the loop strips past
+       * "\\server\\share" down to "\\server", "\", and finally "" (empty),
+       * which makes g_build_filename() below produce a non-absolute path
+       * and trips the g_assert() above. The separator we're about to strip
+       * is the first one after the server name, i.e. the one preceding the
+       * share name.
+       */
+      if (G_IS_DIR_SEPARATOR (base_searching_path[0]) &&
+          G_IS_DIR_SEPARATOR (base_searching_path[1]) &&
+          strchr (base_searching_path + 2, G_DIR_SEPARATOR) == p)
+        break;
+
       *p = '\0';
     }
+
   g_free (base_searching_path);
+  return executable_path;
+}
+
+gchar *
+g_win32_find_helper_executable_path (const gchar *executable_name, void *dll_handle)
+{
+  DWORD module_path_len;
+  wchar_t module_path[MAX_PATH + 2] = { 0 };
+  gchar *base_searching_path;
+  gchar *p;
+  gchar *executable_path;
+
+  g_return_val_if_fail (executable_name && *executable_name, NULL);
+
+  module_path_len = GetModuleFileNameW (dll_handle, module_path, MAX_PATH + 1);
+  /* The > MAX_PATH check prevents truncated module path usage */
+  if (module_path_len == 0 || module_path_len > MAX_PATH)
+    return NULL;
+
+  base_searching_path = g_utf16_to_utf8 (module_path, -1, NULL, NULL, NULL);
+  if (base_searching_path == NULL)
+    return NULL;
+
+  p = strrchr (base_searching_path, G_DIR_SEPARATOR);
+  if (p == NULL)
+    {
+      g_free (base_searching_path);
+      return NULL;
+    }
+  *p = '\0';
+
+  executable_path = _g_win32_find_helper_walk_up (base_searching_path, executable_name);
 
   if (executable_path == NULL)
     {
