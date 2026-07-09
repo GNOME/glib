@@ -149,9 +149,9 @@ dup_close_on_exec_fd (int      fd,
 /**
  * g_unix_fd_list_new:
  *
- * Creates a new #GUnixFDList containing no file descriptors.
+ * Creates a new [class@Gio.UnixFDList] containing no file descriptors.
  *
- * Returns: a new #GUnixFDList
+ * Returns: a new [class@Gio.UnixFDList]
  *
  * Since: 2.24
  **/
@@ -164,18 +164,17 @@ g_unix_fd_list_new (void)
 /**
  * g_unix_fd_list_new_from_array:
  * @fds: (array length=n_fds): the initial list of file descriptors
- * @n_fds: the length of #fds, or -1
+ * @n_fds: the length of @fds, or `-1`
  *
- * Creates a new #GUnixFDList containing the file descriptors given in
- * @fds.  The file descriptors become the property of the new list and
- * may no longer be used by the caller.  The array itself is owned by
- * the caller.
+ * Creates a new [class@Gio.UnixFDList] containing the file descriptors given
+ * in @fds. The file descriptors become the property of the new list and may no
+ * longer be used by the caller. The array itself is owned by the caller.
  *
  * Each file descriptor in the array should be set to close-on-exec.
  *
  * If @n_fds is -1 then @fds must be terminated with -1.
  *
- * Returns: a new #GUnixFDList
+ * Returns: a new [class@Gio.UnixFDList]
  *
  * Since: 2.24
  **/
@@ -209,9 +208,9 @@ g_unix_fd_list_new_from_array (const int *fds,
 
 /**
  * g_unix_fd_list_steal_fds:
- * @list: a #GUnixFDList
+ * @list: a [class@Gio.UnixFDList]
  * @length: (out) (optional): pointer to the length of the returned
- *     array, or %NULL
+ *     array, or `NULL`
  *
  * Returns the array of file descriptors that is contained in this
  * object.
@@ -220,16 +219,16 @@ g_unix_fd_list_new_from_array (const int *fds,
  * @list. Further calls will return an empty list (unless more
  * descriptors have been added).
  *
- * The return result of this function must be freed with g_free().
+ * The return result of this function must be freed with `g_free()`.
  * The caller is also responsible for closing all of the file
  * descriptors.  The file descriptors in the array are set to
  * close-on-exec.
  *
- * If @length is non-%NULL then it is set to the number of file
+ * If @length is non-`NULL` then it is set to the number of file
  * descriptors in the returned array. The returned array is also
- * terminated with -1.
+ * terminated with `-1`.
  *
- * This function never returns %NULL. In case there are no file
+ * This function never returns `NULL`. In case there are no file
  * descriptors contained in @list, an empty array is returned.
  *
  * Returns: (array length=length) (transfer full): an array of file
@@ -266,9 +265,9 @@ g_unix_fd_list_steal_fds (GUnixFDList *list,
 
 /**
  * g_unix_fd_list_peek_fds:
- * @list: a #GUnixFDList
+ * @list: a [class@Gio.UnixFDList]
  * @length: (out) (optional): pointer to the length of the returned
- *     array, or %NULL
+ *     array, or `NULL`
  *
  * Returns the array of file descriptors that is contained in this
  * object.
@@ -277,11 +276,11 @@ g_unix_fd_list_steal_fds (GUnixFDList *list,
  * caller must not close them and must not free the array.  The array is
  * valid only until @list is changed in any way.
  *
- * If @length is non-%NULL then it is set to the number of file
+ * If @length is non-`NULL` then it is set to the number of file
  * descriptors in the returned array. The returned array is also
- * terminated with -1.
+ * terminated with `-1`.
  *
- * This function never returns %NULL. In case there are no file
+ * This function never returns `NULL`. In case there are no file
  * descriptors contained in @list, an empty array is returned.
  *
  * Returns: (array length=length) (transfer none): an array of file
@@ -312,13 +311,13 @@ g_unix_fd_list_peek_fds (GUnixFDList *list,
 
 /**
  * g_unix_fd_list_append:
- * @list: a #GUnixFDList
+ * @list: a [class@Gio.UnixFDList]
  * @fd: a valid open file descriptor
- * @error: a #GError pointer
+ * @error: a [type@GLib.Error]
  *
  * Adds a file descriptor to @list.
  *
- * The file descriptor is duplicated using dup(). You keep your copy
+ * The file descriptor is duplicated using `dup()`. You keep your copy
  * of the descriptor and the copy contained in @list will be closed
  * when @list is finalized.
  *
@@ -326,10 +325,10 @@ g_unix_fd_list_peek_fds (GUnixFDList *list,
  * system-wide file descriptor limit.
  *
  * The index of the file descriptor in the list is returned.  If you use
- * this index with g_unix_fd_list_get() then you will receive back a
+ * this index with [method@Gio.UnixFDList.get] then you will receive back a
  * duplicated copy of the same file descriptor.
  *
- * Returns: the index of the appended fd in case of success, else -1
+ * Returns: the index of the appended fd in case of success, else `-1`
  *          (and @error is set)
  *
  * Since: 2.24
@@ -372,24 +371,24 @@ g_unix_fd_list_append (GUnixFDList  *list,
 
 /**
  * g_unix_fd_list_get:
- * @list: a #GUnixFDList
+ * @list: a [method@Gio.UnixFDList.get]
  * @index_: the index into the list
- * @error: a #GError pointer
+ * @error: a [type@GLib.Error]
  *
  * Gets a file descriptor out of @list.
  *
  * @index_ specifies the index of the file descriptor to get.  It is a
  * programmer error for @index_ to be out of range; see
- * g_unix_fd_list_get_length().
+ * [method@Gio.UnixFDList.get_length].
  *
- * The file descriptor is duplicated using dup() and set as
- * close-on-exec before being returned.  You must call close() on it
+ * The file descriptor is duplicated using `dup()` and set as
+ * close-on-exec before being returned.  You must call `close()` on it
  * when you are done.
  *
  * A possible cause of failure is exceeding the per-process or
  * system-wide file descriptor limit.
  *
- * Returns: the file descriptor, or -1 in case of error
+ * Returns: the file descriptor, or `-1` in case of error
  *
  * Since: 2.24
  **/
@@ -407,7 +406,7 @@ g_unix_fd_list_get (GUnixFDList  *list,
 
 /**
  * g_unix_fd_list_get_length:
- * @list: a #GUnixFDList
+ * @list: a [class@Gio.UnixFDList]
  *
  * Gets the length of @list (ie: the number of file descriptors
  * contained within).
