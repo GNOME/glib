@@ -1203,7 +1203,7 @@ test_message_serialize_over_long_signature (void)
   GError *error = NULL;
   guchar *blob = NULL;
   gsize blob_size = 0;
-  gchar *long_signature;
+  char *long_signature = NULL;
 
   long_signature = g_strnfill (256, 'y');
 
@@ -1243,9 +1243,9 @@ test_message_serialize_over_long_variant_signature (void)
   GVariantType *long_tuple_type = NULL;
   guchar *blob = NULL;
   gsize blob_size = 0;
-  gchar *long_signature;
-  gchar *long_tuple_type_string;
-  guint8 *data;
+  char *long_signature = NULL;
+  char *long_tuple_type_string = NULL;
+  guint8 *data = NULL;
 
   long_signature = g_strnfill (256, 'y');
   long_tuple_type_string = g_strdup_printf ("(%s)", long_signature);
