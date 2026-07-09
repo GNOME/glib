@@ -51,8 +51,8 @@
 
 struct _GUnixFDListPrivate
 {
-  gint *fds;
-  gint nfd;
+  int *fds;
+  size_t nfd;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GUnixFDList, g_unix_fd_list, G_TYPE_OBJECT)
@@ -67,14 +67,12 @@ static void
 g_unix_fd_list_finalize (GObject *object)
 {
   GUnixFDList *list = G_UNIX_FD_LIST (object);
-  gint i;
 
-  for (i = 0; i < list->priv->nfd; i++)
+  for (size_t i = 0; i < list->priv->nfd; i++)
     g_close (list->priv->fds[i], NULL);
   g_free (list->priv->fds);
 
-  G_OBJECT_CLASS (g_unix_fd_list_parent_class)
-    ->finalize (object);
+  G_OBJECT_CLASS (g_unix_fd_list_parent_class)->finalize (object);
 }
 
 static void
@@ -86,12 +84,12 @@ g_unix_fd_list_class_init (GUnixFDListClass *class)
 }
 
 static int
-dup_close_on_exec_fd (gint     fd,
+dup_close_on_exec_fd (int      fd,
                       GError **error)
 {
-  gint new_fd;
+  int new_fd;
 #ifndef G_OS_WIN32
-  gint s;
+  int s;
 #endif
 
 #ifdef F_DUPFD_CLOEXEC
@@ -182,23 +180,29 @@ g_unix_fd_list_new (void)
  * Since: 2.24
  **/
 GUnixFDList *
-g_unix_fd_list_new_from_array (const gint *fds,
-                               gint        n_fds)
+g_unix_fd_list_new_from_array (const int *fds,
+                               int        n_fds)
 {
   GUnixFDList *list;
+  size_t n_fds_unsigned;
 
   g_return_val_if_fail (fds != NULL || n_fds == 0, NULL);
+  g_return_val_if_fail (n_fds >= -1, NULL);
 
-  if (n_fds == -1)
-    for (n_fds = 0; fds[n_fds] != -1; n_fds++);
+  if (n_fds >= 0)
+    n_fds_unsigned = n_fds;
+  else
+    for (n_fds_unsigned = 0; fds[n_fds_unsigned] != -1; n_fds_unsigned++);
+
+  g_assert (n_fds_unsigned < G_MAXSIZE);
 
   list = g_object_new (G_TYPE_UNIX_FD_LIST, NULL);
-  list->priv->fds = g_new (gint, n_fds + 1);
-  list->priv->nfd = n_fds;
+  list->priv->fds = g_new (int, n_fds_unsigned + 1);
+  list->priv->nfd = n_fds_unsigned;
 
-  if (n_fds > 0)
-    memcpy (list->priv->fds, fds, sizeof (gint) * n_fds);
-  list->priv->fds[n_fds] = -1;
+  if (n_fds_unsigned > 0)
+    memcpy (list->priv->fds, fds, sizeof (int) * n_fds_unsigned);
+  list->priv->fds[n_fds_unsigned] = -1;
 
   return list;
 }
@@ -233,18 +237,19 @@ g_unix_fd_list_new_from_array (const gint *fds,
  *
  * Since: 2.24
  */
-gint *
+int *
 g_unix_fd_list_steal_fds (GUnixFDList *list,
-                          gint        *length)
+                          int         *length)
 {
-  gint *result;
+  int *result;
 
   g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), NULL);
+  g_return_val_if_fail (list->priv->nfd <= G_MAXINT, NULL);
 
   /* will be true for fresh object or if we were just called */
   if (list->priv->fds == NULL)
     {
-      list->priv->fds = g_new (gint, 1);
+      list->priv->fds = g_new (int, 1);
       list->priv->fds[0] = -1;
       list->priv->nfd = 0;
     }
@@ -284,16 +289,17 @@ g_unix_fd_list_steal_fds (GUnixFDList *list,
  *
  * Since: 2.24
  */
-const gint *
+const int *
 g_unix_fd_list_peek_fds (GUnixFDList *list,
-                         gint        *length)
+                         int         *length)
 {
   g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), NULL);
+  g_return_val_if_fail (list->priv->nfd <= G_MAXINT, NULL);
 
   /* will be true for fresh object or if steal() was just called */
   if (list->priv->fds == NULL)
     {
-      list->priv->fds = g_new (gint, 1);
+      list->priv->fds = g_new (int, 1);
       list->priv->fds[0] = -1;
       list->priv->nfd = 0;
     }
@@ -328,27 +334,40 @@ g_unix_fd_list_peek_fds (GUnixFDList *list,
  *
  * Since: 2.24
  */
-gint
+int
 g_unix_fd_list_append (GUnixFDList  *list,
-                       gint          fd,
+                       int           fd,
                        GError      **error)
 {
-  gint new_fd;
+  int new_fd;
+  size_t index_;
 
   g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), -1);
   g_return_val_if_fail (fd >= 0, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
+  index_ = list->priv->nfd;
+  if (index_ > G_MAXINT)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Too many file descriptors");
+      return -1;
+    }
+
   if ((new_fd = dup_close_on_exec_fd (fd, error)) < 0)
     return -1;
 
-  list->priv->fds = g_realloc_n (list->priv->fds,
-                                 list->priv->nfd + 2,
-                                 sizeof (gint));
-  list->priv->fds[list->priv->nfd++] = new_fd;
-  list->priv->fds[list->priv->nfd] = -1;
+  /* we allocate nfd + 2 elements (fd itself and -1 terminator) */
+  g_assert (list->priv->nfd <= G_MAXSIZE - 2);
 
-  return list->priv->nfd - 1;
+  list->priv->nfd++;
+  list->priv->fds = g_realloc_n (list->priv->fds,
+                                 list->priv->nfd + 1,
+                                 sizeof (int));
+  list->priv->fds[index_] = new_fd;
+  list->priv->fds[index_ + 1] = -1;
+
+  return index_;
 }
 
 /**
@@ -374,13 +393,13 @@ g_unix_fd_list_append (GUnixFDList  *list,
  *
  * Since: 2.24
  **/
-gint
+int
 g_unix_fd_list_get (GUnixFDList  *list,
-                    gint          index_,
+                    int           index_,
                     GError      **error)
 {
   g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), -1);
-  g_return_val_if_fail (index_ >= 0 && index_ < list->priv->nfd, -1);
+  g_return_val_if_fail (index_ >= 0 && (size_t) index_ < list->priv->nfd, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   return dup_close_on_exec_fd (list->priv->fds[index_], error);
@@ -397,10 +416,11 @@ g_unix_fd_list_get (GUnixFDList  *list,
  *
  * Since: 2.24
  **/
-gint
+int
 g_unix_fd_list_get_length (GUnixFDList *list)
 {
   g_return_val_if_fail (G_IS_UNIX_FD_LIST (list), 0);
+  g_return_val_if_fail (list->priv->nfd <= G_MAXINT, 0);
 
   return list->priv->nfd;
 }
