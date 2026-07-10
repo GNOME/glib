@@ -263,6 +263,124 @@ temp_dbus_keyrings_teardown (void)
   g_unsetenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION");
 }
 
+static void
+async_result_cb (GObject      *obj,
+                 GAsyncResult *result,
+                 void         *user_data)
+{
+  GAsyncResult **result_out = user_data;
+
+  g_assert (result_out != NULL);
+  g_assert (*result_out == NULL);
+
+  *result_out = g_object_ref (result);
+  g_main_context_wakeup (g_main_context_get_thread_default ());
+}
+
+static gboolean
+server_new_connection_unexpected_cb (GDBusServer     *server,
+                                     GDBusConnection *connection,
+                                     void            *user_data)
+{
+  g_assert_not_reached ();
+  return FALSE;
+}
+
+static void
+test_auth_server_read_limit (void)
+{
+  GDBusServer *server = NULL;
+  unsigned long new_connection_id = 0;
+  const char *server_address;
+  GIOStream *client_stream = NULL;
+  GOutputStream *client_output_stream;
+  GInputStream *client_input_stream;
+  GAsyncResult *result = NULL;
+  char *write_buffer = NULL;
+  char read_buffer[100];
+  ssize_t read_len;
+  size_t bytes_written;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test that GDBusServer limits the lengths of reads it does during auth from a client");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3985");
+
+  server = server_new_for_mechanism (NULL);
+
+  new_connection_id = g_signal_connect (server,
+                                        "new-connection",
+                                        G_CALLBACK (server_new_connection_unexpected_cb),
+                                        NULL);
+  server_address = g_dbus_server_get_client_address (server);
+  g_dbus_server_start (server);
+
+  /* Start connecting as a client */
+  g_dbus_address_get_stream (server_address, NULL, async_result_cb, &result);
+
+  while (result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  client_stream = g_dbus_address_get_stream_finish (result, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_clear_object (&result);
+
+  /* Send an over-long AUTH line, maliciously */
+  client_output_stream = g_io_stream_get_output_stream (client_stream);
+  client_input_stream = g_io_stream_get_input_stream (client_stream);
+
+  write_buffer = g_strdup_printf ("AUTH DBUS_COOKIE_SHA1 context%0*d 123 456\r\n", 5000, 0);
+
+  g_output_stream_write_all_async (client_output_stream,
+                                   write_buffer,
+                                   strlen (write_buffer),
+                                   G_PRIORITY_DEFAULT,
+                                   NULL,
+                                   async_result_cb,
+                                   &result);
+
+  while (result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_output_stream_write_all_finish (client_output_stream, result, &bytes_written, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpuint (bytes_written, ==, strlen (write_buffer));
+  g_clear_object (&result);
+
+  g_clear_pointer (&write_buffer, g_free);
+
+  /* Authentication should have been rejected, so reading or writing the stream
+   * should now fail. */
+  read_len = g_input_stream_read (client_input_stream,
+                                  read_buffer,
+                                  sizeof (read_buffer),
+                                  NULL,
+                                  &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_CONNECTION_CLOSED);
+  g_assert_cmpint (read_len, <, 0);
+  g_clear_error (&local_error);
+
+  write_buffer = g_strdup_printf ("AUTH\r\n");
+
+  g_output_stream_write_all (client_output_stream,
+                             write_buffer,
+                             strlen (write_buffer),
+                             &bytes_written,
+                             NULL,
+                             &local_error);
+  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_CONNECTION_CLOSED);
+  g_assert_cmpuint (bytes_written, ==, 0);
+  g_clear_error (&local_error);
+
+  g_clear_pointer (&write_buffer, g_free);
+
+  /* Cleanup */
+  g_clear_object (&client_stream);
+  g_dbus_server_stop (server);
+
+  g_clear_signal_handler (&new_connection_id, server);
+  g_clear_object (&server);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -282,6 +400,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/auth/server/ANONYMOUS",        auth_server_anonymous);
   g_test_add_func ("/gdbus/auth/server/EXTERNAL",         auth_server_external);
   g_test_add_func ("/gdbus/auth/server/DBUS_COOKIE_SHA1", auth_server_dbus_cookie_sha1);
+  g_test_add_func ("/gdbus/auth/server/read-limit", test_auth_server_read_limit);
 
   /* TODO: we currently don't have tests for
    *
