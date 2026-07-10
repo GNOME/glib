@@ -356,7 +356,7 @@ _my_g_input_stream_read_line_safe (GInputStream  *i,
           g_set_error_literal (error,
                                G_IO_ERROR,
                                G_IO_ERROR_FAILED,
-                               _("Malformed D-Bus authentication line"));
+                               "Malformed D-Bus authentication line");
           goto fail;
         }
 
