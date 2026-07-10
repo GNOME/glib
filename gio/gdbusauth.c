@@ -260,6 +260,21 @@ find_mech_by_name (GDBusAuth *auth,
   return ret;
 }
 
+static size_t
+get_longest_mechanism_name_length (GDBusAuth *auth)
+{
+  size_t len = 0;
+
+  for (GList *l = auth->priv->available_mechanisms; l != NULL; l = l->next)
+    {
+      Mechanism *m = l->data;
+
+      len = MAX (len, strlen (m->name));
+    }
+
+  return len;
+}
+
 GDBusAuth  *
 _g_dbus_auth_new (GIOStream *stream)
 {
@@ -267,6 +282,20 @@ _g_dbus_auth_new (GIOStream *stream)
                        "stream", stream,
                        NULL);
 }
+
+/* Arbitrarily chosen limit on the length of a DATA command payload, to prevent
+ * unbounded reads from malicious clients.
+ *
+ *  - The ANONYMOUS mechanism doesn’t use DATA.
+ *  - The EXTERNAL mechanism just uses it to transfer a decimal-encoded UID.
+ *  - The DBUS_COOKIE_SHA1 mechanism transfers a challenge and a SHA1 hash. The
+ *    hash is bounded in length, but the challenge is not, so could potentially
+ *    hit this limit. It doesn’t seem unreasonable to bound the challenge to
+ *    ~4KB though. GDBus itself generates a 16 byte challenge.
+ *
+ * See https://dbus.freedesktop.org/doc/dbus-specification.html#auth-command-data
+ */
+#define MAX_DATA_PAYLOAD_LENGTH_BYTES 4096
 
 /* ---------------------------------------------------------------------------------------------------- */
 /* like g_data_input_stream_read_line() but sets error if there's no content to read */
@@ -305,6 +334,7 @@ _my_g_data_input_stream_read_line (GDataInputStream  *dis,
  */
 static gchar *
 _my_g_input_stream_read_line_safe (GInputStream  *i,
+                                   size_t         max_line_length,
                                    gsize         *out_line_length,
                                    GCancellable  *cancellable,
                                    GError       **error)
@@ -314,11 +344,22 @@ _my_g_input_stream_read_line_safe (GInputStream  *i,
   gssize num_read;
   gboolean last_was_cr;
 
+  g_assert (max_line_length <= SIZE_MAX - 2);
+
   str = g_string_new (NULL);
 
   last_was_cr = FALSE;
   while (TRUE)
     {
+      if (str->len >= max_line_length + 2  /* allow for \r\n */)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_FAILED,
+                               _("Malformed D-Bus authentication line"));
+          goto fail;
+        }
+
       num_read = g_input_stream_read (i,
                                       &c,
                                       1,
@@ -1071,6 +1112,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
         case SERVER_STATE_WAITING_FOR_AUTH:
           debug_print ("SERVER: WaitingForAuth");
           line = _my_g_input_stream_read_line_safe (g_io_stream_get_input_stream (auth->priv->stream),
+                                                    strlen ("AUTH ") + get_longest_mechanism_name_length (auth) + strlen (" ") + MAX_DATA_PAYLOAD_LENGTH_BYTES,
                                                     &line_length,
                                                     cancellable,
                                                     error);
@@ -1292,6 +1334,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
         case SERVER_STATE_WAITING_FOR_DATA:
           debug_print ("SERVER: WaitingForData");
           line = _my_g_input_stream_read_line_safe (g_io_stream_get_input_stream (auth->priv->stream),
+                                                    strlen ("DATA ") + MAX_DATA_PAYLOAD_LENGTH_BYTES,
                                                     &line_length,
                                                     cancellable,
                                                     error);
@@ -1334,6 +1377,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
         case SERVER_STATE_WAITING_FOR_BEGIN:
           debug_print ("SERVER: WaitingForBegin");
           line = _my_g_input_stream_read_line_safe (g_io_stream_get_input_stream (auth->priv->stream),
+                                                    MAX (strlen ("BEGIN"), strlen ("NEGOTIATE_UNIX_FD")),
                                                     &line_length,
                                                     cancellable,
                                                     error);
