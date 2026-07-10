@@ -587,15 +587,17 @@ g_poll (GPollFD *fds,
   if (G_UNLIKELY (maxfd >= FD_SETSIZE))
     {
       fd_set_bytes = g_poll_fd_set_alloc_size (maxfd);
-      heap_storage = g_malloc (fd_set_bytes * 3);
+      heap_storage = g_malloc0 (fd_set_bytes * 3);
       rset = heap_storage;
       wset = (fd_set *) ((char *) heap_storage + fd_set_bytes);
       xset = (fd_set *) ((char *) heap_storage + (fd_set_bytes * 2));
     }
-
-  FD_ZERO (rset);
-  FD_ZERO (wset);
-  FD_ZERO (xset);
+  else
+    {
+      FD_ZERO (rset);
+      FD_ZERO (wset);
+      FD_ZERO (xset);
+    }
 
   for (f = fds; f < f_end; ++f)
     if (f->fd >= 0)
