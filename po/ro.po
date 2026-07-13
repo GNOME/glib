@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-06-04 18:14+0000\n"
-"PO-Revision-Date: 2026-06-06 11:51+0200\n"
+"POT-Creation-Date: 2026-07-10 14:53+0000\n"
+"PO-Revision-Date: 2026-07-11 10:28+0200\n"
 "Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);\n"
-"X-Generator: Gtranslator 48.0\n"
+"X-Generator: Gtranslator 50.0\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -338,7 +338,7 @@ msgstr "Spațiu insuficient în destinație"
 #: gio/gcharsetconverter.c:357 gio/gdatainputstream.c:842
 #: gio/gdatainputstream.c:1276 glib/gconvert.c:358 glib/gconvert.c:790
 #: glib/giochannel.c:1571 glib/giochannel.c:1613 glib/giochannel.c:2474
-#: glib/gutf8.c:966 glib/gutf8.c:1423
+#: glib/gutf8.c:967 glib/gutf8.c:1424
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secvență de octeți incorectă la intrarea pentru conversie"
 
@@ -565,17 +565,21 @@ msgstr ""
 msgid "Unknown bus type %d"
 msgstr "Tip de magistrală %d necunoscut"
 
-#: gio/gdbusauth.c:292
+#: gio/gdbusauth.c:321
 msgid "Unexpected lack of content trying to read a line"
 msgstr "Lipsă de conținut neașteptată în timp ce se încerca citirea unui rând"
 
-#: gio/gdbusauth.c:336
+#: gio/gdbusauth.c:359
+msgid "Malformed D-Bus authentication line"
+msgstr "Rând de autentificare D-Bus incorect"
+
+#: gio/gdbusauth.c:377
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr ""
 "Lipsă de conținut neașteptată în timp ce se încerca citirea unui rând (în "
 "siguranță)"
 
-#: gio/gdbusauth.c:480
+#: gio/gdbusauth.c:521
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -583,16 +587,16 @@ msgstr ""
 "S-au epuizat toate mecanismele de autentificare disponibile (încercat: %s) "
 "(disponibile: %s)"
 
-#: gio/gdbusauth.c:1043
+#: gio/gdbusauth.c:1084
 msgid "Unexpected lack of content trying to read a byte"
 msgstr "Lipsă de conținut neașteptată în timp ce se încerca citirea unui octet"
 
-#: gio/gdbusauth.c:1193
+#: gio/gdbusauth.c:1235
 msgid "User IDs must be the same for peer and server"
 msgstr ""
 "ID-urile utilizatorului trebuie să fie aceleași pentru client și server"
 
-#: gio/gdbusauth.c:1205
+#: gio/gdbusauth.c:1247
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Anulat via GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -1457,17 +1461,17 @@ msgstr "TLS nu este disponibil"
 msgid "DTLS support is not available"
 msgstr "DTLS nu este disponibil"
 
-#: gio/gemblem.c:337
+#: gio/gemblem.c:332
 #, c-format
 msgid "Can’t handle version %d of GEmblem encoding"
 msgstr "Nu se poate procesa versiunea %d a codificării GEmblem"
 
-#: gio/gemblem.c:347
+#: gio/gemblem.c:342
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Număr de elemente formatat eronat (%d) în codificarea GEmblem"
 
-#: gio/gemblem.c:368
+#: gio/gemblem.c:363
 #, c-format
 msgid "Malformed origin (%s) in GEmblem encoding"
 msgstr "Origine formatată eronat (%s) în codificarea GEmblem"
@@ -3650,29 +3654,31 @@ msgid "Network unreachable"
 msgstr "Nu se poate accesa rețeaua"
 
 #: gio/gnetworkmonitorbase.c:259 gio/gnetworkmonitorbase.c:290
+#: gio/gnetworkmonitornetlink.c:833 gio/gnetworkmonitornetlink.c:854
+#: gio/gnetworkmonitornetlink.c:911
 msgid "Host unreachable"
 msgstr "Nu se poate accesa gazda"
 
-#: gio/gnetworkmonitornetlink.c:110 gio/gnetworkmonitornetlink.c:122
-#: gio/gnetworkmonitornetlink.c:142
+#: gio/gnetworkmonitornetlink.c:159 gio/gnetworkmonitornetlink.c:177
+#: gio/gnetworkmonitornetlink.c:209
 #, c-format
 msgid "Could not create network monitor: %s"
 msgstr "Nu s-a putut crea monitorul de rețea: %s"
 
-#: gio/gnetworkmonitornetlink.c:131
+#: gio/gnetworkmonitornetlink.c:186
 msgid "Could not create network monitor: "
 msgstr "Nu s-a putut crea monitorul de rețea: "
 
-#: gio/gnetworkmonitornetlink.c:196
+#: gio/gnetworkmonitornetlink.c:303
 msgid "Could not get network status: "
 msgstr "Nu s-a putut obține starea rețelei: "
 
-#: gio/gnetworkmonitornm.c:313
+#: gio/gnetworkmonitornm.c:321
 #, c-format
 msgid "NetworkManager not running"
 msgstr "NetworkManager nu funcționează"
 
-#: gio/gnetworkmonitornm.c:324
+#: gio/gnetworkmonitornm.c:332
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "Versiunea de NetworkManager este prea veche"
@@ -4107,7 +4113,7 @@ msgstr "Socket greșit, inițializarea a eșuat din următoarea cauză: %s"
 msgid "Socket is already closed"
 msgstr "Socket-ul este deja închis"
 
-#: gio/gsocket.c:465 gio/gsocket.c:3357 gio/gsocket.c:4729 gio/gsocket.c:4787
+#: gio/gsocket.c:465 gio/gsocket.c:3360 gio/gsocket.c:4732 gio/gsocket.c:4790
 #: gio/gthreadedresolver.c:1572
 msgid "Socket I/O timed out"
 msgstr "A expirat limita de timp la I/O pe socket"
@@ -4142,136 +4148,136 @@ msgstr ""
 "Nu se pot utiliza operațiile de datagramă pe un socket care are stabilită o "
 "limită de timp."
 
-#: gio/gsocket.c:2091
+#: gio/gsocket.c:2094
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nu s-a putut obține adresa locală: %s"
 
-#: gio/gsocket.c:2137
+#: gio/gsocket.c:2140
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nu s-a putut obține adresa la distanță: %s"
 
-#: gio/gsocket.c:2203
+#: gio/gsocket.c:2206
 #, c-format
 msgid "could not listen: %s"
 msgstr "nu s-a putut asculta: %s"
 
-#: gio/gsocket.c:2307
+#: gio/gsocket.c:2310
 #, c-format
 msgid "Error binding to address %s: %s"
 msgstr "Eroare la asocierea adresei %s: %s"
 
-#: gio/gsocket.c:2445
+#: gio/gsocket.c:2448
 #, c-format
 msgid "Interface name too long"
 msgstr "Numele de interfață este prea lung"
 
-#: gio/gsocket.c:2458 gio/gsocket.c:2783
+#: gio/gsocket.c:2461 gio/gsocket.c:2786
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Nu s-a putut găsi interfața: %s"
 
-#: gio/gsocket.c:2539 gio/gsocket.c:2576 gio/gsocket.c:2686 gio/gsocket.c:2711
-#: gio/gsocket.c:2757 gio/gsocket.c:2815 gio/gsocket.c:2833
+#: gio/gsocket.c:2542 gio/gsocket.c:2579 gio/gsocket.c:2689 gio/gsocket.c:2714
+#: gio/gsocket.c:2760 gio/gsocket.c:2818 gio/gsocket.c:2836
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Eroare la alăturarea grupului multicast: %s"
 
-#: gio/gsocket.c:2540 gio/gsocket.c:2577 gio/gsocket.c:2687 gio/gsocket.c:2712
-#: gio/gsocket.c:2758 gio/gsocket.c:2816 gio/gsocket.c:2834
+#: gio/gsocket.c:2543 gio/gsocket.c:2580 gio/gsocket.c:2690 gio/gsocket.c:2715
+#: gio/gsocket.c:2761 gio/gsocket.c:2819 gio/gsocket.c:2837
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Eroare la părăsirea grupului multicast: %s"
 
-#: gio/gsocket.c:2541
+#: gio/gsocket.c:2544
 msgid "No support for source-specific multicast"
 msgstr "Nu există implementare pentru difuzarea multiplă specifică sursei"
 
-#: gio/gsocket.c:2688
+#: gio/gsocket.c:2691
 msgid "Unsupported socket family"
 msgstr "Familie de socket neacceptată"
 
-#: gio/gsocket.c:2713
+#: gio/gsocket.c:2716
 msgid "source-specific not an IPv4 address"
 msgstr "specific sursei nu o adresă IPv4"
 
-#: gio/gsocket.c:2759
+#: gio/gsocket.c:2762
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Nu există implementare pentru difuzarea multiplă specifică sursei IPv4"
 
-#: gio/gsocket.c:2817
+#: gio/gsocket.c:2820
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Nu există implementare pentru difuzarea multiplă specifică sursei IPv6"
 
-#: gio/gsocket.c:3053
+#: gio/gsocket.c:3056
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Eroare la acceptarea conexiunii: %s"
 
-#: gio/gsocket.c:3182
+#: gio/gsocket.c:3185
 msgid "Connection in progress"
 msgstr "Conectare în curs"
 
-#: gio/gsocket.c:3233
+#: gio/gsocket.c:3236
 msgid "Unable to get pending error: "
 msgstr "Nu se poate obține eroarea în așteptare: "
 
-#: gio/gsocket.c:3422
+#: gio/gsocket.c:3425
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Eroare la primirea datelor: %s"
 
-#: gio/gsocket.c:3761
+#: gio/gsocket.c:3764
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Eroare la trimiterea datelor: %s"
 
-#: gio/gsocket.c:3948
+#: gio/gsocket.c:3951
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Nu se poate opri socket-ul: %s"
 
-#: gio/gsocket.c:4029
+#: gio/gsocket.c:4032
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Eroare la închiderea socket-ului: %s"
 
-#: gio/gsocket.c:4722
+#: gio/gsocket.c:4725
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Se așteaptă condiția socket-ului: %s"
 
-#: gio/gsocket.c:5112 gio/gsocket.c:5128 gio/gsocket.c:5141
+#: gio/gsocket.c:5115 gio/gsocket.c:5131 gio/gsocket.c:5144
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "Nu s-a putut trimite mesajul: %s"
 
-#: gio/gsocket.c:5113 gio/gsocket.c:5129 gio/gsocket.c:5142
+#: gio/gsocket.c:5116 gio/gsocket.c:5132 gio/gsocket.c:5145
 msgid "Message vectors too large"
 msgstr "Vectorii mesaj prea mari"
 
-#: gio/gsocket.c:5158 gio/gsocket.c:5160 gio/gsocket.c:5307 gio/gsocket.c:5392
-#: gio/gsocket.c:5570 gio/gsocket.c:5610 gio/gsocket.c:5612
+#: gio/gsocket.c:5161 gio/gsocket.c:5163 gio/gsocket.c:5310 gio/gsocket.c:5395
+#: gio/gsocket.c:5573 gio/gsocket.c:5613 gio/gsocket.c:5615
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Eroare la trimiterea mesajului: %s"
 
-#: gio/gsocket.c:5334
+#: gio/gsocket.c:5337
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage nu este acceptat pe Windows"
 
-#: gio/gsocket.c:5807 gio/gsocket.c:5883 gio/gsocket.c:6109
+#: gio/gsocket.c:5810 gio/gsocket.c:5886 gio/gsocket.c:6112
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Eroare la primirea mesajului: %s"
 
-#: gio/gsocket.c:6394 gio/gsocket.c:6405 gio/gsocket.c:6468
+#: gio/gsocket.c:6397 gio/gsocket.c:6408 gio/gsocket.c:6471
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Nu se pot citi certificările socket-ului: %s"
 
-#: gio/gsocket.c:6477
+#: gio/gsocket.c:6480
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials nu este implementat pentru acest sistem"
 
@@ -4898,8 +4904,8 @@ msgstr "Nu s-a putut extinde comanda „%s” cu URI-ul „%s”"
 msgid "Unrepresentable character in conversion input"
 msgstr "Caracter nereprezentabil în intrarea conversiei"
 
-#: glib/gconvert.c:404 glib/gutf8.c:962 glib/gutf8.c:1176 glib/gutf8.c:1314
-#: glib/gutf8.c:1419
+#: glib/gconvert.c:404 glib/gutf8.c:963 glib/gutf8.c:1177 glib/gutf8.c:1315
+#: glib/gutf8.c:1420
 msgid "Partial character sequence at end of input"
 msgstr "Secvență parțială de caractere la sfârșitul datelor introduse"
 
@@ -5922,7 +5928,7 @@ msgstr "buclă recursivă"
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr "este cerut un mod de potrivire care nu a fost compilat pentru JIT"
 
-#: glib/gregex.c:617 glib/gregex.c:2155
+#: glib/gregex.c:617 glib/gregex.c:2177
 msgid "unknown error"
 msgstr "eroare necunoscută"
 
@@ -6128,61 +6134,61 @@ msgstr "spațiul de compilare a fost depășit"
 msgid "previously-checked referenced subpattern not found"
 msgstr "nu s-a găsit submodelul referit și verificat anterior"
 
-#: glib/gregex.c:958 glib/gregex.c:1232 glib/gregex.c:2771
+#: glib/gregex.c:958 glib/gregex.c:1232 glib/gregex.c:2793
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Eroare la compararea expresiei regulate %s: %s"
 
-#: glib/gregex.c:2039
+#: glib/gregex.c:2061
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Biblioteca PCRE este compilată fără compatibilitate UTF-8"
 
-#: glib/gregex.c:2047
+#: glib/gregex.c:2069
 msgid "PCRE library is compiled with incompatible options"
 msgstr "Biblioteca PCRE este compilată cu opțiuni incompatibile"
 
-#: glib/gregex.c:2164
+#: glib/gregex.c:2186
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr "Eroare la compilarea expresiei regulate „%s” la caracterul %s: %s"
 
-#: glib/gregex.c:3222
+#: glib/gregex.c:3244
 msgid "hexadecimal digit or “}” expected"
 msgstr "s-a așteptat o cifră hexazecimală sau „}”"
 
-#: glib/gregex.c:3238
+#: glib/gregex.c:3260
 msgid "hexadecimal digit expected"
 msgstr "se aștepta un digit hexazecimal"
 
-#: glib/gregex.c:3278
+#: glib/gregex.c:3300
 msgid "missing “<” in symbolic reference"
 msgstr "lipsește „<” în referința simbolică"
 
-#: glib/gregex.c:3287
+#: glib/gregex.c:3309
 msgid "unfinished symbolic reference"
 msgstr "referință simbolică neterminată"
 
-#: glib/gregex.c:3294
+#: glib/gregex.c:3316
 msgid "zero-length symbolic reference"
 msgstr "referință simbolică de lungime zero"
 
-#: glib/gregex.c:3305
+#: glib/gregex.c:3327
 msgid "digit expected"
 msgstr "se aștepta un digit"
 
-#: glib/gregex.c:3323
+#: glib/gregex.c:3345
 msgid "illegal symbolic reference"
 msgstr "referință simbolică nepermisă"
 
-#: glib/gregex.c:3386
+#: glib/gregex.c:3408
 msgid "stray final “\\”"
 msgstr "caracter neprevăzut la final „\\”"
 
-#: glib/gregex.c:3390
+#: glib/gregex.c:3412
 msgid "unknown escape sequence"
 msgstr "secvență de eludare necunoscută"
 
-#: glib/gregex.c:3400
+#: glib/gregex.c:3422
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
@@ -6214,93 +6220,93 @@ msgstr ""
 "Textul s-a terminat înainte de semnul de citare pereche pentru %c. (Textul "
 "era „%s”)"
 
-#: glib/gspawn-posix.c:188
+#: glib/gspawn-posix.c:195
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nu s-au putut citi datele din procesul copil (%s)"
 
-#: glib/gspawn-posix.c:298
+#: glib/gspawn-posix.c:305
 #, c-format
 msgid "Unexpected error in reading data from a child process (%s)"
 msgstr "Eroare neașteptată la citirea datelor din procesul copil (%s)"
 
-#: glib/gspawn-posix.c:378
+#: glib/gspawn-posix.c:385
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Eroare neașteptată în waitpid() (%s)"
 
-#: glib/gspawn-posix.c:483 glib/gspawn-win32.c:1407
+#: glib/gspawn-posix.c:490 glib/gspawn-win32.c:1407
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Procesul copil s-a terminat cu codul %ld"
 
-#: glib/gspawn-posix.c:491
+#: glib/gspawn-posix.c:498
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Procesul copil a fost terminat forțat de semnalul %ld"
 
-#: glib/gspawn-posix.c:498
+#: glib/gspawn-posix.c:505
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Procesul copil a fost oprit de semnalul %ld"
 
-#: glib/gspawn-posix.c:505
+#: glib/gspawn-posix.c:512
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Procesul copil s-a terminat în mod neobișnuit"
 
-#: glib/gspawn-posix.c:984 glib/gspawn-win32.c:450 glib/gspawn-win32.c:458
+#: glib/gspawn-posix.c:991 glib/gspawn-win32.c:450 glib/gspawn-win32.c:458
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nu s-au putut citi datele din conectorul „pipe” copil (%s)"
 
-#: glib/gspawn-posix.c:1365
+#: glib/gspawn-posix.c:1372
 #, c-format
 msgid "Failed to spawn child process “%s” (%s)"
 msgstr "Nu s-a putut crea procesul copil „%s” (%s)"
 
-#: glib/gspawn-posix.c:1489
+#: glib/gspawn-posix.c:1496
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nu s-a putut clona procesul (%s)"
 
-#: glib/gspawn-posix.c:1650 glib/gspawn-win32.c:481
+#: glib/gspawn-posix.c:1657 glib/gspawn-win32.c:481
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Nu s-a putut schimba dosarul în „%s” (%s)"
 
-#: glib/gspawn-posix.c:1660
+#: glib/gspawn-posix.c:1667
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Nu s-a putut executa procesul copil „%s” (%s)"
 
-#: glib/gspawn-posix.c:1670
+#: glib/gspawn-posix.c:1677
 #, c-format
 msgid "Failed to open file to remap file descriptor (%s)"
 msgstr ""
 "Nu s-a putut deschide fișierul pentru a reasocia descriptorul de fișiere (%s)"
 
-#: glib/gspawn-posix.c:1678
+#: glib/gspawn-posix.c:1685
 #, c-format
 msgid "Failed to duplicate file descriptor for child process (%s)"
 msgstr "Nu s-a putut duplica descriptorul de fișier pentru procesul copil (%s)"
 
-#: glib/gspawn-posix.c:1687
+#: glib/gspawn-posix.c:1694
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nu s-a putut clona procesul copil (%s)"
 
-#: glib/gspawn-posix.c:1695
+#: glib/gspawn-posix.c:1702
 #, c-format
 msgid "Failed to close file descriptor for child process (%s)"
 msgstr "Nu s-a putut închide descriptorul de fișier pentru procesul copil (%s)"
 
-#: glib/gspawn-posix.c:1703
+#: glib/gspawn-posix.c:1710
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Eroare necunoscută la executarea procesului copil „%s”"
 
-#: glib/gspawn-posix.c:1727
+#: glib/gspawn-posix.c:1734
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nu s-au putut citi date suficiente de la procesul copil (%s)"
@@ -6432,20 +6438,20 @@ msgstr "URI-ul nu este absolut și nu s-a furnizat nicio bază URI"
 msgid "Missing ‘=’ and parameter value"
 msgstr "Lipsește „=” și valoarea parametrului"
 
-#: glib/gutf8.c:909
+#: glib/gutf8.c:910
 msgid "Failed to allocate memory"
 msgstr "Nu s-a putut aloca memoria"
 
-#: glib/gutf8.c:1042
+#: glib/gutf8.c:1043
 msgid "Character out of range for UTF-8"
 msgstr "Caracter în afara limitelor standardului UTF-8"
 
-#: glib/gutf8.c:1144 glib/gutf8.c:1153 glib/gutf8.c:1284 glib/gutf8.c:1293
-#: glib/gutf8.c:1433 glib/gutf8.c:1530
+#: glib/gutf8.c:1145 glib/gutf8.c:1154 glib/gutf8.c:1285 glib/gutf8.c:1294
+#: glib/gutf8.c:1434 glib/gutf8.c:1531
 msgid "Invalid sequence in conversion input"
 msgstr "Secvență incorectă la intrarea conversiei"
 
-#: glib/gutf8.c:1444 glib/gutf8.c:1541
+#: glib/gutf8.c:1445 glib/gutf8.c:1542
 msgid "Character out of range for UTF-16"
 msgstr "Caracter în afara limitelor standardului UTF-16"
 
