@@ -1,3 +1,43 @@
+Overview of changes in GLib 2.89.2, 2026-07-14
+==============================================
+
+* Fix potential miscompilation with GCC 17 with `G_GNUC_CONST` on `get_type()`
+  functions (#3984, work by Sam James)
+
+* Update toolchain requirement to C11; previously this was just strongly
+  recommended (!3574, work by Emmanuele Bassi)
+
+* Bugs fixed:
+  - #2931 GMemoryMonitor should have a backend for systemd MEMORY_PRESSURE_WATCH
+    API (Kate Hsuan)
+  - #3719 gspawn-win32-helper-console.exe fails on Windows with UNC path (Andrew
+    Ziem)
+  - #3984 G_GNUC_CONST vs get_type comes home to roost (Sam James)
+  - #3985 Security report: GDBusServer pre-authentication DoS via unbounded SASL
+    line buffering (Philip Withnall)
+  - #3986 GDBusActionGroupClass failure (Philip Withnall)
+  - !3574 Update toolchain requirement to C11
+  - !5222 GNetworkMonitor: Stop pulling route table on sd-networkd hosts
+  - !5224 gquark: Fix an incorrect G_GNUC_CONST annotation on
+    g_quark_to_string()
+  - !5226 fuzzing: Skip build if oss-fuzz and tests are both omitted
+  - !5232 gnetworkmonitornetlink: Performance improvements by following iproute2
+    behavior
+  - !5234 gmain: fix poll.h include order on AIX
+  - !5235 tests: Fix gi-inspect-typelib.py on Visual Studio
+  - !5236 gio/tests: skip unsupported IP TOS tests on AIX
+  - !5237 gdbus-serialization.c: Avoid g_autofree
+  - !5238 gpoll: Correctly zero-out heap-allocated fd_sets on macOS
+  - !5244 Update Romanian translation
+  - !5245 Update Slovenian translation
+  - !5247 gdbusnameowning: Downgrade ReleaseName warning on closed connection to
+    debug
+
+* Translation updates:
+  - Romanian (Antonio Marin)
+  - Slovenian (Martin)
+
+
 Overview of changes in GLib 2.89.1, 2026-06-25
 ==============================================
 
