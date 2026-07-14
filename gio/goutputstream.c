@@ -2135,9 +2135,15 @@ g_output_stream_close_finish (GOutputStream  *stream,
  * g_output_stream_is_closed:
  * @stream: a #GOutputStream.
  * 
- * Checks if an output stream has already been closed.
+ * Checks if an output stream has been closed.
+ *
+ * This only indicates whether the stream has been closed from this end by
+ * calling [method@Gio.OutputStream.close]. If the stream is a pipe or socket,
+ * for example, and the process on the other end has closed its end, this method
+ * will still return false. Methods which try to write to the output stream will
+ * return an error, however.
  * 
- * Returns: %TRUE if @stream is closed. %FALSE otherwise. 
+ * Returns: true if the stream has been closed; false otherwise
  **/
 gboolean
 g_output_stream_is_closed (GOutputStream *stream)
