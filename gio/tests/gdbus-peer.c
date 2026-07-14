@@ -1718,7 +1718,7 @@ test_nonce_tcp (void)
   GError *error;
   GThread *service_thread;
   GDBusConnection *c;
-  gchar *s;
+  const char *s;
   gchar *nonce_file;
   gboolean res;
   const gchar *address;
