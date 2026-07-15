@@ -26,7 +26,7 @@
 
 /* See the g_test_skip() calls below for platform-specific reasons why this test
  * code sometimes needs to be skipped. */
-#if ! (defined(G_OS_WIN32) || defined(__APPLE__) || defined(__GNU__) || defined(_AIX))
+#if ! (defined(G_OS_WIN32) || defined(__APPLE__) || defined(__GNU__) || defined(_AIX) || defined(__sun__))
 
 static GSocketControlMessage *
 send_recv_control_message (GSocketFamily family, GSocketControlMessage *msg)
@@ -118,6 +118,8 @@ test_ip_tos (void)
   g_test_skip ("IP_RECVTOS not supported on Hurd");
 #elif defined(_AIX)
   g_test_skip ("IP_RECVTOS not supported on AIX");
+#elif defined(__sun__)
+  g_test_skip ("IP_RECVTOS not supported on Solaris");
 #else
   GIPTosMessage *smsg;
   GIPTosMessage *rmsg;
@@ -144,6 +146,8 @@ test_ipv6_tclass (void)
   g_test_skip ("IPV6_RECVTCLASS not supported on Hurd");
 #elif defined(_AIX)
   g_test_skip ("IPV6_RECVTCLASS not supported on AIX");
+#elif defined(__sun__)
+  g_test_skip ("IPV6_RECVTCLASS not supported on Solaris");
 #else
   GIPv6TclassMessage *smsg;
   GIPv6TclassMessage *rmsg;
