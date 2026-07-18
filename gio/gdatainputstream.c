@@ -1167,8 +1167,8 @@ g_data_input_stream_read_line_async (GDataInputStream    *stream,
  * @stop_chars: characters to terminate the read.
  * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async): callback to call when the request is satisfied.
- * @user_data: (closure): the data to pass to callback function.
+ * @callback: (scope async) (closure user_data): callback to call when the request is satisfied.
+ * @user_data: the data to pass to callback function.
  *
  * The asynchronous version of g_data_input_stream_read_until().
  * It is an error to have two outstanding calls to this function.
@@ -1415,8 +1415,8 @@ g_data_input_stream_read_upto (GDataInputStream  *stream,
  *     nul-terminated
  * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
- * @callback: (scope async): callback to call when the request is satisfied
- * @user_data: (closure): the data to pass to callback function
+ * @callback: (scope async) (closure user_data): callback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
  *
  * The asynchronous version of g_data_input_stream_read_upto().
  * It is an error to have two outstanding calls to this function.

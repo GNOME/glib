@@ -343,8 +343,8 @@ g_value_array_sort (GValueArray *value_array,
 /**
  * g_value_array_sort_with_data: (rename-to g_value_array_sort)
  * @value_array: #GValueArray to sort
- * @compare_func: (scope call): function to compare elements
- * @user_data: (closure): extra data argument provided for @compare_func
+ * @compare_func: (scope call) (closure user_data): function to compare elements
+ * @user_data: extra data argument provided for @compare_func
  *
  * Sort @value_array using @compare_func to compare the elements according
  * to the semantics of #GCompareDataFunc.

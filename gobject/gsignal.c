@@ -960,8 +960,8 @@ signal_finalize_hook (GHookList *hook_list,
  * g_signal_add_emission_hook:
  * @signal_id: the signal identifier, as returned by g_signal_lookup().
  * @detail: the detail on which to call the hook.
- * @hook_func: (not nullable): a #GSignalEmissionHook function.
- * @hook_data: (nullable) (closure hook_func): user data for @hook_func.
+ * @hook_func: (not nullable) (closure hook_data): a #GSignalEmissionHook function.
+ * @hook_data: (nullable): user data for @hook_func.
  * @data_destroy: (nullable) (destroy hook_data): a #GDestroyNotify for @hook_data.
  *
  * Adds an emission hook for a signal, which will get called for any emission
@@ -1384,8 +1384,8 @@ g_signal_query (guint         signal_id,
  * @class_offset: The offset of the function pointer in the class structure
  *  for this type. Used to invoke a class method generically. Pass 0 to
  *  not associate a class method slot with this signal.
- * @accumulator: (nullable) (scope forever): the accumulator for this signal; may be %NULL.
- * @accu_data: (nullable) (closure accumulator): user data for the @accumulator.
+ * @accumulator: (nullable) (scope forever) (closure accu_data): the accumulator for this signal; may be %NULL.
+ * @accu_data: (nullable): user data for the @accumulator.
  * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or %G_TYPE_NONE for a signal
@@ -1460,8 +1460,8 @@ g_signal_new (const gchar	 *signal_name,
  * @class_handler: (nullable) (scope forever): a #GCallback which acts as class implementation of
  *  this signal. Used to invoke a class method generically. Pass %NULL to
  *  not associate a class method with this signal.
- * @accumulator: (nullable) (scope forever): the accumulator for this signal; may be %NULL.
- * @accu_data: (nullable) (closure accumulator): user data for the @accumulator.
+ * @accumulator: (nullable) (scope forever) (closure accu_data): the accumulator for this signal; may be %NULL.
+ * @accu_data: (nullable): user data for the @accumulator.
  * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or %G_TYPE_NONE for a signal
@@ -1597,8 +1597,8 @@ signal_add_class_closure (SignalNode *node,
  *     %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST
  * @class_closure: (nullable): The closure to invoke on signal emission;
  *     may be %NULL
- * @accumulator: (nullable) (scope forever): the accumulator for this signal; may be %NULL
- * @accu_data: (nullable) (closure accumulator): user data for the @accumulator
+ * @accumulator: (nullable) (scope forever) (closure accu_data): the accumulator for this signal; may be %NULL
+ * @accu_data: (nullable): user data for the @accumulator
  * @c_marshaller: (nullable): the function to translate arrays of
  *     parameter values to signal emissions into C language callback
  *     invocations or %NULL
@@ -1858,8 +1858,8 @@ g_signal_set_va_marshaller (guint              signal_id,
  *  the default handler is to be invoked. You should at least specify
  *  %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST.
  * @class_closure: (nullable): The closure to invoke on signal emission; may be %NULL.
- * @accumulator: (nullable) (scope forever): the accumulator for this signal; may be %NULL.
- * @accu_data: (nullable) (closure accumulator): user data for the @accumulator.
+ * @accumulator: (nullable) (scope forever) (closure accu_data): the accumulator for this signal; may be %NULL.
+ * @accu_data: (nullable): user data for the @accumulator.
  * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or %G_TYPE_NONE for a signal
@@ -2491,8 +2491,8 @@ node_check_deprecated (const SignalNode *node)
  * g_signal_connect_data:
  * @instance: (type GObject.Object): the instance to connect to.
  * @detailed_signal: a string of the form "signal-name::detail".
- * @c_handler: (not nullable): the #GCallback to connect.
- * @data: (nullable) (closure c_handler): data to pass to @c_handler calls.
+ * @c_handler: (not nullable) (closure data): the #GCallback to connect.
+ * @data: (nullable): data to pass to @c_handler calls.
  * @destroy_data: (nullable) (destroy data): a #GClosureNotify for @data.
  * @connect_flags: a combination of #GConnectFlags.
  *

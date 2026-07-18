@@ -3715,11 +3715,11 @@ g_desktop_app_info_launch_uris_as_manager_with_fds (GDesktopAppInfo            *
  * @uris: (element-type utf8): List of URIs
  * @launch_context: (nullable): a [class@Gio.AppLaunchContext]
  * @spawn_flags: [flags@GLib.SpawnFlags], used for each process
- * @user_setup: (scope async) (nullable): a [callback@GLib.SpawnChildSetupFunc],
+ * @user_setup: (scope async) (nullable) (closure user_setup_data): a [callback@GLib.SpawnChildSetupFunc],
  *   used once  for each process.
- * @user_setup_data: (closure user_setup) (nullable): User data for @user_setup
- * @pid_callback: (scope call) (nullable): Callback for child processes
- * @pid_callback_data: (closure pid_callback) (nullable): User data for @callback
+ * @user_setup_data: (nullable): User data for @user_setup
+ * @pid_callback: (scope call) (nullable) (closure pid_callback_data): Callback for child processes
+ * @pid_callback_data: (nullable): User data for @callback
  * @error: return location for a #GError, or `NULL`
  *
  * This function performs the equivalent of [method@Gio.AppInfo.launch_uris],
