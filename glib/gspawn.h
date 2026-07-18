@@ -164,12 +164,6 @@ typedef void (* GSpawnChildSetupFunc) (gpointer data);
  *     Since: 2.34
  * @G_SPAWN_CLOEXEC_PIPES: create all pipes with the `O_CLOEXEC` flag set.
  *     Since: 2.40
- * @G_SPAWN_CHILD_INHERITS_STDOUT: the child will inherit the parent's standard output.
- *     Since: 2.74
- * @G_SPAWN_CHILD_INHERITS_STDERR: the child will inherit the parent's standard error.
- *     Since: 2.74
- * @G_SPAWN_STDIN_FROM_DEV_NULL: the child's standard input is attached to `/dev/null`.
- *     Since: 2.74
  *
  * Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
  */
