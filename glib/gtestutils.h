@@ -500,7 +500,6 @@ void    g_test_queue_destroy            (GDestroyNotify destroy_func,
 
 /**
  * GTestTrapFlags:
- * @G_TEST_TRAP_DEFAULT: Default behaviour. Since: 2.74
  * @G_TEST_TRAP_SILENCE_STDOUT: Redirect stdout of the test child to
  *     `/dev/null` so it cannot be observed on the console during test
  *     runs. The actual output is still captured though to allow later
@@ -522,6 +521,13 @@ void    g_test_queue_destroy            (GDestroyNotify destroy_func,
  *   [flags@GLib.TestSubprocessFlags].
  */
 typedef enum {
+  /**
+   * G_TEST_TRAP_DEFAULT:
+   *
+   * Default behaviour.
+   *
+   * Since: 2.74
+   * */
   G_TEST_TRAP_DEFAULT GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_TEST_TRAP_SILENCE_STDOUT    = 1 << 7,
   G_TEST_TRAP_SILENCE_STDERR    = 1 << 8,

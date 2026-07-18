@@ -197,7 +197,6 @@
 
 /**
  * GTestSubprocessFlags:
- * @G_TEST_SUBPROCESS_DEFAULT: Default behaviour. Since: 2.74
  * @G_TEST_SUBPROCESS_INHERIT_STDIN: If this flag is given, the child
  *   process will inherit the parent's stdin. Otherwise, the child's
  *   stdin is redirected to `/dev/null`.
@@ -217,6 +216,13 @@
  * Note that in contrast with [func@GLib.test_trap_fork], the default
  * behavior of [func@GLib.test_trap_subprocess] is to not show stdout
  * and stderr.
+ */
+/**
+ * G_TEST_SUBPROCESS_DEFAULT:
+ *
+ * Default behaviour.
+ *
+ * Since: 2.74
  */
 
 /**

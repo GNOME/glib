@@ -2823,14 +2823,28 @@ g_format_size (guint64 size)
  *     Network and storage sizes should be reported in the normal SI units.
  * @G_FORMAT_SIZE_BITS: set the size as a quantity in bits, rather than
  *     bytes, and return units in bits. For example, ‘Mbit’ rather than ‘MB’.
- * @G_FORMAT_SIZE_ONLY_VALUE: return only value, without unit; this should
- *     not be used together with @G_FORMAT_SIZE_LONG_FORMAT
- *     nor @G_FORMAT_SIZE_ONLY_UNIT. Since: 2.74
- * @G_FORMAT_SIZE_ONLY_UNIT: return only unit, without value; this should
- *     not be used together with @G_FORMAT_SIZE_LONG_FORMAT
- *     nor @G_FORMAT_SIZE_ONLY_VALUE. Since: 2.74
  *
  * Flags to modify the format of the string returned by g_format_size_full().
+ */
+/**
+ * G_FORMAT_SIZE_ONLY_VALUE:
+ *
+ * Returns only the value, without a unit.
+ *
+ * This should not be used together with `G_FORMAT_SIZE_LONG_FORMAT` nor
+ * `G_FORMAT_SIZE_ONLY_UNIT`.
+ *
+ * Since: 2.74
+ */
+/**
+ * G_FORMAT_SIZE_ONLY_UNIT:
+ *
+ * Returns only the unit, without a value.
+ *
+ * This should not be used together with `G_FORMAT_SIZE_LONG_FORMAT` nor
+ * `G_FORMAT_SIZE_ONLY_VALUE`.
+ *
+ * Since: 2.74
  */
 
 #pragma GCC diagnostic push
