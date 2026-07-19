@@ -1946,7 +1946,7 @@ static inline GType TypeName##_gtype (void) { return type_name##_get_type(); }
                                                                                                            \
   _GLIB_DEFINE_AUTOPTR_CHAINUP (ModuleObjName, PrerequisiteName)                                           \
                                                                                                            \
-  _G_DEFINE_ATOMIC_GTYPE_GET(ModuleObjName, module_obj_name)                                               \
+  G_GNUC_UNUSED _G_DEFINE_ATOMIC_GTYPE_GET(ModuleObjName, module_obj_name)                                 \
   G_GNUC_UNUSED static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                         \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }               \
   G_GNUC_UNUSED static inline gboolean MODULE##_IS_##OBJ_NAME (gpointer ptr) {                             \
