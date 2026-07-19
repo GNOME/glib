@@ -1575,8 +1575,8 @@ g_type_once_init (GTypeAtomic *gtype_id_ptr,
 {
 #if G_C_STD_CHECK_VERSION(11) && !defined(__STDC_NO_ATOMICS__)
   atomic_init (gtype_id_ptr, gtype);
-#elif defined(__ATOMIC_ACQUIRE)
-  __atomic_store_n (gtype_id_ptr, gtype, __ATOMIC_ACQUIRE);
+#elif defined(__ATOMIC_SEQ_CST)
+  __atomic_store_n (gtype_id_ptr, gtype, __ATOMIC_SEQ_CST);
 #else
   *gtype_id_ptr = gtype;
 #endif
