@@ -187,7 +187,6 @@ G_BEGIN_DECLS
 #define G_INITIALLY_UNOWNED_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), G_TYPE_INITIALLY_UNOWNED, GInitiallyUnownedClass))
 /* GInitiallyUnowned ia a GObject with initially floating reference count */
 
-
 /* --- typedefs & structures --- */
 typedef struct _GObject                  GObject;
 typedef struct _GObjectClass             GObjectClass;
@@ -932,6 +931,13 @@ gpointer g_weak_ref_get        (GWeakRef *weak_ref);
 GOBJECT_AVAILABLE_IN_ALL
 void     g_weak_ref_set        (GWeakRef *weak_ref,
                                 gpointer  object);
+
+/* Compatibility inlines for g_gtype(), g_is_a(), and g_as() */
+GOBJECT_AVAILABLE_STATIC_INLINE_IN_2_90
+static inline GType GObject_gtype (void) { return G_TYPE_OBJECT; }
+
+GOBJECT_AVAILABLE_STATIC_INLINE_IN_2_90
+static inline GType GInitiallyUnowned_gtype (void) { return G_TYPE_INITIALLY_UNOWNED; }
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GObject, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GInitiallyUnowned, g_object_unref)
