@@ -587,7 +587,7 @@ cross-mingw64:
       junit:
         - _build/meson-logs/testlog.junit.xml
         - _build/meson-logs/testlog-*.junit.xml
-    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
+    name: glib-$CI_JOB_NAME-$CI_COMMIT_REF_NAME
     when: always
     expire_in: 1 week
     paths:
@@ -638,7 +638,7 @@ msys2-mingw32:
       junit:
         - _build/meson-logs/testlog.junit.xml
         - _build/meson-logs/testlog-*.junit.xml
-    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
+    name: glib-$CI_JOB_NAME-$CI_COMMIT_REF_NAME
     when: always
     expire_in: 1 week
     paths:
@@ -671,7 +671,7 @@ msys2-clang64:
       junit:
         - _build/meson-logs/testlog.junit.xml
         - _build/meson-logs/testlog-*.junit.xml
-    name: "glib-${env:CI_JOB_NAME}-${env:CI_COMMIT_REF_NAME}"
+    name: glib-$CI_JOB_NAME-$CI_COMMIT_REF_NAME
     when: always
     expire_in: 1 week
     paths:
