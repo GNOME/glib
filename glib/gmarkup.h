@@ -76,7 +76,7 @@ GQuark g_markup_error_quark (void);
 
 /**
  * GMarkupParseFlags:
- * @G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: flag you should not use
+ * @G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: Flag you should not use
  * @G_MARKUP_TREAT_CDATA_AS_TEXT: When this flag is set, CDATA marked
  *     sections are not passed literally to the @passthrough function of
  *     the parser. Instead, the content of the section (without the
