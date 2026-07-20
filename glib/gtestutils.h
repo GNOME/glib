@@ -542,7 +542,36 @@ gboolean g_test_trap_fork               (guint64              usec_timeout,
 
 G_GNUC_END_IGNORE_DEPRECATIONS
 
+/**
+ * GTestSubprocessFlags:
+ * @G_TEST_SUBPROCESS_INHERIT_STDIN: If this flag is given, the child
+ *   process will inherit the parent's stdin. Otherwise, the child's
+ *   stdin is redirected to `/dev/null`.
+ * @G_TEST_SUBPROCESS_INHERIT_STDOUT: If this flag is given, the child
+ *   process will inherit the parent's stdout. Otherwise, the child's
+ *   stdout will not be visible, but it will be captured to allow
+ *   later tests with [func@GLib.test_trap_assert_stdout].
+ * @G_TEST_SUBPROCESS_INHERIT_STDERR: If this flag is given, the child
+ *   process will inherit the parent's stderr. Otherwise, the child's
+ *   stderr will not be visible, but it will be captured to allow
+ *   later tests with [func@GLib.test_trap_assert_stderr].
+ * @G_TEST_SUBPROCESS_INHERIT_DESCRIPTORS: If this flag is given, the
+ *   child process will inherit the parent’s open file descriptors.
+ *
+ * Flags to pass to [func@GLib.test_trap_subprocess] to control input and output.
+ *
+ * Note that in contrast with [func@GLib.test_trap_fork], the default
+ * behavior of [func@GLib.test_trap_subprocess] is to not show stdout
+ * and stderr.
+ */
 typedef enum {
+  /**
+   * G_TEST_SUBPROCESS_DEFAULT:
+   *
+   * Default behaviour.
+   *
+   * Since: 2.74
+   */
   G_TEST_SUBPROCESS_DEFAULT GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_TEST_SUBPROCESS_INHERIT_STDIN  = 1 << 0,
   G_TEST_SUBPROCESS_INHERIT_STDOUT = 1 << 1,
