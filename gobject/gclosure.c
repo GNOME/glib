@@ -1040,8 +1040,8 @@ _g_closure_set_va_marshal (GClosure       *closure,
 
 /**
  * g_cclosure_new: (skip)
- * @callback_func: the function to invoke
- * @user_data: (closure callback_func): user data to pass to @callback_func
+ * @callback_func: (closure user_data): the function to invoke
+ * @user_data: user data to pass to @callback_func
  * @destroy_data: destroy notify to be called when @user_data is no longer used
  *
  * Creates a new closure which invokes @callback_func with @user_data as
@@ -1070,8 +1070,8 @@ g_cclosure_new (GCallback      callback_func,
 
 /**
  * g_cclosure_new_swap: (skip)
- * @callback_func: the function to invoke
- * @user_data: (closure callback_func): user data to pass to @callback_func
+ * @callback_func: (closure user_data): the function to invoke
+ * @user_data: user data to pass to @callback_func
  * @destroy_data: destroy notify to be called when @user_data is no longer used
  *
  * Creates a new closure which invokes @callback_func with @user_data as
