@@ -300,13 +300,47 @@ gint                  g_vsnprintf          (gchar       *string,
 GLIB_AVAILABLE_IN_ALL
 void                  g_nullify_pointer    (gpointer    *nullify_location);
 
+/**
+ * GFormatSizeFlags:
+ * @G_FORMAT_SIZE_DEFAULT: behave the same as g_format_size()
+ * @G_FORMAT_SIZE_LONG_FORMAT: include the exact number of bytes as part
+ *     of the returned string.  For example, "45.6 kB (45,612 bytes)".
+ * @G_FORMAT_SIZE_IEC_UNITS: use IEC (base 1024) units with "KiB"-style
+ *     suffixes. IEC units should only be used for reporting things with
+ *     a strong "power of 2" basis, like RAM sizes or RAID stripe sizes.
+ *     Network and storage sizes should be reported in the normal SI units.
+ * @G_FORMAT_SIZE_BITS: set the size as a quantity in bits, rather than
+ *     bytes, and return units in bits. For example, ‘Mbit’ rather than ‘MB’.
+ *
+ * Flags to modify the format of the string returned by g_format_size_full().
+ */
 typedef enum
 {
   G_FORMAT_SIZE_DEFAULT     = 0,
   G_FORMAT_SIZE_LONG_FORMAT = 1 << 0,
   G_FORMAT_SIZE_IEC_UNITS   = 1 << 1,
   G_FORMAT_SIZE_BITS        = 1 << 2,
+  /**
+   * G_FORMAT_SIZE_ONLY_VALUE:
+   *
+   * Returns only the value, without a unit.
+   *
+   * This should not be used together with `G_FORMAT_SIZE_LONG_FORMAT` nor
+   * `G_FORMAT_SIZE_ONLY_UNIT`.
+   *
+   * Since: 2.74
+   */
   G_FORMAT_SIZE_ONLY_VALUE GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 1 << 3,
+  /**
+   * G_FORMAT_SIZE_ONLY_UNIT:
+   *
+   * Returns only the unit, without a value.
+   *
+   * This should not be used together with `G_FORMAT_SIZE_LONG_FORMAT` nor
+   * `G_FORMAT_SIZE_ONLY_VALUE`.
+   *
+   * Since: 2.74
+   */
   G_FORMAT_SIZE_ONLY_UNIT GLIB_AVAILABLE_ENUMERATOR_IN_2_74 = 1 << 4
 } G_GNUC_FLAG_ENUM GFormatSizeFlags;
 

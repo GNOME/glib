@@ -1070,7 +1070,6 @@ typedef enum    /*< skip >*/
 } G_GNUC_FLAG_ENUM GTypeFundamentalFlags;
 /**
  * GTypeFlags:
- * @G_TYPE_FLAG_NONE: No special flags. Since: 2.74
  * @G_TYPE_FLAG_ABSTRACT: Indicates an abstract type. No instances can be
  *  created for an abstract type
  * @G_TYPE_FLAG_VALUE_ABSTRACT: Indicates an abstract value type, i.e. a type
@@ -1086,6 +1085,13 @@ typedef enum    /*< skip >*/
  */
 typedef enum    /*< skip >*/
 {
+  /**
+   * G_TYPE_FLAG_NONE:
+   *
+   * No special flags.
+   *
+   * Since: 2.74
+   */
   G_TYPE_FLAG_NONE GOBJECT_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_TYPE_FLAG_ABSTRACT = (1 << 4),
   G_TYPE_FLAG_VALUE_ABSTRACT = (1 << 5),

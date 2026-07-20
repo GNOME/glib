@@ -182,7 +182,6 @@ typedef enum
 #define G_SIGNAL_FLAGS_MASK  0x1ff
 /**
  * GConnectFlags:
- * @G_CONNECT_DEFAULT: Default behaviour (no special flags). Since: 2.74
  * @G_CONNECT_AFTER: If set, the handler should be called after the
  *  default handler of the signal. Normally, the handler is called before
  *  the default handler.
@@ -194,6 +193,13 @@ typedef enum
  */
 typedef enum
 {
+  /**
+   * G_CONNECT_DEFAULT:
+   *
+   * Default behaviour (no special flags).
+   *
+   * Since: 2.74
+   */
   G_CONNECT_DEFAULT GOBJECT_AVAILABLE_ENUMERATOR_IN_2_74 = 0,
   G_CONNECT_AFTER	= 1 << 0,
   G_CONNECT_SWAPPED	= 1 << 1

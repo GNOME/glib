@@ -204,12 +204,6 @@ typedef enum
  * @G_UNICODE_BREAK_EMOJI_BASE: Emoji Base (EB). Since: 2.50
  * @G_UNICODE_BREAK_EMOJI_MODIFIER: Emoji Modifier (EM). Since: 2.50
  * @G_UNICODE_BREAK_ZERO_WIDTH_JOINER: Zero Width Joiner (ZWJ). Since: 2.50
- * @G_UNICODE_BREAK_AKSARA: Aksara (AK). Since: 2.80
- * @G_UNICODE_BREAK_AKSARA_PRE_BASE: Aksara Pre-Base (AP). Since: 2.80
- * @G_UNICODE_BREAK_AKSARA_START: Aksara Start (AS). Since: 2.80
- * @G_UNICODE_BREAK_VIRAMA_FINAL: Virama Final (VF). Since: 2.80
- * @G_UNICODE_BREAK_VIRAMA: Virama (VI). Since: 2.80
- * @G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN: Unambiguous Hyphen (HH). Since: 2.88
  *
  * These are the possible line break classifications.
  *
@@ -264,11 +258,53 @@ typedef enum
   G_UNICODE_BREAK_EMOJI_BASE,
   G_UNICODE_BREAK_EMOJI_MODIFIER,
   G_UNICODE_BREAK_ZERO_WIDTH_JOINER,
-  G_UNICODE_BREAK_AKSARA,
-  G_UNICODE_BREAK_AKSARA_PRE_BASE,
-  G_UNICODE_BREAK_AKSARA_START,
-  G_UNICODE_BREAK_VIRAMA_FINAL,
-  G_UNICODE_BREAK_VIRAMA,
+  /**
+   * G_UNICODE_BREAK_AKSARA:
+   *
+   * Aksara (AK).
+   *
+   * Since: 2.80
+   */
+  G_UNICODE_BREAK_AKSARA GLIB_AVAILABLE_ENUMERATOR_IN_2_80,
+  /**
+   * G_UNICODE_BREAK_AKSARA_PRE_BASE:
+   *
+   * Aksara Pre-Base (AP).
+   *
+   * Since: 2.80
+   */
+  G_UNICODE_BREAK_AKSARA_PRE_BASE GLIB_AVAILABLE_ENUMERATOR_IN_2_80,
+  /**
+   * G_UNICODE_BREAK_AKSARA_START:
+   *
+   * Aksara Start (AS).
+   *
+   * Since: 2.80
+   */
+  G_UNICODE_BREAK_AKSARA_START GLIB_AVAILABLE_ENUMERATOR_IN_2_80,
+  /**
+   * G_UNICODE_BREAK_VIRAMA_FINAL:
+   *
+   * Virama Final (VF).
+   *
+   * Since: 2.80
+   */
+  G_UNICODE_BREAK_VIRAMA_FINAL GLIB_AVAILABLE_ENUMERATOR_IN_2_80,
+  /**
+   * G_UNICODE_BREAK_VIRAMA:
+   *
+   * Virama (VI).
+   *
+   * Since: 2.80
+   */
+  G_UNICODE_BREAK_VIRAMA GLIB_AVAILABLE_ENUMERATOR_IN_2_80,
+  /**
+   * G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN:
+   *
+   * Unambiguous Hyphen (HH).
+   *
+   * Since: 2.88
+   */
   G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN GLIB_AVAILABLE_ENUMERATOR_IN_2_88,
 } GUnicodeBreakType;
 
@@ -450,19 +486,6 @@ typedef enum
  * @G_UNICODE_SCRIPT_TOTO:                 Toto. Since: 2.72
  * @G_UNICODE_SCRIPT_VITHKUQI:             Vithkuqi. Since: 2.72
  * @G_UNICODE_SCRIPT_MATH:                 Mathematical notation. Since: 2.72
- * @G_UNICODE_SCRIPT_KAWI:                 Kawi. Since 2.74
- * @G_UNICODE_SCRIPT_NAG_MUNDARI:          Nag Mundari. Since 2.74
- * @G_UNICODE_SCRIPT_TODHRI:               Todhri. Since: 2.84
- * @G_UNICODE_SCRIPT_GARAY:                Garay. Since: 2.84
- * @G_UNICODE_SCRIPT_TULU_TIGALARI:        Tulu-Tigalari. Since: 2.84
- * @G_UNICODE_SCRIPT_SUNUWAR:              Sunuwar. Since: 2.84
- * @G_UNICODE_SCRIPT_GURUNG_KHEMA:         Gurung Khema. Since: 2.84
- * @G_UNICODE_SCRIPT_KIRAT_RAI:            Kirat Rai. Since: 2.84
- * @G_UNICODE_SCRIPT_OL_ONAL:              Ol Onal. Since: 2.84
- * @G_UNICODE_SCRIPT_SIDETIC:              Sidetic. Since: 2.88
- * @G_UNICODE_SCRIPT_TOLONG_SIKI:          Tolong Siki. Since: 2.88
- * @G_UNICODE_SCRIPT_TAI_YO:               Tai Yo. Since: 2.88
- * @G_UNICODE_SCRIPT_BERIA_ERFE:           Beria Erfe. Since: 2.88
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the
@@ -673,22 +696,113 @@ typedef enum
   G_UNICODE_SCRIPT_MATH,                   /* Zmth */
 
   /* Unicode 15.0 additions */
+  /**
+   * G_UNICODE_SCRIPT_KAWI:
+   *
+   * Kawi.
+   *
+   * Since 2.74
+   */
   G_UNICODE_SCRIPT_KAWI GLIB_AVAILABLE_ENUMERATOR_IN_2_74,          /* Kawi */
+  /**
+   * G_UNICODE_SCRIPT_NAG_MUNDARI:
+   *
+   * Nag Mundari.
+   *
+   * Since 2.74
+   */
   G_UNICODE_SCRIPT_NAG_MUNDARI GLIB_AVAILABLE_ENUMERATOR_IN_2_74,   /* Nagm */
 
   /* Unicode 16.0 additions */
+  /**
+   * G_UNICODE_SCRIPT_TODHRI:
+   *
+   * Todhri.
+   *
+   * Since: 2.84
+   */
   G_UNICODE_SCRIPT_TODHRI GLIB_AVAILABLE_ENUMERATOR_IN_2_84,         /* Todr */
+  /**
+   * G_UNICODE_SCRIPT_GARAY:
+   *
+   * Garay.
+   *
+   * Since: 2.84
+   */
   G_UNICODE_SCRIPT_GARAY GLIB_AVAILABLE_ENUMERATOR_IN_2_84,          /* Gara */
+  /**
+   * G_UNICODE_SCRIPT_TULU_TIGALARI:
+   *
+   * Tulu-Tigalari.
+   *
+   * Since: 2.84
+   */
   G_UNICODE_SCRIPT_TULU_TIGALARI GLIB_AVAILABLE_ENUMERATOR_IN_2_84,  /* Tutg */
+  /**
+   * G_UNICODE_SCRIPT_SUNUWAR:
+   *
+   * Sunuwar.
+   *
+   * Since: 2.84
+   */
   G_UNICODE_SCRIPT_SUNUWAR GLIB_AVAILABLE_ENUMERATOR_IN_2_84,        /* Sunu */
+  /**
+   * G_UNICODE_SCRIPT_GURUNG_KHEMA:
+   *
+   * Gurung Khema.
+   *
+   * Since: 2.84
+   */
   G_UNICODE_SCRIPT_GURUNG_KHEMA GLIB_AVAILABLE_ENUMERATOR_IN_2_84,   /* Gukh */
+  /**
+   * G_UNICODE_SCRIPT_KIRAT_RAI:
+   *
+   * Kirat Rai.
+   *
+   * Since: 2.84
+   */
   G_UNICODE_SCRIPT_KIRAT_RAI GLIB_AVAILABLE_ENUMERATOR_IN_2_84,      /* Krai */
+  /**
+   * G_UNICODE_SCRIPT_OL_ONAL:
+   *
+   * Ol Onal.
+   *
+   * Since: 2.84
+   */
   G_UNICODE_SCRIPT_OL_ONAL GLIB_AVAILABLE_ENUMERATOR_IN_2_84,        /* Onao */
 
   /* Unicode 17.0 additions */
+  /**
+   * G_UNICODE_SCRIPT_SIDETIC:
+   *
+   * Sidetic.
+   *
+   * Since: 2.88
+   */
   G_UNICODE_SCRIPT_SIDETIC GLIB_AVAILABLE_ENUMERATOR_IN_2_88,                /* Sidt */
+  /**
+   * G_UNICODE_SCRIPT_TOLONG_SIKI:
+   *
+   * Tolong Siki.
+   *
+   * Since: 2.88
+   */
   G_UNICODE_SCRIPT_TOLONG_SIKI GLIB_AVAILABLE_ENUMERATOR_IN_2_88,            /* Tols */
+  /**
+   * G_UNICODE_SCRIPT_TAI_YO:
+   *
+   * Tai Yo.
+   *
+   * Since: 2.88
+   */
   G_UNICODE_SCRIPT_TAI_YO GLIB_AVAILABLE_ENUMERATOR_IN_2_88,                 /* Tayo */
+  /**
+   * G_UNICODE_SCRIPT_BERIA_ERFE:
+   *
+   * Beria Erfe.
+   *
+   * Since: 2.88
+   */
   G_UNICODE_SCRIPT_BERIA_ERFE GLIB_AVAILABLE_ENUMERATOR_IN_2_88,             /* Berf */
 } GUnicodeScript;
 
