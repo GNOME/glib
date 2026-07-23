@@ -1395,6 +1395,7 @@ g_file_set_contents_full (const gchar            *filename,
                 set_file_error (error,
                                 tmp_filename, _ ("Failed to set permissions of “%s”: %s"),
                                 saved_errno);
+              close (fd);
               g_unlink (tmp_filename);
               retval = FALSE;
               goto consistent_out;
