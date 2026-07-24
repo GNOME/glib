@@ -248,8 +248,8 @@ struct _GIdleSource
 struct _GTimeoutSource
 {
   GSource     source;
-  /* Measured in seconds if 'seconds' is TRUE, or milliseconds otherwise. */
-  guint       interval;
+  /* Measured in seconds if 'seconds' is TRUE, or nanoseconds otherwise. */
+  uint64_t    interval;
   gboolean    seconds;
   gboolean    one_shot;
 };
@@ -5252,7 +5252,7 @@ static void
 g_timeout_set_expiration (GTimeoutSource *timeout_source,
                           gint64          current_time)
 {
-  gint64 expiration;
+  uint64_t expiration;
 
   if (timeout_source->seconds)
     {
@@ -5275,7 +5275,7 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
             timer_perturb = 0;
         }
 
-      expiration = current_time + (guint64) timeout_source->interval * 1000 * 1000;
+      expiration = current_time + (guint64) timeout_source->interval * G_USEC_PER_SEC;
 
       /* We want the microseconds part of the timeout to land on the
        * 'timer_perturb' mark, but we need to make sure we don't try to
@@ -5294,7 +5294,7 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
     }
   else
     {
-      expiration = current_time + (guint64) timeout_source->interval * 1000;
+      expiration = current_time + (guint64) timeout_source->interval / 1000;
     }
 
   g_source_set_ready_time ((GSource *) timeout_source, expiration);
@@ -5335,7 +5335,7 @@ g_timeout_dispatch (GSource     *source,
 }
 
 static GSource *
-timeout_source_new (guint    interval,
+timeout_source_new (uint64_t interval,
                     gboolean seconds,
                     gboolean one_shot)
 {
@@ -5369,7 +5369,7 @@ timeout_source_new (guint    interval,
 GSource *
 g_timeout_source_new (guint interval)
 {
-  return timeout_source_new (interval, FALSE, FALSE);
+  return timeout_source_new ((uint64_t) interval * (G_NSEC_PER_SEC / 1000), FALSE, FALSE);
 }
 
 /**
@@ -5399,7 +5399,7 @@ g_timeout_source_new_seconds (guint interval)
 
 static guint
 timeout_add_full (gint           priority,
-                  guint          interval,
+                  uint64_t       interval,
                   gboolean       seconds,
                   gboolean       one_shot,
                   GSourceFunc    function,
@@ -5474,7 +5474,7 @@ g_timeout_add_full (gint           priority,
 		    gpointer       data,
 		    GDestroyNotify notify)
 {
-  return timeout_add_full (priority, interval, FALSE, FALSE, function, data, notify);
+  return timeout_add_full (priority, (uint64_t) interval * (G_NSEC_PER_SEC / 1000), FALSE, FALSE, function, data, notify);
 }
 
 /**
@@ -5550,7 +5550,7 @@ g_timeout_add_once (guint32         interval,
                     GSourceOnceFunc function,
                     gpointer        data)
 {
-  return timeout_add_full (G_PRIORITY_DEFAULT, interval, FALSE, TRUE, (GSourceFunc) function, data, NULL);
+  return timeout_add_full (G_PRIORITY_DEFAULT, (uint64_t) interval * (G_NSEC_PER_SEC / 1000), FALSE, TRUE, (GSourceFunc) function, data, NULL);
 }
 
 /**
