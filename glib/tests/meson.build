@@ -261,6 +261,7 @@ if host_machine.system() == 'windows'
 else
   glib_tests += {
     'include' : {},
+    'mainloop-poll-realloc' : {},
     'poll-fdset' : {},
     'unix' : {},
   }
@@ -486,7 +487,7 @@ foreach test_name, extra_args : glib_tests
   foreach var, value : extra_args.get('env', {})
     local_test_env.append(var, value)
   endforeach
-  
+
   test(test_name, exe,
     args: extra_args.get('args', []),
     protocol : extra_args.get('protocol', test_protocol),
