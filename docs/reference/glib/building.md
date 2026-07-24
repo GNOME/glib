@@ -90,6 +90,9 @@ libraries.
   expression matching. The system version of PCRE is used, unless not available
   (which is the case on Android), in which case a fallback subproject is used.
 
+- GObject uses libffi 3.7.0 or newer to implement generic marshalling
+  functionality.
+
 - The optional extended attribute support in GIO requires the `getxattr()`
   family of functions that may be provided by the C library or by the
   standalone libattr library. To build GLib without extended attribute

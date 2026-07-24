@@ -170,6 +170,228 @@ enum {
   POST_NOTIFY
 };
 
+typedef struct
+{
+  ffi_cif         cif;
+  ffi_call_plan  *plan;
+  ffi_type      **atypes;
+  ffi_type       *rtype;
+  ffi_abi         abi;
+  guint           n_args;
+} GClosureMarshalCallPlan;
+
+typedef struct
+{
+  GRWLock     lock;
+  GHashTable *plans;
+} GClosureMarshalPlanCache;
+
+/* Like quarks, the cache and its entries live for the lifetime of the process. */
+static GClosureMarshalPlanCache marshal_plan_cache;
+
+static void
+closure_marshal_call_plan_free (GClosureMarshalCallPlan *call_plan)
+{
+  g_clear_pointer (&call_plan->plan, ffi_call_plan_free);
+  g_clear_pointer (&call_plan->atypes, g_free);
+  g_free (call_plan);
+}
+
+static GClosureMarshalCallPlan *
+closure_marshal_call_plan_new (ffi_abi    abi,
+                               guint      n_args,
+                               ffi_type  *rtype,
+                               ffi_type **atypes)
+{
+  GClosureMarshalCallPlan *call_plan;
+
+  g_assert (rtype != NULL);
+  g_assert (atypes != NULL);
+
+  call_plan = g_new0 (GClosureMarshalCallPlan, 1);
+  call_plan->atypes = g_new0 (ffi_type *, n_args);
+  memcpy (call_plan->atypes, atypes, sizeof (*atypes) * n_args);
+  call_plan->rtype = rtype;
+  call_plan->abi = abi;
+  call_plan->n_args = n_args;
+
+  if (ffi_prep_cif (&call_plan->cif,
+                    call_plan->abi,
+                    call_plan->n_args,
+                    call_plan->rtype,
+                    call_plan->atypes) != FFI_OK)
+    {
+      closure_marshal_call_plan_free (call_plan);
+      return NULL;
+    }
+
+  if (!(call_plan->plan = ffi_call_plan_alloc (&call_plan->cif)))
+    {
+      closure_marshal_call_plan_free (call_plan);
+      return NULL;
+    }
+
+  return call_plan;
+}
+
+static gboolean
+closure_marshal_call_plan_matches (const GClosureMarshalCallPlan  *call_plan,
+                                   ffi_abi                         abi,
+                                   guint                           n_args,
+                                   ffi_type                       *rtype,
+                                   ffi_type                      **atypes)
+{
+  g_assert (call_plan != NULL);
+  g_assert (rtype != NULL);
+  g_assert (atypes != NULL);
+
+  return call_plan->abi == abi &&
+         call_plan->n_args == n_args &&
+         call_plan->rtype == rtype &&
+         memcmp (call_plan->atypes, atypes, sizeof (*atypes) * n_args) == 0;
+}
+
+static guint
+closure_marshal_call_plan_hash (gconstpointer data)
+{
+  const GClosureMarshalCallPlan *call_plan = data;
+  guint hash;
+  guint i;
+
+  hash = (guint) call_plan->abi;
+  hash = (hash * 33) ^ call_plan->n_args;
+  hash = (hash * 33) ^ g_direct_hash (call_plan->rtype);
+
+  for (i = 0; i < call_plan->n_args; i++)
+    hash = (hash * 33) ^ g_direct_hash (call_plan->atypes[i]);
+
+  return hash;
+}
+
+static gboolean
+closure_marshal_call_plan_equal (gconstpointer data_a,
+                                 gconstpointer data_b)
+{
+  const GClosureMarshalCallPlan *call_plan_a = data_a;
+  const GClosureMarshalCallPlan *call_plan_b = data_b;
+
+  return closure_marshal_call_plan_matches (call_plan_a,
+                                            call_plan_b->abi,
+                                            call_plan_b->n_args,
+                                            call_plan_b->rtype,
+                                            call_plan_b->atypes);
+}
+
+static GClosureMarshalCallPlan *
+closure_marshal_plan_cache_lookup_unlocked (GClosureMarshalPlanCache  *cache,
+                                            ffi_abi                    abi,
+                                            guint                      n_args,
+                                            ffi_type                  *rtype,
+                                            ffi_type                 **atypes)
+{
+  GClosureMarshalCallPlan lookup = { 0, };
+
+  if (cache->plans == NULL)
+    return NULL;
+
+  lookup.atypes = atypes;
+  lookup.rtype = rtype;
+  lookup.abi = abi;
+  lookup.n_args = n_args;
+
+  return g_hash_table_lookup (cache->plans, &lookup);
+}
+
+static GClosureMarshalCallPlan *
+closure_marshal_plan_cache_get (ffi_abi    abi,
+                                guint      n_args,
+                                ffi_type  *rtype,
+                                ffi_type **atypes)
+{
+  GClosureMarshalCallPlan *call_plan;
+  GClosureMarshalCallPlan *candidate;
+
+  g_rw_lock_reader_lock (&marshal_plan_cache.lock);
+  call_plan = closure_marshal_plan_cache_lookup_unlocked (&marshal_plan_cache,
+                                                          abi,
+                                                          n_args,
+                                                          rtype,
+                                                          atypes);
+  g_rw_lock_reader_unlock (&marshal_plan_cache.lock);
+
+  if (call_plan != NULL)
+    return call_plan;
+
+  if (!(candidate = closure_marshal_call_plan_new (abi, n_args, rtype, atypes)))
+    return NULL;
+
+  g_rw_lock_writer_lock (&marshal_plan_cache.lock);
+
+  if (marshal_plan_cache.plans == NULL)
+    marshal_plan_cache.plans =
+      g_hash_table_new_full (closure_marshal_call_plan_hash,
+                             closure_marshal_call_plan_equal,
+                             (GDestroyNotify) closure_marshal_call_plan_free,
+                             NULL);
+
+  call_plan = closure_marshal_plan_cache_lookup_unlocked (&marshal_plan_cache,
+                                                          abi,
+                                                          n_args,
+                                                          rtype,
+                                                          atypes);
+
+  if (call_plan == NULL)
+    {
+      call_plan = candidate;
+      candidate = NULL;
+      g_hash_table_add (marshal_plan_cache.plans, call_plan);
+    }
+
+  g_rw_lock_writer_unlock (&marshal_plan_cache.lock);
+
+  if (candidate != NULL)
+    closure_marshal_call_plan_free (candidate);
+
+  return call_plan;
+}
+
+static gboolean
+closure_marshal_call_plan_invoke (GClosure  *closure,
+                                  ffi_abi    abi,
+                                  guint      n_args,
+                                  ffi_type  *rtype,
+                                  ffi_type **atypes,
+                                  void     (*callback) (void),
+                                  void      *rvalue,
+                                  void     **args)
+{
+  GRealClosure *real_closure;
+  GClosureMarshalCallPlan *call_plan;
+
+  g_assert (closure != NULL);
+  g_assert (rtype != NULL);
+  g_assert (atypes != NULL);
+  g_assert (callback != NULL);
+  g_assert (args != NULL);
+
+  real_closure = G_REAL_CLOSURE (closure);
+  call_plan = g_atomic_pointer_get (&real_closure->marshal_call_plan);
+
+  if (call_plan == NULL ||
+      !closure_marshal_call_plan_matches (call_plan, abi, n_args, rtype, atypes))
+    {
+      if (!(call_plan = closure_marshal_plan_cache_get (abi, n_args, rtype, atypes)))
+        return FALSE;
+
+      g_atomic_pointer_compare_and_exchange (&real_closure->marshal_call_plan,
+                                             NULL,
+                                             call_plan);
+    }
+
+  ffi_call_plan_invoke (call_plan->plan, callback, rvalue, args);
+
+  return TRUE;
+}
 
 /* --- functions --- */
 /**
@@ -1696,10 +1918,23 @@ g_cclosure_marshal_generic (GClosure     *closure,
 
   g_assert (n_args <= UINT_MAX);
 
-  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, (unsigned int) n_args, rtype, atypes) != FFI_OK)
-    return;
+  if (!closure_marshal_call_plan_invoke (closure,
+                                         FFI_DEFAULT_ABI,
+                                         n_args,
+                                         rtype,
+                                         atypes,
+                                         FFI_FN (marshal_data ? marshal_data : cc->callback),
+                                         rvalue,
+                                         args))
+    {
+      if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) != FFI_OK)
+        return;
 
-  ffi_call (&cif, marshal_data ? marshal_data : cc->callback, rvalue, args);
+      ffi_call (&cif,
+                FFI_FN (marshal_data ? marshal_data : cc->callback),
+                rvalue,
+                args);
+    }
 
   if (return_gvalue && G_VALUE_TYPE (return_gvalue))
     value_from_ffi_type (return_gvalue, rvalue);
@@ -1748,6 +1983,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
   gint *enum_tmpval;
   gpointer *pointer_tmpval;
   gboolean tmpval_used = FALSE;
+  gboolean call_succeeded = FALSE;
   va_list args_copy;
   GValue *value_storage;
 
@@ -1828,10 +2064,25 @@ g_cclosure_marshal_generic_va (GClosure *closure,
 
   g_assert (n_args <= UINT_MAX);
 
-  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, (unsigned int) n_args, rtype, atypes) != FFI_OK)
-    return;
-
-  ffi_call (&cif, marshal_data ? marshal_data : cc->callback, rvalue, args);
+  if (closure_marshal_call_plan_invoke (closure,
+                                        FFI_DEFAULT_ABI,
+                                        n_args,
+                                        rtype,
+                                        atypes,
+                                        FFI_FN (marshal_data ? marshal_data : cc->callback),
+                                        rvalue,
+                                        args))
+    {
+      call_succeeded = TRUE;
+    }
+  else if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) == FFI_OK)
+    {
+      ffi_call (&cif,
+                FFI_FN (marshal_data ? marshal_data : cc->callback),
+                rvalue,
+                args);
+      call_succeeded = TRUE;
+    }
 
   /* Unbox non-primitive arguments */
   for (i = 0; i < unsigned_n_params; i++)
@@ -1855,7 +2106,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
       if (fundamental == G_TYPE_OBJECT && storage[i]._gpointer != NULL)
 	g_object_unref (storage[i]._gpointer);
     }
-  
-  if (return_value && G_VALUE_TYPE (return_value))
+
+  if (call_succeeded && return_value && G_VALUE_TYPE (return_value))
     value_from_ffi_type (return_value, rvalue);
 }
