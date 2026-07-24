@@ -84,6 +84,25 @@
 	fun:g_quark_init
 }
 
+# Cached libffi call plans and their hash table live for the process lifetime.
+{
+	gobject-marshal-plan-cache-malloc
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:malloc
+	...
+	fun:closure_marshal_plan_cache_get
+}
+
+{
+	gobject-marshal-plan-cache-calloc
+	Memcheck:Leak
+	match-leak-kinds:reachable
+	fun:calloc
+	...
+	fun:closure_marshal_plan_cache_get
+}
+
 {
 	gobject-init-malloc
 	Memcheck:Leak
