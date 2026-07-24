@@ -7,6 +7,14 @@ gobject_tests = {
   'performance-threaded' : { 'args' : [ '--seconds', '0' ] },
 }
 
+executable(
+  'cclosure-marshal-benchmark',
+  'cclosure-marshal.c',
+  build_by_default : false,
+  dependencies : [libglib_dep, libgobject_dep],
+  install : false,
+)
+
 test_env = environment()
 test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
