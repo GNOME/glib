@@ -5373,6 +5373,28 @@ g_timeout_source_new (guint interval)
 }
 
 /**
+ * g_timeout_source_new:
+ * @interval: the timeout interval in nanoseconds
+ * 
+ * Creates a new timeout source.
+ *
+ * The source will not initially be associated with any [struct@GLib.MainContext]
+ * and must be added to one with [method@GLib.Source.attach] before it will be
+ * executed.
+ *
+ * The interval given is in terms of monotonic time, not wall clock
+ * time.  See [func@GLib.get_monotonic_time_ns].
+ *
+ * Returns: (transfer full): the newly-created timeout source
+ * Since: 2.90
+ **/
+GSource *
+g_timeout_source_new_ns (uint64_t interval)
+{
+  return timeout_source_new (interval, FALSE, FALSE);
+}
+
+/**
  * g_timeout_source_new_seconds:
  * @interval: the timeout interval in seconds
  *
