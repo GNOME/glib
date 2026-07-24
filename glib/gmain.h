@@ -820,6 +820,8 @@ GLIB_AVAILABLE_IN_ALL
 GSource *g_child_watch_source_new (GPid pid);
 GLIB_AVAILABLE_IN_ALL
 GSource *g_timeout_source_new     (guint interval);
+GLIB_AVAILABLE_IN_2_90
+GSource *g_timeout_source_new_ns  (uint64_t interval);
 GLIB_AVAILABLE_IN_ALL
 GSource *g_timeout_source_new_seconds (guint interval);
 
