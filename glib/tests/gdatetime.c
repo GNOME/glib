@@ -145,6 +145,54 @@ test_GDateTime_now (void)
 }
 
 static void
+test_GDateTime_set_date_time (void)
+{
+  GDateTime *beginning = g_date_time_new_from_iso8601 ("1970-01-01T00:00:00Z", NULL);
+  GDateTime *beginning_elsewhere = g_date_time_new_from_iso8601 ("1970-01-01T12:00:00+12:00", NULL);
+  GDateTime *millennium = g_date_time_new_from_iso8601 ("2000-01-01T00:00:00Z", NULL);
+  GDateTime *test = NULL;
+  gboolean was_set = FALSE;
+
+  g_assert_nonnull (beginning);
+  g_assert_nonnull (beginning_elsewhere);
+  g_assert_nonnull (millennium);
+  g_assert_true (g_date_time_equal (beginning, beginning_elsewhere));
+
+  was_set = g_set_date_time (&test, millennium);
+  g_assert_true (was_set);
+  g_assert_false (g_date_time_equal (test, beginning));
+  g_assert_true (g_date_time_equal (test, millennium));
+
+  was_set = g_set_date_time (&test, beginning);
+  g_assert_true (was_set);
+  g_assert_true (g_date_time_equal (test, beginning));
+  g_assert_false (g_date_time_equal (test, millennium));
+
+  was_set = g_set_date_time (&test, beginning);
+  g_assert_false (was_set);
+  g_assert_true (g_date_time_equal (test, beginning));
+  g_assert_false (g_date_time_equal (test, millennium));
+
+  was_set = g_set_date_time (&test, beginning_elsewhere);
+  g_assert_true (was_set);
+  g_assert_true (g_date_time_equal (test, beginning_elsewhere));
+  g_assert_false (g_date_time_equal (test, millennium));
+
+  was_set = g_set_date_time (&test, millennium);
+  g_assert_true (was_set);
+  g_assert_false (g_date_time_equal (test, beginning));
+  g_assert_true (g_date_time_equal (test, millennium));
+
+  was_set = g_set_date_time (&test, NULL);
+  g_assert_true (was_set);
+  g_assert_null (test);
+
+  g_date_time_unref (beginning);
+  g_date_time_unref (beginning_elsewhere);
+  g_date_time_unref (millennium);
+}
+
+static void
 test_GDateTime_new_from_unix (void)
 {
   GDateTime *dt;
@@ -3777,6 +3825,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/new_from_iso8601/2", test_GDateTime_new_from_iso8601_2);
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
+  g_test_add_func ("/GDateTime/set_date_time", test_GDateTime_set_date_time);
   g_test_add_func ("/GDateTime/test-6-days-until-end-of-the-month", test_6_days_until_end_of_the_month);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
