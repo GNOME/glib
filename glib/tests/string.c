@@ -95,8 +95,8 @@ test_string_new (void)
   g_assert_cmpstr ("hi pete!", ==, string1->str);
   g_assert_cmpstr ("", ==, string2->str);
 
-  g_string_free (string1, TRUE);
-  g_string_free (string2, TRUE);
+  g_string_free_deep (string1);
+  g_string_free_deep (string2);
 
   string1 = g_string_new_len ("foo", -1);
   string2 = g_string_new_len ("foobar", 3);
@@ -106,8 +106,8 @@ test_string_new (void)
   g_assert_cmpstr (string2->str, ==, "foo");
   g_assert_cmpuint (string2->len, ==, 3);
 
-  g_string_free (string1, TRUE);
-  g_string_free (string2, TRUE);
+  g_string_free_deep (string1);
+  g_string_free_deep (string2);
 }
 
 G_GNUC_PRINTF(2, 3)
