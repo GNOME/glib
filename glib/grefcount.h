@@ -129,12 +129,12 @@ gboolean        g_atomic_ref_count_compare      (gatomicrefcount *arc,
 # define g_ref_count_dec(rc) \
   (G_GNUC_EXTENSION ({ \
     G_STATIC_ASSERT (sizeof *(rc) == sizeof (grefcount)); \
-    grefcount __rc = *(rc); \
-    __rc += 1; \
-    if (__rc == 0) ; else { \
-      *(rc) = __rc; \
+    grefcount _rc = *(rc); \
+    _rc += 1; \
+    if (_rc == 0) ; else { \
+      *(rc) = _rc; \
     } \
-    (gboolean) (__rc == 0); \
+    (gboolean) (_rc == 0); \
   }))
 
 # define g_ref_count_compare(rc,val) \

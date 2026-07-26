@@ -44,96 +44,96 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
 
 /* assertion API */
 #define g_assert_cmpstr(s1, cmp, s2)    G_STMT_START { \
-                                             const char *__s1 = (s1), *__s2 = (s2); \
-                                             if (g_strcmp0 (__s1, __s2) cmp 0) ; else \
+                                             const char *_s1 = (s1), *_s2 = (s2); \
+                                             if (g_strcmp0 (_s1, _s2) cmp 0) ; else \
                                                g_assertion_message_cmpstr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #s1 " " #cmp " " #s2, __s1, #cmp, __s2); \
+                                                 #s1 " " #cmp " " #s2, _s1, #cmp, _s2); \
                                         } G_STMT_END
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78
 #define g_assert_cmpint(n1, cmp, n2)    G_STMT_START { \
-                                             gint64 __n1 = (n1), __n2 = (n2); \
-                                             if (__n1 cmp __n2) ; else \
+                                             gint64 _n1 = (n1), _n2 = (n2); \
+                                             if (_n1 cmp _n2) ; else \
                                                g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, (guint64)__n1, #cmp, (guint64)__n2, 'i'); \
+                                                 #n1 " " #cmp " " #n2, (guint64)_n1, #cmp, (guint64)_n2, 'i'); \
                                         } G_STMT_END
 #define g_assert_cmpuint(n1, cmp, n2)   G_STMT_START { \
-                                             guint64 __n1 = (n1), __n2 = (n2); \
-                                             if (__n1 cmp __n2) ; else \
+                                             guint64 _n1 = (n1), _n2 = (n2); \
+                                             if (_n1 cmp _n2) ; else \
                                                g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'u'); \
+                                                 #n1 " " #cmp " " #n2, _n1, #cmp, _n2, 'u'); \
                                         } G_STMT_END
 #define g_assert_cmphex(n1, cmp, n2)    G_STMT_START { \
-                                             guint64 __n1 = (n1), __n2 = (n2); \
-                                             if (__n1 cmp __n2) ; else \
+                                             guint64 _n1 = (n1), _n2 = (n2); \
+                                             if (_n1 cmp _n2) ; else \
                                                g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'x'); \
+                                                 #n1 " " #cmp " " #n2, _n1, #cmp, _n2, 'x'); \
                                         } G_STMT_END
 #else /* GLIB_VERSION_MIN_REQUIRED < GLIB_VERSION_2_78 */
 #define g_assert_cmpint(n1, cmp, n2)    G_STMT_START { \
-                                             gint64 __n1 = (n1), __n2 = (n2); \
-                                             if (__n1 cmp __n2) ; else \
+                                             gint64 _n1 = (n1), _n2 = (n2); \
+                                             if (_n1 cmp _n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'i'); \
+                                                 #n1 " " #cmp " " #n2, (long double) _n1, #cmp, (long double) _n2, 'i'); \
                                         } G_STMT_END
 #define g_assert_cmpuint(n1, cmp, n2)   G_STMT_START { \
-                                             guint64 __n1 = (n1), __n2 = (n2); \
-                                             if (__n1 cmp __n2) ; else \
+                                             guint64 _n1 = (n1), _n2 = (n2); \
+                                             if (_n1 cmp _n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'i'); \
+                                                 #n1 " " #cmp " " #n2, (long double) _n1, #cmp, (long double) _n2, 'i'); \
                                         } G_STMT_END
 #define g_assert_cmphex(n1, cmp, n2)    G_STMT_START {\
-                                             guint64 __n1 = (n1), __n2 = (n2); \
-                                             if (__n1 cmp __n2) ; else \
+                                             guint64 _n1 = (n1), _n2 = (n2); \
+                                             if (_n1 cmp _n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'x'); \
+                                                 #n1 " " #cmp " " #n2, (long double) _n1, #cmp, (long double) _n2, 'x'); \
                                         } G_STMT_END
 #endif /* GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78 */
 #define g_assert_cmpfloat(n1,cmp,n2)    G_STMT_START { \
-                                             long double __n1 = (long double) (n1), __n2 = (long double) (n2); \
-                                             if (__n1 cmp __n2) ; else \
+                                             long double _n1 = (long double) (n1), _n2 = (long double) (n2); \
+                                             if (_n1 cmp _n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'f'); \
+                                                 #n1 " " #cmp " " #n2, (long double) _n1, #cmp, (long double) _n2, 'f'); \
                                         } G_STMT_END
 #define g_assert_cmpfloat_with_epsilon(n1,n2,epsilon) \
                                         G_STMT_START { \
-                                             double __n1 = (n1), __n2 = (n2), __epsilon = (epsilon); \
-                                             if (G_APPROX_VALUE (__n1,  __n2, __epsilon)) ; else \
+                                             double _n1 = (n1), _n2 = (n2), _epsilon = (epsilon); \
+                                             if (G_APPROX_VALUE (_n1,  _n2, _epsilon)) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " == " #n2 " (+/- " #epsilon ")", __n1, "==", __n2, 'f'); \
+                                                 #n1 " == " #n2 " (+/- " #epsilon ")", _n1, "==", _n2, 'f'); \
                                         } G_STMT_END
 #if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_78
 #define g_assert_cmpmem(m1, l1, m2, l2) G_STMT_START {\
-                                             gconstpointer __m1 = m1, __m2 = m2; \
-                                             size_t __l1 = (size_t) l1, __l2 = (size_t) l2; \
-                                             if (__l1 != 0 && __m1 == NULL) \
+                                             gconstpointer _m1 = m1, _m2 = m2; \
+                                             size_t _l1 = (size_t) l1, _l2 = (size_t) l2; \
+                                             if (_l1 != 0 && _m1 == NULL) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #l1 " == 0 || " #m1 " != NULL)"); \
-                                             else if (__l2 != 0 && __m2 == NULL) \
+                                             else if (_l2 != 0 && _m2 == NULL) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #l2 " == 0 || " #m2 " != NULL)"); \
-                                             else if (__l1 != __l2) \
+                                             else if (_l1 != _l2) \
                                                g_assertion_message_cmpint (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                            #l1 " (len(" #m1 ")) == " #l2 " (len(" #m2 "))", \
-                                                                           __l1, "==", __l2, 'u'); \
-                                             else if (__l1 != 0 && __m2 != NULL && memcmp (__m1, __m2, __l1) != 0) \
+                                                                           _l1, "==", _l2, 'u'); \
+                                             else if (_l1 != 0 && _m2 != NULL && memcmp (_m1, _m2, _l1) != 0) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #m1 " == " #m2 ")"); \
                                         } G_STMT_END
 #else /* GLIB_VERSION_MIN_REQUIRED < GLIB_VERSION_2_78 */
 #define g_assert_cmpmem(m1, l1, m2, l2) G_STMT_START {\
-                                             gconstpointer __m1 = m1, __m2 = m2; \
-                                             size_t __l1 = (size_t) l1, __l2 = (size_t) l2; \
-                                             if (__l1 != 0 && __m1 == NULL) \
+                                             gconstpointer _m1 = m1, _m2 = m2; \
+                                             size_t _l1 = (size_t) l1, _l2 = (size_t) l2; \
+                                             if (_l1 != 0 && _m1 == NULL) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #l1 " == 0 || " #m1 " != NULL)"); \
-                                             else if (__l2 != 0 && __m2 == NULL) \
+                                             else if (_l2 != 0 && _m2 == NULL) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #l2 " == 0 || " #m2 " != NULL)"); \
-                                             else if (__l1 != __l2) \
+                                             else if (_l1 != _l2) \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                            #l1 " (len(" #m1 ")) == " #l2 " (len(" #m2 "))", \
-                                                                           (long double) __l1, "==", (long double) __l2, 'i'); \
-                                             else if (__l1 != 0 && __m2 != NULL && memcmp (__m1, __m2, __l1) != 0) \
+                                                                           (long double) _l1, "==", (long double) _l2, 'i'); \
+                                             else if (_l1 != 0 && _m2 != NULL && memcmp (_m1, _m2, _l1) != 0) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #m1 " == " #m2 ")"); \
                                         } G_STMT_END
@@ -141,33 +141,33 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
 #define g_assert_cmpvariant(v1, v2) \
   G_STMT_START \
   { \
-    GVariant *__v1 = (v1), *__v2 = (v2); \
-    if (!g_variant_equal (__v1, __v2)) \
+    GVariant *_v1 = (v1), *_v2 = (v2); \
+    if (!g_variant_equal (_v1, _v2)) \
       { \
-        gchar *__s1, *__s2, *__msg; \
-        __s1 = g_variant_print (__v1, TRUE); \
-        __s2 = g_variant_print (__v2, TRUE); \
-        __msg = g_strdup_printf ("assertion failed (" #v1 " == " #v2 "): %s does not equal %s", __s1, __s2); \
-        g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, __msg); \
-        g_free (__s1); \
-        g_free (__s2); \
-        g_free (__msg); \
+        gchar *_s1, *_s2, *_msg; \
+        _s1 = g_variant_print (_v1, TRUE); \
+        _s2 = g_variant_print (_v2, TRUE); \
+        _msg = g_strdup_printf ("assertion failed (" #v1 " == " #v2 "): %s does not equal %s", _s1, _s2); \
+        g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, _msg); \
+        g_free (_s1); \
+        g_free (_s2); \
+        g_free (_msg); \
       } \
   } \
   G_STMT_END
 #define g_assert_cmpstrv(strv1, strv2) \
   G_STMT_START \
   { \
-    const char * const *__strv1 = (const char * const *) (strv1); \
-    const char * const *__strv2 = (const char * const *) (strv2); \
-    if (!__strv1 || !__strv2) \
+    const char * const *_strv1 = (const char * const *) (strv1); \
+    const char * const *_strv2 = (const char * const *) (strv2); \
+    if (!_strv1 || !_strv2) \
       { \
-        if (__strv1) \
+        if (_strv1) \
           { \
             g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                  "assertion failed (" #strv1 " == " #strv2 "): " #strv2 " is NULL, but " #strv1 " is not"); \
           } \
-        else if (__strv2) \
+        else if (_strv2) \
           { \
             g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                  "assertion failed (" #strv1 " == " #strv2 "): " #strv1 " is NULL, but " #strv2 " is not"); \
@@ -175,25 +175,25 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
       } \
     else \
       { \
-        guint __l1 = g_strv_length ((char **) __strv1); \
-        guint __l2 = g_strv_length ((char **) __strv2); \
-        if (__l1 != __l2) \
+        guint _l1 = g_strv_length ((char **) _strv1); \
+        guint _l2 = g_strv_length ((char **) _strv2); \
+        if (_l1 != _l2) \
           { \
-            char *__msg; \
-            __msg = g_strdup_printf ("assertion failed (" #strv1 " == " #strv2 "): length %u does not equal length %u", __l1, __l2); \
-            g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, __msg); \
-            g_free (__msg); \
+            char *_msg; \
+            _msg = g_strdup_printf ("assertion failed (" #strv1 " == " #strv2 "): length %u does not equal length %u", _l1, _l2); \
+            g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, _msg); \
+            g_free (_msg); \
           } \
         else \
           { \
-            guint __i; \
-            for (__i = 0; __i < __l1; __i++) \
+            guint _i; \
+            for (_i = 0; _i < _l1; _i++) \
               { \
-                if (g_strcmp0 (__strv1[__i], __strv2[__i]) != 0) \
+                if (g_strcmp0 (_strv1[_i], _strv2[_i]) != 0) \
                   { \
                     g_assertion_message_cmpstrv (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                  #strv1 " == " #strv2, \
-                                                 __strv1, __strv2, __i); \
+                                                 _strv1, _strv2, _i); \
                   } \
               } \
           } \
@@ -201,16 +201,16 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
   } \
   G_STMT_END
 #define g_assert_no_errno(expr)         G_STMT_START { \
-                                             int __ret, __errsv; \
+                                             int _ret, _errsv; \
                                              errno = 0; \
-                                             __ret = expr; \
-                                             __errsv = errno; \
-                                             if (__ret < 0) \
+                                             _ret = expr; \
+                                             _errsv = errno; \
+                                             if (_ret < 0) \
                                                { \
-                                                 gchar *__msg; \
-                                                 __msg = g_strdup_printf ("assertion failed (" #expr " >= 0): errno %i: %s", __errsv, g_strerror (__errsv)); \
-                                                 g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, __msg); \
-                                                 g_free (__msg); \
+                                                 gchar *_msg; \
+                                                 _msg = g_strdup_printf ("assertion failed (" #expr " >= 0): errno %i: %s", _errsv, g_strerror (_errsv)); \
+                                                 g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, _msg); \
+                                                 g_free (_msg); \
                                                } \
                                         } G_STMT_END \
                                         GLIB_AVAILABLE_MACRO_IN_2_66
