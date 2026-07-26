@@ -54,14 +54,14 @@ void     _g_atomic_array_update (GAtomicArray *array,
 
 #define G_ATOMIC_ARRAY_DO_TRANSACTION(_array, _type, _C_) G_STMT_START {	\
     gpointer *_datap  = &(_array)->data;				\
-    _type *transaction_data, *__check;						\
+    _type *transaction_data, *_check;						\
 										\
-    __check = g_atomic_pointer_get (_datap);					\
+    _check = g_atomic_pointer_get (_datap);					\
     do {									\
-      transaction_data = __check;						\
+      transaction_data = _check;						\
       {_C_;}									\
-      __check = g_atomic_pointer_get (_datap);					\
-    } while (transaction_data != __check);					\
+      _check = g_atomic_pointer_get (_datap);					\
+    } while (transaction_data != _check);					\
   } G_STMT_END
 
 G_END_DECLS

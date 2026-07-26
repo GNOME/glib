@@ -272,10 +272,10 @@ g_string_truncate_inline (GString *gstring,
 #define g_string_append(gstr, val)                  \
   (__builtin_constant_p (val) ?                     \
     G_GNUC_EXTENSION ({                             \
-      const char * const __val = (val);             \
-      g_string_append_len (gstr, __val,             \
-        G_LIKELY (__val != NULL) ?                  \
-          (gssize) strlen (_G_STR_NONNULL (__val))  \
+      const char * const _val = (val);              \
+      g_string_append_len (gstr, _val,              \
+        G_LIKELY (_val != NULL) ?                   \
+          (gssize) strlen (_G_STR_NONNULL (_val))   \
         : (gssize) -1);                             \
     })                                              \
     :                                               \

@@ -69,7 +69,7 @@ union _GTypeCValue
  * @var_args: the va_list variable; it may be evaluated multiple times
  * @flags: flags which are passed on to the collect_value() function of
  *  the #GTypeValueTable of @value.
- * @__error: a #gchar** variable that will be modified to hold a g_new()
+ * @_error: a #gchar** variable that will be modified to hold a g_new()
  *  allocated error messages if something fails
  * 
  * Collects a variable argument value from a `va_list`.
@@ -79,10 +79,10 @@ union _GTypeCValue
  *
  * Since: 2.24
  */
-#define G_VALUE_COLLECT_INIT(value, _value_type, var_args, flags, __error) \
+#define G_VALUE_COLLECT_INIT(value, _value_type, var_args, flags, _error) \
   G_STMT_START { \
     GTypeValueTable *g_vci_vtab; \
-    G_VALUE_COLLECT_INIT2(value, g_vci_vtab, _value_type, var_args, flags, __error); \
+    G_VALUE_COLLECT_INIT2(value, g_vci_vtab, _value_type, var_args, flags, _error); \
 } G_STMT_END
 
 /**
@@ -94,7 +94,7 @@ union _GTypeCValue
  * @var_args: the va_list variable; it may be evaluated multiple times
  * @flags: flags which are passed on to the collect_value() function of
  *  the #GTypeValueTable of @value.
- * @__error: a #gchar** variable that will be modified to hold a g_new()
+ * @_error: a #gchar** variable that will be modified to hold a g_new()
  *  allocated error messages if something fails
  *
  * A variant of G_VALUE_COLLECT_INIT() that provides the #GTypeValueTable
@@ -102,7 +102,7 @@ union _GTypeCValue
  *
  * Since: 2.74
  */
-#define G_VALUE_COLLECT_INIT2(value, g_vci_vtab, _value_type, var_args, flags, __error)		\
+#define G_VALUE_COLLECT_INIT2(value, g_vci_vtab, _value_type, var_args, flags, _error)		\
 G_STMT_START {										\
   GValue *g_vci_val = (value);								\
   guint g_vci_flags = (flags);								\
@@ -137,7 +137,7 @@ G_STMT_START {										\
 	  g_assert_not_reached ();							\
 	}										\
     }											\
-  *(__error) = g_vci_vtab->collect_value (g_vci_val,						\
+  *(_error) = g_vci_vtab->collect_value (g_vci_val,						\
 				       g_vci_n_values,					\
 				       g_vci_cvalues,					\
 				       g_vci_flags);						\
@@ -150,7 +150,7 @@ G_STMT_START {										\
  * @var_args: the va_list variable; it may be evaluated multiple times
  * @flags: flags which are passed on to the collect_value() function of
  *  the #GTypeValueTable of @value.
- * @__error: a #gchar** variable that will be modified to hold a g_new()
+ * @_error: a #gchar** variable that will be modified to hold a g_new()
  *  allocated error messages if something fails
  *
  * Collects a variable argument value from a `va_list`.
@@ -162,7 +162,7 @@ G_STMT_START {										\
  * you should use the G_VALUE_COLLECT_INIT() variant and pass the uninitialized
  * #GValue. That variant is faster than G_VALUE_COLLECT().
  */
-#define G_VALUE_COLLECT(value, var_args, flags, __error) G_STMT_START {			\
+#define G_VALUE_COLLECT(value, var_args, flags, _error) G_STMT_START {			\
   GValue *g_vc_value = (value);								\
   GType g_vc_value_type = G_VALUE_TYPE (g_vc_value);						\
   GTypeValueTable *g_vc_vtable = g_type_value_table_peek (g_vc_value_type);			\
@@ -171,7 +171,7 @@ G_STMT_START {										\
     g_vc_vtable->value_free (g_vc_value);							\
   memset (g_vc_value->data, 0, sizeof (g_vc_value->data));					\
 											\
-  G_VALUE_COLLECT_INIT(value, g_vc_value_type, var_args, flags, __error);			\
+  G_VALUE_COLLECT_INIT(value, g_vc_value_type, var_args, flags, _error);			\
 } G_STMT_END
 
 /**
@@ -218,14 +218,14 @@ G_STMT_START {										\
  * @var_args: the va_list variable; it may be evaluated multiple times
  * @flags: flags which are passed on to the lcopy_value() function of
  *  the #GTypeValueTable of @value.
- * @__error: a #gchar** variable that will be modified to hold a g_new()
+ * @_error: a #gchar** variable that will be modified to hold a g_new()
  *  allocated error message if something fails
  *
  * Stores a value’s value into one or more argument locations from a `va_list`.
  *
  * This is the inverse of G_VALUE_COLLECT().
  */
-#define G_VALUE_LCOPY(value, var_args, flags, __error)					\
+#define G_VALUE_LCOPY(value, var_args, flags, _error)					\
 G_STMT_START {										\
   const GValue *g_vl_value = (value);							\
   guint g_vl_flags = (flags);								\
@@ -260,7 +260,7 @@ G_STMT_START {										\
 	  g_assert_not_reached ();							\
 	}										\
     }											\
-  *(__error) = g_vl_vtable->lcopy_value (g_vl_value,						\
+  *(_error) = g_vl_vtable->lcopy_value (g_vl_value,						\
 				     g_vl_n_values,						\
 				     g_vl_cvalues,						\
 				     g_vl_flags);						\

@@ -60,11 +60,11 @@ void     g_slice_free_chain_with_offset (gsize         block_size,
 #if defined (__GNUC__) && (__GNUC__ >= 2) && defined (__OPTIMIZE__)
 #  define g_slice_new0(type)                                    \
   (type *) (G_GNUC_EXTENSION ({                                 \
-    gsize __s = g_slice_alloc_size (type);                      \
-    gpointer __p;                                               \
-    __p = g_slice_alloc (__s);                                  \
-    memset (__p, 0, __s);                                       \
-    __p;                                                        \
+    gsize _s = g_slice_alloc_size (type);                       \
+    gpointer _p;                                                \
+    _p = g_slice_alloc (_s);                                    \
+    memset (_p, 0, _s);                                         \
+    _p;                                                         \
   }))
 #else
 #  define g_slice_new0(type)    ((type*) g_slice_alloc0 (g_slice_alloc_size (type)))
