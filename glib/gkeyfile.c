@@ -635,6 +635,13 @@ static void                  g_key_file_flush_parse_buffer     (GKeyFile        
 
 G_DEFINE_QUARK (g-key-file-error-quark, g_key_file_error)
 
+/* Wrapper needed to match GDestroyNotify prototype */
+static void
+clear_fd (void *fd)
+{
+  g_clear_fd ((int *) fd, NULL);
+}
+
 static void
 g_key_file_init (GKeyFile *key_file)
 {  
@@ -1002,6 +1009,325 @@ g_key_file_load_from_data (GKeyFile       *key_file,
     }
 
   return TRUE;
+}
+
+/**
+ * g_key_file_load_unix_configurations:
+ * @key_file: an empty key file
+ * @project: (nullable): name of the project used as subdirectory
+ * @etc_subdir: (nullable) (type filename): directory path for administrative configuration files
+ * @run_subdir: (nullable) (type filename): directory path for ephemeral overrides
+ * @usr_subdir: (nullable) (type filename): directory path for vendor-defined settings
+ * @config_name: (type filename): basename of the configuration file
+ * @config_suffix: (nullable) (type filename): suffix of the configuration file
+ * @flags: flags from [flags@GLib.KeyFileFlags]
+ * @error: return location for a [struct@GLib.Error]
+ *
+ * Evaluates and merges configuration key/values from multiple Unix directories into a single key file.
+ *
+ * This function reads and merges all available configuration files based on the rules defined by
+ * the [UAPI Configuration Files Specification](https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md) (version 1).
+ *
+ * This API is primarily intended for system daemons or CLI tools that need to load systemd-style
+ * configuration files spread across vendor and customization directories. User applications
+ * should generally use [`GSettings`](../gio/class.Settings.html) instead to manage user preferences.
+ *
+ * ### Directory Layout Guidance
+ * When choosing paths for @etc_subdir and @usr_subdir, you should prefer using your build
+ * system's standard configuration variables (such as `$sysconfdir` and `$libdir`) rather
+ * than hard-coding absolute paths. For context, on a standard Linux layout, @etc_subdir
+ * typically points to administrative overrides (e.g., `/etc`), @run_subdir to /run while
+ * @usr_subdir points to the vendor defaults (e.g., `/usr/lib` or `/usr/share`). Passing `NULL`
+ * will fall back to platform-specific defaults where appropriate.
+ *
+ * ### Relationship to XDG Base Directory Specification
+ * Note that this function operates independently of the
+ * [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir/latest/)
+ * and [func@GLib.get_system_config_dirs]. While XDG directories (like `$XDG_CONFIG_DIRS`)
+ * are intended to manage desktop session applications and user-facing environments, this
+ * API is strictly designed for low-level system-wide components following the UAPI
+ * specification. Mixing the two concepts should be avoided.
+ *
+ * Note that this function is synchronous and blocking. Because it may load an arbitrary amount
+ * of files, it is best suited for application startup or non-interactive environments. If called
+ * from a user-interactive UI thread, you must handle asynchronicity yourself if needed.
+ *
+ * If no file for parsing has been found, [error@GLib.KeyFileError.NOT_FOUND] is returned.
+ * If files have been found but the OS returns an error when opening or reading a
+ * file, a [error@GLib.FileError] is returned. If there is a problem parsing
+ * files, a [error@GLib.KeyFileError] is returned.
+ *
+ *
+ * The following example parses files in following order:
+ *
+ * - `<SYSCONFDIR>/project/mydaemon.conf`
+ * - `/run/project/mydaemon.conf` (if <SYSCONFDIR>/project/mydaemon.conf is not defined)
+ * - `<LIBDIR>/project/mydaemon.conf`
+ *   (if `<SYSCONFDIR>/project/mydaemon.conf` and `/run/project/mydaemon.conf are not defined`)
+ * - valid drop-ins in `<SYSCONFDIR>/project/mydaemon.conf.d/`, `/run/project/mydaemon.conf.d/`, `<LIBDIR>/project/mydaemon.conf.d/`
+ *
+ *```
+ * g_autoptr(GKeyFile) kf = g_key_file_new ();
+ * g_autoptr(GError) local_error = NULL;
+ *
+ * // Using build-configured paths or defaults instead of hardcoded strings
+ * gboolean success = g_key_file_load_unix_configurations (kf,
+ *                                                         "my-daemon",
+ *                                                         SYSCONFDIR,
+ *                                                         RUNDIR,
+ *                                                         LIBDIR,
+ *                                                         "mydaemon",
+ *                                                         "conf",
+ *                                                         G_KEY_FILE_NONE,
+ *                                                         &local_error);
+ * if (!success)
+ *   {
+ *     g_warning ("Failed to load configuration: %s", local_error->message);
+ *     return;
+ *   }
+ *
+ * g_autofree char *val = g_key_file_get_string (kf, "Management", "Setting", NULL);
+ *```
+ *
+ * Returns: true on success, false otherwise
+ * Since: 2.90
+ */
+gboolean
+g_key_file_load_unix_configurations (GKeyFile       *key_file,
+                                     const gchar    *project,
+                                     const gchar    *etc_subdir,
+                                     const gchar    *run_subdir,
+                                     const gchar    *usr_subdir,
+                                     const gchar    *config_name,
+                                     const gchar    *config_suffix,
+                                     GKeyFileFlags   flags,
+                                     GError        **error)
+{
+  gchar *suffix = NULL;
+  gboolean ret = TRUE;
+  GArray *parsing_fd_list = NULL;
+  GPtrArray *etc_list = NULL;
+  GPtrArray *usr_list = NULL;
+  GPtrArray *run_list = NULL;
+
+  g_return_val_if_fail (key_file != NULL, FALSE);
+  g_return_val_if_fail (config_name != NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  /* Array of file descriptors to parse. */
+  parsing_fd_list = g_array_new (FALSE, FALSE, sizeof (int));
+  g_array_set_clear_func (parsing_fd_list, clear_fd);
+
+  etc_list = g_ptr_array_new_with_free_func (g_free);
+  usr_list = g_ptr_array_new_with_free_func (g_free);
+  run_list = g_ptr_array_new_with_free_func (g_free);
+
+  /* Default settings */
+  if (!etc_subdir)
+    etc_subdir = "/etc";
+  if (!run_subdir)
+    run_subdir = "/run";
+  if (!usr_subdir)
+    usr_subdir = "/usr/share";
+
+  gchar *config_filename = NULL;
+  if (config_suffix)
+    config_filename = g_strconcat (config_name, ".", config_suffix, NULL);
+  else
+    config_filename = g_strdup (config_name);
+
+  if (!project)
+    project = "";
+
+  const char *top_level_dirs[] = {
+    etc_subdir,
+    run_subdir,
+    usr_subdir
+  };
+  /* Evaluating first "main" file which has to be parsed */
+  for (size_t i = 0; i < G_N_ELEMENTS (top_level_dirs); i++)
+    {
+      char *path = g_build_filename (top_level_dirs[i], project, config_filename, NULL);
+      int fd = g_open (path, O_RDONLY | O_CLOEXEC, 0);
+      g_free (path);
+      if (fd >= 0)
+        {
+          int stolen_fd = g_steal_fd (&fd);
+          g_array_append_val (parsing_fd_list, stolen_fd);
+          break;
+        }
+    }
+  g_free (config_filename);
+
+  /* Evaluating all "Drop-ins" files which have to be parsed and insert them into
+     lists. The content of each directory has an own list. */
+  gchar *config_d_filename = NULL;
+
+  if (config_suffix)
+    {
+      config_d_filename = g_strconcat (config_name, ".", config_suffix, ".d", NULL);
+      suffix = g_strconcat (".", config_suffix, NULL);
+    }
+  else
+    config_d_filename = g_strconcat (config_name, ".d", NULL);
+
+  GPtrArray *top_level_list[] = {
+    etc_list,
+    run_list,
+    usr_list
+  };
+
+  for (size_t i = 0; i < G_N_ELEMENTS (top_level_dirs); i++)
+    {
+      gchar *scan_dir = g_build_filename (top_level_dirs[i], project,
+                                          config_d_filename, NULL);
+      GDir *dir = g_dir_open (scan_dir, 0, NULL);
+      if (dir)
+        {
+          const gchar *file;
+          while ((file = g_dir_read_name (dir)) != NULL)
+            {
+              if (!suffix || g_str_has_suffix (file, suffix))
+                g_ptr_array_add (top_level_list[i], g_strdup (file));
+            }
+          g_clear_pointer (&dir, g_dir_close);
+        }
+      g_free (scan_dir);
+    }
+  g_free (suffix);
+
+  /* Sorting all lists */
+  g_ptr_array_sort_values (usr_list, (GCompareFunc) g_strcmp0);
+  g_ptr_array_sort_values (run_list, (GCompareFunc) g_strcmp0);
+  g_ptr_array_sort_values (etc_list, (GCompareFunc) g_strcmp0);
+
+  /* Evaluate the right order of available "Drop-ins" which have to be parsed.
+   * The rules are described in:
+   * https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md#drop-ins */
+
+  guint size_etc = etc_list->len;
+  guint size_run = run_list->len;
+  guint size_usr = usr_list->len;
+  /* Descriptive indices to track the current position in each list */
+  guint idx_etc = 0;
+  guint idx_run = 0;
+  guint idx_usr = 0;
+
+  while (idx_etc < size_etc || idx_run < size_run || idx_usr < size_usr)
+    {
+      /* Pointers to the current smallest string from each list,
+       * or NULL if the list is exhausted */
+      const gchar *val_etc = (idx_etc < size_etc) ? (gchar *) g_ptr_array_index (etc_list, idx_etc) : NULL;
+      const gchar *val_run = (idx_run < size_run) ? (gchar *) g_ptr_array_index (run_list, idx_run) : NULL;
+      const gchar *val_usr = (idx_usr < size_usr) ? (gchar *) g_ptr_array_index (usr_list, idx_usr) : NULL;
+
+      /* Step 1: Find the absolute alphabetically "smallest" string available */
+      const gchar *smallest = NULL;
+
+      if (val_etc)
+        smallest = val_etc;
+      if (val_run)
+        if (!smallest || strcmp (val_run, smallest) < 0)
+          smallest = val_run;
+
+      if (val_usr)
+         if (!smallest || strcmp (val_usr, smallest) < 0)
+          smallest = val_usr;
+
+      const gchar *choice = NULL;
+      const gchar *choice_dir = NULL;
+
+      /* Step 2: We have the globally smallest alphabetical string.
+       * Now apply Priority #2: If this string exists in multiple lists,
+       * we officially take it from the highest priority list (etc > run > var). */
+      if (val_etc && strcmp (val_etc, smallest) == 0)
+        {
+          choice = val_etc; /* etc wins the tie-breaker */
+          choice_dir = etc_subdir;
+        }
+      else if (val_run && strcmp (val_run, smallest) == 0)
+        {
+          choice = val_run; /* run wins the tie-breaker */
+          choice_dir = run_subdir;
+        }
+      else
+        {
+          choice = val_usr; /* usr wins by default */
+          choice_dir = usr_subdir;
+        }
+
+      /* Add the chosen winner to the merged list */
+      char *path = g_build_filename (choice_dir, project,
+                                     config_d_filename, choice, NULL);
+      int fd = g_open (path, O_RDONLY | O_CLOEXEC, 0);
+      g_free (path);
+      if (fd >= 0)
+        {
+          int stolen_fd = g_steal_fd (&fd);
+          g_array_append_val (parsing_fd_list, stolen_fd);
+        }
+
+      /* Step 3: Advance indices for ANY list that matches the chosen string value
+         This clears duplicates out of the way for the next iteration. */
+      if (val_etc && strcmp (choice, val_etc) == 0)
+        idx_etc++;
+      if (val_run && strcmp (choice, val_run) == 0)
+        idx_run++;
+      if (val_usr && strcmp (choice, val_usr) == 0)
+        idx_usr++;
+    }
+  g_free (config_d_filename);
+
+  /* Parsing all configuration files in the correct order and merging the entries.*/
+  for (guint index = 0; index < parsing_fd_list->len; index++)
+    {
+      GKeyFile *parsed_key_file = g_key_file_new ();
+      GError *key_file_error = NULL;
+
+      if (!g_key_file_load_from_fd (parsed_key_file, g_array_index (parsing_fd_list, int, index),
+                                    flags, &key_file_error))
+        {
+          g_propagate_error (error, g_steal_pointer (&key_file_error));
+          ret = FALSE;
+          continue;
+        }
+
+      for (GList *g = parsed_key_file->groups; g != NULL; g = g->next)
+        {
+          GKeyFileGroup *group = (GKeyFileGroup *) g->data;
+
+          if (group->name == NULL)
+            continue;
+
+          for (GList *p = group->key_value_pairs; p != NULL; p = p->next)
+            {
+              GKeyFileKeyValuePair *pair = (GKeyFileKeyValuePair *) p->data;
+
+              if (pair->key == NULL)
+                continue;
+
+              g_key_file_set_value (key_file, group->name, pair->key, pair->value);
+            }
+        }
+
+      g_key_file_unref (parsed_key_file);
+    }
+
+  if (parsing_fd_list->len == 0)
+    {
+      g_set_error_literal (error, G_KEY_FILE_ERROR,
+                           G_KEY_FILE_ERROR_NOT_FOUND,
+                           _("Valid key file could not be "
+                             "found in search dirs"));
+      ret = FALSE;
+    }
+
+  g_ptr_array_unref (usr_list);
+  g_ptr_array_unref (etc_list);
+  g_ptr_array_unref (run_list);
+  g_array_unref (parsing_fd_list);
+
+  return ret;
 }
 
 /**
