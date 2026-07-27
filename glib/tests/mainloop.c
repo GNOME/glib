@@ -287,6 +287,68 @@ test_timeouts (void)
 }
 
 static void
+test_timeouts_ns (void)
+{
+  const uint64_t test_duration = G_NSEC_PER_SEC;
+  GMainContext *ctx;
+  GMainLoop *loop;
+  GSource *source;
+  gsize i;
+  int counters[31] = { 0, };
+
+  if (!g_test_thorough ())
+    {
+      g_test_skip ("Not running timing heavy test");
+      return;
+    }
+
+  ctx = g_main_context_new ();
+  loop = g_main_loop_new (ctx, FALSE);
+
+  for (i = 0; i < G_N_ELEMENTS (counters); i++)
+    {
+      if (i == G_N_ELEMENTS (counters) - 1)
+        source = g_timeout_source_new_ns (UINT64_MAX);
+      else
+        source = g_timeout_source_new_ns (((uint64_t) 1) << i);
+      g_source_set_callback (source, count_calls, &counters[i], NULL);
+      g_source_attach (source, ctx);
+      g_source_unref (source);
+    }
+
+  source = g_timeout_source_new_ns (test_duration);
+  g_source_set_callback (source, (GSourceFunc) g_main_loop_quit, loop, NULL);
+  g_source_attach (source, ctx);
+  g_source_unref (source);
+
+  g_main_loop_run (loop);
+
+  for (i = 0; i < G_N_ELEMENTS (counters) - 1; i++)
+    {
+      /* We may be delayed for an arbitrary amount of time - for example,
+       * it's possible for all timeouts to fire exactly once, when the
+       * source fires that quits the main loop.
+       */
+      g_assert_cmpint (counters[i], >, 0);
+      /* Counters must not fire more than there was time available. */
+      g_assert_cmpint (counters[i], <=, (test_duration >> i) + 1);
+      /* Each counter has a lower timeout than the next, so they must fire
+       * at least as often.
+       */
+      g_assert_cmpint (counters[i], >=, counters[i+1]);
+
+      if (g_test_verbose())
+        g_test_message ("%9uns source fired%3d%% - %9d/%u",
+                        1 << i,
+                        100 * counters[i] / ((int) (test_duration >> i) + 1),
+                        counters[i], (unsigned) (test_duration >> i) + 1);
+    }
+
+  g_main_loop_unref (loop);
+  g_main_context_unref (ctx);
+}
+
+static void
 test_priorities (void)
 {
   GMainContext *ctx;
@@ -2739,6 +2801,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/mainloop/basic", test_mainloop_basic);
   g_test_add_func ("/mainloop/timeouts", test_timeouts);
+  g_test_add_func ("/mainloop/timeouts_ns", test_timeouts_ns);
   g_test_add_func ("/mainloop/priorities", test_priorities);
   g_test_add_func ("/mainloop/invoke", test_invoke);
   g_test_add_func ("/mainloop/child_sources", test_child_sources);
