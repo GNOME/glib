@@ -80,6 +80,7 @@
 #endif /* G_OS_UNIX */
 #include <errno.h>
 #include <string.h>
+#include <inttypes.h>
 
 #ifdef HAVE_PIDFD
 #include <sys/syscall.h>
@@ -336,7 +337,8 @@ static gboolean g_main_context_prepare_unlocked (GMainContext *context,
                                                  gint         *priority);
 static gint g_main_context_query_unlocked       (GMainContext *context,
                                                  gint          max_priority,
-                                                 gint64       *timeout_usec,
+                                                 gboolean     *has_timeout,
+                                                 uint64_t     *timeout_ns,
                                                  GPollFD      *fds,
                                                  gint          n_fds);
 static gboolean g_main_context_check_unlocked   (GMainContext *context,
@@ -345,7 +347,8 @@ static gboolean g_main_context_check_unlocked   (GMainContext *context,
                                                  gint          n_fds);
 static void g_main_context_dispatch_unlocked    (GMainContext *context);
 static void g_main_context_poll_unlocked        (GMainContext *context,
-                                                 gint64        timeout_usec,
+                                                 gboolean      has_timeout,
+                                                 uint64_t      timeout_ns,
                                                  int           priority,
                                                  GPollFD      *fds,
                                                  int           n_fds);
@@ -3929,9 +3932,10 @@ g_main_context_prepare (GMainContext *context,
 }
 
 static inline int
-round_timeout_to_msec (gint64 timeout_usec)
+round_timeout_to_msec (gboolean has_timeout,
+                       uint64_t timeout_ns)
 {
-  /* We need to round to milliseconds from our internal microseconds for
+  /* We need to round to milliseconds from our internal nanoseconds for
    * various external API and GPollFunc which requires milliseconds.
    *
    * However, we want to ensure a few invariants for this.
@@ -3945,17 +3949,15 @@ round_timeout_to_msec (gint64 timeout_usec)
    * of poll() (when available) avoids this jitter.
    */
 
-  if (timeout_usec == 0)
+  if (!has_timeout)
+    return -1;
+
+  if (timeout_ns == 0)
     return 0;
 
-  if (timeout_usec > 0)
-    {
-      guint64 timeout_msec = (timeout_usec + 999) / 1000;
+  timeout_ns = MIN (timeout_ns, ((uint64_t) G_MAXINT) * 1000000);
 
-      return (int) MIN (timeout_msec, G_MAXINT);
-    }
-
-  return -1;
+  return (int) ((timeout_ns + 999999) / 1000000);
 }
 
 static inline gint64
@@ -4145,7 +4147,8 @@ g_main_context_query (GMainContext *context,
 		      GPollFD      *fds,
 		      gint          n_fds)
 {
-  gint64 timeout_usec;
+  gboolean has_timeout;
+  uint64_t timeout_ns;
   gint n_poll;
 
   if (context == NULL)
@@ -4153,12 +4156,12 @@ g_main_context_query (GMainContext *context,
 
   LOCK_CONTEXT (context);
 
-  n_poll = g_main_context_query_unlocked (context, max_priority, &timeout_usec, fds, n_fds);
+  n_poll = g_main_context_query_unlocked (context, max_priority, &has_timeout, &timeout_ns, fds, n_fds);
 
   UNLOCK_CONTEXT (context);
 
   if (timeout_msec != NULL)
-    *timeout_msec = round_timeout_to_msec (timeout_usec);
+    *timeout_msec = round_timeout_to_msec (has_timeout, timeout_ns);
 
   return n_poll;
 }
@@ -4166,7 +4169,8 @@ g_main_context_query (GMainContext *context,
 static gint
 g_main_context_query_unlocked (GMainContext *context,
                                gint          max_priority,
-                               gint64       *timeout_usec,
+                               gboolean     *has_timeout,
+                               uint64_t     *timeout_ns,
                                GPollFD      *fds,
                                gint          n_fds)
 {
@@ -4220,12 +4224,18 @@ g_main_context_query_unlocked (GMainContext *context,
 
   context->poll_changed = FALSE;
 
-  if (timeout_usec)
+  if (context->timeout_usec < 0)
     {
-      *timeout_usec = context->timeout_usec;
-      if (*timeout_usec != 0)
-        context->time_is_fresh = FALSE;
+      *has_timeout = FALSE;
+      *timeout_ns = 0;
     }
+  else
+    {
+      *has_timeout = TRUE;
+      *timeout_ns = MIN (UINT64_MAX / 1000, (uint64_t) context->timeout_usec) * 1000;
+    }
+  if (context->timeout_usec != 0)
+    context->time_is_fresh = FALSE;
 
   TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->timeout_usec,
                                         fds, n_poll));
@@ -4503,7 +4513,8 @@ g_main_context_iterate_unlocked (GMainContext *context,
                                  GThread      *self)
 {
   gint max_priority = 0;
-  gint64 timeout_usec;
+  gboolean has_timeout;
+  uint64_t timeout_ns;
   gboolean some_ready;
   gint nfds, allocated_nfds;
   GPollFD *fds = NULL;
@@ -4538,8 +4549,8 @@ g_main_context_iterate_unlocked (GMainContext *context,
   g_main_context_prepare_unlocked (context, &max_priority);
 
   while ((nfds = g_main_context_query_unlocked (
-              context, max_priority, &timeout_usec, fds,
-              allocated_nfds)) > allocated_nfds)
+              context, max_priority, &has_timeout, &timeout_ns,
+              fds, allocated_nfds)) > allocated_nfds)
     {
       g_free (fds);
       context->cached_poll_array_size = allocated_nfds = nfds;
@@ -4547,9 +4558,12 @@ g_main_context_iterate_unlocked (GMainContext *context,
     }
 
   if (!block)
-    timeout_usec = 0;
+    {
+      has_timeout = TRUE;
+      timeout_ns = 0;
+    }
 
-  g_main_context_poll_unlocked (context, timeout_usec, max_priority, fds, nfds);
+  g_main_context_poll_unlocked (context, has_timeout, timeout_ns, max_priority, fds, nfds);
 
   some_ready = g_main_context_check_unlocked (context, max_priority, fds, nfds);
   
@@ -4833,7 +4847,8 @@ g_main_loop_get_context (GMainLoop *loop)
 /* HOLDS: context's lock */
 static void
 g_main_context_poll_unlocked (GMainContext *context,
-                              gint64        timeout_usec,
+                              gboolean      has_timeout,
+                              uint64_t      timeout_ns,
                               int           priority,
                               GPollFD      *fds,
                               int           n_fds)
@@ -4846,7 +4861,7 @@ g_main_context_poll_unlocked (GMainContext *context,
 
   GPollFunc poll_func;
 
-  if (n_fds || timeout_usec != 0)
+  if (n_fds || !has_timeout || timeout_ns != 0)
     {
       int ret, errsv;
 
@@ -4854,8 +4869,8 @@ g_main_context_poll_unlocked (GMainContext *context,
       poll_timer = NULL;
       if (_g_main_poll_debug)
 	{
-          g_print ("polling context=%p n=%d timeout_usec=%"G_GINT64_FORMAT"\n",
-                   context, n_fds, timeout_usec);
+          g_print ("polling context=%p n=%d has_timeout=%s timeout_ns=%"PRIu64"\n",
+                   context, n_fds, has_timeout ? "true" : "false", timeout_ns);
           poll_timer = g_timer_new ();
 	}
 #endif
@@ -4867,10 +4882,10 @@ g_main_context_poll_unlocked (GMainContext *context,
           struct timespec spec;
           struct timespec *spec_p = NULL;
 
-          if (timeout_usec > -1)
+          if (has_timeout)
             {
-              spec.tv_sec = timeout_usec / G_USEC_PER_SEC;
-              spec.tv_nsec = (timeout_usec % G_USEC_PER_SEC) * 1000L;
+              spec.tv_sec = timeout_ns / G_NSEC_PER_SEC;
+              spec.tv_nsec = timeout_ns % G_NSEC_PER_SEC;
               spec_p = &spec;
             }
 
@@ -4881,7 +4896,7 @@ g_main_context_poll_unlocked (GMainContext *context,
       else
 #endif
         {
-          int timeout_msec = round_timeout_to_msec (timeout_usec);
+          int timeout_msec = round_timeout_to_msec (has_timeout, timeout_ns);
 
           UNLOCK_CONTEXT (context);
           ret = (*poll_func) (fds, n_fds, timeout_msec);
@@ -4902,9 +4917,10 @@ g_main_context_poll_unlocked (GMainContext *context,
 #ifdef	G_MAIN_POLL_DEBUG
       if (_g_main_poll_debug)
 	{
-          g_print ("g_main_poll(%d) timeout_usec: %"G_GINT64_FORMAT" - elapsed %12.10f seconds",
+          g_print ("g_main_poll(%d) has_timeout: %s timeout_ns: %"PRIu64" - elapsed %12.10f seconds",
                    n_fds,
-                   timeout_usec,
+                   has_timeout ? "true" : "false",
+                   timeout_ns,
                    g_timer_elapsed (poll_timer, NULL));
           g_timer_destroy (poll_timer);
 	  pollrec = context->poll_records;
@@ -4940,7 +4956,7 @@ g_main_context_poll_unlocked (GMainContext *context,
 	  g_print ("\n");
 	}
 #endif
-    } /* if (n_fds || timeout_usec != 0) */
+    } /* if (n_fds || !has_timeout || timeout_ns != 0) */
 }
 
 /**
