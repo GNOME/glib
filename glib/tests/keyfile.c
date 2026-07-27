@@ -35,6 +35,24 @@ check_no_error (GError **error)
 }
 
 static void
+write_file (const gchar *path,
+            const gchar *content)
+{
+  GError *error = NULL;
+  gchar *full_path = g_build_filename (g_get_user_runtime_dir (), path, NULL);
+  gchar *parent_dir = g_path_get_dirname (full_path);
+
+  /* Create all missing parent directories automatically */
+  g_mkdir_with_parents (parent_dir, 0755);
+
+  gboolean write_success = g_file_set_contents (full_path, content, -1, &error);
+  if (!write_success)
+    check_error (&error, G_KEY_FILE_ERROR, G_FILE_ERROR_FAILED);
+  g_free (full_path);
+  g_free (parent_dir);
+}
+
+static void
 check_string_value (GKeyFile    *keyfile,
                     const gchar *group,
                     const gchar *key,
@@ -1581,6 +1599,294 @@ copy_file (const char *source,
 #endif  /* G_OS_UNIX */
 
 static void
+test_load_unix_conf (void)
+{
+  GKeyFile *keyfile = g_key_file_new ();
+  GError *error = NULL;
+  gboolean loaded;
+  gchar *etc_path = g_build_filename (g_get_user_runtime_dir (), "unix_conf", "etc", NULL);
+  gchar *run_path = g_build_filename (g_get_user_runtime_dir (), "unix_conf", "run", NULL);
+  gchar *usr_lib_path = g_build_filename (g_get_user_runtime_dir (), "unix_conf", "usr", "lib", NULL);
+
+  /* Drop-ins
+    https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md#drop-ins
+    Reading configuration file in following order:
+    unix_conf/etc/foo/bar.conf
+    unix_conf/etc/foo/bar.conf.d/1.conf
+    unix_conf/etc/foo/bar.conf.d/2.conf
+    unix_conf/usr/lib/foo/bar.conf.d/3.conf
+
+    do not read
+    unix_conf/etc/foo/bar.conf.d/4.other_suffix
+   */
+
+  write_file ("unix_conf/etc/foo/bar.conf",
+              "[test]\n"
+              "key1=etc_foo_bar.conf:key1\n"
+              "key2=etc_foo_bar.conf:key2\n"
+              "key3=etc_foo_bar.conf:key3\n"
+              "key5=etc_foo_bar.conf:key5");
+  write_file ("unix_conf/etc/foo/bar.conf.d/1.conf",
+              "[test]\n"
+              "key1=etc_foo_bar.conf.d_1.conf:key1\n"
+              "key2=etc_foo_bar.conf.d_1.conf:key2\n"
+              "key3=etc_foo_bar.conf.d_1.conf:key3\n"
+              "[test2]\n"
+              "key6=etc_foo_bar.conf.d_1.conf:key6");
+  write_file ("unix_conf/etc/foo/bar.conf.d/2.conf",
+              "[test]\n"
+              "key1=etc_foo_bar.conf.d_2.conf:key1\n"
+              "key2=etc_foo_bar.conf.d_2.conf:key2\n"
+              "key3=etc_foo_bar.conf.d_2.conf:key3");
+  write_file ("unix_conf/usr/lib/foo/bar.conf.d/3.conf",
+              "[test]\n"
+              "key1=usr_lib_foo_bar.conf.d_3.conf:key1\n"
+              "key2=usr_lib_foo_bar.conf.d_3.conf:key2\n"
+              "key3=usr_lib_foo_bar.conf.d_3.conf:key3\n"
+              "key4=usr_lib_foo_bar.conf.d_3.conf:key4");
+  write_file ("unix_conf/etc/foo/bar.conf.d/4.other_suffix",
+              "[test]\n"
+              "key1=etc_foo_bar.conf.d_2.other:key1\n"
+              "key2=etc_foo_bar.conf.d_2.other:key2\n"
+              "key3=etc_foo_bar.conf.d_2.other:key3");
+
+  loaded = g_key_file_load_unix_configurations (keyfile,
+                                                "foo",
+                                                etc_path,
+                                                run_path,
+                                                usr_lib_path,
+                                                "bar",
+                                                "conf",
+                                                0,
+                                                &error);
+  g_assert_no_error (error);
+  g_assert_true (loaded);
+  check_string_value (keyfile, "test", "key1", "usr_lib_foo_bar.conf.d_3.conf:key1");
+  check_string_value (keyfile, "test", "key2", "usr_lib_foo_bar.conf.d_3.conf:key2");;
+  check_string_value (keyfile, "test", "key3", "usr_lib_foo_bar.conf.d_3.conf:key3");
+  check_string_value (keyfile, "test", "key4", "usr_lib_foo_bar.conf.d_3.conf:key4");    
+  check_string_value (keyfile, "test", "key5", "etc_foo_bar.conf:key5");
+  check_string_value (keyfile, "test2", "key6", "etc_foo_bar.conf.d_1.conf:key6");
+  g_key_file_free (keyfile);
+
+  /* Reading unix_conf/usr/lib/bar.conf which has no <project> directory */
+  write_file ("unix_conf/usr/lib/bar.conf",
+              "[test]\n"
+              "key1=usr_lib_bar.conf:key1\n"
+              "key2=usr_lib_bar.conf:key2\n"
+              "key3=usr_lib_bar.conf:key3");
+
+  keyfile = g_key_file_new ();
+  loaded = g_key_file_load_unix_configurations (keyfile,
+                                                NULL,
+                                                etc_path,
+                                                run_path,
+                                                usr_lib_path,
+                                                "bar",
+                                                "conf",
+                                                0,
+                                                &error);
+  g_assert_no_error (error);
+  g_assert_true (loaded);
+  check_string_value (keyfile, "test", "key1", "usr_lib_bar.conf:key1");
+  check_string_value (keyfile, "test", "key2", "usr_lib_bar.conf:key2");
+  check_string_value (keyfile, "test", "key3", "usr_lib_bar.conf:key3");
+  g_key_file_free (keyfile);
+
+  /* Reading unix_conf/etc/bar2.conf only although unix_conf/usr/lib/bar2.conf is available. */
+  write_file ("unix_conf/etc/bar2.conf",
+              "[test]\n"
+              "key1=etc_bar2.conf:key1\n"
+              "key2=etc_bar2.conf:key2\n"
+              "key3=etc_bar2.conf:key3\n");
+  write_file ("unix_conf/usr/lib/bar2.conf",
+              "[test]\n"
+              "key1=usr_lib_bar2.conf:key1\n"
+              "key2=usr_lib_bar2.conf:key2\n"
+              "key3=usr_lib_bar2.conf:key3");
+
+  keyfile = g_key_file_new ();
+  loaded = g_key_file_load_unix_configurations (keyfile,
+                                                NULL,
+                                                etc_path,
+                                                run_path,
+                                                usr_lib_path,
+                                                "bar2",
+                                                "conf",
+                                                0,
+                                                &error);
+  g_assert_no_error (error);
+  g_assert_true (loaded);
+  check_string_value (keyfile, "test", "key1", "etc_bar2.conf:key1");
+  check_string_value (keyfile, "test", "key2", "etc_bar2.conf:key2");
+  check_string_value (keyfile, "test", "key3", "etc_bar2.conf:key3");
+  g_key_file_free (keyfile);
+
+  /* Reading unix_conf/run/bar2.conf only although unix_conf/usr/lib/bar2.conf is available. */
+  write_file ("unix_conf/run/bar22.conf",
+              "[test]\n"
+              "key1=run_bar22.conf:key1\n"
+              "key2=run_bar22.conf:key2\n"
+              "key3=run_bar22.conf:key3\n");
+  write_file ("unix_conf/usr/lib/bar22.conf",
+              "[test]\n"
+              "key1=usr_lib_bar22.conf:key1\n"
+              "key2=usr_lib_bar22.conf:key2\n"
+              "key3=usr_lib_bar22.conf:key3");
+
+  keyfile = g_key_file_new ();
+  loaded = g_key_file_load_unix_configurations (keyfile,
+                                                NULL,
+                                                etc_path,
+                                                run_path,
+                                                usr_lib_path,
+                                                "bar22",
+                                                "conf",
+                                                0,
+                                                &error);
+  g_assert_no_error (error);
+  g_assert_true (loaded);
+  check_string_value (keyfile, "test", "key1", "run_bar22.conf:key1");
+  check_string_value (keyfile, "test", "key2", "run_bar22.conf:key2");
+  check_string_value (keyfile, "test", "key3", "run_bar22.conf:key3");
+  g_key_file_free (keyfile);
+
+  /* Drop-ins without Main Configuration File
+  https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md#drop-ins-without-main-configuration-file
+  Reading configuration file in following order:
+  unix_conf/etc/drop_in.d/a.conf
+  unix_conf/usr/lib/drop_in.d/b.conf
+  */
+  write_file ("unix_conf/etc/drop_in.d/a.conf",
+              "[test]\n"
+              "key1=etc_drop_in.d_a.conf:key1\n"
+              "key2=etc_drop_in.d_a.conf:key2");
+  write_file ("unix_conf/usr/lib/drop_in.d/b.conf",
+              "[test]\n"
+              "key2=usr_lib_drop_in.d_b.conf:key2\n"
+              "key3=usr_lib_drop_in.d_b.conf:key3");
+
+  keyfile = g_key_file_new ();
+  loaded = g_key_file_load_unix_configurations (keyfile,
+                                                NULL,
+                                                etc_path,
+                                                run_path,
+                                                usr_lib_path,
+                                                "drop_in",
+                                                NULL,
+                                                0,
+                                                &error);
+  g_assert_no_error (error);
+  g_assert_true (loaded);
+  check_string_value (keyfile, "test", "key1", "etc_drop_in.d_a.conf:key1");
+  check_string_value (keyfile, "test", "key2", "usr_lib_drop_in.d_b.conf:key2");
+  check_string_value (keyfile, "test", "key3", "usr_lib_drop_in.d_b.conf:key3");
+  g_key_file_free (keyfile);
+
+  /* Drop-ins with Main Configuration File
+  https://github.com/uapi-group/specifications/blob/main/specs/configuration_files_specification.md#drop-ins
+  Reading configuration file in following order:
+  unix_conf/etc/drop_in.conf
+  unix_conf/etc/drop_in.conf.d/a.conf
+  unix_conf/run/drop_in.conf.d/b.conf
+  *not due same name in run* unix_conf/usr/lib/drop_in.conf.d/b.conf
+  unix_conf/usr/lib/drop_in.conf.d/c.conf
+  unix_conf/run/drop_in.conf.d/d.conf
+  */
+  write_file ("unix_conf/etc/drop_in.conf",
+              "[test]\n"
+              "key1=etc_drop_in.conf:key1\n"
+              "key2=etc_drop_in.conf:key2\n"
+              "key3=etc_drop_in.conf:key3\n");
+  write_file ("unix_conf/etc/drop_in.conf.d/a.conf",
+              "[test]\n"
+              "key1=etc_drop_in.d_a.conf:key1\n"
+              "key2=etc_drop_in.d_a.conf:key2");
+  write_file ("unix_conf/run/drop_in.conf.d/b.conf",
+              "[test]\n"
+              "key2=run_drop_in.d_b.conf:key2\n"
+              "key4=run_drop_in.d_b.conf:key4");
+  write_file ("unix_conf/usr/lib/drop_in.conf.d/b.conf",
+              "[test]\n"
+              "key2=usr_lib_drop_in.d_b.conf:key2\n"
+              "key4=usr_lib_drop_in.d_b.conf:key4");
+  write_file ("unix_conf/usr/lib/drop_in.conf.d/c.conf",
+              "[test]\n"
+              "key5=usr_lib_drop_in.d_c.conf:key5");
+  write_file ("unix_conf/run/drop_in.conf.d/d.conf",
+              "[test]\n"
+              "key6=run_drop_in.d_c.conf:key6");
+
+  keyfile = g_key_file_new ();
+  loaded = g_key_file_load_unix_configurations (keyfile,
+                                                NULL,
+                                                etc_path,
+                                                run_path,
+                                                usr_lib_path,
+                                                "drop_in",
+                                                "conf",
+                                                0,
+                                                &error);
+  g_assert_no_error (error);
+  g_assert_true (loaded);
+  check_string_value (keyfile, "test", "key1", "etc_drop_in.d_a.conf:key1");
+  check_string_value (keyfile, "test", "key2", "run_drop_in.d_b.conf:key2");
+  check_string_value (keyfile, "test", "key3", "etc_drop_in.conf:key3");
+  check_string_value (keyfile, "test", "key4", "run_drop_in.d_b.conf:key4");
+  check_string_value (keyfile, "test", "key5", "usr_lib_drop_in.d_c.conf:key5");
+  check_string_value (keyfile, "test", "key6", "run_drop_in.d_c.conf:key6");
+
+  g_key_file_free (keyfile);  
+
+  /* Do not find any configuration file */
+  keyfile = g_key_file_new ();
+  loaded = g_key_file_load_unix_configurations (keyfile,
+                                                NULL,
+                                                NULL,
+                                                NULL,
+                                                usr_lib_path,
+                                                "not_found",
+                                                "conf",
+                                                0,
+                                                &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_NOT_FOUND);
+  g_assert_false (loaded);
+  g_key_file_free (keyfile);
+
+  /* one corrupted Drop-in
+  Parsing only unix_conf/etc/drop_in.d/a.conf
+  */
+  write_file ("unix_conf/etc/drop_in.d/a.conf",
+              "[test]\n"
+              "key1=etc_drop_in.d_a.conf:key1\n"
+              "key2=etc_drop_in.d_a.conf:key2");
+  write_file ("unix_conf/etc/drop_in.d/b.conf",
+              "This is a none parseable file.\n");
+
+  keyfile = g_key_file_new ();
+  loaded = g_key_file_load_unix_configurations (keyfile,
+                                                NULL,
+                                                etc_path,
+                                                run_path,
+                                                usr_lib_path,
+                                                "drop_in",
+                                                NULL,
+                                                0,
+                                                &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_PARSE);
+  g_assert_false (loaded);
+  /* There will be an error returned.
+     But at least the rest of the values have been parsed. */
+  check_string_value (keyfile, "test", "key1", "etc_drop_in.d_a.conf:key1");
+  check_string_value (keyfile, "test", "key2", "etc_drop_in.d_a.conf:key2");
+  g_key_file_free (keyfile);
+
+  g_free (etc_path);
+  g_free (run_path);
+  g_free (usr_lib_path);
+}
+
+static void
 test_load (void)
 {
   GKeyFile *file;
@@ -2047,6 +2353,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/reload", test_reload_idempotency);
   g_test_add_func ("/keyfile/int64", test_int64);
   g_test_add_func ("/keyfile/load", test_load);
+  g_test_add_func ("/keyfile/load_unix_conf", test_load_unix_conf);
   g_test_add_func ("/keyfile/save", test_save);
   g_test_add_func ("/keyfile/load-fail", test_load_fail);
   g_test_add_func ("/keyfile/non-utf8", test_non_utf8);
