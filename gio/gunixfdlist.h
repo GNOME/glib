@@ -68,29 +68,41 @@ GType                   g_unix_fd_list_get_type                         (void);
 GIO_AVAILABLE_IN_ALL
 GUnixFDList *           g_unix_fd_list_new                              (void);
 GIO_AVAILABLE_IN_ALL
-GUnixFDList *           g_unix_fd_list_new_from_array                   (const gint   *fds,
-                                                                         gint          n_fds);
+GUnixFDList *           g_unix_fd_list_new_from_array                   (const int    *fds,
+                                                                         int           n_fds);
 
 GIO_AVAILABLE_IN_ALL
-gint                    g_unix_fd_list_append                           (GUnixFDList  *list,
-                                                                         gint          fd,
+int                     g_unix_fd_list_append                           (GUnixFDList  *list,
+                                                                         int           fd,
                                                                          GError      **error);
 
-GIO_AVAILABLE_IN_ALL
-gint                    g_unix_fd_list_get_length                       (GUnixFDList  *list);
+GIO_AVAILABLE_IN_2_90
+size_t                  g_unix_fd_list_append_take                      (GUnixFDList  *list,
+                                                                         int           fd);
 
 GIO_AVAILABLE_IN_ALL
-gint                    g_unix_fd_list_get                              (GUnixFDList  *list,
-                                                                         gint          index_,
+int                     g_unix_fd_list_get_length                       (GUnixFDList  *list);
+
+GIO_AVAILABLE_IN_ALL
+int                     g_unix_fd_list_get                              (GUnixFDList  *list,
+                                                                         int           index_,
                                                                          GError      **error);
 
-GIO_AVAILABLE_IN_ALL
-const gint *            g_unix_fd_list_peek_fds                         (GUnixFDList  *list,
-                                                                         gint         *length);
+GIO_AVAILABLE_IN_2_90
+int                     g_unix_fd_list_peek                             (GUnixFDList  *list,
+                                                                         size_t        index_);
+
+GIO_AVAILABLE_IN_2_90
+int                     g_unix_fd_list_lookup                           (GUnixFDList  *list,
+                                                                         size_t        index_);
 
 GIO_AVAILABLE_IN_ALL
-gint *                  g_unix_fd_list_steal_fds                        (GUnixFDList  *list,
-                                                                         gint         *length);
+const int *             g_unix_fd_list_peek_fds                         (GUnixFDList  *list,
+                                                                         int          *length);
+
+GIO_AVAILABLE_IN_ALL
+int *                   g_unix_fd_list_steal_fds                        (GUnixFDList *list,
+                                                                         int         *length);
 
 G_END_DECLS
 
