@@ -296,6 +296,7 @@ struct _GSourcePrivate
   GSourceDisposeFunc dispose;
 
   gboolean static_name;
+  gboolean has_ready_time;
 };
 
 typedef struct _GSourceIter
@@ -985,6 +986,7 @@ g_source_new (GSourceFuncs *source_funcs,
   g_atomic_int_set (&source->flags, G_HOOK_FLAG_ACTIVE);
 
   source->priv->ready_time = -1;
+  source->priv->has_ready_time = FALSE;
 
   /* NULL/0 initialization for all other fields */
 
@@ -2069,16 +2071,19 @@ g_source_set_ready_time (GSource *source,
                          gint64   ready_time)
 {
   GMainContext *context;
+  gboolean has_ready_time;
 
   g_return_if_fail (source != NULL);
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
+  has_ready_time = ready_time != -1;
   context = source_dup_main_context (source);
 
   if (context)
     LOCK_CONTEXT (context);
 
-  if (source->priv->ready_time == ready_time)
+  if (source->priv->ready_time == ready_time &&
+      source->priv->has_ready_time == has_ready_time)
     {
       if (context)
         {
@@ -2089,6 +2094,7 @@ g_source_set_ready_time (GSource *source,
     }
 
   source->priv->ready_time = ready_time;
+  source->priv->has_ready_time = has_ready_time;
 
   TRACE (GLIB_SOURCE_SET_READY_TIME (source, ready_time));
 
@@ -2120,7 +2126,10 @@ g_source_get_ready_time (GSource *source)
   g_return_val_if_fail (source != NULL, -1);
   g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, -1);
 
-  return source->priv->ready_time;
+  if (source->priv->has_ready_time)
+    return source->priv->ready_time;
+  else
+    return -1;
 }
 
 /**
@@ -4018,7 +4027,7 @@ g_main_context_prepare_unlocked (GMainContext *context,
           else
             result = FALSE;
 
-          if (result == FALSE && source->priv->ready_time != -1)
+          if (result == FALSE && source->priv->has_ready_time)
             {
               if (!context->time_is_fresh)
                 {
@@ -4373,7 +4382,7 @@ g_main_context_check_unlocked (GMainContext *context,
                 }
             }
 
-          if (result == FALSE && source->priv->ready_time != -1)
+          if (result == FALSE && source->priv->has_ready_time)
             {
               if (!context->time_is_fresh)
                 {
