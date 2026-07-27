@@ -2033,50 +2033,13 @@ g_source_get_priority (GSource *source)
   return source->priority;
 }
 
-/**
- * g_source_set_ready_time:
- * @source: a source
- * @ready_time: the monotonic time at which the source will be ready;
- *   `0` for ‘immediately’, `-1` for ‘never’
- *
- * Sets a source to be dispatched when the given monotonic time is
- * reached (or passed).
- *
- * If the monotonic time is in the past (as it
- * always will be if @ready_time is `0`) then the source will be
- * dispatched immediately.
- *
- * If @ready_time is `-1` then the source is never woken up on the basis
- * of the passage of time.
- *
- * Dispatching the source does not reset the ready time.  You should do
- * so yourself, from the source dispatch function.
- *
- * Note that if you have a pair of sources where the ready time of one
- * suggests that it will be delivered first but the priority for the
- * other suggests that it would be delivered first, and the ready time
- * for both sources is reached during the same main context iteration,
- * then the order of dispatch is undefined.
- *
- * It is a no-op to call this function on a [struct@GLib.Source] which has
- * already been destroyed with [method@GLib.Source.destroy].
- *
- * This API is only intended to be used by implementations of [struct@GLib.Source].
- * Do not call this API on a [struct@GLib.Source] that you did not create.
- *
- * Since: 2.36
- **/
-void
-g_source_set_ready_time (GSource *source,
-                         gint64   ready_time)
+static void
+g_source_update_ready_time_internal (GSource *source,
+                                     gboolean has_ready_time,
+                                     gint64   ready_time)
 {
   GMainContext *context;
-  gboolean has_ready_time;
 
-  g_return_if_fail (source != NULL);
-  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
-
-  has_ready_time = ready_time != -1;
   context = source_dup_main_context (source);
 
   if (context)
@@ -2106,6 +2069,73 @@ g_source_set_ready_time (GSource *source,
       UNLOCK_CONTEXT (context);
       g_main_context_unref (context);
     }
+}
+
+/**
+ * g_source_set_ready_time:
+ * @source: a source
+ * @ready_time: the monotonic time at which the source will be ready;
+ *   `0` for ‘immediately’, `-1` for ‘never’
+ *
+ * Sets a source to be dispatched when the given monotonic time is
+ * reached (or passed).
+ *
+ * If the monotonic time is in the past (as it
+ * always will be if @ready_time is `0`) then the source will be
+ * dispatched immediately.
+ *
+ * If @ready_time is `-1` then the source is never woken up on the basis
+ * of the passage of time.
+ * Since GLib 2.90 [method@GLib.Source.clear_ready_time] should be used
+ * instead for this purpose.
+ *
+ * Dispatching the source does not reset the ready time.  You should do
+ * so yourself, from the source dispatch function.
+ *
+ * Note that if you have a pair of sources where the ready time of one
+ * suggests that it will be delivered first but the priority for the
+ * other suggests that it would be delivered first, and the ready time
+ * for both sources is reached during the same main context iteration,
+ * then the order of dispatch is undefined.
+ *
+ * It is a no-op to call this function on a [struct@GLib.Source] which has
+ * already been destroyed with [method@GLib.Source.destroy].
+ *
+ * This API is only intended to be used by implementations of [struct@GLib.Source].
+ * Do not call this API on a [struct@GLib.Source] that you did not create.
+ *
+ * Since: 2.36
+ **/
+void
+g_source_set_ready_time (GSource *source,
+                         gint64   ready_time)
+{
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
+
+  if (ready_time == -1)
+    g_source_update_ready_time_internal (source, FALSE, 0);
+  else
+    g_source_update_ready_time_internal (source, TRUE, ready_time);
+}
+
+/**
+ * g_source_clear_ready_time:
+ * @source: a source
+ * 
+ * Unsets any previously set ready time.
+ *
+ * If the source does not have a ready time set, this function
+ * does nothing.
+ *
+ * Since: 2.90
+ */
+void
+g_source_clear_ready_time (GSource *source)
+{
+  g_return_if_fail (source != NULL);
+
+  g_source_update_ready_time_internal (source, FALSE, 0);
 }
 
 /**

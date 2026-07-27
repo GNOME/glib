@@ -29,6 +29,15 @@
 #include <stdio.h>
 #include <string.h>
 
+static void
+clear_ready_time (GSource *source)
+{
+  if (g_test_rand_bit ())
+    g_source_clear_ready_time (source);
+  else
+    g_source_set_ready_time (source, -1);
+}
+
 static gboolean
 cb (gpointer data)
 {
@@ -1052,7 +1061,7 @@ ready_time_dispatch (GSource     *source,
 {
   g_atomic_int_set (&ready_time_dispatched, TRUE);
 
-  g_source_set_ready_time (source, -1);
+  clear_ready_time (source);
 
   return TRUE;
 }
@@ -1095,7 +1104,7 @@ test_ready_time (void)
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
 
   /* Of course this shouldn't change anything either */
-  g_source_set_ready_time (source, -1);
+  clear_ready_time (source);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
 
   /* A source with a ready time set to tomorrow should not fire on any
@@ -1108,7 +1117,7 @@ test_ready_time (void)
   g_assert_cmpint (g_source_get_ready_time (source), !=, -1);
 
   /* Ready time of -1 -> don't fire */
-  g_source_set_ready_time (source, -1);
+  clear_ready_time (source);
   while (g_main_context_iteration (NULL, FALSE));
   g_assert_false (g_atomic_int_get (&ready_time_dispatched));
   /* Not reset, but should still be -1 from above */
