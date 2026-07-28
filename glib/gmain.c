@@ -222,7 +222,7 @@ struct _GMainContext
 
   GPollFunc poll_func;
 
-  gint64   time;
+  uint64_t time_ns;
   gboolean time_is_fresh;
 };
 
@@ -288,7 +288,7 @@ struct _GSourcePrivate
   GSList *child_sources;
   GSource *parent_source;
 
-  gint64 ready_time;
+  uint64_t ready_time_ns;
 
   /* This is currently only used on UNIX, but we always declare it (and
    * let it remain empty on Windows) to avoid #ifdef all over the place.
@@ -989,7 +989,7 @@ g_source_new (GSourceFuncs *source_funcs,
 
   g_atomic_int_set (&source->flags, G_HOOK_FLAG_ACTIVE);
 
-  source->priv->ready_time = -1;
+  source->priv->ready_time_ns = 0;
   source->priv->has_ready_time = FALSE;
 
   /* NULL/0 initialization for all other fields */
@@ -2040,7 +2040,7 @@ g_source_get_priority (GSource *source)
 static void
 g_source_update_ready_time_internal (GSource *source,
                                      gboolean has_ready_time,
-                                     gint64   ready_time)
+                                     uint64_t ready_time_ns)
 {
   GMainContext *context;
 
@@ -2049,7 +2049,7 @@ g_source_update_ready_time_internal (GSource *source,
   if (context)
     LOCK_CONTEXT (context);
 
-  if (source->priv->ready_time == ready_time &&
+  if (source->priv->ready_time_ns == ready_time_ns &&
       source->priv->has_ready_time == has_ready_time)
     {
       if (context)
@@ -2060,10 +2060,10 @@ g_source_update_ready_time_internal (GSource *source,
       return;
     }
 
-  source->priv->ready_time = ready_time;
+  source->priv->ready_time_ns = ready_time_ns;
   source->priv->has_ready_time = has_ready_time;
 
-  TRACE (GLIB_SOURCE_SET_READY_TIME (source, ready_time));
+  TRACE (GLIB_SOURCE_SET_READY_TIME (source, ready_time_ns));
 
   if (context)
     {
@@ -2120,7 +2120,18 @@ g_source_set_ready_time (GSource *source,
   if (ready_time == -1)
     g_source_update_ready_time_internal (source, FALSE, 0);
   else
-    g_source_update_ready_time_internal (source, TRUE, ready_time);
+    {
+      uint64_t ready_time_ns;
+
+      if (ready_time < 0)
+        ready_time_ns = 0; /* backwards compat */
+      else if ((uint64_t) ready_time > UINT64_MAX / 1000)
+        ready_time_ns = UINT64_MAX;
+      else
+        ready_time_ns = (uint64_t) ready_time * 1000;
+
+      g_source_update_ready_time_internal (source, TRUE, ready_time_ns);
+    }
 }
 
 /**
@@ -2161,7 +2172,7 @@ g_source_get_ready_time (GSource *source)
   g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, -1);
 
   if (source->priv->has_ready_time)
-    return source->priv->ready_time;
+    return (MIN (source->priv->ready_time_ns, UINT64_MAX - 999) + 999) / 1000;
   else
     return -1;
 }
@@ -4061,20 +4072,17 @@ g_main_context_prepare_unlocked (GMainContext *context,
             {
               if (!context->time_is_fresh)
                 {
-                  context->time = g_get_monotonic_time ();
+                  context->time_ns = g_get_monotonic_time_ns ();
                   context->time_is_fresh = TRUE;
                 }
 
-              if (source->priv->ready_time <= context->time)
+              if (source->priv->ready_time_ns <= context->time_ns)
                 {
                   source_timeout_ns = 0;
                 }
               else
                 {
-                  uint64_t ready_timeout_ns = (uint64_t) (source->priv->ready_time - context->time);
-
-                  ready_timeout_ns = MIN (ready_timeout_ns, UINT64_MAX / 1000);
-                  ready_timeout_ns *= 1000;
+                  uint64_t ready_timeout_ns = source->priv->ready_time_ns - context->time_ns;
 
                   if (!has_source_timeout)
                     source_timeout_ns = ready_timeout_ns;
@@ -4431,11 +4439,11 @@ g_main_context_check_unlocked (GMainContext *context,
             {
               if (!context->time_is_fresh)
                 {
-                  context->time = g_get_monotonic_time ();
+                  context->time_ns = g_get_monotonic_time_ns ();
                   context->time_is_fresh = TRUE;
                 }
 
-              if (source->priv->ready_time <= context->time)
+              if (source->priv->ready_time_ns <= context->time_ns)
                 result = TRUE;
             }
 
@@ -5154,11 +5162,11 @@ g_source_get_time (GSource *source)
 
   if (!context->time_is_fresh)
     {
-      context->time = g_get_monotonic_time ();
+      context->time_ns = g_get_monotonic_time_ns ();
       context->time_is_fresh = TRUE;
     }
 
-  result = context->time;
+  result = context->time_ns / 1000;
 
   UNLOCK_CONTEXT (context);
   g_main_context_unref (context);
