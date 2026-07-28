@@ -1224,8 +1224,99 @@ test_ready_time (void)
   g_source_destroy (source);
 }
 
+static gboolean
+clear_ready_time_dispatch (GSource     *source,
+                           GSourceFunc  callback,
+                           gpointer     user_data)
+{
+  uint64_t ready_time_ns;
+
+  g_assert_cmpint (g_source_get_ready_time (source), !=, -1);
+  g_assert_cmpint (g_source_get_ready_time (source), <=, g_source_get_time (source));
+  g_assert_true (g_source_get_ready_time_ns (source, &ready_time_ns));
+  g_assert_cmpuint (ready_time_ns, <=, g_source_get_time_ns (source));
+
+  clear_ready_time (source);
+
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
+
+  return G_SOURCE_CONTINUE;
+}
+
 static void
-test_wakeup(void)
+test_various_ready_times (void)
+{
+  GSourceFuncs source_funcs = {
+    NULL, NULL, clear_ready_time_dispatch, NULL, NULL, NULL
+  };
+  gint64 ready_times[] = {
+    G_MININT64,
+    G_MININT64 + 1,
+    -2,
+    -1,
+    0,
+    1,
+    G_MAXINT64 - 1,
+    G_MAXINT64,
+  };
+  uint64_t ready_times_ns[] = {
+    0,
+    1,
+    1189998819991197253,
+    UINT64_MAX - 1,
+    UINT64_MAX,
+  };
+  GSource *sources[G_N_ELEMENTS (ready_times) + G_N_ELEMENTS (ready_times_ns) + 100];
+  GMainContext *ctx;
+  GMainLoop *loop;
+  GSource *source;
+  gsize i;
+  uint64_t now;
+
+  ctx = g_main_context_new ();
+  loop = g_main_loop_new (ctx, FALSE);
+
+  now = g_get_monotonic_time_ns ();
+
+  for (i = 0; i < G_N_ELEMENTS (sources); i++)
+    {
+      sources[i] = g_source_new (&source_funcs, sizeof (GSource));
+      if (i < G_N_ELEMENTS (ready_times))
+        g_source_set_ready_time (sources[i], ready_times[i]);
+      else if (i < G_N_ELEMENTS (ready_times) + G_N_ELEMENTS (ready_times_ns))
+        g_source_set_ready_time_ns (sources[i], ready_times_ns[i - G_N_ELEMENTS (ready_times)]);
+      else
+        g_source_set_ready_time_ns (sources[i], now + g_test_rand_int_range (0, G_MAXINT) - G_NSEC_PER_SEC / 2);
+
+      g_source_attach (sources[i], ctx);
+    }
+
+  source = g_timeout_source_new_ns (G_NSEC_PER_SEC);
+  g_source_set_callback (source, (GSourceFunc) g_main_loop_quit, loop, NULL);
+  g_source_attach (source, ctx);
+  g_source_unref (source);
+
+  g_main_loop_run (loop);
+
+  for (i = 0; i < G_N_ELEMENTS (sources); i++)
+    {
+      uint64_t ready_time_ns;
+
+      if (g_source_get_ready_time_ns (sources[i], &ready_time_ns))
+        {
+          /* hasn't triggered yet, so ready time must be in the future */
+          g_assert_cmpuint (ready_time_ns, >, g_source_get_time_ns (sources[i]));
+        }
+      g_source_unref (sources[i]);
+    }
+
+  g_main_loop_unref (loop);
+  g_main_context_unref (ctx);
+}
+
+static void
+test_wakeup (void)
 {
   GMainContext *ctx;
   int i;
@@ -2877,6 +2968,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/source_time", test_source_time);
   g_test_add_func ("/mainloop/overflow", test_mainloop_overflow);
   g_test_add_func ("/mainloop/ready-time", test_ready_time);
+  g_test_add_func ("/mainloop/various-ready-times", test_various_ready_times);
   g_test_add_func ("/mainloop/wakeup", test_wakeup);
   g_test_add_func ("/mainloop/remove-invalid", test_remove_invalid);
   g_test_add_func ("/mainloop/unref-while-pending", test_unref_while_pending);
