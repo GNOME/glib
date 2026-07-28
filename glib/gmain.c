@@ -2220,6 +2220,45 @@ g_source_get_ready_time (GSource *source)
 }
 
 /**
+ * g_source_get_ready_time_ns:
+ * @source: a source
+ * @ready_time: (optional) (out caller-allocates): Set to the ready time
+ *   on success
+ *
+ * Gets the ‘ready time’ of @source, as set by
+ * [method@GLib.Source.set_ready_time_ns]. If no ready time has been set
+ * or it has been cleared via method@GLib.Source.clear_ready_time], this
+ * function returns false.
+ *
+ * Any time before or equal to the current monotonic time (including zero)
+ * is an indication that the source will fire immediately.
+ *
+ * Returns: true if the source has a ready time set.
+ *
+ * Since: 2.90
+ **/
+gboolean
+g_source_get_ready_time_ns (GSource  *source,
+                            uint64_t *ready_time)
+{
+  g_return_val_if_fail (source != NULL, -1);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, -1);
+
+  if (source->priv->has_ready_time)
+    {
+      if (ready_time)
+        *ready_time = source->priv->ready_time_ns;
+      return TRUE;
+    }
+  else
+    {
+      if (ready_time)
+        *ready_time = UINT64_MAX; /* defensive programming */
+      return FALSE;
+    }
+}
+
+/**
  * g_source_set_can_recurse:
  * @source: a source
  * @can_recurse: whether recursion is allowed for this source

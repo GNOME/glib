@@ -766,6 +766,9 @@ GLIB_AVAILABLE_IN_2_90
 void                 g_source_clear_ready_time (GSource      *source);
 GLIB_AVAILABLE_IN_2_36
 gint64               g_source_get_ready_time (GSource        *source);
+GLIB_AVAILABLE_IN_2_90
+gboolean             g_source_get_ready_time_ns (GSource     *source,
+                                                 uint64_t    *ready_time);
 
 #ifdef G_OS_UNIX
 GLIB_AVAILABLE_IN_2_36

@@ -1098,6 +1098,7 @@ test_ready_time (void)
     NULL, NULL, ready_time_dispatch, NULL, NULL, NULL
   };
   GMainLoop *loop;
+  uint64_t ready_time_ns;
 
   source = g_source_new (&source_funcs, sizeof (GSource));
   g_source_attach (source, NULL);
@@ -1112,15 +1113,18 @@ test_ready_time (void)
 
   /* A source with no ready time set should not fire */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
   while (g_main_context_iteration (NULL, FALSE));
   g_assert_false (g_atomic_int_get (&ready_time_dispatched));
 
   /* The ready time should not have been changed */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* Of course this shouldn't change anything either */
   clear_ready_time (source);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* A source with a ready time set to tomorrow should not fire on any
    * builder, no matter how badly loaded...
@@ -1130,6 +1134,8 @@ test_ready_time (void)
   g_assert_false (g_atomic_int_get (&ready_time_dispatched));
   /* Make sure it didn't get reset */
   g_assert_cmpint (g_source_get_ready_time (source), !=, -1);
+  g_assert_true (g_source_get_ready_time_ns (source, &ready_time_ns));
+  g_assert_cmpuint (ready_time_ns, <=, g_get_monotonic_time_ns () + G_TIME_SPAN_DAY * 1000);
 
   /* Ready time of -1 -> don't fire */
   clear_ready_time (source);
@@ -1137,6 +1143,7 @@ test_ready_time (void)
   g_assert_false (g_atomic_int_get (&ready_time_dispatched));
   /* Not reset, but should still be -1 from above */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* A ready time of the current time should fire immediately */
   g_source_set_ready_time (source, g_get_monotonic_time ());
@@ -1145,6 +1152,7 @@ test_ready_time (void)
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   /* Should have gotten reset by the handler function */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* This should also work in nanoseconds */
   g_source_set_ready_time_ns (source, g_get_monotonic_time_ns ());
@@ -1153,6 +1161,7 @@ test_ready_time (void)
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   /* Should have gotten reset by the handler function */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* As well as one in the recent past... */
   g_source_set_ready_time (source, g_get_monotonic_time () - G_TIME_SPAN_SECOND);
@@ -1160,6 +1169,7 @@ test_ready_time (void)
   g_assert_true (g_atomic_int_get (&ready_time_dispatched));
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* ... also works in nanoseconds */
   g_source_set_ready_time_ns (source, g_get_monotonic_time_ns () - G_NSEC_PER_SEC);
@@ -1167,6 +1177,7 @@ test_ready_time (void)
   g_assert_true (g_atomic_int_get (&ready_time_dispatched));
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* Zero is the 'official' way to get a source to fire immediately */
   g_source_set_ready_time (source, 0);
@@ -1174,6 +1185,7 @@ test_ready_time (void)
   g_assert_true (g_atomic_int_get (&ready_time_dispatched));
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* Zero is also 'official' for immediate firing in nanoseconds */
   g_source_set_ready_time_ns (source, 0);
@@ -1181,6 +1193,7 @@ test_ready_time (void)
   g_assert_true (g_atomic_int_get (&ready_time_dispatched));
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* Now do some tests of cross-thread wakeups.
    *
