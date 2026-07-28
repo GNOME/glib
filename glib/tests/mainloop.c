@@ -844,6 +844,7 @@ typedef struct {
 
   GSource *timeout1, *timeout2;
   gint64 time1;
+  uint64_t time1_ns;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GTimeVal tv;  /* needed for g_source_get_current_time() */
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -855,6 +856,7 @@ timeout1_callback (gpointer user_data)
   TimeTestData *data = user_data;
   GSource *source;
   gint64 mtime1, mtime2, time2;
+  uint64_t mtime1_ns, mtime2_ns, time2_ns;
 
   source = g_main_current_source ();
   g_assert_true (source == data->timeout1);
@@ -866,6 +868,8 @@ timeout1_callback (gpointer user_data)
 
       mtime1 = g_get_monotonic_time ();
       data->time1 = g_source_get_time (source);
+      mtime1_ns = g_get_monotonic_time_ns ();
+      data->time1_ns = g_source_get_time_ns (source);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_source_get_current_time (source, &data->tv);
@@ -875,9 +879,13 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       g_usleep (1000000);
       mtime2 = g_get_monotonic_time ();
       time2 = g_source_get_time (source);
+      mtime2_ns = g_get_monotonic_time_ns ();
+      time2_ns = g_source_get_time_ns (source);
 
       g_assert_cmpint (mtime1, <, mtime2);
       g_assert_cmpint (data->time1, ==, time2);
+      g_assert_cmpuint (mtime1_ns, <, mtime2_ns);
+      g_assert_cmpuint (data->time1_ns, ==, time2_ns);
     }
   else
     {
@@ -894,6 +902,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
        */
       time2 = g_source_get_time (source);
       g_assert_cmpint (data->time1, <, time2);
+      time2_ns = g_source_get_time_ns (source);
+      g_assert_cmpuint (data->time1_ns, <, time2_ns);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_source_get_current_time (source, &tv);
@@ -915,6 +925,7 @@ timeout2_callback (gpointer user_data)
   TimeTestData *data = user_data;
   GSource *source;
   gint64 time2, time3;
+  uint64_t time2_ns, time3_ns;
 
   source = g_main_current_source ();
   g_assert_true (source == data->timeout2);
@@ -926,6 +937,8 @@ timeout2_callback (gpointer user_data)
    */
   time2 = g_source_get_time (source);
   g_assert_cmpint (data->time1, ==, time2);
+  time2_ns = g_source_get_time_ns (source);
+  g_assert_cmpuint (data->time1_ns, ==, time2_ns);
 
   /* The source should still have a valid time even after being
    * destroyed, since it's currently running.
@@ -933,6 +946,8 @@ timeout2_callback (gpointer user_data)
   g_source_destroy (source);
   time3 = g_source_get_time (source);
   g_assert_cmpint (time2, ==, time3);
+  time3_ns = g_source_get_time_ns (source);
+  g_assert_cmpuint (time2_ns, ==, time3_ns);
 
   return FALSE;
 }

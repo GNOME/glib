@@ -5173,6 +5173,50 @@ g_source_get_current_time (GSource  *source,
 G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
+ * g_source_get_time_ns:
+ * @source: a source
+ *
+ * Gets the time to be used when checking this source.
+ *
+ * The advantage of calling this function over calling
+ * [func@GLib.get_monotonic_time_ns] directly is
+ * that when checking multiple sources, GLib can cache a single value
+ * instead of having to repeatedly get the system monotonic time.
+ *
+ * The time here is the system monotonic time, if available, or some
+ * other reasonable alternative otherwise.  See [func@GLib.get_monotonic_time_ns].
+ *
+ * Returns: the monotonic time in nanoseconds
+ * Since: 2.90
+ **/
+uint64_t
+g_source_get_time_ns (GSource *source)
+{
+  GMainContext *context;
+  gint64 result;
+
+  g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
+  context = source_dup_main_context (source);
+  g_return_val_if_fail (context != NULL, 0);
+
+  LOCK_CONTEXT (context);
+
+  if (!context->time_is_fresh)
+    {
+      context->time_ns = g_get_monotonic_time_ns ();
+      context->time_is_fresh = TRUE;
+    }
+
+  result = context->time_ns;
+
+  UNLOCK_CONTEXT (context);
+  g_main_context_unref (context);
+
+  return result;
+}
+
+/**
  * g_source_get_time:
  * @source: a source
  *
@@ -5192,28 +5236,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 gint64
 g_source_get_time (GSource *source)
 {
-  GMainContext *context;
-  gint64 result;
-
   g_return_val_if_fail (source != NULL, 0);
-  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
-  context = source_dup_main_context (source);
-  g_return_val_if_fail (context != NULL, 0);
 
-  LOCK_CONTEXT (context);
-
-  if (!context->time_is_fresh)
-    {
-      context->time_ns = g_get_monotonic_time_ns ();
-      context->time_is_fresh = TRUE;
-    }
-
-  result = context->time_ns / 1000;
-
-  UNLOCK_CONTEXT (context);
-  g_main_context_unref (context);
-
-  return result;
+  return g_source_get_time_ns (source) / 1000;
 }
 
 /**

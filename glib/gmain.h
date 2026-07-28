@@ -812,6 +812,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 GLIB_AVAILABLE_IN_ALL
 gint64   g_source_get_time         (GSource        *source);
+GLIB_AVAILABLE_IN_2_90
+uint64_t g_source_get_time_ns      (GSource        *source);
 
  /* void g_source_connect_closure (GSource        *source,
                                   GClosure       *closure);
