@@ -201,7 +201,8 @@ struct _GMainContext
   GHashTable *sources;              /* guint -> GSource */
 
   GPtrArray *pending_dispatches;
-  gint64 timeout_usec; /* Timeout for current iteration */
+  uint64_t timeout_ns; /* Timeout for current iteration */
+  gboolean has_timeout;
 
   guint next_id;
   GQueue source_lists;
@@ -3960,15 +3961,6 @@ round_timeout_to_msec (gboolean has_timeout,
   return (int) ((timeout_ns + 999999) / 1000000);
 }
 
-static inline gint64
-extend_timeout_to_usec (int timeout_msec)
-{
-  if (timeout_msec >= 0)
-    return (gint64) timeout_msec * 1000;
-
-  return -1;
-}
-
 static gboolean
 g_main_context_prepare_unlocked (GMainContext *context,
                                  gint         *priority)
@@ -4012,12 +4004,14 @@ g_main_context_prepare_unlocked (GMainContext *context,
   
   /* Prepare all sources */
 
-  context->timeout_usec = -1;
+  context->has_timeout = FALSE;
+  context->timeout_ns = 0;
   
   g_source_iter_init (&iter, context, TRUE);
   while (g_source_iter_next (&iter, &source))
     {
-      gint64 source_timeout_usec = -1;
+      gboolean has_source_timeout = FALSE;
+      uint64_t source_timeout_ns;
 
       if (SOURCE_DESTROYED (source) || SOURCE_BLOCKED (source))
 	continue;
@@ -4045,7 +4039,11 @@ g_main_context_prepare_unlocked (GMainContext *context,
               result = (*prepare) (source, &source_timeout_msec);
               TRACE (GLIB_MAIN_AFTER_PREPARE (source, prepare, source_timeout_msec));
 
-              source_timeout_usec = extend_timeout_to_usec (source_timeout_msec);
+              if (source_timeout_msec >= 0)
+                {
+                  has_source_timeout = TRUE;
+                  source_timeout_ns = ((uint64_t) source_timeout_msec) * 1000 * 1000;
+                }
 
               g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
                             "GLib", "GSource.prepare",
@@ -4069,14 +4067,22 @@ g_main_context_prepare_unlocked (GMainContext *context,
 
               if (source->priv->ready_time <= context->time)
                 {
-                  source_timeout_usec = 0;
-                  result = TRUE;
+                  source_timeout_ns = 0;
                 }
-              else if (source_timeout_usec < 0 ||
-                       (source->priv->ready_time < context->time + source_timeout_usec))
+              else
                 {
-                  source_timeout_usec = MAX (0, source->priv->ready_time - context->time);
+                  uint64_t ready_timeout_ns = (uint64_t) (source->priv->ready_time - context->time);
+
+                  ready_timeout_ns = MIN (ready_timeout_ns, UINT64_MAX / 1000);
+                  ready_timeout_ns *= 1000;
+
+                  if (!has_source_timeout)
+                    source_timeout_ns = ready_timeout_ns;
+                  else
+                    source_timeout_ns = MIN (source_timeout_ns, ready_timeout_ns);
                 }
+
+              has_source_timeout = TRUE;
             }
 
 	  if (result)
@@ -4095,15 +4101,21 @@ g_main_context_prepare_unlocked (GMainContext *context,
 	{
 	  n_ready++;
 	  current_priority = source->priority;
-	  context->timeout_usec = 0;
+	  context->has_timeout = TRUE;
+	  context->timeout_ns = 0;
 	}
 
-      if (source_timeout_usec >= 0)
+      if (has_source_timeout)
         {
-          if (context->timeout_usec < 0)
-            context->timeout_usec = source_timeout_usec;
+          if (!context->has_timeout)
+            {
+              context->timeout_ns = source_timeout_ns;
+              context->has_timeout = TRUE;
+            }
           else
-            context->timeout_usec = MIN (context->timeout_usec, source_timeout_usec);
+            {
+              context->timeout_ns = MIN (context->timeout_ns, source_timeout_ns);
+            }
         }
     }
   g_source_iter_clear (&iter);
@@ -4224,20 +4236,13 @@ g_main_context_query_unlocked (GMainContext *context,
 
   context->poll_changed = FALSE;
 
-  if (context->timeout_usec < 0)
-    {
-      *has_timeout = FALSE;
-      *timeout_ns = 0;
-    }
-  else
-    {
-      *has_timeout = TRUE;
-      *timeout_ns = MIN (UINT64_MAX / 1000, (uint64_t) context->timeout_usec) * 1000;
-    }
-  if (context->timeout_usec != 0)
+  *has_timeout = context->has_timeout;
+  *timeout_ns = context->timeout_ns;
+
+  if (!context->has_timeout || context->timeout_ns != 0)
     context->time_is_fresh = FALSE;
 
-  TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->timeout_usec,
+  TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->has_timeout, context->timeout_ns,
                                         fds, n_poll));
 
   return n_poll;
