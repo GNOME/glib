@@ -2078,8 +2078,8 @@ g_source_update_ready_time_internal (GSource *source,
 /**
  * g_source_set_ready_time:
  * @source: a source
- * @ready_time: the monotonic time at which the source will be ready;
- *   `0` for ‘immediately’, `-1` for ‘never’
+ * @ready_time: the monotonic time in microseconds at which the source will
+ *   be ready; `0` for ‘immediately’, `-1` for ‘never’
  *
  * Sets a source to be dispatched when the given monotonic time is
  * reached (or passed).
@@ -2132,6 +2132,48 @@ g_source_set_ready_time (GSource *source,
 
       g_source_update_ready_time_internal (source, TRUE, ready_time_ns);
     }
+}
+
+/**
+ * g_source_set_ready_time_ns:
+ * @source: a source
+ * @ready_time: the monotonic time in nanoseconds at which the source will
+ *   be ready; `0` for ‘immediately’
+ *
+ * Sets a source to be dispatched when the given monotonic time is
+ * reached (or passed).
+ *
+ * If the monotonic time is in the past (as it
+ * always will be if @ready_time is `0`) then the source will be
+ * dispatched immediately.
+ *
+ * Dispatching the source does not reset the ready time.  You should do
+ * so yourself, from the source dispatch function.
+ *
+ * To reset the ready time, use [method@GLib.Source.clear_ready_time].
+ *
+ * Note that if you have a pair of sources where the ready time of one
+ * suggests that it will be delivered first but the priority for the
+ * other suggests that it would be delivered first, and the ready time
+ * for both sources is reached during the same main context iteration,
+ * then the order of dispatch is undefined.
+ *
+ * It is a no-op to call this function on a [struct@GLib.Source] which has
+ * already been destroyed with [method@GLib.Source.destroy].
+ *
+ * This API is only intended to be used by implementations of [struct@GLib.Source].
+ * Do not call this API on a [struct@GLib.Source] that you did not create.
+ *
+ * Since: 2.90
+ */
+void
+g_source_set_ready_time_ns (GSource  *source,
+                            uint64_t  ready_time)
+{
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
+
+  g_source_update_ready_time_internal (source, TRUE, ready_time);
 }
 
 /**

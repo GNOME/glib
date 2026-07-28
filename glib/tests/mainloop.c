@@ -1131,6 +1131,14 @@ test_ready_time (void)
   /* Should have gotten reset by the handler function */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
 
+  /* This should also work in nanoseconds */
+  g_source_set_ready_time_ns (source, g_get_monotonic_time_ns ());
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
+  /* Should have gotten reset by the handler function */
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
   /* As well as one in the recent past... */
   g_source_set_ready_time (source, g_get_monotonic_time () - G_TIME_SPAN_SECOND);
   while (g_main_context_iteration (NULL, FALSE));
@@ -1138,8 +1146,22 @@ test_ready_time (void)
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
 
+  /* ... also works in nanoseconds */
+  g_source_set_ready_time_ns (source, g_get_monotonic_time_ns () - G_NSEC_PER_SEC);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
   /* Zero is the 'official' way to get a source to fire immediately */
   g_source_set_ready_time (source, 0);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+
+  /* Zero is also 'official' for immediate firing in nanoseconds */
+  g_source_set_ready_time_ns (source, 0);
   while (g_main_context_iteration (NULL, FALSE));
   g_assert_true (g_atomic_int_get (&ready_time_dispatched));
   g_atomic_int_set (&ready_time_dispatched, FALSE);
@@ -1158,6 +1180,12 @@ test_ready_time (void)
   g_usleep (G_TIME_SPAN_SECOND / 2);
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_source_set_ready_time (source, 0);
+  while (!g_atomic_int_get (&ready_time_dispatched));
+
+  /* Play the same game, but this time in nanoseconds */
+  g_usleep (G_TIME_SPAN_SECOND / 2);
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
+  g_source_set_ready_time_ns (source, 0);
   while (!g_atomic_int_get (&ready_time_dispatched));
 
   /* kill the thread */
