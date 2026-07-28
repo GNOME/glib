@@ -56,9 +56,13 @@ class TestGioTool(testprogramrunner.TestProgramRunner):
         """Test the --help argument and help subcommand."""
         result = self.runGio("--help")
         result2 = self.runGio("help")
+        result3 = self.runGio("help", "help")
 
         self.assertEqual(result.out, result2.out)
         self.assertEqual(result.err, result2.err)
+
+        self.assertEqual(result2.out, result3.out)
+        self.assertEqual(result2.err, result3.err)
 
         self.assertIn("Usage:\n  gio COMMAND", result.out)
         self.assertIn("List the contents of locations", result.out)
