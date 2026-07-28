@@ -5385,13 +5385,13 @@ g_main_context_is_owner (GMainContext *context)
 
 static void
 g_timeout_set_expiration (GTimeoutSource *timeout_source,
-                          gint64          current_time)
+                          uint64_t        current_time_ns)
 {
-  uint64_t expiration;
+  uint64_t expiration_ns;
 
   if (timeout_source->seconds)
     {
-      gint64 remainder;
+      uint64_t remainder_ns;
       static gint timer_perturb = -1;
 
       if (timer_perturb == -1)
@@ -5405,12 +5405,12 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
           if (!session_bus_address)
             session_bus_address = g_getenv ("HOSTNAME");
           if (session_bus_address)
-            timer_perturb = ABS ((gint) g_str_hash (session_bus_address)) % 1000000;
+            timer_perturb = ABS ((gint) g_str_hash (session_bus_address)) % G_NSEC_PER_SEC;
           else
             timer_perturb = 0;
         }
 
-      expiration = current_time + (guint64) timeout_source->interval * G_USEC_PER_SEC;
+      expiration_ns = current_time_ns + timeout_source->interval * G_NSEC_PER_SEC;
 
       /* We want the microseconds part of the timeout to land on the
        * 'timer_perturb' mark, but we need to make sure we don't try to
@@ -5418,21 +5418,21 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
        * always only *increase* the expiration time by adding a full
        * second in the case that the microsecond portion decreases.
        */
-      expiration -= timer_perturb;
+      expiration_ns -= timer_perturb;
 
-      remainder = expiration % 1000000;
-      if (remainder >= 1000000/4)
-        expiration += 1000000;
+      remainder_ns = expiration_ns % G_NSEC_PER_SEC;
+      if (remainder_ns >= G_NSEC_PER_SEC / 4)
+        expiration_ns += G_NSEC_PER_SEC;
 
-      expiration -= remainder;
-      expiration += timer_perturb;
+      expiration_ns -= remainder_ns;
+      expiration_ns += timer_perturb;
     }
   else
     {
-      expiration = current_time + (guint64) timeout_source->interval / 1000;
+      expiration_ns = current_time_ns + timeout_source->interval;
     }
 
-  g_source_set_ready_time ((GSource *) timeout_source, expiration);
+  g_source_set_ready_time_ns ((GSource *) timeout_source, expiration_ns);
 }
 
 static gboolean
@@ -5464,7 +5464,7 @@ g_timeout_dispatch (GSource     *source,
   TRACE (GLIB_TIMEOUT_DISPATCH (source, source->context, callback, user_data, again));
 
   if (again)
-    g_timeout_set_expiration (timeout_source, g_source_get_time (source));
+    g_timeout_set_expiration (timeout_source, g_source_get_time_ns (source));
 
   return again;
 }
@@ -5481,7 +5481,7 @@ timeout_source_new (uint64_t interval,
   timeout_source->seconds = seconds;
   timeout_source->one_shot = one_shot;
 
-  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
+  g_timeout_set_expiration (timeout_source, g_get_monotonic_time_ns ());
 
   return source;
 }
