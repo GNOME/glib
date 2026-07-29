@@ -82,7 +82,7 @@ The Nitty-Gritty
 Complete information about installing GLib can be found
 in the file:
 
- docs/reference/glib/html/glib-building.html
+ docs/reference/glib/glib-2.0/building.html
 
 Or online at:
 
