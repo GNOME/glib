@@ -80,6 +80,7 @@
 #endif /* G_OS_UNIX */
 #include <errno.h>
 #include <string.h>
+#include <inttypes.h>
 
 #ifdef HAVE_PIDFD
 #include <sys/syscall.h>
@@ -200,7 +201,8 @@ struct _GMainContext
   GHashTable *sources;              /* guint -> GSource */
 
   GPtrArray *pending_dispatches;
-  gint64 timeout_usec; /* Timeout for current iteration */
+  uint64_t timeout_ns; /* Timeout for current iteration */
+  gboolean has_timeout;
 
   guint next_id;
   GQueue source_lists;
@@ -220,7 +222,7 @@ struct _GMainContext
 
   GPollFunc poll_func;
 
-  gint64   time;
+  uint64_t time_ns;
   gboolean time_is_fresh;
 };
 
@@ -248,8 +250,8 @@ struct _GIdleSource
 struct _GTimeoutSource
 {
   GSource     source;
-  /* Measured in seconds if 'seconds' is TRUE, or milliseconds otherwise. */
-  guint       interval;
+  /* Measured in seconds if 'seconds' is TRUE, or nanoseconds otherwise. */
+  uint64_t    interval;
   gboolean    seconds;
   gboolean    one_shot;
 };
@@ -286,7 +288,7 @@ struct _GSourcePrivate
   GSList *child_sources;
   GSource *parent_source;
 
-  gint64 ready_time;
+  uint64_t ready_time_ns;
 
   /* This is currently only used on UNIX, but we always declare it (and
    * let it remain empty on Windows) to avoid #ifdef all over the place.
@@ -296,6 +298,7 @@ struct _GSourcePrivate
   GSourceDisposeFunc dispose;
 
   gboolean static_name;
+  gboolean has_ready_time;
 };
 
 typedef struct _GSourceIter
@@ -335,7 +338,8 @@ static gboolean g_main_context_prepare_unlocked (GMainContext *context,
                                                  gint         *priority);
 static gint g_main_context_query_unlocked       (GMainContext *context,
                                                  gint          max_priority,
-                                                 gint64       *timeout_usec,
+                                                 gboolean     *has_timeout,
+                                                 uint64_t     *timeout_ns,
                                                  GPollFD      *fds,
                                                  gint          n_fds);
 static gboolean g_main_context_check_unlocked   (GMainContext *context,
@@ -344,7 +348,8 @@ static gboolean g_main_context_check_unlocked   (GMainContext *context,
                                                  gint          n_fds);
 static void g_main_context_dispatch_unlocked    (GMainContext *context);
 static void g_main_context_poll_unlocked        (GMainContext *context,
-                                                 gint64        timeout_usec,
+                                                 gboolean      has_timeout,
+                                                 uint64_t      timeout_ns,
                                                  int           priority,
                                                  GPollFD      *fds,
                                                  int           n_fds);
@@ -984,7 +989,8 @@ g_source_new (GSourceFuncs *source_funcs,
 
   g_atomic_int_set (&source->flags, G_HOOK_FLAG_ACTIVE);
 
-  source->priv->ready_time = -1;
+  source->priv->ready_time_ns = 0;
+  source->priv->has_ready_time = FALSE;
 
   /* NULL/0 initialization for all other fields */
 
@@ -2031,11 +2037,49 @@ g_source_get_priority (GSource *source)
   return source->priority;
 }
 
+static void
+g_source_update_ready_time_internal (GSource *source,
+                                     gboolean has_ready_time,
+                                     uint64_t ready_time_ns)
+{
+  GMainContext *context;
+
+  context = source_dup_main_context (source);
+
+  if (context)
+    LOCK_CONTEXT (context);
+
+  if (source->priv->ready_time_ns == ready_time_ns &&
+      source->priv->has_ready_time == has_ready_time)
+    {
+      if (context)
+        {
+          UNLOCK_CONTEXT (context);
+          g_main_context_unref (context);
+        }
+      return;
+    }
+
+  source->priv->ready_time_ns = ready_time_ns;
+  source->priv->has_ready_time = has_ready_time;
+
+  TRACE (GLIB_SOURCE_SET_READY_TIME (source, ready_time_ns));
+
+  if (context)
+    {
+      /* Quite likely that we need to change the timeout on the poll */
+      if (!SOURCE_BLOCKED (source))
+        g_wakeup_signal (context->wakeup);
+      UNLOCK_CONTEXT (context);
+      g_main_context_unref (context);
+    }
+}
+
 /**
  * g_source_set_ready_time:
  * @source: a source
- * @ready_time: the monotonic time at which the source will be ready;
- *   `0` for ‘immediately’, `-1` for ‘never’
+ * @ready_time: the monotonic time in microseconds at which the source will
+ *   be ready; `0` for ‘immediately’, `-1` for ‘never’
  *
  * Sets a source to be dispatched when the given monotonic time is
  * reached (or passed).
@@ -2046,6 +2090,8 @@ g_source_get_priority (GSource *source)
  *
  * If @ready_time is `-1` then the source is never woken up on the basis
  * of the passage of time.
+ * Since GLib 2.90 [method@GLib.Source.clear_ready_time] should be used
+ * instead for this purpose.
  *
  * Dispatching the source does not reset the ready time.  You should do
  * so yourself, from the source dispatch function.
@@ -2068,38 +2114,85 @@ void
 g_source_set_ready_time (GSource *source,
                          gint64   ready_time)
 {
-  GMainContext *context;
-
   g_return_if_fail (source != NULL);
   g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
-  context = source_dup_main_context (source);
-
-  if (context)
-    LOCK_CONTEXT (context);
-
-  if (source->priv->ready_time == ready_time)
+  if (ready_time == -1)
+    g_source_update_ready_time_internal (source, FALSE, 0);
+  else
     {
-      if (context)
-        {
-          UNLOCK_CONTEXT (context);
-          g_main_context_unref (context);
-        }
-      return;
+      uint64_t ready_time_ns;
+
+      if (ready_time < 0)
+        ready_time_ns = 0; /* backwards compat */
+      else if ((uint64_t) ready_time > UINT64_MAX / 1000)
+        ready_time_ns = UINT64_MAX;
+      else
+        ready_time_ns = (uint64_t) ready_time * 1000;
+
+      g_source_update_ready_time_internal (source, TRUE, ready_time_ns);
     }
+}
 
-  source->priv->ready_time = ready_time;
+/**
+ * g_source_set_ready_time_ns:
+ * @source: a source
+ * @ready_time: the monotonic time in nanoseconds at which the source will
+ *   be ready; `0` for ‘immediately’
+ *
+ * Sets a source to be dispatched when the given monotonic time is
+ * reached (or passed).
+ *
+ * If the monotonic time is in the past (as it
+ * always will be if @ready_time is `0`) then the source will be
+ * dispatched immediately.
+ *
+ * Dispatching the source does not reset the ready time.  You should do
+ * so yourself, from the source dispatch function.
+ *
+ * To reset the ready time, use [method@GLib.Source.clear_ready_time].
+ *
+ * Note that if you have a pair of sources where the ready time of one
+ * suggests that it will be delivered first but the priority for the
+ * other suggests that it would be delivered first, and the ready time
+ * for both sources is reached during the same main context iteration,
+ * then the order of dispatch is undefined.
+ *
+ * It is a no-op to call this function on a [struct@GLib.Source] which has
+ * already been destroyed with [method@GLib.Source.destroy].
+ *
+ * This API is only intended to be used by implementations of [struct@GLib.Source].
+ * Do not call this API on a [struct@GLib.Source] that you did not create.
+ *
+ * Since: 2.90
+ */
+void
+g_source_set_ready_time_ns (GSource  *source,
+                            uint64_t  ready_time)
+{
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (g_atomic_int_get (&source->ref_count) > 0);
 
-  TRACE (GLIB_SOURCE_SET_READY_TIME (source, ready_time));
+  g_source_update_ready_time_internal (source, TRUE, ready_time);
+}
 
-  if (context)
-    {
-      /* Quite likely that we need to change the timeout on the poll */
-      if (!SOURCE_BLOCKED (source))
-        g_wakeup_signal (context->wakeup);
-      UNLOCK_CONTEXT (context);
-      g_main_context_unref (context);
-    }
+/**
+ * g_source_clear_ready_time:
+ * @source: a source
+ * 
+ * Unsets any previously set ready time.
+ *
+ * If the source does not have a ready time set, this function
+ * does nothing.
+ *
+ * Since: 2.90
+ */
+void
+g_source_clear_ready_time (GSource *source)
+{
+  g_return_if_fail (source != NULL);
+
+  g_source_update_ready_time_internal (source, FALSE, 0);
 }
 
 /**
@@ -2120,7 +2213,49 @@ g_source_get_ready_time (GSource *source)
   g_return_val_if_fail (source != NULL, -1);
   g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, -1);
 
-  return source->priv->ready_time;
+  if (source->priv->has_ready_time)
+    return (MIN (source->priv->ready_time_ns, UINT64_MAX - 999) + 999) / 1000;
+  else
+    return -1;
+}
+
+/**
+ * g_source_get_ready_time_ns:
+ * @source: a source
+ * @ready_time: (optional) (out caller-allocates): Set to the ready time
+ *   on success
+ *
+ * Gets the ‘ready time’ of @source, as set by
+ * [method@GLib.Source.set_ready_time_ns]. If no ready time has been set
+ * or it has been cleared via method@GLib.Source.clear_ready_time], this
+ * function returns false.
+ *
+ * Any time before or equal to the current monotonic time (including zero)
+ * is an indication that the source will fire immediately.
+ *
+ * Returns: true if the source has a ready time set.
+ *
+ * Since: 2.90
+ **/
+gboolean
+g_source_get_ready_time_ns (GSource  *source,
+                            uint64_t *ready_time)
+{
+  g_return_val_if_fail (source != NULL, -1);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, -1);
+
+  if (source->priv->has_ready_time)
+    {
+      if (ready_time)
+        *ready_time = source->priv->ready_time_ns;
+      return TRUE;
+    }
+  else
+    {
+      if (ready_time)
+        *ready_time = UINT64_MAX; /* defensive programming */
+      return FALSE;
+    }
 }
 
 /**
@@ -3890,9 +4025,10 @@ g_main_context_prepare (GMainContext *context,
 }
 
 static inline int
-round_timeout_to_msec (gint64 timeout_usec)
+round_timeout_to_msec (gboolean has_timeout,
+                       uint64_t timeout_ns)
 {
-  /* We need to round to milliseconds from our internal microseconds for
+  /* We need to round to milliseconds from our internal nanoseconds for
    * various external API and GPollFunc which requires milliseconds.
    *
    * However, we want to ensure a few invariants for this.
@@ -3906,26 +4042,15 @@ round_timeout_to_msec (gint64 timeout_usec)
    * of poll() (when available) avoids this jitter.
    */
 
-  if (timeout_usec == 0)
+  if (!has_timeout)
+    return -1;
+
+  if (timeout_ns == 0)
     return 0;
 
-  if (timeout_usec > 0)
-    {
-      guint64 timeout_msec = (timeout_usec + 999) / 1000;
+  timeout_ns = MIN (timeout_ns, ((uint64_t) G_MAXINT) * 1000000);
 
-      return (int) MIN (timeout_msec, G_MAXINT);
-    }
-
-  return -1;
-}
-
-static inline gint64
-extend_timeout_to_usec (int timeout_msec)
-{
-  if (timeout_msec >= 0)
-    return (gint64) timeout_msec * 1000;
-
-  return -1;
+  return (int) ((timeout_ns + 999999) / 1000000);
 }
 
 static gboolean
@@ -3971,12 +4096,14 @@ g_main_context_prepare_unlocked (GMainContext *context,
   
   /* Prepare all sources */
 
-  context->timeout_usec = -1;
+  context->has_timeout = FALSE;
+  context->timeout_ns = 0;
   
   g_source_iter_init (&iter, context, TRUE);
   while (g_source_iter_next (&iter, &source))
     {
-      gint64 source_timeout_usec = -1;
+      gboolean has_source_timeout = FALSE;
+      uint64_t source_timeout_ns;
 
       if (SOURCE_DESTROYED (source) || SOURCE_BLOCKED (source))
 	continue;
@@ -4004,7 +4131,11 @@ g_main_context_prepare_unlocked (GMainContext *context,
               result = (*prepare) (source, &source_timeout_msec);
               TRACE (GLIB_MAIN_AFTER_PREPARE (source, prepare, source_timeout_msec));
 
-              source_timeout_usec = extend_timeout_to_usec (source_timeout_msec);
+              if (source_timeout_msec >= 0)
+                {
+                  has_source_timeout = TRUE;
+                  source_timeout_ns = ((uint64_t) source_timeout_msec) * 1000 * 1000;
+                }
 
               g_trace_mark (begin_time_nsec, G_TRACE_CURRENT_TIME - begin_time_nsec,
                             "GLib", "GSource.prepare",
@@ -4018,24 +4149,29 @@ g_main_context_prepare_unlocked (GMainContext *context,
           else
             result = FALSE;
 
-          if (result == FALSE && source->priv->ready_time != -1)
+          if (result == FALSE && source->priv->has_ready_time)
             {
               if (!context->time_is_fresh)
                 {
-                  context->time = g_get_monotonic_time ();
+                  context->time_ns = g_get_monotonic_time_ns ();
                   context->time_is_fresh = TRUE;
                 }
 
-              if (source->priv->ready_time <= context->time)
+              if (source->priv->ready_time_ns <= context->time_ns)
                 {
-                  source_timeout_usec = 0;
-                  result = TRUE;
+                  source_timeout_ns = 0;
                 }
-              else if (source_timeout_usec < 0 ||
-                       (source->priv->ready_time < context->time + source_timeout_usec))
+              else
                 {
-                  source_timeout_usec = MAX (0, source->priv->ready_time - context->time);
+                  uint64_t ready_timeout_ns = source->priv->ready_time_ns - context->time_ns;
+
+                  if (!has_source_timeout)
+                    source_timeout_ns = ready_timeout_ns;
+                  else
+                    source_timeout_ns = MIN (source_timeout_ns, ready_timeout_ns);
                 }
+
+              has_source_timeout = TRUE;
             }
 
 	  if (result)
@@ -4054,15 +4190,21 @@ g_main_context_prepare_unlocked (GMainContext *context,
 	{
 	  n_ready++;
 	  current_priority = source->priority;
-	  context->timeout_usec = 0;
+	  context->has_timeout = TRUE;
+	  context->timeout_ns = 0;
 	}
 
-      if (source_timeout_usec >= 0)
+      if (has_source_timeout)
         {
-          if (context->timeout_usec < 0)
-            context->timeout_usec = source_timeout_usec;
+          if (!context->has_timeout)
+            {
+              context->timeout_ns = source_timeout_ns;
+              context->has_timeout = TRUE;
+            }
           else
-            context->timeout_usec = MIN (context->timeout_usec, source_timeout_usec);
+            {
+              context->timeout_ns = MIN (context->timeout_ns, source_timeout_ns);
+            }
         }
     }
   g_source_iter_clear (&iter);
@@ -4106,7 +4248,8 @@ g_main_context_query (GMainContext *context,
 		      GPollFD      *fds,
 		      gint          n_fds)
 {
-  gint64 timeout_usec;
+  gboolean has_timeout;
+  uint64_t timeout_ns;
   gint n_poll;
 
   if (context == NULL)
@@ -4114,12 +4257,12 @@ g_main_context_query (GMainContext *context,
 
   LOCK_CONTEXT (context);
 
-  n_poll = g_main_context_query_unlocked (context, max_priority, &timeout_usec, fds, n_fds);
+  n_poll = g_main_context_query_unlocked (context, max_priority, &has_timeout, &timeout_ns, fds, n_fds);
 
   UNLOCK_CONTEXT (context);
 
   if (timeout_msec != NULL)
-    *timeout_msec = round_timeout_to_msec (timeout_usec);
+    *timeout_msec = round_timeout_to_msec (has_timeout, timeout_ns);
 
   return n_poll;
 }
@@ -4127,7 +4270,8 @@ g_main_context_query (GMainContext *context,
 static gint
 g_main_context_query_unlocked (GMainContext *context,
                                gint          max_priority,
-                               gint64       *timeout_usec,
+                               gboolean     *has_timeout,
+                               uint64_t     *timeout_ns,
                                GPollFD      *fds,
                                gint          n_fds)
 {
@@ -4181,14 +4325,13 @@ g_main_context_query_unlocked (GMainContext *context,
 
   context->poll_changed = FALSE;
 
-  if (timeout_usec)
-    {
-      *timeout_usec = context->timeout_usec;
-      if (*timeout_usec != 0)
-        context->time_is_fresh = FALSE;
-    }
+  *has_timeout = context->has_timeout;
+  *timeout_ns = context->timeout_ns;
 
-  TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->timeout_usec,
+  if (!context->has_timeout || context->timeout_ns != 0)
+    context->time_is_fresh = FALSE;
+
+  TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->has_timeout, context->timeout_ns,
                                         fds, n_poll));
 
   return n_poll;
@@ -4373,15 +4516,15 @@ g_main_context_check_unlocked (GMainContext *context,
                 }
             }
 
-          if (result == FALSE && source->priv->ready_time != -1)
+          if (result == FALSE && source->priv->has_ready_time)
             {
               if (!context->time_is_fresh)
                 {
-                  context->time = g_get_monotonic_time ();
+                  context->time_ns = g_get_monotonic_time_ns ();
                   context->time_is_fresh = TRUE;
                 }
 
-              if (source->priv->ready_time <= context->time)
+              if (source->priv->ready_time_ns <= context->time_ns)
                 result = TRUE;
             }
 
@@ -4464,7 +4607,8 @@ g_main_context_iterate_unlocked (GMainContext *context,
                                  GThread      *self)
 {
   gint max_priority = 0;
-  gint64 timeout_usec;
+  gboolean has_timeout;
+  uint64_t timeout_ns;
   gboolean some_ready;
   gint nfds, allocated_nfds;
   GPollFD *fds = NULL;
@@ -4499,8 +4643,8 @@ g_main_context_iterate_unlocked (GMainContext *context,
   g_main_context_prepare_unlocked (context, &max_priority);
 
   while ((nfds = g_main_context_query_unlocked (
-              context, max_priority, &timeout_usec, fds,
-              allocated_nfds)) > allocated_nfds)
+              context, max_priority, &has_timeout, &timeout_ns,
+              fds, allocated_nfds)) > allocated_nfds)
     {
       g_free (fds);
       context->cached_poll_array_size = allocated_nfds = nfds;
@@ -4508,9 +4652,12 @@ g_main_context_iterate_unlocked (GMainContext *context,
     }
 
   if (!block)
-    timeout_usec = 0;
+    {
+      has_timeout = TRUE;
+      timeout_ns = 0;
+    }
 
-  g_main_context_poll_unlocked (context, timeout_usec, max_priority, fds, nfds);
+  g_main_context_poll_unlocked (context, has_timeout, timeout_ns, max_priority, fds, nfds);
 
   some_ready = g_main_context_check_unlocked (context, max_priority, fds, nfds);
   
@@ -4794,7 +4941,8 @@ g_main_loop_get_context (GMainLoop *loop)
 /* HOLDS: context's lock */
 static void
 g_main_context_poll_unlocked (GMainContext *context,
-                              gint64        timeout_usec,
+                              gboolean      has_timeout,
+                              uint64_t      timeout_ns,
                               int           priority,
                               GPollFD      *fds,
                               int           n_fds)
@@ -4807,7 +4955,7 @@ g_main_context_poll_unlocked (GMainContext *context,
 
   GPollFunc poll_func;
 
-  if (n_fds || timeout_usec != 0)
+  if (n_fds || !has_timeout || timeout_ns != 0)
     {
       int ret, errsv;
 
@@ -4815,8 +4963,8 @@ g_main_context_poll_unlocked (GMainContext *context,
       poll_timer = NULL;
       if (_g_main_poll_debug)
 	{
-          g_print ("polling context=%p n=%d timeout_usec=%"G_GINT64_FORMAT"\n",
-                   context, n_fds, timeout_usec);
+          g_print ("polling context=%p n=%d has_timeout=%s timeout_ns=%"PRIu64"\n",
+                   context, n_fds, has_timeout ? "true" : "false", timeout_ns);
           poll_timer = g_timer_new ();
 	}
 #endif
@@ -4828,10 +4976,10 @@ g_main_context_poll_unlocked (GMainContext *context,
           struct timespec spec;
           struct timespec *spec_p = NULL;
 
-          if (timeout_usec > -1)
+          if (has_timeout)
             {
-              spec.tv_sec = timeout_usec / G_USEC_PER_SEC;
-              spec.tv_nsec = (timeout_usec % G_USEC_PER_SEC) * 1000L;
+              spec.tv_sec = timeout_ns / G_NSEC_PER_SEC;
+              spec.tv_nsec = timeout_ns % G_NSEC_PER_SEC;
               spec_p = &spec;
             }
 
@@ -4842,7 +4990,7 @@ g_main_context_poll_unlocked (GMainContext *context,
       else
 #endif
         {
-          int timeout_msec = round_timeout_to_msec (timeout_usec);
+          int timeout_msec = round_timeout_to_msec (has_timeout, timeout_ns);
 
           UNLOCK_CONTEXT (context);
           ret = (*poll_func) (fds, n_fds, timeout_msec);
@@ -4863,9 +5011,10 @@ g_main_context_poll_unlocked (GMainContext *context,
 #ifdef	G_MAIN_POLL_DEBUG
       if (_g_main_poll_debug)
 	{
-          g_print ("g_main_poll(%d) timeout_usec: %"G_GINT64_FORMAT" - elapsed %12.10f seconds",
+          g_print ("g_main_poll(%d) has_timeout: %s timeout_ns: %"PRIu64" - elapsed %12.10f seconds",
                    n_fds,
-                   timeout_usec,
+                   has_timeout ? "true" : "false",
+                   timeout_ns,
                    g_timer_elapsed (poll_timer, NULL));
           g_timer_destroy (poll_timer);
 	  pollrec = context->poll_records;
@@ -4901,7 +5050,7 @@ g_main_context_poll_unlocked (GMainContext *context,
 	  g_print ("\n");
 	}
 #endif
-    } /* if (n_fds || timeout_usec != 0) */
+    } /* if (n_fds || !has_timeout || timeout_ns != 0) */
 }
 
 /**
@@ -5063,6 +5212,50 @@ g_source_get_current_time (GSource  *source,
 G_GNUC_END_IGNORE_DEPRECATIONS
 
 /**
+ * g_source_get_time_ns:
+ * @source: a source
+ *
+ * Gets the time to be used when checking this source.
+ *
+ * The advantage of calling this function over calling
+ * [func@GLib.get_monotonic_time_ns] directly is
+ * that when checking multiple sources, GLib can cache a single value
+ * instead of having to repeatedly get the system monotonic time.
+ *
+ * The time here is the system monotonic time, if available, or some
+ * other reasonable alternative otherwise.  See [func@GLib.get_monotonic_time_ns].
+ *
+ * Returns: the monotonic time in nanoseconds
+ * Since: 2.90
+ **/
+uint64_t
+g_source_get_time_ns (GSource *source)
+{
+  GMainContext *context;
+  gint64 result;
+
+  g_return_val_if_fail (source != NULL, 0);
+  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
+  context = source_dup_main_context (source);
+  g_return_val_if_fail (context != NULL, 0);
+
+  LOCK_CONTEXT (context);
+
+  if (!context->time_is_fresh)
+    {
+      context->time_ns = g_get_monotonic_time_ns ();
+      context->time_is_fresh = TRUE;
+    }
+
+  result = context->time_ns;
+
+  UNLOCK_CONTEXT (context);
+  g_main_context_unref (context);
+
+  return result;
+}
+
+/**
  * g_source_get_time:
  * @source: a source
  *
@@ -5082,28 +5275,9 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 gint64
 g_source_get_time (GSource *source)
 {
-  GMainContext *context;
-  gint64 result;
-
   g_return_val_if_fail (source != NULL, 0);
-  g_return_val_if_fail (g_atomic_int_get (&source->ref_count) > 0, 0);
-  context = source_dup_main_context (source);
-  g_return_val_if_fail (context != NULL, 0);
 
-  LOCK_CONTEXT (context);
-
-  if (!context->time_is_fresh)
-    {
-      context->time = g_get_monotonic_time ();
-      context->time_is_fresh = TRUE;
-    }
-
-  result = context->time;
-
-  UNLOCK_CONTEXT (context);
-  g_main_context_unref (context);
-
-  return result;
+  return g_source_get_time_ns (source) / 1000;
 }
 
 /**
@@ -5250,13 +5424,13 @@ g_main_context_is_owner (GMainContext *context)
 
 static void
 g_timeout_set_expiration (GTimeoutSource *timeout_source,
-                          gint64          current_time)
+                          uint64_t        current_time_ns)
 {
-  gint64 expiration;
+  uint64_t expiration_ns;
 
   if (timeout_source->seconds)
     {
-      gint64 remainder;
+      uint64_t remainder_ns;
       static gint timer_perturb = -1;
 
       if (timer_perturb == -1)
@@ -5270,12 +5444,12 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
           if (!session_bus_address)
             session_bus_address = g_getenv ("HOSTNAME");
           if (session_bus_address)
-            timer_perturb = ABS ((gint) g_str_hash (session_bus_address)) % 1000000;
+            timer_perturb = ABS ((gint) g_str_hash (session_bus_address)) % G_NSEC_PER_SEC;
           else
             timer_perturb = 0;
         }
 
-      expiration = current_time + (guint64) timeout_source->interval * 1000 * 1000;
+      expiration_ns = current_time_ns + timeout_source->interval * G_NSEC_PER_SEC;
 
       /* We want the microseconds part of the timeout to land on the
        * 'timer_perturb' mark, but we need to make sure we don't try to
@@ -5283,21 +5457,21 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
        * always only *increase* the expiration time by adding a full
        * second in the case that the microsecond portion decreases.
        */
-      expiration -= timer_perturb;
+      expiration_ns -= timer_perturb;
 
-      remainder = expiration % 1000000;
-      if (remainder >= 1000000/4)
-        expiration += 1000000;
+      remainder_ns = expiration_ns % G_NSEC_PER_SEC;
+      if (remainder_ns >= G_NSEC_PER_SEC / 4)
+        expiration_ns += G_NSEC_PER_SEC;
 
-      expiration -= remainder;
-      expiration += timer_perturb;
+      expiration_ns -= remainder_ns;
+      expiration_ns += timer_perturb;
     }
   else
     {
-      expiration = current_time + (guint64) timeout_source->interval * 1000;
+      expiration_ns = current_time_ns + timeout_source->interval;
     }
 
-  g_source_set_ready_time ((GSource *) timeout_source, expiration);
+  g_source_set_ready_time_ns ((GSource *) timeout_source, expiration_ns);
 }
 
 static gboolean
@@ -5329,13 +5503,13 @@ g_timeout_dispatch (GSource     *source,
   TRACE (GLIB_TIMEOUT_DISPATCH (source, source->context, callback, user_data, again));
 
   if (again)
-    g_timeout_set_expiration (timeout_source, g_source_get_time (source));
+    g_timeout_set_expiration (timeout_source, g_source_get_time_ns (source));
 
   return again;
 }
 
 static GSource *
-timeout_source_new (guint    interval,
+timeout_source_new (uint64_t interval,
                     gboolean seconds,
                     gboolean one_shot)
 {
@@ -5346,7 +5520,7 @@ timeout_source_new (guint    interval,
   timeout_source->seconds = seconds;
   timeout_source->one_shot = one_shot;
 
-  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
+  g_timeout_set_expiration (timeout_source, g_get_monotonic_time_ns ());
 
   return source;
 }
@@ -5368,6 +5542,28 @@ timeout_source_new (guint    interval,
  **/
 GSource *
 g_timeout_source_new (guint interval)
+{
+  return timeout_source_new ((uint64_t) interval * (G_NSEC_PER_SEC / 1000), FALSE, FALSE);
+}
+
+/**
+ * g_timeout_source_new_ns:
+ * @interval: the timeout interval in nanoseconds
+ * 
+ * Creates a new timeout source.
+ *
+ * The source will not initially be associated with any [struct@GLib.MainContext]
+ * and must be added to one with [method@GLib.Source.attach] before it will be
+ * executed.
+ *
+ * The interval given is in terms of monotonic time, not wall clock
+ * time.  See [func@GLib.get_monotonic_time_ns].
+ *
+ * Returns: (transfer full): the newly-created timeout source
+ * Since: 2.90
+ **/
+GSource *
+g_timeout_source_new_ns (uint64_t interval)
 {
   return timeout_source_new (interval, FALSE, FALSE);
 }
@@ -5399,7 +5595,7 @@ g_timeout_source_new_seconds (guint interval)
 
 static guint
 timeout_add_full (gint           priority,
-                  guint          interval,
+                  uint64_t       interval,
                   gboolean       seconds,
                   gboolean       one_shot,
                   GSourceFunc    function,
@@ -5474,7 +5670,7 @@ g_timeout_add_full (gint           priority,
 		    gpointer       data,
 		    GDestroyNotify notify)
 {
-  return timeout_add_full (priority, interval, FALSE, FALSE, function, data, notify);
+  return timeout_add_full (priority, (uint64_t) interval * (G_NSEC_PER_SEC / 1000), FALSE, FALSE, function, data, notify);
 }
 
 /**
@@ -5550,7 +5746,7 @@ g_timeout_add_once (guint32         interval,
                     GSourceOnceFunc function,
                     gpointer        data)
 {
-  return timeout_add_full (G_PRIORITY_DEFAULT, interval, FALSE, TRUE, (GSourceFunc) function, data, NULL);
+  return timeout_add_full (G_PRIORITY_DEFAULT, (uint64_t) interval * (G_NSEC_PER_SEC / 1000), FALSE, TRUE, (GSourceFunc) function, data, NULL);
 }
 
 /**

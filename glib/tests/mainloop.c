@@ -29,6 +29,15 @@
 #include <stdio.h>
 #include <string.h>
 
+static void
+clear_ready_time (GSource *source)
+{
+  if (g_test_rand_bit ())
+    g_source_clear_ready_time (source);
+  else
+    g_source_set_ready_time (source, -1);
+}
+
 static gboolean
 cb (gpointer data)
 {
@@ -281,6 +290,68 @@ test_timeouts (void)
   g_assert_cmpint (global_a, <=, 10);
   g_assert_cmpint (global_b, <=, 4);
   g_assert_cmpint (global_c, <=, 3);
+
+  g_main_loop_unref (loop);
+  g_main_context_unref (ctx);
+}
+
+static void
+test_timeouts_ns (void)
+{
+  const uint64_t test_duration = G_NSEC_PER_SEC;
+  GMainContext *ctx;
+  GMainLoop *loop;
+  GSource *source;
+  gsize i;
+  int counters[31] = { 0, };
+
+  if (!g_test_thorough ())
+    {
+      g_test_skip ("Not running timing heavy test");
+      return;
+    }
+
+  ctx = g_main_context_new ();
+  loop = g_main_loop_new (ctx, FALSE);
+
+  for (i = 0; i < G_N_ELEMENTS (counters); i++)
+    {
+      if (i == G_N_ELEMENTS (counters) - 1)
+        source = g_timeout_source_new_ns (UINT64_MAX);
+      else
+        source = g_timeout_source_new_ns (((uint64_t) 1) << i);
+      g_source_set_callback (source, count_calls, &counters[i], NULL);
+      g_source_attach (source, ctx);
+      g_source_unref (source);
+    }
+
+  source = g_timeout_source_new_ns (test_duration);
+  g_source_set_callback (source, (GSourceFunc) g_main_loop_quit, loop, NULL);
+  g_source_attach (source, ctx);
+  g_source_unref (source);
+
+  g_main_loop_run (loop);
+
+  for (i = 0; i < G_N_ELEMENTS (counters) - 1; i++)
+    {
+      /* We may be delayed for an arbitrary amount of time - for example,
+       * it's possible for all timeouts to fire exactly once, when the
+       * source fires that quits the main loop.
+       */
+      g_assert_cmpint (counters[i], >, 0);
+      /* Counters must not fire more than there was time available. */
+      g_assert_cmpint (counters[i], <=, (test_duration >> i) + 1);
+      /* Each counter has a lower timeout than the next, so they must fire
+       * at least as often.
+       */
+      g_assert_cmpint (counters[i], >=, counters[i+1]);
+
+      if (g_test_verbose())
+        g_test_message ("%9uns source fired%3d%% - %9d/%u",
+                        1 << i,
+                        100 * counters[i] / ((int) (test_duration >> i) + 1),
+                        counters[i], (unsigned) (test_duration >> i) + 1);
+    }
 
   g_main_loop_unref (loop);
   g_main_context_unref (ctx);
@@ -773,6 +844,7 @@ typedef struct {
 
   GSource *timeout1, *timeout2;
   gint64 time1;
+  uint64_t time1_ns;
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GTimeVal tv;  /* needed for g_source_get_current_time() */
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -784,6 +856,7 @@ timeout1_callback (gpointer user_data)
   TimeTestData *data = user_data;
   GSource *source;
   gint64 mtime1, mtime2, time2;
+  uint64_t mtime1_ns, mtime2_ns, time2_ns;
 
   source = g_main_current_source ();
   g_assert_true (source == data->timeout1);
@@ -795,6 +868,8 @@ timeout1_callback (gpointer user_data)
 
       mtime1 = g_get_monotonic_time ();
       data->time1 = g_source_get_time (source);
+      mtime1_ns = g_get_monotonic_time_ns ();
+      data->time1_ns = g_source_get_time_ns (source);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_source_get_current_time (source, &data->tv);
@@ -804,9 +879,13 @@ G_GNUC_END_IGNORE_DEPRECATIONS
       g_usleep (1000000);
       mtime2 = g_get_monotonic_time ();
       time2 = g_source_get_time (source);
+      mtime2_ns = g_get_monotonic_time_ns ();
+      time2_ns = g_source_get_time_ns (source);
 
       g_assert_cmpint (mtime1, <, mtime2);
       g_assert_cmpint (data->time1, ==, time2);
+      g_assert_cmpuint (mtime1_ns, <, mtime2_ns);
+      g_assert_cmpuint (data->time1_ns, ==, time2_ns);
     }
   else
     {
@@ -823,6 +902,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
        */
       time2 = g_source_get_time (source);
       g_assert_cmpint (data->time1, <, time2);
+      time2_ns = g_source_get_time_ns (source);
+      g_assert_cmpuint (data->time1_ns, <, time2_ns);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_source_get_current_time (source, &tv);
@@ -844,6 +925,7 @@ timeout2_callback (gpointer user_data)
   TimeTestData *data = user_data;
   GSource *source;
   gint64 time2, time3;
+  uint64_t time2_ns, time3_ns;
 
   source = g_main_current_source ();
   g_assert_true (source == data->timeout2);
@@ -855,6 +937,8 @@ timeout2_callback (gpointer user_data)
    */
   time2 = g_source_get_time (source);
   g_assert_cmpint (data->time1, ==, time2);
+  time2_ns = g_source_get_time_ns (source);
+  g_assert_cmpuint (data->time1_ns, ==, time2_ns);
 
   /* The source should still have a valid time even after being
    * destroyed, since it's currently running.
@@ -862,6 +946,8 @@ timeout2_callback (gpointer user_data)
   g_source_destroy (source);
   time3 = g_source_get_time (source);
   g_assert_cmpint (time2, ==, time3);
+  time3_ns = g_source_get_time_ns (source);
+  g_assert_cmpuint (time2_ns, ==, time3_ns);
 
   return FALSE;
 }
@@ -990,7 +1076,7 @@ ready_time_dispatch (GSource     *source,
 {
   g_atomic_int_set (&ready_time_dispatched, TRUE);
 
-  g_source_set_ready_time (source, -1);
+  clear_ready_time (source);
 
   return TRUE;
 }
@@ -1012,6 +1098,7 @@ test_ready_time (void)
     NULL, NULL, ready_time_dispatch, NULL, NULL, NULL
   };
   GMainLoop *loop;
+  uint64_t ready_time_ns;
 
   source = g_source_new (&source_funcs, sizeof (GSource));
   g_source_attach (source, NULL);
@@ -1026,15 +1113,18 @@ test_ready_time (void)
 
   /* A source with no ready time set should not fire */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
   while (g_main_context_iteration (NULL, FALSE));
   g_assert_false (g_atomic_int_get (&ready_time_dispatched));
 
   /* The ready time should not have been changed */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* Of course this shouldn't change anything either */
-  g_source_set_ready_time (source, -1);
+  clear_ready_time (source);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* A source with a ready time set to tomorrow should not fire on any
    * builder, no matter how badly loaded...
@@ -1044,13 +1134,16 @@ test_ready_time (void)
   g_assert_false (g_atomic_int_get (&ready_time_dispatched));
   /* Make sure it didn't get reset */
   g_assert_cmpint (g_source_get_ready_time (source), !=, -1);
+  g_assert_true (g_source_get_ready_time_ns (source, &ready_time_ns));
+  g_assert_cmpuint (ready_time_ns, <=, g_get_monotonic_time_ns () + G_TIME_SPAN_DAY * 1000);
 
   /* Ready time of -1 -> don't fire */
-  g_source_set_ready_time (source, -1);
+  clear_ready_time (source);
   while (g_main_context_iteration (NULL, FALSE));
   g_assert_false (g_atomic_int_get (&ready_time_dispatched));
   /* Not reset, but should still be -1 from above */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* A ready time of the current time should fire immediately */
   g_source_set_ready_time (source, g_get_monotonic_time ());
@@ -1059,6 +1152,16 @@ test_ready_time (void)
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   /* Should have gotten reset by the handler function */
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
+
+  /* This should also work in nanoseconds */
+  g_source_set_ready_time_ns (source, g_get_monotonic_time_ns ());
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
+  /* Should have gotten reset by the handler function */
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* As well as one in the recent past... */
   g_source_set_ready_time (source, g_get_monotonic_time () - G_TIME_SPAN_SECOND);
@@ -1066,6 +1169,15 @@ test_ready_time (void)
   g_assert_true (g_atomic_int_get (&ready_time_dispatched));
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
+
+  /* ... also works in nanoseconds */
+  g_source_set_ready_time_ns (source, g_get_monotonic_time_ns () - G_NSEC_PER_SEC);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* Zero is the 'official' way to get a source to fire immediately */
   g_source_set_ready_time (source, 0);
@@ -1073,6 +1185,15 @@ test_ready_time (void)
   g_assert_true (g_atomic_int_get (&ready_time_dispatched));
   g_atomic_int_set (&ready_time_dispatched, FALSE);
   g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
+
+  /* Zero is also 'official' for immediate firing in nanoseconds */
+  g_source_set_ready_time_ns (source, 0);
+  while (g_main_context_iteration (NULL, FALSE));
+  g_assert_true (g_atomic_int_get (&ready_time_dispatched));
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
 
   /* Now do some tests of cross-thread wakeups.
    *
@@ -1089,6 +1210,12 @@ test_ready_time (void)
   g_source_set_ready_time (source, 0);
   while (!g_atomic_int_get (&ready_time_dispatched));
 
+  /* Play the same game, but this time in nanoseconds */
+  g_usleep (G_TIME_SPAN_SECOND / 2);
+  g_atomic_int_set (&ready_time_dispatched, FALSE);
+  g_source_set_ready_time_ns (source, 0);
+  while (!g_atomic_int_get (&ready_time_dispatched));
+
   /* kill the thread */
   g_main_loop_quit (loop);
   g_thread_join (thread);
@@ -1097,8 +1224,99 @@ test_ready_time (void)
   g_source_destroy (source);
 }
 
+static gboolean
+clear_ready_time_dispatch (GSource     *source,
+                           GSourceFunc  callback,
+                           gpointer     user_data)
+{
+  uint64_t ready_time_ns;
+
+  g_assert_cmpint (g_source_get_ready_time (source), !=, -1);
+  g_assert_cmpint (g_source_get_ready_time (source), <=, g_source_get_time (source));
+  g_assert_true (g_source_get_ready_time_ns (source, &ready_time_ns));
+  g_assert_cmpuint (ready_time_ns, <=, g_source_get_time_ns (source));
+
+  clear_ready_time (source);
+
+  g_assert_cmpint (g_source_get_ready_time (source), ==, -1);
+  g_assert_false (g_source_get_ready_time_ns (source, &ready_time_ns));
+
+  return G_SOURCE_CONTINUE;
+}
+
 static void
-test_wakeup(void)
+test_various_ready_times (void)
+{
+  GSourceFuncs source_funcs = {
+    NULL, NULL, clear_ready_time_dispatch, NULL, NULL, NULL
+  };
+  gint64 ready_times[] = {
+    G_MININT64,
+    G_MININT64 + 1,
+    -2,
+    -1,
+    0,
+    1,
+    G_MAXINT64 - 1,
+    G_MAXINT64,
+  };
+  uint64_t ready_times_ns[] = {
+    0,
+    1,
+    1189998819991197253,
+    UINT64_MAX - 1,
+    UINT64_MAX,
+  };
+  GSource *sources[G_N_ELEMENTS (ready_times) + G_N_ELEMENTS (ready_times_ns) + 100];
+  GMainContext *ctx;
+  GMainLoop *loop;
+  GSource *source;
+  gsize i;
+  uint64_t now;
+
+  ctx = g_main_context_new ();
+  loop = g_main_loop_new (ctx, FALSE);
+
+  now = g_get_monotonic_time_ns ();
+
+  for (i = 0; i < G_N_ELEMENTS (sources); i++)
+    {
+      sources[i] = g_source_new (&source_funcs, sizeof (GSource));
+      if (i < G_N_ELEMENTS (ready_times))
+        g_source_set_ready_time (sources[i], ready_times[i]);
+      else if (i < G_N_ELEMENTS (ready_times) + G_N_ELEMENTS (ready_times_ns))
+        g_source_set_ready_time_ns (sources[i], ready_times_ns[i - G_N_ELEMENTS (ready_times)]);
+      else
+        g_source_set_ready_time_ns (sources[i], now + g_test_rand_int_range (0, G_MAXINT) - G_NSEC_PER_SEC / 2);
+
+      g_source_attach (sources[i], ctx);
+    }
+
+  source = g_timeout_source_new_ns (G_NSEC_PER_SEC);
+  g_source_set_callback (source, (GSourceFunc) g_main_loop_quit, loop, NULL);
+  g_source_attach (source, ctx);
+  g_source_unref (source);
+
+  g_main_loop_run (loop);
+
+  for (i = 0; i < G_N_ELEMENTS (sources); i++)
+    {
+      uint64_t ready_time_ns;
+
+      if (g_source_get_ready_time_ns (sources[i], &ready_time_ns))
+        {
+          /* hasn't triggered yet, so ready time must be in the future */
+          g_assert_cmpuint (ready_time_ns, >, g_source_get_time_ns (sources[i]));
+        }
+      g_source_unref (sources[i]);
+    }
+
+  g_main_loop_unref (loop);
+  g_main_context_unref (ctx);
+}
+
+static void
+test_wakeup (void)
 {
   GMainContext *ctx;
   int i;
@@ -2739,6 +2957,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/mainloop/basic", test_mainloop_basic);
   g_test_add_func ("/mainloop/timeouts", test_timeouts);
+  g_test_add_func ("/mainloop/timeouts_ns", test_timeouts_ns);
   g_test_add_func ("/mainloop/priorities", test_priorities);
   g_test_add_func ("/mainloop/invoke", test_invoke);
   g_test_add_func ("/mainloop/child_sources", test_child_sources);
@@ -2749,6 +2968,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/source_time", test_source_time);
   g_test_add_func ("/mainloop/overflow", test_mainloop_overflow);
   g_test_add_func ("/mainloop/ready-time", test_ready_time);
+  g_test_add_func ("/mainloop/various-ready-times", test_various_ready_times);
   g_test_add_func ("/mainloop/wakeup", test_wakeup);
   g_test_add_func ("/mainloop/remove-invalid", test_remove_invalid);
   g_test_add_func ("/mainloop/unref-while-pending", test_unref_while_pending);

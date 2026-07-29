@@ -21,7 +21,7 @@ provider glib {
 	probe main__context_before_prepare(void*);
 	probe main__context_after_prepare(void*, int, int);
 	probe main__context_before_query(void*, int);
-	probe main__context_after_query(void*, int64_t, void*, int);
+	probe main__context_after_query(void*, bool, uint64_t, void*, int);
 	probe main__context_before_check(void*, int, void*, int);
 	probe main__context_after_check(void*, int);
 	probe main__context_before_dispatch(void*);

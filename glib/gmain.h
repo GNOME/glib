@@ -759,8 +759,16 @@ void                 g_source_set_name_by_id (guint           tag,
 GLIB_AVAILABLE_IN_2_36
 void                 g_source_set_ready_time (GSource        *source,
                                               gint64          ready_time);
+GLIB_AVAILABLE_IN_2_90
+void                 g_source_set_ready_time_ns (GSource     *source,
+                                                 uint64_t     ready_time);
+GLIB_AVAILABLE_IN_2_90
+void                 g_source_clear_ready_time (GSource      *source);
 GLIB_AVAILABLE_IN_2_36
 gint64               g_source_get_ready_time (GSource        *source);
+GLIB_AVAILABLE_IN_2_90
+gboolean             g_source_get_ready_time_ns (GSource     *source,
+                                                 uint64_t    *ready_time);
 
 #ifdef G_OS_UNIX
 GLIB_AVAILABLE_IN_2_36
@@ -807,6 +815,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 GLIB_AVAILABLE_IN_ALL
 gint64   g_source_get_time         (GSource        *source);
+GLIB_AVAILABLE_IN_2_90
+uint64_t g_source_get_time_ns      (GSource        *source);
 
  /* void g_source_connect_closure (GSource        *source,
                                   GClosure       *closure);
@@ -820,6 +830,8 @@ GLIB_AVAILABLE_IN_ALL
 GSource *g_child_watch_source_new (GPid pid);
 GLIB_AVAILABLE_IN_ALL
 GSource *g_timeout_source_new     (guint interval);
+GLIB_AVAILABLE_IN_2_90
+GSource *g_timeout_source_new_ns  (uint64_t interval);
 GLIB_AVAILABLE_IN_ALL
 GSource *g_timeout_source_new_seconds (guint interval);
 
