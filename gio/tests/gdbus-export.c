@@ -313,7 +313,7 @@ dyna_cyber (GDBusConnection *connection,
             gpointer user_data)
 {
   GPtrArray *data = user_data;
-  gchar *node_name;
+  const char *node_name;
   guint n;
 
   node_name = strrchr (object_path, '/') + 1;

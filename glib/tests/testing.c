@@ -22,6 +22,8 @@
  * if advised of the possibility of such damage.
  */
 
+#define _POSIX_C_SOURCE 200809L  /* for F_DUPFD_CLOEXEC */
+
 #include "config.h"
 
 /* We want to distinguish between messages originating from libglib
@@ -36,7 +38,6 @@
 #include <string.h>
 
 #ifdef G_OS_UNIX
-#define _POSIX_C_SOURCE 200809L  /* for F_DUPFD_CLOEXEC */
 #include <fcntl.h>
 #include <glib-unix.h>
 #include <unistd.h>
