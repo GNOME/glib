@@ -4654,7 +4654,7 @@ g_test_build_filename_va (GTestFileType  file_type,
  *
  * The data file should either have been distributed with the module
  * containing the test ([enum@GLib.TestFileType.dist] or built as part of the
- * buildcsystem of that module ([enum@GLib.TestFileType.built]).
+ * build system of that module ([enum@GLib.TestFileType.built]).
  *
  * In order for this function to work in srcdir != builddir situations,
  * the `G_TEST_SRCDIR` and `G_TEST_BUILDDIR` environment variables need
