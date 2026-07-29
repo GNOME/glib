@@ -1,3 +1,35 @@
+Overview of changes in GLib 2.89.3, 2026-07-29
+==============================================
+
+* Support systemd-style UAPI file masking and drop-ins for `GKeyFile` (#3622,
+  work by Stefan Schubert)
+
+* Add some string and date convenience API, `g_string_free_deep()` and
+  `g_set_date_time()` (!4919, !5193, work by Peter Eisenmann)
+
+* Add some convenience API to `GUnixFDList` (!5233, work by Sebastian Wick)
+
+* Bugs fixed:
+  - #3622 Support UAPI file masking and drop-ins in GKeyFile
+  - #3994 gio/tests: iptosmessage does not compile on Solaris
+  - #3999 fd leak in `g_file_set_contents_full()` on error? (Kondor Dániel)
+  - #4007 gio-tool: crash (assertion failed) when running 'gio help help' (Jose
+    Carlos Leiva)
+  - !4919 Add g_string_free_deep
+  - !5193 datetime: Add g_set_date_time
+  - !5230 giostream: Clarify is_closed() method docs for streams
+  - !5233 gunixfdlist: Add g_unix_fd_list_append_take, g_unix_fd_list_peek,
+    g_unix_fd_list_lookup, g_unix_fd_list_lookup_peek
+  - !5246 gtestutils: Fix a minor typo in a documentation comment
+  - !5248 tests: Minor compiler warning fixes for GCC16
+  - !5249 build: Fix a deprecation warning from Meson 1.12
+  - !5251 docs: Use dedicated docblocks for new enum members
+  - !5252 docs: Annotate callbacks rather than user_data
+  - !5254 Add finer accuracy g_timeout APIs
+  - !5255 gdbusnameowning: Don't print any logs when connection is closed
+  - !5257 Avoid reserved identifiers in public macros
+
+
 Overview of changes in GLib 2.89.2, 2026-07-14
 ==============================================
 
