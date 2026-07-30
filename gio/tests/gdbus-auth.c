@@ -317,7 +317,7 @@ test_auth_server_read_limit (void)
   size_t bytes_written;
   GError *local_error = NULL;
 
-  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3985");
+  g_test_bug ("3985");
 
   server = server_new_for_mechanism (NULL);
 
@@ -412,6 +412,7 @@ main (int   argc,
   temp_dbus_keyrings_setup ();
 
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("https://gitlab.gnome.org/GNOME/glib/-/issues/");
 
   g_test_add_func ("/gdbus/auth/client/EXTERNAL",         auth_client_external);
   g_test_add_func ("/gdbus/auth/client/DBUS_COOKIE_SHA1", auth_client_dbus_cookie_sha1);
