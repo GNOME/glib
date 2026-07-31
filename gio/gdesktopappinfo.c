@@ -4209,6 +4209,8 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
   if (!dirname)
     return FALSE;
 
+  /* The vfunc wrapper has validated that @extension is OK to use as a component
+   * of a filename. */
   basename = g_strdup_printf ("user-extension-%s.xml", extension);
   filename = g_build_filename (dirname, basename, NULL);
   g_free (basename);
