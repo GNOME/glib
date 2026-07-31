@@ -18,7 +18,7 @@ foreach service_file_name : dbus_service_files
     # Build a second copy of the service file for the installed
     # version of the tests.
     installed_service_file = configure_file(
-      input: service_file,
+      input: service_file_name + '.in',
       output: service_file_name + '.to-install',
       configuration: installed_cdata,
     )
