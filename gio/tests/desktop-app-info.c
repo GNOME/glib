@@ -525,7 +525,7 @@ test_last_used (void)
     return;
 
   info1 = create_app_info ("Test1");
-  info2 = create_app_info ("Test2");
+  info2 = create_app_info ("Oh No / A Slash");
 
   g_app_info_set_as_default_for_type (info1, "application/x-test", &error);
   g_assert_no_error (error);

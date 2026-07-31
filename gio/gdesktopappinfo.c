@@ -4312,6 +4312,7 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
   gsize data_size;
   int fd;
   gboolean res;
+  char *escaped_name = NULL;
 
   if (info->filename != NULL)
     return TRUE;
@@ -4364,10 +4365,18 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
   data = g_key_file_to_data (key_file, &data_size, NULL);
   g_key_file_free (key_file);
 
-  desktop_id = g_strdup_printf ("userapp-%s-XXXXXX.desktop", info->name);
+  /* We’re only using the name as a pseudo-unique identifier to make the files
+   * a bit easier to identify to humans. g_mkstemp() is doing the real work of
+   * avoiding collisions. So, if the app name contains characters which are
+   * invalid in a filename, just escape them. */
+  escaped_name = g_strdup (info->name);
+  g_strdelimit (escaped_name, "/\\", '_');
+
+  desktop_id = g_strdup_printf ("userapp-%s-XXXXXX.desktop", escaped_name);
   filename = g_build_filename (dirname, desktop_id, NULL);
   g_free (desktop_id);
   g_free (dirname);
+  g_free (escaped_name);
 
   fd = g_mkstemp (filename);
   if (fd == -1)
