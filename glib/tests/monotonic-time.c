@@ -123,8 +123,8 @@ test_similar (void)
   int64_t us_before, us_after, us_elapsed;
   uint64_t ns_before, ns_after, ns_elapsed;
 
-  us_before = g_get_monotonic_time ();
   ns_before = g_get_monotonic_time_ns ();
+  us_before = g_get_monotonic_time ();
 
   do
     {
