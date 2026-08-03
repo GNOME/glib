@@ -27,10 +27,10 @@ endif
 if host_system == 'windows'
   # Use gio-2.0-uninstalled.pc to find the paths where the GLib DLLs (and their dependent non-system
   # DLLs that are built as subprojects) are located
-  check_built_dll_paths_cmd = [get_dll_paths_script, '--build-path=@0@'.format(meson.project_build_root())]
+  check_built_dll_paths_cmd = [get_dll_paths_script, '--build-path=@0@'.format(meson.global_build_root())]
   meson_pkgconfig_paths = get_option('pkg_config_path')
   if meson_pkgconfig_paths.length() > 0
-    check_built_dll_paths_cmd += '--pkg-config-path=@0@'.format(''.join(meson_pkgconfig_paths))
+    check_built_dll_paths_cmd += '--pkg-config-path=@0@'.format(';'.join(meson_pkgconfig_paths))
   endif
   check_built_dll_paths = run_command(
     check_built_dll_paths_cmd,
