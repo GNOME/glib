@@ -4209,6 +4209,8 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
   if (!dirname)
     return FALSE;
 
+  /* The vfunc wrapper has validated that @extension is OK to use as a component
+   * of a filename. */
   basename = g_strdup_printf ("user-extension-%s.xml", extension);
   filename = g_build_filename (dirname, basename, NULL);
   g_free (basename);
@@ -4218,7 +4220,10 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
 
   if (!g_file_test (filename, G_FILE_TEST_EXISTS))
     {
-      char *contents;
+      char *contents = NULL, *mimetype_escaped = NULL, *extension_escaped = NULL;
+
+      mimetype_escaped = g_markup_escape_text (mimetype, -1);
+      extension_escaped = g_markup_escape_text (extension, -1);
 
       contents =
         g_strdup_printf ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -4227,12 +4232,15 @@ g_desktop_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
                          "  <comment>%s document</comment>\n"
                          "  <glob pattern=\"*.%s\"/>\n"
                          " </mime-type>\n"
-                         "</mime-info>\n", mimetype, extension, extension);
+                         "</mime-info>\n",
+                         mimetype_escaped, extension_escaped, extension_escaped);
 
       g_file_set_contents_full (filename, contents, -1,
                                 G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING,
                                 0600, NULL);
       g_free (contents);
+      g_free (extension_escaped);
+      g_free (mimetype_escaped);
 
       run_update_command ("update-mime-database", "mime");
     }
@@ -4304,6 +4312,7 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
   gsize data_size;
   int fd;
   gboolean res;
+  char *escaped_name = NULL;
 
   if (info->filename != NULL)
     return TRUE;
@@ -4356,10 +4365,18 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
   data = g_key_file_to_data (key_file, &data_size, NULL);
   g_key_file_free (key_file);
 
-  desktop_id = g_strdup_printf ("userapp-%s-XXXXXX.desktop", info->name);
+  /* We’re only using the name as a pseudo-unique identifier to make the files
+   * a bit easier to identify to humans. g_mkstemp() is doing the real work of
+   * avoiding collisions. So, if the app name contains characters which are
+   * invalid in a filename, just escape them. */
+  escaped_name = g_strdup (info->name);
+  g_strdelimit (escaped_name, "/\\", '_');
+
+  desktop_id = g_strdup_printf ("userapp-%s-XXXXXX.desktop", escaped_name);
   filename = g_build_filename (dirname, desktop_id, NULL);
   g_free (desktop_id);
   g_free (dirname);
+  g_free (escaped_name);
 
   fd = g_mkstemp (filename);
   if (fd == -1)

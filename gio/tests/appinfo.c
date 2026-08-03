@@ -498,6 +498,38 @@ test_associations (void)
 }
 
 static void
+test_extension_validation (void)
+{
+  GAppInfo *appinfo = NULL;
+  GError *local_error = NULL;
+  gboolean result;
+  char *cmdline = NULL;
+  const char *invalid_extensions[] =
+    {
+      "",
+      "../path/traversal",
+      "..\\windows\\path\\traversal",
+    };
+
+  cmdline = g_strconcat (g_test_get_dir (G_TEST_BUILT), "/appinfo-test --option", NULL);
+  appinfo = g_app_info_create_from_commandline (cmdline,
+                                                "cmdline-app-test",
+                                                G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                                NULL);
+  g_free (cmdline);
+
+  for (size_t i = 0; i < G_N_ELEMENTS (invalid_extensions); i++)
+    {
+      result = g_app_info_set_as_default_for_extension (appinfo, invalid_extensions[i], &local_error);
+      g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+      g_assert_false (result);
+      g_clear_error (&local_error);
+    }
+
+  g_clear_object (&appinfo);
+}
+
+static void
 test_environment (void)
 {
   GAppLaunchContext *ctx;
@@ -638,6 +670,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/launch-context-signals", test_launch_context_signals);
   g_test_add_func ("/appinfo/tryexec", test_tryexec);
   g_test_add_func ("/appinfo/associations", test_associations);
+  g_test_add_func ("/appinfo/extension-validation", test_extension_validation);
   g_test_add_func ("/appinfo/environment", test_environment);
   g_test_add_func ("/appinfo/startup-wm-class", test_startup_wm_class);
   g_test_add_func ("/appinfo/supported-types", test_supported_types);
