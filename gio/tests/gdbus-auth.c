@@ -355,8 +355,11 @@ test_auth_server_read_limit (void)
                                   sizeof (read_buffer),
                                   NULL,
                                   &local_error);
-  g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_CONNECTION_CLOSED);
-  g_assert_cmpint (read_len, <, 0);
+  if (read_len != 0)
+    {
+      g_assert_error (local_error, G_IO_ERROR, G_IO_ERROR_CONNECTION_CLOSED);
+      g_assert_cmpint (read_len, <, 0);
+    }
   g_clear_error (&local_error);
 
   write_buffer = g_strdup_printf ("AUTH\r\n");

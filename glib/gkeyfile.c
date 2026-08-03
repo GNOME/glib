@@ -1289,6 +1289,7 @@ g_key_file_load_unix_configurations (GKeyFile       *key_file,
         {
           g_propagate_error (error, g_steal_pointer (&key_file_error));
           ret = FALSE;
+          g_key_file_unref (parsed_key_file);
           continue;
         }
 
