@@ -5,6 +5,7 @@ RUN dnf -y update \
     bindfs \
     clang \
     clang-analyzer \
+    compiler-rt \
     dbus-daemon \
     dbus-devel \
     desktop-file-utils \
@@ -45,6 +46,7 @@ RUN dnf -y update \
     libffi-devel \
     libmount-devel \
     libselinux-devel \
+    libubsan \
     libxslt \
     ncurses-compat-libs \
     ninja-build \
