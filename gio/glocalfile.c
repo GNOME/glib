@@ -1853,19 +1853,10 @@ try_make_relative (const char *path,
 static gboolean
 ignore_trash_mount (GUnixMountEntry *mount)
 {
-  GUnixMountPoint *mount_point = NULL;
   const gchar *mount_options;
+  gboolean is_system_internal;
 
   mount_options = g_unix_mount_entry_get_options (mount);
-  if (mount_options == NULL)
-    {
-      mount_point = g_unix_mount_point_at (g_unix_mount_entry_get_mount_path (mount),
-                                           NULL);
-      if (mount_point != NULL)
-        mount_options = g_unix_mount_point_get_options (mount_point);
-
-      g_clear_pointer (&mount_point, g_unix_mount_point_free);
-    }
 
   if (mount_options != NULL)
     {
@@ -1876,10 +1867,52 @@ ignore_trash_mount (GUnixMountEntry *mount)
         return TRUE;
     }
 
-  if (g_unix_mount_entry_is_system_internal (mount))
-    return TRUE;
+  is_system_internal = g_unix_mount_entry_is_system_internal (mount);
 
-  return FALSE;
+  if (mount_options == NULL || is_system_internal)
+    {
+      GUnixMountPoint *mount_point = NULL;
+      const gchar *fstab_options = NULL;
+      gboolean fstab_trash = FALSE;
+      gboolean fstab_notrash = FALSE;
+
+      /* The x-gvfs-* options are userspace-only mount options: the kernel does
+       * not know about them, so they never appear in /proc/self/mountinfo.
+       * libmount can only report them from /run/mount/utab, which requires the
+       * filesystem to have been mounted by mount(8) and that file to have
+       * survived since boot; filesystems mounted by systemd, by the initrd or
+       * by an image-based OS carry no utab entry at all. So fall back to the
+       * fstab entry for this mount path.
+       *
+       * The mount_options == NULL case is the pre-existing fallback path, kept
+       * unchanged for platforms whose mount entries carry no options at all.
+       * The system-internal case is the new one, and is deliberately limited to
+       * that branch, which would refuse trashing anyway: g_unix_mount_point_at()
+       * re-parses fstab and has no cache, while this function is on the hot path
+       * of the access::can-trash attribute, which is queried for every file of
+       * an enumeration.
+       */
+      mount_point = g_unix_mount_point_at (g_unix_mount_entry_get_mount_path (mount),
+                                           NULL);
+      if (mount_point != NULL)
+        fstab_options = g_unix_mount_point_get_options (mount_point);
+
+      if (fstab_options != NULL)
+        {
+          fstab_trash = strstr (fstab_options, "x-gvfs-trash") != NULL;
+          fstab_notrash = strstr (fstab_options, "x-gvfs-notrash") != NULL;
+        }
+
+      g_clear_pointer (&mount_point, g_unix_mount_point_free);
+
+      if (fstab_trash)
+        return FALSE;
+
+      if (fstab_notrash)
+        return TRUE;
+    }
+
+  return is_system_internal;
 }
 
 static gboolean
