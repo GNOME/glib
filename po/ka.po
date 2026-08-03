@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-07-28 23:06+0000\n"
-"PO-Revision-Date: 2026-07-31 06:45+0200\n"
+"POT-Creation-Date: 2026-08-03 09:38+0000\n"
+"PO-Revision-Date: 2026-08-03 17:24+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -28,13 +28,18 @@ msgstr ""
 "აპლიკაციის, როგორც ტიპისთვის ბოლოს გამოყენებულის დაყენება ჯერ მხარდაჭერილი "
 "არაა"
 
-#: gio/gappinfo.c:996
+#: gio/gappinfo.c:595
+#, c-format
+msgid "Invalid file extension ‘%s’"
+msgstr "არასწორი ფაილის გაფართოება „%s“"
+
+#: gio/gappinfo.c:1011
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
 msgstr ""
 "ჩავარდა ნაგულისხმევი აპლიკაციის პოვნის მცდელობა შემცველობის ტიპისთვის '%s'"
 
-#: gio/gappinfo.c:1058
+#: gio/gappinfo.c:1073
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "ჩავარდა ნაგულისხმევი აპლიკაციის პოვნის მცდელობა URI-ის სქემისთვის '%s'"
@@ -1363,7 +1368,7 @@ msgstr "შეცდომა: %s მატარებლის ცნობი
 msgid "Not authorized to change debug settings"
 msgstr "გამართვის პარამეტრების შესაცვლელად ავტორიზაცია არ გაგაჩნიათ"
 
-#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5258
+#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5275
 #: gio/gwin32appinfo.c:4257
 msgid "Unnamed"
 msgstr "უსახელო"
@@ -1399,12 +1404,12 @@ msgstr "MIME აპების ინფორმაცია მეტის�
 msgid "Application information lacks an identifier"
 msgstr "აპლიკაციის ინფორმაციას იდენტიფიკატორი აკლია"
 
-#: gio/gdesktopappinfo.c:4371
+#: gio/gdesktopappinfo.c:4388
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "მომხმარებლის სამუშაო მაგიდის ფაილის '%s' შექმნა შეუძლებელია"
 
-#: gio/gdesktopappinfo.c:4491
+#: gio/gdesktopappinfo.c:4508
 #, c-format
 msgid "Custom definition for %s"
 msgstr "ხელით მითითებული აღწერა %s-სთვის"
@@ -5443,7 +5448,7 @@ msgstr "არხი არასრული სიმბოლოთი იხ
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "უშუალოდ წაკითხვა ფუნქციაში g_io_channel_read_to_end ვერ ხერხდება"
 
-#: glib/gkeyfile.c:810 glib/gkeyfile.c:1320
+#: glib/gkeyfile.c:810 glib/gkeyfile.c:1321
 msgid "Valid key file could not be found in search dirs"
 msgstr "ძიების კატალოგებში შეუძლებელია დამოწმებული გასაღების პოვნა"
 
@@ -5451,7 +5456,7 @@ msgstr "ძიების კატალოგებში შეუძლე�
 msgid "Not a regular file"
 msgstr "ფაილი ჩვეულებრივი არაა"
 
-#: glib/gkeyfile.c:1642
+#: glib/gkeyfile.c:1643
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5459,50 +5464,50 @@ msgstr ""
 "გასაღების ფაილი '%s' შეიცავს სტრიქონს, რომელიც არ წარმოადგენს გასაღები-"
 "მნიშვნელობას, ჯგუფს ან კომენტარს"
 
-#: glib/gkeyfile.c:1699
+#: glib/gkeyfile.c:1700
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "ჯგუფის მიუღებელი სახელი: %s"
 
-#: glib/gkeyfile.c:1724
+#: glib/gkeyfile.c:1725
 msgid "Key file does not start with a group"
 msgstr "საკვანძო ფაილი ჯგუფით არ იწყება"
 
-#: glib/gkeyfile.c:1748
+#: glib/gkeyfile.c:1749
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "გასაღების მიუღებელი სახელი: %.*s"
 
-#: glib/gkeyfile.c:1776
+#: glib/gkeyfile.c:1777
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "გასაღების ფაილი შეიცავს მხარდაუჭერელ კოდირებას '%s'"
 
-#: glib/gkeyfile.c:2023 glib/gkeyfile.c:2197 glib/gkeyfile.c:3673
-#: glib/gkeyfile.c:3775 glib/gkeyfile.c:3885 glib/gkeyfile.c:4014
-#: glib/gkeyfile.c:4158 glib/gkeyfile.c:4408 glib/gkeyfile.c:4482
+#: glib/gkeyfile.c:2024 glib/gkeyfile.c:2198 glib/gkeyfile.c:3674
+#: glib/gkeyfile.c:3776 glib/gkeyfile.c:3886 glib/gkeyfile.c:4015
+#: glib/gkeyfile.c:4159 glib/gkeyfile.c:4409 glib/gkeyfile.c:4483
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "გასაღების ფაილი არ შეიცავს ჯგუფს '%s'"
 
-#: glib/gkeyfile.c:2153
+#: glib/gkeyfile.c:2154
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "გასაღების ფაილი არ შეიცავს გასაღებს '%s' ჯგუფში '%s'"
 
-#: glib/gkeyfile.c:2314 glib/gkeyfile.c:2431
+#: glib/gkeyfile.c:2315 glib/gkeyfile.c:2432
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "ფაილი შეიცავს გასაღებს '%s', რომლის მნიშვნელობაც '%s' UTF-8 კოდირებაში არაა"
 
-#: glib/gkeyfile.c:2334 glib/gkeyfile.c:2451 glib/gkeyfile.c:2913
+#: glib/gkeyfile.c:2335 glib/gkeyfile.c:2452 glib/gkeyfile.c:2914
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr "ფაილი შეიცავს გასაღებს '%s', რომლის მნიშვნელობაც ვერ იშიფრება."
 
-#: glib/gkeyfile.c:3127 glib/gkeyfile.c:3501
+#: glib/gkeyfile.c:3128 glib/gkeyfile.c:3502
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5510,36 +5515,36 @@ msgid ""
 msgstr ""
 "ფაილი შეიცავს გასაღებს '%s' ჯგუფში '%s', რომლის მნიშვნელობაც ვერ იშიფრება."
 
-#: glib/gkeyfile.c:3208 glib/gkeyfile.c:3288
+#: glib/gkeyfile.c:3209 glib/gkeyfile.c:3289
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "გასაღებს “%s” ჯგუფში “%s” აქვს მნიშვნელობა “%s” სადაც მოველოდი %s"
 
-#: glib/gkeyfile.c:4738
+#: glib/gkeyfile.c:4739
 msgid "Key file contains escape character at end of line"
 msgstr "გასაღების ფაილი სტრიქონის ბოლოს escape სიმბოლოს შეიცავს"
 
-#: glib/gkeyfile.c:4760
+#: glib/gkeyfile.c:4761
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "გასაღების ფაილი მცდარ escape მიმდევრობას '%s' შეიცავს"
 
-#: glib/gkeyfile.c:4912
+#: glib/gkeyfile.c:4913
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "მნიშვნელობა '%s' ვერ აღიქმება, როგორც რიცხვი."
 
-#: glib/gkeyfile.c:4926
+#: glib/gkeyfile.c:4927
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "მთელი მნიშვნელობა '%s' დიაპაზონს გარეთაა"
 
-#: glib/gkeyfile.c:4959
+#: glib/gkeyfile.c:4960
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "მნიშვნელობა '%s' ვერ აღიქმება, როგორც წილადი."
 
-#: glib/gkeyfile.c:4998
+#: glib/gkeyfile.c:4999
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "მნიშვნელობა '%s' ვერ აღიქმება, როგორც ლოგიკური ოპერატორი."
