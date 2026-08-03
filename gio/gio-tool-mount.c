@@ -48,6 +48,7 @@ static gboolean mount_unmount = FALSE;
 static gboolean mount_eject = FALSE;
 static gboolean force = FALSE;
 static gboolean anonymous = FALSE;
+static gboolean mount_readonly = FALSE;
 static gboolean mount_list = FALSE;
 static gboolean extra_detail = FALSE;
 static gboolean mount_monitor = FALSE;
@@ -70,6 +71,7 @@ static const GOptionEntry entries[] =
   { "unmount-scheme", 's', 0, G_OPTION_ARG_STRING, &unmount_scheme, N_("Unmount all mounts with the given scheme"), N_("SCHEME") },
   { "force", 'f', 0, G_OPTION_ARG_NONE, &force, N_("Ignore outstanding file operations when unmounting or ejecting"), NULL },
   { "anonymous", 'a', 0, G_OPTION_ARG_NONE, &anonymous, N_("Use an anonymous user when authenticating"), NULL },
+  { "read-only", 'r', 0, G_OPTION_ARG_NONE, &mount_readonly, N_("Mount read-only"), NULL },
   /* Translator: List here is a verb as in 'List all mounts' */
   { "list", 'l', 0, G_OPTION_ARG_NONE, &mount_list, N_("List user-interesting volumes, drives and mounts"), NULL},
   { "monitor", 'o', 0, G_OPTION_ARG_NONE, &mount_monitor, N_("Monitor user-interesting volume, drive and mount events"), NULL},
@@ -1030,7 +1032,7 @@ mount_with_id (const char *id)
           op = new_mount_op ();
 
           g_volume_mount (volume,
-                          G_MOUNT_MOUNT_NONE,
+                          mount_readonly ? G_MOUNT_MOUNT_READ_ONLY : G_MOUNT_MOUNT_NONE,
                           op,
                           NULL,
                           mount_with_device_file_cb,
