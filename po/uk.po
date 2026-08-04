@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-07-28 23:06+0000\n"
-"PO-Revision-Date: 2026-07-30 21:55+0300\n"
+"POT-Creation-Date: 2026-08-03 16:07+0000\n"
+"PO-Revision-Date: 2026-08-03 20:45+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -32,12 +32,18 @@ msgstr ""
 "Підтримки встановлення програми, як останньої використаної для типу, ще не "
 "передбачено"
 
-#: gio/gappinfo.c:996
+#: gio/gappinfo.c:595
+#, c-format
+#| msgid "Invalid GVariant type string “%s”"
+msgid "Invalid file extension ‘%s’"
+msgstr "Некоректний суфікс назви файла «%s»"
+
+#: gio/gappinfo.c:1011
 #, c-format
 msgid "Failed to find default application for content type ‘%s’"
 msgstr "Не вдалося знайти типову програму для типу даних «%s»"
 
-#: gio/gappinfo.c:1058
+#: gio/gappinfo.c:1073
 #, c-format
 msgid "Failed to find default application for URI Scheme ‘%s’"
 msgstr "Не вдалося знайти типову програму для схеми адреси «%s»"
@@ -604,8 +610,9 @@ msgid ""
 "Error accessing D-Bus keyring: keyring-based authentication is not supported "
 "when running as setuid"
 msgstr ""
-"Помилка під час спроби доступу до сховища ключів D-Bus: підтримки розпізнаван"
-"ня на основі сховища ключів не передбачено, якщо програму запущено з setuid"
+"Помилка під час спроби доступу до сховища ключів D-Bus: підтримки "
+"розпізнавання на основі сховища ключів не передбачено, якщо програму "
+"запущено з setuid"
 
 #: gio/gdbusauthmechanismsha1.c:321
 #, c-format
@@ -1381,7 +1388,7 @@ msgstr "Помилка: %s не є припустимим добре відом�
 msgid "Not authorized to change debug settings"
 msgstr "Не уповноважено змінювати параметри діагностики"
 
-#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5258
+#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5275
 #: gio/gwin32appinfo.c:4257
 msgid "Unnamed"
 msgstr "Без назви"
@@ -1417,12 +1424,12 @@ msgstr "Дані щодо MIME програм є надто довгими"
 msgid "Application information lacks an identifier"
 msgstr "У інформації про програму не вказано ідентифікатор"
 
-#: gio/gdesktopappinfo.c:4371
+#: gio/gdesktopappinfo.c:4388
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Не вдалося створити для користувача desktop-файл %s"
 
-#: gio/gdesktopappinfo.c:4491
+#: gio/gdesktopappinfo.c:4508
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Власне визначення %s"
@@ -1510,7 +1517,7 @@ msgstr "Операція не підтримується"
 msgid "Containing mount does not exist"
 msgstr "Вкладена точка монтування не існує"
 
-#: gio/gfile.c:2677 gio/glocalfile.c:2727
+#: gio/gfile.c:2677 gio/glocalfile.c:2760
 msgid "Can’t copy over directory"
 msgstr "Не можна копіювати із заміною каталогу"
 
@@ -2490,33 +2497,27 @@ msgid "Invalid attribute type “%s”"
 msgstr "Некоректний тип атрибута «%s»"
 
 #: gio/gio-tool-trash.c:30
-#| msgid "Move files or directories to the trash"
 msgid "Move files or directories to the trash."
 msgstr "Пересунути файли або каталоги до смітника."
 
 #: gio/gio-tool-trash.c:31
-#| msgid "Trash not supported"
 msgid "Empty the trash (not supported on macOS)"
 msgstr "Спорожнити смітник (у macOS немає підтримки)"
 
 #: gio/gio-tool-trash.c:32
-#| msgid "List files in the trash with their original locations"
 msgid ""
 "List files in the trash with their original locations (not supported on "
 "macOS)"
 msgstr ""
-"Вивести список файлів у смітнику із зазначенням початкових місць зберігання ("
-"у macOS не працює)"
+"Вивести список файлів у смітнику із зазначенням початкових місць зберігання "
+"(у macOS не працює)"
 
 #: gio/gio-tool-trash.c:33
-#| msgid ""
-#| "Restore a file from trash to its original location (possibly recreating "
-#| "the directory)"
 msgid ""
 "Restore a file from trash to its original location (not supported on macOS)"
 msgstr ""
-"Відновити файл зі смітника до його початкового розташування (у macOS не працю"
-"є)"
+"Відновити файл зі смітника до його початкового розташування (у macOS не "
+"працює)"
 
 #: gio/gio-tool-trash.c:35
 msgid "Move/Restore files or directories to the trash."
@@ -3239,8 +3240,8 @@ msgstr "Помилка при перейменуванні файла %s: %s"
 msgid "Can’t rename file, filename already exists"
 msgstr "Не вдалося перейменувати файл, файл із також назвою вже існує"
 
-#: gio/glocalfile.c:1218 gio/glocalfile.c:2621 gio/glocalfile.c:2649
-#: gio/glocalfile.c:2788 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1218 gio/glocalfile.c:2654 gio/glocalfile.c:2682
+#: gio/glocalfile.c:2821 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "Некоректна назва файла"
 
@@ -3254,99 +3255,99 @@ msgstr "Помилка при відкритті файла «%s»: %s"
 msgid "Error removing file %s: %s"
 msgstr "Помилка під час спроби вилучити файл %s: %s"
 
-#: gio/glocalfile.c:2078
+#: gio/glocalfile.c:2111
 #, c-format
 msgid "Unable to trash child file %s"
 msgstr "Не вдалося перемістити дочірній файл до смітника %s"
 
-#: gio/glocalfile.c:2142 gio/glocalfile.c:2153 gio/glocalfile.c:2183
+#: gio/glocalfile.c:2175 gio/glocalfile.c:2186 gio/glocalfile.c:2216
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Помилка під час спроби надіслати файл %s до смітника: %s"
 
-#: gio/glocalfile.c:2204
+#: gio/glocalfile.c:2237
 #, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "Помилка при створенні каталогу смітника %s: %s"
 
-#: gio/glocalfile.c:2225
+#: gio/glocalfile.c:2258
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Не вдалося знайти каталог верхнього рівня для смітника %s"
 
-#: gio/glocalfile.c:2233
+#: gio/glocalfile.c:2266
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr ""
 "Підтримки надсилання до смітника на внутрішніх точках монтування системи не "
 "передбачено"
 
-#: gio/glocalfile.c:2319 gio/glocalfile.c:2347
+#: gio/glocalfile.c:2352 gio/glocalfile.c:2380
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr "Не вдалося знайти або створити каталог смітника %s для викидання %s"
 
-#: gio/glocalfile.c:2444
+#: gio/glocalfile.c:2477
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr ""
 "Не вдалося створити файл відомостей щодо надсилання до смітника для %s: %s"
 
-#: gio/glocalfile.c:2532
+#: gio/glocalfile.c:2565
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Не вдалося надіслати файл %s до смітника за межами файлової системи"
 
-#: gio/glocalfile.c:2536 gio/glocalfile.c:2592
+#: gio/glocalfile.c:2569 gio/glocalfile.c:2625
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Не вдалося перемістити файл до смітника %s: %s"
 
-#: gio/glocalfile.c:2598
+#: gio/glocalfile.c:2631
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Не вдалося перемістити файл до смітника %s"
 
-#: gio/glocalfile.c:2624
+#: gio/glocalfile.c:2657
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Сталася помилка при створенні каталогу «%s»: %s"
 
-#: gio/glocalfile.c:2653
+#: gio/glocalfile.c:2686
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Файлова система не підтримує символічні посилання"
 
-#: gio/glocalfile.c:2656
+#: gio/glocalfile.c:2689
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Помилка при створенні символічного посилання %s: %s"
 
-#: gio/glocalfile.c:2699 gio/glocalfile.c:2734 gio/glocalfile.c:2791
+#: gio/glocalfile.c:2732 gio/glocalfile.c:2767 gio/glocalfile.c:2824
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Помилка при переміщенні файла %s: %s"
 
-#: gio/glocalfile.c:2722
+#: gio/glocalfile.c:2755
 msgid "Can’t move directory over directory"
 msgstr "Не вдалося перемістити каталог поверх каталогу"
 
-#: gio/glocalfile.c:2748 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2781 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
 #: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1176
 msgid "Backup file creation failed"
 msgstr "Помилка при створенні файла резервної копії"
 
-#: gio/glocalfile.c:2767
+#: gio/glocalfile.c:2800
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Помилка при зчитуванні файла призначення: %s"
 
-#: gio/glocalfile.c:2781
+#: gio/glocalfile.c:2814
 msgid "Move between mounts not supported"
 msgstr "Переміщення між різними точками монтування не підтримується"
 
-#: gio/glocalfile.c:2957
+#: gio/glocalfile.c:2990
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Не вдалося визначити використання диска %s: %s"
@@ -5497,7 +5498,7 @@ msgstr ""
 "Не можна виконувати безпосереднє зчитування у функції "
 "g_io_channel_read_to_end"
 
-#: glib/gkeyfile.c:810 glib/gkeyfile.c:1320
+#: glib/gkeyfile.c:810 glib/gkeyfile.c:1321
 msgid "Valid key file could not be found in search dirs"
 msgstr "Не вдалося знайти правильний ключовий файл у каталогах ключів"
 
@@ -5505,7 +5506,7 @@ msgstr "Не вдалося знайти правильний ключовий �
 msgid "Not a regular file"
 msgstr "Не є звичайним файлом"
 
-#: glib/gkeyfile.c:1642
+#: glib/gkeyfile.c:1643
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5513,52 +5514,52 @@ msgstr ""
 "Файл ключа містить рядок «%s», який не є парою ключ-значення, групою або "
 "коментарем"
 
-#: glib/gkeyfile.c:1699
+#: glib/gkeyfile.c:1700
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Неправильна назва групи: %s"
 
-#: glib/gkeyfile.c:1724
+#: glib/gkeyfile.c:1725
 msgid "Key file does not start with a group"
 msgstr "Ключовий файл не починається з групи"
 
-#: glib/gkeyfile.c:1748
+#: glib/gkeyfile.c:1749
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Неправильна назва ключа: %.*s"
 
-#: glib/gkeyfile.c:1776
+#: glib/gkeyfile.c:1777
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Файл ключа містить кодування, підтримки якого не передбачено — «%s»"
 
-#: glib/gkeyfile.c:2023 glib/gkeyfile.c:2197 glib/gkeyfile.c:3673
-#: glib/gkeyfile.c:3775 glib/gkeyfile.c:3885 glib/gkeyfile.c:4014
-#: glib/gkeyfile.c:4158 glib/gkeyfile.c:4408 glib/gkeyfile.c:4482
+#: glib/gkeyfile.c:2024 glib/gkeyfile.c:2198 glib/gkeyfile.c:3674
+#: glib/gkeyfile.c:3776 glib/gkeyfile.c:3886 glib/gkeyfile.c:4015
+#: glib/gkeyfile.c:4159 glib/gkeyfile.c:4409 glib/gkeyfile.c:4483
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Файл ключа не містить групи «%s»"
 
-#: glib/gkeyfile.c:2153
+#: glib/gkeyfile.c:2154
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Файл ключа не містить ключ «%s» у групі «%s»"
 
-#: glib/gkeyfile.c:2314 glib/gkeyfile.c:2431
+#: glib/gkeyfile.c:2315 glib/gkeyfile.c:2432
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "Файл ключа містить ключ «%s» зі значенням «%s», кодування якого не є "
 "кодуванням UTF-8"
 
-#: glib/gkeyfile.c:2334 glib/gkeyfile.c:2451 glib/gkeyfile.c:2913
+#: glib/gkeyfile.c:2335 glib/gkeyfile.c:2452 glib/gkeyfile.c:2914
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Ключ «%s» з файла ключів містить значення, яке не вдається проаналізувати."
 
-#: glib/gkeyfile.c:3127 glib/gkeyfile.c:3501
+#: glib/gkeyfile.c:3128 glib/gkeyfile.c:3502
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5567,36 +5568,36 @@ msgstr ""
 "Файл ключів містить ключ «%s» у групі «%s», значення якого не вдалося "
 "розпізнати."
 
-#: glib/gkeyfile.c:3208 glib/gkeyfile.c:3288
+#: glib/gkeyfile.c:3209 glib/gkeyfile.c:3289
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Значення ключа «%s» у групі «%s» дорівнює «%s», але очікувалося «%s»"
 
-#: glib/gkeyfile.c:4738
+#: glib/gkeyfile.c:4739
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовий файл містить escape-символ наприкінці рядка"
 
-#: glib/gkeyfile.c:4760
+#: glib/gkeyfile.c:4761
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Файл ключа містить неправильну послідовність екранування «%s»"
 
-#: glib/gkeyfile.c:4912
+#: glib/gkeyfile.c:4913
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Не вдалося розібрати значення «%s» як число."
 
-#: glib/gkeyfile.c:4926
+#: glib/gkeyfile.c:4927
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Числове ціле значення «%s» поза межами діапазону"
 
-#: glib/gkeyfile.c:4959
+#: glib/gkeyfile.c:4960
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Значення «%s» не вдалося перетворити на число з рухомою комою."
 
-#: glib/gkeyfile.c:4998
+#: glib/gkeyfile.c:4999
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Не вдалося обробити значення «%s» як логічне значення."
@@ -5618,7 +5619,6 @@ msgid "Failed to open file “%s”: open() failed: %s"
 msgstr "Помилка відкривання файла «%s»: помилка open(): %s"
 
 #: glib/gmarkup.c:366 glib/gmarkup.c:408 glib/gmarkup.c:581
-#| msgid "Error on line %d: %s"
 msgid "Error on line %"
 msgstr "Помилка в рядку %"
 
