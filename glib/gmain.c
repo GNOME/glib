@@ -5468,7 +5468,8 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
     }
   else
     {
-      expiration_ns = current_time_ns + timeout_source->interval;
+      if (G_UNLIKELY (!g_uint64_checked_add (&expiration_ns, current_time_ns, timeout_source->interval)))
+        expiration_ns = UINT64_MAX;
     }
 
   g_source_set_ready_time_ns ((GSource *) timeout_source, expiration_ns);
