@@ -1530,17 +1530,29 @@ void      g_type_ensure                 (GType                       type);
 GOBJECT_AVAILABLE_IN_2_36
 guint     g_type_get_type_registration_serial (void);
 
+/*< protected >
+ * GTypeAtomic:
+ *
+ * An atomic variant of `GType`.
+ *
+ * This type should only be used by the `G_DECLARE_*` and `G_DEFINE_TYPE`
+ * macros.
+ *
+ * Since: 2.90
+ */
 #if G_C_STD_CHECK_VERSION(11) && !defined(__STDC_NO_ATOMICS__)
 typedef _Atomic GType GTypeAtomic;
 #else
 typedef GType GTypeAtomic;
 #endif
 
-/**
+/*< protected >
  * g_type_once_get:
  * @gtype_id_ptr: a pointer to an atomic GType variable
  *
  * Atomically reads the @gtype_id_ptr and returns its value.
+ *
+ * This function should only be used by the `G_DECLARE_*` macros.
  *
  * Returns: the contents of the GType variable
  *
@@ -1559,12 +1571,14 @@ g_type_once_get (GTypeAtomic *gtype_id_ptr)
 #endif
 }
 
-/**
+/*< protected >
  * g_type_once_init:
  * @gtype_id_ptr: a pointer to an atomic GType variable
  * @gtype: the value to set
  *
  * Atomically initialises the @gtype_id_ptr to @gtype.
+ *
+ * This function should only be used by the `G_DEFINE_TYPE` macros.
  *
  * Since: 2.90
  */
