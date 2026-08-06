@@ -1613,7 +1613,7 @@ g_type_once_init (GTypeAtomic *gtype_id_ptr,
  *
  * Since: 2.90
  */
-#define g_gtype(TypeName) (TypeName##_gtype())
+#define g_gtype(TypeName) (TypeName##_gtype()) GOBJECT_AVAILABLE_MACRO_IN_2_90
 
 /**
  * g_is_a:
@@ -1635,7 +1635,7 @@ g_type_once_init (GTypeAtomic *gtype_id_ptr,
  *
  * Since: 2.90
  */
-#define g_is_a(TypeName, inst) (G_TYPE_CHECK_INSTANCE_TYPE ((inst), TypeName##_gtype()))
+#define g_is_a(TypeName, inst) (G_TYPE_CHECK_INSTANCE_TYPE ((inst), TypeName##_gtype())) GOBJECT_AVAILABLE_MACRO_IN_2_90
 
 /**
  * g_as:
@@ -1655,7 +1655,7 @@ g_type_once_init (GTypeAtomic *gtype_id_ptr,
  *
  * Since: 2.90
  */
-#define g_as(TypeName, inst) (G_TYPE_CHECK_INSTANCE_CAST ((inst), TypeName##_gtype(), TypeName))
+#define g_as(TypeName, inst) (G_TYPE_CHECK_INSTANCE_CAST ((inst), TypeName##_gtype(), TypeName)) GOBJECT_AVAILABLE_MACRO_IN_2_90
 
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_90
 #define _G_DECLARE_ATOMIC_GTYPE_ID(TypeName) GOBJECT_VAR GTypeAtomic TypeName##_gtype_id
