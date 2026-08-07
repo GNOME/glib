@@ -1657,6 +1657,40 @@ g_type_once_init (GTypeAtomic *gtype_id_ptr,
  */
 #define g_as(TypeName, inst) (G_TYPE_CHECK_INSTANCE_CAST ((inst), TypeName##_gtype(), TypeName)) GOBJECT_AVAILABLE_MACRO_IN_2_90
 
+/**
+ * g_super:
+ * @ParentType: a type name
+ * @inst: the instance to use
+ *
+ * Evaluates to the parent class structure for @inst.
+ *
+ * This macro can be used to chain up a virtual function to
+ * the parent's implementation, e.g.
+ *
+ * ```c
+ * static void
+ * gtk_button_realize (GtkWidget *button)
+ * {
+ *   // chain up to the parent's implementation
+ *   g_super (GtkWidget, button)->realize (button);
+ *
+ *   // additional code
+ * }
+ *
+ * static void
+ * gtk_button_dispose (GObject *button)
+ * {
+ *   // class code...
+ *
+ *   // chain up
+ *   g_super (GObject, button)->dispose (button);
+ * }
+ * ```
+ *
+ * Since: 2.90
+ */
+#define g_super(ParentType, inst) ((ParentType##Class *) g_type_class_get (g_type_parent (G_TYPE_FROM_INSTANCE ((inst))))) GOBJECT_AVAILABLE_MACRO_IN_2_90
+
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_90
 #define _G_DECLARE_ATOMIC_GTYPE_ID(TypeName) GOBJECT_VAR GTypeAtomic TypeName##_gtype_id
 #define _G_DEFINE_ATOMIC_GTYPE_ID(TypeName) GTypeAtomic TypeName##_gtype_id

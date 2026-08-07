@@ -661,7 +661,7 @@ g_binding_finalize (GObject *gobject)
 
   g_mutex_clear (&binding->unbind_lock);
 
-  G_OBJECT_CLASS (g_binding_parent_class)->finalize (gobject);
+  g_super (GObject, binding)->finalize (gobject);
 }
 
 /* @key must have already been validated with is_valid()
