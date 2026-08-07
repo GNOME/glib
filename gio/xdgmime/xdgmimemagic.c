@@ -483,15 +483,15 @@ _xdg_mime_magic_parse_magic_line (FILE              *magic_file,
 	  for (i = 0; i < matchlet->value_length; i = i + matchlet->word_size)
 	    {
 	      if (matchlet->word_size == 2)
-		*((xdg_uint16_t *) matchlet->value + i) = SWAP_BE16_TO_LE16 (*((xdg_uint16_t *) (matchlet->value + i)));
+		*((xdg_uint16_t *) (matchlet->value + i)) = SWAP_BE16_TO_LE16 (*((xdg_uint16_t *) (matchlet->value + i)));
 	      else if (matchlet->word_size == 4)
-		*((xdg_uint32_t *) matchlet->value + i) = SWAP_BE32_TO_LE32 (*((xdg_uint32_t *) (matchlet->value + i)));
+		*((xdg_uint32_t *) (matchlet->value + i)) = SWAP_BE32_TO_LE32 (*((xdg_uint32_t *) (matchlet->value + i)));
 	      if (matchlet->mask)
 		{
 		  if (matchlet->word_size == 2)
-		    *((xdg_uint16_t *) matchlet->mask + i) = SWAP_BE16_TO_LE16 (*((xdg_uint16_t *) (matchlet->mask + i)));
+		    *((xdg_uint16_t *) (matchlet->mask + i)) = SWAP_BE16_TO_LE16 (*((xdg_uint16_t *) (matchlet->mask + i)));
 		  else if (matchlet->word_size == 4)
-		    *((xdg_uint32_t *) matchlet->mask + i) = SWAP_BE32_TO_LE32 (*((xdg_uint32_t *) (matchlet->mask + i)));
+		    *((xdg_uint32_t *) (matchlet->mask + i)) = SWAP_BE32_TO_LE32 (*((xdg_uint32_t *) (matchlet->mask + i)));
 
 		}
 	    }
