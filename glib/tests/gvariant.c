@@ -1557,16 +1557,22 @@ test_array (void)
     gsize i;
 
     body_ptr = data = align_malloc (needed_size);
-    offset_ptr = body_ptr + needed_size - offset_size * n_children;
 
-    for (i = 0; i < n_children; i++)
+    /* An empty array serialises to nothing, and align_malloc() returns NULL
+     * for a zero-sized allocation. */
+    if (needed_size > 0)
       {
-        append_instance_data (instances[i], &body_ptr);
-        append_offset (&offset_ptr, body_ptr - data, offset_size);
-      }
+        offset_ptr = body_ptr + needed_size - offset_size * n_children;
 
-    g_assert_true (body_ptr == data + needed_size - offset_size * n_children);
-    g_assert_true (offset_ptr == data + needed_size);
+        for (i = 0; i < n_children; i++)
+          {
+            append_instance_data (instances[i], &body_ptr);
+            append_offset (&offset_ptr, body_ptr - data, offset_size);
+          }
+
+        g_assert_true (body_ptr == data + needed_size - offset_size * n_children);
+        g_assert_true (offset_ptr == data + needed_size);
+      }
   }
 
   {
