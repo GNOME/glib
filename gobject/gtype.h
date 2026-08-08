@@ -1691,6 +1691,20 @@ g_type_once_init (GTypeAtomic *gtype_id_ptr,
  */
 #define g_super(ParentType, inst) ((ParentType##Class *) g_type_class_get (g_type_parent (G_TYPE_FROM_INSTANCE ((inst))))) GOBJECT_AVAILABLE_MACRO_IN_2_90
 
+/**
+ * g_class:
+ * @TypeName: a type name
+ * @inst: the instance to use
+ *
+ * Evaluates to the class structure for @inst.
+ *
+ * This macro can only be used with object types declared with `G_DECLARE_*`
+ * macros, and defined with `G_DEFINE_*` macros.
+ *
+ * Since: 2.90
+ */
+#define g_class(TypeName, inst) (G_TYPE_INSTANCE_GET_CLASS ((inst), TypeName##_gtype(), TypeName##Class)) GOBJECT_AVAILABLE_MACRO_IN_2_90
+
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_90
 #define _G_DECLARE_ATOMIC_GTYPE_ID(TypeName) GOBJECT_VAR GTypeAtomic TypeName##_gtype_id
 #define _G_DEFINE_ATOMIC_GTYPE_ID(TypeName) GTypeAtomic TypeName##_gtype_id
