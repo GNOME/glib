@@ -1712,7 +1712,13 @@ g_type_once_init (GTypeAtomic *gtype_id_ptr,
 #define g_class(TypeName, inst) (G_TYPE_INSTANCE_GET_CLASS ((inst), TypeName##_gtype(), TypeName##Class)) GOBJECT_AVAILABLE_MACRO_IN_2_90
 
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_90
-#define _G_DECLARE_ATOMIC_GTYPE_ID(TypeName) GOBJECT_VAR GTypeAtomic TypeName##_gtype_id
+# if (defined(_WIN32) || defined(__CYGWIN__))
+#  define _G_DECLARE_ATOMIC_GTYPE_ID(TypeName) __declspec(dllexport) extern GTypeAtomic TypeName##_gtype_id
+# elif (defined(__GNUC__) && __GNUC__ >= 4)
+#  define _G_DECLARE_ATOMIC_GTYPE_ID(TypeName) __attribute__((visibility("default"))) extern GTypeAtomic TypeName##_gtype_id
+# else
+#  define _G_DECLARE_ATOMIC_GTYPE_ID(TypeName) extern GTypeAtomic TypeName##_gtype_id
+#endif
 #define _G_DEFINE_ATOMIC_GTYPE_ID(TypeName) GTypeAtomic TypeName##_gtype_id
 #define _G_DEFINE_INIT_ATOMIC_GTYPE_ID(TypeName) g_type_once_init (&TypeName##_gtype_id, g_define_type_id)
 #define _G_DEFINE_ATOMIC_GTYPE_GET(TypeName, type_name)               \
