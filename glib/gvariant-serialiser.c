@@ -517,6 +517,7 @@ static gboolean
 gvs_fixed_sized_array_is_normal (GVariantSerialised value)
 {
   GVariantSerialised child = { 0, };
+  gsize offset;
 
   child.type_info = g_variant_type_info_element (value.type_info);
   g_variant_type_info_query (child.type_info, NULL, &child.size);
@@ -525,10 +526,9 @@ gvs_fixed_sized_array_is_normal (GVariantSerialised value)
   if (value.size % child.size != 0)
     return FALSE;
 
-  for (child.data = value.data;
-       child.data < value.data + value.size;
-       child.data += child.size)
+  for (offset = 0; offset < value.size; offset += child.size)
     {
+      child.data = value.data + offset;
       if (!g_variant_serialised_is_normal (child))
         return FALSE;
     }
@@ -866,6 +866,10 @@ gvs_variable_sized_array_serialise (GVariantSerialised        value,
   gsize offset;
   gsize i;
 
+  /* Nothing to write, and @value.data may be NULL. */
+  if (n_children == 0)
+    return;
+
   g_variant_type_info_query (value.type_info, &alignment, NULL);
   offset_size = gvs_get_offset_size (value.size);
   offset = 0;
@@ -971,6 +975,20 @@ gvs_variable_sized_array_is_normal (GVariantSerialised value)
  * for the tuple.  See the notes in gvarianttypeinfo.h.
  */
 
+/* Read the offset stored at byte @position of @value. A zero @offset_size
+ * means there is no offset table at all; @value.data may then be NULL, so no
+ * pointer into it is formed. */
+static gsize
+gvs_tuple_read_offset (GVariantSerialised value,
+                       gsize              position,
+                       gsize              offset_size)
+{
+  if (offset_size == 0)
+    return 0;
+
+  return gvs_read_unaligned_le (value.data + position, offset_size);
+}
+
 /* Note: This doesn’t guarantee that @out_member_end >= @out_member_start; that
  * condition may not hold true for invalid serialised variants. The caller is
  * responsible for checking the returned values and handling invalid ones
@@ -989,8 +1007,8 @@ gvs_tuple_get_member_bounds (GVariantSerialised  value,
 
   if (member_info->i + 1 &&
       offset_size * (member_info->i + 1) <= value.size)
-    member_start = gvs_read_unaligned_le (value.data + value.size -
-                                          offset_size * (member_info->i + 1),
+    member_start = gvs_tuple_read_offset (value,
+                                          value.size - offset_size * (member_info->i + 1),
                                           offset_size);
   else
     member_start = 0;
@@ -1013,8 +1031,8 @@ gvs_tuple_get_member_bounds (GVariantSerialised  value,
 
   else if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_OFFSET &&
            offset_size * (member_info->i + 2) <= value.size)
-    member_end = gvs_read_unaligned_le (value.data + value.size -
-                                        offset_size * (member_info->i + 2),
+    member_end = gvs_tuple_read_offset (value,
+                                        value.size - offset_size * (member_info->i + 2),
                                         offset_size);
 
   else  /* invalid */
@@ -1184,6 +1202,12 @@ gvs_tuple_serialise (GVariantSerialised        value,
   gsize offset;
   gsize i;
 
+  /* A tuple whose members all serialise to nothing takes up no space at all,
+   * and @value.data may then be NULL. There is nothing to write in that case,
+   * and no pointer into @value.data may be formed. */
+  if (value.size == 0)
+    return;
+
   offset_size = gvs_get_offset_size (value.size);
   offset = 0;
 
@@ -1255,7 +1279,7 @@ gvs_tuple_is_normal (GVariantSerialised value)
           offset++;
         }
 
-      child.data = value.data + offset;
+      child.data = value.data != NULL ? value.data + offset : NULL;
 
       switch (member_info->ending_type)
         {
@@ -1276,7 +1300,7 @@ gvs_tuple_is_normal (GVariantSerialised value)
           if (offset_ptr < offset)
             return FALSE;
 
-          end = gvs_read_unaligned_le (value.data + offset_ptr, offset_size);
+          end = gvs_tuple_read_offset (value, offset_ptr, offset_size);
           break;
 
         default:

@@ -2394,6 +2394,138 @@ test_byteswap_zero_sized (void)
   g_variant_unref (swapped);
 }
 
+/* Serialise @value and all of its descendants and check each of them for
+ * normal form. The results are deliberately unused: the point is to reach the
+ * code which handles them, so that a sanitizer can have its say. */
+static void
+serialise_recursively (GVariant *value)
+{
+  gsize i, n;
+
+  g_variant_get_data (value);
+  g_variant_get_size (value);
+  g_variant_is_normal_form (value);
+
+  if (!g_variant_is_container (value))
+    return;
+
+  n = g_variant_n_children (value);
+  for (i = 0; i < n; i++)
+    {
+      GVariant *child = g_variant_get_child_value (value, i);
+
+      serialise_recursively (child);
+      g_variant_unref (child);
+    }
+}
+
+/* Test values whose serialised form is zero bytes long. Their data pointer is
+ * NULL, so the serialiser must not form any pointer into it. */
+static void
+test_serialiser_zero_sized (void)
+{
+  const gchar *texts[] = {
+    /* Empty arrays, with fixed-sized, variable-sized and zero-sized
+     * elements. */
+    "@ai []",
+    "@as []",
+    "@a() []",
+    "@aay []",
+    "@a{ss} {}",
+    /* A maybe with no value. */
+    "@may nothing",
+    /* Tuples whose members all serialise to nothing. The last member of a
+     * tuple has no entry in the offset table, so these need no table at all. */
+    "(@ay [],)",
+    "(@as [],)",
+    "((@ay [],),)",
+    "@(ay) ([],)",
+    "@((ay)) (([],),)",
+  };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (texts); i++)
+    {
+      GVariant *value = NULL, *copy = NULL;
+      GBytes *bytes = NULL;
+      GError *local_error = NULL;
+
+      g_test_message ("Text: %s", texts[i]);
+
+      value = g_variant_parse (NULL, texts[i], NULL, NULL, &local_error);
+      g_assert_no_error (local_error);
+      g_assert_nonnull (value);
+
+      /* Serialising must give a zero-sized value with no data at all. */
+      g_assert_null (g_variant_get_data (value));
+      g_assert_cmpuint (g_variant_get_size (value), ==, 0);
+      g_assert_true (g_variant_is_normal_form (value));
+
+      /* Read the same data back and compare it to the original. */
+      bytes = g_variant_get_data_as_bytes (value);
+      copy = g_variant_new_from_bytes (g_variant_get_type (value), bytes, FALSE);
+      g_variant_ref_sink (copy);
+
+      serialise_recursively (copy);
+      g_assert_cmpvariant (value, copy);
+
+      g_variant_unref (copy);
+      g_bytes_unref (bytes);
+      g_variant_unref (value);
+    }
+
+  g_variant_type_info_assert_no_infos ();
+}
+
+/* Test tuples deserialised from zero bytes of data. Their offset table is
+ * empty, so reading a member's bounds must not form a pointer into the (NULL)
+ * data either. */
+static void
+test_serialiser_zero_sized_tuple_data (void)
+{
+  const struct
+  {
+    const gchar *type;
+    gboolean normal;
+  } tests[] = {
+    { "(ayay)", TRUE },
+    { "(asas)", TRUE },
+    { "(ayayay)", TRUE },
+    { "(mayay)", TRUE },
+    { "((ay)(ay))", TRUE },
+    { "(a(ay)a(ay))", TRUE },
+    /* Members which cannot be zero-sized make the value non-normal. Note that
+     * the others are considered normal because every one of their members can
+     * legitimately be zero-sized, so there is nothing missing from the data. */
+    { "(sss)", FALSE },
+    { "(ayi)", FALSE },
+    { "(iay)", FALSE },
+  };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      GVariant *value = NULL;
+      GBytes *bytes = NULL;
+
+      g_test_message ("Type: %s", tests[i].type);
+
+      bytes = g_bytes_new (NULL, 0);
+      value = g_variant_new_from_bytes (G_VARIANT_TYPE (tests[i].type), bytes, FALSE);
+      g_variant_ref_sink (value);
+
+      g_assert_cmpuint (g_variant_get_size (value), ==, 0);
+      g_assert_cmpint (g_variant_is_normal_form (value), ==, tests[i].normal);
+
+      serialise_recursively (value);
+
+      g_variant_unref (value);
+      g_bytes_unref (bytes);
+    }
+
+  g_variant_type_info_assert_no_infos ();
+}
+
 /* Test the unit tuple, which is the only type with no member information at
  * all. */
 static void
@@ -6072,6 +6204,9 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/serialiser/byteswap", test_byteswaps);
   g_test_add_func ("/gvariant/serialiser/byteswap/zero-sized", test_byteswap_zero_sized);
   g_test_add_func ("/gvariant/serialiser/children", test_serialiser_children);
+  g_test_add_func ("/gvariant/serialiser/zero-sized", test_serialiser_zero_sized);
+  g_test_add_func ("/gvariant/serialiser/zero-sized-tuple-data",
+                   test_serialiser_zero_sized_tuple_data);
   g_test_add_func ("/gvariant/serialiser/unit-tuple", test_serialiser_unit_tuple);
 
   for (i = 1; i <= 20; i += 4)
