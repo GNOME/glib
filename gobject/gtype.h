@@ -1576,9 +1576,12 @@ g_type_once_get (GTypeAtomic *gtype_id_ptr)
  * @gtype_id_ptr: a pointer to an atomic GType variable
  * @gtype: the value to set
  *
- * Atomically initialises the @gtype_id_ptr to @gtype.
+ * Initialises the @gtype_id_ptr to @gtype.
  *
  * This function should only be used by the `G_DEFINE_TYPE` macros.
+ *
+ * This function is not thread safe, and should only be called within
+ * the type registration function.
  *
  * Since: 2.90
  */
