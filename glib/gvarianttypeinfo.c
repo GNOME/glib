@@ -419,7 +419,7 @@ tuple_get_item (TupleInfo          *info,
                 gsize              *d,
                 gsize              *e)
 {
-  if (&info->members[info->n_members] == item)
+  if (info->members == NULL || &info->members[info->n_members] == item)
     return FALSE;
 
   *d = item->type_info->alignment;

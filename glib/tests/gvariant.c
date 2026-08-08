@@ -2388,6 +2388,29 @@ test_byteswap_zero_sized (void)
   g_variant_unref (swapped);
 }
 
+/* Test the unit tuple, which is the only type with no member information at
+ * all. */
+static void
+test_serialiser_unit_tuple (void)
+{
+  GVariant *value = NULL;
+
+  value = g_variant_new_tuple (NULL, 0);
+  g_variant_ref_sink (value);
+
+  g_assert_cmpstr (g_variant_get_type_string (value), ==, "()");
+  g_assert_cmpuint (g_variant_n_children (value), ==, 0);
+
+  /* The unit tuple is defined to take up one byte rather than none. */
+  g_assert_cmpuint (g_variant_get_size (value), ==, 1);
+  g_assert_nonnull (g_variant_get_data (value));
+  g_assert_true (g_variant_is_normal_form (value));
+
+  g_variant_unref (value);
+
+  g_variant_type_info_assert_no_infos ();
+}
+
 static void
 test_serialiser_children (void)
 {
@@ -6043,6 +6066,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/serialiser/byteswap", test_byteswaps);
   g_test_add_func ("/gvariant/serialiser/byteswap/zero-sized", test_byteswap_zero_sized);
   g_test_add_func ("/gvariant/serialiser/children", test_serialiser_children);
+  g_test_add_func ("/gvariant/serialiser/unit-tuple", test_serialiser_unit_tuple);
 
   for (i = 1; i <= 20; i += 4)
     {
