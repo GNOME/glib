@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include <math.h>
 #include <stdlib.h>
 #include <locale.h>
 #include <libintl.h>
@@ -986,6 +987,7 @@ enum
   PROP_INT64,
   PROP_UINT64,
   PROP_DOUBLE,
+  PROP_ANY_DOUBLE,
   PROP_STRING,
   PROP_NO_READ,
   PROP_NO_WRITE,
@@ -1008,6 +1010,7 @@ typedef struct
   gint64 int64_prop;
   guint64 uint64_prop;
   gdouble double_prop;
+  gdouble any_double_prop;
   gchar *string_prop;
   gchar *no_read_prop;
   gchar *no_write_prop;
@@ -1078,6 +1081,9 @@ test_object_get_property (GObject    *object,
     case PROP_DOUBLE:
       g_value_set_double (value, test_object->double_prop);
       break;
+    case PROP_ANY_DOUBLE:
+      g_value_set_double (value, test_object->any_double_prop);
+      break;
     case PROP_STRING:
       g_value_set_string (value, test_object->string_prop);
       break;
@@ -1138,6 +1144,9 @@ test_object_set_property (GObject      *object,
       break;
     case PROP_DOUBLE:
       test_object->double_prop = g_value_get_double (value);
+      break;
+    case PROP_ANY_DOUBLE:
+      test_object->any_double_prop = g_value_get_double (value);
       break;
     case PROP_STRING:
       g_free (test_object->string_prop);
@@ -1236,6 +1245,9 @@ test_object_class_init (TestObjectClass *class)
     g_param_spec_uint64 ("uint64", "", "", 0, G_MAXUINT64, 0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_DOUBLE,
     g_param_spec_double ("double", "", "", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0, G_PARAM_READWRITE));
+  /* Unlike "double", this accepts infinities. */
+  g_object_class_install_property (gobject_class, PROP_ANY_DOUBLE,
+    g_param_spec_double ("any-double", "", "", -INFINITY, INFINITY, 0.0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_STRING,
     g_param_spec_string ("string", "", "", NULL, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_NO_WRITE,
@@ -1509,6 +1521,96 @@ test_simple_binding (void)
   g_assert_cmpuint (g_settings_get_uint (settings, "range"), ==, 22);
   /* The value of the object is currently not reset back to its initial value
   g_assert_cmpuint (u, ==, 22); */
+
+  g_object_unref (obj);
+  g_object_unref (settings);
+}
+
+/* Bind @key to the "any-double" property of @obj, set that property to @d and
+ * check that the key ends up holding @expected. Keys which the double cannot be
+ * mapped to are left untouched, so @expected is their default in that case. */
+static void
+check_float_mapping (GSettings   *settings,
+                     TestObject  *obj,
+                     const gchar *key,
+                     gdouble      d,
+                     GVariant    *expected)
+{
+  GVariant *value;
+
+  expected = g_variant_ref_sink (expected);
+
+  g_settings_reset (settings, key);
+
+  g_settings_bind (settings, key, obj, "any-double", G_SETTINGS_BIND_DEFAULT);
+  g_object_set (obj, "any-double", d, NULL);
+  g_settings_unbind (obj, "any-double");
+
+  value = g_settings_get_value (settings, key);
+  g_assert_cmpvariant (value, expected);
+
+  g_variant_unref (value);
+  g_variant_unref (expected);
+}
+
+/* Test that a double GObject property bound to a numeric key is range checked
+ * before it is converted, including for values which no integer type can
+ * represent. */
+static void
+test_bind_float_mapping (void)
+{
+  GSettings *settings;
+  TestObject *obj;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  /* In range of the target type; the fractional part is truncated. */
+  check_float_mapping (settings, obj, "int16", -42.5, g_variant_new_int16 (-42));
+  check_float_mapping (settings, obj, "uint16", 42.5, g_variant_new_uint16 (42));
+  check_float_mapping (settings, obj, "int", -42.5, g_variant_new_int32 (-42));
+  check_float_mapping (settings, obj, "uint", 42.5, g_variant_new_uint32 (42));
+  check_float_mapping (settings, obj, "int64", -42.5, g_variant_new_int64 (-42));
+  check_float_mapping (settings, obj, "uint64", 42.5, g_variant_new_uint64 (42));
+  check_float_mapping (settings, obj, "handle", 42.5, g_variant_new_handle (42));
+
+  /* A double key needs no conversion at all, so it takes any value. */
+  check_float_mapping (settings, obj, "double", 42.5, g_variant_new_double (42.5));
+  check_float_mapping (settings, obj, "double", G_MAXDOUBLE,
+                       g_variant_new_double (G_MAXDOUBLE));
+  check_float_mapping (settings, obj, "double", -G_MAXDOUBLE,
+                       g_variant_new_double (-G_MAXDOUBLE));
+
+  /* Representable as a gint64, but out of range of the target type. */
+  check_float_mapping (settings, obj, "int16", G_MAXINT16 + 1.0, g_variant_new_int16 (0));
+  check_float_mapping (settings, obj, "int16", G_MININT16 - 1.0, g_variant_new_int16 (0));
+  check_float_mapping (settings, obj, "uint16", G_MAXUINT16 + 1.0, g_variant_new_uint16 (0));
+  check_float_mapping (settings, obj, "uint16", -1.0, g_variant_new_uint16 (0));
+  check_float_mapping (settings, obj, "int", G_MAXINT32 + 1.0, g_variant_new_int32 (0));
+  check_float_mapping (settings, obj, "int", G_MININT32 - 1.0, g_variant_new_int32 (0));
+  check_float_mapping (settings, obj, "uint", G_MAXUINT32 + 1.0, g_variant_new_uint32 (0));
+  check_float_mapping (settings, obj, "uint", -1.0, g_variant_new_uint32 (0));
+  check_float_mapping (settings, obj, "uint64", -1.0, g_variant_new_uint64 (0));
+  check_float_mapping (settings, obj, "handle", G_MAXUINT32 + 1.0, g_variant_new_handle (0));
+  check_float_mapping (settings, obj, "handle", -1.0, g_variant_new_handle (0));
+
+  /* The bounds of gint64, and the doubles either side of them. -2^63 is
+   * exactly representable, and is G_MININT64; 2^63 is too, but is one past the
+   * end of the range. */
+  check_float_mapping (settings, obj, "int64", -9223372036854775808.0,
+                       g_variant_new_int64 (G_MININT64));
+  check_float_mapping (settings, obj, "int64", 9223372036854775808.0,
+                       g_variant_new_int64 (0));
+  /* The largest double below -2^63. */
+  check_float_mapping (settings, obj, "int64", -9223372036854777856.0,
+                       g_variant_new_int64 (0));
+
+  /* Values no integer type can represent. Converting these to a gint64 would
+   * be undefined, so they must be rejected before the conversion. */
+  check_float_mapping (settings, obj, "int64", G_MAXDOUBLE, g_variant_new_int64 (0));
+  check_float_mapping (settings, obj, "int64", -G_MAXDOUBLE, g_variant_new_int64 (0));
+  check_float_mapping (settings, obj, "int64", (gdouble) INFINITY, g_variant_new_int64 (0));
+  check_float_mapping (settings, obj, "int64", (gdouble) -INFINITY, g_variant_new_int64 (0));
 
   g_object_unref (obj);
   g_object_unref (settings);
@@ -3398,6 +3500,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/simple-binding", test_simple_binding);
   g_test_add_func ("/gsettings/directional-binding", test_directional_binding);
   g_test_add_func ("/gsettings/custom-binding", test_custom_binding);
+  g_test_add_func ("/gsettings/bind-float-mapping", test_bind_float_mapping);
   g_test_add_func ("/gsettings/bind-with-mapping-closures", test_bind_with_mapping_closures);
   g_test_add_func ("/gsettings/bind-with-mapping-closures-parameters", test_bind_with_mapping_closures_parameters);
   g_test_add_func ("/gsettings/no-change-binding", test_no_change_binding);
