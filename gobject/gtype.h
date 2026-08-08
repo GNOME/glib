@@ -1640,7 +1640,7 @@ g_type_once_init (GTypeAtomic *gtype_id_ptr,
 /**
  * g_as:
  * @TypeName: a type name
- * @ins: the instance to cast
+ * @inst: the instance to cast
  *
  * Evaluates as a safe cast of @inst to the desired type @TypeName.
  *
