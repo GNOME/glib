@@ -151,7 +151,19 @@ on_handle_add_full (FakeDocuments         *object,
       g_assert_no_error (local_error);
 
       filename = g_unix_fd_query_path (fd, &local_error);
-      g_assert_no_error (local_error);
+      if (local_error != NULL)
+        {
+          if (g_error_matches (local_error, G_FILE_ERROR, G_FILE_ERROR_NOSYS))
+            {
+              /* g_unix_fd_query_path() is not supported on this platform (e.g. Hurd).
+               * We cannot determine the file path from the fd, so we skip creating
+               * the document stub file. Tests that require this should be skipped. */
+              g_clear_error (&local_error);
+              g_clear_object (&file_dir);
+              continue;
+            }
+          g_assert_no_error (local_error);
+        }
 
       g_test_message ("Creating Document ID %s mapped to FD %d (%s)",
                       doc_ids[i], fd, filename);
