@@ -27,9 +27,27 @@
 #include "fake-document-portal.h"
 #include "gdocumentportal.h"
 
+/* Returns TRUE and calls g_test_skip() if g_unix_fd_query_path() is not
+ * supported on this platform (e.g. Hurd). Tests that depend on the fake
+ * document portal being able to resolve fd paths should call this and
+ * return early if it returns TRUE. */
+static gboolean
+skip_if_fd_query_path_unsupported (void)
+{
+#ifdef __GNU__
+  g_test_skip ("g_unix_fd_query_path() not supported on Hurd");
+  return TRUE;
+#else
+  return FALSE;
+#endif
+}
+
 static void
 test_document_portal_add_uri (void)
 {
+  if (skip_if_fd_query_path_unsupported ())
+    return;
+
   GFakeDocumentPortalThread *thread = NULL;
   GFile *file;
   GList *uris = NULL;  /* (element-type utf8) */
@@ -114,6 +132,9 @@ test_document_portal_add_not_existent_uri (void)
 static void
 test_document_portal_add_existent_and_not_existent_uris (void)
 {
+  if (skip_if_fd_query_path_unsupported ())
+    return;
+
   GFakeDocumentPortalThread *thread = NULL;
   GFile *file;
   GFile *expected_file0;
@@ -178,6 +199,9 @@ test_document_portal_add_existent_and_not_existent_uris (void)
 static void
 test_document_portal_add_symlink_uri (void)
 {
+  if (skip_if_fd_query_path_unsupported ())
+    return;
+
   GFakeDocumentPortalThread *thread = NULL;
   GFile *target;
   GFile *link1;

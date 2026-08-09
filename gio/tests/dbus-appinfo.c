@@ -387,6 +387,13 @@ static void
 test_sandboxed_application_doc_export (const char *app_id,
                                        const char *expected_portal_app_id)
 {
+#ifdef __GNU__
+  /* g_unix_fd_query_path() is not supported on Hurd, so the fake document
+   * portal cannot determine filenames from file descriptors. */
+  g_test_skip ("g_unix_fd_query_path() not supported on Hurd");
+  return;
+#endif
+
   const gchar *argv[] = { "myapp", NULL };
   gchar *desktop_file = NULL;
   gchar *desktop_id;
