@@ -151,6 +151,9 @@ on_handle_add_full (FakeDocuments         *object,
       g_assert_no_error (local_error);
 
       filename = g_unix_fd_query_path (fd, &local_error);
+      /* fd was dup()'d by g_unix_fd_list_get(); close it now we have the path */
+      g_close (fd, NULL);
+
       if (local_error != NULL)
         {
           if (g_error_matches (local_error, G_FILE_ERROR, G_FILE_ERROR_NOSYS))
