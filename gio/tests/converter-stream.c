@@ -99,6 +99,14 @@ g_expander_converter_convert (GConverter *converter,
   gsize i;
   gsize block_size;
 
+  /* An empty input buffer may be passed as NULL, which must not be offset. */
+  if (inbuf == NULL || inbuf_size == 0)
+    {
+      if (flags & G_CONVERTER_INPUT_AT_END)
+        return G_CONVERTER_FINISHED;
+      return G_CONVERTER_CONVERTED;
+    }
+
   in = inbuf;
   out = outbuf;
   in_end = in + inbuf_size;
@@ -214,6 +222,14 @@ g_compressor_converter_convert (GConverter *converter,
   guint8 v, *out;
   gsize i;
   gsize block_size;
+
+  /* An empty input buffer may be passed as NULL, which must not be offset. */
+  if (inbuf == NULL || inbuf_size == 0)
+    {
+      if (flags & G_CONVERTER_INPUT_AT_END)
+        return G_CONVERTER_FINISHED;
+      return G_CONVERTER_CONVERTED;
+    }
 
   in = inbuf;
   out = outbuf;

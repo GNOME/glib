@@ -91,6 +91,15 @@ g_settings_set_mapping_float (const GValue       *value,
   else
     return NULL;
 
+  if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_DOUBLE))
+    return g_variant_new_double (d);
+
+  /* Values gint64 cannot represent, and NaN, are out of range of every integer
+   * type handled below. G_MININT64 is -2^63, which is exactly representable as
+   * a gdouble; G_MAXINT64 is not, and rounds up to 2^63. */
+  if (!(d >= (gdouble) G_MININT64 && d < -(gdouble) G_MININT64))
+    return NULL;
+
   l = (gint64) d;
   if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_INT16))
     {
@@ -127,8 +136,6 @@ g_settings_set_mapping_float (const GValue       *value,
       if (0 <= l && l <= G_MAXUINT32)
         variant = g_variant_new_handle ((guint) l);
     }
-  else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_DOUBLE))
-    variant = g_variant_new_double ((gdouble) d);
 
   return variant;
 }

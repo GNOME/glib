@@ -119,6 +119,9 @@
     <key name="double" type="d">
       <default>0</default>
     </key>
+    <key name="handle" type="h">
+      <default>0</default>
+    </key>
     <key name="string" type="s">
       <default>""</default>
     </key>
