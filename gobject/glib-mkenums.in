@@ -180,7 +180,7 @@ def parse_entries(file, file_name):
 
         # strip comments w/o options
         line = re.sub(r'''/\*(?!<)
-            ([^*]+|\*(?!/))*
+            ([^*]|\*(?!/))*
            \*/''', '', line, flags=re.X)
 
         line = line.rstrip()
@@ -520,7 +520,7 @@ def process_file(curfilename):
 
         # strip comments w/o options
         line = re.sub(r'''/\*(?!<)
-           ([^*]+|\*(?!/))*
+           ([^*]|\*(?!/))*
            \*/''', '', line)
 
         # ignore forward declarations
