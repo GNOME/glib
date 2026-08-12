@@ -105,6 +105,12 @@ test_cleanup_handles_errors (void)
     {
 
       g_assert_no_errno (g_mkdir_with_parents (subdir, 0755));
+      /* Normally this is enough to prevent us from deleting
+       * $XDG_RUNTIME_DIR and its contents. If we're root (specifically,
+       * CAP_DAC_OVERRIDE) then this will not prevent deletion,
+       * making this test ineffective, but in the common case where the
+       * tests aren't run as root, the test will work as intended.
+       */
       g_assert_no_errno (g_chmod (runtime_dir, 0));
 
       g_clear_pointer (&subdir, g_free);
@@ -125,8 +131,19 @@ test_cleanup_handles_errors (void)
   /* Now that we have verified that a failure to delete part of the isolated
    * temporary directory hierarchy does not cause the test to fail, clean up
    * after ourselves.
+   *
+   * Note that in the case where we have CAP_DAC_OVERRIDE or equivalent,
+   * we will find that it *was* deleted.
    */
-  g_assert_no_errno (g_chmod (runtime_dir, 0755));
+  if (g_chmod (runtime_dir, 0755) != 0)
+    {
+      if (errno == ENOENT)
+        g_test_skip_printf ("g_chmod(%s, 0) was not enough to prevent cleanup, "
+                            "perhaps we have CAP_DAC_OVERRIDE?",
+                            runtime_dir);
+      else
+        g_error ("g_chmod(%s, 0755) -> %s", runtime_dir, g_strerror (errno));
+    }
 
   g_free (subdir);
 }
