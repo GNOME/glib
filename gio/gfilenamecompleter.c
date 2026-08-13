@@ -463,8 +463,10 @@ g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
  * 
  * Gets an array of completion strings for a given initial text.
  * 
- * Returns: (array zero-terminated=1) (transfer full): array of strings with possible completions for @initial_text.
- * This array must be freed by g_strfreev() when finished. 
+ * The strings are returned in an undefined order.
+ *
+ * Returns: (array zero-terminated=1) (transfer full): array of strings with
+ *   possible completions for @initial_text
  **/
 char **
 g_filename_completer_get_completions (GFilenameCompleter *completer,

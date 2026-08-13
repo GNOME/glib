@@ -322,6 +322,21 @@ g_qsort_with_data (gconstpointer    pbase,
  *
  * Unlike `qsort()`, this is guaranteed to be a stable sort.
  *
+ * An example of sorting an array of strings (a strv):
+ * ```
+ * static int
+ * strcmp_data (const void *a,
+ *              const void *b,
+ *              void       *user_data)
+ * {
+ *   return strcmp (*((const char * const *) a), *((const char * const *) b));
+ * }
+ *
+ * char **my_strv = …;
+ * size_t my_strv_length = g_strv_length (my_strv);
+ * g_sort_array (my_strv, (my_strv_length, sizeof (*my_strv), strcmp_data, NULL);
+ * ```
+ *
  * Since: 2.82
  */
 void
