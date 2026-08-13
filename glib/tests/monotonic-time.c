@@ -121,27 +121,33 @@ static void
 test_similar (void)
 {
   int64_t us_before, us_after, us_elapsed;
-  uint64_t ns_before, ns_after, ns_elapsed;
+  uint64_t ns1_before, ns1_after, ns1_elapsed;
+  uint64_t ns2_before, ns2_after, ns2_elapsed;
 
-  ns_before = g_get_monotonic_time_ns ();
+  ns1_before = g_get_monotonic_time_ns ();
   us_before = g_get_monotonic_time ();
+  ns2_before = g_get_monotonic_time_ns ();
 
   do
     {
+      ns2_after = g_get_monotonic_time_ns ();
       us_after = g_get_monotonic_time ();
     }
   while (us_after == us_before);
 
-  ns_after = g_get_monotonic_time_ns ();
+  ns1_after = g_get_monotonic_time_ns ();
 
   g_assert_cmpint (us_after, >, us_before);
-  g_assert_cmpint (ns_after, >, ns_before);
+  g_assert_cmpint (ns1_after, >, ns1_before);
+  /* need >= here, clocks can tick slowly */
+  g_assert_cmpint (ns2_after, >=, ns2_before);
   us_elapsed = us_after - us_before;
-  ns_elapsed = ns_after - ns_before;
+  ns1_elapsed = ns1_after - ns1_before;
+  ns2_elapsed = ns2_after - ns2_before;
 
-  /* allow 50 * elapsed difference - which is hopefully a lot for 1us of waiting */
-  g_assert_cmpint (ns_elapsed, <, 50 * 1000 * us_elapsed);
-  g_assert_cmpint (50 * ns_elapsed, >, 1000 * us_elapsed);
+  /* +1000 because of rounding errors */
+  g_assert_cmpint (ns1_elapsed + 1000, >=, 1000 * us_elapsed);
+  g_assert_cmpint (ns2_elapsed, <=, 1000 + 1000 * us_elapsed);
 }
 
 int
