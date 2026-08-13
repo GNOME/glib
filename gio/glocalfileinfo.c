@@ -218,12 +218,12 @@ get_selinux_context (const char            *path,
     {
       if (follow_symlinks)
 	{
-	  if (lgetfilecon_raw (path, &context) < 0)
+	  if (getfilecon_raw (path, &context) < 0)
 	    return;
 	}
       else
 	{
-	  if (getfilecon_raw (path, &context) < 0)
+	  if (lgetfilecon_raw (path, &context) < 0)
 	    return;
 	}
 
