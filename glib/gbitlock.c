@@ -186,7 +186,8 @@ bit_lock_contended_class (gconstpointer address)
 }
 
 #if (defined (i386) || defined (__amd64__))
-  #if G_GNUC_CHECK_VERSION(4, 5)
+  #if G_GNUC_CHECK_VERSION(4, 5) || \
+      (defined (__clang_major__) && __clang_major__ >= 9)
     #define USE_ASM_GOTO 1
   #endif
 #endif
