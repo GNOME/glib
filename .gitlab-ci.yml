@@ -853,11 +853,11 @@ vs2019-arm64:
       - _build/gthread/libgthread-2.0-0.dll
       - _build/gobject/libgobject-2.0-0.dll
 
-freebsd-13-x86_64:
+freebsd-14-x86_64:
   extends: .only-schedules-or-manual
   stage: build
   tags:
-    - freebsd-13
+    - freebsd-14
   needs: []
   variables:
     CPPFLAGS: -I/usr/local/include
