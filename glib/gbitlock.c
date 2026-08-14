@@ -34,6 +34,10 @@
 #include "gtestutils.h"
 #include "gthreadprivate.h"
 
+#ifdef __SANITIZE_THREAD__
+#include <sanitizer/tsan_interface.h>
+#endif
+
 #ifdef G_BIT_LOCK_FORCE_FUTEX_EMULATION
 #undef HAVE_FUTEX
 #undef HAVE_FUTEX_TIME64
@@ -255,6 +259,9 @@ g_bit_lock_and_get (gint *address,
                                 : "r"(address), "r"(lock_bit)
                                 : "cc", "memory"
                                 : contended);
+#ifdef __SANITIZE_THREAD__
+          __tsan_acquire (address);
+#endif
           return;
 
         contended:
@@ -346,7 +353,10 @@ g_bit_trylock (volatile gint *address,
                     : "=r" (result)
                     : "r" (address), "r" (lock_bit)
                     : "cc", "memory");
-
+#ifdef __SANITIZE_THREAD__
+  int *address_nonvolatile = (int *) address;
+  __tsan_acquire (address_nonvolatile);
+#endif
   return result;
 #else
   gint *address_nonvolatile = (gint *) address;
@@ -382,6 +392,9 @@ g_bit_unlock (volatile gint *address,
   gint *address_nonvolatile = (gint *) address;
 
 #ifdef USE_ASM_GOTO
+#ifdef __SANITIZE_THREAD__
+  __tsan_release (address_nonvolatile);
+#endif
   __asm__ volatile ("lock btr %1, (%0)"
                     : /* no output */
                     : "r" (address), "r" (lock_bit)
@@ -559,6 +572,9 @@ void
                                  : "r"(address), "r"((gsize) lock_bit)
                                  : "cc", "memory"
                                  : contended);
+#ifdef __SANITIZE_THREAD__
+          __tsan_acquire (address);
+#endif
           return;
 
         contended:
@@ -638,7 +654,10 @@ gboolean
                       : "=r" (result)
                       : "r" (address), "r" ((gsize) lock_bit)
                       : "cc", "memory");
-
+#ifdef __SANITIZE_THREAD__
+    void *address_nonvolatile = (void *) address;
+    __tsan_acquire (address_nonvolatile);
+#endif
     return result;
 #else
     void *address_nonvolatile = (void *) address;
@@ -681,6 +700,9 @@ void
 
   {
 #ifdef USE_ASM_GOTO
+#ifdef __SANITIZE_THREAD__
+    __tsan_release (address_nonvolatile);
+#endif
     __asm__ volatile ("lock btr %1, (%0)"
                       : /* no output */
                       : "r" (address), "r" ((gsize) lock_bit)
