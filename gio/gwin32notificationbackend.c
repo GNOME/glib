@@ -29,6 +29,7 @@
 
 #include <windows.h>
 
+#include "gapplication.h"
 #include "gnotificationbackend.h"
 
 #include "giomodule-priv.h"
@@ -109,25 +110,63 @@ G_DEFINE_TYPE_WITH_CODE (GWin32NotificationBackend, g_win32_notification_backend
  * which is for the NUL-terminator */
 #define MAX_BODY_COUNT (G_N_ELEMENTS (((NOTIFYICONDATA *) 0)->szInfo) - 1)
 
+/* Maximum number of UTF-16 code units that can be written into
+ * NOTIFYICONDATA.szTip array, it does not count one element
+ * which is for the NUL-terminator */
+#define MAX_TIP_COUNT (G_N_ELEMENTS (((NOTIFYICONDATA *) 0)->szTip) - 1)
+
+#define WM_APP_NOTIFYCALLBACK (WM_APP + 1)
+
 /* Initializes `out` with a NOTIFYICONDATA struct, to be passed to
  * Shell_NotifyIcon (NIM_ADD, ...) calls. */
-#define G_NOTIFYICONDATA_INIT(out)                            \
-  G_STMT_START                                                \
-  {                                                           \
-    *(out) = (NOTIFYICONDATA){                                \
-      .cbSize = sizeof (NOTIFYICONDATA),                      \
-      .hWnd = hwnd,                                           \
-      .uFlags = NIF_ICON,                                     \
-      .hIcon = LoadIcon (exe_module (), MAKEINTRESOURCE (1)), \
-    };                                                        \
-                                                              \
-    if (!(out)->hIcon)                                        \
-      {                                                       \
-        /* Fallback if the application has no icon */         \
-        (out)->hIcon = LoadIcon (NULL, IDI_APPLICATION);      \
-      }                                                       \
-  }                                                           \
-  G_STMT_END
+static void
+fill_notify_icon_data (NOTIFYICONDATA *out)
+{
+  *out = (NOTIFYICONDATA){
+    .cbSize = sizeof (NOTIFYICONDATA),
+    .hWnd = hwnd,
+    .uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP | NIF_SHOWTIP,
+    .hIcon = LoadIcon (exe_module (), MAKEINTRESOURCE (1)),
+    .uCallbackMessage = WM_APP_NOTIFYCALLBACK,
+    .uVersion = NOTIFYICON_VERSION_4,
+  };
+
+  if (!out->hIcon)
+    {
+      /* Fallback if the application has no icon */
+      out->hIcon = LoadIcon (NULL, IDI_APPLICATION);
+    }
+
+  const gchar *tip_utf8 = g_get_application_name ();
+
+  glong items_written;
+  GError *error = NULL;
+
+  if (tip_utf8 && *tip_utf8)
+    {
+      WCHAR *tip_utf16 = g_utf8_to_utf16 (tip_utf8, -1, NULL, &items_written, &error);
+      if (error)
+        {
+          g_critical ("Invalid UTF-8 in application name: %s", error->message);
+          g_error_free (error);
+        }
+      else
+        {
+          g_assert (items_written >= 0);
+          if ((size_t) items_written > MAX_TIP_COUNT)
+            {
+              g_warning ("Application name too long for notification tool-tip, truncating it");
+              items_written = MAX_TIP_COUNT;
+              if (IS_LOW_SURROGATE (tip_utf16[items_written]))
+                items_written--;
+            }
+
+          memcpy (&out->szTip, tip_utf16, items_written * sizeof (WCHAR));
+          out->szTip[items_written] = L'\0';
+          g_free (tip_utf16);
+        }
+    }
+}
 
 static gboolean
 g_win32_notification_backend_is_supported (void)
@@ -293,6 +332,10 @@ destroy_window_worker (void)
 
   g_assert (hwnd_state == HWND_STATE_DESTROYING);
 
+  GWeakRef *weak_ref = (GWeakRef *) GetWindowLongPtr (hwnd, GWLP_USERDATA);
+  g_weak_ref_clear (weak_ref);
+  g_free (weak_ref);
+
   DestroyWindow (hwnd);
   hwnd = NULL;
   UnregisterClass (MAKEINTATOM (wnd_klass), this_module ());
@@ -334,14 +377,18 @@ g_win32_notification_backend_dispose (GObject *self)
   G_OBJECT_CLASS (g_win32_notification_backend_parent_class)->dispose (self);
 }
 
+static gboolean
+activate_app (GApplication *app)
+{
+  g_application_activate (app);
+
+  return G_SOURCE_REMOVE;
+}
+
 /* Not dummy anymore... */
 static LRESULT CALLBACK
 dummy_WndProc (HWND _hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 {
-  /* FIXME: We could add some nice features:
-   *
-   * - If we got notification icon click event, activate the application. */
-
   static UINT msg_TaskbarCreated;
 
   switch (message)
@@ -353,10 +400,41 @@ dummy_WndProc (HWND _hwnd, UINT message, WPARAM wparam, LPARAM lparam)
           {
             g_warning ("win32-notification: RegisterWindowMessage failed: '%ld'", GetLastError ());
           }
+
+        CREATESTRUCT *cs = (CREATESTRUCT *) lparam;
+        SetWindowLongPtr (_hwnd, GWLP_USERDATA, (LONG_PTR) cs->lpCreateParams);
         break;
       }
     case WM_NULL:
       {
+        break;
+      }
+    case WM_APP_NOTIFYCALLBACK:
+      {
+        switch (LOWORD (lparam))
+          {
+          /* Handles ENTER, SPACE and LEFT_CLICK keystrokes */
+          case NIN_SELECT:
+          case NIN_KEYSELECT:
+            {
+              GWeakRef *backend_weak = (GWeakRef *) GetWindowLongPtr (_hwnd, GWLP_USERDATA);
+              GNotificationBackend *backend = (GNotificationBackend *) g_weak_ref_get (backend_weak);
+              if (!backend)
+                break;
+
+              GApplication *app = g_notification_backend_dup_application (backend);
+              if (app)
+                {
+                  g_main_context_invoke_full (NULL, G_PRIORITY_DEFAULT,
+                                              G_SOURCE_FUNC (activate_app), app,
+                                              g_object_unref);
+                }
+
+              g_object_unref (backend);
+
+              break;
+            }
+          }
         break;
       }
     default:
@@ -373,16 +451,16 @@ dummy_WndProc (HWND _hwnd, UINT message, WPARAM wparam, LPARAM lparam)
               }
 
             NOTIFYICONDATA notify_singleton;
-            G_NOTIFYICONDATA_INIT (&notify_singleton);
+            fill_notify_icon_data (&notify_singleton);
 
-            if (!Shell_NotifyIcon (NIM_ADD, &notify_singleton))
+            if (!Shell_NotifyIcon (NIM_ADD, &notify_singleton) ||
+                !Shell_NotifyIcon (NIM_SETVERSION, &notify_singleton))
               {
                 hwnd_state = HWND_STATE_FAILED;
               }
             else
               {
                 hwnd_state = HWND_STATE_READY;
-                Shell_NotifyIcon (NIM_SETVERSION, &notify_singleton);
               }
 
             g_cond_broadcast (&hwnd_cond);
@@ -396,8 +474,10 @@ dummy_WndProc (HWND _hwnd, UINT message, WPARAM wparam, LPARAM lparam)
 
 /* Runs on GLib worker thread */
 static gboolean
-create_window_worker (void)
+create_window_worker (gpointer user_data)
 {
+  GWeakRef *backend_weak = (GWeakRef *) user_data;
+
   g_mutex_lock (&hwnd_mutex);
 
   g_assert (hwnd_state == HWND_STATE_INITIALIZING);
@@ -413,11 +493,13 @@ create_window_worker (void)
     {
       g_critical ("win32-notification: RegisterClass failed: %ld", GetLastError ());
       hwnd_state = HWND_STATE_FAILED;
+      g_weak_ref_clear (backend_weak);
+      g_free (backend_weak);
       goto err_out;
     }
 
   hwnd = CreateWindow (MAKEINTATOM (wnd_klass), NULL, WS_POPUP,
-                       0, 0, 0, 0, NULL, NULL, this_module (), NULL);
+                       0, 0, 0, 0, NULL, NULL, this_module (), backend_weak);
 
   if (!hwnd)
     {
@@ -425,15 +507,15 @@ create_window_worker (void)
       UnregisterClass (MAKEINTATOM (wnd_klass), this_module ());
       wnd_klass = 0;
       hwnd_state = HWND_STATE_FAILED;
+      g_weak_ref_clear (backend_weak);
+      g_free (backend_weak);
       goto err_out;
     }
-
-  g_ref_count_init (&hwnd_refcount);
 
   /* Create the notification icon for the first time */
 
   NOTIFYICONDATA notify_singleton;
-  G_NOTIFYICONDATA_INIT (&notify_singleton);
+  fill_notify_icon_data (&notify_singleton);
 
   if (!Shell_NotifyIcon (NIM_ADD, &notify_singleton))
     {
@@ -441,11 +523,27 @@ create_window_worker (void)
        * and wait until dummy_WndProc receives TaskbarCreated message */
       hwnd_state = HWND_STATE_INITIALIZING_NOTIFY_ICON;
     }
+  else if (!Shell_NotifyIcon (NIM_SETVERSION, &notify_singleton))
+    {
+      /* We require NOTIFYICON_VERSION_4 features, this is an unlikely path
+       * since it can only fail in very old Windows systems (pre-Windows 2000) */
+
+      g_warning ("Windows system unsupported for sending notifications");
+      DestroyWindow (hwnd);
+      hwnd = NULL;
+      UnregisterClass (MAKEINTATOM (wnd_klass), this_module ());
+      wnd_klass = 0;
+      hwnd_state = HWND_STATE_FAILED;
+      g_weak_ref_clear (backend_weak);
+      g_free (backend_weak);
+      goto err_out;
+    }
   else
     {
-      Shell_NotifyIcon (NIM_SETVERSION, &notify_singleton);
       hwnd_state = HWND_STATE_READY;
     }
+
+  g_ref_count_init (&hwnd_refcount);
 
 err_out:
   g_cond_broadcast (&hwnd_cond);
@@ -550,8 +648,12 @@ g_win32_message_source_ensure_running (void)
 /* }}} */
 
 static void
-g_win32_notification_backend_init (GWin32NotificationBackend *backend)
+g_win32_notification_backend_constructed (GObject *self)
 {
+  G_OBJECT_CLASS (g_win32_notification_backend_parent_class)->constructed (self);
+
+  GWin32NotificationBackend *backend = G_WIN32_NOTIFICATION_BACKEND (self);
+
   /* FIXME: Move this to centralized module */
   g_win32_message_source_ensure_running ();
 
@@ -568,8 +670,12 @@ g_win32_notification_backend_init (GWin32NotificationBackend *backend)
     {
       hwnd_state = HWND_STATE_INITIALIZING;
       needs_inc = FALSE; /* Alredy incremented in worker */
+
+      GWeakRef *backend_weak = g_new (GWeakRef, 1);
+      g_weak_ref_init (backend_weak, backend);
+
       g_main_context_invoke (GLIB_PRIVATE_CALL (g_get_worker_context) (),
-                             G_SOURCE_FUNC (create_window_worker), NULL);
+                             G_SOURCE_FUNC (create_window_worker), backend_weak);
     }
 
   while (hwnd_state == HWND_STATE_INITIALIZING)
@@ -587,12 +693,18 @@ g_win32_notification_backend_init (GWin32NotificationBackend *backend)
 }
 
 static void
+g_win32_notification_backend_init (GWin32NotificationBackend *backend)
+{
+}
+
+static void
 g_win32_notification_backend_class_init (GWin32NotificationBackendClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
   GNotificationBackendClass *backend_class = G_NOTIFICATION_BACKEND_CLASS (class);
 
   object_class->dispose = g_win32_notification_backend_dispose;
+  object_class->constructed = g_win32_notification_backend_constructed;
 
   backend_class->is_supported = g_win32_notification_backend_is_supported;
   backend_class->send_notification = g_win32_notification_backend_send_notification;
