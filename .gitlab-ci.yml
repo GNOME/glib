@@ -865,6 +865,12 @@ freebsd-14-x86_64:
     LANG: C.UTF-8
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
+    - id
+    - uname -a
+    - freebsd-version
+    - cat /etc/os-release
+    - pkg info
+    - ps aux
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --localstatedir=/var
