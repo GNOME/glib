@@ -866,9 +866,8 @@ freebsd-14-x86_64:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
     - id
-    - uname
-    - freebsd-version -u
-    - freebsd-version -k
+    - uname -a
+    - freebsd-version
     - cat /etc/os-release
     - pkg info
     - ps aux
