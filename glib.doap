@@ -178,7 +178,7 @@
     <foaf:Person>
       <foaf:name>Luca Bacci</foaf:name>
       <foaf:mbox rdf:resource="mailto:luca.bacci982@gmail.com"/>
-      <gnome:userid>lb90</gnome:userid>
+      <gnome:userid>lbacci</gnome:userid>
     </foaf:Person>
   </maintainer>
 
