@@ -5436,10 +5436,11 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
 
   if (timeout_source->seconds)
     {
+      static gsize timer_perturb;
+      gsize perturb;
       uint64_t remainder_ns;
-      static gint timer_perturb = -1;
 
-      if (timer_perturb == -1)
+      if (g_once_init_enter (&timer_perturb))
         {
           /*
            * we want a per machine/session unique 'random' value; try the dbus
@@ -5450,10 +5451,16 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
           if (!session_bus_address)
             session_bus_address = g_getenv ("HOSTNAME");
           if (session_bus_address)
-            timer_perturb = ABS ((gint) g_str_hash (session_bus_address)) % G_NSEC_PER_SEC;
+            perturb = ABS ((gint) g_str_hash (session_bus_address)) % G_NSEC_PER_SEC;
           else
-            timer_perturb = 0;
+            perturb = 0;
+
+          /* g_once_init_leave() treats 0 as "not initialised", so add 1. */
+          g_once_init_leave (&timer_perturb, perturb + 1);
         }
+
+      /* Remove the extra value added during initialization. */
+      perturb = timer_perturb - 1;
 
       expiration_ns = current_time_ns + timeout_source->interval * G_NSEC_PER_SEC;
 
@@ -5463,14 +5470,14 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
        * always only *increase* the expiration time by adding a full
        * second in the case that the microsecond portion decreases.
        */
-      expiration_ns -= timer_perturb;
+      expiration_ns -= perturb;
 
       remainder_ns = expiration_ns % G_NSEC_PER_SEC;
       if (remainder_ns >= G_NSEC_PER_SEC / 4)
         expiration_ns += G_NSEC_PER_SEC;
 
       expiration_ns -= remainder_ns;
-      expiration_ns += timer_perturb;
+      expiration_ns += perturb;
     }
   else
     {
