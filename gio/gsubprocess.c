@@ -278,20 +278,29 @@ g_subprocess_exited (GPid     pid,
   g_mutex_lock (&self->pending_waits_lock);
   g_assert (self->pid == pid);
   self->status = status;
-  tasks = self->pending_waits;
-  self->pending_waits = NULL;
+  tasks = g_steal_pointer (&self->pending_waits);
   self->pid = 0;
   g_mutex_unlock (&self->pending_waits_lock);
 
   /* Signal anyone in g_subprocess_wait_async() to wake up now */
-  while (tasks)
+  for (GSList *l = tasks; l != NULL; l = l->next)
     {
-      g_task_return_boolean (tasks->data, TRUE);
-      g_object_unref (tasks->data);
-      tasks = g_slist_delete_link (tasks, tasks);
+      g_task_return_boolean (l->data, TRUE);
+      g_object_unref (l->data);
     }
 
   g_spawn_close_pid (pid);
+
+  /* Locking here is technically not needed, but we do it to please TSAN, as
+   * it considers modifying tasks list memory outside the lock dangerous.
+   */
+#ifdef _GLIB_THREAD_SANITIZER
+  g_mutex_lock (&self->pending_waits_lock);
+  g_clear_slist (&tasks, NULL);
+  g_mutex_unlock (&self->pending_waits_lock);
+#else
+  g_clear_slist (&tasks, NULL);
+#endif
 
   return FALSE;
 }
