@@ -82,7 +82,10 @@ g_gtk_notification_backend_send_notification (GNotificationBackend *backend,
 {
   GVariant *params;
 
-  params = g_variant_new ("(ss@a{sv})", g_application_get_application_id (backend->application),
+  GApplication *application = g_notification_backend_dup_application (backend);
+  g_assert (application != NULL);
+
+  params = g_variant_new ("(ss@a{sv})", g_application_get_application_id (application),
                                         id,
                                         g_notification_serialize (notification));
 
@@ -91,6 +94,8 @@ g_gtk_notification_backend_send_notification (GNotificationBackend *backend,
                           "org.gtk.Notifications", "AddNotification", params,
                           G_VARIANT_TYPE_UNIT,
                           G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+
+  g_object_unref (application);
 }
 
 static void
@@ -99,12 +104,17 @@ g_gtk_notification_backend_withdraw_notification (GNotificationBackend *backend,
 {
   GVariant *params;
 
-  params = g_variant_new ("(ss)", g_application_get_application_id (backend->application), id);
+  GApplication *application = g_notification_backend_dup_application (backend);
+  g_assert (application != NULL);
+
+  params = g_variant_new ("(ss)", g_application_get_application_id (application), id);
 
   g_dbus_connection_call (backend->dbus_connection, "org.gtk.Notifications",
                           "/org/gtk/Notifications", "org.gtk.Notifications",
                           "RemoveNotification", params, G_VARIANT_TYPE_UNIT,
                           G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+
+  g_object_unref (application);
 }
 
 static void

@@ -41,7 +41,9 @@ struct _GNotificationBackend
 {
   GObject parent_instance;
 
-  GApplication    *application;
+  /* Avoid ref cycle by not taking a ref to the application at all. The
+   * backend only lives as long as the application does. */
+  GWeakRef         application;
   GDBusConnection *dbus_connection;
 };
 
@@ -69,6 +71,8 @@ void                    g_notification_backend_send_notification        (GNotifi
 
 void                    g_notification_backend_withdraw_notification    (GNotificationBackend *backend,
                                                                          const gchar          *id);
+
+GApplication         *  g_notification_backend_dup_application          (GNotificationBackend *backend);
 
 G_END_DECLS
 

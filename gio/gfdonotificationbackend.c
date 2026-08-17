@@ -138,8 +138,13 @@ activate_action (GFdoNotificationBackend *backend,
 {
   GNotificationBackend *g_backend = G_NOTIFICATION_BACKEND (backend);
 
+  GApplication *application = g_notification_backend_dup_application (g_backend);
+  g_assert (application != NULL);
+
   /* Callers should not provide a floating variant here */
   g_assert (parameter == NULL || !g_variant_is_floating (parameter));
+
+  gboolean retval = FALSE;
 
   if (name != NULL &&
       g_str_has_prefix (name, "app."))
@@ -148,23 +153,25 @@ activate_action (GFdoNotificationBackend *backend,
       const gchar *action_name = name + strlen ("app.");
 
       /* @name and @parameter come as untrusted input over D-Bus, so validate them first */
-      if (g_action_group_query_action (G_ACTION_GROUP (g_backend->application),
+      if (g_action_group_query_action (G_ACTION_GROUP (application),
                                        action_name, NULL, &parameter_type,
                                        NULL, NULL, NULL) &&
           ((parameter_type == NULL && parameter == NULL) ||
            (parameter_type != NULL && parameter != NULL && g_variant_is_of_type (parameter, parameter_type))))
         {
-          g_action_group_activate_action (G_ACTION_GROUP (g_backend->application), action_name, parameter);
-          return TRUE;
+          g_action_group_activate_action (G_ACTION_GROUP (application), action_name, parameter);
+          retval = TRUE;
         }
     }
   else if (name == NULL)
     {
-      g_application_activate (g_backend->application);
-      return TRUE;
+      g_application_activate (application);
+      retval = TRUE;
     }
 
-  return FALSE;
+  g_object_unref (application);
+
+  return retval;
 }
 
 static void
@@ -468,6 +475,9 @@ g_fdo_notification_backend_send_notification (GNotificationBackend *backend,
   GFdoNotificationBackend *self = G_FDO_NOTIFICATION_BACKEND (backend);
   FreedesktopNotification *n, *tmp;
 
+  GApplication *application = g_notification_backend_dup_application (backend);
+  g_assert (application != NULL);
+
   if (self->bus_name_id == 0)
     {
       self->bus_name_id = g_bus_watch_name_on_connection (backend->dbus_connection,
@@ -496,7 +506,9 @@ g_fdo_notification_backend_send_notification (GNotificationBackend *backend,
   if (tmp)
     n->notify_id = tmp->notify_id;
 
-  call_notify (backend->dbus_connection, backend->application, n->notify_id, notification, notification_sent, n);
+  call_notify (backend->dbus_connection, application, n->notify_id, notification, notification_sent, n);
+
+  g_object_unref (application);
 }
 
 static void
