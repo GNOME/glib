@@ -217,7 +217,12 @@ python_tests = {
   },
   'gdbus-tool.py' : {
     'depends' : gdbus_tool,
-    'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gdbus_tool.full_path())},
+    'env': {
+      '_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gdbus_tool.full_path()),
+      # FIXME: PyGObject is leaking some GI Info instances.
+      # https://gitlab.gnome.org/GNOME/pygobject/-/work_items/770
+      'ASAN_OPTIONS': 'detect_leaks=0',
+    },
   },
   'gio-tool.py' : {
     'depends' : [
