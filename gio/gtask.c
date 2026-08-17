@@ -591,7 +591,11 @@ struct _GTask {
 
   /* Unprotected, but written to when task runs in thread: */
   guint completed : 1;
+  guint : 0;
+
   guint had_error : 1;
+  guint : 0;
+
   guint result_set : 1;
   guint ever_returned : 1;
   guint : 0;
