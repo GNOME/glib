@@ -219,7 +219,10 @@ python_tests = {
     'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gdbus_tool.full_path())},
   },
   'gio-tool.py' : {
-    'depends' : gio_tool,
+    'depends' : [
+      gio_tool,
+      have_gio_launch_desktop ? gio_launch_desktop : [],
+    ],
     'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gio_tool.full_path())},
     'can_fail' : host_system == 'windows',
   },
@@ -230,7 +233,7 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_env.set('GIO_MODULE_DIR', '')
 
-if host_system != 'windows' and not glib_have_cocoa
+if have_gio_launch_desktop
   test_env.set('GIO_LAUNCH_DESKTOP', gio_launch_desktop.full_path())
 endif
 
