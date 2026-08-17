@@ -1319,6 +1319,7 @@ g_source_attach (GSource      *source,
   if (!context)
     context = g_main_context_default ();
 
+  g_rw_lock_writer_lock (&source_destroy_lock);
   LOCK_CONTEXT (context);
 
   result = g_source_attach_unlocked (source, context, TRUE);
@@ -1327,6 +1328,7 @@ g_source_attach (GSource      *source,
                                   result));
 
   UNLOCK_CONTEXT (context);
+  g_rw_lock_writer_unlock (&source_destroy_lock);
 
   return result;
 }
@@ -1674,7 +1676,10 @@ g_source_add_child_source (GSource *source,
   context = source_dup_main_context (source);
 
   if (context)
-    LOCK_CONTEXT (context);
+    {
+      g_rw_lock_writer_lock (&source_destroy_lock);
+      LOCK_CONTEXT (context);
+    }
 
   TRACE (GLIB_SOURCE_ADD_CHILD_SOURCE (source, child_source));
 
@@ -1689,6 +1694,7 @@ g_source_add_child_source (GSource *source,
     {
       g_source_attach_unlocked (child_source, context, TRUE);
       UNLOCK_CONTEXT (context);
+      g_rw_lock_writer_unlock (&source_destroy_lock);
       g_main_context_unref (context);
     }
 }
