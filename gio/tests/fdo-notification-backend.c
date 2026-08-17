@@ -45,8 +45,7 @@ construct_backend (GApplication **app_out)
 
   /* Replicate the behaviour from g_notification_backend_new_default(), which is
    * not exported publicly so can‘t be easily used in the test. */
-  backend = g_object_new (fdo_type, NULL);
-  backend->application = app;
+  backend = g_object_new (fdo_type, "application", app, NULL);
   backend->dbus_connection = g_application_get_dbus_connection (app);
   if (backend->dbus_connection)
     g_object_ref (backend->dbus_connection);
