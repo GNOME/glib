@@ -59,7 +59,10 @@ gio_tests = {
   'buffered-input-stream' : {},
   'buffered-output-stream' : {},
   'cancellable' : {},
-  'contexts' : {},
+  'contexts' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'contenttype' : {},
   'converter-stream' : {
     # musl: charset tests fail due to missing collation support in musl libc
@@ -82,6 +85,8 @@ gio_tests = {
   'gsubprocess' : {
     'suite': host_system == 'windows' ? ['flaky'] : [],
     'extra_programs': ['gsubprocess-testprog'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
   },
   'g-file' : {},
   'g-file-info' : {
@@ -97,7 +102,9 @@ gio_tests = {
     'install_rpath' : installed_tests_execdir,
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1392
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
-    'can_fail' : host_system in ['darwin', 'windows', 'gnu'],
+    'can_fail' : host_system in ['darwin', 'windows', 'gnu'] or
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'thread' in glib_sanitizers,
   },
   'file-enumerator' : {},
   'inet-address' : {},
@@ -114,7 +121,10 @@ gio_tests = {
   'mount-operation' : {},
   'network-address' : {'extra_sources': ['mock-resolver.c']},
   'network-monitor' : {},
-  'network-monitor-race' : {},
+  'network-monitor-race' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'null-settings-backend' : {},
   'permission' : {},
   'pollable' : {'dependencies' : [libutil_dep]},
@@ -162,14 +172,23 @@ gio_tests = {
 
 if host_system == 'linux'
   gio_tests += {
-    'memory-monitor-psi' : {},
-    'memory-monitor-psi-env-set' :{},
+    'memory-monitor-psi' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'can_fail': 'thread' in glib_sanitizers,
+    },
+    'memory-monitor-psi-env-set' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'can_fail': 'thread' in glib_sanitizers,
+    },
   }
 endif
 
 if glib_conf.has('HAVE_SYSINFO')
   gio_tests += {
-    'memory-monitor-poll' : {},
+    'memory-monitor-poll' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'can_fail': 'thread' in glib_sanitizers,
+    },
   }
 endif
 
@@ -268,12 +287,17 @@ if dbus1_dep.found()
     },
     'gdbus-server-auth' : {
       'dependencies' : [dbus1_dep],
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'can_fail': 'thread' in glib_sanitizers,
     },
   }
 else
   # We can build a cut-down version of this test without libdbus
   gio_tests += {
-    'gdbus-server-auth' : {},
+    'gdbus-server-auth' : {
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'can_fail': 'thread' in glib_sanitizers,
+    },
   }
 endif
 
@@ -379,6 +403,8 @@ if host_machine.system() != 'windows'
       'appinfo' : {
         'install' : false,
         'extra_programs' : ['appinfo-test'],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
       },
     }
   endif
@@ -475,15 +501,27 @@ if host_machine.system() != 'windows'
       'actions' : {
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
       },
       'fdo-notification-backend': {},
-      'gdbus-auth' : {'extra_sources' : extra_sources},
+      'gdbus-auth' : {
+        'extra_sources' : extra_sources,
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
+      },
       'gdbus-auth-mechanism-sha1': {'extra_sources' : extra_sources},
       'gdbus-bz627724' : {'extra_sources' : extra_sources},
-      'gdbus-close-pending' : {'extra_sources' : extra_sources},
+      'gdbus-close-pending' : {
+        'extra_sources' : extra_sources,
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
+      },
       'gdbus-connection' : {
         'extra_sources' : extra_sources,
         'extra_programs': extra_programs,
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
       },
       'gdbus-connection-loss' : {
         'extra_sources' : extra_sources,
@@ -496,9 +534,15 @@ if host_machine.system() != 'windows'
         'can_fail' : host_system == 'gnu',
       },
       'gdbus-error' : {'extra_sources' : extra_sources},
-      'gdbus-exit-on-close' : {'extra_sources' : extra_sources},
+      'gdbus-exit-on-close' : {
+        'extra_sources' : extra_sources,
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
+      },
       'gdbus-export' : {
         'extra_sources' : extra_sources,
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
         'suite' : ['slow'],
       },
       'gdbus-introspection' : {
@@ -509,6 +553,8 @@ if host_machine.system() != 'windows'
       'gdbus-names' : {
         'extra_sources' : extra_sources,
         'extra_programs' : ['fake-service-name'],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
       },
       'gdbus-proxy' : {
         'extra_sources' : extra_sources,
@@ -541,10 +587,14 @@ if host_machine.system() != 'windows'
         'extra_sources' : extra_sources,
         'extra_programs': extra_programs,
         'suite' : ['slow'],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
       },
       'gmenumodel' : {
         'extra_sources' : extra_sources,
         'suite' : ['slow'],
+        # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+        'can_fail': 'thread' in glib_sanitizers,
       },
       'gnotification' : {
         'extra_sources' : [extra_sources, 'gnotification-server.c'],
@@ -631,9 +681,11 @@ if host_machine.system() != 'windows'
           'install' : false,
           'depends' : gio_launch_desktop,
           'extra_programs' : ['apps', 'appinfo-test', 'snapinfo-test'],
-          # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
-          'can_fail' : host_system == 'gnu',
           'extra_sources' : [extra_sources, fake_document_portal_sources],
+          # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
+          'can_fail' : (host_system == 'gnu' or
+            # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+            'thread' in glib_sanitizers),
         },
       }
     endif
@@ -654,9 +706,13 @@ if host_machine.system() != 'windows'
   gio_tests += {
     'gdbus-connection-flush' : {
       'extra_sources' : ['test-io-stream.c', 'test-pipe-unix.c'],
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'can_fail': 'thread' in glib_sanitizers,
     },
     'gdbus-non-socket' : {
       'extra_sources' : ['gdbus-tests.c', 'test-io-stream.c', 'test-pipe-unix.c'],
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'can_fail': 'thread' in glib_sanitizers,
     },
   }
 
