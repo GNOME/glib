@@ -1344,3 +1344,13 @@
 	...
 	fun:g_trace_mark
 }
+{
+	glib-trace-collector2
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:sysprof_collector_get
+	...
+	fun:g_trace_mark
+}
