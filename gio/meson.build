@@ -345,6 +345,7 @@ contenttype_sources = []
 portal_sources = []
 unix_sources = []
 win32_sources = []
+have_gio_launch_desktop = false
 
 # This is also used by tests/gdbus-daemon, so use files() to include the path
 gdbus_daemon_sources = [
@@ -428,6 +429,7 @@ if host_system != 'windows'
         launch_desktop_sources += files('../glib/gjournal-private.c')
       endif
 
+      have_gio_launch_desktop = true
       gio_launch_desktop = executable('gio-launch-desktop', launch_desktop_sources,
         dependencies: [app_profile_dep],
         include_directories : glibinc,

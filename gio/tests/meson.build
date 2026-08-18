@@ -219,7 +219,10 @@ python_tests = {
     'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gdbus_tool.full_path())},
   },
   'gio-tool.py' : {
-    'depends' : gio_tool,
+    'depends' : [
+      gio_tool,
+      have_gio_launch_desktop ? gio_launch_desktop : [],
+    ],
     'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gio_tool.full_path())},
     'can_fail' : host_system == 'windows',
   },
@@ -230,7 +233,7 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
 test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
 test_env.set('GIO_MODULE_DIR', '')
 
-if host_system != 'windows' and not glib_have_cocoa
+if have_gio_launch_desktop
   test_env.set('GIO_LAUNCH_DESKTOP', gio_launch_desktop.full_path())
 endif
 
@@ -345,24 +348,25 @@ if host_machine.system() != 'windows'
       asan_env = {'ASAN_OPTIONS': 'verify_asan_link_order=0'}
     endif
 
+    slow_connect_preload_lib = shared_library('slow-connect-preload',
+      'slow-connect-preload.c',
+      name_prefix : '',
+      dependencies: libdl_dep,
+      install_dir : installed_tests_execdir,
+      install_tag : 'tests',
+      install: installed_tests_enabled,
+    )
+
     gio_tests += {
       'gsocketclient-slow' : {
-        'depends' : [
-          shared_library('slow-connect-preload',
-            'slow-connect-preload.c',
-            name_prefix : '',
-            dependencies: libdl_dep,
-            install_dir : installed_tests_execdir,
-            install_tag : 'tests',
-            install: installed_tests_enabled,
-          )
-        ],
+        'depends' : slow_connect_preload_lib,
         'env' : {
-          'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(meson.current_build_dir())
+          'LD_PRELOAD': slow_connect_preload_lib.full_path(),
         } + asan_env,
         'installed_tests_env' : {
-          'LD_PRELOAD': '@0@/slow-connect-preload.so'.format(installed_tests_execdir),
         } + asan_env,
+          'LD_PRELOAD': installed_tests_execdir /
+            fs.name(slow_connect_preload_lib.full_path()),
       },
     }
   endif
@@ -1157,7 +1161,7 @@ foreach test_name, extra_args : gio_tests
     if installed_tests_env != {}
       envs = []
       foreach var, value : installed_tests_env
-         envs += '@0@=@1@'.format(var, value)
+        envs += '@0@=\'@1@\''.format(var, value)
       endforeach
       test_env_override = '@0@ @1@ '.format(env_program.full_path(), ' '.join(envs))
     endif
