@@ -75,6 +75,15 @@ void __lsan_ignore_object (const void *p) __attribute__ ((weak));
 
 #endif
 
+#if !defined(_MSC_VER) && defined(__SANITIZE_THREAD__) || g_macro__has_feature (thread_sanitizer)
+/*
+ * %_GLIB_THREAD_SANITIZER:
+ *
+ * Private macro defined if the ThreadSanitizer is in use by GLib itself.
+ */
+#define _GLIB_THREAD_SANITIZER
+#endif
+
 /**
  * G_CONTAINER_OF:
  * @ptr: a pointer to a member @field of type @type.
