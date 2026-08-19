@@ -783,7 +783,16 @@ g_test_print_handler_full (const gchar *string,
 
   if (G_LIKELY (use_tap_format) && strchr (string, '\n') != NULL)
     {
-      static gboolean last_had_final_newline = TRUE;
+      static GPrivate last_had_newline_key = G_PRIVATE_INIT (g_free);
+      gboolean *last_had_final_newline = g_private_get (&last_had_newline_key);
+
+      if G_UNLIKELY (last_had_final_newline == NULL)
+        {
+          last_had_final_newline = g_new0 (gboolean, 1);
+          *last_had_final_newline = TRUE;
+          g_private_set (&last_had_newline_key, last_had_final_newline);
+        }
+
       GString *output = g_string_new_len (NULL, strlen (string) + 2);
       const char *line = string;
 
@@ -791,7 +800,8 @@ g_test_print_handler_full (const gchar *string,
         {
           const char *next = strchr (line, '\n');
 
-          if (last_had_final_newline && (next || *line != '\0'))
+          if ((next || *line != '\0') &&
+              *last_had_final_newline)
             {
               for (unsigned l = 0; l < subtest_level; ++l)
                 g_string_append (output, TAP_SUBTEST_PREFIX);
@@ -808,7 +818,7 @@ g_test_print_handler_full (const gchar *string,
           else
             {
               g_string_append (output, line);
-              last_had_final_newline = (*line == '\0');
+              *last_had_final_newline = (*line == '\0');
             }
 
           line = next;

@@ -3726,6 +3726,7 @@ localtime_not_a_symlink_setup (LocaltimeFixture *fixture,
   g_file_set_contents (path, contents, len, &error);
   g_assert_no_error (error);
   g_free (path);
+  g_free (contents);
 
   fixture->expect_null = TRUE;
 #endif
