@@ -591,13 +591,19 @@ def process_file(curfilename):
             if flags is None:
                 flags = seenbitshift
 
+            def common_prefix(s1, s2):
+                for i, char in enumerate(s1):
+                    if i >= len(s2) or char != s2[i]:
+                        return s1[:i]
+                return s1
+
             # Autogenerate a prefix
             if enum_prefix is None:
                 for entry in entries:
                     if not entry[2] and (len(entry) < 4 or entry[3] is None):
                         name = entry[0]
                         if enum_prefix is not None:
-                            enum_prefix = os.path.commonprefix([name, enum_prefix])
+                            enum_prefix = common_prefix(name, enum_prefix)
                         else:
                             enum_prefix = name
                 if enum_prefix is None:
