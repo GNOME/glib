@@ -4166,6 +4166,7 @@ g_main_context_prepare_unlocked (GMainContext *context,
               if (source->priv->ready_time_ns <= context->time_ns)
                 {
                   source_timeout_ns = 0;
+                  result = TRUE;
                 }
               else
                 {
