@@ -402,6 +402,32 @@ test_priorities (void)
   g_main_context_unref (ctx);
 }
 
+static void
+test_prepare_timeout (void)
+{
+  GMainContext *context = NULL;
+  GSource *source = NULL;
+  int priority = 0;
+  gboolean ready;
+
+  g_test_summary ("Test that a GTimeoutSource which is ready is noticed during prepare");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/mutter/-/work_items/4994");
+
+  context = g_main_context_new ();
+
+  source = g_timeout_source_new (0);
+  g_source_set_priority (source, 666);
+  g_source_attach (source, context);
+  g_clear_pointer (&source, g_source_unref);
+
+  ready = g_main_context_prepare (context, &priority);
+
+  g_assert_true (ready);
+  g_assert_cmpint (priority, ==, 666);
+
+  g_clear_pointer (&context, g_main_context_unref);
+}
+
 static gboolean
 quit_loop (gpointer data)
 {
@@ -2959,6 +2985,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/timeouts", test_timeouts);
   g_test_add_func ("/mainloop/timeouts_ns", test_timeouts_ns);
   g_test_add_func ("/mainloop/priorities", test_priorities);
+  g_test_add_func ("/mainloop/prepare-timeout", test_prepare_timeout);
   g_test_add_func ("/mainloop/invoke", test_invoke);
   g_test_add_func ("/mainloop/child_sources", test_child_sources);
   g_test_add_func ("/mainloop/recursive_child_sources", test_recursive_child_sources);
