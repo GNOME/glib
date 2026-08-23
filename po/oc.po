@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-08-03 16:07+0000\n"
-"PO-Revision-Date: 2026-08-06 18:37+0200\n"
+"POT-Creation-Date: 2026-08-18 16:25+0000\n"
+"PO-Revision-Date: 2026-08-23 13:36+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot en òc (totenoc.eu)\n"
 "Language: oc\n"
@@ -383,7 +383,7 @@ msgstr "Tipe desconegut"
 msgid "%s filetype"
 msgstr "Tipe de fichièr %s"
 
-#: gio/gconverteroutputstream.c:427
+#: gio/gconverteroutputstream.c:432
 msgid "Unexpected data after end of conversion"
 msgstr "Donadas inesperadas aprèp la fin de la conversion"
 
@@ -591,7 +591,7 @@ msgstr ""
 
 #: gio/gdbusauth.c:359
 msgid "Malformed D-Bus authentication line"
-msgstr ""
+msgstr "linha d’autentificacion D-Bus maridament formada"
 
 #: gio/gdbusauth.c:377
 msgid "Unexpected lack of content trying to (safely) read a line"
@@ -625,6 +625,8 @@ msgid ""
 "Error accessing D-Bus keyring: keyring-based authentication is not supported "
 "when running as setuid"
 msgstr ""
+"Error d'accès al trocèl de claus D-Bus : l'autentificacion basada sul trocèl "
+"de claus es pas presa en carga al moment de l'execucion coma setuid"
 
 #: gio/gdbusauthmechanismsha1.c:321
 #, c-format
@@ -816,7 +818,7 @@ msgstr "L’objècte existís pas dins lo camin « %s »"
 #: gio/gdbusmessage.c:116
 #, c-format
 msgid "D-Bus signature exceeds maximum length of %u bytes"
-msgstr ""
+msgstr "La signatura D-Bus a atengut la longor maximala de %u octets"
 
 #: gio/gdbusmessage.c:1320
 #, c-format
@@ -2541,23 +2543,19 @@ msgid "Empty the trash (not supported on macOS)"
 msgstr "Voidar l'escobilhièr (pas presa en carga sus macOS)"
 
 #: gio/gio-tool-trash.c:32
-#, fuzzy
-#| msgid "List files in the trash with their original locations"
 msgid ""
 "List files in the trash with their original locations (not supported on "
 "macOS)"
-msgstr "Enumerar los fichièrs a l’escobilhièr amb lor emplaçament d’origina"
+msgstr ""
+"Enumerar los fichièrs a l’escobilhièr amb lor emplaçament d’origina (non "
+"compatible macOS)"
 
 #: gio/gio-tool-trash.c:33
-#, fuzzy
-#| msgid ""
-#| "Restore a file from trash to its original location (possibly recreating "
-#| "the directory)"
 msgid ""
 "Restore a file from trash to its original location (not supported on macOS)"
 msgstr ""
-"Restablir un fichièr de l'escobilhièr a son emplaçament d'origina (en "
-"recreant lo repertòri se necessari)"
+"Restablir un fichièr de l'escobilhièr a son emplaçament d'origina (non "
+"compatible macOS)"
 
 #: gio/gio-tool-trash.c:35
 msgid "Move/Restore files or directories to the trash."
@@ -2582,6 +2580,7 @@ msgstr ""
 #: gio/gio-tool-trash.c:60 gio/gio-tool-trash.c:64
 msgid "The options --restore, --list, and --empty are not supported on macOS"
 msgstr ""
+"Las opcions --restore, --list e --empty son pas presas en carga sus macOS"
 
 #: gio/gio-tool-trash.c:174
 msgid "Unable to find original path"
@@ -5752,7 +5751,7 @@ msgstr ""
 
 #: glib/gmarkup.c:1165 glib/gmarkup.c:1180
 msgid "Invalid byte order mark"
-msgstr ""
+msgstr "marca d’òrdre d’octet invalida"
 
 #: glib/gmarkup.c:1212
 msgid "Document must begin with an element (e.g. <book>)"
