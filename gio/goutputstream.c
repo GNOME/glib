@@ -757,6 +757,12 @@ g_output_stream_splice (GOutputStream             *stream,
   return bytes_copied;
 }
 
+/* This is large enough to amortize syscall and asynchronous dispatch
+ * overhead for bulk copies while keeping the two-buffer asynchronous path
+ * below to a modest amount of per-operation memory.
+ */
+#define SPLICE_BUFFER_SIZE (256 * 1024)
+
 static gssize
 g_output_stream_real_splice (GOutputStream             *stream,
                              GInputStream              *source,
@@ -767,7 +773,8 @@ g_output_stream_real_splice (GOutputStream             *stream,
   GOutputStreamClass *class = G_OUTPUT_STREAM_GET_CLASS (stream);
   gssize n_read, n_written;
   gsize bytes_copied;
-  char buffer[8192], *p;
+  char *buffer = NULL;
+  char *p;
   gboolean res;
 
   bytes_copied = 0;
@@ -779,10 +786,11 @@ g_output_stream_real_splice (GOutputStream             *stream,
       goto notsupported;
     }
 
+  buffer = g_malloc (SPLICE_BUFFER_SIZE);
   res = TRUE;
   do
     {
-      n_read = g_input_stream_read (source, buffer, sizeof (buffer), cancellable, error);
+      n_read = g_input_stream_read (source, buffer, SPLICE_BUFFER_SIZE, cancellable, error);
       if (n_read == -1)
 	{
 	  res = FALSE;
@@ -828,6 +836,8 @@ g_output_stream_real_splice (GOutputStream             *stream,
       if (!g_output_stream_internal_close (stream, cancellable, error))
         res = FALSE;
     }
+
+  g_free (buffer);
 
   if (res)
     return bytes_copied;
@@ -2656,22 +2666,39 @@ g_output_stream_real_writev_finish (GOutputStream   *stream,
   return g_task_propagate_boolean (task, error);
 }
 
+typedef enum
+{
+  SPLICE_BUFFER_EMPTY,
+  SPLICE_BUFFER_READING,
+  SPLICE_BUFFER_READY,
+  SPLICE_BUFFER_WRITING,
+} SpliceBufferState;
+
+typedef struct
+{
+  guint8 *data;
+  gssize n_read;
+  gssize n_written;
+  SpliceBufferState state;
+} SpliceBuffer;
+
 typedef struct {
   GInputStream *source;
   GOutputStreamSpliceFlags flags;
   guint istream_closed : 1;
   guint ostream_closed : 1;
-  gssize n_read;
-  gssize n_written;
+  guint eof : 1;
   gsize bytes_copied;
   GError *error;
-  guint8 *buffer;
+  SpliceBuffer buffers[2];
 } SpliceData;
 
 static void
 free_splice_data (SpliceData *op)
 {
-  g_clear_pointer (&op->buffer, g_free);
+  for (gsize i = 0; i < G_N_ELEMENTS (op->buffers); i++)
+    g_clear_pointer (&op->buffers[i].data, g_free);
+
   g_object_unref (op->source);
   g_clear_error (&op->error);
   g_free (op);
@@ -2764,6 +2791,106 @@ static void real_splice_async_read_cb (GObject      *source,
                                        GAsyncResult *res,
                                        gpointer      user_data);
 
+static void real_splice_async_write_cb (GObject      *source,
+                                        GAsyncResult *res,
+                                        gpointer      user_data);
+
+static void
+real_splice_async_take_error (SpliceData *op,
+                              GError     *error)
+{
+  if (op->error == NULL)
+    op->error = error;
+  else
+    g_error_free (error);
+}
+
+static SpliceBuffer *
+real_splice_async_find_buffer (SpliceData        *op,
+                               SpliceBufferState  state)
+{
+  for (gsize i = 0; i < G_N_ELEMENTS (op->buffers); i++)
+    {
+      if (op->buffers[i].state == state)
+        return &op->buffers[i];
+    }
+
+  return NULL;
+}
+
+static void
+real_splice_async_start_read (GTask        *task,
+                              SpliceBuffer *buffer)
+{
+  SpliceData *op = g_task_get_task_data (task);
+
+  g_assert (buffer->state == SPLICE_BUFFER_EMPTY);
+  g_assert (real_splice_async_find_buffer (op, SPLICE_BUFFER_READING) == NULL);
+
+  buffer->state = SPLICE_BUFFER_READING;
+  g_input_stream_read_async (op->source, buffer->data, SPLICE_BUFFER_SIZE,
+                             g_task_get_priority (task),
+                             g_task_get_cancellable (task),
+                             real_splice_async_read_cb, task);
+}
+
+static void
+real_splice_async_start_write (GTask        *task,
+                               SpliceBuffer *buffer)
+{
+  GOutputStream *stream = g_task_get_source_object (task);
+  GOutputStreamClass *class = G_OUTPUT_STREAM_GET_CLASS (stream);
+  SpliceData *op = g_task_get_task_data (task);
+
+  g_assert (buffer->state == SPLICE_BUFFER_READY);
+  g_assert (real_splice_async_find_buffer (op, SPLICE_BUFFER_WRITING) == NULL);
+
+  buffer->state = SPLICE_BUFFER_WRITING;
+  class->write_async (stream,
+                      buffer->data + buffer->n_written,
+                      buffer->n_read - buffer->n_written,
+                      g_task_get_priority (task),
+                      g_task_get_cancellable (task),
+                      real_splice_async_write_cb, task);
+}
+
+static void
+real_splice_async_progress (GTask *task)
+{
+  SpliceData *op = g_task_get_task_data (task);
+  SpliceBuffer *buffer;
+
+  if (op->error != NULL)
+    {
+      for (gsize i = 0; i < G_N_ELEMENTS (op->buffers); i++)
+        {
+          if (op->buffers[i].state == SPLICE_BUFFER_READY)
+            op->buffers[i].state = SPLICE_BUFFER_EMPTY;
+        }
+
+      if (real_splice_async_find_buffer (op, SPLICE_BUFFER_READING) == NULL &&
+          real_splice_async_find_buffer (op, SPLICE_BUFFER_WRITING) == NULL)
+        real_splice_async_complete (task);
+
+      return;
+    }
+
+  if (real_splice_async_find_buffer (op, SPLICE_BUFFER_WRITING) == NULL &&
+      (buffer = real_splice_async_find_buffer (op, SPLICE_BUFFER_READY)) != NULL)
+    real_splice_async_start_write (task, buffer);
+
+  if (!op->eof &&
+      real_splice_async_find_buffer (op, SPLICE_BUFFER_READING) == NULL &&
+      (buffer = real_splice_async_find_buffer (op, SPLICE_BUFFER_EMPTY)) != NULL)
+    real_splice_async_start_read (task, buffer);
+
+  if (op->eof &&
+      real_splice_async_find_buffer (op, SPLICE_BUFFER_READY) == NULL &&
+      real_splice_async_find_buffer (op, SPLICE_BUFFER_READING) == NULL &&
+      real_splice_async_find_buffer (op, SPLICE_BUFFER_WRITING) == NULL)
+    real_splice_async_complete (task);
+}
+
 static void
 real_splice_async_write_cb (GObject      *source,
                             GAsyncResult *res,
@@ -2772,38 +2899,49 @@ real_splice_async_write_cb (GObject      *source,
   GOutputStreamClass *class;
   GTask *task = G_TASK (user_data);
   SpliceData *op = g_task_get_task_data (task);
+  SpliceBuffer *buffer;
+  GError *error = NULL;
   gssize ret;
 
   class = G_OUTPUT_STREAM_GET_CLASS (g_task_get_source_object (task));
+  buffer = real_splice_async_find_buffer (op, SPLICE_BUFFER_WRITING);
+  g_assert (buffer != NULL);
 
-  ret = class->write_finish (G_OUTPUT_STREAM (source), res, &op->error);
+  ret = class->write_finish (G_OUTPUT_STREAM (source), res, &error);
 
   if (ret == -1)
     {
-      real_splice_async_complete (task);
+      buffer->state = SPLICE_BUFFER_EMPTY;
+      real_splice_async_take_error (op, error);
+      real_splice_async_progress (task);
       return;
     }
 
-  op->n_written += ret;
+  buffer->n_written += ret;
   op->bytes_copied += ret;
   if (op->bytes_copied > G_MAXSSIZE)
     op->bytes_copied = G_MAXSSIZE;
 
-  if (op->n_written < op->n_read)
+  if (op->error != NULL)
+    {
+      buffer->state = SPLICE_BUFFER_EMPTY;
+      real_splice_async_progress (task);
+      return;
+    }
+
+  if (buffer->n_written < buffer->n_read)
     {
       class->write_async (g_task_get_source_object (task),
-                          op->buffer + op->n_written,
-                          op->n_read - op->n_written,
+                          buffer->data + buffer->n_written,
+                          buffer->n_read - buffer->n_written,
                           g_task_get_priority (task),
                           g_task_get_cancellable (task),
                           real_splice_async_write_cb, task);
       return;
     }
 
-  g_input_stream_read_async (op->source, op->buffer, 8192,
-                             g_task_get_priority (task),
-                             g_task_get_cancellable (task),
-                             real_splice_async_read_cb, task);
+  buffer->state = SPLICE_BUFFER_EMPTY;
+  real_splice_async_progress (task);
 }
 
 static void
@@ -2811,27 +2949,38 @@ real_splice_async_read_cb (GObject      *source,
                            GAsyncResult *res,
                            gpointer      user_data)
 {
-  GOutputStreamClass *class;
   GTask *task = G_TASK (user_data);
   SpliceData *op = g_task_get_task_data (task);
+  SpliceBuffer *buffer;
+  GError *error = NULL;
   gssize ret;
 
-  class = G_OUTPUT_STREAM_GET_CLASS (g_task_get_source_object (task));
+  buffer = real_splice_async_find_buffer (op, SPLICE_BUFFER_READING);
+  g_assert (buffer != NULL);
 
-  ret = g_input_stream_read_finish (op->source, res, &op->error);
-  if (ret == -1 || ret == 0)
+  ret = g_input_stream_read_finish (op->source, res, &error);
+  buffer->state = SPLICE_BUFFER_EMPTY;
+
+  if (ret == -1)
     {
-      real_splice_async_complete (task);
-      return;
+      real_splice_async_take_error (op, error);
+    }
+  else if (op->error != NULL)
+    {
+      /* An overlapping write failed. Discard this read. */
+    }
+  else if (ret == 0)
+    {
+      op->eof = TRUE;
+    }
+  else
+    {
+      buffer->n_read = ret;
+      buffer->n_written = 0;
+      buffer->state = SPLICE_BUFFER_READY;
     }
 
-  op->n_read = ret;
-  op->n_written = 0;
-
-  class->write_async (g_task_get_source_object (task), op->buffer,
-                      op->n_read, g_task_get_priority (task),
-                      g_task_get_cancellable (task),
-                      real_splice_async_write_cb, task);
+  real_splice_async_progress (task);
 }
 
 static void
@@ -2885,11 +3034,10 @@ g_output_stream_real_splice_async (GOutputStream             *stream,
     }
   else
     {
-      op->buffer = g_malloc (8192);
-      g_input_stream_read_async (op->source, op->buffer, 8192,
-                                 g_task_get_priority (task),
-                                 g_task_get_cancellable (task),
-                                 real_splice_async_read_cb, task);
+      for (gsize i = 0; i < G_N_ELEMENTS (op->buffers); i++)
+        op->buffers[i].data = g_malloc (SPLICE_BUFFER_SIZE);
+
+      real_splice_async_start_read (task, &op->buffers[0]);
     }
 }
 
