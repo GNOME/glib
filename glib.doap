@@ -104,14 +104,6 @@
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Jonathan Matthew</foaf:name>
-      <foaf:mbox rdf:resource="mailto:jonathan@d14n.org"/>
-      <gnome:userid>jmatthew</gnome:userid>
-    </foaf:Person>
-  </maintainer>
-
-  <maintainer>
-    <foaf:Person>
       <foaf:name>Ting-Wei Lan</foaf:name>
       <foaf:mbox rdf:resource="mailto:lantw@src.gnome.org"/>
       <gnome:userid>lantw</gnome:userid>

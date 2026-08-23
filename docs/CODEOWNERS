@@ -55,8 +55,8 @@ subprojects/		@xclaesse @nirbheek @pwithnall
 *android*	@xclaesse @pwithnall
 
 # BSD support
-*bsd*		@jmatthew @ajacoutot @lantw @pwithnall
-*kqueue*	@jmatthew @ajacoutot @lantw @pwithnall
+*bsd*		@ajacoutot @lantw @pwithnall
+*kqueue*	@ajacoutot @lantw @pwithnall
 
 # GNU Hurd support
 *hurd*	@bugaevc @sthibaul
