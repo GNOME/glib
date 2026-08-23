@@ -1,3 +1,105 @@
+Overview of changes in GLib 2.89.4, 2026-08-23
+==============================================
+
+ - Improve support for nanosecond source timeouts (#4012, #4018, #4025,
+   GNOME/mutter#4994, work by Benjamin Otte)
+
+ - Fix installed service file containing build path (#4011, work by
+   Jaipaul Cheernam)
+
+ - Support clicking notification icons on Windows (!5019, work by otaxhu)
+
+ - Improve stream splice performance by increasing buffer size (!5316, work by
+   Christian Hergert)
+
+* Bugs fixed:
+  - #1936 Potentially enable gbitlock USE_ASM_GOTO with clang9+ ? (Luca Bacci)
+  - #3359 1bit-emufutex test fails under ASAN / TSAN (Luca Bacci)
+  - #3695 TSan data race in gobject / binding test (Luca Bacci)
+  - #3836 filenamecompleter test fails on Hurd (Philip Withnall)
+  - #3992 (CVE-2026-16118) (#YWH-PGM9867-233) Heap Overflow on GLib through
+    _xdg_mime_magic_parse_magic_line() in gio/xdgmime/xdgmimemagic.c via
+    Incorrect Byte-Swap Pointer Arithmetic on MIME magic content in user-
+    writable XDG data location
+  - #4003 GDesktopAppInfo should validate desktop file path snippets (Philip
+    Withnall)
+  - #4011 gio/tests/services: Installed service file contains build path after
+    !5259 (Jaipaul Cheernam)
+  - #4012 glib:monotonic-time-ns/similar random failures on riscv64 (Benjamin
+    Otte)
+  - #4018 mainloop test fails with test_timeouts_ns() assertion failure
+    (Benjamin Otte)
+  - #4019 documentportal test fails on Hurd as g_unix_fd_query_path() is not
+    supported (Kashyap Ekbote)
+  - #4020 ‘TLS callback not invoked’ error on msys2-clang64 CI job (Luca Bacci)
+  - #4023 pollable test fails on FreeBSD (Ting-Wei Lan)
+  - #4025 tests/monotonic-time: test_similar is racy under scheduling jitter
+    (Benjamin Otte)
+  - GNOME/mutter#4994 Test timeout: core+mutter/backends/native - mutter:thread
+    (Benjamin Otte)
+  - !5019 gnotification-win32: Handling notification icon click
+  - !5022 gnotification-backend: Setting application as a GObject property
+  - !5260 docs: Update path to information about installing GLib
+  - !5263 Minor test and GKeyFile fixes
+  - !5266 docs: Fix gio gi-docgen docs_url
+  - !5267 build: fix grab-gio-dll-paths.py invocation in case glib is a
+    subproject
+  - !5268 Update Czech translation
+  - !5269 Update Georgian translation
+  - !5270 glocalfile: Honour x-gvfs-trash/x-gvfs-notrash from fstab mount points
+  - !5271 Update Ukrainian translation
+  - !5272 Update Chinese (China) translation
+  - !5274 Update Slovenian translation
+  - !5275 Update Georgian translation
+  - !5276 Update Ukrainian translation
+  - !5277 ci: Add a ubsan job
+  - !5280 Update Chinese (China) translation
+  - !5281 Update Romanian translation
+  - !5282 Update Persian translation
+  - !5284 Update Occitan translation
+  - !5288 Update Basque translation
+  - !5290 Update Brazilian Portuguese translation
+  - !5291 Update Catalan translation
+  - !5293 Update Galician translation
+  - !5294 Update Lithuanian translation
+  - !5295 Update Hebrew translation
+  - !5296 fix a potentially quadratic-time regex to be linear.
+  - !5297 Fix utils-isolated test failure when running as root
+  - !5299 Update Belarusian translation
+  - !5301 localfileinfo: Fix swapped selinux context symlink logic
+  - !5305 Update Bulgarian translation
+  - !5308 build: Some test dependencies fixes
+  - !5309 Handle some thread sanitizer races
+  - !5310 gbsearcharray: Fix a -Wsign-conversion warning in
+    G_BSEARCH_UPPER_POWER2
+  - !5312 mkenums: remove use of deprecated os.path.commonprefix()
+  - !5313 docs: Remove Jonathan Matthew as a co-maintainer
+  - !5315 Update Kazakh translation
+  - !5316 gio/outputstream: increase splice buffer size
+  - !5317 Update Occitan translation
+  - !5318 Update Swedish translation
+
+* Translation updates:
+  - Basque (Asier Saratsua Garmendia)
+  - Belarusian (Vasil Pupkin)
+  - Bulgarian (Alexander Alexandrov Shopov)
+  - Catalan (Xavi Ivars)
+  - Chinese (China) (luming zh)
+  - Czech (Daniel Rusek)
+  - Galician (Francisco Diéguez Souto)
+  - Georgian (Ekaterine Papava)
+  - Hebrew (Yaron Shahrabani)
+  - Kazakh (Baurzhan Muftakhidinov)
+  - Lithuanian (Aurimas Černius)
+  - Occitan (post 1500) (Quentin PAGÈS)
+  - Persian (Danial Behzadi)
+  - Portuguese (Brazil) (Luiggi Cardoso)
+  - Romanian (Antonio Marin)
+  - Slovenian (Martin)
+  - Swedish (Anders Jonsson)
+  - Ukrainian (Yuri Chornoivan)
+
+
 Overview of changes in GLib 2.89.3, 2026-07-29
 ==============================================
 
