@@ -1039,6 +1039,13 @@ if host_system == 'qnx'
   glib_conf.set('HAVE_QNX', 1)
 endif
 
+if host_system == 'windows'
+  if not cc.has_header_symbol('fcntl.h', 'O_CLOEXEC')
+    glib_conf.set('O_CLOEXEC', 'O_NOINHERIT')
+    glib_conf.set('_O_CLOEXEC', '_O_NOINHERIT')
+  endif
+endif
+
 # Check for futex(2)
 if cc.compiles('''#include <linux/futex.h>
                #include <sys/syscall.h>
