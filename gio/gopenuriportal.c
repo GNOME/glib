@@ -33,12 +33,6 @@
 #include "gunixfdlist.h"
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#else
-#define HAVE_O_CLOEXEC 1
-#endif
-
 gboolean
 g_openuri_portal_open_file (GFile       *file,
                             const char  *parent_window,
@@ -90,9 +84,6 @@ g_openuri_portal_open_file (GFile       *file,
           return FALSE;
         }
 
-#ifndef HAVE_O_CLOEXEC
-      fcntl (fd, F_SETFD, FD_CLOEXEC);
-#endif
       fd_list = g_unix_fd_list_new_from_array (&fd, 1);
       fd = -1;
       fd_id = 0;
@@ -363,9 +354,6 @@ g_openuri_portal_open_file_async (GFile               *file,
           return;
         }
 
-#ifndef HAVE_O_CLOEXEC
-      fcntl (fd, F_SETFD, FD_CLOEXEC);
-#endif
       fd_list = g_unix_fd_list_new_from_array (&fd, 1);
       fd = -1;
       fd_id = 0;

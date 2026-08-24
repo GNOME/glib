@@ -33,12 +33,6 @@
 #include "gunixfdlist.h"
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#else
-#define HAVE_O_CLOEXEC 1
-#endif
-
 #ifndef O_PATH
 #define O_PATH 0
 #endif
@@ -106,10 +100,6 @@ g_trash_portal_trash_file (GFile   *file,
                    "Failed to open %s", path);
       goto out;
     }
-
-#ifndef HAVE_O_CLOEXEC
-  fcntl (fd, F_SETFD, FD_CLOEXEC);
-#endif
 
   fd_list = g_unix_fd_list_new ();
   fd_in = g_unix_fd_list_append (fd_list, fd, error);

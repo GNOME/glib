@@ -50,10 +50,6 @@
 
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include "gconvert.h"
 #include "gerror.h"
 #include "gfileutils.h"

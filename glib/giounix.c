@@ -44,10 +44,6 @@
 #include <fcntl.h>
 #include <glib/gstdio.h>
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include "giochannel.h"
 
 #include "gerror.h"

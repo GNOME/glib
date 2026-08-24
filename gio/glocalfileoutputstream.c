@@ -65,12 +65,6 @@
 #define O_BINARY 0
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#else
-#define HAVE_O_CLOEXEC 1
-#endif
-
 struct _GLocalFileOutputStreamPrivate {
   char *tmp_filename;
   char *original_filename;
@@ -1315,10 +1309,6 @@ _g_local_file_output_stream_replace (const char        *filename,
       set_error_from_open_errno (filename, error);
       return NULL;
     }
-#if !defined(HAVE_O_CLOEXEC) && defined(F_SETFD)
-  else
-    fcntl (fd, F_SETFD, FD_CLOEXEC);
-#endif
 
   stream = g_object_new (G_TYPE_LOCAL_FILE_OUTPUT_STREAM, NULL);
   stream->priv->fd = fd;

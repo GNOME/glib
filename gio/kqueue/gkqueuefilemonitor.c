@@ -32,10 +32,6 @@
 #include <fcntl.h>
 #include <string.h>
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include <glib-object.h>
 #include <glib/gfileutils.h>
 #include <gio/gfilemonitor.h>

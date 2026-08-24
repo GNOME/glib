@@ -124,12 +124,6 @@ sleep_forever_mode (int argc,
   return 0;
 }
 
-#ifdef G_OS_UNIX
-#define GLIB_FD_CLOEXEC "e"
-#else
-#define GLIB_FD_CLOEXEC ""
-#endif
-
 static int
 write_to_fds (int argc, char **argv)
 {
@@ -138,7 +132,7 @@ write_to_fds (int argc, char **argv)
   for (i = 2; i < argc; i++)
     {
       int fd = atoi (argv[i]);
-      FILE *f = fdopen (fd, "w" GLIB_FD_CLOEXEC);
+      FILE *f = fdopen (fd, "we");
       const char buf[] = "hello world\n";
       size_t bytes_written;
       
@@ -176,7 +170,7 @@ read_from_fd (int argc, char **argv)
       return 1;
     }
 
-  f = fdopen (fd, "r" GLIB_FD_CLOEXEC);
+  f = fdopen (fd, "re");
   if (f == NULL)
     {
       g_warning ("Failed to open fd %d: %s", fd, g_strerror (errno));

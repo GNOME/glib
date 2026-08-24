@@ -51,10 +51,6 @@
 #include <io.h>		/* For open() and close() prototypes. */
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include "gmoduleconf.h"
 #include "gstdio.h"
 

@@ -115,12 +115,6 @@
 #define O_BINARY 0
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#else
-#define HAVE_O_CLOEXEC 1
-#endif
-
 #define COMMUNICATE_READ_SIZE 4096
 
 /* A GSubprocess can have two possible states: running and not.
@@ -235,10 +229,6 @@ unix_open_file (const char  *filename,
       g_free (display_name);
       /* fall through... */
     }
-#ifndef HAVE_O_CLOEXEC
-  else
-    fcntl (my_fd, F_SETFD, FD_CLOEXEC);
-#endif
 
   return my_fd;
 }

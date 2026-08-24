@@ -49,10 +49,6 @@
 #define O_BINARY 0
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include "gfileutils.h"
 
 #include "gstdio.h"

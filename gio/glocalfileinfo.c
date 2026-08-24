@@ -92,10 +92,6 @@
 #endif
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include "glocalfileinfo.h"
 #include "gioerror.h"
 #include "gthemedicon.h"

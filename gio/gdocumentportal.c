@@ -33,12 +33,6 @@
 #include "gunixfdlist.h"
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#else
-#define HAVE_O_CLOEXEC 1
-#endif
-
 static gboolean
 get_document_portal (GXdpDocuments **documents,
                      char          **documents_mountpoint,
@@ -167,9 +161,6 @@ g_document_portal_add_documents (GList       *uris,
             }
           if (fd >= 0)
             {
-#ifndef HAVE_O_CLOEXEC
-              fcntl (fd, F_SETFD, FD_CLOEXEC);
-#endif
               idx = g_unix_fd_list_append (fd_list, fd, NULL);
               close (fd);
             }

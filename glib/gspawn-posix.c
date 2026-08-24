@@ -111,12 +111,6 @@
 extern char **environ;
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#else
-#define HAVE_O_CLOEXEC 1
-#endif
-
 static gint g_execute (const gchar  *file,
                        gchar       **argv,
                        gchar       **argv_buffer,
@@ -1093,10 +1087,6 @@ do_posix_spawn (const gchar * const *argv,
       g_assert (read_null != -1);
       parent_close_fds[num_parent_close_fds++] = read_null;
 
-#ifndef HAVE_O_CLOEXEC
-      fcntl (read_null, F_SETFD, FD_CLOEXEC);
-#endif
-
       r = posix_spawn_file_actions_adddup2 (&file_actions, read_null, 0);
       if (r != 0)
         goto out_close_fds;
@@ -1117,10 +1107,6 @@ do_posix_spawn (const gchar * const *argv,
       g_assert (write_null != -1);
       parent_close_fds[num_parent_close_fds++] = write_null;
 
-#ifndef HAVE_O_CLOEXEC
-      fcntl (write_null, F_SETFD, FD_CLOEXEC);
-#endif
-
       r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 1);
       if (r != 0)
         goto out_close_fds;
@@ -1140,10 +1126,6 @@ do_posix_spawn (const gchar * const *argv,
       gint write_null = safe_open ("/dev/null", O_WRONLY | O_CLOEXEC);
       g_assert (write_null != -1);
       parent_close_fds[num_parent_close_fds++] = write_null;
-
-#ifndef HAVE_O_CLOEXEC
-      fcntl (write_null, F_SETFD, FD_CLOEXEC);
-#endif
 
       r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 2);
       if (r != 0)

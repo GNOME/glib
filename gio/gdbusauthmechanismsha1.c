@@ -37,10 +37,6 @@
 #include "gwin32sid.h"
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include "gdbusauthmechanismsha1.h"
 #include "gcredentials.h"
 #include "gdbuserror.h"

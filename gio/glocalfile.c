@@ -51,10 +51,6 @@
 #define O_BINARY 0
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include "gfileattribute.h"
 #include "glocalfile.h"
 #include "glocalfileinfo.h"
