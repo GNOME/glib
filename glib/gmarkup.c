@@ -2794,6 +2794,7 @@ g_markup_collect_attributes (const gchar         *element_name,
   const gchar *attr;
   guint64 collected;
   int written;
+  int remaining;
   va_list ap;
   int i;
 
@@ -2962,10 +2963,15 @@ failure:
   /* replay the above to free allocations */
   type = first_type;
 
+  remaining = written;
   va_start (ap, first_attr);
   while (type != G_MARKUP_COLLECT_INVALID)
     {
       gpointer ptr;
+      gboolean was_processed = (remaining > 0);
+
+      if (remaining > 0)
+        remaining--;
 
       ptr = va_arg (ap, gpointer);
 
@@ -2974,7 +2980,7 @@ failure:
           switch (type & (G_MARKUP_COLLECT_OPTIONAL - 1))
             {
             case G_MARKUP_COLLECT_STRDUP:
-              if (written)
+              if (written && was_processed)
                 g_free (*(char **) ptr);
               *(char **) ptr = NULL;
               break;

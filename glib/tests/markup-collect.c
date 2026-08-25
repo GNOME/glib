@@ -221,6 +221,65 @@ test_cleanup (void)
   g_markup_parse_context_free (context);
 }
 
+static void
+start_element_strdup_cleanup (GMarkupParseContext  *context,
+                              const gchar          *element_name,
+                              const gchar         **attribute_names,
+                              const gchar         **attribute_values,
+                              gpointer              user_data,
+                              GError              **error)
+{
+  char *a_val = NULL;
+  const char *b_val = NULL;
+  char *c_val;
+  char *saved;
+  gboolean result;
+
+  /* Pre-fill c_val with a valid allocation. g_markup_collect_attributes
+   * should NOT free it during cleanup because it is never processed -
+   * the required attribute "b" is missing and triggers failure first.
+   */
+  c_val = g_strdup ("sentinel");
+  saved = c_val;
+
+  result = g_markup_collect_attributes (element_name,
+                                        attribute_names,
+                                        attribute_values,
+                                        error,
+                                        G_MARKUP_COLLECT_STRDUP, "a", &a_val,
+                                        G_MARKUP_COLLECT_STRING, "b", &b_val,
+                                        G_MARKUP_COLLECT_STRDUP, "c", &c_val,
+                                        G_MARKUP_COLLECT_INVALID);
+
+  g_assert_false (result);
+  g_assert_null (a_val);
+  g_assert_null (b_val);
+  g_assert_null (c_val);
+
+  /* If the bug is present, saved was already freed in the cleanup path
+   * and this is a double-free.  With the fix, saved is still valid.
+   */
+  g_free (saved);
+}
+
+static GMarkupParser strdup_cleanup_parser = {
+  start_element_strdup_cleanup, NULL, NULL, NULL, NULL
+};
+
+static void
+test_strdup_cleanup (void)
+{
+  GMarkupParseContext *context;
+  GError *error = NULL;
+
+  context = g_markup_parse_context_new (&strdup_cleanup_parser,
+                                        G_MARKUP_DEFAULT_FLAGS, NULL, NULL);
+  g_markup_parse_context_parse (context, "<test a='x'/>", -1, &error);
+  g_assert_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_MISSING_ATTRIBUTE);
+  g_clear_error (&error);
+  g_markup_parse_context_free (context);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -237,6 +296,7 @@ main (int argc, char **argv)
     }
 
   g_test_add_func ("/markup/collect/cleanup", test_cleanup);
+  g_test_add_func ("/markup/collect/strdup-cleanup", test_strdup_cleanup);
 
   return g_test_run ();
 }
