@@ -798,16 +798,19 @@ static void
 append_mark (const char **p_inout,
              char        *out_buffer,
              size_t      *in_out_len,
+             const char  *limit,
              gboolean     remove_dot)
 {
   const char *p = *p_inout;
 
-  while (*p)
+  while (p < limit && *p)
     {
       gunichar c = g_utf8_get_char (p);
       
       if (ISMARK (TYPE (c)))
 	{
+          if (g_utf8_next_char (p) > limit)
+            break;
 	  if (!remove_dot || c != 0x307 /* COMBINING DOT ABOVE */)
             append_utf8_char_to_buffer (c, out_buffer, in_out_len);
 	  p = g_utf8_next_char (p);
@@ -851,6 +854,7 @@ real_toupper (const gchar *str,
 	      LocaleType   locale_type)
 {
   const gchar *p = str;
+  const gchar *limit = (max_len < 0) ? (gpointer) G_MAXSIZE : str + max_len;
   const char *last = NULL;
   gsize len = 0;
   gboolean last_was_i = FALSE;
@@ -888,7 +892,7 @@ real_toupper (const gchar *str,
                                                     out_buffer, &len);
 		    }
 
-                  append_mark (&p, out_buffer, &len, TRUE);
+                  append_mark (&p, out_buffer, &len, limit, TRUE);
 
 		  continue;
 		}
@@ -908,7 +912,7 @@ real_toupper (const gchar *str,
 	  /* Nasty, need to move it after other combining marks .. this would go away if
 	   * we normalized first.
 	   */
-          append_mark (&p, out_buffer, &len, TRUE);
+          append_mark (&p, out_buffer, &len, limit, TRUE);
 
 	  /* And output as GREEK CAPITAL LETTER IOTA */
           append_utf8_char_to_buffer (0x399, out_buffer, &len);
@@ -1003,19 +1007,21 @@ g_utf8_strup (const gchar *str,
 /* traverses the string checking for characters with combining class == 230
  * until a base character is found */
 static gboolean
-has_more_above (const gchar *str)
+has_more_above (const gchar *str,
+                const gchar *limit)
 {
   const gchar *p = str;
   gint combining_class;
 
-  while (*p)
+  while (p < limit && *p)
     {
       combining_class = g_unichar_combining_class (g_utf8_get_char (p));
       if (combining_class == 230)
         return TRUE;
       else if (combining_class == 0)
         break;
-
+      if (g_utf8_next_char (p) > limit)
+        break;
       p = g_utf8_next_char (p);
     }
 
@@ -1029,6 +1035,7 @@ real_tolower (const gchar *str,
 	      LocaleType   locale_type)
 {
   const gchar *p = str;
+  const gchar *limit = (max_len < 0) ? (gpointer) G_MAXSIZE : str + max_len;
   const char *last = NULL;
   gsize len = 0;
 
@@ -1044,7 +1051,8 @@ real_tolower (const gchar *str,
       if (locale_type == LOCALE_TURKIC && (c == 'I' || c == 0x130 ||
                                            c == G_UNICHAR_FULLWIDTH_I))
         {
-          gboolean combining_dot = (c == 'I' || c == G_UNICHAR_FULLWIDTH_I) &&
+          gboolean combining_dot = (p < limit) &&
+                                   (c == 'I' || c == G_UNICHAR_FULLWIDTH_I) &&
                                    g_utf8_get_char (p) == 0x0307;
           if (combining_dot || c == 0x130)
             {
@@ -1085,7 +1093,7 @@ real_tolower (const gchar *str,
       else if (locale_type == LOCALE_LITHUANIAN && 
                (c == 'I' || c == G_UNICHAR_FULLWIDTH_I ||
                 c == 'J' || c == G_UNICHAR_FULLWIDTH_J || c == 0x012e) &&
-               has_more_above (p))
+               has_more_above (p, limit))
         {
           append_utf8_char_to_buffer (g_unichar_tolower (c), out_buffer, &len);
           append_utf8_char_to_buffer (0x0307, out_buffer, &len);
