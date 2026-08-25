@@ -64,7 +64,11 @@ g_rc_box_alloc_full (gsize    block_size,
       private_size += (alignment - private_offset);
     }
 
-  g_assert (block_size < (G_MAXSIZE - private_size));
+  if (block_size >= (G_MAXSIZE - private_size))
+    {
+      g_error ("%s: overflow allocating %s of %"G_GSIZE_FORMAT" bytes",
+               G_STRLOC, atomic ? "GArcBox" : "GRcBox", block_size);
+    }
   real_size = private_size + block_size;
 
   /* The real allocated size must be a multiple of @alignment, to
