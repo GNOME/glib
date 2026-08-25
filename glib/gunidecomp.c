@@ -351,6 +351,7 @@ _g_utf8_normalize_wc (const gchar    *str,
 		      GNormalizeMode  mode)
 {
   gsize n_wc;
+  gsize tmp;
   gunichar *wc_buffer;
   const char *p;
   gsize last_start;
@@ -396,14 +397,21 @@ _g_utf8_normalize_wc (const gchar    *str,
         {
           gsize result_len;
           decompose_hangul (wc, NULL, &result_len);
-          n_wc += result_len;
+          if (G_UNLIKELY (!g_size_checked_add (&tmp, n_wc, result_len)))
+            return NULL;
+          n_wc = tmp;
         }
       else 
         {
           decomp = find_decomposition (wc, do_compat);
 
           if (decomp)
-            n_wc += g_utf8_strlen (decomp, -1);
+            {
+              gsize add = (gsize) g_utf8_strlen (decomp, -1);
+              if (G_UNLIKELY (!g_size_checked_add (&tmp, n_wc, add)))
+                return NULL;
+              n_wc = tmp;
+            }
           else
             n_wc++;
         }
@@ -412,7 +420,10 @@ _g_utf8_normalize_wc (const gchar    *str,
     }
 
   /* Allocate the buffer for the result. */
-  wc_buffer = g_new (gunichar, n_wc + 1);
+  if (G_UNLIKELY (!g_size_checked_add (&tmp, n_wc, 1)))
+    return NULL;
+
+  wc_buffer = g_new (gunichar, tmp);
 
   /* Do another pass to fill the buffer with the normalised string. */
   last_start = 0;
