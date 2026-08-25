@@ -1147,6 +1147,9 @@ g_variant_get_data (GVariant *value)
  * g_variant_get_data(), except that the returned #GBytes holds
  * a reference to the variant data.
  *
+ * This function cannot fail, even for corrupted variants. In that case
+ * it will return a #GBytes filled with nul bytes.
+ *
  * Returns: (transfer full): A new #GBytes representing the variant data
  *
  * Since: 2.36
@@ -1176,8 +1179,10 @@ g_variant_get_data_as_bytes (GVariant *value)
 
   if (data == NULL)
     {
-      g_assert (size == 0);
-      data = bytes_data;
+      if (size == 0)
+        return g_bytes_new (NULL, 0);
+      else
+        return g_bytes_new_take (g_malloc0 (size), size);
     }
 
   if (bytes_data != NULL && data == bytes_data && size == bytes_size)
