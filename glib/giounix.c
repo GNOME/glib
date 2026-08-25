@@ -33,8 +33,6 @@
 
 #include "config.h"
 
-#define _POSIX_SOURCE		/* for SSIZE_MAX */
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -190,8 +188,8 @@ g_io_unix_read (GIOChannel *channel,
   GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   gssize result;
 
-  if (count > SSIZE_MAX) /* At least according to the Debian manpage for read */
-    count = SSIZE_MAX;
+  if (count > G_MAXSSIZE) /* At least according to the Debian manpage for read */
+    count = G_MAXSSIZE;
 
  retry:
   result = read (unix_channel->fd, buf, count);
