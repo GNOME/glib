@@ -2148,6 +2148,71 @@ test_unknown_scripts (void)
 #undef PACK
 }
 
+static void
+test_strupdown_length (void)
+{
+  char *result;
+  char *oldlocale;
+  char *old_lc_all, *old_lc_messages, *old_lang;
+
+  /* U+0345 COMBINING GREEK YPOGEGRAMMENI triggers append_mark() in strup.
+   * Verify that a combining mark (U+0308) placed after max_len is not
+   * picked up by append_mark().
+   */
+  result = g_utf8_strup ("a" "\xCD\x85" "\xCC\x88", 3);
+  g_assert_cmpstr (result, ==, "A" "\xCE\x99");
+  g_free (result);
+
+  save_and_clear_env ("LC_ALL", &old_lc_all);
+  save_and_clear_env ("LC_MESSAGES", &old_lc_messages);
+  save_and_clear_env ("LANG", &old_lang);
+
+  /* Turkic locale: I + COMBINING DOT ABOVE => i, but only when the
+   * combining dot is within max_len.  With max_len=1 the dot is past
+   * the limit, so I should become DOTLESS I (U+0131) instead of i.
+   */
+  oldlocale = g_strdup (setlocale (LC_ALL, "tr_TR.UTF-8"));
+  if (oldlocale != NULL)
+    {
+      result = g_utf8_strdown ("I" "\xCC\x87", 1);
+      g_assert_cmpstr (result, ==, "\xC4\xB1");
+      g_free (result);
+
+      setlocale (LC_ALL, oldlocale);
+    }
+  else
+    g_test_message ("locale tr_TR.UTF-8 not available, skipping Turkic test");
+  g_free (oldlocale);
+
+  /* Lithuanian locale: I + COMBINING ACUTE ACCENT (class 230) makes
+   * has_more_above() return TRUE and inserts a dot above.  With
+   * max_len=1 the accent is past the limit, so the result should be
+   * just a plain lowercase 'i'.
+   */
+  oldlocale = g_strdup (setlocale (LC_ALL, "lt_LT.UTF-8"));
+  if (oldlocale != NULL)
+    {
+      result = g_utf8_strdown ("I" "\xCC\x81", 1);
+      g_assert_cmpstr (result, ==, "i");
+      g_free (result);
+
+      setlocale (LC_ALL, oldlocale);
+    }
+  else
+    g_test_message ("locale lt_LT.UTF-8 not available, skipping Lithuanian test");
+  g_free (oldlocale);
+
+  if (old_lc_all)
+    g_setenv ("LC_ALL", old_lc_all, TRUE);
+  if (old_lc_messages)
+    g_setenv ("LC_MESSAGES", old_lc_messages, TRUE);
+  if (old_lang)
+    g_setenv ("LANG", old_lang, TRUE);
+  g_free (old_lc_all);
+  g_free (old_lc_messages);
+  g_free (old_lang);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2184,6 +2249,7 @@ main (int   argc,
   g_test_add_func ("/unicode/space", test_space);
   g_test_add_func ("/unicode/strdown", test_strdown);
   g_test_add_func ("/unicode/strup", test_strup);
+  g_test_add_func ("/unicode/strupdown-length", test_strupdown_length);
   g_test_add_func ("/unicode/turkish-strupdown", test_turkish_strupdown);
   g_test_add_func ("/unicode/title", test_title);
   g_test_add_func ("/unicode/upper", test_upper);
