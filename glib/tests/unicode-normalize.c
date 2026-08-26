@@ -170,6 +170,12 @@ test_unicode_normalize_invalid (void)
     { 4, "\xC0\x80\xE0\x80\x80" },
     /* input containing invalid multibyte encoding */
     { -1, "\xED\x85\x9C\xED\x15\x9C\xED\x85\x9C" },
+    /* valid prefix followed by overlong encoding */
+    { -1, "hello\xC0\x80" },
+    { -1, "hello\xF0\x80\x80\x80" },
+    /* valid prefix followed by surrogate codepoint */
+    { -1, "abc\xED\xA0\x80" },
+    { -1, "abc\xED\xBF\xBF" },
   };
   gsize i;
 

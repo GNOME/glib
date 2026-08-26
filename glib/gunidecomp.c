@@ -365,6 +365,7 @@ _g_utf8_normalize_wc (const gchar    *str,
   p = str;
   while ((max_len < 0 || p < str + max_len) && *p)
     {
+      gsize char_len;
       const gchar *decomp;
       const char *next, *between;
       gunichar wc;
@@ -386,9 +387,10 @@ _g_utf8_normalize_wc (const gchar    *str,
           if (G_UNLIKELY (next > str + max_len))
             return NULL;
         }
-      wc = g_utf8_get_char (p);
+      char_len = next - p;
+      wc = g_utf8_get_char_validated (p, char_len);
 
-      if (G_UNLIKELY (wc == (gunichar) -1))
+      if (G_UNLIKELY (wc == (gunichar) -1 || wc == (gunichar) -2))
         {
           return NULL;
         }
