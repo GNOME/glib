@@ -617,15 +617,27 @@ g_array_append_vals (GArray       *farray,
   GRealArray *array = (GRealArray*) farray;
 
   g_return_val_if_fail (array, NULL);
-  g_return_val_if_fail (!g_array_contains_pointer (array, data), NULL);
 
   if (len == 0)
     return farray;
 
-  g_array_maybe_expand (array, len);
+  if (g_array_contains_pointer (array, data))
+    {
+      gsize offset = (guint8 *) data - array->data;
 
-  memcpy (g_array_elt_pos (array, array->len), data, 
-          g_array_elt_len (array, len));
+      g_array_maybe_expand (array, len);
+
+      memcpy (g_array_elt_pos (array, array->len),
+              array->data + offset, 
+              g_array_elt_len (array, len));
+    }
+  else
+    {
+      g_array_maybe_expand (array, len);
+
+      memcpy (g_array_elt_pos (array, array->len), data, 
+              g_array_elt_len (array, len));
+    }
 
   array->len += len;
 
