@@ -109,7 +109,7 @@ g_leak_sanitizer_is_supported (void)
 #if defined (_GLIB_ADDRESS_SANITIZER)
   return TRUE;
 #elif defined (HAS_DYNAMIC_ASAN_LOADING)
-  return G_UNLIKELY (__lsan_enable != NULL && __lsan_ignore_object != NULL);
+  return !!G_UNLIKELY (__lsan_enable != NULL && __lsan_ignore_object != NULL);
 #else
   return FALSE;
 #endif
