@@ -470,6 +470,59 @@ array_append_val (gconstpointer test_data)
   g_free (segment);
 }
 
+static void
+array_append_vals_self (gconstpointer test_data)
+{
+  const ArrayTestData *config = test_data;
+  GArray *array1, *array2, *garray_out;
+  const gint vals[] = { 0, 1, 2, 3, 4 };
+
+  /* Set up two arrays. */
+  array1 = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
+  assert_int_array_zero_terminated (config, array1);
+  array2 = g_array_new (config->zero_terminated, config->clear_, sizeof (gint));
+  assert_int_array_zero_terminated (config, array2);
+
+  /* fill them with some data */
+  garray_out = g_array_prepend_vals (array1, vals, G_N_ELEMENTS (vals));
+  g_assert_true (array1 == garray_out);
+  assert_int_array_equal (array1, vals, G_N_ELEMENTS (vals));
+  assert_int_array_zero_terminated (config, array1);
+  garray_out = g_array_prepend_vals (array2, vals, G_N_ELEMENTS (vals));
+  g_assert_true (array2 == garray_out);
+  assert_int_array_equal (array2, vals, G_N_ELEMENTS (vals));
+  assert_int_array_zero_terminated (config, array2);
+
+  /* randomly append parts of the array to itself until it's large enough */
+  while (array1->len < 1024)
+    {
+      guint n = g_test_rand_int_range (0, array1->len + 1);
+      guint start = array1->len > n ? g_test_rand_int_range (0, array1->len - n) : 0;
+
+      /* perform operation on array1 */
+      garray_out = g_array_append_vals (array1, &g_array_index (array1, int, start), n);
+      g_assert_true (array1 == garray_out);
+      assert_int_array_zero_terminated (config, array1);
+
+      /* check that the operation did the right thing by comparing with values in array2 */
+      g_assert_cmpuint (array1->len, ==, array2->len + n);
+      assert_int_array_equal_part (array1, 0, &g_array_index (array2, int, 0), array2->len);
+      assert_int_array_equal_part (array1, array2->len, &g_array_index (array2, int, start), n);
+
+      /* finally perform same operation on array2 and ensure both arrays are equal */
+      garray_out = g_array_append_vals (array2, &g_array_index (array2, int, start), n);
+      g_assert_true (array2 == garray_out);
+      assert_int_array_zero_terminated (config, array2);
+      if (g_test_rand_bit ())
+        assert_int_array_equal (array1, &g_array_index (array2, int, 0), array2->len);
+      else
+        assert_int_array_equal (array2, &g_array_index (array1, int, 0), array1->len);
+    }
+
+  g_array_free (array1, TRUE);
+  g_array_free (array2, TRUE);
+}
+
 /* Check that g_array_prepend_val() works correctly for various #GArray
  * configurations. */
 static void
@@ -3390,6 +3443,7 @@ main (int argc, char *argv[])
       add_array_test ("/array/set-size", &array_configurations[i], array_set_size);
       add_array_test ("/array/set-size/sized", &array_configurations[i], array_set_size_sized);
       add_array_test ("/array/append-val", &array_configurations[i], array_append_val);
+      add_array_test ("/array/append-vals-self", &array_configurations[i], array_append_vals_self);
       add_array_test ("/array/prepend-val", &array_configurations[i], array_prepend_val);
       add_array_test ("/array/prepend-vals", &array_configurations[i], array_prepend_vals);
       add_array_test ("/array/insert-vals", &array_configurations[i], array_insert_vals);
