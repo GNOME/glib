@@ -120,6 +120,14 @@ struct _GRealArray
 static void  g_array_maybe_expand (GRealArray *array,
                                    guint       len);
 
+static inline gboolean
+g_array_contains_pointer (GRealArray    *array,
+                          gconstpointer  data)
+{
+  return (const guint8 *) data >= array->data &&
+         (const guint8 *) data < g_array_elt_pos (array, array->elt_capacity);
+}
+
 /**
  * g_array_new:
  * @zero_terminated: if true, the array should have an extra element at
@@ -609,6 +617,7 @@ g_array_append_vals (GArray       *farray,
   GRealArray *array = (GRealArray*) farray;
 
   g_return_val_if_fail (array, NULL);
+  g_return_val_if_fail (!g_array_contains_pointer (array, data), NULL);
 
   if (len == 0)
     return farray;
@@ -668,6 +677,7 @@ g_array_prepend_vals (GArray        *farray,
   GRealArray *array = (GRealArray*) farray;
 
   g_return_val_if_fail (array, NULL);
+  g_return_val_if_fail (!g_array_contains_pointer (array, data), NULL);
 
   if (len == 0)
     return farray;
@@ -732,6 +742,7 @@ g_array_insert_vals (GArray        *farray,
   GRealArray *array = (GRealArray*) farray;
 
   g_return_val_if_fail (array, NULL);
+  g_return_val_if_fail (!g_array_contains_pointer (array, data), NULL);
 
   if (len == 0)
     return farray;
