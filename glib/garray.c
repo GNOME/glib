@@ -768,19 +768,29 @@ g_array_insert_vals (GArray        *farray,
                      guint          len)
 {
   GRealArray *array = (GRealArray*) farray;
+  gboolean contains_pointer;
+  gsize offset;
 
   g_return_val_if_fail (array, NULL);
-  g_return_val_if_fail (!g_array_contains_pointer (array, data), NULL);
 
   if (len == 0)
     return farray;
+
+  contains_pointer = g_array_contains_pointer (array, data);
+  if (contains_pointer)
+    offset = (guint8 *) data - array->data;
+  else
+    offset = 0;
 
   /* Is the index off the end of the array, and hence do we need to over-allocate
    * and clear some elements? */
   if (index_ >= array->len)
     {
       g_array_maybe_expand (array, index_ - array->len + len);
-      return g_array_append_vals (g_array_set_size (farray, index_), data, len);
+      if (contains_pointer)
+        return g_array_append_vals (g_array_set_size (farray, index_), array->data + offset, len);
+      else
+        return g_array_append_vals (g_array_set_size (farray, index_), data, len);
     }
 
   g_array_maybe_expand (array, len);
@@ -789,7 +799,30 @@ g_array_insert_vals (GArray        *farray,
            g_array_elt_pos (array, index_),
            g_array_elt_len (array, array->len - index_));
 
-  memcpy (g_array_elt_pos (array, index_), data, g_array_elt_len (array, len));
+  if (contains_pointer)
+    {
+      gsize cut = g_array_elt_len (array, index_);
+      gsize n_bytes = g_array_elt_len (array, len);
+      gsize n_copied = 0;
+
+      if (offset < cut)
+        {
+          /* Copy any part of the data which comes from before the cut */
+          n_copied = MIN (n_bytes, cut - offset);
+          memcpy (g_array_elt_pos (array, index_), array->data + offset, n_copied);
+        }
+      if (n_bytes > n_copied)
+        {
+          /* Copy any part of the data which comes from at or after the cut */
+          memcpy (g_array_elt_pos (array, index_) + n_copied,
+                  array->data + offset + n_bytes + n_copied,
+                  n_bytes - n_copied);
+        }
+    }
+  else
+    {
+      memcpy (g_array_elt_pos (array, index_), data, g_array_elt_len (array, len));
+    }
 
   array->len += len;
 
