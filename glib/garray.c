@@ -687,19 +687,35 @@ g_array_prepend_vals (GArray        *farray,
                       guint          len)
 {
   GRealArray *array = (GRealArray*) farray;
+  gboolean contains_pointer;
+  gsize offset;
 
   g_return_val_if_fail (array, NULL);
-  g_return_val_if_fail (!g_array_contains_pointer (array, data), NULL);
 
   if (len == 0)
     return farray;
+
+  contains_pointer = g_array_contains_pointer (array, data);
+  if (contains_pointer)
+    offset = (guint8 *) data - array->data;
+  else
+    offset = 0;
 
   g_array_maybe_expand (array, len);
 
   memmove (g_array_elt_pos (array, len), g_array_elt_pos (array, 0),
            g_array_elt_len (array, array->len));
 
-  memcpy (g_array_elt_pos (array, 0), data, g_array_elt_len (array, len));
+  if (contains_pointer)
+    {
+      memcpy (g_array_elt_pos (array, 0),
+              array->data + offset + g_array_elt_len (array, len),
+              g_array_elt_len (array, len));
+    }
+  else
+    {
+      memcpy (g_array_elt_pos (array, 0), data, g_array_elt_len (array, len));
+    }
 
   array->len += len;
 
