@@ -120,6 +120,12 @@ struct _GRealArray
 static void  g_array_maybe_expand (GRealArray *array,
                                    guint       len);
 
+/* Detect the case where a pointer from inside the array data
+ * is being prepended/inserted/appended into the array again.
+ * Note that these pointers are handled by offset, because any
+ * g_array_maybe_expand() call may reallocate the array data
+ * and render the original pointer invalid.
+ */
 static inline gboolean
 g_array_contains_pointer (GRealArray    *array,
                           gconstpointer  data)
