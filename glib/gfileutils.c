@@ -2158,6 +2158,13 @@ g_build_pathname_va (const gchar  *first_element,
 
       if (TRUE)
 	{
+	  if (is_first)
+	    {
+	      /* Recognize drive letter at start of first element */
+	      if (g_ascii_isalpha (start[0]) &&
+		  start[1] == ':' && G_IS_DIR_SEPARATOR (start[2]))
+		current_separator = start[2];
+	    }
 	  while (start &&
 		 (*start == '\\' || *start == '/'))
 	    {
