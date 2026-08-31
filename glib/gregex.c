@@ -310,13 +310,6 @@ struct _GMatchInfo
   pcre2_jit_stack *jit_stack;
 };
 
-typedef enum
-{
-  JIT_STATUS_DEFAULT,
-  JIT_STATUS_ENABLED,
-  JIT_STATUS_DISABLED
-} JITStatus;
-
 struct _GRegex
 {
   gint ref_count;               /* the ref count for the immutable part (atomic) */
@@ -326,15 +319,7 @@ struct _GRegex
   GRegexCompileFlags regex_compile_opts; /* options used at compile time on the pattern, gregex values */
   uint32_t match_opts;          /* pcre2 options used at match time on the regex */
   GRegexMatchFlags orig_match_opts; /* options used as default match options, gregex values */
-  uint32_t jit_options;         /* options which were enabled for jit compiler */
-  JITStatus jit_status;         /* indicates the status of jit compiler for this compiled regex */
-  /* The jit_status here does _not_ correspond to whether we used the JIT in the last invocation,
-   * which may be affected by match_options or a JIT_STACK_LIMIT error, but whether it was ever
-   * enabled for the current regex AND current set of jit_options.
-   * JIT_STATUS_DEFAULT means enablement was never tried,
-   * JIT_STATUS_ENABLED means it was tried and successful (even if we're not currently using it),
-   * and JIT_STATUS_DISABLED means it was tried and failed (so we shouldn't try again).
-   */
+  uint32_t jit_options;         /* JIT modes compiled before the regex was shared */
 };
 
 /* TRUE if ret is an error code, FALSE otherwise. */
@@ -979,74 +964,78 @@ recalc_match_offsets (GMatchInfo *match_info,
   return TRUE;
 }
 
-static JITStatus
-enable_jit_with_match_options (GMatchInfo  *match_info,
-                               uint32_t  match_options)
+static uint32_t
+enable_jit (GRegex  *regex,
+            uint32_t match_options)
 {
   gint retval;
-  uint32_t old_jit_options, new_jit_options;
-
-  if (!(match_info->regex->regex_compile_opts & G_REGEX_OPTIMIZE))
-    return JIT_STATUS_DISABLED;
-
-  if (match_info->regex->jit_status == JIT_STATUS_DISABLED)
-    return JIT_STATUS_DISABLED;
+  PCRE2_SIZE jit_size = 0;
+  uint32_t jit_options = PCRE2_JIT_COMPLETE;
 
   if (match_options & G_REGEX_PCRE2_JIT_UNSUPPORTED_OPTIONS)
-    return JIT_STATUS_DISABLED;
+    return 0;
 
-  old_jit_options = match_info->regex->jit_options;
-  new_jit_options = old_jit_options | PCRE2_JIT_COMPLETE;
   if (match_options & PCRE2_PARTIAL_HARD)
-    new_jit_options |= PCRE2_JIT_PARTIAL_HARD;
+    jit_options |= PCRE2_JIT_PARTIAL_HARD;
   if (match_options & PCRE2_PARTIAL_SOFT)
-    new_jit_options |= PCRE2_JIT_PARTIAL_SOFT;
+    jit_options |= PCRE2_JIT_PARTIAL_SOFT;
 
-  /* no new options enabled */
-  if (new_jit_options == old_jit_options)
-    {
-      g_assert (match_info->regex->jit_status != JIT_STATUS_DEFAULT);
-      return match_info->regex->jit_status;
-    }
-
-  retval = pcre2_jit_compile (match_info->regex->pcre_re, new_jit_options);
+  retval = pcre2_jit_compile (regex->pcre_re, jit_options);
   if (retval == 0)
     {
-      match_info->regex->jit_status = JIT_STATUS_ENABLED;
+      retval = pcre2_pattern_info (regex->pcre_re, PCRE2_INFO_JITSIZE, &jit_size);
+      if (retval == 0 && jit_size > 0)
+        return jit_options;
 
-      match_info->regex->jit_options = new_jit_options;
-      /* Set min stack size for JIT to 32KiB and max to 512KiB */
-      match_info->jit_stack = pcre2_jit_stack_create (1 << 15, 1 << 19, NULL);
-      pcre2_jit_stack_assign (match_info->match_context, NULL, match_info->jit_stack);
+      if (retval == 0)
+        g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+                 "but the pattern disabled JIT compilation. Falling back to "
+                 "interpretive code.");
     }
-  else
+
+  switch (retval)
     {
-      match_info->regex->jit_status = JIT_STATUS_DISABLED;
-
-      switch (retval)
-        {
-        case PCRE2_ERROR_NOMEMORY:
-          g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-                   "but JIT was unable to allocate executable memory for the "
-                   "compiler. Falling back to interpretive code.");
-          break;
-        case PCRE2_ERROR_JIT_BADOPTION:
-          g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-                   "but JIT support is not available. Falling back to "
-                   "interpretive code.");
-          break;
-        default:
-          g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
-                   "but request for JIT support had unexpectedly failed (error %d). "
-                   "Falling back to interpretive code.",
-                   retval);
-          break;
-        }
+    case PCRE2_ERROR_NOMEMORY:
+      g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+               "but JIT was unable to allocate executable memory for the "
+               "compiler. Falling back to interpretive code.");
+      break;
+    case PCRE2_ERROR_JIT_BADOPTION:
+      g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+               "but JIT support is not available. Falling back to "
+               "interpretive code.");
+      break;
+    default:
+      if (retval != 0)
+        g_debug ("JIT compilation was requested with G_REGEX_OPTIMIZE, "
+                 "but request for JIT support had unexpectedly failed (error %d). "
+                 "Falling back to interpretive code.",
+                 retval);
+      break;
     }
 
-  return match_info->regex->jit_status;
+  return 0;
+}
 
-  g_assert_not_reached ();
+static gboolean
+prepare_jit_match (GMatchInfo *match_info,
+                   uint32_t    match_options)
+{
+  uint32_t jit_option = PCRE2_JIT_COMPLETE;
+
+  if (match_options & PCRE2_PARTIAL_HARD)
+    jit_option = PCRE2_JIT_PARTIAL_HARD;
+  else if (match_options & PCRE2_PARTIAL_SOFT)
+    jit_option = PCRE2_JIT_PARTIAL_SOFT;
+
+  if (match_options & G_REGEX_PCRE2_JIT_UNSUPPORTED_OPTIONS)
+    return FALSE;
+
+  /* Never compile another mode here because the regex may already be shared. */
+  if ((match_info->regex->jit_options & jit_option) != jit_option)
+    return FALSE;
+
+  return TRUE;
 }
 
 /**
@@ -1170,7 +1159,7 @@ gboolean
 g_match_info_next (GMatchInfo  *match_info,
                    GError     **error)
 {
-  JITStatus jit_status;
+  gboolean jit_enabled;
   gint prev_match_start;
   gint prev_match_end;
   uint32_t opts;
@@ -1194,8 +1183,8 @@ g_match_info_next (GMatchInfo  *match_info,
 
   opts = match_info->regex->match_opts | match_info->match_opts;
 
-  jit_status = enable_jit_with_match_options (match_info, opts);
-  if (jit_status == JIT_STATUS_ENABLED)
+  jit_enabled = prepare_jit_match (match_info, opts);
+  if (jit_enabled)
     {
       match_info->matches = pcre2_jit_match (match_info->regex->pcre_re,
                                              (PCRE2_SPTR8) match_info->string,
@@ -1204,6 +1193,25 @@ g_match_info_next (GMatchInfo  *match_info,
                                              opts,
                                              match_info->match_data,
                                              match_info->match_context);
+
+      if (match_info->matches == PCRE2_ERROR_JIT_STACKLIMIT &&
+          match_info->jit_stack == NULL)
+        {
+          /* Set min stack size for JIT to 32KiB and max to 512KiB */
+          match_info->jit_stack = pcre2_jit_stack_create (1 << 15, 1 << 19, NULL);
+          if (match_info->jit_stack != NULL)
+            {
+              pcre2_jit_stack_assign (match_info->match_context, NULL, match_info->jit_stack);
+              match_info->matches = pcre2_jit_match (match_info->regex->pcre_re,
+                                                     (PCRE2_SPTR8) match_info->string,
+                                                     match_info->string_len,
+                                                     match_info->pos,
+                                                     opts,
+                                                     match_info->match_data,
+                                                     match_info->match_context);
+            }
+        }
+
       /* if the JIT stack limit was reached, fall back to non-JIT matching in
        * the next conditional statement */
       if (match_info->matches == PCRE2_ERROR_JIT_STACKLIMIT)
@@ -1211,12 +1219,15 @@ g_match_info_next (GMatchInfo  *match_info,
           g_debug ("PCRE2 JIT stack limit reached, falling back to "
                    "non-optimized matching.");
           opts |= PCRE2_NO_JIT;
-          jit_status = JIT_STATUS_DISABLED;
+          jit_enabled = FALSE;
         }
     }
 
-  if (jit_status != JIT_STATUS_ENABLED)
+  if (!jit_enabled)
     {
+      if (match_info->regex->regex_compile_opts & G_REGEX_OPTIMIZE)
+        opts |= PCRE2_NO_JIT;
+
       match_info->matches = pcre2_match (match_info->regex->pcre_re,
                                          (PCRE2_SPTR8) match_info->string,
                                          match_info->string_len,
@@ -2113,6 +2124,8 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   regex->regex_compile_opts = compile_options;
   regex->match_opts = pcre_match_options;
   regex->orig_match_opts = match_options;
+  if (compile_options & G_REGEX_OPTIMIZE)
+    regex->jit_options = enable_jit (regex, pcre_match_options);
 
   return regex;
 }

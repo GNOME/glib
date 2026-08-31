@@ -2561,6 +2561,49 @@ test_compiled_regex_after_jit_failure (void)
 }
 
 static void
+test_jit_disabled_by_pattern (void)
+{
+  GRegex *regex = NULL;
+  GError *error = NULL;
+
+  g_test_summary ("Test fallback when a pattern disables JIT compilation");
+
+  regex = g_regex_new ("(*NO_JIT)^a$", G_REGEX_OPTIMIZE, 0, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (regex);
+  g_assert_true (g_regex_match (regex, "a", 0, NULL));
+
+  g_regex_unref (regex);
+}
+
+static void
+test_jit_uncompiled_match_modes (void)
+{
+  static const GRegexMatchFlags match_options[] = {
+    G_REGEX_MATCH_PARTIAL_SOFT,
+    G_REGEX_MATCH_PARTIAL_HARD,
+  };
+  GRegex *regex;
+
+  g_test_summary ("Test fallback for JIT modes not compiled at construction");
+
+  regex = g_regex_new ("^abc$", G_REGEX_OPTIMIZE, 0, NULL);
+  for (guint i = 0; i < G_N_ELEMENTS (match_options); i++)
+    {
+      GMatchInfo *match_info = NULL;
+      GError *error = NULL;
+
+      g_assert_false (g_regex_match_full (regex, "ab", -1, 0,
+                                          match_options[i], &match_info, &error));
+      g_assert_no_error (error);
+      g_assert_true (g_match_info_is_partial_match (match_info));
+      g_match_info_free (match_info);
+    }
+
+  g_regex_unref (regex);
+}
+
+static void
 test_replace_raw_change_case (void)
 {
   GError *local_error = NULL;
@@ -2701,6 +2744,120 @@ test_next_next_next (void)
   g_regex_unref (re);
 }
 
+typedef struct
+{
+  GMutex mutex;
+  GCond cond;
+  gint n_ready;
+  gint start;
+} RegexThreadBarrier;
+
+typedef struct
+{
+  GRegex *regex;
+  GRegexMatchFlags match_options;
+  RegexThreadBarrier *barrier;
+} RegexThreadData;
+
+static gpointer
+test_jit_thread_safety_worker (gpointer user_data)
+{
+  RegexThreadData *data = user_data;
+
+  g_mutex_lock (&data->barrier->mutex);
+  g_atomic_int_inc (&data->barrier->n_ready);
+  g_cond_broadcast (&data->barrier->cond);
+  while (!g_atomic_int_get (&data->barrier->start))
+    g_cond_wait (&data->barrier->cond, &data->barrier->mutex);
+  g_mutex_unlock (&data->barrier->mutex);
+
+  for (guint i = 0; i < 10; i++)
+    {
+      GMatchInfo *match_info = NULL;
+      GError *error = NULL;
+      gboolean matched;
+
+      matched = g_regex_match_full (data->regex,
+                                    data->match_options == G_REGEX_MATCH_DEFAULT ?
+                                      "token255" : "token",
+                                    -1, 0, data->match_options,
+                                    &match_info, &error);
+      g_assert_no_error (error);
+      if (data->match_options == G_REGEX_MATCH_DEFAULT)
+        g_assert_true (matched);
+      else
+        {
+          g_assert_false (matched);
+          g_assert_true (g_match_info_is_partial_match (match_info));
+        }
+      g_match_info_free (match_info);
+    }
+
+  return NULL;
+}
+
+static void
+test_jit_thread_safety (void)
+{
+  static const GRegexMatchFlags match_options[] = {
+    G_REGEX_MATCH_DEFAULT,
+    G_REGEX_MATCH_PARTIAL_SOFT,
+    G_REGEX_MATCH_PARTIAL_HARD,
+  };
+  RegexThreadData data[12];
+  GThread *threads[G_N_ELEMENTS (data)];
+  GString *pattern;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3996");
+  g_test_summary ("Test optimized matching on a shared GRegex from multiple threads");
+
+  pattern = g_string_new ("^(?:");
+  for (guint i = 0; i < 256; i++)
+    g_string_append_printf (pattern, "token%03u|", i);
+  g_string_truncate (pattern, pattern->len - 1);
+  g_string_append (pattern, ")$");
+
+  for (guint mode = 0; mode < G_N_ELEMENTS (match_options); mode++)
+    {
+      RegexThreadBarrier barrier = { 0, };
+      GError *error = NULL;
+      GRegex *regex;
+
+      g_mutex_init (&barrier.mutex);
+      g_cond_init (&barrier.cond);
+
+      regex = g_regex_new (pattern->str, G_REGEX_OPTIMIZE,
+                           match_options[mode], &error);
+      g_assert_no_error (error);
+      g_assert_nonnull (regex);
+
+      for (guint i = 0; i < G_N_ELEMENTS (threads); i++)
+        {
+          data[i].regex = regex;
+          data[i].match_options = match_options[mode];
+          data[i].barrier = &barrier;
+          threads[i] = g_thread_new ("regex-jit", test_jit_thread_safety_worker,
+                                     &data[i]);
+        }
+
+      g_mutex_lock (&barrier.mutex);
+      while ((guint) g_atomic_int_get (&barrier.n_ready) < G_N_ELEMENTS (threads))
+        g_cond_wait (&barrier.cond, &barrier.mutex);
+      g_atomic_int_set (&barrier.start, TRUE);
+      g_cond_broadcast (&barrier.cond);
+      g_mutex_unlock (&barrier.mutex);
+
+      for (guint i = 0; i < G_N_ELEMENTS (threads); i++)
+        g_thread_join (threads[i]);
+
+      g_cond_clear (&barrier.cond);
+      g_mutex_clear (&barrier.mutex);
+      g_regex_unref (regex);
+    }
+
+  g_string_free (pattern, TRUE);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2722,6 +2879,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/jit-unsupported-matching", test_jit_unsupported_matching_options);
   g_test_add_func ("/regex/unmatched-named-subpattern", test_unmatched_named_subpattern);
   g_test_add_func ("/regex/compiled-regex-after-jit-failure", test_compiled_regex_after_jit_failure);
+  g_test_add_func ("/regex/jit-disabled-by-pattern", test_jit_disabled_by_pattern);
+  g_test_add_func ("/regex/jit-uncompiled-match-modes", test_jit_uncompiled_match_modes);
+  g_test_add_func ("/regex/jit-thread-safety", test_jit_thread_safety);
   g_test_add_func ("/regex/replace-raw-change-case", test_replace_raw_change_case);
   g_test_add_func ("/regex/split-raw", test_split_raw);
   g_test_add_func ("/regex/match-at-end", test_match_at_end);
