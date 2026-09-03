@@ -1025,9 +1025,12 @@ handle_overwrite_open (const char    *filename,
    * tmp file to the original name. This is fast but doesn't work
    * when the file is a link (hard or symbolic) or when we can't
    * write to the current dir or can't set the permissions on the
-   * new file. 
+   * new file.
    * The second strategy consist simply in copying the old file
-   * to a backup file and rewrite the contents of the file.
+   * to a backup file and rewrite the contents of the file. This
+   * strategy is not implemented for the replace_destination_set case,
+   * because in that case we already know the first strategy failed
+   * due to insufficient permissions, so the backup strategy will fail too.
    */
   
   if (replace_destination_set ||
@@ -1043,8 +1046,17 @@ handle_overwrite_open (const char    *filename,
       tmpfd = g_mkstemp_full (tmp_filename, (readable ? O_RDWR : O_WRONLY) | O_BINARY | O_CLOEXEC, mode);
       if (tmpfd == -1)
 	{
-	  g_free (tmp_filename);
-	  goto fallback_strategy;
+          errsv = errno;
+          g_free (tmp_filename);
+
+          if (!replace_destination_set)
+            goto fallback_strategy;
+
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error creating temporary file: %s"),
+                       g_strerror (errsv));
+          goto error;
 	}
       
       /* try to keep permissions (unless replacing) */
@@ -1091,6 +1103,7 @@ handle_overwrite_open (const char    *filename,
     }
 
  fallback_strategy:
+  g_assert (!replace_destination_set);
 
   if (create_backup)
     {
@@ -1197,59 +1210,22 @@ handle_overwrite_open (const char    *filename,
 	}
     }
 
-  if (replace_destination_set)
-    {
-      g_clear_fd (&fd, NULL);
-
-      if (g_unlink (filename) != 0)
-	{
-          errsv = errno;
-	  
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error removing old file: %s"),
-		       g_strerror (errsv));
-          goto error;
-	}
-
-      if (readable)
-	open_flags = O_RDWR | O_CREAT | O_BINARY | O_CLOEXEC;
-      else
-	open_flags = O_WRONLY | O_CREAT | O_BINARY | O_CLOEXEC;
-      fd = g_open (filename, open_flags, mode);
-      if (fd == -1)
-	{
-    char *display_name;
-    errsv = errno;
-    display_name = g_filename_display_name (filename);
-
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error opening file “%s”: %s"),
-		       display_name, g_strerror (errsv));
-	  g_free (display_name);
-          goto error;
-	}
-    }
-  else
-    {
-      /* Truncate the file at the start */
+  /* Truncate the file at the start */
 #ifdef G_OS_WIN32
-      if (g_win32_ftruncate (fd, 0) == -1)
+  if (g_win32_ftruncate (fd, 0) == -1)
 #else
-	if (ftruncate (fd, 0) == -1)
+  if (ftruncate (fd, 0) == -1)
 #endif
-	  {
-	    errsv = errno;
-	    
-	    g_set_error (error, G_IO_ERROR,
-			 g_io_error_from_errno (errsv),
-			 _("Error truncating file: %s"),
-			 g_strerror (errsv));
-            goto error;
-	  }
-    }
+    {
+      errsv = errno;
     
+      g_set_error (error, G_IO_ERROR,
+                   g_io_error_from_errno (errsv),
+                   _("Error truncating file: %s"),
+                   g_strerror (errsv));
+      goto error;
+    }
+
   return fd;
 
 error:

@@ -1954,15 +1954,15 @@ test_replace (gconstpointer test_data)
       },
 
       /* A symlink in an unwriteable directory, with the need to replace the
-       * destination and make a backup, tests the fallback backup code path. It
-       * can’t succeed, because even if the file replace would work, the backup
-       * file cannot be created in a read-only directory. */
+       * destination and make a backup, can’t succeed, because in a read-only
+       * directory the file replace cannot work, and the backup file
+       * cannot be created. */
       {
         TRUE, G_FILE_CREATE_REPLACE_DESTINATION, NULL,
         FILE_TEST_DIRECTORY_SETUP_TYPE_READ_ONLY,
         FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode,
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, TRUE,
-        FALSE, G_IO_ERROR, G_IO_ERROR_CANT_CREATE_BACKUP,
+        FALSE, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED,
         2, FILE_TEST_SETUP_TYPE_SYMLINK_VALID, default_public_mode, "source-target",
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
       },
