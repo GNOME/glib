@@ -1216,6 +1216,9 @@ handle_overwrite_open (const char    *filename,
 	open_flags = O_RDWR | O_CREAT | O_BINARY | O_CLOEXEC;
       else
 	open_flags = O_WRONLY | O_CREAT | O_BINARY | O_CLOEXEC;
+#ifdef O_NOFOLLOW
+	open_flags |= O_NOFOLLOW;
+#endif
       fd = g_open (filename, open_flags, mode);
       if (fd == -1)
 	{
