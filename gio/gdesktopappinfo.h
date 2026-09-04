@@ -206,6 +206,11 @@ GAppInfo **g_desktop_app_info_get_for_intent (const char *interface,
 GIO_AVAILABLE_IN_2_92
 GAppInfo *g_desktop_app_info_get_default_for_intent (const char *interface,
                                                      const char *scope);
+GIO_AVAILABLE_IN_2_92
+gboolean g_desktop_app_info_set_as_default_for_intent (GDesktopAppInfo  *info,
+                                                       const char       *interface,
+                                                       const char       *scope,
+                                                       GError          **error);
 
 G_END_DECLS
 

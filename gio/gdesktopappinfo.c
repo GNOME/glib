@@ -142,6 +142,12 @@ typedef enum {
   UPDATE_MIME_SET_LAST_USED = 1 << 4,
 } G_GNUC_FLAG_ENUM UpdateMimeFlags;
 
+typedef enum
+{
+  UPDATE_INTENT_SET_DEFAULT = 1 << 0,
+  UPDATE_INTENT_REMOVE = 1 << 1,
+} G_GNUC_FLAG_ENUM UpdateIntentFlags;
+
 G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_APP_INFO, g_desktop_app_info_iface_init))
 
@@ -4764,6 +4770,189 @@ update_mimeapps_list (const char  *desktop_id,
 }
 
 static gboolean
+update_intentapps_list (const char         *desktop_id,
+                        const char         *interface,
+                        const char         *scope,
+                        UpdateIntentFlags   flags,
+                        GError            **error)
+{
+  char *dirname, *old_filename, *filename, *scope_desktop_id;
+  GKeyFile *key_file;
+  gboolean load_succeeded, res;
+  size_t data_size;
+  char *data;
+  char **intents, **scopes, **old_intent_desktop_ids, **intent_desktop_ids;
+  size_t n_old_intent_desktop_ids, n_intent_desktop_ids;
+
+  dirname = ensure_dir (CONF_DIR, error);
+  if (dirname == NULL)
+    return FALSE;
+
+  filename = g_build_filename (dirname, "intentapps.list", NULL);
+
+  while (g_file_test (filename, G_FILE_TEST_IS_SYMLINK))
+    {
+      old_filename = filename;
+      filename = g_file_read_link (old_filename, error);
+      g_free (old_filename);
+
+      if (filename == NULL)
+        return FALSE;
+
+      if (!g_path_is_absolute (filename))
+        {
+          old_filename = filename;
+          filename = g_build_filename (dirname, old_filename, NULL);
+          g_free (old_filename);
+        }
+    }
+
+  g_free (dirname);
+
+  key_file = g_key_file_new ();
+  load_succeeded = g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, NULL);
+  if (!load_succeeded || !g_key_file_has_group (key_file, DEFAULT_APPLICATIONS_GROUP))
+    {
+      g_key_file_free (key_file);
+      key_file = g_key_file_new ();
+    }
+
+  if (interface != NULL &&
+      !g_key_file_has_key (key_file, DEFAULT_APPLICATIONS_GROUP, interface, NULL))
+    {
+      g_key_file_set_string (key_file, DEFAULT_APPLICATIONS_GROUP, interface, "");
+    }
+
+  if (interface != NULL &&
+      scope != NULL &&
+      !g_key_file_has_key (key_file, interface, scope, NULL))
+    {
+      g_key_file_set_string (key_file, interface, scope, "");
+    }
+
+  intents = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP, NULL, NULL);
+
+  for (size_t i = 0; intents != NULL && intents[i] != NULL; i++)
+    {
+      scopes = g_key_file_get_keys (key_file, intents[i], NULL, NULL);
+
+      for (size_t j = 0; scopes != NULL && scopes[j] != NULL; j++)
+        {
+
+          scope_desktop_id = g_key_file_get_string (key_file,
+                                                    intents[i],
+                                                    scopes[j],
+                                                    NULL);
+
+          if (g_strcmp0 (scope_desktop_id, desktop_id) != 0 &&
+              interface != NULL &&
+              g_strcmp0 (intents[i], interface) == 0 &&
+              scope != NULL &&
+              g_strcmp0 (scopes[j], scope) == 0 &&
+              (flags & UPDATE_INTENT_SET_DEFAULT))
+            {
+              g_free (scope_desktop_id);
+              scope_desktop_id = g_strdup (desktop_id);
+            }
+
+          if (g_strcmp0 (scope_desktop_id, desktop_id) == 0 &&
+              (flags & UPDATE_INTENT_REMOVE))
+            {
+              g_free (scope_desktop_id);
+              scope_desktop_id = NULL;
+            }
+
+          if (scope_desktop_id == NULL)
+            g_key_file_remove_key (key_file,
+                                   intents[i],
+                                   scopes[j],
+                                   NULL);
+          else
+            {
+              g_key_file_set_string (key_file,
+                                     intents[i],
+                                     scopes[j],
+                                     scope_desktop_id);
+              g_free (scope_desktop_id);
+            }
+        }
+
+      g_strfreev (scopes);
+
+      /* Remove the intent group if there are no scopes left */
+      scopes = g_key_file_get_keys (key_file, intents[i], NULL, NULL);
+
+      if (scopes != NULL && *scopes == NULL)
+        g_key_file_remove_group (key_file, intents[i], NULL);
+
+      g_strfreev (scopes);
+
+      n_intent_desktop_ids = 0;
+
+      old_intent_desktop_ids = g_key_file_get_string_list (key_file,
+                                                           DEFAULT_APPLICATIONS_GROUP,
+                                                           intents[i],
+                                                           &n_old_intent_desktop_ids,
+                                                           NULL);
+
+      intent_desktop_ids = g_new (char *, 1 + n_old_intent_desktop_ids + 1);
+
+      if (interface != NULL &&
+          g_strcmp0 (intents[i], interface) == 0 &&
+          (flags & UPDATE_INTENT_SET_DEFAULT))
+        intent_desktop_ids[n_intent_desktop_ids++] = g_strdup (desktop_id);
+
+      for (size_t j = 0; j < n_old_intent_desktop_ids; j++)
+        if (g_strcmp0 (old_intent_desktop_ids[j], desktop_id) != 0 ||
+            ((flags & UPDATE_INTENT_SET_DEFAULT) &&
+             g_strcmp0 (intents[i], interface) != 0))
+          intent_desktop_ids[n_intent_desktop_ids++] = g_strdup (old_intent_desktop_ids[j]);
+
+      intent_desktop_ids[n_intent_desktop_ids] = NULL;
+
+      g_strfreev (old_intent_desktop_ids);
+
+      if (intent_desktop_ids[0] == NULL)
+        g_key_file_remove_key (key_file,
+                               DEFAULT_APPLICATIONS_GROUP,
+                               intents[i],
+                               NULL);
+      else
+        g_key_file_set_string_list (key_file,
+                                    DEFAULT_APPLICATIONS_GROUP,
+                                    intents[i],
+                                    (const char * const *) intent_desktop_ids,
+                                    n_intent_desktop_ids);
+      g_strfreev (intent_desktop_ids);
+    }
+
+  g_strfreev (intents);
+
+  data = g_key_file_to_data (key_file, &data_size, error);
+  g_key_file_free (key_file);
+
+  if (data_size > G_MAXSSIZE)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Intent apps information is too long"));
+      g_free (filename);
+      g_free (data);
+      return FALSE;
+    }
+
+  res = g_file_set_contents_full (filename, data, (ssize_t) data_size,
+                                  G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING,
+                                  0600, error);
+
+  desktop_file_dirs_invalidate_user_config ();
+
+  g_free (filename);
+  g_free (data);
+
+  return res;
+}
+
+static gboolean
 g_desktop_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
                                               const char  *content_type,
                                               GError     **error)
@@ -5108,6 +5297,10 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
           update_mimeapps_list (info->desktop_id, NULL,
                                 UPDATE_MIME_NONE,
                                 NULL);
+
+          update_intentapps_list (info->desktop_id, NULL, NULL,
+                                  UPDATE_INTENT_REMOVE,
+                                  NULL);
 
           g_free (info->filename);
           info->filename = NULL;
@@ -5487,6 +5680,46 @@ g_desktop_app_info_get_default_for_intent (const char *interface,
   g_free (apps);
 
   return def;
+}
+
+/**
+ * g_desktop_app_info_set_as_default_for_intent:
+ * @info: an app info
+ * @interface: the intent interface to set the app as default for
+ * @scope: (nullable): an optional scope
+ * @error: return location for a `GError`
+ *
+ * Sets the application as the default handler for an intent interface, or for
+ * a scope of the intent interface.
+ *
+ * If @scope is provided, the default handler for that scope of the intent
+ * interface will be set. Additionally, the application will be added to the
+ * list of the default handlers for the intent interface.
+ *
+ * If @scope is not provided, the default handler for the intent interface will
+ * be set to the application.
+ *
+ * Returns: true on success; false otherwise
+ *
+ * Since: 2.92
+ */
+gboolean
+g_desktop_app_info_set_as_default_for_intent (GDesktopAppInfo  *info,
+                                              const char       *interface,
+                                              const char       *scope,
+                                              GError          **error)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), FALSE);
+  g_return_val_if_fail (g_dbus_is_interface_name (interface), FALSE);
+  g_return_val_if_fail (scope == NULL || *scope != '\0', FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (!g_desktop_app_info_ensure_saved (info, error))
+    return FALSE;
+
+  return update_intentapps_list (info->desktop_id, interface, scope,
+                                 UPDATE_INTENT_SET_DEFAULT,
+                                 error);
 }
 
 GAppInfo *

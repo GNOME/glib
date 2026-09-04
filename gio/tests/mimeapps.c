@@ -40,7 +40,7 @@ const gchar *myapp_data =
   "Type=Application\n"
   "Exec=true %f\n"
   "Name=my app\n"
-  "Implements=org.freedesktop.handler.Deeplink1;org.freedesktop.Terminal1\n";
+  "Implements=org.freedesktop.handler.Deeplink1;org.freedesktop.Terminal1;org.freedesktop.Example1\n";
 
 const gchar *myapp2_data =
   "[Desktop Entry]\n"
@@ -718,6 +718,7 @@ test_intent_api (Fixture       *fixture,
   GAppInfo *def;
   GAppInfo **infos;
   size_t n_infos;
+  GError *error = NULL;
 
   appinfo = G_APP_INFO (g_desktop_app_info_new ("myapp.desktop"));
   appinfo2 = G_APP_INFO (g_desktop_app_info_new ("myapp2.desktop"));
@@ -773,6 +774,60 @@ test_intent_api (Fixture       *fixture,
   g_assert_true (g_app_info_equal (infos[0], appinfo3));
   g_assert_nonnull (infos[1]);
   g_assert_true (g_app_info_equal (infos[1], appinfo2));
+
+  /* Test changing the default intent handler with a scope */
+  g_desktop_app_info_set_as_default_for_intent (G_DESKTOP_APP_INFO (appinfo),
+                                                "org.freedesktop.handler.Deeplink1",
+                                                "example.org",
+                                                &error);
+  g_assert_no_error (error);
+
+  def = g_desktop_app_info_get_default_for_intent ("org.freedesktop.handler.Deeplink1", NULL);
+  g_assert_nonnull (def);
+  g_assert_true (g_app_info_equal (def, appinfo));
+  g_object_unref (def);
+
+  def = g_desktop_app_info_get_default_for_intent ("org.freedesktop.handler.Deeplink1", "example.org");
+  g_assert_nonnull (def);
+  g_assert_true (g_app_info_equal (def, appinfo));
+  g_object_unref (def);
+
+  /* Test changing the default intent handler without a scope */
+  g_desktop_app_info_set_as_default_for_intent (G_DESKTOP_APP_INFO (appinfo2),
+                                                "org.freedesktop.Terminal1",
+                                                NULL,
+                                                &error);
+  g_assert_no_error (error);
+
+  def = g_desktop_app_info_get_default_for_intent ("org.freedesktop.Terminal1", NULL);
+  g_assert_nonnull (def);
+  g_assert_true (g_app_info_equal (def, appinfo2));
+  g_object_unref (def);
+
+  /* Test changing the default intent handler with a scope for a new intent */
+  g_desktop_app_info_set_as_default_for_intent (G_DESKTOP_APP_INFO (appinfo),
+                                                "org.freedesktop.Example1",
+                                                "example1",
+                                                &error);
+  g_assert_no_error (error);
+
+  def = g_desktop_app_info_get_default_for_intent ("org.freedesktop.Example1", NULL);
+  g_assert_nonnull (def);
+  g_assert_true (g_app_info_equal (def, appinfo));
+  g_object_unref (def);
+
+  /* Test deleting the default intent handler */
+  g_app_info_delete (appinfo);
+
+  def = g_desktop_app_info_get_default_for_intent ("org.freedesktop.handler.Deeplink1", NULL);
+  g_assert_nonnull (def);
+  g_assert_true (g_app_info_equal (def, appinfo2));
+  g_object_unref (def);
+
+  def = g_desktop_app_info_get_default_for_intent ("org.freedesktop.handler.Deeplink1", "example.org");
+  g_assert_nonnull (def);
+  g_assert_true (g_app_info_equal (def, appinfo2));
+  g_object_unref (def);
 
   g_object_unref (infos[0]);
   g_object_unref (infos[1]);
