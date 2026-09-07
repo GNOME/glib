@@ -873,6 +873,7 @@ freebsd-14-x86_64:
     - ps aux
     - sysctl kern.hostid
     - sysctl kern.hostuuid
+    - service hostid_save start
     - service hostid start
     - sysctl kern.hostid
     - sysctl kern.hostuuid
