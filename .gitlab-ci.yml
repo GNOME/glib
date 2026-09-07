@@ -877,6 +877,7 @@ freebsd-14-x86_64:
             -Dxattr=false
             -Dsystemtap=disabled
             -Ddtrace=disabled
+            -Dintrospection=disabled
             _build
     - meson compile -C _build
     - bash -x ./.gitlab-ci/run-tests.sh
