@@ -873,10 +873,14 @@ freebsd-14-x86_64:
     - ps aux
     - sysctl kern.hostid
     - sysctl kern.hostuuid
+    - service hostid start
+    - sysctl kern.hostid
+    - sysctl kern.hostuuid
     - ls -l /etc/hostid || true
     - ls -l /etc/machine-id || true
-    - ls -l /etc/rc.d/hostid || true
-    - ls -l /etc/rc.d/hostid_save || true
+    - service hostid_save start
+    - ls -l /etc/hostid || true
+    - ls -l /etc/machine-id || true
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --localstatedir=/var
