@@ -871,6 +871,12 @@ freebsd-14-x86_64:
     - cat /etc/os-release
     - pkg info
     - ps aux
+    - sysctl kern.hostid
+    - sysctl kern.hostuuid
+    - ls -l /etc/hostid
+    - ls -l /etc/machine-id
+    - ls -l /etc/rc.d/hostid
+    - ls -l /etc/rc.d/hostid_save
   script:
     - meson setup ${MESON_COMMON_OPTIONS}
             --localstatedir=/var
