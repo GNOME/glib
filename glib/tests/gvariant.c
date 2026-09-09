@@ -6166,6 +6166,33 @@ test_unaligned_construction (void)
 }
 
 static void
+test_invalid_get_data_as_bytes (void)
+{
+  static const guint8 data[] = { 0x41 };
+  GVariant *variant;
+  GBytes *bytes;
+
+  /* deliberately construct an invalid variant */
+  variant = g_variant_new_from_data (G_VARIANT_TYPE_UINT32,
+                                     data, sizeof (data),  
+                                     FALSE,
+                                     NULL, NULL);
+  g_assert_nonnull (variant);
+
+  /* ensure that the data is invalid */
+  g_assert_null (g_variant_get_data (variant));
+
+  /* query that variant's data as bytes */
+  bytes = g_variant_get_data_as_bytes (variant);
+  g_assert_nonnull (bytes);
+  /* assert that some data comes out and has the right size */
+  g_assert_cmpuint (g_variant_get_size (variant), ==, g_bytes_get_size (bytes));
+
+  g_bytes_unref (bytes);
+  g_variant_unref (variant);
+}
+
+static void
 test_g_variant_type_hash (void)
 {
   char mas[4] = {'m', 'a', 's', 0};
@@ -6301,6 +6328,9 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gvariant/unaligned-construction",
                    test_unaligned_construction);
+
+  g_test_add_func ("/gvariant/invalid/get-data-as-bytes",
+                   test_invalid_get_data_as_bytes);
 
   g_test_add_func ("/gvarianttype/hash",
                    test_g_variant_type_hash);
