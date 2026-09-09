@@ -1808,10 +1808,7 @@ test_class (void)
   g_assert (!res);
 
   /* Accessing match again should not crash */
-  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL,
-                         "*match_info->pos_valid*");
   g_assert_false (g_match_info_next (match, NULL));
-  g_test_assert_expected_messages ();
 
   g_match_info_free (match);
   g_regex_unref (regex);
@@ -2646,6 +2643,36 @@ test_split_raw (void)
   g_regex_unref (regex);
 }
 
+static void
+test_next_next_next (void)
+{
+  GRegex *re;
+  GMatchInfo *mi = NULL;
+  const char *str = "a";
+  int start, end;
+  
+  re = g_regex_new ("a", G_REGEX_DEFAULT, 0, NULL);
+  g_regex_match_full (re, str, 1, 0, 0, &mi, NULL);
+
+  /* match the 'a' */
+  g_assert_true (g_match_info_fetch_pos (mi, 0, &start, &end));
+  g_assert_cmpint (start, ==, 0);
+  g_assert_cmpint (end, ==, 1);
+
+  /* This fails as expected, we're at the end of the string */
+  g_assert_false (g_match_info_next (mi, NULL));
+
+  /* Repeated calls to g_match_info_next() are fine */
+  g_assert_false (g_match_info_next (mi, NULL));
+  g_assert_false (g_match_info_next (mi, NULL));
+  g_assert_false (g_match_info_next (mi, NULL));
+  g_assert_false (g_match_info_next (mi, NULL));
+  g_assert_false (g_match_info_next (mi, NULL));
+
+  g_match_info_free (mi);
+  g_regex_unref (re);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2669,6 +2696,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/compiled-regex-after-jit-failure", test_compiled_regex_after_jit_failure);
   g_test_add_func ("/regex/replace-raw-change-case", test_replace_raw_change_case);
   g_test_add_func ("/regex/split-raw", test_split_raw);
+  g_test_add_func ("/regex/next-next-next", test_next_next_next);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);

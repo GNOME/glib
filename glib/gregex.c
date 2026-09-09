@@ -1177,7 +1177,9 @@ g_match_info_next (GMatchInfo  *match_info,
 
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-  g_return_val_if_fail (match_info->pos_valid, FALSE);
+
+  if (!match_info->pos_valid)
+    return FALSE;
 
   prev_match_start = match_info->offsets[0];
   prev_match_end = match_info->offsets[1];
