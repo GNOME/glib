@@ -1275,11 +1275,18 @@ g_match_info_next (GMatchInfo  *match_info,
           match_info->matches = PCRE2_ERROR_NOMATCH;
           return FALSE;
         }
-
-      match_info->pos = NEXT_CHAR (match_info->regex,
-                                   &match_info->string[match_info->pos]) -
-                                   match_info->string;
-      match_info->pos_valid = TRUE;
+      else if (match_info->pos > match_info->string_len)
+        {
+          /* we have one last empty match at the end of the string */
+          match_info->pos_valid = FALSE;
+        }
+      else
+        {
+          match_info->pos = NEXT_CHAR (match_info->regex,
+                                       &match_info->string[match_info->pos]) -
+                                       match_info->string;
+          match_info->pos_valid = TRUE;
+        }
     }
   else
     {

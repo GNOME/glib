@@ -2644,6 +2644,34 @@ test_split_raw (void)
 }
 
 static void
+test_match_at_end (void)
+{
+  GRegex *re;
+  GMatchInfo *mi = NULL;
+  int start, end;
+  char buf[1] = { 'a' };
+  
+  re = g_regex_new ("a*", G_REGEX_DEFAULT, 0, NULL);
+  g_regex_match_full (re, buf, sizeof (buf), 0, 0, &mi, NULL);
+
+  /* match the 'a' */
+  g_assert_true (g_match_info_fetch_pos (mi, 0, &start, &end));
+  g_assert_cmpint (start, ==, 0);
+  g_assert_cmpint (end, ==, 1);
+
+  /* This match of the empty string at the end used to read after the string */
+  g_assert_true (g_match_info_next (mi, NULL));
+  g_assert_true (g_match_info_fetch_pos (mi, 0, &start, &end));
+  g_assert_cmpint (start, ==, 1);
+  g_assert_cmpint (end, ==, 1);
+
+  g_assert_false (g_match_info_next (mi, NULL));
+
+  g_match_info_free (mi);
+  g_regex_unref (re);
+}
+
+static void
 test_next_next_next (void)
 {
   GRegex *re;
@@ -2696,6 +2724,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/compiled-regex-after-jit-failure", test_compiled_regex_after_jit_failure);
   g_test_add_func ("/regex/replace-raw-change-case", test_replace_raw_change_case);
   g_test_add_func ("/regex/split-raw", test_split_raw);
+  g_test_add_func ("/regex/match-at-end", test_match_at_end);
   g_test_add_func ("/regex/next-next-next", test_next_next_next);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
