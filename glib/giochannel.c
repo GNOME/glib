@@ -1827,7 +1827,8 @@ read_again:
                       got_term_len = 1;
                     goto done;
                   case '\xe2': /* Unicode paragraph separator */
-                    if (strncmp ("\xe2\x80\xa9", nextchar, 3) == 0)
+                    if ((size_t) (lastchar - nextchar) >= 3 &&
+                        strncmp ("\xe2\x80\xa9", nextchar, 3) == 0)
                       {
                         line_length = nextchar - use_buf->str;
                         got_term_len = 3;
