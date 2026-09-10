@@ -273,6 +273,9 @@ g_socket_address_new_from_native (gpointer native,
       struct sockaddr_un *addr = (struct sockaddr_un *) native;
       gint path_len = len - G_STRUCT_OFFSET (struct sockaddr_un, sun_path);
 
+      if (len < G_STRUCT_OFFSET (struct sockaddr_un, sun_path))
+        return NULL;
+
       if (path_len == 0)
 	{
 	  return g_unix_socket_address_new_with_type ("", 0,
