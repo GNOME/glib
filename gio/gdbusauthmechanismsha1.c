@@ -426,7 +426,7 @@ keyring_lookup_entry (const gchar  *cookie_context,
       if (line[0] == '\0')
         continue;
 
-      tokens = g_strsplit (line, " ", 0);
+      tokens = g_strsplit (line, " ", 4);
       if (g_strv_length (tokens) != 3)
         {
           g_set_error (error,
@@ -767,7 +767,7 @@ keyring_generate_entry (const gchar  *cookie_context,
           if (line[0] == '\0')
             continue;
 
-          tokens = g_strsplit (line, " ", 0);
+          tokens = g_strsplit (line, " ", 4);
           if (g_strv_length (tokens) != 3)
             {
               g_set_error (error,
@@ -1051,7 +1051,7 @@ mechanism_server_data_receive (GDBusAuthMechanism   *mechanism,
   tokens = NULL;
   sha1 = NULL;
 
-  tokens = g_strsplit (data, " ", 0);
+  tokens = g_strsplit (data, " ", 3);
   if (g_strv_length (tokens) != 2)
     {
       g_free (m->priv->reject_reason);
@@ -1250,7 +1250,7 @@ mechanism_client_data_receive (GDBusAuthMechanism   *mechanism,
   cookie = NULL;
   client_challenge = NULL;
 
-  tokens = g_strsplit (data, " ", 0);
+  tokens = g_strsplit (data, " ", 4);
   if (g_strv_length (tokens) != 3)
     {
       g_free (m->priv->reject_reason);
