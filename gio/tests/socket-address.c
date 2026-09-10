@@ -33,6 +33,9 @@ test_socket_address_native_cornercases (void)
   g_assert_true (G_IS_UNIX_SOCKET_ADDRESS (a));
   g_assert_cmpuint (g_unix_socket_address_get_path_len (G_UNIX_SOCKET_ADDRESS (a)), ==, sizeof (sun.sun_path));
   g_object_unref (a);
+
+  /* specific test for an error check in g_socket_address_new_from_native() */
+  g_assert_null (g_socket_address_new_from_native (&sun, G_STRUCT_OFFSET (struct sockaddr_un, sun_path) - 1));
 }
 
 static void
