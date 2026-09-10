@@ -1177,7 +1177,9 @@ g_match_info_next (GMatchInfo  *match_info,
 
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-  g_return_val_if_fail (match_info->pos_valid, FALSE);
+
+  if (!match_info->pos_valid)
+    return FALSE;
 
   prev_match_start = match_info->offsets[0];
   prev_match_end = match_info->offsets[1];
@@ -1273,11 +1275,18 @@ g_match_info_next (GMatchInfo  *match_info,
           match_info->matches = PCRE2_ERROR_NOMATCH;
           return FALSE;
         }
-
-      match_info->pos = NEXT_CHAR (match_info->regex,
-                                   &match_info->string[match_info->pos]) -
-                                   match_info->string;
-      match_info->pos_valid = TRUE;
+      else if (match_info->pos > match_info->string_len)
+        {
+          /* we have one last empty match at the end of the string */
+          match_info->pos_valid = FALSE;
+        }
+      else
+        {
+          match_info->pos = NEXT_CHAR (match_info->regex,
+                                       &match_info->string[match_info->pos]) -
+                                       match_info->string;
+          match_info->pos_valid = TRUE;
+        }
     }
   else
     {
