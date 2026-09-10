@@ -299,7 +299,11 @@ g_socket_address_new_from_native (gpointer native,
 	    }
 	}
       else
-	return g_unix_socket_address_new (addr->sun_path);
+        {
+	  return g_unix_socket_address_new_with_type (addr->sun_path,
+                                                      path_len,
+                                                      G_UNIX_SOCKET_ADDRESS_PATH);
+        }
     }
 
   return g_native_socket_address_new (native, len);

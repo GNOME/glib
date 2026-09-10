@@ -213,6 +213,8 @@ main (int    argc,
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/socket/address/native/cornercases", test_socket_address_native_cornercases);
+
   g_test_add_func ("/socket/address/unix/construct", test_unix_socket_address_construct);
   g_test_add_func ("/socket/address/unix/construct-path", test_unix_socket_address_construct_path);
   g_test_add_func ("/socket/address/unix/to-string", test_unix_socket_address_to_string);
