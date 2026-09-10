@@ -633,6 +633,39 @@ test_journald_handler (void)
 }
 
 static void
+clear_field (gpointer data)
+{
+  GLogField *field = data;
+
+  g_free ((void *) field->key);
+  g_free ((void *) field->value);
+}
+
+static void
+test_journald_handler_lots_of_fields (void)
+{
+  GArray *array;
+  guint i;
+
+  array = g_array_new (FALSE, FALSE, sizeof (GLogField));
+  g_array_set_clear_func (array, clear_field);
+
+  for (i = 0; i < 1024; i++)
+    {
+      GLogField field = {
+        .key = g_strdup_printf ("MY_APPLICATION_CUSTOM_FIELD_%u", i),
+        .value = g_strdup_printf ("field %u", i),
+        .length = -1,
+      };
+      g_array_append_val (array, field);
+    }
+
+  g_log_writer_journald (G_LOG_LEVEL_DEBUG, (GLogField *) array->data, array->len, NULL);
+
+  g_array_unref (array);
+}
+
+static void
 test_fatal_log_mask (void)
 {
   if (g_test_subprocess ())
@@ -1234,6 +1267,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/default-handler/subprocess/would-drop-robustness", test_default_handler_would_drop_robustness);
   g_test_add_func ("/logging/default-handler/subprocess/structured-logging-non-null-terminated-strings", test_default_handler_structured_logging_non_nul_terminated_strings);
   g_test_add_func ("/logging/journald-handler", test_journald_handler);
+  g_test_add_func ("/logging/journald-handler-lots-of-fields", test_journald_handler_lots_of_fields);
   g_test_add_func ("/logging/warnings", test_warnings);
   g_test_add_func ("/logging/fatal-log-mask", test_fatal_log_mask);
   g_test_add_func ("/logging/always-fatal", test_always_fatal);
