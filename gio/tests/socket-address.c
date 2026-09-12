@@ -8,6 +8,34 @@
 #endif
 
 static void
+test_socket_address_native_cornercases (void)
+{
+  GSocketAddress *a;
+  struct sockaddr_un sun;
+
+  /* no data */
+  g_assert_null (g_socket_address_new_from_native (NULL, 0));
+
+  /* not null-terminated unix path */
+  memset (&sun, 'a', sizeof (struct sockaddr_un));
+  sun.sun_family = AF_UNIX;
+  a = g_socket_address_new_from_native (&sun, sizeof (sun));
+  g_assert_nonnull (a);
+  g_assert_true (G_IS_UNIX_SOCKET_ADDRESS (a));
+  /* ensure this gets null-terminated by the constructor */
+  g_assert_cmpuint (g_unix_socket_address_get_path_len (G_UNIX_SOCKET_ADDRESS (a)), ==, sizeof (sun.sun_path));
+  g_object_unref (a);
+
+  /* unix path with embedded NULL */
+  sun.sun_path[4] = 0;
+  a = g_socket_address_new_from_native (&sun, sizeof (sun));
+  g_assert_nonnull (a);
+  g_assert_true (G_IS_UNIX_SOCKET_ADDRESS (a));
+  g_assert_cmpuint (g_unix_socket_address_get_path_len (G_UNIX_SOCKET_ADDRESS (a)), ==, sizeof (sun.sun_path));
+  g_object_unref (a);
+}
+
+static void
 test_unix_socket_address_construct (void)
 {
   GUnixSocketAddress *a;
