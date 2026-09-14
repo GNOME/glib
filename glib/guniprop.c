@@ -988,6 +988,7 @@ g_utf8_strup (const gchar *str,
   gchar *result;
 
   g_return_val_if_fail (str != NULL, NULL);
+  g_return_val_if_fail (len < 0 || (gsize) len <= G_MAXSIZE - (guintptr) str, NULL);
 
   locale_type = get_locale_type ();
   
@@ -1189,6 +1190,7 @@ g_utf8_strdown (const gchar *str,
   gchar *result;
 
   g_return_val_if_fail (str != NULL, NULL);
+  g_return_val_if_fail (len < 0 || (gsize) len <= G_MAXSIZE - (guintptr) str, NULL);
 
   locale_type = get_locale_type ();
   
@@ -1233,6 +1235,7 @@ g_utf8_casefold (const gchar *str,
   const char *p;
 
   g_return_val_if_fail (str != NULL, NULL);
+  g_return_val_if_fail (len < 0 || (gsize) len <= G_MAXSIZE - (guintptr) str, NULL);
 
   result = g_string_new (NULL);
   p = str;
