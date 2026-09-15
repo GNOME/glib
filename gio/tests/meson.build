@@ -1126,6 +1126,7 @@ if not meson.is_cross_build()
     'resources' : {
       'c_args' : resources_c_args,
       'extra_sources' : resources_extra_sources,
+      'dependencies' : [gvdb_dep],
       'depends' : resource_plugin,
       # FIXME: musl: https://gitlab.gnome.org/GNOME/glib/-/issues/3160
       'can_fail' : linux_libc == 'musl',

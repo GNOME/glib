@@ -744,11 +744,19 @@ do_lookup (GResource             *resource,
         *data = g_variant_get_data (array);
       if (data_size)
         {
-          /* Don't report trailing newline that non-compressed files has */
+          static const char *no_data = "";
+          size_t array_size = g_variant_get_size (array);
+
+          /* Don't report trailing nul that non-compressed files have */
           if (_flags & G_RESOURCE_FLAGS_COMPRESSED)
-            *data_size = g_variant_get_size (array);
+            *data_size = array_size;
+          else if (array_size > 0)
+            *data_size = array_size - 1;
           else
-            *data_size = g_variant_get_size (array) - 1;
+            {
+              *data = no_data;
+              *data_size = 0;
+            }
         }
       g_variant_unref (array);
       g_variant_unref (value);
