@@ -2152,6 +2152,11 @@ test_strupdown_length (void)
   char *result;
   char *oldlocale;
   char *old_lc_all, *old_lc_messages, *old_lang;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+
+  old_lcid = GetThreadLocale ();
+#endif
 
   /* U+0345 COMBINING GREEK YPOGEGRAMMENI triggers append_mark() in strup.
    * Verify that a combining mark (U+0308) placed after max_len is not
@@ -2169,9 +2174,13 @@ test_strupdown_length (void)
    * combining dot is within max_len.  With max_len=1 the dot is past
    * the limit, so I should become DOTLESS I (U+0131) instead of i.
    */
-  oldlocale = g_strdup (setlocale (LC_ALL, "tr_TR.UTF-8"));
+  oldlocale = g_strdup (setlocale (LC_ALL, "tr_TR"));
   if (oldlocale != NULL)
     {
+#ifdef G_OS_WIN32
+      SetThreadLocale (MAKELCID (MAKELANGID (LANG_TURKISH, SUBLANG_TURKISH_TURKEY), SORT_DEFAULT));
+#endif
+
       result = g_utf8_strdown ("I" "\xCC\x87", 1);
       g_assert_cmpstr (result, ==, "\xC4\xB1");
       g_free (result);
@@ -2179,7 +2188,7 @@ test_strupdown_length (void)
       setlocale (LC_ALL, oldlocale);
     }
   else
-    g_test_message ("locale tr_TR.UTF-8 not available, skipping Turkic test");
+    g_test_message ("locale tr_TR not available, skipping Turkic test");
   g_free (oldlocale);
 
   /* Lithuanian locale: I + COMBINING ACUTE ACCENT (class 230) makes
@@ -2187,9 +2196,13 @@ test_strupdown_length (void)
    * max_len=1 the accent is past the limit, so the result should be
    * just a plain lowercase 'i'.
    */
-  oldlocale = g_strdup (setlocale (LC_ALL, "lt_LT.UTF-8"));
+  oldlocale = g_strdup (setlocale (LC_ALL, "lt_LT"));
   if (oldlocale != NULL)
     {
+#ifdef G_OS_WIN32
+      SetThreadLocale (MAKELCID (MAKELANGID (LANG_LITHUANIAN, SUBLANG_LITHUANIAN), SORT_DEFAULT));
+#endif
+
       result = g_utf8_strdown ("I" "\xCC\x81", 1);
       g_assert_cmpstr (result, ==, "i");
       g_free (result);
@@ -2197,8 +2210,12 @@ test_strupdown_length (void)
       setlocale (LC_ALL, oldlocale);
     }
   else
-    g_test_message ("locale lt_LT.UTF-8 not available, skipping Lithuanian test");
+    g_test_message ("locale lt_LT not available, skipping Lithuanian test");
   g_free (oldlocale);
+
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
 
   if (old_lc_all)
     g_setenv ("LC_ALL", old_lc_all, TRUE);
