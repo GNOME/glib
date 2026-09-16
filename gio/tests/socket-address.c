@@ -12,6 +12,7 @@ test_socket_address_native_cornercases (void)
 {
   GSocketAddress *a;
   struct sockaddr_un sun;
+  struct sockaddr_un too_big[2];
 
   /* no data */
   g_assert_null (g_socket_address_new_from_native (NULL, 0));
@@ -36,6 +37,15 @@ test_socket_address_native_cornercases (void)
 
   /* specific test for an error check in g_socket_address_new_from_native() */
   g_assert_null (g_socket_address_new_from_native (&sun, G_STRUCT_OFFSET (struct sockaddr_un, sun_path) - 1));
+
+  /* not null-terminated unix path */
+  memset (&too_big, 'b', sizeof (too_big));
+  too_big[0].sun_family = AF_UNIX;
+  a = g_socket_address_new_from_native (too_big, sizeof (too_big));
+  g_assert_nonnull (a);
+  g_assert_true (G_IS_UNIX_SOCKET_ADDRESS (a));
+  g_assert_cmpuint (g_unix_socket_address_get_path_len (G_UNIX_SOCKET_ADDRESS (a)), ==, sizeof (sun.sun_path));
+  g_object_unref (a);
 }
 
 static void
