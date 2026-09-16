@@ -82,7 +82,7 @@ test_unix_socket_address_construct_path (void)
     gsize max_len;
   } sizes[] = {
     { G_UNIX_SOCKET_ADDRESS_ANONYMOUS, 0 },
-    { G_UNIX_SOCKET_ADDRESS_PATH, UNIX_PATH_MAX - 1 },
+    { G_UNIX_SOCKET_ADDRESS_PATH, UNIX_PATH_MAX },
     { G_UNIX_SOCKET_ADDRESS_ABSTRACT, UNIX_PATH_MAX - 1 },
     { G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED, UNIX_PATH_MAX - 1 },
   };
