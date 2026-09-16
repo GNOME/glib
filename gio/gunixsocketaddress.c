@@ -88,6 +88,42 @@ G_DEFINE_TYPE_WITH_CODE (GUnixSocketAddress, g_unix_socket_address, G_TYPE_SOCKE
                          G_IMPLEMENT_INTERFACE (G_TYPE_SOCKET_CONNECTABLE,
                                                 g_unix_socket_address_connectable_iface_init))
 
+static gsize
+g_unix_socket_address_get_max_path_len (GUnixSocketAddressType address_type)
+{
+  switch (address_type)
+    {
+    case G_UNIX_SOCKET_ADDRESS_ANONYMOUS:
+      return 0;
+    case G_UNIX_SOCKET_ADDRESS_PATH:
+      return UNIX_PATH_MAX - 1;
+    case G_UNIX_SOCKET_ADDRESS_ABSTRACT:
+    case G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED:
+      return UNIX_PATH_MAX - 1; /* initial zero */
+    case G_UNIX_SOCKET_ADDRESS_INVALID:
+    default:
+      g_assert_not_reached ();
+      return 0;
+    }
+}
+
+static void
+g_unix_socket_address_clamp_path_len (GUnixSocketAddress *address)
+{
+  gsize max_len;
+
+  /* will be clamped once this has been set */
+  if (address->priv->address_type == G_UNIX_SOCKET_ADDRESS_INVALID)
+    return;
+
+  max_len = g_unix_socket_address_get_max_path_len (address->priv->address_type);
+  if (address->priv->path_len <= max_len)
+    return;
+
+  address->priv->path_len = max_len;
+  address->priv->path[max_len] = 0;
+}
+
 static void
 g_unix_socket_address_set_property (GObject      *object,
 				    guint         prop_id,
@@ -108,6 +144,7 @@ g_unix_socket_address_set_property (GObject      *object,
 	  g_strlcpy (address->priv->path, str,
 		     sizeof (address->priv->path));
 	  address->priv->path_len = strlen (address->priv->path);
+          g_unix_socket_address_clamp_path_len (address);
 	}
       break;
 
@@ -124,19 +161,26 @@ g_unix_socket_address_set_property (GObject      *object,
 
 	  address->priv->path[len] = 0; /* Ensure null-terminated */
 	  address->priv->path_len = len;
+          g_unix_socket_address_clamp_path_len (address);
 	}
       break;
 
     case PROP_ABSTRACT:
       /* Only set it if it's not the default... */
       if (g_value_get_boolean (value))
-       address->priv->address_type = G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED;
+        {
+          address->priv->address_type = G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED;
+          g_unix_socket_address_clamp_path_len (address);
+        }
       break;
 
     case PROP_ADDRESS_TYPE:
       /* Only set it if it's not the default... */
       if (g_value_get_enum (value) != G_UNIX_SOCKET_ADDRESS_PATH)
-        address->priv->address_type = g_value_get_enum (value);
+        {
+          address->priv->address_type = g_value_get_enum (value);
+          g_unix_socket_address_clamp_path_len (address);
+        }
       break;
 
     default:
