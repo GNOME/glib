@@ -1181,8 +1181,8 @@ g_match_info_next (GMatchInfo  *match_info,
   if (!match_info->pos_valid)
     return FALSE;
 
-  prev_match_start = match_info->offsets[0];
-  prev_match_end = match_info->offsets[1];
+  prev_match_start = match_info->offsets != NULL ? match_info->offsets[0] : -1;
+  prev_match_end = match_info->offsets != NULL ? match_info->offsets[1] : -1;
 
   if (match_info->pos > match_info->string_len)
     {
@@ -1235,6 +1235,11 @@ g_match_info_next (GMatchInfo  *match_info,
                    match_info->regex->pattern, error_msg);
       g_clear_pointer (&error_msg, g_free);
       return FALSE;
+    }
+  else if (match_info->offsets == NULL)
+    {
+      /* Boolean-only scratch state needs neither capture offsets nor iteration. */
+      return match_info->matches >= 0;
     }
   else if (match_info->matches == 0)
     {
@@ -2609,13 +2614,48 @@ g_regex_match_full (const GRegex      *regex,
 
   string_len_unsigned = (string_len < 0) ? strlen (string) : (size_t) string_len;
 
+  /* Boolean searches only need the match result. Using local scratch state avoids
+   * allocating a GMatchInfo and capture offsets, copying those offsets, and atomic
+   * reference counting for both the match info and its regex. */
+  if (match_info == NULL)
+    {
+      GMatchInfo scratch = { 0 };
+
+      if ((size_t) start_position > string_len_unsigned)
+        return FALSE;
+
+      /* Borrow the regex for this invocation; no match info escapes this call. */
+      scratch.regex = (GRegex *) regex;
+      scratch.string = string;
+      scratch.string_len = string_len_unsigned;
+      scratch.pos = start_position;
+      scratch.pos_valid = TRUE;
+      scratch.match_opts = get_pcre2_match_options (match_options, regex->regex_compile_opts);
+      scratch.match_context = pcre2_match_context_create (NULL);
+      /*
+       * PCRE2 still needs match data for captures, including captures used by
+       * backreferences, even though the caller only wants the boolean result.
+       * The NULL offsets below tell g_match_info_next() not to copy or process
+       * the captured offsets.
+       */
+      scratch.match_data = pcre2_match_data_create_from_pattern (regex->pcre_re, NULL);
+
+      match_ok = g_match_info_next (&scratch, error);
+
+      if (scratch.match_context != NULL)
+        pcre2_match_context_free (scratch.match_context);
+      if (scratch.jit_stack != NULL)
+        pcre2_jit_stack_free (scratch.jit_stack);
+      if (scratch.match_data != NULL)
+        pcre2_match_data_free (scratch.match_data);
+
+      return match_ok;
+    }
+
   info = match_info_new (regex, string, string_len_unsigned, start_position,
                          match_options, FALSE);
   match_ok = g_match_info_next (info, error);
-  if (match_info != NULL)
-    *match_info = info;
-  else
-    g_match_info_free (info);
+  *match_info = info;
 
   return match_ok;
 }
@@ -2733,6 +2773,11 @@ g_regex_match_all_full (const GRegex      *regex,
   g_return_val_if_fail (start_position >= 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
+
+  /* Without match information, standard matching is equivalent and faster. */
+  if (match_info == NULL)
+    return g_regex_match_full (regex, string, string_len, start_position,
+                               match_options, NULL, error);
 
   string_len_unsigned = (string_len < 0) ? strlen (string) : (size_t) string_len;
 
