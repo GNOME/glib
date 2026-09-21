@@ -1261,7 +1261,7 @@ msgstr "Skriv ut XML"
 
 #: gio/gdbus-tool.c:1753
 msgid "Introspect children"
-msgstr "Introspeksjon av barn"
+msgstr "Introspiser undernodane"
 
 #: gio/gdbus-tool.c:1754
 msgid "Only print properties"
@@ -2668,7 +2668,7 @@ msgstr "Ugyldig numerisk verdi"
 #: gio/glib-compile-schemas.c:114
 #, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "%s er allereie oppgjeve"
+msgstr "<value nick='%s'/> er allereie oppgjeve"
 
 #: gio/glib-compile-schemas.c:122
 #, c-format
@@ -2683,7 +2683,7 @@ msgstr "flaggverdiane må ha høgst 1 bit sett"
 #: gio/glib-compile-schemas.c:161
 #, c-format
 msgid "<%s> must contain at least one <value>"
-msgstr "<%s> må innehalde minst éin <verdi>"
+msgstr "<%s> må innehalde minst éin <value>"
 
 #: gio/glib-compile-schemas.c:317
 #, c-format
@@ -2790,7 +2790,7 @@ msgstr "<alias value='%s'/> gjeve når <choice value='%s'/> alt var gjeve"
 #: gio/glib-compile-schemas.c:597
 #, c-format
 msgid "<alias value='%s'/> already specified"
-msgstr "%s er allereie spesifisert"
+msgstr "<alias value='%s'/> er allereie oppgjeve"
 
 #: gio/glib-compile-schemas.c:607
 #, c-format
@@ -2800,7 +2800,7 @@ msgstr "alias mål «%s» er ikkje i oppramma type"
 #: gio/glib-compile-schemas.c:608
 #, c-format
 msgid "alias target “%s” is not in <choices>"
-msgstr "alias mål «%s» er ikkje i <val>"
+msgstr "aliasmålet «%s» er ikkje i <choices>"
 
 #: gio/glib-compile-schemas.c:623
 #, c-format
@@ -3187,7 +3187,7 @@ msgstr "Feil ved fjerning av fil %s: %s"
 #, c-format
 #| msgid "Unable to trash file: %s"
 msgid "Unable to trash child file %s"
-msgstr "Kan ikkje leggje fil %s i papirkorga"
+msgstr "Kan ikkje leggje underfila %s i papirkorga"
 
 #: gio/glocalfile.c:2230 gio/glocalfile.c:2241 gio/glocalfile.c:2271
 #, c-format
@@ -3968,7 +3968,7 @@ msgstr ""
 "  list-schemas              List opp installerte skjema\n"
 "  list-relocatable-schemas  List opp flyttbare skjema\n"
 "  list-keys                 List opp nøklar i eit skjema\n"
-"  list-children             List opp barn av eit skjema\n"
+"  list-children             List opp undernodane til eit skjema\n"
 "  list-recursively          List opp nøklar og verdiar, rekursivt\n"
 "  range                     Spør etter spennet til ein nøkkel\n"
 "  describe                  Spør etter skildringa til ein nøkkel\n"
@@ -4351,7 +4351,7 @@ msgstr "Ukjend SOCKSv5-proxyfeil."
 #: gio/gtestdbus.c:641 glib/gspawn-win32.c:411
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Klarte ikkje opprette røyr for å kommunisere med barneprosess (%s)"
+msgstr "Klarte ikkje opprette røyr for å kommunisere med barneprosessen (%s)"
 
 #: gio/gtestdbus.c:648
 #, c-format
@@ -5388,7 +5388,7 @@ msgstr "Klarte ikkje lese frå fil «%s»: %s"
 #, c-format
 #| msgid "Failed to open file '%s': %s"
 msgid "Failed to open file “%s”: %s"
-msgstr "Klarte ikkje å opne fil «%s»: %s"
+msgstr "Klarte ikkje opne fila «%s»: %s"
 
 #: glib/gfileutils.c:919
 #, c-format
@@ -6307,13 +6307,13 @@ msgstr ""
 #: glib/gspawn-posix.c:195
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Klarte ikkje lese data frå barneprosess (%s)"
+msgstr "Klarte ikkje lese data frå barneprosessen (%s)"
 
 #: glib/gspawn-posix.c:305
 #, c-format
 #| msgid "Unexpected error in select() reading data from a child process (%s)"
 msgid "Unexpected error in reading data from a child process (%s)"
-msgstr "Uventa feil ved lesing av data frå ein barne-prosess (%s)"
+msgstr "Uventa feil ved lesing av data frå ein barneprosess (%s)"
 
 #: glib/gspawn-posix.c:385
 #, c-format
@@ -6323,7 +6323,7 @@ msgstr "Uventa feil i waitpid() (%s)"
 #: glib/gspawn-posix.c:490 glib/gspawn-win32.c:1407
 #, c-format
 msgid "Child process exited with code %ld"
-msgstr "Barntenesta avslutta med kode %ld"
+msgstr "Barneprosessen avslutta med kode %ld"
 
 #: glib/gspawn-posix.c:498
 #, c-format
@@ -6333,28 +6333,28 @@ msgstr "Barneprosessen vart drepen av signalet %ld"
 #: glib/gspawn-posix.c:505
 #, c-format
 msgid "Child process stopped by signal %ld"
-msgstr "Barneprosess stoppa av signal %ld"
+msgstr "Barneprosessen vart stoppa av signalet %ld"
 
 #: glib/gspawn-posix.c:512
 #, c-format
 msgid "Child process exited abnormally"
-msgstr "Barneprosess vart avslutta unormalt"
+msgstr "Barneprosessen avslutta unormalt"
 
 #: glib/gspawn-posix.c:991 glib/gspawn-win32.c:450 glib/gspawn-win32.c:458
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Klarte ikkje lese frå røyr frå barn (%s)"
+msgstr "Klarte ikkje lese frå røyret til barneprosessen (%s)"
 
 #: glib/gspawn-posix.c:1372
 #, c-format
 #| msgid "Failed to fork child process (%s)"
 msgid "Failed to spawn child process “%s” (%s)"
-msgstr "Klarte ikkje starte barneprosess «%s» (%s)"
+msgstr "Klarte ikkje starte barneprosessen «%s» (%s)"
 
 #: glib/gspawn-posix.c:1496
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "Klarte ikkje starte barneprosess (%s)"
+msgstr "Klarte ikkje utføre fork() (%s)"
 
 #: glib/gspawn-posix.c:1657 glib/gspawn-win32.c:481
 #, c-format
@@ -6366,7 +6366,7 @@ msgstr "Klarte ikkje byte til mappe «%s» (%s)"
 #, c-format
 #| msgid "Failed to execute child process \"%s\" (%s)"
 msgid "Failed to execute child process “%s” (%s)"
-msgstr "Klarte ikkje køyre barne-prosess «%s» (%s)"
+msgstr "Klarte ikkje køyre barneprosessen «%s» (%s)"
 
 #: glib/gspawn-posix.c:1677
 #, c-format
@@ -6378,29 +6378,29 @@ msgstr "Kunna ikkje opna fil for å ommappe filskildrar (%s)"
 #, c-format
 #| msgid "Failed to redirect output or input of child process (%s)"
 msgid "Failed to duplicate file descriptor for child process (%s)"
-msgstr "Kunna ikkje duplisera filskildrar for barne-prosess (%s)"
+msgstr "Klarte ikkje duplisere filskildraren til barneprosessen (%s)"
 
 #: glib/gspawn-posix.c:1694
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Klarte ikkje starte barneprosess (%s)"
+msgstr "Klarte ikkje starte barneprosessen med fork() (%s)"
 
 #: glib/gspawn-posix.c:1702
 #, c-format
 #| msgid "Failed to read data from child process (%s)"
 msgid "Failed to close file descriptor for child process (%s)"
-msgstr "Kunna ikkje lukka filskildrar for underprosess (%s)"
+msgstr "Klarte ikkje lukke filskildraren til barneprosessen (%s)"
 
 #: glib/gspawn-posix.c:1710
 #, c-format
 #| msgid "Unknown error executing child process \"%s\""
 msgid "Unknown error executing child process “%s”"
-msgstr "Ukjend feil under utføring av underprosess «%s»"
+msgstr "Ukjend feil under køyring av barneprosessen «%s»"
 
 #: glib/gspawn-posix.c:1734
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Klarte ikkje lese nok data frå pid-røyr frå barn (%s)"
+msgstr "Klarte ikkje lese nok data frå pid-røyret til barneprosessen (%s)"
 
 #: glib/gspawn-private.h:166
 #, c-format
@@ -6410,18 +6410,18 @@ msgstr "Ugyldig argument for kjelde-FD-ar"
 
 #: glib/gspawn-win32.c:394
 msgid "Failed to read data from child process"
-msgstr "Klarte ikkje lese data frå barneprosess"
+msgstr "Klarte ikkje lese data frå barneprosessen"
 
 #: glib/gspawn-win32.c:487 glib/gspawn-win32.c:492 glib/gspawn-win32.c:618
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Klarte ikkje utføre barneprosess (%s)"
+msgstr "Klarte ikkje køyre barneprosessen (%s)"
 
 #: glib/gspawn-win32.c:497
 #, c-format
 #| msgid "Failed to fork child process (%s)"
 msgid "Failed to dup() in child process (%s)"
-msgstr "Klarte ikkje utføre dup() i barneprosess (%s)"
+msgstr "Klarte ikkje utføre dup() i barneprosessen (%s)"
 
 #: glib/gspawn-win32.c:568
 #, c-format
@@ -6453,7 +6453,8 @@ msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Uventa feil i g_io_channel_win32_poll() ved lesing av data frå barneprosess"
+"Uventa feil i g_io_channel_win32_poll() ved lesing av data frå ein "
+"barneprosess"
 
 #: glib/gstrfuncs.c:3380 glib/gstrfuncs.c:3482
 msgid "Empty string is not a number"
