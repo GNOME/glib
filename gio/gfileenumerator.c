@@ -639,6 +639,9 @@ g_file_enumerator_set_pending (GFileEnumerator *enumerator,
  * Finally, this function optionally allows retrieving a #GFile as
  * well.
  *
+ * To use this, %G_FILE_ATTRIBUTE_STANDARD_NAME must have been listed in the
+ * attributes list used when creating the #GFileEnumerator.
+ *
  * You must specify at least one of @out_info or @out_child.
  *
  * The code pattern for correctly using g_file_enumerator_iterate() from C

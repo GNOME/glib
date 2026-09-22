@@ -208,7 +208,7 @@ handle_list (int argc, char *argv[], gboolean do_help)
   if (global_attributes != NULL)
     show_long = TRUE;
 
-  global_attributes = g_strconcat (!print_display_names ? G_FILE_ATTRIBUTE_STANDARD_NAME "," : "",
+  global_attributes = g_strconcat (G_FILE_ATTRIBUTE_STANDARD_NAME ",",
                                    print_display_names ? G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME "," : "",
                                    G_FILE_ATTRIBUTE_STANDARD_TYPE "," G_FILE_ATTRIBUTE_STANDARD_SIZE "," G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN,
                                    global_attributes != NULL ? "," : "",
