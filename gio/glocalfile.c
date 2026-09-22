@@ -2135,6 +2135,7 @@ check_removing_recursively (GFile        *file,
   GFileEnumerator *enumerator;
 
   enumerator = g_file_enumerate_children (file,
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME ","
                                           G_FILE_ATTRIBUTE_STANDARD_TYPE ","
                                           G_FILE_ATTRIBUTE_UNIX_UID,
                                           G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
