@@ -1132,6 +1132,126 @@ test_root (Fixture       *fixture,
   g_clear_object (&file);
 }
 
+typedef struct
+{
+  GMainLoop *loop;
+  guint n_created;
+} AliasData;
+
+static void
+alias_monitor_changed (GFileMonitor      *monitor,
+                       GFile             *file,
+                       GFile             *other_file,
+                       GFileMonitorEvent  event_type,
+                       gpointer           user_data)
+{
+  AliasData *data = user_data;
+
+  if (event_type == G_FILE_MONITOR_EVENT_CREATED)
+    {
+      data->n_created++;
+      g_main_loop_quit (data->loop);
+    }
+}
+
+static gboolean
+alias_timeout_cb (gpointer user_data)
+{
+  AliasData *data = user_data;
+
+  g_main_loop_quit (data->loop);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_cancel_alias_keeps_watch (Fixture       *fixture,
+                               gconstpointer  user_data)
+{
+  GFile *real_dir = NULL;
+  GFile *alias_dir = NULL;
+  GFile *canary = NULL;
+  GFileMonitor *real_monitor = NULL;
+  GFileMonitor *alias_monitor = NULL;
+  GFileOutputStream *stream = NULL;
+  GError *local_error = NULL;
+  AliasData data = { NULL, 0 };
+
+  g_test_summary ("Test that cancelling a directory monitor established through "
+                  "a symlink alias does not remove the inotify watch that is "
+                  "still used by a monitor on the real path.");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/4055");
+
+  if (skip_win32 ())
+    return;
+
+  /* Create <tmp>/real and a symlink <tmp>/alias -> real. Both paths resolve
+   * to the same inode, so the inotify backend shares a single kernel watch
+   * (wd) between monitors on the two paths. */
+  real_dir = g_file_get_child (fixture->tmp_dir, "real");
+  g_file_make_directory (real_dir, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  alias_dir = g_file_get_child (fixture->tmp_dir, "alias");
+  g_file_make_symbolic_link (alias_dir, "real", NULL, &local_error);
+  if (local_error != NULL)
+    {
+      g_test_skip_printf ("Symbolic links not supported: %s", local_error->message);
+      g_clear_error (&local_error);
+      goto out;
+    }
+
+  real_monitor = g_file_monitor_directory (real_dir, G_FILE_MONITOR_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (real_monitor);
+
+  alias_monitor = g_file_monitor_directory (alias_dir, G_FILE_MONITOR_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (alias_monitor);
+
+  g_file_monitor_set_rate_limit (real_monitor, 100);
+
+  data.loop = g_main_loop_new (NULL, FALSE);
+  g_signal_connect (real_monitor, "changed",
+                    G_CALLBACK (alias_monitor_changed), &data);
+
+  /* Cancel the alias-side monitor. This must NOT tear down the shared kernel
+   * watch that the real-path monitor still depends on. */
+  g_file_monitor_cancel (alias_monitor);
+  g_clear_object (&alias_monitor);
+
+  g_assert_false (g_file_monitor_is_cancelled (real_monitor));
+
+  /* Create a file in the real directory; the surviving monitor must still
+   * receive the CREATED event. Before the fix it silently received nothing. */
+  canary = g_file_get_child (real_dir, "canary");
+  stream = g_file_create (canary, G_FILE_CREATE_NONE, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_clear_object (&stream);
+
+  g_timeout_add_seconds (5, alias_timeout_cb, &data);
+  g_main_loop_run (data.loop);
+
+  g_assert_cmpuint (data.n_created, >, 0);
+
+  g_file_delete (canary, NULL, &local_error);
+  g_assert_no_error (local_error);
+
+out:
+  g_clear_object (&real_monitor);
+  g_clear_object (&alias_monitor);
+  g_clear_pointer (&data.loop, g_main_loop_unref);
+
+  if (alias_dir != NULL)
+    g_file_delete (alias_dir, NULL, NULL);
+  if (real_dir != NULL)
+    g_file_delete (real_dir, NULL, NULL);
+
+  g_clear_object (&canary);
+  g_clear_object (&alias_dir);
+  g_clear_object (&real_dir);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1145,6 +1265,7 @@ main (int argc, char *argv[])
   g_test_add ("/monitor/file/hard-links", Fixture, NULL, setup, test_file_hard_links, teardown);
   g_test_add ("/monitor/finalize-in-callback", Fixture, NULL, setup, test_finalize_in_callback, teardown);
   g_test_add ("/monitor/root", Fixture, NULL, setup, test_root, teardown);
+  g_test_add ("/monitor/cancel-alias-keeps-watch", Fixture, NULL, setup, test_cancel_alias_keeps_watch, teardown);
 
   return g_test_run ();
 }

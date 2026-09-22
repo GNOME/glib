@@ -241,8 +241,17 @@ ip_watched_file_stop (ip_watched_file_t *file)
 {
   if (file->wd >= 0)
     {
-      _ik_ignore (file->path, file->wd);
-      ip_unmap_wd_file (file->wd, file);
+      gint32 wd = file->wd;
+
+      /* Drop this file from the wd list first, then only remove the kernel
+       * watch if no other watched file (reached via a different path that
+       * resolves to the same inode, e.g. a link) still shares this wd.
+       * Otherwise we would tear down a watch that is still in use. */
+      ip_unmap_wd_file (wd, file);
+
+      if (g_hash_table_lookup (wd_file_hash, GINT_TO_POINTER (wd)) == NULL)
+        _ik_ignore (file->path, wd);
+
       file->wd = -1;
     }
 }
@@ -382,13 +391,24 @@ _ip_stop_watching (inotify_sub *sub)
     return TRUE;
   
   ip_unmap_sub_dir (sub, dir);
-  
+
   /* No one is subscribing to this directory any more */
   if (dir->subs == NULL)
     {
-      _ik_ignore (dir->path, dir->wd);
-      ip_unmap_wd_dir (dir->wd, dir);
+      gint32 wd = dir->wd;
+
+      /* Drop this directory from the wd list first, then only remove the
+       * kernel watch if no other watched directory (reached via a different
+       * path that resolves to the same inode, e.g. a symlink) still shares
+       * this wd. Since inotify watches are keyed by inode, removing the wd
+       * while it is still shared would silently stop events for the other,
+       * still-active monitors. */
+      ip_unmap_wd_dir (wd, dir);
       ip_unmap_path_dir (dir->path, dir);
+
+      if (g_hash_table_lookup (wd_dir_hash, GINT_TO_POINTER (wd)) == NULL)
+        _ik_ignore (dir->path, wd);
+
       ip_watched_dir_free (dir);
     }
   
