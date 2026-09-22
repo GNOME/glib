@@ -74,7 +74,7 @@ g_charset_converter_finalize (GObject *object)
 
   g_free (conv->from);
   g_free (conv->to);
-  if (conv->iconv)
+  if (conv->iconv != NULL && conv->iconv != (GIConv) -1)
     g_iconv_close (conv->iconv);
 
   G_OBJECT_CLASS (g_charset_converter_parent_class)->finalize (object);
