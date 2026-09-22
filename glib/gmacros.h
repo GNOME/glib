@@ -1372,7 +1372,7 @@
 
 #ifndef __GI_SCANNER__
 
-#if g_macro__has_attribute(cleanup)
+#if g_macro__has_attribute(cleanup) && !defined (G_DISABLE_CLEANUP)
 
 /* these macros are private; note that gstdio.h also uses _GLIB_CLEANUP */
 #define _GLIB_AUTOPTR_FUNC_NAME(TypeName) glib_autoptr_cleanup_##TypeName
@@ -1428,7 +1428,7 @@
 #define g_auto(TypeName) _GLIB_CLEANUP(_GLIB_AUTO_FUNC_NAME(TypeName)) TypeName
 #define g_autofree _GLIB_CLEANUP(g_autoptr_cleanup_generic_gfree)
 
-#else /* not GNU C */
+#else /* cleanup is unavailable or disabled */
 /* this (dummy) macro is private */
 #define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName)
 
@@ -1438,7 +1438,7 @@
 #define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func, none)
 
 /* no declaration of g_auto() or g_autoptr() here */
-#endif /* __GNUC__ */
+#endif /* cleanup is unavailable or disabled */
 
 #else
 

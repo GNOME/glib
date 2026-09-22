@@ -9,6 +9,11 @@ cleanup of variables when they go out of scope.
 
 These macros can only be used with GCC and GCC-compatible C compilers.
 
+Define `G_DISABLE_CLEANUP` to make the automatic cleanup variable declaration
+macros, including `g_auto()` and `g_autoptr()`, unavailable even when the
+compiler supports them. For example, pass `-DG_DISABLE_CLEANUP` in your
+project's C compiler flags to catch uses that would fail to compile with MSVC.
+
 ## Variable declaration
 
 `g_auto(TypeName)`
