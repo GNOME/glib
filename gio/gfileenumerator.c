@@ -168,25 +168,25 @@ g_file_enumerator_init (GFileEnumerator *enumerator)
 
 /**
  * g_file_enumerator_next_file:
- * @enumerator: a #GFileEnumerator.
- * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @error: location to store the error occurring, or %NULL to ignore
+ * @enumerator: a file enumerator
+ * @cancellable: (nullable): optional cancellable object
+ * @error: return location for an error, or `NULL`
  *
  * Returns information for the next file in the enumerated object.
- * Will block until the information is available. The #GFileInfo 
- * returned from this function will contain attributes that match the 
- * attribute string that was passed when the #GFileEnumerator was created.
  *
- * See the documentation of #GFileEnumerator for information about the
+ * Will block until the information is available. The [class@Gio.FileInfo]
+ * returned from this function will contain attributes that match the 
+ * attribute string that was passed when the file enumerator was created.
+ *
+ * See the documentation of [class@Gio.FileEnumerator] for information about the
  * order of returned files.
  *
- * On error, returns %NULL and sets @error to the error. If the
- * enumerator is at the end, %NULL will be returned and @error will
+ * On error, returns `NULL` and sets @error to the error. If the
+ * enumerator is at the end, `NULL` will be returned and @error will
  * be unset.
  *
- * Returns: (nullable) (transfer full): A #GFileInfo or %NULL on error
- *    or end of enumerator.  Free the returned object with
- *    g_object_unref() when no longer needed.
+ * Returns: (nullable) (transfer full): A file info object, or `NULL` on error
+ *   or end of enumerator
  **/
 GFileInfo *
 g_file_enumerator_next_file (GFileEnumerator *enumerator,
@@ -237,18 +237,20 @@ g_file_enumerator_next_file (GFileEnumerator *enumerator,
   
 /**
  * g_file_enumerator_close:
- * @enumerator: a #GFileEnumerator.
- * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @error: location to store the error occurring, or %NULL to ignore
+ * @enumerator: a file enumerator
+ * @cancellable: (nullable): optional cancellable object
+ * @error: return location for an error, or `NULL`
  *
- * Releases all resources used by this enumerator, making the
- * enumerator return %G_IO_ERROR_CLOSED on all calls.
+ * Releases all resources used by this enumerator.
+ *
+ * The enumerator will return [error@Gio.IOErrorEnum.CLOSED] on all subsequent
+ * calls.
  *
  * This will be automatically called when the last reference
  * is dropped, but you might want to call this function to make 
  * sure resources are released as early as possible.
  *
- * Returns: #TRUE on success or #FALSE on error.
+ * Returns: true on success; false otherwise
  **/
 gboolean
 g_file_enumerator_close (GFileEnumerator  *enumerator,
@@ -301,31 +303,33 @@ next_async_callback_wrapper (GObject      *source_object,
 
 /**
  * g_file_enumerator_next_files_async:
- * @enumerator: a #GFileEnumerator.
+ * @enumerator: a file enumerator
  * @num_files: the number of file info objects to request
- * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
- * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
- *   to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the
+ *   request
+ * @cancellable: (nullable): optional cancellable object
+ * @callback: (scope async) (closure user_data): callback to call when the
+ *   request is satisfied
+ * @user_data: the data to pass to @callback
  *
  * Request information for a number of files from the enumerator asynchronously.
+ *
  * When all I/O for the operation is finished the @callback will be called with
  * the requested information. 
  *
- * See the documentation of #GFileEnumerator for information about the
+ * See the documentation of [class@Gio.FileEnumerator] for information about the
  * order of returned files.
  *
  * Once the end of the enumerator is reached, or if an error occurs, the
  * @callback will be called with an empty list. In this case, the previous call
- * to g_file_enumerator_next_files_async() will typically have returned fewer
- * than @num_files items.
+ * to [method@Gio.FileEnumerator.next_files_async] will typically have returned
+ * fewer than @num_files items.
  *
  * If a request is cancelled the callback will be called with
- * %G_IO_ERROR_CANCELLED.
+ * [error@Gio.IOErrorEnum.CANCELLED].
  *
  * This leads to the following pseudo-code usage:
- * |[
+ * ```c
  * g_autoptr(GFile) dir = get_directory ();
  * g_autoptr(GFileEnumerator) enumerator = NULL;
  * g_autolist(GFileInfo) files = NULL;
@@ -365,14 +369,14 @@ next_async_callback_wrapper (GObject      *source_object,
  * if (local_error != NULL &&
  *     !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
  *   g_error ("Error while enumerating: %s", local_error->message);
- * ]|
+ * ```
  *
  * During an async request no other sync and async calls are allowed, and will
- * result in %G_IO_ERROR_PENDING errors. 
+ * result in [error@Gio.IOErrorEnum.PENDING] errors.
  *
  * Any outstanding I/O request with higher priority (lower numerical value) will
  * be executed before an outstanding request with lower priority. Default
- * priority is %G_PRIORITY_DEFAULT.
+ * priority is [const@GLib.PRIORITY_DEFAULT].
  **/
 void
 g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
@@ -428,16 +432,15 @@ g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
 
 /**
  * g_file_enumerator_next_files_finish:
- * @enumerator: a #GFileEnumerator.
- * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occurring, or %NULL to 
- * ignore.
+ * @enumerator: a file enumerator
+ * @result: an async result
+ * @error: return location for an error, or `NULL`
  * 
- * Finishes the asynchronous operation started with g_file_enumerator_next_files_async().
+ * Finishes the asynchronous operation started with
+ * [method@Gio.FileEnumerator.next_files_async()].
  * 
- * Returns: (transfer full) (element-type Gio.FileInfo): a #GList of #GFileInfos. You must free the list with 
- *     g_list_free() and unref the infos with g_object_unref() when you're 
- *     done with them.
+ * Returns: (transfer full) (element-type Gio.FileInfo): a list of file info
+ *   objects
  **/
 GList *
 g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,
@@ -474,19 +477,20 @@ close_async_callback_wrapper (GObject      *source_object,
 
 /**
  * g_file_enumerator_close_async:
- * @enumerator: a #GFileEnumerator.
- * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the request
- * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
- * @callback: (scope async) (closure user_data): a #GAsyncReadyCallback
- *   to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @enumerator: a file enumerator
+ * @io_priority: the [I/O priority](iface.AsyncResult.html#io-priority) of the
+ *   request
+ * @cancellable: (nullable): optional cancellable object
+ * @callback: (scope async) (closure user_data): a callback to call when the
+ *   request is satisfied
+ * @user_data: the data to pass to @callback
  *
  * Asynchronously closes the file enumerator. 
  *
- * If @cancellable is not %NULL, then the operation can be cancelled by
+ * If @cancellable is not `NULL`, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned in 
- * g_file_enumerator_close_finish(). 
+ * was cancelled, the error [error@Gio.IOErrorEnum.CANCELLED] will be returned
+ * by [method@Gio.FileEnumerator.close_finish()].
  **/
 void
 g_file_enumerator_close_async (GFileEnumerator     *enumerator,
@@ -528,23 +532,22 @@ g_file_enumerator_close_async (GFileEnumerator     *enumerator,
 
 /**
  * g_file_enumerator_close_finish:
- * @enumerator: a #GFileEnumerator.
- * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occurring, or %NULL to 
- * ignore.
+ * @enumerator: a file enumerator
+ * @result: an async result
+ * @error: return location for an error, or `NULL`
  * 
- * Finishes closing a file enumerator, started from g_file_enumerator_close_async().
+ * Finishes closing a file enumerator, started by
+ * [method@Gio.FileEnumerator.close_async].
  * 
- * If the file enumerator was already closed when g_file_enumerator_close_async() 
- * was called, then this function will report %G_IO_ERROR_CLOSED in @error, and 
- * return %FALSE. If the file enumerator had pending operation when the close 
- * operation was started, then this function will report %G_IO_ERROR_PENDING, and
- * return %FALSE.  If @cancellable was not %NULL, then the operation may have been 
- * cancelled by triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be set, and %FALSE will be 
- * returned. 
+ * If the file enumerator was already closed when
+ * [method@Gio.FileEnumerator.close_async] was called, then this function will
+ * report [error@Gio.IOErrorEnum.CLOSED] in @error. If the file enumerator had a
+ * pending operation when the close operation was started, then
+ * [error@Gio.IOErrorEnum.PENDING] will be reported. If the operation was
+ * cancelled from another thread using @cancellable,
+ * [error@Gio.IOErrorEnum.CANCELLED] will be reported.
  * 
- * Returns: %TRUE if the close operation has finished successfully.
+ * Returns: true on success; false otherwise
  **/
 gboolean
 g_file_enumerator_close_finish (GFileEnumerator  *enumerator,
@@ -567,11 +570,11 @@ g_file_enumerator_close_finish (GFileEnumerator  *enumerator,
 
 /**
  * g_file_enumerator_is_closed:
- * @enumerator: a #GFileEnumerator.
+ * @enumerator: a file enumerator
  *
  * Checks if the file enumerator has been closed.
  * 
- * Returns: %TRUE if the @enumerator is closed.
+ * Returns: true if the @enumerator is closed
  **/
 gboolean
 g_file_enumerator_is_closed (GFileEnumerator *enumerator)
@@ -583,11 +586,11 @@ g_file_enumerator_is_closed (GFileEnumerator *enumerator)
 
 /**
  * g_file_enumerator_has_pending:
- * @enumerator: a #GFileEnumerator.
+ * @enumerator: a file enumerator
  * 
  * Checks if the file enumerator has pending operations.
  *
- * Returns: %TRUE if the @enumerator has pending operations.
+ * Returns: true if the @enumerator has pending operations
  **/
 gboolean
 g_file_enumerator_has_pending (GFileEnumerator *enumerator)
@@ -599,8 +602,8 @@ g_file_enumerator_has_pending (GFileEnumerator *enumerator)
 
 /**
  * g_file_enumerator_set_pending:
- * @enumerator: a #GFileEnumerator.
- * @pending: a boolean value.
+ * @enumerator: a file enumerator
+ * @pending: a boolean value
  * 
  * Sets the file enumerator as having pending operations.
  **/
@@ -615,20 +618,24 @@ g_file_enumerator_set_pending (GFileEnumerator *enumerator,
 
 /**
  * g_file_enumerator_iterate:
- * @direnum: an open #GFileEnumerator
- * @out_info: (out) (transfer none) (optional): Output location for the next #GFileInfo, or %NULL
- * @out_child: (out) (transfer none) (optional): Output location for the next #GFile, or %NULL
- * @cancellable: a #GCancellable
- * @error: a #GError
+ * @direnum: an open file enumerator
+ * @out_info: (out) (transfer none) (optional): return location for the next
+ *   file info object, or `NULL`
+ * @out_child: (out) (transfer none) (optional): return location for the next
+ *   file object, or `NULL`
+ * @cancellable: (nullable): optional cancellable object
+ * @error: return location for an error, or `NULL`
  *
- * This is a version of g_file_enumerator_next_file() that's easier to
- * use correctly from C programs.  With g_file_enumerator_next_file(),
- * the gboolean return value signifies "end of iteration or error", which
- * requires allocation of a temporary #GError.
+ * A version of [method@Gio.FileEnumerator.next_file] that’s easier to use
+ * correctly from C programs.
  *
- * In contrast, with this function, a %FALSE return from
- * g_file_enumerator_iterate() *always* means
- * "error".  End of iteration is signaled by @out_info or @out_child being %NULL.
+ * With [method@Gio.FileEnumerator.next_file], the boolean return value
+ * signifies “end of iteration or error”, which requires allocation of a
+ * temporary [type@GLib.Error] to distinguish which one.
+ *
+ * In contrast, with this function, a false return from
+ * [method@Gio.FileEnumerator.iterate] *always* means “error”.  End of iteration
+ * is signaled by @out_info or @out_child being `NULL`.
  *
  * Another crucial difference is that the references for @out_info and
  * @out_child are owned by @direnum (they are cached as hidden
@@ -636,34 +643,37 @@ g_file_enumerator_set_pending (GFileEnumerator *enumerator,
  * memory management significantly easier for C code in combination
  * with loops.
  *
- * Finally, this function optionally allows retrieving a #GFile as
- * well.
+ * Finally, this function optionally allows retrieving a corresponding
+ * [iface@Gio.File] as well as each [class@Gio.FileInfo].
  *
- * To use this, %G_FILE_ATTRIBUTE_STANDARD_NAME must have been listed in the
- * attributes list used when creating the #GFileEnumerator.
+ * To use this, [const@Gio.FILE_ATTRIBUTE_STANDARD_NAME] must have been listed
+ * in the attributes list used when creating the [class@Gio.FileEnumerator].
  *
  * You must specify at least one of @out_info or @out_child.
  *
- * The code pattern for correctly using g_file_enumerator_iterate() from C
- * is:
+ * The code pattern for correctly using [method@Gio.FileEnumerator.iterate] from
+ * C is:
  *
- * |[
+ * ```c
  * direnum = g_file_enumerate_children (file, ...);
  * while (TRUE)
  *   {
- *     GFileInfo *info;
+ *     GFileInfo *info = NULL;
+ *
  *     if (!g_file_enumerator_iterate (direnum, &info, NULL, cancellable, error))
  *       goto out;
- *     if (!info)
+ *
+ *     if (info == NULL)
  *       break;
- *     ... do stuff with "info"; do not unref it! ...
+ *
+ *     // do stuff with "info"; do not unref it! ...
  *   }
  * 
  * out:
  *   g_object_unref (direnum); // Note: frees the last @info
- * ]|
+ * ```
  *
- *
+ * Returns: true on success or “end of iteration”; false on error
  * Since: 2.44
  */
 gboolean
@@ -738,12 +748,11 @@ g_file_enumerator_iterate (GFileEnumerator  *direnum,
 
 /**
  * g_file_enumerator_get_container:
- * @enumerator: a #GFileEnumerator
+ * @enumerator: a file enumerator
  *
- * Get the #GFile container which is being enumerated.
+ * Get the [iface@Gio.File] container which is being enumerated.
  *
- * Returns: (transfer none): the #GFile which is being enumerated.
- *
+ * Returns: (transfer none): the file which is being enumerated
  * Since: 2.18
  */
 GFile *
@@ -756,26 +765,26 @@ g_file_enumerator_get_container (GFileEnumerator *enumerator)
 
 /**
  * g_file_enumerator_get_child:
- * @enumerator: a #GFileEnumerator
- * @info: a #GFileInfo gotten from g_file_enumerator_next_file()
- *   or the async equivalents.
+ * @enumerator: a file enumerator
+ * @info: a file info object received from [method@Gio.FileEnumerator.next_file]
+ *   or the async equivalent
  *
- * Return a new #GFile which refers to the file named by @info in the source
- * directory of @enumerator.  This function is primarily intended to be used
- * inside loops with g_file_enumerator_next_file().
+ * Returns a new [iface@Gio.File] which refers to the file named by @info in the
+ * source directory of @enumerator.
  *
- * To use this, %G_FILE_ATTRIBUTE_STANDARD_NAME must have been listed in the
- * attributes list used when creating the #GFileEnumerator.
+ * This function is primarily intended to be used inside loops with
+ * [method@Gio.FileEnumerator.next_file].
+ *
+ * To use this, [const@Gio.FILE_ATTRIBUTE_STANDARD_NAME] must have been listed
+ * in the attributes list used when creating the [class@Gio.FileEnumerator].
  *
  * This is a convenience method that's equivalent to:
- * |[<!-- language="C" -->
- *   gchar *name = g_file_info_get_name (info);
- *   GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
- *                                    name);
- * ]|
+ * ```c
+ * char *name = g_file_info_get_name (info);
+ * GFile *child = g_file_get_child (g_file_enumerator_get_container (enumerator), name);
+ * ```
  *
- * Returns: (transfer full): a #GFile for the #GFileInfo passed it.
- *
+ * Returns: (transfer full): a file object for the file info object passed to it
  * Since: 2.36
  */
 GFile *
