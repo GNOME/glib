@@ -3192,6 +3192,9 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
   g_strfreev (envp);
   g_list_free_full (ruris, g_free);
 
+  if (completed && session_bus != NULL)
+    g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
+
   return completed;
 }
 
@@ -3441,15 +3444,7 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
                                                          pid_callback, pid_callback_data,
                                                          stdin_fd, stdout_fd, stderr_fd, error);
 
-  if (session_bus != NULL)
-    {
-      /* This asynchronous flush holds a reference until it completes,
-       * which ensures that the following unref won't immediately kill
-       * the connection if we were the initial owner.
-       */
-      g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
-      g_object_unref (session_bus);
-    }
+  g_clear_object (&session_bus);
 
   return success;
 }
@@ -5355,11 +5350,7 @@ g_desktop_app_info_launch_action (GDesktopAppInfo   *info,
       g_free (exec_line);
     }
 
-  if (session_bus != NULL)
-    {
-      g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
-      g_object_unref (session_bus);
-    }
+  g_clear_object (&session_bus);
 }
 /* Epilogue {{{1 */
 
