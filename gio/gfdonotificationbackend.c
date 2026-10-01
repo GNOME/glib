@@ -65,6 +65,7 @@ typedef struct
   guint32 notify_id;
   gchar *default_action;  /* (nullable) (owned) */
   GVariant *default_action_target;  /* (nullable) (owned), not floating */
+  gchar *activation_token; /* (nullable) (owned) */
 } FreedesktopNotification;
 
 static void
@@ -77,6 +78,7 @@ freedesktop_notification_free (gpointer data)
   g_free (n->default_action);
   if (n->default_action_target)
     g_variant_unref (n->default_action_target);
+  g_free (n->activation_token);
 
   g_slice_free (FreedesktopNotification, n);
 }
@@ -134,7 +136,8 @@ g_fdo_notification_backend_find_notification_by_notify_id (GFdoNotificationBacke
 static gboolean
 activate_action (GFdoNotificationBackend *backend,
                  const gchar             *name,
-                 GVariant                *parameter)
+                 GVariant                *parameter,
+                 const gchar             *activation_token)
 {
   GNotificationBackend *g_backend = G_NOTIFICATION_BACKEND (backend);
 
@@ -145,6 +148,17 @@ activate_action (GFdoNotificationBackend *backend,
   g_assert (parameter == NULL || !g_variant_is_floating (parameter));
 
   gboolean retval = FALSE;
+
+  GVariantBuilder builder;
+  GVariant *platform_data;
+
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{sv}"));
+  if (activation_token)
+    {
+      g_variant_builder_add (&builder, "{sv}", "desktop-startup-id", g_variant_new_string (activation_token));
+      g_variant_builder_add (&builder, "{sv}", "activation-token", g_variant_new_string (activation_token));
+    }
+  platform_data = g_variant_builder_end (&builder);
 
   if (name != NULL &&
       g_str_has_prefix (name, "app."))
@@ -159,13 +173,17 @@ activate_action (GFdoNotificationBackend *backend,
           ((parameter_type == NULL && parameter == NULL) ||
            (parameter_type != NULL && parameter != NULL && g_variant_is_of_type (parameter, parameter_type))))
         {
+          G_APPLICATION_GET_CLASS (application)->before_emit (application, platform_data);
           g_action_group_activate_action (G_ACTION_GROUP (application), action_name, parameter);
+          G_APPLICATION_GET_CLASS (application)->after_emit (application, platform_data);
           retval = TRUE;
         }
     }
   else if (name == NULL)
     {
-      g_application_activate (application);
+      G_APPLICATION_GET_CLASS (application)->before_emit (application, platform_data);
+      g_signal_emit_by_name (application, "activate");
+      G_APPLICATION_GET_CLASS (application)->after_emit (application, platform_data);
       retval = TRUE;
     }
 
@@ -186,6 +204,7 @@ notify_signal (GDBusConnection *connection,
   GFdoNotificationBackend *backend = user_data;
   guint32 id = 0;
   const gchar *action = NULL;
+  const gchar *activation_token = NULL;
   FreedesktopNotification *n;
   gboolean notification_closed = TRUE;
 
@@ -199,6 +218,11 @@ notify_signal (GDBusConnection *connection,
     {
       g_variant_get (parameters, "(u&s)", &id, &action);
     }
+  else if (g_str_equal (signal_name, "ActivationToken") &&
+           g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(us)")))
+    {
+      g_variant_get (parameters, "(u&s)", &id, &activation_token);
+    }
   else
     return;
 
@@ -206,11 +230,18 @@ notify_signal (GDBusConnection *connection,
   if (n == NULL)
     return;
 
+  if (activation_token)
+    {
+      g_free (n->activation_token);
+      n->activation_token = g_strdup (activation_token);
+      return;
+    }
+
   if (action)
     {
       if (g_str_equal (action, "default"))
         {
-          if (!activate_action (backend, n->default_action, n->default_action_target))
+          if (!activate_action (backend, n->default_action, n->default_action_target, n->activation_token))
             notification_closed = FALSE;
         }
       else
@@ -219,7 +250,7 @@ notify_signal (GDBusConnection *connection,
           GVariant *target = NULL;
 
           if (!g_action_parse_detailed_name (action, &name, &target, NULL) ||
-              !activate_action (backend, name, target))
+              !activate_action (backend, name, target, n->activation_token))
             notification_closed = FALSE;
 
           g_free (name);
