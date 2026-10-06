@@ -533,6 +533,8 @@ test_build_filename (void)
   check_string (g_build_filename ("x", S "y", "z", Z, "a", "b", NULL), "x"S"y"S"z"Z"a"Z"b");
   check_string (g_build_filename (Z"x"Z, Z"y"Z, Z"z"Z, NULL), Z"x"Z"y"Z"z"Z);
   check_string (g_build_filename (Z Z"x"Z Z, Z Z"y"Z Z, Z Z"z"Z Z, NULL), Z Z"x"Z"y"Z"z"Z Z);
+  /* Test first element starting with a drive letter */
+  check_string (g_build_filename ("c:"Z"x", "y", NULL), "c:"Z"x"Z"y");
 
 #undef Z
 
