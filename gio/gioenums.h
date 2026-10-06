@@ -244,11 +244,13 @@ typedef enum {
 /**
  * GMountMountFlags:
  * @G_MOUNT_MOUNT_NONE: No flags set.
+ * @G_MOUNT_MOUNT_READ_ONLY: Mount the volume read-only. Since: 2.92
  *
  * Flags used when mounting a mount.
  */
 typedef enum /*< flags >*/ {
-  G_MOUNT_MOUNT_NONE = 0
+  G_MOUNT_MOUNT_NONE = 0,
+  G_MOUNT_MOUNT_READ_ONLY GIO_AVAILABLE_ENUMERATOR_IN_2_92 = (1 << 0)
 } G_GNUC_FLAG_ENUM GMountMountFlags;
 
 

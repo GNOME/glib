@@ -310,6 +310,10 @@ COMMANDS
 
     Use an anonymous user when authenticating.
 
+  ``-r``, ``--read-only``
+
+    Mount the location read-only.
+
   ``-l``, ``--list``
 
     List all GIO mounts.

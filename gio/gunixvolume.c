@@ -346,14 +346,32 @@ g_unix_volume_mount (GVolume            *volume,
                      gpointer             user_data)
 {
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
-  const gchar *argv[] = { "mount", NULL, NULL };
+  const gchar *path;
+  GStrvBuilder *argv_builder;
+  gchar **argv;
 
   if (unix_volume->mount_path != NULL)
-    argv[1] = unix_volume->mount_path;
+    path = unix_volume->mount_path;
   else
-    argv[1] = unix_volume->device_path;
+    path = unix_volume->device_path;
 
-  eject_mount_do (volume, cancellable, callback, user_data, argv, "[gio] mount volume");
+  argv_builder = g_strv_builder_new ();
+  g_strv_builder_add (argv_builder, "mount");
+
+  if (flags & G_MOUNT_MOUNT_READ_ONLY)
+    {
+      g_strv_builder_add (argv_builder, "-o");
+      g_strv_builder_add (argv_builder, "ro");
+    }
+
+  g_strv_builder_add (argv_builder, path);
+
+  argv = g_strv_builder_end (argv_builder);
+  g_strv_builder_unref (argv_builder);
+
+  eject_mount_do (volume, cancellable, callback, user_data, (const gchar * const *) argv, "[gio] mount volume");
+
+  g_strfreev (argv);
 }
 
 static gboolean
