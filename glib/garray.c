@@ -120,6 +120,20 @@ struct _GRealArray
 static void  g_array_maybe_expand (GRealArray *array,
                                    guint       len);
 
+/* Detect the case where a pointer from inside the array data
+ * is being prepended/inserted/appended into the array again.
+ * Note that these pointers are handled by offset, because any
+ * g_array_maybe_expand() call may reallocate the array data
+ * and render the original pointer invalid.
+ */
+static inline gboolean
+g_array_contains_pointer (GRealArray    *array,
+                          gconstpointer  data)
+{
+  return (const guint8 *) data >= array->data &&
+         (const guint8 *) data < g_array_elt_pos (array, array->elt_capacity);
+}
+
 /**
  * g_array_new:
  * @zero_terminated: if true, the array should have an extra element at
@@ -613,10 +627,23 @@ g_array_append_vals (GArray       *farray,
   if (len == 0)
     return farray;
 
-  g_array_maybe_expand (array, len);
+  if (g_array_contains_pointer (array, data))
+    {
+      gsize offset = (guint8 *) data - array->data;
 
-  memcpy (g_array_elt_pos (array, array->len), data, 
-          g_array_elt_len (array, len));
+      g_array_maybe_expand (array, len);
+
+      memcpy (g_array_elt_pos (array, array->len),
+              array->data + offset, 
+              g_array_elt_len (array, len));
+    }
+  else
+    {
+      g_array_maybe_expand (array, len);
+
+      memcpy (g_array_elt_pos (array, array->len), data, 
+              g_array_elt_len (array, len));
+    }
 
   array->len += len;
 
@@ -666,18 +693,35 @@ g_array_prepend_vals (GArray        *farray,
                       guint          len)
 {
   GRealArray *array = (GRealArray*) farray;
+  gboolean contains_pointer;
+  gsize offset;
 
   g_return_val_if_fail (array, NULL);
 
   if (len == 0)
     return farray;
 
+  contains_pointer = g_array_contains_pointer (array, data);
+  if (contains_pointer)
+    offset = (guint8 *) data - array->data;
+  else
+    offset = 0;
+
   g_array_maybe_expand (array, len);
 
   memmove (g_array_elt_pos (array, len), g_array_elt_pos (array, 0),
            g_array_elt_len (array, array->len));
 
-  memcpy (g_array_elt_pos (array, 0), data, g_array_elt_len (array, len));
+  if (contains_pointer)
+    {
+      memcpy (g_array_elt_pos (array, 0),
+              array->data + offset + g_array_elt_len (array, len),
+              g_array_elt_len (array, len));
+    }
+  else
+    {
+      memcpy (g_array_elt_pos (array, 0), data, g_array_elt_len (array, len));
+    }
 
   array->len += len;
 
@@ -730,18 +774,29 @@ g_array_insert_vals (GArray        *farray,
                      guint          len)
 {
   GRealArray *array = (GRealArray*) farray;
+  gboolean contains_pointer;
+  gsize offset;
 
   g_return_val_if_fail (array, NULL);
 
   if (len == 0)
     return farray;
 
+  contains_pointer = g_array_contains_pointer (array, data);
+  if (contains_pointer)
+    offset = (guint8 *) data - array->data;
+  else
+    offset = 0;
+
   /* Is the index off the end of the array, and hence do we need to over-allocate
    * and clear some elements? */
   if (index_ >= array->len)
     {
       g_array_maybe_expand (array, index_ - array->len + len);
-      return g_array_append_vals (g_array_set_size (farray, index_), data, len);
+      if (contains_pointer)
+        return g_array_append_vals (g_array_set_size (farray, index_), array->data + offset, len);
+      else
+        return g_array_append_vals (g_array_set_size (farray, index_), data, len);
     }
 
   g_array_maybe_expand (array, len);
@@ -750,7 +805,30 @@ g_array_insert_vals (GArray        *farray,
            g_array_elt_pos (array, index_),
            g_array_elt_len (array, array->len - index_));
 
-  memcpy (g_array_elt_pos (array, index_), data, g_array_elt_len (array, len));
+  if (contains_pointer)
+    {
+      gsize cut = g_array_elt_len (array, index_);
+      gsize n_bytes = g_array_elt_len (array, len);
+      gsize n_copied = 0;
+
+      if (offset < cut)
+        {
+          /* Copy any part of the data which comes from before the cut */
+          n_copied = MIN (n_bytes, cut - offset);
+          memcpy (g_array_elt_pos (array, index_), array->data + offset, n_copied);
+        }
+      if (n_bytes > n_copied)
+        {
+          /* Copy any part of the data which comes from at or after the cut */
+          memcpy (g_array_elt_pos (array, index_) + n_copied,
+                  array->data + offset + n_bytes + n_copied,
+                  n_bytes - n_copied);
+        }
+    }
+  else
+    {
+      memcpy (g_array_elt_pos (array, index_), data, g_array_elt_len (array, len));
+    }
 
   array->len += len;
 
