@@ -148,6 +148,51 @@ test_alignof_fallback (void)
   check_alignof (struct { char a; int b; });
 }
 
+#ifdef g_auto
+static void
+test_clobber_errno (int expect_errno,
+                    int clobber_errno)
+{
+  G_SAVE_ERRNO (errsv);
+
+  errno = clobber_errno;
+  g_assert_cmpint (errsv, ==, expect_errno);
+  errno = clobber_errno;
+}
+#endif
+
+static void
+test_autocleanup_save_errno (void)
+{
+#ifdef g_auto
+  int errno_after;
+
+  g_test_summary ("Test G_SAVE_ERRNO");
+
+  /* Typical use is in a function that wants to avoid clobbering errno */
+  errno = EDOM;
+  test_clobber_errno (EDOM, ERANGE);
+  errno_after = errno;
+  g_assert_cmpint (errno_after, ==, EDOM);
+
+  /* Can also be used inside any other block */
+  errno = ERANGE;
+  {
+    /* Intentionally not using errsv, to check there's no compiler warning */
+    G_SAVE_ERRNO (errsv);
+
+    errno = EDOM;
+  }
+  errno_after = errno;
+  g_assert_cmpint (errno_after, ==, ERANGE);
+#else
+  g_test_skip ("g_auto and G_SAVE_ERRNO unimplemented on this compiler");
+#ifdef G_SAVE_ERRNO
+#error G_SAVE_ERRNO should not be defined when g_auto is not
+#endif
+#endif
+}
+
 static void
 test_struct_sizeof_member (void)
 {
@@ -167,6 +212,7 @@ main (int   argc,
 
   g_test_add_func ("/alignof/fallback", test_alignof_fallback);
   g_test_add_func ("/assert/static", test_assert_static);
+  g_test_add_func ("/autocleanup/save-errno", test_autocleanup_save_errno);
   g_test_add_func ("/struct/sizeof_member", test_struct_sizeof_member);
 
   return g_test_run ();
