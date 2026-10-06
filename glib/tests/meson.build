@@ -2,7 +2,7 @@ glib_tests = {
   'array-test' : {},
   'asyncqueue' : {},
   'atomic' : {
-    'c_args' : cc.get_id() == 'gcc' ? ['-Wstrict-aliasing=2'] : [],
+    'c_args' : cc.get_argument_syntax() == 'gcc' ? ['-Wstrict-aliasing=2'] : [],
     'c_standards': c_standards.keys(),
   },
   'base64' : {},
@@ -79,9 +79,15 @@ glib_tests = {
       ? ['-Wno-alloc-size-larger-than'] : [],
   },
   'monotonic-time' : {},
-  'mutex' : {},
+  'mutex' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'node' : {},
-  'once' : {},
+  'once' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'onceinit' : {},
   'option-context' : {
     # musl: /option/arg/repetition/locale should be skipped but it's not. The
@@ -104,7 +110,10 @@ glib_tests = {
   'queue' : {},
   'rand' : {},
   'rcbox' : {},
-  'rec-mutex' : {},
+  'rec-mutex' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'refcount' : {},
   'refcount-macro' : {
     'source' : 'refcount.c',
@@ -127,7 +136,9 @@ glib_tests = {
   'slist' : {},
   'sort' : {},
   'spawn-multithreaded' : {
-    'can_fail': glib_build_static and host_system == 'windows',
+    'can_fail': glib_build_static and host_system == 'windows' or
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'thread' in glib_sanitizers,
     'suite': host_system == 'windows' ? ['flaky'] : [],
     'extra_programs' : ['test-spawn-echo'] + (
       host_machine.system() == 'windows' ? ['test-spawn-sleep'] : []),
@@ -152,20 +163,26 @@ glib_tests = {
   },
   'strfuncs' : {},
   'string' : {
-    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=sign-conversion'] : [],
+    'c_args' : cc.get_argument_syntax() == 'gcc' ? ['-Werror=sign-conversion'] : [],
   },
   'strvbuilder' : {},
   'testing' : {
     'args': [ '--verbose' ],
     'extra_programs' : ['testing-helper'],
-    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=sign-conversion'] : [],
+    'c_args' : cc.get_argument_syntax() == 'gcc' ? ['-Werror=sign-conversion'] : [],
   },
   'testing-nonfatal' : {
     'protocol' : 'exitcode'
   },
-  'test-printf' : {},
+  'test-printf' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'thread' : {},
-  'thread-deprecated' : {},
+  'thread-deprecated' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'thread-pool' : {},
   'thread-pool-slow' : {'suite' : ['slow']},
   'timeout' : {},
@@ -174,7 +191,7 @@ glib_tests = {
   'types' : {},
   'utf8-performance' : {},
   'utf8-pointer' : {
-    'c_args' : cc.get_id() == 'gcc' ? ['-Werror=cast-qual'] : [],
+    'c_args' : cc.get_argument_syntax() == 'gcc' ? ['-Werror=cast-qual'] : [],
   },
   'utf8-private' : {},
   'utf8-validate' : {},
@@ -274,26 +291,15 @@ else
                                       install_tag : 'tests',
                                       install: installed_tests_enabled)
 
-    if host_system != 'darwin'
-      var_preload = 'LD_PRELOAD'
-    else
-      var_preload = 'DYLD_INSERT_LIBRARIES'
-    endif
-
-    asan_env = {}
-    if 'address' in glib_sanitizers
-      asan_env = {'ASAN_OPTIONS': 'verify_asan_link_order=0'}
-    endif
-
     glib_tests += {
       'gutils-user-database' : {
         'depends' : getpwuid_preload,
         'env' : {
-          var_preload: getpwuid_preload.full_path()
-        } + asan_env,
+          glib_exec_var_preload: getpwuid_preload.full_path(),
+        },
         'installed_tests_env' : {
-          var_preload: installed_tests_execdir / fs.name(getpwuid_preload.full_path())
-        } + asan_env,
+          glib_exec_var_preload: installed_tests_execdir / fs.name(getpwuid_preload.full_path())
+        },
       },
     }
   endif
@@ -441,6 +447,17 @@ foreach test_name, extra_args : glib_tests
     test_conf.set('program', test_name)
     test_env_override = ''
     if installed_tests_env != {}
+      # FIXME: Ideally meson should handle this for us.
+      # https://github.com/mesonbuild/meson/issues/16126
+      if installed_tests_env.has_key(glib_exec_var_preload)
+        installed_tests_env += {
+          'ASAN_OPTIONS': ','.join([
+            glib_exec_asan_option_ignore_preload,
+            installed_tests_env.get('ASAN_OPTIONS', ''),
+         ]),
+        }
+      endif
+
       envs = []
       foreach var, value : installed_tests_env
         envs += '@0@=\'@1@\''.format(var, value)
@@ -484,10 +501,31 @@ foreach test_name, extra_args : glib_tests
   endforeach
 
   local_test_env = test_env
-  foreach var, value : extra_args.get('env', {})
+  local_test_env_args = extra_args.get('env', {})
+  # FIXME: Ideally meson should handle this for us.
+  # https://github.com/mesonbuild/meson/issues/16126
+  if local_test_env_args.has_key(glib_exec_var_preload)
+    if glib_exec_preloaded_env.has_key(glib_exec_var_preload)
+      local_test_env_args += {
+        glib_exec_var_preload: glib_exec_var_preload_separator.join([
+          glib_exec_preloaded_env.get(glib_exec_var_preload),
+          local_test_env_args.get(glib_exec_var_preload),
+        ])
+      }
+    else
+      local_test_env_args += {
+        'ASAN_OPTIONS': ','.join([
+          glib_exec_asan_option_ignore_preload,
+          local_test_env_args.get('ASAN_OPTIONS', ''),
+        ]),
+      }
+    endif
+  endif
+
+  foreach var, value : local_test_env_args
     local_test_env.append(var, value)
   endforeach
-  
+
   test(test_name, exe,
     args: extra_args.get('args', []),
     protocol : extra_args.get('protocol', test_protocol),
@@ -519,6 +557,8 @@ if 'messages-low-memory' in test_extra_programs
   python_tests += {
     'messages-low-memory.py' : {
       'extra_programs': ['messages-low-memory'],
+      # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+      'can_fail': 'thread' in glib_sanitizers,
     },
   }
 endif
@@ -539,7 +579,28 @@ foreach test_name, extra_args : python_tests
   endif
 
   local_test_env = python_test_env
-  foreach var, value : extra_args.get('env', {})
+  local_test_env_args = extra_args.get('env', {})
+  # FIXME: Ideally meson should handle this for us.
+  # https://github.com/mesonbuild/meson/issues/16126
+  if local_test_env_args.has_key(glib_exec_var_preload)
+    if glib_exec_preloaded_env.has_key(glib_exec_var_preload)
+      local_test_env_args += {
+        glib_exec_var_preload: glib_exec_var_preload_separator.join([
+          glib_exec_preloaded_env.get(glib_exec_var_preload),
+          local_test_env_args.get(glib_exec_var_preload),
+        ])
+      }
+    else
+      local_test_env_args += {
+        'ASAN_OPTIONS': ','.join([
+          glib_exec_asan_option_ignore_preload,
+          local_test_env_args.get('ASAN_OPTIONS', ''),
+        ]),
+      }
+    endif
+  endif
+
+  foreach var, value : local_test_env_args
     local_test_env.append(var, value)
   endforeach
 

@@ -54,7 +54,10 @@ gobject_tests = {
   'basic-signals' : {},
   'singleton' : {},
   'threadtests' : {},
-  'dynamictests' : {},
+  'dynamictests' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'binding' : {},
   'bindinggroup' : {},
   'properties' : {},
@@ -70,7 +73,11 @@ gobject_tests = {
     'source' : 'private.c',
   },
   'closure' : {},
-  'closure-refcount' : { 'suite': ['slow'] },
+  'closure-refcount' : {
+    'suite': ['slow'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'object' : {},
   'signal-handler' : {},
   'ifaceproperties' : {},
@@ -88,7 +95,10 @@ gobject_tests = {
     ]),
   },
   'objects-refcount2' : {'suite' : ['slow']},
-  'properties-refcount1' : {},
+  'properties-refcount1' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
+  },
   'properties-refcount2' : {'suite' : ['slow']},
   'properties-refcount3' : {'suite' : ['slow']},
   'properties-refcount4' : {},
@@ -99,6 +109,8 @@ gobject_tests = {
   'signals-refcount2' : {
     'source' : 'signals-refcount.c',
     'c_args' : ['-DTESTNUM=2'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
   },
   'signals-refcount3' : {
     'source' : 'signals-refcount.c',
@@ -107,6 +119,8 @@ gobject_tests = {
   'signals-refcount4' : {
     'source' : 'signals-refcount.c',
     'c_args' : ['-DTESTNUM=4'],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/1672
+    'can_fail': 'thread' in glib_sanitizers,
   },
 }
 

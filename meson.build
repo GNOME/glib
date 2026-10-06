@@ -575,7 +575,7 @@ foreach m : struct_members
 endforeach
 
 # Compiler flags
-if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+if cc.get_argument_syntax() == 'gcc'
   warning_common_args = [
     '-Wduplicated-branches',
     '-Wfloat-conversion',
@@ -1810,7 +1810,7 @@ g_sizet_compatibility = {
 # Do separate checks for gcc/clang (and ignore other compilers for now), since
 # we need to explicitly pass -Werror to the compilers.
 # FIXME: https://github.com/mesonbuild/meson/issues/5399
-if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+if cc.get_argument_syntax() == 'gcc'
   foreach type_name, size_compatibility : g_sizet_compatibility
     g_sizet_compatibility += { type_name: size_compatibility and
       cc.compiles(
@@ -2108,7 +2108,7 @@ if cc.get_id() == 'msvc' or cc.get_id() == 'clang-cl' or cc.links(atomictest, na
     glib_conf.set('__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4', true)
   endif
 
-  if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+  if cc.get_argument_syntax() == 'gcc'
     sync_swap_test = '''
       int main() {
         int atomic = 2;
@@ -2723,6 +2723,89 @@ if gobject_introspection.version().version_compare('>=1.83.2')
   gir_args += [
     '--doc-format=gi-docgen',
   ]
+endif
+
+glib_exec_preloaded_libs = []
+glib_exec_preloaded_env = {}
+
+if host_system in ['ios', 'darwin']
+  glib_exec_var_library_path = 'DYLD_LIBRARY_PATH'
+  glib_exec_var_preload = 'DYLD_INSERT_LIBRARIES'
+  glib_exec_var_preload_separator = ':'
+else
+  glib_exec_var_library_path = 'LD_LIBRARY_PATH'
+  glib_exec_var_preload = 'LD_PRELOAD'
+  glib_exec_var_preload_separator = ' '
+endif
+
+glib_exec_asan_options_disable = []
+glib_exec_asan_option_ignore_preload = ''
+if 'address' in glib_sanitizers
+  # libasan needs to be the first in the preload list, and that we can’t
+  # guarantee that, so we have to disable its link order checking when using
+  # LD_PRELOAD in tests.
+  glib_exec_asan_option_ignore_preload = 'verify_asan_link_order=false'
+  glib_exec_asan_options_disable = [
+    glib_exec_asan_option_ignore_preload,
+    'start_deactivated=true',
+    'detect_leaks=false',
+  ]
+endif
+
+if cc.get_argument_syntax() == 'gcc'
+  test_preloaded_libs = []
+
+  if 'address' in glib_sanitizers
+    # ASAN has to be the first in list
+    test_preloaded_libs += 'asan'
+  endif
+
+  if 'undefined' in glib_sanitizers
+    test_preloaded_libs += 'ubsan'
+  endif
+
+  if 'leak' in glib_sanitizers
+    test_preloaded_libs += 'lsan'
+  endif
+
+  if 'thread' in glib_sanitizers
+    test_preloaded_libs += 'tsan'
+
+    if enable_dtrace
+      # Tracing is not meant to be thread-safe, so let's make it incompatible with tsan.
+      error('Using Tracing together with thread sanitizer is not supported.')
+    endif
+  endif
+
+  # FIXME: Ideally meson should handle this for us
+  # https://github.com/mesonbuild/meson/issues/13249
+  foreach libname: test_preloaded_libs
+    lib = run_command(cc,
+      '-print-file-name=lib@0@.so'.format(libname),
+      check: true,
+    ).stdout().strip()
+
+    # Support linker script files
+    if run_command('grep', '-qI', '^INPUT', lib, check: false).returncode() == 0
+      out = run_command('cat', lib, check: true).stdout()
+      lib = out.split('(')[1].split(')')[0].strip()
+    endif
+
+    if lib != '' and lib[0] == '/'
+      message('Found @0@ library as @1@'.format(libname, lib))
+      glib_exec_preloaded_libs += '@0@'.format(files(lib)[0].full_path())
+    else
+      warning('No library found for ' + libname + ', sanitizers [' +
+        ', '.join(glib_sanitizers) + '] executions may fail')
+    endif
+  endforeach
+
+  if glib_exec_preloaded_libs.length() > 0
+    glib_exec_preloaded_env = {
+      glib_exec_var_preload: glib_exec_var_preload_separator.join(
+        glib_exec_preloaded_libs),
+    }
+  endif
 endif
 
 pkg = import('pkgconfig')

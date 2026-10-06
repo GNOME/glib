@@ -6,7 +6,7 @@ extra_gnulib_args = cc.get_supported_arguments([
   '-Wno-duplicated-branches',
 ])
 
-if host_system == 'windows' and cc.get_id() == 'clang'
+if host_system == 'windows' and cc.get_argument_syntax() == 'gcc'
   extra_gnulib_args += cc.get_supported_arguments([
     '-Wno-unused-but-set-variable',
     '-Wno-implicit-fallthrough',

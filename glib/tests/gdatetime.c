@@ -34,6 +34,7 @@
 #include <locale.h>
 
 #include "gdatetime-private.h"
+#include "glib-private.h"
 
 #ifdef G_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -3743,6 +3744,11 @@ test_unix_localtime (LocaltimeFixture *fixture,
   g_test_skip ("requires Linux unshare() syscall, skipping test");
   return;
 #else
+#ifdef _GLIB_ADDRESS_SANITIZER
+  g_test_skip ("chroot() breaks LeakSanitizer, skipping under ASAN");
+  return;
+#endif
+
   if (g_test_subprocess ())
     {
       int ret;
