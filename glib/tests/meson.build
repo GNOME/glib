@@ -186,7 +186,10 @@ glib_tests = {
   'thread-pool' : {},
   'thread-pool-slow' : {'suite' : ['slow']},
   'timeout' : {},
-  'timer' : {},
+  'timer' : {
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/work_items/820
+    'can_fail': host_machine.cpu_family() == 'x86',
+  },
   'tree' : {},
   'types' : {},
   'utf8-performance' : {},
