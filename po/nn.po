@@ -6594,7 +6594,7 @@ msgstr "MiB"
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
 #: glib/gutils.c:2872
 msgid "GiB"
-msgstr "GjeB"
+msgstr "GiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
 #: glib/gutils.c:2874
