@@ -1354,3 +1354,12 @@
 	...
 	fun:g_trace_mark
 }
+
+{
+	test-print-handler-last-had-final-newline
+	Memcheck:Leak
+	match-leak-kinds:definite
+	fun:malloc
+	...
+	fun:g_test_print_handler_full
+}
