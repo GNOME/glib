@@ -197,8 +197,8 @@ test_unix_socket_address_construct_path (void)
                       g_assert_cmpuint (path_len[l], ==, MIN (sizes[i].max_len, array->len));
                     }
                   g_assert_cmpuint (strlen (path[l]), <=, MIN (path_len[l], stringlen));
-                  /* because there's no g_asert_cmpstrn() */
-                  g_assert_cmpint (strncmp (path[l], (char *) array->data, path_len[l]), ==, 0);
+                  /* because there's no g_assert_cmpstrn() */
+                  g_assert_cmpint (strncmp (path[l], array->len > 0 ? (char *) array->data : "", path_len[l]), ==, 0);
 
                   g_object_unref (a[l]);
                 }
