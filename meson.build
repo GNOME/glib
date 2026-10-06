@@ -263,6 +263,21 @@ if host_system == 'windows'
   get_dll_paths_script = find_program('tools/grab-gio-dll-paths.py', native: true)
 endif
 
+if host_system == 'windows'
+  # See https://gitlab.gnome.org/GNOME/glib/-/work_items/4065
+
+  # Using this prefix allow us to not error out if <_mingw.h>
+  # doesn't exist, which could happen if we are being built by MSVC
+  mingw64_version = cc.get_define('__MINGW64_VERSION_STR', prefix: '#include <stdlib.h>').strip('"')
+  if mingw64_version != ''
+    min_mingw64_version = '12.0.0'
+
+    if mingw64_version.version_compare('<@0@'.format(min_mingw64_version))
+      error('MINGW-w64 @0@ or newer is required (found version @1@)'.format(min_mingw64_version, mingw64_version))
+    endif
+  endif
+endif
+
 # Disable strict aliasing;
 # see https://bugzilla.gnome.org/show_bug.cgi?id=791622
 if cc.has_argument('-fno-strict-aliasing')

@@ -17,9 +17,12 @@ their vendor.
    * [No support for universal binaries ](https://bugzilla.gnome.org/show_bug.cgi?id=780238);
    * macOS 10.13 support is maintained on a best-effort basis.
  * Windows: [minimum version is Windows 10](https://gitlab.gnome.org/GNOME/glib/-/work_items/3889),
-   minimum build chain is Visual Studio 2019 16.8.x
+   minimum build chain is Visual Studio 2019 16.8.x, or MINGW-w64 12.0.0 (GCC/Clang)
    * Visual Studio 2015/2017 support is maintained on a best-effort basis; not recommended
    for introspection.
+   * MINGW-w64 minimum version requirement follows toolchain availability across GLib's GitLab
+   `cross-mingw64` Fedora CI image, and widely used LTS distributions (Debian Stable, Ubuntu LTS.)
+   It will be updated sparingly.
  * Android: [minimum NDK version 15](https://gitlab.gnome.org/GNOME/glib/issues/1113)
  * Linux: glibc newer than 2.5 (if using glibc; other forms of libc are supported)
 
