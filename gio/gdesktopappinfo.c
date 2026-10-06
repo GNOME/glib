@@ -3815,6 +3815,16 @@ ensure_dir (DirType   type,
   char *path, *display_name;
   int errsv;
 
+  if (GLIB_PRIVATE_CALL (g_check_setuid) ())
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_PERMISSION_DENIED,
+                           _("Saving application information is not supported "
+                             "when running as setuid"));
+      return NULL;
+    }
+
   switch (type)
     {
     case CONF_DIR:
