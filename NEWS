@@ -1,3 +1,50 @@
+Overview of changes in GLib 2.90.1, 2026-10-06
+==============================================
+
+* Bugs fixed:
+  - #3356 Add address and thread sanitizer scheduled CI job (Marco Trevisan
+    (Treviño))
+  - #4055 inotify: cancelling monitor through symlink alias removes watch used
+    by still-active monitors (Kashyap Ekbote)
+  - #4060 g_file_trash() returns FALSE without setting the GError when trashing
+    a non-empty directory for `DT_UNKNOWN` nodes (Philip Withnall)
+  - !5306 tools: Add another variant of an existing suppression to glib.supp
+  - !5348 giochannel: Fix strncmp() off the end of the buffer
+  - !5349 gvariant: Handle get_data_as_bytes() for corrupted variants
+  - !5351 utils: Add missing ENUMERATOR_AVAILABLE_IN
+  - !5352 po: Add Santali translation
+  - !5353 rcbox: Turn assertion into error
+  - !5355 gdbusauthmechanismsha1: Don't split into too many tokens
+  - !5356 logging: Don't stack overflow with too many fields
+  - !5357 regex: Handle empty matches at end
+  - !5358 ci: Replace FreeBSD 13 with FreeBSD 14
+  - !5359 unicode: Fix error handling in normalization
+  - !5360 unicode: Don't read past limits
+  - !5361 unicode: Prevent overflow in normalization
+  - !5362 gmarkup: Be careful in error paths
+  - !5363 gresource: Avoid underflow
+  - !5364 Update Norwegian Nynorsk translation
+  - !5368 Update Norwegian Nynorsk translation
+  - !5370 gcharsetconverter: Avoid closing invalid iconv descriptors
+  - !5373 gregex: Fix some trivial typos in the docs
+  - !5374 gfileenumerator: Reformat docs to fully use gi-docgen and match style
+    guide
+  - !5375 fileutils: Check the mode before creating the file
+  - !5376 Clarify various inconsistencies with
+    g_socket_address_new_from_native()
+  - !5380 Update German translation
+  - !5382 Update Norwegian Nynorsk translation
+  - !5387 Update Norwegian Bokmål translation
+  - !5388 tests: Avoid a ubsan warning about passing NULL to strncmp()
+  - !5389 glib.supp: Mark a TLS variable as not really a leak
+
+* Translation updates:
+  - German (Christian Kirbach)
+  - Norwegian Bokmål (Kjartan Maraas)
+  - Norwegian Nynorsk (Roy-Magne Mo)
+  - Santali (Prasanta-Hembram)
+
+
 Overview of changes in GLib 2.90.0, 2026-09-09
 ==============================================
 
