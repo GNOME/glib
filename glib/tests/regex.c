@@ -371,6 +371,37 @@ test_match (gconstpointer d)
   g_regex_unref (regex);
 }
 
+static void
+test_match_without_match_info (void)
+{
+  GRegex *regex;
+  GError *error = NULL;
+
+  regex = g_regex_new ("(a)\\1", G_REGEX_OPTIMIZE, 0, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (regex);
+
+  g_assert_true (g_regex_match (regex, "aa", 0, NULL));
+  g_assert_true (g_regex_match_all (regex, "aa", 0, NULL));
+  g_assert_true (g_regex_match_all_full (regex, "aa", -1, 0, 0, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_false (g_regex_match (regex, "ab", 0, NULL));
+  g_assert_false (g_regex_match_all (regex, "ab", 0, NULL));
+  g_assert_false (g_regex_match_full (regex, "aa", 2, 3, 0, NULL, NULL));
+  g_assert_false (g_regex_match_all_full (regex, "aa", 2, 3, 0, NULL, NULL));
+
+  g_regex_unref (regex);
+
+  regex = g_regex_new (".", 0, 0, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (regex);
+
+  g_assert_false (g_regex_match (regex, "\xff", 0, NULL));
+  g_assert_no_error (error);
+
+  g_regex_unref (regex);
+}
+
 #define TEST_MATCH(_pattern, _compile_opts, _match_opts, _string, \
                    _string_len, _start_position, _match_opts2, _expected) { \
   TestMatchData *data;                                                  \
@@ -2720,6 +2751,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/max-lookbehind", test_max_lookbehind);
   g_test_add_func ("/regex/compile-errors", test_compile_errors);
   g_test_add_func ("/regex/jit-unsupported-matching", test_jit_unsupported_matching_options);
+  g_test_add_func ("/regex/match-without-match-info", test_match_without_match_info);
   g_test_add_func ("/regex/unmatched-named-subpattern", test_unmatched_named_subpattern);
   g_test_add_func ("/regex/compiled-regex-after-jit-failure", test_compiled_regex_after_jit_failure);
   g_test_add_func ("/regex/replace-raw-change-case", test_replace_raw_change_case);
