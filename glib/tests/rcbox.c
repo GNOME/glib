@@ -280,6 +280,51 @@ test_atomic_rcbox_alignment (void)
     }
 }
 
+#if defined(__GNUC__) && __GNUC__ > 6
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Walloc-size-larger-than="
+#endif
+
+#define TOO_LARGE (G_MAXSIZE - 2 * sizeof (gsize))
+
+static void
+test_rcbox_new_too_big (void)
+{
+  void *a;
+
+  a = g_rc_box_alloc (TOO_LARGE);
+  g_rc_box_release (a);
+  exit (0);
+}
+
+static void
+test_atomic_rcbox_new_too_big (void)
+{
+  void *a;
+
+  a = g_atomic_rc_box_alloc (TOO_LARGE);
+  g_atomic_rc_box_release (a);
+  exit (0);
+}
+
+static void
+test_new_too_big (void)
+{
+  g_test_trap_subprocess ("/subprocess/rcbox/new-too-big", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ERROR*overflow*");
+
+  g_test_trap_subprocess ("/subprocess/atomic-rcbox/new-too-big", 0,
+                          G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ERROR*overflow*");
+}
+
+#if defined(__GNUC__) && __GNUC__ > 6
+#pragma GCC diagnostic pop
+#endif
+
 int
 main (int   argc,
       char *argv[])
@@ -295,6 +340,10 @@ main (int   argc,
   g_test_add_func ("/atomic-rcbox/release-full", test_atomic_rcbox_release_full);
   g_test_add_func ("/atomic-rcbox/dup", test_atomic_rcbox_dup);
   g_test_add_func ("/atomic-rcbox/alignment", test_atomic_rcbox_alignment);
+
+  g_test_add_func ("/new_too_big", test_new_too_big);
+  g_test_add_func ("/subprocess/rcbox/new-too-big", test_rcbox_new_too_big);
+  g_test_add_func ("/subprocess/atomic-rcbox/new-too-big", test_atomic_rcbox_new_too_big);
 
   return g_test_run ();
 }

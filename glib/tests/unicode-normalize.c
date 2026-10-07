@@ -170,6 +170,12 @@ test_unicode_normalize_invalid (void)
     { 4, "\xC0\x80\xE0\x80\x80" },
     /* input containing invalid multibyte encoding */
     { -1, "\xED\x85\x9C\xED\x15\x9C\xED\x85\x9C" },
+    /* valid prefix followed by overlong encoding */
+    { -1, "hello\xC0\x80" },
+    { -1, "hello\xF0\x80\x80\x80" },
+    /* valid prefix followed by surrogate codepoint */
+    { -1, "abc\xED\xA0\x80" },
+    { -1, "abc\xED\xBF\xBF" },
   };
   gsize i;
 
@@ -195,6 +201,51 @@ test_unicode_normalize_bad_length (void)
   g_free (output);
 }
 
+static void
+test_unicode_normalize_overflow (void)
+{
+#if GLIB_SIZEOF_SIZE_T > 4
+  g_test_skip ("Overflow only possible on 32-bit platforms where gsize is 32 bits");
+#else
+  gsize n_chars;
+  gsize input_size;
+  gchar *input;
+  gchar *result;
+
+  g_test_summary ("Test that g_utf8_normalize returns NULL instead of "
+                   "overflowing when the decomposed output would exceed "
+                   "the gsize range on 32-bit platforms.");
+
+  /* U+FDFA has an 18-character NFKD decomposition (the longest in Unicode),
+   * encoded as 3 bytes in UTF-8. We need enough copies so that
+   * n_chars * 18 > G_MAXSIZE, i.e. n_chars > G_MAXSIZE / 18.
+   */
+  n_chars = G_MAXSIZE / 18 + 1;
+  input_size = n_chars * 3 + 1;
+  input = g_try_malloc (input_size);
+  if (input == NULL)
+    {
+      g_test_skip ("Could not allocate large input buffer");
+      return;
+    }
+
+  /* Fill with U+FDFA (UTF-8: EF B7 BA) */
+  for (gsize i = 0; i < n_chars; i++)
+    {
+      input[i * 3]     = '\xef';
+      input[i * 3 + 1] = '\xb7';
+      input[i * 3 + 2] = '\xba';
+    }
+  input[n_chars * 3] = '\0';
+
+  result = g_utf8_normalize (input, -1, G_NORMALIZE_NFKD);
+  g_assert_null (result);
+  g_free (result);
+
+  g_free (input);
+#endif
+}
+
 int
 main (int argc, char **argv)
 {
@@ -204,6 +255,7 @@ main (int argc, char **argv)
   g_test_add_func ("/unicode/normalize-invalid",
                    test_unicode_normalize_invalid);
   g_test_add_func ("/unicode/normalize/bad-length", test_unicode_normalize_bad_length);
+  g_test_add_func ("/unicode/normalize/overflow", test_unicode_normalize_overflow);
 
   return g_test_run ();
 }

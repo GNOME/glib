@@ -24,6 +24,7 @@
 #include "gconstructor.h"
 #include "test_resources2.h"
 #include "digit_test_resources.h"
+#include "gvdb/gvdb-builder.h"
 
 #ifdef _MSC_VER
 # define MODULE_FILENAME_PREFIX ""
@@ -1173,6 +1174,54 @@ test_resource_has_children (void)
   g_resource_unref (resource);
 }
 
+static void
+test_resource_data_empty_entry (void)
+{
+  GHashTable *table;
+  GvdbItem *item;
+  GVariantBuilder builder;
+  GVariant *v_data;
+  GBytes *bytes;
+  GResource *resource;
+  GBytes *data;
+  GError *error = NULL;
+
+  g_test_summary ("Test looking up a resource entry with zero-length data. "
+                   "This is a regression test: the code used to subtract 1 from "
+                   "the data length without checking for zero, causing underflow.");
+
+  table = gvdb_hash_table_new (NULL, NULL);
+
+  item = gvdb_hash_table_insert (table, "/empty/data.txt");
+  gvdb_item_set_parent (item,
+                        gvdb_hash_table_insert (table, "/empty/"));
+
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(uuay)"));
+  g_variant_builder_add (&builder, "u", GUINT32_TO_LE (5)); /* size (uncompressed) */
+  g_variant_builder_add (&builder, "u", 0); /* flags (not compressed) */
+  v_data = g_variant_new_from_data (G_VARIANT_TYPE ("ay"),
+                                    NULL, 0, TRUE, NULL, NULL);
+  g_variant_builder_add_value (&builder, v_data);
+  gvdb_item_set_value (item, g_variant_builder_end (&builder));
+
+  bytes = gvdb_table_get_contents (table, FALSE);
+  g_hash_table_unref (table);
+
+  resource = g_resource_new_from_data (bytes, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (resource);
+
+  data = g_resource_lookup_data (resource, "/empty/data.txt",
+                                 G_RESOURCE_LOOKUP_FLAGS_NONE, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (data);
+  g_assert_cmpuint (g_bytes_get_size (data), ==, 0);
+  g_bytes_unref (data);
+
+  g_resource_unref (resource);
+  g_bytes_unref (bytes);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1204,6 +1253,7 @@ main (int   argc,
   g_test_add_func ("/resource/overlay", test_overlay);
   g_test_add_func ("/resource/digits", test_resource_digits);
   g_test_add_func ("/resource/has-children", test_resource_has_children);
+  g_test_add_func ("/resource/data-empty-entry", test_resource_data_empty_entry);
 
   return g_test_run();
 }
