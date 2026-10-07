@@ -898,15 +898,12 @@ windows_default_tzname (void)
         {
           key_name_w = g_malloc ((gint)size);
 
-          if (key_name_w == NULL ||
+          if (key_name_w != NULL &&
               RegQueryValueExW (key, L"TimeZoneKeyName", NULL, NULL,
-                                (LPBYTE)key_name_w, &size) != ERROR_SUCCESS)
-            {
-              g_free (key_name_w);
-              key_name = NULL;
-            }
-          else
+                                (LPBYTE)key_name_w, &size) == ERROR_SUCCESS)
             key_name = g_utf16_to_utf8 (key_name_w, -1, NULL, NULL, NULL);
+
+          g_free (key_name_w);
         }
       RegCloseKey (key);
     }
