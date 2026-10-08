@@ -177,6 +177,15 @@ configuration files. They can also be used for I/O on files which are
 guaranteed to be small and on the local disk. Note that the user’s home
 directory is not guaranteed to be on the local disk.
 
+Synchronous calls are typically implemented over the same [class@Gio.Task]
+machinery as their asynchronous versions. A consequence is that a synchronous
+call may attach its completion bookkeeping to the thread-default main context
+of the calling thread, where it is reclaimed only once that context is
+iterated. You must make sure to iterate the appropriate main context in order
+to dispatch pending completions. See the
+[asynchronous programming tutorial](https://developer.gnome.org/documentation/tutorials/asynchronous-programming.html)
+for more information.
+
 ### Security
 
 When your program needs to carry out some privileged operation (say, create
