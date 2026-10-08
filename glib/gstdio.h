@@ -57,7 +57,13 @@ typedef struct stat GStatBuf;
 
 #endif
 
-#if defined(G_OS_UNIX) && !defined(G_STDIO_WRAP_ON_UNIX) && !defined(__GI_SCANNER__)
+#ifndef __GI_SCANNER__
+# if defined (G_OS_UNIX) && !defined (G_STDIO_WRAP_ON_UNIX)
+#   define G_STDIO_LIBC_DIRECT
+# endif
+#endif
+
+#ifdef G_STDIO_LIBC_DIRECT
 
 /* Just pass on to the system functions, so there's no potential for data
  * format mismatches, especially with large file interfaces. 
@@ -96,7 +102,7 @@ int g_unlink (const gchar *filename);
 GLIB_AVAILABLE_IN_ALL
 int g_rmdir  (const gchar *filename);
 
-#else /* ! G_OS_UNIX */
+#else /* ! G_STDIO_LIBC_DIRECT */
 
 /* Wrappers for C library functions that take pathname arguments. On
  * Unix, the pathname is a file name as it literally is in the file
@@ -173,7 +179,7 @@ GLIB_AVAILABLE_IN_ALL
 int g_utime     (const gchar    *filename,
 		 struct utimbuf *utb);
 
-#endif /* G_OS_UNIX */
+#endif /* G_STDIO_LIBC_DIRECT */
 
 GLIB_AVAILABLE_IN_2_36
 gboolean g_close (gint       fd,
