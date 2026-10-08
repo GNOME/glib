@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.88.4, 2026-10-08
+==============================================
+
+* Bugs fixed:
+  - #4011 gio/tests/services: Installed service file contains build path after
+    !5259 (Jaipaul Cheernam)
+  - #4020 ‘TLS callback not invoked’ error on msys2-clang64 CI job (Luca Bacci)
+  - !5262 Backport !5261 “gio/tests/services: Fix installed service file
+    containing build path” to glib-2-88
+  - !5273 Backport !5266 “docs: Fix gio gi-docgen docs_url” to glib-2-88
+  - !5285 Backport !5283 “gconstructor: Reference _tls_used also on GCC, CLang”
+    to glib-2-88
+  - !5323 Backport !5311 “fix: handle long filenames in trash by truncating from
+    front” to glib-2-88
+  - !5379 Update Norwegian Nynorsk translation
+  - !5394 Backport various security fixes to glib-2-88
+
+* Translation updates:
+  - Norwegian Nynorsk (Roy-Magne Mo)
+
+
 Overview of changes in GLib 2.88.3, 2026-07-29
 ==============================================
 
