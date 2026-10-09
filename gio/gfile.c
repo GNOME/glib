@@ -3048,6 +3048,10 @@ copy_stream_with_progress (GInputStream           *in,
 }
 
 #ifdef HAVE_COPY_FILE_RANGE
+/* The most that copy_file_range_with_progress() copies in one call, so that
+ * it reports progress and checks for cancellation regularly. */
+#define COPY_FILE_RANGE_CHUNK_SIZE ((size_t) 8 * 1024 * 1024)
+
 static gboolean
 do_copy_file_range (int      fd_in,
                     loff_t  *off_in,
@@ -3130,16 +3134,19 @@ copy_file_range_with_progress (GInputStream           *in,
   copy_len = total_size;
   last_notified_size = 0;
 
-  /* Call copy_file_range() in a loop until the whole contents are copied. For
-   * smaller files, this loop will iterate only once. For larger files, the
-   * kernel (at least, kernel 6.1.6) will return after 2GB anyway, so that gives
-   * us more loop iterations and more progress reporting. */
+  /* Call copy_file_range() in a loop until the whole contents are copied, at
+   * most COPY_FILE_RANGE_CHUNK_SIZE at a time. For smaller files, this loop
+   * will iterate only once. Linux (at least 6.1.6) returns after 2GB anyway,
+   * but FreeBSD copies the whole length in one call, which would leave no
+   * progress reporting or cancellation until the copy is complete. */
   while (copy_len > 0)
     {
       size_t n_copied;
 
       if (g_cancellable_set_error_if_cancelled (cancellable, error) ||
-          !do_copy_file_range (fd_in, &offset_in, fd_out, &offset_out, copy_len, &n_copied, error))
+          !do_copy_file_range (fd_in, &offset_in, fd_out, &offset_out,
+                               MIN (copy_len, COPY_FILE_RANGE_CHUNK_SIZE),
+                               &n_copied, error))
         return FALSE;
 
       if (n_copied == 0)
