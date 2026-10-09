@@ -1682,7 +1682,7 @@ platform_get_argv0 (void)
 {
 #ifdef HAVE_PROC_SELF_CMDLINE
   char *cmdline;
-  char *base_arg0;
+  char *argv0;
   gsize len;
 
   if (!g_file_get_contents ("/proc/self/cmdline",
@@ -1700,12 +1700,12 @@ platform_get_argv0 (void)
    * to hold on to a smaller malloc block; the arguments
    * could be large.
    */
-  base_arg0 = g_path_get_basename (cmdline);
+  argv0 = g_strdup (cmdline);
   g_free (cmdline);
-  return base_arg0;
+  return argv0;
 #elif defined __OpenBSD__
   char **cmdline;
-  char *base_arg0;
+  char *argv0;
   gsize len;
 
   int mib[] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
@@ -1725,15 +1725,15 @@ platform_get_argv0 (void)
    * to hold on to a smaller malloc block; the arguments
    * could be large.
    */
-  base_arg0 = g_path_get_basename (*cmdline);
+  argv0 = g_strdup (*cmdline);
   g_free (cmdline);
-  return base_arg0;
+  return argv0;
 #elif defined G_OS_WIN32
   const wchar_t *cmdline;
   wchar_t **wargv;
   int wargc;
   gchar *utf8_buf = NULL;
-  char *base_arg0 = NULL;
+  char *argv0 = NULL;
 
   /* Pretend it's const, since we're not allowed to free it */
   cmdline = (const wchar_t *) GetCommandLineW ();
@@ -1770,9 +1770,9 @@ platform_get_argv0 (void)
    * to hold on to a smaller malloc block; the arguments
    * could be large.
    */
-  base_arg0 = g_path_get_basename (utf8_buf);
+  argv0 = g_strdup (utf8_buf);
   g_free (utf8_buf);
-  return base_arg0;
+  return argv0;
 #endif
 
   return NULL;
@@ -1823,18 +1823,24 @@ g_option_context_parse (GOptionContext   *context,
 
   g_return_val_if_fail (context != NULL, FALSE);
 
-  /* Set program name */
+  /* Set program name and argv0 */
   if (!g_get_prgname())
     {
-      gchar *prgname;
+      char *prgname, *argv0;
 
       if (argc && argv && *argc)
-	prgname = g_path_get_basename ((*argv)[0]);
+        {
+          argv0 = (*argv)[0];
+          prgname = (argv0 ? g_path_get_basename (argv0) : NULL);
+        }
       else
-	prgname = platform_get_argv0 ();
+        {
+          argv0 = platform_get_argv0 ();
+          prgname = (argv0 ? g_path_get_basename (argv0) : NULL);
+          g_free (argv0);
+        }
 
       g_set_prgname_once (prgname ? prgname : "<unknown>");
-
       g_free (prgname);
     }
 
