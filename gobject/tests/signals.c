@@ -134,7 +134,7 @@ static GType enum_type;
 static GType flags_type;
 
 static guint simple_id;
-static guint simple2_id;
+static guint simple2_id G_GNUC_UNUSED;
 
 typedef struct {
   GTypeInterface g_iface;
