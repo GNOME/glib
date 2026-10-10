@@ -176,7 +176,7 @@ struct _GTypeModuleClass
 static void     type_name##_init              (TypeName        *self); \
 static void     type_name##_class_init        (TypeName##Class *klass); \
 static void     type_name##_class_finalize    (TypeName##Class *klass); \
-static gpointer type_name##_parent_class = NULL; \
+G_GNUC_UNUSED static gpointer type_name##_parent_class = NULL; \
 static GType    type_name##_type_id = 0; \
 static gint     TypeName##_private_offset; \
 \
