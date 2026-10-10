@@ -642,8 +642,8 @@ static GSource *task_pool_manager;
 static guint64 task_wait_time;
 static gint tasks_running;
 
-static guint task_pool_max_counter;
-static guint tasks_running_counter;
+static guint task_pool_max_counter G_GNUC_UNUSED;
+static guint tasks_running_counter G_GNUC_UNUSED;
 
 /* When the task pool fills up and blocks, and the program keeps
  * queueing more tasks, we will slowly add more threads to the pool
