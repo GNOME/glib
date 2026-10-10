@@ -61,10 +61,6 @@ OPTIONS
 
   Specify incremental indent string.
 
-``-s <NUMBER>``
-
-  Specify line spacing.
-
 ``-h``, ``--help``
 
   Print brief help and exit.
