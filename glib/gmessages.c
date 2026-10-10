@@ -2014,6 +2014,9 @@ g_log_set_writer_func (GLogWriterFunc func,
       return;
     }
 
+  if (log_writer_user_data_free != NULL && log_writer_user_data != NULL)
+    log_writer_user_data_free (log_writer_user_data);
+
   log_writer_func = func;
   log_writer_user_data = user_data;
   log_writer_user_data_free = user_data_free;
