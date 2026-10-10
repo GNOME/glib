@@ -670,6 +670,7 @@ test_server_path_in_use (void)
   gchar *escaped = NULL;
 
   path = g_string_new (g_get_tmp_dir ());
+  g_string_append_c (path, G_DIR_SEPARATOR);
   guid = g_dbus_generate_guid ();
   while (path->len < UNIX_PATH_MAX - 1)
     g_string_append_c (path, 'x');
