@@ -1152,7 +1152,16 @@ g_get_process_executable_dir (void)
   if (toplevel == NULL)
     {
 #if defined(G_OS_WIN32)
-      toplevel = g_win32_get_package_installation_directory_of_module (NULL);
+      gunichar2 filename_utf16[MAX_PATH];
+      gchar *filename_utf8;
+
+      if (!GetModuleFileName (NULL, filename_utf16, MAX_PATH))
+        return NULL;
+
+      filename_utf8 = g_utf16_to_utf8 (filename_utf16, -1, NULL, NULL, NULL);
+      g_assert (filename_utf8 != NULL);
+      toplevel = g_path_get_dirname (filename_utf8);
+      g_free (filename_utf8);
 #elif defined(__APPLE__)
       char pathbuf[PATH_MAX + 1];
       uint32_t bufsize = sizeof (pathbuf);
