@@ -161,7 +161,7 @@ g_value_copy (const GValue *src_value,
  * (as if the value had just been initialized using
  * [method@GObject.Value.init]).
  *
- * Returns: the [struct@GObject.Value] structure that has been passed in
+ * Returns: (transfer none): the [struct@GObject.Value] structure that has been passed in
  */
 GValue*
 g_value_reset (GValue *value)
