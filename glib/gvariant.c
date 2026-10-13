@@ -3783,7 +3783,7 @@ g_variant_make_array_type (GVariant *element)
  * have been added; in this case it is impossible to infer the type of
  * the empty array.
  *
- * Returns: (transfer none): a new, floating, #GVariant
+ * Returns: (transfer floating): a new, floating, #GVariant
  *
  * Since: 2.24
  **/
@@ -4320,7 +4320,7 @@ g_variant_dict_clear (GVariantDict *dict)
  * #GVariantDict) or by reinitialising it with g_variant_dict_init() (in
  * the case of stack-allocated).
  *
- * Returns: (transfer none): a new, floating, #GVariant
+ * Returns: (transfer floating): a new, floating, #GVariant
  *
  * Since: 2.40
  **/
@@ -5465,7 +5465,7 @@ g_variant_valist_get (const gchar **str,
  *                              some_strings);
  * ]|
  *
- * Returns: a new floating #GVariant instance
+ * Returns: (transfer floating): a new floating #GVariant instance
  *
  * Since: 2.24
  **/
@@ -5532,7 +5532,7 @@ g_variant_new (const gchar *format_string,
  * result.  This can also be done by adding the result to a container,
  * or by passing it to another g_variant_new() call.
  *
- * Returns: a new, usually floating, #GVariant
+ * Returns: (transfer floating): a new, usually floating, #GVariant
  *
  * Since: 2.24
  **/
@@ -6273,7 +6273,7 @@ g_variant_byteswap (GVariant *value)
  * the memory (since GLib 2.60) or (in older versions) fail and exit the
  * process.
  *
- * Returns: (transfer none): a new floating #GVariant of type @type
+ * Returns: (transfer floating): a new floating #GVariant of type @type
  *
  * Since: 2.24
  **/
