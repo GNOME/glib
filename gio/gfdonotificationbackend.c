@@ -158,7 +158,7 @@ activate_action (GFdoNotificationBackend *backend,
       g_variant_builder_add (&builder, "{sv}", "desktop-startup-id", g_variant_new_string (activation_token));
       g_variant_builder_add (&builder, "{sv}", "activation-token", g_variant_new_string (activation_token));
     }
-  platform_data = g_variant_builder_end (&builder);
+  platform_data = g_variant_ref_sink (g_variant_builder_end (&builder));
 
   if (name != NULL &&
       g_str_has_prefix (name, "app."))
@@ -187,6 +187,7 @@ activate_action (GFdoNotificationBackend *backend,
       retval = TRUE;
     }
 
+  g_variant_unref (platform_data);
   g_object_unref (application);
 
   return retval;
