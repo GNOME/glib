@@ -2120,6 +2120,108 @@ test_launch_fail_dbus (void)
   g_clear_object (&app_info);
 }
 
+static void
+test_launch_async_success (void)
+{
+  GDesktopAppInfo *appinfo;
+  GAppLaunchContext *context;
+  GAsyncResult *result = NULL;
+  GError *error = NULL;
+  const gchar *path;
+  gboolean invoked = FALSE;
+  gboolean launched = FALSE;
+  gboolean failed = FALSE;
+
+  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  appinfo = g_desktop_app_info_new_from_filename (path);
+  g_assert_nonnull (appinfo);
+
+  context = g_object_new (test_launch_context_get_type (), NULL);
+  g_signal_connect (context, "launch-started",
+                    G_CALLBACK (on_launch_started),
+                    &invoked);
+  g_signal_connect (context, "launched",
+                    G_CALLBACK (on_launched),
+                    &launched);
+  g_signal_connect (context, "launch-failed",
+                    G_CALLBACK (on_launch_failed),
+                    &failed);
+
+  g_app_info_launch_uris_async (G_APP_INFO (appinfo), NULL, context, NULL,
+                                async_result_cb, &result);
+
+  while (result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_true (g_app_info_launch_uris_finish (G_APP_INFO (appinfo), result, &error));
+  g_assert_no_error (error);
+  g_assert_true (invoked);
+  g_assert_true (launched);
+  g_assert_false (failed);
+
+  g_clear_object (&result);
+  g_clear_object (&context);
+  g_clear_object (&appinfo);
+}
+
+static void
+test_launch_async_fail (void)
+{
+  GAppInfo *app_info;
+  GAsyncResult *result = NULL;
+  GError *error = NULL;
+
+  app_info = g_app_info_create_from_commandline ("this-must-not-exist‼",
+                                                 "failing app",
+                                                 G_APP_INFO_CREATE_NONE,
+                                                 &error);
+  g_assert_no_error (error);
+
+  g_app_info_launch_uris_async (app_info, NULL, NULL, NULL,
+                                async_result_cb, &result);
+
+  while (result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_false (g_app_info_launch_uris_finish (app_info, result, &error));
+  g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+
+  g_clear_error (&error);
+  g_clear_object (&result);
+  g_clear_object (&app_info);
+}
+
+static void
+test_launch_async_cancelled (void)
+{
+  GDesktopAppInfo *appinfo;
+  GCancellable *cancellable;
+  GAsyncResult *result = NULL;
+  GError *error = NULL;
+  const gchar *path;
+
+  path = g_test_get_filename (G_TEST_BUILT, "appinfo-test.desktop", NULL);
+  appinfo = g_desktop_app_info_new_from_filename (path);
+  g_assert_nonnull (appinfo);
+
+  cancellable = g_cancellable_new ();
+  g_cancellable_cancel (cancellable);
+
+  g_app_info_launch_uris_async (G_APP_INFO (appinfo), NULL, NULL, cancellable,
+                                async_result_cb, &result);
+
+  while (result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_assert_false (g_app_info_launch_uris_finish (G_APP_INFO (appinfo), result, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+
+  g_clear_error (&error);
+  g_clear_object (&cancellable);
+  g_clear_object (&result);
+  g_clear_object (&appinfo);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2165,6 +2267,9 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/launch/fail-absolute-path", test_launch_fail_absolute_path);
   g_test_add_func ("/desktop-app-info/launch/fail-startup-notify", test_launch_startup_notify_fail);
   g_test_add_func ("/desktop-app-info/launch/fail-dbus", test_launch_fail_dbus);
+  g_test_add_func ("/desktop-app-info/launch-async/success", test_launch_async_success);
+  g_test_add_func ("/desktop-app-info/launch-async/fail", test_launch_async_fail);
+  g_test_add_func ("/desktop-app-info/launch-async/cancelled", test_launch_async_cancelled);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
   g_test_add_func ("/desktop-app-info/launch-as-manager/fail", test_launch_as_manager_fail);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);

@@ -2944,20 +2944,20 @@ emit_launch_started (GAppLaunchContext *context,
 #define _SPAWN_FLAGS_DEFAULT (G_SPAWN_SEARCH_PATH)
 
 static gboolean
-g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
-                                           GDBusConnection            *session_bus,
-                                           const gchar                *exec_line,
-                                           GList                      *uris,
-                                           GAppLaunchContext          *launch_context,
-                                           GSpawnFlags                 spawn_flags,
-                                           GSpawnChildSetupFunc        user_setup,
-                                           gpointer                    user_setup_data,
-                                           GDesktopAppLaunchCallback   pid_callback,
-                                           gpointer                    pid_callback_data,
-                                           gint                        stdin_fd,
-                                           gint                        stdout_fd,
-                                           gint                        stderr_fd,
-                                           GError                    **error)
+g_desktop_app_info_launch_uris_with_spawn_internal (GDesktopAppInfo            *info,
+                                                    GDBusConnection            *session_bus,
+                                                    const gchar                *exec_line,
+                                                    GList                      *uris,
+                                                    GAppLaunchContext          *launch_context,
+                                                    GSpawnFlags                 spawn_flags,
+                                                    GSpawnChildSetupFunc        user_setup,
+                                                    gpointer                    user_setup_data,
+                                                    GDesktopAppLaunchCallback   pid_callback,
+                                                    gpointer                    pid_callback_data,
+                                                    gint                        stdin_fd,
+                                                    gint                        stdout_fd,
+                                                    gint                        stderr_fd,
+                                                    GError                    **error)
 {
   gboolean completed = FALSE;
   GList *old_uris;
@@ -3193,6 +3193,136 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
   g_list_free_full (ruris, g_free);
 
   return completed;
+}
+
+static gboolean
+g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
+                                           GDBusConnection            *session_bus,
+                                           const gchar                *exec_line,
+                                           GList                      *uris,
+                                           GAppLaunchContext          *launch_context,
+                                           GSpawnFlags                 spawn_flags,
+                                           GSpawnChildSetupFunc        user_setup,
+                                           gpointer                    user_setup_data,
+                                           GDesktopAppLaunchCallback   pid_callback,
+                                           gpointer                    pid_callback_data,
+                                           gint                        stdin_fd,
+                                           gint                        stdout_fd,
+                                           gint                        stderr_fd,
+                                           GError                    **error)
+{
+  gboolean completed;
+
+  completed = g_desktop_app_info_launch_uris_with_spawn_internal (info,
+                                                                  session_bus,
+                                                                  exec_line,
+                                                                  uris,
+                                                                  launch_context,
+                                                                  spawn_flags,
+                                                                  user_setup,
+                                                                  user_setup_data,
+                                                                  pid_callback,
+                                                                  pid_callback_data,
+                                                                  stdin_fd,
+                                                                  stdout_fd,
+                                                                  stderr_fd,
+                                                                  error);
+
+  if (completed && session_bus != NULL)
+    g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
+
+  return completed;
+}
+
+static void
+launch_uris_with_spawn_flush_cb (GObject      *object,
+                                 GAsyncResult *result,
+                                 gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+
+  g_dbus_connection_flush_finish (G_DBUS_CONNECTION (object), result, NULL);
+  g_task_return_boolean (task, TRUE);
+  g_object_unref (task);
+}
+
+static void
+g_desktop_app_info_launch_uris_with_spawn_async (GDesktopAppInfo           *info,
+                                                 GDBusConnection           *session_bus,
+                                                 const gchar               *exec_line,
+                                                 GList                     *uris,
+                                                 GAppLaunchContext         *launch_context,
+                                                 GSpawnFlags                spawn_flags,
+                                                 GSpawnChildSetupFunc       user_setup,
+                                                 gpointer                   user_setup_data,
+                                                 GDesktopAppLaunchCallback  pid_callback,
+                                                 gpointer                   pid_callback_data,
+                                                 gint                       stdin_fd,
+                                                 gint                       stdout_fd,
+                                                 gint                       stderr_fd,
+                                                 GCancellable              *cancellable,
+                                                 GAsyncReadyCallback        callback,
+                                                 gpointer                   user_data)
+{
+  GTask *task = NULL;
+  GError *local_error = NULL;
+
+  g_return_if_fail (G_IS_DESKTOP_APP_INFO (info));
+  g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+  task = g_task_new (info, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_desktop_app_info_launch_uris_with_spawn_async);
+
+  if (g_task_return_error_if_cancelled (task))
+    {
+      g_object_unref (task);
+      return;
+    }
+
+  if (!g_desktop_app_info_launch_uris_with_spawn_internal (info,
+                                                           session_bus,
+                                                           exec_line,
+                                                           uris,
+                                                           launch_context,
+                                                           spawn_flags,
+                                                           user_setup,
+                                                           user_setup_data,
+                                                           pid_callback,
+                                                           pid_callback_data,
+                                                           stdin_fd,
+                                                           stdout_fd,
+                                                           stderr_fd,
+                                                           &local_error))
+    {
+      g_task_return_error (task, g_steal_pointer (&local_error));
+      g_object_unref (task);
+      return;
+    }
+
+  if (session_bus != NULL)
+    {
+      g_dbus_connection_flush (session_bus,
+                               cancellable,
+                               launch_uris_with_spawn_flush_cb,
+                               g_steal_pointer (&task));
+    }
+  else
+    {
+      g_task_return_boolean (task, TRUE);
+      g_clear_object (&task);
+    }
+}
+
+static gboolean
+g_desktop_app_info_launch_uris_with_spawn_finish (GDesktopAppInfo  *info,
+                                                  GAsyncResult     *result,
+                                                  GError          **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, info), FALSE);
+  g_return_val_if_fail (g_task_get_source_tag (G_TASK (result)) ==
+                        g_desktop_app_info_launch_uris_with_spawn_async, FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static gchar *
@@ -3441,15 +3571,7 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
                                                          pid_callback, pid_callback_data,
                                                          stdin_fd, stdout_fd, stderr_fd, error);
 
-  if (session_bus != NULL)
-    {
-      /* This asynchronous flush holds a reference until it completes,
-       * which ensures that the following unref won't immediately kill
-       * the connection if we were the initial owner.
-       */
-      g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
-      g_object_unref (session_bus);
-    }
+  g_clear_object (&session_bus);
 
   return success;
 }
@@ -3507,14 +3629,19 @@ launch_uris_with_dbus_cb (GObject      *object,
 }
 
 static void
-launch_uris_flush_cb (GObject      *object,
-                      GAsyncResult *result,
-                      gpointer      user_data)
+launch_uris_with_spawn_cb (GObject      *object,
+                           GAsyncResult *result,
+                           gpointer      user_data)
 {
   GTask *task = G_TASK (user_data);
+  GError *error = NULL;
 
-  g_dbus_connection_flush_finish (G_DBUS_CONNECTION (object), result, NULL);
-  g_task_return_boolean (task, TRUE);
+  if (!g_desktop_app_info_launch_uris_with_spawn_finish (G_DESKTOP_APP_INFO (object),
+                                                         result, &error))
+    g_task_return_error (task, g_steal_pointer (&error));
+  else
+    g_task_return_boolean (task, TRUE);
+
   g_object_unref (task);
 }
 
@@ -3528,7 +3655,6 @@ launch_uris_bus_get_cb (GObject      *object,
   LaunchUrisData *data = g_task_get_task_data (task);
   GCancellable *cancellable = g_task_get_cancellable (task);
   GDBusConnection *session_bus;
-  GError *local_error = NULL;
 
   session_bus = g_bus_get_finish (result, NULL);
 
@@ -3546,30 +3672,13 @@ launch_uris_bus_get_cb (GObject      *object,
     }
   else
     {
-      /* FIXME: The D-Bus message from the notify_desktop_launch() function
-       * can be still lost even if flush is called later. See:
-       * https://gitlab.freedesktop.org/dbus/dbus/issues/72
-       */
-      g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec,
-                                                 data->uris, data->context,
-                                                 _SPAWN_FLAGS_DEFAULT, NULL,
-                                                 NULL, NULL, NULL, -1, -1, -1,
-                                                 &local_error);
-      if (local_error != NULL)
-        {
-          g_task_return_error (task, g_steal_pointer (&local_error));
-          g_object_unref (task);
-        }
-      else if (session_bus)
-        g_dbus_connection_flush (session_bus,
-                                 cancellable,
-                                 launch_uris_flush_cb,
-                                 g_steal_pointer (&task));
-      else
-        {
-          g_task_return_boolean (task, TRUE);
-          g_clear_object (&task);
-        }
+      g_desktop_app_info_launch_uris_with_spawn_async (info, session_bus, info->exec,
+                                                       data->uris, data->context,
+                                                       _SPAWN_FLAGS_DEFAULT, NULL,
+                                                       NULL, NULL, NULL, -1, -1, -1,
+                                                       cancellable,
+                                                       launch_uris_with_spawn_cb,
+                                                       g_steal_pointer (&task));
     }
 
   g_clear_object (&session_bus);
@@ -5355,11 +5464,7 @@ g_desktop_app_info_launch_action (GDesktopAppInfo   *info,
       g_free (exec_line);
     }
 
-  if (session_bus != NULL)
-    {
-      g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
-      g_object_unref (session_bus);
-    }
+  g_clear_object (&session_bus);
 }
 /* Epilogue {{{1 */
 
