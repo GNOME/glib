@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-08-03 09:38+0000\n"
-"PO-Revision-Date: 2026-08-03 17:24+0200\n"
+"POT-Creation-Date: 2026-10-12 14:31+0000\n"
+"PO-Revision-Date: 2026-10-13 17:40+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <(nothing)>\n"
 "Language: ka\n"
@@ -292,7 +292,7 @@ msgstr ""
 
 #: gio/gbufferedinputstream.c:422 gio/gbufferedinputstream.c:500
 #: gio/ginputstream.c:181 gio/ginputstream.c:381 gio/ginputstream.c:651
-#: gio/ginputstream.c:1056 gio/goutputstream.c:227 gio/goutputstream.c:1052
+#: gio/ginputstream.c:1056 gio/goutputstream.c:227 gio/goutputstream.c:1062
 #: gio/gpollableinputstream.c:217 gio/gpollableoutputstream.c:289
 #, c-format
 msgid "Too large count value passed to %s"
@@ -308,7 +308,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "GBufferedInputStream-ის წაკვეთა შეუძლებელია"
 
 #: gio/gbufferedinputstream.c:986 gio/ginputstream.c:1252 gio/giostream.c:321
-#: gio/goutputstream.c:2214
+#: gio/goutputstream.c:2224
 msgid "Stream is already closed"
 msgstr "ნაკადი უკვე დახურულია"
 
@@ -336,13 +336,13 @@ msgstr "დანიშნულების წერტილში საკ�
 
 #: gio/gcharsetconverter.c:357 gio/gdatainputstream.c:842
 #: gio/gdatainputstream.c:1276 glib/gconvert.c:358 glib/gconvert.c:790
-#: glib/giochannel.c:1543 glib/giochannel.c:1585 glib/giochannel.c:2446
+#: glib/giochannel.c:1543 glib/giochannel.c:1585 glib/giochannel.c:2447
 #: glib/gutf8.c:967 glib/gutf8.c:1424
 msgid "Invalid byte sequence in conversion input"
 msgstr "შეტანილ ტექსტში ბაიტების მიმდევრობა მცდარია"
 
 #: gio/gcharsetconverter.c:362 glib/gconvert.c:366 glib/gconvert.c:704
-#: glib/giochannel.c:1550 glib/giochannel.c:2461
+#: glib/giochannel.c:1550 glib/giochannel.c:2462
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "გარდაქმნის შეცდომა: %s"
@@ -375,7 +375,7 @@ msgstr "უცნობი ტიპი"
 msgid "%s filetype"
 msgstr "ფაილის ტიპი %s"
 
-#: gio/gconverteroutputstream.c:427
+#: gio/gconverteroutputstream.c:432
 msgid "Unexpected data after end of conversion"
 msgstr "მოულოდნელი მონაცემები გადაყვანის დასრულების შემდეგ"
 
@@ -1368,7 +1368,7 @@ msgstr "შეცდომა: %s მატარებლის ცნობი
 msgid "Not authorized to change debug settings"
 msgstr "გამართვის პარამეტრების შესაცვლელად ავტორიზაცია არ გაგაჩნიათ"
 
-#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5275
+#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5285
 #: gio/gwin32appinfo.c:4257
 msgid "Unnamed"
 msgstr "უსახელო"
@@ -1386,30 +1386,36 @@ msgstr "აპლიკაციისთვის აუცილებელ�
 msgid "Program ‘%s’ not found in $PATH"
 msgstr "პროგრამა '%s' $PATH-ში აღმოჩენილი არაა"
 
-#: gio/gdesktopappinfo.c:3846
+#: gio/gdesktopappinfo.c:3823
+msgid "Saving application information is not supported when running as setuid"
+msgstr ""
+"setuid-ით გაშვებისას აპლიკაციის ინფორმაციის ინფორმაციის შენახვა მხარდაჭერილი "
+"არაა"
+
+#: gio/gdesktopappinfo.c:3856
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "ვერ შევქმენი მომხმარებლის აპლიკაციის კონფიგურაციის საქაღალდე %s: %s"
 
-#: gio/gdesktopappinfo.c:3850
+#: gio/gdesktopappinfo.c:3860
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "ვერ შევქმენი MIME-ის კონფიგურაციის საქაღალდე %s: %s"
 
-#: gio/gdesktopappinfo.c:4080
+#: gio/gdesktopappinfo.c:4090
 msgid "MIME apps information is too long"
 msgstr "MIME აპების ინფორმაცია მეტისმეტად გრძელია"
 
-#: gio/gdesktopappinfo.c:4111 gio/gdesktopappinfo.c:4135
+#: gio/gdesktopappinfo.c:4121 gio/gdesktopappinfo.c:4145
 msgid "Application information lacks an identifier"
 msgstr "აპლიკაციის ინფორმაციას იდენტიფიკატორი აკლია"
 
-#: gio/gdesktopappinfo.c:4388
+#: gio/gdesktopappinfo.c:4398
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "მომხმარებლის სამუშაო მაგიდის ფაილის '%s' შექმნა შეუძლებელია"
 
-#: gio/gdesktopappinfo.c:4508
+#: gio/gdesktopappinfo.c:4518
 #, c-format
 msgid "Custom definition for %s"
 msgstr "ხელით მითითებული აღწერა %s-სთვის"
@@ -1481,10 +1487,10 @@ msgstr "GEmblemedIcon-სთვის GEmblem-ს ველოდებოდი
 
 #: gio/gfile.c:1112 gio/gfile.c:1370 gio/gfile.c:1508 gio/gfile.c:1745
 #: gio/gfile.c:1800 gio/gfile.c:1858 gio/gfile.c:1942 gio/gfile.c:1999
-#: gio/gfile.c:2063 gio/gfile.c:2118 gio/gfile.c:4113 gio/gfile.c:4292
-#: gio/gfile.c:4699 gio/gfile.c:5167 gio/gfile.c:5579 gio/gfile.c:5664
-#: gio/gfile.c:5754 gio/gfile.c:5851 gio/gfile.c:5938 gio/gfile.c:6037
-#: gio/gfile.c:9214 gio/gfile.c:9304 gio/gfile.c:9388
+#: gio/gfile.c:2063 gio/gfile.c:2118 gio/gfile.c:4120 gio/gfile.c:4299
+#: gio/gfile.c:4706 gio/gfile.c:5174 gio/gfile.c:5586 gio/gfile.c:5671
+#: gio/gfile.c:5761 gio/gfile.c:5858 gio/gfile.c:5945 gio/gfile.c:6044
+#: gio/gfile.c:9221 gio/gfile.c:9311 gio/gfile.c:9395
 #: gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "ოპერაცია მხარდაუჭერელია"
@@ -1497,7 +1503,7 @@ msgstr "ოპერაცია მხარდაუჭერელია"
 msgid "Containing mount does not exist"
 msgstr "შეცველი მიმაგრება არ არსებობს"
 
-#: gio/gfile.c:2677 gio/glocalfile.c:2727
+#: gio/gfile.c:2677 gio/glocalfile.c:2812
 msgid "Can’t copy over directory"
 msgstr "საქაღალდეზე ზემოდან კოპირება შეუძლებელია"
 
@@ -1513,68 +1519,68 @@ msgstr "სამიზნე ფაილი უკვე არსებობ
 msgid "Can’t recursively copy directory"
 msgstr "საქაღალდის რეკურსიულად კოპირება შეუძლებელია"
 
-#: gio/gfile.c:3077 gio/gfile.c:3125
+#: gio/gfile.c:3081 gio/gfile.c:3129
 #, c-format
 msgid "Copy file range not supported"
 msgstr "ფაილების დიაპაზონის კოპირება მხარდაჭერილი არაა"
 
-#: gio/gfile.c:3083 gio/gfile.c:3194
+#: gio/gfile.c:3087 gio/gfile.c:3201
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "ფაილის შეერთების შეცდომა: %s"
 
-#: gio/gfile.c:3190
+#: gio/gfile.c:3197
 msgid "Splice not supported"
 msgstr "შეერთება მხარდაჭერილი არაა"
 
-#: gio/gfile.c:3354
+#: gio/gfile.c:3361
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "მიმაგრების წერტილებს შორის კოპირება (reflink/clone) მხარდაჭერილი არაა"
 
-#: gio/gfile.c:3358
+#: gio/gfile.c:3365
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "კოპირება (reflink/clone) მხარდაუჭერელი ან არასწორია"
 
-#: gio/gfile.c:3363
+#: gio/gfile.c:3370
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "კოპირება (reflink/clone) მხარდაუჭერელია ან არ იმუშავა"
 
-#: gio/gfile.c:3411 gio/gfile.c:3422
+#: gio/gfile.c:3418 gio/gfile.c:3429
 #, c-format
 msgid "Cannot retrieve attribute %s"
 msgstr "ვერ მივიღე ატრიბუტი %s"
 
-#: gio/gfile.c:3442
+#: gio/gfile.c:3449
 msgid "Can’t copy special file"
 msgstr "სპეციალური ფაილის კოპირება შეუძლებელია"
 
-#: gio/gfile.c:4516
+#: gio/gfile.c:4523
 msgid "Invalid symlink value given"
 msgstr "სიმბმბულის მითითებული მნიშვნელობა არასწორია"
 
-#: gio/gfile.c:4526 glib/gfileutils.c:2436
+#: gio/gfile.c:4533 glib/gfileutils.c:2447
 msgid "Symbolic links not supported"
 msgstr "სიმბოლური ბმების გამოყენება არაა რეალიზებული"
 
-#: gio/gfile.c:4810
+#: gio/gfile.c:4817
 msgid "Trash not supported"
-msgstr "ნაგავი მხარდაუჭერელია"
+msgstr "ნაგვის ყუთი მხარდაჭერილი არაა"
 
-#: gio/gfile.c:4920
+#: gio/gfile.c:4927
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "ფაილის სახელი არ შეიძლება, \"%c\"-ს შეიცავდეს"
 
-#: gio/gfile.c:7346 gio/gfile.c:7472
+#: gio/gfile.c:7353 gio/gfile.c:7479
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "შაბლონისთვის \"%s\" დროებითი საქაღალდის შექმნის შეცდომა: %s"
 
-#: gio/gfile.c:7790 gio/gvolume.c:368
+#: gio/gfile.c:7797 gio/gvolume.c:368
 msgid "volume doesn’t implement mount"
 msgstr "ტომს მიმაგრების მხარდაჭერა არ გააჩნია"
 
-#: gio/gfile.c:7904 gio/gfile.c:7981
+#: gio/gfile.c:7911 gio/gfile.c:7988
 msgid "No application is registered as handling this file"
 msgstr "ამ ფაილის გასახსნელი პროგრამა დარეგისტრირებული არაა"
 
@@ -1582,12 +1588,12 @@ msgstr "ამ ფაილის გასახსნელი პროგრ
 msgid "Enumerator is closed"
 msgstr "დამთვლელი დახურულია"
 
-#: gio/gfileenumerator.c:212 gio/gfileenumerator.c:271
-#: gio/gfileenumerator.c:416 gio/gfileenumerator.c:516
+#: gio/gfileenumerator.c:212 gio/gfileenumerator.c:273
+#: gio/gfileenumerator.c:420 gio/gfileenumerator.c:520
 msgid "File enumerator has outstanding operation"
 msgstr "ფაილის დამთვლელი დაკავებულია"
 
-#: gio/gfileenumerator.c:407 gio/gfileenumerator.c:507
+#: gio/gfileenumerator.c:411 gio/gfileenumerator.c:511
 msgid "File enumerator is already closed"
 msgstr "ფაილის დამთვლელი უკვე დახურულია"
 
@@ -1706,7 +1712,7 @@ msgid "Could not parse “%s” as IP address mask"
 msgstr "\"%s\"-ის IP მისამართის ნიღბის სახით დამუშავება შეუძლებელია"
 
 #: gio/ginetsocketaddress.c:199 gio/ginetsocketaddress.c:216
-#: gio/gnativesocketaddress.c:108 gio/gunixsocketaddress.c:222
+#: gio/gnativesocketaddress.c:108 gio/gunixsocketaddress.c:268
 msgid "Not enough space for socket address"
 msgstr "სოკეტის მისამართისთვის ადგილი საკმარისი არაა"
 
@@ -1724,7 +1730,7 @@ msgstr "შეყვანის ნაკადს წაკითხვის 
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: gio/ginputstream.c:1262 gio/giostream.c:331 gio/goutputstream.c:2224
+#: gio/ginputstream.c:1262 gio/giostream.c:331 gio/goutputstream.c:2234
 msgid "Stream has outstanding operation"
 msgstr "ნაკადი გადაუდებელ ოპერაციას ასრულებს"
 
@@ -1833,7 +1839,7 @@ msgstr "შეცდომა stdout-ზე ჩაწერისას"
 #: gio/gio-tool-cat.c:135 gio/gio-tool-info.c:383 gio/gio-tool-list.c:178
 #: gio/gio-tool-mkdir.c:50 gio/gio-tool-monitor.c:39 gio/gio-tool-monitor.c:41
 #: gio/gio-tool-monitor.c:43 gio/gio-tool-monitor.c:45
-#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1236 gio/gio-tool-open.c:72
+#: gio/gio-tool-monitor.c:206 gio/gio-tool-mount.c:1238 gio/gio-tool-open.c:72
 #: gio/gio-tool-remove.c:50 gio/gio-tool-rename.c:47 gio/gio-tool-set.c:95
 #: gio/gio-tool-trash.c:291 gio/gio-tool-tree.c:246
 msgid "LOCATION"
@@ -1854,7 +1860,7 @@ msgstr ""
 "შეგიძლიათ, მდებარეობად smb://server/resource/file.txt გამოიყენოთ."
 
 #: gio/gio-tool-cat.c:164 gio/gio-tool-info.c:414 gio/gio-tool-mkdir.c:78
-#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1287 gio/gio-tool-open.c:98
+#: gio/gio-tool-monitor.c:231 gio/gio-tool-mount.c:1289 gio/gio-tool-open.c:98
 #: gio/gio-tool-remove.c:74 gio/gio-tool-trash.c:388
 msgid "No locations given"
 msgstr "მდებარეობები მითითებული არაა"
@@ -2221,95 +2227,99 @@ msgstr "მიმაგრების მოვლენების მეთ�
 msgid "Monitor files or directories for changes."
 msgstr "ფაილების და საქაღალდეების ცვლილებების მონიტორინგი."
 
-#: gio/gio-tool-mount.c:65
+#: gio/gio-tool-mount.c:66
 msgid "Mount as mountable"
 msgstr "მიმაგრება მიმაგრებადია"
 
-#: gio/gio-tool-mount.c:66
+#: gio/gio-tool-mount.c:67
 msgid "Mount volume with device file, or other identifier"
 msgstr "ტომის მიმაგრება მოწყობილობის ფაილით ან სხვა იდენტიფიკატორით"
 
-#: gio/gio-tool-mount.c:66
+#: gio/gio-tool-mount.c:67
 msgid "ID"
 msgstr "ID"
 
-#: gio/gio-tool-mount.c:67
+#: gio/gio-tool-mount.c:68
 msgid "Unmount"
 msgstr "მოხსნა"
 
-#: gio/gio-tool-mount.c:68
+#: gio/gio-tool-mount.c:69
 msgid "Eject"
 msgstr "გამოღება"
 
-#: gio/gio-tool-mount.c:69
+#: gio/gio-tool-mount.c:70
 msgid "Stop drive with device file"
 msgstr "დისკის შეჩერება მოწყობილობის ფაილით"
 
-#: gio/gio-tool-mount.c:69
+#: gio/gio-tool-mount.c:70
 msgid "DEVICE"
 msgstr "მოწყობილობა"
 
-#: gio/gio-tool-mount.c:70
+#: gio/gio-tool-mount.c:71
 msgid "Unmount all mounts with the given scheme"
 msgstr "ყველა მიმაგრების მოხსნა მითითებული სქემით"
 
-#: gio/gio-tool-mount.c:70
+#: gio/gio-tool-mount.c:71
 msgid "SCHEME"
 msgstr "სქემა"
 
-#: gio/gio-tool-mount.c:71
+#: gio/gio-tool-mount.c:72
 msgid "Ignore outstanding file operations when unmounting or ejecting"
 msgstr "დაუსრულებელი ფაილის ოპერაციების გამოტოვება მოხსნისას ან გამოღებისას"
 
-#: gio/gio-tool-mount.c:72
+#: gio/gio-tool-mount.c:73
 msgid "Use an anonymous user when authenticating"
 msgstr "ავთენტიკაციისას ანონიმური მომხმარებლის გამოყენება"
 
-#. Translator: List here is a verb as in 'List all mounts'
 #: gio/gio-tool-mount.c:74
+msgid "Mount read-only"
+msgstr "მიმაგრება მხოლოდ-წასაკითხად"
+
+#. Translator: List here is a verb as in 'List all mounts'
+#: gio/gio-tool-mount.c:76
 msgid "List user-interesting volumes, drives and mounts"
 msgstr ""
 "მომხმარებლისთვის საინტერესო ტომების, დისკებისა და მიმაგრების წერტილების სია"
 
-#: gio/gio-tool-mount.c:75
+#: gio/gio-tool-mount.c:77
 msgid "Monitor user-interesting volume, drive and mount events"
 msgstr ""
 "მომხმარებლისთვის საინტერესო ტომების, დისკებისა და მიმაგრების მოვლენების "
 "მონიტორინგი"
 
-#: gio/gio-tool-mount.c:76
+#: gio/gio-tool-mount.c:78
 msgid "Show extra information"
 msgstr "დამატებითი ინფორმაციის ჩვენება"
 
-#: gio/gio-tool-mount.c:77
+#: gio/gio-tool-mount.c:79
 msgid "The numeric PIM when unlocking a VeraCrypt volume"
 msgstr "რიცხვითი PIM დაშიფრული VeraCrypt ტომის გახსნისას"
 
-#: gio/gio-tool-mount.c:77
+#: gio/gio-tool-mount.c:79
 msgid "PIM"
 msgstr "PIM"
 
-#: gio/gio-tool-mount.c:78
+#: gio/gio-tool-mount.c:80
 msgid "Mount a TCRYPT hidden volume"
 msgstr "TCRYPT დამალული ტომის მიმაგრება"
 
-#: gio/gio-tool-mount.c:79
+#: gio/gio-tool-mount.c:81
 msgid "Mount a TCRYPT system volume"
 msgstr "TCRYPT სისტემური ტომის მიმაგრება"
 
-#: gio/gio-tool-mount.c:276 gio/gio-tool-mount.c:308
+#: gio/gio-tool-mount.c:278 gio/gio-tool-mount.c:310
 msgid "Anonymous access denied"
 msgstr "ანონიმური წვდომა აკრძალულია"
 
-#: gio/gio-tool-mount.c:559
+#: gio/gio-tool-mount.c:561
 msgid "No drive for device file"
 msgstr "მოწყობილობის ფაილისთვის დისკი არ არსებობს"
 
-#: gio/gio-tool-mount.c:1051
+#: gio/gio-tool-mount.c:1053
 msgid "No volume for given ID"
 msgstr "მითითებული ID-სთვის ტომი არ არსებობს"
 
-#: gio/gio-tool-mount.c:1240
+#: gio/gio-tool-mount.c:1242
 msgid "Mount or unmount the locations."
 msgstr "მდებარეობების მიმაგრება ან მოხსნა."
 
@@ -3216,8 +3226,8 @@ msgid "Can’t rename file, filename already exists"
 msgstr ""
 "ფაილის სახელის გადარქმევა შეუძლებელია, რადგან ფაილის სახელი უკვე არსებობს"
 
-#: gio/glocalfile.c:1218 gio/glocalfile.c:2621 gio/glocalfile.c:2649
-#: gio/glocalfile.c:2788 gio/glocalfileoutputstream.c:658
+#: gio/glocalfile.c:1218 gio/glocalfile.c:2706 gio/glocalfile.c:2734
+#: gio/glocalfile.c:2873 gio/glocalfileoutputstream.c:658
 msgid "Invalid filename"
 msgstr "ფაილის არასწორი სახელი"
 
@@ -3231,97 +3241,97 @@ msgstr "ფაილის (%s) გახსნის შეცდომა: %s"
 msgid "Error removing file %s: %s"
 msgstr "ფაილის (%s) წაშლის შეცდომა: %s"
 
-#: gio/glocalfile.c:2078
+#: gio/glocalfile.c:2167
 #, c-format
 msgid "Unable to trash child file %s"
 msgstr "შვილი ფაილის %s ნაგვის ყუთში გადატანა შეუძლებელია"
 
-#: gio/glocalfile.c:2142 gio/glocalfile.c:2153 gio/glocalfile.c:2183
+#: gio/glocalfile.c:2231 gio/glocalfile.c:2242 gio/glocalfile.c:2272
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "ფაილის (%s) ნაგვის ყუთში გადატანის შეცდომა: %s"
 
-#: gio/glocalfile.c:2204
+#: gio/glocalfile.c:2293
 #, c-format
 msgid "Unable to create trash directory %s: %s"
 msgstr "სანაგვის საქაღალდის (%s) შექმნის შეცდომა: %s"
 
-#: gio/glocalfile.c:2225
+#: gio/glocalfile.c:2314
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "%s-ის წასაშლელად ზედა საქაღალდის პოვნა შეუძლებელი იყო"
 
-#: gio/glocalfile.c:2233
+#: gio/glocalfile.c:2322
 #, c-format
 msgid "Trashing on system internal mounts is not supported"
 msgstr ""
 "სისტემურ შიდა მიმაგრების წერტილებზე ნაგვის ყუთის შექმნა მხარდაჭერილი არაა"
 
-#: gio/glocalfile.c:2319 gio/glocalfile.c:2347
+#: gio/glocalfile.c:2408 gio/glocalfile.c:2436
 #, c-format
 msgid "Unable to find or create trash directory %s to trash %s"
 msgstr "სანაგვე საქაღალდის (%s) შექმნა შეუძლებელია %s-ის წასაშლელად"
 
-#: gio/glocalfile.c:2444
+#: gio/glocalfile.c:2529
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "წაშლის ინფორმაციის ფაილის (%s) შექმნის შეცდომა: %s"
 
-#: gio/glocalfile.c:2532
+#: gio/glocalfile.c:2617
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "ფაილის (%s) წაშლა ფაილური სისტემის საზღვრებს მიღმა შეუძლებელია"
 
-#: gio/glocalfile.c:2536 gio/glocalfile.c:2592
+#: gio/glocalfile.c:2621 gio/glocalfile.c:2677
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "ფაილის (%s) წაშლა შეუძლებელია: %s"
 
-#: gio/glocalfile.c:2598
+#: gio/glocalfile.c:2683
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "ფაილის (%s) წაშლა შეუძლებელია"
 
-#: gio/glocalfile.c:2624
+#: gio/glocalfile.c:2709
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "საქაღალდის (%s) შექმნის შეცდომა: %s"
 
-#: gio/glocalfile.c:2653
+#: gio/glocalfile.c:2738
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "ფაილურ სისტემას სიმბმულების მხარდაჭერა არ გააჩნია"
 
-#: gio/glocalfile.c:2656
+#: gio/glocalfile.c:2741
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "სიმბოლური ბმულის ('%s') შექმნის შეცდომა:%s"
 
-#: gio/glocalfile.c:2699 gio/glocalfile.c:2734 gio/glocalfile.c:2791
+#: gio/glocalfile.c:2784 gio/glocalfile.c:2819 gio/glocalfile.c:2876
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "ფაილის (%s) გადატანის შეცდომა: %s"
 
-#: gio/glocalfile.c:2722
+#: gio/glocalfile.c:2807
 msgid "Can’t move directory over directory"
 msgstr "საქაღალდის საქაღალდეზე გადატანა შეუძლებელია"
 
-#: gio/glocalfile.c:2748 gio/glocalfileoutputstream.c:1110
+#: gio/glocalfile.c:2833 gio/glocalfileoutputstream.c:1110
 #: gio/glocalfileoutputstream.c:1124 gio/glocalfileoutputstream.c:1139
 #: gio/glocalfileoutputstream.c:1156 gio/glocalfileoutputstream.c:1176
 msgid "Backup file creation failed"
 msgstr "მარქაფის ფაილის შექმნის შეცდომა"
 
-#: gio/glocalfile.c:2767
+#: gio/glocalfile.c:2852
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "სამიზნე ფაილის წაშლა შეუძლებელია: %s"
 
-#: gio/glocalfile.c:2781
+#: gio/glocalfile.c:2866
 msgid "Move between mounts not supported"
 msgstr "მიმაგრების წერტილებს შორის გადატანა მხარდაჭერილი არაა"
 
-#: gio/glocalfile.c:2957
+#: gio/glocalfile.c:3042
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "დისკზე %s-ის მიერ დაკავებული ადგილის გამოთვლის შეცდომა: %s"
@@ -3657,16 +3667,16 @@ msgstr "NetworkManager-ი გაშვებული არაა"
 msgid "NetworkManager version too old"
 msgstr "NetworkManager-ის ვერსია მეტისმეტად ძველია"
 
-#: gio/goutputstream.c:236 gio/goutputstream.c:777
+#: gio/goutputstream.c:236 gio/goutputstream.c:784
 msgid "Output stream doesn’t implement write"
 msgstr "გამოტანის ნაკადს ჩაწერის ფუნქცია განხორციელებული არ აქვს"
 
-#: gio/goutputstream.c:474 gio/goutputstream.c:1539
+#: gio/goutputstream.c:474 gio/goutputstream.c:1549
 #, c-format
 msgid "Sum of vectors passed to %s too large"
 msgstr "%s-სთვის გადაცემული ვექტორების ჯამი მეტისმეტად დიდია"
 
-#: gio/goutputstream.c:738 gio/goutputstream.c:1769
+#: gio/goutputstream.c:738 gio/goutputstream.c:1779
 msgid "Source stream is already closed"
 msgstr "შეყვანის ნაკადი უკვე დახურულია"
 
@@ -3699,7 +3709,7 @@ msgstr "დომენის არასწორი სახელი"
 msgid "The resource at “%s” does not exist"
 msgstr "რესურსი მისამართზე \"%s\" არ არსებობს"
 
-#: gio/gresource.c:915
+#: gio/gresource.c:923
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "რესურის, მისამართზე \"%s\", გაშლა ჩავარდა"
@@ -4573,7 +4583,7 @@ msgstr "ფაილური სისტემის საწყისი ს
 msgid "Error writing to file descriptor: %s"
 msgstr "შეცდომა ფაილის დესკრიპტორში ჩაწერისას: %s"
 
-#: gio/gunixsocketaddress.c:245
+#: gio/gunixsocketaddress.c:291
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "აბსტრაქტული UNIX სოკეტის მისამართები ამ სისტემაზე მხარდაჭერილი არაა"
 
@@ -5362,7 +5372,7 @@ msgstr "%s: ფაილი ძალიან დიდია"
 msgid "Failed to read from file “%s”: %s"
 msgstr "ფაილიდან \"%s\" წაკითხვის შეცდომა: %s"
 
-#: glib/gfileutils.c:906 glib/gfileutils.c:981 glib/gfileutils.c:1510
+#: glib/gfileutils.c:906 glib/gfileutils.c:981 glib/gfileutils.c:1514
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "ფაილის (%s) გახსნა შეუძლებელია: %s"
@@ -5397,32 +5407,32 @@ msgstr "ვერ ვწერ '%s' ფაილს: fwrite() ვერ შე�
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "ვერ ვწერ '%s' ფაილს: fsync() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:1378 glib/gfileutils.c:1820
+#: glib/gfileutils.c:1382 glib/gfileutils.c:1824
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "ვერ ვქმნი '%s' ფაილს: %s"
 
-#: glib/gfileutils.c:1396
+#: glib/gfileutils.c:1400
 #, c-format
 msgid "Failed to set permissions of “%s”: %s"
 msgstr "\"%s\"-ის წვდომების მიღება ჩავარდა: %s"
 
-#: glib/gfileutils.c:1444
+#: glib/gfileutils.c:1448
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "არსებული '%s' ფაილი ვერ ამოიშლება: g_unlink() ვერ შედგა: %s"
 
-#: glib/gfileutils.c:1785
+#: glib/gfileutils.c:1789
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "შაბლონი '%s' მცდარია და '%s'-ს არ უნდა შეიცავდეს"
 
-#: glib/gfileutils.c:1798
+#: glib/gfileutils.c:1802
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "შაბლონი '%s' არ შეიცავს XXXXXX"
 
-#: glib/gfileutils.c:2392 glib/gfileutils.c:2421
+#: glib/gfileutils.c:2403 glib/gfileutils.c:2432
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "სიმბოლური ბმის \"%s\" წაკითხვის შეცდომა: %s"
@@ -5436,15 +5446,15 @@ msgstr "ვერ ხერხდება გარდამქმნელი�
 msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "უშუალოდ წაკითხვა ფუნქციაში g_io_channel_read_line_string ვერ ხერხდება"
 
-#: glib/giochannel.c:1775 glib/giochannel.c:2034 glib/giochannel.c:2121
+#: glib/giochannel.c:1775 glib/giochannel.c:2035 glib/giochannel.c:2122
 msgid "Leftover unconverted data in read buffer"
 msgstr "გარდაუქმნელი მონაცემები წაკითხვის ბუფერში დარჩა"
 
-#: glib/giochannel.c:1857 glib/giochannel.c:1934
+#: glib/giochannel.c:1858 glib/giochannel.c:1935
 msgid "Channel terminates in a partial character"
 msgstr "არხი არასრული სიმბოლოთი იხურება"
 
-#: glib/giochannel.c:1920
+#: glib/giochannel.c:1921
 msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "უშუალოდ წაკითხვა ფუნქციაში g_io_channel_read_to_end ვერ ხერხდება"
 
@@ -5834,185 +5844,185 @@ msgstr "შეცდომის გაანალიზების პარ�
 msgid "Missing argument for %s"
 msgstr "არ არსებული არგუმენტი - %s-თვის"
 
-#: glib/goption.c:2044
+#: glib/goption.c:2050
 #, c-format
 msgid "Unknown option %s"
 msgstr "უცნობი პარამეტრი %s"
 
-#: glib/gregex.c:562
+#: glib/gregex.c:547
 msgid "corrupted object"
 msgstr "დაზიანებული ობიექტი"
 
-#: glib/gregex.c:564
+#: glib/gregex.c:549
 msgid "out of memory"
 msgstr "არასაკმარისი მეხსიერება"
 
-#: glib/gregex.c:579
+#: glib/gregex.c:564
 msgid "internal error"
 msgstr "შიდა შეცდომა"
 
-#: glib/gregex.c:581
+#: glib/gregex.c:566
 msgid "the pattern contains items not supported for partial matching"
 msgstr "თარგი შეიცავს ნაწილობრივი დამთხვევისთვის მხარდაუჭერელ ელემეტებს"
 
-#: glib/gregex.c:583
+#: glib/gregex.c:568
 msgid "back references as conditions are not supported for partial matching"
 msgstr "უკუ მიმართვა პირობების სახით მხარდაუჭერელია ნაწილობრივი დამთხვევისთვის"
 
-#: glib/gregex.c:589
+#: glib/gregex.c:574
 msgid "recursion limit reached"
 msgstr "რეკურსიის ლიმიტი მიღწეულია"
 
-#: glib/gregex.c:591
+#: glib/gregex.c:576
 msgid "bad offset"
 msgstr "არასწორი წანაცვლება"
 
-#: glib/gregex.c:593
+#: glib/gregex.c:578
 msgid "recursion loop"
 msgstr "რეკურსიის მარყუჟი"
 
 #. should not happen in GRegex since we check modes before each match
-#: glib/gregex.c:596
+#: glib/gregex.c:581
 msgid "matching mode is requested that was not compiled for JIT"
 msgstr "მოთხოვნილია დამთხვევის რეჟიმი, რომელიც JIT-სთვის დაკომპილებული არაა"
 
-#: glib/gregex.c:617 glib/gregex.c:2177
+#: glib/gregex.c:602 glib/gregex.c:2204
 msgid "unknown error"
 msgstr "უცნობი შეცდომა"
 
-#: glib/gregex.c:638
+#: glib/gregex.c:623
 msgid "\\ at end of pattern"
 msgstr "\\ ნიმუშის ბოლოში"
 
-#: glib/gregex.c:642
+#: glib/gregex.c:627
 msgid "\\c at end of pattern"
 msgstr "\\c ნიმუშის ბოლოში"
 
-#: glib/gregex.c:647
+#: glib/gregex.c:632
 msgid "unrecognized character following \\"
 msgstr "უცნობი სიმბოლო \\-ის შემდეგ"
 
-#: glib/gregex.c:651
+#: glib/gregex.c:636
 msgid "numbers out of order in {} quantifier"
 msgstr "მთვლელში რიცხვები დაულაგებელია {}"
 
-#: glib/gregex.c:655
+#: glib/gregex.c:640
 msgid "number too big in {} quantifier"
 msgstr "მთვლელში {} რიცხვები ძალიან დიდია"
 
-#: glib/gregex.c:659
+#: glib/gregex.c:644
 msgid "missing terminating ] for character class"
 msgstr "სიმბოლოების კლასს დამაბოლოებელი ] აკლია"
 
-#: glib/gregex.c:663
+#: glib/gregex.c:648
 msgid "invalid escape sequence in character class"
 msgstr "სიმბოლოების კლასის არასწორი დამაბოლოებელი თანამიმდევრობა"
 
-#: glib/gregex.c:667
+#: glib/gregex.c:652
 msgid "range out of order in character class"
 msgstr "სიმბოლოების კლასის დიაპაზონი მიმდევრობის გარეთაა"
 
-#: glib/gregex.c:672
+#: glib/gregex.c:657
 msgid "nothing to repeat"
 msgstr "გასამეორებელი არაფერია"
 
-#: glib/gregex.c:676
+#: glib/gregex.c:661
 msgid "unrecognized character after (? or (?-"
 msgstr "უცნობი სიმბლოები (? ან (?- ის შემდეგ"
 
-#: glib/gregex.c:680
+#: glib/gregex.c:665
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX-ის დასახელებული კლასები მხოლოდ კლასის შიგნითაა ხელმისაწვდომი"
 
-#: glib/gregex.c:684
+#: glib/gregex.c:669
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX-ის გადაფარვადი ელემენტები მხარდაუჭერელია"
 
-#: glib/gregex.c:690
+#: glib/gregex.c:675
 msgid "missing terminating )"
 msgstr "აკლია დამხურავი )"
 
-#: glib/gregex.c:694
+#: glib/gregex.c:679
 msgid "reference to non-existent subpattern"
 msgstr "ბმა არარსებულ ქვეშაბლონთან"
 
-#: glib/gregex.c:698
+#: glib/gregex.c:683
 msgid "missing ) after comment"
 msgstr "კომენტარის შემდეგ ) აკლია"
 
-#: glib/gregex.c:702
+#: glib/gregex.c:687
 msgid "regular expression is too large"
 msgstr "რეგულარული გამოსახულება ძალიან გრძელია"
 
-#: glib/gregex.c:706
+#: glib/gregex.c:691
 msgid "malformed number or name after (?("
 msgstr "(?(-ის შემდეგ არასწორი რიცხვი ან სახელია"
 
-#: glib/gregex.c:710
+#: glib/gregex.c:695
 msgid "lookbehind assertion is not fixed length"
 msgstr "lookbehind assertion is not fixed length"
 
-#: glib/gregex.c:714
+#: glib/gregex.c:699
 msgid "conditional group contains more than two branches"
 msgstr "პირობითი ჯგუფი ორ ბრენჩზე მეტს შეიცავს"
 
-#: glib/gregex.c:718
+#: glib/gregex.c:703
 msgid "assertion expected after (?("
 msgstr "assertion expected after (?("
 
-#: glib/gregex.c:722
+#: glib/gregex.c:707
 msgid "a numbered reference must not be zero"
 msgstr "რიცხვითი მიმართვა ნუილის ტოლი ვერ იქნება"
 
-#: glib/gregex.c:726
+#: glib/gregex.c:711
 msgid "unknown POSIX class name"
 msgstr "posix-ის უცნობი კლასის სახელი"
 
-#: glib/gregex.c:731
+#: glib/gregex.c:716
 msgid "character value in \\x{...} sequence is too large"
 msgstr "character value in \\x{...} sequence is too large"
 
-#: glib/gregex.c:735
+#: glib/gregex.c:720
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C not allowed in lookbehind assertion"
 
-#: glib/gregex.c:739
+#: glib/gregex.c:724
 msgid "missing terminator in subpattern name"
 msgstr "ქვეშაბლონის სახელს დამაბოლოებელი აკლია"
 
-#: glib/gregex.c:743
+#: glib/gregex.c:728
 msgid "two named subpatterns have the same name"
 msgstr "ორ სხვადასხვა ქვეშაბლონს ერთი და იგივე სახელი აქვთ"
 
-#: glib/gregex.c:747
+#: glib/gregex.c:732
 msgid "malformed \\P or \\p sequence"
 msgstr "არასწორი \\P ან \\p მიმდევრობა"
 
-#: glib/gregex.c:751
+#: glib/gregex.c:736
 msgid "unknown property name after \\P or \\p"
 msgstr "უცნობი თვისების სახელი \\P-ის ან \\p-ის შემდეგ"
 
-#: glib/gregex.c:755
+#: glib/gregex.c:740
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "ქვეშაბლონის სახელი ძალიან გრძელია (მაქს 32 სიმბოლო)"
 
-#: glib/gregex.c:759
+#: glib/gregex.c:744
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "მეტისმეტად ბევრი სახელიანი ქვეშაბლონი (მაქს 10000)"
 
-#: glib/gregex.c:763
+#: glib/gregex.c:748
 msgid "octal value is greater than \\377"
 msgstr "რვაობითი მნიშვნელობა მეტია, ვიდრე \\377"
 
-#: glib/gregex.c:767
+#: glib/gregex.c:752
 msgid "DEFINE group contains more than one branch"
 msgstr "ჯგუფი DEFINE ერთზე მეტ ჯგუფს შეიცავს"
 
-#: glib/gregex.c:771
+#: glib/gregex.c:756
 msgid "inconsistent NEWLINE options"
 msgstr "არამდგრადი ახალი ხაზის პარამეტრები"
 
-#: glib/gregex.c:775
+#: glib/gregex.c:760
 msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
@@ -6020,125 +6030,125 @@ msgstr ""
 "\\g-ს არ მოსდევს ფრჩხილი, ერთი ბრჭყალი, ორმაგი ბრჭყალი ან რიცხვი ან უბრალოდ "
 "რიცხვი"
 
-#: glib/gregex.c:781
+#: glib/gregex.c:766
 msgid "syntax error in subpattern number (missing terminator?)"
 msgstr "სინტაქსის შეცდომა ქვენიმუშის ნომერში (აკლია დამაბოლოებელი?)"
 
-#: glib/gregex.c:786
+#: glib/gregex.c:771
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
 msgstr ""
 "ბრძანებებისთვის (*ACCEPT), (*FAIL), ან (*COMMIT) არგუმენტი დაშვებული არაა"
 
-#: glib/gregex.c:790
+#: glib/gregex.c:775
 msgid "(*VERB) not recognized"
 msgstr "(*VERB) უცნობია"
 
-#: glib/gregex.c:794
+#: glib/gregex.c:779
 msgid "number is too big"
 msgstr "რიცხვი ძალიან დიდია"
 
-#: glib/gregex.c:798
+#: glib/gregex.c:783
 msgid "missing subpattern name after (?&"
 msgstr "აკლია ქვეშაბლონის სახელი (?& -ის შემდეგ"
 
-#: glib/gregex.c:802
+#: glib/gregex.c:787
 msgid "different names for subpatterns of the same number are not allowed"
 msgstr "იგივე ნომრის მქონე ქვენიმუშებისთვის სხვადასხვა სახელები დაშვებული არაა"
 
-#: glib/gregex.c:806
+#: glib/gregex.c:791
 msgid "(*MARK) must have an argument"
 msgstr "(*MARK) არგუმენტის ქონა აუცილებელია"
 
-#: glib/gregex.c:810
+#: glib/gregex.c:795
 msgid "\\c must be followed by an ASCII character"
 msgstr "\\c-ს ASCII სიმბოლო უნდა მოჰყვებოდეს"
 
-#: glib/gregex.c:814
+#: glib/gregex.c:799
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
 "\\k-ის შემდეგი ტექსტი არაა ჩასმული არც ფრჩხილებში, არც ბრჭყალებში, არც ორმაგ "
 "ბრჭყალებში"
 
-#: glib/gregex.c:818
+#: glib/gregex.c:803
 msgid "\\N is not supported in a class"
 msgstr "კლასში \\N მხარდაუჭერელია"
 
-#: glib/gregex.c:822
+#: glib/gregex.c:807
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
 msgstr "სახელი ძალიან გრძელია (*MARK), (*PRUNE), (*SKIP) ან (*THEN)"
 
-#: glib/gregex.c:826 glib/gregex.c:959
+#: glib/gregex.c:811 glib/gregex.c:944
 msgid "code overflow"
 msgstr "კოდის გადავსება"
 
-#: glib/gregex.c:830
+#: glib/gregex.c:815
 msgid "unrecognized character after (?P"
 msgstr "უცნობი სიმბოლო (?P-ის შემდეგ"
 
-#: glib/gregex.c:834
+#: glib/gregex.c:819
 msgid "overran compiling workspace"
 msgstr "კომპილაციის სამუშაო სივრცის გადავსება"
 
-#: glib/gregex.c:838
+#: glib/gregex.c:823
 msgid "previously-checked referenced subpattern not found"
 msgstr "ადრე შემოწმებული მიმართული ქვენიმუში ვერ ვიპოვე"
 
-#: glib/gregex.c:958 glib/gregex.c:1232 glib/gregex.c:2793
+#: glib/gregex.c:943 glib/gregex.c:1245 glib/gregex.c:2860
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "დაიშვა შეცდომა სტანდარტული გამოსახულების %s დამთხვევის ძიების დროს: %s"
 
-#: glib/gregex.c:2061
+#: glib/gregex.c:2086
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "ბიბლიოთეკა PCRE-ს არ გააჩნია UTF8-ის მხარდაჭერა"
 
-#: glib/gregex.c:2069
+#: glib/gregex.c:2094
 msgid "PCRE library is compiled with incompatible options"
 msgstr "PCRE ბიბლიოთეკა კომპილირებულია შეუთავსებელი პარამეტრებით"
 
-#: glib/gregex.c:2186
+#: glib/gregex.c:2213
 #, c-format
 msgid "Error while compiling regular expression ‘%s’ at char %s: %s"
 msgstr ""
 "შეცდომა რეგულარული გამოსახულება %s-ის კომპილირებისას, სიმბოლოსთან %s: %s"
 
-#: glib/gregex.c:3244
+#: glib/gregex.c:3311
 msgid "hexadecimal digit or “}” expected"
 msgstr "მოსალოდნელია თექვსმეტობითი რიცხვი, ან '}'"
 
-#: glib/gregex.c:3260
+#: glib/gregex.c:3327
 msgid "hexadecimal digit expected"
 msgstr "მოსალოდნელია თექვსმეტობითი სიმბოლო"
 
-#: glib/gregex.c:3300
+#: glib/gregex.c:3367
 msgid "missing “<” in symbolic reference"
 msgstr "არ მოიძებნა '<', სიმბოლურ მითითებაში"
 
-#: glib/gregex.c:3309
+#: glib/gregex.c:3376
 msgid "unfinished symbolic reference"
 msgstr "დაუსრულებელი სიმბოლური მითითება"
 
-#: glib/gregex.c:3316
+#: glib/gregex.c:3383
 msgid "zero-length symbolic reference"
 msgstr "ნულოვანი სიგრძის სიმბოლური მითითება"
 
-#: glib/gregex.c:3327
+#: glib/gregex.c:3394
 msgid "digit expected"
 msgstr "მოველოდი ციფრს"
 
-#: glib/gregex.c:3345
+#: glib/gregex.c:3412
 msgid "illegal symbolic reference"
 msgstr "მიუღებელი სიმბოლური მითითება"
 
-#: glib/gregex.c:3408
+#: glib/gregex.c:3475
 msgid "stray final “\\”"
 msgstr "დაბოლოვება '\\'"
 
-#: glib/gregex.c:3412
+#: glib/gregex.c:3479
 msgid "unknown escape sequence"
 msgstr "უცნობი escape სეკვენცია"
 
-#: glib/gregex.c:3422
+#: glib/gregex.c:3489
 #, c-format
 msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr ""
@@ -6402,132 +6412,132 @@ msgid "Character out of range for UTF-16"
 msgstr "სიმბოლო UTF-16 რანგს გარეთაა"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kB"
-#: glib/gutils.c:2854
+#: glib/gutils.c:2918
 msgid "kB"
 msgstr "კბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MB"
-#: glib/gutils.c:2856
+#: glib/gutils.c:2920
 msgid "MB"
 msgstr "მბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GB"
-#: glib/gutils.c:2858
+#: glib/gutils.c:2922
 msgid "GB"
 msgstr "გბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TB"
-#: glib/gutils.c:2860
+#: glib/gutils.c:2924
 msgid "TB"
 msgstr "ტბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PB"
-#: glib/gutils.c:2862
+#: glib/gutils.c:2926
 msgid "PB"
 msgstr "პბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EB"
-#: glib/gutils.c:2864
+#: glib/gutils.c:2928
 msgid "EB"
 msgstr "ებ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 KiB"
-#: glib/gutils.c:2868
+#: glib/gutils.c:2932
 msgid "KiB"
 msgstr "კიბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MiB"
-#: glib/gutils.c:2870
+#: glib/gutils.c:2934
 msgid "MiB"
 msgstr "მიბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
-#: glib/gutils.c:2872
+#: glib/gutils.c:2936
 msgid "GiB"
 msgstr "გიბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
-#: glib/gutils.c:2874
+#: glib/gutils.c:2938
 msgid "TiB"
 msgstr "ტიბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PiB"
-#: glib/gutils.c:2876
+#: glib/gutils.c:2940
 msgid "PiB"
 msgstr "პიბ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EiB"
-#: glib/gutils.c:2878
+#: glib/gutils.c:2942
 msgid "EiB"
 msgstr "EiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kbit"
-#: glib/gutils.c:2882
+#: glib/gutils.c:2946
 msgid "kbit"
 msgstr "კბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mbit"
-#: glib/gutils.c:2884
+#: glib/gutils.c:2948
 msgid "Mbit"
 msgstr "მბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gbit"
-#: glib/gutils.c:2886
+#: glib/gutils.c:2950
 msgid "Gbit"
 msgstr "გბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tbit"
-#: glib/gutils.c:2888
+#: glib/gutils.c:2952
 msgid "Tbit"
 msgstr "ტბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pbit"
-#: glib/gutils.c:2890
+#: glib/gutils.c:2954
 msgid "Pbit"
 msgstr "პბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Ebit"
-#: glib/gutils.c:2892
+#: glib/gutils.c:2956
 msgid "Ebit"
 msgstr "ებიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Kibit"
-#: glib/gutils.c:2896
+#: glib/gutils.c:2960
 msgid "Kibit"
 msgstr "კიბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mibit"
-#: glib/gutils.c:2898
+#: glib/gutils.c:2962
 msgid "Mibit"
 msgstr "მიბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gibit"
-#: glib/gutils.c:2900
+#: glib/gutils.c:2964
 msgid "Gibit"
 msgstr "გიბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tibit"
-#: glib/gutils.c:2902
+#: glib/gutils.c:2966
 msgid "Tibit"
 msgstr "ტიბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pibit"
-#: glib/gutils.c:2904
+#: glib/gutils.c:2968
 msgid "Pibit"
 msgstr "პიბიტ"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Eibit"
-#: glib/gutils.c:2906
+#: glib/gutils.c:2970
 msgid "Eibit"
 msgstr "ეიბიტ"
 
-#: glib/gutils.c:2944
+#: glib/gutils.c:3008
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "ბაიტი"
 msgstr[1] "ბაიტი"
 
-#: glib/gutils.c:2948
+#: glib/gutils.c:3012
 msgid "bit"
 msgid_plural "bits"
 msgstr[0] "ბიტი"
@@ -6535,7 +6545,7 @@ msgstr[1] "ბიტი"
 
 #. Translators: The "%u" is replaced with the size value, like "13"; it could
 #. * be part of "13 bytes", but only the number is requested this time.
-#: glib/gutils.c:2956
+#: glib/gutils.c:3020
 #, c-format
 msgctxt "format-size"
 msgid "%u"
@@ -6543,7 +6553,7 @@ msgstr "%u"
 
 #. Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1u". An example: "13 bytes"
-#: glib/gutils.c:2961
+#: glib/gutils.c:3025
 #, c-format
 msgctxt "format-size"
 msgid "%u %s"
@@ -6551,7 +6561,7 @@ msgstr "%u %s"
 
 #. Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
 #. * be part of "13.0 MB", but only the number is requested this time.
-#: glib/gutils.c:2997
+#: glib/gutils.c:3061
 #, c-format
 msgctxt "format-size"
 msgid "%.1f"
@@ -6560,14 +6570,14 @@ msgstr "%.1f"
 #. Translators: The first "%.1f" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1.1f". Keep the no-break space between the value and
 #. * the unit symbol. An example: "13.0 MB"
-#: glib/gutils.c:3003
+#: glib/gutils.c:3067
 #, c-format
 msgctxt "format-size"
 msgid "%.1f %s"
 msgstr "%.1f %s"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:3043
+#: glib/gutils.c:3107
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6575,14 +6585,14 @@ msgstr[0] "%s ბაიტი"
 msgstr[1] "%s ბაიტი"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:3048
+#: glib/gutils.c:3112
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
 msgstr[0] "%s ბიტი"
 msgstr[1] "%s ბიტი"
 
-#: glib/gutils.c:3089
+#: glib/gutils.c:3153
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6594,32 +6604,32 @@ msgstr[1] "%u ბაიტი"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3102
+#: glib/gutils.c:3166
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f კბ"
 
-#: glib/gutils.c:3107
+#: glib/gutils.c:3171
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f მბ"
 
-#: glib/gutils.c:3112
+#: glib/gutils.c:3176
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f გბ"
 
-#: glib/gutils.c:3117
+#: glib/gutils.c:3181
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ტბ"
 
-#: glib/gutils.c:3122
+#: glib/gutils.c:3186
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f პბ"
 
-#: glib/gutils.c:3127
+#: glib/gutils.c:3191
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ებ"
