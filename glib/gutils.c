@@ -94,6 +94,10 @@
 #  include <process.h>
 #endif
 
+#ifdef __GNU__
+#  include <hurd.h>
+#endif
+
 #ifdef HAVE_CODESET
 #include <langinfo.h>
 #endif
@@ -1182,9 +1186,24 @@ g_get_process_executable_dir (void)
       toplevel = g_build_filename (bin_dir, NULL);
       g_free (exe_path);
       g_free (bin_dir);
+#elif defined(__GNU__)
+      /* On GNU/Hurd, get the executable path from the process server */
+      kern_return_t kr;
+      process_t proc;
+      string_t exe_path;
+
+      proc = getproc ();
+      if (G_UNLIKELY (!MACH_PORT_VALID (proc)))
+        return NULL;
+      kr = proc_get_exe (proc, getpid (), exe_path);
+      mach_port_deallocate (mach_task_self (), proc);
+      if (G_UNLIKELY (kr))
+        return NULL;
+
+      toplevel = g_path_get_dirname (exe_path);
 #else
-    /* Relocations not currently supported for this platform */
-    return NULL;
+      /* Relocations not currently supported for this platform */
+      return NULL;
 #endif
     }
 
