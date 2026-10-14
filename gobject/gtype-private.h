@@ -58,6 +58,7 @@ struct _GRealClosure
   gpointer meta_marshal_data;
   GVaClosureMarshal va_meta_marshal;
   GVaClosureMarshal va_marshal;
+  gpointer marshal_call_plan; /* (atomic) */
   GClosure closure;
 };
 

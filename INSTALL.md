@@ -74,7 +74,8 @@ Some of the mimetype-related functionality in GIO requires the
 `update-mime-database` and `update-desktop-database` utilities, which
 are part of shared-mime-info and desktop-file-utils, respectively.
 
-GObject uses libffi to implement generic marshalling functionality.
+GObject uses libffi to implement generic marshalling functionality. With
+libffi 3.7.0 or newer, GObject also caches call plans for generic marshalling.
 
 The Nitty-Gritty
 ================

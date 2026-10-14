@@ -5,6 +5,10 @@ gobject_tests = {
     'can_fail' : host_system == 'gnu',
   },
   'performance-threaded' : { 'args' : [ '--seconds', '0' ] },
+  'cclosure-marshal' : {
+    'args' : [ '--iterations', '1000', '--closures', '1000', '--samples', '1' ],
+    'install' : false,
+  },
 }
 
 test_env = environment()
