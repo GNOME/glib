@@ -459,9 +459,10 @@ else
   contenttype_sources += files('gcontenttype-win32.c')
   platform_deps += [cc.find_library('shlwapi'),
                     cc.find_library('dnsapi'),
+                    cc.find_library('shcore'),
+                    cc.find_library('runtimeobject'),
                     iphlpapi_dep,
                     winsock2]
-  platform_deps += uwp_gio_deps
 
   win32_sources += files(
     'gmemorymonitorwin32.c',
