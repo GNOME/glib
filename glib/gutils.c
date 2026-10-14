@@ -1187,7 +1187,7 @@ g_get_process_executable_dir (void)
       g_free (exe_path);
       g_free (bin_dir);
 #elif defined(__GNU__)
-      /* On GNU/Hurd, get the executable path form the process server */
+      /* On GNU/Hurd, get the executable path from the process server */
       kern_return_t kr;
       process_t proc;
       string_t exe_path;
