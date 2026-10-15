@@ -701,6 +701,10 @@ endif
 
 # Windows SDK requirements and checks
 if host_system == 'windows'
+  glib_conf.set('_WIN32_WINNT', '_WIN32_WINNT_WIN10')
+  glib_conf.set('NTDDI_VERSION', 'NTDDI_WIN10')
+
+  # FIXME: Deprecating UWP-only apps, new code shouldn't depend on G_WINAPI_ONLY_APP
   # Check whether we're building for UWP apps
   code = '''
   #include <windows.h>
@@ -709,14 +713,6 @@ if host_system == 'windows'
   #endif'''
   if cc.compiles(code, name : 'building for UWP')
     glib_conf.set('G_WINAPI_ONLY_APP', true)
-    # We require Windows 10+ on WinRT
-    glib_conf.set('_WIN32_WINNT', '0x0A00')
-    uwp_gio_deps = [cc.find_library('shcore'),
-                    cc.find_library('runtimeobject')]
-  else
-    # We require Windows 7+ on Win32
-    glib_conf.set('_WIN32_WINNT', '0x0601')
-    uwp_gio_deps = []
   endif
 endif
 

@@ -22,12 +22,6 @@
  *          Руслан Ижбулатов  <lrn1986@gmail.com>
  */
 
-#ifdef NTDDI_VERSION
-#undef NTDDI_VERSION
-#endif
-
-#define NTDDI_VERSION NTDDI_WIN8
-
 #include "config.h"
 
 #define COBJMACROS
