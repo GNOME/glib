@@ -653,6 +653,72 @@ test_from_keyfile (void)
   g_object_unref (info);
 }
 
+
+static void
+test_from_invalid_keyfile (void)
+{
+  const char keyfile_contents[] =
+    "[Desktop Entry]\n"
+    "Type=Application\n";
+
+  GKeyFile *keyfile;
+  gboolean loaded;
+  GAppInfo *appinfo;
+
+  /* Test creating app info from a keyfile without Name key */
+  keyfile = g_key_file_new ();
+  loaded = g_key_file_load_from_data (keyfile, keyfile_contents, -1, G_KEY_FILE_NONE, NULL);
+  g_assert_true (loaded);
+
+  appinfo = G_APP_INFO (g_desktop_app_info_new_from_keyfile (keyfile));
+  g_assert_null (appinfo);
+
+  g_key_file_unref (keyfile);
+}
+
+static void
+test_from_valid_keyfile (void)
+{
+  const char *keyfiles[] =
+    {
+      /* no Exec */
+      "[Desktop Entry]\n"
+      "Type=Application\n"
+      "Name=Example\n",
+      /* no Comment */
+      "[Desktop Entry]\n"
+      "Type=Application\n"
+      "Name=Example\n"
+      "Exec=true\n",
+    };
+
+  g_test_summary ("Test loading and saving appinfo from various minimal-but-valid keyfiles");
+
+  for (size_t i = 0; i < G_N_ELEMENTS (keyfiles); i++)
+    {
+      GKeyFile *keyfile = NULL;
+      gboolean loaded;
+      GAppInfo *appinfo = NULL;
+      GError *local_error = NULL;
+
+      g_test_message ("Keyfile %" G_GSIZE_FORMAT "u: %s", i, keyfiles[i]);
+
+      keyfile = g_key_file_new ();
+      loaded = g_key_file_load_from_data (keyfile, keyfiles[i], -1, G_KEY_FILE_NONE, NULL);
+      g_assert_true (loaded);
+
+      appinfo = G_APP_INFO (g_desktop_app_info_new_from_keyfile (keyfile));
+      g_assert_nonnull (appinfo);
+
+      /* Causes g_desktop_app_info_ensure_saved() to be called */
+      g_app_info_add_supports_type (appinfo, "text/plain", &local_error);
+      g_assert_no_error (local_error);
+
+      g_object_unref (appinfo);
+      g_key_file_unref (keyfile);
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -675,6 +741,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/startup-wm-class", test_startup_wm_class);
   g_test_add_func ("/appinfo/supported-types", test_supported_types);
   g_test_add_func ("/appinfo/from-keyfile", test_from_keyfile);
+  g_test_add_func ("/appinfo/from-invalid-keyfile", test_from_invalid_keyfile);
+  g_test_add_func ("/appinfo/from-valid-keyfile", test_from_valid_keyfile);
 
   return g_test_run ();
 }
