@@ -1024,8 +1024,7 @@ handle_overwrite_open (const char    *filename,
    * tmp file then rename the original file to the backup and the
    * tmp file to the original name. This is fast but doesn't work
    * when the file is a link (hard or symbolic) or when we can't
-   * write to the current dir or can't set the permissions on the
-   * new file.
+   * write to the current dir.
    * The second strategy consist simply in copying the old file
    * to a backup file and rewrite the contents of the file. This
    * strategy is not implemented for the replace_destination_set case,
@@ -1038,12 +1037,16 @@ handle_overwrite_open (const char    *filename,
     {
       char *dirname, *tmp_filename;
       int tmpfd;
+      int tmp_mode = mode;
       
       dirname = g_path_get_dirname (filename);
       tmp_filename = g_build_filename (dirname, ".goutputstream-XXXXXX", NULL);
       g_free (dirname);
 
-      tmpfd = g_mkstemp_full (tmp_filename, (readable ? O_RDWR : O_WRONLY) | O_BINARY | O_CLOEXEC, mode);
+      if (!replace_destination_set)
+        tmp_mode = _g_stat_mode (&original_stat) & ~S_IFMT;
+
+      tmpfd = g_mkstemp_full (tmp_filename, (readable ? O_RDWR : O_WRONLY) | O_BINARY | O_CLOEXEC, tmp_mode);
       if (tmpfd == -1)
 	{
           errsv = errno;
@@ -1057,43 +1060,6 @@ handle_overwrite_open (const char    *filename,
                        _("Error creating temporary file: %s"),
                        g_strerror (errsv));
           goto error;
-	}
-      
-      /* try to keep permissions (unless replacing) */
-
-      if (!replace_destination_set &&
-	   (
-#ifdef HAVE_FCHOWN
-	    fchown (tmpfd, _g_stat_uid (&original_stat), _g_stat_gid (&original_stat)) == -1 ||
-#endif
-#ifdef HAVE_FCHMOD
-	    fchmod (tmpfd, _g_stat_mode (&original_stat) & ~S_IFMT) == -1 ||
-#endif
-	    0
-	    )
-	  )
-	{
-          GLocalFileStat tmp_statbuf;
-          int tres;
-
-          tres = g_local_file_fstat (tmpfd,
-                                     G_LOCAL_FILE_STAT_FIELD_TYPE |
-                                     G_LOCAL_FILE_STAT_FIELD_MODE |
-                                     G_LOCAL_FILE_STAT_FIELD_UID |
-                                     G_LOCAL_FILE_STAT_FIELD_GID,
-                                     G_LOCAL_FILE_STAT_FIELD_ALL, &tmp_statbuf);
-
-	  /* Check that we really needed to change something */
-	  if (tres != 0 ||
-	      _g_stat_uid (&original_stat) != _g_stat_uid (&tmp_statbuf) ||
-	      _g_stat_gid (&original_stat) != _g_stat_gid (&tmp_statbuf) ||
-	      _g_stat_mode (&original_stat) != _g_stat_mode (&tmp_statbuf))
-	    {
-	      g_close (tmpfd, NULL);
-	      g_unlink (tmp_filename);
-	      g_free (tmp_filename);
-	      goto fallback_strategy;
-	    }
 	}
 
       if (fd >= 0)
