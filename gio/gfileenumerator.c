@@ -619,9 +619,9 @@ g_file_enumerator_set_pending (GFileEnumerator *enumerator,
 /**
  * g_file_enumerator_iterate:
  * @direnum: an open file enumerator
- * @out_info: (out) (transfer none) (optional): return location for the next
+ * @out_info: (out) (transfer none) (optional) (nullable): return location for the next
  *   file info object, or `NULL`
- * @out_child: (out) (transfer none) (optional): return location for the next
+ * @out_child: (out) (transfer none) (optional) (nullable): return location for the next
  *   file object, or `NULL`
  * @cancellable: (nullable): optional cancellable object
  * @error: return location for an error, or `NULL`
