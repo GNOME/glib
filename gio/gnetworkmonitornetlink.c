@@ -913,19 +913,62 @@ g_network_monitor_netlink_can_reach (GNetworkMonitor     *monitor,
 }
 
 static void
-can_reach_thread (GTask        *task,
-                  gpointer      source_object,
-                  gpointer      task_data,
-                  GCancellable *cancellable)
+can_reach_async_got_address (GObject      *object,
+                             GAsyncResult *result,
+                             gpointer      user_data)
 {
-  GNetworkMonitor *monitor = G_NETWORK_MONITOR (source_object);
-  GSocketConnectable *connectable = G_SOCKET_CONNECTABLE (task_data);
+  GSocketAddressEnumerator *enumerator = G_SOCKET_ADDRESS_ENUMERATOR (object);
+  GTask *task = user_data;
+  GNetworkMonitor *monitor = G_NETWORK_MONITOR (g_task_get_source_object (task));
+  GNetworkMonitorNetlink *nl = G_NETWORK_MONITOR_NETLINK (monitor);
+  GCancellable *cancellable = g_task_get_cancellable (task);
+  GSocketAddress *addr;
   GError *error = NULL;
 
-  if (g_network_monitor_netlink_can_reach (monitor, connectable, cancellable, &error))
-    g_task_return_boolean (task, TRUE);
-  else
-    g_task_return_error (task, g_steal_pointer (&error));
+  addr = g_socket_address_enumerator_next_finish (enumerator, result, &error);
+  if (!addr && !error)
+    {
+      /* Resolved all addresses, none matched */
+      g_task_return_new_error_literal (task, G_IO_ERROR,
+                                       G_IO_ERROR_HOST_UNREACHABLE,
+                                       _("Host unreachable"));
+      g_object_unref (task);
+      return;
+    }
+
+  if (G_IS_INET_SOCKET_ADDRESS (addr))
+    {
+      GInetAddress *iaddr;
+
+      iaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (addr));
+      if (route_get (nl, iaddr, cancellable, &error))
+        {
+          g_object_unref (addr);
+          g_task_return_boolean (task, TRUE);
+          g_object_unref (task);
+          return;
+        }
+
+      if (!g_cancellable_is_cancelled (cancellable))
+        {
+          g_clear_error (&error);
+        }
+    }
+
+  if (addr)
+    g_object_unref (addr);
+
+  if (error)
+    {
+      /* Either the user cancelled, or DNS resolution failed */
+      g_task_return_error (task, error);
+      g_object_unref (task);
+      return;
+    }
+
+  g_socket_address_enumerator_next_async (enumerator,
+                                          g_task_get_cancellable (task),
+                                          can_reach_async_got_address, task);
 }
 
 static void
@@ -936,16 +979,16 @@ g_network_monitor_netlink_can_reach_async (GNetworkMonitor     *monitor,
                                            gpointer             user_data)
 {
   GTask *task;
+  GSocketAddressEnumerator *enumerator;
 
   task = g_task_new (monitor, cancellable, callback, user_data);
   g_task_set_source_tag (task, g_network_monitor_netlink_can_reach_async);
   g_task_set_static_name (task, "[gio] network monitor can_reach");
-  g_task_set_task_data (task, g_object_ref (connectable), g_object_unref);
 
-  /* A route lookup is a quick kernel round-trip, so the shared GTask thread
-   * pool is fine here. */
-  g_task_run_in_thread (task, can_reach_thread);
-  g_object_unref (task);
+  enumerator = g_socket_connectable_proxy_enumerate (connectable);
+  g_socket_address_enumerator_next_async (enumerator, cancellable,
+                                          can_reach_async_got_address, task);
+  g_object_unref (enumerator);
 }
 
 static gboolean
