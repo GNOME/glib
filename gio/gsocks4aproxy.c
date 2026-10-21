@@ -112,8 +112,15 @@ set_connect_msg (guint8      *msg,
     ip = "0.0.0.1";
     
   addr = g_inet_address_new_from_string (ip);
-  addr_len = g_inet_address_get_native_size (addr);
+  if (addr == NULL)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+		   _("Invalid IP address “%s”"),
+		   ip);
+      return -1;
+    }
 
+  addr_len = g_inet_address_get_native_size (addr);
   if (addr_len != 4)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,

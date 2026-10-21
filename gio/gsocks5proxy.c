@@ -294,8 +294,17 @@ set_connect_msg (guint8       *msg,
   if (g_hostname_is_ip_address (hostname))
     {
       GInetAddress *addr = g_inet_address_new_from_string (hostname);
-      gsize addr_len = g_inet_address_get_native_size (addr);
+      gsize addr_len;
 
+      if (addr == NULL)
+        {
+	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+		       _("Invalid IP address “%s”"),
+		       hostname);
+	  return FALSE;
+        }
+
+      addr_len = g_inet_address_get_native_size (addr);
       /* We are cheating for simplicity, here's the logic:
        *   1 = IPV4 = 4 bytes / 4
        *   4 = IPV6 = 16 bytes / 4 */

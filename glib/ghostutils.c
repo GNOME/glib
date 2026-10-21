@@ -766,6 +766,10 @@ g_hostname_is_ascii_encoded (const gchar *hostname)
  *
  * Since 2.66, IPv6 addresses with a zone-id are accepted (RFC6874).
  *
+ * Note that this function only checks the syntax. It does not guarantee that
+ * the string will be accepted by the current OS and in particular by
+ * [ctor@gio.InetAddress.new_from_string].
+ *
  * Returns: %TRUE if @hostname is an IP address
  *
  * Since: 2.22
