@@ -581,185 +581,127 @@ g_local_file_get_child_for_display_name (GFile        *file,
 }
 
 #if defined(USE_STATFS) && !defined(HAVE_STRUCT_STATFS_F_FSTYPENAME)
+typedef struct {
+  long f_type;
+  const char *fs_type;  /* file system ID taken from Linux manpage */
+} FsTypeMapping;
+
+static const FsTypeMapping fs_type_map[] =
+  {
+    /* Keep this list sorted by f_type to allow for binary search */
+    { 0x00011954, "ufs" },
+    { 0x002f, "qnx4" },
+    { 0x00414A53, "efs" },
+    { 0x00c0ffee, "hostfs" },
+    { 0x01021994, "tmpfs" },
+    { 0x01021997, "v9fs" },
+    { 0x012FD16D, "xiafs" },
+    { 0x012FF7B4, "xenix" },
+    { 0x012FF7B5, "sysv4" },
+    { 0x012FF7B6, "sysv2" },
+    { 0x012FF7B7, "coh" },
+    { 0x0187, "autofs" },
+    { 0x1373, "devfs" },
+    { 0x137D, "ext" },
+    { 0x137F, "minix" },
+    { 0x138F, "minix2" },
+    { 0x15013346, "udf" },
+    { 0x19800202, "mqueue" },
+    { 0x1BADFACE, "bfs" },
+    { 0x1cd1, "devpts" },
+    { 0x2011BAB0UL, "exfat" },
+    { 0x2468, "minix2" },
+    { 0x2478, "minix22" },
+    { 0x27e0eb, "cgroup" },
+    { 0x28cd3d45, "cramfs" },
+    { 0x3153464a, "jfs" },
+    { 0x3434, "nilfs" },
+    { 0x4244, "hfs" },
+    { 0x42465331, "befs" },
+    { 0x42494e4d, "binfmt_misc" },
+    { 0x43415d53, "smackfs" },
+    { 0x4d44, "msdos" },
+    { 0x4d5a, "minix3" },
+    { 0x50495045, "pipefs" },
+    { 0x517B, "smb" },
+    { 0x52345362, "reiser4" },
+    { 0x52654973, "reiserfs" },
+    { 0x5346414f, "afs" },
+    { 0x5346544e, "ntfs" },
+    { 0x534F434B, "sockfs" },
+    { 0x564c, "ncp" },
+    { 0x58465342, "xfs" },
+    { 0x6165676C, "pstore" },
+    { 0x62646576, "bdevfs" },
+    { 0x62656570, "configfs" },
+    { 0x62656572, "sysfs" },
+    { 0x63677270, "cgroup2" },
+    { 0x64626720, "debugfs" },
+    { 0x65735543, "fusectl" },
+    { 0x65735546, "fuse" },
+    { 0x67596969, "rpc_pipefs" },
+    { 0x68191122, "qnx6" },
+    { 0x6969, "nfs" },
+    { 0x6e736673, "nsfs" },
+    { 0x7275, "romfs" },
+    { 0x72b6, "jffs2" },
+    { 0x73636673, "securityfs" },
+    { 0x7366746e, "ntfs3" },
+    { 0x73717368, "squashfs" },
+    { 0x73727279, "btrfs_test_fs" },
+    { 0x73757245, "coda" },
+    { 0x7461636f, "ocfs2" },
+    { 0x74726163, "tracefs" },
+    { 0x794c7630, "overlay" },
+    { 0x858458f6, "ramfs" },
+    { 0x9123683E, "btrfs" },
+    { 0x958458f6, "hugetlbfs" },
+    { 0x9660, "isofs" },
+    { 0x9fa0, "proc" },
+    { 0x9fa1, "openprom" },
+    { 0x9fa2, "usbdevice" },
+    { 0xa501FCF5, "vxfs" },
+    { 0xabba1974, "xenfs" },
+    { 0xadf5, "adfs" },
+    { 0xADFF, "affs" },
+    { 0xBAD1DEA, "futexfs" },
+    { 0xde5e81e4, "efivarfs" },
+    { 0xEF51, "ext2" },
+    { 0xEF53, "ext3/ext4" },
+    { 0xf15f, "ecryptfs" },
+    { 0xF2F52010, "f2fs" },
+    { 0xf97cff8c, "selinuxfs" },
+    { 0xF995E849, "hpfs" },
+    { 0xfe534d42, "smb2" },
+    { 0xFF534D42, "cifs" },
+  };
+
+static int
+fs_type_mapping_compare (const void *a,
+                         const void *b)
+{
+  const FsTypeMapping *type_a = a;
+  const FsTypeMapping *type_b = b;
+
+  if (type_a->f_type < type_b->f_type)
+    return -1;
+  else if (type_a->f_type > type_b->f_type)
+    return 1;
+  else
+    return 0;
+}
+
 static const char *
 get_fs_type (long f_type)
 {
-  /* filesystem ids taken from linux manpage */
-  switch (f_type) 
-    {
-    case 0xadf5:
-      return "adfs";
-    case 0x5346414f:
-      return "afs";
-    case 0x0187:
-      return "autofs";
-    case 0xADFF:
-      return "affs";
-    case 0x62646576:
-      return "bdevfs";
-    case 0x42465331:
-      return "befs";
-    case 0x1BADFACE:
-      return "bfs";
-    case 0x42494e4d:
-      return "binfmt_misc";
-    case 0x9123683E:
-      return "btrfs";
-    case 0x73727279:
-      return "btrfs_test_fs";
-    case 0x27e0eb:
-      return "cgroup";
-    case 0x63677270:
-      return "cgroup2";
-    case 0xFF534D42:
-      return "cifs";
-    case 0x73757245:
-      return "coda";
-    case 0x012FF7B7:
-      return "coh";
-    case 0x62656570:
-      return "configfs";
-    case 0x28cd3d45:
-      return "cramfs";
-    case 0x64626720:
-      return "debugfs";
-    case 0x1373:
-      return "devfs";
-    case 0x1cd1:
-      return "devpts";
-    case 0xf15f:
-      return "ecryptfs";
-    case 0xde5e81e4:
-      return "efivarfs";
-    case 0x00414A53:
-      return "efs";
-    case 0x2011BAB0UL:
-      return "exfat";
-    case 0x137D:
-      return "ext";
-    case 0xEF51:
-      return "ext2";
-    case 0xEF53:
-      return "ext3/ext4";
-    case 0xF2F52010:
-      return "f2fs";
-    case 0x65735546:
-      return "fuse";
-    case 0x65735543:
-      return "fusectl";
-    case 0xBAD1DEA:
-      return "futexfs";
-    case 0x4244:
-      return "hfs";
-    case 0x00c0ffee:
-      return "hostfs";
-    case 0xF995E849:
-      return "hpfs";
-    case 0x958458f6:
-      return "hugetlbfs";
-    case 0x9660:
-      return "isofs";
-    case 0x72b6:
-      return "jffs2";
-    case 0x3153464a:
-      return "jfs";
-    case 0x137F:
-      return "minix";
-    case 0x138F:
-      return "minix2";
-    case 0x2468:
-      return "minix2";
-    case 0x2478:
-      return "minix22";
-    case 0x4d5a:
-      return "minix3";
-    case 0x19800202:
-      return "mqueue";
-    case 0x4d44:
-      return "msdos";
-    case 0x564c:
-      return "ncp";
-    case 0x6969:
-      return "nfs";
-    case 0x3434:
-      return "nilfs";
-    case 0x6e736673:
-      return "nsfs";
-    case 0x5346544e:
-      return "ntfs";
-    case 0x7366746e:
-      return "ntfs3";
-    case 0x7461636f:
-      return "ocfs2";
-    case 0x9fa1:
-      return "openprom";
-    case 0x794c7630:
-      return "overlay";
-    case 0x50495045:
-      return "pipefs";
-    case 0x9fa0:
-      return "proc";
-    case 0x6165676C:
-      return "pstore";
-    case 0x002f:
-      return "qnx4";
-    case 0x68191122:
-      return "qnx6";
-    case 0x858458f6:
-      return "ramfs";
-    case 0x52654973:
-      return "reiserfs";
-    case 0x7275:
-      return "romfs";
-    case 0x67596969:
-      return "rpc_pipefs";
-    case 0x73636673:
-      return "securityfs";
-    case 0xf97cff8c:
-      return "selinuxfs";
-    case 0x43415d53:
-      return "smackfs";
-    case 0x517B:
-      return "smb";
-    case 0xfe534d42:
-      return "smb2";
-    case 0x534F434B:
-      return "sockfs";
-    case 0x73717368:
-      return "squashfs";
-    case 0x62656572:
-      return "sysfs";
-    case 0x012FF7B6:
-      return "sysv2";
-    case 0x012FF7B5:
-      return "sysv4";
-    case 0x01021994:
-      return "tmpfs";
-    case 0x74726163:
-      return "tracefs";
-    case 0x15013346:
-      return "udf";
-    case 0x00011954:
-      return "ufs";
-    case 0x9fa2:
-      return "usbdevice";
-    case 0x01021997:
-      return "v9fs";
-    case 0xa501FCF5:
-      return "vxfs";
-    case 0xabba1974:
-      return "xenfs";
-    case 0x012FF7B4:
-      return "xenix";
-    case 0x58465342:
-      return "xfs";
-    case 0x012FD16D:
-      return "xiafs";
-    case 0x52345362:
-      return "reiser4";
-    default:
-      return NULL;
-    }
+  FsTypeMapping key = { f_type, NULL };
+  const FsTypeMapping *needle;
+
+  needle = bsearch (&key, fs_type_map,
+                    sizeof (fs_type_map[0]), G_N_ELEMENTS (fs_type_map),
+                    fs_type_mapping_compare);
+
+  return (needle != NULL) ? needle->fs_type : NULL;
 }
 #endif
 
