@@ -1168,7 +1168,11 @@ g_match_info_next (GMatchInfo  *match_info,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if (!match_info->pos_valid)
-    return FALSE;
+    {
+      /* make sure the match info gets updated */
+      match_info->matches = PCRE2_ERROR_NOMATCH;
+      return FALSE;
+    }
 
   prev_match_start = match_info->offsets != NULL ? match_info->offsets[0] : -1;
   prev_match_end = match_info->offsets != NULL ? match_info->offsets[1] : -1;
