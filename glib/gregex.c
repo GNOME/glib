@@ -1291,7 +1291,7 @@ g_match_info_next (GMatchInfo  *match_info,
           match_info->matches = PCRE2_ERROR_NOMATCH;
           return FALSE;
         }
-      else if (match_info->pos > match_info->string_len)
+      else if (match_info->pos == match_info->string_len)
         {
           /* we have one last empty match at the end of the string */
           match_info->pos_valid = FALSE;
