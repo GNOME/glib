@@ -600,6 +600,7 @@ if cc.get_argument_syntax() == 'gcc'
     '-Wnonnull',
     '-Wnull-dereference',
     '-Wunused',
+    '-Wduplicated-cond',
     # Due to maintained deprecated code, we do not want to see unused parameters
     '-Wno-unused-parameter',
     # Due to pervasive use of things like GPOINTER_TO_UINT(), we do not support
