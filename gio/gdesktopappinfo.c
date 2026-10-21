@@ -1896,6 +1896,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
 {
   char *start_group;
   char *type;
+  char *name;
   char *try_exec;
   char *exec;
   char *path;
@@ -1920,6 +1921,15 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       return FALSE;
     }
   g_free (type);
+
+  name = g_key_file_get_locale_string (key_file,
+                                       G_KEY_FILE_DESKTOP_GROUP,
+                                       G_KEY_FILE_DESKTOP_KEY_NAME,
+                                       NULL,
+                                       NULL);
+  /* Desktop Entry Specification requires that Name is set */
+  if (name == NULL)
+    return FALSE;
 
   path = g_key_file_get_string (key_file,
                                 G_KEY_FILE_DESKTOP_GROUP,
@@ -2004,7 +2014,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
         }
     }
 
-  info->name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
+  info->name = name;
   info->generic_name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, GENERIC_NAME_KEY, NULL, NULL);
   info->fullname = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, FULL_NAME_KEY, NULL, NULL);
   info->keywords = g_key_file_get_locale_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, KEYWORDS_KEY, NULL, NULL, NULL);
@@ -4224,13 +4234,6 @@ g_desktop_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
   if (!g_desktop_app_info_ensure_saved (info, error))
     return FALSE;
 
-  if (!info->desktop_id)
-    {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                           _("Application information lacks an identifier"));
-      return FALSE;
-    }
-
   /* both add support for the content type and set as last used */
   return update_mimeapps_list (info->desktop_id, content_type,
                                UPDATE_MIME_SET_NON_DEFAULT |
@@ -4247,13 +4250,6 @@ g_desktop_app_info_set_as_default_for_type (GAppInfo    *appinfo,
 
   if (!g_desktop_app_info_ensure_saved (info, error))
     return FALSE;
-
-  if (!info->desktop_id)
-    {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                           _("Application information lacks an identifier"));
-      return FALSE;
-    }
 
   return update_mimeapps_list (info->desktop_id, content_type,
                                UPDATE_MIME_SET_DEFAULT,
@@ -4437,7 +4433,8 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
     return TRUE;
 
   /* This is only used for object created with
-   * g_app_info_create_from_commandline. All other
+   * g_app_info_create_from_commandline, or
+   * g_desktop_app_info_new_from_keyfile. All other
    * object should have a filename
    */
 
@@ -4461,8 +4458,9 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
     g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
                             G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, TRUE);
 
-  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
-                         G_KEY_FILE_DESKTOP_KEY_EXEC, info->exec);
+  if (info->exec != NULL)
+    g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                           G_KEY_FILE_DESKTOP_KEY_EXEC, info->exec);
 
   g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
                          G_KEY_FILE_DESKTOP_KEY_NAME, info->name);
@@ -4475,8 +4473,9 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
     g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
                            FULL_NAME_KEY, info->fullname);
 
-  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
-                         G_KEY_FILE_DESKTOP_KEY_COMMENT, info->comment);
+  if (info->comment != NULL)
+    g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                           G_KEY_FILE_DESKTOP_KEY_COMMENT, info->comment);
 
   g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
                           G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, TRUE);
