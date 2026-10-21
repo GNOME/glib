@@ -93,6 +93,8 @@ glib_gir = gnome.generate_gir(libglib,
     '--library-path=' + meson.current_build_dir(),
     '--library=gobject-2.0',
   ],
+  # FIXME: https://gitlab.gnome.org/GNOME/glib/-/work_items/3251
+  fatal_warnings: false,
 )
 
 if host_system == 'windows'
@@ -155,6 +157,8 @@ else
       '--library=gobject-2.0',
       '--c-include=glib-unix.h',
     ],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/work_items/3251
+    fatal_warnings: false,
   )
 endif
 
@@ -181,6 +185,8 @@ gobject_gir = gnome.generate_gir(libgobject,
       '-DGOBJECT_COMPILATION',
       '--symbol-prefix=gobject',
   ],
+  # FIXME: https://gitlab.gnome.org/GNOME/glib/-/work_items/3251
+  fatal_warnings: false,
 )
 
 # GModule
@@ -211,6 +217,8 @@ gmodule_gir = gnome.generate_gir(libgmodule,
       '-DGETTEXT_PACKAGE="dummy"',
       '--symbol-prefix=gmodule',
   ],
+  # FIXME: https://gitlab.gnome.org/GNOME/glib/-/work_items/3251
+  fatal_warnings: false,
 )
 
 # Gio
@@ -251,6 +259,8 @@ gio_gir = gnome.generate_gir(libgio,
   ],
   env: gi_gen_env_variables,
   extra_args: gir_args + gio_gir_args,
+  # FIXME: https://gitlab.gnome.org/GNOME/glib/-/work_items/3251
+  fatal_warnings: false,
 )
 
 if host_system == 'windows'
@@ -311,6 +321,8 @@ else
       '--symbol-prefix=g_unix',
       '--identifier-prefix=GUnix'
     ],
+    # FIXME: https://gitlab.gnome.org/GNOME/glib/-/work_items/3251
+    fatal_warnings: false,
   )
   gio_platform_gir = gio_unix_gir
 endif
