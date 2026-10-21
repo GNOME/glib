@@ -763,8 +763,6 @@ functions = [
   'poll',
   'prlimit',
   'readlink',
-  'recvmmsg',
-  'sendmmsg',
   'setenv',
   'setmntent',
   'strerror_r',
@@ -884,6 +882,20 @@ if cc.compiles('''#include <netdb.h>
                name : 'getservbyname_r()',
                args: '-Werror=incompatible-pointer-types')
   glib_conf.set('HAVE_GETSERVBYNAME_R', 1)
+endif
+
+mmsg_includes = '''#include <sys/socket.h>
+               #include <sys/socketvar.h>
+               #include <sys/types.h>'''
+if cc.has_function('sendmmsg',
+              prefix: mmsg_includes,
+              args: '-Werror=implicit-function-declaration')
+  glib_conf.set('HAVE_SENDMMSG', 1)
+endif
+if cc.has_function('recvmmsg',
+              prefix: mmsg_includes,
+              args: '-Werror=implicit-function-declaration')
+  glib_conf.set('HAVE_RECVMMSG', 1)
 endif
 
 if cc.has_function('_aligned_malloc', prefix: '#include <malloc.h>')
