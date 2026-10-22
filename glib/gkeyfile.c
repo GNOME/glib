@@ -846,7 +846,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
     {
       int errsv = errno;
       g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errsv),
+                           (int) g_file_error_from_errno (errsv),
                            g_strerror (errsv));
       return FALSE;
     }
@@ -881,7 +881,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
             continue;
 
           g_set_error_literal (error, G_FILE_ERROR,
-                               g_file_error_from_errno (errsv),
+                               (int) g_file_error_from_errno (errsv),
                                g_strerror (errsv));
           return FALSE;
         }
@@ -948,7 +948,7 @@ g_key_file_load_from_file (GKeyFile       *key_file,
   if (fd == -1)
     {
       g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errsv),
+                           (int) g_file_error_from_errno (errsv),
                            g_strerror (errsv));
       return FALSE;
     }
