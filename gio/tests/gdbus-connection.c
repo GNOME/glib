@@ -25,6 +25,12 @@
 #include <string.h>
 
 #include <sys/types.h>
+#ifdef G_OS_UNIX
+#include <fcntl.h>
+#include <gio/gunixfdmessage.h>
+#include <glib-unix.h>
+#include <sys/socket.h>
+#endif
 
 #include "gdbusprivate.h"
 #include "gdbus-tests.h"
@@ -69,6 +75,338 @@ test_connection_quit_mainloop (gpointer user_data)
   g_atomic_int_set (quit_mainloop_fired, TRUE);
   g_main_loop_quit (loop);
   return G_SOURCE_CONTINUE;
+}
+
+#ifdef G_OS_UNIX
+typedef struct
+{
+  GSocketConnection *connection;
+  GMutex mutex;
+  GCond cond;
+  gboolean client_ready;
+  gboolean disconnected;
+  gboolean negotiate_unix_fd_passing;
+  gboolean send_fds_in_separate_chunks;
+} FdsTestData;
+
+static void
+test_connection_closed (GDBusConnection *connection,
+                        gboolean remote_peer_vanished,
+                        GError *error,
+                        gpointer user_data)
+{
+  FdsTestData *data = user_data;
+
+  g_mutex_lock (&data->mutex);
+  data->disconnected = TRUE;
+  g_mutex_unlock (&data->mutex);
+  g_main_context_wakeup (g_main_context_get_thread_default ());
+}
+
+static gpointer
+test_fds_server_thread (gpointer user_data)
+{
+  FdsTestData *data = user_data;
+  GInputStream *input_stream;
+  GOutputStream *output_stream;
+  GDataInputStream *data_input_stream;
+  GSocket *socket;
+  GUnixFDList *fd_list;
+  GUnixFDList *first_fd_list;
+  GUnixFDList *second_fd_list;
+  GSocketControlMessage *control_message;
+  GSocketControlMessage *first_control_message;
+  GSocketControlMessage *second_control_message;
+  GDBusMessage *message;
+  GOutputVector vector;
+  GError *error = NULL;
+  guchar *blob;
+  const gchar *response;
+  gchar *line;
+  gchar byte;
+  gsize blob_size;
+  gssize bytes_read;
+  gssize bytes_sent;
+  gint pipe_fds[2];
+
+  input_stream = g_io_stream_get_input_stream (G_IO_STREAM (data->connection));
+  output_stream = g_io_stream_get_output_stream (G_IO_STREAM (data->connection));
+  data_input_stream = g_data_input_stream_new (input_stream);
+  g_data_input_stream_set_newline_type (data_input_stream,
+                                        G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
+
+  bytes_read = g_input_stream_read (input_stream, &byte, 1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (bytes_read, ==, 1);
+
+  line = g_data_input_stream_read_line (data_input_stream, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (line, ==, "AUTH");
+  g_free (line);
+
+  g_assert_true (g_output_stream_write_all (output_stream,
+                                            "REJECTED EXTERNAL\r\n",
+                                            strlen ("REJECTED EXTERNAL\r\n"),
+                                            NULL,
+                                            NULL,
+                                            &error));
+  g_assert_no_error (error);
+
+  line = g_data_input_stream_read_line (data_input_stream, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_true (g_str_has_prefix (line, "AUTH "));
+  g_free (line);
+
+  g_assert_true (g_output_stream_write_all (output_stream,
+                                            "OK 0123456789abcdef0123456789abcdef\r\n",
+                                            strlen ("OK 0123456789abcdef0123456789abcdef\r\n"),
+                                            NULL,
+                                            NULL,
+                                            &error));
+  g_assert_no_error (error);
+
+  line = g_data_input_stream_read_line (data_input_stream, NULL, NULL, &error);
+  g_assert_no_error (error);
+  if (g_str_equal (line, "NEGOTIATE_UNIX_FD"))
+    {
+      response = data->negotiate_unix_fd_passing ? "AGREE_UNIX_FD\r\n" : "ERROR\r\n";
+      g_assert_true (g_output_stream_write_all (output_stream,
+                                                response,
+                                                strlen (response),
+                                                NULL,
+                                                NULL,
+                                                &error));
+      g_assert_no_error (error);
+      g_free (line);
+      line = g_data_input_stream_read_line (data_input_stream, NULL, NULL, &error);
+      g_assert_no_error (error);
+    }
+  g_assert_cmpstr (line, ==, "BEGIN");
+  g_free (line);
+
+  g_mutex_lock (&data->mutex);
+  while (!data->client_ready)
+    g_cond_wait (&data->cond, &data->mutex);
+  g_mutex_unlock (&data->mutex);
+
+  g_unix_open_pipe (pipe_fds, O_CLOEXEC, &error);
+  g_assert_no_error (error);
+  fd_list = g_unix_fd_list_new_from_array (pipe_fds, 2);
+  socket = g_socket_connection_get_socket (data->connection);
+
+  if (data->send_fds_in_separate_chunks)
+    {
+      gint fd;
+
+      message = g_dbus_message_new_signal ("/org/example/Test",
+                                            "org.example.Test",
+                                            "Test");
+      g_dbus_message_set_serial (message, 1);
+      g_dbus_message_set_unix_fd_list (message, fd_list);
+      blob = g_dbus_message_to_blob (message, &blob_size,
+                                     G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING,
+                                     &error);
+      g_assert_no_error (error);
+      g_assert_cmpuint (blob_size, >, 16);
+
+      fd = g_unix_fd_list_get (fd_list, 0, &error);
+      g_assert_no_error (error);
+      first_fd_list = g_unix_fd_list_new_from_array (&fd, 1);
+      first_control_message = g_unix_fd_message_new_with_fd_list (first_fd_list);
+      vector.buffer = blob;
+      vector.size = 16;
+      bytes_sent = g_socket_send_message (socket, NULL, &vector, 1,
+                                          &first_control_message, 1,
+                                          G_SOCKET_MSG_NONE, NULL, &error);
+      g_assert_no_error (error);
+      g_assert_cmpint (bytes_sent, ==, 16);
+
+      fd = g_unix_fd_list_get (fd_list, 1, &error);
+      g_assert_no_error (error);
+      second_fd_list = g_unix_fd_list_new_from_array (&fd, 1);
+      second_control_message = g_unix_fd_message_new_with_fd_list (second_fd_list);
+      vector.buffer = blob + 16;
+      vector.size = blob_size - 16;
+      bytes_sent = g_socket_send_message (socket, NULL, &vector, 1,
+                                          &second_control_message, 1,
+                                          G_SOCKET_MSG_NONE, NULL, &error);
+      g_assert_no_error (error);
+      g_assert_cmpint (bytes_sent, ==, (gssize) vector.size);
+
+      g_free (blob);
+      g_clear_object (&second_control_message);
+      g_clear_object (&second_fd_list);
+      g_clear_object (&first_control_message);
+      g_clear_object (&first_fd_list);
+      g_clear_object (&message);
+    }
+  else
+    {
+      control_message = g_unix_fd_message_new_with_fd_list (fd_list);
+      vector.buffer = &byte;
+      vector.size = 1;
+      bytes_sent = g_socket_send_message (socket, NULL, &vector, 1,
+                                          &control_message, 1,
+                                          G_SOCKET_MSG_NONE, NULL, &error);
+      g_assert_no_error (error);
+      g_assert_cmpint (bytes_sent, ==, 1);
+
+      g_clear_object (&control_message);
+    }
+
+  g_clear_object (&fd_list);
+  g_clear_object (&data_input_stream);
+  g_clear_object (&data->connection);
+
+  return NULL;
+}
+#endif
+
+static void
+test_worker_rejects_unnegotiated_fds (void)
+{
+  g_test_summary ("Check that a GDBusConnection disconnects immediately if "
+                  "sent an FD without negotiated FD passing");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/work_items/4089");
+
+#ifdef G_OS_UNIX
+  GError *error = NULL;
+  GSocket *sockets[2];
+  GSocketConnection *client_stream;
+  GDBusConnection *connection;
+  GThread *server_thread;
+  FdsTestData data = { 0 };
+  gint socket_fds[2];
+
+  g_assert_cmpint (socketpair (AF_UNIX, SOCK_STREAM, 0, socket_fds), ==, 0);
+  sockets[0] = g_socket_new_from_fd (socket_fds[0], &error);
+  g_assert_no_error (error);
+  sockets[1] = g_socket_new_from_fd (socket_fds[1], &error);
+  g_assert_no_error (error);
+  client_stream = g_socket_connection_factory_create_connection (sockets[0]);
+  data.connection = g_socket_connection_factory_create_connection (sockets[1]);
+  g_mutex_init (&data.mutex);
+  g_cond_init (&data.cond);
+  server_thread = g_thread_new ("gdbus-unnegotiated-fds-server",
+                                test_fds_server_thread,
+                                &data);
+
+  connection = g_dbus_connection_new_sync (G_IO_STREAM (client_stream),
+                                           NULL,
+                                           G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                           NULL,
+                                           NULL,
+                                           &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (connection);
+  g_signal_connect (connection, "closed",
+                    G_CALLBACK (test_connection_closed),
+                    &data);
+
+  g_mutex_lock (&data.mutex);
+  data.client_ready = TRUE;
+  g_cond_signal (&data.cond);
+  g_mutex_unlock (&data.mutex);
+
+  while (TRUE)
+    {
+      gboolean disconnected;
+
+      g_mutex_lock (&data.mutex);
+      disconnected = data.disconnected;
+      g_mutex_unlock (&data.mutex);
+
+      if (disconnected)
+        break;
+
+      g_main_context_iteration (NULL, TRUE);
+    }
+
+  g_thread_join (server_thread);
+  g_clear_object (&connection);
+  g_clear_object (&client_stream);
+  g_clear_object (&sockets[0]);
+  g_clear_object (&sockets[1]);
+  g_cond_clear (&data.cond);
+  g_mutex_clear (&data.mutex);
+#else
+  g_test_skip ("Testing FD passing only works on Unix");
+#endif
+}
+
+static void
+test_worker_limits_fds_in_later_chunks (void)
+{
+  g_test_summary ("Check that FDs received in later chunks count towards the "
+                  "per-message limit");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/work_items/4089");
+
+#ifdef G_OS_UNIX
+  GError *error = NULL;
+  GSocket *sockets[2];
+  GSocketConnection *client_stream;
+  GDBusConnection *connection;
+  GThread *server_thread;
+  FdsTestData data = { 0 };
+  gint socket_fds[2];
+
+  g_assert_cmpint (socketpair (AF_UNIX, SOCK_STREAM, 0, socket_fds), ==, 0);
+  sockets[0] = g_socket_new_from_fd (socket_fds[0], &error);
+  g_assert_no_error (error);
+  sockets[1] = g_socket_new_from_fd (socket_fds[1], &error);
+  g_assert_no_error (error);
+  client_stream = g_socket_connection_factory_create_connection (sockets[0]);
+  data.connection = g_socket_connection_factory_create_connection (sockets[1]);
+  data.negotiate_unix_fd_passing = TRUE;
+  data.send_fds_in_separate_chunks = TRUE;
+  g_mutex_init (&data.mutex);
+  g_cond_init (&data.cond);
+  server_thread = g_thread_new ("gdbus-fd-limit-server",
+                                test_fds_server_thread,
+                                &data);
+
+  connection = g_initable_new (G_TYPE_DBUS_CONNECTION,
+                               NULL,
+                               &error,
+                               "stream", client_stream,
+                               "flags", G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                               "max-message-unix-fds", 1,
+                               NULL);
+  g_assert_no_error (error);
+  g_assert_nonnull (connection);
+  g_signal_connect (connection, "closed",
+                    G_CALLBACK (test_connection_closed),
+                    &data);
+
+  g_mutex_lock (&data.mutex);
+  data.client_ready = TRUE;
+  g_cond_signal (&data.cond);
+  g_mutex_unlock (&data.mutex);
+
+  while (TRUE)
+    {
+      gboolean disconnected;
+
+      g_mutex_lock (&data.mutex);
+      disconnected = data.disconnected;
+      g_mutex_unlock (&data.mutex);
+
+      if (disconnected)
+        break;
+
+      g_main_context_iteration (NULL, TRUE);
+    }
+
+  g_thread_join (server_thread);
+  g_clear_object (&connection);
+  g_clear_object (&client_stream);
+  g_clear_object (&sockets[0]);
+  g_clear_object (&sockets[1]);
+  g_cond_clear (&data.cond);
+  g_mutex_clear (&data.mutex);
+#else
+  g_test_skip ("Testing FD passing only works on Unix");
+#endif
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1442,6 +1780,10 @@ main (int   argc,
   g_test_add_func ("/gdbus/connection/filter", test_connection_filter);
   g_test_add_func ("/gdbus/connection/serials", test_connection_serials);
   g_test_add_func ("/gdbus/connection/cancel", test_connection_cancel);
+  g_test_add_func ("/gdbus/connection/worker/rejects-unnegotiated-fds",
+                   test_worker_rejects_unnegotiated_fds);
+  g_test_add_func ("/gdbus/connection/worker/limits-fds-in-later-chunks",
+                   test_worker_limits_fds_in_later_chunks);
   ret = g_test_run();
 
   g_main_loop_unref (loop);
