@@ -4788,6 +4788,26 @@ invoke_set_property_in_idle_cb (gpointer _data)
   GError *error;
   GDBusMessage *reply;
   GVariant *value;
+  ExportedInterface *ei = NULL;
+  ExportedSubtree *es = NULL;
+
+  if (has_object_been_unregistered (data->connection,
+                                    data->registration_id,
+                                    &ei,
+                                    data->subtree_registration_id,
+                                    &es))
+    {
+      reply = g_dbus_message_new_method_error (data->message,
+                                               DBUS_ERROR_UNKNOWN_METHOD,
+                                               /* Translators: The first placeholder is a D-Bus interface,
+                                                * the second is the path of an object. */
+                                               _("No such interface “%s” on object at path %s"),
+                                               DBUS_INTERFACE_PROPERTIES,
+                                               g_dbus_message_get_path (data->message));
+      g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
+      g_object_unref (reply);
+      goto out;
+    }
 
   error = NULL;
   value = NULL;
@@ -4825,6 +4845,10 @@ invoke_set_property_in_idle_cb (gpointer _data)
   g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
   g_variant_unref (value);
+
+ out:
+  g_clear_pointer (&ei, exported_interface_unref);
+  g_clear_pointer (&es, exported_subtree_unref);
 
   return FALSE;
 }
