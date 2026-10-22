@@ -486,6 +486,111 @@ expand_commandlines[] =
       { "app.exe", "100%", NULL },
       0,
     },
+    /* https://gitlab.gnome.org/GNOME/glib/-/issues/4032 */
+    {
+      "\"C:\\Program Files\\App\\app.exe\" %f",
+      { { "C:\\Users\\me\\x' --injected 'z.txt", NULL } },
+      { "C:\\Program Files\\App\\app.exe", "C:\\Users\\me\\x' --injected 'z.txt", NULL },
+      0,
+    },
+    {
+      "\"C:\\Program Files\\App\\app.exe\" %u",
+      { { NULL, "https://example.com/x' --injected 'z" } },
+      { "C:\\Program Files\\App\\app.exe", "https://example.com/x' --injected 'z", NULL },
+      0,
+    },
+    {
+      "\"C:\\Program Files\\App\\app.exe\"",
+      { { "C:\\it's.txt", NULL }, { "C:\\b.txt", NULL } },
+      { "C:\\Program Files\\App\\app.exe", "C:\\it's.txt", NULL },
+      1,
+    },
+    /* Values are kept as they are, in the argument their field code is in */
+    {
+      "\"C:\\Program Files\\App\\app.exe\" \"%1\"",
+      { { "C:\\Users\\me\\it's a file.txt", NULL } },
+      { "C:\\Program Files\\App\\app.exe", "C:\\Users\\me\\it's a file.txt", NULL },
+      0,
+    },
+    {
+      "C:\\Windows\\notepad.exe %1",
+      { { "C:\\My Documents\\a \"b\" c.txt", NULL } },
+      { "C:\\Windows\\notepad.exe", "C:\\My Documents\\a \"b\" c.txt", NULL },
+      0,
+    },
+    {
+      "\"app.exe\" \"%1\" %1",
+      { { "C:\\some dir\\", NULL }, { "C:\\other dir\\\\", NULL } },
+      { "app.exe", "C:\\some dir\\", "C:\\other dir\\\\", NULL },
+      0,
+    },
+    {
+      "app.exe --file=%1 --verbose",
+      { { "C:\\a b\\c.txt", NULL } },
+      { "app.exe", "--file=C:\\a b\\c.txt", "--verbose", NULL },
+      0,
+    },
+    {
+      "app.exe --title %c",
+      { { NULL, NULL } },
+      { "app.exe", "--title", "Bob's App", NULL },
+      0,
+    },
+    {
+      "app.exe %*",
+      { { "C:\\a b.txt", NULL }, { "C:\\it's.txt", NULL }, { "C:\\c\\", NULL } },
+      { "app.exe", "C:\\a b.txt", "C:\\it's.txt", "C:\\c\\", NULL },
+      0,
+    },
+    {
+      "app.exe %*\t--",
+      { { "C:\\a b.txt", NULL }, { "C:\\c.txt", NULL } },
+      { "app.exe", "C:\\a b.txt", "C:\\c.txt", "--", NULL },
+      0,
+    },
+    {
+      "app.exe \"%*\"",
+      { { "C:\\a.txt", NULL }, { "C:\\b.txt", NULL } },
+      { "app.exe", "C:\\a.txt C:\\b.txt", NULL },
+      0,
+    },
+    {
+      "app.exe --files=%F",
+      { { "C:\\a b.txt", NULL }, { "C:\\c.txt", NULL } },
+      { "app.exe", "--files=C:\\a b.txt C:\\c.txt", NULL },
+      0,
+    },
+    {
+      "app.exe %F --",
+      { { "C:\\a b.txt", NULL }, { "C:\\it's \"c\".txt", NULL } },
+      { "app.exe", "C:\\a b.txt", "C:\\it's \"c\".txt", "--", NULL },
+      0,
+    },
+    {
+      "app.exe %U",
+      { { NULL, "https://example.com/a b" }, { NULL, "https://example.com/'c'\\d" } },
+      { "app.exe", "https://example.com/a b", "https://example.com/'c'\\d", NULL },
+      0,
+    },
+    {
+      "\"%1\" %*",
+      { { "C:\\Program Files\\x y.exe", NULL } },
+      { "C:\\Program Files\\x y.exe", NULL },
+      0,
+    },
+    /* Splitting the command line itself */
+    {
+      "  app.exe\t \"a \\\"quoted\\\" word\" C:\\dir\\file \"C:\\dir\\\\\" a\\\\\\\"b \"x\"\"y\" un\"quo ted\" ",
+      { { NULL, NULL } },
+      { "app.exe", "a \"quoted\" word", "C:\\dir\\file", "C:\\dir\\", "a\\\"b", "x\"y", "unquo ted", NULL },
+      0,
+    },
+    {
+      "\"C:\\Program Files\\App\\\"app.exe \"unterminated",
+      { { NULL, NULL } },
+      { "C:\\Program Files\\App\\app.exe", "unterminated", NULL },
+      0,
+    },
   };
 
 static void
@@ -544,6 +649,30 @@ test_win32_expand_application_parameters (void)
 }
 
 static void
+test_win32_expand_application_parameters_empty (void)
+{
+  const char *commands[] = { "", "  \t ", "%1", "%U %F" };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (commands); i++)
+    {
+      GList *objs = NULL;
+      int argc = 0;
+      char **argv = NULL;
+      GError *error = NULL;
+      gboolean success;
+
+      g_test_message ("Command line: %s", commands[i]);
+
+      success = _g_win32_expand_application_parameters (NULL, commands[i], &objs, &argc, &argv, &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+      g_assert_false (success);
+      g_assert_null (argv);
+      g_clear_error (&error);
+    }
+}
+
+static void
 do_fail_on_broken_utf16_1 (void)
 {
   const gunichar2 utf16[] = { 0xd800, 0x0000 };
@@ -585,6 +714,7 @@ main (int   argc,
   g_test_add_func ("/appinfo/win32-parse-filename", test_win32_parse_filename);
   g_test_add_func ("/appinfo/win32-utf16-conversion-fail", test_fail_on_broken_utf16);
   g_test_add_func ("/appinfo/win32-expand-application-parameters/commands", test_win32_expand_application_parameters);
+  g_test_add_func ("/appinfo/win32-expand-application-parameters/empty", test_win32_expand_application_parameters_empty);
 
   g_test_add_func ("/appinfo/subprocess/win32-assert-broken-utf16_1", do_fail_on_broken_utf16_1);
   g_test_add_func ("/appinfo/subprocess/win32-assert-broken-utf16_2", do_fail_on_broken_utf16_2);

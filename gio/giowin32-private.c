@@ -499,21 +499,24 @@ expand_macro_single (char macro, file_or_uri *obj)
     case 'u':
     case 'U':
       if (obj->uri)
-        result = g_shell_quote (obj->uri);
+        result = g_strdup (obj->uri);
       break;
     case 'f':
     case 'F':
       if (obj->file)
-        result = g_shell_quote (obj->file);
+        result = g_strdup (obj->file);
       break;
     }
 
   return result;
 }
 
+/* Appends each value of @macro to @values, as is: the values are never
+ * quoted or parsed again.
+ */
 static gboolean
 expand_macro (char               macro,
-              GString           *exec,
+              GPtrArray         *values,
               const char        *app_name,
               GList            **stat_obj_list,
               GList            **obj_list)
@@ -522,7 +525,7 @@ expand_macro (char               macro,
   char *expanded;
   gboolean result = FALSE;
 
-  g_return_val_if_fail (exec != NULL, FALSE);
+  g_return_val_if_fail (values != NULL, FALSE);
 
 /*
 Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%28v=vs.85%29.aspx)
@@ -557,13 +560,7 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
               expanded = expand_macro_single (macro, o->data);
 
               if (expanded)
-                {
-                  if (o != *stat_obj_list)
-                    g_string_append (exec, " ");
-
-                  g_string_append (exec, expanded);
-                  g_free (expanded);
-                }
+                g_ptr_array_add (values, expanded);
             }
 
           objs = NULL;
@@ -585,13 +582,7 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
               expanded = expand_macro_single (macro, o->data);
 
               if (expanded)
-                {
-                  if (o != *stat_obj_list)
-                    g_string_append (exec, " ");
-
-                  g_string_append (exec, expanded);
-                  g_free (expanded);
-                }
+                g_ptr_array_add (values, expanded);
             }
 
           if (objs)
@@ -649,13 +640,7 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
               expanded = expand_macro_single (macro, o->data);
 
               if (expanded)
-                {
-                  if (o != *stat_obj_list)
-                    g_string_append (exec, " ");
-
-                  g_string_append (exec, expanded);
-                  g_free (expanded);
-                }
+                g_ptr_array_add (values, expanded);
             }
           result = TRUE;
 
@@ -672,9 +657,7 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
     case 'v':
       break;
     case 'w':
-      expanded = g_get_current_dir ();
-      g_string_append (exec, expanded);
-      g_free (expanded);
+      g_ptr_array_add (values, g_get_current_dir ());
       break;
     case 'u':
     case 'f':
@@ -683,10 +666,8 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
           expanded = expand_macro_single (macro, objs->data);
 
           if (expanded)
-            {
-              g_string_append (exec, expanded);
-              g_free (expanded);
-            }
+            g_ptr_array_add (values, expanded);
+
           objs = objs->next;
           result = TRUE;
         }
@@ -700,27 +681,17 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
           expanded = expand_macro_single (macro, objs->data);
 
           if (expanded)
-            {
-              g_string_append (exec, expanded);
-              g_free (expanded);
-            }
+            g_ptr_array_add (values, expanded);
 
           objs = objs->next;
           result = TRUE;
-
-          if (objs != NULL && expanded)
-            g_string_append_c (exec, ' ');
         }
 
       break;
 
     case 'c':
       if (app_name)
-        {
-          expanded = g_shell_quote (app_name);
-          g_string_append (exec, expanded);
-          g_free (expanded);
-        }
+        g_ptr_array_add (values, g_strdup (app_name));
       break;
 
     case 'm': /* deprecated */
@@ -731,7 +702,7 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
       break;
 
     case '%':
-      g_string_append_c (exec, '%');
+      g_ptr_array_add (values, g_strdup ("%"));
       break;
     }
 
@@ -740,6 +711,64 @@ Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%2
   return result;
 }
 
+static gboolean
+is_command_line_space (char c)
+{
+  return c == ' ' || c == '\t';
+}
+
+/* Field codes that can expand to more than one value */
+static gboolean
+is_list_macro (char macro)
+{
+  return macro == '*' || macro == '~' || macro == 'F' || macro == 'U';
+}
+
+/* Adds the argument built in @arg to @args. An argument that came out
+ * empty is dropped, unless it was quoted (as in `""`).
+ */
+static void
+end_argument (GPtrArray  *args,
+              GString   **arg,
+              gboolean   *arg_quoted)
+{
+  if ((*arg)->len > 0 || *arg_quoted)
+    g_ptr_array_add (args, g_string_free_and_steal (g_steal_pointer (arg)));
+  else
+    g_string_free (g_steal_pointer (arg), TRUE);
+
+  *arg_quoted = FALSE;
+}
+
+/*
+ * Splits @exec_line, a command line template as found in the registry
+ * (such as `"C:\Program Files\App\app.exe" "%1"`), into @argv, and expands
+ * the field codes in it with the files and URIs of @objs.
+ *
+ * The template is split the way the Microsoft C runtime splits a command line
+ * (see "Parsing C Command-Line Arguments" at
+ * https://learn.microsoft.com/en-us/cpp/c-language/parsing-c-command-line-arguments),
+ * which is also how g_spawn_async() quotes each element of @argv again for
+ * the new process. Whitespace before the program name is skipped, and an
+ * argument that comes out empty (such as a field code with no value) is
+ * left out, unless it is quoted.
+ *
+ * A field code is expanded inside the argument it appears in: its value
+ * becomes part of that element of @argv as is, and is never parsed again,
+ * so whatever characters a file name or URI contains, it cannot add, split
+ * or join elements of @argv.
+ *
+ * A field code that can expand to several values (%*, %~, %F and %U)
+ * gives one argument per value when it makes up a whole argument by
+ * itself, as in `app.exe %*`; anywhere else its values are joined with
+ * spaces into the argument it appears in.
+ *
+ * If no field code used any of @objs, the file of the first one (if it has
+ * one) is added as an argument of its own, as %f would.
+ *
+ * @objs is moved past the objects used; the caller launches the application
+ * again with the rest.
+ */
 static gboolean
 _g_win32_expand_application_parameters (const char  *app_name,
                                         const gchar *exec_line,
@@ -751,51 +780,140 @@ _g_win32_expand_application_parameters (const char  *app_name,
   GList *obj_list = *objs;
   GList **stat_obj_list = objs;
   const char *p = exec_line;
-  GString *expanded_exec;
-  gboolean res;
-  gchar *a_char;
+  GPtrArray *args;
+  GPtrArray *values;
+  GString *arg = NULL;
+  gboolean arg_quoted = FALSE;
+  gboolean in_quotes = FALSE;
+  gboolean in_program_name = TRUE;
+  gboolean res = FALSE;
+  guint i;
 
-  expanded_exec = g_string_new (NULL);
-  res = FALSE;
+  args = g_ptr_array_new_null_terminated (0, g_free, TRUE);
 
   while (*p)
     {
-      if (p[0] == '%' && p[1] != '\0')
+      if (arg == NULL && is_command_line_space (*p))
         {
-          if (expand_macro (p[1],
-                            expanded_exec,
-                            app_name, stat_obj_list,
-                            objs))
+          p++;
+          continue;
+        }
+
+      if (arg == NULL &&
+          p[0] == '%' && is_list_macro (p[1]) &&
+          (p[2] == '\0' || is_command_line_space (p[2])))
+        {
+          /* A list field code that makes up a whole argument gives one
+           * argument per value */
+          values = g_ptr_array_new_with_free_func (g_free);
+
+          if (expand_macro (p[1], values, app_name, stat_obj_list, objs))
             res = TRUE;
 
+          g_ptr_array_extend_and_steal (args, g_steal_pointer (&values));
+          in_program_name = FALSE;
+          p += 2;
+          continue;
+        }
+
+      if (arg == NULL)
+        arg = g_string_new (NULL);
+
+      if (p[0] == '%' && p[1] != '\0')
+        {
+          values = g_ptr_array_new_with_free_func (g_free);
+
+          if (expand_macro (p[1], values, app_name, stat_obj_list, objs))
+            res = TRUE;
+
+          for (i = 0; i < values->len; i++)
+            {
+              if (i > 0)
+                g_string_append_c (arg, ' ');
+
+              g_string_append (arg, g_ptr_array_index (values, i));
+            }
+
+          g_ptr_array_unref (values);
+          p += 2;
+        }
+      else if (*p == '\\' && !in_program_name)
+        {
+          /* Backslashes are literal, unless they come before a double
+           * quote mark. They are always literal in the program name
+           * (the first argument).
+           */
+          gsize n_backslashes = strspn (p, "\\");
+
+          if (p[n_backslashes] == '"')
+            {
+              g_string_append_len (arg, p, n_backslashes / 2);
+
+              if (n_backslashes % 2 == 1)
+                {
+                  g_string_append_c (arg, '"');
+                  p += n_backslashes + 1;
+                }
+              else
+                p += n_backslashes;
+            }
+          else
+            {
+              g_string_append_len (arg, p, n_backslashes);
+              p += n_backslashes;
+            }
+        }
+      else if (*p == '"')
+        {
+          arg_quoted = TRUE;
+
+          if (in_quotes && p[1] == '"' && !in_program_name)
+            {
+              /* "" inside a quoted part is a literal double quote mark */
+              g_string_append_c (arg, '"');
+              p += 2;
+            }
+          else
+            {
+              in_quotes = !in_quotes;
+              p++;
+            }
+        }
+      else if (!in_quotes && is_command_line_space (*p))
+        {
+          end_argument (args, &arg, &arg_quoted);
+          in_program_name = FALSE;
           p++;
         }
       else
-        g_string_append_c (expanded_exec, *p);
-
-      p++;
+        {
+          g_string_append_c (arg, *p);
+          p++;
+        }
     }
+
+  if (arg != NULL)
+    end_argument (args, &arg, &arg_quoted);
 
   /* No file substitutions */
   if (obj_list == *objs && obj_list != NULL && !res)
     {
       /* If there is no macro default to %f. This is also what KDE does */
-      g_string_append_c (expanded_exec, ' ');
-      expand_macro ('f', expanded_exec, app_name, stat_obj_list, objs);
+      values = g_ptr_array_new_with_free_func (g_free);
+      expand_macro ('f', values, app_name, stat_obj_list, objs);
+      g_ptr_array_extend_and_steal (args, g_steal_pointer (&values));
     }
 
-  /* Replace '\\' with '/', because g_shell_parse_argv considers them
-   * to be escape sequences.
-   */
-  for (a_char = expanded_exec->str;
-       a_char <= &expanded_exec->str[expanded_exec->len];
-       a_char++)
+  if (args->len == 0)
     {
-      if (*a_char == '\\')
-        *a_char = '/';
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Command line is empty");
+      g_ptr_array_unref (args);
+      return FALSE;
     }
 
-  res = g_shell_parse_argv (expanded_exec->str, argc, argv, error);
-  g_string_free (expanded_exec, TRUE);
-  return res;
+  *argc = args->len;
+  *argv = (char **) g_ptr_array_free (args, FALSE);
+
+  return TRUE;
 }
