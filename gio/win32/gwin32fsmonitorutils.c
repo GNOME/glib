@@ -39,6 +39,7 @@ g_win32_fs_monitor_handle_event (GWin32FSMonitorPrivate   *monitor,
   PFILE_NOTIFY_INFORMATION pfni_next;
   WIN32_FILE_ATTRIBUTE_DATA attrib_data = {0, };
   gchar *renamed_file = NULL;
+  gboolean interesting = FALSE;
 
   switch (pfni->Action)
     {
@@ -105,14 +106,16 @@ g_win32_fs_monitor_handle_event (GWin32FSMonitorPrivate   *monitor,
     }
 
   if (fme != (GFileMonitorEvent) -1)
-    return g_file_monitor_source_handle_event (monitor->fms,
-                                               fme,
-                                               filename,
-                                               renamed_file,
-                                               NULL,
-                                               g_get_monotonic_time ());
-  else
-    return FALSE;
+    interesting = g_file_monitor_source_handle_event (monitor->fms,
+                                                      fme,
+                                                      filename,
+                                                      renamed_file,
+                                                      NULL,
+                                                      g_get_monotonic_time ());
+
+  g_free (renamed_file);
+
+  return interesting;
 }
 
 
