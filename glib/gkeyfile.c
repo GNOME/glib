@@ -3302,9 +3302,9 @@ g_key_file_get_uint64 (GKeyFile     *key_file,
   gchar *s, *end;
   guint64 v;
 
-  g_return_val_if_fail (key_file != NULL, -1);
-  g_return_val_if_fail (group_name != NULL, -1);
-  g_return_val_if_fail (key != NULL, -1);
+  g_return_val_if_fail (key_file != NULL, 0);
+  g_return_val_if_fail (group_name != NULL, 0);
+  g_return_val_if_fail (key != NULL, 0);
 
   s = g_key_file_get_value (key_file, group_name, key, error);
 
