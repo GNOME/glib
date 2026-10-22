@@ -4695,8 +4695,7 @@ typedef struct
   gpointer user_data;
   const gchar *property_name;
   const GDBusInterfaceVTable *vtable;
-  GDBusInterfaceInfo *interface_info;
-  const GDBusPropertyInfo *property_info;
+  GDBusInterfaceInfo *interface_info;  /* (owned) */
   guint registration_id;
   guint subtree_registration_id;
 } PropertyData;
@@ -4706,6 +4705,7 @@ property_data_free (PropertyData *data)
 {
   g_object_unref (data->connection);
   g_clear_object (&data->message);
+  g_dbus_interface_info_unref (data->interface_info);
   g_free (data);
 }
 
@@ -4989,8 +4989,9 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
   property_data->user_data = user_data;
   property_data->property_name = property_name;
   property_data->vtable = vtable;
-  property_data->interface_info = interface_info;
-  property_data->property_info = property_info;
+  /* Subtree introspection data may be freed as soon as the call has been
+   * scheduled, so keep the info alive until the idle callback has run. */
+  property_data->interface_info = g_dbus_interface_info_ref (interface_info);
   property_data->registration_id = registration_id;
   property_data->subtree_registration_id = subtree_registration_id;
 
@@ -5077,7 +5078,7 @@ typedef struct
   GDBusMessage *message;  /* (owned) */
   gpointer user_data;
   const GDBusInterfaceVTable *vtable;
-  GDBusInterfaceInfo *interface_info;
+  GDBusInterfaceInfo *interface_info;  /* (owned) */
   guint registration_id;
   guint subtree_registration_id;
 } PropertyGetAllData;
@@ -5087,6 +5088,7 @@ property_get_all_data_free (PropertyGetAllData *data)
 {
   g_object_unref (data->connection);
   g_clear_object (&data->message);
+  g_dbus_interface_info_unref (data->interface_info);
   g_free (data);
 }
 
@@ -5219,7 +5221,9 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
   property_get_all_data->message = g_object_ref (message);
   property_get_all_data->user_data = user_data;
   property_get_all_data->vtable = vtable;
-  property_get_all_data->interface_info = interface_info;
+  /* Keep the info alive until the idle callback has run, as in
+   * validate_and_maybe_schedule_property_getset(). */
+  property_get_all_data->interface_info = g_dbus_interface_info_ref (interface_info);
   property_get_all_data->registration_id = registration_id;
   property_get_all_data->subtree_registration_id = subtree_registration_id;
 
