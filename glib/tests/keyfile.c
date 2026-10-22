@@ -105,7 +105,7 @@ check_string_list_value (GKeyFile    *keyfile,
                          const gchar *key,
                          ...)
 {
-  gint i;
+  size_t i;
   gchar *v, **value;
   va_list args;
   gsize len;
@@ -127,6 +127,9 @@ check_string_list_value (GKeyFile    *keyfile,
     }
 
   va_end (args);
+
+  g_assert_null (value[i]);
+  g_assert_cmpuint (len, ==, i);
 
   g_strfreev (value);
 }
@@ -955,7 +958,8 @@ test_lists (void)
     "key6=1;0;-1\n"
     "key7= 1 ; 0 ; -1 \n"
     "key8=v1\\,v2\n"
-    "key9=0;1.3456;-76532.456\n";
+    "key9=0;1.3456;-76532.456\n"
+    "key10=\n";
 
   keyfile = load_data (data, 0);
 
@@ -963,6 +967,7 @@ test_lists (void)
   check_string_list_value (keyfile, "valid", "key2", "v1", "v2", NULL);
   check_string_list_value (keyfile, "valid", "key3", "v1,v2", NULL);
   check_string_list_value (keyfile, "valid", "key4", "v1;v2", NULL);
+  check_string_list_value (keyfile, "valid", "key10", NULL);
   check_boolean_list_value (keyfile, "valid", "key5", TRUE, FALSE, -100);
   check_integer_list_value (keyfile, "valid", "key6", 1, 0, -1, -100);
   check_double_list_value (keyfile, "valid", "key9", 0.0, 1.3456, -76532.456, -100.0);

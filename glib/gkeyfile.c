@@ -2417,7 +2417,7 @@ g_key_file_get_string_list (GKeyFile     *key_file,
 {
   GError *key_file_error = NULL;
   gchar *value, *string_value, **values;
-  gint i, len;
+  size_t i, len;
   GSList *p, *pieces = NULL;
 
   g_return_val_if_fail (key_file != NULL, NULL);
