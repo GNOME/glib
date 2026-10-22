@@ -1266,6 +1266,229 @@ test_launch_as_manager_fail (void)
   g_assert_finalize_object (context);
 }
 
+/* Launches an app named @name with icon @name, whose Exec line is
+ * @program (shell-quoted) followed by @arguments, with @paths as its files,
+ * and asserts that it printed @expected on stdout */
+static void
+assert_launch_output (const char         *program,
+                      const char         *arguments,
+                      const char         *name,
+                      const char * const *paths,
+                      const char         *expected)
+{
+  GKeyFile *key_file;
+  GDesktopAppInfo *appinfo;
+  GList *uris = NULL;
+  char *quoted_program;
+  char *exec;
+  char *output_path = NULL;
+  char *output = NULL;
+  gboolean child_waited = FALSE;
+  GError *error = NULL;
+  int output_fd;
+  gsize i;
+
+  quoted_program = g_shell_quote (program);
+  exec = g_strconcat (quoted_program, arguments, NULL);
+  g_test_message ("Exec=%s with %s", exec, paths[0] != NULL ? paths[0] : name);
+
+  key_file = g_key_file_new ();
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                         G_KEY_FILE_DESKTOP_KEY_TYPE,
+                         G_KEY_FILE_DESKTOP_TYPE_APPLICATION);
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                         G_KEY_FILE_DESKTOP_KEY_NAME, name);
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                         G_KEY_FILE_DESKTOP_KEY_ICON, name);
+  g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+                         G_KEY_FILE_DESKTOP_KEY_EXEC, exec);
+  appinfo = g_desktop_app_info_new_from_keyfile (key_file);
+  g_assert_true (G_IS_DESKTOP_APP_INFO (appinfo));
+
+  for (i = 0; paths[i] != NULL; i++)
+    {
+      uris = g_list_append (uris, g_filename_to_uri (paths[i], NULL, &error));
+      g_assert_no_error (error);
+    }
+
+  output_fd = g_file_open_tmp ("desktop-app-info-output-XXXXXX", &output_path, &error);
+  g_assert_no_error (error);
+
+  g_desktop_app_info_launch_uris_as_manager_with_fds (appinfo, uris, NULL,
+                                                      G_SPAWN_DO_NOT_REAP_CHILD,
+                                                      NULL, NULL,
+                                                      wait_child_completed,
+                                                      &child_waited,
+                                                      -1, output_fd, -1,
+                                                      &error);
+  g_assert_no_error (error);
+  g_assert_true (child_waited);
+
+  g_file_get_contents (output_path, &output, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (output, ==, expected);
+
+  g_close (output_fd, &error);
+  g_assert_no_error (error);
+  g_assert_no_errno (g_unlink (output_path));
+
+  g_free (output);
+  g_free (output_path);
+  g_clear_list (&uris, g_free);
+  g_object_unref (appinfo);
+  g_key_file_unref (key_file);
+  g_free (exec);
+  g_free (quoted_program);
+}
+
+/* Test that a field code expands to text that g_shell_parse_argv() reads back
+ * whole, inside quotes as outside them, whatever characters its value has */
+static void
+test_launch_quoted_field_codes (void)
+{
+  const char *file_names[] = {
+    "plain",
+    "blank and\ttab",
+    "with \"double\" quotes",
+    "with 'single' quotes",
+    "back\\slash",
+    "\\\"escaped\\\" and \\\\ \\$ \\` \\",
+    "dollar $HOME and `backquotes`",
+    "#hash and # hash",
+    "new\nline",
+    "\"; '\\'' \\\" \"$(x)\" `x` #\n x '",
+  };
+  const char *no_paths[] = { NULL };
+  char *printf_path;
+  char *sh_path;
+  char *quoted_printf_path;
+  char *sh_printf_arguments;
+  char *tmpdir;
+  gsize i;
+
+  g_test_summary ("Test that field codes inside quoted Exec arguments "
+                  "expand to text that keeps the argument whole");
+
+  printf_path = g_find_program_in_path ("printf");
+  sh_path = g_find_program_in_path ("sh");
+  if (printf_path == NULL || sh_path == NULL)
+    {
+      g_test_skip ("printf or sh not found");
+      g_free (printf_path);
+      g_free (sh_path);
+      return;
+    }
+
+  tmpdir = g_dir_make_tmp ("desktop-app-info-quoted-XXXXXX", NULL);
+  g_assert_nonnull (tmpdir);
+  quoted_printf_path = g_shell_quote (printf_path);
+  sh_printf_arguments = g_strdup_printf (" -c \"%s '[%%%%s]' %%f\"",
+                                         quoted_printf_path);
+
+  for (i = 0; i < G_N_ELEMENTS (file_names); i++)
+    {
+      char *path = g_build_filename (tmpdir, file_names[i], NULL);
+      char *path2 = g_strconcat (path, "2", NULL);
+      const char *paths[] = { path, NULL };
+      const char *same_path_twice[] = { path, path, NULL };
+      const char *two_paths[] = { path, path2, NULL };
+      char *quoted = g_shell_quote (path);
+      char *quoted2 = g_shell_quote (path2);
+      char *quoted_dir = g_shell_quote (tmpdir);
+      char *quoted_name = g_shell_quote (file_names[i]);
+      char *expected;
+
+      /* Unquoted, as before: the value, as an argument or a part of one */
+      expected = g_strconcat ("[", path, "][--file=", path, "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" %f --file=%f",
+                            "App", same_path_twice, expected);
+      g_free (expected);
+
+      /* Inside double quotes: the shell-quoted value */
+      expected = g_strconcat ("[", quoted, "][--file=", quoted, "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" \"%f\" \"--file=%u\"",
+                            "App", same_path_twice, expected);
+      g_free (expected);
+
+      expected = g_strconcat ("[", quoted, " ", quoted2, "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" \"%F\"",
+                            "App", two_paths, expected);
+      g_free (expected);
+
+      expected = g_strconcat ("[", quoted_dir, "/", quoted_name, "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" \"%d/%n\"",
+                            "App", same_path_twice, expected);
+      g_free (expected);
+
+      expected = g_strconcat ("[", quoted_name, "][--icon ", quoted_name, "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" \"%c\" \"%i\"",
+                            file_names[i], no_paths, expected);
+      g_free (expected);
+
+      /* which a shell reads back as the value */
+      expected = g_strconcat ("[", path, "]", NULL);
+      assert_launch_output (sh_path, sh_printf_arguments,
+                            "App", paths, expected);
+      g_free (expected);
+
+      /* Inside single quotes: the value */
+      expected = g_strconcat ("[", path, "][--file=", path, "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" '%f' '--file=%u'",
+                            "App", same_path_twice, expected);
+      g_free (expected);
+
+      expected = g_strconcat ("[", path, " ", path2, "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" '%F'",
+                            "App", two_paths, expected);
+      g_free (expected);
+
+      expected = g_strconcat ("[", tmpdir, "/", file_names[i], "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" '%d/%n'",
+                            "App", same_path_twice, expected);
+      g_free (expected);
+
+      expected = g_strconcat ("[", file_names[i], "][--icon ", file_names[i], "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" '%c' '%i'",
+                            file_names[i], no_paths, expected);
+      g_free (expected);
+
+      g_free (quoted_name);
+      g_free (quoted_dir);
+      g_free (quoted2);
+      g_free (quoted);
+      g_free (path2);
+      g_free (path);
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (file_names); i++)
+    {
+      char *path = g_build_filename (tmpdir, file_names[i], NULL);
+      const char *paths[] = { path, NULL };
+      char *expected;
+
+      /* After an unquoted backslash: the value */
+      expected = g_strconcat ("[", path, "]", NULL);
+      assert_launch_output (printf_path, " \"[%%s]\" \\%f",
+                            "App", paths, expected);
+      g_free (expected);
+
+      /* In a comment: nothing */
+      assert_launch_output (printf_path, " \"[%%s]\" x # %f",
+                            "App", paths, "[x]");
+      assert_launch_output (printf_path, " \"[%%s]\" x #%f",
+                            "App", paths, "[x]");
+
+      g_free (path);
+    }
+
+  g_assert_no_errno (g_rmdir (tmpdir));
+  g_free (tmpdir);
+  g_free (sh_printf_arguments);
+  g_free (quoted_printf_path);
+  g_free (sh_path);
+  g_free (printf_path);
+}
+
 static GAppInfo *
 create_app_info_toucher (const char  *name,
                          const char  *touched_file_name,
@@ -2165,6 +2388,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/launch/fail-absolute-path", test_launch_fail_absolute_path);
   g_test_add_func ("/desktop-app-info/launch/fail-startup-notify", test_launch_startup_notify_fail);
   g_test_add_func ("/desktop-app-info/launch/fail-dbus", test_launch_fail_dbus);
+  g_test_add_func ("/desktop-app-info/launch/quoted-field-codes", test_launch_quoted_field_codes);
   g_test_add_func ("/desktop-app-info/launch-as-manager", test_launch_as_manager);
   g_test_add_func ("/desktop-app-info/launch-as-manager/fail", test_launch_as_manager_fail);
   g_test_add_func ("/desktop-app-info/launch-default-uri-handler", test_default_uri_handler);

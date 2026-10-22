@@ -2503,13 +2503,120 @@ g_desktop_app_info_get_show_in (GDesktopAppInfo *info,
 
 /* Launching... {{{2 */
 
+/* Returns the quoting g_shell_parse_argv() is in at the end of
+ * @command_line, as tokenize_command_line() in gshell.c reads it:
+ * '\0' (none), '\'' or '"' (inside those quotes), '\\' (just after an
+ * unquoted backslash) or '#' (in a comment). */
+static char
+get_shell_quoting (const char *command_line)
+{
+  const char *p;
+  char quoting = '\0';
+  gboolean escaped = FALSE;
+
+  for (p = command_line; *p != '\0'; p++)
+    {
+      if (quoting == '\\')
+        quoting = '\0';
+      else if (quoting == '#')
+        {
+          if (*p == '\n')
+            quoting = '\0';
+        }
+      else if (quoting != '\0')
+        {
+          if (*p == quoting && !(quoting == '"' && escaped))
+            quoting = '\0';
+        }
+      else if (*p == '\'' || *p == '"' || *p == '\\')
+        quoting = *p;
+      else if (*p == '#' &&
+               (p == command_line || p[-1] == ' ' || p[-1] == '\n'))
+        quoting = '#';
+
+      /* Count consecutive backslashes mod 2, to detect escaped double quotes */
+      escaped = (*p == '\\') ? !escaped : FALSE;
+    }
+
+  return quoting;
+}
+
+/* Appends @value to @exec, where g_shell_parse_argv() is in @quoting (see
+ * get_shell_quoting()), so that whatever characters @value has, it cannot
+ * end that quoting or change how the line splits into arguments. */
+static void
+append_quoted_value (GString    *exec,
+                     const char *value,
+                     char        quoting)
+{
+  char *quoted;
+  const char *p;
+
+  switch (quoting)
+    {
+    case '#':
+      /* The comment is dropped up to the next newline: leave out the ones
+       * in @value */
+      quoted = g_shell_quote (value);
+      for (p = quoted; *p != '\0'; p++)
+        {
+          if (*p != '\n')
+            g_string_append_c (exec, *p);
+        }
+      g_free (quoted);
+      break;
+
+    case '\'':
+      /* Inside single quotes the argument gets @value itself, as it always
+       * did for a value with no blanks, newlines, quotes or backslashes; a
+       * single quote in @value closes the quotes, adds an escaped one and
+       * reopens them */
+      for (p = value; *p != '\0'; p++)
+        {
+          if (*p == '\'')
+            g_string_append (exec, "'\\''");
+          else
+            g_string_append_c (exec, *p);
+        }
+      break;
+
+    case '"':
+      /* Inside double quotes the argument gets @value shell-quoted, as it
+       * always did for a value with no `"` or `\`, so that
+       * `sh -c "command %f"` gets it as one word; escape what a backslash
+       * escapes there */
+      quoted = g_shell_quote (value);
+      for (p = quoted; *p != '\0'; p++)
+        {
+          if (*p == '"' || *p == '\\' || *p == '$' || *p == '`')
+            g_string_append_c (exec, '\\');
+          g_string_append_c (exec, *p);
+        }
+      g_free (quoted);
+      break;
+
+    case '\\':
+      /* The backslash would escape the opening quote; a backslash followed
+       * by a newline is dropped. (After "--icon " or the blank between two
+       * values, the newline is one more blank.) */
+      g_string_append_c (exec, '\n');
+      G_GNUC_FALLTHROUGH;
+
+    case '\0':
+    default:
+      quoted = g_shell_quote (value);
+      g_string_append (exec, quoted);
+      g_free (quoted);
+      break;
+    }
+}
+
 static char *
 expand_macro_single (char macro, const char *uri)
 {
   GFile *file;
   char *result = NULL;
   char *path = NULL;
-  char *name;
 
   file = g_file_new_for_uri (uri);
 
@@ -2517,33 +2624,23 @@ expand_macro_single (char macro, const char *uri)
     {
     case 'u':
     case 'U':
-      result = g_shell_quote (uri);
+      result = g_strdup (uri);
       break;
     case 'f':
     case 'F':
-      path = g_file_get_path (file);
-      if (path)
-        result = g_shell_quote (path);
+      result = g_file_get_path (file);
       break;
     case 'd':
     case 'D':
       path = g_file_get_path (file);
       if (path)
-        {
-          name = g_path_get_dirname (path);
-          result = g_shell_quote (name);
-          g_free (name);
-        }
+        result = g_path_get_dirname (path);
       break;
     case 'n':
     case 'N':
       path = g_file_get_path (file);
       if (path)
-        {
-          name = g_path_get_basename (path);
-          result = g_shell_quote (name);
-          g_free (name);
-        }
+        result = g_path_get_basename (path);
       break;
     }
 
@@ -2587,8 +2684,17 @@ expand_macro (char              macro,
   gboolean force_file_uri;
   char force_file_uri_macro;
   const char *uri;
+  char quoting;
 
   g_return_if_fail (exec != NULL);
+
+  /* The specification leaves field codes inside quoted arguments
+   * undefined; append each value for the quoting g_shell_parse_argv() is
+   * in here, which the text appended below leaves as it is.
+   *
+   * FIXME: Update this once the specification defines it. See
+   * https://gitlab.freedesktop.org/xdg/xdg-specs/-/issues/281 */
+  quoting = get_shell_quoting (exec->str);
 
   /* On %u and %U, pass POSIX file path pointing to the URI via
    * the FUSE mount in ~/.gvfs. Note that if the FUSE daemon isn't
@@ -2627,7 +2733,7 @@ expand_macro (char              macro,
                                        force_file_uri, force_file_uri_macro);
           if (expanded)
             {
-              g_string_append (exec, expanded);
+              append_quoted_value (exec, expanded, quoting);
               g_free (expanded);
             }
           uris = uris->next;
@@ -2646,7 +2752,7 @@ expand_macro (char              macro,
                                        force_file_uri, force_file_uri_macro);
           if (expanded)
             {
-              g_string_append (exec, expanded);
+              append_quoted_value (exec, expanded, quoting);
               g_free (expanded);
             }
 
@@ -2662,28 +2768,18 @@ expand_macro (char              macro,
       if (info->icon_name)
         {
           g_string_append (exec, "--icon ");
-          expanded = g_shell_quote (info->icon_name);
-          g_string_append (exec, expanded);
-          g_free (expanded);
+          append_quoted_value (exec, info->icon_name, quoting);
         }
       break;
 
     case 'c':
       if (info->name)
-        {
-          expanded = g_shell_quote (info->name);
-          g_string_append (exec, expanded);
-          g_free (expanded);
-        }
+        append_quoted_value (exec, info->name, quoting);
       break;
 
     case 'k':
       if (info->filename)
-        {
-          expanded = g_shell_quote (info->filename);
-          g_string_append (exec, expanded);
-          g_free (expanded);
-        }
+        append_quoted_value (exec, info->filename, quoting);
       break;
 
     case 'm': /* deprecated */

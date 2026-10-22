@@ -430,6 +430,8 @@ delimit_token (GString **token,
   *token = NULL;
 }
 
+/* get_shell_quoting() in gio/gdesktopappinfo.c follows the quoting this
+ * reads: keep them in step. */
 static GSList*
 tokenize_command_line (const gchar *command_line,
                        GError **error)
