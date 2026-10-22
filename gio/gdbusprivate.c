@@ -356,6 +356,7 @@ struct GDBusWorker
    */
   gboolean                            frozen;
   GDBusCapabilityFlags                capabilities;
+  unsigned int                        max_message_unix_fds;
   GQueue                             *received_messages_while_frozen;
 
   GIOStream                          *stream;
@@ -403,6 +404,23 @@ struct GDBusWorker
 };
 
 static void _g_dbus_worker_unref (GDBusWorker *worker);
+
+static void
+clear_read_fd_list (GDBusWorker *worker)
+{
+  g_clear_object (&worker->read_fd_list);
+}
+
+#ifdef G_OS_UNIX
+static void
+steal_and_close_fds (int    *fds,
+                     size_t  num_fds)
+{
+  for (size_t i = 0; i < num_fds; i++)
+    (void) g_close (fds[i], NULL);
+  g_free (fds);
+}
+#endif
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -606,9 +624,31 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
               GUnixFDMessage *fd_message;
               gint *fds;
               gint num_fds;
+              unsigned int n_fds_already_received = 0;
 
               fd_message = G_UNIX_FD_MESSAGE (control_message);
               fds = g_unix_fd_message_steal_fds (fd_message, &num_fds);
+              if (worker->read_fd_list != NULL)
+                n_fds_already_received = (unsigned int) g_unix_fd_list_get_length (worker->read_fd_list);
+              if (error == NULL &&
+                  (!(worker->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING) ||
+                   n_fds_already_received > worker->max_message_unix_fds ||
+                   (guint) num_fds > worker->max_message_unix_fds - n_fds_already_received))
+                {
+                  steal_and_close_fds (g_steal_pointer (&fds), num_fds);
+                  clear_read_fd_list (worker);
+                  g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                                       "Received too many UNIX file descriptors, or file "
+                                       "descriptor passing was not negotiated");
+                  _g_dbus_worker_emit_disconnected (worker, TRUE, error);
+                  g_error_free (error);
+                  g_object_unref (control_message);
+                  n++;
+                  while (n < worker->read_num_ancillary_messages)
+                    g_object_unref (worker->read_ancillary_messages[n++]);
+                  g_free (worker->read_ancillary_messages);
+                  goto out;
+                }
               if (worker->read_fd_list == NULL)
                 {
                   worker->read_fd_list = g_unix_fd_list_new_from_array (fds, num_fds);
@@ -641,6 +681,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
                                g_type_name (G_TYPE_FROM_INSTANCE (control_message)));
                   _g_dbus_worker_emit_disconnected (worker, TRUE, error);
                   g_error_free (error);
+                  clear_read_fd_list (worker);
                   g_object_unref (control_message);
                   n++;
                   while (n < worker->read_num_ancillary_messages)
@@ -691,6 +732,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
         _g_dbus_worker_emit_disconnected (worker, TRUE, error);
 
       g_error_free (error);
+      clear_read_fd_list (worker);
       goto out;
     }
 
@@ -714,6 +756,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
                    "Underlying GIOStream returned 0 bytes on an async read");
       _g_dbus_worker_emit_disconnected (worker, TRUE, error);
       g_error_free (error);
+      clear_read_fd_list (worker);
       goto out;
     }
 
@@ -736,6 +779,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
               g_warning ("_g_dbus_worker_do_read_cb: error determining bytes needed: %s", error->message);
               _g_dbus_worker_emit_disconnected (worker, FALSE, error);
               g_error_free (error);
+              clear_read_fd_list (worker);
               goto out;
             }
 
@@ -767,6 +811,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
               g_free (s);
               _g_dbus_worker_emit_disconnected (worker, FALSE, error);
               g_error_free (error);
+              clear_read_fd_list (worker);
               goto out;
             }
 
@@ -1667,13 +1712,14 @@ _g_dbus_worker_send_message (GDBusWorker    *worker,
 /* ---------------------------------------------------------------------------------------------------- */
 
 GDBusWorker *
-_g_dbus_worker_new (GIOStream                              *stream,
-                    GDBusCapabilityFlags                    capabilities,
-                    gboolean                                initially_frozen,
-                    GDBusWorkerMessageReceivedCallback      message_received_callback,
+_g_dbus_worker_new (GIOStream *stream,
+                    GDBusCapabilityFlags capabilities,
+                    guint max_message_unix_fds,
+                    gboolean initially_frozen,
+                    GDBusWorkerMessageReceivedCallback message_received_callback,
                     GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback,
-                    GDBusWorkerDisconnectedCallback         disconnected_callback,
-                    gpointer                                user_data)
+                    GDBusWorkerDisconnectedCallback disconnected_callback,
+                    gpointer user_data)
 {
   GDBusWorker *worker;
   GSource *idle_source;
@@ -1693,6 +1739,7 @@ _g_dbus_worker_new (GIOStream                              *stream,
   worker->user_data = user_data;
   worker->stream = g_object_ref (stream);
   worker->capabilities = capabilities;
+  worker->max_message_unix_fds = max_message_unix_fds;
   worker->cancellable = g_cancellable_new ();
   worker->output_pending = PENDING_NONE;
 
