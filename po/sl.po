@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-10-09 10:24+0000\n"
-"PO-Revision-Date: 2026-10-09 22:11+0200\n"
+"POT-Creation-Date: 2026-10-21 18:44+0000\n"
+"PO-Revision-Date: 2026-10-22 08:49+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -1372,53 +1372,49 @@ msgid "Not authorized to change debug settings"
 msgstr ""
 "Za spreminjanje nastavitev razhroščevanja so zahtevana posebna dovoljenja"
 
-#: gio/gdesktopappinfo.c:2285 gio/gdesktopappinfo.c:5285
-#: gio/gwin32appinfo.c:4257
+#: gio/gdesktopappinfo.c:2295 gio/gdesktopappinfo.c:5393
+#: gio/gwin32appinfo.c:4251
 msgid "Unnamed"
 msgstr "Neimenovano"
 
-#: gio/gdesktopappinfo.c:2716
+#: gio/gdesktopappinfo.c:2726
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Namizna datoteka ne vsebuje določenega polja Exec"
 
-#: gio/gdesktopappinfo.c:3032
+#: gio/gdesktopappinfo.c:3042
 msgid "Unable to find terminal required for application"
 msgstr "Ni mogoče najti terminala, ki ga zahteva program"
 
-#: gio/gdesktopappinfo.c:3093
+#: gio/gdesktopappinfo.c:3103
 #, c-format
 msgid "Program ‘%s’ not found in $PATH"
 msgstr "Programa »%s« na poti $PATH ni mogoče najti"
 
-#: gio/gdesktopappinfo.c:3823
+#: gio/gdesktopappinfo.c:3942
 msgid "Saving application information is not supported when running as setuid"
 msgstr ""
 "Shranjevanje podatkov programa ni podprto, ko izvajate program kot setuid"
 
-#: gio/gdesktopappinfo.c:3856
+#: gio/gdesktopappinfo.c:3975
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Ni mogoče ustvariti nastavitvene mape uporabnikovega programa %s: %s"
 
-#: gio/gdesktopappinfo.c:3860
+#: gio/gdesktopappinfo.c:3979
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Ni mogoče ustvariti uporabnikove nastavitvene mape MIME %s: %s"
 
-#: gio/gdesktopappinfo.c:4090
+#: gio/gdesktopappinfo.c:4209
 msgid "MIME apps information is too long"
 msgstr "Podatki MIME apps so predolgi"
 
-#: gio/gdesktopappinfo.c:4121 gio/gdesktopappinfo.c:4145
-msgid "Application information lacks an identifier"
-msgstr "Podatki programa so brez določila"
-
-#: gio/gdesktopappinfo.c:4398
+#: gio/gdesktopappinfo.c:4506
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Ni mogoče ustvariti uporabnikove datoteke namizja %s"
 
-#: gio/gdesktopappinfo.c:4518
+#: gio/gdesktopappinfo.c:4626
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Določilo po meri za %s"
@@ -1490,10 +1486,10 @@ msgstr "Pričakovan GEmblem za GEmblemedIcon"
 
 #: gio/gfile.c:1112 gio/gfile.c:1370 gio/gfile.c:1508 gio/gfile.c:1745
 #: gio/gfile.c:1800 gio/gfile.c:1858 gio/gfile.c:1942 gio/gfile.c:1999
-#: gio/gfile.c:2063 gio/gfile.c:2118 gio/gfile.c:4113 gio/gfile.c:4292
-#: gio/gfile.c:4699 gio/gfile.c:5167 gio/gfile.c:5579 gio/gfile.c:5664
-#: gio/gfile.c:5754 gio/gfile.c:5851 gio/gfile.c:5938 gio/gfile.c:6037
-#: gio/gfile.c:9214 gio/gfile.c:9304 gio/gfile.c:9388
+#: gio/gfile.c:2063 gio/gfile.c:2118 gio/gfile.c:4120 gio/gfile.c:4299
+#: gio/gfile.c:4706 gio/gfile.c:5174 gio/gfile.c:5586 gio/gfile.c:5671
+#: gio/gfile.c:5761 gio/gfile.c:5858 gio/gfile.c:5945 gio/gfile.c:6044
+#: gio/gfile.c:9221 gio/gfile.c:9311 gio/gfile.c:9395
 #: gio/win32/gwinhttpfile.c:453
 msgid "Operation not supported"
 msgstr "Opravilo ni podprto"
@@ -1522,69 +1518,69 @@ msgstr "Ciljna datoteka obstaja"
 msgid "Can’t recursively copy directory"
 msgstr "Ni mogoče kopirati drevesne zgradbe map"
 
-#: gio/gfile.c:3077 gio/gfile.c:3125
+#: gio/gfile.c:3081 gio/gfile.c:3129
 #, c-format
 msgid "Copy file range not supported"
 msgstr "Kopiranje obsega datotek ni podprto"
 
-#: gio/gfile.c:3083 gio/gfile.c:3194
+#: gio/gfile.c:3087 gio/gfile.c:3201
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Napaka med prepletanjem datoteke: %s"
 
-#: gio/gfile.c:3190
+#: gio/gfile.c:3197
 msgid "Splice not supported"
 msgstr "Splice ni podprt"
 
-#: gio/gfile.c:3354
+#: gio/gfile.c:3361
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "Kopiranje (sklic povezave/kloniranje) med različnimi priklopi ni podprto"
 
-#: gio/gfile.c:3358
+#: gio/gfile.c:3365
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopiranje (sklic povezave/kloniranje) ni podprto ali pa ni veljavno"
 
-#: gio/gfile.c:3363
+#: gio/gfile.c:3370
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopiranje (sklic povezave/kloniranje) ni podprto, ali pa ni delovalo"
 
-#: gio/gfile.c:3411 gio/gfile.c:3422
+#: gio/gfile.c:3418 gio/gfile.c:3429
 #, c-format
 msgid "Cannot retrieve attribute %s"
 msgstr "Ni mogoče pridobiti atributa %s"
 
-#: gio/gfile.c:3442
+#: gio/gfile.c:3449
 msgid "Can’t copy special file"
 msgstr "Ni mogoče kopirati posebne datoteke"
 
-#: gio/gfile.c:4516
+#: gio/gfile.c:4523
 msgid "Invalid symlink value given"
 msgstr "Neveljavna vrednost simbolne povezave"
 
-#: gio/gfile.c:4526 glib/gfileutils.c:2447
+#: gio/gfile.c:4533 glib/gfileutils.c:2447
 msgid "Symbolic links not supported"
 msgstr "Simbolne povezave niso podprte"
 
-#: gio/gfile.c:4810
+#: gio/gfile.c:4817
 msgid "Trash not supported"
 msgstr "Smeti niso podprte"
 
-#: gio/gfile.c:4920
+#: gio/gfile.c:4927
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Ni mogoče uporabiti »%c« v imenu datoteke"
 
-#: gio/gfile.c:7346 gio/gfile.c:7472
+#: gio/gfile.c:7353 gio/gfile.c:7479
 #, c-format
 msgid "Failed to create a temporary directory for template “%s”: %s"
 msgstr "Ustvarjanje začasne mape za predlogo »%s« je spodletelo: %s"
 
-#: gio/gfile.c:7790 gio/gvolume.c:368
+#: gio/gfile.c:7797 gio/gvolume.c:368
 msgid "volume doesn’t implement mount"
 msgstr "enota ne podpira priklopa"
 
-#: gio/gfile.c:7904 gio/gfile.c:7981
+#: gio/gfile.c:7911 gio/gfile.c:7988
 msgid "No application is registered as handling this file"
 msgstr "Na voljo ni programa z a upravljanje s to datoteko"
 
@@ -4279,29 +4275,34 @@ msgstr "Poslušalnik je že zaprt"
 msgid "Added socket is closed"
 msgstr "Dodan vtič je zaprt"
 
-#: gio/gsocks4aproxy.c:120
+#: gio/gsocks4aproxy.c:118 gio/gsocks5proxy.c:302
+#, c-format
+msgid "Invalid IP address “%s”"
+msgstr "Neveljaven naslov IP »%s«"
+
+#: gio/gsocks4aproxy.c:127
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address “%s”"
 msgstr "Posredniški strežnik SOCKSv4 nima podpore za naslov IPv6 »%s«"
 
-#: gio/gsocks4aproxy.c:138
+#: gio/gsocks4aproxy.c:145
 msgid "Username is too long for SOCKSv4 protocol"
 msgstr "Uporabniško ime je predolgo za protokol SOCKSv4"
 
-#: gio/gsocks4aproxy.c:155
+#: gio/gsocks4aproxy.c:162
 #, c-format
 msgid "Hostname “%s” is too long for SOCKSv4 protocol"
 msgstr "Ime gostitelja »%s« je predolgo za protokol SOCKSv4"
 
-#: gio/gsocks4aproxy.c:181
+#: gio/gsocks4aproxy.c:188
 msgid "The server is not a SOCKSv4 proxy server."
 msgstr "Strežnik ni SOCKSv4 posredniški strežnik."
 
-#: gio/gsocks4aproxy.c:188
+#: gio/gsocks4aproxy.c:195
 msgid "Connection through SOCKSv4 server was rejected"
 msgstr "Povezava preko posredniškega strežnika SOCKSv4 je zavrnjena."
 
-#: gio/gsocks5proxy.c:155 gio/gsocks5proxy.c:356 gio/gsocks5proxy.c:366
+#: gio/gsocks5proxy.c:155 gio/gsocks5proxy.c:365 gio/gsocks5proxy.c:375
 msgid "The server is not a SOCKSv5 proxy server."
 msgstr "Strežnik ni SOCKSv5 posredniški strežnik."
 
@@ -4325,44 +4326,44 @@ msgstr ""
 "Overitev strežnika SOCKSv5 je spodletela zaradi napačno vnesenega "
 "uporabniškega imena ali gesla."
 
-#: gio/gsocks5proxy.c:315
+#: gio/gsocks5proxy.c:324
 #, c-format
 msgid "Hostname “%s” is too long for SOCKSv5 protocol"
 msgstr "Ime gostitelja »%s« je predolgo za protokol SOCKSv5"
 
-#: gio/gsocks5proxy.c:380
+#: gio/gsocks5proxy.c:389
 msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "Posredniški strežnik SOCKSv5 uporablja neznano vrsto naslova."
 
-#: gio/gsocks5proxy.c:387
+#: gio/gsocks5proxy.c:396
 msgid "Internal SOCKSv5 proxy server error."
 msgstr "Notranja napaka posredniškega strežnika SOCKSv5"
 
-#: gio/gsocks5proxy.c:393
+#: gio/gsocks5proxy.c:402
 msgid "SOCKSv5 connection not allowed by ruleset."
 msgstr "Nabor pravil ne dovoljuje SOCKSv5 povezave"
 
-#: gio/gsocks5proxy.c:400
+#: gio/gsocks5proxy.c:409
 msgid "Host unreachable through SOCKSv5 server."
 msgstr "Gostitelj ni dosegljiv preko strežnika SOCKSv5"
 
-#: gio/gsocks5proxy.c:406
+#: gio/gsocks5proxy.c:415
 msgid "Network unreachable through SOCKSv5 proxy."
 msgstr "Skozi SOCKSv5 posredniški strežnik ni mogoče doseči omrežja."
 
-#: gio/gsocks5proxy.c:412
+#: gio/gsocks5proxy.c:421
 msgid "Connection refused through SOCKSv5 proxy."
 msgstr "Povezava skozi posredniški strežnik SOCKSv5 je zavrnjena."
 
-#: gio/gsocks5proxy.c:418
+#: gio/gsocks5proxy.c:427
 msgid "SOCKSv5 proxy does not support “connect” command."
 msgstr "Posredniški strežnik SOCKSv5 ne podpira ukaza »connect«."
 
-#: gio/gsocks5proxy.c:424
+#: gio/gsocks5proxy.c:433
 msgid "SOCKSv5 proxy does not support provided address type."
 msgstr "SOCKSv5 posredniški strežnik ne podpira ponujene vrste naslova"
 
-#: gio/gsocks5proxy.c:430
+#: gio/gsocks5proxy.c:439
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Neznana napaka posredniškega strežnika SOCKSv5."
 
@@ -4576,13 +4577,13 @@ msgstr "nosilec ne podpira možnosti izmetavanja"
 msgid "volume doesn’t implement eject or eject_with_operation"
 msgstr "nosilec ne prepozna ukaza izvrzi ali izvrzi_z_dejanjem"
 
-#: gio/gwin32appinfo.c:5286
+#: gio/gwin32appinfo.c:5280
 #, c-format
 msgid "The app ‘%s’ in the application object has no verbs"
 msgstr ""
 "Program »%s« v predmetu programa nima vpisanih vseh podatkov (no verbs)"
 
-#: gio/gwin32appinfo.c:5290
+#: gio/gwin32appinfo.c:5284
 #, c-format
 msgid ""
 "The app ‘%s’ and the handler ‘%s’ in the application object have no verbs"
@@ -6404,126 +6405,126 @@ msgid "Character out of range for UTF-16"
 msgstr "Znak izven območja za UTF-16"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kB"
-#: glib/gutils.c:2909
+#: glib/gutils.c:2937
 msgid "kB"
 msgstr "kB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MB"
-#: glib/gutils.c:2911
+#: glib/gutils.c:2939
 msgid "MB"
 msgstr "MB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GB"
-#: glib/gutils.c:2913
+#: glib/gutils.c:2941
 msgid "GB"
 msgstr "GB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TB"
-#: glib/gutils.c:2915
+#: glib/gutils.c:2943
 msgid "TB"
 msgstr "TB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PB"
-#: glib/gutils.c:2917
+#: glib/gutils.c:2945
 msgid "PB"
 msgstr "PB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EB"
-#: glib/gutils.c:2919
+#: glib/gutils.c:2947
 msgid "EB"
 msgstr "EB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 KiB"
-#: glib/gutils.c:2923
+#: glib/gutils.c:2951
 msgid "KiB"
 msgstr "KiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 MiB"
-#: glib/gutils.c:2925
+#: glib/gutils.c:2953
 msgid "MiB"
 msgstr "MiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 GiB"
-#: glib/gutils.c:2927
+#: glib/gutils.c:2955
 msgid "GiB"
 msgstr "GiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 TiB"
-#: glib/gutils.c:2929
+#: glib/gutils.c:2957
 msgid "TiB"
 msgstr "TiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 PiB"
-#: glib/gutils.c:2931
+#: glib/gutils.c:2959
 msgid "PiB"
 msgstr "PiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 EiB"
-#: glib/gutils.c:2933
+#: glib/gutils.c:2961
 msgid "EiB"
 msgstr "EiB"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 kbit"
-#: glib/gutils.c:2937
+#: glib/gutils.c:2965
 msgid "kbit"
 msgstr "kbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mbit"
-#: glib/gutils.c:2939
+#: glib/gutils.c:2967
 msgid "Mbit"
 msgstr "Mbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gbit"
-#: glib/gutils.c:2941
+#: glib/gutils.c:2969
 msgid "Gbit"
 msgstr "Gbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tbit"
-#: glib/gutils.c:2943
+#: glib/gutils.c:2971
 msgid "Tbit"
 msgstr "Tbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pbit"
-#: glib/gutils.c:2945
+#: glib/gutils.c:2973
 msgid "Pbit"
 msgstr "Pbit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Ebit"
-#: glib/gutils.c:2947
+#: glib/gutils.c:2975
 msgid "Ebit"
 msgstr "Ebit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Kibit"
-#: glib/gutils.c:2951
+#: glib/gutils.c:2979
 msgid "Kibit"
 msgstr "Kibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Mibit"
-#: glib/gutils.c:2953
+#: glib/gutils.c:2981
 msgid "Mibit"
 msgstr "Mibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Gibit"
-#: glib/gutils.c:2955
+#: glib/gutils.c:2983
 msgid "Gibit"
 msgstr "Gibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Tibit"
-#: glib/gutils.c:2957
+#: glib/gutils.c:2985
 msgid "Tibit"
 msgstr "Tibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Pibit"
-#: glib/gutils.c:2959
+#: glib/gutils.c:2987
 msgid "Pibit"
 msgstr "Pibit"
 
 #. Translators: A unit symbol for size formatting, showing for example: "13.0 Eibit"
-#: glib/gutils.c:2961
+#: glib/gutils.c:2989
 msgid "Eibit"
 msgstr "Eibit"
 
-#: glib/gutils.c:2999
+#: glib/gutils.c:3027
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "bajtov"
@@ -6531,7 +6532,7 @@ msgstr[1] "bajt"
 msgstr[2] "bajta"
 msgstr[3] "bajti"
 
-#: glib/gutils.c:3003
+#: glib/gutils.c:3031
 msgid "bit"
 msgid_plural "bits"
 msgstr[0] "bitov"
@@ -6541,7 +6542,7 @@ msgstr[3] "biti"
 
 #. Translators: The "%u" is replaced with the size value, like "13"; it could
 #. * be part of "13 bytes", but only the number is requested this time.
-#: glib/gutils.c:3011
+#: glib/gutils.c:3039
 #, c-format
 msgctxt "format-size"
 msgid "%u"
@@ -6549,7 +6550,7 @@ msgstr "%u"
 
 #. Translators: The first "%u" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1u". An example: "13 bytes"
-#: glib/gutils.c:3016
+#: glib/gutils.c:3044
 #, c-format
 msgctxt "format-size"
 msgid "%u %s"
@@ -6557,7 +6558,7 @@ msgstr "%u %s"
 
 #. Translators: The "%.1f" is replaced with the size value, like "13.0"; it could
 #. * be part of "13.0 MB", but only the number is requested this time.
-#: glib/gutils.c:3052
+#: glib/gutils.c:3080
 #, c-format
 msgctxt "format-size"
 msgid "%.1f"
@@ -6566,14 +6567,14 @@ msgstr "%.1f"
 #. Translators: The first "%.1f" is replaced with the value, the "%s" with a unit of the value.
 #. * The order can be changed with "%$2s %$1.1f". Keep the no-break space between the value and
 #. * the unit symbol. An example: "13.0 MB"
-#: glib/gutils.c:3058
+#: glib/gutils.c:3086
 #, c-format
 msgctxt "format-size"
 msgid "%.1f %s"
 msgstr "%.1f %s"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: glib/gutils.c:3098
+#: glib/gutils.c:3126
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -6583,7 +6584,7 @@ msgstr[2] "%s bajta"
 msgstr[3] "%s bajti"
 
 #. Translators: the %s in "%s bits" will always be replaced by a number.
-#: glib/gutils.c:3103
+#: glib/gutils.c:3131
 #, c-format
 msgid "%s bit"
 msgid_plural "%s bits"
@@ -6592,7 +6593,7 @@ msgstr[1] "%s bit"
 msgstr[2] "%s bita"
 msgstr[3] "%s biti"
 
-#: glib/gutils.c:3144
+#: glib/gutils.c:3172
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -6606,32 +6607,32 @@ msgstr[3] "%u bajti"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: glib/gutils.c:3157
+#: glib/gutils.c:3185
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: glib/gutils.c:3162
+#: glib/gutils.c:3190
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: glib/gutils.c:3167
+#: glib/gutils.c:3195
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: glib/gutils.c:3172
+#: glib/gutils.c:3200
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: glib/gutils.c:3177
+#: glib/gutils.c:3205
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: glib/gutils.c:3182
+#: glib/gutils.c:3210
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
