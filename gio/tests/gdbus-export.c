@@ -2165,6 +2165,161 @@ test_unregistration_with_pending_call (gconstpointer test_data)
                                           g_variant_new ("(s)", "org.example.Foo"));
 }
 
+static const gchar transient_introspection_xml[] =
+  "<node>"
+  "  <interface name='org.example.Foo'>"
+  "    <method name='Method1'>"
+  "      <arg type='s' name='Input' direction='in'/>"
+  "      <arg type='s' name='Output' direction='out'/>"
+  "    </method>"
+  "    <property type='s' name='PropertyUno' access='readwrite'/>"
+  "  </interface>"
+  "</node>";
+
+/* Unlike subtree_introspect(), this builds new interface info for each call,
+ * so the only references to it are the ones passed to the caller. */
+static GDBusInterfaceInfo **
+transient_subtree_introspect (GDBusConnection       *connection,
+                              const gchar           *sender,
+                              const gchar           *object_path,
+                              const gchar           *node,
+                              gpointer               user_data)
+{
+  GDBusNodeInfo *node_info;
+  GDBusInterfaceInfo **interfaces;
+  GError *local_error = NULL;
+
+  if (node == NULL)
+    return NULL;
+
+  node_info = g_dbus_node_info_new_for_xml (transient_introspection_xml, &local_error);
+  g_assert_no_error (local_error);
+
+  interfaces = g_new0 (GDBusInterfaceInfo *, 2);
+  interfaces[0] = g_dbus_interface_info_ref (node_info->interfaces[0]);
+  g_dbus_node_info_unref (node_info);
+
+  return interfaces;
+}
+
+static const GDBusSubtreeVTable transient_subtree_vtable =
+{
+  subtree_enumerate,
+  transient_subtree_introspect,
+  subtree_dispatch,
+  { 0 }
+};
+
+static GVariant *
+call_and_wait (GDBusConnection  *connection,
+               const gchar      *object_path,
+               const gchar      *interface_name,
+               const gchar      *method_name,
+               GVariant         *parameters,
+               GError          **error)
+{
+  GAsyncResult *call_result = NULL;
+  GVariant *value;
+
+  g_dbus_connection_call (connection,
+                          g_dbus_connection_get_unique_name (connection),
+                          object_path,
+                          interface_name,
+                          method_name,
+                          parameters,
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          NULL,
+                          async_result_cb,
+                          &call_result);
+
+  while (call_result == NULL)
+    g_main_context_iteration (NULL, TRUE);
+
+  value = g_dbus_connection_call_finish (connection, call_result, error);
+  g_object_unref (call_result);
+
+  return value;
+}
+
+static void
+test_subtree_transient_introspection (void)
+{
+  GDBusConnection *connection = NULL;
+  ObjectRegistrationData object_registration_data = { 0, 0, 1 };
+  guint subtree_registration_id;
+  GVariant *value = NULL;
+  GVariant *property_value = NULL;
+  GVariant *properties = NULL;
+  const gchar *value_str;
+  GError *local_error = NULL;
+
+  g_test_summary ("Test that method calls and property accesses work on a "
+                  "subtree whose introspect() function returns newly built "
+                  "interface info for each call");
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &local_error);
+  g_assert_no_error (local_error);
+  g_assert_nonnull (connection);
+
+  subtree_registration_id = g_dbus_connection_register_subtree (connection,
+                                                                "/foo/boss/transient",
+                                                                &transient_subtree_vtable,
+                                                                G_DBUS_SUBTREE_FLAGS_NONE,
+                                                                &object_registration_data,
+                                                                on_subtree_unregistered,
+                                                                &local_error);
+  g_assert_no_error (local_error);
+  g_assert_cmpuint (subtree_registration_id, >, 0);
+
+  value = call_and_wait (connection, "/foo/boss/transient/vp0",
+                         "org.example.Foo", "Method1",
+                         g_variant_new ("(s)", "winwinwin"), &local_error);
+  g_assert_no_error (local_error);
+  g_variant_get (value, "(&s)", &value_str);
+  g_assert_cmpstr (value_str, ==, "You passed the string 'winwinwin'. Jolly good!");
+  g_clear_pointer (&value, g_variant_unref);
+
+  value = call_and_wait (connection, "/foo/boss/transient/vp0",
+                         DBUS_INTERFACE_PROPERTIES, "Get",
+                         g_variant_new ("(ss)", "org.example.Foo", "PropertyUno"),
+                         &local_error);
+  g_assert_no_error (local_error);
+  g_variant_get (value, "(v)", &property_value);
+  g_assert_cmpstr (g_variant_get_string (property_value, NULL), ==, "Property 'PropertyUno' Is What It Is!");
+  g_clear_pointer (&property_value, g_variant_unref);
+  g_clear_pointer (&value, g_variant_unref);
+
+  /* foo_set_property() always returns this error */
+  value = call_and_wait (connection, "/foo/boss/transient/vp0",
+                         DBUS_INTERFACE_PROPERTIES, "Set",
+                         g_variant_new ("(ssv)", "org.example.Foo", "PropertyUno",
+                                        g_variant_new_string ("winwinwin")),
+                         &local_error);
+  g_assert_error (local_error, G_DBUS_ERROR, G_DBUS_ERROR_SPAWN_FILE_INVALID);
+  g_assert_null (value);
+  g_clear_error (&local_error);
+
+  value = call_and_wait (connection, "/foo/boss/transient/vp0",
+                         DBUS_INTERFACE_PROPERTIES, "GetAll",
+                         g_variant_new ("(s)", "org.example.Foo"),
+                         &local_error);
+  g_assert_no_error (local_error);
+  g_variant_get (value, "(@a{sv})", &properties);
+  g_assert_true (g_variant_lookup (properties, "PropertyUno", "&s", &value_str));
+  g_assert_cmpstr (value_str, ==, "Property 'PropertyUno' Is What It Is!");
+  g_clear_pointer (&properties, g_variant_unref);
+  g_clear_pointer (&value, g_variant_unref);
+
+  g_assert_true (g_dbus_connection_unregister_subtree (connection, subtree_registration_id));
+
+  while (object_registration_data.num_unregistered_subtree_calls == 0)
+    g_main_context_iteration (NULL, TRUE);
+
+  g_clear_object (&connection);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -2187,6 +2342,7 @@ main (int   argc,
   g_test_add_data_func ("/gdbus/threaded-unregistration/subtree", GINT_TO_POINTER (TRUE), test_threaded_unregistration);
   g_test_add_data_func ("/gdbus/unregistration-with-pending-call/object", GINT_TO_POINTER (FALSE), test_unregistration_with_pending_call);
   g_test_add_data_func ("/gdbus/unregistration-with-pending-call/subtree", GINT_TO_POINTER (TRUE), test_unregistration_with_pending_call);
+  g_test_add_func ("/gdbus/subtree-transient-introspection", test_subtree_transient_introspection);
 
   /* TODO: check that we spit out correct introspection data */
   /* TODO: check that registering a whole subtree works */
