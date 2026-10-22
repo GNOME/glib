@@ -802,7 +802,7 @@ find_file_in_data_dirs (const gchar   *file,
           candidate_file++;
 
           g_free (sub_dir);
-          sub_dir = g_strndup (file, candidate_file - file - 1);
+          sub_dir = g_strndup (file, (size_t) (candidate_file - file - 1));
 
           for (p = sub_dir; *p != '\0'; p++)
             {
@@ -1640,11 +1640,11 @@ g_key_file_parse_line (GKeyFile     *key_file,
     g_key_file_parse_comment (key_file, line, length, &parse_error);
   else if (g_key_file_line_is_group (line_start))
     g_key_file_parse_group (key_file, line_start,
-                            length - (line_start - line),
+                            length - (size_t) (line_start - line),
                             &parse_error);
   else if (g_key_file_line_is_key_value_pair (line_start))
     g_key_file_parse_key_value_pair (key_file, line_start,
-                                     length - (line_start - line),
+                                     length - (size_t) (line_start - line),
                                      &parse_error);
   else
     {
@@ -1701,8 +1701,14 @@ g_key_file_parse_group (GKeyFile     *key_file,
   while (*group_name_end != ']')
     group_name_end--;
 
-  group_name = g_strndup (group_name_start, 
-                          group_name_end - group_name_start);
+  /* g_key_file_line_is_group() checked that there is a ']' after the
+   * opening '[', so the loop above stops at or after group_name_start.
+   * The group name may still be empty here: g_key_file_is_group_name()
+   * rejects that below. */
+  g_assert (group_name_end >= group_name_start);
+
+  group_name = g_strndup (group_name_start,
+                          (size_t) (group_name_end - group_name_start));
   
   if (!g_key_file_is_group_name (group_name))
     {
@@ -1749,7 +1755,13 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
   while (g_ascii_isspace (*key_end))
     key_end--;
 
-  key_len = key_end - line + 2;
+  /* g_key_file_parse_line() skipped leading whitespace and
+   * g_key_file_line_is_key_value_pair() checked that the line does not
+   * start with '=', so the loop above stops at or after the start of the
+   * line. */
+  g_assert (key_end >= line);
+
+  key_len = (size_t) (key_end - line + 2);
 
   g_warn_if_fail (key_len <= length);
 
@@ -1768,7 +1780,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
   while (g_ascii_isspace (*value_start))
     value_start++;
 
-  value_len = line + length - value_start;
+  value_len = (size_t) (line + length - value_start);
 
   g_warn_if_fail (key_file->start_group != NULL);
 
@@ -1898,7 +1910,7 @@ g_key_file_parse_data (GKeyFile     *key_file,
           if (end_of_line == NULL)
             end_of_line = data + length;
 
-          line_length = end_of_line - start_of_line;
+          line_length = (size_t) (end_of_line - start_of_line);
 
           g_string_append_len (key_file->parse_buffer, start_of_line, line_length);
           i += line_length;
@@ -4782,7 +4794,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
           *q = *p;
           if (pieces && (*p == key_file->list_separator))
             {
-              tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, q - q0));
+              tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, (size_t) (q - q0)));
               q0 = q + 1;
             }
         }
@@ -4798,7 +4810,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
   if (pieces)
     {
       if (q0 < q)
-        tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, q - q0));
+        tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, (size_t) (q - q0)));
       *pieces = g_slist_reverse (tmp_pieces);
     }
 
