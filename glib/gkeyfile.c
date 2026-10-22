@@ -887,7 +887,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
         }
 
       g_key_file_parse_data (key_file,
-                             read_buf, bytes_read,
+                             read_buf, (gsize) bytes_read,
                              &key_file_error);
     }
   while (!key_file_error);
@@ -1648,7 +1648,11 @@ g_key_file_parse_line (GKeyFile     *key_file,
                                      &parse_error);
   else
     {
-      gchar *line_utf8 = g_utf8_make_valid (line, length);
+      gchar *line_utf8;
+
+      /* The line is held in memory, so its length fits in a gssize */
+      g_assert (length <= G_MAXSSIZE);
+      line_utf8 = g_utf8_make_valid (line, (gssize) length);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
                    _("Key file contains line “%s” which is not "
@@ -1794,7 +1798,11 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
       if (value_len != strlen ("UTF-8") ||
           g_ascii_strncasecmp (value_start, "UTF-8", value_len) != 0)
         {
-          gchar *value_utf8 = g_utf8_make_valid (value_start, value_len);
+          gchar *value_utf8;
+
+          /* The value is held in memory, so its length fits in a gssize */
+          g_assert (value_len <= G_MAXSSIZE);
+          value_utf8 = g_utf8_make_valid (value_start, (gssize) value_len);
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                        _("Key file contains unsupported "
@@ -1878,9 +1886,8 @@ g_key_file_parse_data (GKeyFile     *key_file,
           if (key_file->parse_buffer->len > 0
               && (key_file->parse_buffer->str[key_file->parse_buffer->len - 1]
                   == '\r'))
-            g_string_erase (key_file->parse_buffer,
-                            key_file->parse_buffer->len - 1,
-                            1);
+            g_string_truncate (key_file->parse_buffer,
+                               key_file->parse_buffer->len - 1);
             
           /* When a newline is encountered flush the parse buffer so that the
            * line can be parsed.  Note that completely blank lines won't show
@@ -1912,7 +1919,7 @@ g_key_file_parse_data (GKeyFile     *key_file,
 
           line_length = (size_t) (end_of_line - start_of_line);
 
-          g_string_append_len (key_file->parse_buffer, start_of_line, line_length);
+          g_string_append_len (key_file->parse_buffer, start_of_line, end_of_line - start_of_line);
           i += line_length;
         }
     }
