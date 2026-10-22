@@ -4947,7 +4947,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
       return 0;
     }
 
-  int_value = long_value;
+  int_value = (gint) long_value;
   if (int_value != long_value || errsv == ERANGE)
     {
       gchar *value_utf8 = g_utf8_make_valid (value, -1);
