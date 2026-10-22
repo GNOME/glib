@@ -670,11 +670,14 @@ test_boolean (void)
     "key4=0\n"
     "key5= true\n"
     "key6=true \n"
+    "key7=false \t \n"
     "[invalid]\n"
     "key1=t\n"
     "key2=f\n"
     "key3=yes\n"
-    "key4=no\n";
+    "key4=no\n"
+    "key5=true false\n"
+    "key6=0 1\n";
 
   keyfile = load_data (data, 0);
 
@@ -684,6 +687,7 @@ test_boolean (void)
   check_boolean_value (keyfile, "valid", "key4", FALSE);
   check_boolean_value (keyfile, "valid", "key5", TRUE);
   check_boolean_value (keyfile, "valid", "key6", TRUE);
+  check_boolean_value (keyfile, "valid", "key7", FALSE);
 
   g_key_file_get_boolean (keyfile, "invalid", "key1", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
@@ -695,6 +699,13 @@ test_boolean (void)
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 
   g_key_file_get_boolean (keyfile, "invalid", "key4", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  /* Only trailing whitespace is ignored */
+  g_key_file_get_boolean (keyfile, "invalid", "key5", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_boolean (keyfile, "invalid", "key6", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 
   g_key_file_set_boolean (keyfile, "valid", "key1", FALSE);

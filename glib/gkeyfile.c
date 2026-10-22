@@ -4992,7 +4992,7 @@ g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
                                    GError      **error)
 {
   gchar *value_utf8;
-  gint i, length = 0;
+  size_t i, length = 0;
 
   /* Count the number of non-whitespace characters */
   for (i = 0; value[i]; i++)
