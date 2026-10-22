@@ -5112,7 +5112,8 @@ g_key_file_parse_comment_as_value (GKeyFile      *key_file,
  * [method@GLib.KeyFile.to_data].
  *
  * This function can fail for any of the reasons that
- * [func@GLib.file_set_contents] may fail.
+ * [func@GLib.file_set_contents] may fail, or with
+ * [error@GLib.FileError.FAILED] if the contents are too long to write.
  *
  * Returns: true if successful, false otherwise
  *
@@ -5134,7 +5135,15 @@ g_key_file_save_to_file (GKeyFile     *key_file,
   contents = g_key_file_to_data (key_file, &length, NULL);
   g_assert (contents != NULL);
 
-  success = g_file_set_contents (filename, contents, length, error);
+  if (length > G_MAXSSIZE)
+    {
+      g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Key file contents are too long"));
+      g_free (contents);
+      return FALSE;
+    }
+
+  success = g_file_set_contents (filename, contents, (gssize) length, error);
   g_free (contents);
 
   return success;
