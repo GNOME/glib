@@ -424,6 +424,125 @@ test_win32_parse_filename (void)
     }
 }
 
+static const struct
+  {
+    const char *command;
+    struct {
+      const char *file;
+      const char *uri;
+    } objects[4];  /* ends at the first one with neither a file nor a URI */
+    const char *argv[8];
+    unsigned int n_objects_left;
+  }
+expand_commandlines[] =
+  {
+    {
+      "app.exe --new-window",
+      { { NULL, NULL } },
+      { "app.exe", "--new-window", NULL },
+      0,
+    },
+    {
+      "app.exe %f",
+      { { "C:/Users/me/a.txt", NULL }, { "C:/Users/me/b.txt", NULL } },
+      { "app.exe", "C:/Users/me/a.txt", NULL },
+      1,
+    },
+    {
+      "app.exe %F",
+      { { "C:/a.txt", NULL }, { "C:/b.txt", NULL } },
+      { "app.exe", "C:/a.txt", "C:/b.txt", NULL },
+      0,
+    },
+    {
+      "app.exe %u",
+      { { NULL, "https://example.com/a" } },
+      { "app.exe", "https://example.com/a", NULL },
+      0,
+    },
+    /* No field code: the first file is passed as with %f */
+    {
+      "app.exe",
+      { { "C:/a.txt", NULL }, { "C:/b.txt", NULL } },
+      { "app.exe", "C:/a.txt", NULL },
+      1,
+    },
+    {
+      "app.exe",
+      { { NULL, "https://example.com/a" } },
+      { "app.exe", NULL },
+      0,
+    },
+    /* A field code with no value is no argument, unless it is quoted */
+    {
+      "app.exe %1 \"%1\" %U",
+      { { NULL, NULL } },
+      { "app.exe", "", NULL },
+      0,
+    },
+    {
+      "app.exe 100%%",
+      { { NULL, NULL } },
+      { "app.exe", "100%", NULL },
+      0,
+    },
+  };
+
+static void
+free_object (gpointer data)
+{
+  file_or_uri *obj = data;
+
+  g_free (obj->file);
+  g_free (obj->uri);
+  g_free (obj);
+}
+
+static void
+test_win32_expand_application_parameters (void)
+{
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (expand_commandlines); i++)
+    {
+      GList *objs = NULL;
+      GList *objs_left;
+      int argc = 0;
+      char **argv = NULL;
+      GError *error = NULL;
+      gboolean success;
+      gsize j;
+
+      g_test_message ("Command line: %s", expand_commandlines[i].command);
+
+      for (j = 0; expand_commandlines[i].objects[j].file != NULL ||
+                  expand_commandlines[i].objects[j].uri != NULL; j++)
+        {
+          file_or_uri *obj = g_new0 (file_or_uri, 1);
+
+          obj->file = g_strdup (expand_commandlines[i].objects[j].file);
+          obj->uri = g_strdup (expand_commandlines[i].objects[j].uri);
+          objs = g_list_append (objs, obj);
+        }
+
+      objs_left = objs;
+      success = _g_win32_expand_application_parameters ("Bob's App",
+                                                        expand_commandlines[i].command,
+                                                        &objs_left,
+                                                        &argc,
+                                                        &argv,
+                                                        &error);
+      g_assert_no_error (error);
+      g_assert_true (success);
+      g_assert_cmpstrv (argv, expand_commandlines[i].argv);
+      g_assert_cmpint (argc, ==, g_strv_length (argv));
+      g_assert_cmpuint (g_list_length (objs_left), ==, expand_commandlines[i].n_objects_left);
+
+      g_strfreev (argv);
+      g_list_free_full (objs, free_object);
+    }
+}
+
 static void
 do_fail_on_broken_utf16_1 (void)
 {
@@ -465,6 +584,7 @@ main (int   argc,
   g_test_add_func ("/appinfo/win32-rundll32-fixup", test_win32_rundll32_fixup);
   g_test_add_func ("/appinfo/win32-parse-filename", test_win32_parse_filename);
   g_test_add_func ("/appinfo/win32-utf16-conversion-fail", test_fail_on_broken_utf16);
+  g_test_add_func ("/appinfo/win32-expand-application-parameters/commands", test_win32_expand_application_parameters);
 
   g_test_add_func ("/appinfo/subprocess/win32-assert-broken-utf16_1", do_fail_on_broken_utf16_1);
   g_test_add_func ("/appinfo/subprocess/win32-assert-broken-utf16_2", do_fail_on_broken_utf16_2);

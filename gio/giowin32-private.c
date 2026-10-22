@@ -449,3 +449,353 @@ _g_win32_fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
    * of the function name - either way this will work).
    */
 }
+
+typedef struct _file_or_uri {
+  gchar *uri;
+  gchar *file;
+} file_or_uri;
+
+static char *
+expand_macro_single (char macro, file_or_uri *obj)
+{
+  char *result = NULL;
+
+  switch (macro)
+    {
+    case '*':
+    case '0':
+    case '1':
+    case 'l':
+    case 'd':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      /* TODO: handle 'l' and 'd' differently (longname and desktop name) */
+      if (obj->file)
+        {
+          result = g_strdup (obj->file);
+        }
+      else if (obj->uri)
+        {
+          const char *prefix = "file:///";
+          const size_t prefix_len = strlen (prefix);
+
+          if (g_str_has_prefix (obj->uri, prefix) && obj->uri[prefix_len] != 0)
+            {
+              GFile *file = g_file_new_for_uri (obj->uri);
+              result = g_file_get_path (file);
+              g_object_unref (file);
+            }
+
+          if (!result)
+            result = g_strdup (obj->uri);
+        }
+      break;
+    case 'u':
+    case 'U':
+      if (obj->uri)
+        result = g_shell_quote (obj->uri);
+      break;
+    case 'f':
+    case 'F':
+      if (obj->file)
+        result = g_shell_quote (obj->file);
+      break;
+    }
+
+  return result;
+}
+
+static gboolean
+expand_macro (char               macro,
+              GString           *exec,
+              const char        *app_name,
+              GList            **stat_obj_list,
+              GList            **obj_list)
+{
+  GList *objs = *obj_list;
+  char *expanded;
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (exec != NULL, FALSE);
+
+/*
+Legend: (from http://msdn.microsoft.com/en-us/library/windows/desktop/cc144101%28v=vs.85%29.aspx)
+%* - replace with all parameters
+%~ - replace with all parameters starting with and following the second parameter
+%0 or %1 the first file parameter. For example "C:\\Users\\Eric\\Desktop\\New Text Document.txt". Generally this should be in quotes and the applications command line parsing should accept quotes to disambiguate files with spaces in the name and different command line parameters (this is a security best practice and I believe mentioned in MSDN).
+%<n> (where N is 2 - 9), replace with the nth parameter
+%s - show command
+%h - hotkey value
+%i - IDList stored in a shared memory handle is passed here.
+%l - long file name form of the first parameter. Note win32 applications will be passed the long file name, win16 applications get the short file name. Specifying %L is preferred as it avoids the need to probe for the application type.
+%d - desktop absolute parsing name of the first parameter (for items that don't have file system paths)
+%v - for verbs that are none implies all, if there is no parameter passed this is the working directory
+%w - the working directory
+*/
+
+  switch (macro)
+    {
+    case '*':
+    case '~':
+      if (*stat_obj_list)
+        {
+          gint i;
+          GList *o;
+
+          for (o = *stat_obj_list, i = 0;
+               macro == '~' && o && i < 2;
+               o = o->next, i++);
+
+          for (; o; o = o->next)
+            {
+              expanded = expand_macro_single (macro, o->data);
+
+              if (expanded)
+                {
+                  if (o != *stat_obj_list)
+                    g_string_append (exec, " ");
+
+                  g_string_append (exec, expanded);
+                  g_free (expanded);
+                }
+            }
+
+          objs = NULL;
+          result = TRUE;
+        }
+      break;
+    case '0':
+    case '1':
+    case 'l':
+    case 'd':
+      if (*stat_obj_list)
+        {
+          GList *o;
+
+          o = *stat_obj_list;
+
+          if (o)
+            {
+              expanded = expand_macro_single (macro, o->data);
+
+              if (expanded)
+                {
+                  if (o != *stat_obj_list)
+                    g_string_append (exec, " ");
+
+                  g_string_append (exec, expanded);
+                  g_free (expanded);
+                }
+            }
+
+          if (objs)
+            objs = objs->next;
+
+          result = TRUE;
+        }
+      break;
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      if (*stat_obj_list)
+        {
+          gint i;
+          GList *o;
+          gint n = 0;
+
+          switch (macro)
+            {
+            case '2':
+              n = 2;
+              break;
+            case '3':
+              n = 3;
+              break;
+            case '4':
+              n = 4;
+              break;
+            case '5':
+              n = 5;
+              break;
+            case '6':
+              n = 6;
+              break;
+            case '7':
+              n = 7;
+              break;
+            case '8':
+              n = 8;
+              break;
+            case '9':
+              n = 9;
+              break;
+            }
+
+          for (o = *stat_obj_list, i = 0; o && i < n; o = o->next, i++);
+
+          if (o)
+            {
+              expanded = expand_macro_single (macro, o->data);
+
+              if (expanded)
+                {
+                  if (o != *stat_obj_list)
+                    g_string_append (exec, " ");
+
+                  g_string_append (exec, expanded);
+                  g_free (expanded);
+                }
+            }
+          result = TRUE;
+
+          if (objs)
+            objs = NULL;
+        }
+      break;
+    case 's':
+      break;
+    case 'h':
+      break;
+    case 'i':
+      break;
+    case 'v':
+      break;
+    case 'w':
+      expanded = g_get_current_dir ();
+      g_string_append (exec, expanded);
+      g_free (expanded);
+      break;
+    case 'u':
+    case 'f':
+      if (objs)
+        {
+          expanded = expand_macro_single (macro, objs->data);
+
+          if (expanded)
+            {
+              g_string_append (exec, expanded);
+              g_free (expanded);
+            }
+          objs = objs->next;
+          result = TRUE;
+        }
+
+      break;
+
+    case 'U':
+    case 'F':
+      while (objs)
+        {
+          expanded = expand_macro_single (macro, objs->data);
+
+          if (expanded)
+            {
+              g_string_append (exec, expanded);
+              g_free (expanded);
+            }
+
+          objs = objs->next;
+          result = TRUE;
+
+          if (objs != NULL && expanded)
+            g_string_append_c (exec, ' ');
+        }
+
+      break;
+
+    case 'c':
+      if (app_name)
+        {
+          expanded = g_shell_quote (app_name);
+          g_string_append (exec, expanded);
+          g_free (expanded);
+        }
+      break;
+
+    case 'm': /* deprecated */
+    case 'n': /* deprecated */
+    case 'N': /* deprecated */
+    /*case 'd': *//* deprecated */
+    case 'D': /* deprecated */
+      break;
+
+    case '%':
+      g_string_append_c (exec, '%');
+      break;
+    }
+
+  *obj_list = objs;
+
+  return result;
+}
+
+static gboolean
+_g_win32_expand_application_parameters (const char  *app_name,
+                                        const gchar *exec_line,
+                                        GList      **objs,
+                                        int         *argc,
+                                        char      ***argv,
+                                        GError     **error)
+{
+  GList *obj_list = *objs;
+  GList **stat_obj_list = objs;
+  const char *p = exec_line;
+  GString *expanded_exec;
+  gboolean res;
+  gchar *a_char;
+
+  expanded_exec = g_string_new (NULL);
+  res = FALSE;
+
+  while (*p)
+    {
+      if (p[0] == '%' && p[1] != '\0')
+        {
+          if (expand_macro (p[1],
+                            expanded_exec,
+                            app_name, stat_obj_list,
+                            objs))
+            res = TRUE;
+
+          p++;
+        }
+      else
+        g_string_append_c (expanded_exec, *p);
+
+      p++;
+    }
+
+  /* No file substitutions */
+  if (obj_list == *objs && obj_list != NULL && !res)
+    {
+      /* If there is no macro default to %f. This is also what KDE does */
+      g_string_append_c (expanded_exec, ' ');
+      expand_macro ('f', expanded_exec, app_name, stat_obj_list, objs);
+    }
+
+  /* Replace '\\' with '/', because g_shell_parse_argv considers them
+   * to be escape sequences.
+   */
+  for (a_char = expanded_exec->str;
+       a_char <= &expanded_exec->str[expanded_exec->len];
+       a_char++)
+    {
+      if (*a_char == '\\')
+        *a_char = '/';
+    }
+
+  res = g_shell_parse_argv (expanded_exec->str, argc, argv, error);
+  g_string_free (expanded_exec, TRUE);
+  return res;
+}
