@@ -102,6 +102,10 @@
 #include <langinfo.h>
 #endif
 
+#if defined __FreeBSD__
+#include <sys/sysctl.h>
+#endif
+
 /**
  * g_memmove: 
  * @dest: the destination address to copy the bytes to.
@@ -1201,6 +1205,32 @@ g_get_process_executable_dir (void)
         return NULL;
 
       toplevel = g_path_get_dirname (exe_path);
+#elif defined(__FreeBSD__)
+      char *exe_path = NULL;
+      size_t len;
+      int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+      int retval;
+
+      do
+        {
+          g_clear_pointer (&exe_path, g_free);
+
+          if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
+              return NULL;
+
+          exe_path = g_malloc0 (len);
+        }
+      while ((retval = sysctl (mib, G_N_ELEMENTS (mib), exe_path, &len, NULL, 0)) < 0 &&
+             errno == ENOMEM);
+
+      if (retval < 0)
+        {
+          g_free (exe_path);
+          return NULL;
+        }
+
+      toplevel = g_path_get_dirname (exe_path);
+      g_free (exe_path);
 #else
       /* Relocations not currently supported for this platform */
       return NULL;
