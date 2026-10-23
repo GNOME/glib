@@ -734,6 +734,7 @@ functions = [
   'ftruncate64',
   'getauxval',
   'getc_unlocked',
+  'getexecpath',
   'getfsent',
   'getfsstat',
   'getgrgid_r',
