@@ -348,7 +348,7 @@ test_string_prepend_c (void)
   string = g_string_new ("hi pete!");
 
   for (i = 0; i < 10000; i++)
-    g_string_prepend_c (string, 'a'+(i%26));
+    g_string_prepend_c (string, (char)('a'+(i%26)));
 
   g_assert((strlen("hi pete!") + 10000) == string->len);
   g_assert((strlen("hi pete!") + 10000) == strlen(string->str));
