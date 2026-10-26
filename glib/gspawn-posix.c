@@ -726,6 +726,20 @@ do_exec (gint                  child_err_report_fd,
     write_err_and_exit (child_err_report_fd,
                         CHILD_CHDIR_FAILED);
 
+  /* If stdin, stdout, or stderr was closed, the error pipe may have reused
+   * its fd. We need to move the write end before redirecting those streams.
+   */
+  if (IS_STD_FILENO (child_err_report_fd))
+    {
+      int old_fd = child_err_report_fd;
+
+      child_err_report_fd = dupfd_cloexec (old_fd, STDERR_FILENO + 1);
+      if (child_err_report_fd < 0)
+        write_err_and_exit (old_fd, CHILD_DUPFD_FAILED);
+
+      g_clear_fd (&old_fd, NULL);
+    }
+
   /* It's possible the caller assigned stdin to an fd with a
    * file number that is supposed to be reserved for
    * stdout or stderr.
@@ -762,7 +776,7 @@ do_exec (gint                  child_err_report_fd,
 
       set_cloexec (stdin_fd);
     }
-  else if (!child_inherits_stdin)
+  else if (!IS_VALID_FILENO (stdin_fd) && !child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
       gint read_null = safe_open ("/dev/null", O_RDONLY);
@@ -772,7 +786,8 @@ do_exec (gint                  child_err_report_fd,
       if (safe_dup2 (read_null, 0) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
-      g_clear_fd (&read_null, NULL);
+      if (read_null != STDIN_FILENO)
+        g_clear_fd (&read_null, NULL);
     }
 
   /* Like with stdin above, it's possible the caller assigned
@@ -809,7 +824,8 @@ do_exec (gint                  child_err_report_fd,
       if (safe_dup2 (write_null, 1) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
-      g_clear_fd (&write_null, NULL);
+      if (write_null != STDOUT_FILENO)
+        g_clear_fd (&write_null, NULL);
     }
 
   if (IS_STD_FILENO (stderr_fd) && stderr_fd != STDERR_FILENO)
@@ -841,7 +857,8 @@ do_exec (gint                  child_err_report_fd,
       if (safe_dup2 (write_null, 2) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
-      g_clear_fd (&write_null, NULL);
+      if (write_null != STDERR_FILENO)
+        g_clear_fd (&write_null, NULL);
     }
 
   /* Close all file descriptors but stdin, stdout and stderr, and any of source_fds,
