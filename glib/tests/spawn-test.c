@@ -422,8 +422,9 @@ test_spawn_basics (void)
 
 #ifdef G_OS_UNIX
 static void
-test_spawn_stdio_overwrite (void)
+test_spawn_stdio_overwrite (gconstpointer user_data)
 {
+  GSpawnFlags flags = GPOINTER_TO_INT (user_data);
   gboolean result;
   int ret;
   GError *error = NULL;
@@ -486,7 +487,7 @@ test_spawn_stdio_overwrite (void)
         g_clear_pointer (&command_line, g_free);
 
         result = g_spawn_sync (NULL,
-                               argv, envp, G_SPAWN_SEARCH_PATH_FROM_ENVP,
+                               argv, envp, flags,
                                NULL, NULL,
                                output_return_state == OPENED? &standard_output : NULL,
                                error_return_state == OPENED? &standard_error: NULL,
@@ -546,7 +547,12 @@ main (int   argc,
 
   g_test_add_func ("/spawn/basics", test_spawn_basics);
 #ifdef G_OS_UNIX
-  g_test_add_func ("/spawn/stdio-overwrite", test_spawn_stdio_overwrite);
+  g_test_add_data_func ("/spawn/stdio-overwrite",
+                        GINT_TO_POINTER (G_SPAWN_SEARCH_PATH_FROM_ENVP),
+                        test_spawn_stdio_overwrite);
+  g_test_add_data_func ("/spawn/stdio-overwrite/default",
+                        GINT_TO_POINTER (G_SPAWN_DEFAULT),
+                        test_spawn_stdio_overwrite);
 #endif
 
   ret_val = g_test_run ();
