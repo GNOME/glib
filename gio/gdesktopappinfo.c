@@ -77,10 +77,16 @@
 #define ADDED_ASSOCIATIONS_GROUP    "Added Associations"
 #define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations"
 #define MIME_CACHE_GROUP            "MIME Cache"
+#define INTENT_CACHE_GROUP          "Intent Cache"
 #define GENERIC_NAME_KEY            "GenericName"
 #define FULL_NAME_KEY               "X-GNOME-FullName"
 #define KEYWORDS_KEY                "Keywords"
 #define STARTUP_WM_CLASS_KEY        "StartupWMClass"
+
+/* The XDG terminal-intent-spec:
+ * https://specifications.freedesktop.org/terminal-intent/latest/
+ */
+#define INTENT_FDO_TERMINAL1        "org.freedesktop.Terminal1"
 
 enum {
   PROP_0,
@@ -119,6 +125,7 @@ struct _GDesktopAppInfo
   char *startup_wm_class;
   char **mime_types;
   char **actions;
+  char **intents;  /* (nullable) (owned) */
 
   guint nodisplay       : 1;
   guint hidden          : 1;
@@ -135,6 +142,12 @@ typedef enum {
   UPDATE_MIME_SET_LAST_USED = 1 << 4,
 } G_GNUC_FLAG_ENUM UpdateMimeFlags;
 
+typedef enum
+{
+  UPDATE_INTENT_SET_DEFAULT = 1 << 0,
+  UPDATE_INTENT_REMOVE = 1 << 1,
+} G_GNUC_FLAG_ENUM UpdateIntentFlags;
+
 G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_APP_INFO, g_desktop_app_info_iface_init))
 
@@ -150,8 +163,8 @@ typedef struct
   GFileMonitor               *monitor;
   GHashTable                 *app_names;
   GHashTable                 *mime_tweaks;
+  GHashTable                 *intent_tweaks;  /* (owned) (nullable) (element-type utf8 UnindexedIntentTweaks); maps intent interface name to UnindexedIntentTweaks instance; NULL before intents are read */
   GHashTable                 *memory_index;
-  GHashTable                 *memory_implementations;
 } DesktopFileDir;
 
 static GPtrArray      *desktop_file_dirs = NULL;
@@ -812,6 +825,46 @@ get_apps_from_dir (GHashTable **apps,
 
 typedef struct
 {
+  char **defaults;             /* (owned); list of priority ordered desktop file IDs */
+  GHashTable *defaults_scopes; /* (owned) (element-type utf8 GStrv); maps scope to list of priority ordered desktop file IDs */
+  char **cache;                /* (owned); list of desktop file IDs */
+  GHashTable *cache_scopes;    /* (owned) (element-type utf8 GStrv); maps scope to list of desktop file IDs */
+} UnindexedIntentTweaks;
+
+static void
+unindexed_intent_tweaks_free (UnindexedIntentTweaks *tweaks)
+{
+  g_strfreev (tweaks->defaults);
+  g_hash_table_unref (tweaks->defaults_scopes);
+  g_strfreev (tweaks->cache);
+  g_hash_table_unref (tweaks->cache_scopes);
+  g_free (tweaks);
+}
+
+static UnindexedIntentTweaks *
+desktop_file_dir_unindexed_get_intent_tweaks (DesktopFileDir *dir,
+                                              const char     *interface)
+{
+  UnindexedIntentTweaks *tweaks;
+
+  tweaks = g_hash_table_lookup (dir->intent_tweaks, interface);
+  if (tweaks == NULL)
+    {
+      tweaks = g_new0 (UnindexedIntentTweaks, 1);
+      tweaks->defaults_scopes = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                       g_free,
+                                                       (GDestroyNotify) g_strfreev);
+      tweaks->cache_scopes = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                    g_free,
+                                                    (GDestroyNotify) g_strfreev);
+      g_hash_table_insert (dir->intent_tweaks, g_strdup (interface), tweaks);
+    }
+
+  return tweaks;
+}
+
+typedef struct
+{
   gchar **additions;
   gchar **removals;
   gchar **defaults;
@@ -1042,11 +1095,163 @@ desktop_file_dir_unindexed_read_mimeapps_lists (DesktopFileDir *dir)
 }
 
 static void
+desktop_file_dir_unindexed_read_interface_scopes (GHashTable *tweak_scopes,
+                                                  const char *filename,
+                                                  GKeyFile   *key_file,
+                                                  const char *interface)
+{
+  char **scopes;
+
+  scopes = g_key_file_get_keys (key_file, interface, NULL, NULL);
+  for (size_t i = 0; scopes != NULL && scopes[i] != NULL; i++)
+    {
+      GStrv scope_desktop_file_ids;
+      GStrv desktop_file_ids;
+      char *owned_key;
+
+      desktop_file_ids = g_key_file_get_string_list (key_file,
+                                                     interface,
+                                                     scopes[i],
+                                                     NULL, NULL);
+
+      if (desktop_file_ids == NULL || desktop_file_ids[0] == NULL)
+        continue;
+
+      if (!g_hash_table_steal_extended (tweak_scopes, scopes[i],
+                                        (void **) &owned_key,
+                                        (void **) &scope_desktop_file_ids))
+        {
+          scope_desktop_file_ids = NULL;
+          owned_key = g_strdup (scopes[i]);
+        }
+
+      expand_strv (&scope_desktop_file_ids, g_steal_pointer (&desktop_file_ids), NULL);
+
+      g_hash_table_insert (tweak_scopes,
+                           g_steal_pointer (&owned_key),
+                           g_steal_pointer (&scope_desktop_file_ids));
+    }
+  g_clear_pointer (&scopes, g_strfreev);
+}
+
+static void
+desktop_file_dir_unindexed_read_intentapps_list (DesktopFileDir *dir,
+                                                 const char     *filename,
+                                                 const char     *added_group,
+                                                 gboolean        is_cache)
+{
+  GKeyFile *key_file;
+  char **interfaces;
+
+  /* This implements the XDG intent-apps-spec:
+   * https://specifications.freedesktop.org/intent-apps/latest/
+   */
+
+  key_file = g_key_file_new ();
+  if (!g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, NULL))
+    {
+      g_key_file_free (key_file);
+      return;
+    }
+
+  interfaces = g_key_file_get_keys (key_file, added_group, NULL, NULL);
+  for (size_t i = 0; interfaces != NULL && interfaces[i] != NULL; i++)
+    {
+      UnindexedIntentTweaks *tweaks;
+      char ***list;
+      GHashTable *scopes;
+      char **desktop_file_ids;
+
+      tweaks = desktop_file_dir_unindexed_get_intent_tweaks (dir, interfaces[i]);
+
+      if (is_cache)
+        {
+          list = &tweaks->cache;
+          scopes = tweaks->cache_scopes;
+        }
+      else
+        {
+          list = &tweaks->defaults;
+          scopes = tweaks->defaults_scopes;
+        }
+
+      desktop_file_ids = g_key_file_get_string_list (key_file,
+                                                     added_group,
+                                                     interfaces[i],
+                                                     NULL, NULL);
+
+      if (desktop_file_ids)
+        expand_strv (list, g_steal_pointer (&desktop_file_ids), NULL);
+
+      desktop_file_dir_unindexed_read_interface_scopes (scopes,
+                                                        filename,
+                                                        key_file,
+                                                        interfaces[i]);
+    }
+  g_clear_pointer (&interfaces, g_strfreev);
+
+  g_key_file_free (key_file);
+}
+
+static void
+desktop_file_dir_unindexed_read_intentapps_lists (DesktopFileDir *dir)
+{
+  const char *const *desktops;
+  char *filename;
+
+  dir->intent_tweaks = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                              g_free,
+                                              (GDestroyNotify)
+                                                unindexed_intent_tweaks_free);
+
+  /* We process in order of precedence, using a blocklisting approach to
+   * avoid recording later instructions that conflict with ones we found
+   * earlier.
+   *
+   * We first start with the XDG_CURRENT_DESKTOP files, in precedence
+   * order.
+   */
+  desktops = get_lowercase_current_desktops ();
+  for (size_t i = 0; desktops[i]; i++)
+    {
+      char *basename;
+
+      basename = g_strdup_printf ("%s-intentapps.list", desktops[i]);
+      filename = g_build_filename (dir->path, basename, NULL);
+      desktop_file_dir_unindexed_read_intentapps_list (dir, filename,
+                                                       DEFAULT_APPLICATIONS_GROUP,
+                                                       FALSE);
+      g_free (basename);
+      g_free (filename);
+    }
+
+  /* Next, the non-desktop-specific intentapps.list */
+  filename = g_build_filename (dir->path, "intentapps.list", NULL);
+  desktop_file_dir_unindexed_read_intentapps_list (dir, filename,
+                                                   DEFAULT_APPLICATIONS_GROUP,
+                                                   FALSE);
+  g_free (filename);
+
+  if (dir->is_config)
+    return;
+
+  /* Finally, the intent.cache, which is just a cached copy of what we
+   * would find in the Implements= lines of all of the desktop files.
+   */
+  filename = g_build_filename (dir->path, "intent.cache", NULL);
+  desktop_file_dir_unindexed_read_intentapps_list (dir, filename,
+                                                   INTENT_CACHE_GROUP,
+                                                   TRUE);
+  g_free (filename);
+}
+
+static void
 desktop_file_dir_unindexed_init (DesktopFileDir *dir)
 {
   if (!dir->is_config)
     get_apps_from_dir (&dir->app_names, dir->path, "");
 
+  desktop_file_dir_unindexed_read_intentapps_lists (dir);
   desktop_file_dir_unindexed_read_mimeapps_lists (dir);
 }
 
@@ -1186,7 +1391,6 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
   gpointer app, path;
 
   dir->memory_index = memory_index_new ();
-  dir->memory_implementations = memory_index_new ();
 
   /* Nothing to search? */
   if (dir->app_names == NULL)
@@ -1206,7 +1410,6 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
           !g_key_file_get_boolean (key_file, "Desktop Entry", "Hidden", NULL))
         {
           /* Index the interesting keys... */
-          gchar **implements;
           gsize i;
 
           for (i = 0; i < G_N_ELEMENTS (desktop_key_match_category); i++)
@@ -1244,12 +1447,6 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
 
               g_free (raw);
             }
-
-          /* Make note of the Implements= line */
-          implements = g_key_file_get_string_list (key_file, "Desktop Entry", "Implements", NULL, NULL);
-          for (i = 0; implements && implements[i]; i++)
-            memory_index_add_token (dir->memory_implementations, implements[i], i, 0, app);
-          g_strfreev (implements);
         }
 
       g_key_file_free (key_file);
@@ -1348,9 +1545,9 @@ desktop_file_dir_unindexed_mime_lookup (DesktopFileDir *dir,
 }
 
 static void
-desktop_file_dir_unindexed_default_lookup (DesktopFileDir *dir,
-                                           const gchar    *mime_type,
-                                           GPtrArray      *results)
+desktop_file_dir_unindexed_mime_lookup_default (DesktopFileDir *dir,
+                                                const char     *mime_type,
+                                                GPtrArray      *results)
 {
   UnindexedMimeTweaks *tweaks;
   gint i;
@@ -1370,17 +1567,56 @@ desktop_file_dir_unindexed_default_lookup (DesktopFileDir *dir,
 }
 
 static void
-desktop_file_dir_unindexed_get_implementations (DesktopFileDir  *dir,
-                                                GList          **results,
-                                                const gchar     *interface)
+unindexed_intent_lookup (DesktopFileDir *dir,
+                         const char     *interface,
+                         const char     *scope,
+                         gboolean        is_cache,
+                         GPtrArray      *results)
 {
-  MemoryIndexEntry *mie;
+  UnindexedIntentTweaks *tweaks;
+  char **list;
 
-  if (!dir->memory_index)
-    desktop_file_dir_unindexed_setup_search (dir);
+  tweaks = g_hash_table_lookup (dir->intent_tweaks, interface);
+  if (!tweaks)
+    return;
 
-  for (mie = g_hash_table_lookup (dir->memory_implementations, interface); mie; mie = mie->next)
-    *results = g_list_prepend (*results, g_strdup (mie->app_name));
+  if (scope && is_cache)
+    list = g_hash_table_lookup (tweaks->cache_scopes, scope);
+  else if (scope && !is_cache)
+    list = g_hash_table_lookup (tweaks->defaults_scopes, scope);
+  else if (!scope && is_cache)
+    list = tweaks->cache;
+  else if (!scope && !is_cache)
+    list = tweaks->defaults;
+  else
+    g_assert_not_reached ();
+
+  for (size_t i = 0; list && list[i]; i++)
+    {
+      const char *app_name = list[i];
+
+      if (!desktop_file_dir_app_name_is_masked (dir, app_name) &&
+          !array_contains (results, app_name))
+        g_ptr_array_add (results, (char *) app_name);
+    }
+}
+
+static void
+desktop_file_dir_unindexed_intent_lookup (DesktopFileDir *dir,
+                                          const char     *interface,
+                                          const char     *scope,
+                                          GPtrArray      *results)
+{
+  unindexed_intent_lookup (dir, interface, scope, TRUE, results);
+}
+
+static void
+desktop_file_dir_unindexed_intent_lookup_default (DesktopFileDir *dir,
+                                                  const char     *interface,
+                                                  const char     *scope,
+                                                  GPtrArray      *results)
+{
+  unindexed_intent_lookup (dir, interface, scope, FALSE, results);
 }
 
 /* DesktopFileDir "API" {{{2 */
@@ -1464,11 +1700,7 @@ desktop_file_dir_reset (DesktopFileDir *dir)
       dir->mime_tweaks = NULL;
     }
 
-  if (dir->memory_implementations)
-    {
-      g_hash_table_unref (dir->memory_implementations);
-      dir->memory_implementations = NULL;
-    }
+  g_clear_pointer (&dir->intent_tweaks, g_hash_table_unref);
 
   dir->is_setup = FALSE;
 }
@@ -1581,7 +1813,7 @@ desktop_file_dir_mime_lookup (DesktopFileDir *dir,
 }
 
 /*< internal >
- * desktop_file_dir_default_lookup:
+ * desktop_file_dir_mime_lookup_default:
  * @dir: a #DesktopFileDir
  * @mime_type: the mime type to look up
  * @results: an array to store the results in
@@ -1589,11 +1821,47 @@ desktop_file_dir_mime_lookup (DesktopFileDir *dir,
  * Collects the "default" applications for a given mime type from @dir.
  */
 static void
-desktop_file_dir_default_lookup (DesktopFileDir *dir,
-                                 const gchar    *mime_type,
-                                 GPtrArray      *results)
+desktop_file_dir_mime_lookup_default (DesktopFileDir *dir,
+                                      const char     *mime_type,
+                                      GPtrArray      *results)
 {
-  desktop_file_dir_unindexed_default_lookup (dir, mime_type, results);
+  desktop_file_dir_unindexed_mime_lookup_default (dir, mime_type, results);
+}
+
+/*< internal >
+ * desktop_file_dir_intent_lookup:
+ * @dir: a #DesktopFileDir
+ * @interface: the intent interface name
+ * @scope: (nullable): optional scope
+ * @results: an array to store the results in
+ *
+ * Collects the applications for a given intent from @dir in order of priority.
+ */
+static void
+desktop_file_dir_intent_lookup (DesktopFileDir *dir,
+                                const char     *interface,
+                                const char     *scope,
+                                GPtrArray      *results)
+{
+  desktop_file_dir_unindexed_intent_lookup (dir, interface, scope, results);
+}
+
+/*< internal >
+ * desktop_file_dir_intent_lookup_default:
+ * @dir: a #DesktopFileDir
+ * @interface: the intent interface name
+ * @scope: (nullable): optional scope
+ * @results: an array to store the results in
+ *
+ * Collects the "default" applications for a given intent from @dir in order of priority.
+ */
+static void
+desktop_file_dir_intent_lookup_default (DesktopFileDir *dir,
+                                        const char     *interface,
+                                        const char     *scope,
+                                        GPtrArray      *results)
+{
+  desktop_file_dir_unindexed_intent_lookup_default (dir, interface, scope, results);
 }
 
 /*< internal >
@@ -1608,14 +1876,6 @@ desktop_file_dir_search (DesktopFileDir *dir,
                          const gchar    *search_token)
 {
   desktop_file_dir_unindexed_search (dir, search_token);
-}
-
-static void
-desktop_file_dir_get_implementations (DesktopFileDir  *dir,
-                                      GList          **results,
-                                      const gchar     *interface)
-{
-  desktop_file_dir_unindexed_get_implementations (dir, results, interface);
 }
 
 /* Lock/unlock and global setup API {{{2 */
@@ -1739,6 +1999,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_strfreev (info->mime_types);
   g_free (info->app_id);
   g_strfreev (info->actions);
+  g_strfreev (info->intents);
 
   G_OBJECT_CLASS (g_desktop_app_info_parent_class)->finalize (object);
 }
@@ -2035,6 +2296,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->mime_types = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_MIME_TYPE, NULL, NULL);
   bus_activatable = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE, NULL);
   info->actions = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ACTIONS, NULL, NULL);
+  info->intents = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS, NULL, NULL);
 
   /* Remove the special-case: no Actions= key just means 0 extra actions */
   if (info->actions == NULL)
@@ -2258,6 +2520,7 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->hidden = info->hidden;
   new_info->terminal = info->terminal;
   new_info->startup_notify = info->startup_notify;
+  new_info->intents = g_strdupv (info->intents);
 
   return G_APP_INFO (new_info);
 }
@@ -2414,6 +2677,54 @@ g_desktop_app_info_get_keywords (GDesktopAppInfo *info)
   g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
 
   return (const char * const *)info->keywords;
+}
+
+/**
+ * g_desktop_app_info_get_intents:
+ * @info: an app info
+ *
+ * Gets the implemented intents from the desktop file.
+ *
+ * As per the specification, this is the list of intents that are
+ * explicitly listed in the [`Implements` key](https://specifications.freedesktop.org/desktop-entry/latest/recognized-keys.html) of the `Desktop Entry` group.
+ *
+ * Returns: (array zero-terminated=1) (element-type utf8) (transfer none): a
+ * list of strings, always non-`NULL`
+ *
+ * Since: 2.92
+ */
+const char * const *
+g_desktop_app_info_get_intents (GDesktopAppInfo *info)
+{
+  static const char *empty_strv[1] = { NULL, };
+
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
+
+  return (info->intents != NULL) ? (const char * const *)info->intents : empty_strv;
+}
+
+/**
+ * g_desktop_app_info_has_intent:
+ * @info: an app info
+ * @intent: the intent to look up
+ *
+ * Returns whether @intent is implemented by the application.
+ *
+ * As per specification, an intent implemented by the application is listed in
+ * the [`Implements` key](https://specifications.freedesktop.org/desktop-entry/latest/recognized-keys.html) of the `Desktop Entry` group.
+ *
+ * Returns: true if the @intent is implemented by the application
+ *
+ * Since: 2.92
+ */
+gboolean
+g_desktop_app_info_has_intent (GDesktopAppInfo *info,
+                               const char      *intent)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), FALSE);
+
+  return (info->intents != NULL &&
+          g_strv_contains ((const char * const *)info->intents, intent));
 }
 
 /**
@@ -3448,6 +3759,160 @@ launch_uris_with_dbus_signal_cb (GObject      *object,
   launch_uris_with_dbus_data_free (data);
 }
 
+static GDesktopAppInfo *
+g_desktop_app_info_get_default_terminal_launcher (GDesktopAppInfo *info)
+{
+  GDesktopAppInfo *terminal_info;
+
+  if (!info->terminal)
+    return NULL;
+
+  terminal_info =
+    (GDesktopAppInfo *) g_desktop_app_info_get_default_for_intent (INTENT_FDO_TERMINAL1,
+                                                                   NULL);
+
+  if (terminal_info == NULL || terminal_info->app_id == NULL)
+    {
+      g_clear_object (&terminal_info);
+      return NULL;
+    }
+
+  return g_steal_pointer (&terminal_info);
+}
+
+static gboolean
+prepare_launch_uris_with_terminal1 (GDesktopAppInfo    *terminal_info,
+                                    GDesktopAppInfo    *info,
+                                    GList              *uris,
+                                    GAppLaunchContext  *launch_context,
+                                    GVariant          **call_data_out,
+                                    char              **startup_id_out,
+                                    GError            **error)
+{
+  GList *remaining_uris;
+  GVariantBuilder builder;
+
+  g_variant_builder_init_static (&builder, G_VARIANT_TYPE_TUPLE);
+
+  g_variant_builder_open (&builder, G_VARIANT_TYPE_ARRAY);
+
+  /* invocations */
+  remaining_uris = uris;
+  do
+    {
+      GVariantBuilder invocation;
+      GVariantBuilder exec;
+      char **argv;
+      int argc;
+
+      if (!expand_application_parameters (info,
+                                          info->exec,
+                                          &remaining_uris,
+                                          &argc,
+                                          &argv,
+                                          error))
+        {
+          g_variant_builder_clear (&builder);
+          return FALSE;
+        }
+
+      g_variant_builder_init_static (&invocation, G_VARIANT_TYPE_VARDICT);
+
+      g_variant_builder_init_static (&exec, G_VARIANT_TYPE_BYTESTRING_ARRAY);
+      for (int i = 0; i < argc; i++)
+        g_variant_builder_add_value (&exec, g_variant_new_bytestring (argv[i]));
+      g_variant_builder_add (&invocation, "{sv}",
+                             "exec", g_variant_builder_end (&exec));
+
+      if (info->path)
+        g_variant_builder_add (&invocation, "{sv}",
+                               "working_directory",
+                               g_variant_new_bytestring (info->path));
+
+      g_variant_builder_add_value (&builder, g_variant_builder_end (&invocation));
+
+      g_clear_pointer (&argv, g_strfreev);
+    }
+  while (remaining_uris != NULL);
+
+  g_variant_builder_close (&builder);
+
+  /* desktop file path (desktop_entry)
+   *
+   * App info could have been created without a desktop file, for example by
+   * g_app_info_create_from_commandline(), so `info->filename` can be NULL.
+   */
+  g_variant_builder_add_value (&builder, g_variant_new_bytestring (info->filename ? info->filename : ""));
+
+  /* options */
+  g_variant_builder_open (&builder, G_VARIANT_TYPE_VARDICT);
+  g_variant_builder_close (&builder);
+
+  /* platform data */
+  {
+    GVariant *platform_data;
+
+    platform_data = g_desktop_app_info_make_platform_data (terminal_info,
+                                                           uris,
+                                                           launch_context);
+
+    if (startup_id_out)
+      {
+        GVariantDict dict;
+
+        g_variant_dict_init (&dict, platform_data);
+        g_variant_dict_lookup (&dict, "desktop-startup-id", "s", startup_id_out);
+        g_variant_dict_clear (&dict);
+      }
+
+    g_variant_builder_add_value (&builder, platform_data);
+  }
+
+  *call_data_out = g_variant_builder_end (&builder);
+
+  return TRUE;
+}
+
+static void
+launch_uris_with_terminal1 (GDesktopAppInfo     *terminal_info,
+                            GDesktopAppInfo     *info,
+                            GDBusConnection     *session_bus,
+                            GVariant            *call_data,
+                            char                *startup_id,
+                            GAppLaunchContext   *launch_context,
+                            GCancellable        *cancellable,
+                            GAsyncReadyCallback  callback,
+                            void                *user_data)
+{
+  LaunchUrisWithDBusData *data;
+  char *object_path;
+
+  if (launch_context)
+    emit_launch_started (launch_context, terminal_info, startup_id);
+
+  data = g_new0 (LaunchUrisWithDBusData, 1);
+  data->info = g_object_ref (info);
+  data->callback = callback;
+  data->user_data = user_data;
+  data->launch_context = launch_context ? g_object_ref (launch_context) : NULL;
+  data->startup_id = g_steal_pointer (&startup_id);
+
+  object_path = object_path_from_appid (terminal_info->app_id);
+  g_dbus_connection_call (session_bus,
+                          terminal_info->app_id,
+                          object_path,
+                          INTENT_FDO_TERMINAL1,
+                          "LaunchCommand",
+                          g_steal_pointer (&call_data),
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          -1,
+                          cancellable,
+                          launch_uris_with_dbus_signal_cb,
+                          g_steal_pointer (&data));
+  g_free (object_path);
+}
+
 static void
 launch_uris_with_dbus (GDesktopAppInfo    *info,
                        GDBusConnection    *session_bus,
@@ -3500,19 +3965,19 @@ launch_uris_with_dbus (GDesktopAppInfo    *info,
   g_variant_dict_clear (&dict);
 }
 
-static gboolean
-g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
-                                          GDBusConnection    *session_bus,
-                                          GList              *uris,
-                                          GAppLaunchContext  *launch_context,
-                                          GCancellable       *cancellable,
-                                          GAsyncReadyCallback callback,
-                                          gpointer            user_data)
+static void
+g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo     *info,
+                                          GDBusConnection     *session_bus,
+                                          GList               *uris,
+                                          GAppLaunchContext   *launch_context,
+                                          GCancellable        *cancellable,
+                                          GAsyncReadyCallback  callback,
+                                          void                *user_data)
 {
   GList *ruris = uris;
   char *app_id = NULL;
 
-  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_if_fail (info != NULL);
 
 #ifdef G_OS_UNIX
   app_id = g_desktop_app_info_get_string (info, "X-Flatpak");
@@ -3544,8 +4009,6 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
 
   if (ruris != uris)
     g_list_free_full (ruris, g_free);
-
-  return TRUE;
 }
 
 static gboolean
@@ -3564,24 +4027,67 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
   GDBusConnection *session_bus;
+  GDesktopAppInfo *terminal_info;
   gboolean success = TRUE;
 
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
-  if (session_bus && info->app_id)
-    /* This is non-blocking API. Similar to launching via fork()/exec()
-     * we don't wait around to see if the program crashed during startup.
-     * This is what startup-notification's job is...
-     */
-    g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context,
-                                              NULL, NULL, NULL);
+  terminal_info = g_desktop_app_info_get_default_terminal_launcher (info);
+
+  if (session_bus && terminal_info)
+    {
+      GVariant *call_data = NULL;
+      char *startup_id = NULL;
+
+      success = prepare_launch_uris_with_terminal1 (terminal_info,
+                                                    info,
+                                                    uris,
+                                                    launch_context,
+                                                    &call_data,
+                                                    &startup_id,
+                                                    error);
+      if (success)
+        {
+          launch_uris_with_terminal1 (terminal_info,
+                                      info,
+                                      session_bus,
+                                      g_steal_pointer (&call_data),
+                                      g_steal_pointer (&startup_id),
+                                      launch_context,
+                                      NULL, NULL, NULL);
+        }
+    }
+  else if (session_bus && info->app_id)
+    {
+      /* This is non-blocking API. Similar to launching via fork()/exec()
+       * we don't wait around to see if the program crashed during startup.
+       * This is what startup-notification's job is...
+       */
+      g_desktop_app_info_launch_uris_with_dbus (info,
+                                                session_bus,
+                                                uris,
+                                                launch_context,
+                                                NULL, NULL, NULL);
+    }
   else
-    success = g_desktop_app_info_launch_uris_with_spawn (info, session_bus, info->exec, uris, launch_context,
-                                                         spawn_flags, user_setup, user_setup_data,
-                                                         pid_callback, pid_callback_data,
-                                                         stdin_fd, stdout_fd, stderr_fd, error);
+    {
+      success = g_desktop_app_info_launch_uris_with_spawn (info,
+                                                           session_bus,
+                                                           info->exec,
+                                                           uris,
+                                                           launch_context,
+                                                           spawn_flags,
+                                                           user_setup,
+                                                           user_setup_data,
+                                                           pid_callback,
+                                                           pid_callback_data,
+                                                           stdin_fd, stdout_fd, stderr_fd,
+                                                           error);
+    }
 
   g_clear_object (&session_bus);
+
+  g_clear_object (&terminal_info);
 
   return success;
 }
@@ -3665,17 +4171,55 @@ launch_uris_bus_get_cb (GObject      *object,
   LaunchUrisData *data = g_task_get_task_data (task);
   GCancellable *cancellable = g_task_get_cancellable (task);
   GDBusConnection *session_bus;
+  GDesktopAppInfo *terminal_info;
+  GError *local_error = NULL;
 
   session_bus = g_bus_get_finish (result, NULL);
 
-  if (session_bus && info->app_id)
+  terminal_info = g_desktop_app_info_get_default_terminal_launcher (info);
+
+  if (session_bus && terminal_info)
+    {
+      gboolean success;
+      GVariant *call_data = NULL;
+      char *startup_id = NULL;
+
+      success = prepare_launch_uris_with_terminal1 (terminal_info,
+                                                    info,
+                                                    data->uris,
+                                                    data->context,
+                                                    &call_data,
+                                                    &startup_id,
+                                                    &local_error);
+      if (!success)
+        {
+          g_task_return_error (task, g_steal_pointer (&local_error));
+          g_object_unref (task);
+        }
+      else
+        {
+          launch_uris_with_terminal1 (terminal_info,
+                                      info,
+                                      session_bus,
+                                      g_steal_pointer (&call_data),
+                                      g_steal_pointer (&startup_id),
+                                      data->context,
+                                      cancellable,
+                                      launch_uris_with_dbus_cb,
+                                      g_steal_pointer (&task));
+        }
+    }
+  else if (session_bus && info->app_id)
     {
       /* FIXME: The g_document_portal_add_documents() function, which is called
        * from the g_desktop_app_info_launch_uris_with_dbus() function, still
        * uses blocking calls.
        */
-      g_desktop_app_info_launch_uris_with_dbus (info, session_bus,
-                                                data->uris, data->context,
+
+      g_desktop_app_info_launch_uris_with_dbus (info,
+                                                session_bus,
+                                                data->uris,
+                                                data->context,
                                                 cancellable,
                                                 launch_uris_with_dbus_cb,
                                                 g_steal_pointer (&task));
@@ -3691,6 +4235,7 @@ launch_uris_bus_get_cb (GObject      *object,
                                                        g_steal_pointer (&task));
     }
 
+  g_clear_object (&terminal_info);
   g_clear_object (&session_bus);
 }
 
@@ -4225,6 +4770,189 @@ update_mimeapps_list (const char  *desktop_id,
 }
 
 static gboolean
+update_intentapps_list (const char         *desktop_id,
+                        const char         *interface,
+                        const char         *scope,
+                        UpdateIntentFlags   flags,
+                        GError            **error)
+{
+  char *dirname, *old_filename, *filename, *scope_desktop_id;
+  GKeyFile *key_file;
+  gboolean load_succeeded, res;
+  size_t data_size;
+  char *data;
+  char **intents, **scopes, **old_intent_desktop_ids, **intent_desktop_ids;
+  size_t n_old_intent_desktop_ids, n_intent_desktop_ids;
+
+  dirname = ensure_dir (CONF_DIR, error);
+  if (dirname == NULL)
+    return FALSE;
+
+  filename = g_build_filename (dirname, "intentapps.list", NULL);
+
+  while (g_file_test (filename, G_FILE_TEST_IS_SYMLINK))
+    {
+      old_filename = filename;
+      filename = g_file_read_link (old_filename, error);
+      g_free (old_filename);
+
+      if (filename == NULL)
+        return FALSE;
+
+      if (!g_path_is_absolute (filename))
+        {
+          old_filename = filename;
+          filename = g_build_filename (dirname, old_filename, NULL);
+          g_free (old_filename);
+        }
+    }
+
+  g_free (dirname);
+
+  key_file = g_key_file_new ();
+  load_succeeded = g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, NULL);
+  if (!load_succeeded || !g_key_file_has_group (key_file, DEFAULT_APPLICATIONS_GROUP))
+    {
+      g_key_file_free (key_file);
+      key_file = g_key_file_new ();
+    }
+
+  if (interface != NULL &&
+      !g_key_file_has_key (key_file, DEFAULT_APPLICATIONS_GROUP, interface, NULL))
+    {
+      g_key_file_set_string (key_file, DEFAULT_APPLICATIONS_GROUP, interface, "");
+    }
+
+  if (interface != NULL &&
+      scope != NULL &&
+      !g_key_file_has_key (key_file, interface, scope, NULL))
+    {
+      g_key_file_set_string (key_file, interface, scope, "");
+    }
+
+  intents = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP, NULL, NULL);
+
+  for (size_t i = 0; intents != NULL && intents[i] != NULL; i++)
+    {
+      scopes = g_key_file_get_keys (key_file, intents[i], NULL, NULL);
+
+      for (size_t j = 0; scopes != NULL && scopes[j] != NULL; j++)
+        {
+
+          scope_desktop_id = g_key_file_get_string (key_file,
+                                                    intents[i],
+                                                    scopes[j],
+                                                    NULL);
+
+          if (g_strcmp0 (scope_desktop_id, desktop_id) != 0 &&
+              interface != NULL &&
+              g_strcmp0 (intents[i], interface) == 0 &&
+              scope != NULL &&
+              g_strcmp0 (scopes[j], scope) == 0 &&
+              (flags & UPDATE_INTENT_SET_DEFAULT))
+            {
+              g_free (scope_desktop_id);
+              scope_desktop_id = g_strdup (desktop_id);
+            }
+
+          if (g_strcmp0 (scope_desktop_id, desktop_id) == 0 &&
+              (flags & UPDATE_INTENT_REMOVE))
+            {
+              g_free (scope_desktop_id);
+              scope_desktop_id = NULL;
+            }
+
+          if (scope_desktop_id == NULL)
+            g_key_file_remove_key (key_file,
+                                   intents[i],
+                                   scopes[j],
+                                   NULL);
+          else
+            {
+              g_key_file_set_string (key_file,
+                                     intents[i],
+                                     scopes[j],
+                                     scope_desktop_id);
+              g_free (scope_desktop_id);
+            }
+        }
+
+      g_strfreev (scopes);
+
+      /* Remove the intent group if there are no scopes left */
+      scopes = g_key_file_get_keys (key_file, intents[i], NULL, NULL);
+
+      if (scopes != NULL && *scopes == NULL)
+        g_key_file_remove_group (key_file, intents[i], NULL);
+
+      g_strfreev (scopes);
+
+      n_intent_desktop_ids = 0;
+
+      old_intent_desktop_ids = g_key_file_get_string_list (key_file,
+                                                           DEFAULT_APPLICATIONS_GROUP,
+                                                           intents[i],
+                                                           &n_old_intent_desktop_ids,
+                                                           NULL);
+
+      intent_desktop_ids = g_new (char *, 1 + n_old_intent_desktop_ids + 1);
+
+      if (interface != NULL &&
+          g_strcmp0 (intents[i], interface) == 0 &&
+          (flags & UPDATE_INTENT_SET_DEFAULT))
+        intent_desktop_ids[n_intent_desktop_ids++] = g_strdup (desktop_id);
+
+      for (size_t j = 0; j < n_old_intent_desktop_ids; j++)
+        if (g_strcmp0 (old_intent_desktop_ids[j], desktop_id) != 0 ||
+            ((flags & UPDATE_INTENT_SET_DEFAULT) &&
+             g_strcmp0 (intents[i], interface) != 0))
+          intent_desktop_ids[n_intent_desktop_ids++] = g_strdup (old_intent_desktop_ids[j]);
+
+      intent_desktop_ids[n_intent_desktop_ids] = NULL;
+
+      g_strfreev (old_intent_desktop_ids);
+
+      if (intent_desktop_ids[0] == NULL)
+        g_key_file_remove_key (key_file,
+                               DEFAULT_APPLICATIONS_GROUP,
+                               intents[i],
+                               NULL);
+      else
+        g_key_file_set_string_list (key_file,
+                                    DEFAULT_APPLICATIONS_GROUP,
+                                    intents[i],
+                                    (const char * const *) intent_desktop_ids,
+                                    n_intent_desktop_ids);
+      g_strfreev (intent_desktop_ids);
+    }
+
+  g_strfreev (intents);
+
+  data = g_key_file_to_data (key_file, &data_size, error);
+  g_key_file_free (key_file);
+
+  if (data_size > G_MAXSSIZE)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Intent apps information is too long"));
+      g_free (filename);
+      g_free (data);
+      return FALSE;
+    }
+
+  res = g_file_set_contents_full (filename, data, (ssize_t) data_size,
+                                  G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING,
+                                  0600, error);
+
+  desktop_file_dirs_invalidate_user_config ();
+
+  g_free (filename);
+  g_free (data);
+
+  return res;
+}
+
+static gboolean
 g_desktop_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
                                               const char  *content_type,
                                               GError     **error)
@@ -4570,6 +5298,10 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
                                 UPDATE_MIME_NONE,
                                 NULL);
 
+          update_intentapps_list (info->desktop_id, NULL, NULL,
+                                  UPDATE_INTENT_REMOVE,
+                                  NULL);
+
           g_free (info->filename);
           info->filename = NULL;
           g_free (info->desktop_id);
@@ -4860,7 +5592,7 @@ g_app_info_get_default_for_type_impl (const char *content_type,
     {
       /* Collect all the default apps for this type */
       for (j = 0; j < desktop_file_dirs->len; j++)
-        desktop_file_dir_default_lookup (g_ptr_array_index (desktop_file_dirs, j), types[i], results);
+        desktop_file_dir_mime_lookup_default (g_ptr_array_index (desktop_file_dirs, j), types[i], results);
 
       /* Consider the associations as well... */
       for (j = 0; j < desktop_file_dirs->len; j++)
@@ -4901,6 +5633,95 @@ out:
   return info;
 }
 
+/**
+ * g_desktop_app_info_get_default_for_intent:
+ * @interface: the intent interface to find an app for
+ * @scope: (nullable): an optional scope
+ *
+ * Gets the default [iface@Gio.AppInfo] that implements @interface and, if @scope
+ * is not `NULL`, also supports @scope.
+ *
+ * An application implements an interface if that interface is listed in
+ * the `Implements` line of the desktop file, as per the
+ * [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry/latest/interfaces.html).
+ *
+ * An application implements a scope of an interface, if the scope is listed in
+ * the [`Supports` line](https://specifications.freedesktop.org/intent-apps/latest/#scopes)
+ * of the section of the desktop file named after @interface. Scopes are specific
+ * to each @interface and are defined in the specification which defines that intent
+ * interface. A URI handler intent might have `https`, `http` and `ftp` as scopes,
+ * for example.
+ *
+ * Application priority can be adjusted via
+ * [`intentapps.list` files](https://specifications.freedesktop.org/intent-apps/latest/#file).
+ *
+ * Returns: (transfer full) (nullable): app info for the given @intent and @scope,
+ *   or `NULL` if not found.
+ *
+ * Since: 2.92
+ */
+GAppInfo *
+g_desktop_app_info_get_default_for_intent (const char *interface,
+                                           const char *scope)
+{
+  GAppInfo *def = NULL;
+  GAppInfo **apps;
+  size_t n_apps;
+
+  g_return_val_if_fail (g_dbus_is_interface_name (interface), NULL);
+  g_return_val_if_fail (scope == NULL || *scope != '\0', NULL);
+
+  apps = g_desktop_app_info_get_for_intent (interface, scope, &n_apps);
+  if (n_apps)
+    def = g_object_ref (apps[0]);
+
+  for (size_t i = 0; i < n_apps; i++)
+    g_object_unref (apps[i]);
+  g_free (apps);
+
+  return def;
+}
+
+/**
+ * g_desktop_app_info_set_as_default_for_intent:
+ * @info: an app info
+ * @interface: the intent interface to set the app as default for
+ * @scope: (nullable): an optional scope
+ * @error: return location for a `GError`
+ *
+ * Sets the application as the default handler for an intent interface, or for
+ * a scope of the intent interface.
+ *
+ * If @scope is provided, the default handler for that scope of the intent
+ * interface will be set. Additionally, the application will be added to the
+ * list of the default handlers for the intent interface.
+ *
+ * If @scope is not provided, the default handler for the intent interface will
+ * be set to the application.
+ *
+ * Returns: true on success; false otherwise
+ *
+ * Since: 2.92
+ */
+gboolean
+g_desktop_app_info_set_as_default_for_intent (GDesktopAppInfo  *info,
+                                              const char       *interface,
+                                              const char       *scope,
+                                              GError          **error)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), FALSE);
+  g_return_val_if_fail (g_dbus_is_interface_name (interface), FALSE);
+  g_return_val_if_fail (scope == NULL || *scope != '\0', FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (!g_desktop_app_info_ensure_saved (info, error))
+    return FALSE;
+
+  return update_intentapps_list (info->desktop_id, interface, scope,
+                                 UPDATE_INTENT_SET_DEFAULT,
+                                 error);
+}
+
 GAppInfo *
 g_app_info_get_default_for_uri_scheme_impl (const char *uri_scheme)
 {
@@ -4921,6 +5742,112 @@ g_app_info_get_default_for_uri_scheme_impl (const char *uri_scheme)
 /* "Get all" API {{{2 */
 
 /**
+ * g_desktop_app_info_get_for_intent:
+ * @interface: the intent interface to find an app for
+ * @scope: (nullable): an optional scope
+ * @out_n_results: (optional) (out): the number of infos returned
+ *
+ * Gets all [iface@Gio.AppInfo]s that implement @interface and, if @scope is not
+ * `NULL`, also supports @scope.
+ *
+ * Applications earlier in the list have higher priority.
+ *
+ * An application implements an interface if that interface is listed in
+ * the `Implements` line of the desktop file, as per the
+ * [Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry/latest/interfaces.html).
+ *
+ * An application implements a scope of an interface, if the scope is listed in
+ * the [`Supports` line](https://specifications.freedesktop.org/intent-apps/latest/#scopes)
+ * of the section of the desktop file named after @interface. Scopes are specific
+ * to each @interface and are defined in the specification which defines that intent
+ * interface. A URI handler intent might have `https`, `http` and `ftp` as scopes,
+ * for example.
+ *
+ * Application priority can be adjusted via
+ * [`intentapps.list` files](https://specifications.freedesktop.org/intent-apps/latest/#file).
+ *
+ * The list is guaranteed to be `NULL` terminated. The `NULL` terminator is not
+ * counted in @out_n_results.
+ *
+ * Returns: (array length=out_n_results) (transfer full) (nullable): an array of
+ * app infos for the given @intent and @scope, or `NULL` if none are found.
+ *
+ * Since: 2.92
+ **/
+GAppInfo **
+g_desktop_app_info_get_for_intent (const char *interface,
+                                   const char *scope,
+                                   size_t     *out_n_results)
+{
+  GPtrArray *results = g_ptr_array_new ();
+  GPtrArray *valid_infos = g_ptr_array_new ();
+  GAppInfo **infos = NULL;
+
+  g_return_val_if_fail (g_dbus_is_interface_name (interface), NULL);
+  g_return_val_if_fail (scope == NULL || *scope != '\0', NULL);
+
+  desktop_file_dirs_lock ();
+
+  /* Collect all the default apps for the interface and scope */
+  for (unsigned int i = 0; i < desktop_file_dirs->len; i++)
+    {
+      desktop_file_dir_intent_lookup_default (g_ptr_array_index (desktop_file_dirs, i),
+                                              interface,
+                                              scope,
+                                              results);
+    }
+
+  /* Collect all the default apps for the interface and scope */
+  for (unsigned int i = 0; i < desktop_file_dirs->len; i++)
+    {
+      desktop_file_dir_intent_lookup (g_ptr_array_index (desktop_file_dirs, i),
+                                      interface,
+                                      scope,
+                                      results);
+    }
+
+  /* (If any), see if one of those apps is installed... */
+  for (unsigned int i = 0; i < results->len; i++)
+    {
+      const char *desktop_id = g_ptr_array_index (results, i);
+
+      for (unsigned int j = 0; j < desktop_file_dirs->len; j++)
+        {
+          GDesktopAppInfo *info;
+
+          info = desktop_file_dir_get_app (g_ptr_array_index (desktop_file_dirs, j),
+                                           desktop_id);
+          if (!info)
+            continue;
+
+          if (!g_desktop_app_info_has_intent (info, interface))
+            {
+              g_debug ("%s: %s claimed to, but does not support intent %s",
+                       G_STRFUNC, info->filename, interface);
+              g_clear_object (&info);
+              continue;
+            }
+
+          g_ptr_array_add (valid_infos, G_APP_INFO (info));
+        }
+    }
+
+  desktop_file_dirs_unlock ();
+  g_ptr_array_unref (results);
+
+  if (out_n_results)
+    *out_n_results = valid_infos->len;
+
+  if (valid_infos->len)
+    g_ptr_array_add (valid_infos, NULL);
+
+  infos = (GAppInfo **) g_ptr_array_steal (valid_infos, NULL);
+  g_ptr_array_unref (valid_infos);
+
+  return infos;
+}
+
+/**
  * g_desktop_app_info_get_implementations:
  * @interface: the name of the interface
  *
@@ -4937,33 +5864,18 @@ g_app_info_get_default_for_uri_scheme_impl (const char *uri_scheme)
 GList *
 g_desktop_app_info_get_implementations (const gchar *interface)
 {
+  GAppInfo **infos;
+  size_t n_infos;
   GList *result = NULL;
-  GList **ptr;
-  guint i;
 
-  desktop_file_dirs_lock ();
+  infos = g_desktop_app_info_get_for_intent (interface, NULL, &n_infos);
 
-  for (i = 0; i < desktop_file_dirs->len; i++)
-    desktop_file_dir_get_implementations (g_ptr_array_index (desktop_file_dirs, i), &result, interface);
-
-  desktop_file_dirs_unlock ();
-
-  ptr = &result;
-  while (*ptr)
+  if (infos)
     {
-      gchar *name = (*ptr)->data;
-      GDesktopAppInfo *app;
-
-      app = g_desktop_app_info_new (name);
-      g_free (name);
-
-      if (app)
-        {
-          (*ptr)->data = app;
-          ptr = &(*ptr)->next;
-        }
-      else
-        *ptr = g_list_delete_link (*ptr, *ptr);
+      for (size_t i = 0; i < n_infos; i++)
+        result = g_list_prepend (result, infos[i]);
+      result = g_list_reverse (result);
+      g_free (infos);
     }
 
   return result;

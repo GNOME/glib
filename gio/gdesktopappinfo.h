@@ -62,6 +62,11 @@ GIO_AVAILABLE_IN_2_30
 const char *     g_desktop_app_info_get_categories    (GDesktopAppInfo *info);
 GIO_AVAILABLE_IN_2_30
 const char * const *g_desktop_app_info_get_keywords   (GDesktopAppInfo *info);
+GIO_AVAILABLE_IN_2_92
+const char * const *g_desktop_app_info_get_intents    (GDesktopAppInfo *info);
+GIO_AVAILABLE_IN_2_92
+gboolean         g_desktop_app_info_has_intent        (GDesktopAppInfo *info,
+                                                       const char      *intent);
 GIO_AVAILABLE_IN_2_30
 gboolean         g_desktop_app_info_get_nodisplay     (GDesktopAppInfo *info);
 GIO_AVAILABLE_IN_2_30
@@ -192,8 +197,20 @@ gboolean    g_desktop_app_info_launch_uris_as_manager_with_fds (GDesktopAppInfo 
 GIO_AVAILABLE_IN_2_40
 gchar *** g_desktop_app_info_search (const gchar *search_string);
 
-GIO_AVAILABLE_IN_2_42
+GIO_DEPRECATED_IN_2_92_FOR (g_desktop_app_info_get_for_intent)
 GList *g_desktop_app_info_get_implementations (const gchar *interface);
+GIO_AVAILABLE_IN_2_92
+GAppInfo **g_desktop_app_info_get_for_intent (const char *interface,
+                                              const char *scope,
+                                              size_t     *out_n_results);
+GIO_AVAILABLE_IN_2_92
+GAppInfo *g_desktop_app_info_get_default_for_intent (const char *interface,
+                                                     const char *scope);
+GIO_AVAILABLE_IN_2_92
+gboolean g_desktop_app_info_set_as_default_for_intent (GDesktopAppInfo  *info,
+                                                       const char       *interface,
+                                                       const char       *scope,
+                                                       GError          **error);
 
 G_END_DECLS
 

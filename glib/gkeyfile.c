@@ -475,6 +475,17 @@
  */
 
 /**
+ * G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS:
+ *
+ * A key under [const@GLib.KEY_FILE_DESKTOP_GROUP], whose value is a string list
+ * giving the available intents.
+ *
+ * Intents are defined in the [Intents Specification](https://specifications.freedesktop.org/intent-apps/latest/).
+ *
+ * Since: 2.92
+ */
+
+/**
  * G_KEY_FILE_DESKTOP_TYPE_APPLICATION:
  *
  * The value of the [const@GLib.KEY_FILE_DESKTOP_KEY_TYPE], key for desktop
