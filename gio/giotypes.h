@@ -379,7 +379,8 @@ struct _GInputVector {
  * the POSIX sockets API (see `man 2 recvmmsg`).
  *
  * If @address is non-%NULL then it is set to the source address the message
- * was received from, and the caller must free it afterwards.
+ * was received from (or %NULL if it is not available), and the caller must
+ * free it afterwards.
  *
  * If @control_messages is non-%NULL then it is set to an array of control
  * messages received with the message (if any), and the caller must free it
