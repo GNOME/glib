@@ -3581,7 +3581,7 @@ g_socket_receive_with_blocking (GSocket       *socket,
 /**
  * g_socket_receive_bytes_from:
  * @socket: a #GSocket
- * @address: (out) (optional): return location for a #GSocketAddress
+ * @address: (out) (optional) (nullable): return location for a #GSocketAddress
  * @size: the number of bytes you want to read from the socket
  * @timeout_us: the timeout to wait for, in microseconds, or `-1` to block
  *   indefinitely
@@ -3594,7 +3594,7 @@ g_socket_receive_with_blocking (GSocket       *socket,
  * a [struct@GLib.Bytes] rather than a plain buffer.
  *
  * If @address is non-%NULL then @address will be set equal to the
- * source address of the received packet.
+ * source address of the received packet, or %NULL if it is not available.
  *
  * The @address is owned by the caller.
  *
@@ -3660,7 +3660,7 @@ g_socket_receive_bytes_from (GSocket         *socket,
 /**
  * g_socket_receive_from:
  * @socket: a #GSocket
- * @address: (out) (optional): a pointer to a #GSocketAddress
+ * @address: (out) (optional) (nullable): a pointer to a #GSocketAddress
  *     pointer, or %NULL
  * @buffer: (array length=size) (element-type guint8) (out caller-allocates):
  *     a buffer to read data into (which should be at least @size bytes long).
@@ -3671,7 +3671,7 @@ g_socket_receive_bytes_from (GSocket         *socket,
  * Receive data (up to @size bytes) from a socket.
  *
  * If @address is non-%NULL then @address will be set equal to the
- * source address of the received packet.
+ * source address of the received packet, or %NULL if it is not available.
  * @address is owned by the caller.
  *
  * See g_socket_receive() for additional information.
@@ -6192,7 +6192,7 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
 /**
  * g_socket_receive_message:
  * @socket: a #GSocket
- * @address: (out) (optional): a pointer to a #GSocketAddress
+ * @address: (out) (optional) (nullable): a pointer to a #GSocketAddress
  *     pointer, or %NULL
  * @vectors: (array length=num_vectors): an array of #GInputVector structs
  * @num_vectors: the number of elements in @vectors, or -1
@@ -6211,7 +6211,7 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
  * g_socket_receive() and g_socket_receive_from().
  *
  * If @address is non-%NULL then @address will be set equal to the
- * source address of the received packet.
+ * source address of the received packet, or %NULL if it is not available.
  * @address is owned by the caller.
  *
  * @vector must point to an array of #GInputVector structs and
