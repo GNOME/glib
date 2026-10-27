@@ -4478,6 +4478,51 @@ test_from_uri_ignores_query_string (void)
   test_path_from_uri_helper ("file:///tmp/foo?bar#baz", "/tmp/foo");
 }
 
+static void
+test_file_system_info_basic (void)
+{
+  GFile *file = NULL;
+  GFileInfo *info = NULL;
+  GError *local_error = NULL;
+
+  g_test_summary ("Basic smoke tests for getting file system info");
+
+  file = g_file_new_for_path ("/");
+  info = g_file_query_filesystem_info (file, "filesystem::*", NULL, &local_error);
+  g_assert_no_error (local_error);
+
+  /* This should basically always be set and be non-zero */
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_FILESYSTEM_FREE));
+  g_assert_cmpuint (g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_FREE), >, 0);
+
+  /* We can’t assert anything about whether the file system is readonly, but we can exercise the code */
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY));
+  (void) g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY);
+
+  /* Similarly */
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE));
+  (void) g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE);
+
+  /* This should basically always be set and be non-zero */
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_FILESYSTEM_SIZE));
+  g_assert_cmpuint (g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_SIZE), >, 0);
+
+  /* This should basically always be set */
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE));
+  g_assert_nonnull (g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE));
+
+  /* This should basically always be set and be non-zero */
+  g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_FILESYSTEM_USED));
+  g_assert_cmpuint (g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_USED), >, 0);
+
+  /* We can’t assert anything about this, and it might not be set */
+  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW))
+    (void) g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW);
+
+  g_clear_object (&info);
+  g_clear_object (&file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -4540,6 +4585,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/enumerator-cancellation", test_enumerator_cancellation);
   g_test_add_func ("/file/from-uri/ignores-query-string", test_from_uri_ignores_query_string);
   g_test_add_func ("/file/from-uri/ignores-fragment", test_from_uri_ignores_fragment);
+  g_test_add_func ("/file/file-system-info/basic", test_file_system_info_basic);
 
   return g_test_run ();
 }
