@@ -135,10 +135,10 @@ setup (Fixture       *fixture,
        gconstpointer  test_data)
 {
   const gchar *xdgdatahome;
+  const char *xdgconfighome;
   const gchar * const *xdgdatadirs;
   gchar *appdir_name;
   gchar *apphome;
-  const char *confhome;
   gchar *mimeapps;
   gchar *name;
   gint res;
@@ -147,6 +147,7 @@ setup (Fixture       *fixture,
   /* These are already set to a temporary directory through our use of
    * %G_TEST_OPTION_ISOLATE_DIRS below. */
   xdgdatahome = g_get_user_data_dir ();
+  xdgconfighome = g_get_user_config_dir ();
   xdgdatadirs = g_get_system_data_dirs ();
 
   appdir_name = g_build_filename (xdgdatadirs[0], "applications", NULL);
@@ -154,36 +155,45 @@ setup (Fixture       *fixture,
   res = g_mkdir_with_parents (appdir_name, 0700);
   g_assert_cmpint (res, ==, 0);
 
+  name = g_build_filename (appdir_name, "mimeapps.list", NULL);
+  g_test_message ("creating '%s'", name);
+  g_file_set_contents (name, defaults_data, -1, &error);
+  g_assert_no_error (error);
+  g_free (name);
+
+  g_test_message ("creating '%s'", xdgconfighome);
+  res = g_mkdir_with_parents (xdgconfighome, 0700);
+  g_assert_cmpint (res, ==, 0);
+
   if (!GPOINTER_TO_INT (test_data))
     {
-      name = g_build_filename (appdir_name, "mimeapps.list", NULL);
+      name = g_build_filename (xdgconfighome, "mimeapps.list", NULL);
     }
   else
     {
-      GFile *file_a = NULL, *file_b = NULL, *appdir = NULL;
+      GFile *file_a = NULL, *file_b = NULL, *configdir = NULL;
 
       /*
        * Ensure mimeapps.list can be reachable via a symlink chain.
        * See https://gitlab.gnome.org/GNOME/glib/-/issues/3579
-      */
-      appdir = g_file_new_for_path (appdir_name);
-      file_a = g_file_get_child (appdir, "mimeapps.list");
+       */
+      configdir = g_file_new_for_path (xdgconfighome);
+      file_a = g_file_get_child (configdir, "mimeapps.list");
       g_file_make_symbolic_link (file_a, "mimeapps.list.b", NULL, &error);
       g_assert_no_error (error);
       g_object_unref (file_a);
 
-      file_b = g_file_get_child (appdir, "mimeapps.list.b");
+      file_b = g_file_get_child (configdir, "mimeapps.list.b");
       g_file_make_symbolic_link (file_b, "mimeapps.list.c", NULL, &error);
       g_assert_no_error (error);
       g_object_unref (file_b);
 
-      g_object_unref (appdir);
-      name = g_build_filename (appdir_name, "mimeapps.list.c", NULL);
+      g_object_unref (configdir);
+      name = g_build_filename (xdgconfighome, "mimeapps.list.c", NULL);
     }
 
-  g_test_message ("creating '%s'", name);
-  g_file_set_contents (name, defaults_data, -1, &error);
-  g_assert_no_error (error);
+  /* Pointer to one of the temporary directories. */
+  fixture->mimeapps_list_home = g_strdup (name);
   g_free (name);
 
   apphome = g_build_filename (xdgdatahome, "applications", NULL);
@@ -237,35 +247,30 @@ setup (Fixture       *fixture,
   g_assert_no_error (error);
   g_free (name);
 
-  confhome = g_get_user_config_dir ();
-  g_test_message ("creating '%s'", confhome);
-  res = g_mkdir_with_parents (g_get_user_config_dir (), 0700);
-  g_assert_cmpint (res, ==, 0);
-
   if (!GPOINTER_TO_INT (test_data))
     {
-      name = g_build_filename (confhome, "intentapps.list", NULL);
+      name = g_build_filename (xdgconfighome, "intentapps.list", NULL);
     }
   else
     {
-      GFile *file_a = NULL, *file_b = NULL, *appdir = NULL;
+      GFile *file_a = NULL, *file_b = NULL, *configdir = NULL;
 
       /*
        * Ensure intentapps.list can be reachable via a symlink chain.
        */
-      appdir = g_file_new_for_path (confhome);
-      file_a = g_file_get_child (appdir, "intentapps.list");
+      configdir = g_file_new_for_path (xdgconfighome);
+      file_a = g_file_get_child (configdir, "intentapps.list");
       g_file_make_symbolic_link (file_a, "intentapps.list.b", NULL, &error);
       g_assert_no_error (error);
       g_object_unref (file_a);
 
-      file_b = g_file_get_child (appdir, "intentapps.list.b");
+      file_b = g_file_get_child (configdir, "intentapps.list.b");
       g_file_make_symbolic_link (file_b, "intentapps.list.c", NULL, &error);
       g_assert_no_error (error);
       g_object_unref (file_b);
 
-      g_object_unref (appdir);
-      name = g_build_filename (confhome, "intentapps.list.c", NULL);
+      g_object_unref (configdir);
+      name = g_build_filename (xdgconfighome, "intentapps.list.c", NULL);
     }
 
   g_test_message ("creating '%s'", name);
@@ -282,9 +287,6 @@ setup (Fixture       *fixture,
   g_free (apphome);
   g_free (appdir_name);
   g_free (mimeapps);
-
-  /* Pointer to one of the temporary directories. */
-  fixture->mimeapps_list_home = g_build_filename (g_get_user_config_dir (), "mimeapps.list", NULL);
 }
 
 static void

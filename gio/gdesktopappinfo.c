@@ -4539,6 +4539,13 @@ update_mimeapps_list (const char  *desktop_id,
       g_free (old_filename);
       if (filename == NULL)
         return FALSE;
+
+      if (!g_path_is_absolute (filename))
+        {
+          old_filename = filename;
+          filename = g_build_filename (dirname, old_filename, NULL);
+          g_free (old_filename);
+        }
     }
 
   g_free (dirname);
