@@ -1938,6 +1938,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   if (is_invalid_key_error (local_error))
     {
       g_error_free (local_error);
+      g_free (name);
       return FALSE;
     }
   g_clear_error (&local_error);
@@ -1948,6 +1949,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                     &local_error);
   if (is_invalid_key_error (local_error))
     {
+      g_free (name);
       g_free (path);
       g_error_free (local_error);
       return FALSE;
@@ -1961,6 +1963,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       t = GLIB_PRIVATE_CALL (g_find_program_for_path) (try_exec, NULL, path);
       if (t == NULL)
         {
+          g_free (name);
           g_free (path);
           g_free (try_exec);
           return FALSE;
@@ -1974,6 +1977,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                 &local_error);
   if (is_invalid_key_error (local_error))
     {
+      g_free (name);
       g_free (path);
       g_free (try_exec);
       g_error_free (local_error);
@@ -1987,6 +1991,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       char **argv;
       if (!g_shell_parse_argv (exec, &argc, &argv, NULL))
         {
+          g_free (name);
           g_free (path);
           g_free (exec);
           g_free (try_exec);
@@ -2005,6 +2010,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
 
           if (t == NULL)
             {
+              g_free (name);
               g_free (path);
               g_free (exec);
               g_free (try_exec);
