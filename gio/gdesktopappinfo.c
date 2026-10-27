@@ -1894,33 +1894,27 @@ static gboolean
 g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                       GKeyFile        *key_file)
 {
-  char *start_group;
-  char *type;
-  char *name;
-  char *try_exec;
-  char *exec;
-  char *path;
+  char *start_group = NULL;
+  char *type = NULL;
+  char *name = NULL;
+  char *try_exec = NULL;
+  char *exec = NULL;
+  char *path = NULL;
   gboolean bus_activatable;
   GError *local_error = NULL;
 
   start_group = g_key_file_get_start_group (key_file);
   if (start_group == NULL || strcmp (start_group, G_KEY_FILE_DESKTOP_GROUP) != 0)
-    {
-      g_free (start_group);
-      return FALSE;
-    }
-  g_free (start_group);
+    goto error;
+  g_clear_pointer (&start_group, g_free);
 
   type = g_key_file_get_string (key_file,
                                 G_KEY_FILE_DESKTOP_GROUP,
                                 G_KEY_FILE_DESKTOP_KEY_TYPE,
                                 NULL);
   if (type == NULL || strcmp (type, G_KEY_FILE_DESKTOP_TYPE_APPLICATION) != 0)
-    {
-      g_free (type);
-      return FALSE;
-    }
-  g_free (type);
+    goto error;
+  g_clear_pointer (&type, g_free);
 
   name = g_key_file_get_locale_string (key_file,
                                        G_KEY_FILE_DESKTOP_GROUP,
@@ -1929,18 +1923,14 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                        NULL);
   /* Desktop Entry Specification requires that Name is set */
   if (name == NULL)
-    return FALSE;
+    goto error;
 
   path = g_key_file_get_string (key_file,
                                 G_KEY_FILE_DESKTOP_GROUP,
                                 G_KEY_FILE_DESKTOP_KEY_PATH,
                                 &local_error);
   if (is_invalid_key_error (local_error))
-    {
-      g_error_free (local_error);
-      g_free (name);
-      return FALSE;
-    }
+    goto error;
   g_clear_error (&local_error);
 
   try_exec = g_key_file_get_string (key_file,
@@ -1948,12 +1938,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                     G_KEY_FILE_DESKTOP_KEY_TRY_EXEC,
                                     &local_error);
   if (is_invalid_key_error (local_error))
-    {
-      g_free (name);
-      g_free (path);
-      g_error_free (local_error);
-      return FALSE;
-    }
+    goto error;
   g_clear_error (&local_error);
 
   if (try_exec && try_exec[0] != '\0')
@@ -1962,12 +1947,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       /* Use the desktop file path (if any) as working dir to search program */
       t = GLIB_PRIVATE_CALL (g_find_program_for_path) (try_exec, NULL, path);
       if (t == NULL)
-        {
-          g_free (name);
-          g_free (path);
-          g_free (try_exec);
-          return FALSE;
-        }
+        goto error;
       g_free (t);
     }
 
@@ -1976,13 +1956,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
                                 G_KEY_FILE_DESKTOP_KEY_EXEC,
                                 &local_error);
   if (is_invalid_key_error (local_error))
-    {
-      g_free (name);
-      g_free (path);
-      g_free (try_exec);
-      g_error_free (local_error);
-      return FALSE;
-    }
+    goto error;
   g_clear_error (&local_error);
 
   if (exec && exec[0] != '\0')
@@ -1991,11 +1965,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
       char **argv;
       if (!g_shell_parse_argv (exec, &argc, &argv, NULL))
         {
-          g_free (name);
-          g_free (path);
-          g_free (exec);
-          g_free (try_exec);
-          return FALSE;
+          goto error;
         }
       else
         {
@@ -2009,18 +1979,12 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
           g_strfreev (argv);
 
           if (t == NULL)
-            {
-              g_free (name);
-              g_free (path);
-              g_free (exec);
-              g_free (try_exec);
-              return FALSE;
-            }
+            goto error;
           g_free (t);
         }
     }
 
-  info->name = name;
+  info->name = g_steal_pointer (&name);
   info->generic_name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, GENERIC_NAME_KEY, NULL, NULL);
   info->fullname = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, FULL_NAME_KEY, NULL, NULL);
   info->keywords = g_key_file_get_locale_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, KEYWORDS_KEY, NULL, NULL, NULL);
@@ -2029,8 +1993,8 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->icon_name =  g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, NULL, NULL);
   info->only_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ONLY_SHOW_IN, NULL, NULL);
   info->not_show_in = g_key_file_get_string_list (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN, NULL, NULL);
-  info->try_exec = try_exec;
-  info->exec = exec;
+  info->try_exec = g_steal_pointer (&try_exec);
+  info->exec = g_steal_pointer (&exec);
   info->path = g_steal_pointer (&path);
   info->terminal = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_TERMINAL, NULL) != FALSE;
   info->startup_notify = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, NULL) != FALSE;
@@ -2076,10 +2040,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
     info->binary = binary_from_exec (info->exec);
 
   if (info->path && info->path[0] == '\0')
-    {
-      g_free (info->path);
-      info->path = NULL;
-    }
+    g_clear_pointer (&info->path, g_free);
 
   /* Can only be DBusActivatable if we know the filename, which means
    * that this won't work for the load-from-keyfile case.
@@ -2109,6 +2070,17 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->keyfile = g_key_file_ref (key_file);
 
   return TRUE;
+
+error:
+  g_free (start_group);
+  g_free (type);
+  g_free (name);
+  g_free (try_exec);
+  g_free (exec);
+  g_free (path);
+  g_clear_error (&local_error);
+
+  return FALSE;
 }
 
 static gboolean
