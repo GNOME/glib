@@ -781,10 +781,20 @@ g_system_thread_new (GThreadFunc proxy,
 G_ALWAYS_INLINE static inline void
 g_thread_yield_impl (void)
 {
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__)
+  /* On select kernels where nanosleep with an extremely short timeout is known
+   * not to put the caller to sleep for a tick, prefer nanosleep to sched_yield,
+   * since the latter is not universally well-defined outside of real-time
+   * threads, and might never defer to lower-priority threads.
+   */
 #ifdef HAVE_CLOCK_NANOSLEEP
   clock_nanosleep (CLOCK_MONOTONIC, 0, &(struct timespec){ 0, 1 }, NULL);
 #else
   nanosleep (&(struct timespec){ 0, 1 }, NULL);
+#endif
+
+#else
+  sched_yield ();
 #endif
 }
 
