@@ -69,6 +69,10 @@
 #ifdef G_OS_WIN32
 #include <windows.h>
 #endif
+#ifdef __GNU__
+#include <mach/mach_traps.h>
+#include <mach/thread_switch.h>
+#endif
 
 #if defined(HAVE_SYS_SCHED_GETATTR)
 #include <sys/syscall.h>
@@ -793,6 +797,9 @@ g_thread_yield_impl (void)
   nanosleep (&(struct timespec){ 0, 1 }, NULL);
 #endif
 
+#elif defined (__GNU__)
+  /* On GNU Hurd, use the dedicated Mach trap */
+  thread_switch (MACH_PORT_NULL, SWITCH_OPTION_DEPRESS, 1);
 #else
   sched_yield ();
 #endif
