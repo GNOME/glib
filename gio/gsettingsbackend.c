@@ -595,7 +595,8 @@ g_settings_backend_flatten_one (gpointer key,
 /**
  * g_settings_backend_flatten_tree:
  * @tree: a #GTree containing the changes
- * @path: (out): the location to save the path
+ * @path: (out) (nullable): the location to save the path, which is set to
+ *        %NULL if @tree is empty
  * @keys: (out) (transfer container) (array zero-terminated=1): the
  *        location to save the relative keys
  * @values: (out) (optional) (transfer container) (array zero-terminated=1):
