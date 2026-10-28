@@ -808,8 +808,8 @@ g_utf8_get_char_validated (const gchar *p,
  * but does no error checking on the input. A trailing nul character (U+0000)
  * will be added to the string after the converted text.
  * 
- * Returns: (transfer full): a pointer to a newly allocated UCS-4 string.
- *   This value must be freed with [func@GLib.free].
+ * Returns: (transfer full) (array zero-terminated=1): a pointer to a newly
+ *   allocated UCS-4 string. This value must be freed with [func@GLib.free].
  */
 gunichar *
 g_utf8_to_ucs4_fast (const gchar *str,
@@ -933,8 +933,8 @@ try_malloc_n (gsize n_blocks, gsize n_block_bytes, GError **error)
  * A trailing nul character (U+0000) will be added to the string after the
  * converted text.
  * 
- * Returns: (transfer full): a pointer to a newly allocated UCS-4 string.
- *   This value must be freed with [func@GLib.free].
+ * Returns: (transfer full) (array zero-terminated=1): a pointer to a newly
+ *   allocated UCS-4 string. This value must be freed with [func@GLib.free].
  */
 gunichar *
 g_utf8_to_ucs4 (const gchar *str,
@@ -1248,8 +1248,8 @@ g_utf16_to_utf8 (const gunichar2  *str,
  *
  * The result will be nul-terminated.
  * 
- * Returns: (transfer full): a pointer to a newly allocated UCS-4 string.
- *   This value must be freed with [func@GLib.free].
+ * Returns: (transfer full) (array zero-terminated=1): a pointer to a newly
+ *   allocated UCS-4 string. This value must be freed with [func@GLib.free].
  */
 gunichar *
 g_utf16_to_ucs4 (const gunichar2  *str,
