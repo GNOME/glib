@@ -386,6 +386,88 @@ test_auth_server_read_limit (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static gpointer
+test_auth_client_read_limit_server_thread (gpointer user_data)
+{
+  GSocketListener *listener = user_data;
+  GSocketConnection *connection;
+  GOutputStream *output_stream;
+  GError *error = NULL;
+  gchar *response;
+  gsize bytes_written;
+
+  connection = g_socket_listener_accept (listener, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (connection);
+
+  output_stream = g_io_stream_get_output_stream (G_IO_STREAM (connection));
+  response = g_strdup_printf ("REJECTED %0*d\r\n", 5000, 0);
+  g_assert_true (g_output_stream_write_all (output_stream,
+                                            response,
+                                            strlen (response),
+                                            &bytes_written,
+                                            NULL,
+                                            &error));
+  g_assert_no_error (error);
+  g_assert_cmpuint (bytes_written, ==, strlen (response));
+
+  g_free (response);
+  g_object_unref (connection);
+
+  return NULL;
+}
+
+static void
+test_auth_client_read_limit (void)
+{
+  GSocketListener *listener;
+  GSocketClient *socket_client;
+  GSocketConnection *socket_connection;
+  GDBusConnection *connection;
+  GThread *server_thread;
+  GError *error = NULL;
+  guint16 port;
+
+  g_test_summary ("Test that GDBus clients limit the lengths of reads they do "
+                  "during authentication");
+
+  listener = g_socket_listener_new ();
+  port = g_socket_listener_add_any_inet_port (listener, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpuint (port, !=, 0);
+
+  server_thread = g_thread_new ("gdbus-auth-server",
+                                test_auth_client_read_limit_server_thread,
+                                listener);
+
+  socket_client = g_socket_client_new ();
+  socket_connection = g_socket_client_connect_to_host (socket_client,
+                                                       "localhost",
+                                                       port,
+                                                       NULL,
+                                                       &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (socket_connection);
+
+  connection = g_dbus_connection_new_sync (G_IO_STREAM (socket_connection),
+                                           NULL,
+                                           G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                           NULL,
+                                           NULL,
+                                           &error);
+  g_assert_null (connection);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_assert_cmpstr (error->message, ==, "Malformed D-Bus authentication line");
+
+  g_clear_error (&error);
+  g_clear_object (&socket_connection);
+  g_clear_object (&socket_client);
+  g_thread_join (server_thread);
+  g_clear_object (&listener);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -404,6 +486,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/auth/server/EXTERNAL",         auth_server_external);
   g_test_add_func ("/gdbus/auth/server/DBUS_COOKIE_SHA1", auth_server_dbus_cookie_sha1);
   g_test_add_func ("/gdbus/auth/server/read-limit", test_auth_server_read_limit);
+  g_test_add_func ("/gdbus/auth/client/read-limit", test_auth_client_read_limit);
 
   /* TODO: we currently don't have tests for
    *
