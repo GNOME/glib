@@ -605,6 +605,44 @@ test_gpoll (void)
   cleanup_sockets (sockets, opp_sockets, NUM_POLLEES);
 }
 
+static void
+test_mwmo_inputavailable (void)
+{
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/work_items/3910");
+
+  g_assert_true (PostMessage (NULL, WM_APP, 1, 2));
+
+  gboolean is_test_msg = FALSE;
+
+  MSG msg;
+  while (!is_test_msg && PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE))
+    if (msg.message == WM_APP && msg.wParam == 1 && msg.lParam == 2)
+      is_test_msg = TRUE;
+    else
+      g_assert_true (PeekMessage (&msg, NULL, 0, 0, PM_REMOVE));
+
+  g_assert_true (is_test_msg);
+
+  /* Verify that g_poll() with MWMO_INPUTAVAILABLE correctly detects
+   * the unconsumed message remaining in the queue across multiple iterations. */
+
+  for (int i = 0; i < 100; i++)
+    {
+      GPollFD fd;
+      reset_fds_msg (&fd, 1);
+
+      g_assert_cmpint (g_poll (&fd, 1, 0), ==, 1);
+
+      g_assert_true (PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE));
+
+      g_assert_cmpint (msg.message, ==, WM_APP);
+      g_assert_cmpint (msg.wParam, ==, 1);
+      g_assert_cmpint (msg.lParam, ==, 2);
+    }
+
+  PeekMessage (&msg, NULL, 0, 0, PM_REMOVE);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -617,6 +655,7 @@ main (int   argc,
   ctx = g_main_context_new ();
 
   g_test_add_func ("/gpoll/gpoll", test_gpoll);
+  g_test_add_func ("/gpoll/mwmo-inputavailable", test_mwmo_inputavailable);
 
   result = g_test_run ();
 
