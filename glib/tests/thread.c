@@ -258,6 +258,30 @@ test_thread7 (void)
 #endif
 }
 
+static void
+test_thread_yield_duration (void)
+{
+  g_test_summary ("Bound the maximum cost of calling g_thread_yield()");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/work_items/4099");
+
+  g_test_timer_start ();
+
+  /* We expect yielding to take <1us/call, but if we end up using the wrong
+   * implementation of g_thread_yield() then it could take multiple ticks
+   * (>10ms/call) which is not what we want. Allow 2 orders of magnitude above
+   * what we want and below what we fear, to allow for slow and emulated CI
+   * runners */
+  const unsigned int max_duration_per_call_us = 100;
+  const unsigned int n_iterations = 10000;
+
+  for (unsigned int i = 0; i < n_iterations; i++)
+    g_thread_yield ();
+
+  g_test_minimized_result (g_test_timer_elapsed (),
+                           "%.02fus/call", g_test_timer_elapsed () * G_USEC_PER_SEC / n_iterations);
+  g_assert_cmpuint ((uint64_t) (g_test_timer_elapsed () * G_USEC_PER_SEC), <, max_duration_per_call_us * n_iterations);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -270,6 +294,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/thread5", test_thread5);
   g_test_add_func ("/thread/thread6", test_thread6);
   g_test_add_func ("/thread/thread7", test_thread7);
+  g_test_add_func ("/thread/yield/duration", test_thread_yield_duration);
 
   return g_test_run ();
 }
