@@ -386,22 +386,29 @@ test_auth_server_read_limit (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+typedef struct
+{
+  GSocketListener *listener;
+  GAsyncQueue *done_queue;
+} AuthReadLimitData;
+
 static gpointer
 test_auth_client_read_limit_server_thread (gpointer user_data)
 {
-  GSocketListener *listener = user_data;
+  AuthReadLimitData *data = user_data;
   GSocketConnection *connection;
   GOutputStream *output_stream;
   GError *error = NULL;
   gchar *response;
   gsize bytes_written;
 
-  connection = g_socket_listener_accept (listener, NULL, NULL, &error);
+  connection = g_socket_listener_accept (data->listener, NULL, NULL, &error);
   g_assert_no_error (error);
   g_assert_nonnull (connection);
 
   output_stream = g_io_stream_get_output_stream (G_IO_STREAM (connection));
   response = g_strdup_printf ("REJECTED %0*d\r\n", 5000, 0);
+
   g_assert_true (g_output_stream_write_all (output_stream,
                                             response,
                                             strlen (response),
@@ -412,6 +419,10 @@ test_auth_client_read_limit_server_thread (gpointer user_data)
   g_assert_cmpuint (bytes_written, ==, strlen (response));
 
   g_free (response);
+
+  /* Keep the connection open until the client has finished authentication. */
+  g_async_queue_pop (data->done_queue);
+
   g_object_unref (connection);
 
   return NULL;
@@ -425,6 +436,7 @@ test_auth_client_read_limit (void)
   GSocketConnection *socket_connection;
   GDBusConnection *connection;
   GThread *server_thread;
+  AuthReadLimitData data;
   GError *error = NULL;
   guint16 port;
 
@@ -436,9 +448,13 @@ test_auth_client_read_limit (void)
   g_assert_no_error (error);
   g_assert_cmpuint (port, !=, 0);
 
+  /* Set up synchronization between the client and server threads. */
+  data.listener = listener;
+  data.done_queue = g_async_queue_new ();
+
   server_thread = g_thread_new ("gdbus-auth-server",
                                 test_auth_client_read_limit_server_thread,
-                                listener);
+                                &data);
 
   socket_client = g_socket_client_new ();
   socket_connection = g_socket_client_connect_to_host (socket_client,
@@ -455,6 +471,11 @@ test_auth_client_read_limit (void)
                                            NULL,
                                            NULL,
                                            &error);
+
+  /* Allow the server thread to close its connection now that
+   * client authentication has finished. */
+  g_async_queue_push (data.done_queue, GINT_TO_POINTER (1));
+
   g_assert_null (connection);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
   g_assert_cmpstr (error->message, ==, "Malformed D-Bus authentication line");
@@ -462,7 +483,10 @@ test_auth_client_read_limit (void)
   g_clear_error (&error);
   g_clear_object (&socket_connection);
   g_clear_object (&socket_client);
+
   g_thread_join (server_thread);
+  g_async_queue_unref (data.done_queue);
+
   g_clear_object (&listener);
 }
 
