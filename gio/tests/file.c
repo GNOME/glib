@@ -1087,6 +1087,100 @@ test_replace_symlink_using_etag (void)
 #endif
 }
 
+#ifdef G_OS_UNIX
+typedef struct {
+  const char *path;
+  int expected_mode;
+  int should_stop;
+} ThreadData;
+
+static gpointer
+permissions_checker_thread (gpointer user_data)
+{
+  ThreadData *data = user_data;
+  struct stat st;
+  int ret;
+
+  while (g_atomic_int_get (&data->should_stop) == 0)
+    {
+      ret = stat (data->path, &st);
+      g_assert_cmpint (ret, ==, 0);
+      g_assert_cmpint (st.st_mode & 0777, ==, data->expected_mode);
+    }
+
+  return NULL;
+}
+#endif // G_OS_UNIX
+
+static void
+test_replace_permissions_race (void)
+{
+#ifdef G_OS_UNIX
+  gchar *tmpdir_path = NULL;
+  GFile *tmpdir = NULL, *file = NULL;
+  GFileOutputStream *stream = NULL;
+  GThread *thread;
+  GError *error = NULL;
+  ThreadData data;
+  int ret;
+  guint i, iterations;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/work_items/4076");
+
+  if (TRUE /* g_test_slow () */)
+    iterations = 500000;
+  else
+    iterations = 50;
+
+  /* Create a fresh, empty working directory. */
+  tmpdir_path = g_dir_make_tmp ("g_file_replace_permissions_race_XXXXXX", &error);
+  g_assert_no_error (error);
+  tmpdir = g_file_new_for_path (tmpdir_path);
+
+  g_test_message ("Using temporary directory %s", tmpdir_path);
+  g_free (tmpdir_path);
+
+  file = g_file_get_child (tmpdir, "testfile");
+  g_file_create (file, G_FILE_CREATE_NONE, NULL, &error);
+
+  data.path = g_file_peek_path (file);
+  data.expected_mode = 0600;
+  data.should_stop = 0;
+
+  ret = g_chmod (g_file_peek_path (file), data.expected_mode);
+  g_assert_cmpint (ret, ==, 0);
+
+  thread = g_thread_new ("test_replace_permissions_race permissions checker thread", permissions_checker_thread, &data);
+
+  for (i = 0; i < iterations; i++)
+    {
+      /* g_file_replace */
+      stream = g_file_replace (file, NULL, FALSE  /* no backup */,
+                               G_FILE_CREATE_NONE, NULL, &error);
+      g_assert_no_error (error);
+
+      g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, &error);
+      g_assert_no_error (error);
+      g_clear_object (&stream);
+    }
+
+  g_atomic_int_inc (&data.should_stop);
+  g_thread_join (thread);
+
+  /* Tidy up. */
+  g_file_delete (file, NULL, &error);
+  g_assert_no_error (error);
+
+  g_file_delete (tmpdir, NULL, &error);
+  g_assert_no_error (error);
+
+  g_clear_object (&file);
+  g_clear_object (&tmpdir);
+#else  /* if !G_OS_UNIX */
+  g_test_skip ("Permissions tests can only be run on Unix")
+#endif
+}
+
 /* FIXME: These tests have only been checked on Linux. Most of them are probably
  * applicable on Windows, too, but that has not been tested yet.
  * See https://gitlab.gnome.org/GNOME/glib/-/issues/2325 */
@@ -4502,6 +4596,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/replace-cancel", test_replace_cancel);
   g_test_add_func ("/file/replace-symlink", test_replace_symlink);
   g_test_add_func ("/file/replace-symlink/using-etag", test_replace_symlink_using_etag);
+  g_test_add_func ("/file/replace-permissions-race", test_replace_permissions_race);
   g_test_add_data_func ("/file/replace/write-only", GUINT_TO_POINTER (FALSE), test_replace);
   g_test_add_data_func ("/file/replace/read-write", GUINT_TO_POINTER (TRUE), test_replace);
   g_test_add_func ("/file/async-new-tmp", test_async_new_tmp);
