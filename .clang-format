@@ -9,3 +9,4 @@ SpaceAfterCStyleCast: true
 # developer will line wrap appropriately. clang-format will still check
 # existing hanging indents.
 ColumnLimit: 0
+UseTab: Never
