@@ -117,8 +117,8 @@ g_initable_default_init (GInitableInterface *iface)
  */
 gboolean
 g_initable_init (GInitable     *initable,
-		 GCancellable  *cancellable,
-		 GError       **error)
+                 GCancellable  *cancellable,
+                 GError       **error)
 {
   GInitableIface *iface;
 
@@ -151,18 +151,18 @@ g_initable_init (GInitable     *initable,
  */
 gpointer
 g_initable_new (GType          object_type,
-		GCancellable  *cancellable,
-		GError       **error,
-		const gchar   *first_property_name,
-		...)
+                GCancellable  *cancellable,
+                GError       **error,
+                const gchar   *first_property_name,
+                ...)
 {
   GObject *object;
   va_list var_args;
 
   va_start (var_args, first_property_name);
   object = g_initable_new_valist (object_type,
-				  first_property_name, var_args,
-				  cancellable, error);
+                                  first_property_name, var_args,
+                                  cancellable, error);
   va_end (var_args);
 
   return object;
@@ -191,10 +191,10 @@ g_initable_new (GType          object_type,
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 gpointer
 g_initable_newv (GType          object_type,
-		 guint          n_parameters,
-		 GParameter    *parameters,
-		 GCancellable  *cancellable,
-		 GError       **error)
+                 guint          n_parameters,
+                 GParameter    *parameters,
+                 GCancellable  *cancellable,
+                 GError       **error)
 {
   GObject *obj;
 
@@ -233,18 +233,18 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  */
 GObject*
 g_initable_new_valist (GType          object_type,
-		       const gchar   *first_property_name,
-		       va_list        var_args,
-		       GCancellable  *cancellable,
-		       GError       **error)
+                       const gchar   *first_property_name,
+                       va_list        var_args,
+                       GCancellable  *cancellable,
+                       GError       **error)
 {
   GObject *obj;
 
   g_return_val_if_fail (G_TYPE_IS_INITABLE (object_type), NULL);
 
   obj = g_object_new_valist (object_type,
-			     first_property_name,
-			     var_args);
+                             first_property_name,
+                             var_args);
 
   if (!g_initable_init (G_INITABLE (obj), cancellable, error))
     {

@@ -100,10 +100,10 @@ g_proxy_get_default_for_protocol (const gchar *protocol)
  */
 GIOStream *
 g_proxy_connect (GProxy            *proxy,
-		 GIOStream         *connection,
-		 GProxyAddress     *proxy_address,
-		 GCancellable      *cancellable,
-		 GError           **error)
+                 GIOStream         *connection,
+                 GProxyAddress     *proxy_address,
+                 GCancellable      *cancellable,
+                 GError           **error)
 {
   GProxyInterface *iface;
 
@@ -112,10 +112,10 @@ g_proxy_connect (GProxy            *proxy,
   iface = G_PROXY_GET_IFACE (proxy);
 
   return (* iface->connect) (proxy,
-			     connection,
-			     proxy_address,
-			     cancellable,
-			     error);
+                             connection,
+                             proxy_address,
+                             cancellable,
+                             error);
 }
 
 /**
@@ -133,11 +133,11 @@ g_proxy_connect (GProxy            *proxy,
  */
 void
 g_proxy_connect_async (GProxy               *proxy,
-		       GIOStream            *connection,
-		       GProxyAddress        *proxy_address,
-		       GCancellable         *cancellable,
-		       GAsyncReadyCallback   callback,
-		       gpointer              user_data)
+                       GIOStream            *connection,
+                       GProxyAddress        *proxy_address,
+                       GCancellable         *cancellable,
+                       GAsyncReadyCallback   callback,
+                       gpointer              user_data)
 {
   GProxyInterface *iface;
 
@@ -146,11 +146,11 @@ g_proxy_connect_async (GProxy               *proxy,
   iface = G_PROXY_GET_IFACE (proxy);
 
   (* iface->connect_async) (proxy,
-			    connection,
-			    proxy_address,
-			    cancellable,
-			    callback,
-			    user_data);
+                            connection,
+                            proxy_address,
+                            cancellable,
+                            callback,
+                            user_data);
 }
 
 /**
@@ -167,8 +167,8 @@ g_proxy_connect_async (GProxy               *proxy,
  */
 GIOStream *
 g_proxy_connect_finish (GProxy       *proxy,
-			GAsyncResult *result,
-			GError      **error)
+                        GAsyncResult *result,
+                        GError      **error)
 {
   GProxyInterface *iface;
 

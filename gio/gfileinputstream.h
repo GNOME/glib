@@ -55,7 +55,7 @@ struct _GFileInputStreamClass
 
   goffset     (* tell)              (GFileInputStream     *stream);
   gboolean    (* can_seek)          (GFileInputStream     *stream);
-  gboolean    (* seek)	            (GFileInputStream     *stream,
+  gboolean    (* seek)              (GFileInputStream     *stream,
                                      goffset               offset,
                                      GSeekType             type,
                                      GCancellable         *cancellable,
@@ -88,20 +88,20 @@ GType      g_file_input_stream_get_type          (void);
 
 GIO_AVAILABLE_IN_ALL
 GFileInfo *g_file_input_stream_query_info        (GFileInputStream     *stream,
-						  const char           *attributes,
-						  GCancellable         *cancellable,
-						  GError              **error);
+                                                  const char           *attributes,
+                                                  GCancellable         *cancellable,
+                                                  GError              **error);
 GIO_AVAILABLE_IN_ALL
 void       g_file_input_stream_query_info_async  (GFileInputStream     *stream,
-						  const char           *attributes,
-						  int                   io_priority,
-						  GCancellable         *cancellable,
-						  GAsyncReadyCallback   callback,
-						  gpointer              user_data);
+                                                  const char           *attributes,
+                                                  int                   io_priority,
+                                                  GCancellable         *cancellable,
+                                                  GAsyncReadyCallback   callback,
+                                                  gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
 GFileInfo *g_file_input_stream_query_info_finish (GFileInputStream     *stream,
-						  GAsyncResult         *result,
-						  GError              **error);
+                                                  GAsyncResult         *result,
+                                                  GError              **error);
 
 G_END_DECLS
 

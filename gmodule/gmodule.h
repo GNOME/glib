@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -62,14 +62,14 @@ G_BEGIN_DECLS
  */
 typedef enum
 {
-  G_MODULE_BIND_LAZY	= 1 << 0,
-  G_MODULE_BIND_LOCAL	= 1 << 1,
-  G_MODULE_BIND_MASK	= 0x03
+  G_MODULE_BIND_LAZY    = 1 << 0,
+  G_MODULE_BIND_LOCAL   = 1 << 1,
+  G_MODULE_BIND_MASK    = 0x03
 } G_GNUC_FLAG_ENUM GModuleFlags;
 
-typedef	struct _GModule			 GModule;
-typedef const gchar* (*GModuleCheckInit) (GModule	*module);
-typedef void	     (*GModuleUnload)	 (GModule	*module);
+typedef struct _GModule                  GModule;
+typedef const gchar* (*GModuleCheckInit) (GModule       *module);
+typedef void         (*GModuleUnload)    (GModule       *module);
 
 #define G_MODULE_ERROR g_module_error_quark () GMODULE_AVAILABLE_MACRO_IN_2_70
 GMODULE_AVAILABLE_IN_2_70
@@ -93,12 +93,12 @@ GMODULE_AVAILABLE_ENUMERATOR_IN_2_70;
 
 /* return TRUE if dynamic module loading is supported */
 GMODULE_AVAILABLE_IN_ALL
-gboolean	g_module_supported	   (void) G_GNUC_CONST;
+gboolean        g_module_supported         (void) G_GNUC_CONST;
 
 /* open a module 'file_name' and return handle, which is NULL on error */
 GMODULE_AVAILABLE_IN_ALL
 GModule*              g_module_open          (const gchar  *file_name,
-					      GModuleFlags  flags);
+                                              GModuleFlags  flags);
 
 GMODULE_AVAILABLE_IN_2_70
 GModule              *g_module_open_full     (const gchar   *file_name,
@@ -120,8 +120,8 @@ const gchar *         g_module_error         (void);
 /* retrieve a symbol pointer from 'module', returns TRUE on success */
 GMODULE_AVAILABLE_IN_ALL
 gboolean              g_module_symbol        (GModule      *module,
-					      const gchar  *symbol_name,
-					      gpointer     *symbol);
+                                              const gchar  *symbol_name,
+                                              gpointer     *symbol);
 
 /* retrieve the file name from an existing module */
 GMODULE_AVAILABLE_IN_ALL
@@ -140,7 +140,7 @@ const gchar *         g_module_name          (GModule      *module);
  */
 GMODULE_DEPRECATED_IN_2_76
 gchar*                g_module_build_path    (const gchar  *directory,
-					      const gchar  *module_name);
+                                              const gchar  *module_name);
 
 G_END_DECLS
 

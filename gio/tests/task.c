@@ -35,8 +35,8 @@ completed_cb (GObject    *gobject,
               GParamSpec *pspec,
               gpointer    user_data)
 {
-	gboolean *notification_emitted = user_data;
-	*notification_emitted = TRUE;
+        gboolean *notification_emitted = user_data;
+        *notification_emitted = TRUE;
 }
 
 static void

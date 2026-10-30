@@ -1822,7 +1822,7 @@ test_non_utf8_printf (void)
   TEST_PRINTF ("%R", "00:00");
   TEST_PRINTF_TIME (13, 13, 31, "%R", "13:13");
   TEST_PRINTF ("%S", "00");
-  TEST_PRINTF ("%t", "	");
+  TEST_PRINTF ("%t", "  ");
   TEST_PRINTF ("%u", "6");
 #ifndef __APPLE__ /* OSX returns YYYY/MM/DD in ASCII */
   TEST_PRINTF ("%x", "2009\345\271\26410\346\234\21024\346\227\245");

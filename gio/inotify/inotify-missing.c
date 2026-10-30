@@ -20,7 +20,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.
 
    Authors: 
-		 John McCutchan <john@johnmccutchan.com>
+                 John McCutchan <john@johnmccutchan.com>
 */
 
 #include "config.h"
@@ -124,14 +124,14 @@ im_scan_missing (gpointer user_data)
       not_m = _ip_start_watching (sub);
 
       if (not_m)
-	{
-	  missing_cb (sub);
-	  IM_W ("removed %s from missing list\n", sub->dirname);
-	  /* We have to build a list of list nodes to remove from the
-	   * missing_sub_list. We do the removal outside of this loop.
-	   */
-	  nolonger_missing = g_list_prepend (nolonger_missing, l);
-	} 
+        {
+          missing_cb (sub);
+          IM_W ("removed %s from missing list\n", sub->dirname);
+          /* We have to build a list of list nodes to remove from the
+           * missing_sub_list. We do the removal outside of this loop.
+           */
+          nolonger_missing = g_list_prepend (nolonger_missing, l);
+        } 
     }
 
   for (l = nolonger_missing; l ; l = l->next)

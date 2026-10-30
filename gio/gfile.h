@@ -33,10 +33,10 @@ G_BEGIN_DECLS
 
 #define G_TYPE_FILE            (g_file_get_type ())
 #define G_FILE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_FILE, GFile))
-#define G_IS_FILE(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_FILE))
+#define G_IS_FILE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_FILE))
 #define G_FILE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_FILE, GFileIface))
 
-typedef struct _GFileIface    		GFileIface;
+typedef struct _GFileIface              GFileIface;
 
 
 /**
@@ -351,25 +351,25 @@ struct _GFileIface
                                                        GCancellable         *cancellable,
                                                        GError              **error);
   void                (* delete_file_async)           (GFile                *file,
-						       int                   io_priority,
-						       GCancellable         *cancellable,
-						       GAsyncReadyCallback   callback,
-						       gpointer              user_data);
+                                                       int                   io_priority,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
   gboolean            (* delete_file_finish)          (GFile                *file,
-						       GAsyncResult         *result,
-						       GError              **error);
+                                                       GAsyncResult         *result,
+                                                       GError              **error);
 
   gboolean            (* trash)                       (GFile                *file,
                                                        GCancellable         *cancellable,
                                                        GError              **error);
   void                (* trash_async)                 (GFile                *file,
-						       int                   io_priority,
-						       GCancellable         *cancellable,
-						       GAsyncReadyCallback   callback,
-						       gpointer              user_data);
+                                                       int                   io_priority,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
   gboolean            (* trash_finish)                (GFile                *file,
-						       GAsyncResult         *result,
-						       GError              **error);
+                                                       GAsyncResult         *result,
+                                                       GError              **error);
 
   gboolean            (* make_directory)              (GFile                *file,
                                                        GCancellable         *cancellable,
@@ -496,11 +496,11 @@ struct _GFileIface
                                                        GAsyncResult         *res,
                                                        GError              **error);
   GFileIOStream *     (* create_readwrite)            (GFile                *file,
-						       GFileCreateFlags      flags,
+                                                       GFileCreateFlags      flags,
                                                        GCancellable         *cancellable,
                                                        GError              **error);
   void                (* create_readwrite_async)      (GFile                *file,
-						       GFileCreateFlags      flags,
+                                                       GFileCreateFlags      flags,
                                                        int                   io_priority,
                                                        GCancellable         *cancellable,
                                                        GAsyncReadyCallback   callback,
@@ -652,7 +652,7 @@ GIO_AVAILABLE_IN_ALL
 guint                   g_file_hash                       (gconstpointer               file);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_equal                      (GFile                      *file1,
-							   GFile                      *file2);
+                                                           GFile                      *file2);
 GIO_AVAILABLE_IN_ALL
 char *                  g_file_get_basename               (GFile                      *file);
 GIO_AVAILABLE_IN_ALL
@@ -670,284 +670,284 @@ gboolean                g_file_has_parent                 (GFile                
                                                            GFile                      *parent);
 GIO_AVAILABLE_IN_ALL
 GFile *                 g_file_get_child                  (GFile                      *file,
-							   const char                 *name);
+                                                           const char                 *name);
 GIO_AVAILABLE_IN_ALL
 GFile *                 g_file_get_child_for_display_name (GFile                      *file,
-							   const char                 *display_name,
-							   GError                    **error);
+                                                           const char                 *display_name,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_has_prefix                 (GFile                      *file,
-							   GFile                      *prefix);
+                                                           GFile                      *prefix);
 GIO_AVAILABLE_IN_ALL
 char *                  g_file_get_relative_path          (GFile                      *parent,
-							   GFile                      *descendant);
+                                                           GFile                      *descendant);
 GIO_AVAILABLE_IN_ALL
 GFile *                 g_file_resolve_relative_path      (GFile                      *file,
-							   const char                 *relative_path);
+                                                           const char                 *relative_path);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_is_native                  (GFile                      *file);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_has_uri_scheme             (GFile                      *file,
-							   const char                 *uri_scheme);
+                                                           const char                 *uri_scheme);
 GIO_AVAILABLE_IN_ALL
 char *                  g_file_get_uri_scheme             (GFile                      *file);
 GIO_AVAILABLE_IN_ALL
 GFileInputStream *      g_file_read                       (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_read_async                 (GFile                      *file,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileInputStream *      g_file_read_finish                (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileOutputStream *     g_file_append_to                  (GFile                      *file,
-							   GFileCreateFlags             flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GFileCreateFlags             flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileOutputStream *     g_file_create                     (GFile                      *file,
-							   GFileCreateFlags             flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GFileCreateFlags             flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileOutputStream *     g_file_replace                    (GFile                      *file,
-							   const char                 *etag,
-							   gboolean                    make_backup,
-							   GFileCreateFlags            flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *etag,
+                                                           gboolean                    make_backup,
+                                                           GFileCreateFlags            flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_append_to_async            (GFile                      *file,
-							   GFileCreateFlags            flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GFileCreateFlags            flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileOutputStream *     g_file_append_to_finish           (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_create_async               (GFile                      *file,
-							   GFileCreateFlags            flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GFileCreateFlags            flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileOutputStream *     g_file_create_finish              (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_replace_async              (GFile                      *file,
-							   const char                 *etag,
-							   gboolean                    make_backup,
-							   GFileCreateFlags            flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           const char                 *etag,
+                                                           gboolean                    make_backup,
+                                                           GFileCreateFlags            flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileOutputStream *     g_file_replace_finish             (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileIOStream *         g_file_open_readwrite             (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_open_readwrite_async       (GFile                      *file,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileIOStream *         g_file_open_readwrite_finish      (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileIOStream *         g_file_create_readwrite           (GFile                      *file,
-							   GFileCreateFlags            flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GFileCreateFlags            flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_create_readwrite_async     (GFile                      *file,
-							   GFileCreateFlags            flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GFileCreateFlags            flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileIOStream *         g_file_create_readwrite_finish    (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileIOStream *         g_file_replace_readwrite          (GFile                      *file,
-							   const char                 *etag,
-							   gboolean                    make_backup,
-							   GFileCreateFlags            flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *etag,
+                                                           gboolean                    make_backup,
+                                                           GFileCreateFlags            flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_replace_readwrite_async    (GFile                      *file,
-							   const char                 *etag,
-							   gboolean                    make_backup,
-							   GFileCreateFlags            flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           const char                 *etag,
+                                                           gboolean                    make_backup,
+                                                           GFileCreateFlags            flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileIOStream *         g_file_replace_readwrite_finish   (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_query_exists               (GFile                      *file,
-							   GCancellable               *cancellable);
+                                                           GCancellable               *cancellable);
 GIO_AVAILABLE_IN_ALL
 GFileType               g_file_query_file_type            (GFile                      *file,
                                                            GFileQueryInfoFlags         flags,
                                                            GCancellable               *cancellable);
 GIO_AVAILABLE_IN_ALL
 GFileInfo *             g_file_query_info                 (GFile                      *file,
-							   const char                 *attributes,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attributes,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_query_info_async           (GFile                      *file,
-							   const char                 *attributes,
-							   GFileQueryInfoFlags         flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           const char                 *attributes,
+                                                           GFileQueryInfoFlags         flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileInfo *             g_file_query_info_finish          (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileInfo *             g_file_query_filesystem_info      (GFile                      *file,
-							   const char                 *attributes,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attributes,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_query_filesystem_info_async (GFile                      *file,
-							   const char                 *attributes,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           const char                 *attributes,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileInfo *             g_file_query_filesystem_info_finish (GFile                      *file,
                                                            GAsyncResult               *res,
-							   GError                    **error);
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GMount *                g_file_find_enclosing_mount       (GFile                      *file,
                                                            GCancellable               *cancellable,
                                                            GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_find_enclosing_mount_async (GFile                      *file,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GMount *                g_file_find_enclosing_mount_finish (GFile                     *file,
-							    GAsyncResult              *res,
-							    GError                   **error);
+                                                            GAsyncResult              *res,
+                                                            GError                   **error);
 GIO_AVAILABLE_IN_ALL
 GFileEnumerator *       g_file_enumerate_children         (GFile                      *file,
-							   const char                 *attributes,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attributes,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_enumerate_children_async   (GFile                      *file,
-							   const char                 *attributes,
-							   GFileQueryInfoFlags         flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           const char                 *attributes,
+                                                           GFileQueryInfoFlags         flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFileEnumerator *       g_file_enumerate_children_finish  (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFile *                 g_file_set_display_name           (GFile                      *file,
-							   const char                 *display_name,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *display_name,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_set_display_name_async     (GFile                      *file,
-							   const char                 *display_name,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           const char                 *display_name,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFile *                 g_file_set_display_name_finish    (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_delete                     (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 
 GIO_AVAILABLE_IN_2_34
 void                    g_file_delete_async               (GFile                      *file,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 
 GIO_AVAILABLE_IN_2_34
 gboolean                g_file_delete_finish              (GFile                      *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_trash                      (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 
 GIO_AVAILABLE_IN_2_38
 void                    g_file_trash_async                (GFile                      *file,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 
 GIO_AVAILABLE_IN_2_38
 gboolean                g_file_trash_finish               (GFile                      *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_copy                       (GFile                      *source,
-							   GFile                      *destination,
-							   GFileCopyFlags              flags,
-							   GCancellable               *cancellable,
-							   GFileProgressCallback       progress_callback,
-							   gpointer                    progress_callback_data,
-							   GError                    **error);
+                                                           GFile                      *destination,
+                                                           GFileCopyFlags              flags,
+                                                           GCancellable               *cancellable,
+                                                           GFileProgressCallback       progress_callback,
+                                                           gpointer                    progress_callback_data,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_copy_async                 (GFile                      *source,
-							   GFile                      *destination,
-							   GFileCopyFlags              flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GFileProgressCallback       progress_callback,
-							   gpointer                    progress_callback_data,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GFile                      *destination,
+                                                           GFileCopyFlags              flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GFileProgressCallback       progress_callback,
+                                                           gpointer                    progress_callback_data,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_2_82
 void g_file_copy_async_with_closures (GFile *source,
                                       GFile *destination,
@@ -958,26 +958,26 @@ void g_file_copy_async_with_closures (GFile *source,
                                       GClosure *ready_callback_closure);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_copy_finish                (GFile                      *file,
-							   GAsyncResult               *res,
-							   GError                    **error);
+                                                           GAsyncResult               *res,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_move                       (GFile                      *source,
-							   GFile                      *destination,
-							   GFileCopyFlags              flags,
-							   GCancellable               *cancellable,
-							   GFileProgressCallback       progress_callback,
-							   gpointer                    progress_callback_data,
-							   GError                    **error);
+                                                           GFile                      *destination,
+                                                           GFileCopyFlags              flags,
+                                                           GCancellable               *cancellable,
+                                                           GFileProgressCallback       progress_callback,
+                                                           gpointer                    progress_callback_data,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_2_72
 void                    g_file_move_async                 (GFile                      *source,
-							                                             GFile                      *destination,
-							                                             GFileCopyFlags              flags,
-							                                             int                         io_priority,
-							                                             GCancellable               *cancellable,
-							                                             GFileProgressCallback       progress_callback,
-							                                             gpointer                    progress_callback_data,
-							                                             GAsyncReadyCallback         callback,
-							                                             gpointer                    user_data);
+                                                                                                     GFile                      *destination,
+                                                                                                     GFileCopyFlags              flags,
+                                                                                                     int                         io_priority,
+                                                                                                     GCancellable               *cancellable,
+                                                                                                     GFileProgressCallback       progress_callback,
+                                                                                                     gpointer                    progress_callback_data,
+                                                                                                     GAsyncReadyCallback         callback,
+                                                                                                     gpointer                    user_data);
 GIO_AVAILABLE_IN_2_82
 void g_file_move_async_with_closures (GFile *source,
                                       GFile *destination,
@@ -988,12 +988,12 @@ void g_file_move_async_with_closures (GFile *source,
                                       GClosure *ready_callback_closure);
 GIO_AVAILABLE_IN_2_72
 gboolean                g_file_move_finish                (GFile                      *file,
-							                                             GAsyncResult               *result,
-							                                             GError                    **error);
+                                                                                                     GAsyncResult               *result,
+                                                                                                     GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_make_directory             (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_2_38
 void                    g_file_make_directory_async       (GFile                      *file,
                                                            int                         io_priority,
@@ -1007,13 +1007,13 @@ gboolean                g_file_make_directory_finish      (GFile                
 
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_make_directory_with_parents (GFile                     *file,
-		                                           GCancellable               *cancellable,
-		                                           GError                    **error);
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_make_symbolic_link         (GFile                      *file,
-							   const char                 *symlink_value,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *symlink_value,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_2_74
 void                    g_file_make_symbolic_link_async   (GFile                      *file,
                                                            const char                 *symlink_value,
@@ -1027,103 +1027,103 @@ gboolean                g_file_make_symbolic_link_finish  (GFile                
                                                            GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileAttributeInfoList *g_file_query_settable_attributes  (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 GFileAttributeInfoList *g_file_query_writable_namespaces  (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attribute              (GFile                      *file,
-							   const char                 *attribute,
-							   GFileAttributeType          type,
-							   gpointer                    value_p,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attribute,
+                                                           GFileAttributeType          type,
+                                                           gpointer                    value_p,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attributes_from_info   (GFile                      *file,
-							   GFileInfo                  *info,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GFileInfo                  *info,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_set_attributes_async       (GFile                      *file,
-							   GFileInfo                  *info,
-							   GFileQueryInfoFlags         flags,
-							   int                         io_priority,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GFileInfo                  *info,
+                                                           GFileQueryInfoFlags         flags,
+                                                           int                         io_priority,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attributes_finish      (GFile                      *file,
-							   GAsyncResult               *result,
-							   GFileInfo                 **info,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GFileInfo                 **info,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attribute_string       (GFile                      *file,
-							   const char                 *attribute,
-							   const char                 *value,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attribute,
+                                                           const char                 *value,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attribute_byte_string  (GFile                      *file,
-							   const char                 *attribute,
-							   const char                 *value,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attribute,
+                                                           const char                 *value,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attribute_uint32       (GFile                      *file,
-							   const char                 *attribute,
-							   guint32                     value,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attribute,
+                                                           guint32                     value,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attribute_int32        (GFile                      *file,
-							   const char                 *attribute,
-							   gint32                      value,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attribute,
+                                                           gint32                      value,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attribute_uint64       (GFile                      *file,
-							   const char                 *attribute,
-							   guint64                     value,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attribute,
+                                                           guint64                     value,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_set_attribute_int64        (GFile                      *file,
-							   const char                 *attribute,
-							   gint64                      value,
-							   GFileQueryInfoFlags         flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           const char                 *attribute,
+                                                           gint64                      value,
+                                                           GFileQueryInfoFlags         flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_mount_enclosing_volume     (GFile                      *location,
-							   GMountMountFlags            flags,
-							   GMountOperation            *mount_operation,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GMountMountFlags            flags,
+                                                           GMountOperation            *mount_operation,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_mount_enclosing_volume_finish (GFile                      *location,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_mount_mountable            (GFile                      *file,
-							   GMountMountFlags            flags,
-							   GMountOperation            *mount_operation,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GMountMountFlags            flags,
+                                                           GMountOperation            *mount_operation,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 GFile *                 g_file_mount_mountable_finish     (GFile                      *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 GIO_DEPRECATED_FOR(g_file_unmount_mountable_with_operation)
 void                    g_file_unmount_mountable          (GFile                      *file,
                                                            GMountUnmountFlags          flags,
@@ -1137,15 +1137,15 @@ gboolean                g_file_unmount_mountable_finish   (GFile                
                                                            GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_unmount_mountable_with_operation (GFile                *file,
-							   GMountUnmountFlags          flags,
-							   GMountOperation            *mount_operation,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GMountUnmountFlags          flags,
+                                                           GMountOperation            *mount_operation,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_unmount_mountable_with_operation_finish (GFile         *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 GIO_DEPRECATED_FOR(g_file_eject_mountable_with_operation)
 void                    g_file_eject_mountable            (GFile                      *file,
                                                            GMountUnmountFlags          flags,
@@ -1159,45 +1159,45 @@ gboolean                g_file_eject_mountable_finish     (GFile                
                                                            GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_eject_mountable_with_operation (GFile                  *file,
-							   GMountUnmountFlags          flags,
-							   GMountOperation            *mount_operation,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GMountUnmountFlags          flags,
+                                                           GMountOperation            *mount_operation,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_eject_mountable_with_operation_finish (GFile           *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 
 GIO_AVAILABLE_IN_2_68
-char *			g_file_build_attribute_list_for_copy (GFile                   *file,
-							   GFileCopyFlags              flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+char *                  g_file_build_attribute_list_for_copy (GFile                   *file,
+                                                           GFileCopyFlags              flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_copy_attributes            (GFile                      *source,
-							   GFile                      *destination,
-							   GFileCopyFlags              flags,
-							   GCancellable               *cancellable,
-							   GError                    **error);
+                                                           GFile                      *destination,
+                                                           GFileCopyFlags              flags,
+                                                           GCancellable               *cancellable,
+                                                           GError                    **error);
 
 
 GIO_AVAILABLE_IN_ALL
 GFileMonitor*           g_file_monitor_directory          (GFile                  *file,
-							   GFileMonitorFlags       flags,
-							   GCancellable           *cancellable,
-							   GError                **error);
+                                                           GFileMonitorFlags       flags,
+                                                           GCancellable           *cancellable,
+                                                           GError                **error);
 GIO_AVAILABLE_IN_ALL
 GFileMonitor*           g_file_monitor_file               (GFile                  *file,
-							   GFileMonitorFlags       flags,
-							   GCancellable           *cancellable,
-							   GError                **error);
+                                                           GFileMonitorFlags       flags,
+                                                           GCancellable           *cancellable,
+                                                           GError                **error);
 GIO_AVAILABLE_IN_ALL
 GFileMonitor*           g_file_monitor                    (GFile                  *file,
-							   GFileMonitorFlags       flags,
-							   GCancellable           *cancellable,
-							   GError                **error);
+                                                           GFileMonitorFlags       flags,
+                                                           GCancellable           *cancellable,
+                                                           GError                **error);
 
 GIO_AVAILABLE_IN_2_38
 gboolean                g_file_measure_disk_usage         (GFile                         *file,
@@ -1230,43 +1230,43 @@ gboolean                g_file_measure_disk_usage_finish  (GFile                
 
 GIO_AVAILABLE_IN_ALL
 void                    g_file_start_mountable            (GFile                      *file,
-							   GDriveStartFlags            flags,
-							   GMountOperation            *start_operation,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GDriveStartFlags            flags,
+                                                           GMountOperation            *start_operation,
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_start_mountable_finish     (GFile                      *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_file_stop_mountable             (GFile                      *file,
-							   GMountUnmountFlags          flags,
+                                                           GMountUnmountFlags          flags,
                                                            GMountOperation            *mount_operation,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_stop_mountable_finish      (GFile                      *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 
 GIO_AVAILABLE_IN_ALL
 void                    g_file_poll_mountable             (GFile                      *file,
-							   GCancellable               *cancellable,
-							   GAsyncReadyCallback         callback,
-							   gpointer                    user_data);
+                                                           GCancellable               *cancellable,
+                                                           GAsyncReadyCallback         callback,
+                                                           gpointer                    user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_file_poll_mountable_finish      (GFile                      *file,
-							   GAsyncResult               *result,
-							   GError                    **error);
+                                                           GAsyncResult               *result,
+                                                           GError                    **error);
 
 /* Utilities */
 
 GIO_AVAILABLE_IN_ALL
 GAppInfo *g_file_query_default_handler       (GFile                  *file,
-					      GCancellable           *cancellable,
-					      GError                **error);
+                                              GCancellable           *cancellable,
+                                              GError                **error);
 GIO_AVAILABLE_IN_2_60
 void      g_file_query_default_handler_async (GFile                  *file,
                                               int                     io_priority,
@@ -1280,70 +1280,70 @@ GAppInfo *g_file_query_default_handler_finish (GFile                 *file,
 
 GIO_AVAILABLE_IN_ALL
 gboolean g_file_load_contents                (GFile                  *file,
-					      GCancellable           *cancellable,
-					      char                  **contents,
-					      gsize                  *length,
-					      char                  **etag_out,
-					      GError                **error);
+                                              GCancellable           *cancellable,
+                                              char                  **contents,
+                                              gsize                  *length,
+                                              char                  **etag_out,
+                                              GError                **error);
 GIO_AVAILABLE_IN_ALL
 void     g_file_load_contents_async          (GFile                  *file,
-					      GCancellable           *cancellable,
-					      GAsyncReadyCallback     callback,
-					      gpointer                user_data);
+                                              GCancellable           *cancellable,
+                                              GAsyncReadyCallback     callback,
+                                              gpointer                user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean g_file_load_contents_finish         (GFile                  *file,
-					      GAsyncResult           *res,
-					      char                  **contents,
-					      gsize                  *length,
-					      char                  **etag_out,
-					      GError                **error);
+                                              GAsyncResult           *res,
+                                              char                  **contents,
+                                              gsize                  *length,
+                                              char                  **etag_out,
+                                              GError                **error);
 GIO_AVAILABLE_IN_ALL
 void     g_file_load_partial_contents_async  (GFile                  *file,
-					      GCancellable           *cancellable,
-					      GFileReadMoreCallback   read_more_callback,
-					      GAsyncReadyCallback     callback,
-					      gpointer                user_data);
+                                              GCancellable           *cancellable,
+                                              GFileReadMoreCallback   read_more_callback,
+                                              GAsyncReadyCallback     callback,
+                                              gpointer                user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean g_file_load_partial_contents_finish (GFile                  *file,
-					      GAsyncResult           *res,
-					      char                  **contents,
-					      gsize                  *length,
-					      char                  **etag_out,
-					      GError                **error);
+                                              GAsyncResult           *res,
+                                              char                  **contents,
+                                              gsize                  *length,
+                                              char                  **etag_out,
+                                              GError                **error);
 GIO_AVAILABLE_IN_ALL
 gboolean g_file_replace_contents             (GFile                  *file,
-					      const char             *contents,
-					      gsize                   length,
-					      const char             *etag,
-					      gboolean                make_backup,
-					      GFileCreateFlags        flags,
-					      char                  **new_etag,
-					      GCancellable           *cancellable,
-					      GError                **error);
+                                              const char             *contents,
+                                              gsize                   length,
+                                              const char             *etag,
+                                              gboolean                make_backup,
+                                              GFileCreateFlags        flags,
+                                              char                  **new_etag,
+                                              GCancellable           *cancellable,
+                                              GError                **error);
 GIO_AVAILABLE_IN_ALL
 void     g_file_replace_contents_async       (GFile                  *file,
-					      const char             *contents,
-					      gsize                   length,
-					      const char             *etag,
-					      gboolean                make_backup,
-					      GFileCreateFlags        flags,
-					      GCancellable           *cancellable,
-					      GAsyncReadyCallback     callback,
-					      gpointer                user_data);
+                                              const char             *contents,
+                                              gsize                   length,
+                                              const char             *etag,
+                                              gboolean                make_backup,
+                                              GFileCreateFlags        flags,
+                                              GCancellable           *cancellable,
+                                              GAsyncReadyCallback     callback,
+                                              gpointer                user_data);
 GIO_AVAILABLE_IN_2_40
 void     g_file_replace_contents_bytes_async (GFile                  *file,
-					      GBytes                 *contents,
-					      const char             *etag,
-					      gboolean                make_backup,
-					      GFileCreateFlags        flags,
-					      GCancellable           *cancellable,
-					      GAsyncReadyCallback     callback,
-					      gpointer                user_data);
+                                              GBytes                 *contents,
+                                              const char             *etag,
+                                              gboolean                make_backup,
+                                              GFileCreateFlags        flags,
+                                              GCancellable           *cancellable,
+                                              GAsyncReadyCallback     callback,
+                                              gpointer                user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean g_file_replace_contents_finish      (GFile                  *file,
-					      GAsyncResult           *res,
-					      char                  **new_etag,
-					      GError                **error);
+                                              GAsyncResult           *res,
+                                              char                  **new_etag,
+                                              GError                **error);
 
 GIO_AVAILABLE_IN_ALL
 gboolean g_file_supports_thread_contexts     (GFile                  *file);

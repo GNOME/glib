@@ -75,13 +75,13 @@ GIO_AVAILABLE_IN_ALL
 gboolean      g_cancellable_is_cancelled           (GCancellable  *cancellable);
 GIO_AVAILABLE_IN_ALL
 gboolean      g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
-						    GError       **error);
+                                                    GError       **error);
 
 GIO_AVAILABLE_IN_ALL
 int           g_cancellable_get_fd                 (GCancellable  *cancellable);
 GIO_AVAILABLE_IN_ALL
 gboolean      g_cancellable_make_pollfd            (GCancellable  *cancellable,
-						    GPollFD       *pollfd);
+                                                    GPollFD       *pollfd);
 GIO_AVAILABLE_IN_ALL
 void          g_cancellable_release_fd             (GCancellable  *cancellable);
 
@@ -98,12 +98,12 @@ GIO_AVAILABLE_IN_ALL
 void          g_cancellable_reset                  (GCancellable  *cancellable);
 GIO_AVAILABLE_IN_ALL
 gulong        g_cancellable_connect                (GCancellable  *cancellable,
-						    GCallback      callback,
-						    gpointer       data,
-						    GDestroyNotify data_destroy_func);
+                                                    GCallback      callback,
+                                                    gpointer       data,
+                                                    GDestroyNotify data_destroy_func);
 GIO_AVAILABLE_IN_ALL
 void          g_cancellable_disconnect             (GCancellable  *cancellable,
-						    gulong         handler_id);
+                                                    gulong         handler_id);
 
 
 /* This is safe to call from another thread */

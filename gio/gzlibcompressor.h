@@ -51,7 +51,7 @@ GType            g_zlib_compressor_get_type (void);
 
 GIO_AVAILABLE_IN_ALL
 GZlibCompressor *g_zlib_compressor_new (GZlibCompressorFormat format,
-					int level);
+                                        int level);
 
 GIO_AVAILABLE_IN_ALL
 GFileInfo       *g_zlib_compressor_get_file_info (GZlibCompressor *compressor);

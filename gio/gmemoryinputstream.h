@@ -80,7 +80,7 @@ void           g_memory_input_stream_add_data      (GMemoryInputStream *stream,
                                                     GDestroyNotify      destroy);
 GIO_AVAILABLE_IN_2_34
 void           g_memory_input_stream_add_bytes     (GMemoryInputStream     *stream,
-						    GBytes                 *bytes);
+                                                    GBytes                 *bytes);
 
 G_END_DECLS
 

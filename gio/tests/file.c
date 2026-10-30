@@ -496,7 +496,7 @@ test_create_delete (gconstpointer d)
   data->pos = 0;
 
   data->file = g_file_new_tmp ("g_file_create_delete_XXXXXX",
-			       &iostream, NULL);
+                               &iostream, NULL);
   g_assert_nonnull (data->file);
   g_object_unref (iostream);
 
@@ -688,7 +688,7 @@ test_replace_load (void)
   data->data = replace_data;
 
   data->file = g_file_new_tmp ("g_file_replace_load_XXXXXX",
-			       &iostream, NULL);
+                               &iostream, NULL);
   g_assert_nonnull (data->file);
   g_object_unref (iostream);
 
@@ -2379,8 +2379,8 @@ test_async_new_tmp_dir (void)
 
 static void
 on_file_deleted (GObject      *object,
-		 GAsyncResult *result,
-		 gpointer      user_data)
+                 GAsyncResult *result,
+                 gpointer      user_data)
 {
   GError *local_error = NULL;
   GMainLoop *loop = user_data;
@@ -2401,7 +2401,7 @@ test_async_delete (void)
   GMainLoop *loop;
 
   file = g_file_new_tmp ("g_file_delete_XXXXXX",
-			 &iostream, error);
+                         &iostream, error);
   g_assert_no_error (local_error);
   g_object_unref (iostream);
 
@@ -4441,7 +4441,7 @@ test_enumerator_cancellation (void)
 
 static void
 test_path_from_uri_helper (const gchar *uri,
-			   const gchar *expected_path)
+                           const gchar *expected_path)
 {
   GFile *file;
   gchar *path;
@@ -4452,7 +4452,7 @@ test_path_from_uri_helper (const gchar *uri,
   for (gchar *p = expected_platform_path; *p; p++)
     {
       if (*p == '/')
-	*p = '\\';
+        *p = '\\';
     }
 #endif
 

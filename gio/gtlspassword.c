@@ -195,11 +195,11 @@ g_tls_password_class_init (GTlsPasswordClass *klass)
    * Since: 2.30
    */
   g_object_class_install_property (gobject_class, PROP_FLAGS,
-				   g_param_spec_flags ("flags", NULL, NULL,
-						       G_TYPE_TLS_PASSWORD_FLAGS,
-						       G_TLS_PASSWORD_NONE,
-						       G_PARAM_READWRITE |
-						       G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_flags ("flags", NULL, NULL,
+                                                       G_TYPE_TLS_PASSWORD_FLAGS,
+                                                       G_TLS_PASSWORD_NONE,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GTlsPassword:description:
@@ -209,10 +209,10 @@ g_tls_password_class_init (GTlsPasswordClass *klass)
    * Since: 2.30
    */
   g_object_class_install_property (gobject_class, PROP_DESCRIPTION,
-				   g_param_spec_string ("description", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE |
-							G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_string ("description", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GTlsPassword:warning:
@@ -222,10 +222,10 @@ g_tls_password_class_init (GTlsPasswordClass *klass)
    * Since: 2.30
    */
   g_object_class_install_property (gobject_class, PROP_WARNING,
-				   g_param_spec_string ("warning", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE |
-							G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_string ("warning", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
 
 }
 

@@ -35,7 +35,7 @@ G_BEGIN_DECLS
  * if the socket file is missing.
  */
 
-#define _g_assert_error_domain(err, dom)	do { if (!err || (err)->domain != dom) \
+#define _g_assert_error_domain(err, dom)        do { if (!err || (err)->domain != dom) \
       g_assertion_message_error (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                  #err, err, dom, -1); } while (0)
 

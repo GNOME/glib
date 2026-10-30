@@ -100,12 +100,12 @@ g_filename_completer_class_init (GFilenameCompleterClass *klass)
    * Emitted when the file name completion information comes available.
    **/
   signals[GOT_COMPLETION_DATA] = g_signal_new (I_("got-completion-data"),
-					  G_TYPE_FILENAME_COMPLETER,
-					  G_SIGNAL_RUN_LAST,
-					  G_STRUCT_OFFSET (GFilenameCompleterClass, got_completion_data),
-					  NULL, NULL,
-					  NULL,
-					  G_TYPE_NONE, 0);
+                                          G_TYPE_FILENAME_COMPLETER,
+                                          G_SIGNAL_RUN_LAST,
+                                          G_STRUCT_OFFSET (GFilenameCompleterClass, got_completion_data),
+                                          NULL, NULL,
+                                          NULL,
+                                          G_TYPE_NONE, 0);
 }
 
 static void
@@ -158,8 +158,8 @@ load_basenames_data_free (LoadBasenamesData *data)
 
 static void
 got_more_files (GObject *source_object,
-		GAsyncResult *res,
-		gpointer user_data)
+                GAsyncResult *res,
+                gpointer user_data)
 {
   LoadBasenamesData *data = user_data;
   GList *infos, *l;
@@ -183,40 +183,40 @@ got_more_files (GObject *source_object,
       info = l->data;
 
       if (data->dirs_only &&
-	  g_file_info_get_file_type (info) != G_FILE_TYPE_DIRECTORY)
-	{
-	  g_object_unref (info);
-	  continue;
-	}
+          g_file_info_get_file_type (info) != G_FILE_TYPE_DIRECTORY)
+        {
+          g_object_unref (info);
+          continue;
+        }
       
       append_slash = g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY;
       name = g_file_info_get_name (info);
       if (name == NULL)
-	{
-	  g_object_unref (info);
-	  continue;
-	}
+        {
+          g_object_unref (info);
+          continue;
+        }
 
       
       if (data->should_escape)
-	basename = g_uri_escape_string (name,
-					G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
-					TRUE);
+        basename = g_uri_escape_string (name,
+                                        G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
+                                        TRUE);
       else
-	/* If not should_escape, must be a local filename, convert to utf8 */
-	basename = g_filename_to_utf8 (name, -1, NULL, NULL, NULL);
+        /* If not should_escape, must be a local filename, convert to utf8 */
+        basename = g_filename_to_utf8 (name, -1, NULL, NULL, NULL);
       
       if (basename)
-	{
-	  if (append_slash)
-	    {
-	      t = basename;
-	      basename = g_strconcat (basename, G_DIR_SEPARATOR_S, NULL);
-	      g_free (t);
-	    }
-	  
-	  data->basenames = g_list_prepend (data->basenames, basename);
-	}
+        {
+          if (append_slash)
+            {
+              t = basename;
+              basename = g_strconcat (basename, G_DIR_SEPARATOR_S, NULL);
+              g_free (t);
+            }
+          
+          data->basenames = g_list_prepend (data->basenames, basename);
+        }
       
       g_object_unref (info);
     }
@@ -227,17 +227,17 @@ got_more_files (GObject *source_object,
     {
       /* Not last, get more files */
       g_file_enumerator_next_files_async (data->enumerator,
-					  100,
-					  0,
-					  data->cancellable,
-					  got_more_files, data);
+                                          100,
+                                          0,
+                                          data->cancellable,
+                                          got_more_files, data);
     }
   else
     {
       data->completer->basename_loader = NULL;
       
       if (data->completer->basenames_dir)
-	g_object_unref (data->completer->basenames_dir);
+        g_object_unref (data->completer->basenames_dir);
       g_list_free_full (data->completer->basenames, g_free);
       
       data->completer->basenames_dir = g_object_ref (data->dir);
@@ -255,8 +255,8 @@ got_more_files (GObject *source_object,
 
 static void
 got_enum (GObject *source_object,
-	  GAsyncResult *res,
-	  gpointer user_data)
+          GAsyncResult *res,
+          gpointer user_data)
 {
   LoadBasenamesData *data = user_data;
 
@@ -274,7 +274,7 @@ got_enum (GObject *source_object,
       data->completer->basename_loader = NULL;
 
       if (data->completer->basenames_dir)
-	g_object_unref (data->completer->basenames_dir);
+        g_object_unref (data->completer->basenames_dir);
       g_list_free_full (data->completer->basenames, g_free);
 
       /* Mark up-to-date with no basenames */
@@ -287,16 +287,16 @@ got_enum (GObject *source_object,
     }
   
   g_file_enumerator_next_files_async (data->enumerator,
-				      100,
-				      0,
-				      data->cancellable,
-				      got_more_files, data);
+                                      100,
+                                      0,
+                                      data->cancellable,
+                                      got_more_files, data);
 }
 
 static void
 schedule_load_basenames (GFilenameCompleter *completer,
-			 GFile *dir,
-			 gboolean should_escape)
+                         GFile *dir,
+                         gboolean should_escape)
 {
   LoadBasenamesData *data;
 
@@ -312,10 +312,10 @@ schedule_load_basenames (GFilenameCompleter *completer,
   completer->basename_loader = data;
   
   g_file_enumerate_children_async (dir,
-				   G_FILE_ATTRIBUTE_STANDARD_NAME "," G_FILE_ATTRIBUTE_STANDARD_TYPE,
-				   0, 0,
-				   data->cancellable,
-				   got_enum, data);
+                                   G_FILE_ATTRIBUTE_STANDARD_NAME "," G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                   0, 0,
+                                   data->cancellable,
+                                   got_enum, data);
 }
 
 static void
@@ -338,8 +338,8 @@ cancel_load_basenames (GFilenameCompleter *completer)
 /* Returns a list of possible matches and the basename to use for it */
 static GList *
 init_completion (GFilenameCompleter *completer,
-		 const char *initial_text,
-		 char **basename_out)
+                 const char *initial_text,
+                 char **basename_out)
 {
   gboolean should_escape;
   GFile *file = NULL, *parent = NULL;
@@ -415,7 +415,7 @@ out:
  **/
 char *
 g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
-					    const char *initial_text)
+                                            const char *initial_text)
 {
   GList *possible_matches, *l;
   char *prefix;
@@ -435,20 +435,20 @@ g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
       possible_match = l->data;
       
       if (g_str_has_prefix (possible_match, prefix))
-	{
-	  if (suffix == NULL)
-	    suffix = g_strdup (possible_match + strlen (prefix));
-	  else
-	    {
-	      lcp = longest_common_prefix (suffix,
-					   possible_match + strlen (prefix));
-	      g_free (suffix);
-	      suffix = lcp;
-	      
-	      if (*suffix == 0)
-		break;
-	    }
-	}
+        {
+          if (suffix == NULL)
+            suffix = g_strdup (possible_match + strlen (prefix));
+          else
+            {
+              lcp = longest_common_prefix (suffix,
+                                           possible_match + strlen (prefix));
+              g_free (suffix);
+              suffix = lcp;
+              
+              if (*suffix == 0)
+                break;
+            }
+        }
     }
 
   g_free (prefix);
@@ -470,7 +470,7 @@ g_filename_completer_get_completion_suffix (GFilenameCompleter *completer,
  **/
 char **
 g_filename_completer_get_completions (GFilenameCompleter *completer,
-				      const char         *initial_text)
+                                      const char         *initial_text)
 {
   GList *possible_matches, *l;
   char *prefix;
@@ -488,8 +488,8 @@ g_filename_completer_get_completions (GFilenameCompleter *completer,
       possible_match = l->data;
 
       if (g_str_has_prefix (possible_match, prefix))
-	g_ptr_array_add (res,
-			 g_strconcat (initial_text, possible_match + strlen (prefix), NULL));
+        g_ptr_array_add (res,
+                         g_strconcat (initial_text, possible_match + strlen (prefix), NULL));
     }
 
   g_free (prefix);
@@ -512,7 +512,7 @@ g_filename_completer_get_completions (GFilenameCompleter *completer,
  **/
 void
 g_filename_completer_set_dirs_only (GFilenameCompleter *completer,
-				    gboolean dirs_only)
+                                    gboolean dirs_only)
 {
   g_return_if_fail (G_IS_FILENAME_COMPLETER (completer));
 

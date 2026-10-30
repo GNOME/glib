@@ -949,7 +949,7 @@ g_win32_readlink_utf8 (const gchar  *filename,
  */
 int
 g_access (const gchar *filename,
-	  int          mode)
+          int          mode)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -1001,7 +1001,7 @@ g_access (const gchar *filename,
  */
 int
 g_chmod (const gchar *filename,
-	 int          mode)
+         int          mode)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -1059,8 +1059,8 @@ g_chmod (const gchar *filename,
  */
 int
 g_open (const gchar *filename,
-	int          flags,
-	int          mode)
+        int          flags,
+        int          mode)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -1123,7 +1123,7 @@ g_open (const gchar *filename,
  */
 int
 g_creat (const gchar *filename,
-	 int          mode)
+         int          mode)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -1167,7 +1167,7 @@ g_creat (const gchar *filename,
  */
 int
 g_rename (const gchar *oldfilename,
-	  const gchar *newfilename)
+          const gchar *newfilename)
 {
 #ifdef G_OS_WIN32
   wchar_t *woldfilename = g_utf8_to_utf16 (oldfilename, -1, NULL, NULL, NULL);
@@ -1227,7 +1227,7 @@ g_rename (const gchar *oldfilename,
  */
 int
 g_mkdir (const gchar *filename,
-	 int          mode)
+         int          mode)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -1335,7 +1335,7 @@ g_chdir (const gchar *path)
  */
 int
 g_stat (const gchar *filename,
-	GStatBuf    *buf)
+        GStatBuf    *buf)
 {
 #ifdef G_OS_WIN32
   GWin32PrivateStat w32_buf;
@@ -1381,7 +1381,7 @@ g_stat (const gchar *filename,
  */
 int
 g_lstat (const gchar *filename,
-	 GStatBuf    *buf)
+         GStatBuf    *buf)
 {
 #ifdef HAVE_LSTAT
   /* This can't be Win32, so don't do the widechar dance. */
@@ -1587,7 +1587,7 @@ g_rmdir (const gchar *filename)
  */
 FILE *
 g_fopen (const gchar *filename,
-	 const gchar *mode)
+         const gchar *mode)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -1646,8 +1646,8 @@ g_fopen (const gchar *filename,
  */
 FILE *
 g_freopen (const gchar *filename,
-	   const gchar *mode,
-	   FILE        *stream)
+           const gchar *mode,
+           FILE        *stream)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
@@ -1740,7 +1740,7 @@ g_fsync (gint fd)
  */
 int
 g_utime (const gchar    *filename,
-	 struct utimbuf *utb)
+         struct utimbuf *utb)
 {
 #ifdef G_OS_WIN32
   wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);

@@ -56,14 +56,14 @@ static void g_socket_output_stream_file_descriptor_based_iface_init (GFileDescri
 #ifdef G_OS_UNIX
 G_DEFINE_TYPE_WITH_CODE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM,
                          G_ADD_PRIVATE (GSocketOutputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_output_stream_file_descriptor_based_iface_init)
-			 )
+                         G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_output_stream_file_descriptor_based_iface_init)
+                         )
 #else
 G_DEFINE_TYPE_WITH_CODE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM,
                          G_ADD_PRIVATE (GSocketOutputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
-			 )
+                         G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
+                         )
 #endif
 
 enum
@@ -131,8 +131,8 @@ g_socket_output_stream_write (GOutputStream  *stream,
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (stream);
 
   return g_socket_send_with_blocking (output_stream->priv->socket,
-				      buffer, count, TRUE,
-				      cancellable, error);
+                                      buffer, count, TRUE,
+                                      cancellable, error);
 }
 
 static gboolean
@@ -174,15 +174,15 @@ g_socket_output_stream_pollable_is_writable (GPollableOutputStream *pollable)
 
 static gssize
 g_socket_output_stream_pollable_write_nonblocking (GPollableOutputStream  *pollable,
-						   const void             *buffer,
-						   gsize                   size,
-						   GError                **error)
+                                                   const void             *buffer,
+                                                   gsize                   size,
+                                                   GError                **error)
 {
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
 
   return g_socket_send_with_blocking (output_stream->priv->socket,
-				      buffer, size, FALSE,
-				      NULL, error);
+                                      buffer, size, FALSE,
+                                      NULL, error);
 }
 
 static GPollableReturn
@@ -208,14 +208,14 @@ g_socket_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *poll
 
 static GSource *
 g_socket_output_stream_pollable_create_source (GPollableOutputStream *pollable,
-					       GCancellable          *cancellable)
+                                               GCancellable          *cancellable)
 {
   GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
   GSource *socket_source, *pollable_source;
 
   pollable_source = g_pollable_source_new (G_OBJECT (output_stream));
   socket_source = g_socket_create_source (output_stream->priv->socket,
-					  G_IO_OUT, cancellable);
+                                          G_IO_OUT, cancellable);
   g_source_set_dummy_callback (socket_source);
   g_source_add_child_source (pollable_source, socket_source);
   g_source_unref (socket_source);
@@ -247,9 +247,9 @@ g_socket_output_stream_class_init (GSocketOutputStreamClass *klass)
   goutputstream_class->writev_fn = g_socket_output_stream_writev;
 
   g_object_class_install_property (gobject_class, PROP_SOCKET,
-				   g_param_spec_object ("socket", NULL, NULL,
-							G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("socket", NULL, NULL,
+                                                        G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 #ifdef G_OS_UNIX

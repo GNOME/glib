@@ -1439,7 +1439,7 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
 
                   /* Don't match on blocklisted binaries like interpreters */
                   if (g_strv_contains (exec_key_match_blocklist, value))
-		    value = NULL;
+                    value = NULL;
                 }
 
               if (value)

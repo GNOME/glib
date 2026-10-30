@@ -326,7 +326,7 @@ g_memory_buffer_write (GMemoryBuffer  *mbuf,
   if (mbuf->pos + count > mbuf->len)
     {
       /* At least enough to fit the write, rounded up
-	     for greater than linear growth.
+             for greater than linear growth.
          TODO: This wastes a lot of memory at large buffer sizes.
                Figure out a more rational allocation strategy. */
       new_size = g_nearest_pow (mbuf->pos + count);
@@ -352,14 +352,14 @@ g_memory_buffer_write (GMemoryBuffer  *mbuf,
 
 static gboolean
 g_memory_buffer_put_byte (GMemoryBuffer  *mbuf,
-			  guchar          data)
+                          guchar          data)
 {
   return g_memory_buffer_write (mbuf, &data, 1);
 }
 
 static gboolean
 g_memory_buffer_put_int16 (GMemoryBuffer  *mbuf,
-			   gint16          data)
+                           gint16          data)
 {
   if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
     data = (gint16) GUINT16_SWAP_LE_BE (data);
@@ -369,7 +369,7 @@ g_memory_buffer_put_int16 (GMemoryBuffer  *mbuf,
 
 static gboolean
 g_memory_buffer_put_uint16 (GMemoryBuffer  *mbuf,
-			    guint16         data)
+                            guint16         data)
 {
   if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
     data = GUINT16_SWAP_LE_BE (data);
@@ -379,7 +379,7 @@ g_memory_buffer_put_uint16 (GMemoryBuffer  *mbuf,
 
 static gboolean
 g_memory_buffer_put_int32 (GMemoryBuffer  *mbuf,
-			   gint32          data)
+                           gint32          data)
 {
   if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
     data = (gint32) GUINT32_SWAP_LE_BE (data);
@@ -389,7 +389,7 @@ g_memory_buffer_put_int32 (GMemoryBuffer  *mbuf,
 
 static gboolean
 g_memory_buffer_put_uint32 (GMemoryBuffer  *mbuf,
-			    guint32         data)
+                            guint32         data)
 {
   if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
     data = GUINT32_SWAP_LE_BE (data);
@@ -399,7 +399,7 @@ g_memory_buffer_put_uint32 (GMemoryBuffer  *mbuf,
 
 static gboolean
 g_memory_buffer_put_int64 (GMemoryBuffer  *mbuf,
-			   gint64          data)
+                           gint64          data)
 {
   if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
     data = (gint64) GUINT64_SWAP_LE_BE (data);
@@ -409,7 +409,7 @@ g_memory_buffer_put_int64 (GMemoryBuffer  *mbuf,
 
 static gboolean
 g_memory_buffer_put_uint64 (GMemoryBuffer  *mbuf,
-			    guint64         data)
+                            guint64         data)
 {
   if G_UNLIKELY (g_memory_buffer_is_byteswapped (mbuf))
     data = GUINT64_SWAP_LE_BE (data);
@@ -419,7 +419,7 @@ g_memory_buffer_put_uint64 (GMemoryBuffer  *mbuf,
 
 static gboolean
 g_memory_buffer_put_string (GMemoryBuffer  *mbuf,
-			    const char     *str)
+                            const char     *str)
 {
   g_return_val_if_fail (str != NULL, FALSE);
 

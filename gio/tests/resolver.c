@@ -46,14 +46,14 @@ static gint timeout_ms = 0;
 static G_NORETURN void
 usage (void)
 {
-	fprintf (stderr, "Usage: resolver [-s] [hostname | IP | service/protocol/domain ] ...\n");
-	fprintf (stderr, "Usage: resolver [-s] [-t MX|TXT|NS|SOA|SRV] rrname ...\n");
-	fprintf (stderr, "       resolver [-s] -c NUMBER [hostname | IP | service/protocol/domain ]\n");
-	fprintf (stderr, "       Use -s to do synchronous lookups.\n");
-	fprintf (stderr, "       Use -c NUMBER (and only a single resolvable argument) to test GSocketConnectable.\n");
-	fprintf (stderr, "       The given NUMBER determines how many times the connectable will be enumerated.\n");
-	fprintf (stderr, "       Use -t with MX, TXT, NS, SOA or SRV to look up DNS records of those types.\n");
-	exit (1);
+        fprintf (stderr, "Usage: resolver [-s] [hostname | IP | service/protocol/domain ] ...\n");
+        fprintf (stderr, "Usage: resolver [-s] [-t MX|TXT|NS|SOA|SRV] rrname ...\n");
+        fprintf (stderr, "       resolver [-s] -c NUMBER [hostname | IP | service/protocol/domain ]\n");
+        fprintf (stderr, "       Use -s to do synchronous lookups.\n");
+        fprintf (stderr, "       Use -c NUMBER (and only a single resolvable argument) to test GSocketConnectable.\n");
+        fprintf (stderr, "       The given NUMBER determines how many times the connectable will be enumerated.\n");
+        fprintf (stderr, "       Use -t with MX, TXT, NS, SOA or SRV to look up DNS records of those types.\n");
+        exit (1);
 }
 
 G_LOCK_DEFINE_STATIC (response);
@@ -97,7 +97,7 @@ print_resolved_name (const char *phys,
 static void
 print_resolved_addresses (const char *name,
                           GList      *addresses,
-			  GError     *error)
+                          GError     *error)
 {
   char *phys;
   GList *a;
@@ -112,12 +112,12 @@ print_resolved_addresses (const char *name,
   else
     {
       for (a = addresses; a; a = a->next)
-	{
-	  phys = g_inet_address_to_string (a->data);
-	  printf ("Address: %s\n", phys);
-	  g_free (phys);
+        {
+          phys = g_inet_address_to_string (a->data);
+          printf ("Address: %s\n", phys);
+          g_free (phys);
           g_object_unref (a->data);
-	}
+        }
       g_list_free (addresses);
     }
   printf ("\n");
@@ -129,7 +129,7 @@ print_resolved_addresses (const char *name,
 static void
 print_resolved_service (const char *service,
                         GList      *targets,
-			GError     *error)
+                        GError     *error)
 {
   GList *t;  
 
@@ -143,14 +143,14 @@ print_resolved_service (const char *service,
   else
     {
       for (t = targets; t; t = t->next)
-	{
-	  printf ("%s:%u (pri %u, weight %u)\n",
-		  g_srv_target_get_hostname (t->data),
-		  (guint)g_srv_target_get_port (t->data),
-		  (guint)g_srv_target_get_priority (t->data),
-		  (guint)g_srv_target_get_weight (t->data));
+        {
+          printf ("%s:%u (pri %u, weight %u)\n",
+                  g_srv_target_get_hostname (t->data),
+                  (guint)g_srv_target_get_port (t->data),
+                  (guint)g_srv_target_get_priority (t->data),
+                  (guint)g_srv_target_get_weight (t->data));
           g_srv_target_free (t->data);
-	}
+        }
       g_list_free (targets);
     }
   printf ("\n");
@@ -389,7 +389,7 @@ lookup_one_sync (const char *arg)
       char **parts = g_strsplit (arg, "/", 3);
 
       if (!parts || !parts[2])
-	usage ();
+        usage ();
 
       targets = g_resolver_lookup_service (resolver,
                                            parts[0], parts[1], parts[2],
@@ -460,7 +460,7 @@ lookup_by_name_callback (GObject *source, GAsyncResult *result,
 
 static void
 lookup_service_callback (GObject *source, GAsyncResult *result,
-			 gpointer user_data)
+                         gpointer user_data)
 {
   const char *service = user_data;
   GError *error = NULL;
@@ -512,37 +512,37 @@ start_async_lookups (char **argv, int argc)
   for (i = 0; i < argc; i++)
     {
       if (record_type != 0)
-	{
-	  g_resolver_lookup_records_async (resolver, argv[i], record_type,
-	                                   cancellable, lookup_records_callback, argv[i]);
-	}
+        {
+          g_resolver_lookup_records_async (resolver, argv[i], record_type,
+                                           cancellable, lookup_records_callback, argv[i]);
+        }
       else if (strchr (argv[i], '/'))
-	{
-	  /* service/protocol/domain */
-	  char **parts = g_strsplit (argv[i], "/", 3);
+        {
+          /* service/protocol/domain */
+          char **parts = g_strsplit (argv[i], "/", 3);
 
-	  if (!parts || !parts[2])
-	    usage ();
+          if (!parts || !parts[2])
+            usage ();
 
-	  g_resolver_lookup_service_async (resolver,
-					   parts[0], parts[1], parts[2],
-					   cancellable,
-					   lookup_service_callback, argv[i]);
-	}
+          g_resolver_lookup_service_async (resolver,
+                                           parts[0], parts[1], parts[2],
+                                           cancellable,
+                                           lookup_service_callback, argv[i]);
+        }
       else if (g_hostname_is_ip_address (argv[i]))
-	{
+        {
           GInetAddress *addr = g_inet_address_new_from_string (argv[i]);
 
-	  g_resolver_lookup_by_address_async (resolver, addr, cancellable,
+          g_resolver_lookup_by_address_async (resolver, addr, cancellable,
                                               lookup_by_addr_callback, argv[i]);
-	  g_object_unref (addr);
-	}
+          g_object_unref (addr);
+        }
       else
-	{
-	  g_resolver_lookup_by_name_async (resolver, argv[i], cancellable,
+        {
+          g_resolver_lookup_by_name_async (resolver, argv[i], cancellable,
                                            lookup_by_name_callback,
                                            argv[i]);
-	}
+        }
 
       /* Stress-test the reloading code */
       g_signal_emit_by_name (resolver, "reload");
@@ -630,7 +630,7 @@ do_connectable (const char *arg, gboolean synch, guint count)
       /* service/protocol/domain */
       parts = g_strsplit (arg, "/", 3);
       if (!parts || !parts[2])
-	usage ();
+        usage ();
 
       connectable = g_network_service_new (parts[0], parts[1], parts[2]);
     }
@@ -640,21 +640,21 @@ do_connectable (const char *arg, gboolean synch, guint count)
 
       parts = g_strsplit (arg, ":", 2);
       if (parts && parts[1])
-	{
-	  arg = parts[0];
-	  port = strtoul (parts[1], NULL, 10);
-	}
+        {
+          arg = parts[0];
+          port = strtoul (parts[1], NULL, 10);
+        }
       else
-	port = 0;
+        port = 0;
 
       if (g_hostname_is_ip_address (arg))
-	{
-	  GInetAddress *addr = g_inet_address_new_from_string (arg);
-	  GSocketAddress *sockaddr = g_inet_socket_address_new (addr, port);
+        {
+          GInetAddress *addr = g_inet_address_new_from_string (arg);
+          GSocketAddress *sockaddr = g_inet_socket_address_new (addr, port);
 
-	  g_object_unref (addr);
-	  connectable = G_SOCKET_CONNECTABLE (sockaddr);
-	}
+          g_object_unref (addr);
+          connectable = G_SOCKET_CONNECTABLE (sockaddr);
+        }
       else
         connectable = g_network_address_new (arg, port);
     }

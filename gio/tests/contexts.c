@@ -40,9 +40,9 @@ opened_for_read (GObject *source, GAsyncResult *result, gpointer loop)
 
   memset (async_read_buffer, 0, sizeof (async_read_buffer));
   g_input_stream_read_async (G_INPUT_STREAM (in),
-			     async_read_buffer, sizeof (async_read_buffer),
-			     G_PRIORITY_DEFAULT, NULL,
-			     read_data, loop);
+                             async_read_buffer, sizeof (async_read_buffer),
+                             G_PRIORITY_DEFAULT, NULL,
+                             read_data, loop);
 
   g_object_unref (in);
 }
@@ -114,7 +114,7 @@ test1_thread (gpointer user_data)
 
   loop = g_main_loop_new (context, FALSE);
   g_file_read_async (file, G_PRIORITY_DEFAULT, NULL,
-		     opened_for_read, loop);
+                     opened_for_read, loop);
   g_object_unref (file);
   g_main_loop_run (loop);
   g_main_loop_unref (loop);
@@ -155,7 +155,7 @@ test_context_independence (void)
 
   /* Add a timeout to the main loop, to fail immediately if it gets run */
   default_timeout = g_timeout_add_full (G_PRIORITY_HIGH, 0,
-					test2_fail, NULL, NULL);
+                                        test2_fail, NULL, NULL);
   /* Add a timeout to the alternate loop, to fail if the I/O *doesn't* run */
   thread_default_timeout = g_timeout_source_new_seconds (2);
   g_source_set_callback (thread_default_timeout, test2_fail, NULL, NULL);
@@ -163,7 +163,7 @@ test_context_independence (void)
 
   loop = g_main_loop_new (context, FALSE);
   g_file_read_async (file, G_PRIORITY_DEFAULT, NULL,
-		     opened_for_read, loop);
+                     opened_for_read, loop);
   g_object_unref (file);
   g_main_loop_run (loop);
   g_main_loop_unref (loop);
@@ -423,7 +423,7 @@ main (int argc, char **argv)
 
   test_file = g_test_build_filename (G_TEST_DIST, "contexts.c", NULL);
   g_file_get_contents (test_file, &test_file_buffer,
-		       &test_file_size, &error);
+                       &test_file_size, &error);
   g_assert_no_error (error);
 
   g_test_add_func ("/gio/contexts/thread-independence", test_thread_independence);

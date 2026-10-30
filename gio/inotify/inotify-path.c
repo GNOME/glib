@@ -21,7 +21,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.
 
    Authors:
-		 John McCutchan <john@johnmccutchan.com>
+                 John McCutchan <john@johnmccutchan.com>
                  Ryan Lortie <desrt@desrt.ca>
 */
 
@@ -61,7 +61,7 @@ typedef struct ip_watched_dir_s {
    * Or the application could do it...
    */
   struct ip_watched_dir_s* parent;
-  GList*	 children;
+  GList*         children;
 
   /* basename -> ip_watched_file_t
    * Maps basename to a ip_watched_file_t if the file is currently
@@ -99,7 +99,7 @@ static GHashTable * wd_dir_hash = NULL;
 static GHashTable * wd_file_hash = NULL;
 
 static ip_watched_dir_t *ip_watched_dir_new  (const char       *path,
-					      int               wd);
+                                              int               wd);
 static void              ip_watched_dir_free (ip_watched_dir_t *dir);
 static gboolean          ip_event_callback   (ik_event_t       *event);
 
@@ -476,43 +476,43 @@ ip_event_dispatch (GList      *dir_list,
       ip_watched_dir_t *dir = l->data;
       
       for (subl = dir->subs; subl; subl = subl->next)
-	{
-	  inotify_sub *sub = subl->data;
-	  
-	  /* If the subscription and the event
-	   * contain a filename and they don't
-	   * match, we don't deliver this event.
-	   */
-	  if (sub->filename &&
-	      event->name &&
-	      strcmp (sub->filename, event->name) &&
+        {
+          inotify_sub *sub = subl->data;
+          
+          /* If the subscription and the event
+           * contain a filename and they don't
+           * match, we don't deliver this event.
+           */
+          if (sub->filename &&
+              event->name &&
+              strcmp (sub->filename, event->name) &&
               (!event->pair || !event->pair->name || strcmp (sub->filename, event->pair->name)))
-	    continue;
-	  
-	  /* If the subscription has a filename
-	   * but this event doesn't, we don't
-	   * deliver this event.
-	   */
-	  if (sub->filename && !event->name)
-	    continue;
-	  
-	  /* If we're also watching the file directly
-	   * don't report events that will also be
-	   * reported on the file itself.
-	   */
-	  if (sub->hardlinks)
-	    {
-	      event->mask &= (guint32) ~IP_INOTIFY_FILE_MASK;
-	      if (!event->mask)
-		continue;
-	    }
-	  
-	  /* FIXME: We might need to synthesize
-	   * DELETE/UNMOUNT events when
-	   * the filename doesn't match
-	   */
-	  
-	  interesting |= event_callback (event, sub, FALSE);
+            continue;
+          
+          /* If the subscription has a filename
+           * but this event doesn't, we don't
+           * deliver this event.
+           */
+          if (sub->filename && !event->name)
+            continue;
+          
+          /* If we're also watching the file directly
+           * don't report events that will also be
+           * reported on the file itself.
+           */
+          if (sub->hardlinks)
+            {
+              event->mask &= (guint32) ~IP_INOTIFY_FILE_MASK;
+              if (!event->mask)
+                continue;
+            }
+          
+          /* FIXME: We might need to synthesize
+           * DELETE/UNMOUNT events when
+           * the filename doesn't match
+           */
+          
+          interesting |= event_callback (event, sub, FALSE);
 
           if (sub->hardlinks)
             {
@@ -539,9 +539,9 @@ ip_event_dispatch (GList      *dir_list,
 
       for (subl = file->subs; subl; subl = subl->next)
         {
-	  inotify_sub *sub = subl->data;
+          inotify_sub *sub = subl->data;
 
-	  interesting |= event_callback (event, sub, TRUE);
+          interesting |= event_callback (event, sub, TRUE);
         }
     }
 
@@ -610,7 +610,7 @@ _ip_get_path_for_wd (gint32 wd)
     {
       dir = dir_list->data;
       if (dir)
-	return dir->path;
+        return dir->path;
     }
 
   return NULL;

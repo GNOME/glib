@@ -11,26 +11,26 @@ static GOptionEntry cmd_entries[] = {
 
 static void
 send_error (GOutputStream *out,
-	    int error_code,
-	    const char *reason)
+            int error_code,
+            const char *reason)
 {
   char *res;
 
   res = g_strdup_printf ("HTTP/1.0 %d %s\r\n\r\n"
-			 "<html><head><title>%d %s</title></head>"
-			 "<body>%s</body></html>",
-			 error_code, reason,
-			 error_code, reason,
-			 reason);
+                         "<html><head><title>%d %s</title></head>"
+                         "<body>%s</body></html>",
+                         error_code, reason,
+                         error_code, reason,
+                         reason);
   g_output_stream_write_all (out, res, strlen (res), NULL, NULL, NULL);
   g_free (res);
 }
 
 static gboolean
 handler (GThreadedSocketService *service,
-	 GSocketConnection      *connection,
-	 GSocketListener        *listener,
-	 gpointer                user_data)
+         GSocketConnection      *connection,
+         GSocketListener        *listener,
+         gpointer                user_data)
 {
   GOutputStream *out;
   GInputStream *in;
@@ -102,38 +102,38 @@ handler (GThreadedSocketService *service,
 
   s = g_string_new ("HTTP/1.0 200 OK\r\n");
   info = g_file_input_stream_query_info (file_in,
-					 G_FILE_ATTRIBUTE_STANDARD_SIZE ","
-					 G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-					 NULL, NULL);
+                                         G_FILE_ATTRIBUTE_STANDARD_SIZE ","
+                                         G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                                         NULL, NULL);
   if (info)
     {
       const char *content_type;
       char *mime_type;
 
       if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE))
-	g_string_append_printf (s, "Content-Length: %"G_GINT64_FORMAT"\r\n",
-				g_file_info_get_size (info));
+        g_string_append_printf (s, "Content-Length: %"G_GINT64_FORMAT"\r\n",
+                                g_file_info_get_size (info));
       content_type = g_file_info_get_content_type (info);
       if (content_type)
-	{
-	  mime_type = g_content_type_get_mime_type (content_type);
-	  if (mime_type)
-	    {
-	      g_string_append_printf (s, "Content-Type: %s\r\n",
-				      mime_type);
-	      g_free (mime_type);
-	    }
-	}
+        {
+          mime_type = g_content_type_get_mime_type (content_type);
+          if (mime_type)
+            {
+              g_string_append_printf (s, "Content-Type: %s\r\n",
+                                      mime_type);
+              g_free (mime_type);
+            }
+        }
     }
   g_string_append (s, "\r\n");
 
   if (g_output_stream_write_all (out,
-				 s->str, s->len,
-				 NULL, NULL, NULL))
+                                 s->str, s->len,
+                                 NULL, NULL, NULL))
     {
       g_output_stream_splice (out,
-			      G_INPUT_STREAM (file_in),
-			      0, NULL, NULL);
+                              G_INPUT_STREAM (file_in),
+                              0, NULL, NULL);
     }
   g_string_free (s, TRUE);
 
@@ -171,9 +171,9 @@ main (int argc, char *argv[])
 
   service = g_threaded_socket_service_new (10);
   if (!g_socket_listener_add_inet_port (G_SOCKET_LISTENER (service),
-					port,
-					NULL,
-					&error))
+                                        port,
+                                        NULL,
+                                        &error))
     {
       g_printerr ("%s: %s\n", argv[0], error->message);
       return 1;

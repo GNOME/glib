@@ -19,9 +19,9 @@ decode (const gchar *input)
       g_string_append_unichar (result, ch);
 
       while (input[offset] && input[offset] != ' ')
-	offset++;
+        offset++;
       while (input[offset] && input[offset] == ' ')
-	offset++;
+        offset++;
     }
   while (input[offset]);
 
@@ -37,33 +37,33 @@ const char *names[4] = {
 
 static void
 test_form (int            line,
-	   GNormalizeMode mode,
-	   gboolean       do_compat,
-	   int            expected,
-	   char         **c,
-	   char         **raw)
+           GNormalizeMode mode,
+           gboolean       do_compat,
+           int            expected,
+           char         **c,
+           char         **raw)
 {
   int i;
   gboolean mode_is_compat = (mode == G_NORMALIZE_NFKC ||
-			     mode == G_NORMALIZE_NFKD);
+                             mode == G_NORMALIZE_NFKD);
 
   if (mode_is_compat || !do_compat)
     {
       for (i = 0; i < 3; i++)
-	{
-	  char *result = g_utf8_normalize (c[i], -1, mode);
+        {
+          char *result = g_utf8_normalize (c[i], -1, mode);
           g_assert_cmpstr (result, ==, c[expected]);
           g_free (result);
-	}
+        }
     }
   if (mode_is_compat || do_compat)
     {
       for (i = 3; i < 5; i++)
-	{
-	  char *result = g_utf8_normalize (c[i], -1, mode);
+        {
+          char *result = g_utf8_normalize (c[i], -1, mode);
           g_assert_cmpstr (result, ==, c[expected]);
           g_free (result);
-	}
+        }
     }
 }
 
@@ -113,17 +113,17 @@ test_unicode_normalize (void)
       gchar **columns;
 
       if (g_io_channel_read_line_string (in, buffer, &term_pos, &error) != G_IO_STATUS_NORMAL)
-	break;
+        break;
 
       buffer->str[term_pos] = '\0';
 
       if (buffer->str[0] == '#') /* Comment */
-	goto next;
+        goto next;
       if (buffer->str[0] == '@') /* Part */
-	{
-	  g_test_message ("Processing %s", buffer->str + 1);
-	  goto next;
-	}
+        {
+          g_test_message ("Processing %s", buffer->str + 1);
+          goto next;
+        }
 
       columns = g_strsplit (buffer->str, ";", -1);
       if (!columns[0])

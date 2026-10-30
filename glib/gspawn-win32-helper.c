@@ -26,13 +26,13 @@
 #undef G_LOG_DOMAIN
 #include "glib.h"
 #define GSPAWN_HELPER
-#include "gspawn-win32.c"	/* For shared definitions */
+#include "gspawn-win32.c"       /* For shared definitions */
 #include "glib/glib-private.h"
 
 
 static void
 write_err_and_exit (gint    fd,
-		    gintptr msg)
+                    gintptr msg)
 {
   gintptr en = errno;
   
@@ -58,8 +58,8 @@ write_err_and_exit (gint    fd,
 
 static gint
 protect_wargv (gint       argc,
-	       wchar_t  **wargv,
-	       wchar_t ***new_wargv)
+               wchar_t  **wargv,
+               wchar_t ***new_wargv)
 {
   gint i;
   
@@ -84,57 +84,57 @@ protect_wargv (gint       argc,
       size_t pre_bslash = 0;
       gboolean need_dblquotes = FALSE;
       while (*p)
-	{
-	  if (*p == ' ' || *p == '\t')
-	    need_dblquotes = TRUE;
-	  /* estimate max len, assuming that all escapable characters will be escaped */
-	  if (*p == '"' || *p == '\\')
-	    len += 2;
-	  else
-	    len += 1;
-	  p++;
-	}
+        {
+          if (*p == ' ' || *p == '\t')
+            need_dblquotes = TRUE;
+          /* estimate max len, assuming that all escapable characters will be escaped */
+          if (*p == '"' || *p == '\\')
+            len += 2;
+          else
+            len += 1;
+          p++;
+        }
 
       q = (*new_wargv)[i] = g_new (wchar_t, len + need_dblquotes*2 + 1);
       p = wargv[i];
 
       if (need_dblquotes)
-	*q++ = '"';
+        *q++ = '"';
 
       /* Only quotes and backslashes preceding quotes are escaped:
        * see "Parsing C Command-Line Arguments" at
        * https://docs.microsoft.com/en-us/cpp/c-language/parsing-c-command-line-arguments
        */
       while (*p)
-	{
-	  if (*p == '"')
-	    {
-	      /* Add backslash for escaping quote itself */
-	      *q++ = '\\';
-	      /* Add backslash for every preceding backslash for escaping it */
-	      for (;pre_bslash > 0; --pre_bslash)
-		*q++ = '\\';
-	    }
+        {
+          if (*p == '"')
+            {
+              /* Add backslash for escaping quote itself */
+              *q++ = '\\';
+              /* Add backslash for every preceding backslash for escaping it */
+              for (;pre_bslash > 0; --pre_bslash)
+                *q++ = '\\';
+            }
 
-	  /* Count length of continuous sequence of preceding backslashes. */
-	  if (*p == '\\')
-	    ++pre_bslash;
-	  else
-	    pre_bslash = 0;
+          /* Count length of continuous sequence of preceding backslashes. */
+          if (*p == '\\')
+            ++pre_bslash;
+          else
+            pre_bslash = 0;
 
-	  *q++ = *p;
-	  p++;
-	}
+          *q++ = *p;
+          p++;
+        }
 
       if (need_dblquotes)
-	{
-	  /* Add backslash for every preceding backslash for escaping it,
-	   * do NOT escape quote itself.
-	   */
-	  for (;pre_bslash > 0; --pre_bslash)
-	    *q++ = '\\';
-	  *q++ = '"';
-	}
+        {
+          /* Add backslash for every preceding backslash for escaping it,
+           * do NOT escape quote itself.
+           */
+          for (;pre_bslash > 0; --pre_bslash)
+            *q++ = '\\';
+          *q++ = '"';
+        }
       *q++ = '\0';
     }
   (*new_wargv)[argc] = NULL;
@@ -157,9 +157,9 @@ checked_dup2 (int oldfd, int newfd, int report_fd)
 #ifndef HELPER_CONSOLE
 int _stdcall
 WinMain (struct HINSTANCE__ *hInstance,
-	 struct HINSTANCE__ *hPrevInstance,
-	 char               *lpszCmdLine,
-	 int                 nCmdShow)
+         struct HINSTANCE__ *hPrevInstance,
+         char               *lpszCmdLine,
+         int                 nCmdShow)
 #else
 int
 main (int ignored_argc, char **ignored_argv)
@@ -353,7 +353,7 @@ main (int ignored_argc, char **ignored_argv)
    */
   GLIB_PRIVATE_CALL (g_win32_push_empty_invalid_parameter_handler) (&handler);
   if (argv[ARG_CLOSE_DESCRIPTORS][0] == 'y')
-    for (i = 3; i < 1000; i++)	/* FIXME real limit? */
+    for (i = 3; i < 1000; i++)  /* FIXME real limit? */
       if (!g_hash_table_contains (fds, GINT_TO_POINTER (i)))
         if (_get_osfhandle (i) != -1)
           close (i);

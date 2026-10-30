@@ -11,7 +11,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -84,7 +84,7 @@
 
 gint
 g_win32_ftruncate (gint  fd,
-		   guint size)
+                   guint size)
 {
   return _chsize (fd, size);
 }
@@ -151,34 +151,34 @@ g_win32_getlocale (void)
     {
     case LANG_AZERI:
       switch (sub)
-	{
-	case SUBLANG_AZERI_LATIN:
-	  script = "@Latn";
-	  break;
-	case SUBLANG_AZERI_CYRILLIC:
-	  script = "@Cyrl";
-	  break;
-	}
+        {
+        case SUBLANG_AZERI_LATIN:
+          script = "@Latn";
+          break;
+        case SUBLANG_AZERI_CYRILLIC:
+          script = "@Cyrl";
+          break;
+        }
       break;
-    case LANG_SERBIAN:		/* LANG_CROATIAN == LANG_SERBIAN */
+    case LANG_SERBIAN:          /* LANG_CROATIAN == LANG_SERBIAN */
       switch (sub)
-	{
-	case SUBLANG_SERBIAN_LATIN:
-	case 0x06: /* Serbian (Latin) - Bosnia and Herzegovina */
-	  script = "@Latn";
-	  break;
-	}
+        {
+        case SUBLANG_SERBIAN_LATIN:
+        case 0x06: /* Serbian (Latin) - Bosnia and Herzegovina */
+          script = "@Latn";
+          break;
+        }
       break;
     case LANG_UZBEK:
       switch (sub)
-	{
-	case SUBLANG_UZBEK_LATIN:
-	  script = "@Latn";
-	  break;
-	case SUBLANG_UZBEK_CYRILLIC:
-	  script = "@Cyrl";
-	  break;
-	}
+        {
+        case SUBLANG_UZBEK_LATIN:
+          script = "@Latn";
+          break;
+        case SUBLANG_UZBEK_CYRILLIC:
+          script = "@Cyrl";
+          break;
+        }
       break;
     }
 
@@ -221,10 +221,10 @@ g_win32_error_message (gint error)
   size_t nchars;
 
   FormatMessageW (FORMAT_MESSAGE_ALLOCATE_BUFFER
-		  |FORMAT_MESSAGE_IGNORE_INSERTS
-		  |FORMAT_MESSAGE_FROM_SYSTEM,
-		  NULL, error, 0,
-		  (LPWSTR) &msg, 0, NULL);
+                  |FORMAT_MESSAGE_IGNORE_INSERTS
+                  |FORMAT_MESSAGE_FROM_SYSTEM,
+                  NULL, error, 0,
+                  (LPWSTR) &msg, 0, NULL);
   if (msg != NULL)
     {
       nchars = wcslen (msg);
@@ -361,10 +361,10 @@ get_package_directory_from_module (const gchar *module_name)
       g_free (wc_module_name);
 
       if (!hmodule)
-	{
-	  G_UNLOCK (module_dirs);
-	  return NULL;
-	}
+        {
+          G_UNLOCK (module_dirs);
+          return NULL;
+        }
     }
 
   fn = g_win32_get_package_installation_directory_of_module (hmodule);

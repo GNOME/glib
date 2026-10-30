@@ -206,15 +206,15 @@ GIO_AVAILABLE_IN_ALL
 gboolean g_volume_should_automount      (GVolume              *volume);
 GIO_AVAILABLE_IN_ALL
 void     g_volume_mount                 (GVolume              *volume,
-					 GMountMountFlags      flags,
-					 GMountOperation      *mount_operation,
-					 GCancellable         *cancellable,
-					 GAsyncReadyCallback   callback,
-					 gpointer              user_data);
+                                         GMountMountFlags      flags,
+                                         GMountOperation      *mount_operation,
+                                         GCancellable         *cancellable,
+                                         GAsyncReadyCallback   callback,
+                                         gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean g_volume_mount_finish          (GVolume              *volume,
-					 GAsyncResult         *result,
-					 GError              **error);
+                                         GAsyncResult         *result,
+                                         GError              **error);
 GIO_DEPRECATED_FOR(g_volume_eject_with_operation)
 void     g_volume_eject                 (GVolume              *volume,
                                          GMountUnmountFlags    flags,
@@ -228,7 +228,7 @@ gboolean g_volume_eject_finish          (GVolume              *volume,
                                          GError              **error);
 GIO_AVAILABLE_IN_ALL
 char *   g_volume_get_identifier        (GVolume              *volume,
-					 const char           *kind);
+                                         const char           *kind);
 GIO_AVAILABLE_IN_ALL
 char **  g_volume_enumerate_identifiers (GVolume              *volume);
 

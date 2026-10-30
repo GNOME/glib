@@ -40,8 +40,8 @@ typedef struct {
 
 
 /* --- prototypes --- */
-static gint	transform_entries_cmp	(gconstpointer bsearch_node1,
-					 gconstpointer bsearch_node2);
+static gint     transform_entries_cmp   (gconstpointer bsearch_node1,
+                                         gconstpointer bsearch_node2);
 
 
 /* --- variables --- */
@@ -60,9 +60,9 @@ _g_value_c_init (void)
   transform_array = g_bsearch_array_create (&transform_bconfig);
 }
 
-static inline void		/* keep this function in sync with gvaluecollector.h and gboxed.c */
+static inline void              /* keep this function in sync with gvaluecollector.h and gboxed.c */
 value_meminit (GValue *value,
-	       GType   value_type)
+               GType   value_type)
 {
   value->g_type = value_type;
   memset (value->data, 0, sizeof (value->data));
@@ -92,12 +92,12 @@ value_meminit (GValue *value,
  */
 GValue*
 g_value_init (GValue *value,
-	      GType   g_type)
+              GType   g_type)
 {
   GTypeValueTable *value_table;
-  /* g_return_val_if_fail (G_TYPE_IS_VALUE (g_type), NULL);	be more elaborate below */
+  /* g_return_val_if_fail (G_TYPE_IS_VALUE (g_type), NULL);     be more elaborate below */
   g_return_val_if_fail (value != NULL, NULL);
-  /* g_return_val_if_fail (G_VALUE_TYPE (value) == 0, NULL);	be more elaborate below */
+  /* g_return_val_if_fail (G_VALUE_TYPE (value) == 0, NULL);    be more elaborate below */
 
   value_table = g_type_value_table_peek (g_type);
 
@@ -109,9 +109,9 @@ g_value_init (GValue *value,
     }
   else if (G_VALUE_TYPE (value))
     g_critical ("%s: cannot initialize GValue with type '%s', the value has already been initialized as '%s'",
-	        G_STRLOC,
-	        g_type_name (g_type),
-	        g_type_name (G_VALUE_TYPE (value)));
+                G_STRLOC,
+                g_type_name (g_type),
+                g_type_name (G_VALUE_TYPE (value)));
   else /* !G_TYPE_IS_VALUE (g_type) */
     g_critical ("%s: cannot initialize GValue with type '%s', %s",
                 G_STRLOC,
@@ -130,7 +130,7 @@ g_value_init (GValue *value,
  */
 void
 g_value_copy (const GValue *src_value,
-	      GValue       *dest_value)
+              GValue       *dest_value)
 {
   g_return_if_fail (src_value);
   g_return_if_fail (dest_value);
@@ -145,7 +145,7 @@ g_value_copy (const GValue *src_value,
 
       /* make sure dest_value's value is free()d */
       if (value_table->value_free)
-	value_table->value_free (dest_value);
+        value_table->value_free (dest_value);
 
       /* setup and copy */
       value_meminit (dest_value, dest_type);
@@ -281,7 +281,7 @@ g_value_peek_pointer (const GValue *value)
  */
 void
 g_value_set_instance (GValue  *value,
-		      gpointer instance)
+                      gpointer instance)
 {
   GType g_type;
   GTypeValueTable *value_table;
@@ -402,7 +402,7 @@ transform_lookup_get_parent_type (GType type)
 
 static GValueTransform
 transform_func_lookup (GType src_type,
-		       GType dest_type)
+                       GType dest_type)
 {
   TransformEntry entry;
 
@@ -411,19 +411,19 @@ transform_func_lookup (GType src_type,
     {
       entry.dest_type = dest_type;
       do
-	{
-	  TransformEntry *e;
-	  
-	  e = g_bsearch_array_lookup (transform_array, &transform_bconfig, &entry);
-	  if (e)
-	    {
-	      /* need to check that there hasn't been a change in value handling */
-	      if (g_type_value_table_peek (entry.dest_type) == g_type_value_table_peek (dest_type) &&
-		  g_type_value_table_peek (entry.src_type) == g_type_value_table_peek (src_type))
-		return e->func;
-	    }
-	  entry.dest_type = transform_lookup_get_parent_type (entry.dest_type);
-	}
+        {
+          TransformEntry *e;
+          
+          e = g_bsearch_array_lookup (transform_array, &transform_bconfig, &entry);
+          if (e)
+            {
+              /* need to check that there hasn't been a change in value handling */
+              if (g_type_value_table_peek (entry.dest_type) == g_type_value_table_peek (dest_type) &&
+                  g_type_value_table_peek (entry.src_type) == g_type_value_table_peek (src_type))
+                return e->func;
+            }
+          entry.dest_type = transform_lookup_get_parent_type (entry.dest_type);
+        }
       while (entry.dest_type);
       
       entry.src_type = transform_lookup_get_parent_type (entry.src_type);
@@ -435,7 +435,7 @@ transform_func_lookup (GType src_type,
 
 static gint
 transform_entries_cmp (gconstpointer bsearch_node1,
-		       gconstpointer bsearch_node2)
+                       gconstpointer bsearch_node2)
 {
   const TransformEntry *e1 = bsearch_node1;
   const TransformEntry *e2 = bsearch_node2;
@@ -462,8 +462,8 @@ transform_entries_cmp (gconstpointer bsearch_node1,
  */
 void
 g_value_register_transform_func (GType           src_type,
-				 GType           dest_type,
-				 GValueTransform transform_func)
+                                 GType           dest_type,
+                                 GValueTransform transform_func)
 {
   TransformEntry entry;
 
@@ -479,9 +479,9 @@ g_value_register_transform_func (GType           src_type,
 #if 0 /* let transform function replacement be a valid operation */
   if (g_bsearch_array_lookup (transform_array, &transform_bconfig, &entry))
     g_warning ("reregistering value transformation function (%p) for '%s' to '%s'",
-	       transform_func,
-	       g_type_name (src_type),
-	       g_type_name (dest_type));
+               transform_func,
+               g_type_name (src_type),
+               g_type_name (dest_type));
 #endif
 
   entry.func = transform_func;
@@ -504,13 +504,13 @@ g_value_register_transform_func (GType           src_type,
  */
 gboolean
 g_value_type_transformable (GType src_type,
-			    GType dest_type)
+                            GType dest_type)
 {
   g_return_val_if_fail (src_type, FALSE);
   g_return_val_if_fail (dest_type, FALSE);
 
   return (g_value_type_compatible (src_type, dest_type) ||
-	  transform_func_lookup (src_type, dest_type) != NULL);
+          transform_func_lookup (src_type, dest_type) != NULL);
 }
 
 /**
@@ -525,7 +525,7 @@ g_value_type_transformable (GType src_type,
  */
 gboolean
 g_value_type_compatible (GType src_type,
-			 GType dest_type)
+                         GType dest_type)
 {
   g_return_val_if_fail (src_type, FALSE);
   g_return_val_if_fail (dest_type, FALSE);
@@ -535,7 +535,7 @@ g_value_type_compatible (GType src_type,
     return TRUE;
 
   return (g_type_is_a (src_type, dest_type) &&
-	  g_type_value_table_peek (dest_type) == g_type_value_table_peek (src_type));
+          g_type_value_table_peek (dest_type) == g_type_value_table_peek (src_type));
 }
 
 /**
@@ -560,7 +560,7 @@ g_value_type_compatible (GType src_type,
  */
 gboolean
 g_value_transform (const GValue *src_value,
-		   GValue       *dest_value)
+                   GValue       *dest_value)
 {
   GType dest_type;
 
@@ -579,15 +579,15 @@ g_value_transform (const GValue *src_value,
       GValueTransform transform = transform_func_lookup (G_VALUE_TYPE (src_value), dest_type);
 
       if (transform)
-	{
-	  g_value_unset (dest_value);
-	  
-	  /* setup and transform */
-	  value_meminit (dest_value, dest_type);
-	  transform (src_value, dest_value);
-	  
-	  return TRUE;
-	}
+        {
+          g_value_unset (dest_value);
+          
+          /* setup and transform */
+          value_meminit (dest_value, dest_type);
+          transform (src_value, dest_value);
+          
+          return TRUE;
+        }
     }
   return FALSE;
 }

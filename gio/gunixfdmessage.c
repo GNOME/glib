@@ -73,9 +73,9 @@ g_unix_fd_message_get_msg_type (GSocketControlMessage *message)
 
 static GSocketControlMessage *
 g_unix_fd_message_deserialize (int      level,
-			       int      type,
-			       gsize    size,
-			       gpointer data)
+                               int      type,
+                               gsize    size,
+                               gpointer data)
 {
   GSocketControlMessage *message;
   GUnixFDList *list;
@@ -127,7 +127,7 @@ g_unix_fd_message_deserialize (int      level,
 
 static void
 g_unix_fd_message_serialize (GSocketControlMessage *message,
-			     gpointer               data)
+                             gpointer               data)
 {
   GUnixFDMessage *fd_message = G_UNIX_FD_MESSAGE (message);
   const gint *fds;

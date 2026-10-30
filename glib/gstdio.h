@@ -91,7 +91,7 @@ typedef struct stat GStatBuf;
 
 GLIB_AVAILABLE_IN_ALL
 int g_access (const gchar *filename,
-	      int          mode);
+              int          mode);
 
 GLIB_AVAILABLE_IN_ALL
 int g_chdir  (const gchar *path);
@@ -116,11 +116,11 @@ int g_rmdir  (const gchar *filename);
 
 GLIB_AVAILABLE_IN_ALL
 int g_access    (const gchar *filename,
-		 int          mode);
+                 int          mode);
 
 GLIB_AVAILABLE_IN_ALL
 int g_chmod     (const gchar *filename,
-		 int          mode);
+                 int          mode);
 
 GLIB_AVAILABLE_IN_ALL
 int g_open      (const gchar *filename,
@@ -171,13 +171,13 @@ FILE *g_freopen (const gchar *filename,
 GLIB_AVAILABLE_IN_2_64
 gint g_fsync    (gint fd);
 
-struct utimbuf;			/* Don't need the real definition of struct utimbuf when just
-				 * including this header.
-				 */
+struct utimbuf;                 /* Don't need the real definition of struct utimbuf when just
+                                 * including this header.
+                                 */
 
 GLIB_AVAILABLE_IN_ALL
 int g_utime     (const gchar    *filename,
-		 struct utimbuf *utb);
+                 struct utimbuf *utb);
 
 #endif /* G_STDIO_LIBC_DIRECT */
 

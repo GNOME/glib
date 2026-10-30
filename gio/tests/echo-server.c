@@ -53,9 +53,9 @@ main (int argc, char *argv[])
   service = g_threaded_socket_service_new (10);
 
   if (!g_socket_listener_add_inet_port (G_SOCKET_LISTENER (service),
-					port,
-					NULL,
-					&error))
+                                        port,
+                                        NULL,
+                                        &error))
     {
       g_printerr ("%s: %s\n", argv[0], error->message);
       return 1;

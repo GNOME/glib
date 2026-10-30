@@ -61,16 +61,16 @@ struct _GSocketAddressEnumeratorClass
   /* Virtual Table */
 
   GSocketAddress * (* next)        (GSocketAddressEnumerator  *enumerator,
-				    GCancellable              *cancellable,
-				    GError                   **error);
+                                    GCancellable              *cancellable,
+                                    GError                   **error);
 
   void             (* next_async)  (GSocketAddressEnumerator  *enumerator,
-				    GCancellable              *cancellable,
-				    GAsyncReadyCallback        callback,
-				    gpointer                   user_data);
+                                    GCancellable              *cancellable,
+                                    GAsyncReadyCallback        callback,
+                                    gpointer                   user_data);
   GSocketAddress * (* next_finish) (GSocketAddressEnumerator  *enumerator,
-				    GAsyncResult              *result,
-				    GError                   **error);
+                                    GAsyncResult              *result,
+                                    GError                   **error);
 };
 
 GIO_AVAILABLE_IN_ALL
@@ -78,18 +78,18 @@ GType           g_socket_address_enumerator_get_type        (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketAddress *g_socket_address_enumerator_next        (GSocketAddressEnumerator  *enumerator,
-							 GCancellable              *cancellable,
-							 GError                   **error);
+                                                         GCancellable              *cancellable,
+                                                         GError                   **error);
 
 GIO_AVAILABLE_IN_ALL
 void            g_socket_address_enumerator_next_async  (GSocketAddressEnumerator  *enumerator,
-							 GCancellable              *cancellable,
-							 GAsyncReadyCallback        callback,
-							 gpointer                   user_data);
+                                                         GCancellable              *cancellable,
+                                                         GAsyncReadyCallback        callback,
+                                                         gpointer                   user_data);
 GIO_AVAILABLE_IN_ALL
 GSocketAddress *g_socket_address_enumerator_next_finish (GSocketAddressEnumerator  *enumerator,
-							 GAsyncResult              *result,
-							 GError                   **error);
+                                                         GAsyncResult              *result,
+                                                         GError                   **error);
 
 G_END_DECLS
 

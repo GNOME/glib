@@ -86,11 +86,11 @@ struct XdgCallbackList
 /* Function called by xdg_run_command_on_dirs.  If it returns TRUE, further
  * directories aren't looked at */
 typedef int (*XdgDirectoryFunc) (const char *directory,
-				 void       *user_data);
+                                 void       *user_data);
 
 static void
 xdg_dir_time_list_add (char   *file_name, 
-		       time_t  mtime)
+                       time_t  mtime)
 {
   XdgDirTimeList *list;
 
@@ -141,16 +141,16 @@ xdg_mime_init_from_directory (const char *directory,
       XdgMimeCache *cache = _xdg_mime_cache_new_from_file (file_name);
 
       if (cache != NULL)
-	{
-	  xdg_dir_time_list_add (file_name, st.st_mtime);
+        {
+          xdg_dir_time_list_add (file_name, st.st_mtime);
 
-	  _caches = realloc (_caches, sizeof (XdgMimeCache *) * (n_caches + 2));
-	  _caches[n_caches] = cache;
+          _caches = realloc (_caches, sizeof (XdgMimeCache *) * (n_caches + 2));
+          _caches[n_caches] = cache;
           _caches[n_caches + 1] = NULL;
-	  n_caches++;
+          n_caches++;
 
-	  return FALSE;
-	}
+          return FALSE;
+        }
     }
   free (file_name);
 
@@ -370,17 +370,17 @@ xdg_check_file (const char *file_path,
         *exists = TRUE;
 
       for (list = dir_time_list; list; list = list->next)
-	{
-	  if (! strcmp (list->directory_name, file_path))
-	    {
-	      if (st.st_mtime == list->mtime)
-		list->checked = XDG_CHECKED_VALID;
-	      else 
-		list->checked = XDG_CHECKED_INVALID;
+        {
+          if (! strcmp (list->directory_name, file_path))
+            {
+              if (st.st_mtime == list->mtime)
+                list->checked = XDG_CHECKED_VALID;
+              else 
+                list->checked = XDG_CHECKED_INVALID;
 
-	      return (list->checked != XDG_CHECKED_VALID);
-	    }
-	}
+              return (list->checked != XDG_CHECKED_VALID);
+            }
+        }
       return TRUE;
     }
 
@@ -392,7 +392,7 @@ xdg_check_file (const char *file_path,
 
 static int
 xdg_check_dir (const char *directory,
-	       void       *user_data)
+               void       *user_data)
 {
   int invalid, exists;
   char *file_name;
@@ -459,7 +459,7 @@ xdg_check_dirs (void)
   for (list = dir_time_list; list; list = list->next)
     {
       if (list->checked != XDG_CHECKED_VALID)
-	return TRUE;
+        return TRUE;
     }
 
   return FALSE;
@@ -515,8 +515,8 @@ xdg_mime_init (void)
 
 const char *
 xdg_mime_get_mime_type_for_data (const void *data,
-				 size_t      len,
-				 int        *result_prio)
+                                 size_t      len,
+                                 int        *result_prio)
 {
   const char *mime_type;
 
@@ -576,7 +576,7 @@ xdg_mime_get_mime_type_for_file (const char  *file_name,
   if (!statbuf)
     {
       if (stat (file_name, &buf) != 0)
-	return XDG_MIME_TYPE_UNKNOWN;
+        return XDG_MIME_TYPE_UNKNOWN;
 
       statbuf = &buf;
     }
@@ -608,7 +608,7 @@ xdg_mime_get_mime_type_for_file (const char  *file_name,
     }
 
   mime_type = _xdg_mime_magic_lookup_data (global_magic, data, bytes_read, NULL,
-					   mime_types, n);
+                                           mime_types, n);
 
   if (!mime_type)
     mime_type = _xdg_binary_or_text_fallback (data, bytes_read);
@@ -637,8 +637,8 @@ xdg_mime_get_mime_type_from_file_name (const char *file_name)
 
 int
 xdg_mime_get_mime_types_from_file_name (const char *file_name,
-					const char  *mime_types[],
-					int          n_mime_types)
+                                        const char  *mime_types[],
+                                        int          n_mime_types)
 {
   xdg_mime_init ();
   
@@ -667,7 +667,7 @@ xdg_mime_shutdown (void)
       xdg_dir_time_list_free (dir_time_list);
       dir_time_list = NULL;
     }
-	
+        
   if (global_hash)
     {
       _xdg_glob_hash_free (global_hash);
@@ -755,7 +755,7 @@ xdg_mime_unalias_mime_type (const char *mime_type)
 
 int
 _xdg_mime_mime_type_equal (const char *mime_a,
-			   const char *mime_b)
+                           const char *mime_b)
 {
   const char *unalias_a, *unalias_b;
 
@@ -770,7 +770,7 @@ _xdg_mime_mime_type_equal (const char *mime_a,
 
 int
 xdg_mime_mime_type_equal (const char *mime_a,
-			  const char *mime_b)
+                          const char *mime_b)
 {
   xdg_mime_init ();
 
@@ -779,7 +779,7 @@ xdg_mime_mime_type_equal (const char *mime_a,
 
 int
 xdg_mime_media_type_equal (const char *mime_a,
-			   const char *mime_b)
+                           const char *mime_b)
 {
   const char *sep;
 
@@ -819,8 +819,8 @@ xdg_mime_is_super_type (const char *mime)
 
 int
 _xdg_mime_mime_type_subclass (const char *mime,
-			      const char *base,
-			      const char ***seen)
+                              const char *base,
+                              const char ***seen)
 {
   const char *umime, *ubase, *parent;
   const char **parents, **first_seen = NULL, **new_seen;
@@ -891,7 +891,7 @@ done:
 
 int
 xdg_mime_mime_type_subclass (const char *mime,
-			     const char *base)
+                             const char *base)
 {
   xdg_mime_init ();
 
@@ -959,8 +959,8 @@ xdg_mime_dump (void)
  */
 int
 xdg_mime_register_reload_callback (XdgMimeCallback  callback,
-				   void            *data,
-				   XdgMimeDestroy   destroy)
+                                   void            *data,
+                                   XdgMimeDestroy   destroy)
 {
   XdgCallbackList *list_el;
   static int callback_id = 1;
@@ -989,20 +989,20 @@ xdg_mime_remove_callback (int callback_id)
   for (list = callback_list; list; list = list->next)
     {
       if (list->callback_id == callback_id)
-	{
-	  if (list->next)
-	    list->next = list->prev;
+        {
+          if (list->next)
+            list->next = list->prev;
 
-	  if (list->prev)
-	    list->prev->next = list->next;
-	  else
-	    callback_list = list->next;
+          if (list->prev)
+            list->prev->next = list->next;
+          else
+            callback_list = list->next;
 
-	  /* invoke the destroy handler */
-	  (list->destroy) (list->data);
-	  free (list);
-	  return;
-	}
+          /* invoke the destroy handler */
+          (list->destroy) (list->data);
+          free (list);
+          return;
+        }
     }
 }
 

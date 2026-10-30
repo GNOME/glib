@@ -5,9 +5,9 @@
 
 struct _select_t
 {
-	cmph_uint32 n,m;
-	cmph_uint32 * bits_vec;
-	cmph_uint32 * select_table;
+        cmph_uint32 n,m;
+        cmph_uint32 * bits_vec;
+        cmph_uint32 * select_table;
 };
 
 typedef struct _select_t select_t;

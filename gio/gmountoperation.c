@@ -245,26 +245,26 @@ reply_non_handled_in_idle (gpointer data)
 
 static void
 ask_password (GMountOperation *op,
-	      const char      *message,
-	      const char      *default_user,
-	      const char      *default_domain,
-	      GAskPasswordFlags flags)
+              const char      *message,
+              const char      *default_user,
+              const char      *default_domain,
+              GAskPasswordFlags flags)
 {
   g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
-		   reply_non_handled_in_idle,
-		   g_object_ref (op),
-		   g_object_unref);
+                   reply_non_handled_in_idle,
+                   g_object_ref (op),
+                   g_object_unref);
 }
   
 static void
 ask_question (GMountOperation *op,
-	      const char      *message,
-	      const char      *choices[])
+              const char      *message,
+              const char      *choices[])
 {
   g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
-		   reply_non_handled_in_idle,
-		   g_object_ref (op),
-		   g_object_unref);
+                   reply_non_handled_in_idle,
+                   g_object_ref (op),
+                   g_object_unref);
 }
 
 static void
@@ -274,9 +274,9 @@ show_processes (GMountOperation      *op,
                 const gchar          *choices[])
 {
   g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
-		   reply_non_handled_in_idle,
-		   g_object_ref (op),
-		   g_object_unref);
+                   reply_non_handled_in_idle,
+                   g_object_ref (op),
+                   g_object_unref);
 }
 
 static void
@@ -319,17 +319,17 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    */
   signals[ASK_PASSWORD] =
     g_signal_new (I_("ask-password"),
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GMountOperationClass, ask_password),
-		  NULL, NULL,
-		  _g_cclosure_marshal_VOID__STRING_STRING_STRING_FLAGS,
-		  G_TYPE_NONE, 4,
-		  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_ASK_PASSWORD_FLAGS);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GMountOperationClass, ask_password),
+                  NULL, NULL,
+                  _g_cclosure_marshal_VOID__STRING_STRING_STRING_FLAGS,
+                  G_TYPE_NONE, 4,
+                  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_ASK_PASSWORD_FLAGS);
   g_signal_set_va_marshaller (signals[ASK_PASSWORD],
                               G_TYPE_FROM_CLASS (object_class),
                               _g_cclosure_marshal_VOID__STRING_STRING_STRING_FLAGSv);
-		  
+                  
   /**
    * GMountOperation::ask-question:
    * @op: a #GMountOperation asking a question.
@@ -345,17 +345,17 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    */
   signals[ASK_QUESTION] =
     g_signal_new (I_("ask-question"),
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GMountOperationClass, ask_question),
-		  NULL, NULL,
-		  _g_cclosure_marshal_VOID__STRING_BOXED,
-		  G_TYPE_NONE, 2,
-		  G_TYPE_STRING, G_TYPE_STRV);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GMountOperationClass, ask_question),
+                  NULL, NULL,
+                  _g_cclosure_marshal_VOID__STRING_BOXED,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_STRING, G_TYPE_STRV);
   g_signal_set_va_marshaller (signals[ASK_QUESTION],
                               G_TYPE_FROM_CLASS (object_class),
                               _g_cclosure_marshal_VOID__STRING_BOXEDv);
-		  
+                  
   /**
    * GMountOperation::reply:
    * @op: a #GMountOperation.
@@ -365,13 +365,13 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    */
   signals[REPLY] =
     g_signal_new (I_("reply"),
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GMountOperationClass, reply),
-		  NULL, NULL,
-		  NULL,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_MOUNT_OPERATION_RESULT);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GMountOperationClass, reply),
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_MOUNT_OPERATION_RESULT);
 
   /**
    * GMountOperation::aborted:
@@ -386,12 +386,12 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    */
   signals[ABORTED] =
     g_signal_new (I_("aborted"),
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GMountOperationClass, aborted),
-		  NULL, NULL,
-		  NULL,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GMountOperationClass, aborted),
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 0);
 
   /**
    * GMountOperation::show-processes:
@@ -418,13 +418,13 @@ g_mount_operation_class_init (GMountOperationClass *klass)
    */
   signals[SHOW_PROCESSES] =
     g_signal_new (I_("show-processes"),
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GMountOperationClass, show_processes),
-		  NULL, NULL,
-		  _g_cclosure_marshal_VOID__STRING_BOXED_BOXED,
-		  G_TYPE_NONE, 3,
-		  G_TYPE_STRING, G_TYPE_ARRAY, G_TYPE_STRV);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GMountOperationClass, show_processes),
+                  NULL, NULL,
+                  _g_cclosure_marshal_VOID__STRING_BOXED_BOXED,
+                  G_TYPE_NONE, 3,
+                  G_TYPE_STRING, G_TYPE_ARRAY, G_TYPE_STRV);
   g_signal_set_va_marshaller (signals[SHOW_PROCESSES],
                               G_TYPE_FROM_CLASS (object_class),
                               _g_cclosure_marshal_VOID__STRING_BOXED_BOXEDv);
@@ -639,7 +639,7 @@ g_mount_operation_get_username (GMountOperation *op)
  **/
 void
 g_mount_operation_set_username (GMountOperation *op,
-				const char      *username)
+                                const char      *username)
 {
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   g_free (op->priv->user);
@@ -672,7 +672,7 @@ g_mount_operation_get_password (GMountOperation *op)
  **/
 void
 g_mount_operation_set_password (GMountOperation *op,
-				const char      *password)
+                                const char      *password)
 {
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   g_free (op->priv->password);
@@ -705,7 +705,7 @@ g_mount_operation_get_anonymous (GMountOperation *op)
  **/  
 void
 g_mount_operation_set_anonymous (GMountOperation *op,
-				 gboolean         anonymous)
+                                 gboolean         anonymous)
 {
   GMountOperationPrivate *priv;
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
@@ -742,7 +742,7 @@ g_mount_operation_get_domain (GMountOperation *op)
  **/  
 void
 g_mount_operation_set_domain (GMountOperation *op,
-			      const char      *domain)
+                              const char      *domain)
 {
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   g_free (op->priv->domain);
@@ -776,7 +776,7 @@ g_mount_operation_get_password_save (GMountOperation *op)
  **/   
 void
 g_mount_operation_set_password_save (GMountOperation *op,
-				     GPasswordSave    save)
+                                     GPasswordSave    save)
 {
   GMountOperationPrivate *priv;
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
@@ -814,7 +814,7 @@ g_mount_operation_get_choice (GMountOperation *op)
  **/
 void
 g_mount_operation_set_choice (GMountOperation *op,
-			      int              choice)
+                              int              choice)
 {
   GMountOperationPrivate *priv;
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
@@ -959,7 +959,7 @@ g_mount_operation_set_pim (GMountOperation *op,
  **/
 void
 g_mount_operation_reply (GMountOperation *op,
-			 GMountOperationResult result)
+                         GMountOperationResult result)
 {
   g_return_if_fail (G_IS_MOUNT_OPERATION (op));
   g_signal_emit (op, signals[REPLY], 0, result);

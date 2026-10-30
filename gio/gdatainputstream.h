@@ -112,9 +112,9 @@ char *                 g_data_input_stream_read_line            (GDataInputStrea
                                                                  GError                 **error);
 GIO_AVAILABLE_IN_2_30
 char *                 g_data_input_stream_read_line_utf8       (GDataInputStream        *stream,
-								 gsize                   *length,
-								 GCancellable            *cancellable,
-								 GError                 **error);
+                                                                 gsize                   *length,
+                                                                 GCancellable            *cancellable,
+                                                                 GError                 **error);
 GIO_AVAILABLE_IN_ALL
 void                   g_data_input_stream_read_line_async      (GDataInputStream        *stream,
                                                                  gint                     io_priority,

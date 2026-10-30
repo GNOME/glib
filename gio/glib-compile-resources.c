@@ -88,11 +88,11 @@ file_data_free (FileData *data)
 
 static void
 start_element (GMarkupParseContext  *context,
-	       const gchar          *element_name,
-	       const gchar         **attribute_names,
-	       const gchar         **attribute_values,
-	       gpointer              user_data,
-	       GError              **error)
+               const gchar          *element_name,
+               const gchar         **attribute_names,
+               const gchar         **attribute_values,
+               gpointer              user_data,
+               GError              **error)
 {
   ParseState *state = user_data;
   const GSList *element_stack;
@@ -103,8 +103,8 @@ start_element (GMarkupParseContext  *context,
 
 #define COLLECT(first, ...) \
   g_markup_collect_attributes (element_name,                                 \
-			       attribute_names, attribute_values, error,     \
-			       first, __VA_ARGS__, G_MARKUP_COLLECT_INVALID)
+                               attribute_names, attribute_values, error,     \
+                               first, __VA_ARGS__, G_MARKUP_COLLECT_INVALID)
 #define OPTIONAL   G_MARKUP_COLLECT_OPTIONAL
 #define STRDUP     G_MARKUP_COLLECT_STRDUP
 #define STRING     G_MARKUP_COLLECT_STRING
@@ -114,43 +114,43 @@ start_element (GMarkupParseContext  *context,
   if (container == NULL)
     {
       if (strcmp (element_name, "gresources") == 0)
-	return;
+        return;
     }
   else if (strcmp (container, "gresources") == 0)
     {
       if (strcmp (element_name, "gresource") == 0)
-	{
-	  COLLECT (OPTIONAL | STRDUP,
-		   "prefix", &state->prefix);
-	  return;
-	}
+        {
+          COLLECT (OPTIONAL | STRDUP,
+                   "prefix", &state->prefix);
+          return;
+        }
     }
   else if (strcmp (container, "gresource") == 0)
     {
       if (strcmp (element_name, "file") == 0)
-	{
-	  COLLECT (OPTIONAL | STRDUP, "alias", &state->alias,
-		   OPTIONAL | BOOL, "compressed", &state->compressed,
+        {
+          COLLECT (OPTIONAL | STRDUP, "alias", &state->alias,
+                   OPTIONAL | BOOL, "compressed", &state->compressed,
                    OPTIONAL | STRDUP, "preprocess", &state->preproc_options);
-	  state->string = g_string_new ("");
-	  return;
-	}
+          state->string = g_string_new ("");
+          return;
+        }
     }
 
   if (container)
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-		 _("Element <%s> not allowed inside <%s>"),
-		 element_name, container);
+                 _("Element <%s> not allowed inside <%s>"),
+                 element_name, container);
   else
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-		 _("Element <%s> not allowed at toplevel"), element_name);
+                 _("Element <%s> not allowed at toplevel"), element_name);
 
 }
 
 static GvdbItem *
 get_parent (GHashTable *table,
-	    gchar      *key,
-	    gint        length)
+            gchar      *key,
+            gint        length)
 {
   GvdbItem *grandparent, *parent;
 
@@ -169,7 +169,7 @@ get_parent (GHashTable *table,
       grandparent = get_parent (table, key, length);
 
       if (grandparent != NULL)
-	gvdb_item_set_parent (parent, grandparent);
+        gvdb_item_set_parent (parent, grandparent);
     }
 
   return parent;
@@ -188,20 +188,20 @@ find_file (const gchar *filename)
   /* search all the sourcedirs for the correct files in order */
   for (i = 0; sourcedirs[i] != NULL; i++)
     {
-	real_file = g_build_path ("/", sourcedirs[i], filename, NULL);
-	exists = g_file_test (real_file, G_FILE_TEST_EXISTS);
-	if (exists)
-	  return real_file;
-	g_free (real_file);
+        real_file = g_build_path ("/", sourcedirs[i], filename, NULL);
+        exists = g_file_test (real_file, G_FILE_TEST_EXISTS);
+        if (exists)
+          return real_file;
+        g_free (real_file);
     }
     return NULL;
 }
 
 static void
 end_element (GMarkupParseContext  *context,
-	     const gchar          *element_name,
-	     gpointer              user_data,
-	     GError              **error)
+             const gchar          *element_name,
+             gpointer              user_data,
+             GError              **error)
 {
   ParseState *state = user_data;
   GError *my_error = NULL;
@@ -223,42 +223,42 @@ end_element (GMarkupParseContext  *context,
       file = state->string->str;
       key = file;
       if (state->alias)
-	key = state->alias;
+        key = state->alias;
 
       if (state->prefix)
-	key = g_build_path ("/", "/", state->prefix, key, NULL);
+        key = g_build_path ("/", "/", state->prefix, key, NULL);
       else
-	key = g_build_path ("/", "/", key, NULL);
+        key = g_build_path ("/", "/", key, NULL);
 
       if (g_hash_table_lookup (state->table, key) != NULL)
-	{
-	  g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-		       _("File %s appears multiple times in the resource"),
-		       key);
-	  return;
-	}
+        {
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                       _("File %s appears multiple times in the resource"),
+                       key);
+          return;
+        }
 
       if (sourcedirs != NULL)
         {
-	  real_file = find_file (file);
-	  if (real_file == NULL && state->collect_data)
-	    {
-		g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			     _("Failed to locate “%s” in any source directory"), file);
-		return;
-	    }
-	}
+          real_file = find_file (file);
+          if (real_file == NULL && state->collect_data)
+            {
+                g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                             _("Failed to locate “%s” in any source directory"), file);
+                return;
+            }
+        }
       else
         {
-	  gboolean exists;
-	  exists = g_file_test (file, G_FILE_TEST_EXISTS);
-	  if (!exists && state->collect_data)
-	    {
-	      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			   _("Failed to locate “%s” in current directory"), file);
-	      return;
-	    }
-	}
+          gboolean exists;
+          exists = g_file_test (file, G_FILE_TEST_EXISTS);
+          if (!exists && state->collect_data)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Failed to locate “%s” in current directory"), file);
+              return;
+            }
+        }
 
       if (real_file == NULL)
         real_file = g_strdup (file);
@@ -410,7 +410,7 @@ end_element (GMarkupParseContext  *context,
 
           if (to_pixdata)
             {
-	      GSubprocess *proc;
+              GSubprocess *proc;
               int fd;
 
               /* This is a fatal error: if to-pixdata is used it means that
@@ -441,59 +441,59 @@ end_element (GMarkupParseContext  *context,
               g_free (real_file);
               real_file = NULL;
 
-	      if (!g_subprocess_wait_check (proc, NULL, error))
-		{
-		  g_object_unref (proc);
+              if (!g_subprocess_wait_check (proc, NULL, error))
+                {
+                  g_object_unref (proc);
                   goto cleanup;
-		}
+                }
 
-	      g_object_unref (proc);
+              g_object_unref (proc);
 
               real_file = g_strdup (tmp_file);
             }
-	}
+        }
 
       if (!g_file_get_contents (real_file, &data->content, &data->size, &my_error))
-	{
-	  g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-		       _("Error reading file %s: %s"),
-		       real_file, my_error->message);
-	  g_clear_error (&my_error);
-	  goto cleanup;
-	}
+        {
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                       _("Error reading file %s: %s"),
+                       real_file, my_error->message);
+          g_clear_error (&my_error);
+          goto cleanup;
+        }
       /* Include zero termination in content_size for uncompressed files (but not in size) */
       data->content_size = data->size + 1;
 
       if (state->compressed)
-	{
-	  GOutputStream *out = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
-	  GZlibCompressor *compressor =
-	    g_zlib_compressor_new (G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 9);
-	  GOutputStream *out2 = g_converter_output_stream_new (out, G_CONVERTER (compressor));
+        {
+          GOutputStream *out = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+          GZlibCompressor *compressor =
+            g_zlib_compressor_new (G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 9);
+          GOutputStream *out2 = g_converter_output_stream_new (out, G_CONVERTER (compressor));
 
-	  if (!g_output_stream_write_all (out2, data->content, data->size,
-					  NULL, NULL, NULL) ||
-	      !g_output_stream_close (out2, NULL, NULL))
-	    {
-	      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-			   _("Error compressing file %s"),
-			   real_file);
+          if (!g_output_stream_write_all (out2, data->content, data->size,
+                                          NULL, NULL, NULL) ||
+              !g_output_stream_close (out2, NULL, NULL))
+            {
+              g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                           _("Error compressing file %s"),
+                           real_file);
               g_object_unref (compressor);
               g_object_unref (out);
               g_object_unref (out2);
               goto cleanup;
-	    }
+            }
 
-	  g_free (data->content);
-	  data->content_size = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (out));
-	  data->content = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (out));
+          g_free (data->content);
+          data->content_size = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (out));
+          data->content = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (out));
 
-	  g_object_unref (compressor);
-	  g_object_unref (out);
-	  g_object_unref (out2);
+          g_object_unref (compressor);
+          g_object_unref (out);
+          g_object_unref (out2);
 
-	  data->flags |= G_RESOURCE_FLAGS_COMPRESSED;
-	}
+          data->flags |= G_RESOURCE_FLAGS_COMPRESSED;
+        }
 
 done:
       g_hash_table_insert (state->table, key, data);
@@ -535,15 +535,15 @@ text (GMarkupParseContext  *context,
   for (i = 0; i < text_len; i++)
     if (!g_ascii_isspace (text[i]))
       {
-	if (state->string)
-	  g_string_append_len (state->string, text, text_len);
+        if (state->string)
+          g_string_append_len (state->string, text, text_len);
 
-	else
-	  g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-		       _("text may not appear inside <%s>"),
-		       g_markup_parse_context_get_element (context));
+        else
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                       _("text may not appear inside <%s>"),
+                       g_markup_parse_context_get_element (context));
 
-	break;
+        break;
       }
 }
 
@@ -571,9 +571,9 @@ parse_resource_file (const gchar *filename,
   state.table = g_hash_table_ref (files);
 
   context = g_markup_parse_context_new (&parser,
-					G_MARKUP_TREAT_CDATA_AS_TEXT |
-					G_MARKUP_PREFIX_ERROR_POSITION,
-					&state, NULL);
+                                        G_MARKUP_TREAT_CDATA_AS_TEXT |
+                                        G_MARKUP_PREFIX_ERROR_POSITION,
+                                        &state, NULL);
 
   if (!g_markup_parse_context_parse (context, contents, size, &error) ||
       !g_markup_parse_context_end_parse (context, &error))
@@ -596,30 +596,30 @@ parse_resource_file (const gchar *filename,
 
       g_hash_table_iter_init (&iter, state.table);
       while (g_hash_table_iter_next (&iter, (gpointer *)&key, (gpointer *)&data))
-	{
-	  key_len = strlen (key);
-	  mykey = g_strdup (key);
+        {
+          key_len = strlen (key);
+          mykey = g_strdup (key);
 
-	  item = gvdb_hash_table_insert (table, key);
-	  gvdb_item_set_parent (item,
-				get_parent (table, mykey, key_len));
+          item = gvdb_hash_table_insert (table, key);
+          gvdb_item_set_parent (item,
+                                get_parent (table, mykey, key_len));
 
-	  g_free (mykey);
+          g_free (mykey);
 
-	  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(uuay)"));
+          g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("(uuay)"));
 
-	  g_variant_builder_add (&builder, "u", data->size); /* Size */
-	  g_variant_builder_add (&builder, "u", data->flags); /* Flags */
+          g_variant_builder_add (&builder, "u", data->size); /* Size */
+          g_variant_builder_add (&builder, "u", data->flags); /* Flags */
 
-	  v_data = g_variant_new_from_data (G_VARIANT_TYPE("ay"),
-					    data->content, data->content_size, TRUE,
-					    g_free, data->content);
-	  g_variant_builder_add_value (&builder, v_data);
-	  data->content = NULL; /* Take ownership */
+          v_data = g_variant_new_from_data (G_VARIANT_TYPE("ay"),
+                                            data->content, data->content_size, TRUE,
+                                            g_free, data->content);
+          g_variant_builder_add_value (&builder, v_data);
+          data->content = NULL; /* Take ownership */
 
-	  gvdb_item_set_value (item,
-			       g_variant_builder_end (&builder));
-	}
+          gvdb_item_set_value (item,
+                               g_variant_builder_end (&builder));
+        }
     }
 
   g_hash_table_unref (state.table);
@@ -631,14 +631,14 @@ parse_resource_file (const gchar *filename,
 
 static gboolean
 write_to_file (GHashTable   *table,
-	       const gchar  *filename,
-	       GError      **error)
+               const gchar  *filename,
+               GError      **error)
 {
   gboolean success;
 
   success = gvdb_table_write_contents (table, filename,
-				       G_BYTE_ORDER != G_LITTLE_ENDIAN,
-				       error);
+                                       G_BYTE_ORDER != G_LITTLE_ENDIAN,
+                                       error);
 
   return success;
 }
@@ -934,14 +934,14 @@ main (int argc, char **argv)
       char *base = g_path_get_basename (srcfile);
       char *target_basename;
       if (g_str_has_suffix (base, ".xml"))
-	base[strlen(base) - strlen (".xml")] = 0;
+        base[strlen(base) - strlen (".xml")] = 0;
 
       if (generate_source)
-	{
-	  if (g_str_has_suffix (base, ".gresource"))
-	    base[strlen(base) - strlen (".gresource")] = 0;
-	  target_basename = g_strconcat (base, ".c", NULL);
-	}
+        {
+          if (g_str_has_suffix (base, ".gresource"))
+            base[strlen(base) - strlen (".gresource")] = 0;
+          target_basename = g_strconcat (base, ".c", NULL);
+        }
       else if (generate_header)
         {
           if (g_str_has_suffix (base, ".gresource"))
@@ -949,12 +949,12 @@ main (int argc, char **argv)
           target_basename = g_strconcat (base, ".h", NULL);
         }
       else
-	{
-	  if (g_str_has_suffix (base, ".gresource"))
-	    target_basename = g_strdup (base);
-	  else
-	    target_basename = g_strconcat (base, ".gresource", NULL);
-	}
+        {
+          if (g_str_has_suffix (base, ".gresource"))
+            target_basename = g_strdup (base);
+          else
+            target_basename = g_strconcat (base, ".gresource", NULL);
+        }
 
       target = g_build_filename (dirname, target_basename, NULL);
       g_free (target_basename);
@@ -1023,7 +1023,7 @@ main (int argc, char **argv)
        */
       if (generate_phony_targets)
         {
-					g_string_append (dep_string, "\n");
+                                        g_string_append (dep_string, "\n");
 
           /* One rule for every resource: resourceN: */
           g_hash_table_iter_init (&iter, files);
@@ -1078,47 +1078,47 @@ main (int argc, char **argv)
   else if (generate_source || generate_header)
     {
       if (generate_source)
-	{
-	  int fd = g_file_open_tmp (NULL, &binary_target, &error);
-	  if (fd == -1)
-	    {
-	      g_printerr ("Can't open temp file: %s\n", error->message);
+        {
+          int fd = g_file_open_tmp (NULL, &binary_target, &error);
+          if (fd == -1)
+            {
+              g_printerr ("Can't open temp file: %s\n", error->message);
               g_error_free (error);
-	      g_free (c_name);
+              g_free (c_name);
               g_hash_table_unref (files);
-	      return 1;
-	    }
-	  close (fd);
-	}
+              return 1;
+            }
+          close (fd);
+        }
 
       if (c_name == NULL)
-	{
-	  char *base = g_path_get_basename (srcfile);
-	  GString *s;
-	  char *dot;
-	  int i;
+        {
+          char *base = g_path_get_basename (srcfile);
+          GString *s;
+          char *dot;
+          int i;
 
-	  /* Remove extensions */
-	  dot = strchr (base, '.');
-	  if (dot)
-	    *dot = 0;
+          /* Remove extensions */
+          dot = strchr (base, '.');
+          if (dot)
+            *dot = 0;
 
-	  s = g_string_new ("");
+          s = g_string_new ("");
 
-	  for (i = 0; base[i] != 0; i++)
-	    {
-	      const char *first = G_CSET_A_2_Z G_CSET_a_2_z "_";
-	      const char *rest = G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "_";
-	      if (strchr ((s->len == 0) ? first : rest, base[i]) != NULL)
-		g_string_append_c (s, base[i]);
-	      else if (base[i] == '-')
-		g_string_append_c (s, '_');
+          for (i = 0; base[i] != 0; i++)
+            {
+              const char *first = G_CSET_A_2_Z G_CSET_a_2_z "_";
+              const char *rest = G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "_";
+              if (strchr ((s->len == 0) ? first : rest, base[i]) != NULL)
+                g_string_append_c (s, base[i]);
+              else if (base[i] == '-')
+                g_string_append_c (s, '_');
 
-	    }
+            }
 
-	  g_free (base);
-	  c_name = g_string_free (s, FALSE);
-	}
+          g_free (base);
+          c_name = g_string_free (s, FALSE);
+        }
     }
   else
     binary_target = g_strdup (target);
@@ -1143,32 +1143,32 @@ main (int argc, char **argv)
 
       file = g_fopen (target, "we");
       if (file == NULL)
-	{
-	  g_printerr ("can't write to file %s", target);
-	  g_free (c_name);
+        {
+          g_printerr ("can't write to file %s", target);
+          g_free (c_name);
           g_hash_table_unref (files);
-	  return 1;
-	}
+          return 1;
+        }
 
       g_fprintf (file,
-	       "#ifndef __RESOURCE_%s_H__\n"
-	       "#define __RESOURCE_%s_H__\n"
-	       "\n"
-	       "#include <gio/gio.h>\n"
-	       "\n"
-	       "%s GResource *%s_get_resource (void);\n",
-	       c_name, c_name, linkage, c_name);
+               "#ifndef __RESOURCE_%s_H__\n"
+               "#define __RESOURCE_%s_H__\n"
+               "\n"
+               "#include <gio/gio.h>\n"
+               "\n"
+               "%s GResource *%s_get_resource (void);\n",
+               c_name, c_name, linkage, c_name);
 
       if (manual_register)
-	g_fprintf (file,
-		 "\n"
-		 "%s void %s_register_resource (void);\n"
-		 "%s void %s_unregister_resource (void);\n"
-		 "\n",
-		 linkage, c_name, linkage, c_name);
+        g_fprintf (file,
+                 "\n"
+                 "%s void %s_register_resource (void);\n"
+                 "%s void %s_unregister_resource (void);\n"
+                 "\n",
+                 linkage, c_name, linkage, c_name);
 
       g_fprintf (file,
-	       "#endif\n");
+               "#endif\n");
 
       fclose (file);
     }
@@ -1181,37 +1181,37 @@ main (int argc, char **argv)
       const char *export = "G_MODULE_EXPORT";
 
       if (!g_file_get_contents (binary_target, (char **)&data,
-				&data_size, NULL))
-	{
-	  g_printerr ("can't read back temporary file");
-	  g_free (c_name);
+                                &data_size, NULL))
+        {
+          g_printerr ("can't read back temporary file");
+          g_free (c_name);
           g_hash_table_unref (files);
-	  return 1;
-	}
+          return 1;
+        }
       g_unlink (binary_target);
 
       file = g_fopen (target, "we");
       if (file == NULL)
-	{
-	  g_printerr ("can't write to file %s", target);
-	  g_free (c_name);
+        {
+          g_printerr ("can't write to file %s", target);
+          g_free (c_name);
           g_hash_table_unref (files);
-	  return 1;
-	}
+          return 1;
+        }
 
       if (internal)
         export = "G_GNUC_INTERNAL";
 
       g_fprintf (file,
-	       "#include <gio/gio.h>\n"
-	       "\n"
-	       "#if defined (__ELF__) && ( __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 6))\n"
-	       "# define SECTION __attribute__ ((section (\".gresource.%s\"), aligned (sizeof(void *) > 8 ? sizeof(void *) : 8)))\n"
-	       "#else\n"
-	       "# define SECTION\n"
-	       "#endif\n"
-	       "\n",
-	       c_name_no_underscores);
+               "#include <gio/gio.h>\n"
+               "\n"
+               "#if defined (__ELF__) && ( __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 6))\n"
+               "# define SECTION __attribute__ ((section (\".gresource.%s\"), aligned (sizeof(void *) > 8 ? sizeof(void *) : 8)))\n"
+               "#else\n"
+               "# define SECTION\n"
+               "#endif\n"
+               "\n",
+               c_name_no_underscores);
 
       if (external_data)
         {
@@ -1260,71 +1260,71 @@ main (int argc, char **argv)
         }
 
       g_fprintf (file,
-	       "\n"
-	       "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data)%s, NULL, NULL, NULL };\n"
-	       "\n"
-	       "%s\n"
-	       "GResource *%s_get_resource (void);\n"
-	       "GResource *%s_get_resource (void)\n"
-	       "{\n"
-	       "  return g_static_resource_get_resource (&static_resource);\n"
-	       "}\n",
-	       c_name, c_name, (external_data ? "" : " - 1 /* nul terminator */"),
-	       export, c_name, c_name);
+               "\n"
+               "static GStaticResource static_resource = { %s_resource_data.data, sizeof (%s_resource_data.data)%s, NULL, NULL, NULL };\n"
+               "\n"
+               "%s\n"
+               "GResource *%s_get_resource (void);\n"
+               "GResource *%s_get_resource (void)\n"
+               "{\n"
+               "  return g_static_resource_get_resource (&static_resource);\n"
+               "}\n",
+               c_name, c_name, (external_data ? "" : " - 1 /* nul terminator */"),
+               export, c_name, c_name);
 
 
       if (manual_register)
-	{
-	  g_fprintf (file,
-		   "\n"
-		   "%s\n"
-		   "void %s_unregister_resource (void);\n"
-		   "void %s_unregister_resource (void)\n"
-		   "{\n"
-		   "  g_static_resource_fini (&static_resource);\n"
-		   "}\n"
-		   "\n"
-		   "%s\n"
-		   "void %s_register_resource (void);\n"
-		   "void %s_register_resource (void)\n"
-		   "{\n"
-		   "  g_static_resource_init (&static_resource);\n"
-		   "}\n",
-		   export, c_name, c_name,
-		   export, c_name, c_name);
-	}
+        {
+          g_fprintf (file,
+                   "\n"
+                   "%s\n"
+                   "void %s_unregister_resource (void);\n"
+                   "void %s_unregister_resource (void)\n"
+                   "{\n"
+                   "  g_static_resource_fini (&static_resource);\n"
+                   "}\n"
+                   "\n"
+                   "%s\n"
+                   "void %s_register_resource (void);\n"
+                   "void %s_register_resource (void)\n"
+                   "{\n"
+                   "  g_static_resource_init (&static_resource);\n"
+                   "}\n",
+                   export, c_name, c_name,
+                   export, c_name, c_name);
+        }
       else
-	{
-	  g_fprintf (file, "%s", gconstructor_code);
-	  g_fprintf (file,
-		   "\n"
-		   "#ifdef G_HAS_CONSTRUCTORS\n"
-		   "\n"
-		   "#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA\n"
-		   "#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(%sresource_constructor)\n"
-		   "#endif\n"
-		   "G_DEFINE_CONSTRUCTOR(%sresource_constructor)\n"
-		   "#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA\n"
-		   "#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(%sresource_destructor)\n"
-		   "#endif\n"
-		   "G_DEFINE_DESTRUCTOR(%sresource_destructor)\n"
-		   "\n"
-		   "#else\n"
-		   "#warning \"Constructor not supported on this compiler, linking in resources will not work\"\n"
-		   "#endif\n"
-		   "\n"
-		   "static void %sresource_constructor (void)\n"
-		   "{\n"
-		   "  g_static_resource_init (&static_resource);\n"
-		   "}\n"
-		   "\n"
-		   "static void %sresource_destructor (void)\n"
-		   "{\n"
-		   "  g_static_resource_fini (&static_resource);\n"
-		   "}\n",
+        {
+          g_fprintf (file, "%s", gconstructor_code);
+          g_fprintf (file,
+                   "\n"
+                   "#ifdef G_HAS_CONSTRUCTORS\n"
+                   "\n"
+                   "#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA\n"
+                   "#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(%sresource_constructor)\n"
+                   "#endif\n"
+                   "G_DEFINE_CONSTRUCTOR(%sresource_constructor)\n"
+                   "#ifdef G_DEFINE_DESTRUCTOR_NEEDS_PRAGMA\n"
+                   "#pragma G_DEFINE_DESTRUCTOR_PRAGMA_ARGS(%sresource_destructor)\n"
+                   "#endif\n"
+                   "G_DEFINE_DESTRUCTOR(%sresource_destructor)\n"
+                   "\n"
+                   "#else\n"
+                   "#warning \"Constructor not supported on this compiler, linking in resources will not work\"\n"
+                   "#endif\n"
+                   "\n"
+                   "static void %sresource_constructor (void)\n"
+                   "{\n"
+                   "  g_static_resource_init (&static_resource);\n"
+                   "}\n"
+                   "\n"
+                   "static void %sresource_destructor (void)\n"
+                   "{\n"
+                   "  g_static_resource_fini (&static_resource);\n"
+                   "}\n",
            c_name, c_name, c_name,
            c_name, c_name, c_name);
-	}
+        }
 
       fclose (file);
 

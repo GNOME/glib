@@ -37,13 +37,13 @@ G_DEFINE_TYPE (GTest, my_test, G_TYPE_OBJECT)
 static gint stopping;  /* (atomic) */
 
 static void my_test_get_property (GObject    *object,
-				  guint       prop_id,
-				  GValue     *value,
-				  GParamSpec *pspec);
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec);
 static void my_test_set_property (GObject      *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec);
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec);
 
 static void
 my_test_class_init (GTestClass * klass)
@@ -56,12 +56,12 @@ my_test_class_init (GTestClass * klass)
   gobject_class->set_property = my_test_set_property;
 
   g_object_class_install_property (gobject_class,
-				   PROP_DUMMY,
-				   g_param_spec_int ("dummy",
-						     NULL,
-						     NULL,
-						     0, G_MAXINT, 0,
-						     G_PARAM_READWRITE));
+                                   PROP_DUMMY,
+                                   g_param_spec_int ("dummy",
+                                                     NULL,
+                                                     NULL,
+                                                     0, G_MAXINT, 0,
+                                                     G_PARAM_READWRITE));
 }
 
 static void
@@ -73,9 +73,9 @@ my_test_init (GTest * test)
 
 static void
 my_test_get_property (GObject    *object,
-		      guint       prop_id,
-		      GValue     *value,
-		      GParamSpec *pspec)
+                      guint       prop_id,
+                      GValue     *value,
+                      GParamSpec *pspec)
 {
   GTest *test;
 
@@ -94,9 +94,9 @@ my_test_get_property (GObject    *object,
 
 static void
 my_test_set_property (GObject      *object,
-		      guint         prop_id,
-		      const GValue *value,
-		      GParamSpec   *pspec)
+                      guint         prop_id,
+                      const GValue *value,
+                      GParamSpec   *pspec)
 {
   GTest *test;
 
@@ -115,7 +115,7 @@ my_test_set_property (GObject      *object,
 
 static void
 dummy_notify (GObject    *object,
-	      GParamSpec *pspec)
+              GParamSpec *pspec)
 {
   GTest *test;
 

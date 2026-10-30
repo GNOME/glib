@@ -705,7 +705,7 @@ g_spawn_command_line_async (const gchar *command_line,
  */
 gboolean
 g_spawn_check_wait_status (gint      wait_status,
-			   GError  **error)
+                           GError  **error)
 {
   return g_spawn_check_wait_status_impl (wait_status, error);
 }

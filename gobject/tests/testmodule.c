@@ -34,8 +34,8 @@ test_module_class_init (TestModuleClass *class)
 }
 
 DEFINE_TYPE (TestModule, test_module,
-	     test_module_class_init, NULL, NULL,
-	     G_TYPE_TYPE_MODULE)
+             test_module_class_init, NULL, NULL,
+             G_TYPE_TYPE_MODULE)
 
 static gboolean
 test_module_load (GTypeModule *module)

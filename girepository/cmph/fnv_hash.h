@@ -5,7 +5,7 @@
 
 typedef struct __fnv_state_t
 {
-	CMPH_HASH hashfunc;
+        CMPH_HASH hashfunc;
 } fnv_state_t;
 
 fnv_state_t *fnv_state_new();

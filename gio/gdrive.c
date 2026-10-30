@@ -74,12 +74,12 @@ g_drive_default_init (GDriveInterface *iface)
    * Emitted when the drive's state has changed.
    **/
   g_signal_new (I_("changed"),
-		G_TYPE_DRIVE,
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GDriveIface, changed),
-		NULL, NULL,
-		NULL,
-		G_TYPE_NONE, 0);
+                G_TYPE_DRIVE,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GDriveIface, changed),
+                NULL, NULL,
+                NULL,
+                G_TYPE_NONE, 0);
 
   /**
    * GDrive::disconnected:
@@ -91,12 +91,12 @@ g_drive_default_init (GDriveInterface *iface)
    * finalized.
    **/
   g_signal_new (I_("disconnected"),
-		G_TYPE_DRIVE,
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GDriveIface, disconnected),
-		NULL, NULL,
-		NULL,
-		G_TYPE_NONE, 0);
+                G_TYPE_DRIVE,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GDriveIface, disconnected),
+                NULL, NULL,
+                NULL,
+                G_TYPE_NONE, 0);
 
   /**
    * GDrive::eject-button:
@@ -106,12 +106,12 @@ g_drive_default_init (GDriveInterface *iface)
    * been pressed.
    **/
   g_signal_new (I_("eject-button"),
-		G_TYPE_DRIVE,
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GDriveIface, eject_button),
-		NULL, NULL,
-		NULL,
-		G_TYPE_NONE, 0);
+                G_TYPE_DRIVE,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GDriveIface, eject_button),
+                NULL, NULL,
+                NULL,
+                G_TYPE_NONE, 0);
 
   /**
    * GDrive::stop-button:
@@ -123,12 +123,12 @@ g_drive_default_init (GDriveInterface *iface)
    * Since: 2.22
    **/
   g_signal_new (I_("stop-button"),
-		G_TYPE_DRIVE,
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GDriveIface, stop_button),
-		NULL, NULL,
-		NULL,
-		G_TYPE_NONE, 0);
+                G_TYPE_DRIVE,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GDriveIface, stop_button),
+                NULL, NULL,
+                NULL,
+                G_TYPE_NONE, 0);
 }
 
 /**
@@ -398,10 +398,10 @@ g_drive_can_poll_for_media (GDrive *drive)
  **/
 void
 g_drive_eject (GDrive              *drive,
-	       GMountUnmountFlags   flags,
-	       GCancellable        *cancellable,
-	       GAsyncReadyCallback  callback,
-	       gpointer             user_data)
+               GMountUnmountFlags   flags,
+               GCancellable        *cancellable,
+               GAsyncReadyCallback  callback,
+               gpointer             user_data)
 {
   GDriveIface *iface;
 
@@ -436,8 +436,8 @@ g_drive_eject (GDrive              *drive,
  **/
 gboolean
 g_drive_eject_finish (GDrive        *drive,
-		      GAsyncResult  *result,
-		      GError       **error)
+                      GAsyncResult  *result,
+                      GError       **error)
 {
   GDriveIface *iface;
 
@@ -621,7 +621,7 @@ g_drive_poll_for_media_finish (GDrive        *drive,
  */
 char *
 g_drive_get_identifier (GDrive     *drive,
-			const char *kind)
+                        const char *kind)
 {
   GDriveIface *iface;
 

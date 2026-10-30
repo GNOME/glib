@@ -65,36 +65,36 @@ GIO_AVAILABLE_IN_2_32
 GType         g_resource_get_type            (void);
 GIO_AVAILABLE_IN_2_32
 GResource *   g_resource_new_from_data       (GBytes                *data,
-					      GError               **error);
+                                              GError               **error);
 GIO_AVAILABLE_IN_2_32
 GResource *   g_resource_ref                 (GResource             *resource);
 GIO_AVAILABLE_IN_2_32
 void          g_resource_unref               (GResource             *resource);
 GIO_AVAILABLE_IN_2_32
 GResource *   g_resource_load                (const gchar           *filename,
-					      GError               **error);
+                                              GError               **error);
 GIO_AVAILABLE_IN_2_32
 GInputStream *g_resource_open_stream         (GResource             *resource,
-					      const char            *path,
-					      GResourceLookupFlags   lookup_flags,
-					      GError               **error);
+                                              const char            *path,
+                                              GResourceLookupFlags   lookup_flags,
+                                              GError               **error);
 GIO_AVAILABLE_IN_2_32
 GBytes *      g_resource_lookup_data         (GResource             *resource,
-					      const char            *path,
-					      GResourceLookupFlags   lookup_flags,
-					      GError               **error);
+                                              const char            *path,
+                                              GResourceLookupFlags   lookup_flags,
+                                              GError               **error);
 GIO_AVAILABLE_IN_2_32
 char **       g_resource_enumerate_children  (GResource             *resource,
-					      const char            *path,
-					      GResourceLookupFlags   lookup_flags,
-					      GError               **error);
+                                              const char            *path,
+                                              GResourceLookupFlags   lookup_flags,
+                                              GError               **error);
 GIO_AVAILABLE_IN_2_32
 gboolean      g_resource_get_info            (GResource             *resource,
-					      const char            *path,
-					      GResourceLookupFlags   lookup_flags,
-					      gsize                 *size,
-					      guint32               *flags,
-					      GError               **error);
+                                              const char            *path,
+                                              GResourceLookupFlags   lookup_flags,
+                                              gsize                 *size,
+                                              guint32               *flags,
+                                              GError               **error);
 
 GIO_AVAILABLE_IN_2_32
 void          g_resources_register           (GResource             *resource);
@@ -102,22 +102,22 @@ GIO_AVAILABLE_IN_2_32
 void          g_resources_unregister         (GResource             *resource);
 GIO_AVAILABLE_IN_2_32
 GInputStream *g_resources_open_stream        (const char            *path,
-					      GResourceLookupFlags   lookup_flags,
-					      GError               **error);
+                                              GResourceLookupFlags   lookup_flags,
+                                              GError               **error);
 GIO_AVAILABLE_IN_2_32
 GBytes *      g_resources_lookup_data        (const char            *path,
-					      GResourceLookupFlags   lookup_flags,
-					      GError               **error);
+                                              GResourceLookupFlags   lookup_flags,
+                                              GError               **error);
 GIO_AVAILABLE_IN_2_32
 char **       g_resources_enumerate_children (const char            *path,
-					      GResourceLookupFlags   lookup_flags,
-					      GError               **error);
+                                              GResourceLookupFlags   lookup_flags,
+                                              GError               **error);
 GIO_AVAILABLE_IN_2_32
 gboolean      g_resources_get_info           (const char            *path,
-					      GResourceLookupFlags   lookup_flags,
-					      gsize                 *size,
-					      guint32               *flags,
-					      GError               **error);
+                                              GResourceLookupFlags   lookup_flags,
+                                              gsize                 *size,
+                                              guint32               *flags,
+                                              GError               **error);
 
 GIO_AVAILABLE_IN_2_84
 gboolean      g_resource_has_children        (GResource             *resource,

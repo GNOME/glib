@@ -20,7 +20,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.
 
    Authors: 
-		 John McCutchan <john@johnmccutchan.com>
+                 John McCutchan <john@johnmccutchan.com>
 */
 
 #include "config.h"
@@ -105,7 +105,7 @@ gboolean
 _ih_sub_add (inotify_sub *sub)
 {
   G_LOCK (inotify_lock);
-	
+        
   if (!_ip_start_watching (sub))
     _im_add (sub);
   
@@ -137,8 +137,8 @@ _ih_sub_cancel (inotify_sub *sub)
 
 static char *
 _ih_fullpath_from_event (ik_event_t *event,
-			 const char *dirname,
-			 const char *filename)
+                         const char *dirname,
+                         const char *filename)
 {
   char *fullpath;
 

@@ -30,8 +30,8 @@
 }
 
 #define MY_DEFINE_TYPE(TN, t_n, T_P) \
-	G_DEFINE_TYPE_WITH_CODE (TN, t_n, T_P, \
-				 MY_G_IMPLEMENT_INTERFACE (G_TYPE_INTERFACE, NULL))
+        G_DEFINE_TYPE_WITH_CODE (TN, t_n, T_P, \
+                                 MY_G_IMPLEMENT_INTERFACE (G_TYPE_INTERFACE, NULL))
 
 typedef struct _TypeName {
   GObject parent_instance;

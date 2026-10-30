@@ -119,8 +119,8 @@ struct _GLocalFile
 
 #define g_local_file_get_type _g_local_file_get_type
 G_DEFINE_TYPE_WITH_CODE (GLocalFile, g_local_file, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
-						g_local_file_file_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
+                                                g_local_file_file_iface_init))
 
 static char *find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_symlink);
 
@@ -155,63 +155,63 @@ g_local_file_class_init (GLocalFileClass *klass)
   list = g_file_attribute_info_list_new ();
 
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_UNIX_MODE,
-				  G_FILE_ATTRIBUTE_TYPE_UINT32,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_UNIX_MODE,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT32,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
   
 #ifdef G_OS_UNIX
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_UNIX_UID,
-				  G_FILE_ATTRIBUTE_TYPE_UINT32,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_UNIX_UID,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT32,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_UNIX_GID,
-				  G_FILE_ATTRIBUTE_TYPE_UINT32,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_UNIX_GID,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT32,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
 #endif
   
 #ifdef HAVE_SYMLINK
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
-				  G_FILE_ATTRIBUTE_TYPE_BYTE_STRING,
-				  0);
+                                  G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET,
+                                  G_FILE_ATTRIBUTE_TYPE_BYTE_STRING,
+                                  0);
 #endif
   
 #if defined(HAVE_UTIMES) || defined(HAVE_UTIMENSAT)
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_TIME_MODIFIED,
-				  G_FILE_ATTRIBUTE_TYPE_UINT64,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_TIME_MODIFIED,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT64,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
-				  G_FILE_ATTRIBUTE_TYPE_UINT32,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT32,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
   /* When copying, the target file is accessed. Replicating
    * the source access time does not make sense in this case.
    */
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_TIME_ACCESS,
-				  G_FILE_ATTRIBUTE_TYPE_UINT64,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_TIME_ACCESS,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT64,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_TIME_ACCESS_USEC,
-				  G_FILE_ATTRIBUTE_TYPE_UINT32,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_TIME_ACCESS_USEC,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT32,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
 #endif  /* HAVE_UTIMES || HAVE_UTIMENSAT */
 
 #ifdef HAVE_UTIMENSAT
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC,
-				  G_FILE_ATTRIBUTE_TYPE_UINT32,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_TIME_MODIFIED_NSEC,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT32,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
   g_file_attribute_info_list_add (list,
-				  G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC,
-				  G_FILE_ATTRIBUTE_TYPE_UINT32,
-				  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                  G_FILE_ATTRIBUTE_TIME_ACCESS_NSEC,
+                                  G_FILE_ATTRIBUTE_TYPE_UINT32,
+                                  G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
 #endif
 
   local_writable_attributes = list;
@@ -279,7 +279,7 @@ g_local_file_is_native (GFile *file)
 
 static gboolean
 g_local_file_has_uri_scheme (GFile      *file,
-			     const char *uri_scheme)
+                             const char *uri_scheme)
 {
   return g_ascii_strcasecmp (uri_scheme, "file") == 0;
 }
@@ -324,7 +324,7 @@ get_filename_charset (const gchar **filename_charset)
 
 static gboolean
 name_is_valid_for_display (const char *string,
-			   gboolean    is_valid_utf8)
+                           gboolean    is_valid_utf8)
 {
   char c;
 
@@ -335,7 +335,7 @@ name_is_valid_for_display (const char *string,
   while ((c = *string++) != 0)
     {
       if (g_ascii_iscntrl (c))
-	return FALSE;
+        return FALSE;
     }
 
   return TRUE;
@@ -363,34 +363,34 @@ g_local_file_get_parse_name (GFile *file)
   else
     {
       utf8_filename = g_convert (filename, -1, 
-				 "UTF-8", charset, NULL, NULL, NULL);
+                                 "UTF-8", charset, NULL, NULL, NULL);
       free_utf8_filename = TRUE;
       is_valid_utf8 = TRUE;
 
       if (utf8_filename != NULL)
-	{
-	  /* Make sure we can roundtrip: */
-	  roundtripped_filename = g_convert (utf8_filename, -1,
-					     charset, "UTF-8", NULL, NULL, NULL);
-	  
-	  if (roundtripped_filename == NULL ||
-	      strcmp (filename, roundtripped_filename) != 0)
-	    {
-	      g_free (utf8_filename);
-	      utf8_filename = NULL;
-	    }
+        {
+          /* Make sure we can roundtrip: */
+          roundtripped_filename = g_convert (utf8_filename, -1,
+                                             charset, "UTF-8", NULL, NULL, NULL);
+          
+          if (roundtripped_filename == NULL ||
+              strcmp (filename, roundtripped_filename) != 0)
+            {
+              g_free (utf8_filename);
+              utf8_filename = NULL;
+            }
 
-	  g_free (roundtripped_filename);
-	}
+          g_free (roundtripped_filename);
+        }
     }
 
   if (utf8_filename != NULL &&
       name_is_valid_for_display (utf8_filename, is_valid_utf8))
     {
       if (free_utf8_filename)
-	parse_name = utf8_filename;
+        parse_name = utf8_filename;
       else
-	parse_name = g_strdup (utf8_filename);
+        parse_name = g_strdup (utf8_filename);
     }
   else
     {
@@ -405,26 +405,26 @@ g_local_file_get_parse_name (GFile *file)
       filename = p = dup_filename;
 
       while ((backslash = strchr (p, '\\')) != NULL)
-	{
-	  *backslash = '/';
-	  p = backslash + 1;
-	}
+        {
+          *backslash = '/';
+          p = backslash + 1;
+        }
 #endif
 
       escaped_path = g_uri_escape_string (filename,
-					  G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT "/",
-					  TRUE);
+                                          G_URI_RESERVED_CHARS_ALLOWED_IN_PATH_ELEMENT "/",
+                                          TRUE);
       parse_name = g_strconcat ("file://",
-				(*escaped_path != '/') ? "/" : "",
-				escaped_path,
-				NULL);
+                                (*escaped_path != '/') ? "/" : "",
+                                escaped_path,
+                                NULL);
       
       g_free (escaped_path);
 #ifdef G_OS_WIN32
       g_free (dup_filename);
 #endif
       if (free_utf8_filename)
-	g_free (utf8_filename);
+        g_free (utf8_filename);
     }
   
   return parse_name;
@@ -470,7 +470,7 @@ g_local_file_hash (GFile *file)
 
 static gboolean
 g_local_file_equal (GFile *file1,
-		    GFile *file2)
+                    GFile *file2)
 {
   GLocalFile *local1 = G_LOCAL_FILE (file1);
   GLocalFile *local2 = G_LOCAL_FILE (file2);
@@ -499,7 +499,7 @@ match_prefix (const char *path,
 
 static gboolean
 g_local_file_prefix_matches (GFile *parent,
-			     GFile *descendant)
+                             GFile *descendant)
 {
   GLocalFile *parent_local = G_LOCAL_FILE (parent);
   GLocalFile *descendant_local = G_LOCAL_FILE (descendant);
@@ -513,7 +513,7 @@ g_local_file_prefix_matches (GFile *parent,
 
 static char *
 g_local_file_get_relative_path (GFile *parent,
-				GFile *descendant)
+                                GFile *descendant)
 {
   GLocalFile *parent_local = G_LOCAL_FILE (parent);
   GLocalFile *descendant_local = G_LOCAL_FILE (descendant);
@@ -528,7 +528,7 @@ g_local_file_get_relative_path (GFile *parent,
 
 static GFile *
 g_local_file_resolve_relative_path (GFile      *file,
-				    const char *relative_path)
+                                    const char *relative_path)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   char *filename;
@@ -546,21 +546,21 @@ g_local_file_resolve_relative_path (GFile      *file,
 
 static GFileEnumerator *
 g_local_file_enumerate_children (GFile                *file,
-				 const char           *attributes,
-				 GFileQueryInfoFlags   flags,
-				 GCancellable         *cancellable,
-				 GError              **error)
+                                 const char           *attributes,
+                                 GFileQueryInfoFlags   flags,
+                                 GCancellable         *cancellable,
+                                 GError              **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   return _g_local_file_enumerator_new (local,
-				       attributes, flags,
-				       cancellable, error);
+                                       attributes, flags,
+                                       cancellable, error);
 }
 
 static GFile *
 g_local_file_get_child_for_display_name (GFile        *file,
-					 const char   *display_name,
-					 GError      **error)
+                                         const char   *display_name,
+                                         GError      **error)
 {
   GFile *new_file;
   char *basename;
@@ -569,8 +569,8 @@ g_local_file_get_child_for_display_name (GFile        *file,
   if (basename == NULL)
     {
       g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_INVALID_FILENAME,
-		   _("Invalid filename %s"), display_name);
+                   G_IO_ERROR_INVALID_FILENAME,
+                   _("Invalid filename %s"), display_name);
       return NULL;
     }
 
@@ -730,8 +730,8 @@ device_hash (gconstpointer v)
 
 static void
 get_mount_info (GFileInfo             *fs_info,
-		const char            *path,
-		GFileAttributeMatcher *matcher)
+                const char            *path,
+                GFileAttributeMatcher *matcher)
 {
   GStatBuf buf;
   gboolean got_info;
@@ -750,16 +750,16 @@ get_mount_info (GFileInfo             *fs_info,
 
   if (mount_info_hash == NULL)
     mount_info_hash = g_hash_table_new_full (device_hash, device_equal,
-					     g_free, NULL);
+                                             g_free, NULL);
 
 
   if (g_unix_mount_entries_changed_since (mount_info_hash_cache_time))
     g_hash_table_remove_all (mount_info_hash);
   
   got_info = g_hash_table_lookup_extended (mount_info_hash,
-					   &buf.st_dev,
-					   NULL,
-					   &info_as_ptr);
+                                           &buf.st_dev,
+                                           NULL,
+                                           &info_as_ptr);
   
   G_UNLOCK (mount_info_hash);
   
@@ -771,18 +771,18 @@ get_mount_info (GFileInfo             *fs_info,
 
       mountpoint = find_mountpoint_for (path, buf.st_dev, FALSE);
       if (mountpoint == NULL)
-	mountpoint = g_strdup ("/");
+        mountpoint = g_strdup ("/");
 
       mount = g_unix_mount_entry_at (mountpoint, &cache_time);
       if (mount)
-	{
-	  if (g_unix_mount_entry_is_readonly (mount))
-	    mount_info |= MOUNT_INFO_READONLY;
+        {
+          if (g_unix_mount_entry_is_readonly (mount))
+            mount_info |= MOUNT_INFO_READONLY;
           if (is_remote_fs_type (g_unix_mount_entry_get_fs_type (mount)))
             is_remote = TRUE;
-	  
-	  g_unix_mount_entry_free (mount);
-	}
+          
+          g_unix_mount_entry_free (mount);
+        }
 
       g_free (mountpoint);
 
@@ -859,7 +859,7 @@ find_mountpoint_for (const char *file, dev_t dev, gboolean resolve_basename_syml
 
 static void
 get_filesystem_readonly (GFileInfo  *info,
-			 const char *path)
+                         const char *path)
 {
   wchar_t *rootdir;
 
@@ -898,9 +898,9 @@ g_set_io_error (GError      **error,
 
 static GFileInfo *
 g_local_file_query_filesystem_info (GFile         *file,
-				    const char    *attributes,
-				    GCancellable  *cancellable,
-				    GError       **error)
+                                    const char    *attributes,
+                                    GCancellable  *cancellable,
+                                    GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   GFileInfo *info;
@@ -917,7 +917,7 @@ g_local_file_query_filesystem_info (GFile         *file,
 #endif /* USE_STATFS */
 #endif /* G_OS_WIN32 */
   GFileAttributeMatcher *attribute_matcher;
-	
+        
   no_size = FALSE;
   
 #ifdef USE_STATFS
@@ -926,7 +926,7 @@ g_local_file_query_filesystem_info (GFile         *file,
   statfs_result = statfs (local->filename, &statfs_buffer);
 #elif STATFS_ARGS == 4
   statfs_result = statfs (local->filename, &statfs_buffer,
-			  sizeof (statfs_buffer), 0);
+                          sizeof (statfs_buffer), 0);
 #endif /* STATFS_ARGS == 2 */
   block_size = statfs_buffer.f_bsize;
   
@@ -967,7 +967,7 @@ g_local_file_query_filesystem_info (GFile         *file,
   
   if (!no_size &&
       g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FILESYSTEM_FREE))
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_FREE))
     {
 #ifdef G_OS_WIN32
       gchar *localdir = g_path_get_dirname (local->filename);
@@ -986,7 +986,7 @@ g_local_file_query_filesystem_info (GFile         *file,
     }
   if (!no_size &&
       g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FILESYSTEM_SIZE))
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_SIZE))
     {
 #ifdef G_OS_WIN32
       gchar *localdir = g_path_get_dirname (local->filename);
@@ -1045,7 +1045,7 @@ g_local_file_query_filesystem_info (GFile         *file,
 
   if (fstype &&
       g_file_attribute_matcher_matches (attribute_matcher,
-					G_FILE_ATTRIBUTE_FILESYSTEM_TYPE))
+                                        G_FILE_ATTRIBUTE_FILESYSTEM_TYPE))
     g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE, fstype);
 #endif /* G_OS_WIN32 */
 
@@ -1090,11 +1090,11 @@ g_local_file_find_enclosing_mount (GFile         *file,
 
 error:
   g_set_io_error (error,
-		  /* Translators: This is an error message when trying to find
-		   * the enclosing (user visible) mount of a file, but none
-		   * exists.
-		   */
-		  _("Containing mount for file %s not found"),
+                  /* Translators: This is an error message when trying to find
+                   * the enclosing (user visible) mount of a file, but none
+                   * exists.
+                   */
+                  _("Containing mount for file %s not found"),
                   file, 0);
 
   return NULL;
@@ -1102,9 +1102,9 @@ error:
 
 static GFile *
 g_local_file_set_display_name (GFile         *file,
-			       const char    *display_name,
-			       GCancellable  *cancellable,
-			       GError       **error)
+                               const char    *display_name,
+                               GCancellable  *cancellable,
+                               GError       **error)
 {
   GLocalFile *local, *new_local;
   GFile *new_file, *parent;
@@ -1153,14 +1153,14 @@ g_local_file_set_display_name (GFile         *file,
       errsv = errno;
 
       if (errsv == EINVAL)
-	/* We can't get a rename file into itself error here,
-	 * so this must be an invalid filename, on e.g. FAT
+        /* We can't get a rename file into itself error here,
+         * so this must be an invalid filename, on e.g. FAT
          */
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_FILENAME,
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_FILENAME,
                              _("Invalid filename"));
       else
         g_set_io_error (error,
-		        _("Error renaming file %s: %s"),
+                        _("Error renaming file %s: %s"),
                         file, errsv);
       g_object_unref (new_file);
       return NULL;
@@ -1176,10 +1176,10 @@ g_local_file_set_display_name (GFile         *file,
 
 static GFileInfo *
 g_local_file_query_info (GFile                *file,
-			 const char           *attributes,
-			 GFileQueryInfoFlags   flags,
-			 GCancellable         *cancellable,
-			 GError              **error)
+                         const char           *attributes,
+                         GFileQueryInfoFlags   flags,
+                         GCancellable         *cancellable,
+                         GError              **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   GFileInfo *info;
@@ -1196,8 +1196,8 @@ g_local_file_query_info (GFile                *file,
   g_free (dirname);
   
   info = _g_local_file_info_get (basename, local->filename,
-				 matcher, flags, &parent_info,
-				 error);
+                                 matcher, flags, &parent_info,
+                                 error);
   
 
   _g_local_file_info_free_parent_info (&parent_info);
@@ -1245,16 +1245,16 @@ g_local_file_query_exists (GFile        *file,
 
 static GFileAttributeInfoList *
 g_local_file_query_settable_attributes (GFile         *file,
-					GCancellable  *cancellable,
-					GError       **error)
+                                        GCancellable  *cancellable,
+                                        GError       **error)
 {
   return g_file_attribute_info_list_ref (local_writable_attributes);
 }
 
 static GFileAttributeInfoList *
 g_local_file_query_writable_namespaces (GFile         *file,
-					GCancellable  *cancellable,
-					GError       **error)
+                                        GCancellable  *cancellable,
+                                        GError       **error)
 {
   GFileAttributeInfoList *list;
   GVfsClass *class;
@@ -1268,20 +1268,20 @@ g_local_file_query_writable_namespaces (GFile         *file,
 
 #ifdef HAVE_XATTR
       g_file_attribute_info_list_add (list,
-				      "xattr",
-				      G_FILE_ATTRIBUTE_TYPE_STRING,
-				      G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
-				      G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                      "xattr",
+                                      G_FILE_ATTRIBUTE_TYPE_STRING,
+                                      G_FILE_ATTRIBUTE_INFO_COPY_WITH_FILE |
+                                      G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
       g_file_attribute_info_list_add (list,
-				      "xattr-sys",
-				      G_FILE_ATTRIBUTE_TYPE_STRING,
-				      G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
+                                      "xattr-sys",
+                                      G_FILE_ATTRIBUTE_TYPE_STRING,
+                                      G_FILE_ATTRIBUTE_INFO_COPY_WHEN_MOVED);
 #endif
 
       vfs = g_vfs_get_default ();
       class = G_VFS_GET_CLASS (vfs);
       if (class->add_writable_namespaces)
-	class->add_writable_namespaces (vfs, list);
+        class->add_writable_namespaces (vfs, list);
 
       g_once_init_leave_pointer (&local_writable_namespaces, list);
     }
@@ -1292,39 +1292,39 @@ g_local_file_query_writable_namespaces (GFile         *file,
 
 static gboolean
 g_local_file_set_attribute (GFile                *file,
-			    const char           *attribute,
-			    GFileAttributeType    type,
-			    gpointer              value_p,
-			    GFileQueryInfoFlags   flags,
-			    GCancellable         *cancellable,
-			    GError              **error)
+                            const char           *attribute,
+                            GFileAttributeType    type,
+                            gpointer              value_p,
+                            GFileQueryInfoFlags   flags,
+                            GCancellable         *cancellable,
+                            GError              **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
 
   return _g_local_file_info_set_attribute (local->filename,
-					   attribute,
-					   type,
-					   value_p,
-					   flags,
-					   cancellable,
-					   error);
+                                           attribute,
+                                           type,
+                                           value_p,
+                                           flags,
+                                           cancellable,
+                                           error);
 }
 
 static gboolean
 g_local_file_set_attributes_from_info (GFile                *file,
-				       GFileInfo            *info,
-				       GFileQueryInfoFlags   flags,
-				       GCancellable         *cancellable,
-				       GError              **error)
+                                       GFileInfo            *info,
+                                       GFileQueryInfoFlags   flags,
+                                       GCancellable         *cancellable,
+                                       GError              **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   int res, chained_res;
   GFileIface *default_iface;
 
   res = _g_local_file_info_set_attributes (local->filename,
-					   info, flags, 
-					   cancellable,
-					   error);
+                                           info, flags, 
+                                           cancellable,
+                                           error);
 
   if (!res)
     error = NULL; /* Don't write over error if further errors */
@@ -1338,8 +1338,8 @@ g_local_file_set_attributes_from_info (GFile                *file,
 
 static GFileInputStream *
 g_local_file_read (GFile         *file,
-		   GCancellable  *cancellable,
-		   GError       **error)
+                   GCancellable  *cancellable,
+                   GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   int fd, ret;
@@ -1352,15 +1352,15 @@ g_local_file_read (GFile         *file,
 
 #ifdef G_OS_WIN32
       if (errsv == EACCES)
-	{
-	  /* Exploit the fact that on W32 the glib filename encoding is UTF8 */
-	  ret = GLIB_PRIVATE_CALL (g_win32_stat_utf8) (local->filename, &buf);
-	  if (ret == 0 && S_ISDIR (buf.st_mode))
+        {
+          /* Exploit the fact that on W32 the glib filename encoding is UTF8 */
+          ret = GLIB_PRIVATE_CALL (g_win32_stat_utf8) (local->filename, &buf);
+          if (ret == 0 && S_ISDIR (buf.st_mode))
             errsv = EISDIR;
-	}
+        }
 #endif
       g_set_io_error (error,
-		      _("Error opening file %s: %s"),
+                      _("Error opening file %s: %s"),
                       file, errsv);
       return NULL;
     }
@@ -1371,7 +1371,7 @@ g_local_file_read (GFile         *file,
     {
       (void) g_close (fd, NULL);
       g_set_io_error (error,
-		      _("Error opening file %s: %s"),
+                      _("Error opening file %s: %s"),
                       file, EISDIR);
       return NULL;
     }
@@ -1381,19 +1381,19 @@ g_local_file_read (GFile         *file,
 
 static GFileOutputStream *
 g_local_file_append_to (GFile             *file,
-			GFileCreateFlags   flags,
-			GCancellable      *cancellable,
-			GError           **error)
+                        GFileCreateFlags   flags,
+                        GCancellable      *cancellable,
+                        GError           **error)
 {
   return _g_local_file_output_stream_append (G_LOCAL_FILE (file)->filename,
-					     flags, cancellable, error);
+                                             flags, cancellable, error);
 }
 
 static GFileOutputStream *
 g_local_file_create (GFile             *file,
-		     GFileCreateFlags   flags,
-		     GCancellable      *cancellable,
-		     GError           **error)
+                     GFileCreateFlags   flags,
+                     GCancellable      *cancellable,
+                     GError           **error)
 {
   return _g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
                                              FALSE, flags, NULL,
@@ -1402,11 +1402,11 @@ g_local_file_create (GFile             *file,
 
 static GFileOutputStream *
 g_local_file_replace (GFile             *file,
-		      const char        *etag,
-		      gboolean           make_backup,
-		      GFileCreateFlags   flags,
-		      GCancellable      *cancellable,
-		      GError           **error)
+                      const char        *etag,
+                      gboolean           make_backup,
+                      GFileCreateFlags   flags,
+                      GCancellable      *cancellable,
+                      GError           **error)
 {
   return _g_local_file_output_stream_replace (G_LOCAL_FILE (file)->filename,
                                               FALSE,
@@ -1416,15 +1416,15 @@ g_local_file_replace (GFile             *file,
 
 static GFileIOStream *
 g_local_file_open_readwrite (GFile                      *file,
-			     GCancellable               *cancellable,
-			     GError                    **error)
+                             GCancellable               *cancellable,
+                             GError                    **error)
 {
   GFileOutputStream *output;
   GFileIOStream *res;
 
   output = _g_local_file_output_stream_open (G_LOCAL_FILE (file)->filename,
-					     TRUE,
-					     cancellable, error);
+                                             TRUE,
+                                             cancellable, error);
   if (output == NULL)
     return NULL;
 
@@ -1435,16 +1435,16 @@ g_local_file_open_readwrite (GFile                      *file,
 
 static GFileIOStream *
 g_local_file_create_readwrite (GFile                      *file,
-			       GFileCreateFlags            flags,
-			       GCancellable               *cancellable,
-			       GError                    **error)
+                               GFileCreateFlags            flags,
+                               GCancellable               *cancellable,
+                               GError                    **error)
 {
   GFileOutputStream *output;
   GFileIOStream *res;
 
   output = _g_local_file_output_stream_create (G_LOCAL_FILE (file)->filename,
-					       TRUE, flags, NULL,
-					       cancellable, error);
+                                               TRUE, flags, NULL,
+                                               cancellable, error);
   if (output == NULL)
     return NULL;
 
@@ -1455,11 +1455,11 @@ g_local_file_create_readwrite (GFile                      *file,
 
 static GFileIOStream *
 g_local_file_replace_readwrite (GFile                      *file,
-				const char                 *etag,
-				gboolean                    make_backup,
-				GFileCreateFlags            flags,
-				GCancellable               *cancellable,
-				GError                    **error)
+                                const char                 *etag,
+                                gboolean                    make_backup,
+                                GFileCreateFlags            flags,
+                                GCancellable               *cancellable,
+                                GError                    **error)
 {
   GFileOutputStream *output;
   GFileIOStream *res;
@@ -1478,8 +1478,8 @@ g_local_file_replace_readwrite (GFile                      *file,
 
 static gboolean
 g_local_file_delete (GFile         *file,
-		     GCancellable  *cancellable,
-		     GError       **error)
+                     GCancellable  *cancellable,
+                     GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   GVfsClass *class;
@@ -1490,13 +1490,13 @@ g_local_file_delete (GFile         *file,
       int errsv = errno;
 
       /* Posix allows EEXIST too, but the clearer error
-	 is G_IO_ERROR_NOT_FOUND, and it's what nautilus
-	 expects */
+         is G_IO_ERROR_NOT_FOUND, and it's what nautilus
+         expects */
       if (errsv == EEXIST)
-	errsv = ENOTEMPTY;
+        errsv = ENOTEMPTY;
 
       g_set_io_error (error,
-		      _("Error removing file %s: %s"),
+                      _("Error removing file %s: %s"),
                       file, errsv);
       return FALSE;
     }
@@ -1833,7 +1833,7 @@ try_make_relative (const char *path,
     {
       relative = path2 + strlen (base2);
       while (*relative == '/')
-	relative ++;
+        relative ++;
       relative = g_strdup (relative);
     }
   g_free (path2);
@@ -2005,7 +2005,7 @@ _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
       g_free (topdir);
       g_free (trashdir);
       return S_ISDIR (trash_stat.st_mode) &&
-	     trash_stat.st_uid == uid;
+             trash_stat.st_uid == uid;
     }
   g_free (trashdir);
 
@@ -2135,8 +2135,8 @@ check_removing_recursively (GFile        *file,
 
 static gboolean
 g_local_file_trash (GFile         *file,
-		    GCancellable  *cancellable,
-		    GError       **error)
+                    GCancellable  *cancellable,
+                    GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
 #ifdef HAVE_COCOA
@@ -2170,7 +2170,7 @@ g_local_file_trash (GFile         *file,
       errsv = errno;
 
       g_set_io_error (error,
-		      _("Error trashing file %s: %s"),
+                      _("Error trashing file %s: %s"),
                       file, errsv);
       return FALSE;
     }
@@ -2206,15 +2206,15 @@ g_local_file_trash (GFile         *file,
        * we use g_stat here instead of g_lstat, to know where the symlink
        * points to. */
       if (g_stat (path, &parent_stat))
-	{
-	  errsv = errno;
-	  g_free (path);
+        {
+          errsv = errno;
+          g_free (path);
 
-	  g_set_io_error (error,
-			  _("Error trashing file %s: %s"),
-			  file, errsv);
-	  return FALSE;
-	}
+          g_set_io_error (error,
+                          _("Error trashing file %s: %s"),
+                          file, errsv);
+          return FALSE;
+        }
       checked_st_dev = parent_stat.st_dev;
       g_free (path);
     }
@@ -2225,7 +2225,7 @@ g_local_file_trash (GFile         *file,
       errno = 0;
       trashdir = g_build_filename (g_get_user_data_dir (), "Trash", NULL);
       if (g_mkdir_with_parents (trashdir, 0700) < 0)
-	{
+        {
           char *display_name;
           errsv = errno;
 
@@ -2237,7 +2237,7 @@ g_local_file_trash (GFile         *file,
           g_free (display_name);
           g_free (trashdir);
           return FALSE;
-	}
+        }
       topdir = g_strdup (g_get_user_data_dir ());
     }
   else
@@ -2251,12 +2251,12 @@ g_local_file_trash (GFile         *file,
 
       topdir = _g_local_file_find_topdir_for (local->filename);
       if (topdir == NULL)
-	{
+        {
           g_set_io_error (error,
                           _("Unable to find toplevel directory to trash %s"),
                           file, ENOTSUP);
-	  return FALSE;
-	}
+          return FALSE;
+        }
 
       if (ignore_trash_path (topdir))
         {
@@ -2270,77 +2270,77 @@ g_local_file_trash (GFile         *file,
       /* Try looking for global trash dir $topdir/.Trash/$uid */
       globaldir = g_build_filename (topdir, ".Trash", NULL);
       if (g_lstat (globaldir, &global_stat) == 0 &&
-	  S_ISDIR (global_stat.st_mode) &&
-	  (global_stat.st_mode & S_ISVTX) != 0)
-	{
-	  trashdir = g_build_filename (globaldir, uid_str, NULL);
-	  success = TRUE;
+          S_ISDIR (global_stat.st_mode) &&
+          (global_stat.st_mode & S_ISVTX) != 0)
+        {
+          trashdir = g_build_filename (globaldir, uid_str, NULL);
+          success = TRUE;
 
-	  if (g_lstat (trashdir, &trash_stat) == 0)
-	    {
-	      if (!S_ISDIR (trash_stat.st_mode) ||
-		  trash_stat.st_uid != uid)
-		{
-		  /* Not a directory or not owned by user, ignore */
-		  g_free (trashdir);
-		  trashdir = NULL;
-		  success = FALSE;
-		}
-	    }
-	  else if (g_mkdir (trashdir, 0700) == -1)
-	    {
-	      g_free (trashdir);
-	      trashdir = NULL;
-	      success = FALSE;
-	    }
-	}
+          if (g_lstat (trashdir, &trash_stat) == 0)
+            {
+              if (!S_ISDIR (trash_stat.st_mode) ||
+                  trash_stat.st_uid != uid)
+                {
+                  /* Not a directory or not owned by user, ignore */
+                  g_free (trashdir);
+                  trashdir = NULL;
+                  success = FALSE;
+                }
+            }
+          else if (g_mkdir (trashdir, 0700) == -1)
+            {
+              g_free (trashdir);
+              trashdir = NULL;
+              success = FALSE;
+            }
+        }
       g_free (globaldir);
 
       if (trashdir == NULL)
-	{
-	  gboolean tried_create;
-	  
-	  /* No global trash dir, or it failed the tests, fall back to $topdir/.Trash-$uid */
-	  dirname = g_strdup_printf (".Trash-%s", uid_str);
-	  trashdir = g_build_filename (topdir, dirname, NULL);
+        {
+          gboolean tried_create;
+          
+          /* No global trash dir, or it failed the tests, fall back to $topdir/.Trash-$uid */
+          dirname = g_strdup_printf (".Trash-%s", uid_str);
+          trashdir = g_build_filename (topdir, dirname, NULL);
           success = TRUE;
-	  g_free (dirname);
+          g_free (dirname);
 
-	  tried_create = FALSE;
+          tried_create = FALSE;
 
-	retry:
-	  if (g_lstat (trashdir, &trash_stat) == 0)
-	    {
-	      if (!S_ISDIR (trash_stat.st_mode) ||
-		  trash_stat.st_uid != uid)
-		{
-		  /* Remove the failed directory */
-		  if (tried_create)
-		    g_remove (trashdir);
-		  
-		  /* Not a directory or not owned by user, ignore */
-		  success = FALSE;
-		}
-	    }
-	  else
-	    {
-	      if (!tried_create &&
-		  g_mkdir (trashdir, 0700) != -1)
-		{
-		  /* Ensure that the created dir has the right uid etc.
-		     This might fail on e.g. a FAT dir */
-		  tried_create = TRUE;
-		  goto retry;
-		}
-	      else
-		{
-		  success = FALSE;
-		}
-	    }
-	}
+        retry:
+          if (g_lstat (trashdir, &trash_stat) == 0)
+            {
+              if (!S_ISDIR (trash_stat.st_mode) ||
+                  trash_stat.st_uid != uid)
+                {
+                  /* Remove the failed directory */
+                  if (tried_create)
+                    g_remove (trashdir);
+                  
+                  /* Not a directory or not owned by user, ignore */
+                  success = FALSE;
+                }
+            }
+          else
+            {
+              if (!tried_create &&
+                  g_mkdir (trashdir, 0700) != -1)
+                {
+                  /* Ensure that the created dir has the right uid etc.
+                     This might fail on e.g. a FAT dir */
+                  tried_create = TRUE;
+                  goto retry;
+                }
+              else
+                {
+                  success = FALSE;
+                }
+            }
+        }
 
       if (!success)
-	{
+        {
           gchar *trashdir_display_name = NULL, *file_display_name = NULL;
 
           trashdir_display_name = g_filename_display_name (trashdir);
@@ -2356,8 +2356,8 @@ g_local_file_trash (GFile         *file,
           g_free (topdir);
           g_free (trashdir);
 
-	  return FALSE;
-	}
+          return FALSE;
+        }
     }
 
   /* Trashdir points to the trash dir with the "info" and "files" subdirectories */
@@ -2499,7 +2499,7 @@ g_local_file_trash (GFile         *file,
   }
 
   data = g_strdup_printf ("[Trash Info]\nPath=%s\nDeletionDate=%s\n",
-			  original_name_escaped, delete_time);
+                          original_name_escaped, delete_time);
   g_free (delete_time);
   g_clear_pointer (&original_name_escaped, g_free);
 
@@ -2551,16 +2551,16 @@ g_local_file_trash (GFile         *file,
       g_free (trashfile);
 
       if (errsv == EXDEV)
-	/* The trash dir was actually on another fs anyway!?
-	 * This can happen when the same device is mounted multiple
-	 * times, or with bind mounts of the same fs.
-	 */
+        /* The trash dir was actually on another fs anyway!?
+         * This can happen when the same device is mounted multiple
+         * times, or with bind mounts of the same fs.
+         */
         g_set_io_error (error,
                         _("Unable to trash file %s across filesystem boundaries"),
                         file, ENOTSUP);
       else
         g_set_io_error (error,
-		        _("Unable to trash file %s: %s"),
+                        _("Unable to trash file %s: %s"),
                         file, errsv);
       return FALSE;
     }
@@ -2584,13 +2584,13 @@ g_local_file_trash (GFile         *file,
 gboolean
 _g_local_file_has_trash_dir (const char *dirname, dev_t dir_dev)
 {
-  return FALSE;			/* XXX ??? */
+  return FALSE;                 /* XXX ??? */
 }
 
 static gboolean
 g_local_file_trash (GFile         *file,
-		    GCancellable  *cancellable,
-		    GError       **error)
+                    GCancellable  *cancellable,
+                    GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   SHFILEOPSTRUCTW op = {0};
@@ -2614,7 +2614,7 @@ g_local_file_trash (GFile         *file,
   if ((success || errcode == ERROR_CANCELLED) && op.fAnyOperationsAborted)
     {
       if (cancellable && !g_cancellable_is_cancelled (cancellable))
-	g_cancellable_cancel (cancellable);
+        g_cancellable_cancel (cancellable);
       g_set_io_error (error,
                       _("Unable to trash file %s: %s"),
                       file, ECANCELED);
@@ -2632,8 +2632,8 @@ g_local_file_trash (GFile         *file,
 
 static gboolean
 g_local_file_make_directory (GFile         *file,
-			     GCancellable  *cancellable,
-			     GError       **error)
+                             GCancellable  *cancellable,
+                             GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   
@@ -2642,13 +2642,13 @@ g_local_file_make_directory (GFile         *file,
       int errsv = errno;
 
       if (errsv == EINVAL)
-	/* This must be an invalid filename, on e.g. FAT */
-	g_set_error_literal (error, G_IO_ERROR,
+        /* This must be an invalid filename, on e.g. FAT */
+        g_set_error_literal (error, G_IO_ERROR,
                              G_IO_ERROR_INVALID_FILENAME,
                              _("Invalid filename"));
       else
         g_set_io_error (error,
-		        _("Error creating directory %s: %s"),
+                        _("Error creating directory %s: %s"),
                         file, errsv);
       return FALSE;
     }
@@ -2659,9 +2659,9 @@ g_local_file_make_directory (GFile         *file,
 #ifdef HAVE_SYMLINK
 static gboolean
 g_local_file_make_symbolic_link (GFile         *file,
-				 const char    *symlink_value,
-				 GCancellable  *cancellable,
-				 GError       **error)
+                                 const char    *symlink_value,
+                                 GCancellable  *cancellable,
+                                 GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
   
@@ -2670,17 +2670,17 @@ g_local_file_make_symbolic_link (GFile         *file,
       int errsv = errno;
 
       if (errsv == EINVAL)
-	/* This must be an invalid filename, on e.g. FAT */
-	g_set_error_literal (error, G_IO_ERROR,
+        /* This must be an invalid filename, on e.g. FAT */
+        g_set_error_literal (error, G_IO_ERROR,
                              G_IO_ERROR_INVALID_FILENAME,
                              _("Invalid filename"));
       else if (errsv == EPERM)
-	g_set_error (error, G_IO_ERROR,
-		     G_IO_ERROR_NOT_SUPPORTED,
-		     _("Filesystem does not support symbolic links"));
+        g_set_error (error, G_IO_ERROR,
+                     G_IO_ERROR_NOT_SUPPORTED,
+                     _("Filesystem does not support symbolic links"));
       else
         g_set_io_error (error,
-		        _("Error making symbolic link %s: %s"),
+                        _("Error making symbolic link %s: %s"),
                         file, errsv);
       return FALSE;
     }
@@ -2690,12 +2690,12 @@ g_local_file_make_symbolic_link (GFile         *file,
 
 static gboolean
 g_local_file_move (GFile                  *source,
-		   GFile                  *destination,
-		   GFileCopyFlags          flags,
-		   GCancellable           *cancellable,
-		   GFileProgressCallback   progress_callback,
-		   gpointer                progress_callback_data,
-		   GError                **error)
+                   GFile                  *destination,
+                   GFileCopyFlags          flags,
+                   GCancellable           *cancellable,
+                   GFileProgressCallback   progress_callback,
+                   gpointer                progress_callback_data,
+                   GError                **error)
 {
   GLocalFile *local_source, *local_destination;
   GStatBuf statbuf;
@@ -2738,44 +2738,44 @@ g_local_file_move (GFile                  *source,
       destination_exist = TRUE; /* Target file exists */
 
       if (flags & G_FILE_COPY_OVERWRITE)
-	{
-	  /* Always fail on dirs, even with overwrite */
-	  if (S_ISDIR (statbuf.st_mode))
-	    {
-	      if (source_is_dir)
-		g_set_error_literal (error,
+        {
+          /* Always fail on dirs, even with overwrite */
+          if (S_ISDIR (statbuf.st_mode))
+            {
+              if (source_is_dir)
+                g_set_error_literal (error,
                                      G_IO_ERROR,
                                      G_IO_ERROR_WOULD_MERGE,
                                      _("Can’t move directory over directory"));
               else
-		g_set_error_literal (error,
+                g_set_error_literal (error,
                                      G_IO_ERROR,
                                      G_IO_ERROR_IS_DIRECTORY,
                                      _("Can’t copy over directory"));
-	      return FALSE;
-	    }
-	}
+              return FALSE;
+            }
+        }
       else
-	{
+        {
           g_set_io_error (error,
                           _("Error moving file %s: %s"),
                           source, EEXIST);
-	  return FALSE;
-	}
+          return FALSE;
+        }
     }
 
   if (flags & G_FILE_COPY_BACKUP && destination_exist)
     {
       backup_name = g_strconcat (local_destination->filename, "~", NULL);
       if (g_rename (local_destination->filename, backup_name) == -1)
-	{
-      	  g_set_error_literal (error,
+        {
+          g_set_error_literal (error,
                                G_IO_ERROR,
                                G_IO_ERROR_CANT_CREATE_BACKUP,
                                _("Backup file creation failed"));
-	  g_free (backup_name);
-	  return FALSE;
-	}
+          g_free (backup_name);
+          return FALSE;
+        }
       g_free (backup_name);
       destination_exist = FALSE; /* It did, but no more */
     }
@@ -2783,18 +2783,18 @@ g_local_file_move (GFile                  *source,
   if (source_is_dir && destination_exist && (flags & G_FILE_COPY_OVERWRITE))
     {
       /* Source is a dir, destination exists (and is not a dir, because that would have failed
-	 earlier), and we're overwriting. Manually remove the target so we can do the rename. */
+         earlier), and we're overwriting. Manually remove the target so we can do the rename. */
       res = g_unlink (local_destination->filename);
       if (res == -1)
-	{
+        {
           int errsv = errno;
 
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error removing target file: %s"),
-		       g_strerror (errsv));
-	  return FALSE;
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error removing target file: %s"),
+                       g_strerror (errsv));
+          return FALSE;
+        }
     }
   
   if (g_rename (local_source->filename, local_destination->filename) == -1)
@@ -2802,15 +2802,15 @@ g_local_file_move (GFile                  *source,
       int errsv = errno;
 
       if (errsv == EXDEV)
-	/* This will cause the fallback code to run */
-	g_set_error_literal (error, G_IO_ERROR,
+        /* This will cause the fallback code to run */
+        g_set_error_literal (error, G_IO_ERROR,
                              G_IO_ERROR_NOT_SUPPORTED,
                              _("Move between mounts not supported"));
       else if (errsv == EINVAL)
-	/* This must be an invalid filename, on e.g. FAT, or
-	   we're trying to move the file into itself...
-	   We return invalid filename for both... */
-	g_set_error_literal (error, G_IO_ERROR,
+        /* This must be an invalid filename, on e.g. FAT, or
+           we're trying to move the file into itself...
+           We return invalid filename for both... */
+        g_set_error_literal (error, G_IO_ERROR,
                              G_IO_ERROR_INVALID_FILENAME,
                              _("Invalid filename"));
       else
@@ -2900,9 +2900,9 @@ g_local_file_is_nfs_home (const gchar *filename)
 
 static GFileMonitor*
 g_local_file_monitor_dir (GFile             *file,
-			  GFileMonitorFlags  flags,
-			  GCancellable      *cancellable,
-			  GError           **error)
+                          GFileMonitorFlags  flags,
+                          GCancellable      *cancellable,
+                          GError           **error)
 {
   GLocalFile *local_file = G_LOCAL_FILE (file);
 
@@ -2911,9 +2911,9 @@ g_local_file_monitor_dir (GFile             *file,
 
 static GFileMonitor*
 g_local_file_monitor_file (GFile             *file,
-			   GFileMonitorFlags  flags,
-			   GCancellable      *cancellable,
-			   GError           **error)
+                           GFileMonitorFlags  flags,
+                           GCancellable      *cancellable,
+                           GError           **error)
 {
   GLocalFile *local_file = G_LOCAL_FILE (file);
 

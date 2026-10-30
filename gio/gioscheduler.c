@@ -102,10 +102,10 @@ io_job_thread (GTask         *task,
  **/
 void
 g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
-			 gpointer             user_data,
-			 GDestroyNotify       notify,
-			 gint                 io_priority,
-			 GCancellable        *cancellable)
+                         gpointer             user_data,
+                         GDestroyNotify       notify,
+                         gint                 io_priority,
+                         GCancellable        *cancellable)
 {
   GIOSchedulerJob *job;
   GTask *task;
@@ -160,8 +160,8 @@ g_io_scheduler_cancel_all_jobs (void)
     {
       GIOSchedulerJob *job = l->data;
       if (job->cancellable)
-	cancellable_list = g_list_prepend (cancellable_list,
-					   g_object_ref (job->cancellable));
+        cancellable_list = g_list_prepend (cancellable_list,
+                                           g_object_ref (job->cancellable));
     }
   G_UNLOCK (active_jobs);
 
@@ -228,9 +228,9 @@ mainloop_proxy_free (MainLoopProxy *proxy)
  **/
 gboolean
 g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
-				     GSourceFunc      func,
-				     gpointer         user_data,
-				     GDestroyNotify   notify)
+                                     GSourceFunc      func,
+                                     gpointer         user_data,
+                                     GDestroyNotify   notify)
 {
   GSource *source;
   MainLoopProxy *proxy;
@@ -250,7 +250,7 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, mainloop_proxy_func, proxy,
-			 NULL);
+                         NULL);
   g_source_set_static_name (source, "[gio] mainloop_proxy_func");
 
   g_source_attach (source, job->context);
@@ -287,9 +287,9 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
  **/
 void
 g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
-					   GSourceFunc      func,
-					   gpointer         user_data,
-					   GDestroyNotify   notify)
+                                           GSourceFunc      func,
+                                           gpointer         user_data,
+                                           GDestroyNotify   notify)
 {
   GSource *source;
   MainLoopProxy *proxy;
@@ -307,7 +307,7 @@ g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, mainloop_proxy_func, proxy,
-			 (GDestroyNotify)mainloop_proxy_free);
+                         (GDestroyNotify)mainloop_proxy_free);
   g_source_set_static_name (source, "[gio] mainloop_proxy_func");
 
   g_source_attach (source, job->context);

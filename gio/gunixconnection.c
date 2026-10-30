@@ -50,12 +50,12 @@
  */
 
 G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
-			 G_TYPE_SOCKET_CONNECTION,
+                         G_TYPE_SOCKET_CONNECTION,
   g_socket_connection_factory_register_type (g_define_type_id,
-					     G_SOCKET_FAMILY_UNIX,
-					     G_SOCKET_TYPE_STREAM,
-					     G_SOCKET_PROTOCOL_DEFAULT);
-			 );
+                                             G_SOCKET_FAMILY_UNIX,
+                                             G_SOCKET_TYPE_STREAM,
+                                             G_SOCKET_PROTOCOL_DEFAULT);
+                         );
 
 /**
  * g_unix_connection_send_fd:
@@ -183,7 +183,7 @@ g_unix_connection_receive_fd (GUnixConnection  *connection,
   if (!G_IS_UNIX_FD_MESSAGE (scms[0]))
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			   _("Unexpected type of ancillary data"));
+                           _("Unexpected type of ancillary data"));
       g_object_unref (scms[0]);
       g_free (scms);
 
@@ -386,15 +386,15 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
 
 static void
 send_credentials_async_thread (GTask         *task,
-			       gpointer       source_object,
-			       gpointer       task_data,
-			       GCancellable  *cancellable)
+                               gpointer       source_object,
+                               gpointer       task_data,
+                               GCancellable  *cancellable)
 {
   GError *error = NULL;
 
   if (g_unix_connection_send_credentials (G_UNIX_CONNECTION (source_object),
-					  cancellable,
-					  &error))
+                                          cancellable,
+                                          &error))
     g_task_return_boolean (task, TRUE);
   else
     g_task_return_error (task, error);
@@ -519,10 +519,10 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
     turn_off_so_passcreds = FALSE;
     opt_val = 0;
     if (!g_socket_get_option (socket,
-			      SOL_SOCKET,
-			      SO_PASSCRED,
-			      &opt_val,
-			      NULL))
+                              SOL_SOCKET,
+                              SO_PASSCRED,
+                              &opt_val,
+                              NULL))
       {
         int errsv = errno;
         g_set_error (error,
@@ -535,10 +535,10 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
     if (opt_val == 0)
       {
         if (!g_socket_set_option (socket,
-				  SOL_SOCKET,
-				  SO_PASSCRED,
-				  TRUE,
-				  NULL))
+                                  SOL_SOCKET,
+                                  SO_PASSCRED,
+                                  TRUE,
+                                  NULL))
           {
             int errsv = errno;
             g_set_error (error,
@@ -630,10 +630,10 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
   if (turn_off_so_passcreds)
     {
       if (!g_socket_set_option (socket,
-				SOL_SOCKET,
-				SO_PASSCRED,
-				FALSE,
-				NULL))
+                                SOL_SOCKET,
+                                SO_PASSCRED,
+                                FALSE,
+                                NULL))
         {
           int errsv = errno;
           g_set_error (error,
@@ -658,9 +658,9 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
 
 static void
 receive_credentials_async_thread (GTask         *task,
-				  gpointer       source_object,
-				  gpointer       task_data,
-				  GCancellable  *cancellable)
+                                  gpointer       source_object,
+                                  gpointer       task_data,
+                                  GCancellable  *cancellable)
 {
   GCredentials *creds;
   GError *error = NULL;

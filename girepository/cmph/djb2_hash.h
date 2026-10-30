@@ -5,7 +5,7 @@
 
 typedef struct __djb2_state_t
 {
-	CMPH_HASH hashfunc;
+        CMPH_HASH hashfunc;
 } djb2_state_t;
 
 djb2_state_t *djb2_state_new();

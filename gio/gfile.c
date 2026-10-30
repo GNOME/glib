@@ -3356,18 +3356,18 @@ btrfs_reflink_with_progress (GInputStream           *in,
   if (ret < 0)
     {
       if (errsv == EXDEV)
-	g_set_error_literal (error, G_IO_ERROR,
-			     G_IO_ERROR_NOT_SUPPORTED,
-			     _("Copy (reflink/clone) between mounts is not supported"));
+        g_set_error_literal (error, G_IO_ERROR,
+                             G_IO_ERROR_NOT_SUPPORTED,
+                             _("Copy (reflink/clone) between mounts is not supported"));
       else if (errsv == EINVAL)
-	g_set_error_literal (error, G_IO_ERROR,
-			     G_IO_ERROR_NOT_SUPPORTED,
-			     _("Copy (reflink/clone) is not supported or invalid"));
+        g_set_error_literal (error, G_IO_ERROR,
+                             G_IO_ERROR_NOT_SUPPORTED,
+                             _("Copy (reflink/clone) is not supported or invalid"));
       else
-	/* Most probably something odd happened; retry with fallback */
-	g_set_error_literal (error, G_IO_ERROR,
-			     G_IO_ERROR_NOT_SUPPORTED,
-			     _("Copy (reflink/clone) is not supported or didn’t work"));
+        /* Most probably something odd happened; retry with fallback */
+        g_set_error_literal (error, G_IO_ERROR,
+                             G_IO_ERROR_NOT_SUPPORTED,
+                             _("Copy (reflink/clone) is not supported or didn’t work"));
       /* We retry with fallback for all error cases because Btrfs is currently
        * unstable, and so we can't trust it to do clone properly.
        * In addition, any hard errors here would cause the same failure in the

@@ -114,14 +114,14 @@ g_simple_proxy_resolver_set_property (GObject      *object,
     {
       case PROP_DEFAULT_PROXY:
         g_simple_proxy_resolver_set_default_proxy (resolver, g_value_get_string (value));
-	break;
+        break;
 
       case PROP_IGNORE_HOSTS:
         g_simple_proxy_resolver_set_ignore_hosts (resolver, g_value_get_boxed (value));
-	break;
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -136,15 +136,15 @@ g_simple_proxy_resolver_get_property (GObject    *object,
   switch (prop_id)
     {
       case PROP_DEFAULT_PROXY:
-	g_value_set_string (value, resolver->priv->default_proxy);
-	break;
+        g_value_set_string (value, resolver->priv->default_proxy);
+        break;
 
       case PROP_IGNORE_HOSTS:
-	g_value_set_boxed (value, resolver->priv->ignore_hosts);
-	break;
+        g_value_set_boxed (value, resolver->priv->ignore_hosts);
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -166,7 +166,7 @@ reparse_ignore_hosts (GSimpleProxyResolver *resolver)
   if (priv->ignore_domains)
     {
       for (i = 0; priv->ignore_domains[i].name; i++)
-	g_free (priv->ignore_domains[i].name);
+        g_free (priv->ignore_domains[i].name);
       g_free (priv->ignore_domains);
     }
   priv->ignore_ips = NULL;
@@ -253,8 +253,8 @@ reparse_ignore_hosts (GSimpleProxyResolver *resolver)
 
 static gboolean
 ignore_host (GSimpleProxyResolver *resolver,
-	     const gchar          *host,
-	     gushort               port)
+             const gchar          *host,
+             gushort               port)
 {
   GSimpleProxyResolverPrivate *priv = resolver->priv;
   gchar *ascii_host = NULL;
@@ -272,18 +272,18 @@ ignore_host (GSimpleProxyResolver *resolver,
       isaddr = (GInetSocketAddress *) g_inet_socket_address_new_from_string (host, 0);
       iaddr = (isaddr != NULL) ? g_inet_socket_address_get_address (isaddr) : NULL;
       if (iaddr != NULL)
-	{
-	  for (i = 0; i < priv->ignore_ips->len; i++)
-	    {
-	      GInetAddressMask *mask = priv->ignore_ips->pdata[i];
+        {
+          for (i = 0; i < priv->ignore_ips->len; i++)
+            {
+              GInetAddressMask *mask = priv->ignore_ips->pdata[i];
 
-	      if (g_inet_address_mask_matches (mask, iaddr))
-		{
-		  ignore = TRUE;
-		  break;
-		}
-	    }
-	}
+              if (g_inet_address_mask_matches (mask, iaddr))
+                {
+                  ignore = TRUE;
+                  break;
+                }
+            }
+        }
 
       g_clear_object (&isaddr);
 
@@ -300,21 +300,21 @@ ignore_host (GSimpleProxyResolver *resolver,
         length = strlen (host);
 
       for (i = 0; length > 0 && priv->ignore_domains[i].length; i++)
-	{
-	  GSimpleProxyResolverDomain *domain = &priv->ignore_domains[i];
+        {
+          GSimpleProxyResolverDomain *domain = &priv->ignore_domains[i];
 
           if (domain->length > length)
             continue;
 
-	  offset = length - domain->length;
-	  if ((domain->port == 0 || domain->port == port) &&
-	      (offset == 0 || (offset > 0 && host[offset - 1] == '.')) &&
-	      (g_ascii_strcasecmp (domain->name, host + offset) == 0))
-	    {
-	      ignore = TRUE;
-	      break;
-	    }
-	}
+          offset = length - domain->length;
+          if ((domain->port == 0 || domain->port == port) &&
+              (offset == 0 || (offset > 0 && host[offset - 1] == '.')) &&
+              (g_ascii_strcasecmp (domain->name, host + offset) == 0))
+            {
+              ignore = TRUE;
+              break;
+            }
+        }
 
       g_free (ascii_host);
     }
@@ -431,7 +431,7 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
    * to all three of the socks5, socks4a, and socks4 proxy types.
    */
   g_object_class_install_property (object_class, PROP_DEFAULT_PROXY,
-				   g_param_spec_string ("default-proxy", NULL, NULL,
+                                   g_param_spec_string ("default-proxy", NULL, NULL,
                                                         NULL,
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_STRINGS));
@@ -475,7 +475,7 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
    * commonly used by other applications.
    */
   g_object_class_install_property (object_class, PROP_IGNORE_HOSTS,
-				   g_param_spec_boxed ("ignore-hosts", NULL, NULL,
+                                   g_param_spec_boxed ("ignore-hosts", NULL, NULL,
                                                        G_TYPE_STRV,
                                                        G_PARAM_READWRITE |
                                                        G_PARAM_STATIC_STRINGS));

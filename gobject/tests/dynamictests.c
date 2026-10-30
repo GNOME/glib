@@ -87,14 +87,14 @@ static GType test_module_get_type (void)
   if (!object_type) {
     static const GTypeInfo object_info =
       {
-	sizeof (TestModuleClass),
-	(GBaseInitFunc) NULL,
-	(GBaseFinalizeFunc) NULL,
-	(GClassInitFunc) test_module_class_init,
-	(GClassFinalizeFunc) NULL,
-	NULL,
-	sizeof (TestModule),
-	0,
+        sizeof (TestModuleClass),
+        (GBaseInitFunc) NULL,
+        (GBaseFinalizeFunc) NULL,
+        (GClassInitFunc) test_module_class_init,
+        (GClassFinalizeFunc) NULL,
+        NULL,
+        sizeof (TestModule),
+        0,
         (GInstanceInitFunc)NULL,
         NULL,
       };
@@ -182,7 +182,7 @@ ref_unref_thread (gpointer data)
   for (i = N_REFS; i; i--) {
     if (g_test_verbose ())
       if (i % 10)
-	g_printerr ("%d\n", i);
+        g_printerr ("%d\n", i);
     g_type_class_unref (g_type_class_ref ((GType) data));
   }
 

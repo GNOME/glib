@@ -51,8 +51,8 @@ socket_address_to_string (GSocketAddress *address)
 
 static void
 async_cb (GObject *source_object,
-	  GAsyncResult *res,
-	  gpointer user_data)
+          GAsyncResult *res,
+          gpointer user_data)
 {
   GAsyncResult **resp = user_data;
   *resp = g_object_ref (res);
@@ -61,9 +61,9 @@ async_cb (GObject *source_object,
 
 static void
 socket_client_event (GSocketClient *client,
-		     GSocketClientEvent event,
-		     GSocketConnectable *connectable,
-		     GSocketConnection *connection)
+                     GSocketClientEvent event,
+                     GSocketConnectable *connectable,
+                     GSocketConnection *connection)
 {
   static GEnumClass *event_class;
   gint64 now_us;
@@ -73,9 +73,9 @@ socket_client_event (GSocketClient *client,
 
   now_us = g_get_real_time ();
   g_print ("%" G_GINT64_FORMAT " GSocketClient => %s [%s]\n",
-	  now_us,
-	  g_enum_get_value (event_class, event)->value_nick,
-	  connection ? G_OBJECT_TYPE_NAME (connection) : "");
+          now_us,
+          g_enum_get_value (event_class, event)->value_nick,
+          connection ? G_OBJECT_TYPE_NAME (connection) : "");
 }
 
 int
@@ -129,7 +129,7 @@ main (int argc, char *argv[])
     {
       GAsyncResult *res;
       g_socket_client_connect_to_host_async (client, argv[1], 7777,
-					     cancellable, async_cb, &res);
+                                             cancellable, async_cb, &res);
       g_main_loop_run (loop);
       connection = g_socket_client_connect_to_host_finish (client, res, &error);
       g_object_unref (res);
@@ -137,9 +137,9 @@ main (int argc, char *argv[])
   else
     {
       connection = g_socket_client_connect_to_host (client,
-						    argv[1],
-						    7777,
-						    cancellable, &error);
+                                                    argv[1],
+                                                    7777,
+                                                    cancellable, &error);
     }
   if (connection == NULL)
     {
@@ -152,11 +152,11 @@ main (int argc, char *argv[])
   if (!address)
     {
       g_printerr ("Error getting remote address: %s\n",
-		  error->message);
+                  error->message);
       return 1;
     }
   g_print ("Connected to address: %s\n",
-	   socket_address_to_string (address));
+           socket_address_to_string (address));
   g_object_unref (address);
 
   if (graceful)
@@ -168,12 +168,12 @@ main (int argc, char *argv[])
     {
       /* FIXME if (async) */
       if (!g_output_stream_write_all (out, buffer, strlen (buffer),
-				      NULL, cancellable, &error))
-	{
-	  g_warning ("send error: %s",  error->message);
-	  g_error_free (error);
-	  error = NULL;
-	}
+                                      NULL, cancellable, &error))
+        {
+          g_warning ("send error: %s",  error->message);
+          g_error_free (error);
+          error = NULL;
+        }
     }
 
   g_print ("closing stream\n");
@@ -181,24 +181,24 @@ main (int argc, char *argv[])
     {
       GAsyncResult *res;
       g_io_stream_close_async (G_IO_STREAM (connection),
-			       0, cancellable, async_cb, &res);
+                               0, cancellable, async_cb, &res);
       g_main_loop_run (loop);
       if (!g_io_stream_close_finish (G_IO_STREAM (connection),
-				     res, &error))
-	{
-	  g_object_unref (res);
-	  g_warning ("close error: %s",  error->message);
-	  return 1;
-	}
+                                     res, &error))
+        {
+          g_object_unref (res);
+          g_warning ("close error: %s",  error->message);
+          return 1;
+        }
       g_object_unref (res);
     }
   else
     {
       if (!g_io_stream_close (G_IO_STREAM (connection), cancellable, &error))
-	{
-	  g_warning ("close error: %s",  error->message);
-	  return 1;
-	}
+        {
+          g_warning ("close error: %s",  error->message);
+          return 1;
+        }
     }
 
   g_object_unref (connection);

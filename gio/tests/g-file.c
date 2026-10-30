@@ -46,16 +46,16 @@ static void
 test_g_file_new_null (void)
 {
   const char *paths[] = {"/",
-			 "/tmp///",
-			 "/non-existent-file",
-			 "/UTF-8 p\xc5\x99\xc3\xadli\xc5\xa1 \xc5\xbelu\xc5\xa5ou\xc4\x8dk\xc3\xbd k\xc5\xaf\xc5\x88",
-			 NULL
+                         "/tmp///",
+                         "/non-existent-file",
+                         "/UTF-8 p\xc5\x99\xc3\xadli\xc5\xa1 \xc5\xbelu\xc5\xa5ou\xc4\x8dk\xc3\xbd k\xc5\xaf\xc5\x88",
+                         NULL
   };
   const char *uris[] = {"file:///",
-			"file:///tmp///",
-			"non-existent-uri:///some-dir/",
-			"file:///UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88",
-			NULL
+                        "file:///tmp///",
+                        "non-existent-uri:///some-dir/",
+                        "file:///UTF-8%20p%C5%99%C3%ADli%C5%A1%20%C5%BElu%C5%A5ou%C4%8Dk%C3%BD%20k%C5%AF%C5%88",
+                        NULL
   };
   
   GFile *file = NULL;
@@ -180,7 +180,7 @@ dup_equals (const gboolean use_uri, const char *path)
     file1 = g_file_new_for_uri (path);
   else
     file1 = g_file_new_for_path (path);
-	
+        
   g_assert (file1 != NULL);
   
   file2 = g_file_dup (file1);
@@ -191,7 +191,7 @@ dup_equals (const gboolean use_uri, const char *path)
   
   g_object_unref (file1);
   g_object_unref (file2);
-	
+        
   return equal;
 }
 
@@ -230,7 +230,7 @@ parse_check_utf8 (const gboolean use_uri, const char *path, const char *result_p
     file1 = g_file_new_for_uri (path);
   else
     file1 = g_file_new_for_path (path);
-	
+        
   g_assert (file1 != NULL);
 
   parsed_name = g_file_get_parse_name (file1);
@@ -249,7 +249,7 @@ parse_check_utf8 (const gboolean use_uri, const char *path, const char *result_p
   g_assert (file2 != NULL);
 
   equal = g_file_equal (file1, file2);
-	
+        
   g_object_unref (file1);
   g_object_unref (file2);
   
@@ -288,12 +288,12 @@ resolve_arg (const gboolean is_uri_only, const char *arg)
   
   file1 = g_file_new_for_commandline_arg (arg);
   g_assert (file1 != NULL);
-	
+        
   /*  Test if we get URI string */
   uri = g_file_get_uri (file1);
   g_assert_cmpstr (uri, !=, NULL);
   g_printerr ("%s\n",uri);
-	
+        
   /*  Test if we get correct value of the local path */
   path = g_file_get_path (file1);
   if (is_uri_only) 
@@ -303,7 +303,7 @@ resolve_arg (const gboolean is_uri_only, const char *arg)
 
   /*  Get the URI scheme and compare it with expected one */
   s = g_file_get_uri_scheme (file1);
-	
+        
   g_object_unref (file1);
   g_free (uri);
   g_free (path);
@@ -384,7 +384,7 @@ get_relative_path (const gboolean use_uri, const gboolean should_have_prefix, co
       file3 = g_file_resolve_relative_path (file1, relative_path);
       g_assert (g_file_equal (file2, file3) == TRUE);
     }
-	
+        
   if (file1)
     g_object_unref (file1);
   if (file2)
@@ -429,14 +429,14 @@ test_g_file_has_prefix (void)
     {
       char *s = get_relative_path (dirs[i].use_uri, dirs[i].equal, dirs[i].path1, dirs[i].path2);
       if (dirs[i].equal) 
-	g_assert_cmpstr (s, ==, dirs[i].path3);
+        g_assert_cmpstr (s, ==, dirs[i].path3);
       g_free (s);
     }
 }
 
 static void
 roundtrip_parent_child (const gboolean use_uri, const gboolean under_root_descending,
-			const char *path, const char *dir_holder)
+                        const char *path, const char *dir_holder)
 {
   GFile *files[6] = {NULL};
   guint i;
@@ -478,7 +478,7 @@ roundtrip_parent_child (const gboolean use_uri, const gboolean under_root_descen
   for (i = 0; i < G_N_ELEMENTS (files); i++)
     {
       if (files[i])
-	g_object_unref (files[i]);
+        g_object_unref (files[i]);
     }
 }
 

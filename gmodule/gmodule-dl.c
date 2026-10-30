@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -49,14 +49,14 @@
 
 /* dlerror() is not implemented on all systems
  */
-#ifndef	G_MODULE_HAVE_DLERROR
+#ifndef G_MODULE_HAVE_DLERROR
 #  ifdef __NetBSD__
-#    define dlerror()	g_strerror (errno)
+#    define dlerror()   g_strerror (errno)
 #  else /* !__NetBSD__ */
 /* could we rely on errno's state here? */
-#    define dlerror()	"unknown dl-error"
+#    define dlerror()   "unknown dl-error"
 #  endif /* !__NetBSD__ */
-#endif	/* G_MODULE_HAVE_DLERROR */
+#endif  /* G_MODULE_HAVE_DLERROR */
 
 /* some flags are missing on some systems, so we provide
  * harmless defaults.
@@ -65,27 +65,27 @@
  *
  * Mandatory:
  * RTLD_LAZY   - resolve undefined symbols as code from the dynamic library
- *		 is executed.
+ *               is executed.
  * RTLD_NOW    - resolve all undefined symbols before dlopen returns, and fail
- *		 if this cannot be done.
+ *               if this cannot be done.
  * Optionally:
  * RTLD_GLOBAL - the external symbols defined in the library will be made
- *		 available to subsequently loaded libraries.
+ *               available to subsequently loaded libraries.
  */
-#ifndef	HAVE_RTLD_LAZY
-#define	RTLD_LAZY	1
-#endif	/* RTLD_LAZY */
-#ifndef	HAVE_RTLD_NOW
-#define	RTLD_NOW	0
-#endif	/* RTLD_NOW */
+#ifndef HAVE_RTLD_LAZY
+#define RTLD_LAZY       1
+#endif  /* RTLD_LAZY */
+#ifndef HAVE_RTLD_NOW
+#define RTLD_NOW        0
+#endif  /* RTLD_NOW */
 /* some systems (OSF1 V5.0) have broken RTLD_GLOBAL linkage */
 #ifdef G_MODULE_BROKEN_RTLD_GLOBAL
-#undef	RTLD_GLOBAL
-#undef	HAVE_RTLD_GLOBAL
+#undef  RTLD_GLOBAL
+#undef  HAVE_RTLD_GLOBAL
 #endif /* G_MODULE_BROKEN_RTLD_GLOBAL */
-#ifndef	HAVE_RTLD_GLOBAL
-#define	RTLD_GLOBAL	0
-#endif	/* RTLD_GLOBAL */
+#ifndef HAVE_RTLD_GLOBAL
+#define RTLD_GLOBAL     0
+#endif  /* RTLD_GLOBAL */
 
 
 /* According to POSIX.1-2001, dlerror() is not necessarily thread-safe
@@ -141,8 +141,8 @@ fetch_dlerror (gboolean replace_null)
 
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy,
-		gboolean     bind_local,
+                gboolean     bind_lazy,
+                gboolean     bind_local,
                 GError     **error)
 {
   gpointer handle;
@@ -282,7 +282,7 @@ retry:
 
 static gpointer
 _g_module_symbol (gpointer     handle,
-		  const gchar *symbol_name)
+                  const gchar *symbol_name)
 {
   gpointer p;
   const gchar *msg;

@@ -74,19 +74,19 @@ GIO_AVAILABLE_IN_ALL
 GIOExtensionPoint *g_io_extension_point_lookup                (const char        *name);
 GIO_AVAILABLE_IN_ALL
 void               g_io_extension_point_set_required_type     (GIOExtensionPoint *extension_point,
-							       GType              type);
+                                                               GType              type);
 GIO_AVAILABLE_IN_ALL
 GType              g_io_extension_point_get_required_type     (GIOExtensionPoint *extension_point);
 GIO_AVAILABLE_IN_ALL
 GList             *g_io_extension_point_get_extensions        (GIOExtensionPoint *extension_point);
 GIO_AVAILABLE_IN_ALL
 GIOExtension *     g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
-							       const char        *name);
+                                                               const char        *name);
 GIO_AVAILABLE_IN_ALL
 GIOExtension *     g_io_extension_point_implement             (const char        *extension_point_name,
-							       GType              type,
-							       const char        *extension_name,
-							       gint               priority);
+                                                               GType              type,
+                                                               const char        *extension_name,
+                                                               gint               priority);
 
 GIO_AVAILABLE_IN_ALL
 GType              g_io_extension_get_type                    (GIOExtension      *extension);

@@ -58,24 +58,24 @@ GType                 g_tls_client_connection_get_type             (void);
 
 GIO_AVAILABLE_IN_ALL
 GIOStream *           g_tls_client_connection_new                  (GIOStream               *base_io_stream,
-								    GSocketConnectable      *server_identity,
-								    GError                 **error);
+                                                                    GSocketConnectable      *server_identity,
+                                                                    GError                 **error);
 
 GIO_DEPRECATED_IN_2_72
 GTlsCertificateFlags  g_tls_client_connection_get_validation_flags (GTlsClientConnection    *conn);
 GIO_DEPRECATED_IN_2_72
 void                  g_tls_client_connection_set_validation_flags (GTlsClientConnection    *conn,
-								    GTlsCertificateFlags     flags);
+                                                                    GTlsCertificateFlags     flags);
 GIO_AVAILABLE_IN_ALL
 GSocketConnectable   *g_tls_client_connection_get_server_identity  (GTlsClientConnection    *conn);
 GIO_AVAILABLE_IN_ALL
 void                  g_tls_client_connection_set_server_identity  (GTlsClientConnection    *conn,
-								    GSocketConnectable      *identity);
+                                                                    GSocketConnectable      *identity);
 GIO_DEPRECATED_IN_2_56
 gboolean              g_tls_client_connection_get_use_ssl3         (GTlsClientConnection    *conn);
 GIO_DEPRECATED_IN_2_56
 void                  g_tls_client_connection_set_use_ssl3         (GTlsClientConnection    *conn,
-								    gboolean                 use_ssl3);
+                                                                    gboolean                 use_ssl3);
 GIO_AVAILABLE_IN_ALL
 GList *               g_tls_client_connection_get_accepted_cas     (GTlsClientConnection    *conn);
 

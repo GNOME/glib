@@ -58,8 +58,8 @@ GType                g_network_service_get_type      (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketConnectable  *g_network_service_new           (const gchar     *service,
-						      const gchar     *protocol,
-						      const gchar     *domain);
+                                                      const gchar     *protocol,
+                                                      const gchar     *domain);
 
 GIO_AVAILABLE_IN_ALL
 const gchar         *g_network_service_get_service   (GNetworkService *srv);

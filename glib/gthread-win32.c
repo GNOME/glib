@@ -393,11 +393,11 @@ g_private_replace_impl (GPrivate *key,
 
 /* {{{1 GThread */
 
-#define win32_check_for_error(what) G_STMT_START{			\
-  if (!(what))								\
-    g_error ("file %s: line %d (%s): error %s during %s",		\
-	     __FILE__, __LINE__, G_STRFUNC,				\
-	     g_win32_error_message (GetLastError ()), #what);		\
+#define win32_check_for_error(what) G_STMT_START{                       \
+  if (!(what))                                                          \
+    g_error ("file %s: line %d (%s): error %s during %s",               \
+             __FILE__, __LINE__, G_STRFUNC,                             \
+             g_win32_error_message (GetLastError ()), #what);           \
   }G_STMT_END
 
 #define G_MUTEX_SIZE (sizeof (gpointer))
@@ -557,10 +557,10 @@ SetThreadName_VEH (PEXCEPTION_POINTERS ExceptionInfo)
 
 typedef struct _THREADNAME_INFO
 {
-  DWORD  dwType;	/* must be 0x1000 */
-  LPCSTR szName;	/* pointer to name (in user addr space) */
-  DWORD  dwThreadID;	/* thread ID (-1=caller thread) */
-  DWORD  dwFlags;	/* reserved for future use, must be zero */
+  DWORD  dwType;        /* must be 0x1000 */
+  LPCSTR szName;        /* pointer to name (in user addr space) */
+  DWORD  dwThreadID;    /* thread ID (-1=caller thread) */
+  DWORD  dwFlags;       /* reserved for future use, must be zero */
 } THREADNAME_INFO;
 
 static void

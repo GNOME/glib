@@ -55,8 +55,8 @@ GType                 g_tls_server_connection_get_type                 (void);
 
 GIO_AVAILABLE_IN_ALL
 GIOStream *           g_tls_server_connection_new                      (GIOStream        *base_io_stream,
-									GTlsCertificate  *certificate,
-									GError          **error);
+                                                                        GTlsCertificate  *certificate,
+                                                                        GError          **error);
 
 G_END_DECLS
 

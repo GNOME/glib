@@ -15,12 +15,12 @@
 #include "xdgmime.h"
 
 
-#ifndef	FALSE
-#define	FALSE (0)
+#ifndef FALSE
+#define FALSE (0)
 #endif
 
-#ifndef	TRUE
-#define	TRUE (!FALSE)
+#ifndef TRUE
+#define TRUE (!FALSE)
 #endif
 
 /* FIXME: Needs to be configure check */
@@ -41,10 +41,10 @@ typedef unsigned int   xdg_uint32_t;
 
 #define SWAP_BE16_TO_LE16(val) (xdg_uint16_t)(((xdg_uint16_t)(val) << 8)|((xdg_uint16_t)(val) >> 8))
 
-#define SWAP_BE32_TO_LE32(val) (xdg_uint32_t)((((xdg_uint32_t)(val) & 0xFF000000U) >> 24) |	\
-					      (((xdg_uint32_t)(val) & 0x00FF0000U) >> 8) |	\
-					      (((xdg_uint32_t)(val) & 0x0000FF00U) << 8) |	\
-					      (((xdg_uint32_t)(val) & 0x000000FFU) << 24))
+#define SWAP_BE32_TO_LE32(val) (xdg_uint32_t)((((xdg_uint32_t)(val) & 0xFF000000U) >> 24) |     \
+                                              (((xdg_uint32_t)(val) & 0x00FF0000U) >> 8) |      \
+                                              (((xdg_uint32_t)(val) & 0x0000FF00U) << 8) |      \
+                                              (((xdg_uint32_t)(val) & 0x000000FFU) << 24))
 /* UTF-8 utils
  */
 extern const char *const _xdg_utf8_skip;

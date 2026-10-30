@@ -55,7 +55,7 @@ struct _GIOStreamClass
   GInputStream *  (*get_input_stream)  (GIOStream *stream);
   GOutputStream * (*get_output_stream) (GIOStream *stream);
 
-  gboolean (* close_fn)	    (GIOStream           *stream,
+  gboolean (* close_fn)     (GIOStream           *stream,
                              GCancellable        *cancellable,
                              GError             **error);
   void     (* close_async)  (GIOStream           *stream,
@@ -90,12 +90,12 @@ GOutputStream *g_io_stream_get_output_stream (GIOStream            *stream);
 
 GIO_AVAILABLE_IN_ALL
 void           g_io_stream_splice_async      (GIOStream            *stream1,
-					      GIOStream            *stream2,
-					      GIOStreamSpliceFlags  flags,
-					      int                   io_priority,
-					      GCancellable         *cancellable,
-					      GAsyncReadyCallback   callback,
-					      gpointer              user_data);
+                                              GIOStream            *stream2,
+                                              GIOStreamSpliceFlags  flags,
+                                              int                   io_priority,
+                                              GCancellable         *cancellable,
+                                              GAsyncReadyCallback   callback,
+                                              gpointer              user_data);
 
 GIO_AVAILABLE_IN_ALL
 gboolean       g_io_stream_splice_finish     (GAsyncResult         *result,
@@ -103,19 +103,19 @@ gboolean       g_io_stream_splice_finish     (GAsyncResult         *result,
 
 GIO_AVAILABLE_IN_ALL
 gboolean       g_io_stream_close             (GIOStream            *stream,
-					      GCancellable         *cancellable,
-					      GError              **error);
+                                              GCancellable         *cancellable,
+                                              GError              **error);
 
 GIO_AVAILABLE_IN_ALL
 void           g_io_stream_close_async       (GIOStream            *stream,
-					      int                   io_priority,
-					      GCancellable         *cancellable,
-					      GAsyncReadyCallback   callback,
-					      gpointer              user_data);
+                                              int                   io_priority,
+                                              GCancellable         *cancellable,
+                                              GAsyncReadyCallback   callback,
+                                              gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean       g_io_stream_close_finish      (GIOStream            *stream,
-					      GAsyncResult         *result,
-					      GError              **error);
+                                              GAsyncResult         *result,
+                                              GError              **error);
 
 GIO_AVAILABLE_IN_ALL
 gboolean       g_io_stream_is_closed         (GIOStream            *stream);
@@ -123,7 +123,7 @@ GIO_AVAILABLE_IN_ALL
 gboolean       g_io_stream_has_pending       (GIOStream            *stream);
 GIO_AVAILABLE_IN_ALL
 gboolean       g_io_stream_set_pending       (GIOStream            *stream,
-					      GError              **error);
+                                              GError              **error);
 GIO_AVAILABLE_IN_ALL
 void           g_io_stream_clear_pending     (GIOStream            *stream);
 

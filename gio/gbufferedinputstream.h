@@ -54,20 +54,20 @@ struct _GBufferedInputStreamClass
   GFilterInputStreamClass parent_class;
 
   gssize   (* fill)        (GBufferedInputStream *stream,
-			    gssize                count,
-			    GCancellable         *cancellable,
-			    GError              **error);
+                            gssize                count,
+                            GCancellable         *cancellable,
+                            GError              **error);
 
   /* Async ops: (optional in derived classes) */
   void     (* fill_async)  (GBufferedInputStream *stream,
-			    gssize                count,
-			    int                   io_priority,
-			    GCancellable         *cancellable,
-			    GAsyncReadyCallback   callback,
-			    gpointer              user_data);
+                            gssize                count,
+                            int                   io_priority,
+                            GCancellable         *cancellable,
+                            GAsyncReadyCallback   callback,
+                            gpointer              user_data);
   gssize   (* fill_finish) (GBufferedInputStream *stream,
-			    GAsyncResult         *result,
-			    GError              **error);
+                            GAsyncResult         *result,
+                            GError              **error);
 
   /*< private >*/
   /* Padding for future expansion */
@@ -85,45 +85,45 @@ GIO_AVAILABLE_IN_ALL
 GInputStream* g_buffered_input_stream_new             (GInputStream          *base_stream);
 GIO_AVAILABLE_IN_ALL
 GInputStream* g_buffered_input_stream_new_sized       (GInputStream          *base_stream,
-						       gsize                  size);
+                                                       gsize                  size);
 
 GIO_AVAILABLE_IN_ALL
 gsize         g_buffered_input_stream_get_buffer_size (GBufferedInputStream  *stream);
 GIO_AVAILABLE_IN_ALL
 void          g_buffered_input_stream_set_buffer_size (GBufferedInputStream  *stream,
-						       gsize                  size);
+                                                       gsize                  size);
 GIO_AVAILABLE_IN_ALL
 gsize         g_buffered_input_stream_get_available   (GBufferedInputStream  *stream);
 GIO_AVAILABLE_IN_ALL
 gsize         g_buffered_input_stream_peek            (GBufferedInputStream  *stream,
-						       void                  *buffer,
-						       gsize                  offset,
-						       gsize                  count);
+                                                       void                  *buffer,
+                                                       gsize                  offset,
+                                                       gsize                  count);
 GIO_AVAILABLE_IN_ALL
 const void*   g_buffered_input_stream_peek_buffer     (GBufferedInputStream  *stream,
-						       gsize                 *count);
+                                                       gsize                 *count);
 
 GIO_AVAILABLE_IN_ALL
 gssize        g_buffered_input_stream_fill            (GBufferedInputStream  *stream,
-						       gssize                 count,
-						       GCancellable          *cancellable,
-						       GError               **error);
+                                                       gssize                 count,
+                                                       GCancellable          *cancellable,
+                                                       GError               **error);
 GIO_AVAILABLE_IN_ALL
 void          g_buffered_input_stream_fill_async      (GBufferedInputStream  *stream,
-						       gssize                 count,
-						       int                    io_priority,
-						       GCancellable          *cancellable,
-						       GAsyncReadyCallback    callback,
-						       gpointer               user_data);
+                                                       gssize                 count,
+                                                       int                    io_priority,
+                                                       GCancellable          *cancellable,
+                                                       GAsyncReadyCallback    callback,
+                                                       gpointer               user_data);
 GIO_AVAILABLE_IN_ALL
 gssize        g_buffered_input_stream_fill_finish     (GBufferedInputStream  *stream,
-						       GAsyncResult          *result,
-						       GError               **error);
+                                                       GAsyncResult          *result,
+                                                       GError               **error);
 
 GIO_AVAILABLE_IN_ALL
 int           g_buffered_input_stream_read_byte       (GBufferedInputStream  *stream,
-						       GCancellable          *cancellable,
-						       GError               **error);
+                                                       GCancellable          *cancellable,
+                                                       GError               **error);
 
 G_END_DECLS
 

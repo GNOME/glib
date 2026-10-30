@@ -77,12 +77,12 @@ GIO_AVAILABLE_IN_ALL
 GType                  g_socket_get_type                (void);
 GIO_AVAILABLE_IN_ALL
 GSocket *              g_socket_new                     (GSocketFamily            family,
-							 GSocketType              type,
-							 GSocketProtocol          protocol,
-							 GError                 **error);
+                                                         GSocketType              type,
+                                                         GSocketProtocol          protocol,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 GSocket *              g_socket_new_from_fd             (gint                     fd,
-							 GError                 **error);
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 int                    g_socket_get_fd                  (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
@@ -93,30 +93,30 @@ GIO_AVAILABLE_IN_ALL
 GSocketProtocol        g_socket_get_protocol            (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
 GSocketAddress *       g_socket_get_local_address       (GSocket                 *socket,
-							 GError                 **error);
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 GSocketAddress *       g_socket_get_remote_address      (GSocket                 *socket,
-							 GError                 **error);
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 void                   g_socket_set_blocking            (GSocket                 *socket,
-							 gboolean                 blocking);
+                                                         gboolean                 blocking);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_get_blocking            (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
 void                   g_socket_set_keepalive           (GSocket                 *socket,
-							 gboolean                 keepalive);
+                                                         gboolean                 keepalive);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_get_keepalive           (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
 gint                   g_socket_get_listen_backlog      (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
 void                   g_socket_set_listen_backlog      (GSocket                 *socket,
-							 gint                     backlog);
+                                                         gint                     backlog);
 GIO_AVAILABLE_IN_ALL
 guint                  g_socket_get_timeout             (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
 void                   g_socket_set_timeout             (GSocket                 *socket,
-							 guint                    timeout);
+                                                         guint                    timeout);
 
 GIO_AVAILABLE_IN_2_32
 guint                  g_socket_get_ttl                 (GSocket                 *socket);
@@ -128,13 +128,13 @@ GIO_AVAILABLE_IN_2_32
 gboolean               g_socket_get_broadcast           (GSocket                 *socket);
 GIO_AVAILABLE_IN_2_32
 void                   g_socket_set_broadcast           (GSocket                 *socket,
-                                                         gboolean		  broadcast);
+                                                         gboolean                 broadcast);
 
 GIO_AVAILABLE_IN_2_32
 gboolean               g_socket_get_multicast_loopback  (GSocket                 *socket);
 GIO_AVAILABLE_IN_2_32
 void                   g_socket_set_multicast_loopback  (GSocket                 *socket,
-                                                         gboolean		  loopback);
+                                                         gboolean                 loopback);
 GIO_AVAILABLE_IN_2_32
 guint                  g_socket_get_multicast_ttl       (GSocket                 *socket);
 GIO_AVAILABLE_IN_2_32
@@ -144,9 +144,9 @@ GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_is_connected            (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_bind                    (GSocket                 *socket,
-							 GSocketAddress          *address,
-							 gboolean                 allow_reuse,
-							 GError                 **error);
+                                                         GSocketAddress          *address,
+                                                         gboolean                 allow_reuse,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_2_32
 gboolean               g_socket_join_multicast_group    (GSocket                 *socket,
                                                          GInetAddress            *group,
@@ -173,43 +173,43 @@ gboolean               g_socket_leave_multicast_group_ssm   (GSocket            
                                                              GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_connect                 (GSocket                 *socket,
-							 GSocketAddress          *address,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GSocketAddress          *address,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_check_connect_result    (GSocket                 *socket,
-							 GError                 **error);
+                                                         GError                 **error);
 
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_get_available_bytes     (GSocket                 *socket);
 
 GIO_AVAILABLE_IN_ALL
 GIOCondition           g_socket_condition_check         (GSocket                 *socket,
-							 GIOCondition             condition);
+                                                         GIOCondition             condition);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_condition_wait          (GSocket                 *socket,
-							 GIOCondition             condition,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GIOCondition             condition,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_2_32
 gboolean               g_socket_condition_timed_wait    (GSocket                 *socket,
-							 GIOCondition             condition,
-							 gint64                   timeout_us,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GIOCondition             condition,
+                                                         gint64                   timeout_us,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 GSocket *              g_socket_accept                  (GSocket                 *socket,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_listen                  (GSocket                 *socket,
-							 GError                 **error);
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_receive                 (GSocket                 *socket,
-							 gchar                   *buffer,
-							 gsize                    size,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         gchar                   *buffer,
+                                                         gsize                    size,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_2_80
 GBytes *               g_socket_receive_bytes           (GSocket                 *socket,
                                                          gsize                    size,
@@ -218,11 +218,11 @@ GBytes *               g_socket_receive_bytes           (GSocket                
                                                          GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_receive_from            (GSocket                 *socket,
-							 GSocketAddress         **address,
-							 gchar                   *buffer,
-							 gsize                    size,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GSocketAddress         **address,
+                                                         gchar                   *buffer,
+                                                         gsize                    size,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_2_80
 GBytes *               g_socket_receive_bytes_from      (GSocket                 *socket,
                                                          GSocketAddress         **address,
@@ -232,37 +232,37 @@ GBytes *               g_socket_receive_bytes_from      (GSocket                
                                                          GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_send                    (GSocket                 *socket,
-							 const gchar             *buffer,
-							 gsize                    size,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         const gchar             *buffer,
+                                                         gsize                    size,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_send_to                 (GSocket                 *socket,
-							 GSocketAddress          *address,
-							 const gchar             *buffer,
-							 gsize                    size,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GSocketAddress          *address,
+                                                         const gchar             *buffer,
+                                                         gsize                    size,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_receive_message         (GSocket                 *socket,
-							 GSocketAddress         **address,
-							 GInputVector            *vectors,
-							 gint                     num_vectors,
-							 GSocketControlMessage ***messages,
-							 gint                    *num_messages,
-							 gint                    *flags,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GSocketAddress         **address,
+                                                         GInputVector            *vectors,
+                                                         gint                     num_vectors,
+                                                         GSocketControlMessage ***messages,
+                                                         gint                    *num_messages,
+                                                         gint                    *flags,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_send_message            (GSocket                 *socket,
-							 GSocketAddress          *address,
-							 GOutputVector           *vectors,
-							 gint                     num_vectors,
-							 GSocketControlMessage  **messages,
-							 gint                     num_messages,
-							 gint                     flags,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GSocketAddress          *address,
+                                                         GOutputVector           *vectors,
+                                                         gint                     num_vectors,
+                                                         GSocketControlMessage  **messages,
+                                                         gint                     num_messages,
+                                                         gint                     flags,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 
 GIO_AVAILABLE_IN_2_48
 gint                   g_socket_receive_messages        (GSocket                 *socket,
@@ -273,26 +273,26 @@ gint                   g_socket_receive_messages        (GSocket                
                                                          GError                 **error);
 GIO_AVAILABLE_IN_2_44
 gint                   g_socket_send_messages           (GSocket                 *socket,
-							 GOutputMessage          *messages,
-							 guint                    num_messages,
-							 gint                     flags,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         GOutputMessage          *messages,
+                                                         guint                    num_messages,
+                                                         gint                     flags,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_close                   (GSocket                 *socket,
-							 GError                 **error);
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_shutdown                (GSocket                 *socket,
-							 gboolean                 shutdown_read,
-							 gboolean                 shutdown_write,
-							 GError                 **error);
+                                                         gboolean                 shutdown_read,
+                                                         gboolean                 shutdown_write,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_is_closed               (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
 GSource *              g_socket_create_source           (GSocket                 *socket,
-							 GIOCondition             condition,
-							 GCancellable            *cancellable);
+                                                         GIOCondition             condition,
+                                                         GCancellable            *cancellable);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_socket_speaks_ipv4             (GSocket                 *socket);
 GIO_AVAILABLE_IN_ALL
@@ -301,42 +301,42 @@ GCredentials          *g_socket_get_credentials         (GSocket                
 
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_receive_with_blocking   (GSocket                 *socket,
-							 gchar                   *buffer,
-							 gsize                    size,
-							 gboolean                 blocking,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         gchar                   *buffer,
+                                                         gsize                    size,
+                                                         gboolean                 blocking,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_ALL
 gssize                 g_socket_send_with_blocking      (GSocket                 *socket,
-							 const gchar             *buffer,
-							 gsize                    size,
-							 gboolean                 blocking,
-							 GCancellable            *cancellable,
-							 GError                 **error);
+                                                         const gchar             *buffer,
+                                                         gsize                    size,
+                                                         gboolean                 blocking,
+                                                         GCancellable            *cancellable,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_2_60
 GPollableReturn        g_socket_send_message_with_timeout (GSocket                *socket,
-							   GSocketAddress         *address,
-							   const GOutputVector    *vectors,
-							   gint                    num_vectors,
-							   GSocketControlMessage **messages,
-							   gint                    num_messages,
-							   gint                    flags,
-							   gint64                  timeout_us,
-							   gsize                  *bytes_written,
-							   GCancellable           *cancellable,
-							   GError                **error);
+                                                           GSocketAddress         *address,
+                                                           const GOutputVector    *vectors,
+                                                           gint                    num_vectors,
+                                                           GSocketControlMessage **messages,
+                                                           gint                    num_messages,
+                                                           gint                    flags,
+                                                           gint64                  timeout_us,
+                                                           gsize                  *bytes_written,
+                                                           GCancellable           *cancellable,
+                                                           GError                **error);
 GIO_AVAILABLE_IN_2_36
 gboolean               g_socket_get_option              (GSocket                 *socket,
-							 gint                     level,
-							 gint                     optname,
-							 gint                    *value,
-							 GError                 **error);
+                                                         gint                     level,
+                                                         gint                     optname,
+                                                         gint                    *value,
+                                                         GError                 **error);
 GIO_AVAILABLE_IN_2_36
 gboolean               g_socket_set_option              (GSocket                 *socket,
-							 gint                     level,
-							 gint                     optname,
-							 gint                     value,
-							 GError                 **error);
+                                                         gint                     level,
+                                                         gint                     optname,
+                                                         gint                     value,
+                                                         GError                 **error);
 
 G_END_DECLS
 

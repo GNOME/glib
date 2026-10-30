@@ -72,8 +72,8 @@
  *
  * static void
  * frobnitz_result_func (GObject      *source_object,
- *			 GAsyncResult *res,
- *			 gpointer      user_data)
+ *                       GAsyncResult *res,
+ *                       gpointer      user_data)
  * {
  *   gboolean success = FALSE;
  *
@@ -188,7 +188,7 @@ g_async_result_get_source_object (GAsyncResult *res)
  **/
 gboolean
 g_async_result_legacy_propagate_error (GAsyncResult  *res,
-				       GError       **error)
+                                       GError       **error)
 {
   /* This doesn't use a vmethod, because it's only for code that used
    * to use `GSimpleAsyncResult`. (But it's a `GAsyncResult` method so
@@ -200,7 +200,7 @@ g_async_result_legacy_propagate_error (GAsyncResult  *res,
   if (G_IS_SIMPLE_ASYNC_RESULT (res))
     {
       return g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (res),
-						    error);
+                                                    error);
     }
   else
     return FALSE;
@@ -222,7 +222,7 @@ g_async_result_legacy_propagate_error (GAsyncResult  *res,
  **/
 gboolean
 g_async_result_is_tagged (GAsyncResult  *res,
-			  gpointer       source_tag)
+                          gpointer       source_tag)
 {
   GAsyncResultIface *iface;
 

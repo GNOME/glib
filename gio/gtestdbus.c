@@ -590,7 +590,7 @@ write_config_file (GTestDBus *self)
 #else
       "  <listen>unix:tmpdir=/tmp</listen>\n"
 #endif
-		   );
+                   );
 
   for (i = 0; i < self->priv->service_dirs->len; i++)
     {

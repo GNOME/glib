@@ -154,9 +154,9 @@ g_proxy_resolver_is_supported (GProxyResolver *resolver)
  */
 gchar **
 g_proxy_resolver_lookup (GProxyResolver  *resolver,
-			 const gchar     *uri,
-			 GCancellable    *cancellable,
-			 GError         **error)
+                         const gchar     *uri,
+                         GCancellable    *cancellable,
+                         GError         **error)
 {
   GProxyResolverInterface *iface;
   gchar **proxy_uris;
@@ -194,10 +194,10 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
  */
 void
 g_proxy_resolver_lookup_async (GProxyResolver      *resolver,
-			       const gchar         *uri,
-			       GCancellable        *cancellable,
-			       GAsyncReadyCallback  callback,
-			       gpointer             user_data)
+                               const gchar         *uri,
+                               GCancellable        *cancellable,
+                               GAsyncReadyCallback  callback,
+                               gpointer             user_data)
 {
   GProxyResolverInterface *iface;
   GError *error = NULL;
@@ -238,8 +238,8 @@ g_proxy_resolver_lookup_async (GProxyResolver      *resolver,
  */
 gchar **
 g_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
-				GAsyncResult       *result,
-				GError            **error)
+                                GAsyncResult       *result,
+                                GError            **error)
 {
   GProxyResolverInterface *iface;
   gchar **proxy_uris;

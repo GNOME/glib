@@ -46,7 +46,7 @@ struct _GDummyProxyResolverClass {
   GObjectClass parent_class;
 };
 
-GType		_g_dummy_proxy_resolver_get_type       (void);
+GType           _g_dummy_proxy_resolver_get_type       (void);
 
 
 G_END_DECLS

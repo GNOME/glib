@@ -21,7 +21,7 @@
  * Author:  Youness Alaoui <youness.alaoui@collabora.co.uk
  *
  * Contributors:
- *	    Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>
+ *          Nicolas Dufresne <nicolas.dufresne@collabora.co.uk>
  */
 
 #include "config.h"
@@ -41,27 +41,27 @@
 #include "gproxyaddress.h"
 #include "gtask.h"
 
-#define SOCKS5_VERSION		  0x05
+#define SOCKS5_VERSION            0x05
 
-#define SOCKS5_CMD_CONNECT	  0x01
-#define SOCKS5_CMD_BIND		  0x02
+#define SOCKS5_CMD_CONNECT        0x01
+#define SOCKS5_CMD_BIND           0x02
 #define SOCKS5_CMD_UDP_ASSOCIATE  0x03
 
-#define SOCKS5_ATYP_IPV4	  0x01
-#define SOCKS5_ATYP_DOMAINNAME	  0x03
-#define SOCKS5_ATYP_IPV6	  0x04
+#define SOCKS5_ATYP_IPV4          0x01
+#define SOCKS5_ATYP_DOMAINNAME    0x03
+#define SOCKS5_ATYP_IPV6          0x04
 
-#define SOCKS5_AUTH_VERSION	  0x01
+#define SOCKS5_AUTH_VERSION       0x01
 
-#define SOCKS5_AUTH_NONE	  0x00
-#define SOCKS5_AUTH_GSSAPI	  0x01
-#define SOCKS5_AUTH_USR_PASS	  0x02
-#define SOCKS5_AUTH_NO_ACCEPT	  0xff
+#define SOCKS5_AUTH_NONE          0x00
+#define SOCKS5_AUTH_GSSAPI        0x01
+#define SOCKS5_AUTH_USR_PASS      0x02
+#define SOCKS5_AUTH_NO_ACCEPT     0xff
 
-#define SOCKS5_MAX_LEN		  255
-#define SOCKS5_RESERVED		  0x00
+#define SOCKS5_MAX_LEN            255
+#define SOCKS5_RESERVED           0x00
 
-#define SOCKS5_REP_SUCCEEDED	  0x00
+#define SOCKS5_REP_SUCCEEDED      0x00
 #define SOCKS5_REP_SRV_FAILURE    0x01
 #define SOCKS5_REP_NOT_ALLOWED    0x02
 #define SOCKS5_REP_NET_UNREACH    0x03
@@ -86,13 +86,13 @@ static void g_socks5_proxy_iface_init (GProxyInterface *proxy_iface);
 
 #define g_socks5_proxy_get_type _g_socks5_proxy_get_type
 G_DEFINE_TYPE_WITH_CODE (GSocks5Proxy, g_socks5_proxy, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY,
-						g_socks5_proxy_iface_init)
-			 _g_io_modules_ensure_extension_points_registered ();
-			 g_io_extension_point_implement (G_PROXY_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "socks5",
-							 0))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_PROXY,
+                                                g_socks5_proxy_iface_init)
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_PROXY_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "socks5",
+                                                         0))
 
 static void
 g_socks5_proxy_finalize (GObject *object)
@@ -113,7 +113,7 @@ g_socks5_proxy_init (GSocks5Proxy *proxy)
  * | 1  |    1     | 1 to 255 |
  * +----+----------+----------+
  */
-#define SOCKS5_NEGO_MSG_LEN	  4
+#define SOCKS5_NEGO_MSG_LEN       4
 static size_t
 set_nego_msg (guint8 *msg, gboolean has_auth)
 {
@@ -142,35 +142,35 @@ set_nego_msg (guint8 *msg, gboolean has_auth)
  * | 1  |   1    |
  * +----+--------+
  */
-#define SOCKS5_NEGO_REP_LEN	  2
+#define SOCKS5_NEGO_REP_LEN       2
 static gboolean
 parse_nego_reply (const guint8 *data,
-		  gboolean     has_auth,
-		  gboolean    *must_auth,
-		  GError     **error)
+                  gboolean     has_auth,
+                  gboolean    *must_auth,
+                  GError     **error)
 {
   if (data[0] != SOCKS5_VERSION)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			   _("The server is not a SOCKSv5 proxy server."));
+                           _("The server is not a SOCKSv5 proxy server."));
       return FALSE;
     }
 
   switch (data[1])
     {
       case SOCKS5_AUTH_NONE:
-	*must_auth = FALSE;
-	break;
+        *must_auth = FALSE;
+        break;
 
       case SOCKS5_AUTH_USR_PASS:
-	if (!has_auth)
-	  {
-	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_NEED_AUTH,
-			   _("The SOCKSv5 proxy requires authentication."));
-	    return FALSE;
-	  }
-	*must_auth = TRUE;
-	break;
+        if (!has_auth)
+          {
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_NEED_AUTH,
+                           _("The SOCKSv5 proxy requires authentication."));
+            return FALSE;
+          }
+        *must_auth = TRUE;
+        break;
 
       case SOCKS5_AUTH_NO_ACCEPT:
         if (!has_auth)
@@ -189,11 +189,11 @@ parse_nego_reply (const guint8 *data,
         G_GNUC_FALLTHROUGH;
       case SOCKS5_AUTH_GSSAPI:
       default:
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_AUTH_FAILED,
-			     _("The SOCKSv5 proxy requires an authentication "
-			       "method that is not supported by GLib."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_AUTH_FAILED,
+                             _("The SOCKSv5 proxy requires an authentication "
+                               "method that is not supported by GLib."));
+        return FALSE;
+        break;
     }
 
   return TRUE;
@@ -224,8 +224,8 @@ set_auth_msg (guint8       *msg,
   if (ulen > SOCKS5_MAX_LEN || plen > SOCKS5_MAX_LEN)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			   _("Username or password is too long for SOCKSv5 "
-			     "protocol."));
+                           _("Username or password is too long for SOCKSv5 "
+                             "protocol."));
       return FALSE;
     }
 
@@ -257,8 +257,8 @@ check_auth_status (const guint8 *data, GError **error)
       || data[1] != SOCKS5_REP_SUCCEEDED)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_AUTH_FAILED,
-			   _("SOCKSv5 authentication failed due to wrong "
-			     "username or password."));
+                           _("SOCKSv5 authentication failed due to wrong "
+                             "username or password."));
       return FALSE;
     }
   return TRUE;
@@ -273,7 +273,7 @@ check_auth_status (const guint8 *data, GError **error)
  * DST.ADDR is a string with first byte being the size. So DST.ADDR may not be
  * longer then 256 bytes.
  */
-#define SOCKS5_CONN_MSG_LEN	  262
+#define SOCKS5_CONN_MSG_LEN       262
 static gboolean
 set_connect_msg (guint8       *msg,
                  const gchar  *hostname,
@@ -298,10 +298,10 @@ set_connect_msg (guint8       *msg,
 
       if (addr == NULL)
         {
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-		       _("Invalid IP address “%s”"),
-		       hostname);
-	  return FALSE;
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                       _("Invalid IP address “%s”"),
+                       hostname);
+          return FALSE;
         }
 
       addr_len = g_inet_address_get_native_size (addr);
@@ -319,12 +319,12 @@ set_connect_msg (guint8       *msg,
       gsize host_len = strlen (hostname);
 
       if (host_len > SOCKS5_MAX_LEN)
-	{
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-		       _("Hostname “%s” is too long for SOCKSv5 protocol"),
-		       hostname);
-	  return FALSE;
-	}
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                       _("Hostname “%s” is too long for SOCKSv5 protocol"),
+                       hostname);
+          return FALSE;
+        }
 
       msg[len++] = SOCKS5_ATYP_DOMAINNAME;
       msg[len++] = (guint8) host_len;
@@ -355,90 +355,90 @@ set_connect_msg (guint8       *msg,
  *
  * The parser only requires 4 bytes.
  */
-#define SOCKS5_CONN_REP_LEN	  257
+#define SOCKS5_CONN_REP_LEN       257
 static gboolean
 parse_connect_reply (const guint8 *data, gint *atype, GError **error)
 {
   if (data[0] != SOCKS5_VERSION)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			   _("The server is not a SOCKSv5 proxy server."));
+                           _("The server is not a SOCKSv5 proxy server."));
       return FALSE;
     }
 
   switch (data[1])
     {
       case SOCKS5_REP_SUCCEEDED:
-	if (data[2] != SOCKS5_RESERVED)
-	  {
-	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			   _("The server is not a SOCKSv5 proxy server."));
-	    return FALSE;
-	  }
+        if (data[2] != SOCKS5_RESERVED)
+          {
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                           _("The server is not a SOCKSv5 proxy server."));
+            return FALSE;
+          }
 
-	switch (data[3])
-	  {
-	  case SOCKS5_ATYP_IPV4:
-	  case SOCKS5_ATYP_IPV6:
-	  case SOCKS5_ATYP_DOMAINNAME:
-	    *atype = data[3];
-	    break;
+        switch (data[3])
+          {
+          case SOCKS5_ATYP_IPV4:
+          case SOCKS5_ATYP_IPV6:
+          case SOCKS5_ATYP_DOMAINNAME:
+            *atype = data[3];
+            break;
 
-	  default:
-	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			   _("The SOCKSv5 proxy server uses unknown address type."));
-	    return FALSE;
-	  }
-	break;
+          default:
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                           _("The SOCKSv5 proxy server uses unknown address type."));
+            return FALSE;
+          }
+        break;
 
       case SOCKS5_REP_SRV_FAILURE:
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			     _("Internal SOCKSv5 proxy server error."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                             _("Internal SOCKSv5 proxy server error."));
+        return FALSE;
+        break;
 
       case SOCKS5_REP_NOT_ALLOWED:
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_NOT_ALLOWED,
-			     _("SOCKSv5 connection not allowed by ruleset."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_NOT_ALLOWED,
+                             _("SOCKSv5 connection not allowed by ruleset."));
+        return FALSE;
+        break;
 
       case SOCKS5_REP_TTL_EXPIRED:
       case SOCKS5_REP_HOST_UNREACH:
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
-			     _("Host unreachable through SOCKSv5 server."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
+                             _("Host unreachable through SOCKSv5 server."));
+        return FALSE;
+        break;
 
       case SOCKS5_REP_NET_UNREACH:
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NETWORK_UNREACHABLE,
-			     _("Network unreachable through SOCKSv5 proxy."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NETWORK_UNREACHABLE,
+                             _("Network unreachable through SOCKSv5 proxy."));
+        return FALSE;
+        break;
 
       case SOCKS5_REP_REFUSED:
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CONNECTION_REFUSED,
-			     _("Connection refused through SOCKSv5 proxy."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CONNECTION_REFUSED,
+                             _("Connection refused through SOCKSv5 proxy."));
+        return FALSE;
+        break;
 
       case SOCKS5_REP_CMD_NOT_SUP:
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			     _("SOCKSv5 proxy does not support “connect” command."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                             _("SOCKSv5 proxy does not support “connect” command."));
+        return FALSE;
+        break;
 
       case SOCKS5_REP_ATYPE_NOT_SUP:
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			     _("SOCKSv5 proxy does not support provided address type."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                             _("SOCKSv5 proxy does not support provided address type."));
+        return FALSE;
+        break;
 
       default: /* Unknown error */
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			     _("Unknown SOCKSv5 proxy error."));
-	return FALSE;
-	break;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+                             _("Unknown SOCKSv5 proxy error."));
+        return FALSE;
+        break;
     }
 
   return TRUE;
@@ -446,10 +446,10 @@ parse_connect_reply (const guint8 *data, gint *atype, GError **error)
 
 static GIOStream *
 g_socks5_proxy_connect (GProxy            *proxy,
-			GIOStream         *io_stream,
-			GProxyAddress     *proxy_address,
-			GCancellable      *cancellable,
-			GError          **error)
+                        GIOStream         *io_stream,
+                        GProxyAddress     *proxy_address,
+                        GCancellable      *cancellable,
+                        GError          **error)
 {
   gboolean has_auth;
   GInputStream *in;
@@ -477,8 +477,8 @@ g_socks5_proxy_connect (GProxy            *proxy,
       len = set_nego_msg (msg, has_auth);
 
       if (!g_output_stream_write_all (out, msg, len, NULL,
-				      cancellable, error))
-	goto error;
+                                      cancellable, error))
+        goto error;
     }
 
   /* Receive SOCKS5 response and reply with authentication if required */
@@ -487,31 +487,31 @@ g_socks5_proxy_connect (GProxy            *proxy,
       gboolean must_auth = FALSE;
 
       if (!g_input_stream_read_all (in, data, sizeof (data), NULL,
-				    cancellable, error))
-	goto error;
+                                    cancellable, error))
+        goto error;
 
       if (!parse_nego_reply (data, has_auth, &must_auth, error))
-	  goto error;
+          goto error;
 
       if (must_auth)
-	{
-	  guint8 msg[SOCKS5_AUTH_MSG_LEN];
-	  size_t len;
+        {
+          guint8 msg[SOCKS5_AUTH_MSG_LEN];
+          size_t len;
 
-	  if (!set_auth_msg (msg, username, password, &len, error))
+          if (!set_auth_msg (msg, username, password, &len, error))
             goto error;
-	  
-	  if (!g_output_stream_write_all (out, msg, len, NULL,
-					  cancellable, error))
-	    goto error;
+          
+          if (!g_output_stream_write_all (out, msg, len, NULL,
+                                          cancellable, error))
+            goto error;
 
-	  if (!g_input_stream_read_all (in, data, sizeof (data), NULL,
-					cancellable, error))
-	    goto error;
+          if (!g_input_stream_read_all (in, data, sizeof (data), NULL,
+                                        cancellable, error))
+            goto error;
 
-	  if (!check_auth_status (data, error))
-	    goto error;
-	}
+          if (!check_auth_status (data, error))
+            goto error;
+        }
     }
 
   /* Send SOCKS5 connection request */
@@ -523,8 +523,8 @@ g_socks5_proxy_connect (GProxy            *proxy,
         goto error;
 
       if (!g_output_stream_write_all (out, msg, len, NULL,
-				      cancellable, error))
-	goto error;
+                                      cancellable, error))
+        goto error;
     }
 
   /* Read SOCKS5 response */
@@ -533,38 +533,38 @@ g_socks5_proxy_connect (GProxy            *proxy,
       gint atype;
 
       if (!g_input_stream_read_all (in, data, 4 /* VER, REP, RSV, ATYP */, NULL,
-				    cancellable, error))
-	goto error;
+                                    cancellable, error))
+        goto error;
 
       if (!parse_connect_reply (data, &atype, error))
-	goto error;
+        goto error;
 
       switch (atype)
-	{
-	  case SOCKS5_ATYP_IPV4:
-	    if (!g_input_stream_read_all (in, data,
-					  4 /* IPv4 length */ + 2 /* port */,
-					  NULL, cancellable, error))
-	      goto error;
-	    break;
+        {
+          case SOCKS5_ATYP_IPV4:
+            if (!g_input_stream_read_all (in, data,
+                                          4 /* IPv4 length */ + 2 /* port */,
+                                          NULL, cancellable, error))
+              goto error;
+            break;
 
-	  case SOCKS5_ATYP_IPV6:
-	    if (!g_input_stream_read_all (in, data,
-					  16 /* IPv6 length */ + 2 /* port */,
-					  NULL, cancellable, error))
-	      goto error;
-	    break;
+          case SOCKS5_ATYP_IPV6:
+            if (!g_input_stream_read_all (in, data,
+                                          16 /* IPv6 length */ + 2 /* port */,
+                                          NULL, cancellable, error))
+              goto error;
+            break;
 
-	  case SOCKS5_ATYP_DOMAINNAME:
-	    if (!g_input_stream_read_all (in, data, 1 /* domain name length */,
-					  NULL, cancellable, error))
-	      goto error;
-	    if (!g_input_stream_read_all (in, data,
-					  data[0] /* domain name length */ + 2 /* port */,
-					  NULL, cancellable, error))
-	      goto error;
-	    break;
-	}
+          case SOCKS5_ATYP_DOMAINNAME:
+            if (!g_input_stream_read_all (in, data, 1 /* domain name length */,
+                                          NULL, cancellable, error))
+              goto error;
+            if (!g_input_stream_read_all (in, data,
+                                          data[0] /* domain name length */ + 2 /* port */,
+                                          NULL, cancellable, error))
+              goto error;
+            break;
+        }
     }
 
   return g_object_ref (io_stream);
@@ -586,31 +586,31 @@ typedef struct
   size_t offset;
 } ConnectAsyncData;
 
-static void nego_msg_write_cb	      (GObject          *source,
-				       GAsyncResult     *res,
-				       gpointer          user_data);
-static void nego_reply_read_cb	      (GObject          *source,
-				       GAsyncResult     *res,
-				       gpointer          user_data);
-static void auth_msg_write_cb	      (GObject          *source,
-				       GAsyncResult     *res,
-				       gpointer          user_data);
-static void auth_reply_read_cb	      (GObject          *source,
-				       GAsyncResult     *result,
-				       gpointer          user_data);
-static void send_connect_msg	      (GTask            *task);
+static void nego_msg_write_cb         (GObject          *source,
+                                       GAsyncResult     *res,
+                                       gpointer          user_data);
+static void nego_reply_read_cb        (GObject          *source,
+                                       GAsyncResult     *res,
+                                       gpointer          user_data);
+static void auth_msg_write_cb         (GObject          *source,
+                                       GAsyncResult     *res,
+                                       gpointer          user_data);
+static void auth_reply_read_cb        (GObject          *source,
+                                       GAsyncResult     *result,
+                                       gpointer          user_data);
+static void send_connect_msg          (GTask            *task);
 static void connect_msg_write_cb      (GObject          *source,
-				       GAsyncResult     *result,
-				       gpointer          user_data);
+                                       GAsyncResult     *result,
+                                       gpointer          user_data);
 static void connect_reply_read_cb     (GObject          *source,
-				       GAsyncResult     *result,
-				       gpointer          user_data);
+                                       GAsyncResult     *result,
+                                       gpointer          user_data);
 static void connect_addr_len_read_cb  (GObject          *source,
-				       GAsyncResult     *result,
-				       gpointer          user_data);
+                                       GAsyncResult     *result,
+                                       gpointer          user_data);
 static void connect_addr_read_cb      (GObject          *source,
-				       GAsyncResult     *result,
-				       gpointer          user_data);
+                                       GAsyncResult     *result,
+                                       gpointer          user_data);
 
 static void
 free_connect_data (ConnectAsyncData *data)
@@ -631,11 +631,11 @@ do_read (GAsyncReadyCallback callback, GTask *task, ConnectAsyncData *data)
    GInputStream *in;
    in = g_io_stream_get_input_stream (data->io_stream);
    g_input_stream_read_async (in,
-			      data->buffer + data->offset,
-			      data->length - data->offset,
-			      g_task_get_priority (task),
-			      g_task_get_cancellable (task),
-			      callback, task);
+                              data->buffer + data->offset,
+                              data->length - data->offset,
+                              g_task_get_priority (task),
+                              g_task_get_cancellable (task),
+                              callback, task);
 }
 
 static void
@@ -644,20 +644,20 @@ do_write (GAsyncReadyCallback callback, GTask *task, ConnectAsyncData *data)
   GOutputStream *out;
   out = g_io_stream_get_output_stream (data->io_stream);
   g_output_stream_write_async (out,
-			       data->buffer + data->offset,
-			       data->length - data->offset,
-			       g_task_get_priority (task),
-			       g_task_get_cancellable (task),
-			       callback, task);
+                               data->buffer + data->offset,
+                               data->length - data->offset,
+                               g_task_get_priority (task),
+                               g_task_get_cancellable (task),
+                               callback, task);
 }
 
 static void
 g_socks5_proxy_connect_async (GProxy               *proxy,
-			      GIOStream            *io_stream,
-			      GProxyAddress        *proxy_address,
-			      GCancellable         *cancellable,
-			      GAsyncReadyCallback   callback,
-			      gpointer              user_data)
+                              GIOStream            *io_stream,
+                              GProxyAddress        *proxy_address,
+                              GCancellable         *cancellable,
+                              GAsyncReadyCallback   callback,
+                              gpointer              user_data)
 {
   GTask *task;
   ConnectAsyncData *data;
@@ -670,15 +670,15 @@ g_socks5_proxy_connect_async (GProxy               *proxy,
   g_task_set_task_data (task, data, (GDestroyNotify) free_connect_data);
 
   g_object_get (G_OBJECT (proxy_address),
-		"destination-hostname", &data->hostname,
-		"destination-port", &data->port,
-		"username", &data->username,
-		"password", &data->password,
-		NULL);
+                "destination-hostname", &data->hostname,
+                "destination-port", &data->port,
+                "username", &data->username,
+                "password", &data->password,
+                NULL);
 
   data->buffer = g_malloc0 (SOCKS5_NEGO_MSG_LEN);
   data->length = set_nego_msg (data->buffer,
-			       data->username || data->password);
+                               data->username || data->password);
   data->offset = 0;
 
   do_write (nego_msg_write_cb, task, data);
@@ -687,8 +687,8 @@ g_socks5_proxy_connect_async (GProxy               *proxy,
 
 static void
 nego_msg_write_cb (GObject      *source,
-		   GAsyncResult *res,
-		   gpointer      user_data)
+                   GAsyncResult *res,
+                   gpointer      user_data)
 {
   GTask *task = user_data;
   ConnectAsyncData *data = g_task_get_task_data (task);
@@ -696,7 +696,7 @@ nego_msg_write_cb (GObject      *source,
   gssize written;
 
   written = g_output_stream_write_finish (G_OUTPUT_STREAM (source),
-					  res, &error);
+                                          res, &error);
 
   if (written < 0)
     {
@@ -725,8 +725,8 @@ nego_msg_write_cb (GObject      *source,
 
 static void
 nego_reply_read_cb (GObject      *source,
-		    GAsyncResult *res,
-		    gpointer      user_data)
+                    GAsyncResult *res,
+                    gpointer      user_data)
 {
   GTask *task = user_data;
   ConnectAsyncData *data = g_task_get_task_data (task);
@@ -734,7 +734,7 @@ nego_reply_read_cb (GObject      *source,
   gssize read;
 
   read = g_input_stream_read_finish (G_INPUT_STREAM (source),
-				     res, &error);
+                                     res, &error);
 
   if (read < 0)
     {
@@ -761,17 +761,17 @@ nego_reply_read_cb (GObject      *source,
       gboolean has_auth = data->username || data->password;
 
       if (!parse_nego_reply (data->buffer, has_auth, &must_auth, &error))
-	{
-	  g_task_return_error (task, error);
-	  g_object_unref (task);
-	  return;
-	}
+        {
+          g_task_return_error (task, error);
+          g_object_unref (task);
+          return;
+        }
 
       if (must_auth)
-	{
-	  g_free (data->buffer);
+        {
+          g_free (data->buffer);
 
-	  data->buffer = g_malloc0 (SOCKS5_AUTH_MSG_LEN);
+          data->buffer = g_malloc0 (SOCKS5_AUTH_MSG_LEN);
           data->offset = 0;
 
           if (!set_auth_msg (data->buffer,
@@ -779,18 +779,18 @@ nego_reply_read_cb (GObject      *source,
                              data->password,
                              &data->length,
                              &error))
-	    {
-	      g_task_return_error (task, error);
-	      g_object_unref (task);
-	      return;
-	    }
-	  
-	  do_write (auth_msg_write_cb, task, data);
-	}
+            {
+              g_task_return_error (task, error);
+              g_object_unref (task);
+              return;
+            }
+          
+          do_write (auth_msg_write_cb, task, data);
+        }
       else
-	{
-	  send_connect_msg (task);
-	}
+        {
+          send_connect_msg (task);
+        }
     }
   else
     {
@@ -800,8 +800,8 @@ nego_reply_read_cb (GObject      *source,
 
 static void
 auth_msg_write_cb (GObject      *source,
-		   GAsyncResult *result,
-		   gpointer      user_data)
+                   GAsyncResult *result,
+                   gpointer      user_data)
 {
   GTask *task = user_data;
   ConnectAsyncData *data = g_task_get_task_data (task);
@@ -809,7 +809,7 @@ auth_msg_write_cb (GObject      *source,
   gssize written;
 
   written = g_output_stream_write_finish (G_OUTPUT_STREAM (source),
-					  result, &error);
+                                          result, &error);
   
   if (written < 0)
     {
@@ -838,8 +838,8 @@ auth_msg_write_cb (GObject      *source,
 
 static void
 auth_reply_read_cb (GObject      *source,
-		    GAsyncResult *result,
-		    gpointer      user_data)
+                    GAsyncResult *result,
+                    gpointer      user_data)
 {
   GTask *task = user_data;
   ConnectAsyncData *data = g_task_get_task_data (task);
@@ -847,7 +847,7 @@ auth_reply_read_cb (GObject      *source,
   gssize read;
 
   read = g_input_stream_read_finish (G_INPUT_STREAM (source),
-				     result, &error);
+                                     result, &error);
 
   if (read < 0)
     {
@@ -871,12 +871,12 @@ auth_reply_read_cb (GObject      *source,
   if (data->offset == data->length)
     {
       if (!check_auth_status (data->buffer, &error))
-	{
-	  g_task_return_error (task, error);
-	  g_object_unref (task);
-	  return;
-	}
-	
+        {
+          g_task_return_error (task, error);
+          g_object_unref (task);
+          return;
+        }
+        
       send_connect_msg (task);
     }
   else
@@ -912,8 +912,8 @@ send_connect_msg (GTask *task)
 
 static void
 connect_msg_write_cb (GObject      *source,
-		      GAsyncResult *result,
-		      gpointer      user_data)
+                      GAsyncResult *result,
+                      gpointer      user_data)
 {
   GTask *task = user_data;
   ConnectAsyncData *data = g_task_get_task_data (task);
@@ -921,7 +921,7 @@ connect_msg_write_cb (GObject      *source,
   gssize written;
 
   written = g_output_stream_write_finish (G_OUTPUT_STREAM (source),
-					  result, &error);
+                                          result, &error);
   
   if (written < 0)
     {
@@ -950,8 +950,8 @@ connect_msg_write_cb (GObject      *source,
 
 static void
 connect_reply_read_cb (GObject       *source,
-		       GAsyncResult  *result,
-		       gpointer       user_data)
+                       GAsyncResult  *result,
+                       gpointer       user_data)
 {
   GTask *task = user_data;
   ConnectAsyncData *data = g_task_get_task_data (task);
@@ -959,7 +959,7 @@ connect_reply_read_cb (GObject       *source,
   gssize read;
 
   read = g_input_stream_read_finish (G_INPUT_STREAM (source),
-				     result, &error);
+                                     result, &error);
 
   if (read < 0)
     {
@@ -985,32 +985,32 @@ connect_reply_read_cb (GObject       *source,
       gint atype;
 
       if (!parse_connect_reply (data->buffer, &atype, &error))
-	{
-	  g_task_return_error (task, error);
-	  g_object_unref (task);
-	  return;
-	}
+        {
+          g_task_return_error (task, error);
+          g_object_unref (task);
+          return;
+        }
 
       switch (atype)
-	{
-	  case SOCKS5_ATYP_IPV4:
-	    data->length = 6;
-	    data->offset = 0;
-	    do_read (connect_addr_read_cb, task, data);
-	    break;
+        {
+          case SOCKS5_ATYP_IPV4:
+            data->length = 6;
+            data->offset = 0;
+            do_read (connect_addr_read_cb, task, data);
+            break;
 
-	  case SOCKS5_ATYP_IPV6:
-	    data->length = 18;
-	    data->offset = 0;
-	    do_read (connect_addr_read_cb, task, data);
-	    break;
+          case SOCKS5_ATYP_IPV6:
+            data->length = 18;
+            data->offset = 0;
+            do_read (connect_addr_read_cb, task, data);
+            break;
 
-	  case SOCKS5_ATYP_DOMAINNAME:
-	    data->length = 1;
-	    data->offset = 0;
-	    do_read (connect_addr_len_read_cb, task, data);
-	    break;
-	}
+          case SOCKS5_ATYP_DOMAINNAME:
+            data->length = 1;
+            data->offset = 0;
+            do_read (connect_addr_len_read_cb, task, data);
+            break;
+        }
     }
   else
     {
@@ -1020,8 +1020,8 @@ connect_reply_read_cb (GObject       *source,
 
 static void
 connect_addr_len_read_cb (GObject      *source,
-			  GAsyncResult *result,
-			  gpointer      user_data)
+                          GAsyncResult *result,
+                          gpointer      user_data)
 {
   GTask *task = user_data;
   ConnectAsyncData *data = g_task_get_task_data (task);
@@ -1029,7 +1029,7 @@ connect_addr_len_read_cb (GObject      *source,
   gssize read;
 
   read = g_input_stream_read_finish (G_INPUT_STREAM (source),
-				     result, &error);
+                                     result, &error);
 
   if (read < 0)
     {
@@ -1056,8 +1056,8 @@ connect_addr_len_read_cb (GObject      *source,
 
 static void
 connect_addr_read_cb (GObject      *source,
-		      GAsyncResult *result,
-		      gpointer      user_data)
+                      GAsyncResult *result,
+                      gpointer      user_data)
 {
   GTask *task = user_data;
   ConnectAsyncData *data = g_task_get_task_data (task);
@@ -1065,7 +1065,7 @@ connect_addr_read_cb (GObject      *source,
   gssize read;
 
   read = g_input_stream_read_finish (G_INPUT_STREAM (source),
-				     result, &error);
+                                     result, &error);
 
   if (read < 0)
     {
@@ -1100,8 +1100,8 @@ connect_addr_read_cb (GObject      *source,
 
 static GIOStream *
 g_socks5_proxy_connect_finish (GProxy       *proxy,
-			       GAsyncResult *result,
-			       GError      **error)
+                               GAsyncResult *result,
+                               GError      **error)
 {
   return g_task_propagate_pointer (G_TASK (result), error);
 }

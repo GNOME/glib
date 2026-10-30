@@ -20,12 +20,12 @@
 #include <string.h>
 #include <fnmatch.h>
 
-#ifndef	FALSE
-#define	FALSE	(0)
+#ifndef FALSE
+#define FALSE   (0)
 #endif
 
-#ifndef	TRUE
-#define	TRUE	(!FALSE)
+#ifndef TRUE
+#define TRUE    (!FALSE)
 #endif
 
 typedef struct XdgIcon XdgIcon;
@@ -63,10 +63,10 @@ _xdg_mime_icon_list_free (XdgIconList *list)
   if (list->icons)
     {
       for (i = 0; i < list->n_icons; i++)
-	{
-	  free (list->icons[i].mime_type);
-	  free (list->icons[i].icon_name);
-	}
+        {
+          free (list->icons[i].mime_type);
+          free (list->icons[i].icon_name);
+        }
       free (list->icons);
     }
   free (list);
@@ -80,7 +80,7 @@ icon_entry_cmp (const void *v1, const void *v2)
 
 const char  *
 _xdg_mime_icon_list_lookup (XdgIconList *list,
-			    const char  *mime_type)
+                            const char  *mime_type)
 {
   XdgIcon *entry;
   XdgIcon key;
@@ -91,7 +91,7 @@ _xdg_mime_icon_list_lookup (XdgIconList *list,
       key.icon_name = NULL;
 
       entry = bsearch (&key, list->icons, list->n_icons,
-		       sizeof (XdgIcon), icon_entry_cmp);
+                       sizeof (XdgIcon), icon_entry_cmp);
       if (entry)
         return entry->icon_name;
     }
@@ -101,7 +101,7 @@ _xdg_mime_icon_list_lookup (XdgIconList *list,
 
 void
 _xdg_mime_icon_read_from_file (XdgIconList *list,
-			       const char   *file_name)
+                               const char   *file_name)
 {
   FILE *file;
   char line[255];
@@ -120,25 +120,25 @@ _xdg_mime_icon_read_from_file (XdgIconList *list,
     {
       char *sep;
       if (line[0] == '#')
-	continue;
+        continue;
 
       sep = strchr (line, ':');
       if (sep == NULL)
-	continue;
+        continue;
       *(sep++) = '\000';
       sep[strlen (sep) -1] = '\000';
       if (list->n_icons == alloc)
-	{
-	  alloc <<= 1;
-	  list->icons = realloc (list->icons, 
-				   alloc * sizeof (XdgIcon));
-	}
+        {
+          alloc <<= 1;
+          list->icons = realloc (list->icons, 
+                                   alloc * sizeof (XdgIcon));
+        }
       list->icons[list->n_icons].mime_type = strdup (line);
       list->icons[list->n_icons].icon_name = strdup (sep);
       list->n_icons++;
     }
   list->icons = realloc (list->icons, 
-			   list->n_icons * sizeof (XdgIcon));
+                           list->n_icons * sizeof (XdgIcon));
 
   fclose (file);  
   
@@ -156,11 +156,11 @@ _xdg_mime_icon_list_dump (XdgIconList *list)
   if (list->icons)
     {
       for (i = 0; i < list->n_icons; i++)
-	{
-	  printf ("%s %s\n", 
-		  list->icons[i].mime_type,
-		  list->icons[i].icon_name);
-	}
+        {
+          printf ("%s %s\n", 
+                  list->icons[i].mime_type,
+                  list->icons[i].icon_name);
+        }
     }
 }
 

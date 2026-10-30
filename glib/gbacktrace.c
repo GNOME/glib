@@ -413,11 +413,11 @@ stack_trace (const char * const *args)
       /* Save stderr for printing failure below */
       int old_err = dup (2);
       if (old_err != -1)
-	{
-	  int getfd = fcntl (old_err, F_GETFD);
-	  if (getfd != -1)
-	    (void) fcntl (old_err, F_SETFD, getfd | FD_CLOEXEC);
-	}
+        {
+          int getfd = fcntl (old_err, F_GETFD);
+          if (getfd != -1)
+            (void) fcntl (old_err, F_SETFD, getfd | FD_CLOEXEC);
+        }
 
       close (0);
       checked_dup (in_fd[0]);   /* set the stdin to the in pipe */

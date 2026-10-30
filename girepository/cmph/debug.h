@@ -21,17 +21,17 @@
 static void debugprintf(const char *format, ...)
 {
     va_list ap;
-	char *f = NULL;
-	const char *p="%s:%d ";
-	size_t plen = strlen(p);
+        char *f = NULL;
+        const char *p="%s:%d ";
+        size_t plen = strlen(p);
     va_start(ap, format);
-	f = (char *)malloc(plen + strlen(format) + 1);
-	if (!f) return;
-	memcpy(f, p, plen);
-	memcpy(f + plen, format, strlen(format) + 1);
+        f = (char *)malloc(plen + strlen(format) + 1);
+        if (!f) return;
+        memcpy(f, p, plen);
+        memcpy(f + plen, format, strlen(format) + 1);
     vfprintf(stderr, f, ap);
     va_end(ap);
-	free(f);
+        free(f);
 }
 static void dummyprintf(const char *format, ...)
 {}

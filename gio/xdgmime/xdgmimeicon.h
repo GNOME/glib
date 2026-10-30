@@ -24,11 +24,11 @@ typedef struct XdgIconList XdgIconList;
 #endif
 
 void          _xdg_mime_icon_read_from_file (XdgIconList *list,
-					    const char   *file_name);
+                                            const char   *file_name);
 XdgIconList  *_xdg_mime_icon_list_new       (void);
 void          _xdg_mime_icon_list_free      (XdgIconList *list);
 const char   *_xdg_mime_icon_list_lookup    (XdgIconList *list,
-					     const char  *mime);
+                                             const char  *mime);
 void          _xdg_mime_icon_list_dump      (XdgIconList *list);
 
 #endif /* __XDG_MIME_ICON_H__ */

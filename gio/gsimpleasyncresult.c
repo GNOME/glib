@@ -238,8 +238,8 @@ struct _GSimpleAsyncResultClass
 
 
 G_DEFINE_TYPE_WITH_CODE (GSimpleAsyncResult, g_simple_async_result, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_RESULT,
-						g_simple_async_result_async_result_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_RESULT,
+                                                g_simple_async_result_async_result_iface_init))
 
 static void
 clear_op_res (GSimpleAsyncResult *simple)
@@ -357,8 +357,8 @@ g_simple_async_result_new_from_error (GObject             *source_object,
   g_return_val_if_fail (!source_object || G_IS_OBJECT (source_object), NULL);
 
   simple = g_simple_async_result_new (source_object,
-				      callback,
-				      user_data, NULL);
+                                      callback,
+                                      user_data, NULL);
   g_simple_async_result_set_from_error (simple, error);
 
   return simple;
@@ -391,8 +391,8 @@ g_simple_async_result_new_take_error (GObject             *source_object,
   g_return_val_if_fail (!source_object || G_IS_OBJECT (source_object), NULL);
 
   simple = g_simple_async_result_new (source_object,
-				      callback,
-				      user_data, NULL);
+                                      callback,
+                                      user_data, NULL);
   g_simple_async_result_take_error (simple, error);
 
   return simple;
@@ -431,8 +431,8 @@ g_simple_async_result_new_error (GObject             *source_object,
   g_return_val_if_fail (format != NULL, NULL);
 
   simple = g_simple_async_result_new (source_object,
-				      callback,
-				      user_data, NULL);
+                                      callback,
+                                      user_data, NULL);
 
   va_start (args, format);
   g_simple_async_result_set_error_va (simple, domain, code, format, args);
@@ -458,7 +458,7 @@ g_simple_async_result_get_source_object (GAsyncResult *res)
 
 static gboolean
 g_simple_async_result_is_tagged (GAsyncResult *res,
-				 gpointer      source_tag)
+                                 gpointer      source_tag)
 {
   return G_SIMPLE_ASYNC_RESULT (res)->source_tag == source_tag;
 }
@@ -792,7 +792,7 @@ g_simple_async_result_complete (GSimpleAsyncResult *simple)
     {
       current_context = g_source_get_context (current_source);
       if (simple->context != current_context)
-	g_warning ("g_simple_async_result_complete() called from wrong context!");
+        g_warning ("g_simple_async_result_complete() called from wrong context!");
     }
 #endif
 
@@ -800,8 +800,8 @@ g_simple_async_result_complete (GSimpleAsyncResult *simple)
     {
       g_main_context_push_thread_default (simple->context);
       simple->callback (simple->source_object,
-			G_ASYNC_RESULT (simple),
-			simple->user_data);
+                        G_ASYNC_RESULT (simple),
+                        simple->user_data);
       g_main_context_pop_thread_default (simple->context);
     }
 }
@@ -1035,8 +1035,8 @@ g_simple_async_report_error_in_idle (GObject             *object,
   g_return_if_fail (format != NULL);
 
   simple = g_simple_async_result_new (object,
-				      callback,
-				      user_data, NULL);
+                                      callback,
+                                      user_data, NULL);
 
   va_start (args, format);
   g_simple_async_result_set_error_va (simple, domain, code, format, args);
@@ -1060,9 +1060,9 @@ g_simple_async_report_error_in_idle (GObject             *object,
  **/
 void
 g_simple_async_report_gerror_in_idle (GObject *object,
-				      GAsyncReadyCallback callback,
-				      gpointer user_data,
-				      const GError *error)
+                                      GAsyncReadyCallback callback,
+                                      gpointer user_data,
+                                      const GError *error)
 {
   GSimpleAsyncResult *simple;
  
@@ -1070,9 +1070,9 @@ g_simple_async_report_gerror_in_idle (GObject *object,
   g_return_if_fail (error != NULL);
 
   simple = g_simple_async_result_new_from_error (object,
-						 callback,
-						 user_data,
-						 error);
+                                                 callback,
+                                                 user_data,
+                                                 error);
   g_simple_async_result_complete_in_idle (simple);
   g_object_unref (simple);
 }

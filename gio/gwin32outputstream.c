@@ -66,9 +66,9 @@ G_DEFINE_TYPE_WITH_PRIVATE (GWin32OutputStream, g_win32_output_stream, G_TYPE_OU
 
 static void
 g_win32_output_stream_set_property (GObject         *object,
-				    guint            prop_id,
-				    const GValue    *value,
-				    GParamSpec      *pspec)
+                                    guint            prop_id,
+                                    const GValue    *value,
+                                    GParamSpec      *pspec)
 {
   GWin32OutputStream *win32_stream;
 
@@ -90,9 +90,9 @@ g_win32_output_stream_set_property (GObject         *object,
 
 static void
 g_win32_output_stream_get_property (GObject    *object,
-				    guint       prop_id,
-				    GValue     *value,
-				    GParamSpec *pspec)
+                                    guint       prop_id,
+                                    GValue     *value,
+                                    GParamSpec *pspec)
 {
   GWin32OutputStream *win32_stream;
 
@@ -113,10 +113,10 @@ g_win32_output_stream_get_property (GObject    *object,
 
 static gssize
 g_win32_output_stream_write (GOutputStream  *stream,
-			    const void     *buffer,
-			    gsize           count,
-			    GCancellable   *cancellable,
-			    GError        **error)
+                            const void     *buffer,
+                            gsize           count,
+                            GCancellable   *cancellable,
+                            GError        **error)
 {
   GWin32OutputStream *win32_stream;
   BOOL res;
@@ -181,8 +181,8 @@ end:
 
 static gboolean
 g_win32_output_stream_close (GOutputStream  *stream,
-			     GCancellable   *cancellable,
-			     GError        **error)
+                             GCancellable   *cancellable,
+                             GError        **error)
 {
   GWin32OutputStream *win32_stream;
   BOOL res;
@@ -195,31 +195,31 @@ g_win32_output_stream_close (GOutputStream  *stream,
   if (win32_stream->priv->fd != -1)
     {
       if (close (win32_stream->priv->fd) < 0)
-	{
-	  int errsv = errno;
+        {
+          int errsv = errno;
 
-	  g_set_error (error, G_IO_ERROR,
-	               g_io_error_from_errno (errsv),
-	               _("Error closing file descriptor: %s"),
-	               g_strerror (errsv));
-	  return FALSE;
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error closing file descriptor: %s"),
+                       g_strerror (errsv));
+          return FALSE;
+        }
     }
   else
     {
       res = CloseHandle (win32_stream->priv->handle);
       if (!res)
-	{
-	  int errsv = GetLastError ();
-	  gchar *emsg = g_win32_error_message (errsv);
+        {
+          int errsv = GetLastError ();
+          gchar *emsg = g_win32_error_message (errsv);
 
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_win32_error (errsv),
-		       _("Error closing handle: %s"),
-		       emsg);
-	  g_free (emsg);
-	  return FALSE;
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_win32_error (errsv),
+                       _("Error closing handle: %s"),
+                       emsg);
+          g_free (emsg);
+          return FALSE;
+        }
     }
 
   return TRUE;
@@ -293,16 +293,16 @@ g_win32_output_stream_init (GWin32OutputStream *win32_stream)
 **/
 GOutputStream *
 g_win32_output_stream_new (void    *handle,
-			   gboolean close_handle)
+                           gboolean close_handle)
 {
   GWin32OutputStream *stream;
 
   g_return_val_if_fail (handle != NULL, NULL);
 
   stream = g_object_new (G_TYPE_WIN32_OUTPUT_STREAM,
-			 "handle", handle,
-			 "close-handle", close_handle,
-			 NULL);
+                         "handle", handle,
+                         "close-handle", close_handle,
+                         NULL);
 
   return G_OUTPUT_STREAM (stream);
 }
@@ -319,7 +319,7 @@ g_win32_output_stream_new (void    *handle,
  */
 void
 g_win32_output_stream_set_close_handle (GWin32OutputStream *stream,
-					gboolean           close_handle)
+                                        gboolean           close_handle)
 {
   g_return_if_fail (G_IS_WIN32_OUTPUT_STREAM (stream));
 

@@ -66,8 +66,8 @@ G_BEGIN_DECLS
  * of those:
  */
 GLIB_AVAILABLE_IN_ALL
-gint		g_win32_ftruncate	(gint		 f,
-					 guint		 size);
+gint            g_win32_ftruncate       (gint            f,
+                                         guint           size);
 #endif /* G_OS_WIN32 */
 
 /* The MS setlocale uses locale names of the form "English_United
@@ -77,7 +77,7 @@ gint		g_win32_ftruncate	(gint		 f,
  * names etc. The returned string should be deallocated with g_free().
  */
 GLIB_AVAILABLE_IN_ALL
-gchar* 		g_win32_getlocale  (void);
+gchar*          g_win32_getlocale  (void);
 
 /* Translate a Win32 error code (as returned by GetLastError()) into
  * the corresponding message. The returned string should be deallocated
@@ -88,18 +88,18 @@ gchar*          g_win32_error_message (gint error);
 
 GLIB_DEPRECATED
 gchar*          g_win32_get_package_installation_directory (const gchar *package,
-							    const gchar *dll_name);
+                                                            const gchar *dll_name);
 
 GLIB_DEPRECATED
 gchar*          g_win32_get_package_installation_subdirectory (const gchar *package,
-							       const gchar *dll_name,
-							       const gchar *subdir);
+                                                               const gchar *dll_name,
+                                                               const gchar *subdir);
 
 GLIB_AVAILABLE_IN_ALL
 gchar*          g_win32_get_package_installation_directory_of_module (gpointer hmodule);
 
 GLIB_DEPRECATED_IN_2_44_FOR(g_win32_check_windows_version)
-guint		g_win32_get_windows_version (void);
+guint           g_win32_get_windows_version (void);
 
 GLIB_AVAILABLE_IN_ALL
 gchar*          g_win32_locale_filename_from_utf8 (const gchar *utf8filename);
@@ -187,6 +187,6 @@ g_win32_clear_com (com_interface **com_obj)
 }
 #endif
 
-#endif	 /* G_PLATFORM_WIN32 */
+#endif   /* G_PLATFORM_WIN32 */
 
 #endif /* __G_WIN32_H__ */

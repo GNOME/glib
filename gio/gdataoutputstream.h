@@ -71,50 +71,50 @@ GDataOutputStream *  g_data_output_stream_new            (GOutputStream         
 
 GIO_AVAILABLE_IN_ALL
 void                 g_data_output_stream_set_byte_order (GDataOutputStream     *stream,
-							  GDataStreamByteOrder   order);
+                                                          GDataStreamByteOrder   order);
 GIO_AVAILABLE_IN_ALL
 GDataStreamByteOrder g_data_output_stream_get_byte_order (GDataOutputStream     *stream);
 
 GIO_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_byte       (GDataOutputStream     *stream,
-							  guchar                 data,
-							  GCancellable          *cancellable,
-							  GError               **error);
+                                                          guchar                 data,
+                                                          GCancellable          *cancellable,
+                                                          GError               **error);
 GIO_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_int16      (GDataOutputStream     *stream,
-							  gint16                 data,
-							  GCancellable          *cancellable,
-							  GError               **error);
+                                                          gint16                 data,
+                                                          GCancellable          *cancellable,
+                                                          GError               **error);
 GIO_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_uint16     (GDataOutputStream     *stream,
-							  guint16                data,
-							  GCancellable          *cancellable,
-							  GError               **error);
+                                                          guint16                data,
+                                                          GCancellable          *cancellable,
+                                                          GError               **error);
 GIO_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_int32      (GDataOutputStream     *stream,
-							  gint32                 data,
-							  GCancellable          *cancellable,
-							  GError               **error);
+                                                          gint32                 data,
+                                                          GCancellable          *cancellable,
+                                                          GError               **error);
 GIO_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_uint32     (GDataOutputStream     *stream,
-							  guint32                data,
-							  GCancellable          *cancellable,
-							  GError               **error);
+                                                          guint32                data,
+                                                          GCancellable          *cancellable,
+                                                          GError               **error);
 GIO_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_int64      (GDataOutputStream     *stream,
-							  gint64                 data,
-							  GCancellable          *cancellable,
-							  GError               **error);
+                                                          gint64                 data,
+                                                          GCancellable          *cancellable,
+                                                          GError               **error);
 GIO_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_uint64     (GDataOutputStream     *stream,
-							  guint64                data,
-							  GCancellable          *cancellable,
-							  GError               **error);
+                                                          guint64                data,
+                                                          GCancellable          *cancellable,
+                                                          GError               **error);
 GIO_AVAILABLE_IN_ALL
 gboolean             g_data_output_stream_put_string     (GDataOutputStream     *stream,
-							  const char            *str,
-							  GCancellable          *cancellable,
-							  GError               **error);
+                                                          const char            *str,
+                                                          GCancellable          *cancellable,
+                                                          GError               **error);
 
 G_END_DECLS
 

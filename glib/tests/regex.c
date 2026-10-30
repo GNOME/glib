@@ -12,7 +12,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -670,7 +670,7 @@ test_match_count (gconstpointer d)
   g_assert (regex != NULL);
 
   g_regex_match_full (regex, data->string, -1, data->start_position,
-		      data->match_opts, &match_info, NULL);
+                      data->match_opts, &match_info, NULL);
   count = g_match_info_get_match_count (match_info);
 
   g_assert_cmpint (count, ==, data->expected_count);
@@ -826,7 +826,7 @@ test_sub_pattern (gconstpointer d)
 }
 
 #define TEST_SUB_PATTERN(_pattern, _string, _start_position, _sub_n, _expected_sub, \
-			 _expected_start, _expected_end) {                       \
+                         _expected_start, _expected_end) {                       \
   TestSubData *data;                                                    \
   gchar *path;                                                          \
   data = g_new0 (TestSubData, 1);                                       \
@@ -887,7 +887,7 @@ test_named_sub_pattern (gconstpointer d)
 }
 
 #define TEST_NAMED_SUB_PATTERN(_pattern, _string, _start_position, _sub_name, \
-			       _expected_sub, _expected_start, _expected_end) { \
+                               _expected_sub, _expected_start, _expected_end) { \
   TestNamedSubData *data;                                                 \
   gchar *path;                                                            \
   data = g_new0 (TestNamedSubData, 1);                                    \
@@ -1125,7 +1125,7 @@ test_split_full (gconstpointer d)
   g_assert (regex != NULL);
 
   tokens = g_regex_split_full (regex, data->string, -1, data->start_position,
-			       0, data->max_tokens, NULL);
+                               0, data->max_tokens, NULL);
   if (tokens)
     token_count = g_strv_length (tokens);
   else
@@ -3138,7 +3138,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_MATCH_SIMPLE ("^(?:[ \t\n]|[^[:cntrl:]])*$", large_test_string, 0, 0, TRUE);
 
   /* TEST_MATCH(pattern, compile_opts, match_opts, string,
-   * 		string_len, start_position, match_opts2, expected) */
+   *            string_len, start_position, match_opts2, expected) */
   TEST_MATCH("a", 0, 0, "a", -1, 0, 0, TRUE);
   TEST_MATCH("a", 0, 0, "A", -1, 0, 0, FALSE);
   TEST_MATCH("a", G_REGEX_CASELESS, 0, "A", -1, 0, 0, TRUE);
@@ -3314,7 +3314,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_PARTIAL_FULL("ab+", "ab", G_REGEX_OPTIMIZE, G_REGEX_MATCH_PARTIAL_HARD, "ab", 0, 2);
 
   /* TEST_SUB_PATTERN(pattern, string, start_position, sub_n, expected_sub,
-   * 		      expected_start, expected_end) */
+   *                  expected_start, expected_end) */
   TEST_SUB_PATTERN("a", "a", 0, 0, "a", 0, 1);
   TEST_SUB_PATTERN("a(.)", "ab", 0, 1, "b", 1, 2);
   TEST_SUB_PATTERN("a(.)", "a" EURO, 0, 1, EURO, 1, 4);
@@ -3330,7 +3330,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_SUB_PATTERN("(a)?b", "b", 0, 2, NULL, UNTOUCHED, UNTOUCHED);
 
   /* TEST_NAMED_SUB_PATTERN(pattern, string, start_position, sub_name,
-   * 			    expected_sub, expected_start, expected_end) */
+   *                        expected_sub, expected_start, expected_end) */
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", "ab", 0, "A", "b", 1, 2);
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", "aab", 1, "A", "b", 2, 3);
   TEST_NAMED_SUB_PATTERN("a(?P<A>.)(?P<B>.)?", EURO "ab", 0, "A", "b", 4, 5);
@@ -3342,7 +3342,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_NAMED_SUB_PATTERN("(?P<A>a)?(?P<B>b)", "b", 0, "B", "b", 0, 1);
 
   /* TEST_NAMED_SUB_PATTERN_DUPNAMES(pattern, string, start_position, sub_name,
-   *				     expected_sub, expected_start, expected_end) */
+   *                                 expected_sub, expected_start, expected_end) */
   TEST_NAMED_SUB_PATTERN_DUPNAMES("(?P<N>a)|(?P<N>b)", "ab", 0, "N", "a", 0, 1);
   TEST_NAMED_SUB_PATTERN_DUPNAMES("(?P<N>aa)|(?P<N>a)", "aa", 0, "N", "aa", 0, 2);
   TEST_NAMED_SUB_PATTERN_DUPNAMES("(?P<N>aa)(?P<N>a)", "aaa", 0, "N", "aa", 0, 2);
@@ -3620,7 +3620,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_ESCAPE("$a$", 4, "\\$a\\$\\0");
   TEST_ESCAPE("|()[]{}^$*+?.", -1, "\\|\\(\\)\\[\\]\\{\\}\\^\\$\\*\\+\\?\\.");
   TEST_ESCAPE("a|a(a)a[a]a{a}a^a$a*a+a?a.a", -1,
-	      "a\\|a\\(a\\)a\\[a\\]a\\{a\\}a\\^a\\$a\\*a\\+a\\?a\\.a");
+              "a\\|a\\(a\\)a\\[a\\]a\\{a\\}a\\^a\\$a\\*a\\+a\\?a\\.a");
 
   /* TEST_MATCH_ALL#(pattern, string, string_len, start_position, ...) */
   TEST_MATCH_ALL0("<.*>", "", -1, 0);
@@ -3637,7 +3637,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_MATCH_ALL2("a+", "aa", -1, 0, "aa", 0, 2, "a", 0, 1);
   TEST_MATCH_ALL2(".+", ENG EURO, -1, 0, ENG EURO, 0, 5, ENG, 0, 2);
   TEST_MATCH_ALL3("<.*>", "<a><b><c>", -1, 0, "<a><b><c>", 0, 9,
-		  "<a><b>", 0, 6, "<a>", 0, 3);
+                  "<a><b>", 0, 6, "<a>", 0, 3);
   TEST_MATCH_ALL3("a+", "aaa", -1, 0, "aaa", 0, 3, "aa", 0, 2, "a", 0, 1);
 
   /* NOTEMPTY matching */

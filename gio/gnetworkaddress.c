@@ -87,7 +87,7 @@ static void g_network_address_get_property (GObject      *object,
 
 static void                      g_network_address_connectable_iface_init       (GSocketConnectableIface *iface);
 static GSocketAddressEnumerator *g_network_address_connectable_enumerate        (GSocketConnectable      *connectable);
-static GSocketAddressEnumerator	*g_network_address_connectable_proxy_enumerate  (GSocketConnectable      *connectable);
+static GSocketAddressEnumerator *g_network_address_connectable_proxy_enumerate  (GSocketConnectable      *connectable);
 static gchar                    *g_network_address_connectable_to_string        (GSocketConnectable      *connectable);
 
 G_DEFINE_TYPE_WITH_CODE (GNetworkAddress, g_network_address, G_TYPE_OBJECT,
@@ -542,8 +542,8 @@ g_network_address_parse (const gchar  *host_and_port,
  */
 GSocketConnectable *
 g_network_address_parse_uri (const gchar  *uri,
-    			     guint16       default_port,
-			     GError      **error)
+                             guint16       default_port,
+                             GError      **error)
 {
   GSocketConnectable *conn = NULL;
   gchar *scheme = NULL;
@@ -1190,8 +1190,8 @@ g_network_address_connectable_proxy_enumerate (GSocketConnectable *connectable)
 
   proxy_enum = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
                              "connectable", connectable,
-      	       	       	     "uri", uri,
-      	       	       	     NULL);
+                             "uri", uri,
+                             NULL);
 
   g_free (uri);
 

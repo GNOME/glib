@@ -250,17 +250,17 @@ test_threadpool_sort (gconstpointer data)
    */
 
   pool = g_thread_pool_new (test_threadpool_sort_entry_func,
-			    GINT_TO_POINTER (sort),
-			    sort ? 0 : max_threads,
-			    FALSE,
-			    NULL);
+                            GINT_TO_POINTER (sort),
+                            sort ? 0 : max_threads,
+                            FALSE,
+                            NULL);
 
   g_thread_pool_set_max_unused_threads (MAX_UNUSED_THREADS);
 
   if (sort) {
     g_thread_pool_set_sort_function (pool,
-				     test_threadpool_sort_compare_func,
-				     NULL);
+                                     test_threadpool_sort_compare_func,
+                                     NULL);
   }
 
   for (i = 0; i < limit; i++) {
@@ -331,10 +331,10 @@ test_threadpool_idle_time (void)
   GSource *poll_source = NULL;
 
   idle_pool = g_thread_pool_new (test_threadpool_idle_time_entry_func,
-				 NULL,
-				 0,
-				 FALSE,
-				 NULL);
+                                 NULL,
+                                 0,
+                                 FALSE,
+                                 NULL);
 
   g_thread_pool_set_max_threads (idle_pool, MAX_THREADS, NULL);
   g_thread_pool_set_max_unused_threads (MAX_UNUSED_THREADS);

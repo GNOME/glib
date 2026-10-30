@@ -52,41 +52,41 @@ static const unsigned long __nan[2] = {0xffffffff, 0x7fffffff};
 
 #define GLIB_TEST_STRING "el dorado "
 
-#define FOR_ALL_CTYPE(macro)	\
-	macro(isalnum)		\
-	macro(isalpha)		\
-	macro(iscntrl)		\
-	macro(isdigit)		\
-	macro(isgraph)		\
-	macro(islower)		\
-	macro(isprint)		\
-	macro(ispunct)		\
-	macro(isspace)		\
-	macro(isupper)		\
-	macro(isxdigit)
+#define FOR_ALL_CTYPE(macro)    \
+        macro(isalnum)          \
+        macro(isalpha)          \
+        macro(iscntrl)          \
+        macro(isdigit)          \
+        macro(isgraph)          \
+        macro(islower)          \
+        macro(isprint)          \
+        macro(ispunct)          \
+        macro(isspace)          \
+        macro(isupper)          \
+        macro(isxdigit)
 
-#define DEFINE_CALL_CTYPE(function)		\
-	static int				\
-	call_##function (int c)			\
-	{					\
-		return function (c);		\
-	}
+#define DEFINE_CALL_CTYPE(function)             \
+        static int                              \
+        call_##function (int c)                 \
+        {                                       \
+                return function (c);            \
+        }
 
-#define DEFINE_CALL_G_ASCII_CTYPE(function)	\
-	static gboolean				\
-	call_g_ascii_##function (gchar c)	\
-	{					\
-		return g_ascii_##function (c);	\
-	}
+#define DEFINE_CALL_G_ASCII_CTYPE(function)     \
+        static gboolean                         \
+        call_g_ascii_##function (gchar c)       \
+        {                                       \
+                return g_ascii_##function (c);  \
+        }
 
 FOR_ALL_CTYPE (DEFINE_CALL_CTYPE)
 FOR_ALL_CTYPE (DEFINE_CALL_G_ASCII_CTYPE)
 
 static void
 test_is_function (const char *name,
-		  gboolean (* ascii_function) (gchar),
-		  int (* c_library_function) (int),
-		  gboolean (* unicode_function) (gunichar))
+                  gboolean (* ascii_function) (gchar),
+                  int (* c_library_function) (int),
+                  gboolean (* unicode_function) (gunichar))
 {
   int c;
 
@@ -97,30 +97,30 @@ test_is_function (const char *name,
       gboolean unicode_result = unicode_function ((gunichar) c);
       if (ascii_result != c_library_result && c != '\v')
         {
-	  g_error ("g_ascii_%s returned %d and %s returned %d for 0x%X",
-		   name, ascii_result, name, c_library_result, c);
-	}
+          g_error ("g_ascii_%s returned %d and %s returned %d for 0x%X",
+                   name, ascii_result, name, c_library_result, c);
+        }
       if (ascii_result != unicode_result)
-	{
-	  g_error ("g_ascii_%s returned %d and g_unichar_%s returned %d for 0x%X",
-		   name, ascii_result, name, unicode_result, c);
-	}
+        {
+          g_error ("g_ascii_%s returned %d and g_unichar_%s returned %d for 0x%X",
+                   name, ascii_result, name, unicode_result, c);
+        }
     }
   for (c = 0x80; c <= 0xFF; c++)
     {
       gboolean ascii_result = ascii_function ((gchar)c);
       if (ascii_result)
-	{
-	  g_error ("g_ascii_%s returned TRUE for 0x%X", name, c);
-	}
+        {
+          g_error ("g_ascii_%s returned TRUE for 0x%X", name, c);
+        }
     }
 }
 
 static void
 test_to_function (const char *name,
-		  gchar (* ascii_function) (gchar),
-		  int (* c_library_function) (int),
-		  gunichar (* unicode_function) (gunichar))
+                  gchar (* ascii_function) (gchar),
+                  int (* c_library_function) (int),
+                  gunichar (* unicode_function) (gunichar))
 {
   int c;
 
@@ -130,31 +130,31 @@ test_to_function (const char *name,
       int c_library_result = c_library_function (c);
       int unicode_result = unicode_function ((gunichar) c);
       if (ascii_result != c_library_result)
-	{
-	  g_error ("g_ascii_%s returned 0x%X and %s returned 0x%X for 0x%X",
-		   name, ascii_result, name, c_library_result, c);
-	}
+        {
+          g_error ("g_ascii_%s returned 0x%X and %s returned 0x%X for 0x%X",
+                   name, ascii_result, name, c_library_result, c);
+        }
       if (ascii_result != unicode_result)
-	{
-	  g_error ("g_ascii_%s returned 0x%X and g_unichar_%s returned 0x%X for 0x%X",
-		   name, ascii_result, name, unicode_result, c);
-	}
+        {
+          g_error ("g_ascii_%s returned 0x%X and g_unichar_%s returned 0x%X for 0x%X",
+                   name, ascii_result, name, unicode_result, c);
+        }
     }
   for (c = 0x80; c <= 0xFF; c++)
     {
       int ascii_result = (guchar) ascii_function ((gchar) c);
       if (ascii_result != c)
-	{
-	  g_error ("g_ascii_%s returned 0x%X for 0x%X",
-		   name, ascii_result, c);
-	}
+        {
+          g_error ("g_ascii_%s returned 0x%X for 0x%X",
+                   name, ascii_result, c);
+        }
     }
 }
 
 static void
 test_digit_function (const char *name,
-		     int (* ascii_function) (gchar),
-		     int (* unicode_function) (gunichar))
+                     int (* ascii_function) (gchar),
+                     int (* unicode_function) (gunichar))
 {
   int c;
 
@@ -163,19 +163,19 @@ test_digit_function (const char *name,
       int ascii_result = ascii_function ((gchar) c);
       int unicode_result = unicode_function ((gunichar) c);
       if (ascii_result != unicode_result)
-	{
-	  g_error ("g_ascii_%s_value returned %d and g_unichar_%s_value returned %d for 0x%X",
-		   name, ascii_result, name, unicode_result, c);
-	}
+        {
+          g_error ("g_ascii_%s_value returned %d and g_unichar_%s_value returned %d for 0x%X",
+                   name, ascii_result, name, unicode_result, c);
+        }
     }
   for (c = 0x80; c <= 0xFF; c++)
     {
       int ascii_result = ascii_function ((gchar) c);
       if (ascii_result != -1)
-	{
-	  g_error ("g_ascii_%s_value returned %d for 0x%X",
-		   name, ascii_result, c);
-	}
+        {
+          g_error ("g_ascii_%s_value returned %d for 0x%X",
+                   name, ascii_result, c);
+        }
     }
 }
 
@@ -650,9 +650,9 @@ test_strconcat (void)
   g_free (str);
 
   str = g_strconcat (GLIB_TEST_STRING,
-		     GLIB_TEST_STRING,
-		     GLIB_TEST_STRING,
-		     NULL);
+                     GLIB_TEST_STRING,
+                     GLIB_TEST_STRING,
+                     NULL);
   g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, GLIB_TEST_STRING GLIB_TEST_STRING GLIB_TEST_STRING);
   g_free (str);
@@ -755,19 +755,19 @@ test_strjoin (void)
   g_free (str);
 
   str = g_strjoin (NULL,
-		   GLIB_TEST_STRING,
-		   GLIB_TEST_STRING,
-		   GLIB_TEST_STRING,
-		   NULL);
+                   GLIB_TEST_STRING,
+                   GLIB_TEST_STRING,
+                   GLIB_TEST_STRING,
+                   NULL);
   g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, GLIB_TEST_STRING GLIB_TEST_STRING GLIB_TEST_STRING);
   g_free (str);
 
   str = g_strjoin (":",
-		   GLIB_TEST_STRING,
-		   GLIB_TEST_STRING,
-		   GLIB_TEST_STRING,
-		   NULL);
+                   GLIB_TEST_STRING,
+                   GLIB_TEST_STRING,
+                   GLIB_TEST_STRING,
+                   NULL);
   g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, GLIB_TEST_STRING ":" GLIB_TEST_STRING ":" GLIB_TEST_STRING);
   g_free (str);
@@ -851,7 +851,7 @@ test_strcompress_strescape (void)
   g_free (str);
 
   str = g_strescape ("abc\\\"\b\f\n\r\t\v\003\177\234\313",
-		     "\b\f\001\002\003\004");
+                     "\b\f\001\002\003\004");
   g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, "abc\\\\\\\"\b\f\\n\\r\\t\\v\003\\177\\234\\313");
   g_free (str);
@@ -1467,13 +1467,13 @@ strv_check (gchar **strv, ...)
     {
       const gchar *str = va_arg (list, const char *);
       if (strv[i] == NULL)
-	{
-	  g_assert_null (str);
-	  break;
-	}
+        {
+          g_assert_null (str);
+          break;
+        }
       if (str == NULL)
         {
-	  ok = FALSE;
+          ok = FALSE;
         }
       else
         {
@@ -1665,9 +1665,9 @@ static char *locales[] = {"sv_SE", "en_US", "fa_IR", "C", "ru_RU"};
 
 static void
 check_strtod_string (gchar    *number,
-		     double    res,
-		     gboolean  check_end,
-		     gsize      correct_len)
+                     double    res,
+                     gboolean  check_end,
+                     gsize      correct_len)
 {
   double d;
   gsize l;
@@ -1826,10 +1826,10 @@ test_ascii_strtod (void)
 
 static void
 check_uint64 (const gchar *str,
-	      const gchar *end,
-	      gint         base,
-	      guint64      result,
-	      gint         error)
+              const gchar *end,
+              gint         base,
+              guint64      result,
+              gint         error)
 {
   guint64 actual;
   gchar *endptr = NULL;
@@ -1846,10 +1846,10 @@ check_uint64 (const gchar *str,
 
 static void
 check_int64 (const gchar *str,
-	     const gchar *end,
-	     gint         base,
-	     gint64       result,
-	     gint         error)
+             const gchar *end,
+             gint         base,
+             gint64       result,
+             gint         error)
 {
   gint64 actual;
   gchar *endptr = NULL;

@@ -1308,114 +1308,114 @@ GIO_AVAILABLE_IN_ALL
 GFileInfo *        g_file_info_dup                       (GFileInfo  *other);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_copy_into                 (GFileInfo  *src_info,
-							  GFileInfo  *dest_info);
+                                                          GFileInfo  *dest_info);
 GIO_AVAILABLE_IN_ALL
 gboolean           g_file_info_has_attribute             (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 gboolean           g_file_info_has_namespace             (GFileInfo  *info,
-							  const char *name_space);
+                                                          const char *name_space);
 GIO_AVAILABLE_IN_ALL
 char **            g_file_info_list_attributes           (GFileInfo  *info,
-							  const char *name_space);
+                                                          const char *name_space);
 GIO_AVAILABLE_IN_ALL
 gboolean           g_file_info_get_attribute_data        (GFileInfo  *info,
-							  const char *attribute,
-							  GFileAttributeType *type,
-							  gpointer   *value_pp,
-							  GFileAttributeStatus *status);
+                                                          const char *attribute,
+                                                          GFileAttributeType *type,
+                                                          gpointer   *value_pp,
+                                                          GFileAttributeStatus *status);
 GIO_AVAILABLE_IN_ALL
 GFileAttributeType g_file_info_get_attribute_type        (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_remove_attribute          (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 GFileAttributeStatus g_file_info_get_attribute_status    (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 gboolean           g_file_info_set_attribute_status      (GFileInfo  *info,
-							  const char *attribute,
-							  GFileAttributeStatus status);
+                                                          const char *attribute,
+                                                          GFileAttributeStatus status);
 GIO_AVAILABLE_IN_ALL
 char *             g_file_info_get_attribute_as_string   (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 const char *       g_file_info_get_attribute_string      (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 const char *       g_file_info_get_attribute_byte_string (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 gboolean           g_file_info_get_attribute_boolean     (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 guint32            g_file_info_get_attribute_uint32      (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 gint32             g_file_info_get_attribute_int32       (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 guint64            g_file_info_get_attribute_uint64      (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 gint64             g_file_info_get_attribute_int64       (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 GObject *          g_file_info_get_attribute_object      (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_ALL
 char **            g_file_info_get_attribute_stringv     (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 GIO_AVAILABLE_IN_2_78
 const char *       g_file_info_get_attribute_file_path   (GFileInfo  *info,
-							  const char *attribute);
+                                                          const char *attribute);
 
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute             (GFileInfo  *info,
-							  const char *attribute,
-							  GFileAttributeType type,
-							  gpointer    value_p);
+                                                          const char *attribute,
+                                                          GFileAttributeType type,
+                                                          gpointer    value_p);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_string      (GFileInfo  *info,
-							  const char *attribute,
-							  const char *attr_value);
+                                                          const char *attribute,
+                                                          const char *attr_value);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_byte_string (GFileInfo  *info,
-							  const char *attribute,
-							  const char *attr_value);
+                                                          const char *attribute,
+                                                          const char *attr_value);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_boolean     (GFileInfo  *info,
-							  const char *attribute,
-							  gboolean    attr_value);
+                                                          const char *attribute,
+                                                          gboolean    attr_value);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_uint32      (GFileInfo  *info,
-							  const char *attribute,
-							  guint32     attr_value);
+                                                          const char *attribute,
+                                                          guint32     attr_value);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_int32       (GFileInfo  *info,
-							  const char *attribute,
-							  gint32      attr_value);
+                                                          const char *attribute,
+                                                          gint32      attr_value);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_uint64      (GFileInfo  *info,
-							  const char *attribute,
-							  guint64     attr_value);
+                                                          const char *attribute,
+                                                          guint64     attr_value);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_int64       (GFileInfo  *info,
-							  const char *attribute,
-							  gint64      attr_value);
+                                                          const char *attribute,
+                                                          gint64      attr_value);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_object      (GFileInfo  *info,
-							  const char *attribute,
-							  GObject    *attr_value);
+                                                          const char *attribute,
+                                                          GObject    *attr_value);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_stringv     (GFileInfo  *info,
-							  const char *attribute,
-							  char      **attr_value);
+                                                          const char *attribute,
+                                                          char      **attr_value);
 GIO_AVAILABLE_IN_2_78
 void               g_file_info_set_attribute_file_path   (GFileInfo  *info,
-							  const char *attribute,
-							  const char *attr_value);
+                                                          const char *attribute,
+                                                          const char *attr_value);
 
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_clear_status              (GFileInfo  *info);
@@ -1465,41 +1465,41 @@ gint32            g_file_info_get_sort_order         (GFileInfo         *info);
 
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_attribute_mask     (GFileInfo         *info,
-						      GFileAttributeMatcher *mask);
+                                                      GFileAttributeMatcher *mask);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_unset_attribute_mask   (GFileInfo         *info);
 
 /* Helper setters: */
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_file_type          (GFileInfo         *info,
-						      GFileType          type);
+                                                      GFileType          type);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_is_hidden          (GFileInfo         *info,
-						      gboolean           is_hidden);
+                                                      gboolean           is_hidden);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_is_symlink         (GFileInfo         *info,
-						      gboolean           is_symlink);
+                                                      gboolean           is_symlink);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_name               (GFileInfo         *info,
-						      const char        *name);
+                                                      const char        *name);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_display_name       (GFileInfo         *info,
-						      const char        *display_name);
+                                                      const char        *display_name);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_edit_name          (GFileInfo         *info,
-						      const char        *edit_name);
+                                                      const char        *edit_name);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_icon               (GFileInfo         *info,
-						      GIcon             *icon);
+                                                      GIcon             *icon);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_symbolic_icon      (GFileInfo         *info,
-						      GIcon             *icon);
+                                                      GIcon             *icon);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_content_type       (GFileInfo         *info,
-						      const char        *content_type);
+                                                      const char        *content_type);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_size               (GFileInfo         *info,
-						      goffset            size);
+                                                      goffset            size);
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GIO_DEPRECATED_IN_2_62_FOR(g_file_info_set_modification_date_time)
 void              g_file_info_set_modification_time  (GFileInfo         *info,
@@ -1516,10 +1516,10 @@ void              g_file_info_set_creation_date_time (GFileInfo *info,
                                                       GDateTime *creation_time);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_symlink_target     (GFileInfo         *info,
-						      const char        *symlink_target);
+                                                      const char        *symlink_target);
 GIO_AVAILABLE_IN_ALL
 void              g_file_info_set_sort_order         (GFileInfo         *info,
-						      gint32             sort_order);
+                                                      gint32             sort_order);
 
 #define G_TYPE_FILE_ATTRIBUTE_MATCHER (g_file_attribute_matcher_get_type ())
 GIO_AVAILABLE_IN_ALL
@@ -1536,13 +1536,13 @@ GFileAttributeMatcher *g_file_attribute_matcher_subtract       (GFileAttributeMa
                                                                 GFileAttributeMatcher *subtract);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_file_attribute_matcher_matches        (GFileAttributeMatcher *matcher,
-								const char            *attribute);
+                                                                const char            *attribute);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_file_attribute_matcher_matches_only   (GFileAttributeMatcher *matcher,
-								const char            *attribute);
+                                                                const char            *attribute);
 GIO_AVAILABLE_IN_ALL
 gboolean               g_file_attribute_matcher_enumerate_namespace (GFileAttributeMatcher *matcher,
-								     const char            *ns);
+                                                                     const char            *ns);
 GIO_AVAILABLE_IN_ALL
 const char *           g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher);
 GIO_AVAILABLE_IN_2_32

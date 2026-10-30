@@ -92,26 +92,26 @@ struct _GVfsClass
 
   /*< private >*/
   void                  (* local_file_add_info)       (GVfs       *vfs,
-						       const char *filename,
-						       guint64     device,
-						       GFileAttributeMatcher *attribute_matcher,
-						       GFileInfo  *info,
-						       GCancellable *cancellable,
-						       gpointer   *extra_data,
-						       GDestroyNotify *free_extra_data);
+                                                       const char *filename,
+                                                       guint64     device,
+                                                       GFileAttributeMatcher *attribute_matcher,
+                                                       GFileInfo  *info,
+                                                       GCancellable *cancellable,
+                                                       gpointer   *extra_data,
+                                                       GDestroyNotify *free_extra_data);
   void                  (* add_writable_namespaces)   (GVfs       *vfs,
-						       GFileAttributeInfoList *list);
+                                                       GFileAttributeInfoList *list);
   gboolean              (* local_file_set_attributes) (GVfs       *vfs,
-						       const char *filename,
-						       GFileInfo  *info,
+                                                       const char *filename,
+                                                       GFileInfo  *info,
                                                        GFileQueryInfoFlags flags,
                                                        GCancellable *cancellable,
-						       GError    **error);
+                                                       GError    **error);
   void                  (* local_file_removed)        (GVfs       *vfs,
-						       const char *filename);
+                                                       const char *filename);
   void                  (* local_file_moved)          (GVfs       *vfs,
-						       const char *source,
-						       const char *dest);
+                                                       const char *source,
+                                                       const char *dest);
   GIcon *               (* deserialize_icon)          (GVfs       *vfs,
                                                        GVariant   *value);
   /* Padding for future expansion */

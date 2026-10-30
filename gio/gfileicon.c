@@ -44,10 +44,10 @@
 static void g_file_icon_icon_iface_init          (GIconIface          *iface);
 static void g_file_icon_loadable_icon_iface_init (GLoadableIconIface  *iface);
 static void g_file_icon_load_async               (GLoadableIcon       *icon,
-						  int                  size,
-						  GCancellable        *cancellable,
-						  GAsyncReadyCallback  callback,
-						  gpointer             user_data);
+                                                  int                  size,
+                                                  GCancellable        *cancellable,
+                                                  GAsyncReadyCallback  callback,
+                                                  gpointer             user_data);
 
 struct _GFileIcon
 {
@@ -206,7 +206,7 @@ g_file_icon_hash (GIcon *icon)
 
 static gboolean
 g_file_icon_equal (GIcon *icon1,
-		   GIcon *icon2)
+                   GIcon *icon2)
 {
   GFileIcon *file1 = G_FILE_ICON (icon1);
   GFileIcon *file2 = G_FILE_ICON (icon2);
@@ -216,7 +216,7 @@ g_file_icon_equal (GIcon *icon1,
 
 static gboolean
 g_file_icon_to_tokens (GIcon *icon,
-		       GPtrArray *tokens,
+                       GPtrArray *tokens,
                        gint  *out_version)
 {
   GFileIcon *file_icon = G_FILE_ICON (icon);
@@ -291,17 +291,17 @@ g_file_icon_icon_iface_init (GIconIface *iface)
 
 static GInputStream *
 g_file_icon_load (GLoadableIcon  *icon,
-		  int            size,
-		  char          **type,
-		  GCancellable   *cancellable,
-		  GError        **error)
+                  int            size,
+                  char          **type,
+                  GCancellable   *cancellable,
+                  GError        **error)
 {
   GFileInputStream *stream;
   GFileIcon *file_icon = G_FILE_ICON (icon);
 
   stream = g_file_read (file_icon->file,
-			cancellable,
-			error);
+                        cancellable,
+                        error);
 
   if (stream && type)
     *type = NULL;
@@ -311,8 +311,8 @@ g_file_icon_load (GLoadableIcon  *icon,
 
 static void
 load_async_callback (GObject      *source_object,
-		     GAsyncResult *res,
-		     gpointer      user_data)
+                     GAsyncResult *res,
+                     gpointer      user_data)
 {
   GFileInputStream *stream;
   GError *error = NULL;
@@ -346,9 +346,9 @@ g_file_icon_load_async (GLoadableIcon       *icon,
 
 static GInputStream *
 g_file_icon_load_finish (GLoadableIcon  *icon,
-			 GAsyncResult   *res,
-			 char          **type,
-			 GError        **error)
+                         GAsyncResult   *res,
+                         char          **type,
+                         GError        **error)
 {
   g_return_val_if_fail (g_task_is_valid (res, icon), NULL);
 

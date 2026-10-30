@@ -57,14 +57,14 @@ struct _GConverterIface
   /* Virtual Table */
 
   GConverterResult (* convert) (GConverter *converter,
-				const void *inbuf,
-				gsize       inbuf_size,
-				void       *outbuf,
-				gsize       outbuf_size,
-				GConverterFlags flags,
-				gsize      *bytes_read,
-				gsize      *bytes_written,
-				GError    **error);
+                                const void *inbuf,
+                                gsize       inbuf_size,
+                                void       *outbuf,
+                                gsize       outbuf_size,
+                                GConverterFlags flags,
+                                gsize      *bytes_read,
+                                gsize      *bytes_written,
+                                GError    **error);
   void  (* reset)   (GConverter *converter);
 };
 
@@ -73,14 +73,14 @@ GType            g_converter_get_type     (void);
 
 GIO_AVAILABLE_IN_ALL
 GConverterResult g_converter_convert (GConverter       *converter,
-				      const void       *inbuf,
-				      gsize             inbuf_size,
-				      void             *outbuf,
-				      gsize             outbuf_size,
-				      GConverterFlags   flags,
-				      gsize            *bytes_read,
-				      gsize            *bytes_written,
-				      GError          **error);
+                                      const void       *inbuf,
+                                      gsize             inbuf_size,
+                                      void             *outbuf,
+                                      gsize             outbuf_size,
+                                      GConverterFlags   flags,
+                                      gsize            *bytes_read,
+                                      gsize            *bytes_written,
+                                      GError          **error);
 GIO_AVAILABLE_IN_ALL
 void             g_converter_reset   (GConverter       *converter);
 

@@ -55,7 +55,7 @@ struct _GFileOutputStreamClass
 
   goffset     (* tell)              (GFileOutputStream    *stream);
   gboolean    (* can_seek)          (GFileOutputStream    *stream);
-  gboolean    (* seek)	            (GFileOutputStream    *stream,
+  gboolean    (* seek)              (GFileOutputStream    *stream,
                                      goffset               offset,
                                      GSeekType             type,
                                      GCancellable         *cancellable,
@@ -99,15 +99,15 @@ GFileInfo *g_file_output_stream_query_info        (GFileOutputStream    *stream,
                                                    GError              **error);
 GIO_AVAILABLE_IN_ALL
 void       g_file_output_stream_query_info_async  (GFileOutputStream    *stream,
-						   const char           *attributes,
-						   int                   io_priority,
-						   GCancellable         *cancellable,
-						   GAsyncReadyCallback   callback,
-						   gpointer              user_data);
+                                                   const char           *attributes,
+                                                   int                   io_priority,
+                                                   GCancellable         *cancellable,
+                                                   GAsyncReadyCallback   callback,
+                                                   gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
 GFileInfo *g_file_output_stream_query_info_finish (GFileOutputStream    *stream,
-						   GAsyncResult         *result,
-						   GError              **error);
+                                                   GAsyncResult         *result,
+                                                   GError              **error);
 GIO_AVAILABLE_IN_ALL
 char *     g_file_output_stream_get_etag          (GFileOutputStream    *stream);
 

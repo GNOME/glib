@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -43,8 +43,8 @@ G_BEGIN_DECLS
 /* calculate a string size, guaranteed to fit format + args.
  */
 GLIB_AVAILABLE_IN_ALL
-gsize	g_printf_string_upper_bound (const gchar* format,
-				     va_list	  args) G_GNUC_PRINTF(1, 0);
+gsize   g_printf_string_upper_bound (const gchar* format,
+                                     va_list      args) G_GNUC_PRINTF(1, 0);
 
 /* Log level shift offset for user defined
  * log levels (0-7 are used by GLib).
@@ -101,7 +101,7 @@ void            g_log_default_handler   (const gchar    *log_domain,
                                          gpointer        unused_data);
 GLIB_AVAILABLE_IN_ALL
 GLogFunc        g_log_set_default_handler (GLogFunc      log_func,
-					   gpointer      user_data);
+                                           gpointer      user_data);
 GLIB_AVAILABLE_IN_ALL
 void            g_log                   (const gchar    *log_domain,
                                          GLogLevelFlags  log_level,
@@ -287,16 +287,16 @@ void             g_log_set_debug_enabled       (gboolean         enabled);
                     g_get_monotonic_time (), G_STRLOC)
 
 /* internal */
-void	_g_log_fallback_handler	(const gchar   *log_domain,
-						 GLogLevelFlags log_level,
-						 const gchar   *message,
-						 gpointer       unused_data);
+void    _g_log_fallback_handler (const gchar   *log_domain,
+                                                 GLogLevelFlags log_level,
+                                                 const gchar   *message,
+                                                 gpointer       unused_data);
 
 /* Internal functions, used to implement the following macros */
 GLIB_AVAILABLE_IN_ALL
 void g_return_if_fail_warning (const char *log_domain,
-			       const char *pretty_function,
-			       const char *expression) G_ANALYZER_NORETURN;
+                               const char *pretty_function,
+                               const char *expression) G_ANALYZER_NORETURN;
 GLIB_AVAILABLE_IN_ALL
 void g_warn_message           (const char     *domain,
                                const char     *file,
@@ -306,10 +306,10 @@ void g_warn_message           (const char     *domain,
 G_NORETURN
 GLIB_DEPRECATED
 void g_assert_warning         (const char *log_domain,
-			       const char *file,
-			       const int   line,
-		               const char *pretty_function,
-		               const char *expression);
+                               const char *file,
+                               const int   line,
+                               const char *pretty_function,
+                               const char *expression);
 
 GLIB_AVAILABLE_IN_2_56
 void g_log_structured_standard (const gchar    *log_domain,

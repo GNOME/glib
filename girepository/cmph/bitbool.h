@@ -8,7 +8,7 @@ static const cmph_uint32 bitmask32[] = { 1,       1 << 1,  1 << 2,  1 << 3,  1 <
                                          1 << 8,  1 << 9,  1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15,
                                          1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20, 1 << 21, 1 << 22, 1 << 23,
                                          1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1U << 31
-				       };
+                                       };
 
 static const cmph_uint8 valuemask[] = { 0xfc, 0xf3, 0xcf, 0x3f};
 
@@ -113,66 +113,66 @@ static const cmph_uint8 valuemask[] = { 0xfc, 0xf3, 0xcf, 0x3f};
 static inline void set_bits_value(cmph_uint32 * bits_table, cmph_uint32 index, cmph_uint32 bits_string, 
                                   cmph_uint32 string_length, cmph_uint32 string_mask)
 {
-	register cmph_uint32 bit_idx = index * string_length;
-	register cmph_uint32 word_idx = bit_idx >> 5;
-	register cmph_uint32 shift1 = bit_idx & 0x0000001f;
-	register cmph_uint32 shift2 = 32 - shift1;
-	
-	bits_table[word_idx] &= ~((string_mask) << shift1);
-	bits_table[word_idx] |= bits_string << shift1;
-	
-	if(shift2 < string_length)
-	{
-		bits_table[word_idx+1] &= ~((string_mask) >> shift2);
-		bits_table[word_idx+1] |= bits_string >> shift2;
-	};
+        register cmph_uint32 bit_idx = index * string_length;
+        register cmph_uint32 word_idx = bit_idx >> 5;
+        register cmph_uint32 shift1 = bit_idx & 0x0000001f;
+        register cmph_uint32 shift2 = 32 - shift1;
+        
+        bits_table[word_idx] &= ~((string_mask) << shift1);
+        bits_table[word_idx] |= bits_string << shift1;
+        
+        if(shift2 < string_length)
+        {
+                bits_table[word_idx+1] &= ~((string_mask) >> shift2);
+                bits_table[word_idx+1] |= bits_string >> shift2;
+        };
 };
 
 static inline cmph_uint32 get_bits_value(cmph_uint32 * bits_table,cmph_uint32 index, cmph_uint32 string_length, cmph_uint32 string_mask)
 {
-	register cmph_uint32 bit_idx = index * string_length;
-	register cmph_uint32 word_idx = bit_idx >> 5;
-	register cmph_uint32 shift1 = bit_idx & 0x0000001f;
-	register cmph_uint32 shift2 = 32-shift1;
-	register cmph_uint32 bits_string;
-	
-	bits_string = (bits_table[word_idx] >> shift1) & string_mask;
-	
-	if(shift2 < string_length)
-		bits_string |= (bits_table[word_idx+1] << shift2) & string_mask;
+        register cmph_uint32 bit_idx = index * string_length;
+        register cmph_uint32 word_idx = bit_idx >> 5;
+        register cmph_uint32 shift1 = bit_idx & 0x0000001f;
+        register cmph_uint32 shift2 = 32-shift1;
+        register cmph_uint32 bits_string;
+        
+        bits_string = (bits_table[word_idx] >> shift1) & string_mask;
+        
+        if(shift2 < string_length)
+                bits_string |= (bits_table[word_idx+1] << shift2) & string_mask;
 
-	return bits_string;
+        return bits_string;
 };
 
 static inline void set_bits_at_pos(cmph_uint32 * bits_table, cmph_uint32 pos, cmph_uint32 bits_string, cmph_uint32 string_length)
 {
-	register cmph_uint32 word_idx = pos >> 5;
-	register cmph_uint32 shift1 = pos & 0x0000001f;
-	register cmph_uint32 shift2 = 32-shift1;
-	register cmph_uint32 string_mask = (1U << string_length) - 1;
-	
-	bits_table[word_idx] &= ~((string_mask) << shift1);
-	bits_table[word_idx] |= bits_string << shift1;
-	if(shift2 < string_length)
-	{
-		bits_table[word_idx+1] &= ~((string_mask) >> shift2);
-		bits_table[word_idx+1] |= bits_string >> shift2;
-	}
+        register cmph_uint32 word_idx = pos >> 5;
+        register cmph_uint32 shift1 = pos & 0x0000001f;
+        register cmph_uint32 shift2 = 32-shift1;
+        register cmph_uint32 string_mask = (1U << string_length) - 1;
+        
+        bits_table[word_idx] &= ~((string_mask) << shift1);
+        bits_table[word_idx] |= bits_string << shift1;
+        if(shift2 < string_length)
+        {
+                bits_table[word_idx+1] &= ~((string_mask) >> shift2);
+                bits_table[word_idx+1] |= bits_string >> shift2;
+        }
 };
 
 static inline cmph_uint32 get_bits_at_pos(cmph_uint32 * bits_table,cmph_uint32 pos,cmph_uint32 string_length)
 {
-	register cmph_uint32 word_idx = pos >> 5;
-	register cmph_uint32 shift1 = pos & 0x0000001f;
-	register cmph_uint32 shift2 = 32 - shift1;
-	register cmph_uint32 string_mask = (1U << string_length) - 1;
-	register cmph_uint32 bits_string;
-	
-	bits_string = (bits_table[word_idx] >> shift1) & string_mask;
+        register cmph_uint32 word_idx = pos >> 5;
+        register cmph_uint32 shift1 = pos & 0x0000001f;
+        register cmph_uint32 shift2 = 32 - shift1;
+        register cmph_uint32 string_mask = (1U << string_length) - 1;
+        register cmph_uint32 bits_string;
+        
+        bits_string = (bits_table[word_idx] >> shift1) & string_mask;
 
-	if(shift2 < string_length)
-		bits_string |= (bits_table[word_idx+1] << shift2) & string_mask;
-	return bits_string;
+        if(shift2 < string_length)
+                bits_string |= (bits_table[word_idx+1] << shift2) & string_mask;
+        return bits_string;
 }
 
 

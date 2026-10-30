@@ -89,34 +89,34 @@ GSocketListener *       g_socket_listener_new                           (void);
 
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_listener_set_backlog                   (GSocketListener     *listener,
-									 int                  listen_backlog);
+                                                                         int                  listen_backlog);
 
 GIO_AVAILABLE_IN_ALL
 gboolean                g_socket_listener_add_socket                    (GSocketListener     *listener,
                                                                          GSocket             *socket,
-									 GObject             *source_object,
-									 GError             **error);
+                                                                         GObject             *source_object,
+                                                                         GError             **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_socket_listener_add_address                   (GSocketListener     *listener,
                                                                          GSocketAddress      *address,
-									 GSocketType          type,
-									 GSocketProtocol      protocol,
-									 GObject             *source_object,
+                                                                         GSocketType          type,
+                                                                         GSocketProtocol      protocol,
+                                                                         GObject             *source_object,
                                                                          GSocketAddress     **effective_address,
-									 GError             **error);
+                                                                         GError             **error);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_socket_listener_add_inet_port                 (GSocketListener     *listener,
                                                                          guint16              port,
-									 GObject             *source_object,
-									 GError             **error);
+                                                                         GObject             *source_object,
+                                                                         GError             **error);
 GIO_AVAILABLE_IN_ALL
 guint16                 g_socket_listener_add_any_inet_port             (GSocketListener     *listener,
-									 GObject             *source_object,
-									 GError             **error);
+                                                                         GObject             *source_object,
+                                                                         GError             **error);
 
 GIO_AVAILABLE_IN_ALL
 GSocket *               g_socket_listener_accept_socket                 (GSocketListener      *listener,
-									 GObject             **source_object,
+                                                                         GObject             **source_object,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 GIO_AVAILABLE_IN_ALL
@@ -127,13 +127,13 @@ void                    g_socket_listener_accept_socket_async           (GSocket
 GIO_AVAILABLE_IN_ALL
 GSocket *               g_socket_listener_accept_socket_finish          (GSocketListener      *listener,
                                                                          GAsyncResult         *result,
-									 GObject             **source_object,
+                                                                         GObject             **source_object,
                                                                          GError              **error);
 
 
 GIO_AVAILABLE_IN_ALL
 GSocketConnection *     g_socket_listener_accept                        (GSocketListener      *listener,
-									 GObject             **source_object,
+                                                                         GObject             **source_object,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 
@@ -146,7 +146,7 @@ void                    g_socket_listener_accept_async                  (GSocket
 GIO_AVAILABLE_IN_ALL
 GSocketConnection *     g_socket_listener_accept_finish                 (GSocketListener      *listener,
                                                                          GAsyncResult         *result,
-									 GObject             **source_object,
+                                                                         GObject             **source_object,
                                                                          GError              **error);
 
 GIO_AVAILABLE_IN_ALL

@@ -65,7 +65,7 @@ struct _GInetAddressPrivate
 
 G_DEFINE_TYPE_WITH_CODE (GInetAddress, g_inet_address, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GInetAddress)
-			 g_networking_init ();)
+                         g_networking_init ();)
 
 enum
 {
@@ -88,9 +88,9 @@ enum
 
 static void
 g_inet_address_set_property (GObject      *object,
-			     guint         prop_id,
-			     const GValue *value,
-			     GParamSpec   *pspec)
+                             guint         prop_id,
+                             const GValue *value,
+                             GParamSpec   *pspec)
 {
   GInetAddress *address = G_INET_ADDRESS (object);
 
@@ -103,9 +103,9 @@ g_inet_address_set_property (GObject      *object,
     case PROP_BYTES:
 #ifdef HAVE_IPV6
       memcpy (&address->priv->addr, g_value_get_pointer (value),
-	      address->priv->family == AF_INET ?
-	      sizeof (address->priv->addr.ipv4) :
-	      sizeof (address->priv->addr.ipv6));
+              address->priv->family == AF_INET ?
+              sizeof (address->priv->addr.ipv4) :
+              sizeof (address->priv->addr.ipv6));
 #else
       g_assert (address->priv->family == AF_INET);
       memcpy (&address->priv->addr, g_value_get_pointer (value),
@@ -220,9 +220,9 @@ g_inet_address_class_init (GInetAddressClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
                                    g_param_spec_enum ("family", NULL, NULL,
-						      G_TYPE_SOCKET_FAMILY,
-						      G_SOCKET_FAMILY_INVALID,
-						      G_PARAM_READWRITE |
+                                                      G_TYPE_SOCKET_FAMILY,
+                                                      G_SOCKET_FAMILY_INVALID,
+                                                      G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_STATIC_STRINGS));
 
@@ -235,7 +235,7 @@ g_inet_address_class_init (GInetAddressClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_BYTES,
                                    g_param_spec_pointer ("bytes", NULL, NULL,
-							 G_PARAM_READWRITE |
+                                                         G_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT_ONLY |
                                                          G_PARAM_STATIC_STRINGS));
 
@@ -517,14 +517,14 @@ g_inet_address_new_from_string (const gchar *string)
  */
 GInetAddress *
 g_inet_address_new_from_bytes (const guint8         *bytes,
-			       GSocketFamily  family)
+                               GSocketFamily  family)
 {
   g_return_val_if_fail (G_INET_ADDRESS_FAMILY_IS_VALID (family), NULL);
 
   return g_object_new (G_TYPE_INET_ADDRESS,
-		       "family", family,
-		       "bytes", bytes,
-		       NULL);
+                       "family", family,
+                       "bytes", bytes,
+                       NULL);
 }
 
 /**
@@ -609,18 +609,18 @@ g_inet_address_new_any (GSocketFamily family)
  */
 GInetAddress *
 g_inet_address_new_from_bytes_with_ipv6_info (const guint8  *bytes,
-			                      GSocketFamily  family,
+                                              GSocketFamily  family,
                                               guint32        flowinfo,
                                               guint32        scope_id)
 {
   g_return_val_if_fail (G_INET_ADDRESS_FAMILY_IS_VALID (family), NULL);
 
   return g_object_new (G_TYPE_INET_ADDRESS,
-		       "family", family,
-		       "bytes", bytes,
+                       "family", family,
+                       "bytes", bytes,
                        "flowinfo", flowinfo,
                        "scope-id", scope_id,
-		       NULL);
+                       NULL);
 }
 
 /**
@@ -833,8 +833,8 @@ g_inet_address_get_is_site_local (GInetAddress *address)
 
       /* 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 */
       return ((addr4 & 0xff000000) == 0x0a000000 ||
-	      (addr4 & 0xfff00000) == 0xac100000 ||
-	      (addr4 & 0xffff0000) == 0xc0a80000);
+              (addr4 & 0xfff00000) == 0xac100000 ||
+              (addr4 & 0xffff0000) == 0xc0a80000);
     }
   else
 #ifdef HAVE_IPV6

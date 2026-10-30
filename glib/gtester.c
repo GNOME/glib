@@ -262,8 +262,8 @@ child_report_cb (GIOChannel  *source,
 
 static void
 child_watch_cb (GPid     pid,
-		gint     status,
-		gpointer data)
+                gint     status,
+                gpointer data)
 {
   g_spawn_close_pid (pid);
   if (WIFEXITED (status)) /* normal exit */

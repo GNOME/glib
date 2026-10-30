@@ -16,9 +16,9 @@ extern char** __argv;
 
 int _stdcall
 WinMain (struct HINSTANCE__ *hInstance,
-	struct HINSTANCE__ *hPrevInstance,
-	char *lpszCmdLine,
-	int   nCmdShow)
+        struct HINSTANCE__ *hPrevInstance,
+        char *lpszCmdLine,
+        int   nCmdShow)
 {
   if (__argc >= 2 && strcmp (__argv[1], "print_argv0") == 0)
     {
@@ -41,54 +41,54 @@ WinMain (struct HINSTANCE__ *hInstance,
       char buf[100] = {0};
 
       if (infd < 0 || outfd < 0)
-	{
+        {
           fprintf (stderr, "spawn-test-win32-gui: illegal fds on command line %s\n",
-		      lpszCmdLine);
-	  exit (1);
-	}
+                      lpszCmdLine);
+          exit (1);
+        }
 
       n = strlen ("Hello there");
       if (write (outfd, &n, sizeof (n)) == -1 ||
-	  write (outfd, "Hello there\n", n) == -1)
-	{
-	  int errsv = errno;
+          write (outfd, "Hello there\n", n) == -1)
+        {
+          int errsv = errno;
           fprintf (stderr, "spawn-test-win32-gui: Write error: %s\n", strerror (errsv));
-	  exit (1);
-	}
+          exit (1);
+        }
 
       k = read (infd, &n, sizeof (n));
       if (k < 0 || (size_t) k != sizeof (n))
-	{
-	  int errsv = errno;
-	  if (k < 0)
+        {
+          int errsv = errno;
+          if (k < 0)
             fprintf (stderr, "spawn-test-win32-gui: Read error: %s\n", strerror (errsv));
-	  else
+          else
             fprintf (stderr, "spawn-test-win32-gui: Got only %zu bytes, wanted %zu\n",
                      (size_t) k, sizeof (n));
-	  exit (1);
-	}
+          exit (1);
+        }
 
       fprintf (stderr, "spawn-test-win32-gui: Parent says %zu bytes to read\n", n);
 
       k = read (infd, buf, n);
       if (k < 0 || (size_t) k != n)
-	{
-	  int errsv = errno;
-	  if (k < 0)
+        {
+          int errsv = errno;
+          if (k < 0)
             fprintf (stderr, "spawn-test-win32-gui: Read error: %s\n", strerror (errsv));
-	  else
+          else
             fprintf (stderr, "spawn-test-win32-gui: Got only %zu bytes\n", (size_t) k);
-	  exit (1);
-	}
+          exit (1);
+        }
 
       n = strlen ("See ya");
       if (write (outfd, &n, sizeof (n)) == -1 ||
-	  write (outfd, "See ya", n) == -1)
-	{
-	  int errsv = errno;
+          write (outfd, "See ya", n) == -1)
+        {
+          int errsv = errno;
           fprintf (stderr, "spawn-test-win32-gui: Write error: %s\n", strerror (errsv));
-	  exit (1);
-	}
+          exit (1);
+        }
     }
 
   return 0;

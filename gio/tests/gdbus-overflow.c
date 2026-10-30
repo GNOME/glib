@@ -122,12 +122,12 @@ test_overflow (void)
   g_assert (socket_connection != NULL);
   g_object_unref (socket);
   producer = g_dbus_connection_new_sync (G_IO_STREAM (socket_connection),
-					 NULL, /* guid */
-					 G_DBUS_CONNECTION_FLAGS_NONE,
-					 NULL, /* GDBusAuthObserver */
-					 NULL, /* GCancellable */
+                                         NULL, /* guid */
+                                         G_DBUS_CONNECTION_FLAGS_NONE,
+                                         NULL, /* GDBusAuthObserver */
+                                         NULL, /* GCancellable */
 
-					 &error);
+                                         &error);
   g_dbus_connection_set_exit_on_close (producer, TRUE);
   g_assert_no_error (error);
   g_object_unref (socket_connection);
@@ -166,11 +166,11 @@ test_overflow (void)
   g_assert (socket_connection != NULL);
   g_object_unref (socket);
   consumer = g_dbus_connection_new_sync (G_IO_STREAM (socket_connection),
-					 NULL, /* guid */
-					 G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING,
-					 NULL, /* GDBusAuthObserver */
-					 NULL, /* GCancellable */
-					 &error);
+                                         NULL, /* guid */
+                                         G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING,
+                                         NULL, /* GDBusAuthObserver */
+                                         NULL, /* GCancellable */
+                                         &error);
   g_assert_no_error (error);
   g_object_unref (socket_connection);
   g_atomic_int_set (&n_messages_received, 0);

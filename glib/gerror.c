@@ -545,7 +545,7 @@ g_set_error_literal (GError      **err,
  */
 void
 g_propagate_error (GError **dest,
-		   GError  *src)
+                   GError  *src)
 {
   g_return_if_fail (src != NULL);
  

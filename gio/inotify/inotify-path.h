@@ -17,7 +17,7 @@
    along with this library; if not, see <http://www.gnu.org/licenses/>.
 
    Authors:.
-		John McCutchan <john@johnmccutchan.com>
+                John McCutchan <john@johnmccutchan.com>
 */
 
 #ifndef __INOTIFY_PATH_H

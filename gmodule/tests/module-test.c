@@ -43,8 +43,8 @@ g_clash_func (void)
   global_state = "global clash";
 }
 
-typedef	void (*SimpleFunc) (void);
-typedef	void (*GModuleFunc) (GModule *);
+typedef void (*SimpleFunc) (void);
+typedef void (*GModuleFunc) (GModule *);
 
 static gchar **gplugin_a_state;
 static gchar **gplugin_b_state;
@@ -59,7 +59,7 @@ compare (const gchar *desc, const gchar *expected, const gchar *found)
     return;
 
   g_error ("error: %s state should have been \"%s\", but is \"%s\"",
-	   desc, expected ? expected : "NULL", found ? found : "NULL");
+           desc, expected ? expected : "NULL", found ? found : "NULL");
 }
 
 static void

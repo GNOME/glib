@@ -134,16 +134,16 @@ test_string_printf (void)
   /* MSVC and mingw32 use the same run-time C library, which doesn't like
      the %10000.10000f format... */
   g_string_printf (string, "%s|%0100d|%s|%0*d|%*.*f|%10000.10000f",
-		   "this pete guy sure is a wuss, like he's the number ",
-		   1,
-		   " wuss.  everyone agrees.\n",
-		   10, 666, 15, 15, 666.666666666, 666.666666666);
+                   "this pete guy sure is a wuss, like he's the number ",
+                   1,
+                   " wuss.  everyone agrees.\n",
+                   10, 666, 15, 15, 666.666666666, 666.666666666);
 #else
   g_string_printf (string, "%s|%0100d|%s|%0*d|%*.*f|%100.100f",
-		   "this pete guy sure is a wuss, like he's the number ",
-		   1,
-		   " wuss.  everyone agrees.\n",
-		   10, 666, 15, 15, 666.666666666, 666.666666666);
+                   "this pete guy sure is a wuss, like he's the number ",
+                   1,
+                   " wuss.  everyone agrees.\n",
+                   10, 666, 15, 15, 666.666666666, 666.666666666);
 #endif
 
   g_string_free (string, TRUE);

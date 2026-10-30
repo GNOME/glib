@@ -82,16 +82,16 @@ print_proxies (const gchar *local_info, gchar **proxies)
 
 static void
 _proxy_lookup_cb (GObject *source_object,
-		  GAsyncResult *result,
-		  gpointer user_data)
+                  GAsyncResult *result,
+                  gpointer user_data)
 {
   GError *error = NULL;
   gchar **proxies;
   GMainLoop *loop = user_data;
 
   proxies = g_proxy_resolver_lookup_finish (G_PROXY_RESOLVER (source_object),
-					    result,
-					    &error);
+                                            result,
+                                            &error);
   if (error)
     {
       print_and_free_error (error);
@@ -120,9 +120,9 @@ use_resolver (gboolean synchronous)
       proxies = g_proxy_resolver_lookup (resolver, info, cancellable, &error);
 
       if (error)
-	  print_and_free_error (error);
+          print_and_free_error (error);
       else
-	  print_proxies (info, proxies);
+          print_proxies (info, proxies);
 
       g_strfreev (proxies);
     }
@@ -131,10 +131,10 @@ use_resolver (gboolean synchronous)
       GMainLoop *loop = g_main_loop_new (NULL, FALSE);
 
       g_proxy_resolver_lookup_async (resolver,
-				     info,
-				     cancellable,
-				     _proxy_lookup_cb,
-				     loop);
+                                     info,
+                                     cancellable,
+                                     _proxy_lookup_cb,
+                                     loop);
 
       g_main_loop_run (loop);
       g_main_loop_unref (loop);
@@ -169,9 +169,9 @@ print_proxy_address (GSocketAddress *sockaddr)
       gchar *addr;
 
       g_object_get (sockaddr,
-		    "address", &inetaddr,
-		    "port", &port,
-		    NULL);
+                    "address", &inetaddr,
+                    "port", &port,
+                    NULL);
 
       addr = g_inet_address_to_string (inetaddr);
 
@@ -196,8 +196,8 @@ print_proxy_address (GSocketAddress *sockaddr)
 
 static void
 _proxy_enumerate_cb (GObject *object,
-		     GAsyncResult *result,
-		     gpointer user_data)
+                     GAsyncResult *result,
+                     gpointer user_data)
 {
   GError *error = NULL;
   GMainLoop *loop = user_data;
@@ -205,21 +205,21 @@ _proxy_enumerate_cb (GObject *object,
   GSocketAddress *sockaddr;
 
   sockaddr = g_socket_address_enumerator_next_finish (enumerator,
-						      result,
-						      &error);
+                                                      result,
+                                                      &error);
   if (sockaddr)
     {
       print_proxy_address (sockaddr);
       g_socket_address_enumerator_next_async (enumerator,
                                               cancellable,
-					      _proxy_enumerate_cb,
-					      loop);
+                                              _proxy_enumerate_cb,
+                                              loop);
       g_object_unref (sockaddr);
     }
   else
     {
       if (error)
-	print_and_free_error (error);
+        print_and_free_error (error);
 
       g_main_loop_quit (loop);
     }
@@ -235,15 +235,15 @@ run_with_enumerator (gboolean synchronous, GSocketAddressEnumerator *enumerator)
       GSocketAddress *sockaddr;
 
       while ((sockaddr = g_socket_address_enumerator_next (enumerator,
-							   cancellable,
-							   &error)))
-	{
-	  print_proxy_address (sockaddr);
-	  g_object_unref (sockaddr);
-	}
+                                                           cancellable,
+                                                           &error)))
+        {
+          print_proxy_address (sockaddr);
+          g_object_unref (sockaddr);
+        }
 
       if (error)
-	print_and_free_error (error);
+        print_and_free_error (error);
     }
   else
     {
@@ -251,8 +251,8 @@ run_with_enumerator (gboolean synchronous, GSocketAddressEnumerator *enumerator)
 
       g_socket_address_enumerator_next_async (enumerator,
                                               cancellable,
-					      _proxy_enumerate_cb,
-					      loop);
+                                              _proxy_enumerate_cb,
+                                              loop);
       g_main_loop_run (loop);
       g_main_loop_unref (loop);
     }
@@ -264,8 +264,8 @@ use_enumerator (gboolean synchronous)
   GSocketAddressEnumerator *enumerator;
 
   enumerator = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
-			     "uri", info,
-			     NULL);
+                             "uri", info,
+                             NULL);
 
   printf ("Proxies for URI '%s' are:\n", info);
   run_with_enumerator (synchronous, enumerator);
@@ -288,7 +288,7 @@ use_inet_address (gboolean synchronous)
     {
       addr = g_inet_address_new_from_string (ip_and_port[0]);
       if (ip_and_port [1])
-	port = strtoul (ip_and_port [1], NULL, 10);
+        port = strtoul (ip_and_port [1], NULL, 10);
     }
 
   g_strfreev (ip_and_port);
@@ -297,7 +297,7 @@ use_inet_address (gboolean synchronous)
     {
       fprintf (stderr, "Bad 'ip:port' parameter '%s'\n", info);
       if (addr)
-	g_object_unref (addr);
+        g_object_unref (addr);
       return_value = 1;
       return;
     }
@@ -484,8 +484,8 @@ use_network_service (gboolean synchronous)
 
 static void
 _socket_connect_cb (GObject *object,
-		    GAsyncResult *result,
-		    gpointer user_data)
+                    GAsyncResult *result,
+                    gpointer user_data)
 {
   GError *error = NULL;
   GMainLoop *loop = user_data;
@@ -493,8 +493,8 @@ _socket_connect_cb (GObject *object,
   GSocketConnection *connection;
 
   connection = g_socket_client_connect_to_uri_finish (client,
-						      result,
-						      &error);
+                                                      result,
+                                                      &error);
   if (connection)
     {
       GSocketAddress *proxy_addr;
@@ -525,31 +525,31 @@ use_socket_client (gboolean synchronous)
       GSocketAddress *proxy_addr;
 
       connection = g_socket_client_connect_to_uri (client,
-						   info,
-						   0,
-      						   cancellable,
-						   &error);
+                                                   info,
+                                                   0,
+                                                   cancellable,
+                                                   &error);
 
       if (connection)
-	{
-	  proxy_addr = g_socket_connection_get_remote_address (connection, NULL);
-	  print_proxy_address (proxy_addr);
-	}
+        {
+          proxy_addr = g_socket_connection_get_remote_address (connection, NULL);
+          print_proxy_address (proxy_addr);
+        }
       else
-	{
-	  print_and_free_error (error);
-	}
+        {
+          print_and_free_error (error);
+        }
     }
   else
     {
       GMainLoop *loop = g_main_loop_new (NULL, FALSE);
 
       g_socket_client_connect_to_uri_async (client,
-					    info,
-					    0,
-					    cancellable,
-					    _socket_connect_cb,
-					    loop);
+                                            info,
+                                            0,
+                                            cancellable,
+                                            _socket_connect_cb,
+                                            loop);
 
       g_main_loop_run (loop);
       g_main_loop_unref (loop);
@@ -605,7 +605,7 @@ main (gint argc, gchar **argv)
       else if (!strcmp (argv[1], "-connect"))
         type = USE_SOCKET_CLIENT;
       else
-	usage ();
+        usage ();
 
       argv++;
       argc--;

@@ -51,11 +51,11 @@
 
 G_LOCK_DEFINE_STATIC (kq_lock);
 static GSource       *kq_source;
-static int	      kq_queue = -1;
+static int            kq_queue = -1;
 
-#define G_TYPE_KQUEUE_FILE_MONITOR	(g_kqueue_file_monitor_get_type ())
-#define G_KQUEUE_FILE_MONITOR(inst)	(G_TYPE_CHECK_INSTANCE_CAST ((inst), \
-					G_TYPE_KQUEUE_FILE_MONITOR, GKqueueFileMonitor))
+#define G_TYPE_KQUEUE_FILE_MONITOR      (g_kqueue_file_monitor_get_type ())
+#define G_KQUEUE_FILE_MONITOR(inst)     (G_TYPE_CHECK_INSTANCE_CAST ((inst), \
+                                        G_TYPE_KQUEUE_FILE_MONITOR, GKqueueFileMonitor))
 
 /* C11 allows type redefinition, but GLib is configured to use C89, which causes
  * clang to show warnings when we use a C11 feature. Since the C89 requirement
@@ -97,10 +97,10 @@ struct _GKqueueFileMonitor
 
 GType g_kqueue_file_monitor_get_type (void);
 G_DEFINE_TYPE_WITH_CODE (GKqueueFileMonitor, g_kqueue_file_monitor, G_TYPE_LOCAL_FILE_MONITOR,
-	g_io_extension_point_implement (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
-		g_define_type_id,
+        g_io_extension_point_implement (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
+                g_define_type_id,
                 "kqueue",
-		20))
+                20))
 
 #ifndef O_EVTONLY
 #define O_KQFLAG O_RDONLY
@@ -124,9 +124,9 @@ note_all (void)
 static gboolean g_kqueue_file_monitor_cancel (GFileMonitor* monitor);
 static gboolean g_kqueue_file_monitor_is_supported (void);
 
-static kqueue_sub	*_kqsub_new (gchar *, gchar *, GKqueueFileMonitor *, GFileMonitorSource *);
-static void		 _kqsub_free (kqueue_sub *);
-static void		 _kqsub_cancel (kqueue_sub *);
+static kqueue_sub       *_kqsub_new (gchar *, gchar *, GKqueueFileMonitor *, GFileMonitorSource *);
+static void              _kqsub_free (kqueue_sub *);
+static void              _kqsub_cancel (kqueue_sub *);
 
 
 #ifndef O_EVTONLY
@@ -261,7 +261,7 @@ g_kqueue_file_monitor_start (GLocalFileMonitor *local_monitor,
       kqueue_monitor->fbfile = file;
       kqueue_monitor->fallback = _g_poll_file_monitor_new (file);
       g_signal_connect (kqueue_monitor->fallback, "changed",
-			G_CALLBACK (_fallback_callback), kqueue_monitor);
+                        G_CALLBACK (_fallback_callback), kqueue_monitor);
       return;
     }
 #endif

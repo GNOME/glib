@@ -28,8 +28,8 @@
 
 static void
 check_property (const char *output,
-	        GParamSpec *pspec,
-		GValue *value)
+                GParamSpec *pspec,
+                GValue *value)
 {
   GValue default_value = G_VALUE_INIT;
   char *v, *dv, *msg;
@@ -43,10 +43,10 @@ check_property (const char *output,
   dv = g_strdup_value_contents (&default_value);
 
   msg = g_strdup_printf ("%s %s.%s: %s != %s\n",
-			 output,
-			 g_type_name (pspec->owner_type),
-			 pspec->name,
-			 dv, v);
+                         output,
+                         g_type_name (pspec->owner_type),
+                         pspec->name,
+                         dv, v);
   g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, msg);
   g_free (msg);
 
@@ -133,10 +133,10 @@ test_type (gconstpointer data)
       GValue value = G_VALUE_INIT;
 
       if (pspec->owner_type != type)
-	continue;
+        continue;
 
       if ((pspec->flags & G_PARAM_READABLE) == 0)
-	continue;
+        continue;
 
       if (g_type_is_a (type, G_TYPE_APPLICATION) &&
           (strcmp (pspec->name, "is-remote") == 0))
@@ -225,7 +225,7 @@ main (int argc, char **argv)
         continue;
 
       testname = g_strdup_printf ("/Default Values/%s",
-				  g_type_name (otypes[i]));
+                                  g_type_name (otypes[i]));
       g_test_add_data_func (testname, &otypes[i], test_type);
       g_free (testname);
     }

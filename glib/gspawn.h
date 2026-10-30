@@ -307,7 +307,7 @@ gboolean g_spawn_check_wait_status (gint      wait_status,
 
 GLIB_DEPRECATED_IN_2_70_FOR(g_spawn_check_wait_status)
 gboolean g_spawn_check_exit_status (gint      wait_status,
-				    GError  **error);
+                                    GError  **error);
 
 GLIB_AVAILABLE_IN_ALL
 void g_spawn_close_pid (GPid pid);

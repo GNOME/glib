@@ -43,7 +43,7 @@
 
 static gboolean
 poll_source_callback (GPollableInputStream *input,
-		      gpointer              user_data)
+                      gpointer              user_data)
 {
   GError *error = NULL;
   char buf[2];
@@ -340,8 +340,8 @@ test_pollable_converter (void)
 
 static void
 client_connected (GObject      *source,
-		  GAsyncResult *result,
-		  gpointer      user_data)
+                  GAsyncResult *result,
+                  gpointer      user_data)
 {
   GSocketClient *client = G_SOCKET_CLIENT (source);
   GSocketConnection **conn = user_data;
@@ -353,8 +353,8 @@ client_connected (GObject      *source,
 
 static void
 server_connected (GObject      *source,
-		  GAsyncResult *result,
-		  gpointer      user_data)
+                  GAsyncResult *result,
+                  gpointer      user_data)
 {
   GSocketListener *listener = G_SOCKET_LISTENER (source);
   GSocketConnection **conn = user_data;
@@ -382,21 +382,21 @@ test_pollable_socket (void)
 
   listener = g_socket_listener_new ();
   g_socket_listener_add_address (listener, saddr,
-				 G_SOCKET_TYPE_STREAM,
-				 G_SOCKET_PROTOCOL_TCP,
-				 NULL,
-				 &effective_address,
-				 &error);
+                                 G_SOCKET_TYPE_STREAM,
+                                 G_SOCKET_PROTOCOL_TCP,
+                                 NULL,
+                                 &effective_address,
+                                 &error);
   g_assert_no_error (error);
   g_object_unref (saddr);
 
   client = g_socket_client_new ();
 
   g_socket_client_connect_async (client,
-				 G_SOCKET_CONNECTABLE (effective_address),
-				 NULL, client_connected, &client_conn);
+                                 G_SOCKET_CONNECTABLE (effective_address),
+                                 NULL, client_connected, &client_conn);
   g_socket_listener_accept_async (listener, NULL,
-				  server_connected, &server_conn);
+                                  server_connected, &server_conn);
 
   while (!client_conn || !server_conn)
     g_main_context_iteration (NULL, TRUE);

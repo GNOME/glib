@@ -95,12 +95,12 @@ g_volume_default_init (GVolumeInterface *iface)
    * Emitted when the volume has been changed.
    */
   g_signal_new (I_("changed"),
-		G_TYPE_VOLUME,
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GVolumeIface, changed),
-		NULL, NULL,
-		NULL,
-		G_TYPE_NONE, 0);
+                G_TYPE_VOLUME,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GVolumeIface, changed),
+                NULL, NULL,
+                NULL,
+                G_TYPE_NONE, 0);
 
   /**
    * GVolume::removed:
@@ -110,12 +110,12 @@ g_volume_default_init (GVolumeInterface *iface)
    * release them so the object can be finalized.
    */
   g_signal_new (I_("removed"),
-		G_TYPE_VOLUME,
-		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GVolumeIface, removed),
-		NULL, NULL,
-		NULL,
-		G_TYPE_NONE, 0);
+                G_TYPE_VOLUME,
+                G_SIGNAL_RUN_LAST,
+                G_STRUCT_OFFSET (GVolumeIface, removed),
+                NULL, NULL,
+                NULL,
+                G_TYPE_NONE, 0);
 }
 
 /**
@@ -348,7 +348,7 @@ g_volume_should_automount (GVolume *volume)
  */
 void
 g_volume_mount (GVolume             *volume,
-		GMountMountFlags     flags,
+                GMountMountFlags     flags,
                 GMountOperation     *mount_operation,
                 GCancellable        *cancellable,
                 GAsyncReadyCallback  callback,
@@ -423,7 +423,7 @@ g_volume_mount_finish (GVolume       *volume,
  */
 void
 g_volume_eject (GVolume             *volume,
-		GMountUnmountFlags   flags,
+                GMountUnmountFlags   flags,
                 GCancellable        *cancellable,
                 GAsyncReadyCallback  callback,
                 gpointer             user_data)
@@ -576,7 +576,7 @@ g_volume_eject_with_operation_finish (GVolume        *volume,
  */
 char *
 g_volume_get_identifier (GVolume    *volume,
-			 const char *kind)
+                         const char *kind)
 {
   GVolumeIface *iface;
 

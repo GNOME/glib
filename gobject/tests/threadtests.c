@@ -187,11 +187,11 @@ prop_tester_class_init (PropTesterClass *c)
 
   call_counter_init (c);
   param = g_param_spec_string ("name", "name_i18n",
-			       "yet-more-wasteful-i18n",
-			       NULL,
-			       G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE |
-			       G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB |
-			       G_PARAM_STATIC_NICK);
+                               "yet-more-wasteful-i18n",
+                               NULL,
+                               G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE |
+                               G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB |
+                               G_PARAM_STATIC_NICK);
   g_object_class_install_property (gobject_class, PROP_NAME, param);
 }
 

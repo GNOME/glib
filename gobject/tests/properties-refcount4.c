@@ -35,16 +35,16 @@ G_DEFINE_TYPE (MyBadger, my_badger, G_TYPE_OBJECT)
 static void my_badger_dispose (GObject * object);
 
 static void my_badger_get_property (GObject    *object,
-				    guint       prop_id,
-				    GValue     *value,
-				    GParamSpec *pspec);
+                                    guint       prop_id,
+                                    GValue     *value,
+                                    GParamSpec *pspec);
 static void my_badger_set_property (GObject      *object,
-				    guint         prop_id,
-				    const GValue *value,
-				    GParamSpec   *pspec);
+                                    guint         prop_id,
+                                    const GValue *value,
+                                    GParamSpec   *pspec);
 
 static void my_badger_mama_notify (GObject    *object,
-				   GParamSpec *pspec);
+                                   GParamSpec *pspec);
 
 static void
 my_badger_class_init (MyBadgerClass * klass)
@@ -59,12 +59,12 @@ my_badger_class_init (MyBadgerClass * klass)
   gobject_class->set_property = my_badger_set_property;
 
   g_object_class_install_property (gobject_class,
-				   PROP_MAMA,
-				   g_param_spec_object ("mama",
-							NULL,
-							NULL,
-							MY_TYPE_BADGER,
-							G_PARAM_READWRITE));
+                                   PROP_MAMA,
+                                   g_param_spec_object ("mama",
+                                                        NULL,
+                                                        NULL,
+                                                        MY_TYPE_BADGER,
+                                                        G_PARAM_READWRITE));
 }
 
 static void
@@ -92,9 +92,9 @@ my_badger_dispose (GObject * object)
 
 static void
 my_badger_get_property (GObject    *object,
-			guint        prop_id,
-			GValue     *value,
-			GParamSpec *pspec)
+                        guint        prop_id,
+                        GValue     *value,
+                        GParamSpec *pspec)
 {
   MyBadger *self;
 
@@ -113,9 +113,9 @@ my_badger_get_property (GObject    *object,
 
 static void
 my_badger_set_property (GObject      *object,
-			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+                        guint         prop_id,
+                        const GValue *value,
+                        GParamSpec   *pspec)
 {
   MyBadger *self;
 
@@ -125,10 +125,10 @@ my_badger_set_property (GObject      *object,
     {
     case PROP_MAMA:
       if (self->mama)
-	g_object_unref (self->mama);
+        g_object_unref (self->mama);
       self->mama = g_value_dup_object (value);
       if (self->mama)
-	g_object_set (self->mama, "mama", NULL, NULL); /* another notify */
+        g_object_set (self->mama, "mama", NULL, NULL); /* another notify */
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);

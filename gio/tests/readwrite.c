@@ -55,8 +55,8 @@ verify_iostream (GFileIOStream *file_iostream)
   verify_pos (iostream, 20);
 
   res = g_seekable_seek (G_SEEKABLE (iostream),
-			 -10, G_SEEK_END,
-			 NULL, NULL);
+                         -10, G_SEEK_END,
+                         NULL, NULL);
   g_assert (res);
   verify_pos (iostream, strlen (original_data) - 10);
 
@@ -67,8 +67,8 @@ verify_iostream (GFileIOStream *file_iostream)
   verify_pos (iostream, strlen (original_data));
 
   res = g_seekable_seek (G_SEEKABLE (iostream),
-			 10, G_SEEK_SET,
-			 NULL, NULL);
+                         10, G_SEEK_SET,
+                         NULL, NULL);
 
   res = g_input_stream_skip (in, 5, NULL, NULL);
   g_assert (res == 5);
@@ -80,21 +80,21 @@ verify_iostream (GFileIOStream *file_iostream)
   verify_pos (iostream, strlen (original_data));
 
   res = g_seekable_seek (G_SEEKABLE (iostream),
-			 10, G_SEEK_SET,
-			 NULL, NULL);
+                         10, G_SEEK_SET,
+                         NULL, NULL);
 
   verify_pos (iostream, 10);
 
   res = g_output_stream_write_all (out, new_data, strlen (new_data),
-				   &n_bytes, NULL, NULL);
+                                   &n_bytes, NULL, NULL);
   g_assert (res);
   g_assert_cmpint (n_bytes, ==, strlen (new_data));
 
   verify_pos (iostream, 10 + strlen (new_data));
 
   res = g_seekable_seek (G_SEEKABLE (iostream),
-			 0, G_SEEK_SET,
-			 NULL, NULL);
+                         0, G_SEEK_SET,
+                         NULL, NULL);
   g_assert (res);
   verify_pos (iostream, 0);
 
@@ -110,8 +110,8 @@ verify_iostream (GFileIOStream *file_iostream)
   verify_pos (iostream, strlen (original_data));
 
   res = g_seekable_seek (G_SEEKABLE (iostream),
-			 0, G_SEEK_SET,
-			 NULL, NULL);
+                         0, G_SEEK_SET,
+                         NULL, NULL);
   g_assert (res);
   verify_pos (iostream, 0);
 
@@ -124,7 +124,7 @@ verify_iostream (GFileIOStream *file_iostream)
 
   error = NULL;
   res = g_output_stream_write_all (out, new_data, strlen (new_data),
-				   &n_bytes, NULL, &error);
+                                   &n_bytes, NULL, &error);
   g_assert (!res);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
   g_error_free (error);
@@ -149,12 +149,12 @@ test_g_file_open_readwrite (void)
   GError *error;
 
   fd = g_file_open_tmp ("readwrite_XXXXXX",
-			&tmp_file, NULL);
+                        &tmp_file, NULL);
   g_assert (fd != -1);
   close (fd);
 
   res = g_file_set_contents (tmp_file,
-			     original_data, -1, NULL);
+                             original_data, -1, NULL);
   g_assert (res);
 
   path = g_build_filename (g_get_tmp_dir (), "g-a-nonexisting-file", NULL);
@@ -194,7 +194,7 @@ test_g_file_create_readwrite (void)
   gsize n_bytes;
 
   fd = g_file_open_tmp ("readwrite_XXXXXX",
-			&tmp_file, NULL);
+                        &tmp_file, NULL);
   g_assert (fd != -1);
   close (fd);
 
@@ -211,13 +211,13 @@ test_g_file_create_readwrite (void)
 
   out = g_io_stream_get_output_stream (G_IO_STREAM (file_iostream));
   res = g_output_stream_write_all (out, original_data, strlen (original_data),
-				   &n_bytes, NULL, NULL);
+                                   &n_bytes, NULL, NULL);
   g_assert (res);
   g_assert_cmpint (n_bytes, ==, strlen (original_data));
 
   res = g_seekable_seek (G_SEEKABLE (file_iostream),
-			 0, G_SEEK_SET,
-			 NULL, NULL);
+                         0, G_SEEK_SET,
+                         NULL, NULL);
   g_assert (res);
 
   verify_iostream (file_iostream);
@@ -244,18 +244,18 @@ test_g_file_replace_readwrite (void)
   gsize n_bytes;
 
   fd = g_file_open_tmp ("readwrite_XXXXXX",
-			&tmp_file, NULL);
+                        &tmp_file, NULL);
   g_assert (fd != -1);
   close (fd);
 
   res = g_file_set_contents (tmp_file,
-			     new_data, -1, NULL);
+                             new_data, -1, NULL);
   g_assert (res);
 
   file = g_file_new_for_path (tmp_file);
   error = NULL;
   file_iostream = g_file_replace_readwrite (file, NULL,
-					    TRUE, 0, NULL, &error);
+                                            TRUE, 0, NULL, &error);
   g_assert (file_iostream != NULL);
 
   in = g_io_stream_get_input_stream (G_IO_STREAM (file_iostream));
@@ -267,13 +267,13 @@ test_g_file_replace_readwrite (void)
 
   out = g_io_stream_get_output_stream (G_IO_STREAM (file_iostream));
   res = g_output_stream_write_all (out, original_data, strlen (original_data),
-				   &n_bytes, NULL, NULL);
+                                   &n_bytes, NULL, NULL);
   g_assert (res);
   g_assert_cmpint (n_bytes, ==, strlen (original_data));
 
   res = g_seekable_seek (G_SEEKABLE (file_iostream),
-			 0, G_SEEK_SET,
-			 NULL, NULL);
+                         0, G_SEEK_SET,
+                         NULL, NULL);
   g_assert (res);
 
   verify_iostream (file_iostream);
@@ -283,8 +283,8 @@ test_g_file_replace_readwrite (void)
 
   backup = g_strconcat (tmp_file, "~", NULL);
   res = g_file_get_contents (backup,
-			     &data,
-			     NULL, NULL);
+                             &data,
+                             NULL, NULL);
   g_assert (res);
   g_assert_cmpstr (data, ==, new_data);
   g_free (data);
@@ -303,11 +303,11 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/readwrite/test_g_file_open_readwrite",
-		   test_g_file_open_readwrite);
+                   test_g_file_open_readwrite);
   g_test_add_func ("/readwrite/test_g_file_create_readwrite",
-		   test_g_file_create_readwrite);
+                   test_g_file_create_readwrite);
   g_test_add_func ("/readwrite/test_g_file_replace_readwrite",
-		   test_g_file_replace_readwrite);
+                   test_g_file_replace_readwrite);
 
   return g_test_run();
 }

@@ -5,14 +5,14 @@
 
 struct _compressed_seq_t
 {
-	cmph_uint32 n; // number of values stored in store_table
-	// The length in bits of each value is decomposed into two components: the lg(n) MSBs are stored in rank_select data structure
-	// the remaining LSBs are stored in a table of n cells, each one of rem_r bits.
-	cmph_uint32 rem_r;
-	cmph_uint32 total_length; // total length in bits of stored_table
-	select_t sel;
-	cmph_uint32 * length_rems;
-	cmph_uint32 * store_table;
+        cmph_uint32 n; // number of values stored in store_table
+        // The length in bits of each value is decomposed into two components: the lg(n) MSBs are stored in rank_select data structure
+        // the remaining LSBs are stored in a table of n cells, each one of rem_r bits.
+        cmph_uint32 rem_r;
+        cmph_uint32 total_length; // total length in bits of stored_table
+        select_t sel;
+        cmph_uint32 * length_rems;
+        cmph_uint32 * store_table;
 };
 
 typedef struct _compressed_seq_t compressed_seq_t;

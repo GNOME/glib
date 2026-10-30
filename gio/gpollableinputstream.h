@@ -67,11 +67,11 @@ struct _GPollableInputStreamInterface
 
   gboolean     (*is_readable)      (GPollableInputStream  *stream);
   GSource *    (*create_source)    (GPollableInputStream  *stream,
-				    GCancellable          *cancellable);
+                                    GCancellable          *cancellable);
   gssize       (*read_nonblocking) (GPollableInputStream  *stream,
-				    void                  *buffer,
-				    gsize                  count,
-				    GError               **error);
+                                    void                  *buffer,
+                                    gsize                  count,
+                                    GError               **error);
 };
 
 GIO_AVAILABLE_IN_ALL
@@ -84,14 +84,14 @@ GIO_AVAILABLE_IN_ALL
 gboolean g_pollable_input_stream_is_readable      (GPollableInputStream  *stream);
 GIO_AVAILABLE_IN_ALL
 GSource *g_pollable_input_stream_create_source    (GPollableInputStream  *stream,
-						   GCancellable          *cancellable);
+                                                   GCancellable          *cancellable);
 
 GIO_AVAILABLE_IN_ALL
 gssize   g_pollable_input_stream_read_nonblocking (GPollableInputStream  *stream,
-						   void                  *buffer,
-						   gsize                  count,
-						   GCancellable          *cancellable,
-						   GError               **error);
+                                                   void                  *buffer,
+                                                   gsize                  count,
+                                                   GCancellable          *cancellable,
+                                                   GError               **error);
 
 G_END_DECLS
 

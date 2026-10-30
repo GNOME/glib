@@ -73,14 +73,14 @@ GMainLoop *loop;
 
 static void
 async_read_chunk (GObject      *object,
-		  GAsyncResult *result,
-		  gpointer      user_data)
+                  GAsyncResult *result,
+                  gpointer      user_data)
 {
   gsize *bytes_read = user_data;
   GError *error = NULL;
 
   *bytes_read = g_input_stream_read_finish (G_INPUT_STREAM (object),
-					    result, &error);
+                                            result, &error);
   g_assert_no_error (error);
 
   g_main_loop_quit (loop);
@@ -130,9 +130,9 @@ test_async (void)
       while (pos < len) 
         {
           g_input_stream_read_async (stream, buffer, chunk_size,
-				     G_PRIORITY_DEFAULT, NULL,
-				     async_read_chunk, &bytes_read);
-	  g_main_loop_run (loop);
+                                     G_PRIORITY_DEFAULT, NULL,
+                                     async_read_chunk, &bytes_read);
+          g_main_loop_run (loop);
 
           g_assert_cmpint (bytes_read, ==, MIN (chunk_size, len - pos));
           g_assert (strncmp (buffer, result + pos, bytes_read) == 0);
@@ -149,9 +149,9 @@ test_async (void)
       while (pos + chunk_size + 1 < len)
         {
           g_input_stream_skip_async (stream, chunk_size,
-				     G_PRIORITY_DEFAULT, NULL,
-				     async_skipped_chunk, &bytes_skipped);
-	  g_main_loop_run (loop);
+                                     G_PRIORITY_DEFAULT, NULL,
+                                     async_skipped_chunk, &bytes_skipped);
+          g_main_loop_run (loop);
 
           g_assert_cmpint (bytes_skipped, ==, MIN (chunk_size, len - pos));
 

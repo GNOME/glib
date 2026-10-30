@@ -31,11 +31,11 @@ G_BEGIN_DECLS
 G_GNUC_INTERNAL
 GInputStream *
 g_win32_input_stream_new_from_fd (gint      fd,
-				  gboolean  close_fd);
+                                  gboolean  close_fd);
 
 GOutputStream *
 g_win32_output_stream_new_from_fd (gint      fd,
-				   gboolean  close_fd);
+                                   gboolean  close_fd);
 
 void
 gio_win32_appinfo_init (gboolean do_wait);

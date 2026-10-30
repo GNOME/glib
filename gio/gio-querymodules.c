@@ -87,47 +87,47 @@ query_dir (const char *dirname)
 
       name = iterator->data;
       if (!is_valid_module_name (name))
-	continue;
+        continue;
 
       path = g_build_filename (dirname, name, NULL);
       module = g_module_open_full (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL, &error);
       g_free (path);
 
       if (module)
-	{
-	  gchar *modulename;
-	  gchar *symname;
+        {
+          gchar *modulename;
+          gchar *symname;
 
-	  modulename = _g_io_module_extract_name (name);
-	  symname = g_strconcat ("g_io_", modulename, "_query", NULL);
-	  g_module_symbol (module, symname, (gpointer) &query);
-	  g_free (symname);
-	  g_free (modulename);
+          modulename = _g_io_module_extract_name (name);
+          symname = g_strconcat ("g_io_", modulename, "_query", NULL);
+          g_module_symbol (module, symname, (gpointer) &query);
+          g_free (symname);
+          g_free (modulename);
 
-	  if (!query)
-	    {
-	      /* Fallback to old name */
-	      g_module_symbol (module, "g_io_module_query", (gpointer) &query);
-	    }
+          if (!query)
+            {
+              /* Fallback to old name */
+              g_module_symbol (module, "g_io_module_query", (gpointer) &query);
+            }
 
-	  if (query)
-	    {
-	      extension_points = query ();
+          if (query)
+            {
+              extension_points = query ();
 
-	      if (extension_points)
-		{
-		  g_string_append_printf (data, "%s: ", name);
+              if (extension_points)
+                {
+                  g_string_append_printf (data, "%s: ", name);
 
-		  for (i = 0; extension_points[i] != NULL; i++)
-		    g_string_append_printf (data, "%s%s", i == 0 ? "" : ",", extension_points[i]);
+                  for (i = 0; extension_points[i] != NULL; i++)
+                    g_string_append_printf (data, "%s%s", i == 0 ? "" : ",", extension_points[i]);
 
-		  g_string_append (data, "\n");
-		  g_strfreev (extension_points);
-		}
-	    }
+                  g_string_append (data, "\n");
+                  g_strfreev (extension_points);
+                }
+            }
 
-	  g_module_close (module);
-	}
+          g_module_close (module);
+        }
       else
         {
           g_debug ("Failed to open module %s: %s", name, error->message);

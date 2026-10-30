@@ -59,13 +59,13 @@ enum
 
 struct _GProxyAddressPrivate
 {
-  gchar 	 *uri;
-  gchar 	 *protocol;
-  gchar		 *username;
-  gchar		 *password;
-  gchar 	 *dest_protocol;
-  gchar 	 *dest_hostname;
-  guint16 	  dest_port;
+  gchar          *uri;
+  gchar          *protocol;
+  gchar          *username;
+  gchar          *password;
+  gchar          *dest_protocol;
+  gchar          *dest_hostname;
+  guint16         dest_port;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GProxyAddress, g_proxy_address, G_TYPE_INET_SOCKET_ADDRESS)
@@ -87,9 +87,9 @@ g_proxy_address_finalize (GObject *object)
 
 static void
 g_proxy_address_set_property (GObject      *object,
-			      guint         prop_id,
-			      const GValue *value,
-			      GParamSpec   *pspec)
+                              guint         prop_id,
+                              const GValue *value,
+                              GParamSpec   *pspec)
 {
   GProxyAddress *proxy = G_PROXY_ADDRESS (object);
 
@@ -136,44 +136,44 @@ g_proxy_address_set_property (GObject      *object,
 
 static void
 g_proxy_address_get_property (GObject    *object,
-			      guint       prop_id,
-			      GValue     *value,
-			      GParamSpec *pspec)
+                              guint       prop_id,
+                              GValue     *value,
+                              GParamSpec *pspec)
 {
   GProxyAddress *proxy = G_PROXY_ADDRESS (object);
 
   switch (prop_id)
     {
       case PROP_PROTOCOL:
-	g_value_set_string (value, proxy->priv->protocol);
-	break;
+        g_value_set_string (value, proxy->priv->protocol);
+        break;
 
       case PROP_DESTINATION_PROTOCOL:
-	g_value_set_string (value, proxy->priv->dest_protocol);
-	break;
+        g_value_set_string (value, proxy->priv->dest_protocol);
+        break;
 
       case PROP_DESTINATION_HOSTNAME:
-	g_value_set_string (value, proxy->priv->dest_hostname);
-	break;
+        g_value_set_string (value, proxy->priv->dest_hostname);
+        break;
 
       case PROP_DESTINATION_PORT:
-	g_value_set_uint (value, proxy->priv->dest_port);
-	break;
+        g_value_set_uint (value, proxy->priv->dest_port);
+        break;
 
       case PROP_USERNAME:
-	g_value_set_string (value, proxy->priv->username);
-	break;
+        g_value_set_string (value, proxy->priv->username);
+        break;
 
       case PROP_PASSWORD:
-	g_value_set_string (value, proxy->priv->password);
-	break;
+        g_value_set_string (value, proxy->priv->password);
+        break;
 
       case PROP_URI:
-	g_value_set_string (value, proxy->priv->uri);
-	break;
+        g_value_set_string (value, proxy->priv->uri);
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -194,12 +194,12 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
-				   PROP_PROTOCOL,
-				   g_param_spec_string ("protocol", NULL, NULL,
-						       NULL,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   PROP_PROTOCOL,
+                                   g_param_spec_string ("protocol", NULL, NULL,
+                                                       NULL,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GProxyAddress:username:
@@ -209,12 +209,12 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
-				   PROP_USERNAME,
-				   g_param_spec_string ("username", NULL, NULL,
-						       NULL,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   PROP_USERNAME,
+                                   g_param_spec_string ("username", NULL, NULL,
+                                                       NULL,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GProxyAddress:password:
@@ -224,12 +224,12 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
-				   PROP_PASSWORD,
-				   g_param_spec_string ("password", NULL, NULL,
-						       NULL,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   PROP_PASSWORD,
+                                   g_param_spec_string ("password", NULL, NULL,
+                                                       NULL,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GProxyAddress:destination-protocol:
@@ -240,12 +240,12 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    * Since: 2.34
    */
   g_object_class_install_property (gobject_class,
-				   PROP_DESTINATION_PROTOCOL,
-				   g_param_spec_string ("destination-protocol", NULL, NULL,
-						       NULL,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   PROP_DESTINATION_PROTOCOL,
+                                   g_param_spec_string ("destination-protocol", NULL, NULL,
+                                                       NULL,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GProxyAddress:destination-hostname:
@@ -255,12 +255,12 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
-				   PROP_DESTINATION_HOSTNAME,
-				   g_param_spec_string ("destination-hostname", NULL, NULL,
-						       NULL,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   PROP_DESTINATION_HOSTNAME,
+                                   g_param_spec_string ("destination-hostname", NULL, NULL,
+                                                       NULL,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GProxyAddress:destination-port:
@@ -270,12 +270,12 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
-				   PROP_DESTINATION_PORT,
-				   g_param_spec_uint ("destination-port", NULL, NULL,
-						      0, 65535, 0,
-						      G_PARAM_READWRITE |
-						      G_PARAM_CONSTRUCT_ONLY |
-						      G_PARAM_STATIC_STRINGS));
+                                   PROP_DESTINATION_PORT,
+                                   g_param_spec_uint ("destination-port", NULL, NULL,
+                                                      0, 65535, 0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_STRINGS));
 
   /**
    * GProxyAddress:uri:
@@ -286,12 +286,12 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
    * Since: 2.34
    */
   g_object_class_install_property (gobject_class,
-				   PROP_URI,
-				   g_param_spec_string ("uri", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   PROP_URI,
+                                   g_param_spec_string ("uri", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -330,22 +330,22 @@ g_proxy_address_init (GProxyAddress *proxy)
  */
 GSocketAddress *
 g_proxy_address_new (GInetAddress  *inetaddr,
-		     guint16        port,
-		     const gchar   *protocol,
-		     const gchar   *dest_hostname,
-		     guint16        dest_port,
-		     const gchar   *username,
-		     const gchar   *password)
+                     guint16        port,
+                     const gchar   *protocol,
+                     const gchar   *dest_hostname,
+                     guint16        dest_port,
+                     const gchar   *username,
+                     const gchar   *password)
 {
   return g_object_new (G_TYPE_PROXY_ADDRESS,
-		       "address", inetaddr,
-		       "port", port,
-		       "protocol", protocol,
-		       "destination-hostname", dest_hostname,
-		       "destination-port", dest_port,
-		       "username", username,
-		       "password", password,
-		       NULL);
+                       "address", inetaddr,
+                       "port", port,
+                       "protocol", protocol,
+                       "destination-hostname", dest_hostname,
+                       "destination-port", dest_port,
+                       "username", username,
+                       "password", password,
+                       NULL);
 }
 
 

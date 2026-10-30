@@ -47,34 +47,34 @@ enum {
 };
 
 static void g_data_output_stream_set_property (GObject      *object,
-					       guint         prop_id,
-					       const GValue *value,
-					       GParamSpec   *pspec);
+                                               guint         prop_id,
+                                               const GValue *value,
+                                               GParamSpec   *pspec);
 static void g_data_output_stream_get_property (GObject      *object,
-					       guint         prop_id,
-					       GValue       *value,
-					       GParamSpec   *pspec);
+                                               guint         prop_id,
+                                               GValue       *value,
+                                               GParamSpec   *pspec);
 
 static void     g_data_output_stream_seekable_iface_init (GSeekableIface  *iface);
 static goffset  g_data_output_stream_tell                (GSeekable       *seekable);
 static gboolean g_data_output_stream_can_seek            (GSeekable       *seekable);
 static gboolean g_data_output_stream_seek                (GSeekable       *seekable,
-							  goffset          offset,
-							  GSeekType        type,
-							  GCancellable    *cancellable,
-							  GError         **error);
+                                                          goffset          offset,
+                                                          GSeekType        type,
+                                                          GCancellable    *cancellable,
+                                                          GError         **error);
 static gboolean g_data_output_stream_can_truncate        (GSeekable       *seekable);
 static gboolean g_data_output_stream_truncate            (GSeekable       *seekable,
-							  goffset          offset,
-							  GCancellable    *cancellable,
-							  GError         **error);
+                                                          goffset          offset,
+                                                          GCancellable    *cancellable,
+                                                          GError         **error);
 
 G_DEFINE_TYPE_WITH_CODE (GDataOutputStream,
-			 g_data_output_stream,
-			 G_TYPE_FILTER_OUTPUT_STREAM,
+                         g_data_output_stream,
+                         G_TYPE_FILTER_OUTPUT_STREAM,
                          G_ADD_PRIVATE (GDataOutputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-						g_data_output_stream_seekable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+                                                g_data_output_stream_seekable_iface_init))
 
 
 static void
@@ -103,9 +103,9 @@ g_data_output_stream_class_init (GDataOutputStreamClass *klass)
 
 static void
 g_data_output_stream_set_property (GObject     *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GDataOutputStream *dstream;
 
@@ -125,9 +125,9 @@ g_data_output_stream_set_property (GObject     *object,
 
 static void
 g_data_output_stream_get_property (GObject    *object,
-				   guint       prop_id,
-				   GValue     *value,
-				   GParamSpec *pspec)
+                                   guint       prop_id,
+                                   GValue     *value,
+                                   GParamSpec *pspec)
 {
   GDataOutputStreamPrivate *priv;
   GDataOutputStream        *dstream;
@@ -236,18 +236,18 @@ g_data_output_stream_get_byte_order (GDataOutputStream *stream)
  **/
 gboolean
 g_data_output_stream_put_byte (GDataOutputStream  *stream,
-			       guchar              data,
-			       GCancellable       *cancellable,
-			       GError            **error)
+                               guchar              data,
+                               GCancellable       *cancellable,
+                               GError            **error)
 {
   gsize bytes_written;
   
   g_return_val_if_fail (G_IS_DATA_OUTPUT_STREAM (stream), FALSE);
 
   return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
-				    &data, 1,
-				    &bytes_written,
-				    cancellable, error);
+                                    &data, 1,
+                                    &bytes_written,
+                                    cancellable, error);
 }
 
 /**
@@ -263,9 +263,9 @@ g_data_output_stream_put_byte (GDataOutputStream  *stream,
  **/
 gboolean
 g_data_output_stream_put_int16 (GDataOutputStream  *stream,
-				gint16              data,
-				GCancellable       *cancellable,
-				GError            **error)
+                                gint16              data,
+                                GCancellable       *cancellable,
+                                GError            **error)
 {
   gsize bytes_written;
   
@@ -285,9 +285,9 @@ g_data_output_stream_put_int16 (GDataOutputStream  *stream,
     }
   
   return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
-				    &data, 2,
-				    &bytes_written,
-				    cancellable, error);
+                                    &data, 2,
+                                    &bytes_written,
+                                    cancellable, error);
 }
 
 /**
@@ -303,9 +303,9 @@ g_data_output_stream_put_int16 (GDataOutputStream  *stream,
  **/
 gboolean
 g_data_output_stream_put_uint16 (GDataOutputStream  *stream,
-				 guint16             data,
-				 GCancellable       *cancellable,
-				 GError            **error)
+                                 guint16             data,
+                                 GCancellable       *cancellable,
+                                 GError            **error)
 {
   gsize bytes_written;
   
@@ -325,9 +325,9 @@ g_data_output_stream_put_uint16 (GDataOutputStream  *stream,
     }
   
   return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
-				    &data, 2,
-				    &bytes_written,
-				    cancellable, error);
+                                    &data, 2,
+                                    &bytes_written,
+                                    cancellable, error);
 }
 
 /**
@@ -343,9 +343,9 @@ g_data_output_stream_put_uint16 (GDataOutputStream  *stream,
  **/
 gboolean
 g_data_output_stream_put_int32 (GDataOutputStream  *stream,
-				gint32              data,
-				GCancellable       *cancellable,
-				GError            **error)
+                                gint32              data,
+                                GCancellable       *cancellable,
+                                GError            **error)
 {
   gsize bytes_written;
   
@@ -365,9 +365,9 @@ g_data_output_stream_put_int32 (GDataOutputStream  *stream,
     }
   
   return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
-				    &data, 4,
-				    &bytes_written,
-				    cancellable, error);
+                                    &data, 4,
+                                    &bytes_written,
+                                    cancellable, error);
 }
 
 /**
@@ -383,9 +383,9 @@ g_data_output_stream_put_int32 (GDataOutputStream  *stream,
  **/
 gboolean
 g_data_output_stream_put_uint32 (GDataOutputStream  *stream,
-				 guint32             data,
-				 GCancellable       *cancellable,
-				 GError            **error)
+                                 guint32             data,
+                                 GCancellable       *cancellable,
+                                 GError            **error)
 {
   gsize bytes_written;
   
@@ -405,9 +405,9 @@ g_data_output_stream_put_uint32 (GDataOutputStream  *stream,
     }
   
   return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
-				    &data, 4,
-				    &bytes_written,
-				    cancellable, error);
+                                    &data, 4,
+                                    &bytes_written,
+                                    cancellable, error);
 }
 
 /**
@@ -423,9 +423,9 @@ g_data_output_stream_put_uint32 (GDataOutputStream  *stream,
  **/
 gboolean
 g_data_output_stream_put_int64 (GDataOutputStream  *stream,
-				gint64              data,
-				GCancellable       *cancellable,
-				GError            **error)
+                                gint64              data,
+                                GCancellable       *cancellable,
+                                GError            **error)
 {
   gsize bytes_written;
   
@@ -445,9 +445,9 @@ g_data_output_stream_put_int64 (GDataOutputStream  *stream,
     }
   
   return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
-				    &data, 8,
-				    &bytes_written,
-				    cancellable, error);
+                                    &data, 8,
+                                    &bytes_written,
+                                    cancellable, error);
 }
 
 /**
@@ -463,9 +463,9 @@ g_data_output_stream_put_int64 (GDataOutputStream  *stream,
  **/
 gboolean
 g_data_output_stream_put_uint64 (GDataOutputStream  *stream,
-				 guint64             data,
-				 GCancellable       *cancellable,
-				 GError            **error)
+                                 guint64             data,
+                                 GCancellable       *cancellable,
+                                 GError            **error)
 {
   gsize bytes_written;
   
@@ -485,9 +485,9 @@ g_data_output_stream_put_uint64 (GDataOutputStream  *stream,
     }
   
   return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
-				    &data, 8,
-				    &bytes_written,
-				    cancellable, error);
+                                    &data, 8,
+                                    &bytes_written,
+                                    cancellable, error);
 }
 
 /**
@@ -503,9 +503,9 @@ g_data_output_stream_put_uint64 (GDataOutputStream  *stream,
  **/
 gboolean
 g_data_output_stream_put_string (GDataOutputStream  *stream,
-				 const char         *str,
-				 GCancellable       *cancellable,
-				 GError            **error)
+                                 const char         *str,
+                                 GCancellable       *cancellable,
+                                 GError            **error)
 {
   gsize bytes_written;
   
@@ -513,9 +513,9 @@ g_data_output_stream_put_string (GDataOutputStream  *stream,
   g_return_val_if_fail (str != NULL, FALSE);
 
   return g_output_stream_write_all (G_OUTPUT_STREAM (stream),
-				    str, strlen (str),
-				    &bytes_written,
-				    cancellable, error);
+                                    str, strlen (str),
+                                    &bytes_written,
+                                    cancellable, error);
 }
 
 static goffset
@@ -542,10 +542,10 @@ g_data_output_stream_can_seek (GSeekable *seekable)
 
 static gboolean
 g_data_output_stream_seek (GSeekable     *seekable,
-			   goffset        offset,
-			   GSeekType      type,
-			   GCancellable  *cancellable,
-			   GError       **error)
+                           goffset        offset,
+                           GSeekType      type,
+                           GCancellable  *cancellable,
+                           GError       **error)
 {
   GOutputStream *base_stream;
   GSeekable *base_stream_seekable;
@@ -573,9 +573,9 @@ g_data_output_stream_can_truncate (GSeekable *seekable)
 
 static gboolean
 g_data_output_stream_truncate (GSeekable     *seekable,
-				   goffset        offset,
-				   GCancellable  *cancellable,
-				   GError       **error)
+                                   goffset        offset,
+                                   GCancellable  *cancellable,
+                                   GError       **error)
 {
   GOutputStream *base_stream;
   GSeekable *base_stream_seekable;

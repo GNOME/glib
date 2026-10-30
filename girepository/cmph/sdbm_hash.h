@@ -5,7 +5,7 @@
 
 typedef struct __sdbm_state_t
 {
-	CMPH_HASH hashfunc;
+        CMPH_HASH hashfunc;
 } sdbm_state_t;
 
 sdbm_state_t *sdbm_state_new();

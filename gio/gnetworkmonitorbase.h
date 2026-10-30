@@ -56,14 +56,14 @@ GType g_network_monitor_base_get_type (void);
 /*< protected >*/
 GIO_AVAILABLE_IN_2_32
 void g_network_monitor_base_add_network    (GNetworkMonitorBase  *monitor,
-					    GInetAddressMask     *network);
+                                            GInetAddressMask     *network);
 GIO_AVAILABLE_IN_2_32
 void g_network_monitor_base_remove_network (GNetworkMonitorBase  *monitor,
-					    GInetAddressMask     *network);
+                                            GInetAddressMask     *network);
 GIO_AVAILABLE_IN_ALL
 void g_network_monitor_base_set_networks   (GNetworkMonitorBase  *monitor,
-					    GInetAddressMask    **networks,
-					    gint                  length);
+                                            GInetAddressMask    **networks,
+                                            gint                  length);
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (GNetworkMonitorBase, g_object_unref)
 

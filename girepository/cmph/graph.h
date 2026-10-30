@@ -10,8 +10,8 @@ typedef struct __graph_t graph_t;
 typedef struct __graph_iterator_t graph_iterator_t;
 struct __graph_iterator_t
 {
-	cmph_uint32 vertex;
-	cmph_uint32 edge;
+        cmph_uint32 vertex;
+        cmph_uint32 edge;
 };
 
 

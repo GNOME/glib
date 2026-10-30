@@ -58,10 +58,10 @@ assert_hashes_unique (size_t    n_hashes,
   for (i = 0; i < n_hashes; i++)
     {
       for (size_t j = 0; j < n_hashes; j++)
-	{
-	  if (j != i)
-	    g_assert_cmpuint (hashes[i], !=, hashes[j]);
-	}
+        {
+          if (j != i)
+            g_assert_cmpuint (hashes[i], !=, hashes[j]);
+        }
     }
 }
 

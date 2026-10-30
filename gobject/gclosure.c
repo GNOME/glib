@@ -91,13 +91,13 @@
  *   automatically removed when the objects they point to go away.
  */
 
-#define	CLOSURE_MAX_REF_COUNT		((1 << 15) - 1)
-#define	CLOSURE_MAX_N_GUARDS		((1 << 1) - 1)
-#define	CLOSURE_MAX_N_FNOTIFIERS	((1 << 2) - 1)
-#define	CLOSURE_MAX_N_INOTIFIERS	((1 << 8) - 1)
-#define	CLOSURE_N_MFUNCS(cl)		((size_t) ((cl)->n_guards << 1L))
+#define CLOSURE_MAX_REF_COUNT           ((1 << 15) - 1)
+#define CLOSURE_MAX_N_GUARDS            ((1 << 1) - 1)
+#define CLOSURE_MAX_N_FNOTIFIERS        ((1 << 2) - 1)
+#define CLOSURE_MAX_N_INOTIFIERS        ((1 << 8) - 1)
+#define CLOSURE_N_MFUNCS(cl)            ((size_t) ((cl)->n_guards << 1L))
 /* same as G_CLOSURE_N_NOTIFIERS() (keep in sync) */
-#define	CLOSURE_N_NOTIFIERS(cl)		((size_t) (CLOSURE_N_MFUNCS (cl) + \
+#define CLOSURE_N_NOTIFIERS(cl)         ((size_t) (CLOSURE_N_MFUNCS (cl) + \
                                          (cl)->n_fnotifiers + \
                                          (cl)->n_inotifiers))
 
@@ -132,10 +132,10 @@ G_STATIC_ASSERT (G_ALIGNOF (GClosureFlags) == G_ALIGNOF (GClosure));
 #define ATOMIC_CHANGE_FIELD(_closure, _field, _OP, _value, _SET_OLD, _SET_NEW) \
 G_STMT_START {                                                                          \
   GClosureFlags *cunion = (GClosureFlags *) _closure; \
-  gint new_int, old_int, success;                              		                \
+  gint new_int, old_int, success;                                                       \
   old_int = g_atomic_int_get (&cunion->atomic_int); \
-  do                                                    		                \
-    {                                                   		                \
+  do                                                                                    \
+    {                                                                                   \
       GClosureFlags tmp; \
       tmp.atomic_int = old_int; \
       _SET_OLD tmp.flags._field; \
@@ -143,8 +143,8 @@ G_STMT_START {                                                                  
       _SET_NEW tmp.flags._field; \
       new_int = tmp.atomic_int; \
       success = g_atomic_int_compare_and_exchange_full (&cunion->atomic_int, old_int, new_int, \
-							&old_int);			\
-    }                                                   		                \
+                                                        &old_int);                      \
+    }                                                                                   \
   while (!success); \
 } G_STMT_END
 
@@ -444,7 +444,7 @@ closure_marshal_call_plan_invoke (GClosure  *closure,
  */
 GClosure*
 g_closure_new_simple (guint           sizeof_closure,
-		      gpointer        data)
+                      gpointer        data)
 {
   GClosure *closure;
   size_t private_size;
@@ -482,7 +482,7 @@ g_closure_new_simple (guint           sizeof_closure,
 
 static inline void
 closure_invoke_notifiers (GClosure *closure,
-			  guint     notify_type)
+                          guint     notify_type)
 {
   /* notifier layout:
    *     n_guards    n_guards     n_fnotif.  n_inotifiers
@@ -507,30 +507,30 @@ closure_invoke_notifiers (GClosure *closure,
       guint i, offs;
     case FNOTIFY:
       while (closure->n_fnotifiers)
-	{
+        {
           guint n;
-	  ATOMIC_DEC_ASSIGN (closure, n_fnotifiers, &n);
+          ATOMIC_DEC_ASSIGN (closure, n_fnotifiers, &n);
 
-	  ndata = closure->notifiers + CLOSURE_N_MFUNCS (closure) + n;
-	  closure->marshal = (GClosureMarshal) ndata->notify;
-	  closure->data = ndata->data;
-	  ndata->notify (ndata->data, closure);
-	}
+          ndata = closure->notifiers + CLOSURE_N_MFUNCS (closure) + n;
+          closure->marshal = (GClosureMarshal) ndata->notify;
+          closure->data = ndata->data;
+          ndata->notify (ndata->data, closure);
+        }
       closure->marshal = NULL;
       closure->data = NULL;
       break;
     case INOTIFY:
       ATOMIC_SET (closure, in_inotify, TRUE);
       while (closure->n_inotifiers)
-	{
+        {
           guint n;
           ATOMIC_DEC_ASSIGN (closure, n_inotifiers, &n);
 
-	  ndata = closure->notifiers + CLOSURE_N_MFUNCS (closure) + closure->n_fnotifiers + n;
-	  closure->marshal = (GClosureMarshal) ndata->notify;
-	  closure->data = ndata->data;
-	  ndata->notify (ndata->data, closure);
-	}
+          ndata = closure->notifiers + CLOSURE_N_MFUNCS (closure) + closure->n_fnotifiers + n;
+          closure->marshal = (GClosureMarshal) ndata->notify;
+          closure->data = ndata->data;
+          ndata->notify (ndata->data, closure);
+        }
       closure->marshal = NULL;
       closure->data = NULL;
       ATOMIC_SET (closure, in_inotify, FALSE);
@@ -539,26 +539,26 @@ closure_invoke_notifiers (GClosure *closure,
       i = closure->n_guards;
       offs = 0;
       while (i--)
-	{
-	  ndata = closure->notifiers + offs + i;
-	  ndata->notify (ndata->data, closure);
-	}
+        {
+          ndata = closure->notifiers + offs + i;
+          ndata->notify (ndata->data, closure);
+        }
       break;
     case POST_NOTIFY:
       i = closure->n_guards;
       offs = i;
       while (i--)
-	{
-	  ndata = closure->notifiers + offs + i;
-	  ndata->notify (ndata->data, closure);
-	}
+        {
+          ndata = closure->notifiers + offs + i;
+          ndata->notify (ndata->data, closure);
+        }
       break;
     }
 }
 
 static void
 g_closure_set_meta_va_marshal (GClosure       *closure,
-			       GVaClosureMarshal va_meta_marshal)
+                               GVaClosureMarshal va_meta_marshal)
 {
   GClosureFlags old_flags;
   GRealClosure *real_closure;
@@ -604,8 +604,8 @@ g_closure_set_meta_va_marshal (GClosure       *closure,
  */
 void
 g_closure_set_meta_marshal (GClosure       *closure,
-			    gpointer        marshal_data,
-			    GClosureMarshal meta_marshal)
+                            gpointer        marshal_data,
+                            GClosureMarshal meta_marshal)
 {
   GClosureFlags old_flags;
   GRealClosure *real_closure;
@@ -644,10 +644,10 @@ g_closure_set_meta_marshal (GClosure       *closure,
  */
 void
 g_closure_add_marshal_guards (GClosure      *closure,
-			      gpointer       pre_marshal_data,
-			      GClosureNotify pre_marshal_notify,
-			      gpointer       post_marshal_data,
-			      GClosureNotify post_marshal_notify)
+                              gpointer       pre_marshal_data,
+                              GClosureNotify pre_marshal_notify,
+                              gpointer       post_marshal_data,
+                              GClosureNotify post_marshal_notify)
 {
   GClosureFlags old_flags;
   guint i;
@@ -664,23 +664,23 @@ g_closure_add_marshal_guards (GClosure      *closure,
   closure->notifiers = g_renew (GClosureNotifyData, closure->notifiers, CLOSURE_N_NOTIFIERS (closure) + 2);
   if (closure->n_inotifiers)
     closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers +
-			closure->n_inotifiers + 1)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-									  closure->n_fnotifiers + 0)];
+                        closure->n_fnotifiers +
+                        closure->n_inotifiers + 1)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
+                                                                          closure->n_fnotifiers + 0)];
   if (closure->n_inotifiers > 1)
     closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers +
-			closure->n_inotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-								      closure->n_fnotifiers + 1)];
+                        closure->n_fnotifiers +
+                        closure->n_inotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
+                                                                      closure->n_fnotifiers + 1)];
   if (closure->n_fnotifiers)
     closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers + 1)] = closure->notifiers[CLOSURE_N_MFUNCS (closure) + 0];
+                        closure->n_fnotifiers + 1)] = closure->notifiers[CLOSURE_N_MFUNCS (closure) + 0];
   if (closure->n_fnotifiers > 1)
     closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers)] = closure->notifiers[CLOSURE_N_MFUNCS (closure) + 1];
+                        closure->n_fnotifiers)] = closure->notifiers[CLOSURE_N_MFUNCS (closure) + 1];
   if (closure->n_guards)
     closure->notifiers[(closure->n_guards +
-			closure->n_guards + 1)] = closure->notifiers[closure->n_guards];
+                        closure->n_guards + 1)] = closure->notifiers[closure->n_guards];
   i = closure->n_guards;
   closure->notifiers[i].data = pre_marshal_data;
   closure->notifiers[i].notify = pre_marshal_notify;
@@ -705,8 +705,8 @@ g_closure_add_marshal_guards (GClosure      *closure,
  */
 void
 g_closure_add_finalize_notifier (GClosure      *closure,
-				 gpointer       notify_data,
-				 GClosureNotify notify_func)
+                                 gpointer       notify_data,
+                                 GClosureNotify notify_func)
 {
   size_t i;
 
@@ -717,9 +717,9 @@ g_closure_add_finalize_notifier (GClosure      *closure,
   closure->notifiers = g_renew (GClosureNotifyData, closure->notifiers, CLOSURE_N_NOTIFIERS (closure) + 1);
   if (closure->n_inotifiers)
     closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			closure->n_fnotifiers +
-			closure->n_inotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-								      closure->n_fnotifiers + 0)];
+                        closure->n_fnotifiers +
+                        closure->n_inotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
+                                                                      closure->n_fnotifiers + 0)];
   i = CLOSURE_N_MFUNCS (closure) + closure->n_fnotifiers;
   closure->notifiers[i].data = notify_data;
   closure->notifiers[i].notify = notify_func;
@@ -740,8 +740,8 @@ g_closure_add_finalize_notifier (GClosure      *closure,
  */
 void
 g_closure_add_invalidate_notifier (GClosure      *closure,
-				   gpointer       notify_data,
-				   GClosureNotify notify_func)
+                                   gpointer       notify_data,
+                                   GClosureNotify notify_func)
 {
   GClosureFlags old_flags;
   size_t i;
@@ -762,8 +762,8 @@ g_closure_add_invalidate_notifier (GClosure      *closure,
 
 static inline gboolean
 closure_try_remove_inotify (GClosure       *closure,
-			    gpointer       notify_data,
-			    GClosureNotify notify_func)
+                            gpointer       notify_data,
+                            GClosureNotify notify_func)
 {
   GClosureNotifyData *ndata, *nlast;
 
@@ -771,19 +771,19 @@ closure_try_remove_inotify (GClosure       *closure,
   for (ndata = nlast + 1 - closure->n_inotifiers; ndata <= nlast; ndata++)
     if (ndata->notify == notify_func && ndata->data == notify_data)
       {
-	ATOMIC_DEC (closure, n_inotifiers);
-	if (ndata < nlast)
-	  *ndata = *nlast;
+        ATOMIC_DEC (closure, n_inotifiers);
+        if (ndata < nlast)
+          *ndata = *nlast;
 
-	return TRUE;
+        return TRUE;
       }
   return FALSE;
 }
 
 static inline gboolean
 closure_try_remove_fnotify (GClosure       *closure,
-			    gpointer       notify_data,
-			    GClosureNotify notify_func)
+                            gpointer       notify_data,
+                            GClosureNotify notify_func)
 {
   GClosureNotifyData *ndata, *nlast;
 
@@ -791,15 +791,15 @@ closure_try_remove_fnotify (GClosure       *closure,
   for (ndata = nlast + 1 - closure->n_fnotifiers; ndata <= nlast; ndata++)
     if (ndata->notify == notify_func && ndata->data == notify_data)
       {
-	ATOMIC_DEC (closure, n_fnotifiers);
-	if (ndata < nlast)
-	  *ndata = *nlast;
-	if (closure->n_inotifiers)
-	  closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-			      closure->n_fnotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
-									    closure->n_fnotifiers +
-									    closure->n_inotifiers)];
-	return TRUE;
+        ATOMIC_DEC (closure, n_fnotifiers);
+        if (ndata < nlast)
+          *ndata = *nlast;
+        if (closure->n_inotifiers)
+          closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
+                              closure->n_fnotifiers)] = closure->notifiers[(CLOSURE_N_MFUNCS (closure) +
+                                                                            closure->n_fnotifiers +
+                                                                            closure->n_inotifiers)];
+        return TRUE;
       }
   return FALSE;
 }
@@ -1036,8 +1036,8 @@ g_closure_sink (GClosure *closure)
  */
 void
 g_closure_remove_invalidate_notifier (GClosure      *closure,
-				      gpointer       notify_data,
-				      GClosureNotify notify_func)
+                                      gpointer       notify_data,
+                                      GClosureNotify notify_func)
 {
   GClosureFlags old_flags;
 
@@ -1052,7 +1052,7 @@ g_closure_remove_invalidate_notifier (GClosure      *closure,
     closure->marshal = NULL;
   else if (!closure_try_remove_inotify (closure, notify_data, notify_func))
     g_critical (G_STRLOC ": unable to remove uninstalled invalidation notifier: %p (%p)",
-	        notify_func, notify_data);
+                notify_func, notify_data);
 }
 
 /**
@@ -1068,8 +1068,8 @@ g_closure_remove_invalidate_notifier (GClosure      *closure,
  */
 void
 g_closure_remove_finalize_notifier (GClosure      *closure,
-				    gpointer       notify_data,
-				    GClosureNotify notify_func)
+                                    gpointer       notify_data,
+                                    GClosureNotify notify_func)
 {
   GClosureFlags old_flags;
 
@@ -1103,10 +1103,10 @@ g_closure_remove_finalize_notifier (GClosure      *closure,
  */
 void
 g_closure_invoke (GClosure       *closure,
-		  GValue /*out*/ *return_value,
-		  guint           n_param_values,
-		  const GValue   *param_values,
-		  gpointer        invocation_hint)
+                  GValue /*out*/ *return_value,
+                  guint           n_param_values,
+                  const GValue   *param_values,
+                  gpointer        invocation_hint)
 {
   GClosureFlags reffed_flags;
   GRealClosure *real_closure;
@@ -1126,24 +1126,24 @@ g_closure_invoke (GClosure       *closure,
 
       ATOMIC_SET (closure, in_marshal, TRUE);
       if (real_closure->meta_marshal)
-	{
-	  marshal_data = real_closure->meta_marshal_data;
-	  marshal = real_closure->meta_marshal;
-	}
+        {
+          marshal_data = real_closure->meta_marshal_data;
+          marshal = real_closure->meta_marshal;
+        }
       else
-	{
-	  marshal_data = NULL;
-	  marshal = closure->marshal;
-	}
+        {
+          marshal_data = NULL;
+          marshal = closure->marshal;
+        }
       if (!in_marshal)
-	closure_invoke_notifiers (closure, PRE_NOTIFY);
+        closure_invoke_notifiers (closure, PRE_NOTIFY);
       marshal (closure,
-	       return_value,
-	       n_param_values, param_values,
-	       invocation_hint,
-	       marshal_data);
+               return_value,
+               n_param_values, param_values,
+               invocation_hint,
+               marshal_data);
       if (!in_marshal)
-	closure_invoke_notifiers (closure, POST_NOTIFY);
+        closure_invoke_notifiers (closure, POST_NOTIFY);
       ATOMIC_SET (closure, in_marshal, (guint) in_marshal);
     }
   g_closure_unref (closure);
@@ -1166,11 +1166,11 @@ _g_closure_supports_invoke_va (GClosure       *closure)
 
 void
 _g_closure_invoke_va (GClosure       *closure,
-		      GValue /*out*/ *return_value,
-		      gpointer        instance,
-		      va_list         args,
-		      int             n_params,
-		      GType          *param_types)
+                      GValue /*out*/ *return_value,
+                      gpointer        instance,
+                      va_list         args,
+                      int             n_params,
+                      GType          *param_types)
 {
   GClosureFlags reffed_flags;
   GRealClosure *real_closure;
@@ -1190,24 +1190,24 @@ _g_closure_invoke_va (GClosure       *closure,
 
       ATOMIC_SET (closure, in_marshal, TRUE);
       if (real_closure->va_meta_marshal)
-	{
-	  marshal_data = real_closure->meta_marshal_data;
-	  marshal = real_closure->va_meta_marshal;
-	}
+        {
+          marshal_data = real_closure->meta_marshal_data;
+          marshal = real_closure->va_meta_marshal;
+        }
       else
-	{
-	  marshal_data = NULL;
-	  marshal = real_closure->va_marshal;
-	}
+        {
+          marshal_data = NULL;
+          marshal = real_closure->va_marshal;
+        }
       if (!in_marshal)
-	closure_invoke_notifiers (closure, PRE_NOTIFY);
+        closure_invoke_notifiers (closure, PRE_NOTIFY);
       marshal (closure,
-	       return_value,
-	       instance, args,
-	       marshal_data,
-	       n_params, param_types);
+               return_value,
+               instance, args,
+               marshal_data,
+               n_params, param_types);
       if (!in_marshal)
-	closure_invoke_notifiers (closure, POST_NOTIFY);
+        closure_invoke_notifiers (closure, POST_NOTIFY);
       ATOMIC_SET (closure, in_marshal, (guint) in_marshal);
     }
   g_closure_unref (closure);
@@ -1232,21 +1232,21 @@ _g_closure_invoke_va (GClosure       *closure,
  */
 void
 g_closure_set_marshal (GClosure       *closure,
-		       GClosureMarshal marshal)
+                       GClosureMarshal marshal)
 {
   g_return_if_fail (closure != NULL);
   g_return_if_fail (marshal != NULL);
 
   if (closure->marshal && closure->marshal != marshal)
     g_critical ("attempt to override closure->marshal (%p) with new marshal (%p)",
-	        closure->marshal, marshal);
+                closure->marshal, marshal);
   else
     closure->marshal = marshal;
 }
 
 void
 _g_closure_set_va_marshal (GClosure       *closure,
-			   GVaClosureMarshal marshal)
+                           GVaClosureMarshal marshal)
 {
   GRealClosure *real_closure;
 
@@ -1257,7 +1257,7 @@ _g_closure_set_va_marshal (GClosure       *closure,
 
   if (real_closure->va_marshal && real_closure->va_marshal != marshal)
     g_critical ("attempt to override closure->va_marshal (%p) with new marshal (%p)",
-	        real_closure->va_marshal, marshal);
+                real_closure->va_marshal, marshal);
   else
     real_closure->va_marshal = marshal;
 }
@@ -1277,8 +1277,8 @@ _g_closure_set_va_marshal (GClosure       *closure,
  */
 GClosure*
 g_cclosure_new (GCallback      callback_func,
-		gpointer       user_data,
-		GClosureNotify destroy_data)
+                gpointer       user_data,
+                GClosureNotify destroy_data)
 {
   GClosure *closure;
   
@@ -1307,8 +1307,8 @@ g_cclosure_new (GCallback      callback_func,
  */
 GClosure*
 g_cclosure_new_swap (GCallback      callback_func,
-		     gpointer       user_data,
-		     GClosureNotify destroy_data)
+                     gpointer       user_data,
+                     GClosureNotify destroy_data)
 {
   GClosure *closure;
   
@@ -1325,11 +1325,11 @@ g_cclosure_new_swap (GCallback      callback_func,
 
 static void
 g_type_class_meta_marshal (GClosure       *closure,
-			   GValue /*out*/ *return_value,
-			   guint           n_param_values,
-			   const GValue   *param_values,
-			   gpointer        invocation_hint,
-			   gpointer        marshal_data)
+                           GValue /*out*/ *return_value,
+                           guint           n_param_values,
+                           const GValue   *param_values,
+                           gpointer        invocation_hint,
+                           gpointer        marshal_data)
 {
   GTypeClass *class;
   gpointer callback;
@@ -1340,20 +1340,20 @@ g_type_class_meta_marshal (GClosure       *closure,
   callback = G_STRUCT_MEMBER (gpointer, class, offset);
   if (callback)
     closure->marshal (closure,
-		      return_value,
-		      n_param_values, param_values,
-		      invocation_hint,
-		      callback);
+                      return_value,
+                      n_param_values, param_values,
+                      invocation_hint,
+                      callback);
 }
 
 static void
 g_type_class_meta_marshalv (GClosure *closure,
-			    GValue   *return_value,
-			    gpointer  instance,
-			    va_list   args,
-			    gpointer  marshal_data,
-			    int       n_params,
-			    GType    *param_types)
+                            GValue   *return_value,
+                            gpointer  instance,
+                            va_list   args,
+                            gpointer  marshal_data,
+                            int       n_params,
+                            GType    *param_types)
 {
   GRealClosure *real_closure;
   GTypeClass *class;
@@ -1367,20 +1367,20 @@ g_type_class_meta_marshalv (GClosure *closure,
   callback = G_STRUCT_MEMBER (gpointer, class, offset);
   if (callback)
     real_closure->va_marshal (closure,
-			      return_value,
-			      instance, args,
-			      callback,
-			      n_params,
-			      param_types);
+                              return_value,
+                              instance, args,
+                              callback,
+                              n_params,
+                              param_types);
 }
 
 static void
 g_type_iface_meta_marshal (GClosure       *closure,
-			   GValue /*out*/ *return_value,
-			   guint           n_param_values,
-			   const GValue   *param_values,
-			   gpointer        invocation_hint,
-			   gpointer        marshal_data)
+                           GValue /*out*/ *return_value,
+                           guint           n_param_values,
+                           const GValue   *param_values,
+                           gpointer        invocation_hint,
+                           gpointer        marshal_data)
 {
   GTypeClass *class;
   gpointer callback;
@@ -1391,15 +1391,15 @@ g_type_iface_meta_marshal (GClosure       *closure,
   callback = G_STRUCT_MEMBER (gpointer, class, offset);
   if (callback)
     closure->marshal (closure,
-		      return_value,
-		      n_param_values, param_values,
-		      invocation_hint,
-		      callback);
+                      return_value,
+                      n_param_values, param_values,
+                      invocation_hint,
+                      callback);
 }
 
 gboolean
 _g_closure_is_void (GClosure *closure,
-		    gpointer instance)
+                    gpointer instance)
 {
   GClosureFlags old_flags;
   GRealClosure *real_closure;
@@ -1438,12 +1438,12 @@ _g_closure_is_void (GClosure *closure,
 
 static void
 g_type_iface_meta_marshalv (GClosure *closure,
-			    GValue   *return_value,
-			    gpointer  instance,
-			    va_list   args,
-			    gpointer  marshal_data,
-			    int       n_params,
-			    GType    *param_types)
+                            GValue   *return_value,
+                            gpointer  instance,
+                            va_list   args,
+                            gpointer  marshal_data,
+                            int       n_params,
+                            GType    *param_types)
 {
   GRealClosure *real_closure;
   GTypeClass *class;
@@ -1457,11 +1457,11 @@ g_type_iface_meta_marshalv (GClosure *closure,
   callback = G_STRUCT_MEMBER (gpointer, class, offset);
   if (callback)
     real_closure->va_marshal (closure,
-			      return_value,
-			      instance, args,
-			      callback,
-			      n_params,
-			      param_types);
+                              return_value,
+                              instance, args,
+                              callback,
+                              n_params,
+                              param_types);
 }
 
 /**
@@ -1478,7 +1478,7 @@ g_type_iface_meta_marshalv (GClosure *closure,
  */
 GClosure*
 g_signal_type_cclosure_new (GType    itype,
-			    guint    struct_offset)
+                            guint    struct_offset)
 {
   GClosure *closure;
   
@@ -1746,8 +1746,8 @@ typedef union {
 
 static ffi_type *
 va_to_ffi_type (GType gtype,
-		va_list *va,
-		va_arg_storage *storage)
+                va_list *va,
+                va_arg_storage *storage)
 {
   ffi_type *rettype = NULL;
   GType type = g_type_fundamental (gtype);
@@ -1972,12 +1972,12 @@ g_cclosure_marshal_generic (GClosure     *closure,
  */
 void
 g_cclosure_marshal_generic_va (GClosure *closure,
-			       GValue   *return_value,
-			       gpointer  instance,
-			       va_list   args_list,
-			       gpointer  marshal_data,
-			       int       n_params,
-			       GType    *param_types)
+                               GValue   *return_value,
+                               gpointer  instance,
+                               va_list   args_list,
+                               gpointer  marshal_data,
+                               int       n_params,
+                               GType    *param_types)
 {
   ffi_type *rtype;
   void *rvalue;
@@ -2044,29 +2044,29 @@ g_cclosure_marshal_generic_va (GClosure *closure,
       GType fundamental = G_TYPE_FUNDAMENTAL (type);
 
       atypes[i+1] = va_to_ffi_type (type,
-				    &args_copy,
-				    &storage[i]);
+                                    &args_copy,
+                                    &storage[i]);
       args[i+1] = &storage[i];
 
       if ((param_types[i]  & G_SIGNAL_TYPE_STATIC_SCOPE) == 0)
-	{
-	  if (fundamental == G_TYPE_STRING && storage[i]._gpointer != NULL)
-	    storage[i]._gpointer = g_strdup (storage[i]._gpointer);
-	  else if (fundamental == G_TYPE_PARAM && storage[i]._gpointer != NULL)
-	    storage[i]._gpointer = g_param_spec_ref (storage[i]._gpointer);
-	  else if (fundamental == G_TYPE_BOXED && storage[i]._gpointer != NULL)
-	    storage[i]._gpointer = g_boxed_copy (type, storage[i]._gpointer);
-	  else if (fundamental == G_TYPE_VARIANT && storage[i]._gpointer != NULL)
-	    storage[i]._gpointer = g_variant_ref_sink (storage[i]._gpointer);
-	  else if (value_type_is_custom_pointer_compatible (type))
-	    {
-	      g_value_init (&value_storage[i], type);
-	      g_value_set_instance (&value_storage[i], storage[i]._gpointer);
-	      storage[i]._gpointer = g_value_peek_pointer (&value_storage[i]);
-	    }
-	}
+        {
+          if (fundamental == G_TYPE_STRING && storage[i]._gpointer != NULL)
+            storage[i]._gpointer = g_strdup (storage[i]._gpointer);
+          else if (fundamental == G_TYPE_PARAM && storage[i]._gpointer != NULL)
+            storage[i]._gpointer = g_param_spec_ref (storage[i]._gpointer);
+          else if (fundamental == G_TYPE_BOXED && storage[i]._gpointer != NULL)
+            storage[i]._gpointer = g_boxed_copy (type, storage[i]._gpointer);
+          else if (fundamental == G_TYPE_VARIANT && storage[i]._gpointer != NULL)
+            storage[i]._gpointer = g_variant_ref_sink (storage[i]._gpointer);
+          else if (value_type_is_custom_pointer_compatible (type))
+            {
+              g_value_init (&value_storage[i], type);
+              g_value_set_instance (&value_storage[i], storage[i]._gpointer);
+              storage[i]._gpointer = g_value_peek_pointer (&value_storage[i]);
+            }
+        }
       if (fundamental == G_TYPE_OBJECT && storage[i]._gpointer != NULL)
-	storage[i]._gpointer = g_object_ref (storage[i]._gpointer);
+        storage[i]._gpointer = g_object_ref (storage[i]._gpointer);
     }
 
   va_end (args_copy);
@@ -2108,20 +2108,20 @@ g_cclosure_marshal_generic_va (GClosure *closure,
       GType fundamental = G_TYPE_FUNDAMENTAL (type);
 
       if ((param_types[i]  & G_SIGNAL_TYPE_STATIC_SCOPE) == 0)
-	{
-	  if (fundamental == G_TYPE_STRING && storage[i]._gpointer != NULL)
-	    g_free (storage[i]._gpointer);
-	  else if (fundamental == G_TYPE_PARAM && storage[i]._gpointer != NULL)
-	    g_param_spec_unref (storage[i]._gpointer);
-	  else if (fundamental == G_TYPE_BOXED && storage[i]._gpointer != NULL)
-	    g_boxed_free (type, storage[i]._gpointer);
-	  else if (fundamental == G_TYPE_VARIANT && storage[i]._gpointer != NULL)
-	    g_variant_unref (storage[i]._gpointer);
-	  else if (G_VALUE_TYPE (&value_storage[i]) != 0)
-	    g_value_unset (&value_storage[i]);
-	}
+        {
+          if (fundamental == G_TYPE_STRING && storage[i]._gpointer != NULL)
+            g_free (storage[i]._gpointer);
+          else if (fundamental == G_TYPE_PARAM && storage[i]._gpointer != NULL)
+            g_param_spec_unref (storage[i]._gpointer);
+          else if (fundamental == G_TYPE_BOXED && storage[i]._gpointer != NULL)
+            g_boxed_free (type, storage[i]._gpointer);
+          else if (fundamental == G_TYPE_VARIANT && storage[i]._gpointer != NULL)
+            g_variant_unref (storage[i]._gpointer);
+          else if (G_VALUE_TYPE (&value_storage[i]) != 0)
+            g_value_unset (&value_storage[i]);
+        }
       if (fundamental == G_TYPE_OBJECT && storage[i]._gpointer != NULL)
-	g_object_unref (storage[i]._gpointer);
+        g_object_unref (storage[i]._gpointer);
     }
 
   if (call_succeeded && return_value && G_VALUE_TYPE (return_value))

@@ -33,7 +33,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_ICON            (g_icon_get_type ())
 #define G_ICON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_ICON, GIcon))
-#define G_IS_ICON(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ICON))
+#define G_IS_ICON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ICON))
 #define G_ICON_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_ICON, GIconIface))
 
 typedef struct _GIconIface GIconIface;

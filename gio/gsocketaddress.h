@@ -57,7 +57,7 @@ struct _GSocketAddressClass
   gboolean       (*to_native)       (GSocketAddress *address,
                                      gpointer        dest,
                                      gsize           destlen,
-				     GError        **error);
+                                     GError        **error);
 };
 
 GIO_AVAILABLE_IN_ALL
@@ -74,7 +74,7 @@ GIO_AVAILABLE_IN_ALL
 gboolean              g_socket_address_to_native       (GSocketAddress *address,
                                                         gpointer        dest,
                                                         gsize           destlen,
-							GError        **error);
+                                                        GError        **error);
 
 GIO_AVAILABLE_IN_ALL
 gssize                g_socket_address_get_native_size (GSocketAddress *address);

@@ -46,15 +46,15 @@
  */
 #define mix(a,b,c) \
 { \
-	a -= b; a -= c; a ^= (c>>13); \
-	b -= c; b -= a; b ^= (a<<8); \
-	c -= a; c -= b; c ^= (b>>13); \
-	a -= b; a -= c; a ^= (c>>12);  \
-	b -= c; b -= a; b ^= (a<<16); \
-	c -= a; c -= b; c ^= (b>>5); \
-	a -= b; a -= c; a ^= (c>>3);  \
-	b -= c; b -= a; b ^= (a<<10); \
-	c -= a; c -= b; c ^= (b>>15); \
+        a -= b; a -= c; a ^= (c>>13); \
+        b -= c; b -= a; b ^= (a<<8); \
+        c -= a; c -= b; c ^= (b>>13); \
+        a -= b; a -= c; a ^= (c>>12);  \
+        b -= c; b -= a; b ^= (a<<16); \
+        c -= a; c -= b; c ^= (b>>5); \
+        a -= b; a -= c; a ^= (c>>3);  \
+        b -= c; b -= a; b ^= (a<<10); \
+        c -= a; c -= b; c ^= (b>>15); \
 }
 
 /*
@@ -86,166 +86,166 @@ acceptable.  Do NOT use for cryptographic purposes.
  */
 jenkins_state_t *jenkins_state_new(cmph_uint32 size) //size of hash table
 {
-	jenkins_state_t *state = (jenkins_state_t *)malloc(sizeof(jenkins_state_t));
-	DEBUGP("Initializing jenkins hash\n");
-	state->seed = ((cmph_uint32)rand() % size);
-	return state;
+        jenkins_state_t *state = (jenkins_state_t *)malloc(sizeof(jenkins_state_t));
+        DEBUGP("Initializing jenkins hash\n");
+        state->seed = ((cmph_uint32)rand() % size);
+        return state;
 }
 void jenkins_state_destroy(jenkins_state_t *state)
 {
-	free(state);
+        free(state);
 }
 
 
 static inline void __jenkins_hash_vector(cmph_uint32 seed, const char *k, cmph_uint32 keylen, cmph_uint32 * hashes)
 {
-	register cmph_uint32 len, length;
+        register cmph_uint32 len, length;
 
-	/* Set up the internal state */
-	length = keylen;
-	len = length;
-	hashes[0] = hashes[1] = 0x9e3779b9;  /* the golden ratio; an arbitrary value */
-	hashes[2] = seed;   /* the previous hash value - seed in our case */
+        /* Set up the internal state */
+        length = keylen;
+        len = length;
+        hashes[0] = hashes[1] = 0x9e3779b9;  /* the golden ratio; an arbitrary value */
+        hashes[2] = seed;   /* the previous hash value - seed in our case */
 
-	/*---------------------------------------- handle most of the key */
-	while (len >= 12)
-	{
-		hashes[0] += ((cmph_uint32)k[0] +((cmph_uint32)k[1]<<8) +((cmph_uint32)k[2]<<16) +((cmph_uint32)k[3]<<24));
-		hashes[1] += ((cmph_uint32)k[4] +((cmph_uint32)k[5]<<8) +((cmph_uint32)k[6]<<16) +((cmph_uint32)k[7]<<24));
-		hashes[2] += ((cmph_uint32)k[8] +((cmph_uint32)k[9]<<8) +((cmph_uint32)k[10]<<16)+((cmph_uint32)k[11]<<24));
-		mix(hashes[0],hashes[1],hashes[2]);
-		k += 12; len -= 12;
-	}
+        /*---------------------------------------- handle most of the key */
+        while (len >= 12)
+        {
+                hashes[0] += ((cmph_uint32)k[0] +((cmph_uint32)k[1]<<8) +((cmph_uint32)k[2]<<16) +((cmph_uint32)k[3]<<24));
+                hashes[1] += ((cmph_uint32)k[4] +((cmph_uint32)k[5]<<8) +((cmph_uint32)k[6]<<16) +((cmph_uint32)k[7]<<24));
+                hashes[2] += ((cmph_uint32)k[8] +((cmph_uint32)k[9]<<8) +((cmph_uint32)k[10]<<16)+((cmph_uint32)k[11]<<24));
+                mix(hashes[0],hashes[1],hashes[2]);
+                k += 12; len -= 12;
+        }
 
-	/*------------------------------------- handle the last 11 bytes */
-	hashes[2]  += length;
-	switch(len)              /* all the case statements fall through */
-	{
-		case 11: 
-			hashes[2] +=((cmph_uint32)k[10]<<24);
-		case 10: 
-			hashes[2] +=((cmph_uint32)k[9]<<16);
-		case 9 : 
-			hashes[2] +=((cmph_uint32)k[8]<<8);
-			/* the first byte of hashes[2] is reserved for the length */
-		case 8 : 
-			hashes[1] +=((cmph_uint32)k[7]<<24);
-		case 7 : 
-			hashes[1] +=((cmph_uint32)k[6]<<16);
-		case 6 : 
-			hashes[1] +=((cmph_uint32)k[5]<<8);
-		case 5 :
-			hashes[1] +=(cmph_uint8) k[4];
-		case 4 : 
-			hashes[0] +=((cmph_uint32)k[3]<<24);
-		case 3 : 
-			hashes[0] +=((cmph_uint32)k[2]<<16);
-		case 2 : 
-			hashes[0] +=((cmph_uint32)k[1]<<8);
-		case 1 : 
-			hashes[0] +=(cmph_uint8)k[0];
-			/* case 0: nothing left to add */
-	}
+        /*------------------------------------- handle the last 11 bytes */
+        hashes[2]  += length;
+        switch(len)              /* all the case statements fall through */
+        {
+                case 11: 
+                        hashes[2] +=((cmph_uint32)k[10]<<24);
+                case 10: 
+                        hashes[2] +=((cmph_uint32)k[9]<<16);
+                case 9 : 
+                        hashes[2] +=((cmph_uint32)k[8]<<8);
+                        /* the first byte of hashes[2] is reserved for the length */
+                case 8 : 
+                        hashes[1] +=((cmph_uint32)k[7]<<24);
+                case 7 : 
+                        hashes[1] +=((cmph_uint32)k[6]<<16);
+                case 6 : 
+                        hashes[1] +=((cmph_uint32)k[5]<<8);
+                case 5 :
+                        hashes[1] +=(cmph_uint8) k[4];
+                case 4 : 
+                        hashes[0] +=((cmph_uint32)k[3]<<24);
+                case 3 : 
+                        hashes[0] +=((cmph_uint32)k[2]<<16);
+                case 2 : 
+                        hashes[0] +=((cmph_uint32)k[1]<<8);
+                case 1 : 
+                        hashes[0] +=(cmph_uint8)k[0];
+                        /* case 0: nothing left to add */
+        }
 
-	mix(hashes[0],hashes[1],hashes[2]);
+        mix(hashes[0],hashes[1],hashes[2]);
 }
 
 cmph_uint32 jenkins_hash(jenkins_state_t *state, const char *k, cmph_uint32 keylen)
 {
-	cmph_uint32 hashes[3];
-	__jenkins_hash_vector(state->seed, k, keylen, hashes);
-	return hashes[2];
-/*	cmph_uint32 a, b, c;
-	cmph_uint32 len, length;
+        cmph_uint32 hashes[3];
+        __jenkins_hash_vector(state->seed, k, keylen, hashes);
+        return hashes[2];
+/*      cmph_uint32 a, b, c;
+        cmph_uint32 len, length;
 
-	// Set up the internal state 
-	length = keylen;
-	len = length;
-	a = b = 0x9e3779b9;  // the golden ratio; an arbitrary value 
-	c = state->seed;   // the previous hash value - seed in our case 
+        // Set up the internal state 
+        length = keylen;
+        len = length;
+        a = b = 0x9e3779b9;  // the golden ratio; an arbitrary value 
+        c = state->seed;   // the previous hash value - seed in our case 
 
-	// handle most of the key 
-	while (len >= 12)
-	{
-		a += (k[0] +((cmph_uint32)k[1]<<8) +((cmph_uint32)k[2]<<16) +((cmph_uint32)k[3]<<24));
-		b += (k[4] +((cmph_uint32)k[5]<<8) +((cmph_uint32)k[6]<<16) +((cmph_uint32)k[7]<<24));
-		c += (k[8] +((cmph_uint32)k[9]<<8) +((cmph_uint32)k[10]<<16)+((cmph_uint32)k[11]<<24));
-		mix(a,b,c);
-		k += 12; len -= 12;
-	}
+        // handle most of the key 
+        while (len >= 12)
+        {
+                a += (k[0] +((cmph_uint32)k[1]<<8) +((cmph_uint32)k[2]<<16) +((cmph_uint32)k[3]<<24));
+                b += (k[4] +((cmph_uint32)k[5]<<8) +((cmph_uint32)k[6]<<16) +((cmph_uint32)k[7]<<24));
+                c += (k[8] +((cmph_uint32)k[9]<<8) +((cmph_uint32)k[10]<<16)+((cmph_uint32)k[11]<<24));
+                mix(a,b,c);
+                k += 12; len -= 12;
+        }
 
-	// handle the last 11 bytes
-	c  += length;
-	switch(len)              /// all the case statements fall through 
-	{
-		case 11: 
-			c +=((cmph_uint32)k[10]<<24);
-		case 10: 
-			c +=((cmph_uint32)k[9]<<16);
-		case 9 : 
-			c +=((cmph_uint32)k[8]<<8);
-			// the first byte of c is reserved for the length 
-		case 8 : 
-			b +=((cmph_uint32)k[7]<<24);
-		case 7 : 
-			b +=((cmph_uint32)k[6]<<16);
-		case 6 : 
-			b +=((cmph_uint32)k[5]<<8);
-		case 5 : 
-			b +=k[4];
-		case 4 : 
-			a +=((cmph_uint32)k[3]<<24);
-		case 3 : 
-			a +=((cmph_uint32)k[2]<<16);
-		case 2 : 
-			a +=((cmph_uint32)k[1]<<8);
-		case 1 : 
-			a +=k[0];
-		// case 0: nothing left to add 
-	}
+        // handle the last 11 bytes
+        c  += length;
+        switch(len)              /// all the case statements fall through 
+        {
+                case 11: 
+                        c +=((cmph_uint32)k[10]<<24);
+                case 10: 
+                        c +=((cmph_uint32)k[9]<<16);
+                case 9 : 
+                        c +=((cmph_uint32)k[8]<<8);
+                        // the first byte of c is reserved for the length 
+                case 8 : 
+                        b +=((cmph_uint32)k[7]<<24);
+                case 7 : 
+                        b +=((cmph_uint32)k[6]<<16);
+                case 6 : 
+                        b +=((cmph_uint32)k[5]<<8);
+                case 5 : 
+                        b +=k[4];
+                case 4 : 
+                        a +=((cmph_uint32)k[3]<<24);
+                case 3 : 
+                        a +=((cmph_uint32)k[2]<<16);
+                case 2 : 
+                        a +=((cmph_uint32)k[1]<<8);
+                case 1 : 
+                        a +=k[0];
+                // case 0: nothing left to add 
+        }
 
-	mix(a,b,c);
+        mix(a,b,c);
 
-	/// report the result 
+        /// report the result 
 
-	return c;
-	*/
+        return c;
+        */
 }
 
 void jenkins_hash_vector_(jenkins_state_t *state, const char *k, cmph_uint32 keylen, cmph_uint32 * hashes)
 {
-	__jenkins_hash_vector(state->seed, k, keylen, hashes);
+        __jenkins_hash_vector(state->seed, k, keylen, hashes);
 }
 
 void jenkins_state_dump(jenkins_state_t *state, char **buf, cmph_uint32 *buflen)
 {
-	*buflen = sizeof(cmph_uint32);
-	*buf = (char *)malloc(sizeof(cmph_uint32));
-	if (!*buf) 
-	{
-		*buflen = UINT_MAX;
-		return;
-	}
-	memcpy(*buf, &(state->seed), sizeof(cmph_uint32));
-	DEBUGP("Dumped jenkins state with seed %u\n", state->seed);
-	return;
+        *buflen = sizeof(cmph_uint32);
+        *buf = (char *)malloc(sizeof(cmph_uint32));
+        if (!*buf) 
+        {
+                *buflen = UINT_MAX;
+                return;
+        }
+        memcpy(*buf, &(state->seed), sizeof(cmph_uint32));
+        DEBUGP("Dumped jenkins state with seed %u\n", state->seed);
+        return;
 }
 
 jenkins_state_t *jenkins_state_copy(jenkins_state_t *src_state)
 {
-	jenkins_state_t *dest_state = (jenkins_state_t *)malloc(sizeof(jenkins_state_t));
-	dest_state->hashfunc = src_state->hashfunc;
-	dest_state->seed = src_state->seed;
-	return dest_state;
+        jenkins_state_t *dest_state = (jenkins_state_t *)malloc(sizeof(jenkins_state_t));
+        dest_state->hashfunc = src_state->hashfunc;
+        dest_state->seed = src_state->seed;
+        return dest_state;
 }
 
 jenkins_state_t *jenkins_state_load(const char *buf, cmph_uint32 buflen)
 {
-	jenkins_state_t *state = (jenkins_state_t *)malloc(sizeof(jenkins_state_t));
-	state->seed = *(cmph_uint32 *)buf;
-	state->hashfunc = CMPH_HASH_JENKINS;
-	DEBUGP("Loaded jenkins state with seed %u\n", state->seed);
-	return state;
+        jenkins_state_t *state = (jenkins_state_t *)malloc(sizeof(jenkins_state_t));
+        state->seed = *(cmph_uint32 *)buf;
+        state->hashfunc = CMPH_HASH_JENKINS;
+        DEBUGP("Loaded jenkins state with seed %u\n", state->seed);
+        return state;
 }
 
 
@@ -256,10 +256,10 @@ jenkins_state_t *jenkins_state_load(const char *buf, cmph_uint32 buflen)
  */
 void jenkins_state_pack(jenkins_state_t *state, void *jenkins_packed)
 {
-	if (state && jenkins_packed)
-	{
-		memcpy(jenkins_packed, &(state->seed), sizeof(cmph_uint32));
-	}
+        if (state && jenkins_packed)
+        {
+                memcpy(jenkins_packed, &(state->seed), sizeof(cmph_uint32));
+        }
 }
 
 /** \fn cmph_uint32 jenkins_state_packed_size(jenkins_state_t *state);
@@ -268,7 +268,7 @@ void jenkins_state_pack(jenkins_state_t *state, void *jenkins_packed)
  */ 
 cmph_uint32 jenkins_state_packed_size(void)
 {
-	return sizeof(cmph_uint32);
+        return sizeof(cmph_uint32);
 }
 
 
@@ -280,9 +280,9 @@ cmph_uint32 jenkins_state_packed_size(void)
  */
 cmph_uint32 jenkins_hash_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen)
 {
-	cmph_uint32 hashes[3];
-	__jenkins_hash_vector(*((cmph_uint32 *)jenkins_packed), k, keylen, hashes);
-	return hashes[2];
+        cmph_uint32 hashes[3];
+        __jenkins_hash_vector(*((cmph_uint32 *)jenkins_packed), k, keylen, hashes);
+        return hashes[2];
 }
 
 /** \fn jenkins_hash_vector_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen, cmph_uint32 * hashes);
@@ -293,5 +293,5 @@ cmph_uint32 jenkins_hash_packed(void *jenkins_packed, const char *k, cmph_uint32
  */
 void jenkins_hash_vector_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen, cmph_uint32 * hashes)
 {
-	__jenkins_hash_vector(*((cmph_uint32 *)jenkins_packed), k, keylen, hashes);
+        __jenkins_hash_vector(*((cmph_uint32 *)jenkins_packed), k, keylen, hashes);
 }

@@ -115,7 +115,7 @@ g_icon_hash (gconstpointer icon)
  **/
 gboolean
 g_icon_equal (GIcon *icon1,
-	      GIcon *icon2)
+              GIcon *icon2)
 {
   GIconIface *iface;
 
@@ -172,7 +172,7 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
       g_string_append_c (s, ' ');
       /* We really only need to escape spaces here, so allow lots of otherwise reserved chars */
       g_string_append_uri_escaped (s, token,
-				   G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, TRUE);
+                                   G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, TRUE);
 
       g_free (token);
     }
@@ -224,14 +224,14 @@ g_icon_to_string (GIcon *icon)
 
       file = g_file_icon_get_file (G_FILE_ICON (icon));
       if (g_file_is_native (file))
-	{
-	  ret = g_file_get_path (file);
-	  if (!g_utf8_validate (ret, -1, NULL))
-	    {
-	      g_free (ret);
-	      ret = NULL;
-	    }
-	}
+        {
+          ret = g_file_get_path (file);
+          if (!g_utf8_validate (ret, -1, NULL))
+            {
+              g_free (ret);
+              ret = NULL;
+            }
+        }
       else
         ret = g_file_get_uri (file);
     }
@@ -246,12 +246,12 @@ g_icon_to_string (GIcon *icon)
                     NULL);
       /* Themed icon initialized with a single name and no fallbacks. */
       if (names != NULL &&
-	  names[0] != NULL &&
-	  names[0][0] != '.' && /* Allowing icons starting with dot would break G_ICON_SERIALIZATION_MAGIC0 */
-	  g_utf8_validate (names[0], -1, NULL) && /* Only return utf8 strings */
+          names[0] != NULL &&
+          names[0][0] != '.' && /* Allowing icons starting with dot would break G_ICON_SERIALIZATION_MAGIC0 */
+          g_utf8_validate (names[0], -1, NULL) && /* Only return utf8 strings */
           names[1] == NULL &&
           ! use_default_fallbacks)
-	ret = g_strdup (names[0]);
+        ret = g_strdup (names[0]);
 
       g_strfreev (names);
     }
@@ -263,9 +263,9 @@ g_icon_to_string (GIcon *icon)
       s = g_string_new (G_ICON_SERIALIZATION_MAGIC0);
 
       if (g_icon_to_string_tokenized (icon, s))
-	ret = g_string_free (s, FALSE);
+        ret = g_string_free (s, FALSE);
       else
-	g_string_free (s, TRUE);
+        g_string_free (s, TRUE);
     }
 
   return ret;
@@ -273,7 +273,7 @@ g_icon_to_string (GIcon *icon)
 
 static GIcon *
 g_icon_new_from_tokens (char   **tokens,
-			GError **error)
+                        GError **error)
 {
   GIcon *icon;
   char *typename, *version_str;
@@ -350,14 +350,14 @@ g_icon_new_from_tokens (char   **tokens,
     {
       version = strtol (version_str, &endp, 10);
       if (endp == NULL || *endp != '\0')
-	{
-	  g_set_error (error,
-		       G_IO_ERROR,
-		       G_IO_ERROR_INVALID_ARGUMENT,
-		       _("Malformed version number: %s"),
-		       version_str);
-	  goto out;
-	}
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Malformed version number: %s"),
+                       version_str);
+          goto out;
+        }
     }
 
   icon_iface = g_type_interface_peek (klass, G_TYPE_ICON);

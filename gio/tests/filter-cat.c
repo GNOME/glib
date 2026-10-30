@@ -95,7 +95,7 @@ cat (GFile * file)
       /* Translators: the first %s is the program name, the second one  */
       /* is the URI of the file, the third is the error message.        */
       g_printerr ("%s: %s: error opening file: %s\n",
-		  g_get_prgname (), g_file_get_uri (file), error->message);
+                  g_get_prgname (), g_file_get_uri (file), error->message);
       g_error_free (error);
       return;
     }
@@ -116,21 +116,21 @@ cat (GFile * file)
       cconv = g_charset_converter_new (to_charset, from_charset, &error);
       conv = (GConverter *)cconv;
       if (conv)
-	{
-	  GInputStream *old;
+        {
+          GInputStream *old;
 
-	  g_charset_converter_set_use_fallback (cconv, fallback);
+          g_charset_converter_set_use_fallback (cconv, fallback);
 
-	  old = in;
-	  in = (GInputStream *) g_converter_input_stream_new (in, conv);
-	  g_object_unref (conv);
-	  g_object_unref (old);
-	}
+          old = in;
+          in = (GInputStream *) g_converter_input_stream_new (in, conv);
+          g_object_unref (conv);
+          g_object_unref (old);
+        }
       else
-	{
-	  g_printerr ("%s: Can't convert between charsets: %s\n",
-		      g_get_prgname (), error->message);
-	}
+        {
+          g_printerr ("%s: Can't convert between charsets: %s\n",
+                      g_get_prgname (), error->message);
+        }
     }
 
   if (compress)
@@ -164,39 +164,39 @@ cat (GFile * file)
   while (1)
     {
       res =
-	g_input_stream_read (in, buffer, sizeof (buffer) - 1, NULL, &error);
+        g_input_stream_read (in, buffer, sizeof (buffer) - 1, NULL, &error);
       if (res > 0)
-	{
-	  gssize written;
+        {
+          gssize written;
 
-	  p = buffer;
-	  while (res > 0)
-	    {
-	      written = write (STDOUT_FILENO, p, res);
+          p = buffer;
+          while (res > 0)
+            {
+              written = write (STDOUT_FILENO, p, res);
 
-	      if (written == -1 && errno != EINTR)
-		{
-		  /* Translators: the first %s is the program name, the */
-		  /* second one is the URI of the file.                 */
-		  g_printerr ("%s: %s, error writing to stdout",
-			      g_get_prgname (), g_file_get_uri (file));
-		  goto out;
-		}
-	      res -= written;
-	      p += written;
-	    }
-	}
+              if (written == -1 && errno != EINTR)
+                {
+                  /* Translators: the first %s is the program name, the */
+                  /* second one is the URI of the file.                 */
+                  g_printerr ("%s: %s, error writing to stdout",
+                              g_get_prgname (), g_file_get_uri (file));
+                  goto out;
+                }
+              res -= written;
+              p += written;
+            }
+        }
       else if (res < 0)
-	{
-	  g_printerr ("%s: %s: error reading: %s\n",
-		      g_get_prgname (), g_file_get_uri (file),
-		      error->message);
-	  g_error_free (error);
-	  error = NULL;
-	  break;
-	}
+        {
+          g_printerr ("%s: %s: error reading: %s\n",
+                      g_get_prgname (), g_file_get_uri (file),
+                      error->message);
+          g_error_free (error);
+          error = NULL;
+          break;
+        }
       else if (res == 0)
-	break;
+        break;
     }
 
  out:
@@ -205,7 +205,7 @@ cat (GFile * file)
   if (!close_res)
     {
       g_printerr ("%s: %s:error closing: %s\n",
-		  g_get_prgname (), g_file_get_uri (file), error->message);
+                  g_get_prgname (), g_file_get_uri (file), error->message);
       g_error_free (error);
     }
 
@@ -213,7 +213,7 @@ cat (GFile * file)
     {
       guint num = g_charset_converter_get_num_fallbacks (cconv);
       if (num > 0)
-	g_printerr ("Number of fallback errors: %u\n", num);
+        g_printerr ("Number of fallback errors: %u\n", num);
     }
 }
 
@@ -227,7 +227,7 @@ main (int argc, char *argv[])
 
   context =
     g_option_context_new ("LOCATION... - concatenate LOCATIONS "
-			  "to standard output.");
+                          "to standard output.");
 
   g_option_context_set_summary (context, "filter files");
 
@@ -241,7 +241,7 @@ main (int argc, char *argv[])
       g_printerr ("Error parsing commandline options: %s\n", error->message);
       g_printerr ("\n");
       g_printerr ("Try \"%s --help\" for more information.",
-		  g_get_prgname ());
+                  g_get_prgname ());
       g_printerr ("\n");
       g_error_free(error);
       return 1;
@@ -252,7 +252,7 @@ main (int argc, char *argv[])
       g_printerr ("%s: missing locations", g_get_prgname ());
       g_printerr ("\n");
       g_printerr ("Try \"%s --help\" for more information.",
-		  g_get_prgname ());
+                  g_get_prgname ());
       g_printerr ("\n");
       return 1;
     }

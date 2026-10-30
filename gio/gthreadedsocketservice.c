@@ -151,10 +151,10 @@ g_threaded_socket_service_constructed (GObject *object)
 
   service->priv->thread_pool =
     g_thread_pool_new  (g_threaded_socket_service_func,
-			NULL,
-			service->priv->max_threads,
-			FALSE,
-			NULL);
+                        NULL,
+                        service->priv->max_threads,
+                        FALSE,
+                        NULL);
 }
 
 
@@ -173,39 +173,39 @@ g_threaded_socket_service_finalize (GObject *object)
 
 static void
 g_threaded_socket_service_get_property (GObject    *object,
-					guint       prop_id,
-					GValue     *value,
-					GParamSpec *pspec)
+                                        guint       prop_id,
+                                        GValue     *value,
+                                        GParamSpec *pspec)
 {
   GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
 
   switch ((GThreadedSocketServiceProperty) prop_id)
     {
       case PROP_MAX_THREADS:
-	g_value_set_int (value, service->priv->max_threads);
-	break;
+        g_value_set_int (value, service->priv->max_threads);
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
 static void
 g_threaded_socket_service_set_property (GObject      *object,
-					guint         prop_id,
-					const GValue *value,
-					GParamSpec   *pspec)
+                                        guint         prop_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
 {
   GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
 
   switch ((GThreadedSocketServiceProperty) prop_id)
     {
       case PROP_MAX_THREADS:
-	service->priv->max_threads = g_value_get_int (value);
-	break;
+        service->priv->max_threads = g_value_get_int (value);
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -238,14 +238,14 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
    */
   g_threaded_socket_service_run_signal =
     g_signal_new (I_("run"), G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GThreadedSocketServiceClass, run),
-		  g_signal_accumulator_true_handled, NULL,
-		  _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECT,
-		  G_TYPE_BOOLEAN,
-		  2, G_TYPE_SOCKET_CONNECTION, G_TYPE_OBJECT);
+                  G_STRUCT_OFFSET (GThreadedSocketServiceClass, run),
+                  g_signal_accumulator_true_handled, NULL,
+                  _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECT,
+                  G_TYPE_BOOLEAN,
+                  2, G_TYPE_SOCKET_CONNECTION, G_TYPE_OBJECT);
   g_signal_set_va_marshaller (g_threaded_socket_service_run_signal,
-			      G_TYPE_FROM_CLASS (class),
-			      _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECTv);
+                              G_TYPE_FROM_CLASS (class),
+                              _g_cclosure_marshal_BOOLEAN__OBJECT_OBJECTv);
 
   /**
    * GThreadedSocketService:max-threads:
@@ -255,11 +255,11 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_MAX_THREADS,
-				   g_param_spec_int ("max-threads", NULL, NULL,
-						     -1,
-						     G_MAXINT,
-						     10,
-						     G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_int ("max-threads", NULL, NULL,
+                                                     -1,
+                                                     G_MAXINT,
+                                                     10,
+                                                     G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -278,6 +278,6 @@ GSocketService *
 g_threaded_socket_service_new (int max_threads)
 {
   return g_object_new (G_TYPE_THREADED_SOCKET_SERVICE,
-		       "max-threads", max_threads,
-		       NULL);
+                       "max-threads", max_threads,
+                       NULL);
 }

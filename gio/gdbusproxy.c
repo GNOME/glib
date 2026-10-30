@@ -798,7 +798,7 @@ g_dbus_proxy_set_cached_property (GDBusProxy   *proxy,
           if (g_strcmp0 (info->signature, g_variant_get_type_string (value)) != 0)
             {
               g_warning ("Trying to set property %s of type %s but according to the expected "
-			 "interface the type is %s",
+                         "interface the type is %s",
                          property_name,
                          g_variant_get_type_string (value),
                          info->signature);
@@ -889,8 +889,8 @@ on_signal_received (GDBusConnection *connection,
 /* must hold properties_lock */
 static void
 insert_property_checked (GDBusProxy  *proxy,
-			 gchar *property_name,
-			 GVariant *value)
+                         gchar *property_name,
+                         GVariant *value)
 {
   if (proxy->priv->expected_interface != NULL)
     {
@@ -913,8 +913,8 @@ insert_property_checked (GDBusProxy  *proxy,
     }
 
   g_hash_table_insert (proxy->priv->properties,
-		       property_name, /* adopts string */
-		       value); /* adopts value */
+                       property_name, /* adopts string */
+                       value); /* adopts value */
 
   return;
 
@@ -1042,8 +1042,8 @@ on_properties_changed (GDBusConnection *connection,
   while (g_variant_iter_next (&iter, "{sv}", &key, &value))
     {
       insert_property_checked (proxy,
-			       key, /* adopts string */
-			       value); /* adopts value */
+                               key, /* adopts string */
+                               value); /* adopts value */
       emit_g_signal = TRUE;
     }
 
@@ -1121,8 +1121,8 @@ process_get_all_reply (GDBusProxy *proxy,
   while (g_variant_iter_next (iter, "{sv}", &key, &value))
     {
       insert_property_checked (proxy,
-			       key, /* adopts string */
-			       value); /* adopts value */
+                               key, /* adopts string */
+                               value); /* adopts value */
     }
   g_variant_iter_free (iter);
 
@@ -1747,8 +1747,8 @@ async_initable_init_first (GAsyncInitable *initable)
 
 static void
 init_second_async_cb (GObject       *source_object,
-		      GAsyncResult  *res,
-		      gpointer       user_data)
+                      GAsyncResult  *res,
+                      gpointer       user_data)
 {
   GTask *task = user_data;
   GError *error = NULL;

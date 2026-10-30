@@ -24,7 +24,7 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-#include	<gmodule.h>
+#include        <gmodule.h>
 
 G_MODULE_EXPORT void gplugin_a_func (void);
 G_MODULE_EXPORT void gplugin_clash_func (void);

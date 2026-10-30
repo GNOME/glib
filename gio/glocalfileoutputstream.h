@@ -54,18 +54,18 @@ struct _GLocalFileOutputStreamClass
 GType               _g_local_file_output_stream_get_type (void);
 
 void     _g_local_file_output_stream_set_do_close (GLocalFileOutputStream *out,
-						   gboolean do_close);
+                                                   gboolean do_close);
 gboolean _g_local_file_output_stream_really_close (GLocalFileOutputStream *out,
-						   GCancellable   *cancellable,
-						   GError        **error);
+                                                   GCancellable   *cancellable,
+                                                   GError        **error);
 
 GFileOutputStream * _g_local_file_output_stream_new      (int               fd);
 GFileOutputStream * _g_local_file_output_stream_open     (const char       *filename,
-							  gboolean          readable,
+                                                          gboolean          readable,
                                                           GCancellable     *cancellable,
                                                           GError          **error);
 GFileOutputStream * _g_local_file_output_stream_create   (const char       *filename,
-							  gboolean          readable,
+                                                          gboolean          readable,
                                                           GFileCreateFlags  flags,
                                                           GFileInfo        *reference_info,
                                                           GCancellable     *cancellable,
@@ -75,7 +75,7 @@ GFileOutputStream * _g_local_file_output_stream_append   (const char       *file
                                                           GCancellable     *cancellable,
                                                           GError          **error);
 GFileOutputStream * _g_local_file_output_stream_replace  (const char       *filename,
-							  gboolean          readable,
+                                                          gboolean          readable,
                                                           const char       *etag,
                                                           gboolean          create_backup,
                                                           GFileCreateFlags  flags,

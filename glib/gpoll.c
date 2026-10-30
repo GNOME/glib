@@ -14,7 +14,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -125,13 +125,13 @@ extern gboolean _g_main_poll_debug;
  **/
 gint
 g_poll (GPollFD *fds,
-	guint    nfds,
-	gint     timeout)
+        guint    nfds,
+        gint     timeout)
 {
   return poll ((struct pollfd *)fds, nfds, timeout);
 }
 
-#else	/* !HAVE_POLL */
+#else   /* !HAVE_POLL */
 
 #ifdef G_OS_WIN32
 
@@ -153,23 +153,23 @@ poll_rest (GPollFD *msg_fd,
        * -> Use MsgWaitForMultipleObjectsEx
        */
       if (_g_main_poll_debug)
-	g_print ("  MsgWaitForMultipleObjectsEx(%d, %lu)\n", nhandles, timeout_ms);
+        g_print ("  MsgWaitForMultipleObjectsEx(%d, %lu)\n", nhandles, timeout_ms);
 
       ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout_ms,
-					   QS_ALLINPUT, MWMO_ALERTABLE);
+                                           QS_ALLINPUT, MWMO_ALERTABLE);
 
       if (ready == WAIT_FAILED)
-	{
-	  gchar *emsg = g_win32_error_message (GetLastError ());
-	  g_warning ("MsgWaitForMultipleObjectsEx failed: %s", emsg);
-	  g_free (emsg);
-	}
+        {
+          gchar *emsg = g_win32_error_message (GetLastError ());
+          g_warning ("MsgWaitForMultipleObjectsEx failed: %s", emsg);
+          g_free (emsg);
+        }
     }
   else if (nhandles == 0)
     {
       /* No handles to wait for, just the timeout */
       if (timeout_ms == INFINITE)
-	ready = WAIT_FAILED;
+        ready = WAIT_FAILED;
       else
         {
           /* Wait for the current process to die, more efficient than SleepEx(). */
@@ -183,28 +183,28 @@ poll_rest (GPollFD *msg_fd,
        * -> Use WaitForMultipleObjectsEx
        */
       if (_g_main_poll_debug)
-	g_print ("  WaitForMultipleObjectsEx(%d, %lu)\n", nhandles, timeout_ms);
+        g_print ("  WaitForMultipleObjectsEx(%d, %lu)\n", nhandles, timeout_ms);
 
       ready = WaitForMultipleObjectsEx (nhandles, handles, FALSE, timeout_ms, TRUE);
       if (ready == WAIT_FAILED)
-	{
-	  gchar *emsg = g_win32_error_message (GetLastError ());
-	  g_warning ("WaitForMultipleObjectsEx failed: %s", emsg);
-	  g_free (emsg);
-	}
+        {
+          gchar *emsg = g_win32_error_message (GetLastError ());
+          g_warning ("WaitForMultipleObjectsEx failed: %s", emsg);
+          g_free (emsg);
+        }
     }
 
   if (_g_main_poll_debug)
     g_print ("  wait returns %ld%s\n",
-	     ready,
-	     (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
-	      (ready == WAIT_TIMEOUT ? " (WAIT_TIMEOUT)" :
-	       (msg_fd != NULL && ready == WAIT_OBJECT_0 + nhandles ? " (msg)" : ""))));
+             ready,
+             (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
+              (ready == WAIT_TIMEOUT ? " (WAIT_TIMEOUT)" :
+               (msg_fd != NULL && ready == WAIT_OBJECT_0 + nhandles ? " (msg)" : ""))));
 
   if (ready == WAIT_FAILED)
     return -1;
   else if (ready == WAIT_TIMEOUT ||
-	   ready == WAIT_IO_COMPLETION)
+           ready == WAIT_IO_COMPLETION)
     return 0;
   else if (msg_fd != NULL && ready == WAIT_OBJECT_0 + nhandles)
     {
@@ -214,7 +214,7 @@ poll_rest (GPollFD *msg_fd,
        * with just noticing we have messages waiting.
        */
       if (timeout_ms != 0 || nhandles == 0)
-	return 1;
+        return 1;
 
       /* If no timeout and handles to poll, recurse to poll them,
        * too.
@@ -387,8 +387,8 @@ cleanup_workers (guint     nworkers,
 
 gint
 g_poll (GPollFD *fds,
-	guint    nfds,
-	gint     timeout)
+        guint    nfds,
+        gint     timeout)
 {
   guint nthreads, threads_remain;
   HANDLE worker_completed_handles[1] = { NULL, };
@@ -561,8 +561,8 @@ g_poll_fd_set_alloc_size (int maxfd)
 
 gint
 g_poll (GPollFD *fds,
-	guint    nfds,
-	gint     timeout)
+        guint    nfds,
+        gint     timeout)
 {
   struct timeval tv;
   fd_set rset_stack, wset_stack, xset_stack;
@@ -637,4 +637,4 @@ g_poll (GPollFD *fds,
 
 #endif /* !G_OS_WIN32 */
 
-#endif	/* !HAVE_POLL */
+#endif  /* !HAVE_POLL */

@@ -133,22 +133,22 @@ async_verify_chain_free (gpointer data)
 
 static void
 async_verify_chain_thread (GTask         *task,
-			   gpointer       object,
-			   gpointer       task_data,
-			   GCancellable  *cancellable)
+                           gpointer       object,
+                           gpointer       task_data,
+                           GCancellable  *cancellable)
 {
   AsyncVerifyChain *args = task_data;
   GTlsCertificateFlags verify_result;
   GError *error = NULL;
 
   verify_result = g_tls_database_verify_chain (G_TLS_DATABASE (object),
-					       args->chain,
-					       args->purpose,
-					       args->identity,
-					       args->interaction,
-					       args->flags,
-					       cancellable,
-					       &error);
+                                               args->chain,
+                                               args->purpose,
+                                               args->identity,
+                                               args->interaction,
+                                               args->flags,
+                                               cancellable,
+                                               &error);
   if (error)
     g_task_return_error (task, error);
   else
@@ -218,20 +218,20 @@ async_lookup_certificate_for_handle_free (gpointer data)
 
 static void
 async_lookup_certificate_for_handle_thread (GTask         *task,
-					    gpointer       object,
-					    gpointer       task_data,
-					    GCancellable  *cancellable)
+                                            gpointer       object,
+                                            gpointer       task_data,
+                                            GCancellable  *cancellable)
 {
   AsyncLookupCertificateForHandle *args = task_data;
   GTlsCertificate *result;
   GError *error = NULL;
 
   result = g_tls_database_lookup_certificate_for_handle (G_TLS_DATABASE (object),
-							 args->handle,
-							 args->interaction,
-							 args->flags,
-							 cancellable,
-							 &error);
+                                                         args->handle,
+                                                         args->interaction,
+                                                         args->flags,
+                                                         cancellable,
+                                                         &error);
   if (result)
     g_task_return_pointer (task, result, g_object_unref);
   else
@@ -292,20 +292,20 @@ async_lookup_certificate_issuer_free (gpointer data)
 
 static void
 async_lookup_certificate_issuer_thread (GTask         *task,
-					gpointer       object,
-					gpointer       task_data,
-					GCancellable  *cancellable)
+                                        gpointer       object,
+                                        gpointer       task_data,
+                                        GCancellable  *cancellable)
 {
   AsyncLookupCertificateIssuer *args = task_data;
   GTlsCertificate *issuer;
   GError *error = NULL;
 
   issuer = g_tls_database_lookup_certificate_issuer (G_TLS_DATABASE (object),
-						     args->certificate,
-						     args->interaction,
-						     args->flags,
-						     cancellable,
-						     &error);
+                                                     args->certificate,
+                                                     args->interaction,
+                                                     args->flags,
+                                                     cancellable,
+                                                     &error);
   if (issuer)
     g_task_return_pointer (task, issuer, g_object_unref);
   else
@@ -374,8 +374,8 @@ async_lookup_certificates_free_certificates (gpointer data)
 
 static void
 async_lookup_certificates_issued_by_thread (GTask         *task,
-					    gpointer       object,
-					    gpointer       task_data,
+                                            gpointer       object,
+                                            gpointer       task_data,
                                             GCancellable  *cancellable)
 {
   AsyncLookupCertificatesIssuedBy *args = task_data;
@@ -383,11 +383,11 @@ async_lookup_certificates_issued_by_thread (GTask         *task,
   GError *error = NULL;
 
   results = g_tls_database_lookup_certificates_issued_by (G_TLS_DATABASE (object),
-							  args->issuer,
-							  args->interaction,
-							  args->flags,
-							  cancellable,
-							  &error);
+                                                          args->issuer,
+                                                          args->interaction,
+                                                          args->flags,
+                                                          cancellable,
+                                                          &error);
   if (results)
     g_task_return_pointer (task, results, async_lookup_certificates_free_certificates);
   else

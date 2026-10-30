@@ -1,16 +1,16 @@
 #include <gio/gio.h>
 #include <string.h>
 
-#define g_assert_content_type_equals(s1, s2) 			\
-  do { 								\
-    const char *__s1 = (s1), *__s2 = (s2); 			\
-    if (g_content_type_equals (__s1, __s2)) ;		 	\
-    else 							\
-      g_assertion_message_cmpstr (G_LOG_DOMAIN, 		\
-                                  __FILE__, __LINE__, 		\
-                                  G_STRFUNC, 			\
-                                  #s1 " == " #s2, 		\
-                                  __s1, " == ", __s2); 		\
+#define g_assert_content_type_equals(s1, s2)                    \
+  do {                                                          \
+    const char *__s1 = (s1), *__s2 = (s2);                      \
+    if (g_content_type_equals (__s1, __s2)) ;                   \
+    else                                                        \
+      g_assertion_message_cmpstr (G_LOG_DOMAIN,                 \
+                                  __FILE__, __LINE__,           \
+                                  G_STRFUNC,                    \
+                                  #s1 " == " #s2,               \
+                                  __s1, " == ", __s2);          \
   } while (0)
 
 static gboolean

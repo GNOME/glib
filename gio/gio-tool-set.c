@@ -54,17 +54,17 @@ hex_unescape (const char *str)
   for (i = 0; i < len; i++)
     {
       if (str[i] == '\\' &&
-	  str[i+1] == 'x' &&
-	  len - i >= 4)
-	{
-	  c =
-	    (g_ascii_xdigit_value (str[i+2]) << 4) |
-	    g_ascii_xdigit_value (str[i+3]);
-	  *p++ = c;
-	  i += 3;
-	}
+          str[i+1] == 'x' &&
+          len - i >= 4)
+        {
+          c =
+            (g_ascii_xdigit_value (str[i+2]) << 4) |
+            g_ascii_xdigit_value (str[i+3]);
+          *p++ = c;
+          i += 3;
+        }
       else
-	*p++ = str[i];
+        *p++ = str[i];
     }
   *p++ = 0;
 
@@ -197,9 +197,9 @@ handle_set (int argc, char *argv[], gboolean do_help)
   file = g_file_new_for_commandline_arg (argv[1]);
 
   if (!g_file_set_attribute (file,
-			     attribute,
-			     type,
-			     value,
+                             attribute,
+                             type,
+                             value,
                              nofollow_symlinks ?
                                G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS :
                                G_FILE_QUERY_INFO_NONE,

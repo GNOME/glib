@@ -34,7 +34,7 @@ G_BEGIN_DECLS
 #define G_IS_SOCKS4_PROXY_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_SOCKS4_PROXY))
 #define G_SOCKS4_PROXY_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_SOCKS4_PROXY, GSocks4ProxyClass))
 
-typedef struct _GSocks4Proxy	    GSocks4Proxy;
+typedef struct _GSocks4Proxy        GSocks4Proxy;
 typedef struct _GSocks4ProxyClass  GSocks4ProxyClass;
 
 GType _g_socks4_proxy_get_type (void);

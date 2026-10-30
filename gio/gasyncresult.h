@@ -33,7 +33,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_ASYNC_RESULT            (g_async_result_get_type ())
 #define G_ASYNC_RESULT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_ASYNC_RESULT, GAsyncResult))
-#define G_IS_ASYNC_RESULT(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ASYNC_RESULT))
+#define G_IS_ASYNC_RESULT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_ASYNC_RESULT))
 #define G_ASYNC_RESULT_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_ASYNC_RESULT, GAsyncResultIface))
 
 typedef struct _GAsyncResultIface    GAsyncResultIface;
@@ -58,7 +58,7 @@ struct _GAsyncResultIface
   GObject * (* get_source_object) (GAsyncResult *res);
 
   gboolean  (* is_tagged)         (GAsyncResult *res,
-				   gpointer      source_tag);
+                                   gpointer      source_tag);
 };
 
 GIO_AVAILABLE_IN_ALL
@@ -71,10 +71,10 @@ GObject *g_async_result_get_source_object (GAsyncResult *res);
 
 GIO_AVAILABLE_IN_2_34
 gboolean g_async_result_legacy_propagate_error (GAsyncResult  *res,
-						GError       **error);
+                                                GError       **error);
 GIO_AVAILABLE_IN_2_34
 gboolean g_async_result_is_tagged              (GAsyncResult  *res,
-						gpointer       source_tag);
+                                                gpointer       source_tag);
 
 G_END_DECLS
 

@@ -307,8 +307,8 @@ typedef struct {
 
 static gboolean
 on_child_exited (GPid     pid,
-		 gint     status,
-		 gpointer datap)
+                 gint     status,
+                 gpointer datap)
 {
   SpawnAsyncMultithreadedData *data = datap;
 
@@ -321,8 +321,8 @@ on_child_exited (GPid     pid,
 
 static gboolean
 on_child_stdout (GIOChannel   *channel,
-		 GIOCondition  condition,
-		 gpointer      datap)
+                 GIOCondition  condition,
+                 gpointer      datap)
 {
   char buf[1024];
   GError *error = NULL;
@@ -336,7 +336,7 @@ on_child_stdout (GIOChannel   *channel,
     {
       g_string_append_len (data->stdout_buf, buf, (gssize) bytes_read);
       if (bytes_read == sizeof (buf))
-	goto read;
+        goto read;
     }
   else if (status == G_IO_STATUS_EOF)
     {
@@ -380,7 +380,7 @@ test_spawn_async_multithreaded_instance (gpointer thread_data)
   g_ptr_array_add (argv, NULL);
 
   g_spawn_async_with_pipes (NULL, (char**)argv->pdata, NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid, NULL,
-			    &child_stdout_fd, NULL, &error);
+                            &child_stdout_fd, NULL, &error);
   g_assert_no_error (error);
   g_ptr_array_free (argv, TRUE);
 

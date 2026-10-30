@@ -187,7 +187,7 @@ g_app_info_dup (GAppInfo *appinfo)
  **/
 gboolean
 g_app_info_equal (GAppInfo *appinfo1,
-		  GAppInfo *appinfo2)
+                  GAppInfo *appinfo2)
 {
   GAppInfoIface *iface;
 
@@ -359,8 +359,8 @@ g_app_info_get_commandline (GAppInfo *appinfo)
  **/
 gboolean
 g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
-				    const char  *content_type,
-				    GError     **error)
+                                    const char  *content_type,
+                                    GError     **error)
 {
   GAppInfoIface *iface;
   
@@ -578,8 +578,8 @@ is_valid_extension (const char *extension)
  **/
 gboolean
 g_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
-					 const char  *extension,
-					 GError     **error)
+                                         const char  *extension,
+                                         GError     **error)
 {
   GAppInfoIface *iface;
   
@@ -617,8 +617,8 @@ g_app_info_set_as_default_for_extension (GAppInfo    *appinfo,
  **/
 gboolean
 g_app_info_add_supports_type (GAppInfo    *appinfo,
-			      const char  *content_type,
-			      GError     **error)
+                              const char  *content_type,
+                              GError     **error)
 {
   GAppInfoIface *iface;
   
@@ -674,8 +674,8 @@ g_app_info_can_remove_supports_type (GAppInfo *appinfo)
  **/
 gboolean
 g_app_info_remove_supports_type (GAppInfo    *appinfo,
-				 const char  *content_type,
-				 GError     **error)
+                                 const char  *content_type,
+                                 GError     **error)
 {
   GAppInfoIface *iface;
   
@@ -787,9 +787,9 @@ g_app_info_get_icon (GAppInfo *appinfo)
  **/
 gboolean
 g_app_info_launch (GAppInfo           *appinfo,
-		   GList              *files,
-		   GAppLaunchContext  *launch_context,
-		   GError            **error)
+                   GList              *files,
+                   GAppLaunchContext  *launch_context,
+                   GError            **error)
 {
   GAppInfoIface *iface;
   
@@ -866,9 +866,9 @@ g_app_info_supports_files (GAppInfo *appinfo)
  **/
 gboolean
 g_app_info_launch_uris (GAppInfo           *appinfo,
-			GList              *uris,
-			GAppLaunchContext  *launch_context,
-			GError            **error)
+                        GList              *uris,
+                        GAppLaunchContext  *launch_context,
+                        GError            **error)
 {
   GAppInfoIface *iface;
   
@@ -1813,8 +1813,8 @@ g_app_launch_context_get_environment (GAppLaunchContext *context)
  */
 char *
 g_app_launch_context_get_display (GAppLaunchContext *context,
-				  GAppInfo          *info,
-				  GList             *files)
+                                  GAppInfo          *info,
+                                  GList             *files)
 {
   GAppLaunchContextClass *class;
 
@@ -1856,8 +1856,8 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  **/
 char *
 g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
-					    GAppInfo          *info,
-					    GList             *files)
+                                            GAppInfo          *info,
+                                            GList             *files)
 {
   GAppLaunchContextClass *class;
 
@@ -1886,7 +1886,7 @@ g_app_launch_context_get_startup_notify_id (GAppLaunchContext *context,
  **/
 void
 g_app_launch_context_launch_failed (GAppLaunchContext *context,
-				    const char        *startup_notify_id)
+                                    const char        *startup_notify_id)
 {
   g_return_if_fail (G_IS_APP_LAUNCH_CONTEXT (context));
   g_return_if_fail (startup_notify_id != NULL);

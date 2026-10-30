@@ -1,14 +1,14 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
-#define TEST_URI_0 	"file:///abc/defgh/ijklmnopqrstuvwxyz"
-#define TEST_URI_1 	"file:///test/uri/1"
-#define TEST_URI_2 	"file:///test/uri/2"
+#define TEST_URI_0      "file:///abc/defgh/ijklmnopqrstuvwxyz"
+#define TEST_URI_1      "file:///test/uri/1"
+#define TEST_URI_2      "file:///test/uri/2"
 
-#define TEST_MIME 	"text/plain"
+#define TEST_MIME       "text/plain"
 
-#define TEST_APP_NAME 	"bookmarkfile-test"
-#define TEST_APP_EXEC 	"bookmarkfile-test %f"
+#define TEST_APP_NAME   "bookmarkfile-test"
+#define TEST_APP_EXEC   "bookmarkfile-test %f"
 
 static void
 test_load_from_data_dirs (void)
@@ -1161,8 +1161,8 @@ test_modify (GBookmarkFile *bookmark)
   g_bookmark_file_set_mime_type (bookmark, TEST_URI_0, TEST_MIME);
   g_assert_false (g_bookmark_file_has_application (bookmark, TEST_URI_0, TEST_APP_NAME, NULL));
   g_bookmark_file_add_application (bookmark, TEST_URI_0,
-				   TEST_APP_NAME,
-				   TEST_APP_EXEC);
+                                   TEST_APP_NAME,
+                                   TEST_APP_EXEC);
   g_assert_true (g_bookmark_file_has_application (bookmark, TEST_URI_0, TEST_APP_NAME, NULL));
   g_bookmark_file_get_application_info (bookmark, TEST_URI_0, TEST_APP_NAME,
                                         &text,

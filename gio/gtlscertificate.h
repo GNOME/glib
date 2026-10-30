@@ -50,8 +50,8 @@ struct _GTlsCertificateClass
   GObjectClass parent_class;
 
   GTlsCertificateFlags  (* verify) (GTlsCertificate     *cert,
-				    GSocketConnectable  *identity,
-				    GTlsCertificate     *trusted_ca);
+                                    GSocketConnectable  *identity,
+                                    GTlsCertificate     *trusted_ca);
 
   /*< private >*/
   /* Padding for future expansion */
@@ -63,8 +63,8 @@ GType                 g_tls_certificate_get_type           (void);
 
 GIO_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_certificate_new_from_pem       (const gchar         *data,
-							    gssize               length,
-							    GError             **error);
+                                                            gssize               length,
+                                                            GError             **error);
 GIO_AVAILABLE_IN_2_72
 GTlsCertificate      *g_tls_certificate_new_from_pkcs12      (const guint8      *data,
                                                               gsize              length,
@@ -76,11 +76,11 @@ GTlsCertificate      *g_tls_certificate_new_from_file_with_password (const gchar
                                                                      GError      **error);
 GIO_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_certificate_new_from_file      (const gchar         *file,
-							    GError             **error);
+                                                            GError             **error);
 GIO_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_certificate_new_from_files     (const gchar         *cert_file,
-							    const gchar         *key_file,
-							    GError             **error);
+                                                            const gchar         *key_file,
+                                                            GError             **error);
 GIO_AVAILABLE_IN_2_68
 GTlsCertificate      *g_tls_certificate_new_from_pkcs11_uris (const gchar       *pkcs11_uri,
                                                               const gchar       *private_key_pkcs11_uri,
@@ -88,15 +88,15 @@ GTlsCertificate      *g_tls_certificate_new_from_pkcs11_uris (const gchar       
 
 GIO_AVAILABLE_IN_ALL
 GList                *g_tls_certificate_list_new_from_file (const gchar         *file,
-							    GError             **error);
+                                                            GError             **error);
 
 GIO_AVAILABLE_IN_ALL
 GTlsCertificate      *g_tls_certificate_get_issuer         (GTlsCertificate     *cert);
 
 GIO_AVAILABLE_IN_ALL
 GTlsCertificateFlags  g_tls_certificate_verify             (GTlsCertificate     *cert,
-							    GSocketConnectable  *identity,
-							    GTlsCertificate     *trusted_ca);
+                                                            GSocketConnectable  *identity,
+                                                            GTlsCertificate     *trusted_ca);
 
 GIO_AVAILABLE_IN_2_34
 gboolean              g_tls_certificate_is_same            (GTlsCertificate     *cert_one,

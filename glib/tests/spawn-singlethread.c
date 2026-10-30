@@ -69,8 +69,8 @@ typedef struct {
 
 static gboolean
 on_child_exited (GPid     pid,
-		 gint     status,
-		 gpointer datap)
+                 gint     status,
+                 gpointer datap)
 {
   SpawnAsyncMultithreadedData *data = datap;
 
@@ -83,8 +83,8 @@ on_child_exited (GPid     pid,
 
 static gboolean
 on_child_stdout (GIOChannel   *channel,
-		 GIOCondition  condition,
-		 gpointer      datap)
+                 GIOCondition  condition,
+                 gpointer      datap)
 {
   char buf[1024];
   GError *error = NULL;
@@ -98,7 +98,7 @@ on_child_stdout (GIOChannel   *channel,
       g_assert_no_error (error);
       g_string_append_len (data->stdout_buf, buf, (gssize) bytes_read);
       if (status == G_IO_STATUS_EOF)
-	data->stdout_done = TRUE;
+        data->stdout_done = TRUE;
     }
   if (condition & G_IO_HUP)
     data->stdout_done = TRUE;
@@ -137,7 +137,7 @@ test_spawn_async (void)
   g_ptr_array_add (argv, NULL);
 
   g_spawn_async_with_pipes (NULL, (char**)argv->pdata, NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid, NULL,
-			    &child_stdout_fd, NULL, &error);
+                            &child_stdout_fd, NULL, &error);
   g_assert_no_error (error);
   g_ptr_array_free (argv, TRUE);
 
@@ -257,9 +257,9 @@ test_spawn_async_with_fds (void)
       loop = g_main_loop_new (context, TRUE);
 
       g_spawn_async_with_fds (NULL, (char**)argv->pdata, NULL,
-			      G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid,
-			      test_pipe[0][0], test_pipe[1][1], test_pipe[2][1],
-			      &error);
+                              G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid,
+                              test_pipe[0][0], test_pipe[1][1], test_pipe[2][1],
+                              &error);
       g_assert_no_error (error);
       safe_close (test_pipe[0][0]);
       safe_close (test_pipe[1][1]);

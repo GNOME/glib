@@ -50,7 +50,7 @@ do_watch_power_profile (void)
 
   monitor = g_power_profile_monitor_dup_default ();
   signal_id = g_signal_connect (G_OBJECT (monitor), "notify::power-saver-enabled",
-		                G_CALLBACK (power_saver_enabled_cb), NULL);
+                                G_CALLBACK (power_saver_enabled_cb), NULL);
 
   loop = g_main_loop_new (NULL, TRUE);
   g_main_loop_run (loop);

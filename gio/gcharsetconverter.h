@@ -50,11 +50,11 @@ GType              g_charset_converter_get_type      (void);
 
 GIO_AVAILABLE_IN_ALL
 GCharsetConverter *g_charset_converter_new            (const gchar  *to_charset,
-						       const gchar  *from_charset,
-						       GError **error);
+                                                       const gchar  *from_charset,
+                                                       GError **error);
 GIO_AVAILABLE_IN_ALL
 void               g_charset_converter_set_use_fallback (GCharsetConverter *converter,
-							 gboolean use_fallback);
+                                                         gboolean use_fallback);
 GIO_AVAILABLE_IN_ALL
 gboolean           g_charset_converter_get_use_fallback (GCharsetConverter *converter);
 GIO_AVAILABLE_IN_ALL

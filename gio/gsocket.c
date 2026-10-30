@@ -161,8 +161,8 @@
 
 static void     g_socket_initable_iface_init (GInitableIface  *iface);
 static gboolean g_socket_initable_init       (GInitable       *initable,
-					      GCancellable    *cancellable,
-					      GError         **error);
+                                              GCancellable    *cancellable,
+                                              GError         **error);
 
 static void     g_socket_datagram_based_iface_init       (GDatagramBasedInterface *iface);
 static gint     g_socket_datagram_based_receive_messages (GDatagramBased  *self,
@@ -427,7 +427,7 @@ address_to_string (GSocketAddress *address)
 
 static gboolean
 check_socket (GSocket *socket,
-	      GError **error)
+              GError **error)
 {
   if (!socket->priv->inited)
     {
@@ -439,15 +439,15 @@ check_socket (GSocket *socket,
   if (socket->priv->construct_error)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
-		   _("Invalid socket, initialization failed due to: %s"),
-		   socket->priv->construct_error->message);
+                   _("Invalid socket, initialization failed due to: %s"),
+                   socket->priv->construct_error->message);
       return FALSE;
     }
 
   if (socket->priv->closed)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-			   _("Socket is already closed"));
+                           _("Socket is already closed"));
       return FALSE;
     }
 
@@ -456,13 +456,13 @@ check_socket (GSocket *socket,
 
 static gboolean
 check_timeout (GSocket *socket,
-	       GError **error)
+               GError **error)
 {
   if (socket->priv->timed_out)
     {
       socket->priv->timed_out = FALSE;
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
-			   _("Socket I/O timed out"));
+                           _("Socket I/O timed out"));
       return FALSE;
     }
 
@@ -540,7 +540,7 @@ g_socket_details_from_fd (GSocket *socket)
   if (addrlen > 0)
     {
       g_assert (G_STRUCT_OFFSET (struct sockaddr, sa_family) +
-		(socklen_t) sizeof address.storage.ss_family <= addrlen);
+                (socklen_t) sizeof address.storage.ss_family <= addrlen);
       family = address.storage.ss_family;
     }
   else
@@ -550,10 +550,10 @@ g_socket_details_from_fd (GSocket *socket)
        */
 #ifdef SO_DOMAIN
       if (!g_socket_get_option (socket, SOL_SOCKET, SO_DOMAIN, &family, NULL))
-	{
-	  errsv = get_socket_errno ();
-	  goto err;
-	}
+        {
+          errsv = get_socket_errno ();
+          goto err;
+        }
 #else
       /* This will translate to G_IO_ERROR_FAILED on either unix or windows */
       errsv = -1;
@@ -570,22 +570,22 @@ g_socket_details_from_fd (GSocket *socket)
      case G_SOCKET_FAMILY_IPV6:
        socket->priv->family = family;
        switch (socket->priv->type)
-	 {
-	 case G_SOCKET_TYPE_STREAM:
-	   socket->priv->protocol = G_SOCKET_PROTOCOL_TCP;
-	   break;
+         {
+         case G_SOCKET_TYPE_STREAM:
+           socket->priv->protocol = G_SOCKET_PROTOCOL_TCP;
+           break;
 
-	 case G_SOCKET_TYPE_DATAGRAM:
-	   socket->priv->protocol = G_SOCKET_PROTOCOL_UDP;
-	   break;
+         case G_SOCKET_TYPE_DATAGRAM:
+           socket->priv->protocol = G_SOCKET_PROTOCOL_UDP;
+           break;
 
-	 case G_SOCKET_TYPE_SEQPACKET:
-	   socket->priv->protocol = G_SOCKET_PROTOCOL_SCTP;
-	   break;
+         case G_SOCKET_TYPE_SEQPACKET:
+           socket->priv->protocol = G_SOCKET_PROTOCOL_SCTP;
+           break;
 
-	 default:
-	   break;
-	 }
+         default:
+           break;
+         }
        break;
 
      case G_SOCKET_FAMILY_UNIX:
@@ -622,9 +622,9 @@ g_socket_details_from_fd (GSocket *socket)
 
  err:
   g_set_error (&socket->priv->construct_error, G_IO_ERROR,
-	       socket_io_error_from_errno (errsv),
-	       _("creating GSocket from fd: %s"),
-	       socket_strerror (errsv));
+               socket_io_error_from_errno (errsv),
+               _("creating GSocket from fd: %s"),
+               socket_strerror (errsv));
 }
 
 static void
@@ -683,7 +683,7 @@ g_socket (gint     domain,
       errsv = get_socket_errno ();
 
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("Unable to create socket: %s"), socket_strerror (errsv));
+                   _("Unable to create socket: %s"), socket_strerror (errsv));
       errno = errsv;
       return -1;
     }
@@ -697,10 +697,10 @@ g_socket (gint     domain,
        using lower level hacks with g_socket_get_fd(). */
     flags = fcntl (fd, F_GETFD, 0);
     if (flags != -1 &&
-	(flags & FD_CLOEXEC) == 0)
+        (flags & FD_CLOEXEC) == 0)
       {
-	flags |= FD_CLOEXEC;
-	(void) fcntl (fd, F_SETFD, flags);
+        flags |= FD_CLOEXEC;
+        (void) fcntl (fd, F_SETFD, flags);
       }
   }
 #else
@@ -724,9 +724,9 @@ g_socket (gint     domain,
 /* Returned socket has SOCK_CLOEXEC | SOCK_NONBLOCK set. */
 static gint
 g_socket_create_socket (GSocketFamily   family,
-			GSocketType     type,
-			int             protocol,
-			GError        **error)
+                        GSocketType     type,
+                        int             protocol,
+                        GError        **error)
 {
   gint native_type;
 
@@ -758,7 +758,7 @@ g_socket_create_socket (GSocketFamily   family,
   if (protocol == -1)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Unable to create socket: %s"), _("Unknown protocol was specified"));
+                   _("Unable to create socket: %s"), _("Unknown protocol was specified"));
       return -1;
     }
 
@@ -780,9 +780,9 @@ g_socket_constructed (GObject *object)
     {
       /* create the fd from socket->priv info; this sets it non-blocking by construction */
       socket->priv->fd = g_socket_create_socket (socket->priv->family,
-					         socket->priv->type,
-					         socket->priv->protocol,
-					         &socket->priv->construct_error);
+                                                 socket->priv->type,
+                                                 socket->priv->protocol,
+                                                 &socket->priv->construct_error);
     }
 
   if (socket->priv->fd != -1)
@@ -798,9 +798,9 @@ g_socket_constructed (GObject *object)
 
 static void
 g_socket_get_property (GObject    *object,
-		       guint       prop_id,
-		       GValue     *value,
-		       GParamSpec *pspec)
+                       guint       prop_id,
+                       GValue     *value,
+                       GParamSpec *pspec)
 {
   GSocket *socket = G_SOCKET (object);
   GSocketAddress *address;
@@ -808,128 +808,128 @@ g_socket_get_property (GObject    *object,
   switch (prop_id)
     {
       case PROP_FAMILY:
-	g_value_set_enum (value, socket->priv->family);
-	break;
+        g_value_set_enum (value, socket->priv->family);
+        break;
 
       case PROP_TYPE:
-	g_value_set_enum (value, socket->priv->type);
-	break;
+        g_value_set_enum (value, socket->priv->type);
+        break;
 
       case PROP_PROTOCOL:
-	g_value_set_enum (value, socket->priv->protocol);
-	break;
+        g_value_set_enum (value, socket->priv->protocol);
+        break;
 
       case PROP_FD:
-	g_value_set_int (value, socket->priv->fd);
-	break;
+        g_value_set_int (value, socket->priv->fd);
+        break;
 
       case PROP_BLOCKING:
-	g_value_set_boolean (value, socket->priv->blocking);
-	break;
+        g_value_set_boolean (value, socket->priv->blocking);
+        break;
 
       case PROP_LISTEN_BACKLOG:
-	g_value_set_int (value, socket->priv->listen_backlog);
-	break;
+        g_value_set_int (value, socket->priv->listen_backlog);
+        break;
 
       case PROP_KEEPALIVE:
-	g_value_set_boolean (value, socket->priv->keepalive);
-	break;
+        g_value_set_boolean (value, socket->priv->keepalive);
+        break;
 
       case PROP_LOCAL_ADDRESS:
-	address = g_socket_get_local_address (socket, NULL);
-	g_value_take_object (value, address);
-	break;
+        address = g_socket_get_local_address (socket, NULL);
+        g_value_take_object (value, address);
+        break;
 
       case PROP_REMOTE_ADDRESS:
-	address = g_socket_get_remote_address (socket, NULL);
-	g_value_take_object (value, address);
-	break;
+        address = g_socket_get_remote_address (socket, NULL);
+        g_value_take_object (value, address);
+        break;
 
       case PROP_TIMEOUT:
-	g_value_set_uint (value, socket->priv->timeout);
-	break;
+        g_value_set_uint (value, socket->priv->timeout);
+        break;
 
       case PROP_TTL:
-	g_value_set_uint (value, g_socket_get_ttl (socket));
-	break;
+        g_value_set_uint (value, g_socket_get_ttl (socket));
+        break;
 
       case PROP_BROADCAST:
-	g_value_set_boolean (value, g_socket_get_broadcast (socket));
-	break;
+        g_value_set_boolean (value, g_socket_get_broadcast (socket));
+        break;
 
       case PROP_MULTICAST_LOOPBACK:
-	g_value_set_boolean (value, g_socket_get_multicast_loopback (socket));
-	break;
+        g_value_set_boolean (value, g_socket_get_multicast_loopback (socket));
+        break;
 
       case PROP_MULTICAST_TTL:
-	g_value_set_uint (value, g_socket_get_multicast_ttl (socket));
-	break;
+        g_value_set_uint (value, g_socket_get_multicast_ttl (socket));
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
 static void
 g_socket_set_property (GObject      *object,
-		       guint         prop_id,
-		       const GValue *value,
-		       GParamSpec   *pspec)
+                       guint         prop_id,
+                       const GValue *value,
+                       GParamSpec   *pspec)
 {
   GSocket *socket = G_SOCKET (object);
 
   switch (prop_id)
     {
       case PROP_FAMILY:
-	socket->priv->family = g_value_get_enum (value);
-	break;
+        socket->priv->family = g_value_get_enum (value);
+        break;
 
       case PROP_TYPE:
-	socket->priv->type = g_value_get_enum (value);
-	break;
+        socket->priv->type = g_value_get_enum (value);
+        break;
 
       case PROP_PROTOCOL:
-	socket->priv->protocol = g_value_get_enum (value);
-	break;
+        socket->priv->protocol = g_value_get_enum (value);
+        break;
 
       case PROP_FD:
-	socket->priv->fd = g_value_get_int (value);
-	break;
+        socket->priv->fd = g_value_get_int (value);
+        break;
 
       case PROP_BLOCKING:
-	g_socket_set_blocking (socket, g_value_get_boolean (value));
-	break;
+        g_socket_set_blocking (socket, g_value_get_boolean (value));
+        break;
 
       case PROP_LISTEN_BACKLOG:
-	g_socket_set_listen_backlog (socket, g_value_get_int (value));
-	break;
+        g_socket_set_listen_backlog (socket, g_value_get_int (value));
+        break;
 
       case PROP_KEEPALIVE:
-	g_socket_set_keepalive (socket, g_value_get_boolean (value));
-	break;
+        g_socket_set_keepalive (socket, g_value_get_boolean (value));
+        break;
 
       case PROP_TIMEOUT:
-	g_socket_set_timeout (socket, g_value_get_uint (value));
-	break;
+        g_socket_set_timeout (socket, g_value_get_uint (value));
+        break;
 
       case PROP_TTL:
-	g_socket_set_ttl (socket, g_value_get_uint (value));
-	break;
+        g_socket_set_ttl (socket, g_value_get_uint (value));
+        break;
 
       case PROP_BROADCAST:
-	g_socket_set_broadcast (socket, g_value_get_boolean (value));
-	break;
+        g_socket_set_broadcast (socket, g_value_get_boolean (value));
+        break;
 
       case PROP_MULTICAST_LOOPBACK:
-	g_socket_set_multicast_loopback (socket, g_value_get_boolean (value));
-	break;
+        g_socket_set_multicast_loopback (socket, g_value_get_boolean (value));
+        break;
 
       case PROP_MULTICAST_TTL:
-	g_socket_set_multicast_ttl (socket, g_value_get_uint (value));
-	break;
+        g_socket_set_multicast_ttl (socket, g_value_get_uint (value));
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -1004,10 +1004,10 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
-				   g_param_spec_enum ("family", NULL, NULL,
-						      G_TYPE_SOCKET_FAMILY,
-						      G_SOCKET_FAMILY_INVALID,
-						      G_PARAM_CONSTRUCT_ONLY |
+                                   g_param_spec_enum ("family", NULL, NULL,
+                                                      G_TYPE_SOCKET_FAMILY,
+                                                      G_SOCKET_FAMILY_INVALID,
+                                                      G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
@@ -1019,10 +1019,10 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_TYPE,
-				   g_param_spec_enum ("type", NULL, NULL,
-						      G_TYPE_SOCKET_TYPE,
-						      G_SOCKET_TYPE_STREAM,
-						      G_PARAM_CONSTRUCT_ONLY |
+                                   g_param_spec_enum ("type", NULL, NULL,
+                                                      G_TYPE_SOCKET_TYPE,
+                                                      G_SOCKET_TYPE_STREAM,
+                                                      G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
@@ -1034,10 +1034,10 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_PROTOCOL,
-				   g_param_spec_enum ("protocol", NULL, NULL,
-						      G_TYPE_SOCKET_PROTOCOL,
-						      G_SOCKET_PROTOCOL_UNKNOWN,
-						      G_PARAM_CONSTRUCT_ONLY |
+                                   g_param_spec_enum ("protocol", NULL, NULL,
+                                                      G_TYPE_SOCKET_PROTOCOL,
+                                                      G_SOCKET_PROTOCOL_UNKNOWN,
+                                                      G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
@@ -1049,11 +1049,11 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_FD,
-				   g_param_spec_int ("fd", NULL, NULL,
-						     G_MININT,
-						     G_MAXINT,
-						     -1,
-						     G_PARAM_CONSTRUCT_ONLY |
+                                   g_param_spec_int ("fd", NULL, NULL,
+                                                     G_MININT,
+                                                     G_MAXINT,
+                                                     -1,
+                                                     G_PARAM_CONSTRUCT_ONLY |
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_STATIC_STRINGS));
 
@@ -1065,9 +1065,9 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_BLOCKING,
-				   g_param_spec_boolean ("blocking", NULL, NULL,
-							 TRUE,
-							 G_PARAM_READWRITE |
+                                   g_param_spec_boolean ("blocking", NULL, NULL,
+                                                         TRUE,
+                                                         G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1078,11 +1078,11 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_LISTEN_BACKLOG,
-				   g_param_spec_int ("listen-backlog", NULL, NULL,
-						     0,
-						     SOMAXCONN,
-						     10,
-						     G_PARAM_READWRITE |
+                                   g_param_spec_int ("listen-backlog", NULL, NULL,
+                                                     0,
+                                                     SOMAXCONN,
+                                                     10,
+                                                     G_PARAM_READWRITE |
                                                      G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1093,9 +1093,9 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_KEEPALIVE,
-				   g_param_spec_boolean ("keepalive", NULL, NULL,
-							 FALSE,
-							 G_PARAM_READWRITE |
+                                   g_param_spec_boolean ("keepalive", NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1106,9 +1106,9 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_LOCAL_ADDRESS,
-				   g_param_spec_object ("local-address", NULL, NULL,
-							G_TYPE_SOCKET_ADDRESS,
-							G_PARAM_READABLE |
+                                   g_param_spec_object ("local-address", NULL, NULL,
+                                                        G_TYPE_SOCKET_ADDRESS,
+                                                        G_PARAM_READABLE |
                                                         G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1119,9 +1119,9 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_REMOTE_ADDRESS,
-				   g_param_spec_object ("remote-address", NULL, NULL,
-							G_TYPE_SOCKET_ADDRESS,
-							G_PARAM_READABLE |
+                                   g_param_spec_object ("remote-address", NULL, NULL,
+                                                        G_TYPE_SOCKET_ADDRESS,
+                                                        G_PARAM_READABLE |
                                                         G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1132,12 +1132,12 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class, PROP_TIMEOUT,
-				   g_param_spec_uint ("timeout", NULL, NULL,
-						      0,
-						      G_MAXUINT,
-						      0,
-						      G_PARAM_READWRITE |
-						      G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_uint ("timeout", NULL, NULL,
+                                                      0,
+                                                      G_MAXUINT,
+                                                      0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 
   /**
    * GSocket:broadcast:
@@ -1147,9 +1147,9 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.32
    */
   g_object_class_install_property (gobject_class, PROP_BROADCAST,
-				   g_param_spec_boolean ("broadcast", NULL, NULL,
-							 FALSE,
-							 G_PARAM_READWRITE |
+                                   g_param_spec_boolean ("broadcast", NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1160,10 +1160,10 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.32
    */
   g_object_class_install_property (gobject_class, PROP_TTL,
-				   g_param_spec_uint ("ttl", NULL, NULL,
-						      0, G_MAXUINT, 0,
-						      G_PARAM_READWRITE |
-						      G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_uint ("ttl", NULL, NULL,
+                                                      0, G_MAXUINT, 0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 
   /**
    * GSocket:multicast-loopback:
@@ -1173,9 +1173,9 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.32
    */
   g_object_class_install_property (gobject_class, PROP_MULTICAST_LOOPBACK,
-				   g_param_spec_boolean ("multicast-loopback", NULL, NULL,
-							 TRUE,
-							 G_PARAM_READWRITE |
+                                   g_param_spec_boolean ("multicast-loopback", NULL, NULL,
+                                                         TRUE,
+                                                         G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
   /**
@@ -1186,10 +1186,10 @@ g_socket_class_init (GSocketClass *klass)
    * Since: 2.32
    */
   g_object_class_install_property (gobject_class, PROP_MULTICAST_TTL,
-				   g_param_spec_uint ("multicast-ttl", NULL, NULL,
-						      0, G_MAXUINT, 1,
-						      G_PARAM_READWRITE |
-						      G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_uint ("multicast-ttl", NULL, NULL,
+                                                      0, G_MAXUINT, 1,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -1226,8 +1226,8 @@ g_socket_init (GSocket *socket)
 
 static gboolean
 g_socket_initable_init (GInitable *initable,
-			GCancellable *cancellable,
-			GError  **error)
+                        GCancellable *cancellable,
+                        GError  **error)
 {
   GSocket  *socket;
 
@@ -1247,7 +1247,7 @@ g_socket_initable_init (GInitable *initable,
   if (socket->priv->construct_error)
     {
       if (error)
-	*error = g_error_copy (socket->priv->construct_error);
+        *error = g_error_copy (socket->priv->construct_error);
       return FALSE;
     }
 
@@ -1386,16 +1386,16 @@ g_socket_datagram_based_condition_wait (GDatagramBased  *datagram_based,
  */
 GSocket *
 g_socket_new (GSocketFamily     family,
-	      GSocketType       type,
-	      GSocketProtocol   protocol,
-	      GError          **error)
+              GSocketType       type,
+              GSocketProtocol   protocol,
+              GError          **error)
 {
   return G_SOCKET (g_initable_new (G_TYPE_SOCKET,
-				   NULL, error,
-				   "family", family,
-				   "type", type,
-				   "protocol", protocol,
-				   NULL));
+                                   NULL, error,
+                                   "family", family,
+                                   "type", type,
+                                   "protocol", protocol,
+                                   NULL));
 }
 
 /**
@@ -1424,12 +1424,12 @@ g_socket_new (GSocketFamily     family,
  */
 GSocket *
 g_socket_new_from_fd (gint     fd,
-		      GError **error)
+                      GError **error)
 {
   return G_SOCKET (g_initable_new (G_TYPE_SOCKET,
-				   NULL, error,
-				   "fd", fd,
-				   NULL));
+                                   NULL, error,
+                                   "fd", fd,
+                                   NULL));
 }
 
 /**
@@ -1451,7 +1451,7 @@ g_socket_new_from_fd (gint     fd,
  */
 void
 g_socket_set_blocking (GSocket  *socket,
-		       gboolean  blocking)
+                       gboolean  blocking)
 {
   g_return_if_fail (G_IS_SOCKET (socket));
 
@@ -1508,7 +1508,7 @@ g_socket_get_blocking (GSocket *socket)
  */
 void
 g_socket_set_keepalive (GSocket  *socket,
-			gboolean  keepalive)
+                        gboolean  keepalive)
 {
   GError *error = NULL;
 
@@ -1519,7 +1519,7 @@ g_socket_set_keepalive (GSocket  *socket,
     return;
 
   if (!g_socket_set_option (socket, SOL_SOCKET, SO_KEEPALIVE,
-			    keepalive, &error))
+                            keepalive, &error))
     {
       g_warning ("error setting keepalive: %s", error->message);
       g_error_free (error);
@@ -1585,7 +1585,7 @@ g_socket_get_listen_backlog  (GSocket *socket)
  */
 void
 g_socket_set_listen_backlog (GSocket *socket,
-			     gint     backlog)
+                             gint     backlog)
 {
   g_return_if_fail (G_IS_SOCKET (socket));
   g_return_if_fail (!socket->priv->listening);
@@ -1646,7 +1646,7 @@ g_socket_get_timeout (GSocket *socket)
  */
 void
 g_socket_set_timeout (GSocket *socket,
-		      guint    timeout)
+                      guint    timeout)
 {
   g_return_if_fail (G_IS_SOCKET (socket));
 
@@ -1679,12 +1679,12 @@ g_socket_get_ttl (GSocket *socket)
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
       g_socket_get_option (socket, IPPROTO_IP, IP_TTL,
-			   &value, &error);
+                           &value, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
       g_socket_get_option (socket, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
-			   &value, &error);
+                           &value, &error);
     }
   else
     g_return_val_if_reached (0);
@@ -1720,14 +1720,14 @@ g_socket_set_ttl (GSocket  *socket,
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
       g_socket_set_option (socket, IPPROTO_IP, IP_TTL,
-			   ttl, &error);
+                           ttl, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
       g_socket_set_option (socket, IPPROTO_IP, IP_TTL,
-			   ttl, NULL);
+                           ttl, NULL);
       g_socket_set_option (socket, IPPROTO_IPV6, IPV6_UNICAST_HOPS,
-			   ttl, &error);
+                           ttl, &error);
     }
   else
     g_return_if_reached ();
@@ -1763,7 +1763,7 @@ g_socket_get_broadcast (GSocket *socket)
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
   if (!g_socket_get_option (socket, SOL_SOCKET, SO_BROADCAST,
-			    &value, &error))
+                            &value, &error))
     {
       g_warning ("error getting broadcast: %s", error->message);
       g_error_free (error);
@@ -1786,7 +1786,7 @@ g_socket_get_broadcast (GSocket *socket)
  */
 void
 g_socket_set_broadcast (GSocket    *socket,
-       	                gboolean    broadcast)
+                        gboolean    broadcast)
 {
   GError *error = NULL;
 
@@ -1795,7 +1795,7 @@ g_socket_set_broadcast (GSocket    *socket,
   broadcast = !!broadcast;
 
   if (!g_socket_set_option (socket, SOL_SOCKET, SO_BROADCAST,
-			    broadcast, &error))
+                            broadcast, &error))
     {
       g_warning ("error setting broadcast: %s", error->message);
       g_error_free (error);
@@ -1828,12 +1828,12 @@ g_socket_get_multicast_loopback (GSocket *socket)
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
       g_socket_get_option (socket, IPPROTO_IP, IP_MULTICAST_LOOP,
-			   &value, &error);
+                           &value, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
       g_socket_get_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
-			   &value, &error);
+                           &value, &error);
     }
   else
     g_return_val_if_reached (FALSE);
@@ -1862,7 +1862,7 @@ g_socket_get_multicast_loopback (GSocket *socket)
  */
 void
 g_socket_set_multicast_loopback (GSocket    *socket,
-				 gboolean    loopback)
+                                 gboolean    loopback)
 {
   GError *error = NULL;
 
@@ -1873,14 +1873,14 @@ g_socket_set_multicast_loopback (GSocket    *socket,
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
       g_socket_set_option (socket, IPPROTO_IP, IP_MULTICAST_LOOP,
-			   loopback, &error);
+                           loopback, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
       g_socket_set_option (socket, IPPROTO_IP, IP_MULTICAST_LOOP,
-			   loopback, NULL);
+                           loopback, NULL);
       g_socket_set_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_LOOP,
-			   loopback, &error);
+                           loopback, &error);
     }
   else
     g_return_if_reached ();
@@ -1917,12 +1917,12 @@ g_socket_get_multicast_ttl (GSocket *socket)
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
       g_socket_get_option (socket, IPPROTO_IP, IP_MULTICAST_TTL,
-			   &value, &error);
+                           &value, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
       g_socket_get_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
-			   &value, &error);
+                           &value, &error);
     }
   else
     g_return_val_if_reached (FALSE);
@@ -1959,14 +1959,14 @@ g_socket_set_multicast_ttl (GSocket  *socket,
   if (socket->priv->family == G_SOCKET_FAMILY_IPV4)
     {
       g_socket_set_option (socket, IPPROTO_IP, IP_MULTICAST_TTL,
-			   ttl, &error);
+                           ttl, &error);
     }
   else if (socket->priv->family == G_SOCKET_FAMILY_IPV6)
     {
       g_socket_set_option (socket, IPPROTO_IP, IP_MULTICAST_TTL,
-			   ttl, NULL);
+                           ttl, NULL);
       g_socket_set_option (socket, IPPROTO_IPV6, IPV6_MULTICAST_HOPS,
-			   ttl, &error);
+                           ttl, &error);
     }
   else
     g_return_if_reached ();
@@ -2077,7 +2077,7 @@ g_socket_get_fd (GSocket *socket)
  */
 GSocketAddress *
 g_socket_get_local_address (GSocket  *socket,
-			    GError  **error)
+                            GError  **error)
 {
   union {
     struct sockaddr_storage storage;
@@ -2091,7 +2091,7 @@ g_socket_get_local_address (GSocket  *socket,
     {
       int errsv = get_socket_errno ();
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("could not get local address: %s"), socket_strerror (errsv));
+                   _("could not get local address: %s"), socket_strerror (errsv));
       return NULL;
     }
 
@@ -2113,7 +2113,7 @@ g_socket_get_local_address (GSocket  *socket,
  */
 GSocketAddress *
 g_socket_get_remote_address (GSocket  *socket,
-			     GError  **error)
+                             GError  **error)
 {
   union {
     struct sockaddr_storage storage;
@@ -2134,12 +2134,12 @@ g_socket_get_remote_address (GSocket  *socket,
   if (!socket->priv->remote_address)
     {
       if (getpeername (socket->priv->fd, &buffer.sa, &len) < 0)
-	{
-	  int errsv = get_socket_errno ();
-	  g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		       _("could not get remote address: %s"), socket_strerror (errsv));
-	  return NULL;
-	}
+        {
+          int errsv = get_socket_errno ();
+          g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
+                       _("could not get remote address: %s"), socket_strerror (errsv));
+          return NULL;
+        }
 
       socket->priv->remote_address = g_socket_address_new_from_native (&buffer.storage, len);
     }
@@ -2191,7 +2191,7 @@ g_socket_is_connected (GSocket *socket)
  */
 gboolean
 g_socket_listen (GSocket  *socket,
-		 GError  **error)
+                 GError  **error)
 {
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
@@ -2203,7 +2203,7 @@ g_socket_listen (GSocket  *socket,
       int errsv = get_socket_errno ();
 
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("could not listen: %s"), socket_strerror (errsv));
+                   _("could not listen: %s"), socket_strerror (errsv));
       return FALSE;
     }
 
@@ -2249,9 +2249,9 @@ g_socket_listen (GSocket  *socket,
  */
 gboolean
 g_socket_bind (GSocket         *socket,
-	       GSocketAddress  *address,
-	       gboolean         reuse_address,
-	       GError         **error)
+               GSocketAddress  *address,
+               gboolean         reuse_address,
+               GError         **error)
 {
   union {
     struct sockaddr_storage storage;
@@ -2300,15 +2300,15 @@ g_socket_bind (GSocket         *socket,
 #endif
 
   if (bind (socket->priv->fd, &addr.sa,
-	    g_socket_address_get_native_size (address)) < 0)
+            g_socket_address_get_native_size (address)) < 0)
     {
       int errsv = get_socket_errno ();
       gchar *address_string = address_to_string (address);
 
       g_set_error (error,
-		   G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("Error binding to address %s: %s"),
-		   address_string, socket_strerror (errsv));
+                   G_IO_ERROR, socket_io_error_from_errno (errsv),
+                   _("Error binding to address %s: %s"),
+                   address_string, socket_strerror (errsv));
       g_free (address_string);
       return FALSE;
     }
@@ -2469,11 +2469,11 @@ g_socket_get_adapter_ipv4_addr (GSocket     *socket,
 
 static gboolean
 g_socket_multicast_group_operation (GSocket       *socket,
-				    GInetAddress  *group,
+                                    GInetAddress  *group,
                                     gboolean       source_specific,
                                     const gchar   *iface,
-				    gboolean       join_group,
-				    GError       **error)
+                                    gboolean       join_group,
+                                    GError       **error)
 {
   const guint8 *native_addr;
   gint optname, result;
@@ -2533,22 +2533,22 @@ g_socket_multicast_group_operation (GSocket       *socket,
 #endif
 
       if (source_specific)
-	{
+        {
 #ifdef IP_ADD_SOURCE_MEMBERSHIP
-	  optname = join_group ? IP_ADD_SOURCE_MEMBERSHIP : IP_DROP_SOURCE_MEMBERSHIP;
+          optname = join_group ? IP_ADD_SOURCE_MEMBERSHIP : IP_DROP_SOURCE_MEMBERSHIP;
 #else
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		       join_group ?
-		       _("Error joining multicast group: %s") :
-		       _("Error leaving multicast group: %s"),
-		       _("No support for source-specific multicast"));
-	  return FALSE;
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                       join_group ?
+                       _("Error joining multicast group: %s") :
+                       _("Error leaving multicast group: %s"),
+                       _("No support for source-specific multicast"));
+          return FALSE;
 #endif
-	}
+        }
       else
         optname = join_group ? IP_ADD_MEMBERSHIP : IP_DROP_MEMBERSHIP;
       result = setsockopt (socket->priv->fd, IPPROTO_IP, optname,
-			   &mc_req, sizeof (mc_req));
+                           &mc_req, sizeof (mc_req));
     }
   else if (g_inet_address_get_family (group) == G_SOCKET_FAMILY_IPV6)
     {
@@ -2565,7 +2565,7 @@ g_socket_multicast_group_operation (GSocket       *socket,
 
       optname = join_group ? IPV6_JOIN_GROUP : IPV6_LEAVE_GROUP;
       result = setsockopt (socket->priv->fd, IPPROTO_IPV6, optname,
-			   &mc_req_ipv6, sizeof (mc_req_ipv6));
+                           &mc_req_ipv6, sizeof (mc_req_ipv6));
     }
   else
     g_return_val_if_reached (FALSE);
@@ -2575,10 +2575,10 @@ g_socket_multicast_group_operation (GSocket       *socket,
       int errsv = get_socket_errno ();
 
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   join_group ?
-		   _("Error joining multicast group: %s") :
-		   _("Error leaving multicast group: %s"),
-		   socket_strerror (errsv));
+                   join_group ?
+                   _("Error joining multicast group: %s") :
+                   _("Error leaving multicast group: %s"),
+                   socket_strerror (errsv));
       return FALSE;
     }
 
@@ -2614,10 +2614,10 @@ g_socket_multicast_group_operation (GSocket       *socket,
  */
 gboolean
 g_socket_join_multicast_group (GSocket       *socket,
-			       GInetAddress  *group,
+                               GInetAddress  *group,
                                gboolean       source_specific,
                                const gchar   *iface,
-			       GError       **error)
+                               GError       **error)
 {
   return g_socket_multicast_group_operation (socket, group, source_specific, iface, TRUE, error);
 }
@@ -2646,10 +2646,10 @@ g_socket_join_multicast_group (GSocket       *socket,
  */
 gboolean
 g_socket_leave_multicast_group (GSocket       *socket,
-				GInetAddress  *group,
+                                GInetAddress  *group,
                                 gboolean       source_specific,
                                 const gchar   *iface,
-				GError       **error)
+                                GError       **error)
 {
   return g_socket_multicast_group_operation (socket, group, source_specific, iface, FALSE, error);
 }
@@ -2945,8 +2945,8 @@ g_socket_speaks_ipv4 (GSocket *socket)
         gint v6_only;
 
         if (!g_socket_get_option (socket,
-				  IPPROTO_IPV6, IPV6_V6ONLY,
-				  &v6_only, NULL))
+                                  IPPROTO_IPV6, IPV6_V6ONLY,
+                                  &v6_only, NULL))
           return FALSE;
 
         return !v6_only;
@@ -2984,8 +2984,8 @@ g_socket_speaks_ipv4 (GSocket *socket)
  */
 GSocket *
 g_socket_accept (GSocket       *socket,
-		 GCancellable  *cancellable,
-		 GError       **error)
+                 GCancellable  *cancellable,
+                 GError       **error)
 {
 #ifdef HAVE_ACCEPT4
   gboolean try_accept4 = TRUE;
@@ -3028,11 +3028,11 @@ g_socket_accept (GSocket       *socket,
         ret = accept (socket->priv->fd, NULL, 0);
 
       if (ret < 0)
-	{
-	  int errsv = get_socket_errno ();
+        {
+          int errsv = get_socket_errno ();
 
-	  if (errsv == EINTR)
-	    continue;
+          if (errsv == EINTR)
+            continue;
 
 #ifdef WSAEWOULDBLOCK
           if (errsv == WSAEWOULDBLOCK)
@@ -3053,9 +3053,9 @@ g_socket_accept (GSocket       *socket,
                 }
             }
 
-	  socket_set_error_lazy (error, errsv, _("Error accepting connection: %s"));
-	  return NULL;
-	}
+          socket_set_error_lazy (error, errsv, _("Error accepting connection: %s"));
+          return NULL;
+        }
       break;
     }
 
@@ -3076,10 +3076,10 @@ g_socket_accept (GSocket       *socket,
        using lower level hacks with g_socket_get_fd(). */
     flags = fcntl (ret, F_GETFD, 0);
     if (flags != -1 &&
-	(flags & FD_CLOEXEC) == 0)
+        (flags & FD_CLOEXEC) == 0)
       {
-	flags |= FD_CLOEXEC;
-	fcntl (ret, F_SETFD, flags);
+        flags |= FD_CLOEXEC;
+        fcntl (ret, F_SETFD, flags);
       }
   }
 #endif
@@ -3129,9 +3129,9 @@ g_socket_accept (GSocket       *socket,
  */
 gboolean
 g_socket_connect (GSocket         *socket,
-		  GSocketAddress  *address,
-		  GCancellable    *cancellable,
-		  GError         **error)
+                  GSocketAddress  *address,
+                  GCancellable    *cancellable,
+                  GError         **error)
 {
   union {
     struct sockaddr_storage storage;
@@ -3156,43 +3156,43 @@ g_socket_connect (GSocket         *socket,
   while (1)
     {
       if (connect (socket->priv->fd, &buffer.sa,
-		   g_socket_address_get_native_size (address)) < 0)
-	{
-	  int errsv = get_socket_errno ();
+                   g_socket_address_get_native_size (address)) < 0)
+        {
+          int errsv = get_socket_errno ();
 
-	  if (errsv == EINTR)
-	    continue;
+          if (errsv == EINTR)
+            continue;
 
 #ifndef G_OS_WIN32
-	  if (errsv == EINPROGRESS)
+          if (errsv == EINPROGRESS)
 #else
-	  if (errsv == WSAEWOULDBLOCK)
+          if (errsv == WSAEWOULDBLOCK)
 #endif
-	    {
+            {
               win32_unset_event_mask (socket, FD_CONNECT);
 
-	      if (socket->priv->blocking)
-		{
-		  if (g_socket_condition_wait (socket, G_IO_OUT, cancellable, error))
-		    {
-		      if (g_socket_check_connect_result (socket, error))
-			break;
-		    }
-		}
-	      else
+              if (socket->priv->blocking)
+                {
+                  if (g_socket_condition_wait (socket, G_IO_OUT, cancellable, error))
+                    {
+                      if (g_socket_check_connect_result (socket, error))
+                        break;
+                    }
+                }
+              else
                 {
                   g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
                                        _("Connection in progress"));
                   socket->priv->connect_pending = TRUE;
                 }
-	    }
-	  else
-	    g_set_error_literal (error, G_IO_ERROR,
-				 socket_io_error_from_errno (errsv),
-				 socket_strerror (errsv));
+            }
+          else
+            g_set_error_literal (error, G_IO_ERROR,
+                                 socket_io_error_from_errno (errsv),
+                                 socket_strerror (errsv));
 
-	  return FALSE;
-	}
+          return FALSE;
+        }
       break;
     }
 
@@ -3219,7 +3219,7 @@ g_socket_connect (GSocket         *socket,
  */
 gboolean
 g_socket_check_connect_result (GSocket  *socket,
-			       GError  **error)
+                               GError  **error)
 {
   int value;
 
@@ -3395,11 +3395,11 @@ g_socket_receive_with_timeout (GSocket       *socket,
   while (1)
     {
       if ((ret = recv (socket->priv->fd, buffer, size, 0)) < 0)
-	{
-	  int errsv = get_socket_errno ();
+        {
+          int errsv = get_socket_errno ();
 
-	  if (errsv == EINTR)
-	    continue;
+          if (errsv == EINTR)
+            continue;
 
 #ifdef WSAEWOULDBLOCK
           if (errsv == WSAEWOULDBLOCK)
@@ -3420,11 +3420,11 @@ g_socket_receive_with_timeout (GSocket       *socket,
                 }
             }
 
-	  win32_unset_event_mask (socket, FD_READ);
+          win32_unset_event_mask (socket, FD_READ);
 
-	  socket_set_error_lazy (error, errsv, _("Error receiving data: %s"));
-	  return -1;
-	}
+          socket_set_error_lazy (error, errsv, _("Error receiving data: %s"));
+          return -1;
+        }
 
       win32_unset_event_mask (socket, FD_READ);
 
@@ -3537,10 +3537,10 @@ g_socket_receive_bytes (GSocket       *socket,
  */
 gssize
 g_socket_receive (GSocket       *socket,
-		  gchar         *buffer,
-		  gsize          size,
-		  GCancellable  *cancellable,
-		  GError       **error)
+                  gchar         *buffer,
+                  gsize          size,
+                  GCancellable  *cancellable,
+                  GError       **error)
 {
   return g_socket_receive_with_timeout (socket, (guint8 *) buffer, size,
                                         socket->priv->blocking ? -1 : 0,
@@ -3568,11 +3568,11 @@ g_socket_receive (GSocket       *socket,
  */
 gssize
 g_socket_receive_with_blocking (GSocket       *socket,
-				gchar         *buffer,
-				gsize          size,
-				gboolean       blocking,
-				GCancellable  *cancellable,
-				GError       **error)
+                                gchar         *buffer,
+                                gsize          size,
+                                gboolean       blocking,
+                                GCancellable  *cancellable,
+                                GError       **error)
 {
   return g_socket_receive_with_timeout (socket, (guint8 *) buffer, size,
                                         blocking ? -1 : 0, cancellable, error);
@@ -3683,11 +3683,11 @@ g_socket_receive_bytes_from (GSocket         *socket,
  */
 gssize
 g_socket_receive_from (GSocket         *socket,
-		       GSocketAddress **address,
-		       gchar           *buffer,
-		       gsize            size,
-		       GCancellable    *cancellable,
-		       GError         **error)
+                       GSocketAddress **address,
+                       gchar           *buffer,
+                       gsize            size,
+                       GCancellable    *cancellable,
+                       GError         **error)
 {
   GInputVector v;
 
@@ -3695,11 +3695,11 @@ g_socket_receive_from (GSocket         *socket,
   v.size = size;
 
   return g_socket_receive_message (socket,
-				   address,
-				   &v, 1,
-				   NULL, 0, NULL,
-				   cancellable,
-				   error);
+                                   address,
+                                   &v, 1,
+                                   NULL, 0, NULL,
+                                   cancellable,
+                                   error);
 }
 
 /* See the comment about SIGPIPE above. */
@@ -3736,11 +3736,11 @@ g_socket_send_with_timeout (GSocket       *socket,
   while (1)
     {
       if ((ret = send (socket->priv->fd, (const char *)buffer, size, G_SOCKET_DEFAULT_SEND_FLAGS)) < 0)
-	{
-	  int errsv = get_socket_errno ();
+        {
+          int errsv = get_socket_errno ();
 
-	  if (errsv == EINTR)
-	    continue;
+          if (errsv == EINTR)
+            continue;
 
 #ifdef WSAEWOULDBLOCK
           if (errsv == WSAEWOULDBLOCK)
@@ -3761,9 +3761,9 @@ g_socket_send_with_timeout (GSocket       *socket,
                 }
             }
 
-	  socket_set_error_lazy (error, errsv, _("Error sending data: %s"));
-	  return -1;
-	}
+          socket_set_error_lazy (error, errsv, _("Error sending data: %s"));
+          return -1;
+        }
       break;
     }
 
@@ -3801,14 +3801,14 @@ g_socket_send_with_timeout (GSocket       *socket,
  */
 gssize
 g_socket_send (GSocket       *socket,
-	       const gchar   *buffer,
-	       gsize          size,
-	       GCancellable  *cancellable,
-	       GError       **error)
+               const gchar   *buffer,
+               gsize          size,
+               GCancellable  *cancellable,
+               GError       **error)
 {
   return g_socket_send_with_blocking (socket, buffer, size,
-				      socket->priv->blocking,
-				      cancellable, error);
+                                      socket->priv->blocking,
+                                      cancellable, error);
 }
 
 /**
@@ -3832,11 +3832,11 @@ g_socket_send (GSocket       *socket,
  */
 gssize
 g_socket_send_with_blocking (GSocket       *socket,
-			     const gchar   *buffer,
-			     gsize          size,
-			     gboolean       blocking,
-			     GCancellable  *cancellable,
-			     GError       **error)
+                             const gchar   *buffer,
+                             gsize          size,
+                             gboolean       blocking,
+                             GCancellable  *cancellable,
+                             GError       **error)
 {
   return g_socket_send_with_timeout (socket, (const guint8 *) buffer, size,
                                      blocking ? -1 : 0, cancellable, error);
@@ -3865,11 +3865,11 @@ g_socket_send_with_blocking (GSocket       *socket,
  */
 gssize
 g_socket_send_to (GSocket         *socket,
-		  GSocketAddress  *address,
-		  const gchar     *buffer,
-		  gsize            size,
-		  GCancellable    *cancellable,
-		  GError         **error)
+                  GSocketAddress  *address,
+                  const gchar     *buffer,
+                  gsize            size,
+                  GCancellable    *cancellable,
+                  GError         **error)
 {
   GOutputVector v;
 
@@ -3877,12 +3877,12 @@ g_socket_send_to (GSocket         *socket,
   v.size = size;
 
   return g_socket_send_message (socket,
-				address,
-				&v, 1,
-				NULL, 0,
-				0,
-				cancellable,
-				error);
+                                address,
+                                &v, 1,
+                                NULL, 0,
+                                0,
+                                cancellable,
+                                error);
 }
 
 /**
@@ -3913,9 +3913,9 @@ g_socket_send_to (GSocket         *socket,
  */
 gboolean
 g_socket_shutdown (GSocket   *socket,
-		   gboolean   shutdown_read,
-		   gboolean   shutdown_write,
-		   GError   **error)
+                   gboolean   shutdown_read,
+                   gboolean   shutdown_write,
+                   GError   **error)
 {
   int how;
 
@@ -3948,7 +3948,7 @@ g_socket_shutdown (GSocket   *socket,
     {
       int errsv = get_socket_errno ();
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("Unable to shutdown socket: %s"), socket_strerror (errsv));
+                   _("Unable to shutdown socket: %s"), socket_strerror (errsv));
       return FALSE;
     }
 
@@ -4001,7 +4001,7 @@ g_socket_shutdown (GSocket   *socket,
  */
 gboolean
 g_socket_close (GSocket  *socket,
-		GError  **error)
+                GError  **error)
 {
   int res;
 
@@ -4021,18 +4021,18 @@ g_socket_close (GSocket  *socket,
       res = close (socket->priv->fd);
 #endif
       if (res == -1)
-	{
-	  int errsv = get_socket_errno ();
+        {
+          int errsv = get_socket_errno ();
 
-	  if (errsv == EINTR)
-	    continue;
+          if (errsv == EINTR)
+            continue;
 
-	  g_set_error (error, G_IO_ERROR,
-		       socket_io_error_from_errno (errsv),
-		       _("Error closing socket: %s"),
-		       socket_strerror (errsv));
-	  return FALSE;
-	}
+          g_set_error (error, G_IO_ERROR,
+                       socket_io_error_from_errno (errsv),
+                       _("Error closing socket: %s"),
+                       socket_strerror (errsv));
+          return FALSE;
+        }
       break;
     }
 
@@ -4068,8 +4068,8 @@ g_socket_is_closed (GSocket *socket)
 /* Broken source, used on errors */
 static gboolean
 broken_dispatch (GSource     *source,
-		 GSourceFunc  callback,
-		 gpointer     user_data)
+                 GSourceFunc  callback,
+                 gpointer     user_data)
 {
   return TRUE;
 }
@@ -4129,21 +4129,21 @@ update_select_events (GSocket *socket)
   if (event_mask != socket->priv->selected_events)
     {
       /* If no events selected, disable event so we can unset
-	 nonblocking mode */
+         nonblocking mode */
 
       if (event_mask == 0)
-	event = NULL;
+        event = NULL;
       else
-	event = socket->priv->event;
+        event = socket->priv->event;
 
       if (WSAEventSelect (socket->priv->fd, event, event_mask) == 0)
-	socket->priv->selected_events = event_mask;
+        socket->priv->selected_events = event_mask;
     }
 }
 
 static void
 add_condition_watch (GSocket      *socket,
-		     GIOCondition *condition)
+                     GIOCondition *condition)
 {
   g_mutex_lock (&socket->priv->win32_source_lock);
   g_assert (g_list_find (socket->priv->requested_conditions, condition) == NULL);
@@ -4157,7 +4157,7 @@ add_condition_watch (GSocket      *socket,
 
 static void
 remove_condition_watch (GSocket      *socket,
-			GIOCondition *condition)
+                        GIOCondition *condition)
 {
   g_mutex_lock (&socket->priv->win32_source_lock);
   g_assert (g_list_find (socket->priv->requested_conditions, condition) != NULL);
@@ -4181,11 +4181,11 @@ update_condition_unlocked (GSocket *socket)
     {
       socket->priv->current_events |= events.lNetworkEvents;
       if (events.lNetworkEvents & FD_WRITE &&
-	  events.iErrorCode[FD_WRITE_BIT] != 0)
-	socket->priv->current_errors |= FD_WRITE;
+          events.iErrorCode[FD_WRITE_BIT] != 0)
+        socket->priv->current_errors |= FD_WRITE;
       if (events.lNetworkEvents & FD_CONNECT &&
-	  events.iErrorCode[FD_CONNECT_BIT] != 0)
-	socket->priv->current_errors |= FD_CONNECT;
+          events.iErrorCode[FD_CONNECT_BIT] != 0)
+        socket->priv->current_errors |= FD_CONNECT;
     }
 
   condition = 0;
@@ -4220,19 +4220,19 @@ update_condition_unlocked (GSocket *socket)
       socket->priv->current_events & FD_WRITE)
     {
       if (socket->priv->current_errors & FD_WRITE)
-	condition |= G_IO_ERR;
+        condition |= G_IO_ERR;
       else
-	condition |= G_IO_OUT;
+        condition |= G_IO_OUT;
     }
   else
     {
       if (socket->priv->current_events & FD_CONNECT)
-	{
-	  if (socket->priv->current_errors & FD_CONNECT)
-	    condition |= (G_IO_HUP | G_IO_ERR);
-	  else
-	    condition |= G_IO_OUT;
-	}
+        {
+          if (socket->priv->current_errors & FD_CONNECT)
+            condition |= (G_IO_HUP | G_IO_ERR);
+          else
+            condition |= G_IO_OUT;
+        }
     }
 
   return condition;
@@ -4295,8 +4295,8 @@ socket_source_check_win32 (GSource *source)
 
 static gboolean
 socket_source_dispatch (GSource     *source,
-			GSourceFunc  callback,
-			gpointer     user_data)
+                        GSourceFunc  callback,
+                        gpointer     user_data)
 {
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
   GSocketSource *socket_source = (GSocketSource *)source;
@@ -4359,8 +4359,8 @@ socket_source_finalize (GSource *source)
 
 static gboolean
 socket_source_closure_callback (GSocket      *socket,
-				GIOCondition  condition,
-				gpointer      data)
+                                GIOCondition  condition,
+                                gpointer      data)
 {
   GClosure *closure = data;
 
@@ -4401,8 +4401,8 @@ static GSourceFuncs socket_source_funcs =
 
 static GSource *
 socket_source_new (GSocket      *socket,
-		   GIOCondition  condition,
-		   GCancellable *cancellable)
+                   GIOCondition  condition,
+                   GCancellable *cancellable)
 {
   GSource *source;
   GSocketSource *socket_source;
@@ -4493,8 +4493,8 @@ socket_source_new (GSocket      *socket,
  */
 GSource *
 g_socket_create_source (GSocket      *socket,
-			GIOCondition  condition,
-			GCancellable *cancellable)
+                        GIOCondition  condition,
+                        GCancellable *cancellable)
 {
   g_return_val_if_fail (G_IS_SOCKET (socket) && (cancellable == NULL || G_IS_CANCELLABLE (cancellable)), NULL);
 
@@ -4530,7 +4530,7 @@ g_socket_create_source (GSocket      *socket,
  */
 GIOCondition
 g_socket_condition_check (GSocket      *socket,
-			  GIOCondition  condition)
+                          GIOCondition  condition)
 {
   g_return_val_if_fail (G_IS_SOCKET (socket), 0);
 
@@ -4589,14 +4589,14 @@ g_socket_condition_check (GSocket      *socket,
  */
 gboolean
 g_socket_condition_wait (GSocket       *socket,
-			 GIOCondition   condition,
-			 GCancellable  *cancellable,
-			 GError       **error)
+                         GIOCondition   condition,
+                         GCancellable  *cancellable,
+                         GError       **error)
 {
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
   return g_socket_condition_timed_wait (socket, condition, -1,
-					cancellable, error);
+                                        cancellable, error);
 }
 
 /**
@@ -4630,10 +4630,10 @@ g_socket_condition_wait (GSocket       *socket,
  */
 gboolean
 g_socket_condition_timed_wait (GSocket       *socket,
-			       GIOCondition   condition,
-			       gint64         timeout_us,
-			       GCancellable  *cancellable,
-			       GError       **error)
+                               GIOCondition   condition,
+                               gint64         timeout_us,
+                               GCancellable  *cancellable,
+                               GError       **error)
 {
   gint64 start_time;
   gint64 timeout_ms;
@@ -4716,34 +4716,34 @@ g_socket_condition_timed_wait (GSocket       *socket,
               }
           }
 
-	if (res == WSA_WAIT_FAILED)
-	  {
-	    int errsv = get_socket_errno ();
+        if (res == WSA_WAIT_FAILED)
+          {
+            int errsv = get_socket_errno ();
 
-	    g_set_error (error, G_IO_ERROR,
-			 socket_io_error_from_errno (errsv),
-			 _("Waiting for socket condition: %s"),
-			 socket_strerror (errsv));
-	    break;
-	  }
-	else if (res == WSA_WAIT_TIMEOUT)
-	  {
-	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
-				 _("Socket I/O timed out"));
-	    break;
-	  }
+            g_set_error (error, G_IO_ERROR,
+                         socket_io_error_from_errno (errsv),
+                         _("Waiting for socket condition: %s"),
+                         socket_strerror (errsv));
+            break;
+          }
+        else if (res == WSA_WAIT_TIMEOUT)
+          {
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+                                 _("Socket I/O timed out"));
+            break;
+          }
 
-	if (g_cancellable_set_error_if_cancelled (cancellable, error))
-	  break;
+        if (g_cancellable_set_error_if_cancelled (cancellable, error))
+          break;
 
         current_condition = update_condition_unlocked (socket);
 
-	if (timeout_ms != WSA_INFINITE)
-	  {
-	    timeout_ms -= (g_get_monotonic_time () - start_time) * 1000;
-	    if (timeout_ms < 0)
-	      timeout_ms = 0;
-	  }
+        if (timeout_ms != WSA_INFINITE)
+          {
+            timeout_ms -= (g_get_monotonic_time () - start_time) * 1000;
+            if (timeout_ms < 0)
+              timeout_ms = 0;
+          }
       }
     g_mutex_unlock (&socket->priv->win32_source_lock);
     remove_condition_watch (socket, &condition);
@@ -4767,18 +4767,18 @@ g_socket_condition_timed_wait (GSocket       *socket,
 
     while (TRUE)
       {
-	int errsv;
-	result = g_poll (poll_fd, num, timeout_ms);
-	errsv = errno;
-	if (result != -1 || errsv != EINTR)
-	  break;
+        int errsv;
+        result = g_poll (poll_fd, num, timeout_ms);
+        errsv = errno;
+        if (result != -1 || errsv != EINTR)
+          break;
 
-	if (timeout_ms != -1)
-	  {
-	    timeout_ms -= (g_get_monotonic_time () - start_time) / 1000;
-	    if (timeout_ms < 0)
-	      timeout_ms = 0;
-	  }
+        if (timeout_ms != -1)
+          {
+            timeout_ms -= (g_get_monotonic_time () - start_time) / 1000;
+            if (timeout_ms < 0)
+              timeout_ms = 0;
+          }
       }
     
     if (num > 1)
@@ -4786,9 +4786,9 @@ g_socket_condition_timed_wait (GSocket       *socket,
 
     if (result == 0)
       {
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
-			     _("Socket I/O timed out"));
-	return FALSE;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+                             _("Socket I/O timed out"));
+        return FALSE;
       }
 
     return !g_cancellable_set_error_if_cancelled (cancellable, error);
@@ -4947,8 +4947,8 @@ G_STMT_START { \
   /* control */ \
   if (_message->control_messages == NULL) \
     { \
-	  _msg->msg_controllen = 0; \
-	  _msg->msg_control = NULL; \
+          _msg->msg_controllen = 0; \
+          _msg->msg_control = NULL; \
     } \
   else \
     { \
@@ -5091,14 +5091,14 @@ input_message_from_msghdr (const struct msghdr  *msg,
  */
 gssize
 g_socket_send_message (GSocket                *socket,
-		       GSocketAddress         *address,
-		       GOutputVector          *vectors,
-		       gint                    num_vectors,
-		       GSocketControlMessage **messages,
-		       gint                    num_messages,
-		       gint                    flags,
-		       GCancellable           *cancellable,
-		       GError                **error)
+                       GSocketAddress         *address,
+                       GOutputVector          *vectors,
+                       gint                    num_vectors,
+                       GSocketControlMessage **messages,
+                       gint                    num_messages,
+                       gint                    flags,
+                       GCancellable           *cancellable,
+                       GError                **error)
 {
   GPollableReturn res;
   gsize bytes_written = 0;
@@ -5238,17 +5238,17 @@ g_socket_send_message_with_timeout (GSocket                *socket,
   if (num_vectors == -1)
     {
       for (num_vectors = 0;
-	   vectors[num_vectors].buffer != NULL;
-	   num_vectors++)
-	;
+           vectors[num_vectors].buffer != NULL;
+           num_vectors++)
+        ;
     }
 
   if (num_messages == -1)
     {
       for (num_messages = 0;
-	   messages != NULL && messages[num_messages] != NULL;
-	   num_messages++)
-	;
+           messages != NULL && messages[num_messages] != NULL;
+           num_messages++)
+        ;
     }
 
   if (num_vectors == 0)
@@ -5285,15 +5285,15 @@ g_socket_send_message_with_timeout (GSocket                *socket,
 
     while (1)
       {
-	result = sendmsg (socket->priv->fd, &msg, flags | G_SOCKET_DEFAULT_SEND_FLAGS);
-	if (result < 0)
-	  {
-	    int errsv = get_socket_errno ();
+        result = sendmsg (socket->priv->fd, &msg, flags | G_SOCKET_DEFAULT_SEND_FLAGS);
+        if (result < 0)
+          {
+            int errsv = get_socket_errno ();
 
-	    if (errsv == EINTR)
-	      continue;
+            if (errsv == EINTR)
+              continue;
 
-	    if (errsv == EWOULDBLOCK || errsv == EAGAIN)
+            if (errsv == EWOULDBLOCK || errsv == EAGAIN)
               {
                 if (timeout_us != 0)
                   {
@@ -5309,8 +5309,8 @@ g_socket_send_message_with_timeout (GSocket                *socket,
 
             socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
             return G_POLLABLE_RETURN_FAILED;
-	  }
-	break;
+          }
+        break;
       }
 
     if (bytes_written)
@@ -5335,48 +5335,48 @@ g_socket_send_message_with_timeout (GSocket                *socket,
       {
         g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                              _("GSocketControlMessage not supported on Windows"));
-	return G_POLLABLE_RETURN_FAILED;
+        return G_POLLABLE_RETURN_FAILED;
       }
 
     /* iov */
     bufs = g_newa (WSABUF, num_vectors);
     for (i = 0; i < num_vectors; i++)
       {
-	bufs[i].buf = (char *)vectors[i].buffer;
-	bufs[i].len = (gulong)vectors[i].size;
+        bufs[i].buf = (char *)vectors[i].buffer;
+        bufs[i].len = (gulong)vectors[i].size;
       }
 
     /* name */
     addrlen = 0; /* Avoid warning */
     if (address)
       {
-	addrlen = g_socket_address_get_native_size (address);
-	if (!g_socket_address_to_native (address, &addr, sizeof addr, error))
-	  return G_POLLABLE_RETURN_FAILED;
+        addrlen = g_socket_address_get_native_size (address);
+        if (!g_socket_address_to_native (address, &addr, sizeof addr, error))
+          return G_POLLABLE_RETURN_FAILED;
       }
 
     while (1)
       {
-	if (address)
-	  result = WSASendTo (socket->priv->fd,
-			      bufs, num_vectors,
-			      &bytes_sent, flags,
-			      (const struct sockaddr *)&addr, addrlen,
-			      NULL, NULL);
-	else
-	  result = WSASend (socket->priv->fd,
-			    bufs, num_vectors,
-			    &bytes_sent, flags,
-			    NULL, NULL);
+        if (address)
+          result = WSASendTo (socket->priv->fd,
+                              bufs, num_vectors,
+                              &bytes_sent, flags,
+                              (const struct sockaddr *)&addr, addrlen,
+                              NULL, NULL);
+        else
+          result = WSASend (socket->priv->fd,
+                            bufs, num_vectors,
+                            &bytes_sent, flags,
+                            NULL, NULL);
 
-	if (result != 0)
-	  {
-	    int errsv = get_socket_errno ();
+        if (result != 0)
+          {
+            int errsv = get_socket_errno ();
 
-	    if (errsv == WSAEINTR)
-	      continue;
+            if (errsv == WSAEINTR)
+              continue;
 
-	    if (errsv == WSAEWOULDBLOCK)
+            if (errsv == WSAEWOULDBLOCK)
               {
                 win32_unset_event_mask (socket, FD_WRITE);
 
@@ -5392,10 +5392,10 @@ g_socket_send_message_with_timeout (GSocket                *socket,
                 return G_POLLABLE_RETURN_WOULD_BLOCK;
               }
 
-	    socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
-	    return G_POLLABLE_RETURN_FAILED;
-	  }
-	break;
+            socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
+            return G_POLLABLE_RETURN_FAILED;
+          }
+        break;
       }
 
     if (bytes_written)
@@ -5459,11 +5459,11 @@ g_socket_send_message_with_timeout (GSocket                *socket,
  */
 gint
 g_socket_send_messages (GSocket        *socket,
-		        GOutputMessage *messages,
-		        guint           num_messages,
-		        gint            flags,
-		        GCancellable   *cancellable,
-		        GError        **error)
+                        GOutputMessage *messages,
+                        guint           num_messages,
+                        gint            flags,
+                        GCancellable   *cancellable,
+                        GError        **error)
 {
   return g_socket_send_messages_with_timeout (socket, messages, num_messages,
                                               flags,
@@ -5739,9 +5739,9 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
   if (num_vectors == -1)
     {
       for (num_vectors = 0;
-	   vectors[num_vectors].buffer != NULL;
-	   num_vectors++)
-	;
+           vectors[num_vectors].buffer != NULL;
+           num_vectors++)
+        ;
     }
 
   if (num_vectors == 0)
@@ -5779,38 +5779,38 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
     /* do it */
     while (1)
       {
-	result = recvmsg (socket->priv->fd, &msg, msg.msg_flags);
-#ifdef MSG_CMSG_CLOEXEC	
-	if (result < 0 && get_socket_errno () == EINVAL)
-	  {
-	    /* We must be running on an old kernel.  Call without the flag. */
-	    msg.msg_flags &= ~(MSG_CMSG_CLOEXEC);
-	    result = recvmsg (socket->priv->fd, &msg, msg.msg_flags);
-	  }
+        result = recvmsg (socket->priv->fd, &msg, msg.msg_flags);
+#ifdef MSG_CMSG_CLOEXEC 
+        if (result < 0 && get_socket_errno () == EINVAL)
+          {
+            /* We must be running on an old kernel.  Call without the flag. */
+            msg.msg_flags &= ~(MSG_CMSG_CLOEXEC);
+            result = recvmsg (socket->priv->fd, &msg, msg.msg_flags);
+          }
 #endif
 
-	if (result < 0)
-	  {
-	    int errsv = get_socket_errno ();
+        if (result < 0)
+          {
+            int errsv = get_socket_errno ();
 
-	    if (errsv == EINTR)
-	      continue;
+            if (errsv == EINTR)
+              continue;
 
-	    if (timeout_us != 0 &&
-		(errsv == EWOULDBLOCK ||
-		 errsv == EAGAIN))
-	      {
+            if (timeout_us != 0 &&
+                (errsv == EWOULDBLOCK ||
+                 errsv == EAGAIN))
+              {
                 if (!block_on_timeout (socket, G_IO_IN, timeout_us, start_time,
                                        cancellable, error))
                   return -1;
 
                 continue;
-	      }
+              }
 
-	    socket_set_error_lazy (error, errsv, _("Error receiving message: %s"));
-	    return -1;
-	  }
-	break;
+            socket_set_error_lazy (error, errsv, _("Error receiving message: %s"));
+            return -1;
+          }
+        break;
       }
 
     input_message_from_msghdr (&msg, &input_message, socket);
@@ -5834,8 +5834,8 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
     bufs = g_newa (WSABUF, num_vectors);
     for (i = 0; i < num_vectors; i++)
       {
-	bufs[i].buf = (char *)vectors[i].buffer;
-	bufs[i].len = (gulong)vectors[i].size;
+        bufs[i].buf = (char *)vectors[i].buffer;
+        bufs[i].len = (gulong)vectors[i].size;
       }
 
     /* flags */
@@ -5850,26 +5850,26 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
         /* addrlen has to be of type int because that’s how WSARecvFrom() is defined */
         G_STATIC_ASSERT (sizeof addr <= G_MAXINT);
 
-	addrlen = sizeof addr;
-	if (address)
-	  result = WSARecvFrom (socket->priv->fd,
-				bufs, num_vectors,
-				&bytes_received, &win_flags,
-				(struct sockaddr *)&addr, &addrlen,
-				NULL, NULL);
-	else
-	  result = WSARecv (socket->priv->fd,
-			    bufs, num_vectors,
-			    &bytes_received, &win_flags,
-			    NULL, NULL);
-	if (result != 0)
-	  {
-	    int errsv = get_socket_errno ();
+        addrlen = sizeof addr;
+        if (address)
+          result = WSARecvFrom (socket->priv->fd,
+                                bufs, num_vectors,
+                                &bytes_received, &win_flags,
+                                (struct sockaddr *)&addr, &addrlen,
+                                NULL, NULL);
+        else
+          result = WSARecv (socket->priv->fd,
+                            bufs, num_vectors,
+                            &bytes_received, &win_flags,
+                            NULL, NULL);
+        if (result != 0)
+          {
+            int errsv = get_socket_errno ();
 
-	    if (errsv == WSAEINTR)
-	      continue;
+            if (errsv == WSAEINTR)
+              continue;
 
-	    win32_unset_event_mask (socket, FD_READ);
+            win32_unset_event_mask (socket, FD_READ);
 
             if (errsv == WSAEWOULDBLOCK)
               {
@@ -5883,11 +5883,11 @@ g_socket_receive_message_with_timeout (GSocket                 *socket,
                   }
               }
 
-	    socket_set_error_lazy (error, errsv, _("Error receiving message: %s"));
-	    return -1;
-	  }
+            socket_set_error_lazy (error, errsv, _("Error receiving message: %s"));
+            return -1;
+          }
         win32_unset_event_mask (socket, FD_READ);
-	break;
+        break;
       }
 
     /* decode address */
@@ -6273,14 +6273,14 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
  */
 gssize
 g_socket_receive_message (GSocket                 *socket,
-			  GSocketAddress         **address,
-			  GInputVector            *vectors,
-			  gint                     num_vectors,
-			  GSocketControlMessage ***messages,
-			  gint                    *num_messages,
-			  gint                    *flags,
-			  GCancellable            *cancellable,
-			  GError                 **error)
+                          GSocketAddress         **address,
+                          GInputVector            *vectors,
+                          gint                     num_vectors,
+                          GSocketControlMessage ***messages,
+                          gint                    *num_messages,
+                          gint                    *flags,
+                          GCancellable            *cancellable,
+                          GError                 **error)
 {
   return g_socket_receive_message_with_timeout (socket, address, vectors,
                                                  num_vectors, messages,
@@ -6513,10 +6513,10 @@ g_socket_get_credentials (GSocket   *socket,
  */
 gboolean
 g_socket_get_option (GSocket  *socket,
-		     gint      level,
-		     gint      optname,
-		     gint     *value,
-		     GError  **error)
+                     gint      level,
+                     gint      optname,
+                     gint     *value,
+                     GError  **error)
 {
   socklen_t size;
 
@@ -6534,9 +6534,9 @@ g_socket_get_option (GSocket  *socket,
       int errsv = get_socket_errno ();
 
       g_set_error_literal (error,
-			   G_IO_ERROR,
-			   socket_io_error_from_errno (errsv),
-			   socket_strerror (errsv));
+                           G_IO_ERROR,
+                           socket_io_error_from_errno (errsv),
+                           socket_strerror (errsv));
 #ifndef G_OS_WIN32
       /* Reset errno in case the caller wants to look at it */
       errno = errsv;
@@ -6581,10 +6581,10 @@ g_socket_get_option (GSocket  *socket,
  */
 gboolean
 g_socket_set_option (GSocket  *socket,
-		     gint      level,
-		     gint      optname,
-		     gint      value,
-		     GError  **error)
+                     gint      level,
+                     gint      optname,
+                     gint      value,
+                     GError  **error)
 {
   gint errsv;
 

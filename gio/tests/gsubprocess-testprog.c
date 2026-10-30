@@ -15,16 +15,16 @@ static GOptionEntry options[] = {
 
 static void
 write_all (int           fd,
-	   const guint8* buf,
-	   gsize         len)
+           const guint8* buf,
+           gsize         len)
 {
   while (len > 0)
     {
       gssize bytes_written = write (fd, buf, len);
       int errsv = errno;
       if (bytes_written < 0)
-	g_error ("Failed to write to fd %d: %s",
-		 fd, g_strerror (errsv));
+        g_error ("Failed to write to fd %d: %s",
+                 fd, g_strerror (errsv));
       buf += bytes_written;
       len -= bytes_written;
     }
@@ -32,7 +32,7 @@ write_all (int           fd,
 
 static int
 echo_mode (int argc,
-	   char **argv)
+           char **argv)
 {
   int i;
 
@@ -47,7 +47,7 @@ echo_mode (int argc,
 
 static int
 echo_stdout_and_stderr_mode (int argc,
-			     char **argv)
+                             char **argv)
 {
   int i;
 
@@ -64,7 +64,7 @@ echo_stdout_and_stderr_mode (int argc,
 
 static int
 cat_mode (int argc,
-	  char **argv)
+          char **argv)
 {
   GIOChannel *chan_stdin;
   GIOChannel *chan_stdout;
@@ -84,20 +84,20 @@ cat_mode (int argc,
   while (TRUE)
     {
       do
-	status = g_io_channel_read_chars (chan_stdin, buf, sizeof (buf),
-					  &bytes_read, error);
+        status = g_io_channel_read_chars (chan_stdin, buf, sizeof (buf),
+                                          &bytes_read, error);
       while (status == G_IO_STATUS_AGAIN);
 
       if (status == G_IO_STATUS_EOF || status == G_IO_STATUS_ERROR)
-	break;
+        break;
 
       do
-	status = g_io_channel_write_chars (chan_stdout, buf, bytes_read,
-					   &bytes_written, error);
+        status = g_io_channel_write_chars (chan_stdout, buf, bytes_read,
+                                           &bytes_written, error);
       while (status == G_IO_STATUS_AGAIN);
 
       if (status == G_IO_STATUS_EOF || status == G_IO_STATUS_ERROR)
-	break;
+        break;
     }
 
   g_io_channel_unref (chan_stdin);
@@ -114,7 +114,7 @@ cat_mode (int argc,
 
 static gint
 sleep_forever_mode (int argc,
-		    char **argv)
+                    char **argv)
 {
   GMainLoop *loop;
   
@@ -343,7 +343,7 @@ main (int argc, char **argv)
   else if (strcmp (mode, "assert-argv0") == 0)
     {
       if (strcmp (argv[0], "moocow") == 0)
-	return 0;
+        return 0;
       g_printerr ("argv0=%s != moocow\n", argv[0]);
       return 1;
     }

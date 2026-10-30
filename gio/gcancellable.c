@@ -128,8 +128,8 @@ g_cancellable_class_init (GCancellableClass *klass)
    *     id = 0;
    *     if (cancellable)
    *       id = g_cancellable_connect (cancellable,
-   *     			      G_CALLBACK (cancelled_handler)
-   *     			      data, NULL);
+   *                                  G_CALLBACK (cancelled_handler)
+   *                                  data, NULL);
    *
    *     // cancellable operation here...
    *
@@ -146,12 +146,12 @@ g_cancellable_class_init (GCancellableClass *klass)
    */
   signals[CANCELLED] =
     g_signal_new (I_("cancelled"),
-		  G_TYPE_FROM_CLASS (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GCancellableClass, cancelled),
-		  NULL, NULL,
-		  NULL,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GCancellableClass, cancelled),
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 0);
   
 }
 
@@ -361,7 +361,7 @@ g_cancellable_get_fd (GCancellable *cancellable)
 #endif
 
   if (cancellable == NULL)
-	  return -1;
+          return -1;
 
 #ifdef G_OS_WIN32
   pollfd.fd = -1;
@@ -599,9 +599,9 @@ g_cancellable_cancel (GCancellable *cancellable)
  */
 gulong
 g_cancellable_connect (GCancellable   *cancellable,
-		       GCallback       callback,
-		       gpointer        data,
-		       GDestroyNotify  data_destroy_func)
+                       GCallback       callback,
+                       gpointer        data,
+                       GDestroyNotify  data_destroy_func)
 {
   GCancellable *extra_ref = NULL;
   gulong id;
@@ -683,7 +683,7 @@ g_cancellable_connect (GCancellable   *cancellable,
  */
 void
 g_cancellable_disconnect (GCancellable  *cancellable,
-			  gulong         handler_id)
+                          gulong         handler_id)
 {
   GCancellablePrivate *priv;
 
@@ -727,7 +727,7 @@ typedef struct {
  */
 static void
 cancellable_source_cancelled (GCancellable *cancellable,
-			      gpointer      user_data)
+                              gpointer      user_data)
 {
   GSource *source = g_atomic_pointer_exchange ((GSource **) user_data, NULL);
   GCancellableSource *cancellable_source;
@@ -771,8 +771,8 @@ cancellable_source_prepare (GSource *source,
 
 static gboolean
 cancellable_source_dispatch (GSource     *source,
-			     GSourceFunc  callback,
-			     gpointer     user_data)
+                             GSourceFunc  callback,
+                             gpointer     user_data)
 {
   GCancellableSourceFunc func = (GCancellableSourceFunc)callback;
   GCancellableSource *cancellable_source = (GCancellableSource *)source;
@@ -822,7 +822,7 @@ cancellable_source_dispose (GSource *source)
 
 static gboolean
 cancellable_source_closure_callback (GCancellable *cancellable,
-				     gpointer      data)
+                                     gpointer      data)
 {
   GClosure *closure = data;
 

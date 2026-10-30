@@ -78,7 +78,7 @@ g_poll_file_monitor_init (GPollFileMonitor* poll_monitor)
 
 static int
 calc_event_type (GFileInfo *last,
-		 GFileInfo *new)
+                 GFileInfo *new)
 {
   if (last == NULL && new == NULL)
     return -1;
@@ -118,26 +118,26 @@ got_new_info (GObject      *source_object,
       event = calc_event_type (poll_monitor->last_info, info);
 
       if (event != -1)
-	{
-	  g_file_monitor_emit_event (G_FILE_MONITOR (poll_monitor),
-				     poll_monitor->file,
-				     NULL, event);
-	  /* We're polling so slowly anyway, so always emit the done hint */
-	  if (!g_file_monitor_is_cancelled (G_FILE_MONITOR (poll_monitor)) &&
+        {
+          g_file_monitor_emit_event (G_FILE_MONITOR (poll_monitor),
+                                     poll_monitor->file,
+                                     NULL, event);
+          /* We're polling so slowly anyway, so always emit the done hint */
+          if (!g_file_monitor_is_cancelled (G_FILE_MONITOR (poll_monitor)) &&
              (event == G_FILE_MONITOR_EVENT_CHANGED || event == G_FILE_MONITOR_EVENT_CREATED))
-	    g_file_monitor_emit_event (G_FILE_MONITOR (poll_monitor),
-				       poll_monitor->file,
-				       NULL, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
-	}
+            g_file_monitor_emit_event (G_FILE_MONITOR (poll_monitor),
+                                       poll_monitor->file,
+                                       NULL, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
+        }
       
       if (poll_monitor->last_info)
-	{
-	  g_object_unref (poll_monitor->last_info);
-	  poll_monitor->last_info = NULL;
-	}
+        {
+          g_object_unref (poll_monitor->last_info);
+          poll_monitor->last_info = NULL;
+        }
       
       if (info)
-	poll_monitor->last_info = g_object_ref (info);
+        poll_monitor->last_info = g_object_ref (info);
       
       schedule_poll_timeout (poll_monitor);
     }
@@ -157,7 +157,7 @@ poll_file_timeout (gpointer data)
   poll_monitor->timeout = NULL;
 
   g_file_query_info_async (poll_monitor->file, G_FILE_ATTRIBUTE_ETAG_VALUE "," G_FILE_ATTRIBUTE_STANDARD_SIZE,
-			 0, 0, NULL, got_new_info, g_object_ref (poll_monitor));
+                         0, 0, NULL, got_new_info, g_object_ref (poll_monitor));
   
   return G_SOURCE_REMOVE;
 }
@@ -206,7 +206,7 @@ _g_poll_file_monitor_new (GFile *file)
   poll_monitor->file = g_object_ref (file);
 
   g_file_query_info_async (file, G_FILE_ATTRIBUTE_ETAG_VALUE "," G_FILE_ATTRIBUTE_STANDARD_SIZE,
-			   0, 0, NULL, got_initial_info, g_object_ref (poll_monitor));
+                           0, 0, NULL, got_initial_info, g_object_ref (poll_monitor));
   
   return G_FILE_MONITOR (poll_monitor);
 }

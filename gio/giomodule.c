@@ -520,84 +520,84 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
       g_free (data);
 
       for (i = 0;  lines[i] != NULL; i++)
-	{
-	  char *line = lines[i];
-	  char *file;
-	  char *colon;
-	  char **strv_extension_points;
+        {
+          char *line = lines[i];
+          char *file;
+          char *colon;
+          char **strv_extension_points;
 
-	  if (line[0] == '#')
-	    continue;
+          if (line[0] == '#')
+            continue;
 
-	  colon = strchr (line, ':');
-	  if (colon == NULL || line == colon)
-	    continue; /* Invalid line, ignore */
+          colon = strchr (line, ':');
+          if (colon == NULL || line == colon)
+            continue; /* Invalid line, ignore */
 
-	  *colon = 0; /* terminate filename */
-	  file = g_strdup (line);
-	  colon++; /* after colon */
+          *colon = 0; /* terminate filename */
+          file = g_strdup (line);
+          colon++; /* after colon */
 
-	  while (g_ascii_isspace (*colon))
-	    colon++;
+          while (g_ascii_isspace (*colon))
+            colon++;
 
           if (G_UNLIKELY (!cache))
             cache = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            g_free, (GDestroyNotify)g_strfreev);
 
-	  strv_extension_points = g_strsplit (colon, ",", -1);
-	  g_hash_table_insert (cache, file, strv_extension_points);
-	}
+          strv_extension_points = g_strsplit (colon, ",", -1);
+          g_hash_table_insert (cache, file, strv_extension_points);
+        }
       g_strfreev (lines);
     }
 
   while ((name = g_dir_read_name (dir)))
     {
       if (is_valid_module_name (name, scope))
-	{
-	  GIOExtensionPoint *extension_point;
-	  GIOModule *module;
-	  gchar *path;
-	  char **strv_extension_points = NULL;
-	  int i;
+        {
+          GIOExtensionPoint *extension_point;
+          GIOModule *module;
+          gchar *path;
+          char **strv_extension_points = NULL;
+          int i;
 
-	  path = g_build_filename (dirname, name, NULL);
-	  module = g_io_module_new (path);
+          path = g_build_filename (dirname, name, NULL);
+          module = g_io_module_new (path);
 
           if (cache)
             strv_extension_points = g_hash_table_lookup (cache, name);
 
-	  if (strv_extension_points != NULL &&
-	      g_stat (path, &statbuf) == 0 &&
-	      statbuf.st_ctime <= cache_time)
-	    {
-	      /* Lazy load/init the library when first required */
-	      for (i = 0; strv_extension_points[i] != NULL; i++)
-		{
-		  extension_point =
-		    g_io_extension_point_register (strv_extension_points[i]);
-		  extension_point->lazy_load_modules =
-		    g_list_prepend (extension_point->lazy_load_modules,
-				    module);
-		}
-	    }
-	  else
-	    {
-	      /* Try to load and init types */
-	      if (g_type_module_use (G_TYPE_MODULE (module)))
-		{
-		  g_type_module_unuse (G_TYPE_MODULE (module)); /* Unload */
-		  /* module must remain alive, because the type system keeps weak refs */
-		  g_ignore_leak (module);
-		}
-	      else
-		{
-		  g_printerr ("Failed to load module: %s\n", path);
-		  g_object_unref (module);
-		}
-	    }
+          if (strv_extension_points != NULL &&
+              g_stat (path, &statbuf) == 0 &&
+              statbuf.st_ctime <= cache_time)
+            {
+              /* Lazy load/init the library when first required */
+              for (i = 0; strv_extension_points[i] != NULL; i++)
+                {
+                  extension_point =
+                    g_io_extension_point_register (strv_extension_points[i]);
+                  extension_point->lazy_load_modules =
+                    g_list_prepend (extension_point->lazy_load_modules,
+                                    module);
+                }
+            }
+          else
+            {
+              /* Try to load and init types */
+              if (g_type_module_use (G_TYPE_MODULE (module)))
+                {
+                  g_type_module_unuse (G_TYPE_MODULE (module)); /* Unload */
+                  /* module must remain alive, because the type system keeps weak refs */
+                  g_ignore_leak (module);
+                }
+              else
+                {
+                  g_printerr ("Failed to load module: %s\n", path);
+                  g_object_unref (module);
+                }
+            }
 
-	  g_free (path);
-	}
+          g_free (path);
+        }
     }
 
   g_dir_close (dir);
@@ -687,7 +687,7 @@ g_io_modules_load_all_in_directory_with_scope (const char     *dirname,
               g_free (path);
               continue;
             }
-	  
+          
           g_free (path);
 
           modules = g_list_prepend (modules, module);
@@ -883,7 +883,7 @@ _g_io_module_get_default_type (const gchar *extension_point,
 static gpointer
 try_implementation (const char           *extension_point,
                     GIOExtension         *extension,
-		    GIOModuleVerifyFunc   verify_func)
+                    GIOModuleVerifyFunc   verify_func)
 {
   GType type = g_io_extension_get_type (extension);
   gpointer impl;
@@ -908,7 +908,7 @@ try_implementation (const char           *extension_point,
     {
       impl = g_object_new (type, NULL);
       if (!verify_func || verify_func (impl))
-	return impl;
+        return impl;
 
       g_object_unref (impl);
       return NULL;
@@ -953,8 +953,8 @@ weak_ref_free (GWeakRef *weak_ref)
  */
 gpointer
 _g_io_module_get_default (const gchar         *extension_point,
-			  const gchar         *envvar,
-			  GIOModuleVerifyFunc  verify_func)
+                          const gchar         *envvar,
+                          GIOModuleVerifyFunc  verify_func)
 {
   static GRecMutex default_modules_lock;
   static GHashTable *default_modules;
@@ -1017,12 +1017,12 @@ _g_io_module_get_default (const gchar         *extension_point,
     {
       preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
       if (preferred)
-	{
-	  impl = try_implementation (extension_point, preferred, verify_func);
-	  extension = preferred;
-	  if (impl)
-	    goto done;
-	}
+        {
+          impl = try_implementation (extension_point, preferred, verify_func);
+          extension = preferred;
+          if (impl)
+            goto done;
+        }
       else
         g_warning ("Can't find module '%s' specified in %s", use_this, envvar);
     }
@@ -1033,11 +1033,11 @@ _g_io_module_get_default (const gchar         *extension_point,
     {
       extension = l->data;
       if (extension == preferred)
-	continue;
+        continue;
 
       impl = try_implementation (extension_point, extension, verify_func);
       if (impl)
-	goto done;
+        goto done;
     }
 
   impl = NULL;
@@ -1131,8 +1131,8 @@ BOOL WINAPI DllMain (HINSTANCE hinstDLL,
 
 BOOL WINAPI
 DllMain (HINSTANCE hinstDLL,
-	 DWORD     fdwReason,
-	 LPVOID    lpvReserved)
+         DWORD     fdwReason,
+         LPVOID    lpvReserved)
 {
   if (fdwReason == DLL_PROCESS_ATTACH)
     {
@@ -1338,19 +1338,19 @@ _g_io_modules_ensure_loaded (void)
       /* First load any overrides, extras (but not if running as setuid!) */
       module_path = !is_setuid ? g_getenv ("GIO_EXTRA_MODULES") : NULL;
       if (module_path)
-	{
-	  gchar **paths;
-	  int i;
+        {
+          gchar **paths;
+          int i;
 
-	  paths = g_strsplit (module_path, G_SEARCHPATH_SEPARATOR_S, 0);
+          paths = g_strsplit (module_path, G_SEARCHPATH_SEPARATOR_S, 0);
 
-	  for (i = 0; paths[i] != NULL; i++)
-	    {
-	      g_io_modules_scan_all_in_directory_with_scope (paths[i], scope);
-	    }
+          for (i = 0; paths[i] != NULL; i++)
+            {
+              g_io_modules_scan_all_in_directory_with_scope (paths[i], scope);
+            }
 
-	  g_strfreev (paths);
-	}
+          g_strfreev (paths);
+        }
 
       /* Then load the compiled in path */
       module_dir = get_gio_module_dir ();
@@ -1451,9 +1451,9 @@ g_io_extension_point_register (const char *name)
   G_LOCK (extension_points);
   if (extension_points == NULL)
     extension_points = g_hash_table_new_full (g_str_hash,
-					      g_str_equal,
-					      NULL,
-					      (GDestroyNotify)g_io_extension_point_free);
+                                              g_str_equal,
+                                              NULL,
+                                              (GDestroyNotify)g_io_extension_point_free);
 
   ep = g_hash_table_lookup (extension_points, name);
   if (ep != NULL)
@@ -1507,7 +1507,7 @@ g_io_extension_point_lookup (const char *name)
  */
 void
 g_io_extension_point_set_required_type (GIOExtensionPoint *extension_point,
-					GType              type)
+                                        GType              type)
 {
   extension_point->required_type = type;
 }
@@ -1538,13 +1538,13 @@ lazy_load_modules (GIOExtensionPoint *extension_point)
       module = l->data;
 
       if (!module->initialized)
-	{
-	  if (g_type_module_use (G_TYPE_MODULE (module)))
-	    g_type_module_unuse (G_TYPE_MODULE (module)); /* Unload */
-	  else
-	    g_printerr ("Failed to load module: %s\n",
-			module->filename);
-	}
+        {
+          if (g_type_module_use (G_TYPE_MODULE (module)))
+            g_type_module_unuse (G_TYPE_MODULE (module)); /* Unload */
+          else
+            g_printerr ("Failed to load module: %s\n",
+                        module->filename);
+        }
     }
 }
 
@@ -1580,7 +1580,7 @@ g_io_extension_point_get_extensions (GIOExtensionPoint *extension_point)
  */
 GIOExtension *
 g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
-					    const char        *name)
+                                            const char        *name)
 {
   GList *l;
 
@@ -1592,8 +1592,8 @@ g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
       GIOExtension *e = l->data;
 
       if (e->name != NULL &&
-	  strcmp (e->name, name) == 0)
-	return e;
+          strcmp (e->name, name) == 0)
+        return e;
     }
   
   return NULL;
@@ -1601,7 +1601,7 @@ g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
 
 static gint
 extension_prio_compare (gconstpointer  a,
-			gconstpointer  b)
+                        gconstpointer  b)
 {
   const GIOExtension *extension_a = a, *extension_b = b;
 
@@ -1631,9 +1631,9 @@ extension_prio_compare (gconstpointer  a,
  */
 GIOExtension *
 g_io_extension_point_implement (const char *extension_point_name,
-				GType       type,
-				const char *extension_name,
-				gint        priority)
+                                GType       type,
+                                const char *extension_name,
+                                gint        priority)
 {
   GIOExtensionPoint *extension_point;
   GIOExtension *extension;
@@ -1652,10 +1652,10 @@ g_io_extension_point_implement (const char *extension_point_name,
       !g_type_is_a (type, extension_point->required_type))
     {
       g_warning ("Tried to register an extension of the type %s to extension point %s. "
-		 "Expected type is %s.",
-		 g_type_name (type),
-		 extension_point_name, 
-		 g_type_name (extension_point->required_type));
+                 "Expected type is %s.",
+                 g_type_name (type),
+                 extension_point_name, 
+                 g_type_name (extension_point->required_type));
       return NULL;
     }      
 
@@ -1664,7 +1664,7 @@ g_io_extension_point_implement (const char *extension_point_name,
     {
       extension = l->data;
       if (extension->type == type)
-	return extension;
+        return extension;
     }
   
   extension = g_slice_new0 (GIOExtension);
@@ -1673,7 +1673,7 @@ g_io_extension_point_implement (const char *extension_point_name,
   extension->priority = priority;
   
   extension_point->extensions = g_list_insert_sorted (extension_point->extensions,
-						      extension, extension_prio_compare);
+                                                      extension, extension_prio_compare);
   
   return extension;
 }

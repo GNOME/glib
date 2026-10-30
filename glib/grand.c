@@ -98,16 +98,16 @@ get_random_version (void)
     {
       const gchar *version_string = g_getenv ("G_RANDOM_VERSION");
       if (!version_string || version_string[0] == '\000' || 
-	  strcmp (version_string, "2.2") == 0)
-	random_version = 22;
+          strcmp (version_string, "2.2") == 0)
+        random_version = 22;
       else if (strcmp (version_string, "2.0") == 0)
-	random_version = 20;
+        random_version = 20;
       else
-	{
-	  g_warning ("Unknown G_RANDOM_VERSION \"%s\". Using version 2.2.",
-		     version_string);
-	  random_version = 22;
-	}
+        {
+          g_warning ("Unknown G_RANDOM_VERSION \"%s\". Using version 2.2.",
+                     version_string);
+          random_version = 22;
+        }
       g_once_init_leave (&initialized, TRUE);
     }
   
@@ -184,20 +184,20 @@ g_rand_new (void)
       while G_UNLIKELY (dev_urandom < 0 && errno == EINTR);
 
       if (dev_urandom >= 0)
-	{
-	  ssize_t r;
+        {
+          ssize_t r;
 
-	  do
+          do
             r = read (dev_urandom, seed, sizeof (seed));
-	  while G_UNLIKELY (r < 0 && errno == EINTR);
+          while G_UNLIKELY (r < 0 && errno == EINTR);
 
-	  if (r != sizeof (seed))
-	    dev_urandom_exists = FALSE;
+          if (r != sizeof (seed))
+            dev_urandom_exists = FALSE;
 
-	  close (dev_urandom);
-	}	
+          close (dev_urandom);
+        }       
       else
-	dev_urandom_exists = FALSE;
+        dev_urandom_exists = FALSE;
     }
 
   if (!dev_urandom_exists)
@@ -294,11 +294,11 @@ g_rand_set_seed (GRand   *rand,
       /*    Vol. 2 (2nd Ed.), pp102]                  */
       
       if (seed == 0) /* This would make the PRNG produce only zeros */
-	seed = 0x6b842128; /* Just set it to another number */
+        seed = 0x6b842128; /* Just set it to another number */
       
       rand->mt[0]= seed;
       for (rand->mti=1; rand->mti<N; rand->mti++)
-	rand->mt[rand->mti] = (69069 * rand->mt[rand->mti-1]);
+        rand->mt[rand->mti] = (69069 * rand->mt[rand->mti-1]);
       
       break;
     case 22:
@@ -308,8 +308,8 @@ g_rand_set_seed (GRand   *rand,
       
       rand->mt[0]= seed;
       for (rand->mti=1; rand->mti<N; rand->mti++)
-	rand->mt[rand->mti] = 1812433253UL * 
-	  (rand->mt[rand->mti-1] ^ (rand->mt[rand->mti-1] >> 30)) + rand->mti; 
+        rand->mt[rand->mti] = 1812433253UL * 
+          (rand->mt[rand->mti-1] ^ (rand->mt[rand->mti-1] >> 30)) + rand->mti; 
       break;
     default:
       g_assert_not_reached ();
@@ -347,30 +347,30 @@ g_rand_set_seed_array (GRand         *rand,
   for (; k; k--)
     {
       rand->mt[i] = (rand->mt[i] ^
-		     ((rand->mt[i-1] ^ (rand->mt[i-1] >> 30)) * 1664525UL))
-	      + seed[j] + j; /* non linear */
+                     ((rand->mt[i-1] ^ (rand->mt[i-1] >> 30)) * 1664525UL))
+              + seed[j] + j; /* non linear */
       rand->mt[i] &= 0xffffffffUL; /* for WORDSIZE > 32 machines */
       i++; j++;
       if (i>=N)
         {
-	  rand->mt[0] = rand->mt[N-1];
-	  i=1;
-	}
+          rand->mt[0] = rand->mt[N-1];
+          i=1;
+        }
       if (j>=seed_length)
-	j=0;
+        j=0;
     }
   for (k=N-1; k; k--)
     {
       rand->mt[i] = (rand->mt[i] ^
-		     ((rand->mt[i-1] ^ (rand->mt[i-1] >> 30)) * 1566083941UL))
-	      - i; /* non linear */
+                     ((rand->mt[i-1] ^ (rand->mt[i-1] >> 30)) * 1566083941UL))
+              - i; /* non linear */
       rand->mt[i] &= 0xffffffffUL; /* for WORDSIZE > 32 machines */
       i++;
       if (i>=N)
         {
-	  rand->mt[0] = rand->mt[N-1];
-	  i=1;
-	}
+          rand->mt[0] = rand->mt[N-1];
+          i=1;
+        }
     }
 
   rand->mt[0] = 0x80000000UL; /* MSB is 1; assuring non-zero initial array */ 
@@ -458,56 +458,56 @@ g_rand_int_range (GRand  *rand,
     {
     case 20:
       if (dist <= 0x10000L) /* 2^16 */
-	{
-	  /* This method, which only calls g_rand_int once is only good
-	   * for (end - begin) <= 2^16, because we only have 32 bits set
-	   * from the one call to g_rand_int ().
-	   *
-	   * We are using (trans + trans * trans), because g_rand_int only
-	   * covers [0..2^32-1] and thus g_rand_int * trans only covers
-	   * [0..1-2^-32], but the biggest double < 1 is 1-2^-52. 
-	   */
-	  
-	  gdouble double_rand = g_rand_int (rand) * 
-	    (G_RAND_DOUBLE_TRANSFORM +
-	     G_RAND_DOUBLE_TRANSFORM * G_RAND_DOUBLE_TRANSFORM);
-	  
-	  random = (gint32) (double_rand * dist);
-	}
-      else
-	{
-	  /* Now we use g_rand_double_range (), which will set 52 bits
-	   * for us, so that it is safe to round and still get a decent
-	   * distribution
+        {
+          /* This method, which only calls g_rand_int once is only good
+           * for (end - begin) <= 2^16, because we only have 32 bits set
+           * from the one call to g_rand_int ().
+           *
+           * We are using (trans + trans * trans), because g_rand_int only
+           * covers [0..2^32-1] and thus g_rand_int * trans only covers
+           * [0..1-2^-32], but the biggest double < 1 is 1-2^-52. 
            */
-	  random = (gint32) g_rand_double_range (rand, 0, dist);
-	}
+          
+          gdouble double_rand = g_rand_int (rand) * 
+            (G_RAND_DOUBLE_TRANSFORM +
+             G_RAND_DOUBLE_TRANSFORM * G_RAND_DOUBLE_TRANSFORM);
+          
+          random = (gint32) (double_rand * dist);
+        }
+      else
+        {
+          /* Now we use g_rand_double_range (), which will set 52 bits
+           * for us, so that it is safe to round and still get a decent
+           * distribution
+           */
+          random = (gint32) g_rand_double_range (rand, 0, dist);
+        }
       break;
     case 22:
       if (dist == 0)
-	random = 0;
+        random = 0;
       else 
-	{
-	  /* maxvalue is set to the predecessor of the greatest
-	   * multiple of dist less or equal 2^32.
-	   */
-	  guint32 maxvalue;
-	  if (dist <= 0x80000000u) /* 2^31 */
-	    {
-	      /* maxvalue = 2^32 - 1 - (2^32 % dist) */
-	      guint32 leftover = (0x80000000u % dist) * 2;
-	      if (leftover >= dist) leftover -= dist;
-	      maxvalue = 0xffffffffu - leftover;
-	    }
-	  else
-	    maxvalue = dist - 1;
-	  
-	  do
-	    random = g_rand_int (rand);
-	  while (random > maxvalue);
-	  
-	  random %= dist;
-	}
+        {
+          /* maxvalue is set to the predecessor of the greatest
+           * multiple of dist less or equal 2^32.
+           */
+          guint32 maxvalue;
+          if (dist <= 0x80000000u) /* 2^31 */
+            {
+              /* maxvalue = 2^32 - 1 - (2^32 % dist) */
+              guint32 leftover = (0x80000000u % dist) * 2;
+              if (leftover >= dist) leftover -= dist;
+              maxvalue = 0xffffffffu - leftover;
+            }
+          else
+            maxvalue = dist - 1;
+          
+          do
+            random = g_rand_int (rand);
+          while (random > maxvalue);
+          
+          random %= dist;
+        }
       break;
     default:
       g_assert_not_reached ();

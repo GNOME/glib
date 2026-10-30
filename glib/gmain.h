@@ -34,12 +34,12 @@ G_BEGIN_DECLS
 
 typedef enum /*< flags >*/
 {
-  G_IO_IN	GLIB_SYSDEF_POLLIN,
-  G_IO_OUT	GLIB_SYSDEF_POLLOUT,
-  G_IO_PRI	GLIB_SYSDEF_POLLPRI,
-  G_IO_ERR	GLIB_SYSDEF_POLLERR,
-  G_IO_HUP	GLIB_SYSDEF_POLLHUP,
-  G_IO_NVAL	GLIB_SYSDEF_POLLNVAL
+  G_IO_IN       GLIB_SYSDEF_POLLIN,
+  G_IO_OUT      GLIB_SYSDEF_POLLOUT,
+  G_IO_PRI      GLIB_SYSDEF_POLLPRI,
+  G_IO_ERR      GLIB_SYSDEF_POLLERR,
+  G_IO_HUP      GLIB_SYSDEF_POLLHUP,
+  G_IO_NVAL     GLIB_SYSDEF_POLLNVAL
 } GIOCondition;
 
 /**
@@ -795,17 +795,17 @@ void g_source_set_callback_indirect (GSource              *source,
 
 GLIB_AVAILABLE_IN_ALL
 void     g_source_add_poll            (GSource        *source,
-				       GPollFD        *fd);
+                                       GPollFD        *fd);
 GLIB_AVAILABLE_IN_ALL
 void     g_source_remove_poll         (GSource        *source,
-				       GPollFD        *fd);
+                                       GPollFD        *fd);
 
 GLIB_AVAILABLE_IN_ALL
 void     g_source_add_child_source    (GSource        *source,
-				       GSource        *child_source);
+                                       GSource        *child_source);
 GLIB_AVAILABLE_IN_ALL
 void     g_source_remove_child_source (GSource        *source,
-				       GSource        *child_source);
+                                       GSource        *child_source);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED_IN_2_28_FOR(g_source_get_time)

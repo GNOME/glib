@@ -48,11 +48,11 @@ struct _GLocalVfsClass
 
 #define g_local_vfs_get_type _g_local_vfs_get_type
 G_DEFINE_TYPE_WITH_CODE (GLocalVfs, g_local_vfs, G_TYPE_VFS,
-			 _g_io_modules_ensure_extension_points_registered ();
-			 g_io_extension_point_implement (G_VFS_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "local",
-							 0))
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_VFS_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "local",
+                                                         0))
 static void
 g_local_vfs_finalize (GObject *object)
 {
@@ -133,23 +133,23 @@ g_local_vfs_parse_name (GVfs       *vfs,
   else
     {
       if (*parse_name == '~')
-	{
+        {
 #ifdef G_OS_UNIX
-	  const char *user_start;
-	  user_start = parse_name + 1;
+          const char *user_start;
+          user_start = parse_name + 1;
 #endif
-	  parse_name ++;
-	  
-	  while (*parse_name != 0 && *parse_name != '/')
-	    parse_name++;
-	  
-	  user_end = parse_name;
+          parse_name ++;
+          
+          while (*parse_name != 0 && *parse_name != '/')
+            parse_name++;
+          
+          user_end = parse_name;
 
 #ifdef G_OS_UNIX
-	  if (user_end == user_start)
-	    user_prefix = g_strdup (g_get_home_dir ());
-	  else
-	    {
+          if (user_end == user_start)
+            user_prefix = g_strdup (g_get_home_dir ());
+          else
+            {
               struct passwd *passwd_file_entry;
               char *user_name;
 
@@ -164,21 +164,21 @@ g_local_vfs_parse_name (GVfs       *vfs,
                 user_prefix = g_strdup (g_get_home_dir ());
 
               g_free (passwd_file_entry);
-	    }
+            }
 #else
-	  user_prefix = g_strdup (g_get_home_dir ());
+          user_prefix = g_strdup (g_get_home_dir ());
 #endif
 
-	  rest = NULL;
-	  if (*user_end != 0)
-	    rest = g_filename_from_utf8 (user_end, -1, NULL, NULL, NULL);
-	  
-	  filename = g_build_filename (user_prefix, rest, NULL);
-	  g_free (rest);
-	  g_free (user_prefix);
-	}
+          rest = NULL;
+          if (*user_end != 0)
+            rest = g_filename_from_utf8 (user_end, -1, NULL, NULL, NULL);
+          
+          filename = g_build_filename (user_prefix, rest, NULL);
+          g_free (rest);
+          g_free (user_prefix);
+        }
       else
-	filename = g_filename_from_utf8 (parse_name, -1, NULL, NULL, NULL);
+        filename = g_filename_from_utf8 (parse_name, -1, NULL, NULL, NULL);
     }
   
   if (filename == NULL)

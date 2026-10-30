@@ -498,8 +498,8 @@ watch_network_changed (GNetworkMonitor *monitor,
 
 static void
 watch_connectivity_changed (GNetworkMonitor *monitor,
-			    GParamSpec      *pspec,
-			    gpointer         user_data)
+                            GParamSpec      *pspec,
+                            gpointer         user_data)
 {
   g_print ("Connectivity is %d\n", g_network_monitor_get_connectivity (monitor));
 }

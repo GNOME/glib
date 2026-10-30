@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -71,9 +71,9 @@ _glib_get_locale_dir (void)
        */
       const char *p = GLIB_LOCALE_DIR + strlen (GLIB_LOCALE_DIR);
       while (*--p != '/')
-	;
+        ;
       while (*--p != '/')
-	;
+        ;
 
       locale_dir = g_build_filename (install_dir, p, NULL);
 

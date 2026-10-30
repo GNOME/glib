@@ -65,9 +65,9 @@ G_DEFINE_TYPE_WITH_PRIVATE (GWin32InputStream, g_win32_input_stream, G_TYPE_INPU
 
 static void
 g_win32_input_stream_set_property (GObject         *object,
-				   guint            prop_id,
-				   const GValue    *value,
-				   GParamSpec      *pspec)
+                                   guint            prop_id,
+                                   const GValue    *value,
+                                   GParamSpec      *pspec)
 {
   GWin32InputStream *win32_stream;
 
@@ -89,9 +89,9 @@ g_win32_input_stream_set_property (GObject         *object,
 
 static void
 g_win32_input_stream_get_property (GObject    *object,
-				   guint       prop_id,
-				   GValue     *value,
-				   GParamSpec *pspec)
+                                   guint       prop_id,
+                                   GValue     *value,
+                                   GParamSpec *pspec)
 {
   GWin32InputStream *win32_stream;
 
@@ -112,10 +112,10 @@ g_win32_input_stream_get_property (GObject    *object,
 
 static gssize
 g_win32_input_stream_read (GInputStream  *stream,
-			   void          *buffer,
-			   gsize          count,
-			   GCancellable  *cancellable,
-			   GError       **error)
+                           void          *buffer,
+                           gsize          count,
+                           GCancellable  *cancellable,
+                           GError       **error)
 {
   GWin32InputStream *win32_stream;
   BOOL res;
@@ -194,8 +194,8 @@ end:
 
 static gboolean
 g_win32_input_stream_close (GInputStream  *stream,
-			   GCancellable  *cancellable,
-			   GError       **error)
+                           GCancellable  *cancellable,
+                           GError       **error)
 {
   GWin32InputStream *win32_stream;
   BOOL res;
@@ -208,31 +208,31 @@ g_win32_input_stream_close (GInputStream  *stream,
   if (win32_stream->priv->fd != -1)
     {
       if (close (win32_stream->priv->fd) < 0)
-	{
-	  int errsv = errno;
+        {
+          int errsv = errno;
 
-	  g_set_error (error, G_IO_ERROR,
-	               g_io_error_from_errno (errsv),
-	               _("Error closing file descriptor: %s"),
-	               g_strerror (errsv));
-	  return FALSE;
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error closing file descriptor: %s"),
+                       g_strerror (errsv));
+          return FALSE;
+        }
     }
   else
     {
       res = CloseHandle (win32_stream->priv->handle);
       if (!res)
-	{
-	  int errsv = GetLastError ();
-	  gchar *emsg = g_win32_error_message (errsv);
+        {
+          int errsv = GetLastError ();
+          gchar *emsg = g_win32_error_message (errsv);
 
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_win32_error (errsv),
-		       _("Error closing handle: %s"),
-		       emsg);
-	  g_free (emsg);
-	  return FALSE;
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_win32_error (errsv),
+                       _("Error closing handle: %s"),
+                       emsg);
+          g_free (emsg);
+          return FALSE;
+        }
     }
 
   return TRUE;
@@ -307,16 +307,16 @@ g_win32_input_stream_init (GWin32InputStream *win32_stream)
  **/
 GInputStream *
 g_win32_input_stream_new (void     *handle,
-			  gboolean close_handle)
+                          gboolean close_handle)
 {
   GWin32InputStream *stream;
 
   g_return_val_if_fail (handle != NULL, NULL);
 
   stream = g_object_new (G_TYPE_WIN32_INPUT_STREAM,
-			 "handle", handle,
-			 "close-handle", close_handle,
-			 NULL);
+                         "handle", handle,
+                         "close-handle", close_handle,
+                         NULL);
 
   return G_INPUT_STREAM (stream);
 }
@@ -333,7 +333,7 @@ g_win32_input_stream_new (void     *handle,
  */
 void
 g_win32_input_stream_set_close_handle (GWin32InputStream *stream,
-				       gboolean          close_handle)
+                                       gboolean          close_handle)
 {
   g_return_if_fail (G_IS_WIN32_INPUT_STREAM (stream));
 
@@ -384,7 +384,7 @@ g_win32_input_stream_get_handle (GWin32InputStream *stream)
 
 GInputStream *
 g_win32_input_stream_new_from_fd (gint      fd,
-				  gboolean  close_fd)
+                                  gboolean  close_fd)
 {
   GWin32InputStream *win32_stream;
 

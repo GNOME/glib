@@ -13,7 +13,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -321,14 +321,14 @@ typedef struct _GSourceIter
 /* Forward declarations */
 
 static void g_source_unref_internal             (GSource      *source,
-						 GMainContext *context,
-						 gboolean      have_lock);
+                                                 GMainContext *context,
+                                                 gboolean      have_lock);
 static void g_source_destroy_internal           (GSource      *source,
-						 GMainContext *context,
-						 gboolean      have_lock);
+                                                 GMainContext *context,
+                                                 gboolean      have_lock);
 static void g_source_set_priority_unlocked      (GSource      *source,
-						 GMainContext *context,
-						 gint          priority);
+                                                 GMainContext *context,
+                                                 gint          priority);
 static void g_child_source_remove_internal      (GSource      *child_source,
                                                  GMainContext *context);
 
@@ -354,27 +354,27 @@ static void g_main_context_poll_unlocked        (GMainContext *context,
                                                  GPollFD      *fds,
                                                  int           n_fds);
 static void g_main_context_add_poll_unlocked    (GMainContext *context,
-						 gint          priority,
-						 GPollFD      *fd);
+                                                 gint          priority,
+                                                 GPollFD      *fd);
 static void g_main_context_remove_poll_unlocked (GMainContext *context,
-						 GPollFD      *fd);
+                                                 GPollFD      *fd);
 
 static void     g_source_iter_init  (GSourceIter   *iter,
-				     GMainContext  *context,
-				     gboolean       may_modify);
+                                     GMainContext  *context,
+                                     gboolean       may_modify);
 static gboolean g_source_iter_next  (GSourceIter   *iter,
-				     GSource      **source);
+                                     GSource      **source);
 static void     g_source_iter_clear (GSourceIter   *iter);
 
 static gboolean g_timeout_dispatch (GSource     *source,
-				    GSourceFunc  callback,
-				    gpointer     user_data);
+                                    GSourceFunc  callback,
+                                    gpointer     user_data);
 static gboolean g_child_watch_prepare  (GSource     *source,
-				        gint        *timeout);
+                                        gint        *timeout);
 static gboolean g_child_watch_check    (GSource     *source);
 static gboolean g_child_watch_dispatch (GSource     *source,
-					GSourceFunc  callback,
-					gpointer     user_data);
+                                        GSourceFunc  callback,
+                                        gpointer     user_data);
 static void     g_child_watch_finalize (GSource     *source);
 
 #ifndef G_OS_WIN32
@@ -384,19 +384,19 @@ static void unref_unix_signal_handler_unlocked (int signum);
 #ifdef G_OS_UNIX
 static void g_unix_signal_handler (int signum);
 static gboolean g_unix_signal_watch_prepare  (GSource     *source,
-					      gint        *timeout);
+                                              gint        *timeout);
 static gboolean g_unix_signal_watch_check    (GSource     *source);
 static gboolean g_unix_signal_watch_dispatch (GSource     *source,
-					      GSourceFunc  callback,
-					      gpointer     user_data);
+                                              GSourceFunc  callback,
+                                              gpointer     user_data);
 static void     g_unix_signal_watch_finalize  (GSource     *source);
 #endif
 static gboolean g_idle_prepare     (GSource     *source,
-				    gint        *timeout);
+                                    gint        *timeout);
 static gboolean g_idle_check       (GSource     *source);
 static gboolean g_idle_dispatch    (GSource     *source,
-				    GSourceFunc  callback,
-				    gpointer     user_data);
+                                    GSourceFunc  callback,
+                                    gpointer     user_data);
 
 static void block_source (GSource      *source,
                           GMainContext *context);
@@ -503,7 +503,7 @@ g_main_context_ref (GMainContext *context)
 
 static inline void
 poll_rec_list_free (GMainContext *context,
-		    GPollRec     *list)
+                    GPollRec     *list)
 {
   g_slice_free_chain (GPollRec, list, next);
 }
@@ -973,7 +973,7 @@ g_main_context_ref_thread_default (void)
  **/
 GSource *
 g_source_new (GSourceFuncs *source_funcs,
-	      guint         struct_size)
+              guint         struct_size)
 {
   GSource *source;
 
@@ -1031,7 +1031,7 @@ g_source_new (GSourceFuncs *source_funcs,
  **/
 void
 g_source_set_dispose_function (GSource            *source,
-			       GSourceDisposeFunc  dispose)
+                               GSourceDisposeFunc  dispose)
 {
   gboolean was_unset G_GNUC_UNUSED;
 
@@ -1046,8 +1046,8 @@ g_source_set_dispose_function (GSource            *source,
 /* Holds context's lock */
 static void
 g_source_iter_init (GSourceIter  *iter,
-		    GMainContext *context,
-		    gboolean      may_modify)
+                    GMainContext *context,
+                    gboolean      may_modify)
 {
   iter->context = context;
   iter->current_list = NULL;
@@ -1069,16 +1069,16 @@ g_source_iter_next (GSourceIter *iter, GSource **source)
   if (!next_source)
     {
       if (iter->current_list)
-	iter->current_list = iter->current_list->next;
+        iter->current_list = iter->current_list->next;
       else
-	iter->current_list = iter->context->source_lists.head;
+        iter->current_list = iter->context->source_lists.head;
 
       if (iter->current_list)
-	{
-	  GSourceList *source_list = iter->current_list->data;
+        {
+          GSourceList *source_list = iter->current_list->data;
 
-	  next_source = source_list->head;
-	}
+          next_source = source_list->head;
+        }
     }
 
   /* Note: unreffing iter->source could potentially cause its
@@ -1118,8 +1118,8 @@ g_source_iter_clear (GSourceIter *iter)
  */
 static GSourceList *
 find_source_list_for_priority (GMainContext *context,
-			       gint          priority,
-			       gboolean      create)
+                               gint          priority,
+                               gboolean      create)
 {
   GList *iter;
   GSourceList *source_list;
@@ -1129,21 +1129,21 @@ find_source_list_for_priority (GMainContext *context,
       source_list = iter->data;
 
       if (source_list->priority == priority)
-	return source_list;
+        return source_list;
 
       if (source_list->priority > priority)
-	{
-	  if (!create)
-	    return NULL;
+        {
+          if (!create)
+            return NULL;
 
-	  source_list = g_slice_new0 (GSourceList);
+          source_list = g_slice_new0 (GSourceList);
           source_list->link.data = source_list;
-	  source_list->priority = priority;
+          source_list->priority = priority;
           g_queue_insert_before_link (&context->source_lists,
                                       iter,
                                       &source_list->link);
-	  return source_list;
-	}
+          return source_list;
+        }
     }
 
   if (!create)
@@ -1161,7 +1161,7 @@ find_source_list_for_priority (GMainContext *context,
  */
 static void
 source_add_to_context (GSource      *source,
-		       GMainContext *context)
+                       GMainContext *context)
 {
   GSourceList *source_list;
   GSource *prev, *next;
@@ -1199,7 +1199,7 @@ source_add_to_context (GSource      *source,
  */
 static void
 source_remove_from_context (GSource      *source,
-			    GMainContext *context)
+                            GMainContext *context)
 {
   GSourceList *source_list;
 
@@ -1307,7 +1307,7 @@ g_source_attach_unlocked (GSource      *source,
  **/
 guint
 g_source_attach (GSource      *source,
-		 GMainContext *context)
+                 GMainContext *context)
 {
   guint result = 0;
 
@@ -1335,8 +1335,8 @@ g_source_attach (GSource      *source,
 
 static void
 g_source_destroy_internal (GSource      *source,
-			   GMainContext *context,
-			   gboolean      have_lock)
+                           GMainContext *context,
+                           gboolean      have_lock)
 {
   TRACE (GLIB_MAIN_SOURCE_DESTROY (g_source_get_name (source), source,
                                    context));
@@ -1359,31 +1359,31 @@ g_source_destroy_internal (GSource      *source,
       source->callback_funcs = NULL;
 
       if (old_cb_funcs)
-	{
-	  UNLOCK_CONTEXT (context);
-	  old_cb_funcs->unref (old_cb_data);
-	  LOCK_CONTEXT (context);
-	}
+        {
+          UNLOCK_CONTEXT (context);
+          old_cb_funcs->unref (old_cb_data);
+          LOCK_CONTEXT (context);
+        }
 
       if (!SOURCE_BLOCKED (source))
-	{
-	  tmp_list = source->poll_fds;
-	  while (tmp_list)
-	    {
-	      g_main_context_remove_poll_unlocked (context, tmp_list->data);
-	      tmp_list = tmp_list->next;
-	    }
+        {
+          tmp_list = source->poll_fds;
+          while (tmp_list)
+            {
+              g_main_context_remove_poll_unlocked (context, tmp_list->data);
+              tmp_list = tmp_list->next;
+            }
 
           for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
             g_main_context_remove_poll_unlocked (context, tmp_list->data);
-	}
+        }
 
       while (source->priv->child_sources)
         g_child_source_remove_internal (source->priv->child_sources->data, context);
 
       if (source->priv->parent_source)
         g_child_source_remove_internal (source, context);
-	  
+          
       g_source_unref_internal (source, context, TRUE);
     }
 
@@ -1567,7 +1567,7 @@ g_source_dup_context (GSource *source)
  **/
 void
 g_source_add_poll (GSource *source,
-		   GPollFD *fd)
+                   GPollFD *fd)
 {
   GMainContext *context;
   
@@ -1586,7 +1586,7 @@ g_source_add_poll (GSource *source,
   if (context)
     {
       if (!SOURCE_BLOCKED (source))
-	g_main_context_add_poll_unlocked (context, source->priority, fd);
+        g_main_context_add_poll_unlocked (context, source->priority, fd);
       UNLOCK_CONTEXT (context);
       g_main_context_unref (context);
     }
@@ -1606,7 +1606,7 @@ g_source_add_poll (GSource *source,
  **/
 void
 g_source_remove_poll (GSource *source,
-		      GPollFD *fd)
+                      GPollFD *fd)
 {
   GMainContext *context;
   
@@ -1625,7 +1625,7 @@ g_source_remove_poll (GSource *source,
   if (context)
     {
       if (!SOURCE_BLOCKED (source))
-	g_main_context_remove_poll_unlocked (context, fd);
+        g_main_context_remove_poll_unlocked (context, fd);
       UNLOCK_CONTEXT (context);
       g_main_context_unref (context);
     }
@@ -1660,7 +1660,7 @@ g_source_remove_poll (GSource *source,
  **/
 void
 g_source_add_child_source (GSource *source,
-			   GSource *child_source)
+                           GSource *child_source)
 {
   GMainContext *context;
 
@@ -1684,7 +1684,7 @@ g_source_add_child_source (GSource *source,
   TRACE (GLIB_SOURCE_ADD_CHILD_SOURCE (source, child_source));
 
   source->priv->child_sources = g_slist_prepend (source->priv->child_sources,
-						 g_source_ref (child_source));
+                                                 g_source_ref (child_source));
   child_source->priv->parent_source = source;
   g_source_set_priority_unlocked (child_source, NULL, source->priority);
   if (SOURCE_BLOCKED (source))
@@ -1728,7 +1728,7 @@ g_child_source_remove_internal (GSource *child_source,
  **/
 void
 g_source_remove_child_source (GSource *source,
-			      GSource *child_source)
+                              GSource *child_source)
 {
   GMainContext *context;
 
@@ -1777,9 +1777,9 @@ g_source_callback_unref (gpointer cb_data)
 
 static void
 g_source_callback_get (gpointer     cb_data,
-		       GSource     *source, 
-		       GSourceFunc *func,
-		       gpointer    *data)
+                       GSource     *source, 
+                       GSourceFunc *func,
+                       gpointer    *data)
 {
   GSourceCallback *callback = cb_data;
 
@@ -1815,8 +1815,8 @@ static GSourceCallbackFuncs g_source_callback_funcs = {
  **/
 void
 g_source_set_callback_indirect (GSource              *source,
-				gpointer              callback_data,
-				GSourceCallbackFuncs *callback_funcs)
+                                gpointer              callback_data,
+                                GSourceCallbackFuncs *callback_funcs)
 {
   GMainContext *context;
   gpointer old_cb_data;
@@ -1886,9 +1886,9 @@ g_source_set_callback_indirect (GSource              *source,
  **/
 void
 g_source_set_callback (GSource        *source,
-		       GSourceFunc     func,
-		       gpointer        data,
-		       GDestroyNotify  notify)
+                       GSourceFunc     func,
+                       gpointer        data,
+                       GDestroyNotify  notify)
 {
   GSourceCallback *new_callback;
 
@@ -1922,7 +1922,7 @@ g_source_set_callback (GSource        *source,
  */
 void
 g_source_set_funcs (GSource     *source,
-	           GSourceFuncs *funcs)
+                   GSourceFuncs *funcs)
 {
   g_return_if_fail (source != NULL);
   g_return_if_fail (source->context == NULL);
@@ -1934,13 +1934,13 @@ g_source_set_funcs (GSource     *source,
 
 static void
 g_source_set_priority_unlocked (GSource      *source,
-				GMainContext *context,
-				gint          priority)
+                                GMainContext *context,
+                                gint          priority)
 {
   GSList *tmp_list;
   
   g_return_if_fail (source->priv->parent_source == NULL ||
-		    source->priv->parent_source->priority == priority);
+                    source->priv->parent_source->priority == priority);
 
   TRACE (GLIB_SOURCE_SET_PRIORITY (source, context, priority));
 
@@ -1959,32 +1959,32 @@ g_source_set_priority_unlocked (GSource      *source,
       source_add_to_context (source, context);
 
       if (!SOURCE_BLOCKED (source))
-	{
-	  tmp_list = source->poll_fds;
-	  while (tmp_list)
-	    {
-	      g_main_context_remove_poll_unlocked (context, tmp_list->data);
-	      g_main_context_add_poll_unlocked (context, priority, tmp_list->data);
-	      
-	      tmp_list = tmp_list->next;
-	    }
+        {
+          tmp_list = source->poll_fds;
+          while (tmp_list)
+            {
+              g_main_context_remove_poll_unlocked (context, tmp_list->data);
+              g_main_context_add_poll_unlocked (context, priority, tmp_list->data);
+              
+              tmp_list = tmp_list->next;
+            }
 
           for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
             {
               g_main_context_remove_poll_unlocked (context, tmp_list->data);
               g_main_context_add_poll_unlocked (context, priority, tmp_list->data);
             }
-	}
+        }
     }
 
   if (source->priv->child_sources)
     {
       tmp_list = source->priv->child_sources;
       while (tmp_list)
-	{
-	  g_source_set_priority_unlocked (tmp_list->data, context, priority);
-	  tmp_list = tmp_list->next;
-	}
+        {
+          g_source_set_priority_unlocked (tmp_list->data, context, priority);
+          tmp_list = tmp_list->next;
+        }
     }
 }
 
@@ -2006,7 +2006,7 @@ g_source_set_priority_unlocked (GSource      *source,
  **/
 void
 g_source_set_priority (GSource  *source,
-		       gint      priority)
+                       gint      priority)
 {
   GMainContext *context;
 
@@ -2277,7 +2277,7 @@ g_source_get_ready_time_ns (GSource  *source,
  **/
 void
 g_source_set_can_recurse (GSource  *source,
-			  gboolean  can_recurse)
+                          gboolean  can_recurse)
 {
   GMainContext *context;
   
@@ -2499,8 +2499,8 @@ g_source_ref (GSource *source)
  */
 static void
 g_source_unref_internal (GSource      *source,
-			 GMainContext *context,
-			 gboolean      have_lock)
+                         GMainContext *context,
+                         gboolean      have_lock)
 {
   gpointer old_cb_data = NULL;
   GSourceCallbackFuncs *old_cb_funcs = NULL;
@@ -2572,29 +2572,29 @@ retry_beginning:
       source->callback_funcs = NULL;
 
       if (context)
-	{
-	  if (!SOURCE_DESTROYED (source))
-	    g_warning (G_STRLOC ": ref_count == 0, but source was still attached to a context!");
-	  source_remove_from_context (source, context);
+        {
+          if (!SOURCE_DESTROYED (source))
+            g_warning (G_STRLOC ": ref_count == 0, but source was still attached to a context!");
+          source_remove_from_context (source, context);
 
-	  g_hash_table_remove (context->sources, &source->source_id);
-	}
+          g_hash_table_remove (context->sources, &source->source_id);
+        }
 
       if (source->source_funcs->finalize)
-	{
+        {
           gint old_ref_count;
 
           /* Temporarily increase the ref count again so that GSource methods
            * can be called from finalize(). */
           g_atomic_int_inc (&source->ref_count);
-	  if (context)
-	    UNLOCK_CONTEXT (context);
-	  source->source_funcs->finalize (source);
-	  if (context)
-	    LOCK_CONTEXT (context);
+          if (context)
+            UNLOCK_CONTEXT (context);
+          source->source_funcs->finalize (source);
+          if (context)
+            LOCK_CONTEXT (context);
           old_ref_count = g_atomic_int_add (&source->ref_count, -1);
           g_warn_if_fail (old_ref_count == 1);
-	}
+        }
 
       if (old_cb_funcs)
         {
@@ -2732,8 +2732,8 @@ g_main_context_find_source_by_id (GMainContext *context,
  **/
 GSource *
 g_main_context_find_source_by_funcs_user_data (GMainContext *context,
-					       GSourceFuncs *funcs,
-					       gpointer      user_data)
+                                               GSourceFuncs *funcs,
+                                               gpointer      user_data)
 {
   GSourceIter iter;
   GSource *source;
@@ -2749,17 +2749,17 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
   while (g_source_iter_next (&iter, &source))
     {
       if (!SOURCE_DESTROYED (source) &&
-	  source->source_funcs == funcs &&
-	  source->callback_funcs)
-	{
-	  GSourceFunc callback;
-	  gpointer callback_data;
+          source->source_funcs == funcs &&
+          source->callback_funcs)
+        {
+          GSourceFunc callback;
+          gpointer callback_data;
 
-	  source->callback_funcs->get (source->callback_data, source, &callback, &callback_data);
-	  
-	  if (callback_data == user_data)
-	    break;
-	}
+          source->callback_funcs->get (source->callback_data, source, &callback, &callback_data);
+          
+          if (callback_data == user_data)
+            break;
+        }
     }
   g_source_iter_clear (&iter);
 
@@ -2784,7 +2784,7 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
  **/
 GSource *
 g_main_context_find_source_by_user_data (GMainContext *context,
-					 gpointer      user_data)
+                                         gpointer      user_data)
 {
   GSourceIter iter;
   GSource *source;
@@ -2798,16 +2798,16 @@ g_main_context_find_source_by_user_data (GMainContext *context,
   while (g_source_iter_next (&iter, &source))
     {
       if (!SOURCE_DESTROYED (source) &&
-	  source->callback_funcs)
-	{
-	  GSourceFunc callback;
-	  gpointer callback_data = NULL;
+          source->callback_funcs)
+        {
+          GSourceFunc callback;
+          gpointer callback_data = NULL;
 
-	  source->callback_funcs->get (source->callback_data, source, &callback, &callback_data);
+          source->callback_funcs->get (source->callback_data, source, &callback, &callback_data);
 
-	  if (callback_data == user_data)
-	    break;
-	}
+          if (callback_data == user_data)
+            break;
+        }
     }
   g_source_iter_clear (&iter);
 
@@ -2902,7 +2902,7 @@ g_source_remove_by_user_data (gpointer user_data)
  **/
 gboolean
 g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
-				    gpointer      user_data)
+                                    gpointer      user_data)
 {
   GSource *source;
 
@@ -3630,10 +3630,10 @@ block_source (GSource      *source,
     {
       tmp_list = source->priv->child_sources;
       while (tmp_list)
-	{
-	  block_source (tmp_list->data, context);
-	  tmp_list = tmp_list->next;
-	}
+        {
+          block_source (tmp_list->data, context);
+          tmp_list = tmp_list->next;
+        }
     }
 }
 
@@ -3663,10 +3663,10 @@ unblock_source (GSource      *source,
     {
       tmp_list = source->priv->child_sources;
       while (tmp_list)
-	{
-	  unblock_source (tmp_list->data, context);
-	  tmp_list = tmp_list->next;
-	}
+        {
+          unblock_source (tmp_list->data, context);
+          tmp_list = tmp_list->next;
+        }
     }
 }
 
@@ -3687,38 +3687,38 @@ g_main_dispatch (GMainContext *context)
       g_atomic_int_and (&source->flags, ~G_SOURCE_READY);
 
       if (!SOURCE_DESTROYED (source))
-	{
-	  gboolean was_in_call;
-	  gpointer user_data = NULL;
-	  GSourceFunc callback = NULL;
-	  GSourceCallbackFuncs *cb_funcs;
-	  gpointer cb_data;
-	  gboolean need_destroy;
+        {
+          gboolean was_in_call;
+          gpointer user_data = NULL;
+          GSourceFunc callback = NULL;
+          GSourceCallbackFuncs *cb_funcs;
+          gpointer cb_data;
+          gboolean need_destroy;
 
-	  gboolean (*dispatch) (GSource *,
-				GSourceFunc,
-				gpointer);
+          gboolean (*dispatch) (GSource *,
+                                GSourceFunc,
+                                gpointer);
           GSource *prev_source;
           gint64 begin_time_nsec G_GNUC_UNUSED;
 
-	  dispatch = source->source_funcs->dispatch;
-	  cb_funcs = source->callback_funcs;
-	  cb_data = source->callback_data;
+          dispatch = source->source_funcs->dispatch;
+          cb_funcs = source->callback_funcs;
+          cb_data = source->callback_data;
 
-	  if (cb_funcs)
-	    cb_funcs->ref (cb_data);
-	  
-	  if ((g_atomic_int_get (&source->flags) & G_SOURCE_CAN_RECURSE) == 0)
-	    block_source (source, context);
-	  
+          if (cb_funcs)
+            cb_funcs->ref (cb_data);
+          
+          if ((g_atomic_int_get (&source->flags) & G_SOURCE_CAN_RECURSE) == 0)
+            block_source (source, context);
+          
           was_in_call = g_atomic_int_or (&source->flags,
                                          (GSourceFlags) G_HOOK_FLAG_IN_CALL) &
                                          G_HOOK_FLAG_IN_CALL;
 
-	  if (cb_funcs)
-	    cb_funcs->get (cb_data, source, &callback, &user_data);
+          if (cb_funcs)
+            cb_funcs->get (cb_data, source, &callback, &user_data);
 
-	  UNLOCK_CONTEXT (context);
+          UNLOCK_CONTEXT (context);
 
           /* These operations are safe because 'current' is thread-local
            * and not modified from anywhere but this function.
@@ -3744,26 +3744,26 @@ g_main_dispatch (GMainContext *context)
           current->source = prev_source;
           current->depth--;
 
-	  if (cb_funcs)
-	    cb_funcs->unref (cb_data);
+          if (cb_funcs)
+            cb_funcs->unref (cb_data);
 
- 	  LOCK_CONTEXT (context);
-	  
-	  if (!was_in_call)
+          LOCK_CONTEXT (context);
+          
+          if (!was_in_call)
             g_atomic_int_and (&source->flags, ~G_HOOK_FLAG_IN_CALL);
 
           if (SOURCE_BLOCKED (source) && !SOURCE_DESTROYED (source))
-	    unblock_source (source, context);
-	  
-	  /* Note: this depends on the fact that we can't switch
-	   * sources from one main context to another
-	   */
-	  if (need_destroy && !SOURCE_DESTROYED (source))
-	    {
-	      g_assert (source->context == context);
-	      g_source_destroy_internal (source, context, TRUE);
-	    }
-	}
+            unblock_source (source, context);
+          
+          /* Note: this depends on the fact that we can't switch
+           * sources from one main context to another
+           */
+          if (need_destroy && !SOURCE_DESTROYED (source))
+            {
+              g_assert (source->context == context);
+              g_source_destroy_internal (source, context, TRUE);
+            }
+        }
       
       g_source_unref_internal (source, context, TRUE);
     }
@@ -3886,19 +3886,19 @@ g_main_context_release_unlocked (GMainContext *context)
       context->owner = NULL;
 
       if (context->waiters)
-	{
-	  GMainWaiter *waiter = context->waiters->data;
-	  gboolean loop_internal_waiter = (waiter->mutex == &context->mutex);
-	  context->waiters = g_slist_delete_link (context->waiters,
-						  context->waiters);
-	  if (!loop_internal_waiter)
-	    g_mutex_lock (waiter->mutex);
-	  
-	  g_cond_signal (waiter->cond);
-	  
-	  if (!loop_internal_waiter)
-	    g_mutex_unlock (waiter->mutex);
-	}
+        {
+          GMainWaiter *waiter = context->waiters->data;
+          gboolean loop_internal_waiter = (waiter->mutex == &context->mutex);
+          context->waiters = g_slist_delete_link (context->waiters,
+                                                  context->waiters);
+          if (!loop_internal_waiter)
+            g_mutex_lock (waiter->mutex);
+          
+          g_cond_signal (waiter->cond);
+          
+          if (!loop_internal_waiter)
+            g_mutex_unlock (waiter->mutex);
+        }
     }
 }
 
@@ -4014,7 +4014,7 @@ g_main_context_wait (GMainContext *context,
  **/
 gboolean
 g_main_context_prepare (GMainContext *context,
-			gint         *priority)
+                        gint         *priority)
 {
   gboolean ready;
 
@@ -4074,7 +4074,7 @@ g_main_context_prepare_unlocked (GMainContext *context,
   if (context->in_check_or_prepare)
     {
       g_warning ("g_main_context_prepare() called recursively from within a source's check() or "
-		 "prepare() member.");
+                 "prepare() member.");
       return FALSE;
     }
 
@@ -4085,7 +4085,7 @@ g_main_context_prepare_unlocked (GMainContext *context,
   if (context->pending_dispatches)
     {
       if (dispatch)
-	g_main_dispatch (context, &current_time);
+        g_main_dispatch (context, &current_time);
       
       return TRUE;
     }
@@ -4112,14 +4112,14 @@ g_main_context_prepare_unlocked (GMainContext *context,
       uint64_t source_timeout_ns;
 
       if (SOURCE_DESTROYED (source) || SOURCE_BLOCKED (source))
-	continue;
+        continue;
       if ((n_ready > 0) && (source->priority > current_priority))
-	break;
+        break;
 
       if (!(g_atomic_int_get (&source->flags) & G_SOURCE_READY))
-	{
-	  gboolean result;
-	  gboolean (* prepare) (GSource  *source,
+        {
+          gboolean result;
+          gboolean (* prepare) (GSource  *source,
                                 gint     *timeout);
 
           prepare = source->source_funcs->prepare;
@@ -4181,25 +4181,25 @@ g_main_context_prepare_unlocked (GMainContext *context,
               has_source_timeout = TRUE;
             }
 
-	  if (result)
-	    {
-	      GSource *ready_source = source;
+          if (result)
+            {
+              GSource *ready_source = source;
 
-	      while (ready_source)
-		{
+              while (ready_source)
+                {
                   g_atomic_int_or (&ready_source->flags, G_SOURCE_READY);
-		  ready_source = ready_source->priv->parent_source;
-		}
-	    }
-	}
+                  ready_source = ready_source->priv->parent_source;
+                }
+            }
+        }
 
       if (g_atomic_int_get (&source->flags) & G_SOURCE_READY)
-	{
-	  n_ready++;
-	  current_priority = source->priority;
-	  context->has_timeout = TRUE;
-	  context->timeout_ns = 0;
-	}
+        {
+          n_ready++;
+          current_priority = source->priority;
+          context->has_timeout = TRUE;
+          context->timeout_ns = 0;
+        }
 
       if (has_source_timeout)
         {
@@ -4250,10 +4250,10 @@ g_main_context_prepare_unlocked (GMainContext *context,
  **/
 gint
 g_main_context_query (GMainContext *context,
-		      gint          max_priority,
-		      gint         *timeout_msec,
-		      GPollFD      *fds,
-		      gint          n_fds)
+                      gint          max_priority,
+                      gint         *timeout_msec,
+                      GPollFD      *fds,
+                      gint          n_fds)
 {
   gboolean has_timeout;
   uint64_t timeout_ns;
@@ -4370,9 +4370,9 @@ g_main_context_query_unlocked (GMainContext *context,
  **/
 gboolean
 g_main_context_check (GMainContext *context,
-		      gint          max_priority,
-		      GPollFD      *fds,
-		      gint          n_fds)
+                      gint          max_priority,
+                      GPollFD      *fds,
+                      gint          n_fds)
 {
   gboolean ready;
 
@@ -4403,7 +4403,7 @@ g_main_context_check_unlocked (GMainContext *context,
   if (context->in_check_or_prepare)
     {
       g_warning ("g_main_context_check() called recursively from within a source's check() or "
-		 "prepare() member.");
+                 "prepare() member.");
       return FALSE;
     }
 
@@ -4466,9 +4466,9 @@ g_main_context_check_unlocked (GMainContext *context,
   while (g_source_iter_next (&iter, &source))
     {
       if (SOURCE_DESTROYED (source) || SOURCE_BLOCKED (source))
-	continue;
+        continue;
       if ((n_ready > 0) && (source->priority > max_priority))
-	break;
+        break;
 
       if (!(g_atomic_int_get (&source->flags) & G_SOURCE_READY))
         {
@@ -4535,30 +4535,30 @@ g_main_context_check_unlocked (GMainContext *context,
                 result = TRUE;
             }
 
-	  if (result)
-	    {
-	      GSource *ready_source = source;
+          if (result)
+            {
+              GSource *ready_source = source;
 
-	      while (ready_source)
-		{
+              while (ready_source)
+                {
                   g_atomic_int_or (&ready_source->flags, G_SOURCE_READY);
-		  ready_source = ready_source->priv->parent_source;
-		}
-	    }
-	}
+                  ready_source = ready_source->priv->parent_source;
+                }
+            }
+        }
 
       if (g_atomic_int_get (&source->flags) & G_SOURCE_READY)
-	{
+        {
           g_source_ref (source);
-	  g_ptr_array_add (context->pending_dispatches, source);
+          g_ptr_array_add (context->pending_dispatches, source);
 
-	  n_ready++;
+          n_ready++;
 
           /* never dispatch sources with less priority than the first
            * one we choose to dispatch
            */
           max_priority = source->priority;
-	}
+        }
     }
   g_source_iter_clear (&iter);
 
@@ -4628,14 +4628,14 @@ g_main_context_iterate_unlocked (GMainContext *context,
       gboolean got_ownership;
 
       if (!block)
-	return FALSE;
+        return FALSE;
 
       got_ownership = g_main_context_wait_internal (context,
                                                     &context->cond,
                                                     &context->mutex);
 
       if (!got_ownership)
-	return FALSE;
+        return FALSE;
     }
   
   if (!context->cached_poll_array)
@@ -4755,7 +4755,7 @@ g_main_context_iteration (GMainContext *context, gboolean may_block)
  **/
 GMainLoop *
 g_main_loop_new (GMainContext *context,
-		 gboolean      is_running)
+                 gboolean      is_running)
 {
   GMainLoop *loop;
 
@@ -4850,14 +4850,14 @@ g_main_loop_run (GMainLoop *loop)
                                                       &loop->context->mutex);
       
       if (!g_atomic_int_get (&loop->is_running))
-	{
-	  if (got_ownership)
-	    g_main_context_release_unlocked (loop->context);
+        {
+          if (got_ownership)
+            g_main_context_release_unlocked (loop->context);
 
-	  UNLOCK_CONTEXT (loop->context);
-	  g_main_loop_unref (loop);
-	  return;
-	}
+          UNLOCK_CONTEXT (loop->context);
+          g_main_loop_unref (loop);
+          return;
+        }
 
       g_assert (got_ownership);
     }
@@ -4865,7 +4865,7 @@ g_main_loop_run (GMainLoop *loop)
   if G_UNLIKELY (loop->context->in_check_or_prepare)
     {
       g_warning ("g_main_loop_run(): called recursively from within a source's "
-		 "check() or prepare() member, iteration not possible.");
+                 "check() or prepare() member, iteration not possible.");
       g_main_context_release_unlocked (loop->context);
       UNLOCK_CONTEXT (loop->context);
       g_main_loop_unref (loop);
@@ -4966,14 +4966,14 @@ g_main_context_poll_unlocked (GMainContext *context,
     {
       int ret, errsv;
 
-#ifdef	G_MAIN_POLL_DEBUG
+#ifdef  G_MAIN_POLL_DEBUG
       poll_timer = NULL;
       if (_g_main_poll_debug)
-	{
+        {
           g_print ("polling context=%p n=%d has_timeout=%s timeout_ns=%"PRIu64"\n",
                    context, n_fds, has_timeout ? "true" : "false", timeout_ns);
           poll_timer = g_timer_new ();
-	}
+        }
 #endif
       poll_func = context->poll_func;
 
@@ -5006,56 +5006,56 @@ g_main_context_poll_unlocked (GMainContext *context,
 
       errsv = errno;
       if (ret < 0 && errsv != EINTR)
-	{
+        {
 #ifndef G_OS_WIN32
-	  g_warning ("poll(2) failed due to: %s.",
-		     g_strerror (errsv));
+          g_warning ("poll(2) failed due to: %s.",
+                     g_strerror (errsv));
 #else
-	  /* If g_poll () returns -1, it has already called g_warning() */
+          /* If g_poll () returns -1, it has already called g_warning() */
 #endif
-	}
+        }
       
-#ifdef	G_MAIN_POLL_DEBUG
+#ifdef  G_MAIN_POLL_DEBUG
       if (_g_main_poll_debug)
-	{
+        {
           g_print ("g_main_poll(%d) has_timeout: %s timeout_ns: %"PRIu64" - elapsed %12.10f seconds",
                    n_fds,
                    has_timeout ? "true" : "false",
                    timeout_ns,
                    g_timer_elapsed (poll_timer, NULL));
           g_timer_destroy (poll_timer);
-	  pollrec = context->poll_records;
+          pollrec = context->poll_records;
 
-	  while (pollrec != NULL)
-	    {
-	      i = 0;
-	      while (i < n_fds)
-		{
-		  if (fds[i].fd == pollrec->fd->fd &&
-		      pollrec->fd->events &&
-		      fds[i].revents)
-		    {
-		      g_print (" [" G_POLLFD_FORMAT " :", fds[i].fd);
-		      if (fds[i].revents & G_IO_IN)
-			g_print ("i");
-		      if (fds[i].revents & G_IO_OUT)
-			g_print ("o");
-		      if (fds[i].revents & G_IO_PRI)
-			g_print ("p");
-		      if (fds[i].revents & G_IO_ERR)
-			g_print ("e");
-		      if (fds[i].revents & G_IO_HUP)
-			g_print ("h");
-		      if (fds[i].revents & G_IO_NVAL)
-			g_print ("n");
-		      g_print ("]");
-		    }
-		  i++;
-		}
-	      pollrec = pollrec->next;
-	    }
-	  g_print ("\n");
-	}
+          while (pollrec != NULL)
+            {
+              i = 0;
+              while (i < n_fds)
+                {
+                  if (fds[i].fd == pollrec->fd->fd &&
+                      pollrec->fd->events &&
+                      fds[i].revents)
+                    {
+                      g_print (" [" G_POLLFD_FORMAT " :", fds[i].fd);
+                      if (fds[i].revents & G_IO_IN)
+                        g_print ("i");
+                      if (fds[i].revents & G_IO_OUT)
+                        g_print ("o");
+                      if (fds[i].revents & G_IO_PRI)
+                        g_print ("p");
+                      if (fds[i].revents & G_IO_ERR)
+                        g_print ("e");
+                      if (fds[i].revents & G_IO_HUP)
+                        g_print ("h");
+                      if (fds[i].revents & G_IO_NVAL)
+                        g_print ("n");
+                      g_print ("]");
+                    }
+                  i++;
+                }
+              pollrec = pollrec->next;
+            }
+          g_print ("\n");
+        }
 #endif
     } /* if (n_fds || !has_timeout || timeout_ns != 0) */
 }
@@ -5078,8 +5078,8 @@ g_main_context_poll_unlocked (GMainContext *context,
  **/
 void
 g_main_context_add_poll (GMainContext *context,
-			 GPollFD      *fd,
-			 gint          priority)
+                         GPollFD      *fd,
+                         gint          priority)
 {
   if (!context)
     context = g_main_context_default ();
@@ -5095,8 +5095,8 @@ g_main_context_add_poll (GMainContext *context,
 /* HOLDS: main_loop_lock */
 static void 
 g_main_context_add_poll_unlocked (GMainContext *context,
-				  gint          priority,
-				  GPollFD      *fd)
+                                  gint          priority,
+                                  GPollFD      *fd)
 {
   GPollRec *prevrec, *nextrec;
   GPollRec *newrec = g_slice_new (GPollRec);
@@ -5149,7 +5149,7 @@ g_main_context_add_poll_unlocked (GMainContext *context,
  **/
 void
 g_main_context_remove_poll (GMainContext *context,
-			    GPollFD      *fd)
+                            GPollFD      *fd)
 {
   if (!context)
     context = g_main_context_default ();
@@ -5164,7 +5164,7 @@ g_main_context_remove_poll (GMainContext *context,
 
 static void
 g_main_context_remove_poll_unlocked (GMainContext *context,
-				     GPollFD      *fd)
+                                     GPollFD      *fd)
 {
   GPollRec *pollrec, *prevrec, *nextrec;
 
@@ -5175,20 +5175,20 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
     {
       nextrec = pollrec->next;
       if (pollrec->fd == fd)
-	{
-	  if (prevrec != NULL)
-	    prevrec->next = nextrec;
-	  else
-	    context->poll_records = nextrec;
+        {
+          if (prevrec != NULL)
+            prevrec->next = nextrec;
+          else
+            context->poll_records = nextrec;
 
-	  if (nextrec != NULL)
-	    nextrec->prev = prevrec;
+          if (nextrec != NULL)
+            nextrec->prev = prevrec;
 
-	  g_slice_free (GPollRec, pollrec);
+          g_slice_free (GPollRec, pollrec);
 
-	  context->n_poll_records--;
-	  break;
-	}
+          context->n_poll_records--;
+          break;
+        }
       prevrec = pollrec;
       pollrec = nextrec;
     }
@@ -5212,7 +5212,7 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_source_get_current_time (GSource  *source,
-			   GTimeVal *timeval)
+                           GTimeVal *timeval)
 {
   g_get_current_time (timeval);
 }
@@ -5304,7 +5304,7 @@ g_source_get_time (GSource *source)
  **/
 void
 g_main_context_set_poll_func (GMainContext *context,
-			      GPollFunc     func)
+                              GPollFunc     func)
 {
   if (!context)
     context = g_main_context_default ();
@@ -5680,10 +5680,10 @@ timeout_add_full (gint           priority,
  **/
 guint
 g_timeout_add_full (gint           priority,
-		    guint          interval,
-		    GSourceFunc    function,
-		    gpointer       data,
-		    GDestroyNotify notify)
+                    guint          interval,
+                    GSourceFunc    function,
+                    gpointer       data,
+                    GDestroyNotify notify)
 {
   return timeout_add_full (priority, (uint64_t) interval * (G_NSEC_PER_SEC / 1000), FALSE, FALSE, function, data, notify);
 }
@@ -5732,11 +5732,11 @@ g_timeout_add_full (gint           priority,
  **/
 guint
 g_timeout_add (guint32        interval,
-	       GSourceFunc    function,
-	       gpointer       data)
+               GSourceFunc    function,
+               gpointer       data)
 {
   return g_timeout_add_full (G_PRIORITY_DEFAULT, 
-			     interval, function, data, NULL);
+                             interval, function, data, NULL);
 }
 
 /**
@@ -5919,7 +5919,7 @@ siginfo_t_to_wait_status (const siginfo_t *info)
 
 static gboolean
 g_child_watch_prepare (GSource *source,
-		       gint    *timeout)
+                       gint    *timeout)
 {
 #ifdef G_OS_WIN32
   return FALSE;
@@ -6094,7 +6094,7 @@ dispatch_unix_signals (void)
 
 static gboolean
 g_unix_signal_watch_prepare (GSource *source,
-			     gint    *timeout)
+                             gint    *timeout)
 {
   GUnixSignalWatchSource *unix_signal_source;
 
@@ -6115,8 +6115,8 @@ g_unix_signal_watch_check (GSource  *source)
 
 static gboolean
 g_unix_signal_watch_dispatch (GSource    *source, 
-			      GSourceFunc callback,
-			      gpointer    user_data)
+                              GSourceFunc callback,
+                              gpointer    user_data)
 {
   GUnixSignalWatchSource *unix_signal_source;
   gboolean again;
@@ -6126,7 +6126,7 @@ g_unix_signal_watch_dispatch (GSource    *source,
   if (!callback)
     {
       g_warning ("Unix signal source dispatched without callback. "
-		 "You must call g_source_set_callback().");
+                 "You must call g_source_set_callback().");
       return FALSE;
     }
 
@@ -6277,8 +6277,8 @@ g_unix_signal_watch_finalize (GSource    *source)
 
 static gboolean
 g_child_watch_dispatch (GSource    *source, 
-			GSourceFunc callback,
-			gpointer    user_data)
+                        GSourceFunc callback,
+                        gpointer    user_data)
 {
   GChildWatchSource *child_watch_source;
   GChildWatchFunc child_watch_callback = (GChildWatchFunc) callback;
@@ -6403,7 +6403,7 @@ g_child_watch_dispatch (GSource    *source,
   if (!callback)
     {
       g_warning ("Child watch source dispatched without callback. "
-		 "You must call g_source_set_callback().");
+                 "You must call g_source_set_callback().");
       return FALSE;
     }
 
@@ -6595,10 +6595,10 @@ g_child_watch_source_new (GPid pid)
  **/
 guint
 g_child_watch_add_full (gint            priority,
-			GPid            pid,
-			GChildWatchFunc function,
-			gpointer        data,
-			GDestroyNotify  notify)
+                        GPid            pid,
+                        GChildWatchFunc function,
+                        gpointer        data,
+                        GDestroyNotify  notify)
 {
   GSource *source;
   guint id;
@@ -6655,8 +6655,8 @@ g_child_watch_add_full (gint            priority,
  **/
 guint 
 g_child_watch_add (GPid            pid,
-		   GChildWatchFunc function,
-		   gpointer        data)
+                   GChildWatchFunc function,
+                   gpointer        data)
 {
   return g_child_watch_add_full (G_PRIORITY_DEFAULT, pid, function, data, NULL);
 }
@@ -6666,7 +6666,7 @@ g_child_watch_add (GPid            pid,
 
 static gboolean 
 g_idle_prepare  (GSource  *source,
-		 gint     *timeout)
+                 gint     *timeout)
 {
   *timeout = 0;
 
@@ -6681,8 +6681,8 @@ g_idle_check    (GSource  *source)
 
 static gboolean
 g_idle_dispatch (GSource    *source, 
-		 GSourceFunc callback,
-		 gpointer    user_data)
+                 GSourceFunc callback,
+                 gpointer    user_data)
 {
   GIdleSource *idle_source = (GIdleSource *)source;
   gboolean again;
@@ -6690,7 +6690,7 @@ g_idle_dispatch (GSource    *source,
   if (!callback)
     {
       g_warning ("Idle source dispatched without callback. "
-		 "You must call g_source_set_callback().");
+                 "You must call g_source_set_callback().");
       return FALSE;
     }
 
@@ -6804,9 +6804,9 @@ idle_add_full (gint           priority,
  **/
 guint 
 g_idle_add_full (gint           priority,
-		 GSourceFunc    function,
-		 gpointer       data,
-		 GDestroyNotify notify)
+                 GSourceFunc    function,
+                 gpointer       data,
+                 GDestroyNotify notify)
 {
   return idle_add_full (priority, FALSE, function, data, notify);
 }
@@ -6837,7 +6837,7 @@ g_idle_add_full (gint           priority,
  **/
 guint 
 g_idle_add (GSourceFunc    function,
-	    gpointer       data)
+            gpointer       data)
 {
   return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, function, data, NULL);
 }

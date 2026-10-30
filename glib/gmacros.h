@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -755,19 +755,19 @@
 #define G_GNUC_BEGIN_IGNORE_DEPRECATIONS                \
   _Pragma ("warning (push)")                            \
   _Pragma ("warning (disable:1478)")
-#define G_GNUC_END_IGNORE_DEPRECATIONS			\
+#define G_GNUC_END_IGNORE_DEPRECATIONS                  \
   _Pragma ("warning (pop)")
 #elif G_GNUC_CHECK_VERSION(4, 6)
-#define G_GNUC_BEGIN_IGNORE_DEPRECATIONS		\
-  _Pragma ("GCC diagnostic push")			\
+#define G_GNUC_BEGIN_IGNORE_DEPRECATIONS                \
+  _Pragma ("GCC diagnostic push")                       \
   _Pragma ("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
-#define G_GNUC_END_IGNORE_DEPRECATIONS			\
+#define G_GNUC_END_IGNORE_DEPRECATIONS                  \
   _Pragma ("GCC diagnostic pop")
 #elif defined (_MSC_VER) && (_MSC_VER >= 1500) && !defined (__clang__)
-#define G_GNUC_BEGIN_IGNORE_DEPRECATIONS		\
+#define G_GNUC_BEGIN_IGNORE_DEPRECATIONS                \
   __pragma (warning (push))  \
   __pragma (warning (disable : 4996))
-#define G_GNUC_END_IGNORE_DEPRECATIONS			\
+#define G_GNUC_END_IGNORE_DEPRECATIONS                  \
   __pragma (warning (pop))
 #elif defined (__clang__)
 #define G_GNUC_BEGIN_IGNORE_DEPRECATIONS \
@@ -898,8 +898,8 @@
 #define G_ANALYZER_NORETURN
 #endif
 
-#define G_STRINGIFY(macro_or_string)	G_STRINGIFY_ARG (macro_or_string)
-#define	G_STRINGIFY_ARG(contents)	#contents
+#define G_STRINGIFY(macro_or_string)    G_STRINGIFY_ARG (macro_or_string)
+#define G_STRINGIFY_ARG(contents)       #contents
 
 #define G_PASTE_ARGS(identifier1,identifier2) identifier1 ## identifier2
 #define G_PASTE(identifier1,identifier2)      G_PASTE_ARGS (identifier1, identifier2)
@@ -925,9 +925,9 @@
 
 /* Provide a string identifying the current code position */
 #if defined (__GNUC__) && (__GNUC__ < 3) && !defined (G_CXX_STD_VERSION)
-#define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
+#define G_STRLOC        __FILE__ ":" G_STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
 #else
-#define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__)
+#define G_STRLOC        __FILE__ ":" G_STRINGIFY (__LINE__)
 #endif
 
 /* Provide a string identifying the current function, non-concatenatable */
@@ -965,24 +965,24 @@
 #  endif /* G_CXX_STD_CHECK_VERSION (11) */
 #endif
 
-#ifndef	FALSE
-#define	FALSE	(0)
+#ifndef FALSE
+#define FALSE   (0)
 #endif
 
-#ifndef	TRUE
-#define	TRUE	(!FALSE)
+#ifndef TRUE
+#define TRUE    (!FALSE)
 #endif
 
-#undef	MAX
+#undef  MAX
 #define MAX(a, b)  (((a) > (b)) ? (a) : (b))
 
-#undef	MIN
+#undef  MIN
 #define MIN(a, b)  (((a) < (b)) ? (a) : (b))
 
-#undef	ABS
-#define ABS(a)	   (((a) < 0) ? -(a) : (a))
+#undef  ABS
+#define ABS(a)     (((a) < 0) ? -(a) : (a))
 
-#undef	CLAMP
+#undef  CLAMP
 #define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 
 #define G_APPROX_VALUE(a, b, epsilon) \
@@ -992,12 +992,12 @@
  * as such; using this with a dynamically allocated array will give
  * incorrect results.
  */
-#define G_N_ELEMENTS(arr)		(sizeof (arr) / sizeof ((arr)[0]))
+#define G_N_ELEMENTS(arr)               (sizeof (arr) / sizeof ((arr)[0]))
 
 /* Macros by analogy to GINT_TO_POINTER, GPOINTER_TO_INT
  */
-#define GPOINTER_TO_SIZE(p)	((gsize) (p))
-#define GSIZE_TO_POINTER(s)	((gpointer) (guintptr) (gsize) (s))
+#define GPOINTER_TO_SIZE(p)     ((gsize) (p))
+#define GSIZE_TO_POINTER(s)     ((gpointer) (guintptr) (gsize) (s))
 
 /* Provide convenience macros for handling structure
  * fields through their offsets.
@@ -1007,7 +1007,7 @@
 #define G_STRUCT_OFFSET(struct_type, member) \
       ((glong) offsetof (struct_type, member))
 #else
-#define G_STRUCT_OFFSET(struct_type, member)	\
+#define G_STRUCT_OFFSET(struct_type, member)    \
       ((glong) ((guint8*) &((struct_type*) 0)->member))
 #endif
 

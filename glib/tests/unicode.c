@@ -1631,11 +1631,11 @@ test_fully_decompose_canonical (void)
     }
   vectors[] =
     {
-#define TEST0(ch)		{ ch, 1, { ch, 0, 0, 0 }}
-#define TEST1(ch, a)		{ ch, 1, { a, 0, 0, 0 }}
-#define TEST2(ch, a, b)		{ ch, 2, { a, b, 0, 0 }}
-#define TEST3(ch, a, b, c)	{ ch, 3, { a, b, c, 0 }}
-#define TEST4(ch, a, b, c, d)	{ ch, 4, { a, b, c, d }}
+#define TEST0(ch)               { ch, 1, { ch, 0, 0, 0 }}
+#define TEST1(ch, a)            { ch, 1, { a, 0, 0, 0 }}
+#define TEST2(ch, a, b)         { ch, 2, { a, b, 0, 0 }}
+#define TEST3(ch, a, b, c)      { ch, 3, { a, b, c, 0 }}
+#define TEST4(ch, a, b, c, d)   { ch, 4, { a, b, c, d }}
 
       /* Not decomposable */
       TEST0 (0x0041),
@@ -1713,11 +1713,11 @@ test_canonical_decomposition (void)
   if (expected_len >= 4) g_assert_cmphex (decomp[3], ==, d); \
   g_free (decomp);
 
-#define TEST0(ch)		TEST_DECOMP (ch, 1, ch, 0, 0, 0)
-#define TEST1(ch, a)		TEST_DECOMP (ch, 1, a, 0, 0, 0)
-#define TEST2(ch, a, b)		TEST_DECOMP (ch, 2, a, b, 0, 0)
-#define TEST3(ch, a, b, c)	TEST_DECOMP (ch, 3, a, b, c, 0)
-#define TEST4(ch, a, b, c, d)	TEST_DECOMP (ch, 4, a, b, c, d)
+#define TEST0(ch)               TEST_DECOMP (ch, 1, ch, 0, 0, 0)
+#define TEST1(ch, a)            TEST_DECOMP (ch, 1, a, 0, 0, 0)
+#define TEST2(ch, a, b)         TEST_DECOMP (ch, 2, a, b, 0, 0)
+#define TEST3(ch, a, b, c)      TEST_DECOMP (ch, 3, a, b, c, 0)
+#define TEST4(ch, a, b, c, d)   TEST_DECOMP (ch, 4, a, b, c, d)
 
   /* Not decomposable */
   TEST0 (0x0041);

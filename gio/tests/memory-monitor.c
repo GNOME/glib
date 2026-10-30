@@ -32,7 +32,7 @@ test_dup_default (void)
 
 static void
 warning_cb (GMemoryMonitor *m,
-	    GMemoryMonitorWarningLevel level)
+            GMemoryMonitorWarningLevel level)
 {
   char *str = g_enum_to_string (G_TYPE_MEMORY_MONITOR_WARNING_LEVEL, level);
   g_message ("Warning level: %s (%d)", str , level);
@@ -47,7 +47,7 @@ do_watch_memory (void)
 
   m = g_memory_monitor_dup_default ();
   g_signal_connect (G_OBJECT (m), "low-memory-warning",
-		    G_CALLBACK (warning_cb), NULL);
+                    G_CALLBACK (warning_cb), NULL);
 
   loop = g_main_loop_new (NULL, TRUE);
   g_main_loop_run (loop);

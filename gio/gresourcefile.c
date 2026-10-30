@@ -94,17 +94,17 @@ typedef struct _GResourceFileInputStreamClass    GResourceFileInputStreamClass;
 
 #define g_resource_file_get_type _g_resource_file_get_type
 G_DEFINE_TYPE_WITH_CODE (GResourceFile, g_resource_file, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
-						g_resource_file_file_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_FILE,
+                                                g_resource_file_file_iface_init))
 
 #define g_resource_file_enumerator_get_type _g_resource_file_enumerator_get_type
 G_DEFINE_TYPE (GResourceFileEnumerator, g_resource_file_enumerator, G_TYPE_FILE_ENUMERATOR)
 
 static GFileEnumerator *_g_resource_file_enumerator_new (GResourceFile *file,
-							 const char           *attributes,
-							 GFileQueryInfoFlags   flags,
-							 GCancellable         *cancellable,
-							 GError              **error);
+                                                         const char           *attributes,
+                                                         GFileQueryInfoFlags   flags,
+                                                         GCancellable         *cancellable,
+                                                         GError              **error);
 
 
 static GType              _g_resource_file_input_stream_get_type (void);
@@ -263,7 +263,7 @@ g_resource_file_is_native (GFile *file)
 
 static gboolean
 g_resource_file_has_uri_scheme (GFile      *file,
-				const char *uri_scheme)
+                                const char *uri_scheme)
 {
   return g_ascii_strcasecmp (uri_scheme, "resource") == 0;
 }
@@ -319,7 +319,7 @@ g_resource_file_get_parent (GFile *file)
 
   parent = g_object_new (G_TYPE_RESOURCE_FILE, NULL);
   parent->path = g_strndup (resource->path,
-			    end - resource->path);
+                            end - resource->path);
 
   return G_FILE (parent);
 }
@@ -342,7 +342,7 @@ g_resource_file_hash (GFile *file)
 
 static gboolean
 g_resource_file_equal (GFile *file1,
-		       GFile *file2)
+                       GFile *file2)
 {
   GResourceFile *resource1 = G_RESOURCE_FILE (file1);
   GResourceFile *resource2 = G_RESOURCE_FILE (file2);
@@ -352,7 +352,7 @@ g_resource_file_equal (GFile *file1,
 
 static const char *
 match_prefix (const char *path,
-	      const char *prefix)
+              const char *prefix)
 {
   size_t prefix_len;
 
@@ -371,7 +371,7 @@ match_prefix (const char *path,
 
 static gboolean
 g_resource_file_prefix_matches (GFile *parent,
-				GFile *descendant)
+                                GFile *descendant)
 {
   GResourceFile *parent_resource = G_RESOURCE_FILE (parent);
   GResourceFile *descendant_resource = G_RESOURCE_FILE (descendant);
@@ -385,7 +385,7 @@ g_resource_file_prefix_matches (GFile *parent,
 
 static char *
 g_resource_file_get_relative_path (GFile *parent,
-				   GFile *descendant)
+                                   GFile *descendant)
 {
   GResourceFile *parent_resource = G_RESOURCE_FILE (parent);
   GResourceFile *descendant_resource = G_RESOURCE_FILE (descendant);
@@ -400,7 +400,7 @@ g_resource_file_get_relative_path (GFile *parent,
 
 static GFile *
 g_resource_file_resolve_relative_path (GFile      *file,
-				       const char *relative_path)
+                                       const char *relative_path)
 {
   GResourceFile *resource = G_RESOURCE_FILE (file);
   char *filename;
@@ -418,21 +418,21 @@ g_resource_file_resolve_relative_path (GFile      *file,
 
 static GFileEnumerator *
 g_resource_file_enumerate_children (GFile                *file,
-				    const char           *attributes,
-				    GFileQueryInfoFlags   flags,
-				    GCancellable         *cancellable,
-				    GError              **error)
+                                    const char           *attributes,
+                                    GFileQueryInfoFlags   flags,
+                                    GCancellable         *cancellable,
+                                    GError              **error)
 {
   GResourceFile *resource = G_RESOURCE_FILE (file);
   return _g_resource_file_enumerator_new (resource,
-					  attributes, flags,
-					  cancellable, error);
+                                          attributes, flags,
+                                          cancellable, error);
 }
 
 static GFile *
 g_resource_file_get_child_for_display_name (GFile        *file,
-					    const char   *display_name,
-					    GError      **error)
+                                            const char   *display_name,
+                                            GError      **error)
 {
   GFile *new_file;
 
@@ -443,10 +443,10 @@ g_resource_file_get_child_for_display_name (GFile        *file,
 
 static GFileInfo *
 g_resource_file_query_info (GFile                *file,
-			    const char           *attributes,
-			    GFileQueryInfoFlags   flags,
-			    GCancellable         *cancellable,
-			    GError              **error)
+                            const char           *attributes,
+                            GFileQueryInfoFlags   flags,
+                            GCancellable         *cancellable,
+                            GError              **error)
 {
   GResourceFile *resource = G_RESOURCE_FILE (file);
   GError *my_error = NULL;
@@ -468,19 +468,19 @@ g_resource_file_query_info (GFile                *file,
     {
       res = g_resources_get_info (resource->path, 0, &size, &resource_flags, &my_error);
       if (!res)
-	{
-	  if (g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
-	    {
-	      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-			   _("The resource at “%s” does not exist"),
-			   resource->path);
-	    }
-	  else
-	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+        {
+          if (g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                           _("The resource at “%s” does not exist"),
+                           resource->path);
+            }
+          else
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                                  my_error->message);
-	  g_clear_error (&my_error);
-	  return FALSE;
-	}
+          g_clear_error (&my_error);
+          return FALSE;
+        }
     }
 
   matcher = g_file_attribute_matcher_new (attributes);
@@ -565,24 +565,24 @@ g_resource_file_query_filesystem_info (GFile         *file,
 
 static GFileAttributeInfoList *
 g_resource_file_query_settable_attributes (GFile         *file,
-					   GCancellable  *cancellable,
-					   GError       **error)
+                                           GCancellable  *cancellable,
+                                           GError       **error)
 {
   return g_file_attribute_info_list_ref (resource_writable_attributes);
 }
 
 static GFileAttributeInfoList *
 g_resource_file_query_writable_namespaces (GFile         *file,
-					   GCancellable  *cancellable,
-					   GError       **error)
+                                           GCancellable  *cancellable,
+                                           GError       **error)
 {
   return g_file_attribute_info_list_ref (resource_writable_namespaces);
 }
 
 static GFileInputStream *
 g_resource_file_read (GFile         *file,
-		      GCancellable  *cancellable,
-		      GError       **error)
+                      GCancellable  *cancellable,
+                      GError       **error)
 {
   GResourceFile *resource = G_RESOURCE_FILE (file);
   GError *my_error = NULL;
@@ -594,13 +594,13 @@ g_resource_file_read (GFile         *file,
   if (stream == NULL)
     {
       if (g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
-	{
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-		       _("The resource at “%s” does not exist"),
-		       resource->path);
-	}
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                       _("The resource at “%s” does not exist"),
+                       resource->path);
+        }
       else
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                              my_error->message);
       g_clear_error (&my_error);
       return NULL;
@@ -698,11 +698,11 @@ g_resource_file_file_iface_init (GFileIface *iface)
 }
 
 static GFileInfo *g_resource_file_enumerator_next_file (GFileEnumerator  *enumerator,
-							GCancellable     *cancellable,
-							GError          **error);
+                                                        GCancellable     *cancellable,
+                                                        GError          **error);
 static gboolean   g_resource_file_enumerator_close     (GFileEnumerator  *enumerator,
-							GCancellable     *cancellable,
-							GError          **error);
+                                                        GCancellable     *cancellable,
+                                                        GError          **error);
 
 static void
 g_resource_file_enumerator_finalize (GObject *object)
@@ -737,10 +737,10 @@ g_resource_file_enumerator_init (GResourceFileEnumerator *resource)
 
 static GFileEnumerator *
 _g_resource_file_enumerator_new (GResourceFile *file,
-				 const char           *attributes,
-				 GFileQueryInfoFlags   flags,
-				 GCancellable         *cancellable,
-				 GError              **error)
+                                 const char           *attributes,
+                                 GFileQueryInfoFlags   flags,
+                                 GCancellable         *cancellable,
+                                 GError              **error)
 {
   GResourceFileEnumerator *resource;
   char **children;
@@ -752,19 +752,19 @@ _g_resource_file_enumerator_new (GResourceFile *file,
     {
       res = g_resources_get_info (file->path, 0, NULL, NULL, NULL);
       if (res)
-	g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_DIRECTORY,
-		     _("The resource at “%s” is not a directory"),
-		     file->path);
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_DIRECTORY,
+                     _("The resource at “%s” is not a directory"),
+                     file->path);
       else
-	g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-		     _("The resource at “%s” does not exist"),
-		     file->path);
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                     _("The resource at “%s” does not exist"),
+                     file->path);
       return NULL;
     }
 
   resource = g_object_new (G_TYPE_RESOURCE_FILE_ENUMERATOR,
-			   "container", file,
-			   NULL);
+                           "container", file,
+                           NULL);
 
   resource->children = children;
   resource->path = g_strdup (file->path);
@@ -776,8 +776,8 @@ _g_resource_file_enumerator_new (GResourceFile *file,
 
 static GFileInfo *
 g_resource_file_enumerator_next_file (GFileEnumerator  *enumerator,
-				      GCancellable     *cancellable,
-				      GError          **error)
+                                      GCancellable     *cancellable,
+                                      GError          **error)
 {
   GResourceFileEnumerator *resource = G_RESOURCE_FILE_ENUMERATOR (enumerator);
   char *path;
@@ -793,10 +793,10 @@ g_resource_file_enumerator_next_file (GFileEnumerator  *enumerator,
   g_free (path);
 
   info = g_file_query_info (file,
-			    resource->attributes,
-			    resource->flags,
-			    cancellable,
-			    error);
+                            resource->attributes,
+                            resource->flags,
+                            cancellable,
+                            error);
 
   g_object_unref (file);
 
@@ -805,8 +805,8 @@ g_resource_file_enumerator_next_file (GFileEnumerator  *enumerator,
 
 static gboolean
 g_resource_file_enumerator_close (GFileEnumerator  *enumerator,
-			       GCancellable     *cancellable,
-			       GError          **error)
+                               GCancellable     *cancellable,
+                               GError          **error)
 {
   return TRUE;
 }
@@ -828,28 +828,28 @@ struct _GResourceFileInputStreamClass
 G_DEFINE_TYPE (GResourceFileInputStream, g_resource_file_input_stream, G_TYPE_FILE_INPUT_STREAM)
 
 static gssize     g_resource_file_input_stream_read       (GInputStream      *stream,
-							   void              *buffer,
-							   gsize              count,
-							   GCancellable      *cancellable,
-							   GError           **error);
+                                                           void              *buffer,
+                                                           gsize              count,
+                                                           GCancellable      *cancellable,
+                                                           GError           **error);
 static gssize     g_resource_file_input_stream_skip       (GInputStream      *stream,
-							   gsize              count,
-							   GCancellable      *cancellable,
-							   GError           **error);
+                                                           gsize              count,
+                                                           GCancellable      *cancellable,
+                                                           GError           **error);
 static gboolean   g_resource_file_input_stream_close      (GInputStream      *stream,
-							   GCancellable      *cancellable,
-							   GError           **error);
+                                                           GCancellable      *cancellable,
+                                                           GError           **error);
 static goffset    g_resource_file_input_stream_tell       (GFileInputStream  *stream);
 static gboolean   g_resource_file_input_stream_can_seek   (GFileInputStream  *stream);
 static gboolean   g_resource_file_input_stream_seek       (GFileInputStream  *stream,
-							   goffset            offset,
-							   GSeekType          type,
-							   GCancellable      *cancellable,
-							   GError           **error);
+                                                           goffset            offset,
+                                                           GSeekType          type,
+                                                           GCancellable      *cancellable,
+                                                           GError           **error);
 static GFileInfo *g_resource_file_input_stream_query_info (GFileInputStream  *stream,
-							   const char        *attributes,
-							   GCancellable      *cancellable,
-							   GError           **error);
+                                                           const char        *attributes,
+                                                           GCancellable      *cancellable,
+                                                           GError           **error);
 
 static void
 g_resource_file_input_stream_finalize (GObject *object)
@@ -898,35 +898,35 @@ _g_resource_file_input_stream_new (GInputStream *in_stream, GFile *file)
 
 static gssize
 g_resource_file_input_stream_read (GInputStream  *stream,
-				   void          *buffer,
-				   gsize          count,
-				   GCancellable  *cancellable,
-				   GError       **error)
+                                   void          *buffer,
+                                   gsize          count,
+                                   GCancellable  *cancellable,
+                                   GError       **error)
 {
   GResourceFileInputStream *file = G_RESOURCE_FILE_INPUT_STREAM (stream);
   return g_input_stream_read (file->stream,
-			      buffer, count, cancellable, error);
+                              buffer, count, cancellable, error);
 }
 
 static gssize
 g_resource_file_input_stream_skip (GInputStream  *stream,
-				   gsize          count,
-				   GCancellable  *cancellable,
-				   GError       **error)
+                                   gsize          count,
+                                   GCancellable  *cancellable,
+                                   GError       **error)
 {
   GResourceFileInputStream *file = G_RESOURCE_FILE_INPUT_STREAM (stream);
   return g_input_stream_skip (file->stream,
-			      count, cancellable, error);
+                              count, cancellable, error);
 }
 
 static gboolean
 g_resource_file_input_stream_close (GInputStream  *stream,
-				    GCancellable  *cancellable,
-				    GError       **error)
+                                    GCancellable  *cancellable,
+                                    GError       **error)
 {
   GResourceFileInputStream *file = G_RESOURCE_FILE_INPUT_STREAM (stream);
   return g_input_stream_close (file->stream,
-			       cancellable, error);
+                               cancellable, error);
 }
 
 
@@ -951,29 +951,29 @@ g_resource_file_input_stream_can_seek (GFileInputStream *stream)
 
 static gboolean
 g_resource_file_input_stream_seek (GFileInputStream  *stream,
-				   goffset            offset,
-				   GSeekType          type,
-				   GCancellable      *cancellable,
-				   GError           **error)
+                                   goffset            offset,
+                                   GSeekType          type,
+                                   GCancellable      *cancellable,
+                                   GError           **error)
 {
   GResourceFileInputStream *file = G_RESOURCE_FILE_INPUT_STREAM (stream);
 
   if (!G_IS_SEEKABLE (file->stream))
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			   _("Input stream doesn’t implement seek"));
+                           _("Input stream doesn’t implement seek"));
       return FALSE;
     }
 
   return g_seekable_seek (G_SEEKABLE (file->stream),
-			  offset, type, cancellable, error);
+                          offset, type, cancellable, error);
 }
 
 static GFileInfo *
 g_resource_file_input_stream_query_info (GFileInputStream  *stream,
-					 const char        *attributes,
-					 GCancellable      *cancellable,
-					 GError           **error)
+                                         const char        *attributes,
+                                         GCancellable      *cancellable,
+                                         GError           **error)
 {
   GResourceFileInputStream *file = G_RESOURCE_FILE_INPUT_STREAM (stream);
 

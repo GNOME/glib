@@ -158,14 +158,14 @@ g_converter_default_init (GConverterInterface *iface)
  **/
 GConverterResult
 g_converter_convert (GConverter *converter,
-		     const void *inbuf,
-		     gsize       inbuf_size,
-		     void       *outbuf,
-		     gsize       outbuf_size,
-		     GConverterFlags flags,
-		     gsize      *bytes_read,
-		     gsize      *bytes_written,
-		     GError    **error)
+                     const void *inbuf,
+                     gsize       inbuf_size,
+                     void       *outbuf,
+                     gsize       outbuf_size,
+                     GConverterFlags flags,
+                     gsize      *bytes_read,
+                     gsize      *bytes_written,
+                     GError    **error)
 {
   GConverterIface *iface;
 
@@ -183,10 +183,10 @@ g_converter_convert (GConverter *converter,
   iface = G_CONVERTER_GET_IFACE (converter);
 
   return (* iface->convert) (converter,
-			     inbuf, inbuf_size,
-			     outbuf, outbuf_size,
-			     flags,
-			     bytes_read, bytes_written, error);
+                             inbuf, inbuf_size,
+                             outbuf, outbuf_size,
+                             flags,
+                             bytes_read, bytes_written, error);
 }
 
 /**

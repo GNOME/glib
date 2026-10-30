@@ -1285,16 +1285,16 @@ handle_call (gint        *argc,
                                                           &error);
 #else
   result = g_dbus_connection_call_sync (c,
-		  			opt_call_dest,
-					opt_call_object_path,
-					interface_name,
-					method_name,
-					parameters,
-					NULL,
-					flags,
-					opt_call_timeout > 0 ? opt_call_timeout * 1000 : opt_call_timeout,
-					NULL,
-					&error);
+                                        opt_call_dest,
+                                        opt_call_object_path,
+                                        interface_name,
+                                        method_name,
+                                        parameters,
+                                        NULL,
+                                        flags,
+                                        opt_call_timeout > 0 ? opt_call_timeout * 1000 : opt_call_timeout,
+                                        NULL,
+                                        &error);
 #endif
   if (result == NULL)
     {

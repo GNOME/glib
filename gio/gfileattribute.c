@@ -83,7 +83,7 @@ _g_file_attribute_value_clear (GFileAttributeValue *attr)
  **/
 void
 _g_file_attribute_value_set (GFileAttributeValue        *attr,
-			     const GFileAttributeValue *new_value)
+                             const GFileAttributeValue *new_value)
 {
   g_return_if_fail (attr != NULL);
   g_return_if_fail (new_value != NULL);
@@ -183,7 +183,7 @@ escape_byte_string (const char *str)
   for (i = 0; i < len; i++)
     {
       if (!valid_char (str[i]))
-	num_invalid++;
+        num_invalid++;
     }
 
   if (num_invalid == 0)
@@ -199,18 +199,18 @@ escape_byte_string (const char *str)
 
       p = escaped_val;
       for (i = 0; i < len; i++)
-	{
-	  c = str[i];
-	  if (valid_char (c))
-	    *p++ = c;
-	  else
-	    {
-	      *p++ = '\\';
-	      *p++ = 'x';
-	      *p++ = hex_digits[(c >> 4) & 0xf];
-	      *p++ = hex_digits[c & 0xf];
-	    }
-	}
+        {
+          c = str[i];
+          if (valid_char (c))
+            *p++ = c;
+          else
+            {
+              *p++ = '\\';
+              *p++ = 'x';
+              *p++ = hex_digits[(c >> 4) & 0xf];
+              *p++ = hex_digits[c & 0xf];
+            }
+        }
       *p++ = 0;
       return escaped_val;
     }
@@ -243,11 +243,11 @@ _g_file_attribute_value_as_string (const GFileAttributeValue *attr)
     case G_FILE_ATTRIBUTE_TYPE_STRINGV:
       s = g_string_new ("[");
       for (i = 0; attr->u.stringv[i] != NULL; i++)
-	{
-	  g_string_append (s, attr->u.stringv[i]);
-	  if (attr->u.stringv[i+1] != NULL)
-	    g_string_append (s, ", ");
-	}
+        {
+          g_string_append (s, attr->u.stringv[i]);
+          if (attr->u.stringv[i+1] != NULL)
+            g_string_append (s, ", ");
+        }
       g_string_append (s, "]");
       str = g_string_free (s, FALSE);
       break;
@@ -460,9 +460,9 @@ _g_file_attribute_value_get_object (const GFileAttributeValue *attr)
 
 void
 _g_file_attribute_value_set_from_pointer (GFileAttributeValue *value,
-					  GFileAttributeType   type,
-					  gpointer             value_p,
-					  gboolean             dup)
+                                          GFileAttributeType   type,
+                                          gpointer             value_p,
+                                          gboolean             dup)
 {
   _g_file_attribute_value_clear (value);
   value->type = type;
@@ -471,23 +471,23 @@ _g_file_attribute_value_set_from_pointer (GFileAttributeValue *value,
     case G_FILE_ATTRIBUTE_TYPE_STRING:
     case G_FILE_ATTRIBUTE_TYPE_BYTE_STRING:
       if (dup)
-	value->u.string = g_strdup (value_p);
+        value->u.string = g_strdup (value_p);
       else
-	value->u.string = value_p;
+        value->u.string = value_p;
       break;
 
     case G_FILE_ATTRIBUTE_TYPE_STRINGV:
       if (dup)
-	value->u.stringv = g_strdupv (value_p);
+        value->u.stringv = g_strdupv (value_p);
       else
-	value->u.stringv = value_p;
+        value->u.stringv = value_p;
       break;
 
     case G_FILE_ATTRIBUTE_TYPE_OBJECT:
       if (dup)
-	value->u.obj = g_object_ref (value_p);
+        value->u.obj = g_object_ref (value_p);
       else
-	value->u.obj = value_p;
+        value->u.obj = value_p;
       break;
 
     case G_FILE_ATTRIBUTE_TYPE_BOOLEAN:
@@ -528,7 +528,7 @@ _g_file_attribute_value_set_from_pointer (GFileAttributeValue *value,
  */
 void
 _g_file_attribute_value_set_string (GFileAttributeValue *attr,
-				    const char          *string)
+                                    const char          *string)
 {
   g_return_if_fail (attr != NULL);
   g_return_if_fail (string != NULL);
@@ -547,7 +547,7 @@ _g_file_attribute_value_set_string (GFileAttributeValue *attr,
  */
 void
 _g_file_attribute_value_set_byte_string (GFileAttributeValue *attr,
-					 const char          *string)
+                                         const char          *string)
 {
   g_return_if_fail (attr != NULL);
   g_return_if_fail (string != NULL);
@@ -559,7 +559,7 @@ _g_file_attribute_value_set_byte_string (GFileAttributeValue *attr,
 
 void
 _g_file_attribute_value_set_stringv (GFileAttributeValue *attr,
-				     char               **value)
+                                     char               **value)
 {
   g_return_if_fail (attr != NULL);
   g_return_if_fail (value != NULL);
@@ -579,7 +579,7 @@ _g_file_attribute_value_set_stringv (GFileAttributeValue *attr,
  */
 void
 _g_file_attribute_value_set_boolean (GFileAttributeValue *attr,
-				     gboolean             value)
+                                     gboolean             value)
 {
   g_return_if_fail (attr != NULL);
 
@@ -597,7 +597,7 @@ _g_file_attribute_value_set_boolean (GFileAttributeValue *attr,
  */
 void
 _g_file_attribute_value_set_uint32 (GFileAttributeValue *attr,
-				    guint32              value)
+                                    guint32              value)
 {
   g_return_if_fail (attr != NULL);
 
@@ -615,7 +615,7 @@ _g_file_attribute_value_set_uint32 (GFileAttributeValue *attr,
  */
 void
 _g_file_attribute_value_set_int32 (GFileAttributeValue *attr,
-				   gint32               value)
+                                   gint32               value)
 {
   g_return_if_fail (attr != NULL);
 
@@ -633,7 +633,7 @@ _g_file_attribute_value_set_int32 (GFileAttributeValue *attr,
  */
 void
 _g_file_attribute_value_set_uint64 (GFileAttributeValue *attr,
-				    guint64              value)
+                                    guint64              value)
 {
   g_return_if_fail (attr != NULL);
 
@@ -651,7 +651,7 @@ _g_file_attribute_value_set_uint64 (GFileAttributeValue *attr,
  */
 void
 _g_file_attribute_value_set_int64 (GFileAttributeValue *attr,
-				   gint64               value)
+                                   gint64               value)
 {
   g_return_if_fail (attr != NULL);
 
@@ -670,7 +670,7 @@ _g_file_attribute_value_set_int64 (GFileAttributeValue *attr,
  */
 void
 _g_file_attribute_value_set_object (GFileAttributeValue *attr,
-				    GObject             *obj)
+                                    GObject             *obj)
 {
   g_return_if_fail (attr != NULL);
   g_return_if_fail (obj != NULL);
@@ -801,7 +801,7 @@ g_file_attribute_info_list_unref (GFileAttributeInfoList *list)
 
 static int
 g_file_attribute_info_list_bsearch (GFileAttributeInfoList *list,
-				    const char             *name)
+                                    const char             *name)
 {
   int start, end, mid;
 
@@ -813,11 +813,11 @@ g_file_attribute_info_list_bsearch (GFileAttributeInfoList *list,
       mid = start + (end - start) / 2;
 
       if (strcmp (name, list->infos[mid].name) < 0)
-	end = mid;
+        end = mid;
       else if (strcmp (name, list->infos[mid].name) > 0)
-	start = mid + 1;
+        start = mid + 1;
       else
-	return mid;
+        return mid;
     }
   return start;
 }
@@ -834,7 +834,7 @@ g_file_attribute_info_list_bsearch (GFileAttributeInfoList *list,
  */
 const GFileAttributeInfo *
 g_file_attribute_info_list_lookup (GFileAttributeInfoList *list,
-				   const char             *name)
+                                   const char             *name)
 {
   int i;
 
@@ -861,9 +861,9 @@ g_file_attribute_info_list_lookup (GFileAttributeInfoList *list,
  */
 void
 g_file_attribute_info_list_add (GFileAttributeInfoList *list,
-				const char             *name,
-				GFileAttributeType      type,
-				GFileAttributeInfoFlags flags)
+                                const char             *name,
+                                GFileAttributeType      type,
+                                GFileAttributeInfoFlags flags)
 {
   GFileAttributeInfoListPriv *priv = (GFileAttributeInfoListPriv *)list;
   GFileAttributeInfo info;

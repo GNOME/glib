@@ -34,7 +34,7 @@ test_g_mutex (void)
   g_assert_true (G_TRYLOCK (test_g_mutex));
   test_g_mutex_thread_ready = FALSE;
   thread = g_thread_create (test_g_mutex_thread, GINT_TO_POINTER (42),
-			    TRUE, NULL);
+                            TRUE, NULL);
   /* This busy wait is only for testing purposes and not an example of
    * good code!*/
   while (!test_g_mutex_thread_ready)
@@ -144,19 +144,19 @@ test_g_static_private_thread (gpointer data)
       number = number * 11 + 1; /* A very simple and bad RNG ;-) */
       private1 = g_static_private_get (&test_g_static_private_private1);
       if (!private1 || number % 7 > 3)
-	{
-	  private1 = test_g_static_private_constructor ();
-	  g_static_private_set (&test_g_static_private_private1, private1,
-				test_g_static_private_destructor);
-	}
+        {
+          private1 = test_g_static_private_constructor ();
+          g_static_private_set (&test_g_static_private_private1, private1,
+                                test_g_static_private_destructor);
+        }
       *private1 = number;
       private2 = g_static_private_get (&test_g_static_private_private2);
       if (!private2 || number % 13 > 5)
-	{
-	  private2 = test_g_static_private_constructor ();
-	  g_static_private_set (&test_g_static_private_private2, private2,
-				test_g_static_private_destructor);
-	}
+        {
+          private2 = test_g_static_private_constructor ();
+          g_static_private_set (&test_g_static_private_private2, private2,
+                                test_g_static_private_destructor);
+        }
       *private2 = number * 2;
       g_usleep (G_USEC_PER_SEC / 5);
       g_assert_cmpint (number, ==, *private1);
@@ -175,10 +175,10 @@ test_g_static_private_thread (gpointer data)
       private2 = g_static_private_get (&test_g_static_private_private2);
       number = number * 11 + 1; /* A very simple and bad RNG ;-) */
       if (!private2 || number % 13 > 5)
-	{
-	  private2 = test_g_static_private_constructor ();
-	  g_static_private_set (&test_g_static_private_private2, private2,
-				test_g_static_private_destructor);
+        {
+          private2 = test_g_static_private_constructor ();
+          g_static_private_set (&test_g_static_private_private2, private2,
+                                test_g_static_private_destructor);
         }
       *private2 = number * 2;
       g_usleep (G_USEC_PER_SEC / 5);
@@ -233,46 +233,46 @@ test_g_static_rw_lock_thread (gpointer data)
   while (test_g_static_rw_lock_run)
     {
       if (g_random_double() > .2) /* I'm a reader */
-	{
+        {
 
           if (g_random_double() > .2) /* I'll block */
-	    g_static_rw_lock_reader_lock (&test_g_static_rw_lock_lock);
-	  else /* I'll only try */
-	    if (!g_static_rw_lock_reader_trylock (&test_g_static_rw_lock_lock))
-	      continue;
-	  G_LOCK (test_g_static_rw_lock_state);
+            g_static_rw_lock_reader_lock (&test_g_static_rw_lock_lock);
+          else /* I'll only try */
+            if (!g_static_rw_lock_reader_trylock (&test_g_static_rw_lock_lock))
+              continue;
+          G_LOCK (test_g_static_rw_lock_state);
           g_assert_cmpint (test_g_static_rw_lock_state, >=, 0);
           test_g_static_rw_lock_state++;
-	  G_UNLOCK (test_g_static_rw_lock_state);
+          G_UNLOCK (test_g_static_rw_lock_state);
 
-	  g_usleep (g_random_int_range (20,1000));
+          g_usleep (g_random_int_range (20,1000));
 
-	  G_LOCK (test_g_static_rw_lock_state);
-	  test_g_static_rw_lock_state--;
-	  G_UNLOCK (test_g_static_rw_lock_state);
+          G_LOCK (test_g_static_rw_lock_state);
+          test_g_static_rw_lock_state--;
+          G_UNLOCK (test_g_static_rw_lock_state);
 
-	  g_static_rw_lock_reader_unlock (&test_g_static_rw_lock_lock);
-	}
+          g_static_rw_lock_reader_unlock (&test_g_static_rw_lock_lock);
+        }
       else /* I'm a writer */
-	{
+        {
           if (g_random_double () > .2) /* I'll block */
             g_static_rw_lock_writer_lock (&test_g_static_rw_lock_lock);
-	  else /* I'll only try */
-	    if (!g_static_rw_lock_writer_trylock (&test_g_static_rw_lock_lock))
-	      continue;
-	  G_LOCK (test_g_static_rw_lock_state);
+          else /* I'll only try */
+            if (!g_static_rw_lock_writer_trylock (&test_g_static_rw_lock_lock))
+              continue;
+          G_LOCK (test_g_static_rw_lock_state);
           g_assert_cmpint (test_g_static_rw_lock_state, ==, 0);
           test_g_static_rw_lock_state = -1;
-	  G_UNLOCK (test_g_static_rw_lock_state);
+          G_UNLOCK (test_g_static_rw_lock_state);
 
-	  g_usleep (g_random_int_range (20,1000));
+          g_usleep (g_random_int_range (20,1000));
 
-	  G_LOCK (test_g_static_rw_lock_state);
-	  test_g_static_rw_lock_state = 0;
-	  G_UNLOCK (test_g_static_rw_lock_state);
+          G_LOCK (test_g_static_rw_lock_state);
+          test_g_static_rw_lock_state = 0;
+          G_UNLOCK (test_g_static_rw_lock_state);
 
-	  g_static_rw_lock_writer_unlock (&test_g_static_rw_lock_lock);
-	}
+          g_static_rw_lock_writer_unlock (&test_g_static_rw_lock_lock);
+        }
     }
   return NULL;
 }

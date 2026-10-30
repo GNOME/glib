@@ -51,14 +51,14 @@ static void g_socket_input_stream_file_descriptor_based_iface_init (GFileDescrip
 #ifdef G_OS_UNIX
 G_DEFINE_TYPE_WITH_CODE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM,
                          G_ADD_PRIVATE (GSocketInputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_input_stream_file_descriptor_based_iface_init)
-			 )
+                         G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_input_stream_file_descriptor_based_iface_init)
+                         )
 #else
 G_DEFINE_TYPE_WITH_CODE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM,
                          G_ADD_PRIVATE (GSocketInputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
-			 )
+                         G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
+                         )
 #endif
 
 enum
@@ -126,8 +126,8 @@ g_socket_input_stream_read (GInputStream  *stream,
   GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (stream);
 
   return g_socket_receive_with_blocking (input_stream->priv->socket,
-					 buffer, count, TRUE,
-					 cancellable, error);
+                                         buffer, count, TRUE,
+                                         cancellable, error);
 }
 
 static gboolean
@@ -140,14 +140,14 @@ g_socket_input_stream_pollable_is_readable (GPollableInputStream *pollable)
 
 static GSource *
 g_socket_input_stream_pollable_create_source (GPollableInputStream *pollable,
-					      GCancellable         *cancellable)
+                                              GCancellable         *cancellable)
 {
   GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (pollable);
   GSource *socket_source, *pollable_source;
 
   pollable_source = g_pollable_source_new (G_OBJECT (input_stream));
   socket_source = g_socket_create_source (input_stream->priv->socket,
-					  G_IO_IN, cancellable);
+                                          G_IO_IN, cancellable);
   g_source_set_dummy_callback (socket_source);
   g_source_add_child_source (pollable_source, socket_source);
   g_source_unref (socket_source);
@@ -157,15 +157,15 @@ g_socket_input_stream_pollable_create_source (GPollableInputStream *pollable,
 
 static gssize
 g_socket_input_stream_pollable_read_nonblocking (GPollableInputStream  *pollable,
-						 void                  *buffer,
-						 gsize                  size,
-						 GError               **error)
+                                                 void                  *buffer,
+                                                 gsize                  size,
+                                                 GError               **error)
 {
   GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (pollable);
 
   return g_socket_receive_with_blocking (input_stream->priv->socket,
-					 buffer, size, FALSE,
-					 NULL, error);
+                                         buffer, size, FALSE,
+                                         NULL, error);
 }
 
 #ifdef G_OS_UNIX
@@ -191,9 +191,9 @@ g_socket_input_stream_class_init (GSocketInputStreamClass *klass)
   ginputstream_class->read_fn = g_socket_input_stream_read;
 
   g_object_class_install_property (gobject_class, PROP_SOCKET,
-				   g_param_spec_object ("socket", NULL, NULL,
-							G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("socket", NULL, NULL,
+                                                        G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
 
 #ifdef G_OS_UNIX
