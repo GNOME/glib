@@ -856,15 +856,37 @@ route_get (GNetworkMonitorNetlink  *nl,
 }
 
 static gboolean
+can_reach_address (GNetworkMonitor  *monitor,
+                   GSocketAddress   *addr,
+                   GCancellable     *cancellable,
+                   GError          **error)
+{
+  GNetworkMonitorNetlink *nl = G_NETWORK_MONITOR_NETLINK (monitor);
+  GInetAddress *iaddr;
+
+  if (!G_IS_INET_SOCKET_ADDRESS (addr))
+    return FALSE;
+
+  iaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (addr));
+  if (route_get (nl, iaddr, cancellable, error))
+    return TRUE;
+
+  if (!g_cancellable_is_cancelled (cancellable))
+    g_clear_error (error);
+
+  return FALSE;
+}
+
+static gboolean
 g_network_monitor_netlink_can_reach (GNetworkMonitor     *monitor,
                                      GSocketConnectable  *connectable,
                                      GCancellable        *cancellable,
                                      GError             **error)
 {
-  GNetworkMonitorNetlink *nl = G_NETWORK_MONITOR_NETLINK (monitor);
   GSocketAddressEnumerator *enumerator;
   GSocketAddress *addr;
   GError *local_error = NULL;
+  gboolean reachable = FALSE;
 
   enumerator = g_socket_connectable_proxy_enumerate (connectable);
 
@@ -873,27 +895,12 @@ g_network_monitor_netlink_can_reach (GNetworkMonitor     *monitor,
    * sees a clean @local_error, except on cancellation, which we propagate. */
   while ((addr = g_socket_address_enumerator_next (enumerator, cancellable, &local_error)))
     {
-      if (G_IS_INET_SOCKET_ADDRESS (addr))
-        {
-          GInetAddress *iaddr;
-
-          iaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (addr));
-          if (route_get (nl, iaddr, cancellable, &local_error))
-            {
-              g_object_unref (addr);
-              g_object_unref (enumerator);
-              return TRUE;
-            }
-
-          if (g_cancellable_is_cancelled (cancellable))
-            {
-              g_object_unref (addr);
-              break;
-            }
-          g_clear_error (&local_error);
-        }
-
+      reachable = can_reach_address (monitor, addr, cancellable, &local_error);
       g_object_unref (addr);
+
+      /* Found or cancelled */
+      if (reachable || local_error != NULL)
+        break;
     }
   g_object_unref (enumerator);
 
@@ -904,12 +911,13 @@ g_network_monitor_netlink_can_reach (GNetworkMonitor     *monitor,
       return FALSE;
     }
 
-  /* Reached when no address was routable (each route_get() error was cleared to
-   * try the next one) or none were `GInetSocketAddress`es; either way report a
-   * generic error, matching the base monitor. */
-  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
-                       _("Host unreachable"));
-  return FALSE;
+  /* No address was a routable `GInetSocketAddress`: report a generic error,
+   * matching the base monitor. */
+  if (!reachable)
+    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_HOST_UNREACHABLE,
+                         _("Host unreachable"));
+
+  return reachable;
 }
 
 static void
@@ -920,7 +928,6 @@ can_reach_async_got_address (GObject      *object,
   GSocketAddressEnumerator *enumerator = G_SOCKET_ADDRESS_ENUMERATOR (object);
   GTask *task = user_data;
   GNetworkMonitor *monitor = G_NETWORK_MONITOR (g_task_get_source_object (task));
-  GNetworkMonitorNetlink *nl = G_NETWORK_MONITOR_NETLINK (monitor);
   GCancellable *cancellable = g_task_get_cancellable (task);
   GSocketAddress *addr;
   GError *error = NULL;
@@ -936,23 +943,12 @@ can_reach_async_got_address (GObject      *object,
       return;
     }
 
-  if (G_IS_INET_SOCKET_ADDRESS (addr))
+  if (can_reach_address (monitor, addr, cancellable, &error))
     {
-      GInetAddress *iaddr;
-
-      iaddr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (addr));
-      if (route_get (nl, iaddr, cancellable, &error))
-        {
-          g_object_unref (addr);
-          g_task_return_boolean (task, TRUE);
-          g_object_unref (task);
-          return;
-        }
-
-      if (!g_cancellable_is_cancelled (cancellable))
-        {
-          g_clear_error (&error);
-        }
+      g_object_unref (addr);
+      g_task_return_boolean (task, TRUE);
+      g_object_unref (task);
+      return;
     }
 
   if (addr)
