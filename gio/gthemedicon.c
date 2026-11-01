@@ -300,7 +300,7 @@ g_themed_icon_update_names (GThemedIcon *themed)
               if (is_symbolic)
                 {
                   g_free (tmp);
-                  fallback = g_strdup_printf ("%s-symbolic", last);
+                  fallback = g_strconcat (last, "-symbolic", NULL);
                 }
               else
                 fallback = last;
@@ -327,7 +327,7 @@ g_themed_icon_update_names (GThemedIcon *themed)
       if (is_symbolic)
         variant = g_strndup (name, strlen (name) - 9);
       else
-        variant = g_strdup_printf ("%s-symbolic", name);
+        variant = g_strconcat (name, "-symbolic", NULL);
       if (g_list_find_custom (names, variant, (GCompareFunc) g_strcmp0) ||
           g_list_find_custom (variants, variant, (GCompareFunc) g_strcmp0))
         {

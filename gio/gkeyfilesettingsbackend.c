@@ -507,9 +507,9 @@ keyfile_to_tree (GKeyfileSettingsBackend *kfsb,
             continue;
 
           if (is_root_group)
-            path = g_strdup_printf ("%s%s", kfsb->prefix, keys[j]);
+            path = g_strconcat (kfsb->prefix, keys[j], NULL);
           else
-            path = g_strdup_printf ("%s%s/%s", kfsb->prefix, groups[i], keys[j]);
+            path = g_strconcat (kfsb->prefix, groups[i], "/", keys[j], NULL);
 
           value = g_key_file_get_value (keyfile, groups[i], keys[j], NULL);
 

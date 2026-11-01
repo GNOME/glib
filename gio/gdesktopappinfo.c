@@ -1216,7 +1216,7 @@ desktop_file_dir_unindexed_read_intentapps_lists (DesktopFileDir *dir)
     {
       char *basename;
 
-      basename = g_strdup_printf ("%s-intentapps.list", desktops[i]);
+      basename = g_strconcat (desktops[i], "-intentapps.list", NULL);
       filename = g_build_filename (dir->path, basename, NULL);
       desktop_file_dir_unindexed_read_intentapps_list (dir, filename,
                                                        DEFAULT_APPLICATIONS_GROUP,
