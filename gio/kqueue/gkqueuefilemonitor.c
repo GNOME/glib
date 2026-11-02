@@ -559,6 +559,8 @@ _kqsub_cancel (kqueue_sub *sub)
 
   struct kevent ev;
 
+  _km_remove (sub);
+
   /* Remove the event and close the file descriptor to automatically
    * delete pending events. */
   if (sub->fd != -1)
@@ -571,8 +573,6 @@ _kqsub_cancel (kqueue_sub *sub)
       close (sub->fd);
       sub->fd = -1;
     }
-
-  _km_remove (sub);
 
   if (sub->deps)
     {
