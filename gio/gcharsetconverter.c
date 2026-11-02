@@ -60,10 +60,10 @@ struct _GCharsetConverter
 };
 
 G_DEFINE_TYPE_WITH_CODE (GCharsetConverter, g_charset_converter, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_CONVERTER,
-						g_charset_converter_iface_init);
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_charset_converter_initable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_CONVERTER,
+                                                g_charset_converter_iface_init);
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_charset_converter_initable_iface_init))
 
 static void
 g_charset_converter_finalize (GObject *object)
@@ -82,9 +82,9 @@ g_charset_converter_finalize (GObject *object)
 
 static void
 g_charset_converter_set_property (GObject      *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GCharsetConverter *conv;
 
@@ -115,9 +115,9 @@ g_charset_converter_set_property (GObject      *object,
 
 static void
 g_charset_converter_get_property (GObject    *object,
-				  guint       prop_id,
-				  GValue     *value,
-				  GParamSpec *pspec)
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GCharsetConverter *conv;
 
@@ -160,11 +160,11 @@ g_charset_converter_class_init (GCharsetConverterClass *klass)
    * Since: 2.24
    */
   g_object_class_install_property (gobject_class,
-				   PROP_TO_CHARSET,
-				   g_param_spec_string ("to-charset", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   PROP_TO_CHARSET,
+                                   g_param_spec_string ("to-charset", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GCharsetConverter:from-charset:
@@ -174,11 +174,11 @@ g_charset_converter_class_init (GCharsetConverterClass *klass)
    * Since: 2.24
    */
   g_object_class_install_property (gobject_class,
-				   PROP_FROM_CHARSET,
-				   g_param_spec_string ("from-charset", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   PROP_FROM_CHARSET,
+                                   g_param_spec_string ("from-charset", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GCharsetConverter:use-fallback:
@@ -188,12 +188,12 @@ g_charset_converter_class_init (GCharsetConverterClass *klass)
    * Since: 2.24
    */
   g_object_class_install_property (gobject_class,
-				   PROP_USE_FALLBACK,
-				   g_param_spec_boolean ("use-fallback", NULL, NULL,
-							 FALSE,
-							 G_PARAM_READWRITE |
-							 G_PARAM_CONSTRUCT |
-							 G_PARAM_STATIC_STRINGS));
+                                   PROP_USE_FALLBACK,
+                                   g_param_spec_boolean ("use-fallback", NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -216,16 +216,16 @@ g_charset_converter_init (GCharsetConverter *local)
  **/
 GCharsetConverter *
 g_charset_converter_new (const gchar *to_charset,
-			 const gchar *from_charset,
-			 GError      **error)
+                         const gchar *from_charset,
+                         GError      **error)
 {
   GCharsetConverter *conv;
 
   conv = g_initable_new (G_TYPE_CHARSET_CONVERTER,
-			 NULL, error,
-			 "to-charset", to_charset,
-			 "from-charset", from_charset,
-			 NULL);
+                         NULL, error,
+                         "to-charset", to_charset,
+                         "from-charset", from_charset,
+                         NULL);
 
   return conv;
 }
@@ -247,14 +247,14 @@ g_charset_converter_reset (GConverter *converter)
 
 static GConverterResult
 g_charset_converter_convert (GConverter       *converter,
-			     const void       *inbuf,
-			     gsize             inbuf_size,
-			     void             *outbuf,
-			     gsize             outbuf_size,
-			     GConverterFlags   flags,
-			     gsize            *bytes_read,
-			     gsize            *bytes_written,
-			     GError          **error)
+                             const void       *inbuf,
+                             gsize             inbuf_size,
+                             void             *outbuf,
+                             gsize             outbuf_size,
+                             GConverterFlags   flags,
+                             gsize            *bytes_read,
+                             gsize            *bytes_written,
+                             GError          **error)
 {
   GCharsetConverter  *conv;
   gsize res;
@@ -269,7 +269,7 @@ g_charset_converter_convert (GConverter       *converter,
   if (conv->iconv == NULL)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
-			   _("Invalid object, not initialized"));
+                           _("Invalid object, not initialized"));
       return G_CONVERTER_ERROR;
     }
 
@@ -317,52 +317,52 @@ g_charset_converter_convert (GConverter       *converter,
       errsv = errno;
 
       switch (errsv)
-	{
-	case EINVAL:
-	  /* Incomplete input text */
-	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT,
-			       _("Incomplete multibyte sequence in input"));
-	  break;
+        {
+        case EINVAL:
+          /* Incomplete input text */
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT,
+                               _("Incomplete multibyte sequence in input"));
+          break;
 
-	case E2BIG:
-	  /* Not enough destination space */
-	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
-			       _("Not enough space in destination"));
-	  break;
+        case E2BIG:
+          /* Not enough destination space */
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+                               _("Not enough space in destination"));
+          break;
 
-	case EILSEQ:
-	  /* Invalid code sequence */
-	  if (conv->use_fallback)
-	    {
-	      if (outbuf_size < 3)
-		g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
-				     _("Not enough space in destination"));
-	      else
-		{
-		  const char hex[] = "0123456789ABCDEF";
-		  guint8 v = *(guint8 *)inbuf;
-		  guint8 *out = (guint8 *)outbuf;
-		  out[0] = '\\';
-		  out[1] = (guint8) hex[(v & 0xf0) >> 4];
-		  out[2] = (guint8) hex[(v & 0x0f) >> 0];
-		  *bytes_read = 1;
-		  *bytes_written = 3;
-		  in_left--;
-		  conv->n_fallback_errors++;
-		  goto ok;
-		}
-	    }
-	  else
-	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
-				 _("Invalid byte sequence in conversion input"));
-	  break;
+        case EILSEQ:
+          /* Invalid code sequence */
+          if (conv->use_fallback)
+            {
+              if (outbuf_size < 3)
+                g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+                                     _("Not enough space in destination"));
+              else
+                {
+                  const char hex[] = "0123456789ABCDEF";
+                  guint8 v = *(guint8 *)inbuf;
+                  guint8 *out = (guint8 *)outbuf;
+                  out[0] = '\\';
+                  out[1] = (guint8) hex[(v & 0xf0) >> 4];
+                  out[2] = (guint8) hex[(v & 0x0f) >> 0];
+                  *bytes_read = 1;
+                  *bytes_written = 3;
+                  in_left--;
+                  conv->n_fallback_errors++;
+                  goto ok;
+                }
+            }
+          else
+            g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
+                                 _("Invalid byte sequence in conversion input"));
+          break;
 
-	default:
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		       _("Error during conversion: %s"),
-		       g_strerror (errsv));
-	  break;
-	}
+        default:
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       _("Error during conversion: %s"),
+                       g_strerror (errsv));
+          break;
+        }
       ret = G_CONVERTER_ERROR;
     }
   else
@@ -371,10 +371,10 @@ g_charset_converter_convert (GConverter       *converter,
       ret = G_CONVERTER_CONVERTED;
 
       if (reset &&
-	  (flags & G_CONVERTER_INPUT_AT_END))
+          (flags & G_CONVERTER_INPUT_AT_END))
         ret = G_CONVERTER_FINISHED;
       else if (reset &&
-	       (flags & G_CONVERTER_FLUSH))
+               (flags & G_CONVERTER_FLUSH))
         ret = G_CONVERTER_FLUSHED;
     }
 
@@ -392,7 +392,7 @@ g_charset_converter_convert (GConverter       *converter,
  */
 void
 g_charset_converter_set_use_fallback (GCharsetConverter *converter,
-				      gboolean           use_fallback)
+                                      gboolean           use_fallback)
 {
   use_fallback = !!use_fallback;
 
@@ -444,8 +444,8 @@ g_charset_converter_iface_init (GConverterIface *iface)
 
 static gboolean
 g_charset_converter_initable_init (GInitable     *initable,
-				   GCancellable  *cancellable,
-				   GError       **error)
+                                   GCancellable  *cancellable,
+                                   GError       **error)
 {
   GCharsetConverter  *conv;
   int errsv;
@@ -457,7 +457,7 @@ g_charset_converter_initable_init (GInitable     *initable,
   if (cancellable != NULL)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			   _("Cancellable initialization not supported"));
+                           _("Cancellable initialization not supported"));
       return FALSE;
     }
 
@@ -467,13 +467,13 @@ g_charset_converter_initable_init (GInitable     *initable,
   if (conv->iconv == (GIConv)-1)
     {
       if (errsv == EINVAL)
-	g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		     _("Conversion from character set “%s” to “%s” is not supported"),
-		     conv->from, conv->to);
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                     _("Conversion from character set “%s” to “%s” is not supported"),
+                     conv->from, conv->to);
       else
-	g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		     _("Could not open converter from “%s” to “%s”"),
-		     conv->from, conv->to);
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                     _("Could not open converter from “%s” to “%s”"),
+                     conv->from, conv->to);
       return FALSE;
     }
 

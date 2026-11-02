@@ -65,8 +65,8 @@ static void g_unix_volume_volume_iface_init (GVolumeIface *iface);
 
 #define g_unix_volume_get_type _g_unix_volume_get_type
 G_DEFINE_TYPE_WITH_CODE (GUnixVolume, g_unix_volume, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_VOLUME,
-						g_unix_volume_volume_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_VOLUME,
+                                                g_unix_volume_volume_iface_init))
 
 static void
 g_unix_volume_finalize (GObject *object)
@@ -112,7 +112,7 @@ _g_unix_volume_new (GVolumeMonitor  *volume_monitor,
   GUnixVolume *volume;
   
   if (!(g_unix_mount_point_is_user_mountable (mountpoint) ||
-	g_str_has_prefix (g_unix_mount_point_get_device_path (mountpoint), "/vol/")) ||
+        g_str_has_prefix (g_unix_mount_point_get_device_path (mountpoint), "/vol/")) ||
       g_unix_mount_point_is_loopback (mountpoint))
     return NULL;
   

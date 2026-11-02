@@ -1908,8 +1908,8 @@ on_object_proxy_removed (GDBusObjectManagerClient  *manager,
 
 static void
 property_changed (GObject    *object,
-		  GParamSpec *pspec,
-		  gpointer    user_data)
+                  GParamSpec *pspec,
+                  gpointer    user_data)
 {
   gboolean *changed = user_data;
 
@@ -1945,7 +1945,7 @@ om_check_property_and_signal_emission (GMainLoop  *loop,
    * notifications are serialized.
    */
   handler = g_signal_connect (proxy, "notify::d",
-			      G_CALLBACK (property_changed), &d_changed);
+                              G_CALLBACK (property_changed), &d_changed);
   foo_igen_bar_set_d (skeleton, 1.0);
   foo_igen_bar_set_i (skeleton, 2);
   _g_assert_property_notify (proxy, "i");
@@ -1955,7 +1955,7 @@ om_check_property_and_signal_emission (GMainLoop  *loop,
   /* Verify that re-setting a property with the "EmitsChangedSignal"
    * set to false doesn't emit a signal. */
   handler = g_signal_connect (proxy, "notify::quiet",
-			      G_CALLBACK (property_changed), &quiet_changed);
+                              G_CALLBACK (property_changed), &quiet_changed);
   foo_igen_bar_set_quiet (skeleton, "hush!");
   foo_igen_bar_set_i (skeleton, 3);
   _g_assert_property_notify (proxy, "i");
@@ -1966,7 +1966,7 @@ om_check_property_and_signal_emission (GMainLoop  *loop,
   /* Also verify that re-setting a property with the "EmitsChangedSignal"
    * set to 'const' doesn't emit a signal. */
   handler = g_signal_connect (proxy, "notify::quiet-too",
-			      G_CALLBACK (property_changed), &quiet_changed);
+                              G_CALLBACK (property_changed), &quiet_changed);
   foo_igen_bar_set_quiet_too (skeleton, "hush too!");
   foo_igen_bar_set_i (skeleton, 4);
   _g_assert_property_notify (proxy, "i");

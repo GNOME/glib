@@ -100,8 +100,8 @@ g_zlib_compressor_set_gzheader (GZlibCompressor *compressor)
 }
 
 G_DEFINE_TYPE_WITH_CODE (GZlibCompressor, g_zlib_compressor, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_CONVERTER,
-						g_zlib_compressor_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_CONVERTER,
+                                                g_zlib_compressor_iface_init))
 
 static void
 g_zlib_compressor_finalize (GObject *object)
@@ -121,9 +121,9 @@ g_zlib_compressor_finalize (GObject *object)
 
 static void
 g_zlib_compressor_set_property (GObject      *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GZlibCompressor *compressor;
 
@@ -156,9 +156,9 @@ g_zlib_compressor_set_property (GObject      *object,
 
 static void
 g_zlib_compressor_get_property (GObject    *object,
-				  guint       prop_id,
-				  GValue     *value,
-				  GParamSpec *pspec)
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GZlibCompressor *compressor;
 
@@ -206,17 +206,17 @@ g_zlib_compressor_constructed (GObject *object)
     {
       /* + 16 for gzip */
       res = deflateInit2 (&compressor->zstream,
-			  compressor->level, Z_DEFLATED,
-			  MAX_WBITS + 16, 8,
-			  Z_DEFAULT_STRATEGY);
+                          compressor->level, Z_DEFLATED,
+                          MAX_WBITS + 16, 8,
+                          Z_DEFAULT_STRATEGY);
     }
   else if (compressor->format == G_ZLIB_COMPRESSOR_FORMAT_RAW)
     {
       /* negative wbits for raw */
       res = deflateInit2 (&compressor->zstream,
-			  compressor->level, Z_DEFLATED,
-			  -MAX_WBITS, 8,
-			  Z_DEFAULT_STRATEGY);
+                          compressor->level, Z_DEFLATED,
+                          -MAX_WBITS, 8,
+                          Z_DEFAULT_STRATEGY);
     }
   else /* ZLIB */
     res = deflateInit (&compressor->zstream, compressor->level);
@@ -248,12 +248,12 @@ g_zlib_compressor_class_init (GZlibCompressorClass *klass)
    * Since: 2.24
    */
   g_object_class_install_property (gobject_class,
-				   PROP_FORMAT,
-				   g_param_spec_enum ("format", NULL, NULL,
-						      G_TYPE_ZLIB_COMPRESSOR_FORMAT,
-						      G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
-						      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
-						      G_PARAM_STATIC_STRINGS));
+                                   PROP_FORMAT,
+                                   g_param_spec_enum ("format", NULL, NULL,
+                                                      G_TYPE_ZLIB_COMPRESSOR_FORMAT,
+                                                      G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
+                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_STRINGS));
 
   /**
    * GZlibCompressor:level:
@@ -266,13 +266,13 @@ g_zlib_compressor_class_init (GZlibCompressorClass *klass)
    * Since: 2.24
    */
   g_object_class_install_property (gobject_class,
-				   PROP_LEVEL,
-				   g_param_spec_int ("level", NULL, NULL,
-						     -1, 9,
-						     -1,
-						     G_PARAM_READWRITE |
-						     G_PARAM_CONSTRUCT_ONLY |
-						     G_PARAM_STATIC_STRINGS));
+                                   PROP_LEVEL,
+                                   g_param_spec_int ("level", NULL, NULL,
+                                                     -1, 9,
+                                                     -1,
+                                                     G_PARAM_READWRITE |
+                                                     G_PARAM_CONSTRUCT_ONLY |
+                                                     G_PARAM_STATIC_STRINGS));
 
   /**
    * GZlibCompressor:file-info:
@@ -333,14 +333,14 @@ g_zlib_compressor_class_init (GZlibCompressorClass *klass)
  **/
 GZlibCompressor *
 g_zlib_compressor_new (GZlibCompressorFormat format,
-		       int level)
+                       int level)
 {
   GZlibCompressor *compressor;
 
   compressor = g_object_new (G_TYPE_ZLIB_COMPRESSOR,
-			     "format", format,
-			     "level", level,
-			     NULL);
+                             "format", format,
+                             "level", level,
+                             NULL);
 
   return compressor;
 }
@@ -457,14 +457,14 @@ g_zlib_compressor_reset (GConverter *converter)
 
 static GConverterResult
 g_zlib_compressor_convert (GConverter *converter,
-			   const void *inbuf,
-			   gsize       inbuf_size,
-			   void       *outbuf,
-			   gsize       outbuf_size,
-			   GConverterFlags flags,
-			   gsize      *bytes_read,
-			   gsize      *bytes_written,
-			   GError    **error)
+                           const void *inbuf,
+                           gsize       inbuf_size,
+                           void       *outbuf,
+                           gsize       outbuf_size,
+                           GConverterFlags flags,
+                           gsize      *bytes_read,
+                           gsize      *bytes_written,
+                           GError    **error)
 {
   GZlibCompressor *compressor;
   int res;
@@ -489,28 +489,28 @@ g_zlib_compressor_convert (GConverter *converter,
   if (res == Z_MEM_ERROR)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			   _("Not enough memory"));
+                           _("Not enough memory"));
       return G_CONVERTER_ERROR;
     }
 
     if (res == Z_STREAM_ERROR)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		   _("Internal error: %s"), compressor->zstream.msg);
+                   _("Internal error: %s"), compressor->zstream.msg);
       return G_CONVERTER_ERROR;
     }
 
     if (res == Z_BUF_ERROR)
       {
-	if (flags & G_CONVERTER_FLUSH)
-	  return G_CONVERTER_FLUSHED;
+        if (flags & G_CONVERTER_FLUSH)
+          return G_CONVERTER_FLUSHED;
 
-	/* We do have output space, so this should only happen if we
-	   have no input but need some */
+        /* We do have output space, so this should only happen if we
+           have no input but need some */
 
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT,
-			     _("Need more input"));
-	return G_CONVERTER_ERROR;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT,
+                             _("Need more input"));
+        return G_CONVERTER_ERROR;
       }
 
   if (res == Z_OK || res == Z_STREAM_END)
@@ -519,7 +519,7 @@ g_zlib_compressor_convert (GConverter *converter,
       *bytes_written = outbuf_size - compressor->zstream.avail_out;
 
       if (res == Z_STREAM_END)
-	return G_CONVERTER_FINISHED;
+        return G_CONVERTER_FINISHED;
       return G_CONVERTER_CONVERTED;
     }
 

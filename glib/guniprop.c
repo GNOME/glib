@@ -12,7 +12,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -71,37 +71,37 @@
       : G_UNICODE_UNASSIGNED))
 
 
-#define IS(Type, Class)	(((guint)1 << (Type)) & (Class))
-#define OR(Type, Rest)	(((guint)1 << (Type)) | (Rest))
+#define IS(Type, Class) (((guint)1 << (Type)) & (Class))
+#define OR(Type, Rest)  (((guint)1 << (Type)) | (Rest))
 
 
 
-#define ISALPHA(Type)	IS ((Type),				\
-			    OR (G_UNICODE_LOWERCASE_LETTER,	\
-			    OR (G_UNICODE_UPPERCASE_LETTER,	\
-			    OR (G_UNICODE_TITLECASE_LETTER,	\
-			    OR (G_UNICODE_MODIFIER_LETTER,	\
-			    OR (G_UNICODE_OTHER_LETTER,		0))))))
+#define ISALPHA(Type)   IS ((Type),                             \
+                            OR (G_UNICODE_LOWERCASE_LETTER,     \
+                            OR (G_UNICODE_UPPERCASE_LETTER,     \
+                            OR (G_UNICODE_TITLECASE_LETTER,     \
+                            OR (G_UNICODE_MODIFIER_LETTER,      \
+                            OR (G_UNICODE_OTHER_LETTER,         0))))))
 
-#define ISALDIGIT(Type)	IS ((Type),				\
-			    OR (G_UNICODE_DECIMAL_NUMBER,	\
-			    OR (G_UNICODE_LETTER_NUMBER,	\
-			    OR (G_UNICODE_OTHER_NUMBER,		\
-			    OR (G_UNICODE_LOWERCASE_LETTER,	\
-			    OR (G_UNICODE_UPPERCASE_LETTER,	\
-			    OR (G_UNICODE_TITLECASE_LETTER,	\
-			    OR (G_UNICODE_MODIFIER_LETTER,	\
-			    OR (G_UNICODE_OTHER_LETTER,		0)))))))))
+#define ISALDIGIT(Type) IS ((Type),                             \
+                            OR (G_UNICODE_DECIMAL_NUMBER,       \
+                            OR (G_UNICODE_LETTER_NUMBER,        \
+                            OR (G_UNICODE_OTHER_NUMBER,         \
+                            OR (G_UNICODE_LOWERCASE_LETTER,     \
+                            OR (G_UNICODE_UPPERCASE_LETTER,     \
+                            OR (G_UNICODE_TITLECASE_LETTER,     \
+                            OR (G_UNICODE_MODIFIER_LETTER,      \
+                            OR (G_UNICODE_OTHER_LETTER,         0)))))))))
 
-#define ISMARK(Type)	IS ((Type),				\
-			    OR (G_UNICODE_NON_SPACING_MARK,	\
-			    OR (G_UNICODE_SPACING_MARK,	\
-			    OR (G_UNICODE_ENCLOSING_MARK,	0))))
+#define ISMARK(Type)    IS ((Type),                             \
+                            OR (G_UNICODE_NON_SPACING_MARK,     \
+                            OR (G_UNICODE_SPACING_MARK, \
+                            OR (G_UNICODE_ENCLOSING_MARK,       0))))
 
-#define ISZEROWIDTHTYPE(Type)	IS ((Type),			\
-			    OR (G_UNICODE_NON_SPACING_MARK,	\
-			    OR (G_UNICODE_ENCLOSING_MARK,	\
-			    OR (G_UNICODE_FORMAT,		0))))
+#define ISZEROWIDTHTYPE(Type)   IS ((Type),                     \
+                            OR (G_UNICODE_NON_SPACING_MARK,     \
+                            OR (G_UNICODE_ENCLOSING_MARK,       \
+                            OR (G_UNICODE_FORMAT,               0))))
 
 /**
  * g_unichar_isalnum:
@@ -185,12 +185,12 @@ gboolean
 g_unichar_isgraph (gunichar c)
 {
   return !IS (TYPE(c),
-	      OR (G_UNICODE_CONTROL,
-	      OR (G_UNICODE_FORMAT,
-	      OR (G_UNICODE_UNASSIGNED,
-	      OR (G_UNICODE_SURROGATE,
-	      OR (G_UNICODE_SPACE_SEPARATOR,
-	     0))))));
+              OR (G_UNICODE_CONTROL,
+              OR (G_UNICODE_FORMAT,
+              OR (G_UNICODE_UNASSIGNED,
+              OR (G_UNICODE_SURROGATE,
+              OR (G_UNICODE_SPACE_SEPARATOR,
+             0))))));
 }
 
 /**
@@ -225,11 +225,11 @@ gboolean
 g_unichar_isprint (gunichar c)
 {
   return !IS (TYPE(c),
-	      OR (G_UNICODE_CONTROL,
-	      OR (G_UNICODE_FORMAT,
-	      OR (G_UNICODE_UNASSIGNED,
-	      OR (G_UNICODE_SURROGATE,
-	     0)))));
+              OR (G_UNICODE_CONTROL,
+              OR (G_UNICODE_FORMAT,
+              OR (G_UNICODE_UNASSIGNED,
+              OR (G_UNICODE_SURROGATE,
+             0)))));
 }
 
 /**
@@ -246,18 +246,18 @@ gboolean
 g_unichar_ispunct (gunichar c)
 {
   return IS (TYPE(c),
-	     OR (G_UNICODE_CONNECT_PUNCTUATION,
-	     OR (G_UNICODE_DASH_PUNCTUATION,
-	     OR (G_UNICODE_CLOSE_PUNCTUATION,
-	     OR (G_UNICODE_FINAL_PUNCTUATION,
-	     OR (G_UNICODE_INITIAL_PUNCTUATION,
-	     OR (G_UNICODE_OTHER_PUNCTUATION,
-	     OR (G_UNICODE_OPEN_PUNCTUATION,
-	     OR (G_UNICODE_CURRENCY_SYMBOL,
-	     OR (G_UNICODE_MODIFIER_SYMBOL,
-	     OR (G_UNICODE_MATH_SYMBOL,
-	     OR (G_UNICODE_OTHER_SYMBOL,
-	    0)))))))))))) ? TRUE : FALSE;
+             OR (G_UNICODE_CONNECT_PUNCTUATION,
+             OR (G_UNICODE_DASH_PUNCTUATION,
+             OR (G_UNICODE_CLOSE_PUNCTUATION,
+             OR (G_UNICODE_FINAL_PUNCTUATION,
+             OR (G_UNICODE_INITIAL_PUNCTUATION,
+             OR (G_UNICODE_OTHER_PUNCTUATION,
+             OR (G_UNICODE_OPEN_PUNCTUATION,
+             OR (G_UNICODE_CURRENCY_SYMBOL,
+             OR (G_UNICODE_MODIFIER_SYMBOL,
+             OR (G_UNICODE_MATH_SYMBOL,
+             OR (G_UNICODE_OTHER_SYMBOL,
+            0)))))))))))) ? TRUE : FALSE;
 }
 
 /**
@@ -289,11 +289,11 @@ g_unichar_isspace (gunichar c)
       
     default:
       {
-	return IS (TYPE(c),
-	           OR (G_UNICODE_SPACE_SEPARATOR,
-	           OR (G_UNICODE_LINE_SEPARATOR,
+        return IS (TYPE(c),
+                   OR (G_UNICODE_SPACE_SEPARATOR,
+                   OR (G_UNICODE_LINE_SEPARATOR,
                    OR (G_UNICODE_PARAGRAPH_SEPARATOR,
-		  0)))) ? TRUE : FALSE;
+                  0)))) ? TRUE : FALSE;
       }
       break;
     }
@@ -391,9 +391,9 @@ gboolean
 g_unichar_isdefined (gunichar c)
 {
   return !IS (TYPE(c),
-	      OR (G_UNICODE_UNASSIGNED,
-	      OR (G_UNICODE_SURROGATE,
-	     0)));
+              OR (G_UNICODE_UNASSIGNED,
+              OR (G_UNICODE_SURROGATE,
+             0)));
 }
 
 /**
@@ -464,11 +464,11 @@ g_unichar_iswide_bsearch (gunichar ch)
   do
     {
       if (ch < g_unicode_width_table_wide[mid].start)
-	upper = mid - 1;
+        upper = mid - 1;
       else if (ch > g_unicode_width_table_wide[mid].end)
-	lower = mid + 1;
+        lower = mid + 1;
       else
-	return TRUE;
+        return TRUE;
 
       mid = (lower + upper) / 2;
     }
@@ -547,7 +547,7 @@ g_unichar_iswide_cjk (gunichar c)
                g_unicode_width_table_ambiguous,
                G_N_ELEMENTS (g_unicode_width_table_ambiguous),
                sizeof g_unicode_width_table_ambiguous[0],
-	       interval_compare))
+               interval_compare))
     return TRUE;
 
   return FALSE;
@@ -572,10 +572,10 @@ g_unichar_toupper (gunichar c)
     {
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
       if (val >= 0x1000000)
-	{
+        {
           const gchar *p = special_case_table + (val - 0x1000000);
           val = g_utf8_get_char (p);
-	}
+        }
       /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
        * do not have an uppercase equivalent, in which case val will be
        * zero. 
@@ -586,10 +586,10 @@ g_unichar_toupper (gunichar c)
     {
       unsigned int i;
       for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
-	{
-	  if (title_table[i][0] == c)
-	    return title_table[i][1] ? title_table[i][1] : c;
-	}
+        {
+          if (title_table[i][0] == c)
+            return title_table[i][1] ? title_table[i][1] : c;
+        }
     }
   return c;
 }
@@ -612,25 +612,25 @@ g_unichar_tolower (gunichar c)
     {
       gunichar val = ATTTABLE (c >> 8, c & 0xff);
       if (val >= 0x1000000)
-	{
+        {
           const gchar *p = special_case_table + (val - 0x1000000);
           return g_utf8_get_char (p);
-	}
+        }
       else
-	{
-	  /* Not all uppercase letters are guaranteed to have a lowercase
-	   * equivalent.  If this is the case, val will be zero. */
-	  return val ? val : c;
-	}
+        {
+          /* Not all uppercase letters are guaranteed to have a lowercase
+           * equivalent.  If this is the case, val will be zero. */
+          return val ? val : c;
+        }
     }
   else if (t == G_UNICODE_TITLECASE_LETTER)
     {
       unsigned int i;
       for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
-	{
-	  if (title_table[i][0] == c)
-	    return title_table[i][2];
-	}
+        {
+          if (title_table[i][0] == c)
+            return title_table[i][2];
+        }
     }
   return c;
 }
@@ -658,8 +658,8 @@ g_unichar_totitle (gunichar c)
   for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
     {
       if (title_table[i][0] == c || title_table[i][1] == c
-	  || title_table[i][2] == c)
-	return title_table[i][0];
+          || title_table[i][2] == c)
+        return title_table[i][0];
     }
 
   if (TYPE (c) == G_UNICODE_LOWERCASE_LETTER)
@@ -757,15 +757,15 @@ get_locale_type (void)
     {
    case 'a':
       if (locale[1] == 'z')
-	return LOCALE_TURKIC;
+        return LOCALE_TURKIC;
       break;
     case 'l':
       if (locale[1] == 't')
-	return LOCALE_LITHUANIAN;
+        return LOCALE_LITHUANIAN;
       break;
     case 't':
       if (locale[1] == 'r')
-	return LOCALE_TURKIC;
+        return LOCALE_TURKIC;
       break;
     }
 
@@ -808,15 +808,15 @@ append_mark (const char **p_inout,
       gunichar c = g_utf8_get_char (p);
       
       if (ISMARK (TYPE (c)))
-	{
+        {
           if (g_utf8_next_char (p) > limit)
             break;
-	  if (!remove_dot || c != 0x307 /* COMBINING DOT ABOVE */)
+          if (!remove_dot || c != 0x307 /* COMBINING DOT ABOVE */)
             append_utf8_char_to_buffer (c, out_buffer, in_out_len);
-	  p = g_utf8_next_char (p);
-	}
+          p = g_utf8_next_char (p);
+        }
       else
-	break;
+        break;
     }
 
   *p_inout = p;
@@ -849,9 +849,9 @@ append_special_case (char   *out_buffer,
 
 static gsize
 real_toupper (const gchar *str,
-	      gssize       max_len,
-	      gchar       *out_buffer,
-	      LocaleType   locale_type)
+              gssize       max_len,
+              gchar       *out_buffer,
+              LocaleType   locale_type)
 {
   const gchar *p = str;
   const gchar *limit = (max_len < 0) ? (gpointer) G_MAXSIZE : str + max_len;
@@ -869,96 +869,96 @@ real_toupper (const gchar *str,
       p = g_utf8_next_char (p);
 
       if (locale_type == LOCALE_LITHUANIAN)
-	{
-	  if (c == 'i')
-	    last_was_i = TRUE;
-	  else 
-	    {
-	      if (last_was_i)
-		{
-		  /* Nasty, need to remove any dot above. Though
-		   * I think only E WITH DOT ABOVE occurs in practice
-		   * which could simplify this considerably.
-		   */
-		  gsize decomp_len, i;
-		  gunichar decomp[G_UNICHAR_MAX_DECOMPOSITION_LENGTH];
+        {
+          if (c == 'i')
+            last_was_i = TRUE;
+          else 
+            {
+              if (last_was_i)
+                {
+                  /* Nasty, need to remove any dot above. Though
+                   * I think only E WITH DOT ABOVE occurs in practice
+                   * which could simplify this considerably.
+                   */
+                  gsize decomp_len, i;
+                  gunichar decomp[G_UNICHAR_MAX_DECOMPOSITION_LENGTH];
 
-		  decomp_len = g_unichar_fully_decompose (c, FALSE, decomp, G_N_ELEMENTS (decomp));
-		  for (i=0; i < decomp_len; i++)
-		    {
+                  decomp_len = g_unichar_fully_decompose (c, FALSE, decomp, G_N_ELEMENTS (decomp));
+                  for (i=0; i < decomp_len; i++)
+                    {
 
-		      if (decomp[i] != 0x307 /* COMBINING DOT ABOVE */)
+                      if (decomp[i] != 0x307 /* COMBINING DOT ABOVE */)
                         append_utf8_char_to_buffer (g_unichar_toupper (decomp[i]),
                                                     out_buffer, &len);
-		    }
+                    }
 
                   append_mark (&p, out_buffer, &len, limit, TRUE);
 
-		  continue;
-		}
+                  continue;
+                }
 
-	      if (!ISMARK (t))
-		last_was_i = FALSE;
-	    }
-	}
+              if (!ISMARK (t))
+                last_was_i = FALSE;
+            }
+        }
 
       if (locale_type == LOCALE_TURKIC && c == 'i')
-	{
-	  /* i => LATIN CAPITAL LETTER I WITH DOT ABOVE */
+        {
+          /* i => LATIN CAPITAL LETTER I WITH DOT ABOVE */
           append_utf8_char_to_buffer (0x130, out_buffer, &len);
-	}
-      else if (c == 0x0345)	/* COMBINING GREEK YPOGEGRAMMENI */
-	{
-	  /* Nasty, need to move it after other combining marks .. this would go away if
-	   * we normalized first.
-	   */
+        }
+      else if (c == 0x0345)     /* COMBINING GREEK YPOGEGRAMMENI */
+        {
+          /* Nasty, need to move it after other combining marks .. this would go away if
+           * we normalized first.
+           */
           append_mark (&p, out_buffer, &len, limit, TRUE);
 
-	  /* And output as GREEK CAPITAL LETTER IOTA */
+          /* And output as GREEK CAPITAL LETTER IOTA */
           append_utf8_char_to_buffer (0x399, out_buffer, &len);
-	}
+        }
       else if (IS (t,
-		   OR (G_UNICODE_LOWERCASE_LETTER,
-		   OR (G_UNICODE_TITLECASE_LETTER,
-		  0))))
-	{
-	  val = ATTTABLE (c >> 8, c & 0xff);
+                   OR (G_UNICODE_LOWERCASE_LETTER,
+                   OR (G_UNICODE_TITLECASE_LETTER,
+                  0))))
+        {
+          val = ATTTABLE (c >> 8, c & 0xff);
 
-	  if (val >= 0x1000000)
-	    {
+          if (val >= 0x1000000)
+            {
               append_special_case (out_buffer, &len, val - 0x1000000, t,
                                    t == G_UNICODE_LOWERCASE_LETTER ? 0 : 1);
-	    }
-	  else
-	    {
-	      if (t == G_UNICODE_TITLECASE_LETTER)
-		{
-		  unsigned int i;
-		  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
-		    {
-		      if (title_table[i][0] == c)
-			{
-			  val = title_table[i][1];
-			  break;
-			}
-		    }
-		}
+            }
+          else
+            {
+              if (t == G_UNICODE_TITLECASE_LETTER)
+                {
+                  unsigned int i;
+                  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
+                    {
+                      if (title_table[i][0] == c)
+                        {
+                          val = title_table[i][1];
+                          break;
+                        }
+                    }
+                }
 
-	      /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
-	       * do not have an uppercase equivalent, in which case val will be
-	       * zero. */
+              /* Some lowercase letters, e.g., U+000AA, FEMININE ORDINAL INDICATOR,
+               * do not have an uppercase equivalent, in which case val will be
+               * zero. */
               append_utf8_char_to_buffer (val ? val : c, out_buffer, &len);
-	    }
-	}
+            }
+        }
       else
-	{
-	  gsize char_len = g_utf8_skip[*(guchar *)last];
+        {
+          gsize char_len = g_utf8_skip[*(guchar *)last];
 
-	  if (out_buffer)
-	    memcpy (out_buffer + len, last, char_len);
+          if (out_buffer)
+            memcpy (out_buffer + len, last, char_len);
 
           increase_size (&len, char_len);
-	}
+        }
 
     }
 
@@ -981,7 +981,7 @@ real_toupper (const gchar *str,
  **/
 gchar *
 g_utf8_strup (const gchar *str,
-	      gssize       len)
+              gssize       len)
 {
   gsize result_len;
   LocaleType locale_type;
@@ -1031,9 +1031,9 @@ has_more_above (const gchar *str,
 
 static gsize
 real_tolower (const gchar *str,
-	      gssize       max_len,
-	      gchar       *out_buffer,
-	      LocaleType   locale_type)
+              gssize       max_len,
+              gchar       *out_buffer,
+              LocaleType   locale_type)
 {
   const gchar *p = str;
   const gchar *limit = (max_len < 0) ? (gpointer) G_MAXSIZE : str + max_len;
@@ -1099,69 +1099,69 @@ real_tolower (const gchar *str,
           append_utf8_char_to_buffer (g_unichar_tolower (c), out_buffer, &len);
           append_utf8_char_to_buffer (0x0307, out_buffer, &len);
         }
-      else if (c == 0x03A3)	/* GREEK CAPITAL LETTER SIGMA */
-	{
-	  if ((max_len < 0 || p < str + max_len) && *p)
-	    {
-	      gunichar next_c = g_utf8_get_char (p);
-	      int next_type = TYPE(next_c);
+      else if (c == 0x03A3)     /* GREEK CAPITAL LETTER SIGMA */
+        {
+          if ((max_len < 0 || p < str + max_len) && *p)
+            {
+              gunichar next_c = g_utf8_get_char (p);
+              int next_type = TYPE(next_c);
 
-	      /* SIGMA mapps differently depending on whether it is
-	       * final or not. The following simplified test would
-	       * fail in the case of combining marks following the
-	       * sigma, but I don't think that occurs in real text.
-	       * The test here matches that in ICU.
-	       */
-	      if (ISALPHA (next_type)) /* Lu,Ll,Lt,Lm,Lo */
-		val = 0x3c3;	/* GREEK SMALL SIGMA */
-	      else
-		val = 0x3c2;	/* GREEK SMALL FINAL SIGMA */
-	    }
-	  else
-	    val = 0x3c2;	/* GREEK SMALL FINAL SIGMA */
+              /* SIGMA mapps differently depending on whether it is
+               * final or not. The following simplified test would
+               * fail in the case of combining marks following the
+               * sigma, but I don't think that occurs in real text.
+               * The test here matches that in ICU.
+               */
+              if (ISALPHA (next_type)) /* Lu,Ll,Lt,Lm,Lo */
+                val = 0x3c3;    /* GREEK SMALL SIGMA */
+              else
+                val = 0x3c2;    /* GREEK SMALL FINAL SIGMA */
+            }
+          else
+            val = 0x3c2;        /* GREEK SMALL FINAL SIGMA */
 
           append_utf8_char_to_buffer (val, out_buffer, &len);
-	}
+        }
       else if (IS (t,
-		   OR (G_UNICODE_UPPERCASE_LETTER,
-		   OR (G_UNICODE_TITLECASE_LETTER,
-		  0))))
-	{
-	  val = ATTTABLE (c >> 8, c & 0xff);
+                   OR (G_UNICODE_UPPERCASE_LETTER,
+                   OR (G_UNICODE_TITLECASE_LETTER,
+                  0))))
+        {
+          val = ATTTABLE (c >> 8, c & 0xff);
 
-	  if (val >= 0x1000000)
-	    {
+          if (val >= 0x1000000)
+            {
               append_special_case (out_buffer, &len, val - 0x1000000, t, 0);
-	    }
-	  else
-	    {
-	      if (t == G_UNICODE_TITLECASE_LETTER)
-		{
-		  unsigned int i;
-		  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
-		    {
-		      if (title_table[i][0] == c)
-			{
-			  val = title_table[i][2];
-			  break;
-			}
-		    }
-		}
+            }
+          else
+            {
+              if (t == G_UNICODE_TITLECASE_LETTER)
+                {
+                  unsigned int i;
+                  for (i = 0; i < G_N_ELEMENTS (title_table); ++i)
+                    {
+                      if (title_table[i][0] == c)
+                        {
+                          val = title_table[i][2];
+                          break;
+                        }
+                    }
+                }
 
-	      /* Not all uppercase letters are guaranteed to have a lowercase
-	       * equivalent.  If this is the case, val will be zero. */
+              /* Not all uppercase letters are guaranteed to have a lowercase
+               * equivalent.  If this is the case, val will be zero. */
               append_utf8_char_to_buffer (val ? val : c, out_buffer, &len);
-	    }
-	}
+            }
+        }
       else
-	{
-	  gsize char_len = g_utf8_skip[*(guchar *)last];
+        {
+          gsize char_len = g_utf8_skip[*(guchar *)last];
 
-	  if (out_buffer)
-	    memcpy (out_buffer + len, last, char_len);
+          if (out_buffer)
+            memcpy (out_buffer + len, last, char_len);
 
           increase_size (&len, char_len);
-	}
+        }
 
     }
 
@@ -1183,7 +1183,7 @@ real_tolower (const gchar *str,
  **/
 gchar *
 g_utf8_strdown (const gchar *str,
-		gssize       len)
+                gssize       len)
 {
   gsize result_len;
   LocaleType locale_type;
@@ -1229,7 +1229,7 @@ g_utf8_strdown (const gchar *str,
  **/
 gchar *
 g_utf8_casefold (const gchar *str,
-		 gssize       len)
+                 gssize       len)
 {
   GString *result;
   const char *p;
@@ -1248,23 +1248,23 @@ g_utf8_casefold (const gchar *str,
 
       if (ch >= casefold_table[start].ch &&
           ch <= casefold_table[end - 1].ch)
-	{
-	  while (TRUE)
-	    {
-	      int half = (start + end) / 2;
-	      if (ch == casefold_table[half].ch)
-		{
-		  g_string_append (result, casefold_table[half].data);
-		  goto next;
-		}
-	      else if (half == start)
-		break;
-	      else if (ch > casefold_table[half].ch)
-		start = half;
-	      else
-		end = half;
-	    }
-	}
+        {
+          while (TRUE)
+            {
+              int half = (start + end) / 2;
+              if (ch == casefold_table[half].ch)
+                {
+                  g_string_append (result, casefold_table[half].data);
+                  goto next;
+                }
+              else if (half == start)
+                break;
+              else if (ch > casefold_table[half].ch)
+                start = half;
+              else
+                end = half;
+            }
+        }
 
       g_string_append_unichar (result, g_unichar_tolower (ch));
       
@@ -1325,11 +1325,11 @@ g_unichar_get_script_bsearch (gunichar ch)
   do 
     {
       if (ch < g_script_table[mid].start)
-	upper = mid - 1;
+        upper = mid - 1;
       else if (ch >= g_script_table[mid].start + g_script_table[mid].chars)
-	lower = mid + 1;
+        lower = mid + 1;
       else
-	return g_script_table[saved_mid = mid].script;
+        return g_script_table[saved_mid = mid].script;
 
       mid = (lower + upper) / 2;
     }

@@ -63,24 +63,24 @@ static void       g_file_io_stream_seekable_iface_init    (GSeekableIface       
 static goffset    g_file_io_stream_seekable_tell          (GSeekable            *seekable);
 static gboolean   g_file_io_stream_seekable_can_seek      (GSeekable            *seekable);
 static gboolean   g_file_io_stream_seekable_seek          (GSeekable            *seekable,
-							   goffset               offset,
-							   GSeekType             type,
-							   GCancellable         *cancellable,
-							   GError              **error);
+                                                           goffset               offset,
+                                                           GSeekType             type,
+                                                           GCancellable         *cancellable,
+                                                           GError              **error);
 static gboolean   g_file_io_stream_seekable_can_truncate  (GSeekable            *seekable);
 static gboolean   g_file_io_stream_seekable_truncate      (GSeekable            *seekable,
-							   goffset               offset,
-							   GCancellable         *cancellable,
-							   GError              **error);
+                                                           goffset               offset,
+                                                           GCancellable         *cancellable,
+                                                           GError              **error);
 static void       g_file_io_stream_real_query_info_async  (GFileIOStream    *stream,
-							   const char           *attributes,
-							   int                   io_priority,
-							   GCancellable         *cancellable,
-							   GAsyncReadyCallback   callback,
-							   gpointer              user_data);
+                                                           const char           *attributes,
+                                                           int                   io_priority,
+                                                           GCancellable         *cancellable,
+                                                           GAsyncReadyCallback   callback,
+                                                           gpointer              user_data);
 static GFileInfo *g_file_io_stream_real_query_info_finish (GFileIOStream    *stream,
-							   GAsyncResult         *result,
-							   GError              **error);
+                                                           GAsyncResult         *result,
+                                                           GError              **error);
 
 struct _GFileIOStreamPrivate {
   GAsyncReadyCallback outstanding_callback;
@@ -88,8 +88,8 @@ struct _GFileIOStreamPrivate {
 
 G_DEFINE_TYPE_WITH_CODE (GFileIOStream, g_file_io_stream, G_TYPE_IO_STREAM,
                          G_ADD_PRIVATE (GFileIOStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-						g_file_io_stream_seekable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+                                                g_file_io_stream_seekable_iface_init))
 
 static void
 g_file_io_stream_seekable_iface_init (GSeekableIface *iface)
@@ -138,9 +138,9 @@ g_file_io_stream_init (GFileIOStream *stream)
  **/
 GFileInfo *
 g_file_io_stream_query_info (GFileIOStream      *stream,
-			     const char             *attributes,
-			     GCancellable           *cancellable,
-			     GError                **error)
+                             const char             *attributes,
+                             GCancellable           *cancellable,
+                             GError                **error)
 {
   GFileIOStreamClass *class;
   GIOStream *io_stream;
@@ -175,8 +175,8 @@ g_file_io_stream_query_info (GFileIOStream      *stream,
 
 static void
 async_ready_callback_wrapper (GObject *source_object,
-			      GAsyncResult *res,
-			      gpointer      user_data)
+                              GAsyncResult *res,
+                              gpointer      user_data)
 {
   GFileIOStream *stream = G_FILE_IO_STREAM (source_object);
 
@@ -208,11 +208,11 @@ async_ready_callback_wrapper (GObject *source_object,
  **/
 void
 g_file_io_stream_query_info_async (GFileIOStream     *stream,
-					  const char           *attributes,
-					  int                   io_priority,
-					  GCancellable         *cancellable,
-					  GAsyncReadyCallback   callback,
-					  gpointer              user_data)
+                                          const char           *attributes,
+                                          int                   io_priority,
+                                          GCancellable         *cancellable,
+                                          GAsyncReadyCallback   callback,
+                                          gpointer              user_data)
 {
   GFileIOStreamClass *klass;
   GIOStream *io_stream;
@@ -253,8 +253,8 @@ g_file_io_stream_query_info_async (GFileIOStream     *stream,
  **/
 GFileInfo *
 g_file_io_stream_query_info_finish (GFileIOStream     *stream,
-				    GAsyncResult         *result,
-				    GError              **error)
+                                    GAsyncResult         *result,
+                                    GError              **error)
 {
   GFileIOStreamClass *class;
 
@@ -346,7 +346,7 @@ g_file_io_stream_can_seek (GFileIOStream  *stream)
     {
       can_seek = TRUE;
       if (class->can_seek)
-	can_seek = class->can_seek (stream);
+        can_seek = class->can_seek (stream);
     }
 
   return can_seek;
@@ -360,10 +360,10 @@ g_file_io_stream_seekable_can_seek (GSeekable *seekable)
 
 static gboolean
 g_file_io_stream_seek (GFileIOStream  *stream,
-		       goffset             offset,
-		       GSeekType           type,
-		       GCancellable       *cancellable,
-		       GError            **error)
+                       goffset             offset,
+                       GSeekType           type,
+                       GCancellable       *cancellable,
+                       GError            **error)
 {
   GFileIOStreamClass *class;
   GIOStream *io_stream;
@@ -399,13 +399,13 @@ g_file_io_stream_seek (GFileIOStream  *stream,
 
 static gboolean
 g_file_io_stream_seekable_seek (GSeekable  *seekable,
-				    goffset     offset,
-				    GSeekType   type,
-				    GCancellable  *cancellable,
-				    GError    **error)
+                                    goffset     offset,
+                                    GSeekType   type,
+                                    GCancellable  *cancellable,
+                                    GError    **error)
 {
   return g_file_io_stream_seek (G_FILE_IO_STREAM (seekable),
-				offset, type, cancellable, error);
+                                offset, type, cancellable, error);
 }
 
 static gboolean
@@ -423,7 +423,7 @@ g_file_io_stream_can_truncate (GFileIOStream  *stream)
     {
       can_truncate = TRUE;
       if (class->can_truncate)
-	can_truncate = class->can_truncate (stream);
+        can_truncate = class->can_truncate (stream);
     }
 
   return can_truncate;
@@ -437,9 +437,9 @@ g_file_io_stream_seekable_can_truncate (GSeekable  *seekable)
 
 static gboolean
 g_file_io_stream_truncate (GFileIOStream  *stream,
-			   goffset             size,
-			   GCancellable       *cancellable,
-			   GError            **error)
+                           goffset             size,
+                           GCancellable       *cancellable,
+                           GError            **error)
 {
   GFileIOStreamClass *class;
   GIOStream *io_stream;
@@ -475,12 +475,12 @@ g_file_io_stream_truncate (GFileIOStream  *stream,
 
 static gboolean
 g_file_io_stream_seekable_truncate (GSeekable     *seekable,
-				    goffset        size,
-				    GCancellable  *cancellable,
-				    GError       **error)
+                                    goffset        size,
+                                    GCancellable  *cancellable,
+                                    GError       **error)
 {
   return g_file_io_stream_truncate (G_FILE_IO_STREAM (seekable),
-					size, cancellable, error);
+                                        size, cancellable, error);
 }
 /*****************************************************
  *   Default implementations based on output stream  *
@@ -512,10 +512,10 @@ g_file_io_stream_real_can_seek (GFileIOStream    *stream)
 
 static gboolean
 g_file_io_stream_real_seek (GFileIOStream    *stream,
-			    goffset           offset,
-			    GSeekType         type,
-			    GCancellable     *cancellable,
-			    GError          **error)
+                            goffset           offset,
+                            GSeekType         type,
+                            GCancellable     *cancellable,
+                            GError          **error)
 {
   GOutputStream *out;
   GSeekable *seekable;
@@ -540,9 +540,9 @@ g_file_io_stream_real_can_truncate (GFileIOStream    *stream)
 
 static gboolean
 g_file_io_stream_real_truncate_fn (GFileIOStream    *stream,
-				   goffset               size,
-				   GCancellable         *cancellable,
-				   GError              **error)
+                                   goffset               size,
+                                   GCancellable         *cancellable,
+                                   GError              **error)
 {
   GOutputStream *out;
   GSeekable *seekable;
@@ -567,9 +567,9 @@ g_file_io_stream_real_get_etag (GFileIOStream    *stream)
 
 static GFileInfo *
 g_file_io_stream_real_query_info (GFileIOStream    *stream,
-				  const char           *attributes,
-				  GCancellable         *cancellable,
-				  GError              **error)
+                                  const char           *attributes,
+                                  GCancellable         *cancellable,
+                                  GError              **error)
 {
   GOutputStream *out;
   GFileOutputStream *file_out;
@@ -578,7 +578,7 @@ g_file_io_stream_real_query_info (GFileIOStream    *stream,
   file_out = G_FILE_OUTPUT_STREAM (out);
 
   return g_file_output_stream_query_info (file_out,
-					  attributes, cancellable, error);
+                                          attributes, cancellable, error);
 }
 
 typedef struct {
@@ -589,8 +589,8 @@ typedef struct {
 
 static AsyncOpWrapper *
 async_op_wrapper_new (gpointer object,
-		      GAsyncReadyCallback callback,
-		      gpointer user_data)
+                      GAsyncReadyCallback callback,
+                      gpointer user_data)
 {
   AsyncOpWrapper *data;
 
@@ -604,8 +604,8 @@ async_op_wrapper_new (gpointer object,
 
 static void
 async_op_wrapper_callback (GObject *source_object,
-			   GAsyncResult *res,
-			   gpointer user_data)
+                           GAsyncResult *res,
+                           gpointer user_data)
 {
   AsyncOpWrapper *data  = user_data;
   data->callback (data->object, res, data->user_data);
@@ -615,11 +615,11 @@ async_op_wrapper_callback (GObject *source_object,
 
 static void
 g_file_io_stream_real_query_info_async (GFileIOStream     *stream,
-					const char           *attributes,
-					int                   io_priority,
-					GCancellable         *cancellable,
-					GAsyncReadyCallback   callback,
-					gpointer              user_data)
+                                        const char           *attributes,
+                                        int                   io_priority,
+                                        GCancellable         *cancellable,
+                                        GAsyncReadyCallback   callback,
+                                        gpointer              user_data)
 {
   GOutputStream *out;
   GFileOutputStream *file_out;
@@ -630,14 +630,14 @@ g_file_io_stream_real_query_info_async (GFileIOStream     *stream,
 
   data = async_op_wrapper_new (stream, callback, user_data);
   g_file_output_stream_query_info_async (file_out,
-					 attributes, io_priority,
-					 cancellable, async_op_wrapper_callback, data);
+                                         attributes, io_priority,
+                                         cancellable, async_op_wrapper_callback, data);
 }
 
 static GFileInfo *
 g_file_io_stream_real_query_info_finish (GFileIOStream     *stream,
-					 GAsyncResult      *res,
-					 GError           **error)
+                                         GAsyncResult      *res,
+                                         GError           **error)
 {
   GOutputStream *out;
   GFileOutputStream *file_out;

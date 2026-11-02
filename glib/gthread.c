@@ -14,7 +14,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -608,8 +608,8 @@ g_private_set_alloc0 (GPrivate *key,
  */
 gpointer
 g_once_impl (GOnce       *once,
-	     GThreadFunc  func,
-	     gpointer     arg)
+             GThreadFunc  func,
+             gpointer     arg)
 {
   g_mutex_lock (&g_once_mutex);
 

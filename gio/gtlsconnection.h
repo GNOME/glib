@@ -65,22 +65,22 @@ struct _GTlsConnectionClass
 
   /* signals */
   gboolean          ( *accept_certificate) (GTlsConnection       *connection,
-					    GTlsCertificate      *peer_cert,
-					    GTlsCertificateFlags  errors);
+                                            GTlsCertificate      *peer_cert,
+                                            GTlsCertificateFlags  errors);
 
   /* methods */
   gboolean ( *handshake )        (GTlsConnection       *conn,
-				  GCancellable         *cancellable,
-				  GError              **error);
+                                  GCancellable         *cancellable,
+                                  GError              **error);
 
   void     ( *handshake_async )  (GTlsConnection       *conn,
-				  int                   io_priority,
-				  GCancellable         *cancellable,
-				  GAsyncReadyCallback   callback,
-				  gpointer              user_data);
+                                  int                   io_priority,
+                                  GCancellable         *cancellable,
+                                  GAsyncReadyCallback   callback,
+                                  gpointer              user_data);
   gboolean ( *handshake_finish ) (GTlsConnection       *conn,
-				  GAsyncResult         *result,
-				  GError              **error);
+                                  GAsyncResult         *result,
+                                  GError              **error);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   gboolean ( *get_binding_data)  (GTlsConnection          *conn,
@@ -107,7 +107,7 @@ gboolean              g_tls_connection_get_use_system_certdb       (GTlsConnecti
 
 GIO_AVAILABLE_IN_ALL
 void                  g_tls_connection_set_database                (GTlsConnection       *conn,
-								    GTlsDatabase         *database);
+                                                                    GTlsDatabase         *database);
 GIO_AVAILABLE_IN_ALL
 GTlsDatabase *        g_tls_connection_get_database                (GTlsConnection       *conn);
 
@@ -130,14 +130,14 @@ GTlsCertificateFlags  g_tls_connection_get_peer_certificate_errors (GTlsConnecti
 
 GIO_AVAILABLE_IN_ALL
 void                  g_tls_connection_set_require_close_notify    (GTlsConnection       *conn,
-								    gboolean              require_close_notify);
+                                                                    gboolean              require_close_notify);
 GIO_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_get_require_close_notify    (GTlsConnection       *conn);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GIO_DEPRECATED_IN_2_60
 void                  g_tls_connection_set_rehandshake_mode        (GTlsConnection       *conn,
-								    GTlsRehandshakeMode   mode);
+                                                                    GTlsRehandshakeMode   mode);
 GIO_DEPRECATED_IN_2_60
 GTlsRehandshakeMode   g_tls_connection_get_rehandshake_mode        (GTlsConnection       *conn);
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -159,19 +159,19 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 GIO_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_handshake                   (GTlsConnection       *conn,
-								    GCancellable         *cancellable,
-								    GError              **error);
+                                                                    GCancellable         *cancellable,
+                                                                    GError              **error);
 
 GIO_AVAILABLE_IN_ALL
 void                  g_tls_connection_handshake_async             (GTlsConnection       *conn,
-								    int                   io_priority,
-								    GCancellable         *cancellable,
-								    GAsyncReadyCallback   callback,
-								    gpointer              user_data);
+                                                                    int                   io_priority,
+                                                                    GCancellable         *cancellable,
+                                                                    GAsyncReadyCallback   callback,
+                                                                    gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_handshake_finish            (GTlsConnection       *conn,
-								    GAsyncResult         *result,
-								    GError              **error);
+                                                                    GAsyncResult         *result,
+                                                                    GError              **error);
 
 GIO_AVAILABLE_IN_2_70
 GTlsProtocolVersion   g_tls_connection_get_protocol_version        (GTlsConnection       *conn);
@@ -206,8 +206,8 @@ GQuark g_tls_channel_binding_error_quark (void);
 /*< protected >*/
 GIO_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_emit_accept_certificate     (GTlsConnection       *conn,
-								    GTlsCertificate      *peer_cert,
-								    GTlsCertificateFlags  errors);
+                                                                    GTlsCertificate      *peer_cert,
+                                                                    GTlsCertificateFlags  errors);
 
 G_END_DECLS
 

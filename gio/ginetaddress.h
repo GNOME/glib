@@ -66,7 +66,7 @@ GInetAddress *        g_inet_address_new_from_string      (const gchar          
 
 GIO_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_from_bytes       (const guint8         *bytes,
-							   GSocketFamily         family);
+                                                           GSocketFamily         family);
 
 GIO_AVAILABLE_IN_ALL
 GInetAddress *        g_inet_address_new_loopback         (GSocketFamily         family);

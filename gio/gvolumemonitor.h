@@ -82,7 +82,7 @@ struct _GVolumeMonitorClass
                                       GMount         *mount);
 
   void      (* drive_connected)      (GVolumeMonitor *volume_monitor,
-                                      GDrive	     *drive);
+                                      GDrive         *drive);
   void      (* drive_disconnected)   (GVolumeMonitor *volume_monitor,
                                       GDrive         *drive);
   void      (* drive_changed)        (GVolumeMonitor *volume_monitor,

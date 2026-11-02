@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -38,7 +38,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
-#include <ctype.h>		/* For tolower() */
+#include <ctype.h>              /* For tolower() */
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -85,7 +85,7 @@
 #    define GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT 2
 #    define GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS 4
 #  endif
-#  include <lmcons.h>		/* For UNLEN */
+#  include <lmcons.h>           /* For UNLEN */
 #endif /* G_PLATFORM_WIN32 */
 
 #ifdef G_OS_WIN32
@@ -182,7 +182,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 static gchar*
 my_strchrnul (const gchar *str, 
-	      gchar        c)
+              gchar        c)
 {
   gchar *p = (gchar*)str;
   while (*p && (*p != c))
@@ -206,33 +206,33 @@ g_find_program_in_path (const gchar *program)
     {
       const size_t program_length = strlen (program);
       gchar *pathext = g_build_path (";",
-				     ".exe;.cmd;.bat;.com",
-				     g_getenv ("PATHEXT"),
-				     NULL);
+                                     ".exe;.cmd;.bat;.com",
+                                     g_getenv ("PATHEXT"),
+                                     NULL);
       gchar *p;
       gchar *decorated_program;
       gchar *retval;
 
       p = pathext;
       do
-	{
-	  gchar *q = my_strchrnul (p, ';');
+        {
+          gchar *q = my_strchrnul (p, ';');
 
-	  decorated_program = g_malloc (program_length + (q-p) + 1);
-	  memcpy (decorated_program, program, program_length);
-	  memcpy (decorated_program+program_length, p, q-p);
-	  decorated_program [program_length + (q-p)] = '\0';
-	  
-	  retval = inner_find_program_in_path (decorated_program);
-	  g_free (decorated_program);
+          decorated_program = g_malloc (program_length + (q-p) + 1);
+          memcpy (decorated_program, program, program_length);
+          memcpy (decorated_program+program_length, p, q-p);
+          decorated_program [program_length + (q-p)] = '\0';
+          
+          retval = inner_find_program_in_path (decorated_program);
+          g_free (decorated_program);
 
-	  if (retval != NULL)
-	    {
-	      g_free (pathext);
-	      return retval;
-	    }
-	  p = q;
-	} while (*p++ != '\0');
+          if (retval != NULL)
+            {
+              g_free (pathext);
+              return retval;
+            }
+          p = q;
+        } while (*p++ != '\0');
       g_free (pathext);
       return NULL;
     }
@@ -345,7 +345,7 @@ g_find_program_for_path (const char *program,
       )
     {
       if (g_file_test (program, G_FILE_TEST_IS_EXECUTABLE) &&
-	  !g_file_test (program, G_FILE_TEST_IS_DIR))
+          !g_file_test (program, G_FILE_TEST_IS_DIR))
         {
           gchar *out = NULL;
 
@@ -492,7 +492,7 @@ g_find_program_for_path (const char *program,
         }
 
       if (g_file_test (startp, G_FILE_TEST_IS_EXECUTABLE) &&
-	  !g_file_test (startp, G_FILE_TEST_IS_DIR))
+          !g_file_test (startp, G_FILE_TEST_IS_DIR))
         {
           gchar *ret;
           if (g_path_is_absolute (startp)) {
@@ -508,7 +508,7 @@ g_find_program_for_path (const char *program,
           g_free (startp_path);
           g_free (freeme);
 #ifdef G_OS_WIN32
-	  g_free ((gchar *) path_copy);
+          g_free ((gchar *) path_copy);
 #endif
           return ret;
         }
@@ -643,11 +643,11 @@ get_windows_directory_root (void)
       char *p;
 
       if (windowsdir == NULL)
-	return g_strdup ("C:\\");
+        return g_strdup ("C:\\");
 
       p = (char *) g_path_skip_root (windowsdir);
       if (G_IS_DIR_SEPARATOR (p[-1]) && p[-2] != ':')
-	p--;
+        p--;
       *p = '\0';
       return windowsdir;
     }
@@ -2539,8 +2539,8 @@ get_module_for_address (gconstpointer address)
     return NULL;
 
   if (!GetModuleHandleExW (GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT |
-			   GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
-			   address, &hmodule))
+                           GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
+                           address, &hmodule))
     {
       MEMORY_BASIC_INFORMATION mbi;
       VirtualQuery (address, &mbi, sizeof (mbi));
@@ -2584,20 +2584,20 @@ g_win32_get_system_data_dirs_for_module_real (void (*address_of_function)(void))
       G_LOCK (g_utils_global);
       hmodule = get_module_for_address (address_of_function);
       if (hmodule != NULL)
-	{
-	  if (per_module_data_dirs == NULL)
-	    per_module_data_dirs = g_hash_table_new (NULL, NULL);
-	  else
-	    {
-	      retval = g_hash_table_lookup (per_module_data_dirs, hmodule);
-	      
-	      if (retval != NULL)
-		{
-		  G_UNLOCK (g_utils_global);
-		  return (const gchar * const *) retval;
-		}
-	    }
-	}
+        {
+          if (per_module_data_dirs == NULL)
+            per_module_data_dirs = g_hash_table_new (NULL, NULL);
+          else
+            {
+              retval = g_hash_table_lookup (per_module_data_dirs, hmodule);
+              
+              if (retval != NULL)
+                {
+                  G_UNLOCK (g_utils_global);
+                  return (const gchar * const *) retval;
+                }
+            }
+        }
     }
 
   data_dirs = g_array_new (TRUE, TRUE, sizeof (char *));
@@ -2643,7 +2643,7 @@ g_win32_get_system_data_dirs_for_module_real (void (*address_of_function)(void))
       gchar *glib_root = g_win32_get_package_installation_directory_of_module (glib_dll);
       p = g_build_filename (glib_root, "share", NULL);
       if (p)
-	g_array_append_val (data_dirs, p);
+        g_array_append_val (data_dirs, p);
       g_free (glib_root);
     }
   
@@ -2658,7 +2658,7 @@ g_win32_get_system_data_dirs_for_module_real (void (*address_of_function)(void))
   if (address_of_function)
     {
       if (hmodule != NULL)
-	g_hash_table_insert (per_module_data_dirs, hmodule, retval);
+        g_hash_table_insert (per_module_data_dirs, hmodule, retval);
       G_UNLOCK (g_utils_global);
     }
 

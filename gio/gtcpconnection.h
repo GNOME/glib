@@ -62,7 +62,7 @@ GType    g_tcp_connection_get_type                (void);
 
 GIO_AVAILABLE_IN_ALL
 void     g_tcp_connection_set_graceful_disconnect (GTcpConnection *connection,
-						   gboolean        graceful_disconnect);
+                                                   gboolean        graceful_disconnect);
 GIO_AVAILABLE_IN_ALL
 gboolean g_tcp_connection_get_graceful_disconnect (GTcpConnection *connection);
 

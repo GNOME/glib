@@ -53,9 +53,9 @@ struct _GSocketClientClass
   GObjectClass parent_class;
 
   void (* event) (GSocketClient       *client,
-		  GSocketClientEvent  event,
-		  GSocketConnectable  *connectable,
-		  GIOStream           *connection);
+                  GSocketClientEvent  event,
+                  GSocketConnectable  *connectable,
+                  GIOStream           *connection);
 
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
@@ -80,43 +80,43 @@ GIO_AVAILABLE_IN_ALL
 GSocketFamily           g_socket_client_get_family                      (GSocketClient        *client);
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_set_family                      (GSocketClient        *client,
-									 GSocketFamily         family);
+                                                                         GSocketFamily         family);
 GIO_AVAILABLE_IN_ALL
 GSocketType             g_socket_client_get_socket_type                 (GSocketClient        *client);
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_set_socket_type                 (GSocketClient        *client,
-									 GSocketType           type);
+                                                                         GSocketType           type);
 GIO_AVAILABLE_IN_ALL
 GSocketProtocol         g_socket_client_get_protocol                    (GSocketClient        *client);
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_set_protocol                    (GSocketClient        *client,
-									 GSocketProtocol       protocol);
+                                                                         GSocketProtocol       protocol);
 GIO_AVAILABLE_IN_ALL
 GSocketAddress         *g_socket_client_get_local_address               (GSocketClient        *client);
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_set_local_address               (GSocketClient        *client,
-									 GSocketAddress       *address);
+                                                                         GSocketAddress       *address);
 GIO_AVAILABLE_IN_ALL
 guint                   g_socket_client_get_timeout                     (GSocketClient        *client);
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_set_timeout                     (GSocketClient        *client,
-									 guint                 timeout);
+                                                                         guint                 timeout);
 GIO_AVAILABLE_IN_ALL
 gboolean                g_socket_client_get_enable_proxy                (GSocketClient        *client);
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_set_enable_proxy                (GSocketClient        *client,
-    									 gboolean	      enable);
+                                                                         gboolean             enable);
 
 GIO_AVAILABLE_IN_2_28
 gboolean                g_socket_client_get_tls                         (GSocketClient        *client);
 GIO_AVAILABLE_IN_2_28
 void                    g_socket_client_set_tls                         (GSocketClient        *client,
-									 gboolean              tls);
+                                                                         gboolean              tls);
 GIO_DEPRECATED_IN_2_72
 GTlsCertificateFlags    g_socket_client_get_tls_validation_flags        (GSocketClient        *client);
 GIO_DEPRECATED_IN_2_72
 void                    g_socket_client_set_tls_validation_flags        (GSocketClient        *client,
-									 GTlsCertificateFlags  flags);
+                                                                         GTlsCertificateFlags  flags);
 GIO_AVAILABLE_IN_2_36
 GProxyResolver         *g_socket_client_get_proxy_resolver              (GSocketClient        *client);
 GIO_AVAILABLE_IN_2_36
@@ -130,20 +130,20 @@ GSocketConnection *     g_socket_client_connect                         (GSocket
                                                                          GError              **error);
 GIO_AVAILABLE_IN_ALL
 GSocketConnection *     g_socket_client_connect_to_host                 (GSocketClient        *client,
-									 const gchar          *host_and_port,
-									 guint16               default_port,
+                                                                         const gchar          *host_and_port,
+                                                                         guint16               default_port,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 GIO_AVAILABLE_IN_ALL
 GSocketConnection *     g_socket_client_connect_to_service              (GSocketClient        *client,
-									 const gchar          *domain,
-									 const gchar          *service,
+                                                                         const gchar          *domain,
+                                                                         const gchar          *service,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 GIO_AVAILABLE_IN_2_26
 GSocketConnection *     g_socket_client_connect_to_uri                  (GSocketClient        *client,
-									 const gchar          *uri,
-									 guint16               default_port,
+                                                                         const gchar          *uri,
+                                                                         guint16               default_port,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 GIO_AVAILABLE_IN_ALL
@@ -158,8 +158,8 @@ GSocketConnection *     g_socket_client_connect_finish                  (GSocket
                                                                          GError              **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_connect_to_host_async           (GSocketClient        *client,
-									 const gchar          *host_and_port,
-									 guint16               default_port,
+                                                                         const gchar          *host_and_port,
+                                                                         guint16               default_port,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
@@ -170,8 +170,8 @@ GSocketConnection *     g_socket_client_connect_to_host_finish          (GSocket
 
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_connect_to_service_async        (GSocketClient        *client,
-									 const gchar          *domain,
-									 const gchar          *service,
+                                                                         const gchar          *domain,
+                                                                         const gchar          *service,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
@@ -181,8 +181,8 @@ GSocketConnection *     g_socket_client_connect_to_service_finish       (GSocket
                                                                          GError              **error);
 GIO_AVAILABLE_IN_ALL
 void                    g_socket_client_connect_to_uri_async            (GSocketClient        *client,
-									 const gchar          *uri,
-									 guint16               default_port,
+                                                                         const gchar          *uri,
+                                                                         guint16               default_port,
                                                                          GCancellable         *cancellable,
                                                                          GAsyncReadyCallback   callback,
                                                                          gpointer              user_data);
@@ -191,8 +191,8 @@ GSocketConnection *     g_socket_client_connect_to_uri_finish           (GSocket
                                                                          GAsyncResult         *result,
                                                                          GError              **error);
 GIO_AVAILABLE_IN_ALL
-void			g_socket_client_add_application_proxy		(GSocketClient        *client,
-									 const gchar          *protocol);
+void                    g_socket_client_add_application_proxy           (GSocketClient        *client,
+                                                                         const gchar          *protocol);
 
 G_END_DECLS
 

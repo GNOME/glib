@@ -115,24 +115,24 @@ static void     g_buffered_input_stream_seekable_iface_init (GSeekableIface  *if
 static goffset  g_buffered_input_stream_tell                (GSeekable       *seekable);
 static gboolean g_buffered_input_stream_can_seek            (GSeekable       *seekable);
 static gboolean g_buffered_input_stream_seek                (GSeekable       *seekable,
-							     goffset          offset,
-							     GSeekType        type,
-							     GCancellable    *cancellable,
-							     GError         **error);
+                                                             goffset          offset,
+                                                             GSeekType        type,
+                                                             GCancellable    *cancellable,
+                                                             GError         **error);
 static gboolean g_buffered_input_stream_can_truncate        (GSeekable       *seekable);
 static gboolean g_buffered_input_stream_truncate            (GSeekable       *seekable,
-							     goffset          offset,
-							     GCancellable    *cancellable,
-							     GError         **error);
+                                                             goffset          offset,
+                                                             GCancellable    *cancellable,
+                                                             GError         **error);
 
 static void compact_buffer (GBufferedInputStream *stream);
 
 G_DEFINE_TYPE_WITH_CODE (GBufferedInputStream,
-			 g_buffered_input_stream,
-			 G_TYPE_FILTER_INPUT_STREAM,
+                         g_buffered_input_stream,
+                         G_TYPE_FILTER_INPUT_STREAM,
                          G_ADD_PRIVATE (GBufferedInputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-						g_buffered_input_stream_seekable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+                                                g_buffered_input_stream_seekable_iface_init))
 
 static void
 g_buffered_input_stream_class_init (GBufferedInputStreamClass *klass)
@@ -497,8 +497,8 @@ g_buffered_input_stream_fill_async (GBufferedInputStream *stream,
       g_task_report_new_error (stream, callback, user_data,
                                g_buffered_input_stream_fill_async,
                                G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-			       _("Too large count value passed to %s"),
-			       G_STRFUNC);
+                               _("Too large count value passed to %s"),
+                               G_STRFUNC);
       return;
     }
 
@@ -874,10 +874,10 @@ g_buffered_input_stream_can_seek (GSeekable *seekable)
 
 static gboolean
 g_buffered_input_stream_seek (GSeekable     *seekable,
-			      goffset        offset,
-			      GSeekType      type,
-			      GCancellable  *cancellable,
-			      GError       **error)
+                              goffset        offset,
+                              GSeekType      type,
+                              GCancellable  *cancellable,
+                              GError       **error)
 {
   GBufferedInputStream        *bstream;
   GBufferedInputStreamPrivate *priv;
@@ -901,14 +901,14 @@ g_buffered_input_stream_seek (GSeekable     *seekable,
     {
       if (offset <= (goffset) (priv->end - priv->pos) &&
           offset >= (goffset) -priv->pos)
-	{
-	  priv->pos += offset;
-	  return TRUE;
-	}
+        {
+          priv->pos += offset;
+          return TRUE;
+        }
       else
-	{
-	  offset -= priv->end - priv->pos;
-	}
+        {
+          offset -= priv->end - priv->pos;
+        }
     }
 
   if (g_seekable_seek (base_stream_seekable, offset, type, cancellable, error))
@@ -931,14 +931,14 @@ g_buffered_input_stream_can_truncate (GSeekable *seekable)
 
 static gboolean
 g_buffered_input_stream_truncate (GSeekable     *seekable,
-				  goffset        offset,
-				  GCancellable  *cancellable,
-				  GError       **error)
+                                  goffset        offset,
+                                  GCancellable  *cancellable,
+                                  GError       **error)
 {
   g_set_error_literal (error,
-		       G_IO_ERROR,
-		       G_IO_ERROR_NOT_SUPPORTED,
-		       _("Cannot truncate GBufferedInputStream"));
+                       G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       _("Cannot truncate GBufferedInputStream"));
   return FALSE;
 }
 
@@ -1140,10 +1140,10 @@ large_skip_callback (GObject      *source_object,
   else
     {
       if (error)
-	g_error_free (error);
+        g_error_free (error);
 
       if (nread > 0)
-	data->bytes_skipped += nread;
+        data->bytes_skipped += nread;
 
       g_task_return_int (task, data->bytes_skipped);
     }
@@ -1178,16 +1178,16 @@ skip_fill_buffer_callback (GObject      *source_object,
   else
     {
       if (error)
-	g_error_free (error);
+        g_error_free (error);
 
       if (nread > 0)
-	{
-	  available = priv->end - priv->pos;
-	  data->count = MIN (data->count, available);
+        {
+          available = priv->end - priv->pos;
+          data->count = MIN (data->count, available);
 
-	  data->bytes_skipped += data->count;
-	  priv->pos += data->count;
-	}
+          data->bytes_skipped += data->count;
+          priv->pos += data->count;
+        }
 
       g_assert (data->bytes_skipped <= G_MAXSSIZE);
       g_task_return_int (task, data->bytes_skipped);

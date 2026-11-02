@@ -104,11 +104,11 @@ mem_overflow (void)
   gpointer p, q;
 
   /* "FAIL" here apparently means "fail to overflow"... */
-#define CHECK_PASS(P)	p = (P); g_assert (p == NULL);
-#define CHECK_FAIL(P)	p = (P); g_assert (p != NULL);
+#define CHECK_PASS(P)   p = (P); g_assert (p == NULL);
+#define CHECK_FAIL(P)   p = (P); g_assert (p != NULL);
 
   /* CHECK if return value is NULL for adhering to API... */
-#define CHECK_NULL(P)	p = (P); g_assert (p == NULL);
+#define CHECK_NULL(P)   p = (P); g_assert (p == NULL);
 
   CHECK_PASS (g_try_malloc_n (a, a));
   CHECK_PASS (g_try_malloc_n (a, b));

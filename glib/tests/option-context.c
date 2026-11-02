@@ -251,7 +251,7 @@ join_stringv (int argc, char **argv)
       g_string_append (str, argv[i]);
 
       if (i < argc - 1)
-	g_string_append_c (str, ' ');
+        g_string_append_c (str, ' ');
     }
 
   return g_string_free (str, FALSE);
@@ -283,9 +283,9 @@ check_identical_stringv (gchar **before, gchar **after)
 
 static gboolean
 error_test1_pre_parse (GOptionContext *context,
-		       GOptionGroup   *group,
-		       gpointer	       data,
-		       GError        **error)
+                       GOptionGroup   *group,
+                       gpointer        data,
+                       GError        **error)
 {
   g_assert_cmpint (error_test1_int, ==, 0x12345678);
 
@@ -294,9 +294,9 @@ error_test1_pre_parse (GOptionContext *context,
 
 static gboolean
 error_test1_post_parse (GOptionContext *context,
-			GOptionGroup   *group,
-			gpointer	  data,
-			GError        **error)
+                        GOptionGroup   *group,
+                        gpointer          data,
+                        GError        **error)
 {
   g_assert_cmpint (error_test1_int, ==, 20);
 
@@ -328,7 +328,7 @@ error_test1 (void)
   /* Set pre and post parse hooks */
   main_group = g_option_context_get_main_group (context);
   g_option_group_set_parse_hooks (main_group,
-				  error_test1_pre_parse, error_test1_post_parse);
+                                  error_test1_pre_parse, error_test1_post_parse);
   
   /* Now try parsing */
   argv = split_string ("program --test 20", &argc);
@@ -351,9 +351,9 @@ error_test1 (void)
 
 static gboolean
 error_test2_pre_parse (GOptionContext *context,
-		       GOptionGroup   *group,
-		       gpointer	  data,
-		       GError        **error)
+                       GOptionGroup   *group,
+                       gpointer   data,
+                       GError        **error)
 {
   g_assert_cmpstr (error_test2_string, ==, "foo");
 
@@ -362,9 +362,9 @@ error_test2_pre_parse (GOptionContext *context,
 
 static gboolean
 error_test2_post_parse (GOptionContext *context,
-			GOptionGroup   *group,
-			gpointer	  data,
-			GError        **error)
+                        GOptionGroup   *group,
+                        gpointer          data,
+                        GError        **error)
 {
   g_assert_cmpstr (error_test2_string, ==, "bar");
 
@@ -396,7 +396,7 @@ error_test2 (void)
   /* Set pre and post parse hooks */
   main_group = g_option_context_get_main_group (context);
   g_option_group_set_parse_hooks (main_group,
-				  error_test2_pre_parse, error_test2_post_parse);
+                                  error_test2_pre_parse, error_test2_post_parse);
   
   /* Now try parsing */
   argv = split_string ("program --test bar", &argc);
@@ -417,9 +417,9 @@ error_test2 (void)
 
 static gboolean
 error_test3_pre_parse (GOptionContext *context,
-		       GOptionGroup   *group,
-		       gpointer	  data,
-		       GError        **error)
+                       GOptionGroup   *group,
+                       gpointer   data,
+                       GError        **error)
 {
   g_assert_false (error_test3_boolean);
 
@@ -428,9 +428,9 @@ error_test3_pre_parse (GOptionContext *context,
 
 static gboolean
 error_test3_post_parse (GOptionContext *context,
-			GOptionGroup   *group,
-			gpointer	  data,
-			GError        **error)
+                        GOptionGroup   *group,
+                        gpointer          data,
+                        GError        **error)
 {
   g_assert_true (error_test3_boolean);
 
@@ -462,7 +462,7 @@ error_test3 (void)
   /* Set pre and post parse hooks */
   main_group = g_option_context_get_main_group (context);
   g_option_group_set_parse_hooks (main_group,
-				  error_test3_pre_parse, error_test3_post_parse);
+                                  error_test3_pre_parse, error_test3_post_parse);
   
   /* Now try parsing */
   argv = split_string ("program --test", &argc);
@@ -700,10 +700,10 @@ arg_test6 (void)
 
 static gboolean
 callback_parse1 (const gchar *option_name, const gchar *value,
-		 gpointer data, GError **error)
+                 gpointer data, GError **error)
 {
-	callback_test1_string = g_strdup (value);
-	return TRUE;
+        callback_test1_string = g_strdup (value);
+        return TRUE;
 }
 
 static void
@@ -741,10 +741,10 @@ callback_test1 (void)
 
 static gboolean
 callback_parse2 (const gchar *option_name, const gchar *value,
-		 gpointer data, GError **error)
+                 gpointer data, GError **error)
 {
-	callback_test2_int++;
-	return TRUE;
+        callback_test2_int++;
+        return TRUE;
 }
 
 static void
@@ -780,14 +780,14 @@ callback_test2 (void)
 
 static gboolean
 callback_parse_optional (const gchar *option_name, const gchar *value,
-		 gpointer data, GError **error)
+                 gpointer data, GError **error)
 {
-	callback_test_optional_boolean = TRUE;
-	if (value)
-		callback_test_optional_string = g_strdup (value);
-	else
-		callback_test_optional_string = NULL;
-	return TRUE;
+        callback_test_optional_boolean = TRUE;
+        if (value)
+                callback_test_optional_string = g_strdup (value);
+        else
+                callback_test_optional_string = NULL;
+        return TRUE;
 }
 
 static void
@@ -801,7 +801,7 @@ callback_test_optional_1 (void)
   int argc;
   GOptionEntry entries [] =
     { { "test", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
-	callback_parse_optional, NULL, NULL },
+        callback_parse_optional, NULL, NULL },
       G_OPTION_ENTRY_NULL };
   
   context = g_option_context_new (NULL);
@@ -837,7 +837,7 @@ callback_test_optional_2 (void)
   int argc;
   GOptionEntry entries [] =
     { { "test", 0, G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
-	callback_parse_optional, NULL, NULL },
+        callback_parse_optional, NULL, NULL },
       G_OPTION_ENTRY_NULL };
   
   context = g_option_context_new (NULL);
@@ -873,7 +873,7 @@ callback_test_optional_3 (void)
   int argc;
   GOptionEntry entries [] =
     { { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
-	callback_parse_optional, NULL, NULL },
+        callback_parse_optional, NULL, NULL },
       G_OPTION_ENTRY_NULL };
   
   context = g_option_context_new (NULL);
@@ -910,7 +910,7 @@ callback_test_optional_4 (void)
   int argc;
   GOptionEntry entries [] =
     { { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
-	callback_parse_optional, NULL, NULL },
+        callback_parse_optional, NULL, NULL },
       G_OPTION_ENTRY_NULL };
   
   context = g_option_context_new (NULL);
@@ -948,7 +948,7 @@ callback_test_optional_5 (void)
   GOptionEntry entries [] =
     { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL, NULL },
       { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
-	callback_parse_optional, NULL, NULL },
+        callback_parse_optional, NULL, NULL },
       G_OPTION_ENTRY_NULL };
   
   context = g_option_context_new (NULL);
@@ -986,7 +986,7 @@ callback_test_optional_6 (void)
   GOptionEntry entries [] =
     { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL, NULL },
       { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
-	callback_parse_optional, NULL, NULL },
+        callback_parse_optional, NULL, NULL },
       G_OPTION_ENTRY_NULL };
   
   context = g_option_context_new (NULL);
@@ -1024,7 +1024,7 @@ callback_test_optional_7 (void)
   GOptionEntry entries [] =
     { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL, NULL },
       { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
-	callback_parse_optional, NULL, NULL },
+        callback_parse_optional, NULL, NULL },
       G_OPTION_ENTRY_NULL };
   
   context = g_option_context_new (NULL);
@@ -1062,7 +1062,7 @@ callback_test_optional_8 (void)
   GOptionEntry entries [] =
     { { "dummy", 'd', 0, G_OPTION_ARG_NONE, &dummy, NULL, NULL },
       { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, 
-	callback_parse_optional, NULL, NULL },
+        callback_parse_optional, NULL, NULL },
       G_OPTION_ENTRY_NULL };
   
   context = g_option_context_new (NULL);
@@ -1090,10 +1090,10 @@ callback_test_optional_8 (void)
 static GPtrArray *callback_remaining_args;
 static gboolean
 callback_remaining_test1_callback (const gchar *option_name, const gchar *value,
-		         gpointer data, GError **error)
+                         gpointer data, GError **error)
 {
-	g_ptr_array_add (callback_remaining_args, g_strdup (value));
-	return TRUE;
+        g_ptr_array_add (callback_remaining_args, g_strdup (value));
+        return TRUE;
 }
 
 static void

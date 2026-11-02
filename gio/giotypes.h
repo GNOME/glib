@@ -160,9 +160,9 @@ typedef struct _GTlsServerConnection          GTlsServerConnection; /* Dummy typ
 typedef struct _GVfs                          GVfs; /* Dummy typedef */
 
 typedef struct _GProxyResolver                GProxyResolver;
-typedef struct _GProxy			      GProxy;
-typedef struct _GProxyAddress		      GProxyAddress;
-typedef struct _GProxyAddressEnumerator	      GProxyAddressEnumerator;
+typedef struct _GProxy                        GProxy;
+typedef struct _GProxyAddress                 GProxyAddress;
+typedef struct _GProxyAddressEnumerator       GProxyAddressEnumerator;
 
 typedef struct _GVolume                       GVolume; /* Dummy typedef */
 typedef struct _GVolumeMonitor                GVolumeMonitor;
@@ -187,8 +187,8 @@ typedef struct _GVolumeMonitor                GVolumeMonitor;
  * after this callback returns.
  **/
 typedef void (*GAsyncReadyCallback) (GObject *source_object,
-				     GAsyncResult *res,
-				     gpointer data);
+                                     GAsyncResult *res,
+                                     gpointer data);
 
 /**
  * GFileProgressCallback:
@@ -282,8 +282,8 @@ typedef void (* GFileMeasureProgressCallback) (gboolean reporting,
  *   [method@Gio.Task.run_in_thread]
  **/
 typedef gboolean (*GIOSchedulerJobFunc) (GIOSchedulerJob *job,
-					 GCancellable    *cancellable,
-					 gpointer         data);
+                                         GCancellable    *cancellable,
+                                         gpointer         data);
 
 /**
  * GSimpleAsyncThreadFunc:
@@ -312,8 +312,8 @@ typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
  * Since: 2.22
  */
 typedef gboolean (*GSocketSourceFunc) (GSocket *socket,
-				       GIOCondition condition,
-				       gpointer data);
+                                       GIOCondition condition,
+                                       gpointer data);
 
 /**
  * GDatagramBasedSourceFunc:
@@ -494,7 +494,7 @@ typedef struct _GDBusNodeInfo                 GDBusNodeInfo;
  * Since: 2.28
  */
 typedef gboolean (*GCancellableSourceFunc) (GCancellable *cancellable,
-					    gpointer      data);
+                                            gpointer      data);
 
 /**
  * GPollableSourceFunc:
@@ -510,7 +510,7 @@ typedef gboolean (*GCancellableSourceFunc) (GCancellable *cancellable,
  * Since: 2.28
  */
 typedef gboolean (*GPollableSourceFunc) (GObject  *pollable_stream,
-					 gpointer  data);
+                                         gpointer  data);
 
 typedef struct _GDBusInterface              GDBusInterface; /* Dummy typedef */
 typedef struct _GDBusInterfaceSkeleton      GDBusInterfaceSkeleton;

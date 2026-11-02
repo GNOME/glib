@@ -13,7 +13,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -66,8 +66,8 @@ set_error (GError      **error,
 /* --- functions --- */
 static gpointer
 _g_module_open (const gchar *file_name,
-		gboolean     bind_lazy,
-		gboolean     bind_local,
+                gboolean     bind_lazy,
+                gboolean     bind_local,
                 GError     **error)
 {
   HINSTANCE handle;
@@ -148,8 +148,8 @@ find_in_any_module (const gchar *symbol_name)
   if (Module32First (snapshot, &me32))
     {
       do {
-	if ((p = GetProcAddress (me32.hModule, symbol_name)) != NULL)
-	  break;
+        if ((p = GetProcAddress (me32.hModule, symbol_name)) != NULL)
+          break;
       } while (Module32Next (snapshot, &me32));
     }
 
@@ -161,14 +161,14 @@ find_in_any_module (const gchar *symbol_name)
 
 static gpointer
 _g_module_symbol (gpointer     handle,
-		  const gchar *symbol_name)
+                  const gchar *symbol_name)
 {
   gpointer p;
   
   if (handle == null_module_handle)
     {
       if ((p = GetProcAddress (GetModuleHandle (NULL), symbol_name)) == NULL)
-	p = find_in_any_module (symbol_name);
+        p = find_in_any_module (symbol_name);
     }
   else
     p = GetProcAddress (handle, symbol_name);
@@ -181,7 +181,7 @@ _g_module_symbol (gpointer     handle,
 
 static gchar*
 _g_module_build_path (const gchar *directory,
-		      const gchar *module_name)
+                      const gchar *module_name)
 {
   size_t k;
 

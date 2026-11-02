@@ -35,9 +35,9 @@ GType g_srv_target_get_type (void);
 
 GIO_AVAILABLE_IN_ALL
 GSrvTarget  *g_srv_target_new          (const gchar *hostname,
-				        guint16      port,
-				        guint16      priority,
-				        guint16      weight);
+                                        guint16      port,
+                                        guint16      priority,
+                                        guint16      weight);
 GIO_AVAILABLE_IN_ALL
 GSrvTarget  *g_srv_target_copy         (GSrvTarget  *target);
 GIO_AVAILABLE_IN_ALL

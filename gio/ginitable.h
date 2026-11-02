@@ -56,8 +56,8 @@ struct _GInitableIface
   /* Virtual Table */
 
   gboolean    (* init) (GInitable    *initable,
-			GCancellable *cancellable,
-			GError      **error);
+                        GCancellable *cancellable,
+                        GError      **error);
 };
 
 
@@ -66,33 +66,33 @@ GType    g_initable_get_type   (void);
 
 GIO_AVAILABLE_IN_ALL
 gboolean g_initable_init       (GInitable     *initable,
-				GCancellable  *cancellable,
-				GError       **error);
+                                GCancellable  *cancellable,
+                                GError       **error);
 
 GIO_AVAILABLE_IN_ALL
 gpointer g_initable_new        (GType          object_type,
-				GCancellable  *cancellable,
-				GError       **error,
-				const gchar   *first_property_name,
-				...);
+                                GCancellable  *cancellable,
+                                GError       **error,
+                                const gchar   *first_property_name,
+                                ...);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 GIO_DEPRECATED_IN_2_54_FOR(g_object_new_with_properties and g_initable_init)
 gpointer g_initable_newv       (GType          object_type,
-				guint          n_parameters,
-				GParameter    *parameters,
-				GCancellable  *cancellable,
-				GError       **error);
+                                guint          n_parameters,
+                                GParameter    *parameters,
+                                GCancellable  *cancellable,
+                                GError       **error);
 
 G_GNUC_END_IGNORE_DEPRECATIONS
 
 GIO_AVAILABLE_IN_ALL
 GObject* g_initable_new_valist (GType          object_type,
-				const gchar   *first_property_name,
-				va_list        var_args,
-				GCancellable  *cancellable,
-				GError       **error);
+                                const gchar   *first_property_name,
+                                va_list        var_args,
+                                GCancellable  *cancellable,
+                                GError       **error);
 
 G_END_DECLS
 

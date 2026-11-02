@@ -45,25 +45,25 @@ struct _GAtomicArray {
 
 void     _g_atomic_array_init   (GAtomicArray *array);
 gpointer _g_atomic_array_copy   (GAtomicArray *array,
-				 gsize         header_size,
-				 gsize         additional_element_size);
+                                 gsize         header_size,
+                                 gsize         additional_element_size);
 void     _g_atomic_array_update (GAtomicArray *array,
-				 gpointer      new_data);
+                                 gpointer      new_data);
 
 #define  G_ATOMIC_ARRAY_GET_LOCKED(_array, _type) ((_type *)((_array)->data))
 
-#define G_ATOMIC_ARRAY_DO_TRANSACTION(_array, _type, _C_) G_STMT_START {	\
-    gpointer *_datap  = &(_array)->data;				\
-    _type *transaction_data, *_check;						\
-										\
-    _check = g_atomic_pointer_get (_datap);					\
-    do {									\
-      transaction_data = _check;						\
-      {_C_;}									\
-      _check = g_atomic_pointer_get (_datap);					\
-    } while (transaction_data != _check);					\
+#define G_ATOMIC_ARRAY_DO_TRANSACTION(_array, _type, _C_) G_STMT_START {        \
+    gpointer *_datap  = &(_array)->data;                                \
+    _type *transaction_data, *_check;                                           \
+                                                                                \
+    _check = g_atomic_pointer_get (_datap);                                     \
+    do {                                                                        \
+      transaction_data = _check;                                                \
+      {_C_;}                                                                    \
+      _check = g_atomic_pointer_get (_datap);                                   \
+    } while (transaction_data != _check);                                       \
   } G_STMT_END
 
 G_END_DECLS
 
-#endif	/* __G_ATOMIC_ARRAY_H__ */
+#endif  /* __G_ATOMIC_ARRAY_H__ */

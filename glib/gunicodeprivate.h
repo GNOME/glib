@@ -11,7 +11,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -28,7 +28,7 @@ G_BEGIN_DECLS
 
 gunichar *_g_utf8_normalize_wc (const gchar    *str,
                                 gssize          max_len,
-				GNormalizeMode  mode);
+                                GNormalizeMode  mode);
 
 void
 g_utf8_to_utf16_make_valid (const char  *utf8,

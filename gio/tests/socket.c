@@ -116,7 +116,7 @@ echo_server_thread (gpointer user_data)
       g_assert_cmpint (nread, >=, 0);
 
       if (nread == 0)
-	break;
+        break;
 
       nwrote = g_socket_send (sock, buf, nread, NULL, &error);
       g_assert_no_error (error);
@@ -145,9 +145,9 @@ create_server_full (GSocketFamily   family,
   data->family = family;
 
   data->server = server = g_socket_new (family,
-					socket_type,
-					G_SOCKET_PROTOCOL_DEFAULT,
-					error);
+                                        socket_type,
+                                        G_SOCKET_PROTOCOL_DEFAULT,
+                                        error);
   if (server == NULL)
     goto error;
 
@@ -227,8 +227,8 @@ static const gchar *testbuf = "0123456789abcdef";
 
 static gboolean
 test_ip_async_read_ready (GSocket      *client,
-			  GIOCondition  cond,
-			  gpointer      user_data)
+                          GIOCondition  cond,
+                          gpointer      user_data)
 {
   IPTestData *data = user_data;
   GError *error = NULL;
@@ -250,8 +250,8 @@ test_ip_async_read_ready (GSocket      *client,
 
 static gboolean
 test_ip_async_write_ready (GSocket      *client,
-			   GIOCondition  cond,
-			   gpointer      user_data)
+                           GIOCondition  cond,
+                           gpointer      user_data)
 {
   IPTestData *data = user_data;
   GError *error = NULL;
@@ -266,7 +266,7 @@ test_ip_async_write_ready (GSocket      *client,
 
   source = g_socket_create_source (client, G_IO_IN, NULL);
   g_source_set_callback (source, (GSourceFunc)test_ip_async_read_ready,
-			 data, NULL);
+                         data, NULL);
   g_source_attach (source, NULL);
   g_source_unref (source);
 
@@ -275,8 +275,8 @@ test_ip_async_write_ready (GSocket      *client,
 
 static gboolean
 test_ip_async_timed_out (GSocket      *client,
-			 GIOCondition  cond,
-			 gpointer      user_data)
+                         GIOCondition  cond,
+                         gpointer      user_data)
 {
   IPTestData *data = user_data;
   GError *error = NULL;
@@ -295,7 +295,7 @@ test_ip_async_timed_out (GSocket      *client,
 
   source = g_socket_create_source (client, G_IO_OUT, NULL);
   g_source_set_callback (source, (GSourceFunc)test_ip_async_write_ready,
-			 data, NULL);
+                         data, NULL);
   g_source_attach (source, NULL);
   g_source_unref (source);
 
@@ -304,8 +304,8 @@ test_ip_async_timed_out (GSocket      *client,
 
 static gboolean
 test_ip_async_connected (GSocket      *client,
-			 GIOCondition  cond,
-			 gpointer      user_data)
+                         GIOCondition  cond,
+                         gpointer      user_data)
 {
   IPTestData *data = user_data;
   GError *error = NULL;
@@ -332,7 +332,7 @@ test_ip_async_connected (GSocket      *client,
 
       source = g_socket_create_source (client, G_IO_IN, NULL);
       g_source_set_callback (source, (GSourceFunc)test_ip_async_timed_out,
-			     data, NULL);
+                             data, NULL);
       g_source_attach (source, NULL);
       g_source_unref (source);
     }
@@ -374,9 +374,9 @@ test_ip_async (GSocketFamily family)
   g_assert_no_error (error);
 
   client = g_socket_new (family,
-			 G_SOCKET_TYPE_STREAM,
-			 G_SOCKET_PROTOCOL_DEFAULT,
-			 &error);
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
   g_assert_no_error (error);
   data->client = client;
 
@@ -398,7 +398,7 @@ test_ip_async (GSocketFamily family)
       g_clear_error (&error);
       source = g_socket_create_source (client, G_IO_OUT, NULL);
       g_source_set_callback (source, (GSourceFunc)test_ip_async_connected,
-			     data, NULL);
+                             data, NULL);
       g_source_attach (source, NULL);
       g_source_unref (source);
     }
@@ -417,7 +417,7 @@ test_ip_async (GSocketFamily family)
     {
       /* Test that reading on a remote-closed socket gets back 0 bytes. */
       len = g_socket_receive_with_blocking (client, buf, sizeof (buf),
-					    TRUE, NULL, &error);
+                                            TRUE, NULL, &error);
       g_assert_no_error (error);
       g_assert_cmpint (len, ==, 0);
     }
@@ -425,7 +425,7 @@ test_ip_async (GSocketFamily family)
     {
       /* Test that writing to a remote-closed socket gets back CONNECTION_CLOSED. */
       len = g_socket_send_with_blocking (client, testbuf, strlen (testbuf) + 1,
-					 TRUE, NULL, &error);
+                                         TRUE, NULL, &error);
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CONNECTION_CLOSED);
       g_assert_cmpint (len, ==, -1);
       g_clear_error (&error);
@@ -481,9 +481,9 @@ test_ip_sync (GSocketFamily family)
   g_assert_no_error (error);
 
   client = g_socket_new (family,
-			 G_SOCKET_TYPE_STREAM,
-			 G_SOCKET_PROTOCOL_DEFAULT,
-			 &error);
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
   g_assert_no_error (error);
 
   g_assert_cmpint (g_socket_get_family (client), ==, family);
@@ -620,9 +620,9 @@ test_ip_sync_dgram (GSocketFamily family)
   g_assert_no_error (error);
 
   client = g_socket_new (family,
-			 G_SOCKET_TYPE_DATAGRAM,
-			 G_SOCKET_PROTOCOL_DEFAULT,
-			 &error);
+                         G_SOCKET_TYPE_DATAGRAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
   g_assert_no_error (error);
 
   g_assert_cmpint (g_socket_get_family (client), ==, family);
@@ -1003,9 +1003,9 @@ test_close_graceful (void)
   g_assert_no_error (error);
 
   client = g_socket_new (family,
-			 G_SOCKET_TYPE_STREAM,
-			 G_SOCKET_PROTOCOL_DEFAULT,
-			 &error);
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
   g_assert_no_error (error);
 
   g_assert_cmpint (g_socket_get_family (client), ==, family);
@@ -1110,9 +1110,9 @@ test_ipv6_v4mapped (void)
     }
 
   client = g_socket_new (G_SOCKET_FAMILY_IPV4,
-			 G_SOCKET_TYPE_STREAM,
-			 G_SOCKET_PROTOCOL_DEFAULT,
-			 &error);
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
   g_assert_no_error (error);
 
   g_socket_set_blocking (client, TRUE);
@@ -1171,9 +1171,9 @@ test_timed_wait (void)
   g_assert_no_error (error);
 
   client = g_socket_new (G_SOCKET_FAMILY_IPV4,
-			 G_SOCKET_TYPE_STREAM,
-			 G_SOCKET_PROTOCOL_DEFAULT,
-			 &error);
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
   g_assert_no_error (error);
 
   g_socket_set_blocking (client, TRUE);
@@ -1185,7 +1185,7 @@ test_timed_wait (void)
 
   start_time = g_get_monotonic_time ();
   g_socket_condition_timed_wait (client, G_IO_IN, 100000 /* 100 ms */,
-				 NULL, &error);
+                                 NULL, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
   g_clear_error (&error);
   poll_duration = g_get_monotonic_time () - start_time;
@@ -1491,13 +1491,13 @@ test_unix_connection_ancillary_data (void)
 
       err = NULL;
       fd = g_unix_connection_receive_fd (G_UNIX_CONNECTION (connection), NULL,
-					 &err);
+                                         &err);
       g_assert_no_error (err);
       g_assert_cmpint (fd, >, -1);
       g_object_unref (connection);
 
       do
-	len = write (fd, TEST_DATA, sizeof (TEST_DATA));
+        len = write (fd, TEST_DATA, sizeof (TEST_DATA));
       while (len == -1 && errno == EINTR);
       g_assert_cmpint (len, ==, sizeof (TEST_DATA));
       exit (0);
@@ -1511,7 +1511,7 @@ test_unix_connection_ancillary_data (void)
 
       err = NULL;
       g_unix_connection_send_fd (G_UNIX_CONNECTION (connection), pv[1], NULL,
-				 &err);
+                                 &err);
       g_assert_no_error (err);
       g_object_unref (connection);
 
@@ -1520,7 +1520,7 @@ test_unix_connection_ancillary_data (void)
 
       memset (buffer, 0xff, sizeof buffer);
       do
-	len = read (pv[0], buffer, sizeof buffer);
+        len = read (pv[0], buffer, sizeof buffer);
       while (len == -1 && errno == EINTR);
 
       g_assert_cmpint (len, ==, sizeof (TEST_DATA));
@@ -2038,9 +2038,9 @@ test_credentials_tcp_client (void)
   g_assert_no_error (error);
 
   client = g_socket_new (family,
-			 G_SOCKET_TYPE_STREAM,
-			 G_SOCKET_PROTOCOL_DEFAULT,
-			 &error);
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
   g_assert_no_error (error);
 
   g_socket_set_blocking (client, TRUE);
@@ -2093,9 +2093,9 @@ test_credentials_tcp_server (void)
   data = g_slice_new0 (IPTestData);
   data->family = family;
   data->server = server = g_socket_new (family,
-					G_SOCKET_TYPE_STREAM,
-					G_SOCKET_PROTOCOL_DEFAULT,
-					&error);
+                                        G_SOCKET_TYPE_STREAM,
+                                        G_SOCKET_PROTOCOL_DEFAULT,
+                                        &error);
   if (error != NULL)
     goto skip;
 
@@ -2162,9 +2162,9 @@ client_setup_thread (gpointer user_data)
   g_assert_no_error (error);
 
   data->client = client = g_socket_new (data->family,
-					G_SOCKET_TYPE_STREAM,
-					G_SOCKET_PROTOCOL_DEFAULT,
-					&error);
+                                        G_SOCKET_TYPE_STREAM,
+                                        G_SOCKET_PROTOCOL_DEFAULT,
+                                        &error);
   g_assert_no_error (error);
 
   g_socket_set_blocking (client, TRUE);

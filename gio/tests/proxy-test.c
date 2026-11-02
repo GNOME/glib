@@ -102,12 +102,12 @@ static void g_test_proxy_resolver_iface_init (GProxyResolverInterface *iface);
 static GType _g_test_proxy_resolver_get_type (void);
 #define g_test_proxy_resolver_get_type _g_test_proxy_resolver_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestProxyResolver, g_test_proxy_resolver, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
-						g_test_proxy_resolver_iface_init)
-			 g_io_extension_point_implement (G_PROXY_RESOLVER_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "test",
-							 0))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
+                                                g_test_proxy_resolver_iface_init)
+                         g_io_extension_point_implement (G_PROXY_RESOLVER_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "test",
+                                                         0))
 
 static void
 g_test_proxy_resolver_init (GTestProxyResolver *resolver)
@@ -122,9 +122,9 @@ g_test_proxy_resolver_is_supported (GProxyResolver *resolver)
 
 static gchar **
 g_test_proxy_resolver_lookup (GProxyResolver  *resolver,
-			      const gchar     *uri,
-			      GCancellable    *cancellable,
-			      GError         **error)
+                              const gchar     *uri,
+                              GCancellable    *cancellable,
+                              GError         **error)
 {
   gchar **proxies;
 
@@ -181,10 +181,10 @@ g_test_proxy_resolver_lookup (GProxyResolver  *resolver,
 
 static void
 g_test_proxy_resolver_lookup_async (GProxyResolver      *resolver,
-				    const gchar         *uri,
-				    GCancellable        *cancellable,
-				    GAsyncReadyCallback  callback,
-				    gpointer             user_data)
+                                    const gchar         *uri,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             user_data)
 {
   GError *error = NULL;
   GTask *task;
@@ -204,8 +204,8 @@ g_test_proxy_resolver_lookup_async (GProxyResolver      *resolver,
 
 static gchar **
 g_test_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
-				     GAsyncResult       *result,
-				     GError            **error)
+                                     GAsyncResult       *result,
+                                     GError            **error)
 {
   g_assert_true (g_task_is_valid (result, resolver));
   g_assert_true (g_task_get_source_tag (G_TASK (result)) == g_test_proxy_resolver_lookup_async);
@@ -239,8 +239,8 @@ static void g_test_alt_proxy_resolver_iface_init (GProxyResolverInterface *iface
 static GType _g_test_alt_proxy_resolver_get_type (void);
 #define g_test_alt_proxy_resolver_get_type _g_test_alt_proxy_resolver_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestAltProxyResolver, g_test_alt_proxy_resolver, g_test_proxy_resolver_get_type (),
-			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
-						g_test_alt_proxy_resolver_iface_init);
+                         G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
+                                                g_test_alt_proxy_resolver_iface_init);
                          )
 
 static void
@@ -303,10 +303,10 @@ g_proxy_base_init (GProxyBase *proxy)
 
 static GIOStream *
 g_proxy_base_connect (GProxy            *proxy,
-		      GIOStream         *io_stream,
-		      GProxyAddress     *proxy_address,
-		      GCancellable      *cancellable,
-		      GError           **error)
+                      GIOStream         *io_stream,
+                      GProxyAddress     *proxy_address,
+                      GCancellable      *cancellable,
+                      GError           **error)
 {
   ProxyData *data = ((GProxyBase *) proxy)->proxy_data;
   const gchar *protocol;
@@ -320,26 +320,26 @@ g_proxy_base_connect (GProxy            *proxy,
   if (strcmp (protocol, data->supported_protocol) != 0)
     {
       g_set_error_literal (&data->last_error,
-			   G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			   "Unsupported protocol");
+                           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           "Unsupported protocol");
       goto fail;
     }
 
   ostream = g_io_stream_get_output_stream (io_stream);
   if (g_output_stream_write (ostream, data->proxy_command, 1, cancellable,
-			     &data->last_error) != 1)
+                             &data->last_error) != 1)
     goto fail;
 
   istream = g_io_stream_get_input_stream (io_stream);
   if (g_input_stream_read (istream, &response, 1, cancellable,
-			   &data->last_error) != 1)
+                           &data->last_error) != 1)
     goto fail;
 
   if (response != g_ascii_toupper (*data->proxy_command))
     {
       g_set_error_literal (&data->last_error,
-			   G_IO_ERROR, G_IO_ERROR_FAILED,
-			   "Failed");
+                           G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Failed");
       goto fail;
     }
 
@@ -352,11 +352,11 @@ g_proxy_base_connect (GProxy            *proxy,
 
 static void
 g_proxy_base_connect_async (GProxy               *proxy,
-			    GIOStream            *io_stream,
-			    GProxyAddress        *proxy_address,
-			    GCancellable         *cancellable,
-			    GAsyncReadyCallback   callback,
-			    gpointer              user_data)
+                            GIOStream            *io_stream,
+                            GProxyAddress        *proxy_address,
+                            GCancellable         *cancellable,
+                            GAsyncReadyCallback   callback,
+                            gpointer              user_data)
 {
   GError *error = NULL;
   GTask *task;
@@ -365,7 +365,7 @@ g_proxy_base_connect_async (GProxy               *proxy,
   task = g_task_new (proxy, NULL, callback, user_data);
 
   proxy_io_stream = g_proxy_connect (proxy, io_stream, proxy_address,
-				     cancellable, &error);
+                                     cancellable, &error);
   if (proxy_io_stream)
     g_task_return_pointer (task, proxy_io_stream, g_object_unref);
   else
@@ -375,8 +375,8 @@ g_proxy_base_connect_async (GProxy               *proxy,
 
 static GIOStream *
 g_proxy_base_connect_finish (GProxy        *proxy,
-			     GAsyncResult  *result,
-			     GError       **error)
+                             GAsyncResult  *result,
+                             GError       **error)
 {
   return g_task_propagate_pointer (G_TASK (result), error);
 }
@@ -399,12 +399,12 @@ static void g_proxy_a_iface_init (GProxyInterface *proxy_iface);
 static GType _g_proxy_a_get_type (void);
 #define g_proxy_a_get_type _g_proxy_a_get_type
 G_DEFINE_TYPE_WITH_CODE (GProxyA, g_proxy_a, g_proxy_base_get_type (),
-			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY,
-						g_proxy_a_iface_init)
-			 g_io_extension_point_implement (G_PROXY_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "proxy-a",
-							 0))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_PROXY,
+                                                g_proxy_a_iface_init)
+                         g_io_extension_point_implement (G_PROXY_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "proxy-a",
+                                                         0))
 
 static void
 g_proxy_a_init (GProxyA *proxy)
@@ -444,12 +444,12 @@ static void g_proxy_b_iface_init (GProxyInterface *proxy_iface);
 static GType _g_proxy_b_get_type (void);
 #define g_proxy_b_get_type _g_proxy_b_get_type
 G_DEFINE_TYPE_WITH_CODE (GProxyB, g_proxy_b, g_proxy_base_get_type (),
-			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY,
-						g_proxy_b_iface_init)
-			 g_io_extension_point_implement (G_PROXY_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "proxy-b",
-							 0))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_PROXY,
+                                                g_proxy_b_iface_init)
+                         g_io_extension_point_implement (G_PROXY_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "proxy-b",
+                                                         0))
 
 static void
 g_proxy_b_init (GProxyB *proxy)
@@ -484,8 +484,8 @@ g_proxy_b_iface_init (GProxyInterface *proxy_iface)
 
 static gboolean
 proxy_bytes (GSocket      *socket,
-	     GIOCondition  condition,
-	     gpointer      user_data)
+             GIOCondition  condition,
+             gpointer      user_data)
 {
   ProxyData *proxy = user_data;
   gssize nread, nwrote, total;
@@ -494,7 +494,7 @@ proxy_bytes (GSocket      *socket,
   GError *error = NULL;
 
   nread = g_socket_receive_with_blocking (socket, buffer, sizeof (buffer),
-					  TRUE, NULL, &error);
+                                          TRUE, NULL, &error);
   if (nread == -1)
     {
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
@@ -517,8 +517,8 @@ proxy_bytes (GSocket      *socket,
   for (total = 0; total < nread; total += nwrote)
     {
       nwrote = g_socket_send_with_blocking (out_socket,
-					    buffer + total, nread - total,
-					    TRUE, NULL, &error);
+                                            buffer + total, nread - total,
+                                            TRUE, NULL, &error);
       g_assert_no_error (error);
     }
 
@@ -542,22 +542,22 @@ proxy_thread (gpointer user_data)
     {
       proxy->client_sock = g_socket_accept (proxy->server, proxy->cancellable, &error);
       if (!proxy->client_sock)
-	{
-	  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+        {
+          g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
           g_error_free (error);
-	  break;
-	}
+          break;
+        }
       else
-	g_assert_no_error (error);
+        g_assert_no_error (error);
 
       nread = g_socket_receive (proxy->client_sock, command, 1, NULL, &error);
       g_assert_no_error (error);
 
       if (nread == 0)
-	{
-	  g_clear_object (&proxy->client_sock);
-	  continue;
-	}
+        {
+          g_clear_object (&proxy->client_sock);
+          continue;
+        }
 
       g_assert_cmpint (nread, ==, 1);
       g_assert_cmpstr (command, ==, proxy->proxy_command);
@@ -568,9 +568,9 @@ proxy_thread (gpointer user_data)
       g_assert_cmpint (nwrote, ==, 1);
 
       proxy->server_sock = g_socket_new (G_SOCKET_FAMILY_IPV4,
-					 G_SOCKET_TYPE_STREAM,
-					 G_SOCKET_PROTOCOL_DEFAULT,
-					 &error);
+                                         G_SOCKET_TYPE_STREAM,
+                                         G_SOCKET_PROTOCOL_DEFAULT,
+                                         &error);
       g_assert_no_error (error);
       g_socket_connect (proxy->server_sock, server.server_addr, NULL, &error);
       g_assert_no_error (error);
@@ -614,9 +614,9 @@ proxy_thread (gpointer user_data)
 
 static void
 create_proxy (ProxyData    *proxy,
-	      gchar         proxy_protocol,
-	      const gchar  *destination_protocol,
-	      GCancellable *cancellable)
+              gchar         proxy_protocol,
+              const gchar  *destination_protocol,
+              GCancellable *cancellable)
 {
   GError *error = NULL;
   GSocketAddress *addr;
@@ -627,9 +627,9 @@ create_proxy (ProxyData    *proxy,
   proxy->cancellable = g_object_ref (cancellable);
 
   proxy->server = g_socket_new (G_SOCKET_FAMILY_IPV4,
-				G_SOCKET_TYPE_STREAM,
-				G_SOCKET_PROTOCOL_DEFAULT,
-				&error);
+                                G_SOCKET_TYPE_STREAM,
+                                G_SOCKET_PROTOCOL_DEFAULT,
+                                &error);
   g_assert_no_error (error);
 
   iaddr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
@@ -643,8 +643,8 @@ create_proxy (ProxyData    *proxy,
   addr = g_socket_get_local_address (proxy->server, &error);
   proxy->port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (addr));
   proxy->uri = g_strdup_printf ("proxy-%c://127.0.0.1:%u",
-				g_ascii_tolower (proxy_protocol),
-				proxy->port);
+                                g_ascii_tolower (proxy_protocol),
+                                proxy->port);
   g_object_unref (addr);
 
   g_socket_listen (proxy->server, &error);
@@ -672,27 +672,27 @@ echo_server_thread (gpointer user_data)
     {
       sock = g_socket_accept (data->server, data->cancellable, &error);
       if (!sock)
-	{
-	  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+        {
+          g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
           g_error_free (error);
-	  break;
-	}
+          break;
+        }
       else
-	g_assert_no_error (error);
+        g_assert_no_error (error);
 
       while (TRUE)
-	{
-	  nread = g_socket_receive (sock, buf, sizeof (buf), NULL, &error);
-	  g_assert_no_error (error);
-	  g_assert_cmpint (nread, >=, 0);
+        {
+          nread = g_socket_receive (sock, buf, sizeof (buf), NULL, &error);
+          g_assert_no_error (error);
+          g_assert_cmpint (nread, >=, 0);
 
-	  if (nread == 0)
-	    break;
+          if (nread == 0)
+            break;
 
-	  nwrote = g_socket_send (sock, buf, nread, NULL, &error);
-	  g_assert_no_error (error);
-	  g_assert_cmpint (nwrote, ==, nread);
-	}
+          nwrote = g_socket_send (sock, buf, nread, NULL, &error);
+          g_assert_no_error (error);
+          g_assert_cmpint (nwrote, ==, nread);
+        }
 
       g_socket_close (sock, &error);
       g_assert_no_error (error);
@@ -716,9 +716,9 @@ create_server (ServerData *data, GCancellable *cancellable)
   data->cancellable = g_object_ref (cancellable);
 
   data->server = g_socket_new (G_SOCKET_FAMILY_IPV4,
-			       G_SOCKET_TYPE_STREAM,
-			       G_SOCKET_PROTOCOL_DEFAULT,
-			       &error);
+                               G_SOCKET_TYPE_STREAM,
+                               G_SOCKET_PROTOCOL_DEFAULT,
+                               &error);
   g_assert_no_error (error);
 
   g_socket_set_blocking (data->server, TRUE);
@@ -760,9 +760,9 @@ g_fake_resolver_init (GFakeResolver *gtr)
 
 static GList *
 g_fake_resolver_lookup_by_name (GResolver     *resolver,
-				const gchar   *hostname,
-				GCancellable  *cancellable,
-				GError       **error)
+                                const gchar   *hostname,
+                                GCancellable  *cancellable,
+                                GError       **error)
 {
   if (!strcmp (hostname, "example.com"))
     return g_list_prepend (NULL, g_inet_address_new_from_string ("127.0.0.1"));
@@ -779,10 +779,10 @@ g_fake_resolver_lookup_by_name (GResolver     *resolver,
 
 static void
 g_fake_resolver_lookup_by_name_async (GResolver           *resolver,
-				      const gchar         *hostname,
-				      GCancellable        *cancellable,
-				      GAsyncReadyCallback  callback,
-				      gpointer             user_data)
+                                      const gchar         *hostname,
+                                      GCancellable        *cancellable,
+                                      GAsyncReadyCallback  callback,
+                                      gpointer             user_data)
 {
   GTask *task;
 
@@ -822,8 +822,8 @@ g_fake_resolver_lookup_by_name_with_flags_async (GResolver               *resolv
 
 static GList *
 g_fake_resolver_lookup_by_name_finish (GResolver            *resolver,
-				       GAsyncResult         *result,
-				       GError              **error)
+                                       GAsyncResult         *result,
+                                       GError              **error)
 {
   return g_task_propagate_pointer (G_TASK (result), error);
 }
@@ -848,13 +848,13 @@ g_fake_resolver_class_init (GFakeResolverClass *fake_class)
 
 static void
 setup_test (gpointer fixture,
-	    gconstpointer user_data)
+            gconstpointer user_data)
 {
 }
 
 static void
 teardown_test (gpointer fixture,
-	       gconstpointer user_data)
+               gconstpointer user_data)
 {
   g_clear_pointer (&last_proxies, g_strfreev);
 
@@ -877,15 +877,15 @@ do_echo_test (GSocketConnection *conn)
   GError *error = NULL;
 
   g_output_stream_write_all (ostream, testbuf, strlen (testbuf),
-			     &nwrote, NULL, &error);
+                             &nwrote, NULL, &error);
   g_assert_no_error (error);
   g_assert_cmpint (nwrote, ==, strlen (testbuf));
 
   for (total = 0; total < nwrote; total += nread)
     {
       nread = g_input_stream_read (istream,
-				   buf + total, sizeof (buf) - total,
-				   NULL, &error);
+                                   buf + total, sizeof (buf) - total,
+                                   NULL, &error);
       g_assert_no_error (error);
       g_assert_cmpint (nread, >, 0);
     }
@@ -896,27 +896,27 @@ do_echo_test (GSocketConnection *conn)
 
 static void
 async_got_conn (GObject      *source,
-		GAsyncResult *result,
-		gpointer      user_data)
+                GAsyncResult *result,
+                gpointer      user_data)
 {
   GSocketConnection **conn = user_data;
   GError *error = NULL;
 
   *conn = g_socket_client_connect_finish (G_SOCKET_CLIENT (source),
-					  result, &error);
+                                          result, &error);
   g_assert_no_error (error);
 }
 
 static void
 async_got_error (GObject      *source,
-		 GAsyncResult *result,
-		 gpointer      user_data)
+                 GAsyncResult *result,
+                 gpointer      user_data)
 {
   GError **error = user_data;
 
   g_assert (error != NULL && *error == NULL);
   g_socket_client_connect_finish (G_SOCKET_CLIENT (source),
-				  result, error);
+                                  result, error);
   g_assert (*error != NULL);
 }
 
@@ -929,7 +929,7 @@ async_resolver_got_error (GObject      *source,
 
   g_assert (error != NULL && *error == NULL);
   g_proxy_resolver_lookup_finish (G_PROXY_RESOLVER (source),
-				  result, error);
+                                  result, error);
   g_assert (*error != NULL);
 }
 
@@ -958,7 +958,7 @@ assert_direct (GSocketConnection *conn)
 
 static void
 test_direct_sync (gpointer fixture,
-		  gconstpointer user_data)
+                  gconstpointer user_data)
 {
   GSocketConnection *conn;
   gchar *uri;
@@ -978,7 +978,7 @@ test_direct_sync (gpointer fixture,
 
 static void
 test_direct_async (gpointer fixture,
-		   gconstpointer user_data)
+                   gconstpointer user_data)
 {
   GSocketConnection *conn;
   gchar *uri;
@@ -987,7 +987,7 @@ test_direct_async (gpointer fixture,
   uri = g_strdup_printf ("simple://127.0.0.1:%u", server.server_port);
   conn = NULL;
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_conn, &conn);
+                                        async_got_conn, &conn);
   g_free (uri);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -1024,7 +1024,7 @@ assert_single (GSocketConnection *conn)
 
 static void
 test_single_sync (gpointer fixture,
-		  gconstpointer user_data)
+                  gconstpointer user_data)
 {
   GSocketConnection *conn;
   GError *error = NULL;
@@ -1044,7 +1044,7 @@ test_single_sync (gpointer fixture,
 
 static void
 test_single_async (gpointer fixture,
-		   gconstpointer user_data)
+                   gconstpointer user_data)
 {
   GSocketConnection *conn;
   gchar *uri;
@@ -1053,7 +1053,7 @@ test_single_async (gpointer fixture,
   uri = g_strdup_printf ("alpha://127.0.0.1:%u", server.server_port);
   conn = NULL;
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_conn, &conn);
+                                        async_got_conn, &conn);
   g_free (uri);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -1090,7 +1090,7 @@ assert_multiple (GSocketConnection *conn)
 
 static void
 test_multiple_sync (gpointer fixture,
-		    gconstpointer user_data)
+                    gconstpointer user_data)
 {
   GSocketConnection *conn;
   GError *error = NULL;
@@ -1111,7 +1111,7 @@ test_multiple_sync (gpointer fixture,
 
 static void
 test_multiple_async (gpointer fixture,
-		     gconstpointer user_data)
+                     gconstpointer user_data)
 {
   GSocketConnection *conn;
   gchar *uri;
@@ -1122,7 +1122,7 @@ test_multiple_async (gpointer fixture,
   uri = g_strdup_printf ("beta://127.0.0.1:%u", server.server_port);
   conn = NULL;
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_conn, &conn);
+                                        async_got_conn, &conn);
   g_free (uri);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -1134,7 +1134,7 @@ test_multiple_async (gpointer fixture,
 
 static void
 test_invalid_uris_sync (gpointer fixture,
-		        gconstpointer user_data)
+                        gconstpointer user_data)
 {
   GSocketConnection *conn;
   gchar *uri;
@@ -1196,7 +1196,7 @@ test_invalid_uris_sync (gpointer fixture,
 
 static void
 test_invalid_uris_async (gpointer fixture,
-		         gconstpointer user_data)
+                         gconstpointer user_data)
 {
   GSocketConnection *conn = NULL;
   GError *error = NULL;
@@ -1207,7 +1207,7 @@ test_invalid_uris_async (gpointer fixture,
   /* The empty:// URI causes the proxy resolver to return an empty string. */
   uri = g_strdup_printf ("empty://127.0.0.1:%u", server.server_port);
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_error, &error);
+                                        async_got_error, &error);
   g_free (uri);
   while (error == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -1218,7 +1218,7 @@ test_invalid_uris_async (gpointer fixture,
   /* The invalid:// URI causes the proxy resolver to return a cat emoji. */
   uri = g_strdup_printf ("invalid://127.0.0.1:%u", server.server_port);
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_error, &error);
+                                        async_got_error, &error);
   g_free (uri);
   while (error == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -1231,7 +1231,7 @@ test_invalid_uris_async (gpointer fixture,
    */
   uri = g_strdup_printf ("invalid-then-simple://127.0.0.1:%u", server.server_port);
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_conn, &conn);
+                                        async_got_conn, &conn);
   g_free (uri);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -1244,7 +1244,7 @@ test_invalid_uris_async (gpointer fixture,
    */
   uri = g_strdup_printf ("simple-then-invalid://127.0.0.1:%u", server.server_port);
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_conn, &conn);
+                                        async_got_conn, &conn);
   g_free (uri);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -1272,7 +1272,7 @@ test_invalid_uris_async (gpointer fixture,
 
 static void
 test_dns (gpointer fixture,
-	  gconstpointer user_data)
+          gconstpointer user_data)
 {
   GSocketConnection *conn;
   GError *error = NULL;
@@ -1294,7 +1294,7 @@ test_dns (gpointer fixture,
   teardown_test (NULL, NULL);
 
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_error, &error);
+                                        async_got_error, &error);
   while (error == NULL)
     g_main_context_iteration (NULL, TRUE);
   g_assert_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND);
@@ -1319,7 +1319,7 @@ test_dns (gpointer fixture,
   teardown_test (NULL, NULL);
 
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_error, &error);
+                                        async_got_error, &error);
   while (error == NULL)
     g_main_context_iteration (NULL, TRUE);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
@@ -1343,7 +1343,7 @@ test_dns (gpointer fixture,
   teardown_test (NULL, NULL);
 
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_conn, &conn);
+                                        async_got_conn, &conn);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
   g_free (uri);
@@ -1395,7 +1395,7 @@ test_override (gpointer fixture,
   teardown_test (NULL, NULL);
 
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_error, &error);
+                                        async_got_error, &error);
   while (error == NULL)
     g_main_context_iteration (NULL, TRUE);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
@@ -1415,7 +1415,7 @@ test_override (gpointer fixture,
 
   conn = NULL;
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_conn, &conn);
+                                        async_got_conn, &conn);
   while (conn == NULL)
     g_main_context_iteration (NULL, TRUE);
   assert_override (conn);
@@ -1433,7 +1433,7 @@ test_override (gpointer fixture,
   teardown_test (NULL, NULL);
 
   g_socket_client_connect_to_uri_async (client, uri, 0, NULL,
-					async_got_error, &error);
+                                        async_got_error, &error);
   while (error == NULL)
     g_main_context_iteration (NULL, TRUE);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);

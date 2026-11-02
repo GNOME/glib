@@ -71,44 +71,44 @@ static void g_unix_output_stream_file_descriptor_based_iface_init (GFileDescript
 
 G_DEFINE_TYPE_WITH_CODE (GUnixOutputStream, g_unix_output_stream, G_TYPE_OUTPUT_STREAM,
                          G_ADD_PRIVATE (GUnixOutputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM,
-						g_unix_output_stream_pollable_iface_init)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
-						g_unix_output_stream_file_descriptor_based_iface_init)
-			 )
+                         G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM,
+                                                g_unix_output_stream_pollable_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
+                                                g_unix_output_stream_file_descriptor_based_iface_init)
+                         )
 
 static void     g_unix_output_stream_set_property (GObject              *object,
-						   guint                 prop_id,
-						   const GValue         *value,
-						   GParamSpec           *pspec);
+                                                   guint                 prop_id,
+                                                   const GValue         *value,
+                                                   GParamSpec           *pspec);
 static void     g_unix_output_stream_get_property (GObject              *object,
-						   guint                 prop_id,
-						   GValue               *value,
-						   GParamSpec           *pspec);
+                                                   guint                 prop_id,
+                                                   GValue               *value,
+                                                   GParamSpec           *pspec);
 static gssize   g_unix_output_stream_write        (GOutputStream        *stream,
-						   const void           *buffer,
-						   gsize                 count,
-						   GCancellable         *cancellable,
-						   GError              **error);
+                                                   const void           *buffer,
+                                                   gsize                 count,
+                                                   GCancellable         *cancellable,
+                                                   GError              **error);
 static gboolean g_unix_output_stream_writev       (GOutputStream        *stream,
-						   const GOutputVector  *vectors,
-						   gsize                 n_vectors,
-						   gsize                *bytes_written,
-						   GCancellable         *cancellable,
-						   GError              **error);
+                                                   const GOutputVector  *vectors,
+                                                   gsize                 n_vectors,
+                                                   gsize                *bytes_written,
+                                                   GCancellable         *cancellable,
+                                                   GError              **error);
 static gboolean g_unix_output_stream_close        (GOutputStream        *stream,
-						   GCancellable         *cancellable,
-						   GError              **error);
+                                                   GCancellable         *cancellable,
+                                                   GError              **error);
 
 static gboolean g_unix_output_stream_pollable_can_poll      (GPollableOutputStream *stream);
 static gboolean g_unix_output_stream_pollable_is_writable   (GPollableOutputStream *stream);
 static GSource *g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
-							     GCancellable         *cancellable);
+                                                             GCancellable         *cancellable);
 static GPollableReturn g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream,
-									 const GOutputVector    *vectors,
-									 gsize                   n_vectors,
-									 gsize                  *bytes_written,
-									 GError                **error);
+                                                                         const GOutputVector    *vectors,
+                                                                         gsize                   n_vectors,
+                                                                         gsize                  *bytes_written,
+                                                                         GError                **error);
 
 static void
 g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
@@ -131,10 +131,10 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
    * Since: 2.20
    */
   g_object_class_install_property (gobject_class,
-				   PROP_FD,
-				   g_param_spec_int ("fd", NULL, NULL,
-						     G_MININT, G_MAXINT, -1,
-						     G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
+                                   PROP_FD,
+                                   g_param_spec_int ("fd", NULL, NULL,
+                                                     G_MININT, G_MAXINT, -1,
+                                                     G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
 
   /**
    * GUnixOutputStream:close-fd:
@@ -144,10 +144,10 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
    * Since: 2.20
    */
   g_object_class_install_property (gobject_class,
-				   PROP_CLOSE_FD,
-				   g_param_spec_boolean ("close-fd", NULL, NULL,
-							 TRUE,
-							 G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
+                                   PROP_CLOSE_FD,
+                                   g_param_spec_boolean ("close-fd", NULL, NULL,
+                                                         TRUE,
+                                                         G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
 }
 
 static void
@@ -167,9 +167,9 @@ g_unix_output_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface
 
 static void
 g_unix_output_stream_set_property (GObject         *object,
-				   guint            prop_id,
-				   const GValue    *value,
-				   GParamSpec      *pspec)
+                                   guint            prop_id,
+                                   const GValue    *value,
+                                   GParamSpec      *pspec)
 {
   GUnixOutputStream *unix_stream;
 
@@ -192,9 +192,9 @@ g_unix_output_stream_set_property (GObject         *object,
 
 static void
 g_unix_output_stream_get_property (GObject    *object,
-				   guint       prop_id,
-				   GValue     *value,
-				   GParamSpec *pspec)
+                                   guint       prop_id,
+                                   GValue     *value,
+                                   GParamSpec *pspec)
 {
   GUnixOutputStream *unix_stream;
 
@@ -235,16 +235,16 @@ g_unix_output_stream_init (GUnixOutputStream *unix_stream)
  **/
 GOutputStream *
 g_unix_output_stream_new (gint     fd,
-			  gboolean close_fd)
+                          gboolean close_fd)
 {
   GUnixOutputStream *stream;
 
   g_return_val_if_fail (fd != -1, NULL);
 
   stream = g_object_new (G_TYPE_UNIX_OUTPUT_STREAM,
-			 "fd", fd,
-			 "close-fd", close_fd,
-			 NULL);
+                         "fd", fd,
+                         "close-fd", close_fd,
+                         NULL);
   
   return G_OUTPUT_STREAM (stream);
 }
@@ -312,10 +312,10 @@ g_unix_output_stream_get_fd (GUnixOutputStream *stream)
 
 static gssize
 g_unix_output_stream_write (GOutputStream  *stream,
-			    const void     *buffer,
-			    gsize           count,
-			    GCancellable   *cancellable,
-			    GError        **error)
+                            const void     *buffer,
+                            gsize           count,
+                            GCancellable   *cancellable,
+                            GError        **error)
 {
   GUnixOutputStream *unix_stream;
   gssize res = -1;
@@ -346,32 +346,32 @@ g_unix_output_stream_write (GOutputStream  *stream,
       while (poll_ret == -1 && errsv == EINTR);
 
       if (poll_ret == -1)
-	{
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error writing to file descriptor: %s"),
-		       g_strerror (errsv));
-	  break;
-	}
+        {
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error writing to file descriptor: %s"),
+                       g_strerror (errsv));
+          break;
+        }
 
       if (g_cancellable_set_error_if_cancelled (cancellable, error))
-	break;
+        break;
 
       if (!poll_fds[0].revents)
-	continue;
+        continue;
 
       res = write (unix_stream->priv->fd, buffer, count);
       errsv = errno;
       if (res == -1)
-	{
-	  if (errsv == EINTR || errsv == EAGAIN)
-	    continue;
+        {
+          if (errsv == EINTR || errsv == EAGAIN)
+            continue;
 
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error writing to file descriptor: %s"),
-		       g_strerror (errsv));
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error writing to file descriptor: %s"),
+                       g_strerror (errsv));
+        }
 
       break;
     }
@@ -390,11 +390,11 @@ g_unix_output_stream_write (GOutputStream  *stream,
 
 static gboolean
 g_unix_output_stream_writev (GOutputStream        *stream,
-			     const GOutputVector  *vectors,
-			     gsize                 n_vectors,
-			     gsize                *bytes_written,
-			     GCancellable         *cancellable,
-			     GError              **error)
+                             const GOutputVector  *vectors,
+                             gsize                 n_vectors,
+                             gsize                *bytes_written,
+                             GCancellable         *cancellable,
+                             GError              **error)
 {
   GUnixOutputStream *unix_stream;
   gssize res = -1;
@@ -453,32 +453,32 @@ g_unix_output_stream_writev (GOutputStream        *stream,
       while (poll_ret == -1 && errsv == EINTR);
 
       if (poll_ret == -1)
-	{
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error writing to file descriptor: %s"),
-		       g_strerror (errsv));
-	  break;
-	}
+        {
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error writing to file descriptor: %s"),
+                       g_strerror (errsv));
+          break;
+        }
 
       if (g_cancellable_set_error_if_cancelled (cancellable, error))
-	break;
+        break;
 
       if (!poll_fds[0].revents)
-	continue;
+        continue;
 
       res = writev (unix_stream->priv->fd, iov, n_vectors);
       errsv = errno;
       if (res == -1)
-	{
-	  if (errsv == EINTR || errsv == EAGAIN)
-	    continue;
+        {
+          if (errsv == EINTR || errsv == EAGAIN)
+            continue;
 
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error writing to file descriptor: %s"),
-		       g_strerror (errsv));
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error writing to file descriptor: %s"),
+                       g_strerror (errsv));
+        }
 
       if (bytes_written)
         *bytes_written = res;
@@ -493,8 +493,8 @@ g_unix_output_stream_writev (GOutputStream        *stream,
 
 static gboolean
 g_unix_output_stream_close (GOutputStream  *stream,
-			    GCancellable   *cancellable,
-			    GError        **error)
+                            GCancellable   *cancellable,
+                            GError        **error)
 {
   GUnixOutputStream *unix_stream;
   int res;
@@ -511,9 +511,9 @@ g_unix_output_stream_close (GOutputStream  *stream,
       int errsv = errno;
 
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error closing file descriptor: %s"),
-		   g_strerror (errsv));
+                   g_io_error_from_errno (errsv),
+                   _("Error closing file descriptor: %s"),
+                   g_strerror (errsv));
     }
 
   return res != -1;
@@ -545,7 +545,7 @@ g_unix_output_stream_pollable_is_writable (GPollableOutputStream *stream)
 
 static GSource *
 g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
-					     GCancellable          *cancellable)
+                                             GCancellable          *cancellable)
 {
   GUnixOutputStream *unix_stream = G_UNIX_OUTPUT_STREAM (stream);
   GSource *inner_source, *cancellable_source, *pollable_source;
@@ -570,10 +570,10 @@ g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
 
 static GPollableReturn
 g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream,
-						  const GOutputVector    *vectors,
-						  gsize                   n_vectors,
-						  gsize                  *bytes_written,
-						  GError                **error)
+                                                  const GOutputVector    *vectors,
+                                                  gsize                   n_vectors,
+                                                  gsize                  *bytes_written,
+                                                  GError                **error)
 {
   GUnixOutputStream *unix_stream = G_UNIX_OUTPUT_STREAM (stream);
   struct iovec *iov;
@@ -616,15 +616,15 @@ g_unix_output_stream_pollable_writev_nonblocking (GPollableOutputStream  *stream
       res = writev (unix_stream->priv->fd, iov, n_vectors);
       errsv = errno;
       if (res == -1)
-	{
-	  if (errsv == EINTR)
-	    continue;
+        {
+          if (errsv == EINTR)
+            continue;
 
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error writing to file descriptor: %s"),
-		       g_strerror (errsv));
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error writing to file descriptor: %s"),
+                       g_strerror (errsv));
+        }
 
       if (bytes_written)
         *bytes_written = res;

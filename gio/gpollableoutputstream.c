@@ -47,14 +47,14 @@ G_DEFINE_INTERFACE (GPollableOutputStream, g_pollable_output_stream, G_TYPE_OUTP
 
 static gboolean g_pollable_output_stream_default_can_poll           (GPollableOutputStream *stream);
 static gssize   g_pollable_output_stream_default_write_nonblocking  (GPollableOutputStream  *stream,
-								     const void             *buffer,
-								     gsize                   count,
-								     GError                **error);
+                                                                     const void             *buffer,
+                                                                     gsize                   count,
+                                                                     GError                **error);
 static GPollableReturn g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *stream,
-									    const GOutputVector    *vectors,
-									    gsize                   n_vectors,
-									    gsize                  *bytes_written,
-									    GError                **error);
+                                                                            const GOutputVector    *vectors,
+                                                                            gsize                   n_vectors,
+                                                                            gsize                  *bytes_written,
+                                                                            GError                **error);
 
 static void
 g_pollable_output_stream_default_init (GPollableOutputStreamInterface *iface)
@@ -148,19 +148,19 @@ g_pollable_output_stream_is_writable (GPollableOutputStream *stream)
  */
 GSource *
 g_pollable_output_stream_create_source (GPollableOutputStream *stream,
-					GCancellable          *cancellable)
+                                        GCancellable          *cancellable)
 {
   g_return_val_if_fail (G_IS_POLLABLE_OUTPUT_STREAM (stream), NULL);
 
   return G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream)->
-	  create_source (stream, cancellable);
+          create_source (stream, cancellable);
 }
 
 static gssize
 g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stream,
-						    const void             *buffer,
-						    gsize                   count,
-						    GError                **error)
+                                                    const void             *buffer,
+                                                    gsize                   count,
+                                                    GError                **error)
 {
   if (!g_pollable_output_stream_is_writable (stream))
     {
@@ -175,10 +175,10 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
 
 static GPollableReturn
 g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *stream,
-						     const GOutputVector    *vectors,
-						     gsize                   n_vectors,
-						     gsize                  *bytes_written,
-						     GError                **error)
+                                                     const GOutputVector    *vectors,
+                                                     gsize                   n_vectors,
+                                                     gsize                  *bytes_written,
+                                                     GError                **error)
 {
   gsize _bytes_written = 0;
   GPollableOutputStreamInterface *iface = G_POLLABLE_OUTPUT_STREAM_GET_INTERFACE (stream);
@@ -267,10 +267,10 @@ g_pollable_output_stream_default_writev_nonblocking (GPollableOutputStream  *str
  */
 gssize
 g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
-					    const void             *buffer,
-					    gsize                   count,
-					    GCancellable           *cancellable,
-					    GError                **error)
+                                            const void             *buffer,
+                                            gsize                   count,
+                                            GCancellable           *cancellable,
+                                            GError                **error)
 {
   gssize res;
 
@@ -286,7 +286,7 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
   if (((gssize) count) < 0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Too large count value passed to %s"), G_STRFUNC);
+                   _("Too large count value passed to %s"), G_STRFUNC);
       return -1;
     }
 
@@ -341,11 +341,11 @@ g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
  */
 GPollableReturn
 g_pollable_output_stream_writev_nonblocking (GPollableOutputStream  *stream,
-					     const GOutputVector    *vectors,
-					     gsize                   n_vectors,
-					     gsize                  *bytes_written,
-					     GCancellable           *cancellable,
-					     GError                **error)
+                                             const GOutputVector    *vectors,
+                                             gsize                   n_vectors,
+                                             gsize                  *bytes_written,
+                                             GCancellable           *cancellable,
+                                             GError                **error)
 {
   GPollableOutputStreamInterface *iface;
   GPollableReturn res;

@@ -100,16 +100,16 @@ struct _GIOStreamPrivate {
 };
 
 static gboolean g_io_stream_real_close        (GIOStream            *stream,
-					       GCancellable         *cancellable,
-					       GError              **error);
+                                               GCancellable         *cancellable,
+                                               GError              **error);
 static void     g_io_stream_real_close_async  (GIOStream            *stream,
-					       int                   io_priority,
-					       GCancellable         *cancellable,
-					       GAsyncReadyCallback   callback,
-					       gpointer              user_data);
+                                               int                   io_priority,
+                                               GCancellable         *cancellable,
+                                               GAsyncReadyCallback   callback,
+                                               gpointer              user_data);
 static gboolean g_io_stream_real_close_finish (GIOStream            *stream,
-					       GAsyncResult         *result,
-					       GError              **error);
+                                               GAsyncResult         *result,
+                                               GError              **error);
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GIOStream, g_io_stream, G_TYPE_OBJECT)
 
@@ -134,9 +134,9 @@ g_io_stream_init (GIOStream *stream)
 
 static void
 g_io_stream_get_property (GObject    *object,
-			  guint       prop_id,
-			  GValue     *value,
-			  GParamSpec *pspec)
+                          guint       prop_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
 {
   GIOStream *stream = G_IO_STREAM (object);
 
@@ -191,9 +191,9 @@ g_io_stream_class_init (GIOStreamClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_INPUT_STREAM,
-				   g_param_spec_object ("input-stream", NULL, NULL,
-							G_TYPE_INPUT_STREAM,
-							G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("input-stream", NULL, NULL,
+                                                        G_TYPE_INPUT_STREAM,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
    * GIOStream:output-stream:
@@ -203,9 +203,9 @@ g_io_stream_class_init (GIOStreamClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_OUTPUT_STREAM,
-				   g_param_spec_object ("output-stream", NULL, NULL,
-							G_TYPE_OUTPUT_STREAM,
-							G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("output-stream", NULL, NULL,
+                                                        G_TYPE_OUTPUT_STREAM,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -311,7 +311,7 @@ g_io_stream_has_pending (GIOStream *stream)
  */
 gboolean
 g_io_stream_set_pending (GIOStream  *stream,
-			 GError    **error)
+                         GError    **error)
 {
   g_return_val_if_fail (G_IS_IO_STREAM (stream), FALSE);
 
@@ -354,13 +354,13 @@ g_io_stream_clear_pending (GIOStream *stream)
 
 static gboolean
 g_io_stream_real_close (GIOStream     *stream,
-			GCancellable  *cancellable,
-			GError       **error)
+                        GCancellable  *cancellable,
+                        GError       **error)
 {
   gboolean res;
 
   res = g_output_stream_close (g_io_stream_get_output_stream (stream),
-			       cancellable, error);
+                               cancellable, error);
 
   /* If this errored out, unset error so that we don't report
      further errors, but still do the following ops */
@@ -368,7 +368,7 @@ g_io_stream_real_close (GIOStream     *stream,
     error = NULL;
 
   res &= g_input_stream_close (g_io_stream_get_input_stream (stream),
-			       cancellable, error);
+                               cancellable, error);
 
   return res;
 }
@@ -419,8 +419,8 @@ g_io_stream_real_close (GIOStream     *stream,
  */
 gboolean
 g_io_stream_close (GIOStream     *stream,
-		   GCancellable  *cancellable,
-		   GError       **error)
+                   GCancellable  *cancellable,
+                   GError       **error)
 {
   GIOStreamClass *class;
   gboolean res;
@@ -502,10 +502,10 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  */
 void
 g_io_stream_close_async (GIOStream           *stream,
-			 int                  io_priority,
-			 GCancellable        *cancellable,
-			 GAsyncReadyCallback  callback,
-			 gpointer             user_data)
+                         int                  io_priority,
+                         GCancellable        *cancellable,
+                         GAsyncReadyCallback  callback,
+                         gpointer             user_data)
 {
   GIOStreamClass *class;
   GError *error = NULL;
@@ -533,7 +533,7 @@ g_io_stream_close_async (GIOStream           *stream,
   class = G_IO_STREAM_GET_CLASS (stream);
 
   class->close_async (stream, io_priority, cancellable,
-		      async_ready_close_callback_wrapper, task);
+                      async_ready_close_callback_wrapper, task);
 }
 
 /**
@@ -551,8 +551,8 @@ g_io_stream_close_async (GIOStream           *stream,
  */
 gboolean
 g_io_stream_close_finish (GIOStream     *stream,
-			  GAsyncResult  *result,
-			  GError       **error)
+                          GAsyncResult  *result,
+                          GError       **error)
 {
   g_return_val_if_fail (G_IS_IO_STREAM (stream), FALSE);
   g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
@@ -637,10 +637,10 @@ stream_close_complete (GObject      *source,
 
 static void
 g_io_stream_real_close_async (GIOStream           *stream,
-			      int                  io_priority,
-			      GCancellable        *cancellable,
-			      GAsyncReadyCallback  callback,
-			      gpointer             user_data)
+                              int                  io_priority,
+                              GCancellable        *cancellable,
+                              GAsyncReadyCallback  callback,
+                              gpointer             user_data)
 {
   GInputStream *input;
   GOutputStream *output;
@@ -682,8 +682,8 @@ g_io_stream_real_close_async (GIOStream           *stream,
 
 static gboolean
 g_io_stream_real_close_finish (GIOStream     *stream,
-			       GAsyncResult  *result,
-			       GError       **error)
+                               GAsyncResult  *result,
+                               GError       **error)
 {
   g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
 
@@ -804,22 +804,22 @@ splice_cb (GObject      *ostream,
 
       /* Close the IO streams if needed */
       if ((ctx->flags & G_IO_STREAM_SPLICE_CLOSE_STREAM1) != 0)
-	{
-	  g_io_stream_close_async (ctx->stream1,
+        {
+          g_io_stream_close_async (ctx->stream1,
                                    g_task_get_priority (task),
                                    ctx->op1_cancellable,
                                    splice_close_cb, g_object_ref (task));
-	}
+        }
       else
         ctx->completed++;
 
       if ((ctx->flags & G_IO_STREAM_SPLICE_CLOSE_STREAM2) != 0)
-	{
-	  g_io_stream_close_async (ctx->stream2,
+        {
+          g_io_stream_close_async (ctx->stream2,
                                    g_task_get_priority (task),
                                    ctx->op2_cancellable,
                                    splice_close_cb, g_object_ref (task));
-	}
+        }
       else
         ctx->completed++;
 

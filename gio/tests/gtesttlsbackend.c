@@ -35,15 +35,15 @@ static void g_test_tls_backend_iface_init (GTlsBackendInterface *iface);
 
 #define g_test_tls_backend_get_type _g_test_tls_backend_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestTlsBackend, g_test_tls_backend, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_BACKEND,
-						g_test_tls_backend_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_TLS_BACKEND,
+                                                g_test_tls_backend_iface_init)
                          g_io_extension_point_set_required_type (
                            g_io_extension_point_register (G_TLS_BACKEND_EXTENSION_POINT_NAME),
                            G_TYPE_TLS_BACKEND);
-			 g_io_extension_point_implement (G_TLS_BACKEND_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "test",
-							 999);)
+                         g_io_extension_point_implement (G_TLS_BACKEND_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "test",
+                                                         999);)
 
 static void
 g_test_tls_backend_init (GTestTlsBackend *backend)
@@ -124,8 +124,8 @@ static void g_test_tls_certificate_initable_iface_init (GInitableIface *iface);
 
 #define g_test_tls_certificate_get_type _g_test_tls_certificate_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestTlsCertificate, g_test_tls_certificate, G_TYPE_TLS_CERTIFICATE,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_test_tls_certificate_initable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_test_tls_certificate_initable_iface_init))
 
 static GTlsCertificateFlags
 g_test_tls_certificate_verify (GTlsCertificate     *cert,
@@ -138,9 +138,9 @@ g_test_tls_certificate_verify (GTlsCertificate     *cert,
 
 static void
 g_test_tls_certificate_get_property (GObject    *object,
-				      guint       prop_id,
-				      GValue     *value,
-				      GParamSpec *pspec)
+                                      guint       prop_id,
+                                      GValue     *value,
+                                      GParamSpec *pspec)
 {
   GTestTlsCertificate *cert = (GTestTlsCertificate *) object;
   GPtrArray *data = NULL;
@@ -196,9 +196,9 @@ g_test_tls_certificate_get_property (GObject    *object,
 
 static void
 g_test_tls_certificate_set_property (GObject      *object,
-				      guint         prop_id,
-				      const GValue *value,
-				      GParamSpec   *pspec)
+                                      guint         prop_id,
+                                      const GValue *value,
+                                      GParamSpec   *pspec)
 {
   GTestTlsCertificate *cert = (GTestTlsCertificate *) object;
 
@@ -277,8 +277,8 @@ g_test_tls_certificate_init (GTestTlsCertificate *certificate)
 
 static gboolean
 g_test_tls_certificate_initable_init (GInitable       *initable,
-				       GCancellable    *cancellable,
-				       GError         **error)
+                                       GCancellable    *cancellable,
+                                       GError         **error)
 {
   return TRUE;
 }
@@ -326,33 +326,33 @@ static void g_test_tls_connection_initable_iface_init (GInitableIface *iface);
 
 #define g_test_tls_connection_get_type _g_test_tls_connection_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestTlsConnection, g_test_tls_connection, G_TYPE_TLS_CONNECTION,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL)
                          G_IMPLEMENT_INTERFACE (G_TYPE_DATAGRAM_BASED, NULL)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_DTLS_CONNECTION, NULL)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_test_tls_connection_initable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_DTLS_CONNECTION, NULL)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_test_tls_connection_initable_iface_init))
 
 static void
 g_test_tls_connection_get_property (GObject    *object,
-				     guint       prop_id,
-				     GValue     *value,
-				     GParamSpec *pspec)
+                                     guint       prop_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
 {
 }
 
 static void
 g_test_tls_connection_set_property (GObject      *object,
-				     guint         prop_id,
-				     const GValue *value,
-				     GParamSpec   *pspec)
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
 {
 }
 
 static gboolean
 g_test_tls_connection_close (GIOStream     *stream,
-			      GCancellable  *cancellable,
-			      GError       **error)
+                              GCancellable  *cancellable,
+                              GError       **error)
 {
   return TRUE;
 }
@@ -395,11 +395,11 @@ g_test_tls_connection_init (GTestTlsConnection *connection)
 
 static gboolean
 g_test_tls_connection_initable_init (GInitable       *initable,
-				      GCancellable    *cancellable,
-				      GError         **error)
+                                      GCancellable    *cancellable,
+                                      GError         **error)
 {
   g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_UNAVAILABLE,
-		       "TLS Connection support is not available");
+                       "TLS Connection support is not available");
   return FALSE;
 }
 
@@ -433,10 +433,10 @@ static void g_test_tls_file_database_file_database_interface_init (GInitableIfac
 
 #define g_test_tls_database_get_type _g_test_tls_database_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestTlsDatabase, g_test_tls_database, G_TYPE_TLS_DATABASE,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_test_tls_database_initable_iface_init);
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_FILE_DATABASE,
-						g_test_tls_file_database_file_database_interface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_test_tls_database_initable_iface_init);
+                         G_IMPLEMENT_INTERFACE (G_TYPE_TLS_FILE_DATABASE,
+                                                g_test_tls_file_database_file_database_interface_init))
 
 static void
 g_test_tls_database_get_property (GObject    *object,

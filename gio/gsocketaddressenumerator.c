@@ -47,12 +47,12 @@
 G_DEFINE_ABSTRACT_TYPE (GSocketAddressEnumerator, g_socket_address_enumerator, G_TYPE_OBJECT)
 
 static void            g_socket_address_enumerator_real_next_async  (GSocketAddressEnumerator  *enumerator,
-								     GCancellable              *cancellable,
-								     GAsyncReadyCallback        callback,
-								     gpointer                   user_data);
+                                                                     GCancellable              *cancellable,
+                                                                     GAsyncReadyCallback        callback,
+                                                                     gpointer                   user_data);
 static GSocketAddress *g_socket_address_enumerator_real_next_finish (GSocketAddressEnumerator  *enumerator,
-								     GAsyncResult              *result,
-								     GError                   **error);
+                                                                     GAsyncResult              *result,
+                                                                     GError                   **error);
 
 static void
 g_socket_address_enumerator_init (GSocketAddressEnumerator *enumerator)
@@ -92,8 +92,8 @@ g_socket_address_enumerator_class_init (GSocketAddressEnumeratorClass *enumerato
  */
 GSocketAddress *
 g_socket_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
-				  GCancellable              *cancellable,
-				  GError                   **error)
+                                  GCancellable              *cancellable,
+                                  GError                   **error)
 {
   GSocketAddressEnumeratorClass *klass;
 
@@ -110,9 +110,9 @@ g_socket_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
  */
 static void
 g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerator,
-					     GCancellable             *cancellable,
-					     GAsyncReadyCallback       callback,
-					     gpointer                  user_data)
+                                             GCancellable             *cancellable,
+                                             GAsyncReadyCallback       callback,
+                                             gpointer                  user_data)
 {
   GTask *task;
   GSocketAddress *address;
@@ -146,9 +146,9 @@ g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerato
  */
 void
 g_socket_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
-					GCancellable             *cancellable,
-					GAsyncReadyCallback       callback,
-					gpointer                  user_data)
+                                        GCancellable             *cancellable,
+                                        GAsyncReadyCallback       callback,
+                                        gpointer                  user_data)
 {
   GSocketAddressEnumeratorClass *klass;
 
@@ -161,8 +161,8 @@ g_socket_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
 
 static GSocketAddress *
 g_socket_address_enumerator_real_next_finish (GSocketAddressEnumerator  *enumerator,
-					      GAsyncResult              *result,
-					      GError                   **error)
+                                              GAsyncResult              *result,
+                                              GError                   **error)
 {
   g_return_val_if_fail (g_task_is_valid (result, enumerator), NULL);
 
@@ -186,8 +186,8 @@ g_socket_address_enumerator_real_next_finish (GSocketAddressEnumerator  *enumera
  */
 GSocketAddress *
 g_socket_address_enumerator_next_finish (GSocketAddressEnumerator  *enumerator,
-					 GAsyncResult              *result,
-					 GError                   **error)
+                                         GAsyncResult              *result,
+                                         GError                   **error)
 {
   GSocketAddressEnumeratorClass *klass;
 

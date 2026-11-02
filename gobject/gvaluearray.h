@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General
@@ -25,7 +25,7 @@
 #error "Only <glib-object.h> can be included directly."
 #endif
 
-#include	<gobject/gvalue.h>
+#include        <gobject/gvalue.h>
 
 G_BEGIN_DECLS
 
@@ -55,43 +55,43 @@ GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
 GType           g_value_array_get_type       (void);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValue*		g_value_array_get_nth	     (GValueArray	*value_array,
-					      guint		 index_);
+GValue*         g_value_array_get_nth        (GValueArray       *value_array,
+                                              guint              index_);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValueArray*	g_value_array_new	     (guint		 n_prealloced);
+GValueArray*    g_value_array_new            (guint              n_prealloced);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-void		g_value_array_free	     (GValueArray	*value_array);
+void            g_value_array_free           (GValueArray       *value_array);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValueArray*	g_value_array_copy	     (const GValueArray *value_array);
+GValueArray*    g_value_array_copy           (const GValueArray *value_array);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValueArray*	g_value_array_prepend	     (GValueArray	*value_array,
-					      const GValue	*value);
+GValueArray*    g_value_array_prepend        (GValueArray       *value_array,
+                                              const GValue      *value);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValueArray*	g_value_array_append	     (GValueArray	*value_array,
-					      const GValue	*value);
+GValueArray*    g_value_array_append         (GValueArray       *value_array,
+                                              const GValue      *value);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValueArray*	g_value_array_insert	     (GValueArray	*value_array,
-					      guint		 index_,
-					      const GValue	*value);
+GValueArray*    g_value_array_insert         (GValueArray       *value_array,
+                                              guint              index_,
+                                              const GValue      *value);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValueArray*	g_value_array_remove	     (GValueArray	*value_array,
-					      guint		 index_);
+GValueArray*    g_value_array_remove         (GValueArray       *value_array,
+                                              guint              index_);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValueArray*	g_value_array_sort	     (GValueArray	*value_array,
-					      GCompareFunc	 compare_func);
+GValueArray*    g_value_array_sort           (GValueArray       *value_array,
+                                              GCompareFunc       compare_func);
 
 GOBJECT_DEPRECATED_IN_2_32_FOR(GArray)
-GValueArray*	g_value_array_sort_with_data (GValueArray	*value_array,
-					      GCompareDataFunc	 compare_func,
-					      gpointer		 user_data);
+GValueArray*    g_value_array_sort_with_data (GValueArray       *value_array,
+                                              GCompareDataFunc   compare_func,
+                                              gpointer           user_data);
 
 
 G_END_DECLS

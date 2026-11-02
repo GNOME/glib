@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General
@@ -36,14 +36,14 @@ G_BEGIN_DECLS
  *
  * Returns: %TRUE if @type "is a" %G_TYPE_ENUM.
  */
-#define G_TYPE_IS_ENUM(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_ENUM)
+#define G_TYPE_IS_ENUM(type)           (G_TYPE_FUNDAMENTAL (type) == G_TYPE_ENUM)
 /**
  * G_ENUM_CLASS:
  * @class: a valid #GEnumClass
  * 
  * Casts a derived #GEnumClass structure into a #GEnumClass structure.
  */
-#define G_ENUM_CLASS(class)	       (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_ENUM, GEnumClass))
+#define G_ENUM_CLASS(class)            (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_ENUM, GEnumClass))
 /**
  * G_IS_ENUM_CLASS:
  * @class: a #GEnumClass
@@ -51,7 +51,7 @@ G_BEGIN_DECLS
  * Checks whether @class "is a" valid #GEnumClass structure of type %G_TYPE_ENUM
  * or derived.
  */
-#define G_IS_ENUM_CLASS(class)	       (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ENUM))
+#define G_IS_ENUM_CLASS(class)         (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ENUM))
 /**
  * G_ENUM_CLASS_TYPE:
  * @class: a #GEnumClass
@@ -80,14 +80,14 @@ G_BEGIN_DECLS
  *
  * Returns: %TRUE if @type "is a" %G_TYPE_FLAGS.
  */
-#define G_TYPE_IS_FLAGS(type)	       (G_TYPE_FUNDAMENTAL (type) == G_TYPE_FLAGS)
+#define G_TYPE_IS_FLAGS(type)          (G_TYPE_FUNDAMENTAL (type) == G_TYPE_FLAGS)
 /**
  * G_FLAGS_CLASS:
  * @class: a valid #GFlagsClass
  * 
  * Casts a derived #GFlagsClass structure into a #GFlagsClass structure.
  */
-#define G_FLAGS_CLASS(class)	       (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_FLAGS, GFlagsClass))
+#define G_FLAGS_CLASS(class)           (G_TYPE_CHECK_CLASS_CAST ((class), G_TYPE_FLAGS, GFlagsClass))
 /**
  * G_IS_FLAGS_CLASS:
  * @class: a #GFlagsClass
@@ -154,14 +154,14 @@ typedef struct _GFlagsValue GFlagsValue;
  * The class of an enumeration type holds information about its 
  * possible values.
  */
-struct	_GEnumClass
+struct  _GEnumClass
 {
   GTypeClass  g_type_class;
 
   /*< public >*/  
-  gint	      minimum;
-  gint	      maximum;
-  guint	      n_values;
+  gint        minimum;
+  gint        maximum;
+  guint       n_values;
   GEnumValue *values;
 };
 /**
@@ -175,13 +175,13 @@ struct	_GEnumClass
  * The class of a flags type holds information about its 
  * possible values.
  */
-struct	_GFlagsClass
+struct  _GFlagsClass
 {
   GTypeClass   g_type_class;
   
   /*< public >*/  
-  guint	       mask;
-  guint	       n_values;
+  guint        mask;
+  guint        n_values;
   GFlagsValue *values;
 };
 /**
@@ -195,7 +195,7 @@ struct	_GFlagsClass
  */
 struct _GEnumValue
 {
-  gint	 value;
+  gint   value;
   const gchar *value_name;
   const gchar *value_nick;
 };
@@ -210,7 +210,7 @@ struct _GEnumValue
  */
 struct _GFlagsValue
 {
-  guint	 value;
+  guint  value;
   const gchar *value_name;
   const gchar *value_nick;
 };
@@ -218,23 +218,23 @@ struct _GFlagsValue
 
 /* --- prototypes --- */
 GOBJECT_AVAILABLE_IN_ALL
-GEnumValue*	g_enum_get_value		(GEnumClass	*enum_class,
-						 gint		 value);
+GEnumValue*     g_enum_get_value                (GEnumClass     *enum_class,
+                                                 gint            value);
 GOBJECT_AVAILABLE_IN_ALL
-GEnumValue*	g_enum_get_value_by_name	(GEnumClass	*enum_class,
-						 const gchar	*name);
+GEnumValue*     g_enum_get_value_by_name        (GEnumClass     *enum_class,
+                                                 const gchar    *name);
 GOBJECT_AVAILABLE_IN_ALL
-GEnumValue*	g_enum_get_value_by_nick	(GEnumClass	*enum_class,
-						 const gchar	*nick);
+GEnumValue*     g_enum_get_value_by_nick        (GEnumClass     *enum_class,
+                                                 const gchar    *nick);
 GOBJECT_AVAILABLE_IN_ALL
-GFlagsValue*	g_flags_get_first_value		(GFlagsClass	*flags_class,
-						 guint		 value);
+GFlagsValue*    g_flags_get_first_value         (GFlagsClass    *flags_class,
+                                                 guint           value);
 GOBJECT_AVAILABLE_IN_ALL
-GFlagsValue*	g_flags_get_value_by_name	(GFlagsClass	*flags_class,
-						 const gchar	*name);
+GFlagsValue*    g_flags_get_value_by_name       (GFlagsClass    *flags_class,
+                                                 const gchar    *name);
 GOBJECT_AVAILABLE_IN_ALL
-GFlagsValue*	g_flags_get_value_by_nick	(GFlagsClass	*flags_class,
-						 const gchar	*nick);
+GFlagsValue*    g_flags_get_value_by_nick       (GFlagsClass    *flags_class,
+                                                 const gchar    *nick);
 GOBJECT_AVAILABLE_IN_2_54
 gchar          *g_enum_to_string                (GType           g_enum_type,
                                                  gint            value);
@@ -242,15 +242,15 @@ GOBJECT_AVAILABLE_IN_2_54
 gchar          *g_flags_to_string               (GType           flags_type,
                                                  guint           value);
 GOBJECT_AVAILABLE_IN_ALL
-void            g_value_set_enum        	(GValue         *value,
-						 gint            v_enum);
+void            g_value_set_enum                (GValue         *value,
+                                                 gint            v_enum);
 GOBJECT_AVAILABLE_IN_ALL
-gint            g_value_get_enum        	(const GValue   *value);
+gint            g_value_get_enum                (const GValue   *value);
 GOBJECT_AVAILABLE_IN_ALL
-void            g_value_set_flags       	(GValue         *value,
-						 guint           v_flags);
+void            g_value_set_flags               (GValue         *value,
+                                                 guint           v_flags);
 GOBJECT_AVAILABLE_IN_ALL
-guint           g_value_get_flags       	(const GValue   *value);
+guint           g_value_get_flags               (const GValue   *value);
 
 
 
@@ -259,22 +259,22 @@ guint           g_value_get_flags       	(const GValue   *value);
  * values that is taken over!
  */
 GOBJECT_AVAILABLE_IN_ALL
-GType	g_enum_register_static	   (const gchar	      *name,
-				    const GEnumValue  *const_static_values);
+GType   g_enum_register_static     (const gchar       *name,
+                                    const GEnumValue  *const_static_values);
 GOBJECT_AVAILABLE_IN_ALL
-GType	g_flags_register_static	   (const gchar	      *name,
-				    const GFlagsValue *const_static_values);
+GType   g_flags_register_static    (const gchar       *name,
+                                    const GFlagsValue *const_static_values);
 /* functions to complete the type information
  * for enums/flags implemented by plugins
  */
 GOBJECT_AVAILABLE_IN_ALL
-void	g_enum_complete_type_info  (GType	       g_enum_type,
-				    GTypeInfo	      *info,
-				    const GEnumValue  *const_values);
+void    g_enum_complete_type_info  (GType              g_enum_type,
+                                    GTypeInfo         *info,
+                                    const GEnumValue  *const_values);
 GOBJECT_AVAILABLE_IN_ALL
-void	g_flags_complete_type_info (GType	       g_flags_type,
-				    GTypeInfo	      *info,
-				    const GFlagsValue *const_values);
+void    g_flags_complete_type_info (GType              g_flags_type,
+                                    GTypeInfo         *info,
+                                    const GFlagsValue *const_values);
 
 /* {{{ Macros */
 

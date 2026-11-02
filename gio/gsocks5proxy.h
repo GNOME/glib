@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 #define G_IS_SOCKS5_PROXY_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_SOCKS5_PROXY))
 #define G_SOCKS5_PROXY_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_SOCKS5_PROXY, GSocks5ProxyClass))
 
-typedef struct _GSocks5Proxy	    GSocks5Proxy;
+typedef struct _GSocks5Proxy        GSocks5Proxy;
 typedef struct _GSocks5ProxyClass   GSocks5ProxyClass;
 
 GType _g_socks5_proxy_get_type (void);

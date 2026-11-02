@@ -58,13 +58,13 @@ struct _GAsyncInitableIface
   /* Virtual Table */
 
   void     (* init_async)  (GAsyncInitable      *initable,
-			    int                  io_priority,
-			    GCancellable        *cancellable,
-			    GAsyncReadyCallback  callback,
-			    gpointer             user_data);
+                            int                  io_priority,
+                            GCancellable        *cancellable,
+                            GAsyncReadyCallback  callback,
+                            gpointer             user_data);
   gboolean (* init_finish) (GAsyncInitable      *initable,
-			    GAsyncResult        *res,
-			    GError             **error);
+                            GAsyncResult        *res,
+                            GError             **error);
 };
 
 GIO_AVAILABLE_IN_ALL
@@ -73,49 +73,49 @@ GType    g_async_initable_get_type    (void);
 
 GIO_AVAILABLE_IN_ALL
 void     g_async_initable_init_async       (GAsyncInitable       *initable,
-					    int                   io_priority,
-					    GCancellable         *cancellable,
-					    GAsyncReadyCallback   callback,
-					    gpointer              user_data);
+                                            int                   io_priority,
+                                            GCancellable         *cancellable,
+                                            GAsyncReadyCallback   callback,
+                                            gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean g_async_initable_init_finish      (GAsyncInitable       *initable,
-					    GAsyncResult         *res,
-					    GError              **error);
+                                            GAsyncResult         *res,
+                                            GError              **error);
 
 GIO_AVAILABLE_IN_ALL
 void     g_async_initable_new_async        (GType                 object_type,
-					    int                   io_priority,
-					    GCancellable         *cancellable,
-					    GAsyncReadyCallback   callback,
-					    gpointer              user_data,
-					    const gchar          *first_property_name,
-					    ...);
+                                            int                   io_priority,
+                                            GCancellable         *cancellable,
+                                            GAsyncReadyCallback   callback,
+                                            gpointer              user_data,
+                                            const gchar          *first_property_name,
+                                            ...);
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 GIO_DEPRECATED_IN_2_54_FOR(g_object_new_with_properties and g_async_initable_init_async)
 void     g_async_initable_newv_async       (GType                 object_type,
-					    guint                 n_parameters,
-					    GParameter           *parameters,
-					    int                   io_priority,
-					    GCancellable         *cancellable,
-					    GAsyncReadyCallback   callback,
-					    gpointer              user_data);
+                                            guint                 n_parameters,
+                                            GParameter           *parameters,
+                                            int                   io_priority,
+                                            GCancellable         *cancellable,
+                                            GAsyncReadyCallback   callback,
+                                            gpointer              user_data);
 
 G_GNUC_END_IGNORE_DEPRECATIONS
 
 GIO_AVAILABLE_IN_ALL
 void     g_async_initable_new_valist_async (GType                 object_type,
-					    const gchar          *first_property_name,
-					    va_list               var_args,
-					    int                   io_priority,
-					    GCancellable         *cancellable,
-					    GAsyncReadyCallback   callback,
-					    gpointer              user_data);
+                                            const gchar          *first_property_name,
+                                            va_list               var_args,
+                                            int                   io_priority,
+                                            GCancellable         *cancellable,
+                                            GAsyncReadyCallback   callback,
+                                            gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
 GObject *g_async_initable_new_finish       (GAsyncInitable       *initable,
-					    GAsyncResult         *res,
-					    GError              **error);
+                                            GAsyncResult         *res,
+                                            GError              **error);
 
 
 

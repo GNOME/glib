@@ -461,7 +461,7 @@ void    g_test_disable_crash_reporting  (void);
  * Since: 2.16
  */
 #define g_test_add(testpath, Fixture, tdata, fsetup, ftest, fteardown) \
-					G_STMT_START {			\
+                                        G_STMT_START {                  \
                                          void (*add_vtable) (const char*,       \
                                                     gsize,             \
                                                     gconstpointer,     \
@@ -470,7 +470,7 @@ void    g_test_disable_crash_reporting  (void);
                                                     void (*) (Fixture*, gconstpointer)) =  (void (*) (const gchar *, gsize, gconstpointer, void (*) (Fixture*, gconstpointer), void (*) (Fixture*, gconstpointer), void (*) (Fixture*, gconstpointer))) g_test_add_vtable; \
                                          add_vtable \
                                           (testpath, sizeof (Fixture), tdata, fsetup, ftest, fteardown); \
-					} G_STMT_END
+                                        } G_STMT_END
 
 /* add test messages to the test report */
 GLIB_AVAILABLE_IN_ALL

@@ -2094,7 +2094,7 @@ read_shm (const wchar_t *shm_name)
     {
       shared_mem = OpenFileMapping (FILE_MAP_READ, FALSE, shm_name);
       if (shared_mem != 0)
-	break;
+        break;
       Sleep (100);
     }
 
@@ -2111,10 +2111,10 @@ read_shm (const wchar_t *shm_name)
        * different apps may break each other due to protocol difference.
        */
       if (shared_data != NULL)
-	{
-	  res = g_strdup (shared_data);
-	  UnmapViewOfFile (shared_data);
-	}
+        {
+          res = g_strdup (shared_data);
+          UnmapViewOfFile (shared_data);
+        }
       CloseHandle (shared_mem);
     }
 
@@ -2390,9 +2390,9 @@ out:
 
   if (address == NULL)
     g_set_error (error,
-		 G_IO_ERROR,
-		 G_IO_ERROR_FAILED,
-		 _("Session dbus not running, and autolaunch failed"));
+                 G_IO_ERROR,
+                 G_IO_ERROR_FAILED,
+                 _("Session dbus not running, and autolaunch failed"));
 
   return address;
 }
@@ -2413,9 +2413,9 @@ _g_dbus_get_machine_id (GError **error)
     {
       char *message = g_win32_error_message (GetLastError ());
       g_set_error (error,
-		   G_IO_ERROR,
-		   G_IO_ERROR_FAILED,
-		   _("Unable to get Hardware profile: %s"), message);
+                   G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   _("Unable to get Hardware profile: %s"), message);
       g_free (message);
       return NULL;
     }

@@ -211,10 +211,10 @@ type_name##_register_type (GTypeModule *type_module) \
     NULL    /* value_table */ \
   }; \
   type_name##_type_id = g_type_module_register_type (type_module, \
-						     TYPE_PARENT, \
-						     #TypeName, \
-						     &g_define_type_info, \
-						     (GTypeFlags) flags); \
+                                                     TYPE_PARENT, \
+                                                     #TypeName, \
+                                                     &g_define_type_info, \
+                                                     (GTypeFlags) flags); \
   g_define_type_id = type_name##_type_id; \
   { CODE ; } \
 }

@@ -55,20 +55,20 @@ struct _GSeekableIface
 
   /* Virtual Table */
 
-  goffset     (* tell)	         (GSeekable    *seekable);
+  goffset     (* tell)           (GSeekable    *seekable);
 
   gboolean    (* can_seek)       (GSeekable    *seekable);
-  gboolean    (* seek)	         (GSeekable    *seekable,
-				  goffset       offset,
-				  GSeekType     type,
-				  GCancellable *cancellable,
-				  GError      **error);
+  gboolean    (* seek)           (GSeekable    *seekable,
+                                  goffset       offset,
+                                  GSeekType     type,
+                                  GCancellable *cancellable,
+                                  GError      **error);
 
   gboolean    (* can_truncate)   (GSeekable    *seekable);
   gboolean    (* truncate_fn)    (GSeekable    *seekable,
-				  goffset       offset,
-				  GCancellable *cancellable,
-				  GError       **error);
+                                  goffset       offset,
+                                  GCancellable *cancellable,
+                                  GError       **error);
 
   /* TODO: Async seek/truncate */
 };
@@ -82,17 +82,17 @@ GIO_AVAILABLE_IN_ALL
 gboolean g_seekable_can_seek     (GSeekable     *seekable);
 GIO_AVAILABLE_IN_ALL
 gboolean g_seekable_seek         (GSeekable     *seekable,
-				  goffset        offset,
-				  GSeekType      type,
-				  GCancellable  *cancellable,
-				  GError       **error);
+                                  goffset        offset,
+                                  GSeekType      type,
+                                  GCancellable  *cancellable,
+                                  GError       **error);
 GIO_AVAILABLE_IN_ALL
 gboolean g_seekable_can_truncate (GSeekable     *seekable);
 GIO_AVAILABLE_IN_ALL
 gboolean g_seekable_truncate     (GSeekable     *seekable,
-				  goffset        offset,
-				  GCancellable  *cancellable,
-				  GError       **error);
+                                  goffset        offset,
+                                  GCancellable  *cancellable,
+                                  GError       **error);
 
 G_END_DECLS
 

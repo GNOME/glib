@@ -211,8 +211,8 @@ unichar_test (gconstpointer d)
 G_GNUC_PRINTF(1, 3)
 static void
 test_format (const gchar *format,
-	     const gchar *expected,
-	     ...)
+             const gchar *expected,
+             ...)
 {
   gchar *result;
   va_list args;

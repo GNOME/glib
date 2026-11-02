@@ -70,11 +70,11 @@ struct _GSocketControlMessageClass
   int                    (* get_level) (GSocketControlMessage  *message);
   int                    (* get_type)  (GSocketControlMessage  *message);
   void                   (* serialize) (GSocketControlMessage  *message,
-					gpointer                data);
+                                        gpointer                data);
   GSocketControlMessage *(* deserialize) (int                   level,
-					  int                   type,
-					  gsize                 size,
-					  gpointer              data);
+                                          int                   type,
+                                          gsize                 size,
+                                          gpointer              data);
 
   /*< private >*/
 
@@ -102,12 +102,12 @@ GIO_AVAILABLE_IN_ALL
 int                    g_socket_control_message_get_msg_type (GSocketControlMessage *message);
 GIO_AVAILABLE_IN_ALL
 void                   g_socket_control_message_serialize    (GSocketControlMessage *message,
-							      gpointer               data);
+                                                              gpointer               data);
 GIO_AVAILABLE_IN_ALL
 GSocketControlMessage *g_socket_control_message_deserialize  (int                    level,
-							      int                    type,
-							      gsize                  size,
-							      gpointer               data);
+                                                              int                    type,
+                                                              gsize                  size,
+                                                              gpointer               data);
 
 
 G_END_DECLS

@@ -21,7 +21,7 @@ G_GNUC_INTERNAL gchar*    _g_module_build_path (const gchar *directory,
 
 gchar*
 _g_module_build_path (const gchar *directory,
-		      const gchar *module_name)
+                      const gchar *module_name)
 {
   if (directory && *directory) {
     if (strncmp (module_name, "lib", 3) == 0)

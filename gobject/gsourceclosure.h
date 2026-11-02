@@ -30,7 +30,7 @@ G_BEGIN_DECLS
 
 GOBJECT_AVAILABLE_IN_ALL
 void g_source_set_closure        (GSource  *source,
-				  GClosure *closure);
+                                  GClosure *closure);
 
 GOBJECT_AVAILABLE_IN_ALL
 void g_source_set_dummy_callback (GSource  *source);

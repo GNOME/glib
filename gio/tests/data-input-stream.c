@@ -27,8 +27,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LINES 	0xFFF
-#define MAX_BYTES	0x10000	
+#define MAX_LINES       0xFFF
+#define MAX_BYTES       0x10000 
 
 static void
 test_basic (void)
@@ -78,12 +78,12 @@ test_read_lines (GDataStreamNewlineType newline_type)
   int i;
   for (i = 0; i < MAX_LINES; i++)
     lines[i] = "some_text";
-	
+        
   base_stream = g_memory_input_stream_new ();
   g_assert_nonnull (base_stream);
   stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
   g_assert_nonnull (stream);
-	
+        
   /*  Byte order testing */
   g_data_input_stream_set_byte_order (G_DATA_INPUT_STREAM (stream), G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN);
   g_assert_cmpint (g_data_input_stream_get_byte_order (G_DATA_INPUT_STREAM (stream)), ==, G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN);
@@ -93,16 +93,16 @@ test_read_lines (GDataStreamNewlineType newline_type)
   /*  Line ends testing */
   g_data_input_stream_set_newline_type (G_DATA_INPUT_STREAM (stream), newline_type);
   g_assert_cmpint (g_data_input_stream_get_newline_type (G_DATA_INPUT_STREAM (stream)), ==, newline_type);
-	
+        
 
   /*  Add sample data */
   for (i = 0; i < MAX_LINES; i++) 
     g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (base_stream),
-				    g_strconcat (lines[i], endl[newline_type], NULL), -1, g_free);
+                                    g_strconcat (lines[i], endl[newline_type], NULL), -1, g_free);
 
   /*  Seek to the start */
   test_seek_to_start (base_stream);
-	
+        
   /*  Test read line */
   error = NULL;
   data = (char*)1;
@@ -112,12 +112,12 @@ test_read_lines (GDataStreamNewlineType newline_type)
       gsize length = -1;
       data = g_data_input_stream_read_line (G_DATA_INPUT_STREAM (stream), &length, NULL, &error);
       if (data)
-	{
-	  g_assert_cmpstr (data, ==, lines[line]);
+        {
+          g_assert_cmpstr (data, ==, lines[line]);
           g_free (data);
-	  g_assert_no_error (error);
-	  line++;
-	}
+          g_assert_no_error (error);
+          line++;
+        }
       if (error)
         g_error_free (error);
     }
@@ -160,12 +160,12 @@ test_read_lines_LF_valid_utf8 (void)
   GError *error = NULL;
   char *line;
   guint n_lines = 0;
-	
+        
   base_stream = g_memory_input_stream_new ();
   stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
-	
+        
   g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (base_stream),
-				  "foo\nthis is valid UTF-8 ☺!\nbar\n", -1, NULL);
+                                  "foo\nthis is valid UTF-8 ☺!\nbar\n", -1, NULL);
 
   /*  Test read line */
   error = NULL;
@@ -202,12 +202,12 @@ test_read_lines_LF_invalid_utf8 (void)
   GError *error = NULL;
   char *line;
   guint n_lines = 0;
-	
+        
   base_stream = g_memory_input_stream_new ();
   stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
-	
+        
   g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (base_stream),
-				  "foo\nthis is not valid UTF-8 \xE5 =(\nbar\n", -1, NULL);
+                                  "foo\nthis is not valid UTF-8 \xE5 =(\nbar\n", -1, NULL);
 
   /*  Test read line */
   error = NULL;
@@ -222,13 +222,13 @@ test_read_lines_LF_invalid_utf8 (void)
           g_assert_cmpuint (length, ==, 3);
         }
       else
-	{
+        {
           g_assert_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE);
-	  g_clear_error (&error);
+          g_clear_error (&error);
           g_assert_cmpuint (length, ==, 0);
-	  g_free (line);
-	  break;
-	}
+          g_free (line);
+          break;
+        }
       n_lines++;
       g_free (line);
     }
@@ -250,10 +250,10 @@ test_read_until (void)
   int line;
   int i;
   
-#define REPEATS			10   /* number of rounds */
-#define DATA_STRING		" part1 # part2 $ part3 % part4 ^"
-#define DATA_PART_LEN		7    /* number of characters between separators */
-#define DATA_SEP		"#$%^"
+#define REPEATS                 10   /* number of rounds */
+#define DATA_STRING             " part1 # part2 $ part3 % part4 ^"
+#define DATA_PART_LEN           7    /* number of characters between separators */
+#define DATA_SEP                "#$%^"
 #define DATA_SEP_LEN            4
   const int DATA_PARTS_NUM = DATA_SEP_LEN * REPEATS;
   
@@ -272,12 +272,12 @@ test_read_until (void)
       gsize length = -1;
       data = g_data_input_stream_read_until (G_DATA_INPUT_STREAM (stream), DATA_SEP, &length, NULL, &error);
       if (data)
-	{
-	  g_assert_cmpint (strlen (data), ==, DATA_PART_LEN);
+        {
+          g_assert_cmpint (strlen (data), ==, DATA_PART_LEN);
           g_free (data);
-	  g_assert_no_error (error);
-	  line++;
-	}
+          g_assert_no_error (error);
+          line++;
+        }
     }
   g_assert_no_error (error);
   g_assert_cmpint (line, ==, DATA_PARTS_NUM);
@@ -323,11 +323,11 @@ test_read_upto (void)
 #undef DATA_PART_LEN
 #undef DATA_SEP
 #undef DATA_SEP_LEN
-#define REPEATS			    vectors[n].n_repeats
-#define DATA_STRING		  vectors[n].data_string
+#define REPEATS                     vectors[n].n_repeats
+#define DATA_STRING               vectors[n].data_string
 #define DATA_STRING_LEN vectors[n].data_string_len
-#define DATA_PART_LEN	  vectors[n].data_part_len
-#define DATA_SEP	      vectors[n].data_sep
+#define DATA_PART_LEN     vectors[n].data_part_len
+#define DATA_SEP              vectors[n].data_sep
 #define DATA_SEP_LEN    vectors[n].data_sep_len
 
   for (guint n = 0; n < G_N_ELEMENTS (vectors); n++)
@@ -392,20 +392,20 @@ enum TestDataType {
 };
 
 /* The order is reversed to avoid -Wduplicated-branches. */
-#define TEST_DATA_RETYPE_BUFF(a, t, v)	\
-	 (a == TEST_DATA_UINT64	? (t) *(guint64*)v :	\
-	 (a == TEST_DATA_INT64	? (t) *(gint64*)v :	\
-	 (a == TEST_DATA_UINT32	? (t) *(guint32*)v :	\
-	 (a == TEST_DATA_INT32	? (t) *(gint32*)v :	\
-	 (a == TEST_DATA_UINT16	? (t) *(guint16*)v :	\
-	 (a == TEST_DATA_INT16	? (t) *(gint16*)v :	\
-	 (t) *(guchar*)v ))))))
+#define TEST_DATA_RETYPE_BUFF(a, t, v)  \
+         (a == TEST_DATA_UINT64 ? (t) *(guint64*)v :    \
+         (a == TEST_DATA_INT64  ? (t) *(gint64*)v :     \
+         (a == TEST_DATA_UINT32 ? (t) *(guint32*)v :    \
+         (a == TEST_DATA_INT32  ? (t) *(gint32*)v :     \
+         (a == TEST_DATA_UINT16 ? (t) *(guint16*)v :    \
+         (a == TEST_DATA_INT16  ? (t) *(gint16*)v :     \
+         (t) *(guchar*)v ))))))
 
 
 static void
 test_data_array (GInputStream *stream, GInputStream *base_stream,
-		 gpointer buffer, int len,
-		 enum TestDataType data_type, GDataStreamByteOrder byte_order)
+                 gpointer buffer, int len,
+                 enum TestDataType data_type, GDataStreamByteOrder byte_order)
 {
   GError *error = NULL;
   int pos = 0;
@@ -448,46 +448,46 @@ test_data_array (GInputStream *stream, GInputStream *base_stream,
   while (data != 0)
     {
       switch (data_type)
-	{
-	case TEST_DATA_BYTE:
-	  data = g_data_input_stream_read_byte (G_DATA_INPUT_STREAM (stream), NULL, &error);
-	  break;
-	case TEST_DATA_INT16:
-	  data = g_data_input_stream_read_int16 (G_DATA_INPUT_STREAM (stream), NULL, &error);
-	  if (swap)
-	    data = (gint16)GUINT16_SWAP_LE_BE((gint16)data);
-	  break;
-	case TEST_DATA_UINT16:
-	  data = g_data_input_stream_read_uint16 (G_DATA_INPUT_STREAM (stream), NULL, &error);
-	  if (swap)
-	    data = (guint16)GUINT16_SWAP_LE_BE((guint16)data);
-	  break;
-	case TEST_DATA_INT32:
-	  data = g_data_input_stream_read_int32 (G_DATA_INPUT_STREAM (stream), NULL, &error);
-	  if (swap)
-	    data = (gint32)GUINT32_SWAP_LE_BE((gint32)data);
-	  break;
-	case TEST_DATA_UINT32:
-	  data = g_data_input_stream_read_uint32 (G_DATA_INPUT_STREAM (stream), NULL, &error);
-	  if (swap)
-	    data = (guint32)GUINT32_SWAP_LE_BE((guint32)data);
-	  break;
-	case TEST_DATA_INT64:
-	  data = g_data_input_stream_read_int64 (G_DATA_INPUT_STREAM (stream), NULL, &error);
-	  if (swap)
-	    data = (gint64)GUINT64_SWAP_LE_BE((gint64)data);
-	  break;
-	case TEST_DATA_UINT64:
-	  data = g_data_input_stream_read_uint64 (G_DATA_INPUT_STREAM (stream), NULL, &error);
-	  if (swap)
-	    data = (guint64)GUINT64_SWAP_LE_BE((guint64)data);
-	  break;
+        {
+        case TEST_DATA_BYTE:
+          data = g_data_input_stream_read_byte (G_DATA_INPUT_STREAM (stream), NULL, &error);
+          break;
+        case TEST_DATA_INT16:
+          data = g_data_input_stream_read_int16 (G_DATA_INPUT_STREAM (stream), NULL, &error);
+          if (swap)
+            data = (gint16)GUINT16_SWAP_LE_BE((gint16)data);
+          break;
+        case TEST_DATA_UINT16:
+          data = g_data_input_stream_read_uint16 (G_DATA_INPUT_STREAM (stream), NULL, &error);
+          if (swap)
+            data = (guint16)GUINT16_SWAP_LE_BE((guint16)data);
+          break;
+        case TEST_DATA_INT32:
+          data = g_data_input_stream_read_int32 (G_DATA_INPUT_STREAM (stream), NULL, &error);
+          if (swap)
+            data = (gint32)GUINT32_SWAP_LE_BE((gint32)data);
+          break;
+        case TEST_DATA_UINT32:
+          data = g_data_input_stream_read_uint32 (G_DATA_INPUT_STREAM (stream), NULL, &error);
+          if (swap)
+            data = (guint32)GUINT32_SWAP_LE_BE((guint32)data);
+          break;
+        case TEST_DATA_INT64:
+          data = g_data_input_stream_read_int64 (G_DATA_INPUT_STREAM (stream), NULL, &error);
+          if (swap)
+            data = (gint64)GUINT64_SWAP_LE_BE((gint64)data);
+          break;
+        case TEST_DATA_UINT64:
+          data = g_data_input_stream_read_uint64 (G_DATA_INPUT_STREAM (stream), NULL, &error);
+          if (swap)
+            data = (guint64)GUINT64_SWAP_LE_BE((guint64)data);
+          break;
         default:
           g_assert_not_reached ();
           break;
-	}
+        }
       if (!error)
-	g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, gint64, ((guchar*)buffer + pos)));
+        g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, gint64, ((guchar*)buffer + pos)));
       
       pos += data_size;
     }
@@ -515,7 +515,7 @@ test_read_int (void)
     {
       guchar x = 0;
       while (! x)
-	x = (guchar)g_rand_int (randomizer);
+        x = (guchar)g_rand_int (randomizer);
       *(guchar*)((guchar*)buffer + sizeof(guchar) * i) = x; 
     }
 
@@ -530,7 +530,7 @@ test_read_int (void)
       g_data_input_stream_set_byte_order (G_DATA_INPUT_STREAM (stream), i);
       
       for (j = 0; j <= TEST_DATA_UINT64; j++)
-	test_data_array (stream, base_stream, buffer, MAX_BYTES, j, i);
+        test_data_array (stream, base_stream, buffer, MAX_BYTES, j, i);
     }
 
   g_object_unref (base_stream);

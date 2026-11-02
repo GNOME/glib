@@ -251,12 +251,12 @@ g_resolver_class_init (GResolverClass *resolver_class)
    **/
   signals[RELOAD] =
     g_signal_new (I_("reload"),
-		  G_TYPE_RESOLVER,
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GResolverClass, reload),
-		  NULL, NULL,
-		  NULL,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_RESOLVER,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GResolverClass, reload),
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 0);
 }
 
 static void

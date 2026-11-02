@@ -57,13 +57,13 @@ static void g_dummy_tls_backend_iface_init (GTlsBackendInterface *iface);
 
 #define g_dummy_tls_backend_get_type _g_dummy_tls_backend_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsBackend, g_dummy_tls_backend, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_BACKEND,
-						g_dummy_tls_backend_iface_init)
-			 _g_io_modules_ensure_extension_points_registered ();
-			 g_io_extension_point_implement (G_TLS_BACKEND_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "dummy",
-							 -100);)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_TLS_BACKEND,
+                                                g_dummy_tls_backend_iface_init)
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_TLS_BACKEND_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "dummy",
+                                                         -100);)
 
 static void
 g_dummy_tls_backend_init (GDummyTlsBackend *dummy)
@@ -144,14 +144,14 @@ static void g_dummy_tls_certificate_initable_iface_init (GInitableIface *iface);
 
 #define g_dummy_tls_certificate_get_type _g_dummy_tls_certificate_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsCertificate, g_dummy_tls_certificate, G_TYPE_TLS_CERTIFICATE,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_dummy_tls_certificate_initable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_dummy_tls_certificate_initable_iface_init))
 
 static void
 g_dummy_tls_certificate_get_property (GObject    *object,
-				      guint       prop_id,
-				      GValue     *value,
-				      GParamSpec *pspec)
+                                      guint       prop_id,
+                                      GValue     *value,
+                                      GParamSpec *pspec)
 {
   /* We need to define this method to make GObject happy, but it will
    * never be possible to construct a working GDummyTlsCertificate, so
@@ -161,9 +161,9 @@ g_dummy_tls_certificate_get_property (GObject    *object,
 
 static void
 g_dummy_tls_certificate_set_property (GObject      *object,
-				      guint         prop_id,
-				      const GValue *value,
-				      GParamSpec   *pspec)
+                                      guint         prop_id,
+                                      const GValue *value,
+                                      GParamSpec   *pspec)
 {
   /* Just ignore all attempts to set properties. */
 }
@@ -190,11 +190,11 @@ g_dummy_tls_certificate_init (GDummyTlsCertificate *certificate)
 
 static gboolean
 g_dummy_tls_certificate_initable_init (GInitable       *initable,
-				       GCancellable    *cancellable,
-				       GError         **error)
+                                       GCancellable    *cancellable,
+                                       GError         **error)
 {
   g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_UNAVAILABLE,
-		       _("TLS support is not available"));
+                       _("TLS support is not available"));
   return FALSE;
 }
 
@@ -246,31 +246,31 @@ static void g_dummy_tls_connection_initable_iface_init (GInitableIface *iface);
 
 #define g_dummy_tls_connection_get_type _g_dummy_tls_connection_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsConnection, g_dummy_tls_connection, G_TYPE_TLS_CONNECTION,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_dummy_tls_connection_initable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_dummy_tls_connection_initable_iface_init))
 
 static void
 g_dummy_tls_connection_get_property (GObject    *object,
-				     guint       prop_id,
-				     GValue     *value,
-				     GParamSpec *pspec)
+                                     guint       prop_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
 {
 }
 
 static void
 g_dummy_tls_connection_set_property (GObject      *object,
-				     guint         prop_id,
-				     const GValue *value,
-				     GParamSpec   *pspec)
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
 {
 }
 
 static gboolean
 g_dummy_tls_connection_close (GIOStream     *stream,
-			      GCancellable  *cancellable,
-			      GError       **error)
+                              GCancellable  *cancellable,
+                              GError       **error)
 {
   return TRUE;
 }
@@ -316,11 +316,11 @@ g_dummy_tls_connection_init (GDummyTlsConnection *connection)
 
 static gboolean
 g_dummy_tls_connection_initable_init (GInitable       *initable,
-				      GCancellable    *cancellable,
-				      GError         **error)
+                                      GCancellable    *cancellable,
+                                      GError         **error)
 {
   g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_UNAVAILABLE,
-		       _("TLS support is not available"));
+                       _("TLS support is not available"));
   return FALSE;
 }
 

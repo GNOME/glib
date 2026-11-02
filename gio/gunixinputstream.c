@@ -69,42 +69,42 @@ static void g_unix_input_stream_file_descriptor_based_iface_init (GFileDescripto
 
 G_DEFINE_TYPE_WITH_CODE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STREAM,
                          G_ADD_PRIVATE (GUnixInputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM,
-						g_unix_input_stream_pollable_iface_init)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
-						g_unix_input_stream_file_descriptor_based_iface_init)
-			 )
+                         G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM,
+                                                g_unix_input_stream_pollable_iface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
+                                                g_unix_input_stream_file_descriptor_based_iface_init)
+                         )
 
 static void     g_unix_input_stream_set_property (GObject              *object,
-						  guint                 prop_id,
-						  const GValue         *value,
-						  GParamSpec           *pspec);
+                                                  guint                 prop_id,
+                                                  const GValue         *value,
+                                                  GParamSpec           *pspec);
 static void     g_unix_input_stream_get_property (GObject              *object,
-						  guint                 prop_id,
-						  GValue               *value,
-						  GParamSpec           *pspec);
+                                                  guint                 prop_id,
+                                                  GValue               *value,
+                                                  GParamSpec           *pspec);
 static gssize   g_unix_input_stream_read         (GInputStream         *stream,
-						  void                 *buffer,
-						  gsize                 count,
-						  GCancellable         *cancellable,
-						  GError              **error);
+                                                  void                 *buffer,
+                                                  gsize                 count,
+                                                  GCancellable         *cancellable,
+                                                  GError              **error);
 static gboolean g_unix_input_stream_close        (GInputStream         *stream,
-						  GCancellable         *cancellable,
-						  GError              **error);
+                                                  GCancellable         *cancellable,
+                                                  GError              **error);
 static void     g_unix_input_stream_skip_async   (GInputStream         *stream,
-						  gsize                 count,
-						  int                   io_priority,
-						  GCancellable         *cancellable,
-						  GAsyncReadyCallback   callback,
-						  gpointer              data);
+                                                  gsize                 count,
+                                                  int                   io_priority,
+                                                  GCancellable         *cancellable,
+                                                  GAsyncReadyCallback   callback,
+                                                  gpointer              data);
 static gssize   g_unix_input_stream_skip_finish  (GInputStream         *stream,
-						  GAsyncResult         *result,
-						  GError              **error);
+                                                  GAsyncResult         *result,
+                                                  GError              **error);
 
 static gboolean g_unix_input_stream_pollable_can_poll      (GPollableInputStream *stream);
 static gboolean g_unix_input_stream_pollable_is_readable   (GPollableInputStream *stream);
 static GSource *g_unix_input_stream_pollable_create_source (GPollableInputStream *stream,
-							    GCancellable         *cancellable);
+                                                            GCancellable         *cancellable);
 
 static void
 g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
@@ -132,10 +132,10 @@ g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
    * Since: 2.20
    */
   g_object_class_install_property (gobject_class,
-				   PROP_FD,
-				   g_param_spec_int ("fd", NULL, NULL,
-						     G_MININT, G_MAXINT, -1,
-						     G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
+                                   PROP_FD,
+                                   g_param_spec_int ("fd", NULL, NULL,
+                                                     G_MININT, G_MAXINT, -1,
+                                                     G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
 
   /**
    * GUnixInputStream:close-fd:
@@ -145,10 +145,10 @@ g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
    * Since: 2.20
    */
   g_object_class_install_property (gobject_class,
-				   PROP_CLOSE_FD,
-				   g_param_spec_boolean ("close-fd", NULL, NULL,
-							 TRUE,
-							 G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
+                                   PROP_CLOSE_FD,
+                                   g_param_spec_boolean ("close-fd", NULL, NULL,
+                                                         TRUE,
+                                                         G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
 }
 
 static void
@@ -167,9 +167,9 @@ g_unix_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface 
 
 static void
 g_unix_input_stream_set_property (GObject         *object,
-				  guint            prop_id,
-				  const GValue    *value,
-				  GParamSpec      *pspec)
+                                  guint            prop_id,
+                                  const GValue    *value,
+                                  GParamSpec      *pspec)
 {
   GUnixInputStream *unix_stream;
   
@@ -192,9 +192,9 @@ g_unix_input_stream_set_property (GObject         *object,
 
 static void
 g_unix_input_stream_get_property (GObject    *object,
-				  guint       prop_id,
-				  GValue     *value,
-				  GParamSpec *pspec)
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GUnixInputStream *unix_stream;
 
@@ -235,16 +235,16 @@ g_unix_input_stream_init (GUnixInputStream *unix_stream)
  **/
 GInputStream *
 g_unix_input_stream_new (gint     fd,
-			 gboolean close_fd)
+                         gboolean close_fd)
 {
   GUnixInputStream *stream;
 
   g_return_val_if_fail (fd != -1, NULL);
 
   stream = g_object_new (G_TYPE_UNIX_INPUT_STREAM,
-			 "fd", fd,
-			 "close-fd", close_fd,
-			 NULL);
+                         "fd", fd,
+                         "close-fd", close_fd,
+                         NULL);
 
   return G_INPUT_STREAM (stream);
 }
@@ -261,7 +261,7 @@ g_unix_input_stream_new (gint     fd,
  */
 void
 g_unix_input_stream_set_close_fd (GUnixInputStream *stream,
-				  gboolean          close_fd)
+                                  gboolean          close_fd)
 {
   g_return_if_fail (G_IS_UNIX_INPUT_STREAM (stream));
 
@@ -312,10 +312,10 @@ g_unix_input_stream_get_fd (GUnixInputStream *stream)
 
 static gssize
 g_unix_input_stream_read (GInputStream  *stream,
-			  void          *buffer,
-			  gsize          count,
-			  GCancellable  *cancellable,
-			  GError       **error)
+                          void          *buffer,
+                          gsize          count,
+                          GCancellable  *cancellable,
+                          GError       **error)
 {
   GUnixInputStream *unix_stream;
   gssize res = -1;
@@ -346,33 +346,33 @@ g_unix_input_stream_read (GInputStream  *stream,
       while (poll_ret == -1 && errsv == EINTR);
 
       if (poll_ret == -1)
-	{
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error reading from file descriptor: %s"),
-		       g_strerror (errsv));
-	  break;
-	}
+        {
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error reading from file descriptor: %s"),
+                       g_strerror (errsv));
+          break;
+        }
 
       if (g_cancellable_set_error_if_cancelled (cancellable, error))
-	break;
+        break;
 
       if (!poll_fds[0].revents)
-	continue;
+        continue;
 
       res = read (unix_stream->priv->fd, buffer, count);
       if (res == -1)
-	{
+        {
           int errsv = errno;
 
-	  if (errsv == EINTR || errsv == EAGAIN)
-	    continue;
+          if (errsv == EINTR || errsv == EAGAIN)
+            continue;
 
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error reading from file descriptor: %s"),
-		       g_strerror (errsv));
-	}
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errsv),
+                       _("Error reading from file descriptor: %s"),
+                       g_strerror (errsv));
+        }
 
       break;
     }
@@ -384,8 +384,8 @@ g_unix_input_stream_read (GInputStream  *stream,
 
 static gboolean
 g_unix_input_stream_close (GInputStream  *stream,
-			   GCancellable  *cancellable,
-			   GError       **error)
+                           GCancellable  *cancellable,
+                           GError       **error)
 {
   GUnixInputStream *unix_stream;
   int res;
@@ -402,9 +402,9 @@ g_unix_input_stream_close (GInputStream  *stream,
       int errsv = errno;
 
       g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error closing file descriptor: %s"),
-		   g_strerror (errsv));
+                   g_io_error_from_errno (errsv),
+                   _("Error closing file descriptor: %s"),
+                   g_strerror (errsv));
     }
   
   return res != -1;
@@ -412,11 +412,11 @@ g_unix_input_stream_close (GInputStream  *stream,
 
 static void
 g_unix_input_stream_skip_async (GInputStream        *stream,
-				gsize                count,
-				int                  io_priority,
-				GCancellable        *cancellable,
-				GAsyncReadyCallback  callback,
-				gpointer             data)
+                                gsize                count,
+                                int                  io_priority,
+                                GCancellable        *cancellable,
+                                GAsyncReadyCallback  callback,
+                                gpointer             data)
 {
   g_warn_if_reached ();
   /* TODO: Not implemented */
@@ -424,8 +424,8 @@ g_unix_input_stream_skip_async (GInputStream        *stream,
 
 static gssize
 g_unix_input_stream_skip_finish  (GInputStream  *stream,
-				  GAsyncResult  *result,
-				  GError       **error)
+                                  GAsyncResult  *result,
+                                  GError       **error)
 {
   g_warn_if_reached ();
   return 0;
@@ -458,7 +458,7 @@ g_unix_input_stream_pollable_is_readable (GPollableInputStream *stream)
 
 static GSource *
 g_unix_input_stream_pollable_create_source (GPollableInputStream *stream,
-					    GCancellable         *cancellable)
+                                            GCancellable         *cancellable)
 {
   GUnixInputStream *unix_stream = G_UNIX_INPUT_STREAM (stream);
   GSource *inner_source, *cancellable_source, *pollable_source;

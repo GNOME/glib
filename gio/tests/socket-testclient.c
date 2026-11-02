@@ -41,9 +41,9 @@ static GOptionEntry cmd_entries[] = {
 
 static gboolean
 accept_certificate (GTlsClientConnection *conn,
-		    GTlsCertificate      *cert,
-		    GTlsCertificateFlags  errors,
-		    gpointer              user_data)
+                    GTlsCertificate      *cert,
+                    GTlsCertificateFlags  errors,
+                    gpointer              user_data)
 {
   g_print ("Certificate would have been rejected ( ");
   if (errors & G_TLS_CERTIFICATE_UNKNOWN_CA)
@@ -65,7 +65,7 @@ accept_certificate (GTlsClientConnection *conn,
 
 static GTlsCertificate *
 lookup_client_certificate (GTlsClientConnection  *conn,
-			   GError               **error)
+                           GError               **error)
 {
   GList *l, *accepted;
   GList *c, *certificates;
@@ -116,14 +116,14 @@ make_socket (GSocketFamily socket_family, GSocketType socket_type, GError **erro
 
 static gboolean
 make_connection (const char       *argument,
-		 GTlsCertificate  *certificate,
-		 GCancellable     *cancellable,
-		 GSocket         **socket,
-		 GSocketAddress  **address,
-		 GIOStream       **connection,
-		 GInputStream    **istream,
-		 GOutputStream   **ostream,
-		 GError          **error)
+                 GTlsCertificate  *certificate,
+                 GCancellable     *cancellable,
+                 GSocket         **socket,
+                 GSocketAddress  **address,
+                 GIOStream       **connection,
+                 GInputStream    **istream,
+                 GOutputStream   **ostream,
+                 GError          **error)
 {
   GSocketType socket_type;
   GSocketAddressEnumerator *enumerator;
@@ -341,91 +341,91 @@ main (int argc,
       gsize to_send;
 
       if (fgets (buffer, sizeof buffer, stdin) == NULL)
-	break;
+        break;
 
       to_send = strlen (buffer);
       while (to_send > 0)
-	{
-	  if (use_udp)
-	    {
-	      ensure_socket_condition (socket, G_IO_OUT, cancellable);
-	      size = g_socket_send_to (socket, address,
-				       buffer, to_send,
-				       cancellable, &error);
-	    }
-	  else
-	    {
-	      ensure_connection_condition (connection, G_IO_OUT, cancellable);
-	      size = g_output_stream_write (ostream,
-					    buffer, to_send,
-					    cancellable, &error);
-	    }
+        {
+          if (use_udp)
+            {
+              ensure_socket_condition (socket, G_IO_OUT, cancellable);
+              size = g_socket_send_to (socket, address,
+                                       buffer, to_send,
+                                       cancellable, &error);
+            }
+          else
+            {
+              ensure_connection_condition (connection, G_IO_OUT, cancellable);
+              size = g_output_stream_write (ostream,
+                                            buffer, to_send,
+                                            cancellable, &error);
+            }
 
-	  if (size < 0)
-	    {
-	      if (g_error_matches (error,
-				   G_IO_ERROR,
-				   G_IO_ERROR_WOULD_BLOCK))
-		{
-		  g_print ("socket send would block, handling\n");
-		  g_error_free (error);
-		  error = NULL;
-		  continue;
-		}
-	      else
-		{
-		  g_printerr ("Error sending to socket: %s\n",
-			      error->message);
-		  return 1;
-		}
-	    }
+          if (size < 0)
+            {
+              if (g_error_matches (error,
+                                   G_IO_ERROR,
+                                   G_IO_ERROR_WOULD_BLOCK))
+                {
+                  g_print ("socket send would block, handling\n");
+                  g_error_free (error);
+                  error = NULL;
+                  continue;
+                }
+              else
+                {
+                  g_printerr ("Error sending to socket: %s\n",
+                              error->message);
+                  return 1;
+                }
+            }
 
-	  g_print ("sent %" G_GSSIZE_FORMAT " bytes of data\n", size);
+          g_print ("sent %" G_GSSIZE_FORMAT " bytes of data\n", size);
 
-	  if (size == 0)
-	    {
-	      g_printerr ("Unexpected short write\n");
-	      return 1;
-	    }
+          if (size == 0)
+            {
+              g_printerr ("Unexpected short write\n");
+              return 1;
+            }
 
-	  to_send -= size;
-	}
+          to_send -= size;
+        }
 
       if (use_udp)
-	{
-	  ensure_socket_condition (socket, G_IO_IN, cancellable);
-	  size = g_socket_receive_from (socket, &src_address,
-					buffer, sizeof buffer,
-					cancellable, &error);
-	}
+        {
+          ensure_socket_condition (socket, G_IO_IN, cancellable);
+          size = g_socket_receive_from (socket, &src_address,
+                                        buffer, sizeof buffer,
+                                        cancellable, &error);
+        }
       else
-	{
-	  ensure_connection_condition (connection, G_IO_IN, cancellable);
-	  size = g_input_stream_read (istream,
-				      buffer, sizeof buffer,
-				      cancellable, &error);
-	}
+        {
+          ensure_connection_condition (connection, G_IO_IN, cancellable);
+          size = g_input_stream_read (istream,
+                                      buffer, sizeof buffer,
+                                      cancellable, &error);
+        }
 
       if (size < 0)
-	{
-	  g_printerr ("Error receiving from socket: %s\n",
-		      error->message);
-	  return 1;
-	}
+        {
+          g_printerr ("Error receiving from socket: %s\n",
+                      error->message);
+          return 1;
+        }
 
       if (size == 0)
-	break;
+        break;
 
       g_print ("received %" G_GSSIZE_FORMAT " bytes of data", size);
       if (use_udp)
-	g_print (" from %s", socket_address_to_string (src_address));
+        g_print (" from %s", socket_address_to_string (src_address));
       g_print ("\n");
 
       if (verbose)
-	g_print ("-------------------------\n"
-		 "%.*s"
-		 "-------------------------\n",
-		 (int)size, buffer);
+        g_print ("-------------------------\n"
+                 "%.*s"
+                 "-------------------------\n",
+                 (int)size, buffer);
 
     }
 
@@ -434,21 +434,21 @@ main (int argc,
   if (connection)
     {
       if (!g_io_stream_close (connection, cancellable, &error))
-	{
-	  g_printerr ("Error closing connection: %s\n",
-		      error->message);
-	  return 1;
-	}
+        {
+          g_printerr ("Error closing connection: %s\n",
+                      error->message);
+          return 1;
+        }
       g_object_unref (connection);
     }
   else
     {
       if (!g_socket_close (socket, &error))
-	{
-	  g_printerr ("Error closing socket: %s\n",
-		      error->message);
-	  return 1;
-	}
+        {
+          g_printerr ("Error closing socket: %s\n",
+                      error->message);
+          return 1;
+        }
     }
 
   g_object_unref (socket);

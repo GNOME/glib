@@ -36,9 +36,9 @@
 #include <io.h> /* for _get_osfhandle */
 #endif
 
-#define TEST_NAME			"Prilis zlutoucky kun"
-#define TEST_DISPLAY_NAME	        "UTF-8 p\xc5\x99\xc3\xadli\xc5\xa1 \xc5\xbelu\xc5\xa5ou\xc4\x8dk\xc3\xbd k\xc5\xaf\xc5\x88"
-#define TEST_SIZE			0xFFFFFFF0
+#define TEST_NAME                       "Prilis zlutoucky kun"
+#define TEST_DISPLAY_NAME               "UTF-8 p\xc5\x99\xc3\xadli\xc5\xa1 \xc5\xbelu\xc5\xa5ou\xc4\x8dk\xc3\xbd k\xc5\xaf\xc5\x88"
+#define TEST_SIZE                       0xFFFFFFF0
 
 static void
 test_assigned_values (GFileInfo *info)
@@ -52,7 +52,7 @@ test_assigned_values (GFileInfo *info)
   g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME));
   g_assert_true (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_SIZE));
   g_assert_false (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_COPY_NAME));
-	
+        
   /*  Retrieve data back and compare */
   
   name = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_STANDARD_NAME);
@@ -69,7 +69,7 @@ test_assigned_values (GFileInfo *info)
   g_assert_cmpint (size, ==, TEST_SIZE);
   g_assert_cmpstr (name, ==, g_file_info_get_name (info));
   g_assert_cmpstr (display_name, ==, g_file_info_get_display_name (info));
-  g_assert_cmpint (size, ==, g_file_info_get_size (info)	);
+  g_assert_cmpint (size, ==, g_file_info_get_size (info)        );
   g_assert_cmpint (type, ==, G_FILE_TYPE_DIRECTORY);
 }
 
@@ -96,7 +96,7 @@ test_g_file_info (void)
   g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, TEST_DISPLAY_NAME);
   g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE, TEST_SIZE);
   g_file_info_set_file_type (info, G_FILE_TYPE_DIRECTORY);
-	
+        
   /*  The attr list should not be empty now */
   attr_list = g_file_info_list_attributes (info, NULL);
   g_assert_nonnull (attr_list);

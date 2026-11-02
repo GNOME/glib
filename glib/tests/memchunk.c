@@ -44,7 +44,7 @@ test_basic (void)
       guint j;
       mem[i] = g_chunk_new (gchar, mem_chunk);
       for (j = 0; j < 50; j++)
-	mem[i][j] = i * j;
+        mem[i][j] = i * j;
     }
   for (i = 0; i < 10000; i++)
     g_mem_chunk_free (mem_chunk, mem[i]);

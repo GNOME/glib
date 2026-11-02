@@ -47,7 +47,7 @@ GFileAttributeValue *_g_file_attribute_value_new             (void);
 void                 _g_file_attribute_value_free            (GFileAttributeValue *attr);
 void                 _g_file_attribute_value_clear           (GFileAttributeValue *attr);
 void                 _g_file_attribute_value_set             (GFileAttributeValue *attr,
-							      const GFileAttributeValue *new_value);
+                                                              const GFileAttributeValue *new_value);
 GFileAttributeValue *_g_file_attribute_value_dup             (const GFileAttributeValue *other);
 gpointer             _g_file_attribute_value_peek_as_pointer (GFileAttributeValue *attr);
 
@@ -64,30 +64,30 @@ GObject *            _g_file_attribute_value_get_object      (const GFileAttribu
 char **              _g_file_attribute_value_get_stringv     (const GFileAttributeValue *attr);
 
 void                 _g_file_attribute_value_set_from_pointer(GFileAttributeValue *attr,
-							      GFileAttributeType   type,
-							      gpointer             value_p,
-							      gboolean             dup);
+                                                              GFileAttributeType   type,
+                                                              gpointer             value_p,
+                                                              gboolean             dup);
 void                 _g_file_attribute_value_set_string      (GFileAttributeValue *attr,
-							      const char          *string);
+                                                              const char          *string);
 void                 _g_file_attribute_value_set_byte_string (GFileAttributeValue *attr,
-							      const char          *string);
+                                                              const char          *string);
 void                 _g_file_attribute_value_set_boolean     (GFileAttributeValue *attr,
-							      gboolean             value);
+                                                              gboolean             value);
 void                 _g_file_attribute_value_set_uint32      (GFileAttributeValue *attr,
-							      guint32              value);
+                                                              guint32              value);
 void                 _g_file_attribute_value_set_int32       (GFileAttributeValue *attr,
-							      gint32               value);
+                                                              gint32               value);
 void                 _g_file_attribute_value_set_uint64      (GFileAttributeValue *attr,
-							      guint64              value);
+                                                              guint64              value);
 void                 _g_file_attribute_value_set_int64       (GFileAttributeValue *attr,
-							      gint64               value);
+                                                              gint64               value);
 void                 _g_file_attribute_value_set_object      (GFileAttributeValue *attr,
-							      GObject             *obj);
+                                                              GObject             *obj);
 void                 _g_file_attribute_value_set_stringv     (GFileAttributeValue *attr,
-							      char               **value);
+                                                              char               **value);
 
 
 GFileAttributeValue *_g_file_info_get_attribute_value (GFileInfo  *info,
-						       const char *attribute);
+                                                       const char *attribute);
 
 #endif /* __G_FILE_ATTRIBUTE_PRIV_H__ */

@@ -67,8 +67,8 @@ check_stop (gpointer data)
 
 static void
 write_or_die (const gchar *filename,
-	      const gchar *contents,
-	      gssize       length)
+              const gchar *contents,
+              gssize       length)
 {
   GError *error = NULL;
   gboolean result;
@@ -80,7 +80,7 @@ write_or_die (const gchar *filename,
 
 static GMappedFile *
 map_or_die (const gchar *filename,
-	    gboolean     writable)
+            gboolean     writable)
 {
   GError *error = NULL;
   GMappedFile *map;

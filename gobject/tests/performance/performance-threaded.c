@@ -325,7 +325,7 @@ find_test (const char *name)
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       if (strcmp (tests[i].name, name) == 0)
-	return &tests[i];
+        return &tests[i];
     }
   return NULL;
 }
@@ -360,16 +360,16 @@ main (int   argc,
     {
       int k;
       for (k = 1; k < argc; k++)
-	{
-	  test = find_test (argv[k]);
-	  if (test)
-	    run_test (test);
-	}
+        {
+          test = find_test (argv[k]);
+          if (test)
+            run_test (test);
+        }
     }
   else
     {
       for (i = 0; i < G_N_ELEMENTS (tests); i++)
-	run_test (&tests[i]);
+        run_test (&tests[i]);
     }
 
   g_option_context_free (context);

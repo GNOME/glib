@@ -116,25 +116,25 @@ test_srv_target_ordering (void)
       sorted = g_srv_target_list_sort (g_list_copy (targets));
 
       for (t = sorted, p = result; t; t = t->next)
-	*(p++) = *g_srv_target_get_hostname (t->data);
+        *(p++) = *g_srv_target_get_hostname (t->data);
       *p = '\0';
       g_list_free (sorted);
 
       for (o = 0; o < NUM_ORDERINGS; o++)
-	{
-	  if (!strcmp (result, ordering[o].order))
-	    {
-	      ordering[o].seen++;
-	      break;
-	    }
-	}
+        {
+          if (!strcmp (result, ordering[o].order))
+            {
+              ordering[o].seen++;
+              break;
+            }
+        }
 
       /* Assert that @result matched one of the valid orderings */
       if (o == NUM_ORDERINGS)
-	{
-	  char *msg = g_strdup_printf ("result '%s' is invalid", result);
-	  g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, msg);
-	}
+        {
+          char *msg = g_strdup_printf ("result '%s' is invalid", result);
+          g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, msg);
+        }
     }
 
   /* Assert that each ordering appeared roughly the expected

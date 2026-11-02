@@ -45,7 +45,7 @@ const gchar *         g_get_home_dir         (void);
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_tmp_dir          (void);
 GLIB_AVAILABLE_IN_ALL
-const gchar *         g_get_host_name	     (void);
+const gchar *         g_get_host_name        (void);
 GLIB_AVAILABLE_IN_2_92
 const char *          g_get_process_executable_dir (void);
 GLIB_AVAILABLE_IN_ALL
@@ -277,27 +277,27 @@ typedef struct _GDebugKey GDebugKey;
 struct _GDebugKey
 {
   const gchar *key;
-  guint	       value;
+  guint        value;
 };
 
 /* Miscellaneous utility functions
  */
 GLIB_AVAILABLE_IN_ALL
 guint                 g_parse_debug_string (const gchar     *string,
-					    const GDebugKey *keys,
-					    guint            nkeys);
+                                            const GDebugKey *keys,
+                                            guint            nkeys);
 
 GLIB_AVAILABLE_IN_ALL
 gint                  g_snprintf           (gchar       *string,
-					    gulong       n,
-					    gchar const *format,
-					    ...) G_GNUC_PRINTF (3, 4);
+                                            gulong       n,
+                                            gchar const *format,
+                                            ...) G_GNUC_PRINTF (3, 4);
 GLIB_AVAILABLE_IN_ALL
 gint                  g_vsnprintf          (gchar       *string,
-					    gulong       n,
-					    gchar const *format,
-					    va_list      args)
-					    G_GNUC_PRINTF(3, 0);
+                                            gulong       n,
+                                            gchar const *format,
+                                            va_list      args)
+                                            G_GNUC_PRINTF(3, 0);
 
 GLIB_AVAILABLE_IN_ALL
 void                  g_nullify_pointer    (gpointer    *nullify_location);
@@ -355,7 +355,7 @@ gchar *g_format_size        (guint64          size);
 GLIB_DEPRECATED_IN_2_30_FOR(g_format_size)
 gchar *g_format_size_for_display (goffset size);
 
-#define g_ATEXIT(proc)	(atexit (proc)) GLIB_DEPRECATED_MACRO_IN_2_32
+#define g_ATEXIT(proc)  (atexit (proc)) GLIB_DEPRECATED_MACRO_IN_2_32
 #define g_memmove(dest,src,len) \
   G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END  GLIB_DEPRECATED_MACRO_IN_2_40_FOR(memmove)
 
@@ -371,7 +371,7 @@ typedef void (*GVoidFunc) (void) GLIB_DEPRECATED_TYPE_IN_2_32;
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 GLIB_DEPRECATED
-void	g_atexit		(GVoidFunc    func);
+void    g_atexit                (GVoidFunc    func);
 G_GNUC_END_IGNORE_DEPRECATIONS
 
 #ifdef G_OS_WIN32
@@ -495,27 +495,27 @@ G_NORETURN GLIB_AVAILABLE_IN_2_50 void g_abort (void) G_ANALYZER_NORETURN;
 #ifndef G_PLATFORM_WIN32
 # define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name) GLIB_DEPRECATED_MACRO_IN_2_26
 #else
-# define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name)			\
-static char *dll_name;							\
-									\
-BOOL WINAPI								\
-DllMain (HINSTANCE hinstDLL,						\
-	 DWORD     fdwReason,						\
-	 LPVOID    lpvReserved)						\
-{									\
-  wchar_t wcbfr[1000];							\
-  char *tem;								\
-  switch (fdwReason)							\
-    {									\
-    case DLL_PROCESS_ATTACH:						\
+# define G_WIN32_DLLMAIN_FOR_DLL_NAME(static, dll_name)                 \
+static char *dll_name;                                                  \
+                                                                        \
+BOOL WINAPI                                                             \
+DllMain (HINSTANCE hinstDLL,                                            \
+         DWORD     fdwReason,                                           \
+         LPVOID    lpvReserved)                                         \
+{                                                                       \
+  wchar_t wcbfr[1000];                                                  \
+  char *tem;                                                            \
+  switch (fdwReason)                                                    \
+    {                                                                   \
+    case DLL_PROCESS_ATTACH:                                            \
       GetModuleFileNameW ((HMODULE) hinstDLL, wcbfr, G_N_ELEMENTS (wcbfr)); \
-      tem = g_utf16_to_utf8 (wcbfr, -1, NULL, NULL, NULL);		\
-      dll_name = g_path_get_basename (tem);				\
-      g_free (tem);							\
-      break;								\
-    }									\
-									\
-  return TRUE;								\
+      tem = g_utf16_to_utf8 (wcbfr, -1, NULL, NULL, NULL);              \
+      dll_name = g_path_get_basename (tem);                             \
+      g_free (tem);                                                     \
+      break;                                                            \
+    }                                                                   \
+                                                                        \
+  return TRUE;                                                          \
 } GLIB_DEPRECATED_MACRO_IN_2_26
 #endif /* G_PLATFORM_WIN32 */
 

@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_TLS_BACKEND               (g_tls_backend_get_type ())
 #define G_TLS_BACKEND(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_TLS_BACKEND, GTlsBackend))
-#define G_IS_TLS_BACKEND(obj)	         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_TLS_BACKEND))
+#define G_IS_TLS_BACKEND(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_TLS_BACKEND))
 #define G_TLS_BACKEND_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), G_TYPE_TLS_BACKEND, GTlsBackendInterface))
 
 typedef struct _GTlsBackend          GTlsBackend;

@@ -34,7 +34,7 @@
 int array[10000];
 gboolean failed = FALSE;
 
-#define	TEST(m,cond)	G_STMT_START { failed = !(cond); \
+#define TEST(m,cond)    G_STMT_START { failed = !(cond); \
 if (failed) \
   { if (!m) \
       g_print ("\n(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
@@ -45,8 +45,8 @@ else \
   g_print ("."); fflush (stdout); \
 } G_STMT_END
 
-#define	C2P(c)		((gpointer) ((long) (c)))
-#define	P2C(p)		((gchar) ((long) (p)))
+#define C2P(c)          ((gpointer) ((long) (c)))
+#define P2C(p)          ((gchar) ((long) (p)))
 
 #define GLIB_TEST_STRING "el dorado "
 #define GLIB_TEST_STRING_5 "el do"

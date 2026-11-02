@@ -34,8 +34,8 @@ typedef struct {
 
 static gboolean
 pollable_source_dispatch (GSource     *source,
-			  GSourceFunc  callback,
-			  gpointer     user_data)
+                          GSourceFunc  callback,
+                          gpointer     user_data)
 {
   GPollableSourceFunc func = (GPollableSourceFunc)callback;
   GPollableSource *pollable_source = (GPollableSource *)source;
@@ -53,7 +53,7 @@ pollable_source_finalize (GSource *source)
 
 static gboolean
 pollable_source_closure_callback (GObject  *stream,
-				  gpointer  data)
+                                  gpointer  data)
 {
   GClosure *closure = data;
 
@@ -106,7 +106,7 @@ g_pollable_source_new (GObject *pollable_stream)
   GPollableSource *pollable_source;
 
   g_return_val_if_fail (G_IS_POLLABLE_INPUT_STREAM (pollable_stream) ||
-			G_IS_POLLABLE_OUTPUT_STREAM (pollable_stream), NULL);
+                        G_IS_POLLABLE_OUTPUT_STREAM (pollable_stream), NULL);
 
   source = g_source_new (&pollable_source_funcs, sizeof (GPollableSource));
   g_source_set_static_name (source, "GPollableSource");
@@ -134,13 +134,13 @@ g_pollable_source_new (GObject *pollable_stream)
  */
 GSource *
 g_pollable_source_new_full (gpointer      pollable_stream,
-			    GSource      *child_source,
-			    GCancellable *cancellable)
+                            GSource      *child_source,
+                            GCancellable *cancellable)
 {
   GSource *source;
 
   g_return_val_if_fail (G_IS_POLLABLE_INPUT_STREAM (pollable_stream) ||
-			G_IS_POLLABLE_OUTPUT_STREAM (pollable_stream), NULL);
+                        G_IS_POLLABLE_OUTPUT_STREAM (pollable_stream), NULL);
 
   source = g_pollable_source_new (pollable_stream);
   if (child_source)
@@ -186,23 +186,23 @@ g_pollable_source_new_full (gpointer      pollable_stream,
  */
 gssize
 g_pollable_stream_read (GInputStream   *stream,
-			void           *buffer,
-			gsize           count,
-			gboolean        blocking,
-			GCancellable   *cancellable,
-			GError        **error)
+                        void           *buffer,
+                        gsize           count,
+                        gboolean        blocking,
+                        GCancellable   *cancellable,
+                        GError        **error)
 {
   if (blocking)
     {
       return g_input_stream_read (stream,
-				  buffer, count,
-				  cancellable, error);
+                                  buffer, count,
+                                  cancellable, error);
     }
   else
     {
       return g_pollable_input_stream_read_nonblocking (G_POLLABLE_INPUT_STREAM (stream),
-						       buffer, count,
-						       cancellable, error);
+                                                       buffer, count,
+                                                       cancellable, error);
     }
 }
 
@@ -233,23 +233,23 @@ g_pollable_stream_read (GInputStream   *stream,
  */
 gssize
 g_pollable_stream_write (GOutputStream   *stream,
-			 const void      *buffer,
-			 gsize            count,
-			 gboolean         blocking,
-			 GCancellable    *cancellable,
-			 GError         **error)
+                         const void      *buffer,
+                         gsize            count,
+                         gboolean         blocking,
+                         GCancellable    *cancellable,
+                         GError         **error)
 {
   if (blocking)
     {
       return g_output_stream_write (stream,
-				    buffer, count,
-				    cancellable, error);
+                                    buffer, count,
+                                    cancellable, error);
     }
   else
     {
       return g_pollable_output_stream_write_nonblocking (G_POLLABLE_OUTPUT_STREAM (stream),
-							 buffer, count,
-							 cancellable, error);
+                                                         buffer, count,
+                                                         cancellable, error);
     }
 }
 
@@ -290,12 +290,12 @@ g_pollable_stream_write (GOutputStream   *stream,
  */
 gboolean
 g_pollable_stream_write_all (GOutputStream  *stream,
-			     const void     *buffer,
-			     gsize           count,
-			     gboolean        blocking,
-			     gsize          *bytes_written,
-			     GCancellable   *cancellable,
-			     GError        **error)
+                             const void     *buffer,
+                             gsize           count,
+                             gboolean        blocking,
+                             gsize          *bytes_written,
+                             GCancellable   *cancellable,
+                             GError        **error)
 {
   gsize _bytes_written;
   gssize res;
@@ -304,19 +304,19 @@ g_pollable_stream_write_all (GOutputStream  *stream,
   while (_bytes_written < count)
     {
       res = g_pollable_stream_write (stream,
-				     (char *)buffer + _bytes_written,
-				     count - _bytes_written,
-				     blocking,
-				     cancellable, error);
+                                     (char *)buffer + _bytes_written,
+                                     count - _bytes_written,
+                                     blocking,
+                                     cancellable, error);
       if (res == -1)
-	{
-	  if (bytes_written)
-	    *bytes_written = _bytes_written;
-	  return FALSE;
-	}
+        {
+          if (bytes_written)
+            *bytes_written = _bytes_written;
+          return FALSE;
+        }
 
       if (res == 0)
-	g_warning ("Write returned zero without error");
+        g_warning ("Write returned zero without error");
 
       _bytes_written += res;
     }

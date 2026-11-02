@@ -197,12 +197,12 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
    * Emitted when a drive is connected to the system.
    **/
   signals[DRIVE_CONNECTED] = g_signal_new (I_("drive-connected"),
-					   G_TYPE_VOLUME_MONITOR,
-					   G_SIGNAL_RUN_LAST,
-					   G_STRUCT_OFFSET (GVolumeMonitorClass, drive_connected),
-					   NULL, NULL,
-					   NULL,
-					   G_TYPE_NONE, 1, G_TYPE_DRIVE);
+                                           G_TYPE_VOLUME_MONITOR,
+                                           G_SIGNAL_RUN_LAST,
+                                           G_STRUCT_OFFSET (GVolumeMonitorClass, drive_connected),
+                                           NULL, NULL,
+                                           NULL,
+                                           G_TYPE_NONE, 1, G_TYPE_DRIVE);
   
   /**
    * GVolumeMonitor::drive-disconnected:
@@ -212,12 +212,12 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
    * Emitted when a drive is disconnected from the system.
    **/  
   signals[DRIVE_DISCONNECTED] = g_signal_new (I_("drive-disconnected"),
-					      G_TYPE_VOLUME_MONITOR,
-					      G_SIGNAL_RUN_LAST,
-					      G_STRUCT_OFFSET (GVolumeMonitorClass, drive_disconnected),
-					      NULL, NULL,
-					      NULL,
-					      G_TYPE_NONE, 1, G_TYPE_DRIVE);
+                                              G_TYPE_VOLUME_MONITOR,
+                                              G_SIGNAL_RUN_LAST,
+                                              G_STRUCT_OFFSET (GVolumeMonitorClass, drive_disconnected),
+                                              NULL, NULL,
+                                              NULL,
+                                              G_TYPE_NONE, 1, G_TYPE_DRIVE);
 
   /**
    * GVolumeMonitor::drive-changed:

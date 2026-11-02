@@ -784,8 +784,8 @@ test_message_serialize_complex (void)
 static void
 replace (char       *blob,
          gsize       len,
-	 const char *before,
-	 const char *after)
+         const char *before,
+         const char *after)
 {
   gsize i;
   gsize slen = strlen (before) + 1;

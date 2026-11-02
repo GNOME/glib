@@ -60,12 +60,12 @@ GType           g_proxy_address_get_type    (void);
 
 GIO_AVAILABLE_IN_ALL
 GSocketAddress *g_proxy_address_new         (GInetAddress *inetaddr,
-					     guint16       port,
-					     const gchar  *protocol,
-					     const gchar  *dest_hostname,
-		                             guint16       dest_port,
-					     const gchar  *username,
-					     const gchar  *password);
+                                             guint16       port,
+                                             const gchar  *protocol,
+                                             const gchar  *dest_hostname,
+                                             guint16       dest_port,
+                                             const gchar  *username,
+                                             const gchar  *password);
 
 GIO_AVAILABLE_IN_ALL
 const gchar    *g_proxy_address_get_protocol                (GProxyAddress *proxy);

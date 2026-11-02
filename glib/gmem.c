@@ -100,7 +100,7 @@ g_malloc (gsize n_bytes)
       mem = malloc (n_bytes);
       TRACE (GLIB_MEM_ALLOC ((void *) mem, n_bytes, 0, 0));
       if (mem)
-	return mem;
+        return mem;
 
       g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_bytes);
@@ -133,7 +133,7 @@ g_malloc0 (gsize n_bytes)
       mem = calloc (1, n_bytes);
       TRACE (GLIB_MEM_ALLOC ((void *) mem, n_bytes, 1, 0));
       if (mem)
-	return mem;
+        return mem;
 
       g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_bytes);
@@ -162,7 +162,7 @@ g_malloc0 (gsize n_bytes)
  */
 gpointer
 g_realloc (gpointer mem,
-	   gsize    n_bytes)
+           gsize    n_bytes)
 {
   gpointer newmem;
 
@@ -171,7 +171,7 @@ g_realloc (gpointer mem,
       newmem = realloc (mem, n_bytes);
       TRACE (GLIB_MEM_REALLOC ((void *) newmem, (void *) mem, n_bytes, 0));
       if (newmem)
-	return newmem;
+        return newmem;
 
       g_error ("%s: failed to allocate %"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_bytes);
@@ -363,7 +363,7 @@ g_try_malloc0 (gsize n_bytes)
  */
 gpointer
 g_try_realloc (gpointer mem,
-	       gsize    n_bytes)
+               gsize    n_bytes)
 {
   gpointer newmem;
 
@@ -397,7 +397,7 @@ g_try_realloc (gpointer mem,
  */
 gpointer
 g_malloc_n (gsize n_blocks,
-	    gsize n_block_bytes)
+            gsize n_block_bytes)
 {
   size_t len;
 
@@ -426,7 +426,7 @@ g_malloc_n (gsize n_blocks,
  */
 gpointer
 g_malloc0_n (gsize n_blocks,
-	     gsize n_block_bytes)
+             gsize n_block_bytes)
 {
   size_t len;
 
@@ -456,8 +456,8 @@ g_malloc0_n (gsize n_blocks,
  */
 gpointer
 g_realloc_n (gpointer mem,
-	     gsize    n_blocks,
-	     gsize    n_block_bytes)
+             gsize    n_blocks,
+             gsize    n_block_bytes)
 {
   size_t len;
 
@@ -483,7 +483,7 @@ g_realloc_n (gpointer mem,
  */
 gpointer
 g_try_malloc_n (gsize n_blocks,
-		gsize n_block_bytes)
+                gsize n_block_bytes)
 {
   size_t len;
 
@@ -506,7 +506,7 @@ g_try_malloc_n (gsize n_blocks,
  */
 gpointer
 g_try_malloc0_n (gsize n_blocks,
-		 gsize n_block_bytes)
+                 gsize n_block_bytes)
 {
   size_t len;
 
@@ -530,8 +530,8 @@ g_try_malloc0_n (gsize n_blocks,
  */
 gpointer
 g_try_realloc_n (gpointer mem,
-		 gsize    n_blocks,
-		 gsize    n_block_bytes)
+                 gsize    n_blocks,
+                 gsize    n_block_bytes)
 {
   size_t len;
 

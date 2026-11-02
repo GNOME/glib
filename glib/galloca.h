@@ -96,7 +96,7 @@ G_END_DECLS
  * 
  * Returns: space for @size bytes, allocated on the stack
  */
-#define g_alloca(size)		 alloca (size)
+#define g_alloca(size)           alloca (size)
 
 /**
  * g_alloca0:
@@ -128,7 +128,7 @@ G_END_DECLS
  *
  * Returns: Pointer to stack space for @n_structs chunks of type @struct_type
  */
-#define g_newa(struct_type, n_structs)	((struct_type*) g_alloca (sizeof (struct_type) * (gsize) (n_structs)))
+#define g_newa(struct_type, n_structs)  ((struct_type*) g_alloca (sizeof (struct_type) * (gsize) (n_structs)))
 
 /**
  * g_newa0:

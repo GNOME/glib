@@ -80,16 +80,16 @@ struct _GSocketConnectionPrivate
 };
 
 static gboolean g_socket_connection_close         (GIOStream            *stream,
-						   GCancellable         *cancellable,
-						   GError              **error);
+                                                   GCancellable         *cancellable,
+                                                   GError              **error);
 static void     g_socket_connection_close_async   (GIOStream            *stream,
-						   int                   io_priority,
-						   GCancellable         *cancellable,
-						   GAsyncReadyCallback   callback,
-						   gpointer              user_data);
+                                                   int                   io_priority,
+                                                   GCancellable         *cancellable,
+                                                   GAsyncReadyCallback   callback,
+                                                   gpointer              user_data);
 static gboolean g_socket_connection_close_finish  (GIOStream            *stream,
-						   GAsyncResult         *result,
-						   GError              **error);
+                                                   GAsyncResult         *result,
+                                                   GError              **error);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GSocketConnection, g_socket_connection, G_TYPE_IO_STREAM)
 
@@ -149,20 +149,20 @@ g_socket_connection_is_connected (GSocketConnection  *connection)
  */
 gboolean
 g_socket_connection_connect (GSocketConnection  *connection,
-			     GSocketAddress     *address,
-			     GCancellable       *cancellable,
-			     GError            **error)
+                             GSocketAddress     *address,
+                             GCancellable       *cancellable,
+                             GError            **error)
 {
   g_return_val_if_fail (G_IS_SOCKET_CONNECTION (connection), FALSE);
   g_return_val_if_fail (G_IS_SOCKET_ADDRESS (address), FALSE);
 
   return g_socket_connect (connection->priv->socket, address,
-			   cancellable, error);
+                           cancellable, error);
 }
 
 static gboolean g_socket_connection_connect_callback (GSocket      *socket,
-						      GIOCondition  condition,
-						      gpointer      user_data);
+                                                      GIOCondition  condition,
+                                                      gpointer      user_data);
 
 /**
  * g_socket_connection_connect_async:
@@ -187,10 +187,10 @@ static gboolean g_socket_connection_connect_callback (GSocket      *socket,
  */
 void
 g_socket_connection_connect_async (GSocketConnection   *connection,
-				   GSocketAddress      *address,
-				   GCancellable        *cancellable,
-				   GAsyncReadyCallback  callback,
-				   gpointer             user_data)
+                                   GSocketAddress      *address,
+                                   GCancellable        *cancellable,
+                                   GAsyncReadyCallback  callback,
+                                   gpointer             user_data)
 {
   GTask *task;
   GError *tmp_error = NULL;
@@ -204,7 +204,7 @@ g_socket_connection_connect_async (GSocketConnection   *connection,
   g_socket_set_blocking (connection->priv->socket, FALSE);
 
   if (g_socket_connect (connection->priv->socket, address,
-			cancellable, &tmp_error))
+                        cancellable, &tmp_error))
     {
       g_task_return_boolean (task, TRUE);
       g_object_unref (task);
@@ -215,9 +215,9 @@ g_socket_connection_connect_async (GSocketConnection   *connection,
 
       g_error_free (tmp_error);
       source = g_socket_create_source (connection->priv->socket,
-				       G_IO_OUT, cancellable);
+                                       G_IO_OUT, cancellable);
       g_task_attach_source (task, source,
-			    (GSourceFunc) g_socket_connection_connect_callback);
+                            (GSourceFunc) g_socket_connection_connect_callback);
       g_source_unref (source);
     }
   else
@@ -229,8 +229,8 @@ g_socket_connection_connect_async (GSocketConnection   *connection,
 
 static gboolean
 g_socket_connection_connect_callback (GSocket      *socket,
-				      GIOCondition  condition,
-				      gpointer      user_data)
+                                      GIOCondition  condition,
+                                      gpointer      user_data)
 {
   GTask *task = user_data;
   GSocketConnection *connection = g_task_get_source_object (task);
@@ -259,8 +259,8 @@ g_socket_connection_connect_callback (GSocket      *socket,
  */
 gboolean
 g_socket_connection_connect_finish (GSocketConnection  *connection,
-				    GAsyncResult       *result,
-				    GError            **error)
+                                    GAsyncResult       *result,
+                                    GError            **error)
 {
   g_return_val_if_fail (G_IS_SOCKET_CONNECTION (connection), FALSE);
   g_return_val_if_fail (g_task_is_valid (result, connection), FALSE);
@@ -302,7 +302,7 @@ g_socket_connection_get_socket (GSocketConnection *connection)
  */
 GSocketAddress *
 g_socket_connection_get_local_address (GSocketConnection  *connection,
-				       GError            **error)
+                                       GError            **error)
 {
   return g_socket_get_local_address (connection->priv->socket, error);
 }
@@ -328,7 +328,7 @@ g_socket_connection_get_local_address (GSocketConnection  *connection,
  */
 GSocketAddress *
 g_socket_connection_get_remote_address (GSocketConnection  *connection,
-					GError            **error)
+                                        GError            **error)
 {
   if (!g_socket_is_connected (connection->priv->socket))
     {
@@ -481,17 +481,17 @@ g_socket_connection_init (GSocketConnection *connection)
 
 static gboolean
 g_socket_connection_close (GIOStream     *stream,
-			   GCancellable  *cancellable,
-			   GError       **error)
+                           GCancellable  *cancellable,
+                           GError       **error)
 {
   GSocketConnection *connection = G_SOCKET_CONNECTION (stream);
 
   if (connection->priv->output_stream)
     g_output_stream_close (connection->priv->output_stream,
-			   cancellable, NULL);
+                           cancellable, NULL);
   if (connection->priv->input_stream)
     g_input_stream_close (connection->priv->input_stream,
-			  cancellable, NULL);
+                          cancellable, NULL);
 
   /* Don't close the underlying socket if this is being called
    * as part of dispose(); when destroying the GSocketConnection,
@@ -508,10 +508,10 @@ g_socket_connection_close (GIOStream     *stream,
 
 static void
 g_socket_connection_close_async (GIOStream           *stream,
-				 int                  io_priority,
-				 GCancellable        *cancellable,
-				 GAsyncReadyCallback  callback,
-				 gpointer             user_data)
+                                 int                  io_priority,
+                                 GCancellable        *cancellable,
+                                 GAsyncReadyCallback  callback,
+                                 gpointer             user_data)
 {
   GTask *task;
   GIOStreamClass *class;
@@ -535,8 +535,8 @@ g_socket_connection_close_async (GIOStream           *stream,
 
 static gboolean
 g_socket_connection_close_finish (GIOStream     *stream,
-				  GAsyncResult  *result,
-				  GError       **error)
+                                  GAsyncResult  *result,
+                                  GError       **error)
 {
   return g_task_propagate_boolean (G_TASK (result), error);
 }
@@ -564,7 +564,7 @@ connection_factory_hash (gconstpointer key)
 
 static gboolean
 connection_factory_equal (gconstpointer _a,
-			  gconstpointer _b)
+                          gconstpointer _b)
 {
   const ConnectionFactory *a = _a;
   const ConnectionFactory *b = _b;
@@ -600,9 +600,9 @@ G_LOCK_DEFINE_STATIC(connection_factories);
  */
 void
 g_socket_connection_factory_register_type (GType         g_type,
-					   GSocketFamily family,
-					   GSocketType   type,
-					   gint          protocol)
+                                           GSocketFamily family,
+                                           GSocketType   type,
+                                           gint          protocol)
 {
   ConnectionFactory *factory;
 
@@ -612,9 +612,9 @@ g_socket_connection_factory_register_type (GType         g_type,
 
   if (connection_factories == NULL)
     connection_factories = g_hash_table_new_full (connection_factory_hash,
-						  connection_factory_equal,
-						  (GDestroyNotify)g_free,
-						  NULL);
+                                                  connection_factory_equal,
+                                                  (GDestroyNotify)g_free,
+                                                  NULL);
 
   factory = g_new0 (ConnectionFactory, 1);
   factory->socket_family = family;
@@ -623,7 +623,7 @@ g_socket_connection_factory_register_type (GType         g_type,
   factory->implementation = g_type;
 
   g_hash_table_insert (connection_factories,
-		       factory, factory);
+                       factory, factory);
 
   G_UNLOCK (connection_factories);
 }
@@ -652,8 +652,8 @@ init_builtin_types (void)
  */
 GType
 g_socket_connection_factory_lookup_type (GSocketFamily family,
-					 GSocketType   type,
-					 gint          protocol_id)
+                                         GSocketType   type,
+                                         gint          protocol_id)
 {
   ConnectionFactory *factory, key;
   GType g_type;
@@ -672,7 +672,7 @@ g_socket_connection_factory_lookup_type (GSocketFamily family,
 
       factory = g_hash_table_lookup (connection_factories, &key);
       if (factory)
-	g_type = factory->implementation;
+        g_type = factory->implementation;
     }
 
   G_UNLOCK (connection_factories);
@@ -697,7 +697,7 @@ g_socket_connection_factory_create_connection (GSocket *socket)
   GType type;
 
   type = g_socket_connection_factory_lookup_type (g_socket_get_family (socket),
-						  g_socket_get_socket_type (socket),
-						  g_socket_get_protocol (socket));
+                                                  g_socket_get_socket_type (socket),
+                                                  g_socket_get_protocol (socket));
   return g_object_new (type, "socket", socket, NULL);
 }

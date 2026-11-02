@@ -312,7 +312,7 @@ random_menu_change (RandomMenu *menu,
       if (menu->order > 0 && g_rand_boolean (rand))
         {
           RandomMenu *child;
-	  const gchar *subtype;
+          const gchar *subtype;
 
           child = random_menu_new (rand, menu->order - 1);
 

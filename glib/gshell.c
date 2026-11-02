@@ -533,7 +533,7 @@ tokenize_command_line (const gchar *command_line,
 
             case '#':
               if (p == command_line)
-	        { /* '#' was the first char */
+                { /* '#' was the first char */
                   current_quote = *p;
                   break;
                 }
@@ -547,7 +547,7 @@ tokenize_command_line (const gchar *command_line,
                   default:
                     ensure_token (&current_token);
                     g_string_append_c (current_token, *p);
-		    break;
+                    break;
                 }
               break;
 
@@ -565,9 +565,9 @@ tokenize_command_line (const gchar *command_line,
        * to detect escaped doublequotes.
        */
       if (*p != '\\')
-	quoted = FALSE;
+        quoted = FALSE;
       else
-	quoted = !quoted;
+        quoted = !quoted;
 
       ++p;
     }

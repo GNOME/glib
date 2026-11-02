@@ -33,17 +33,17 @@ static FILE *f_out = NULL;
 static GType root = 0;
 static gboolean recursion = TRUE;
 
-#define	O_SPACE	" "
-#define	O_ESPACE ""
-#define	O_BRANCH "├"
-#define	O_VLINE "│"
-#define	O_LLEAF	"└"
-#define	O_KEY_FILL "_"
+#define O_SPACE " "
+#define O_ESPACE ""
+#define O_BRANCH "├"
+#define O_VLINE "│"
+#define O_LLEAF "└"
+#define O_KEY_FILL "_"
 
 static void
 show_nodes (GType        type,
-	    GType        sibling,
-	    const gchar *indent)
+            GType        sibling,
+            const gchar *indent)
 {
   GType   *children;
   size_t i;
@@ -54,10 +54,10 @@ show_nodes (GType        type,
   children = g_type_children (type, NULL);
   
   g_fprintf (f_out, "%s%s%s%s",
-	   indent,
-	   sibling ? O_BRANCH : (type != root ? O_LLEAF : O_SPACE),
-	   O_ESPACE,
-	   g_type_name (type));
+           indent,
+           sibling ? O_BRANCH : (type != root ? O_LLEAF : O_SPACE),
+           O_ESPACE,
+           g_type_name (type));
   
   for (i = strlen (g_type_name (type)); i <= strlen (indent_inc); i++)
     fputs (O_KEY_FILL, f_out);
@@ -70,12 +70,12 @@ show_nodes (GType        type,
       GType   *child;
       
       if (sibling)
-	new_indent = g_strconcat (indent, O_VLINE, indent_inc, NULL);
+        new_indent = g_strconcat (indent, O_VLINE, indent_inc, NULL);
       else
-	new_indent = g_strconcat (indent, O_SPACE, indent_inc, NULL);
+        new_indent = g_strconcat (indent, O_SPACE, indent_inc, NULL);
       
       for (child = children; *child; child++)
-	show_nodes (child[0], child[1], new_indent);
+        show_nodes (child[0], child[1], new_indent);
       
       g_free (new_indent);
     }
@@ -120,50 +120,50 @@ main (gint   argc,
   for (i = 1; i < argc; i++)
     {
       if (strcmp ("-i", argv[i]) == 0)
-	{
-	  i++;
-	  if (i < argc)
-	    {
-	      char *p;
-	      guint n;
-	      
-	      p = argv[i];
-	      while (*p)
-		p++;
-	      n = p - argv[i];
-	      indent_inc = g_new (gchar, n * strlen (O_SPACE) + 1);
-	      *indent_inc = 0;
-	      while (n)
-		{
-		  n--;
-		  strcpy (indent_inc, O_SPACE);
-		}
-	    }
-	}
+        {
+          i++;
+          if (i < argc)
+            {
+              char *p;
+              guint n;
+              
+              p = argv[i];
+              while (*p)
+                p++;
+              n = p - argv[i];
+              indent_inc = g_new (gchar, n * strlen (O_SPACE) + 1);
+              *indent_inc = 0;
+              while (n)
+                {
+                  n--;
+                  strcpy (indent_inc, O_SPACE);
+                }
+            }
+        }
       else if (strcmp ("-b", argv[i]) == 0)
-	{
-	  i++;
-	  if (i < argc)
-	    iindent = argv[i];
-	}
+        {
+          i++;
+          if (i < argc)
+            iindent = argv[i];
+        }
       else if (strcmp ("-r", argv[i]) == 0)
-	{
-	  i++;
-	  if (i < argc)
-	    root = g_type_from_name (argv[i]);
-	}
+        {
+          i++;
+          if (i < argc)
+            root = g_type_from_name (argv[i]);
+        }
       else if (strcmp ("-n", argv[i]) == 0)
-	{
-	  recursion = FALSE;
-	}
+        {
+          recursion = FALSE;
+        }
       else if (strcmp ("froots", argv[i]) == 0)
-	{
-	  gen_froots = 1;
-	}
+        {
+          gen_froots = 1;
+        }
       else if (strcmp ("tree", argv[i]) == 0)
-	{
-	  gen_tree = 1;
-	}
+        {
+          gen_tree = 1;
+        }
       else if (strcmp ("--version", argv[i]) == 0)
         {
           g_print (PACKAGE_VERSION "\n");
@@ -171,11 +171,11 @@ main (gint   argc,
         }
       else if (strcmp ("-h", argv[i]) == 0 ||
                strcmp ("--help", argv[i]) == 0)
-	{
-	  return help (NULL);
-	}
+        {
+          return help (NULL);
+        }
       else
-	return help (argv[i]);
+        return help (argv[i]);
     }
   
   if (!gen_froots && !gen_tree)
@@ -194,16 +194,16 @@ main (gint   argc,
     {
       root = ~0;
       for (i = 0; i <= G_TYPE_FUNDAMENTAL_MAX; i += G_TYPE_MAKE_FUNDAMENTAL (1))
-	{
-	  const gchar *name = g_type_name (i);
+        {
+          const gchar *name = g_type_name (i);
           GType sibling = i + G_TYPE_MAKE_FUNDAMENTAL (1);
 
           if (sibling > G_TYPE_FUNDAMENTAL_MAX || g_type_name (sibling) == NULL)
             sibling = 0;
-	  
-	  if (name)
-	    show_nodes (i, sibling, iindent);
-	}
+          
+          if (name)
+            show_nodes (i, sibling, iindent);
+        }
     }
   
   return 0;

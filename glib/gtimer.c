@@ -211,7 +211,7 @@ g_timer_continue (GTimer *timer)
  **/
 gdouble
 g_timer_elapsed (GTimer *timer,
-		 gulong *microseconds)
+                 gulong *microseconds)
 {
   gdouble total;
   gint64 elapsed;
@@ -386,7 +386,7 @@ mktime_utc (struct tm *tm)
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 gboolean
 g_time_val_from_iso8601 (const gchar *iso_date,
-			 GTimeVal    *time_)
+                         GTimeVal    *time_)
 {
   struct tm tm = {0};
   long val;

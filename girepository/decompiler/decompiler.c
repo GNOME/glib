@@ -110,35 +110,35 @@ main (int argc, char *argv[])
       error = NULL;
       mfile = g_mapped_file_new (input[i], FALSE, &error);
       if (!mfile)
-	g_error (_("Failed to read ‘%s’: %s"), input[i], error->message);
+        g_error (_("Failed to read ‘%s’: %s"), input[i], error->message);
 
       bytes = g_mapped_file_get_bytes (mfile);
       g_clear_pointer (&mfile, g_mapped_file_unref);
 
       if (input[i + 1] && output)
-	needs_prefix = TRUE;
+        needs_prefix = TRUE;
       else
-	needs_prefix = FALSE;
+        needs_prefix = FALSE;
 
       typelib = gi_typelib_new_from_bytes (bytes, &error);
       if (!typelib)
-	g_error (_("Failed to create typelib ‘%s’: %s"), input[i], error->message);
+        g_error (_("Failed to create typelib ‘%s’: %s"), input[i], error->message);
 
       namespace = gi_repository_load_typelib (repository, typelib, 0, &error);
       if (namespace == NULL)
-	g_error (_("Failed to load typelib: %s"), error->message);
+        g_error (_("Failed to load typelib: %s"), error->message);
 
       gi_ir_writer_write (repository, output, namespace, needs_prefix, show_all);
 
       /* when writing to stdout, stop after the first module */
       if (input[i + 1] && !output)
-	{
+        {
           char *message = g_strdup_printf (_("Warning: %u modules omitted"), g_strv_length (input) - 1);
-	  g_fprintf (stderr, "%s\n", message);
+          g_fprintf (stderr, "%s\n", message);
           g_free (message);
 
-	  break;
-	}
+          break;
+        }
     }
 
   g_clear_object (&repository);
