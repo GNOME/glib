@@ -791,7 +791,8 @@ g_socket_constructed (GObject *object)
       /* See note about SIGPIPE below. */
       g_socket_set_option (socket, SOL_SOCKET, SO_NOSIGPIPE, TRUE, NULL);
 #endif
-      if (socket->priv->type == G_SOCKET_TYPE_STREAM)
+      if (socket->priv->type == G_SOCKET_TYPE_STREAM &&
+          socket->priv->family != G_SOCKET_FAMILY_UNIX)
         g_socket_set_option (socket, IPPROTO_TCP, TCP_NODELAY, TRUE, NULL);
     }
 }
