@@ -2097,6 +2097,9 @@ else
 endif
 glib_conf.set('HAVE_IPV6', have_ipv6)
 
+have_ip_recvtos = host_system != 'windows' and cc.has_header_symbol('netinet/in.h', 'IP_RECVTOS')
+glib_conf.set('HAVE_IP_RECVTOS', have_ip_recvtos)
+
 # We need to decide at configure time if GLib will use real atomic
 # operations ("lock free") or emulated ones with a mutex.  This is
 # because we must put this information in glibconfig.h so we know if
