@@ -55,10 +55,10 @@ struct _GMountOperationClass
   /* signals: */
 
   void (* ask_password) (GMountOperation       *op,
-			 const char            *message,
-			 const char            *default_user,
-			 const char            *default_domain,
-			 GAskPasswordFlags      flags);
+                         const char            *message,
+                         const char            *default_user,
+                         const char            *default_domain,
+                         GAskPasswordFlags      flags);
 
   /**
    * GMountOperationClass::ask_question:
@@ -70,11 +70,11 @@ struct _GMountOperationClass
    * Virtual implementation of #GMountOperation::ask-question.
    */
   void (* ask_question) (GMountOperation       *op,
-			 const char            *message,
-			 const char            *choices[]);
+                         const char            *message,
+                         const char            *choices[]);
 
   void (* reply)        (GMountOperation       *op,
-			 GMountOperationResult  result);
+                         GMountOperationResult  result);
 
   void (* aborted)      (GMountOperation       *op);
 
@@ -123,35 +123,35 @@ GIO_AVAILABLE_IN_ALL
 const char *  g_mount_operation_get_username      (GMountOperation *op);
 GIO_AVAILABLE_IN_ALL
 void          g_mount_operation_set_username      (GMountOperation *op,
-						   const char      *username);
+                                                   const char      *username);
 GIO_AVAILABLE_IN_ALL
 const char *  g_mount_operation_get_password      (GMountOperation *op);
 GIO_AVAILABLE_IN_ALL
 void          g_mount_operation_set_password      (GMountOperation *op,
-						   const char      *password);
+                                                   const char      *password);
 GIO_AVAILABLE_IN_ALL
 gboolean      g_mount_operation_get_anonymous     (GMountOperation *op);
 GIO_AVAILABLE_IN_ALL
 void          g_mount_operation_set_anonymous     (GMountOperation *op,
-						   gboolean         anonymous);
+                                                   gboolean         anonymous);
 GIO_AVAILABLE_IN_ALL
 const char *  g_mount_operation_get_domain        (GMountOperation *op);
 GIO_AVAILABLE_IN_ALL
 void          g_mount_operation_set_domain        (GMountOperation *op,
-						   const char      *domain);
+                                                   const char      *domain);
 GIO_AVAILABLE_IN_ALL
 GPasswordSave g_mount_operation_get_password_save (GMountOperation *op);
 GIO_AVAILABLE_IN_ALL
 void          g_mount_operation_set_password_save (GMountOperation *op,
-						   GPasswordSave    save);
+                                                   GPasswordSave    save);
 GIO_AVAILABLE_IN_ALL
 int           g_mount_operation_get_choice        (GMountOperation *op);
 GIO_AVAILABLE_IN_ALL
 void          g_mount_operation_set_choice        (GMountOperation *op,
-						   int              choice);
+                                                   int              choice);
 GIO_AVAILABLE_IN_ALL
 void          g_mount_operation_reply             (GMountOperation *op,
-						   GMountOperationResult result);
+                                                   GMountOperationResult result);
 GIO_AVAILABLE_IN_2_58
 gboolean      g_mount_operation_get_is_tcrypt_hidden_volume (GMountOperation *op);
 GIO_AVAILABLE_IN_2_58

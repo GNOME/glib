@@ -58,12 +58,12 @@ GType g_inet_address_mask_get_type (void);
 
 GIO_AVAILABLE_IN_2_32
 GInetAddressMask *g_inet_address_mask_new             (GInetAddress      *addr,
-						       guint              length,
-						       GError           **error);
+                                                       guint              length,
+                                                       GError           **error);
 
 GIO_AVAILABLE_IN_2_32
 GInetAddressMask *g_inet_address_mask_new_from_string (const gchar       *mask_string,
-						       GError           **error);
+                                                       GError           **error);
 GIO_AVAILABLE_IN_2_32
 gchar            *g_inet_address_mask_to_string       (GInetAddressMask  *mask);
 
@@ -76,10 +76,10 @@ guint             g_inet_address_mask_get_length      (GInetAddressMask  *mask);
 
 GIO_AVAILABLE_IN_2_32
 gboolean          g_inet_address_mask_matches         (GInetAddressMask  *mask,
-						       GInetAddress      *address);
+                                                       GInetAddress      *address);
 GIO_AVAILABLE_IN_2_32
 gboolean          g_inet_address_mask_equal           (GInetAddressMask  *mask,
-						       GInetAddressMask  *mask2);
+                                                       GInetAddressMask  *mask2);
 
 G_END_DECLS
 

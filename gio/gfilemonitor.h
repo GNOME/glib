@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 #define G_FILE_MONITOR_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_FILE_MONITOR, GFileMonitorClass))
 
 typedef struct _GFileMonitorClass       GFileMonitorClass;
-typedef struct _GFileMonitorPrivate	GFileMonitorPrivate;
+typedef struct _GFileMonitorPrivate     GFileMonitorPrivate;
 
 struct _GFileMonitor
 {

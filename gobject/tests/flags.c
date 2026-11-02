@@ -59,13 +59,13 @@ G_DEFINE_TYPE (GTest, my_test, G_TYPE_OBJECT)
 static void my_test_class_init (GTestClass * klass);
 static void my_test_init (GTest * test);
 static void my_test_get_property (GObject    *object,
-				  guint       prop_id,
-				  GValue     *value,
-				  GParamSpec *pspec);
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec);
 static void my_test_set_property (GObject      *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec);
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec);
 
 static GType
 my_test_flags_get_type (void)
@@ -75,9 +75,9 @@ my_test_flags_get_type (void)
   if (G_UNLIKELY(flags_type == 0))
     {
       static const GFlagsValue values[] = {
-	{ (unsigned) LOWEST_FLAG,  "LOWEST_FLAG",  "lowest" },
-	{ (unsigned) HIGHEST_FLAG, "HIGHEST_FLAG", "highest" },
-	{ 0, NULL, NULL }
+        { (unsigned) LOWEST_FLAG,  "LOWEST_FLAG",  "lowest" },
+        { (unsigned) HIGHEST_FLAG, "HIGHEST_FLAG", "highest" },
+        { 0, NULL, NULL }
       };
 
       flags_type = g_flags_register_static (g_intern_static_string ("GTestFlags"), values);
@@ -94,11 +94,11 @@ my_test_class_init (GTestClass *klass)
   gobject_class->set_property = my_test_set_property;
 
   g_object_class_install_property (gobject_class, 1,
-				   g_param_spec_flags ("flags",
-						       "Flags",
-						       "Flags test property",
-						       my_test_flags_get_type(), 0,
-						       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                                   g_param_spec_flags ("flags",
+                                                       "Flags",
+                                                       "Flags test property",
+                                                       my_test_flags_get_type(), 0,
+                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 }
 
 static void my_test_init (GTest *test)
@@ -107,9 +107,9 @@ static void my_test_init (GTest *test)
 
 static void
 my_test_get_property (GObject    *object,
-		      guint       prop_id,
-		      GValue     *value,
-		      GParamSpec *pspec)
+                      guint       prop_id,
+                      GValue     *value,
+                      GParamSpec *pspec)
 {
   GTest *test = MY_TEST (object);
 
@@ -126,9 +126,9 @@ my_test_get_property (GObject    *object,
 
 static void
 my_test_set_property (GObject      *object,
-		      guint         prop_id,
-		      const GValue *value,
-		      GParamSpec   *pspec)
+                      guint         prop_id,
+                      const GValue *value,
+                      GParamSpec   *pspec)
 {
   GTest *test = MY_TEST (object);
 
@@ -159,8 +159,8 @@ check_flags_validation (void)
     {
       guint flag_set = (guint) test_flags[i];
       GObject *test = g_object_new (G_TYPE_TEST,
-				    "flags", flag_set,
-				    NULL);
+                                    "flags", flag_set,
+                                    NULL);
 
       g_object_get (test, "flags", &flag_read, NULL);
 

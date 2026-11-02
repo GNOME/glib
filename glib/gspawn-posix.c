@@ -294,8 +294,8 @@ g_spawn_sync_impl (const gchar           *working_directory,
         {
           int errsv = errno;
 
-	  if (errno == EINTR)
-	    continue;
+          if (errno == EINTR)
+            continue;
 
           failed = TRUE;
 
@@ -485,31 +485,31 @@ g_spawn_check_wait_status_impl (gint     wait_status,
   if (WIFEXITED (wait_status))
     {
       if (WEXITSTATUS (wait_status) != 0)
-	{
-	  g_set_error (error, G_SPAWN_EXIT_ERROR, WEXITSTATUS (wait_status),
-		       _("Child process exited with code %ld"),
-		       (long) WEXITSTATUS (wait_status));
-	  goto out;
-	}
+        {
+          g_set_error (error, G_SPAWN_EXIT_ERROR, WEXITSTATUS (wait_status),
+                       _("Child process exited with code %ld"),
+                       (long) WEXITSTATUS (wait_status));
+          goto out;
+        }
     }
   else if (WIFSIGNALED (wait_status))
     {
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		   _("Child process killed by signal %ld"),
-		   (long) WTERMSIG (wait_status));
+                   _("Child process killed by signal %ld"),
+                   (long) WTERMSIG (wait_status));
       goto out;
     }
   else if (WIFSTOPPED (wait_status))
     {
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		   _("Child process stopped by signal %ld"),
-		   (long) WSTOPSIG (wait_status));
+                   _("Child process stopped by signal %ld"),
+                   (long) WSTOPSIG (wait_status));
       goto out;
     }
   else
     {
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
-		   _("Child process exited abnormally"));
+                   _("Child process exited abnormally"));
       goto out;
     }
 
@@ -996,7 +996,7 @@ read_ints (int      fd,
       else if (chunk == 0)
         break; /* EOF */
       else /* chunk > 0 */
-	bytes += chunk;
+        bytes += chunk;
     }
 
   *n_ints_read = (gint)(bytes / sizeof(gint));
@@ -1916,21 +1916,21 @@ g_execute (const gchar  *file,
 
       p = path;
       do
-	{
-	  char *startp;
+        {
+          char *startp;
 
-	  path = p;
-	  p = my_strchrnul (path, ':');
+          path = p;
+          p = my_strchrnul (path, ':');
 
-	  if (p == path)
-	    /* Two adjacent colons, or a colon at the beginning or the end
+          if (p == path)
+            /* Two adjacent colons, or a colon at the beginning or the end
              * of 'PATH' means to search the current directory.
              */
-	    startp = name + 1;
-	  else
-	    startp = memcpy (name - (p - path), path, p - path);
+            startp = name + 1;
+          else
+            startp = memcpy (name - (p - path), path, p - path);
 
-	  /* Try to execute this name.  If it works, execv will not return.  */
+          /* Try to execute this name.  If it works, execv will not return.  */
           if (envp)
             execve (startp, argv, envp);
           else
@@ -1943,50 +1943,50 @@ g_execute (const gchar  *file,
               return -1;
             }
 
-	  switch (errno)
-	    {
-	    case EACCES:
-	      /* Record the we got a 'Permission denied' error.  If we end
+          switch (errno)
+            {
+            case EACCES:
+              /* Record the we got a 'Permission denied' error.  If we end
                * up finding no executable we can use, we want to diagnose
                * that we did find one but were denied access.
                */
-	      got_eacces = TRUE;
+              got_eacces = TRUE;
 
               G_GNUC_FALLTHROUGH;
-	    case ENOENT:
+            case ENOENT:
 #ifdef ESTALE
-	    case ESTALE:
+            case ESTALE:
 #endif
 #ifdef ENOTDIR
-	    case ENOTDIR:
+            case ENOTDIR:
 #endif
-	      /* Those errors indicate the file is missing or not executable
+              /* Those errors indicate the file is missing or not executable
                * by us, in which case we want to just try the next path
                * directory.
                */
-	      break;
+              break;
 
-	    case ENODEV:
-	    case ETIMEDOUT:
-	      /* Some strange filesystems like AFS return even
-	       * stranger error numbers.  They cannot reasonably mean anything
-	       * else so ignore those, too.
-	       */
-	      break;
+            case ENODEV:
+            case ETIMEDOUT:
+              /* Some strange filesystems like AFS return even
+               * stranger error numbers.  They cannot reasonably mean anything
+               * else so ignore those, too.
+               */
+              break;
 
-	    default:
-	      /* Some other error means we found an executable file, but
+            default:
+              /* Some other error means we found an executable file, but
                * something went wrong executing it; return the error to our
                * caller.
                */
-	      return -1;
-	    }
-	}
+              return -1;
+            }
+        }
       while (*p++ != '\0');
 
       /* We tried every element and none of them worked.  */
       if (got_eacces)
-	/* At least one failure was due to permissions, so report that
+        /* At least one failure was due to permissions, so report that
          * error.
          */
         errno = EACCES;

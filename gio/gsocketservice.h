@@ -60,7 +60,7 @@ struct _GSocketServiceClass
 
   gboolean (* incoming) (GSocketService    *service,
                          GSocketConnection *connection,
-			 GObject           *source_object);
+                         GObject           *source_object);
 
   /* Padding for future expansion */
   void (*_g_reserved1) (void);

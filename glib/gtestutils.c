@@ -3617,13 +3617,13 @@ g_assertion_message_cmpstrv (const char         *domain,
 
 void
 g_assertion_message_error (const char     *domain,
-			   const char     *file,
-			   int             line,
-			   const char     *func,
-			   const char     *expr,
-			   const GError   *error,
-			   GQuark          error_domain,
-			   int             error_code)
+                           const char     *file,
+                           int             line,
+                           const char     *func,
+                           const char     *expr,
+                           const GError   *error,
+                           GQuark          error_domain,
+                           int             error_code)
 {
   GString *gstring;
 
@@ -3635,13 +3635,13 @@ g_assertion_message_error (const char     *domain,
   gstring = g_string_new ("assertion failed ");
   if (error_domain)
       g_string_append_printf (gstring, "(%s == (%s, %d)): ", expr,
-			      g_quark_to_string (error_domain), error_code);
+                              g_quark_to_string (error_domain), error_code);
   else
     g_string_append_printf (gstring, "(%s == NULL): ", expr);
 
   if (error)
       g_string_append_printf (gstring, "%s (%s, %d)", error->message,
-			      g_quark_to_string (error->domain), error->code);
+                              g_quark_to_string (error->domain), error->code);
   else
     g_string_append_printf (gstring, "%s is NULL", expr);
 

@@ -74,8 +74,8 @@ enum
 struct _GUnixSocketAddressPrivate
 {
   char path[UNIX_PATH_MAX + 1]; /* Not including the initial zero in abstract case, so
-			           we can guarantee zero termination of abstract
-			           pathnames in the get_path() API, but including
+                                   we can guarantee zero termination of abstract
+                                   pathnames in the get_path() API, but including
                                    an extra nul byte at the end so we can ensure our
                                    paths are always nul-terminated */
   gsize path_len; /* Not including any terminating zeros */
@@ -128,9 +128,9 @@ g_unix_socket_address_clamp_path_len (GUnixSocketAddress *address)
 
 static void
 g_unix_socket_address_set_property (GObject      *object,
-				    guint         prop_id,
-				    const GValue *value,
-				    GParamSpec   *pspec)
+                                    guint         prop_id,
+                                    const GValue *value,
+                                    GParamSpec   *pspec)
 {
   GUnixSocketAddress *address = G_UNIX_SOCKET_ADDRESS (object);
   const char *str;
@@ -142,29 +142,29 @@ g_unix_socket_address_set_property (GObject      *object,
     case PROP_PATH:
       str = g_value_get_string (value);
       if (str)
-	{
-	  g_strlcpy (address->priv->path, str,
-		     sizeof (address->priv->path));
-	  address->priv->path_len = strlen (address->priv->path);
+        {
+          g_strlcpy (address->priv->path, str,
+                     sizeof (address->priv->path));
+          address->priv->path_len = strlen (address->priv->path);
           g_unix_socket_address_clamp_path_len (address);
-	}
+        }
       break;
 
     case PROP_PATH_AS_ARRAY:
       array = g_value_get_boxed (value);
 
       if (array)
-	{
-	  /* Clip to fit in UNIX_PATH_MAX with zero termination or first byte */
-	  len = MIN (array->len, UNIX_PATH_MAX);
+        {
+          /* Clip to fit in UNIX_PATH_MAX with zero termination or first byte */
+          len = MIN (array->len, UNIX_PATH_MAX);
 
-	  if (len != 0)
-	    memcpy (address->priv->path, array->data, len);
+          if (len != 0)
+            memcpy (address->priv->path, array->data, len);
 
-	  address->priv->path[len] = 0; /* Ensure null-terminated */
-	  address->priv->path_len = len;
+          address->priv->path[len] = 0; /* Ensure null-terminated */
+          address->priv->path_len = len;
           g_unix_socket_address_clamp_path_len (address);
-	}
+        }
       break;
 
     case PROP_ABSTRACT:
@@ -192,9 +192,9 @@ g_unix_socket_address_set_property (GObject      *object,
 
 static void
 g_unix_socket_address_get_property (GObject    *object,
-				    guint       prop_id,
-				    GValue     *value,
-				    GParamSpec *pspec)
+                                    guint       prop_id,
+                                    GValue     *value,
+                                    GParamSpec *pspec)
 {
   GUnixSocketAddress *address = G_UNIX_SOCKET_ADDRESS (object);
   GByteArray *array;
@@ -202,27 +202,27 @@ g_unix_socket_address_get_property (GObject    *object,
   switch (prop_id)
     {
       case PROP_PATH:
-	g_value_set_string (value, address->priv->path);
-	break;
+        g_value_set_string (value, address->priv->path);
+        break;
 
       case PROP_PATH_AS_ARRAY:
-	array = g_byte_array_sized_new (address->priv->path_len);
-	g_byte_array_append (array, (guint8 *)address->priv->path, address->priv->path_len);
-	g_value_take_boxed (value, array);
-	break;
+        array = g_byte_array_sized_new (address->priv->path_len);
+        g_byte_array_append (array, (guint8 *)address->priv->path, address->priv->path_len);
+        g_value_take_boxed (value, array);
+        break;
 
       case PROP_ABSTRACT:
-	g_value_set_boolean (value, (address->priv->address_type == G_UNIX_SOCKET_ADDRESS_ABSTRACT ||
-				     address->priv->address_type == G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED));
+        g_value_set_boolean (value, (address->priv->address_type == G_UNIX_SOCKET_ADDRESS_ABSTRACT ||
+                                     address->priv->address_type == G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED));
 
-	break;
+        break;
 
       case PROP_ADDRESS_TYPE:
-	g_value_set_enum (value, address->priv->address_type);
-	break;
+        g_value_set_enum (value, address->priv->address_type);
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -252,9 +252,9 @@ g_unix_socket_address_get_native_size (GSocketAddress *address)
 
 static gboolean
 g_unix_socket_address_to_native (GSocketAddress *address,
-				 gpointer        dest,
-				 gsize           destlen,
-				 GError        **error)
+                                 gpointer        dest,
+                                 gsize           destlen,
+                                 GError        **error)
 {
   GUnixSocketAddress *addr = G_UNIX_SOCKET_ADDRESS (address);
   struct sockaddr_un *sock;
@@ -265,7 +265,7 @@ g_unix_socket_address_to_native (GSocketAddress *address,
   if (destlen < (gsize) socklen)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
-			   _("Not enough space for socket address"));
+                           _("Not enough space for socket address"));
       return FALSE;
     }
 
@@ -286,11 +286,11 @@ g_unix_socket_address_to_native (GSocketAddress *address,
     case G_UNIX_SOCKET_ADDRESS_ABSTRACT:
     case G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED:
       if (!g_unix_socket_address_abstract_names_supported ())
-	{
-	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			       _("Abstract UNIX domain socket addresses not supported on this system"));
-	  return FALSE;
-	}
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                               _("Abstract UNIX domain socket addresses not supported on this system"));
+          return FALSE;
+        }
 
       sock->sun_path[0] = 0;
       memcpy (sock->sun_path+1, addr->priv->path, addr->priv->path_len);
@@ -321,12 +321,12 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class,
-				   PROP_PATH,
-				   g_param_spec_string ("path", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   PROP_PATH,
+                                   g_param_spec_string ("path", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GUnixSocketAddress:path-as-array:
@@ -336,11 +336,11 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_PATH_AS_ARRAY,
-				   g_param_spec_boxed ("path-as-array", NULL, NULL,
-						       G_TYPE_BYTE_ARRAY,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boxed ("path-as-array", NULL, NULL,
+                                                       G_TYPE_BYTE_ARRAY,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GUnixSocketAddress:abstract:
@@ -352,11 +352,11 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
    * abstract addresses.
    */
   g_object_class_install_property (gobject_class, PROP_ABSTRACT,
-				   g_param_spec_boolean ("abstract", NULL, NULL,
-							 FALSE,
-							 G_PARAM_READWRITE |
-							 G_PARAM_CONSTRUCT_ONLY |
-							 G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boolean ("abstract", NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY |
+                                                         G_PARAM_STATIC_STRINGS));
 
   /**
    * GUnixSocketAddress:address-type:
@@ -366,12 +366,12 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_ADDRESS_TYPE,
-				   g_param_spec_enum ("address-type", NULL, NULL,
-						      G_TYPE_UNIX_SOCKET_ADDRESS_TYPE,
-						      G_UNIX_SOCKET_ADDRESS_PATH,
-						      G_PARAM_READWRITE |
-						      G_PARAM_CONSTRUCT_ONLY |
-						      G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_enum ("address-type", NULL, NULL,
+                                                      G_TYPE_UNIX_SOCKET_ADDRESS_TYPE,
+                                                      G_UNIX_SOCKET_ADDRESS_PATH,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -444,9 +444,9 @@ GSocketAddress *
 g_unix_socket_address_new (const gchar *path)
 {
   return g_object_new (G_TYPE_UNIX_SOCKET_ADDRESS,
-		       "path", path,
-		       "abstract", FALSE,
-		       NULL);
+                       "path", path,
+                       "abstract", FALSE,
+                       NULL);
 }
 
 /**
@@ -463,10 +463,10 @@ g_unix_socket_address_new (const gchar *path)
  */
 GSocketAddress *
 g_unix_socket_address_new_abstract (const gchar *path,
-				    gint         path_len)
+                                    gint         path_len)
 {
   return g_unix_socket_address_new_with_type (path, path_len,
-					      G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED);
+                                              G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED);
 }
 
 /**
@@ -513,8 +513,8 @@ g_unix_socket_address_new_abstract (const gchar *path,
  */
 GSocketAddress *
 g_unix_socket_address_new_with_type (const gchar            *path,
-				     gint                    path_len,
-				     GUnixSocketAddressType  type)
+                                     gint                    path_len,
+                                     GUnixSocketAddressType  type)
 {
   GSocketAddress *address;
   GByteArray *array;
@@ -535,9 +535,9 @@ g_unix_socket_address_new_with_type (const gchar            *path,
   g_byte_array_append (array, (guint8 *)path, path_len_unsigned);
 
   address = g_object_new (G_TYPE_UNIX_SOCKET_ADDRESS,
-			  "path-as-array", array,
-			  "address-type", type,
-			  NULL);
+                          "path-as-array", array,
+                          "address-type", type,
+                          NULL);
 
   g_byte_array_unref (array);
 
@@ -615,7 +615,7 @@ gboolean
 g_unix_socket_address_get_is_abstract (GUnixSocketAddress *address)
 {
   return (address->priv->address_type == G_UNIX_SOCKET_ADDRESS_ABSTRACT ||
-	  address->priv->address_type == G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED);
+          address->priv->address_type == G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED);
 }
 
 /**

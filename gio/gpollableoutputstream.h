@@ -75,16 +75,16 @@ struct _GPollableOutputStreamInterface
 
   gboolean     (*is_writable)       (GPollableOutputStream  *stream);
   GSource *    (*create_source)     (GPollableOutputStream  *stream,
-				     GCancellable           *cancellable);
+                                     GCancellable           *cancellable);
   gssize       (*write_nonblocking) (GPollableOutputStream  *stream,
-				     const void             *buffer,
-				     gsize                   count,
-				     GError                **error);
+                                     const void             *buffer,
+                                     gsize                   count,
+                                     GError                **error);
   GPollableReturn (*writev_nonblocking) (GPollableOutputStream  *stream,
-					 const GOutputVector    *vectors,
-					 gsize                   n_vectors,
-					 gsize                  *bytes_written,
-					 GError                **error);
+                                         const GOutputVector    *vectors,
+                                         gsize                   n_vectors,
+                                         gsize                  *bytes_written,
+                                         GError                **error);
 };
 
 GIO_AVAILABLE_IN_ALL
@@ -97,22 +97,22 @@ GIO_AVAILABLE_IN_ALL
 gboolean g_pollable_output_stream_is_writable       (GPollableOutputStream  *stream);
 GIO_AVAILABLE_IN_ALL
 GSource *g_pollable_output_stream_create_source     (GPollableOutputStream  *stream,
-						     GCancellable           *cancellable);
+                                                     GCancellable           *cancellable);
 
 GIO_AVAILABLE_IN_ALL
 gssize   g_pollable_output_stream_write_nonblocking (GPollableOutputStream  *stream,
-						     const void             *buffer,
-						     gsize                   count,
-						     GCancellable           *cancellable,
-						     GError                **error);
+                                                     const void             *buffer,
+                                                     gsize                   count,
+                                                     GCancellable           *cancellable,
+                                                     GError                **error);
 
 GIO_AVAILABLE_IN_2_60
 GPollableReturn g_pollable_output_stream_writev_nonblocking (GPollableOutputStream  *stream,
-							     const GOutputVector    *vectors,
-							     gsize                   n_vectors,
-							     gsize                  *bytes_written,
-							     GCancellable           *cancellable,
-							     GError                **error);
+                                                             const GOutputVector    *vectors,
+                                                             gsize                   n_vectors,
+                                                             gsize                  *bytes_written,
+                                                             GCancellable           *cancellable,
+                                                             GError                **error);
 
 G_END_DECLS
 

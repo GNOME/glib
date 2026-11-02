@@ -58,17 +58,17 @@ struct _PerformanceTest {
 
   gpointer (*setup) (PerformanceTest *test);
   void (*init) (PerformanceTest *test,
-		gpointer data,
-		double factor);
+                gpointer data,
+                double factor);
   void (*run) (PerformanceTest *test,
-	       gpointer data);
+               gpointer data);
   void (*finish) (PerformanceTest *test,
-		  gpointer data);
+                  gpointer data);
   void (*teardown) (PerformanceTest *test,
-		    gpointer data);
+                    gpointer data);
   void (*print_result) (PerformanceTest *test,
-			gpointer data,
-			double time);
+                        gpointer data,
+                        double time);
 };
 
 static void
@@ -340,15 +340,15 @@ struct _ComplexObjectClass
 };
 
 static void complex_test_iface_init (gpointer         g_iface,
-				     gpointer         iface_data);
+                                     gpointer         iface_data);
 
 G_DEFINE_TYPE_EXTENDED (ComplexObject, complex_object,
-			G_TYPE_OBJECT, 0,
-			G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE1, complex_test_iface_init)
-			G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE2, complex_test_iface_init)
-			G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE3, complex_test_iface_init)
-			G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE4, complex_test_iface_init)
-			G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE5, complex_test_iface_init))
+                        G_TYPE_OBJECT, 0,
+                        G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE1, complex_test_iface_init)
+                        G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE2, complex_test_iface_init)
+                        G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE3, complex_test_iface_init)
+                        G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE4, complex_test_iface_init)
+                        G_IMPLEMENT_INTERFACE (TEST_TYPE_IFACE5, complex_test_iface_init))
 
 #define COMPLEX_OBJECT(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), COMPLEX_TYPE_OBJECT, ComplexObject))
 
@@ -384,9 +384,9 @@ complex_object_finalize (GObject *object)
 
 static void
 complex_object_set_property (GObject         *object,
-			     guint            prop_id,
-			     const GValue    *value,
-			     GParamSpec      *pspec)
+                             guint            prop_id,
+                             const GValue    *value,
+                             GParamSpec      *pspec)
 {
   ComplexObject *complex = COMPLEX_OBJECT (object);
 
@@ -407,9 +407,9 @@ complex_object_set_property (GObject         *object,
 
 static void
 complex_object_get_property (GObject         *object,
-			     guint            prop_id,
-			     GValue          *value,
-			     GParamSpec      *pspec)
+                             guint            prop_id,
+                             GValue          *value,
+                             GParamSpec      *pspec)
 {
   ComplexObject *complex = COMPLEX_OBJECT (object);
 
@@ -445,38 +445,38 @@ complex_object_class_init (ComplexObjectClass *class)
 
   complex_signals[COMPLEX_SIGNAL] =
     g_signal_new ("signal",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (ComplexObjectClass, signal),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ComplexObjectClass, signal),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   complex_signals[COMPLEX_SIGNAL_EMPTY] =
     g_signal_new ("signal-empty",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (ComplexObjectClass, signal_empty),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ComplexObjectClass, signal_empty),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   complex_signals[COMPLEX_SIGNAL_GENERIC] =
     g_signal_new ("signal-generic",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (ComplexObjectClass, signal),
-		  NULL, NULL,
-		  NULL,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ComplexObjectClass, signal),
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 0);
   complex_signals[COMPLEX_SIGNAL_GENERIC_EMPTY] =
     g_signal_new ("signal-generic-empty",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (ComplexObjectClass, signal_empty),
-		  NULL, NULL,
-		  NULL,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET (ComplexObjectClass, signal_empty),
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 0);
 
   complex_signals[COMPLEX_SIGNAL_ARGS] =
     g_signal_new ("signal-args",
@@ -506,7 +506,7 @@ complex_object_iface_method (TestIface *obj)
 
 static void
 complex_test_iface_init (gpointer         g_iface,
-			 gpointer         iface_data)
+                         gpointer         iface_data)
 {
   TestIfaceClass *iface = g_iface;
   iface->method = complex_object_iface_method;
@@ -541,8 +541,8 @@ test_construction_setup (PerformanceTest *test)
 
 static void
 test_construction_init (PerformanceTest *test,
-			gpointer _data,
-			double count_factor)
+                        gpointer _data,
+                        double count_factor)
 {
   struct ConstructionTest *data = _data;
   unsigned int n;
@@ -557,7 +557,7 @@ test_construction_init (PerformanceTest *test,
 
 static void
 test_construction_run (PerformanceTest *test,
-		       gpointer _data)
+                       gpointer _data)
 {
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
@@ -571,7 +571,7 @@ test_construction_run (PerformanceTest *test,
 
 static void
 test_construction_run1 (PerformanceTest *test,
-		        gpointer _data)
+                        gpointer _data)
 {
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
@@ -634,7 +634,7 @@ test_complex_construction_run2 (PerformanceTest *test,
 
 static void
 test_construction_finish (PerformanceTest *test,
-			  gpointer _data)
+                          gpointer _data)
 {
   struct ConstructionTest *data = _data;
 
@@ -644,7 +644,7 @@ test_construction_finish (PerformanceTest *test,
 
 static void
 test_construction_finish1 (PerformanceTest *test,
-			   gpointer _data)
+                           gpointer _data)
 {
   struct ConstructionTest *data = _data;
 
@@ -654,7 +654,7 @@ test_construction_finish1 (PerformanceTest *test,
 
 static void
 test_construction_teardown (PerformanceTest *test,
-			    gpointer _data)
+                            gpointer _data)
 {
   struct ConstructionTest *data = _data;
   g_free (data->objects);
@@ -663,8 +663,8 @@ test_construction_teardown (PerformanceTest *test,
 
 static void
 test_finalization_init (PerformanceTest *test,
-			gpointer _data,
-			double count_factor)
+                        gpointer _data,
+                        double count_factor)
 {
   struct ConstructionTest *data = _data;
   unsigned int n;
@@ -684,7 +684,7 @@ test_finalization_init (PerformanceTest *test,
 
 static void
 test_finalization_run (PerformanceTest *test,
-		       gpointer _data)
+                       gpointer _data)
 {
   struct ConstructionTest *data = _data;
   GObject **objects = data->objects;
@@ -699,30 +699,30 @@ test_finalization_run (PerformanceTest *test,
 
 static void
 test_finalization_finish (PerformanceTest *test,
-			  gpointer _data)
+                          gpointer _data)
 {
 }
 
 static void
 test_construction_print_result (PerformanceTest *test,
-				gpointer _data,
-				double time)
+                                gpointer _data,
+                                double time)
 {
   struct ConstructionTest *data = _data;
 
   g_print ("Millions of constructed objects per second: %.3f\n",
-	   data->n_objects / (time * 1000000));
+           data->n_objects / (time * 1000000));
 }
 
 static void
 test_finalization_print_result (PerformanceTest *test,
-				gpointer _data,
-				double time)
+                                gpointer _data,
+                                double time)
 {
   struct ConstructionTest *data = _data;
 
   g_print ("Millions of finalized objects per second: %.3f\n",
-	   data->n_objects / (time * 1000000));
+           data->n_objects / (time * 1000000));
 }
 
 /*************************************************************
@@ -754,8 +754,8 @@ test_type_check_setup (PerformanceTest *test)
 
 static void
 test_type_check_init (PerformanceTest *test,
-		      gpointer _data,
-		      double factor)
+                      gpointer _data,
+                      double factor)
 {
   struct TypeCheckTest *data = _data;
 
@@ -764,7 +764,7 @@ test_type_check_init (PerformanceTest *test,
 
 static void
 test_type_check_run (PerformanceTest *test,
-		     gpointer _data)
+                     gpointer _data)
 {
   struct TypeCheckTest *data = _data;
   GObject *object = data->object;
@@ -780,32 +780,32 @@ test_type_check_run (PerformanceTest *test,
     {
       type = types[i%5];
       for (unsigned int j = 0; j < 1000; j++)
-	{
-	  my_type_check_instance_is_a ((GTypeInstance *)object,
-				       type);
-	}
+        {
+          my_type_check_instance_is_a ((GTypeInstance *)object,
+                                       type);
+        }
     }
 }
 
 static void
 test_type_check_finish (PerformanceTest *test,
-			gpointer data)
+                        gpointer data)
 {
 }
 
 static void
 test_type_check_print_result (PerformanceTest *test,
-			      gpointer _data,
-			      double time)
+                              gpointer _data,
+                              double time)
 {
   struct TypeCheckTest *data = _data;
   g_print ("Million type checks per second: %.2f\n",
-	   data->n_checks / (1000*time));
+           data->n_checks / (1000*time));
 }
 
 static void
 test_type_check_teardown (PerformanceTest *test,
-			  gpointer _data)
+                          gpointer _data)
 {
   struct TypeCheckTest *data = _data;
 
@@ -884,7 +884,7 @@ test_emission_unhandled_print_result (PerformanceTest *test,
   struct EmissionTest *data = _data;
 
   g_print ("Emissions per second: %.0f\n",
-	   data->n_checks / time);
+           data->n_checks / time);
 }
 
 static void
@@ -957,7 +957,7 @@ test_emission_handled_print_result (PerformanceTest *test,
   struct EmissionTest *data = _data;
 
   g_print ("Emissions per second: %.0f\n",
-	   data->n_checks / time);
+           data->n_checks / time);
 }
 
 static void
@@ -1367,17 +1367,17 @@ test_refcount_finish (PerformanceTest *test,
 
 static void
 test_refcount_print_result (PerformanceTest *test,
-			      gpointer _data,
-			      double time)
+                              gpointer _data,
+                              double time)
 {
   struct RefcountTest *data = _data;
   g_print ("Million refs+unref per second: %.2f\n",
-	   data->n_checks * 5 / (time * 1000000 ));
+           data->n_checks * 5 / (time * 1000000 ));
 }
 
 static void
 test_refcount_teardown (PerformanceTest *test,
-			  gpointer _data)
+                          gpointer _data)
 {
   struct RefcountTest *data = _data;
 
@@ -1699,7 +1699,7 @@ find_test (const char *name)
   for (size_t i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       if (strcmp (tests[i].name, name) == 0)
-	return &tests[i];
+        return &tests[i];
     }
   return NULL;
 }
@@ -1736,11 +1736,11 @@ main (int   argc,
   if (argc > 1)
     {
       for (int i = 1; i < argc; i++)
-	{
-	  test = find_test (argv[i]);
-	  if (test)
-	    run_test (test);
-	}
+        {
+          test = find_test (argv[i]);
+          if (test)
+            run_test (test);
+        }
     }
   else
     {

@@ -32,8 +32,8 @@ void _g_io_modules_ensure_loaded                      (void);
 
 typedef gboolean (*GIOModuleVerifyFunc) (gpointer);
 gpointer _g_io_module_get_default (const gchar         *extension_point,
-				   const gchar         *envvar,
-				   GIOModuleVerifyFunc  verify_func);
+                                   const gchar         *envvar,
+                                   GIOModuleVerifyFunc  verify_func);
 
 GType    _g_io_module_get_default_type (const gchar *extension_point,
                                         const gchar *envvar,

@@ -65,7 +65,7 @@ _g_local_file_io_stream_new (GLocalFileOutputStream *output_stream)
   stream->input_stream = (GInputStream *)_g_local_file_input_stream_new (fd);
 
   _g_local_file_input_stream_set_do_close (G_LOCAL_FILE_INPUT_STREAM (stream->input_stream),
-					   FALSE);
+                                           FALSE);
 
   return G_FILE_IO_STREAM (stream);
 }
@@ -85,8 +85,8 @@ g_local_file_io_stream_get_output_stream (GIOStream *stream)
 
 static gboolean
 g_local_file_io_stream_close (GIOStream  *stream,
-			      GCancellable   *cancellable,
-			      GError        **error)
+                              GCancellable   *cancellable,
+                              GError        **error)
 {
   GLocalFileIOStream *file = G_LOCAL_FILE_IO_STREAM (stream);
 
@@ -96,7 +96,7 @@ g_local_file_io_stream_close (GIOStream  *stream,
 
   return
     _g_local_file_output_stream_really_close (G_LOCAL_FILE_OUTPUT_STREAM (file->output_stream),
-					      cancellable, error);
+                                              cancellable, error);
 }
 
 static void

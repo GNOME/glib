@@ -55,7 +55,7 @@ struct _GFileIOStreamClass
 
   goffset     (* tell)              (GFileIOStream    *stream);
   gboolean    (* can_seek)          (GFileIOStream    *stream);
-  gboolean    (* seek)	            (GFileIOStream    *stream,
+  gboolean    (* seek)              (GFileIOStream    *stream,
                                      goffset               offset,
                                      GSeekType             type,
                                      GCancellable         *cancellable,
@@ -93,20 +93,20 @@ GType      g_file_io_stream_get_type          (void);
 
 GIO_AVAILABLE_IN_ALL
 GFileInfo *g_file_io_stream_query_info        (GFileIOStream    *stream,
-					       const char           *attributes,
-					       GCancellable         *cancellable,
-					       GError              **error);
+                                               const char           *attributes,
+                                               GCancellable         *cancellable,
+                                               GError              **error);
 GIO_AVAILABLE_IN_ALL
 void       g_file_io_stream_query_info_async  (GFileIOStream    *stream,
-					       const char           *attributes,
-					       int                   io_priority,
-					       GCancellable         *cancellable,
-					       GAsyncReadyCallback   callback,
-					       gpointer              user_data);
+                                               const char           *attributes,
+                                               int                   io_priority,
+                                               GCancellable         *cancellable,
+                                               GAsyncReadyCallback   callback,
+                                               gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
 GFileInfo *g_file_io_stream_query_info_finish (GFileIOStream    *stream,
-					       GAsyncResult         *result,
-					       GError              **error);
+                                               GAsyncResult         *result,
+                                               GError              **error);
 GIO_AVAILABLE_IN_ALL
 char *     g_file_io_stream_get_etag          (GFileIOStream    *stream);
 

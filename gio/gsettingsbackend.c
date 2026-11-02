@@ -983,7 +983,7 @@ g_settings_backend_verify (gpointer impl)
       g_strcmp0 (g_getenv ("GSETTINGS_BACKEND"), "memory") != 0)
     {
       g_message ("Using the 'memory' GSettings backend.  Your settings "
-		 "will not be saved or shared with other applications.");
+                 "will not be saved or shared with other applications.");
     }
 
   g_settings_has_backend = TRUE;

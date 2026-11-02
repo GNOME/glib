@@ -74,9 +74,9 @@ g_tls_certificate_init (GTlsCertificate *cert)
 
 static void
 g_tls_certificate_get_property (GObject    *object,
-				guint       prop_id,
-				GValue     *value,
-				GParamSpec *pspec)
+                                guint       prop_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
 {
   switch (prop_id)
     {
@@ -94,9 +94,9 @@ g_tls_certificate_get_property (GObject    *object,
 
 static void
 g_tls_certificate_set_property (GObject      *object,
-				guint         prop_id,
-				const GValue *value,
-				GParamSpec   *pspec)
+                                guint         prop_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
 {
   GTlsCertificate *cert = (GTlsCertificate*)object;
   GTlsCertificatePrivate *priv = g_tls_certificate_get_instance_private (cert);
@@ -135,11 +135,11 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * Since: 2.72
    */
   g_object_class_install_property (gobject_class, PROP_PKCS12_DATA,
-				   g_param_spec_boxed ("pkcs12-data", NULL, NULL,
-						       G_TYPE_BYTE_ARRAY,
-						       G_PARAM_WRITABLE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boxed ("pkcs12-data", NULL, NULL,
+                                                       G_TYPE_BYTE_ARRAY,
+                                                       G_PARAM_WRITABLE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GTlsCertificate:password: (nullable)
@@ -164,11 +164,11 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_CERTIFICATE,
-				   g_param_spec_boxed ("certificate", NULL, NULL,
-						       G_TYPE_BYTE_ARRAY,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boxed ("certificate", NULL, NULL,
+                                                       G_TYPE_BYTE_ARRAY,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
   /**
    * GTlsCertificate:certificate-pem:
    *
@@ -179,11 +179,11 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_CERTIFICATE_PEM,
-				   g_param_spec_string ("certificate-pem", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_string ("certificate-pem", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
   /**
    * GTlsCertificate:private-key: (nullable)
    *
@@ -208,11 +208,11 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_PRIVATE_KEY,
-				   g_param_spec_boxed ("private-key", NULL, NULL,
-						       G_TYPE_BYTE_ARRAY,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boxed ("private-key", NULL, NULL,
+                                                       G_TYPE_BYTE_ARRAY,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
   /**
    * GTlsCertificate:private-key-pem: (nullable)
    *
@@ -238,11 +238,11 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_PRIVATE_KEY_PEM,
-				   g_param_spec_string ("private-key-pem", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_string ("private-key-pem", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
   /**
    * GTlsCertificate:issuer:
    *
@@ -266,11 +266,11 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_ISSUER,
-				   g_param_spec_object ("issuer", NULL, NULL,
-							G_TYPE_TLS_CERTIFICATE,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("issuer", NULL, NULL,
+                                                        G_TYPE_TLS_CERTIFICATE,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GTlsCertificate:pkcs11-uri: (nullable)
@@ -391,9 +391,9 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
 
 static GTlsCertificate *
 g_tls_certificate_new_internal (const gchar      *certificate_pem,
-				const gchar      *private_key_pem,
-				GTlsCertificate  *issuer,
-				GError          **error)
+                                const gchar      *private_key_pem,
+                                GTlsCertificate  *issuer,
+                                GError          **error)
 {
   GObject *cert;
   GTlsBackend *backend;
@@ -401,11 +401,11 @@ g_tls_certificate_new_internal (const gchar      *certificate_pem,
   backend = g_tls_backend_get_default ();
 
   cert = g_initable_new (g_tls_backend_get_certificate_type (backend),
-			 NULL, error,
-			 "certificate-pem", certificate_pem,
-			 "private-key-pem", private_key_pem,
-			 "issuer", issuer,
-			 NULL);
+                         NULL, error,
+                         "certificate-pem", certificate_pem,
+                         "private-key-pem", private_key_pem,
+                         "issuer", issuer,
+                         NULL);
 
   return G_TLS_CERTIFICATE (cert);
 }
@@ -420,9 +420,9 @@ g_tls_certificate_new_internal (const gchar      *certificate_pem,
 
 static gchar *
 parse_private_key (const gchar *data,
-		   gsize data_len,
-		   gboolean required,
-		   GError **error)
+                   gsize data_len,
+                   gboolean required,
+                   GError **error)
 {
   const gchar *header_start = NULL, *header_end, *footer_start = NULL, *footer_end;
   const gchar *data_end = data + data_len;
@@ -434,8 +434,8 @@ parse_private_key (const gchar *data,
   if (!header_start)
     {
       if (required)
-	g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-			     _("No PEM-encoded private key found"));
+        g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+                             _("No PEM-encoded private key found"));
 
       return NULL;
     }
@@ -445,7 +445,7 @@ parse_private_key (const gchar *data,
   if (strncmp (header_start, PEM_PKCS8_ENCRYPTED_HEADER, header_end - header_start) == 0)
     {
       g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-			   _("Cannot decrypt PEM-encoded private key"));
+                           _("Cannot decrypt PEM-encoded private key"));
       return NULL;
     }
 
@@ -456,7 +456,7 @@ parse_private_key (const gchar *data,
   if (!footer_start)
     {
       g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-			   _("Could not parse PEM-encoded private key"));
+                           _("Could not parse PEM-encoded private key"));
       return NULL;
     }
 
@@ -471,9 +471,9 @@ parse_private_key (const gchar *data,
 
 static gchar *
 parse_next_pem_certificate (const gchar **data,
-			    const gchar  *data_end,
-			    gboolean      required,
-			    GError      **error)
+                            const gchar  *data_end,
+                            gboolean      required,
+                            GError      **error)
 {
   const gchar *start, *end;
 
@@ -481,10 +481,10 @@ parse_next_pem_certificate (const gchar **data,
   if (!start)
     {
       if (required)
-	{
-	  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-			       _("No PEM-encoded certificate found"));
-	}
+        {
+          g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+                               _("No PEM-encoded certificate found"));
+        }
       return NULL;
     }
 
@@ -492,7 +492,7 @@ parse_next_pem_certificate (const gchar **data,
   if (!end)
     {
       g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-			   _("Could not parse PEM-encoded certificate"));
+                           _("Could not parse PEM-encoded certificate"));
       return NULL;
     }
   end += strlen (PEM_CERTIFICATE_FOOTER);
@@ -666,8 +666,8 @@ parse_and_create_certificate (const gchar  *data,
  */
 GTlsCertificate *
 g_tls_certificate_new_from_pem  (const gchar  *data,
-				 gssize        length,
-				 GError      **error)
+                                 gssize        length,
+                                 GError      **error)
 {
   GError *child_error = NULL;
   gchar *key_pem;
@@ -1001,7 +1001,7 @@ g_tls_certificate_new_from_pkcs11_uris (const gchar  *pkcs11_uri,
  */
 GList *
 g_tls_certificate_list_new_from_file (const gchar  *file,
-				      GError      **error)
+                                      GError      **error)
 {
   GQueue queue = G_QUEUE_INIT;
   gchar *contents, *end;
@@ -1113,8 +1113,8 @@ g_tls_certificate_get_issuer (GTlsCertificate  *cert)
  */
 GTlsCertificateFlags
 g_tls_certificate_verify (GTlsCertificate     *cert,
-			  GSocketConnectable  *identity,
-			  GTlsCertificate     *trusted_ca)
+                          GSocketConnectable  *identity,
+                          GTlsCertificate     *trusted_ca)
 {
   return G_TLS_CERTIFICATE_GET_CLASS (cert)->verify (cert, identity, trusted_ca);
 }

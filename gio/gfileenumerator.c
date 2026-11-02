@@ -78,22 +78,22 @@ enum {
 };
 
 static void     g_file_enumerator_real_next_files_async  (GFileEnumerator      *enumerator,
-							  int                   num_files,
-							  int                   io_priority,
-							  GCancellable         *cancellable,
-							  GAsyncReadyCallback   callback,
-							  gpointer              user_data);
+                                                          int                   num_files,
+                                                          int                   io_priority,
+                                                          GCancellable         *cancellable,
+                                                          GAsyncReadyCallback   callback,
+                                                          gpointer              user_data);
 static GList *  g_file_enumerator_real_next_files_finish (GFileEnumerator      *enumerator,
-							  GAsyncResult         *res,
-							  GError              **error);
+                                                          GAsyncResult         *res,
+                                                          GError              **error);
 static void     g_file_enumerator_real_close_async       (GFileEnumerator      *enumerator,
-							  int                   io_priority,
-							  GCancellable         *cancellable,
-							  GAsyncReadyCallback   callback,
-							  gpointer              user_data);
+                                                          int                   io_priority,
+                                                          GCancellable         *cancellable,
+                                                          GAsyncReadyCallback   callback,
+                                                          gpointer              user_data);
 static gboolean g_file_enumerator_real_close_finish      (GFileEnumerator      *enumerator,
-							  GAsyncResult         *res,
-							  GError              **error);
+                                                          GAsyncResult         *res,
+                                                          GError              **error);
 
 static void
 g_file_enumerator_set_property (GObject      *object,
@@ -190,8 +190,8 @@ g_file_enumerator_init (GFileEnumerator *enumerator)
  **/
 GFileInfo *
 g_file_enumerator_next_file (GFileEnumerator *enumerator,
-			     GCancellable *cancellable,
-			     GError **error)
+                             GCancellable *cancellable,
+                             GError **error)
 {
   GFileEnumeratorClass *class;
   GFileInfo *info;
@@ -254,8 +254,8 @@ g_file_enumerator_next_file (GFileEnumerator *enumerator,
  **/
 gboolean
 g_file_enumerator_close (GFileEnumerator  *enumerator,
-			 GCancellable     *cancellable,
-			 GError          **error)
+                         GCancellable     *cancellable,
+                         GError          **error)
 {
   GFileEnumeratorClass *class;
 
@@ -290,8 +290,8 @@ g_file_enumerator_close (GFileEnumerator  *enumerator,
 
 static void
 next_async_callback_wrapper (GObject      *source_object,
-			     GAsyncResult *res,
-			     gpointer      user_data)
+                             GAsyncResult *res,
+                             gpointer      user_data)
 {
   GFileEnumerator *enumerator = G_FILE_ENUMERATOR (source_object);
 
@@ -380,11 +380,11 @@ next_async_callback_wrapper (GObject      *source_object,
  **/
 void
 g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
-				    int                  num_files,
-				    int                  io_priority,
-				    GCancellable        *cancellable,
-				    GAsyncReadyCallback  callback,
-				    gpointer             user_data)
+                                    int                  num_files,
+                                    int                  io_priority,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             user_data)
 {
   GFileEnumeratorClass *class;
 
@@ -427,7 +427,7 @@ g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
   enumerator->priv->outstanding_callback = callback;
   g_object_ref (enumerator);
   (* class->next_files_async) (enumerator, num_files, io_priority, cancellable, 
-			       next_async_callback_wrapper, user_data);
+                               next_async_callback_wrapper, user_data);
 }
 
 /**
@@ -444,8 +444,8 @@ g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
  **/
 GList *
 g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,
-				     GAsyncResult     *result,
-				     GError          **error)
+                                     GAsyncResult     *result,
+                                     GError          **error)
 {
   GFileEnumeratorClass *class;
   
@@ -463,8 +463,8 @@ g_file_enumerator_next_files_finish (GFileEnumerator  *enumerator,
 
 static void
 close_async_callback_wrapper (GObject      *source_object,
-			      GAsyncResult *res,
-			      gpointer      user_data)
+                              GAsyncResult *res,
+                              gpointer      user_data)
 {
   GFileEnumerator *enumerator = G_FILE_ENUMERATOR (source_object);
   
@@ -494,10 +494,10 @@ close_async_callback_wrapper (GObject      *source_object,
  **/
 void
 g_file_enumerator_close_async (GFileEnumerator     *enumerator,
-			       int                  io_priority,
-			       GCancellable        *cancellable,
-			       GAsyncReadyCallback  callback,
-			       gpointer             user_data)
+                               int                  io_priority,
+                               GCancellable        *cancellable,
+                               GAsyncReadyCallback  callback,
+                               gpointer             user_data)
 {
   GFileEnumeratorClass *class;
 
@@ -527,7 +527,7 @@ g_file_enumerator_close_async (GFileEnumerator     *enumerator,
   enumerator->priv->outstanding_callback = callback;
   g_object_ref (enumerator);
   (* class->close_async) (enumerator, io_priority, cancellable,
-			  close_async_callback_wrapper, user_data);
+                          close_async_callback_wrapper, user_data);
 }
 
 /**
@@ -551,8 +551,8 @@ g_file_enumerator_close_async (GFileEnumerator     *enumerator,
  **/
 gboolean
 g_file_enumerator_close_finish (GFileEnumerator  *enumerator,
-				GAsyncResult     *result,
-				GError          **error)
+                                GAsyncResult     *result,
+                                GError          **error)
 {
   GFileEnumeratorClass *class;
 
@@ -609,7 +609,7 @@ g_file_enumerator_has_pending (GFileEnumerator *enumerator)
  **/
 void
 g_file_enumerator_set_pending (GFileEnumerator *enumerator,
-			       gboolean         pending)
+                               gboolean         pending)
 {
   g_return_if_fail (G_IS_FILE_ENUMERATOR (enumerator));
   
@@ -832,26 +832,26 @@ next_files_thread (GTask        *task,
   for (i = 0; i < num_files; i++)
     {
       if (g_cancellable_set_error_if_cancelled (cancellable, &error))
-	info = NULL;
+        info = NULL;
       else
-	info = class->next_file (enumerator, cancellable, &error);
+        info = class->next_file (enumerator, cancellable, &error);
       
       if (info == NULL)
-	{
-	  /* If we get an error after first file, return that on next operation */
-	  if (error != NULL && i > 0)
-	    {
-	      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-		g_error_free (error); /* Never propagate cancel errors to other call */
-	      else
-		enumerator->priv->outstanding_error = error;
-	      error = NULL;
-	    }
-	      
-	  break;
-	}
+        {
+          /* If we get an error after first file, return that on next operation */
+          if (error != NULL && i > 0)
+            {
+              if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+                g_error_free (error); /* Never propagate cancel errors to other call */
+              else
+                enumerator->priv->outstanding_error = error;
+              error = NULL;
+            }
+              
+          break;
+        }
       else
-	files = g_list_prepend (files, info);
+        files = g_list_prepend (files, info);
     }
 
   if (error)
@@ -865,11 +865,11 @@ next_files_thread (GTask        *task,
 
 static void
 g_file_enumerator_real_next_files_async (GFileEnumerator     *enumerator,
-					 int                  num_files,
-					 int                  io_priority,
-					 GCancellable        *cancellable,
-					 GAsyncReadyCallback  callback,
-					 gpointer             user_data)
+                                         int                  num_files,
+                                         int                  io_priority,
+                                         GCancellable        *cancellable,
+                                         GAsyncReadyCallback  callback,
+                                         gpointer             user_data)
 {
   GTask *task;
 
@@ -884,8 +884,8 @@ g_file_enumerator_real_next_files_async (GFileEnumerator     *enumerator,
 
 static GList *
 g_file_enumerator_real_next_files_finish (GFileEnumerator                *enumerator,
-					  GAsyncResult                   *result,
-					  GError                        **error)
+                                          GAsyncResult                   *result,
+                                          GError                        **error)
 {
   g_return_val_if_fail (g_task_is_valid (result, enumerator), NULL);
 
@@ -913,10 +913,10 @@ close_async_thread (GTask        *task,
 
 static void
 g_file_enumerator_real_close_async (GFileEnumerator     *enumerator,
-				    int                  io_priority,
-				    GCancellable        *cancellable,
-				    GAsyncReadyCallback  callback,
-				    gpointer             user_data)
+                                    int                  io_priority,
+                                    GCancellable        *cancellable,
+                                    GAsyncReadyCallback  callback,
+                                    gpointer             user_data)
 {
   GTask *task;
 

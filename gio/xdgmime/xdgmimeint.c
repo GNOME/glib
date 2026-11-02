@@ -17,12 +17,12 @@
 #include <ctype.h>
 #include <string.h>
 
-#ifndef	FALSE
-#define	FALSE	(0)
+#ifndef FALSE
+#define FALSE   (0)
 #endif
 
-#ifndef	TRUE
-#define	TRUE	(!FALSE)
+#ifndef TRUE
+#define TRUE    (!FALSE)
 #endif
 
 static const char _xdg_utf8_skip_data[256] = {
@@ -54,49 +54,49 @@ _xdg_utf8_to_ucs4(const char *source)
       int bytelength = 0;
       xdg_unichar_t result;
       if ( ! (*source & 0x40) )
-	{
-	  ucs32 = *source;
-	}
+        {
+          ucs32 = *source;
+        }
       else
-	{
-	  if ( ! (*source & 0x20) )
-	    {
-	      result = *source++ & 0x1F;
-	      bytelength = 2;
-	    }
-	  else if ( ! (*source & 0x10) )
-	    {
-	      result = *source++ & 0x0F;
-	      bytelength = 3;
-	    }
-	  else if ( ! (*source & 0x08) )
-	    {
-	      result = *source++ & 0x07;
-	      bytelength = 4;
-	    }
-	  else if ( ! (*source & 0x04) )
-	    {
-	      result = *source++ & 0x03;
-	      bytelength = 5;
-	    }
-	  else if ( ! (*source & 0x02) )
-	    {
-	      result = *source++ & 0x01;
-	      bytelength = 6;
-	    }
-	  else
-	    {
-	      result = *source++;
-	      bytelength = 1;
-	    }
+        {
+          if ( ! (*source & 0x20) )
+            {
+              result = *source++ & 0x1F;
+              bytelength = 2;
+            }
+          else if ( ! (*source & 0x10) )
+            {
+              result = *source++ & 0x0F;
+              bytelength = 3;
+            }
+          else if ( ! (*source & 0x08) )
+            {
+              result = *source++ & 0x07;
+              bytelength = 4;
+            }
+          else if ( ! (*source & 0x04) )
+            {
+              result = *source++ & 0x03;
+              bytelength = 5;
+            }
+          else if ( ! (*source & 0x02) )
+            {
+              result = *source++ & 0x01;
+              bytelength = 6;
+            }
+          else
+            {
+              result = *source++;
+              bytelength = 1;
+            }
 
-	  for ( bytelength --; bytelength > 0; bytelength -- )
-	    {
-	      result <<= 6;
-	      result |= *source++ & 0x3F;
-	    }
-	  ucs32 = result;
-	}
+          for ( bytelength --; bytelength > 0; bytelength -- )
+            {
+              result <<= 6;
+              result |= *source++ & 0x3F;
+            }
+          ucs32 = result;
+        }
     }
   return ucs32;
 }

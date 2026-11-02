@@ -372,13 +372,13 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
       queue->waiting_threads++;
       while (!g_queue_peek_tail_link (&queue->queue))
         {
-	  if (end_time == -1)
-	    g_cond_wait (&queue->cond, &queue->mutex);
-	  else
-	    {
-	      if (!g_cond_wait_until (&queue->cond, &queue->mutex, end_time))
-		break;
-	    }
+          if (end_time == -1)
+            g_cond_wait (&queue->cond, &queue->mutex);
+          else
+            {
+              if (!g_cond_wait_until (&queue->cond, &queue->mutex, end_time))
+                break;
+            }
         }
       queue->waiting_threads--;
     }
@@ -491,7 +491,7 @@ g_async_queue_try_pop_unlocked (GAsyncQueue *queue)
  */
 gpointer
 g_async_queue_timeout_pop (GAsyncQueue *queue,
-			   guint64      timeout)
+                           guint64      timeout)
 {
   gint64 end_time = g_get_monotonic_time () + timeout;
   gpointer retval;
@@ -522,7 +522,7 @@ g_async_queue_timeout_pop (GAsyncQueue *queue,
  */
 gpointer
 g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
-				    guint64      timeout)
+                                    guint64      timeout)
 {
   gint64 end_time = g_get_monotonic_time () + timeout;
 

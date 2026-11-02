@@ -54,32 +54,32 @@
 
 /* --- defines --- */
 #define PARAM_FLOATING_FLAG                     0x2
-#define	G_PARAM_USER_MASK			((GParamFlags) (~0U << G_PARAM_USER_SHIFT))
-#define PSPEC_APPLIES_TO_VALUE(pspec, value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
+#define G_PARAM_USER_MASK                       ((GParamFlags) (~0U << G_PARAM_USER_SHIFT))
+#define PSPEC_APPLIES_TO_VALUE(pspec, value)    (G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
 
 /* --- prototypes --- */
-static void	g_param_spec_class_base_init	 (GParamSpecClass	*class);
-static void	g_param_spec_class_base_finalize (GParamSpecClass	*class);
-static void	g_param_spec_class_init		 (GParamSpecClass	*class,
-						  gpointer               class_data);
-static void	g_param_spec_init		 (GParamSpec		*pspec,
-						  GParamSpecClass	*class);
-static void	g_param_spec_finalize		 (GParamSpec		*pspec);
-static void	value_param_init		(GValue		*value);
-static void	value_param_free_value		(GValue		*value);
-static void	value_param_copy_value		(const GValue	*src_value,
-						 GValue		*dest_value);
-static void	value_param_transform_value	(const GValue	*src_value,
-						 GValue		*dest_value);
-static gpointer	value_param_peek_pointer	(const GValue	*value);
-static gchar*	value_param_collect_value	(GValue		*value,
-						 guint           n_collect_values,
-						 GTypeCValue    *collect_values,
-						 guint           collect_flags);
-static gchar*	value_param_lcopy_value		(const GValue	*value,
-						 guint           n_collect_values,
-						 GTypeCValue    *collect_values,
-						 guint           collect_flags);
+static void     g_param_spec_class_base_init     (GParamSpecClass       *class);
+static void     g_param_spec_class_base_finalize (GParamSpecClass       *class);
+static void     g_param_spec_class_init          (GParamSpecClass       *class,
+                                                  gpointer               class_data);
+static void     g_param_spec_init                (GParamSpec            *pspec,
+                                                  GParamSpecClass       *class);
+static void     g_param_spec_finalize            (GParamSpec            *pspec);
+static void     value_param_init                (GValue         *value);
+static void     value_param_free_value          (GValue         *value);
+static void     value_param_copy_value          (const GValue   *src_value,
+                                                 GValue         *dest_value);
+static void     value_param_transform_value     (const GValue   *src_value,
+                                                 GValue         *dest_value);
+static gpointer value_param_peek_pointer        (const GValue   *value);
+static gchar*   value_param_collect_value       (GValue         *value,
+                                                 guint           n_collect_values,
+                                                 GTypeCValue    *collect_values,
+                                                 guint           collect_flags);
+static gchar*   value_param_lcopy_value         (const GValue   *value,
+                                                 guint           n_collect_values,
+                                                 GTypeCValue    *collect_values,
+                                                 guint           collect_flags);
 
 typedef struct
 {
@@ -110,9 +110,9 @@ _g_param_type_init (void)
     value_param_free_value,     /* value_free */
     value_param_copy_value,     /* value_copy */
     value_param_peek_pointer,   /* value_peek_pointer */
-    "p",			/* collect_format */
+    "p",                        /* collect_format */
     value_param_collect_value,  /* collect_value */
-    "p",			/* lcopy_format */
+    "p",                        /* lcopy_format */
     value_param_lcopy_value,    /* lcopy_value */
   };
   const GTypeInfo param_spec_info = {
@@ -122,10 +122,10 @@ _g_param_type_init (void)
     (GBaseFinalizeFunc) g_param_spec_class_base_finalize,
     (GClassInitFunc) g_param_spec_class_init,
     (GClassFinalizeFunc) NULL,
-    NULL,	/* class_data */
+    NULL,       /* class_data */
 
     sizeof (GParamSpec),
-    0,		/* n_preallocs */
+    0,          /* n_preallocs */
     (GInstanceInitFunc) g_param_spec_init,
 
     &param_value_table,
@@ -155,7 +155,7 @@ g_param_spec_class_base_finalize (GParamSpecClass *class)
 
 static void
 g_param_spec_class_init (GParamSpecClass *class,
-			 gpointer         class_data)
+                         gpointer         class_data)
 {
   class->value_type = G_TYPE_NONE;
   class->finalize = g_param_spec_finalize;
@@ -168,7 +168,7 @@ g_param_spec_class_init (GParamSpecClass *class,
 
 static void
 g_param_spec_init (GParamSpec      *pspec,
-		   GParamSpecClass *class)
+                   GParamSpecClass *class)
 {
   pspec->name = NULL;
   pspec->_nick = NULL;
@@ -325,7 +325,7 @@ g_param_spec_get_nick (GParamSpec *pspec)
 
       redirect_target = g_param_spec_get_redirect_target (pspec);
       if (redirect_target && redirect_target->_nick)
-	return redirect_target->_nick;
+        return redirect_target->_nick;
     }
 
   return pspec->name;
@@ -352,7 +352,7 @@ g_param_spec_get_blurb (GParamSpec *pspec)
 
       redirect_target = g_param_spec_get_redirect_target (pspec);
       if (redirect_target && redirect_target->_blurb)
-	return redirect_target->_blurb;
+        return redirect_target->_blurb;
     }
 
   return NULL;
@@ -445,10 +445,10 @@ g_param_spec_is_valid_name (const gchar *name)
  */
 gpointer
 g_param_spec_internal (GType        param_type,
-		       const gchar *name,
-		       const gchar *nick,
-		       const gchar *blurb,
-		       GParamFlags  flags)
+                       const gchar *name,
+                       const gchar *nick,
+                       const gchar *blurb,
+                       GParamFlags  flags)
 {
   GParamSpec *pspec;
   GParamSpecPrivate *priv;
@@ -509,7 +509,7 @@ g_param_spec_internal (GType        param_type,
  */
 gpointer
 g_param_spec_get_qdata (GParamSpec *pspec,
-			GQuark      quark)
+                        GQuark      quark)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
   
@@ -531,8 +531,8 @@ g_param_spec_get_qdata (GParamSpec *pspec,
  */
 void
 g_param_spec_set_qdata (GParamSpec *pspec,
-			GQuark      quark,
-			gpointer    data)
+                        GQuark      quark,
+                        gpointer    data)
 {
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
   g_return_if_fail (quark > 0);
@@ -556,9 +556,9 @@ g_param_spec_set_qdata (GParamSpec *pspec,
  */
 void
 g_param_spec_set_qdata_full (GParamSpec    *pspec,
-			     GQuark         quark,
-			     gpointer       data,
-			     GDestroyNotify destroy)
+                             GQuark         quark,
+                             gpointer       data,
+                             GDestroyNotify destroy)
 {
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
   g_return_if_fail (quark > 0);
@@ -580,7 +580,7 @@ g_param_spec_set_qdata_full (GParamSpec    *pspec,
  */
 gpointer
 g_param_spec_steal_qdata (GParamSpec *pspec,
-			  GQuark      quark)
+                          GQuark      quark)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
   g_return_val_if_fail (quark > 0, NULL);
@@ -626,7 +626,7 @@ g_param_spec_get_redirect_target (GParamSpec *pspec)
  */
 void
 g_param_value_set_default (GParamSpec *pspec,
-			   GValue     *value)
+                           GValue     *value)
 {
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
 
@@ -655,7 +655,7 @@ g_param_value_set_default (GParamSpec *pspec,
  */
 gboolean
 g_param_value_defaults (GParamSpec   *pspec,
-			const GValue *value)
+                        const GValue *value)
 {
   GValue dflt_value = G_VALUE_INIT;
   gboolean defaults;
@@ -688,7 +688,7 @@ g_param_value_defaults (GParamSpec   *pspec,
  */
 gboolean
 g_param_value_validate (GParamSpec *pspec,
-			GValue     *value)
+                        GValue     *value)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
   g_return_val_if_fail (G_IS_VALUE (value), FALSE);
@@ -699,8 +699,8 @@ g_param_value_validate (GParamSpec *pspec,
       GValue oval = *value;
 
       if (G_PARAM_SPEC_GET_CLASS (pspec)->value_validate (pspec, value) ||
-	  memcmp (&oval.data, &value->data, sizeof (oval.data)))
-	return TRUE;
+          memcmp (&oval.data, &value->data, sizeof (oval.data)))
+        return TRUE;
     }
 
   return FALSE;
@@ -772,9 +772,9 @@ g_param_value_is_valid (GParamSpec *pspec,
  */
 gboolean
 g_param_value_convert (GParamSpec   *pspec,
-		       const GValue *src_value,
-		       GValue       *dest_value,
-		       gboolean	     strict_validation)
+                       const GValue *src_value,
+                       GValue       *dest_value,
+                       gboolean      strict_validation)
 {
   GValue tmp_value = G_VALUE_INIT;
 
@@ -818,8 +818,8 @@ g_param_value_convert (GParamSpec   *pspec,
  */
 gint
 g_param_values_cmp (GParamSpec   *pspec,
-		    const GValue *value1,
-		    const GValue *value2)
+                    const GValue *value1,
+                    const GValue *value2)
 {
   gint cmp;
 
@@ -855,7 +855,7 @@ value_param_free_value (GValue *value)
 
 static void
 value_param_copy_value (const GValue *src_value,
-			GValue       *dest_value)
+                        GValue       *dest_value)
 {
   if (src_value->data[0].v_pointer)
     dest_value->data[0].v_pointer = g_param_spec_ref (src_value->data[0].v_pointer);
@@ -865,7 +865,7 @@ value_param_copy_value (const GValue *src_value,
 
 static void
 value_param_transform_value (const GValue *src_value,
-			     GValue       *dest_value)
+                             GValue       *dest_value)
 {
   if (src_value->data[0].v_pointer &&
       g_type_is_a (G_PARAM_SPEC_TYPE (dest_value->data[0].v_pointer), G_VALUE_TYPE (dest_value)))
@@ -882,26 +882,26 @@ value_param_peek_pointer (const GValue *value)
 
 static gchar*
 value_param_collect_value (GValue      *value,
-			   guint        n_collect_values,
-			   GTypeCValue *collect_values,
-			   guint        collect_flags)
+                           guint        n_collect_values,
+                           GTypeCValue *collect_values,
+                           guint        collect_flags)
 {
   if (collect_values[0].v_pointer)
     {
       GParamSpec *param = collect_values[0].v_pointer;
 
       if (param->g_type_instance.g_class == NULL)
-	return g_strconcat ("invalid unclassed param spec pointer for value type '",
-			    G_VALUE_TYPE_NAME (value),
-			    "'",
-			    NULL);
+        return g_strconcat ("invalid unclassed param spec pointer for value type '",
+                            G_VALUE_TYPE_NAME (value),
+                            "'",
+                            NULL);
       else if (!g_value_type_compatible (G_PARAM_SPEC_TYPE (param), G_VALUE_TYPE (value)))
-	return g_strconcat ("invalid param spec type '",
-			    G_PARAM_SPEC_TYPE_NAME (param),
-			    "' for value type '",
-			    G_VALUE_TYPE_NAME (value),
-			    "'",
-			    NULL);
+        return g_strconcat ("invalid param spec type '",
+                            G_PARAM_SPEC_TYPE_NAME (param),
+                            "' for value type '",
+                            G_VALUE_TYPE_NAME (value),
+                            "'",
+                            NULL);
       value->data[0].v_pointer = g_param_spec_ref (param);
     }
   else
@@ -912,9 +912,9 @@ value_param_collect_value (GValue      *value,
 
 static gchar*
 value_param_lcopy_value (const GValue *value,
-			 guint         n_collect_values,
-			 GTypeCValue  *collect_values,
-			 guint         collect_flags)
+                         guint         n_collect_values,
+                         GTypeCValue  *collect_values,
+                         guint         collect_flags)
 {
   GParamSpec **param_p = collect_values[0].v_pointer;
 
@@ -963,14 +963,14 @@ param_spec_pool_hash (gconstpointer key_spec)
 
 static gboolean
 param_spec_pool_equals (gconstpointer key_spec_1,
-			gconstpointer key_spec_2)
+                        gconstpointer key_spec_2)
 {
   const GParamSpec *key1 = key_spec_1;
   const GParamSpec *key2 = key_spec_2;
 
   return (key1->owner_type == key2->owner_type &&
           (key1->name == key2->name ||
-	   strcmp (key1->name, key2->name) == 0));
+           strcmp (key1->name, key2->name) == 0));
 }
 
 /**
@@ -1030,21 +1030,21 @@ g_param_spec_pool_free (GParamSpecPool *pool)
  */
 void
 g_param_spec_pool_insert (GParamSpecPool *pool,
-			  GParamSpec     *pspec,
-			  GType           owner_type)
+                          GParamSpec     *pspec,
+                          GType           owner_type)
 {
   const gchar *p;
   
   if (pool && pspec && owner_type > 0 && pspec->owner_type == 0)
     {
       for (p = pspec->name; *p; p++)
-	{
-	  if (!strchr (G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-_", *p))
-	    {
-	      g_critical (G_STRLOC ": pspec name \"%s\" contains invalid characters", pspec->name);
-	      return;
-	    }
-	}
+        {
+          if (!strchr (G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-_", *p))
+            {
+              g_critical (G_STRLOC ": pspec name \"%s\" contains invalid characters", pspec->name);
+              return;
+            }
+        }
       g_mutex_lock (&pool->mutex);
       pspec->owner_type = owner_type;
       g_param_spec_ref (pspec);
@@ -1069,13 +1069,13 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
  */
 void
 g_param_spec_pool_remove (GParamSpecPool *pool,
-			  GParamSpec     *pspec)
+                          GParamSpec     *pspec)
 {
   if (pool && pspec)
     {
       g_mutex_lock (&pool->mutex);
       if (!g_hash_table_remove (pool->hash_table, pspec))
-	g_critical (G_STRLOC ": attempt to remove unknown pspec '%s' from pool", pspec->name);
+        g_critical (G_STRLOC ": attempt to remove unknown pspec '%s' from pool", pspec->name);
       g_mutex_unlock (&pool->mutex);
     }
   else
@@ -1087,9 +1087,9 @@ g_param_spec_pool_remove (GParamSpecPool *pool,
 
 static inline GParamSpec*
 param_spec_ht_lookup (GHashTable  *hash_table,
-		      const gchar *param_name,
-		      GType        owner_type,
-		      gboolean     walk_ancestors)
+                      const gchar *param_name,
+                      GType        owner_type,
+                      gboolean     walk_ancestors)
 {
   GParamSpec key, *pspec;
 
@@ -1098,10 +1098,10 @@ param_spec_ht_lookup (GHashTable  *hash_table,
   if (walk_ancestors)
     do
       {
-	pspec = g_hash_table_lookup (hash_table, &key);
-	if (pspec)
-	  return pspec;
-	key.owner_type = g_type_parent (key.owner_type);
+        pspec = g_hash_table_lookup (hash_table, &key);
+        if (pspec)
+          return pspec;
+        key.owner_type = g_type_parent (key.owner_type);
       }
     while (key.owner_type);
   else
@@ -1154,9 +1154,9 @@ param_spec_ht_lookup (GHashTable  *hash_table,
  */
 GParamSpec*
 g_param_spec_pool_lookup (GParamSpecPool *pool,
-			  const gchar    *param_name,
-			  GType           owner_type,
-			  gboolean        walk_ancestors)
+                          const gchar    *param_name,
+                          GType           owner_type,
+                          gboolean        walk_ancestors)
 {
   GParamSpec *pspec;
 
@@ -1219,8 +1219,8 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
 
 static void
 pool_list (gpointer key,
-	   gpointer value,
-	   gpointer user_data)
+           gpointer value,
+           gpointer user_data)
 {
   GParamSpec *pspec = value;
   gpointer *data = user_data;
@@ -1244,7 +1244,7 @@ pool_list (gpointer key,
  */
 GList*
 g_param_spec_pool_list_owned (GParamSpecPool *pool,
-			      GType           owner_type)
+                              GType           owner_type)
 {
   gpointer data[2];
 
@@ -1262,7 +1262,7 @@ g_param_spec_pool_list_owned (GParamSpecPool *pool,
 
 static gint
 pspec_compare_id (gconstpointer a,
-		  gconstpointer b)
+                  gconstpointer b)
 {
   const GParamSpec *pspec1 = a, *pspec2 = b;
 
@@ -1303,8 +1303,8 @@ should_list_pspec (GParamSpec *pspec,
 
 static void
 pool_depth_list (gpointer key,
-		 gpointer value,
-		 gpointer user_data)
+                 gpointer value,
+                 gpointer user_data)
 {
   GParamSpec *pspec = value;
   gpointer *data = user_data;
@@ -1317,17 +1317,17 @@ pool_depth_list (gpointer key,
       should_list_pspec (pspec, owner_type, ht))
     {
       if (G_TYPE_IS_INTERFACE (pspec->owner_type))
-	{
-	  slists[0] = g_slist_prepend (slists[0], pspec);
+        {
+          slists[0] = g_slist_prepend (slists[0], pspec);
           *count = *count + 1;
-	}
+        }
       else
-	{
+        {
           guint d = g_type_depth (pspec->owner_type);
 
           slists[d - 1] = g_slist_prepend (slists[d - 1], pspec);
           *count = *count + 1;
-	}
+        }
     }
 }
 
@@ -1342,8 +1342,8 @@ pool_depth_list (gpointer key,
  */
 static void
 pool_depth_list_for_interface (gpointer key,
-			       gpointer value,
-			       gpointer user_data)
+                               gpointer value,
+                               gpointer user_data)
 {
   GParamSpec *pspec = value;
   gpointer *data = user_data;
@@ -1375,8 +1375,8 @@ pool_depth_list_for_interface (gpointer key,
  */
 GParamSpec**
 g_param_spec_pool_list (GParamSpecPool *pool,
-			GType           owner_type,
-			guint          *n_pspecs_p)
+                        GType           owner_type,
+                        guint          *n_pspecs_p)
 {
   GParamSpec **pspecs, **p;
   GSList **slists, *node;
@@ -1408,7 +1408,7 @@ g_param_spec_pool_list (GParamSpecPool *pool,
     {
       slists[i] = g_slist_sort (slists[i], pspec_compare_id);
       for (node = slists[i]; node; node = node->next)
-	*p++ = node->data;
+        *p++ = node->data;
       g_slist_free (slists[i]);
     }
   *p++ = NULL;
@@ -1427,42 +1427,42 @@ typedef struct
   GType           value_type;
   void          (*finalize)             (GParamSpec   *pspec);
   void          (*value_set_default)    (GParamSpec   *pspec,
-					 GValue       *value);
+                                         GValue       *value);
   gboolean      (*value_validate)       (GParamSpec   *pspec,
-					 GValue       *value);
+                                         GValue       *value);
   gint          (*values_cmp)           (GParamSpec   *pspec,
-					 const GValue *value1,
-					 const GValue *value2);
+                                         const GValue *value1,
+                                         const GValue *value2);
 } ParamSpecClassInfo;
 
 static void
 param_spec_generic_class_init (gpointer g_class,
-			       gpointer class_data)
+                               gpointer class_data)
 {
   GParamSpecClass *class = g_class;
   ParamSpecClassInfo *info = class_data;
 
   class->value_type = info->value_type;
   if (info->finalize)
-    class->finalize = info->finalize;			/* optional */
+    class->finalize = info->finalize;                   /* optional */
   class->value_set_default = info->value_set_default;
   if (info->value_validate)
-    class->value_validate = info->value_validate;	/* optional */
+    class->value_validate = info->value_validate;       /* optional */
   class->values_cmp = info->values_cmp;
   g_free (class_data);
 }
 
 static void
 default_value_set_default (GParamSpec *pspec,
-			   GValue     *value)
+                           GValue     *value)
 {
   /* value is already zero initialized */
 }
 
 static gint
 default_values_cmp (GParamSpec   *pspec,
-		    const GValue *value1,
-		    const GValue *value2)
+                    const GValue *value1,
+                    const GValue *value2)
 {
   return memcmp (&value1->data, &value2->data, sizeof (value1->data));
 }
@@ -1483,7 +1483,7 @@ default_values_cmp (GParamSpec   *pspec,
  */
 GType
 g_param_type_register_static (const gchar              *name,
-			      const GParamSpecTypeInfo *pspec_info)
+                              const GParamSpecTypeInfo *pspec_info)
 {
   GTypeInfo info = {
     sizeof (GParamSpecClass),      /* class_size */
@@ -1531,7 +1531,7 @@ g_param_type_register_static (const gchar              *name,
  */
 void
 g_value_set_param (GValue     *value,
-		   GParamSpec *param)
+                   GParamSpec *param)
 {
   g_return_if_fail (G_VALUE_HOLDS_PARAM (value));
   if (param)
@@ -1555,7 +1555,7 @@ g_value_set_param (GValue     *value,
  */
 void
 g_value_set_param_take_ownership (GValue     *value,
-				  GParamSpec *param)
+                                  GParamSpec *param)
 {
   g_value_take_param (value, param);
 }
@@ -1573,7 +1573,7 @@ g_value_set_param_take_ownership (GValue     *value,
  */
 void
 g_value_take_param (GValue     *value,
-		    GParamSpec *param)
+                    GParamSpec *param)
 {
   g_return_if_fail (G_VALUE_HOLDS_PARAM (value));
   if (param)

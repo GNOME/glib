@@ -51,8 +51,8 @@ static void     g_inet_address_mask_initable_iface_init (GInitableIface  *iface)
 
 G_DEFINE_TYPE_WITH_CODE (GInetAddressMask, g_inet_address_mask, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GInetAddressMask)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_inet_address_mask_initable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_inet_address_mask_initable_iface_init))
 
 enum
 {
@@ -64,9 +64,9 @@ enum
 
 static void
 g_inet_address_mask_set_property (GObject      *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GInetAddressMask *mask = G_INET_ADDRESS_MASK (object);
 
@@ -74,7 +74,7 @@ g_inet_address_mask_set_property (GObject      *object,
     {
     case PROP_ADDRESS:
       if (mask->priv->addr)
-	g_object_unref (mask->priv->addr);
+        g_object_unref (mask->priv->addr);
       mask->priv->addr = g_value_dup_object (value);
       break;
 
@@ -91,9 +91,9 @@ g_inet_address_mask_set_property (GObject      *object,
 
 static void
 g_inet_address_mask_get_property (GObject    *object,
-				  guint       prop_id,
-				  GValue     *value,
-				  GParamSpec *pspec)
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GInetAddressMask *mask = G_INET_ADDRESS_MASK (object);
 
@@ -144,9 +144,9 @@ g_inet_address_mask_class_init (GInetAddressMaskClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
                                    g_param_spec_enum ("family", NULL, NULL,
-						      G_TYPE_SOCKET_FAMILY,
-						      G_SOCKET_FAMILY_INVALID,
-						      G_PARAM_READABLE |
+                                                      G_TYPE_SOCKET_FAMILY,
+                                                      G_SOCKET_FAMILY_INVALID,
+                                                      G_PARAM_READABLE |
                                                       G_PARAM_STATIC_STRINGS));
 
   /**
@@ -158,9 +158,9 @@ g_inet_address_mask_class_init (GInetAddressMaskClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_ADDRESS,
                                    g_param_spec_object ("address", NULL, NULL,
-							G_TYPE_INET_ADDRESS,
-							G_PARAM_READWRITE |
-							G_PARAM_STATIC_STRINGS));
+                                                        G_TYPE_INET_ADDRESS,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GInetAddressMask:length:
@@ -171,15 +171,15 @@ g_inet_address_mask_class_init (GInetAddressMaskClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_LENGTH,
                                    g_param_spec_uint ("length", NULL, NULL,
-						      0, 128, 0,
-						      G_PARAM_READWRITE |
-						      G_PARAM_STATIC_STRINGS));
+                                                      0, 128, 0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
 }
 
 static gboolean
 g_inet_address_mask_initable_init (GInitable     *initable,
-				   GCancellable  *cancellable,
-				   GError       **error)
+                                   GCancellable  *cancellable,
+                                   GError       **error)
 {
   GInetAddressMask *mask = G_INET_ADDRESS_MASK (initable);
   guint addrlen, nbytes, nbits;
@@ -189,7 +189,7 @@ g_inet_address_mask_initable_init (GInitable     *initable,
   if (!mask->priv->addr)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-			   _("No address specified"));
+                           _("No address specified"));
       return FALSE;
     }
 
@@ -197,8 +197,8 @@ g_inet_address_mask_initable_init (GInitable     *initable,
   if (mask->priv->length > addrlen * 8)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Length %u is too long for address"),
-		   mask->priv->length);
+                   _("Length %u is too long for address"),
+                   mask->priv->length);
       return FALSE;
     }
 
@@ -214,7 +214,7 @@ g_inet_address_mask_initable_init (GInitable     *initable,
   if (nbits)
     {
       if (bytes[0] & (0xFF >> nbits))
-	ok = FALSE;
+        ok = FALSE;
       bytes++;
       addrlen--;
     }
@@ -222,7 +222,7 @@ g_inet_address_mask_initable_init (GInitable     *initable,
   while (addrlen)
     {
       if (bytes[0])
-	ok = FALSE;
+        ok = FALSE;
       bytes++;
       addrlen--;
     }
@@ -230,7 +230,7 @@ g_inet_address_mask_initable_init (GInitable     *initable,
   if (!ok)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-			   _("Address has bits set beyond prefix length"));
+                           _("Address has bits set beyond prefix length"));
       return FALSE;
     }
 
@@ -264,13 +264,13 @@ g_inet_address_mask_init (GInetAddressMask *mask)
  */
 GInetAddressMask *
 g_inet_address_mask_new (GInetAddress  *addr,
-			 guint          length,
-			 GError       **error)
+                         guint          length,
+                         GError       **error)
 {
   return g_initable_new (G_TYPE_INET_ADDRESS_MASK, NULL, error,
-			 "address", addr,
-			 "length", length,
-			 NULL);
+                         "address", addr,
+                         "length", length,
+                         NULL);
 }
 
 /**
@@ -290,7 +290,7 @@ g_inet_address_mask_new (GInetAddress  *addr,
  */
 GInetAddressMask *
 g_inet_address_mask_new_from_string (const gchar  *mask_string,
-				     GError      **error)
+                                     GError      **error)
 {
   GInetAddressMask *mask;
   GInetAddress *addr;
@@ -304,26 +304,26 @@ g_inet_address_mask_new_from_string (const gchar  *mask_string,
 
       length = strtoul (slash + 1, &end, 10);
       if (*end || !*(slash + 1))
-	{
-	parse_error:
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		       _("Could not parse “%s” as IP address mask"),
-		       mask_string);
-	  return NULL;
-	}
+        {
+        parse_error:
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Could not parse “%s” as IP address mask"),
+                       mask_string);
+          return NULL;
+        }
 
       address = g_strndup (mask_string, (size_t) (slash - mask_string));
       addr = g_inet_address_new_from_string (address);
       g_free (address);
 
       if (!addr)
-	goto parse_error;
+        goto parse_error;
     }
   else
     {
       addr = g_inet_address_new_from_string (mask_string);
       if (!addr)
-	goto parse_error;
+        goto parse_error;
 
       length = g_inet_address_get_native_size (addr) * 8;
     }
@@ -430,7 +430,7 @@ g_inet_address_mask_get_length (GInetAddressMask *mask)
  */
 gboolean
 g_inet_address_mask_matches (GInetAddressMask *mask,
-			     GInetAddress     *address)
+                             GInetAddress     *address)
 {
   const guint8 *maskbytes, *addrbytes;
   size_t nbytes, nbits;
@@ -473,11 +473,11 @@ g_inet_address_mask_matches (GInetAddressMask *mask,
  */
 gboolean
 g_inet_address_mask_equal (GInetAddressMask  *mask,
-			   GInetAddressMask  *mask2)
+                           GInetAddressMask  *mask2)
 {
   g_return_val_if_fail (G_IS_INET_ADDRESS_MASK (mask), FALSE);
   g_return_val_if_fail (G_IS_INET_ADDRESS_MASK (mask2), FALSE);
 
   return ((mask->priv->length == mask2->priv->length) &&
-	  g_inet_address_equal (mask->priv->addr, mask2->priv->addr));
+          g_inet_address_equal (mask->priv->addr, mask2->priv->addr));
 }

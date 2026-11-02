@@ -105,9 +105,9 @@ grind_get_char_backwards (const char *str, gsize len)
     {
       const char *p = str + len;
       do
-	{
-	  p = g_utf8_prev_char (p);
-	  acc += g_utf8_get_char (p);
+        {
+          p = g_utf8_prev_char (p);
+          acc += g_utf8_get_char (p);
         }
       while (p != str);
     }

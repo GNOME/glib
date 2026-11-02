@@ -64,63 +64,63 @@ struct _GOutputStreamPrivate {
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GOutputStream, g_output_stream, G_TYPE_OBJECT)
 
 static gssize   g_output_stream_real_splice        (GOutputStream             *stream,
-						    GInputStream              *source,
-						    GOutputStreamSpliceFlags   flags,
-						    GCancellable              *cancellable,
-						    GError                   **error);
+                                                    GInputStream              *source,
+                                                    GOutputStreamSpliceFlags   flags,
+                                                    GCancellable              *cancellable,
+                                                    GError                   **error);
 static void     g_output_stream_real_write_async   (GOutputStream             *stream,
-						    const void                *buffer,
-						    gsize                      count,
-						    int                        io_priority,
-						    GCancellable              *cancellable,
-						    GAsyncReadyCallback        callback,
-						    gpointer                   data);
+                                                    const void                *buffer,
+                                                    gsize                      count,
+                                                    int                        io_priority,
+                                                    GCancellable              *cancellable,
+                                                    GAsyncReadyCallback        callback,
+                                                    gpointer                   data);
 static gssize   g_output_stream_real_write_finish  (GOutputStream             *stream,
-						    GAsyncResult              *result,
-						    GError                   **error);
+                                                    GAsyncResult              *result,
+                                                    GError                   **error);
 static gboolean g_output_stream_real_writev        (GOutputStream             *stream,
-						    const GOutputVector       *vectors,
-						    gsize                      n_vectors,
-						    gsize                     *bytes_written,
-						    GCancellable              *cancellable,
-						    GError                   **error);
+                                                    const GOutputVector       *vectors,
+                                                    gsize                      n_vectors,
+                                                    gsize                     *bytes_written,
+                                                    GCancellable              *cancellable,
+                                                    GError                   **error);
 static void     g_output_stream_real_writev_async  (GOutputStream             *stream,
-						    const GOutputVector       *vectors,
-						    gsize                      n_vectors,
-						    int                        io_priority,
-						    GCancellable              *cancellable,
-						    GAsyncReadyCallback        callback,
-						    gpointer                   data);
+                                                    const GOutputVector       *vectors,
+                                                    gsize                      n_vectors,
+                                                    int                        io_priority,
+                                                    GCancellable              *cancellable,
+                                                    GAsyncReadyCallback        callback,
+                                                    gpointer                   data);
 static gboolean g_output_stream_real_writev_finish (GOutputStream             *stream,
-						    GAsyncResult              *result,
-						    gsize                     *bytes_written,
-						    GError                   **error);
+                                                    GAsyncResult              *result,
+                                                    gsize                     *bytes_written,
+                                                    GError                   **error);
 static void     g_output_stream_real_splice_async  (GOutputStream             *stream,
-						    GInputStream              *source,
-						    GOutputStreamSpliceFlags   flags,
-						    int                        io_priority,
-						    GCancellable              *cancellable,
-						    GAsyncReadyCallback        callback,
-						    gpointer                   data);
+                                                    GInputStream              *source,
+                                                    GOutputStreamSpliceFlags   flags,
+                                                    int                        io_priority,
+                                                    GCancellable              *cancellable,
+                                                    GAsyncReadyCallback        callback,
+                                                    gpointer                   data);
 static gssize   g_output_stream_real_splice_finish (GOutputStream             *stream,
-						    GAsyncResult              *result,
-						    GError                   **error);
+                                                    GAsyncResult              *result,
+                                                    GError                   **error);
 static void     g_output_stream_real_flush_async   (GOutputStream             *stream,
-						    int                        io_priority,
-						    GCancellable              *cancellable,
-						    GAsyncReadyCallback        callback,
-						    gpointer                   data);
+                                                    int                        io_priority,
+                                                    GCancellable              *cancellable,
+                                                    GAsyncReadyCallback        callback,
+                                                    gpointer                   data);
 static gboolean g_output_stream_real_flush_finish  (GOutputStream             *stream,
-						    GAsyncResult              *result,
-						    GError                   **error);
+                                                    GAsyncResult              *result,
+                                                    GError                   **error);
 static void     g_output_stream_real_close_async   (GOutputStream             *stream,
-						    int                        io_priority,
-						    GCancellable              *cancellable,
-						    GAsyncReadyCallback        callback,
-						    gpointer                   data);
+                                                    int                        io_priority,
+                                                    GCancellable              *cancellable,
+                                                    GAsyncReadyCallback        callback,
+                                                    gpointer                   data);
 static gboolean g_output_stream_real_close_finish  (GOutputStream             *stream,
-						    GAsyncResult              *result,
-						    GError                   **error);
+                                                    GAsyncResult              *result,
+                                                    GError                   **error);
 static gboolean g_output_stream_internal_close     (GOutputStream             *stream,
                                                     GCancellable              *cancellable,
                                                     GError                   **error);
@@ -207,10 +207,10 @@ g_output_stream_init (GOutputStream *stream)
  **/
 gssize
 g_output_stream_write (GOutputStream  *stream,
-		       const void     *buffer,
-		       gsize           count,
-		       GCancellable   *cancellable,
-		       GError        **error)
+                       const void     *buffer,
+                       gsize           count,
+                       GCancellable   *cancellable,
+                       GError        **error)
 {
   GOutputStreamClass *class;
   gssize res;
@@ -224,7 +224,7 @@ g_output_stream_write (GOutputStream  *stream,
   if (((gssize) count) < 0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Too large count value passed to %s"), G_STRFUNC);
+                   _("Too large count value passed to %s"), G_STRFUNC);
       return -1;
     }
 
@@ -287,11 +287,11 @@ g_output_stream_write (GOutputStream  *stream,
  **/
 gboolean
 g_output_stream_write_all (GOutputStream  *stream,
-			   const void     *buffer,
-			   gsize           count,
-			   gsize          *bytes_written,
-			   GCancellable   *cancellable,
-			   GError        **error)
+                           const void     *buffer,
+                           gsize           count,
+                           gsize          *bytes_written,
+                           GCancellable   *cancellable,
+                           GError        **error)
 {
   gsize _bytes_written;
   gssize res;
@@ -303,13 +303,13 @@ g_output_stream_write_all (GOutputStream  *stream,
   while (_bytes_written < count)
     {
       res = g_output_stream_write (stream, (char *)buffer + _bytes_written, count - _bytes_written,
-				   cancellable, error);
+                                   cancellable, error);
       if (res == -1)
-	{
-	  if (bytes_written)
-	    *bytes_written = _bytes_written;
-	  return FALSE;
-	}
+        {
+          if (bytes_written)
+            *bytes_written = _bytes_written;
+          return FALSE;
+        }
       g_return_val_if_fail (res > 0, FALSE);
 
       _bytes_written += res;
@@ -361,11 +361,11 @@ g_output_stream_write_all (GOutputStream  *stream,
  */
 gboolean
 g_output_stream_writev (GOutputStream        *stream,
-		        const GOutputVector  *vectors,
-		        gsize                 n_vectors,
-		        gsize                *bytes_written,
-		        GCancellable         *cancellable,
-		        GError              **error)
+                        const GOutputVector  *vectors,
+                        gsize                 n_vectors,
+                        gsize                *bytes_written,
+                        GCancellable         *cancellable,
+                        GError              **error)
 {
   GOutputStreamClass *class;
   gboolean res;
@@ -447,11 +447,11 @@ g_output_stream_writev (GOutputStream        *stream,
  */
 gboolean
 g_output_stream_writev_all (GOutputStream  *stream,
-			    GOutputVector  *vectors,
-			    gsize           n_vectors,
-			    gsize          *bytes_written,
-			    GCancellable   *cancellable,
-			    GError        **error)
+                            GOutputVector  *vectors,
+                            gsize           n_vectors,
+                            gsize          *bytes_written,
+                            GCancellable   *cancellable,
+                            GError        **error)
 {
   gsize _bytes_written = 0;
   gsize i, to_be_written = 0;
@@ -637,9 +637,9 @@ g_output_stream_vprintf (GOutputStream  *stream,
  **/
 gssize
 g_output_stream_write_bytes (GOutputStream  *stream,
-			     GBytes         *bytes,
-			     GCancellable   *cancellable,
-			     GError        **error)
+                             GBytes         *bytes,
+                             GCancellable   *cancellable,
+                             GError        **error)
 {
   gsize size;
   gconstpointer data;
@@ -648,8 +648,8 @@ g_output_stream_write_bytes (GOutputStream  *stream,
 
   return g_output_stream_write (stream,
                                 data, size,
-				cancellable,
-				error);
+                                cancellable,
+                                error);
 }
 
 /**
@@ -689,12 +689,12 @@ g_output_stream_flush (GOutputStream  *stream,
   if (class->flush)
     {
       if (cancellable)
-	g_cancellable_push_current (cancellable);
+        g_cancellable_push_current (cancellable);
       
       res = class->flush (stream, cancellable, error);
       
       if (cancellable)
-	g_cancellable_pop_current (cancellable);
+        g_cancellable_pop_current (cancellable);
     }
   
   g_output_stream_clear_pending (stream);
@@ -721,10 +721,10 @@ g_output_stream_flush (GOutputStream  *stream,
  **/
 gssize
 g_output_stream_splice (GOutputStream             *stream,
-			GInputStream              *source,
-			GOutputStreamSpliceFlags   flags,
-			GCancellable              *cancellable,
-			GError                   **error)
+                        GInputStream              *source,
+                        GOutputStreamSpliceFlags   flags,
+                        GCancellable              *cancellable,
+                        GError                   **error)
 {
   GOutputStreamClass *class;
   gssize bytes_copied;
@@ -792,31 +792,31 @@ g_output_stream_real_splice (GOutputStream             *stream,
     {
       n_read = g_input_stream_read (source, buffer, SPLICE_BUFFER_SIZE, cancellable, error);
       if (n_read == -1)
-	{
-	  res = FALSE;
-	  break;
-	}
+        {
+          res = FALSE;
+          break;
+        }
 
       if (n_read == 0)
-	break;
+        break;
 
       p = buffer;
       while (n_read > 0)
-	{
-	  n_written = class->write_fn (stream, p, n_read, cancellable, error);
-	  if (n_written == -1)
-	    {
-	      res = FALSE;
-	      break;
-	    }
+        {
+          n_written = class->write_fn (stream, p, n_read, cancellable, error);
+          if (n_written == -1)
+            {
+              res = FALSE;
+              break;
+            }
 
-	  p += n_written;
-	  n_read -= n_written;
-	  bytes_copied += n_written;
-	}
+          p += n_written;
+          n_read -= n_written;
+          bytes_copied += n_written;
+        }
 
       if (bytes_copied > G_MAXSSIZE)
-	bytes_copied = G_MAXSSIZE;
+        bytes_copied = G_MAXSSIZE;
     }
   while (res);
 
@@ -934,8 +934,8 @@ g_output_stream_internal_close (GOutputStream  *stream,
  **/
 gboolean
 g_output_stream_close (GOutputStream  *stream,
-		       GCancellable   *cancellable,
-		       GError        **error)
+                       GCancellable   *cancellable,
+                       GError        **error)
 {
   gboolean res;
 
@@ -1031,12 +1031,12 @@ async_ready_write_callback_wrapper (GObject      *source_object,
  */
 void
 g_output_stream_write_async (GOutputStream       *stream,
-			     const void          *buffer,
-			     gsize                count,
-			     int                  io_priority,
-			     GCancellable        *cancellable,
-			     GAsyncReadyCallback  callback,
-			     gpointer             user_data)
+                             const void          *buffer,
+                             gsize                count,
+                             int                  io_priority,
+                             GCancellable        *cancellable,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data)
 {
   GOutputStreamClass *class;
   GError *error = NULL;
@@ -1334,12 +1334,12 @@ g_output_stream_write_all_finish (GOutputStream  *stream,
  */
 void
 g_output_stream_writev_async (GOutputStream             *stream,
-			      const GOutputVector       *vectors,
-			      gsize                      n_vectors,
-			      int                        io_priority,
-			      GCancellable              *cancellable,
-			      GAsyncReadyCallback        callback,
-			      gpointer                   user_data)
+                              const GOutputVector       *vectors,
+                              gsize                      n_vectors,
+                              int                        io_priority,
+                              GCancellable              *cancellable,
+                              GAsyncReadyCallback        callback,
+                              gpointer                   user_data)
 {
   GOutputStreamClass *class;
 
@@ -1657,11 +1657,11 @@ write_bytes_callback (GObject      *stream,
  **/
 void
 g_output_stream_write_bytes_async (GOutputStream       *stream,
-				   GBytes              *bytes,
-				   int                  io_priority,
-				   GCancellable        *cancellable,
-				   GAsyncReadyCallback  callback,
-				   gpointer             user_data)
+                                   GBytes              *bytes,
+                                   int                  io_priority,
+                                   GCancellable        *cancellable,
+                                   GAsyncReadyCallback  callback,
+                                   gpointer             user_data)
 {
   GTask *task;
   gsize size;
@@ -1695,8 +1695,8 @@ g_output_stream_write_bytes_async (GOutputStream       *stream,
  **/
 gssize
 g_output_stream_write_bytes_finish (GOutputStream  *stream,
-				    GAsyncResult   *result,
-				    GError        **error)
+                                    GAsyncResult   *result,
+                                    GError        **error)
 {
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), -1);
   g_return_val_if_fail (g_task_is_valid (result, stream), -1);
@@ -1753,12 +1753,12 @@ async_ready_splice_callback_wrapper (GObject      *source_object,
  **/
 void
 g_output_stream_splice_async (GOutputStream            *stream,
-			      GInputStream             *source,
-			      GOutputStreamSpliceFlags  flags,
-			      int                       io_priority,
-			      GCancellable             *cancellable,
-			      GAsyncReadyCallback       callback,
-			      gpointer                  user_data)
+                              GInputStream             *source,
+                              GOutputStreamSpliceFlags  flags,
+                              int                       io_priority,
+                              GCancellable             *cancellable,
+                              GAsyncReadyCallback       callback,
+                              gpointer                  user_data)
 {
   GOutputStreamClass *class;
   GTask *task;
@@ -1810,8 +1810,8 @@ g_output_stream_splice_async (GOutputStream            *stream,
  **/
 gssize
 g_output_stream_splice_finish (GOutputStream  *stream,
-			       GAsyncResult   *result,
-			       GError        **error)
+                               GAsyncResult   *result,
+                               GError        **error)
 {
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
   g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
@@ -2214,7 +2214,7 @@ g_output_stream_has_pending (GOutputStream *stream)
  **/
 gboolean
 g_output_stream_set_pending (GOutputStream *stream,
-			     GError **error)
+                             GError **error)
 {
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
   
@@ -2422,7 +2422,7 @@ static void write_async_pollable (GPollableOutputStream *stream,
 
 static gboolean
 write_async_pollable_ready (GPollableOutputStream *stream,
-			    gpointer               user_data)
+                            gpointer               user_data)
 {
   GTask *task = user_data;
 
@@ -2542,7 +2542,7 @@ static void writev_async_pollable (GPollableOutputStream *stream,
 
 static gboolean
 writev_async_pollable_ready (GPollableOutputStream *stream,
-			     gpointer               user_data)
+                             gpointer               user_data)
 {
   GTask *task = user_data;
 

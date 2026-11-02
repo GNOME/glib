@@ -44,10 +44,10 @@ struct _GWin32VolumeMonitor {
 #define g_win32_volume_monitor_get_type _g_win32_volume_monitor_get_type
 G_DEFINE_TYPE_WITH_CODE (GWin32VolumeMonitor, g_win32_volume_monitor, G_TYPE_NATIVE_VOLUME_MONITOR,
                          g_io_extension_point_implement (G_NATIVE_VOLUME_MONITOR_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "win32",
-							 0));
-							 
+                                                         g_define_type_id,
+                                                         "win32",
+                                                         0));
+                                                         
 /**
  * get_viewable_logical_drives:
  *
@@ -71,19 +71,19 @@ get_viewable_logical_drives (void)
   gboolean hklm_present = FALSE;
 
   if (RegOpenKeyExW (HKEY_LOCAL_MACHINE,
-		     L"Software\\Microsoft\\Windows\\"
-		     L"CurrentVersion\\Policies\\Explorer",
-		     0, KEY_READ, &key) == ERROR_SUCCESS)
+                     L"Software\\Microsoft\\Windows\\"
+                     L"CurrentVersion\\Policies\\Explorer",
+                     0, KEY_READ, &key) == ERROR_SUCCESS)
     {
       if (RegQueryValueExW (key, L"NoDrives", NULL, &var_type,
-			    (LPBYTE) &no_drives, &no_drives_size) == ERROR_SUCCESS)
-	{
-	  /* We need the bits that are set in viewable_drives, and
-	   * unset in no_drives.
-	   */
-	  viewable_drives = viewable_drives & ~no_drives;
-	  hklm_present = TRUE;
-	}
+                            (LPBYTE) &no_drives, &no_drives_size) == ERROR_SUCCESS)
+        {
+          /* We need the bits that are set in viewable_drives, and
+           * unset in no_drives.
+           */
+          viewable_drives = viewable_drives & ~no_drives;
+          hklm_present = TRUE;
+        }
       RegCloseKey (key);
     }
 
@@ -91,17 +91,17 @@ get_viewable_logical_drives (void)
   if (!hklm_present)
     {
       if (RegOpenKeyExW (HKEY_CURRENT_USER,
-			 L"Software\\Microsoft\\Windows\\"
-			 L"CurrentVersion\\Policies\\Explorer",
-			 0, KEY_READ, &key) == ERROR_SUCCESS)
-	{
-	  if (RegQueryValueExW (key, L"NoDrives", NULL, &var_type,
-			        (LPBYTE) &no_drives, &no_drives_size) == ERROR_SUCCESS)
-	    {
-	      viewable_drives = viewable_drives & ~no_drives;
-	    }
-	  RegCloseKey (key);
-	}
+                         L"Software\\Microsoft\\Windows\\"
+                         L"CurrentVersion\\Policies\\Explorer",
+                         0, KEY_READ, &key) == ERROR_SUCCESS)
+        {
+          if (RegQueryValueExW (key, L"NoDrives", NULL, &var_type,
+                                (LPBYTE) &no_drives, &no_drives_size) == ERROR_SUCCESS)
+            {
+              viewable_drives = viewable_drives & ~no_drives;
+            }
+          RegCloseKey (key);
+        }
     }
 
   return viewable_drives; 
@@ -178,8 +178,8 @@ get_connected_drives (GVolumeMonitor *volume_monitor)
         {
           gchar *name = g_utf16_to_utf8 (wc_dev_name, -1, NULL, NULL, NULL);
           g_print ("%s\n", name);
-	  g_free (name);
-	}
+          g_free (name);
+        }
 
       found = FindNextVolumeW (find_handle, wc_name, MAX_PATH);
     }
@@ -244,13 +244,13 @@ g_win32_volume_monitor_init (GWin32VolumeMonitor *win32_monitor)
   unix_monitor->mount_monitor = g_win32_mount_monitor_new ();
 
   g_signal_connect (win32_monitor->mount_monitor,
-		    "mounts-changed", G_CALLBACK (mounts_changed),
-		    win32_monitor);
+                    "mounts-changed", G_CALLBACK (mounts_changed),
+                    win32_monitor);
   
   g_signal_connect (win32_monitor->mount_monitor,
-		    "mountpoints-changed", G_CALLBACK (mountpoints_changed),
-		    win32_monitor);
-		    
+                    "mountpoints-changed", G_CALLBACK (mountpoints_changed),
+                    win32_monitor);
+                    
   update_volumes (win32_monitor);
   update_mounts (win32_monitor);
 #endif

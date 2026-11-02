@@ -54,8 +54,8 @@ static gssize g_winhttp_file_input_stream_read (GInputStream    *stream,
                                                 GError         **error);
 
 static gboolean g_winhttp_file_input_stream_close (GInputStream  *stream,
-						   GCancellable  *cancellable,
-						   GError       **error);
+                                                   GCancellable  *cancellable,
+                                                   GError       **error);
 
 static void
 g_winhttp_file_input_stream_finalize (GObject *object)
@@ -163,8 +163,8 @@ g_winhttp_file_input_stream_read (GInputStream  *stream,
 
 static gboolean 
 g_winhttp_file_input_stream_close (GInputStream         *stream,
-				   GCancellable         *cancellable,
-				   GError              **error)
+                                   GCancellable         *cancellable,
+                                   GError              **error)
 {
   GWinHttpFileInputStream *winhttp_stream = G_WINHTTP_FILE_INPUT_STREAM (stream);
 

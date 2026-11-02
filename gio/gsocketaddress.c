@@ -60,12 +60,12 @@ enum
 };
 
 static void                      g_socket_address_connectable_iface_init       (GSocketConnectableIface *iface);
-static GSocketAddressEnumerator *g_socket_address_connectable_enumerate	       (GSocketConnectable      *connectable);
+static GSocketAddressEnumerator *g_socket_address_connectable_enumerate        (GSocketConnectable      *connectable);
 static GSocketAddressEnumerator *g_socket_address_connectable_proxy_enumerate  (GSocketConnectable      *connectable);
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GSocketAddress, g_socket_address, G_TYPE_OBJECT,
-				  G_IMPLEMENT_INTERFACE (G_TYPE_SOCKET_CONNECTABLE,
-							 g_socket_address_connectable_iface_init))
+                                  G_IMPLEMENT_INTERFACE (G_TYPE_SOCKET_CONNECTABLE,
+                                                         g_socket_address_connectable_iface_init))
 
 /**
  * g_socket_address_get_family:
@@ -87,7 +87,7 @@ g_socket_address_get_family (GSocketAddress *address)
 
 static void
 g_socket_address_get_property (GObject *object, guint prop_id,
-			       GValue *value, GParamSpec *pspec)
+                               GValue *value, GParamSpec *pspec)
 {
   GSocketAddress *address = G_SOCKET_ADDRESS (object);
 
@@ -118,9 +118,9 @@ g_socket_address_class_init (GSocketAddressClass *klass)
    */
   g_object_class_install_property (gobject_class, PROP_FAMILY,
                                    g_param_spec_enum ("family", NULL, NULL,
-						      G_TYPE_SOCKET_FAMILY,
-						      G_SOCKET_FAMILY_INVALID,
-						      G_PARAM_READABLE |
+                                                      G_TYPE_SOCKET_FAMILY,
+                                                      G_SOCKET_FAMILY_INVALID,
+                                                      G_PARAM_READABLE |
                                                       G_PARAM_STATIC_STRINGS));
 }
 
@@ -182,9 +182,9 @@ g_socket_address_get_native_size (GSocketAddress *address)
  */
 gboolean
 g_socket_address_to_native (GSocketAddress  *address,
-			    gpointer         dest,
-			    gsize            destlen,
-			    GError         **error)
+                            gpointer         dest,
+                            gsize            destlen,
+                            GError         **error)
 {
   g_return_val_if_fail (G_IS_SOCKET_ADDRESS (address), FALSE);
 
@@ -206,7 +206,7 @@ g_socket_address_to_native (GSocketAddress  *address,
  */
 GSocketAddress *
 g_socket_address_new_from_native (gpointer native,
-				  gsize    len)
+                                  gsize    len)
 {
 #ifdef G_OS_WIN32
   ADDRESS_FAMILY family;
@@ -229,7 +229,7 @@ g_socket_address_new_from_native (gpointer native,
       GSocketAddress *sockaddr;
 
       if (len < sizeof (*addr))
-	return NULL;
+        return NULL;
 
       iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin_addr), G_SOCKET_FAMILY_IPV4);
       sockaddr = g_inet_socket_address_new (iaddr, g_ntohs (addr->sin_port));
@@ -244,26 +244,26 @@ g_socket_address_new_from_native (gpointer native,
       GSocketAddress *sockaddr;
 
       if (len < sizeof (*addr))
-	return NULL;
+        return NULL;
 
       if (IN6_IS_ADDR_V4MAPPED (&(addr->sin6_addr)))
-	{
-	  struct sockaddr_in sin_addr;
+        {
+          struct sockaddr_in sin_addr;
 
-	  sin_addr.sin_family = AF_INET;
-	  sin_addr.sin_port = addr->sin6_port;
-	  memcpy (&(sin_addr.sin_addr.s_addr), addr->sin6_addr.s6_addr + 12, 4);
-	  iaddr = g_inet_address_new_from_bytes ((guint8 *) &(sin_addr.sin_addr), G_SOCKET_FAMILY_IPV4);
-	}
+          sin_addr.sin_family = AF_INET;
+          sin_addr.sin_port = addr->sin6_port;
+          memcpy (&(sin_addr.sin_addr.s_addr), addr->sin6_addr.s6_addr + 12, 4);
+          iaddr = g_inet_address_new_from_bytes ((guint8 *) &(sin_addr.sin_addr), G_SOCKET_FAMILY_IPV4);
+        }
       else
         {
           iaddr = g_inet_address_new_from_bytes_with_ipv6_info ((guint8 *) &(addr->sin6_addr), G_SOCKET_FAMILY_IPV6, addr->sin6_flowinfo, addr->sin6_scope_id);
         }
 
       sockaddr = g_object_new (G_TYPE_INET_SOCKET_ADDRESS,
-			       "address", iaddr,
-			       "port", g_ntohs (addr->sin6_port),
-			       NULL);
+                               "address", iaddr,
+                               "port", g_ntohs (addr->sin6_port),
+                               NULL);
       g_object_unref (iaddr);
       return sockaddr;
     }
@@ -277,33 +277,33 @@ g_socket_address_new_from_native (gpointer native,
         return NULL;
 
       if (path_len == 0)
-	{
-	  return g_unix_socket_address_new_with_type ("", 0,
-						      G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
-	}
+        {
+          return g_unix_socket_address_new_with_type ("", 0,
+                                                      G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
+        }
       else if (addr->sun_path[0] == 0)
-	{
-	  if (!g_unix_socket_address_abstract_names_supported ())
-	    {
-	      return g_unix_socket_address_new_with_type ("", 0,
-							  G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
-	    }
-	  else if (len < sizeof (*addr))
-	    {
-	      return g_unix_socket_address_new_with_type (addr->sun_path + 1,
-							  path_len - 1,
-							  G_UNIX_SOCKET_ADDRESS_ABSTRACT);
-	    }
-	  else
-	    {
-	      return g_unix_socket_address_new_with_type (addr->sun_path + 1,
-							  path_len - 1,
-							  G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED);
-	    }
-	}
+        {
+          if (!g_unix_socket_address_abstract_names_supported ())
+            {
+              return g_unix_socket_address_new_with_type ("", 0,
+                                                          G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
+            }
+          else if (len < sizeof (*addr))
+            {
+              return g_unix_socket_address_new_with_type (addr->sun_path + 1,
+                                                          path_len - 1,
+                                                          G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+            }
+          else
+            {
+              return g_unix_socket_address_new_with_type (addr->sun_path + 1,
+                                                          path_len - 1,
+                                                          G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED);
+            }
+        }
       else
         {
-	  return g_unix_socket_address_new_with_type (addr->sun_path,
+          return g_unix_socket_address_new_with_type (addr->sun_path,
                                                       path_len,
                                                       G_UNIX_SOCKET_ADDRESS_PATH);
         }
@@ -344,8 +344,8 @@ g_socket_address_address_enumerator_finalize (GObject *object)
 
 static GSocketAddress *
 g_socket_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
-					  GCancellable              *cancellable,
-					  GError                   **error)
+                                          GCancellable              *cancellable,
+                                          GError                   **error)
 {
   GSocketAddressAddressEnumerator *sockaddr_enum =
     G_SOCKET_ADDRESS_ADDRESS_ENUMERATOR (enumerator);
@@ -409,9 +409,9 @@ g_socket_address_connectable_proxy_enumerate (GSocketConnectable *connectable)
       uri = g_uri_join (G_URI_FLAGS_NONE, "none", NULL, ip, port, "", NULL, NULL);
 
       addr_enum = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
-      	       	       	       	"connectable", connectable,
-      	       	       	       	"uri", uri,
-      	       	       	       	NULL);
+                                "connectable", connectable,
+                                "uri", uri,
+                                NULL);
 
       g_object_unref (addr);
       g_free (ip);

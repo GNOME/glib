@@ -198,8 +198,8 @@ seq_foreach (gpointer data,
 
 static gint
 simple_items_cmp (gconstpointer a,
-	          gconstpointer b,
-	          gpointer data)
+                  gconstpointer b,
+                  gpointer data)
 {
   const Item *item_a = fix_pointer (a);
   const Item *item_b = fix_pointer (b);
@@ -214,8 +214,8 @@ simple_items_cmp (gconstpointer a,
 
 static gint
 simple_iters_cmp (gconstpointer a,
-	          gconstpointer b,
-	          gpointer data)
+                  gconstpointer b,
+                  gpointer data)
 {
   GSequence *seq = data;
   GSequenceIter *iter_a = (GSequenceIter *)a;

@@ -84,8 +84,8 @@ enum
 };
 
 static void g_socket_service_ready (GObject      *object,
-				    GAsyncResult *result,
-				    gpointer      user_data);
+                                    GAsyncResult *result,
+                                    gpointer      user_data);
 
 static gboolean
 g_socket_service_real_incoming (GSocketService    *service,
@@ -118,8 +118,8 @@ static void
 do_accept (GSocketService  *service)
 {
   g_socket_listener_accept_async (G_SOCKET_LISTENER (service),
-				  service->priv->cancellable,
-				  g_socket_service_ready, NULL);
+                                  service->priv->cancellable,
+                                  g_socket_service_ready, NULL);
   service->priv->outstanding_accept = TRUE;
 }
 
@@ -217,9 +217,9 @@ g_socket_service_changed (GSocketListener *listener)
   if (service->priv->active)
     {
       if (service->priv->outstanding_accept)
-	g_cancellable_cancel (service->priv->cancellable);
+        g_cancellable_cancel (service->priv->cancellable);
       else
-	do_accept (service);
+        do_accept (service);
     }
 
   G_UNLOCK (active);
@@ -380,7 +380,7 @@ g_socket_service_ready (GObject      *object,
   if (error)
     {
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-	g_warning ("fail: %s", error->message);
+        g_warning ("fail: %s", error->message);
       g_error_free (error);
     }
   else

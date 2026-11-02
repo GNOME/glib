@@ -166,7 +166,7 @@ static guint64 mount_poller_time = 0;
 static GSource *proc_mounts_watch_source = NULL;
 
 #ifdef HAVE_SYS_MNTTAB_H
-#define MNTOPT_RO	"ro"
+#define MNTOPT_RO       "ro"
 #endif
 
 #ifdef HAVE_MNTENT_H
@@ -657,8 +657,8 @@ _g_unix_mounts_get_from_file (const char *table_path,
        * The '/' is to handle procfs, tmpfs and other no device mounts.
        */
       if (mntent->mnt_fsname != NULL &&
-	  mntent->mnt_fsname[0] == '/' &&
-	  g_hash_table_lookup (mounts_hash, mntent->mnt_fsname))
+          mntent->mnt_fsname[0] == '/' &&
+          g_hash_table_lookup (mounts_hash, mntent->mnt_fsname))
         continue;
 
       if (g_strcmp0 (mntent->mnt_fsname, "/dev/root") == 0)
@@ -668,7 +668,7 @@ _g_unix_mounts_get_from_file (const char *table_path,
 
 #if defined (HAVE_HASMNTOPT)
       if (hasmntopt (mntent, MNTOPT_RO) != NULL)
-	is_read_only = TRUE;
+        is_read_only = TRUE;
 #endif
 
       mount_entry = create_unix_mount_entry (device_path,
@@ -679,8 +679,8 @@ _g_unix_mounts_get_from_file (const char *table_path,
                                              is_read_only);
 
       g_hash_table_insert (mounts_hash,
-			   mount_entry->device_path,
-			   mount_entry->device_path);
+                           mount_entry->device_path,
+                           mount_entry->device_path);
 
       g_ptr_array_add (return_array, g_steal_pointer (&mount_entry));
     }
@@ -762,7 +762,7 @@ get_mtab_read_file (void)
 {
 #ifdef _PATH_MOUNTED
   return _PATH_MOUNTED;
-#else	
+#else   
   return "/etc/mnttab";
 #endif
 }
@@ -799,7 +799,7 @@ _g_unix_mounts_get_from_file (const char *table_path,
 
 #if defined (HAVE_HASMNTOPT)
       if (hasmntopt (&mntent, MNTOPT_RO) != NULL)
-	is_read_only = TRUE;
+        is_read_only = TRUE;
 #endif
 
       mount_entry = create_unix_mount_entry (mntent.mnt_special,
@@ -894,7 +894,7 @@ _g_get_unix_mounts (void)
       return_list = g_list_prepend (return_list, mount_entry);
       
       vmount_info = (struct vmount *)( (char*)vmount_info 
-				       + vmount_info->vmt_length);
+                                       + vmount_info->vmt_length);
       vmount_number--;
     }
   
@@ -1291,7 +1291,7 @@ _g_unix_mount_points_get_from_file (const char *table_path,
       if ((strcmp (mntent->mnt_dir, "ignore") == 0) ||
           (strcmp (mntent->mnt_dir, "swap") == 0) ||
           (strcmp (mntent->mnt_dir, "none") == 0))
-	continue;
+        continue;
 
 #ifdef HAVE_HASMNTOPT
       /* We ignore bind fstab entries, as we ignore bind mounts anyway */
@@ -1306,22 +1306,22 @@ _g_unix_mount_points_get_from_file (const char *table_path,
 
 #ifdef HAVE_HASMNTOPT
       if (hasmntopt (mntent, MNTOPT_RO) != NULL)
-	is_read_only = TRUE;
+        is_read_only = TRUE;
 
       if (hasmntopt (mntent, "loop") != NULL)
-	is_loopback = TRUE;
+        is_loopback = TRUE;
 
 #endif
 
       if ((mntent->mnt_type != NULL && strcmp ("supermount", mntent->mnt_type) == 0)
 #ifdef HAVE_HASMNTOPT
-	  || (hasmntopt (mntent, "user") != NULL
-	      && hasmntopt (mntent, "user") != hasmntopt (mntent, "user_xattr"))
-	  || hasmntopt (mntent, "users") != NULL
-	  || hasmntopt (mntent, "owner") != NULL
+          || (hasmntopt (mntent, "user") != NULL
+              && hasmntopt (mntent, "user") != hasmntopt (mntent, "user_xattr"))
+          || hasmntopt (mntent, "users") != NULL
+          || hasmntopt (mntent, "owner") != NULL
 #endif
-	  )
-	is_user_mountable = TRUE;
+          )
+        is_user_mountable = TRUE;
 
       mount_point = create_unix_mount_point (device_path,
                                              mntent->mnt_dir,
@@ -1396,25 +1396,25 @@ _g_unix_mount_points_get_from_file (const char *table_path,
       if ((strcmp (mntent.mnt_mountp, "ignore") == 0) ||
           (strcmp (mntent.mnt_mountp, "swap") == 0) ||
           (strcmp (mntent.mnt_mountp, "none") == 0))
-	continue;
+        continue;
 
 #ifdef HAVE_HASMNTOPT
       if (hasmntopt (&mntent, MNTOPT_RO) != NULL)
-	is_read_only = TRUE;
+        is_read_only = TRUE;
 
       if (hasmntopt (&mntent, "lofs") != NULL)
-	is_loopback = TRUE;
+        is_loopback = TRUE;
 #endif
 
       if ((mntent.mnt_fstype != NULL)
 #ifdef HAVE_HASMNTOPT
-	  || (hasmntopt (&mntent, "user") != NULL
-	      && hasmntopt (&mntent, "user") != hasmntopt (&mntent, "user_xattr"))
-	  || hasmntopt (&mntent, "users") != NULL
-	  || hasmntopt (&mntent, "owner") != NULL
+          || (hasmntopt (&mntent, "user") != NULL
+              && hasmntopt (&mntent, "user") != hasmntopt (&mntent, "user_xattr"))
+          || hasmntopt (&mntent, "users") != NULL
+          || hasmntopt (&mntent, "owner") != NULL
 #endif
-	  )
-	is_user_mountable = TRUE;
+          )
+        is_user_mountable = TRUE;
 
       mount_point = create_unix_mount_point (mntent.mnt_special,
                                              mntent.mnt_mountp,
@@ -1462,7 +1462,7 @@ aix_fs_getc (FILE *fd)
   while ((c = getc (fd)) == '*')
     {
       while (((c = getc (fd)) != '\n') && (c != EOF))
-	;
+        ;
     }
 }
 
@@ -1475,10 +1475,10 @@ aix_fs_ignorespace (FILE *fd)
   while ((c = aix_fs_getc (fd)) != EOF)
     {
       if (!g_ascii_isspace (c))
-	{
-	  ungetc (c,fd);
-	  return c;
-	}
+        {
+          ungetc (c,fd);
+          return c;
+        }
     }
   
   return EOF;
@@ -1496,12 +1496,12 @@ aix_fs_getword (FILE *fd,
   while (((c = aix_fs_getc (fd)) != EOF) && !g_ascii_isspace (c))
     {
       if (c == '"')
-	{
-	  while (((c = aix_fs_getc (fd)) != EOF) && (c != '"'))
-	    *word++ = c;
-	  else
-	    *word++ = c;
-	}
+        {
+          while (((c = aix_fs_getc (fd)) != EOF) && (c != '"'))
+            *word++ = c;
+          else
+            *word++ = c;
+        }
     }
   *word = 0;
   
@@ -1527,7 +1527,7 @@ aix_fs_get (FILE               *fd,
   if (word[0] == 0)
     {
       if (aix_fs_getword (fd, word) == EOF)
-	return EOF;
+        return EOF;
     }
 
   word[strlen(word) - 1] = 0;
@@ -1539,7 +1539,7 @@ aix_fs_get (FILE               *fd,
     {
       /* test if is attribute or new stanza */
       if (word[strlen(word) - 1] == ':')
-	return 0;
+        return 0;
       
       /* read "=" */
       aix_fs_getword (fd, value);
@@ -1548,11 +1548,11 @@ aix_fs_get (FILE               *fd,
       aix_fs_getword (fd, value);
       
       if (strcmp (word, "dev") == 0)
-	g_strlcpy (prop->mnt_special, value, sizeof (prop->mnt_special));
+        g_strlcpy (prop->mnt_special, value, sizeof (prop->mnt_special));
       else if (strcmp (word, "vfs") == 0)
-	g_strlcpy (prop->mnt_fstype, value, sizeof (prop->mnt_fstype));
+        g_strlcpy (prop->mnt_fstype, value, sizeof (prop->mnt_fstype));
       else if (strcmp (word, "options") == 0)
-	g_strlcpy (prop->mnt_options, value, sizeof (prop->mnt_options));
+        g_strlcpy (prop->mnt_options, value, sizeof (prop->mnt_options));
     }
   
   return 0;
@@ -1585,7 +1585,7 @@ _g_unix_mount_points_get_from_file (const char *table_path,
   while (!aix_fs_get (file, &mntent))
     {
       if (strcmp ("cdrfs", mntent.mnt_fstype) == 0)
-	{
+        {
           mount_point = create_unix_mount_point (mntent.mnt_special,
                                                  mntent.mnt_mount,
                                                  mntent.mnt_fstype,
@@ -1595,9 +1595,9 @@ _g_unix_mount_points_get_from_file (const char *table_path,
                                                  FALSE);
 
           g_ptr_array_add (return_array, g_steal_pointer (&mount_point));
-	}
+        }
     }
-	
+        
   endmntent (file);
 
   if (n_points_out != NULL)
@@ -1674,10 +1674,10 @@ _g_get_unix_mount_points (void)
       gboolean is_user_mountable = FALSE;
 
       if (strcmp (fstab->fs_vfstype, "swap") == 0)
-	continue;
+        continue;
 
       if (strcmp (fstab->fs_type, "ro") == 0)
-	is_read_only = TRUE;
+        is_read_only = TRUE;
 
 #ifdef HAVE_SYS_SYSCTL_H
       if (usermnt != 0)
@@ -1905,7 +1905,7 @@ g_unix_mount_entries_get_from_file (const char *table_path,
  **/
 GUnixMountEntry *
 g_unix_mount_at (const char *mount_path,
-		 guint64    *time_read)
+                 guint64    *time_read)
 {
   return g_unix_mount_entry_at (mount_path, time_read);
 }
@@ -1931,7 +1931,7 @@ g_unix_mount_at (const char *mount_path,
  **/
 GUnixMountEntry *
 g_unix_mount_entry_at (const char *mount_path,
-		       guint64    *time_read)
+                       guint64    *time_read)
 {
   GList *mounts, *l;
   GUnixMountEntry *mount_entry, *found;
@@ -2585,12 +2585,12 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
    */ 
   signals[MOUNTS_CHANGED] =
     g_signal_new (I_("mounts-changed"),
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL, NULL,
-		  NULL,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 0);
 
   /**
    * GUnixMountMonitor::mountpoints-changed:
@@ -2600,12 +2600,12 @@ g_unix_mount_monitor_class_init (GUnixMountMonitorClass *klass)
    */
   signals[MOUNTPOINTS_CHANGED] =
     g_signal_new (I_("mountpoints-changed"),
-		  G_TYPE_FROM_CLASS (klass),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL, NULL,
-		  NULL,
-		  G_TYPE_NONE, 0);
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  NULL,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -2816,7 +2816,7 @@ g_unix_mount_point_copy (GUnixMountPoint *mount_point)
  */
 gint
 g_unix_mount_compare (GUnixMountEntry *mount1,
-		      GUnixMountEntry *mount2)
+                      GUnixMountEntry *mount2)
 {
   return g_unix_mount_entry_compare (mount1, mount2);
 }
@@ -2843,7 +2843,7 @@ g_unix_mount_entry_compare (GUnixMountEntry *mount1,
   res = g_strcmp0 (mount1->mount_path, mount2->mount_path);
   if (res != 0)
     return res;
-	
+        
   res = g_strcmp0 (mount1->device_path, mount2->device_path);
   if (res != 0)
     return res;
@@ -3143,7 +3143,7 @@ g_unix_mount_entry_is_system_internal (GUnixMountEntry *mount_entry)
  */
 gint
 g_unix_mount_point_compare (GUnixMountPoint *mount1,
-			    GUnixMountPoint *mount2)
+                            GUnixMountPoint *mount2)
 {
   int res;
 
@@ -3152,11 +3152,11 @@ g_unix_mount_point_compare (GUnixMountPoint *mount1,
   res = g_strcmp0 (mount1->mount_path, mount2->mount_path);
   if (res != 0) 
     return res;
-	
+        
   res = g_strcmp0 (mount1->device_path, mount2->device_path);
   if (res != 0) 
     return res;
-	
+        
   res = g_strcmp0 (mount1->filesystem_type, mount2->filesystem_type);
   if (res != 0) 
     return res;
@@ -3295,8 +3295,8 @@ g_unix_mount_point_is_loopback (GUnixMountPoint *mount_point)
 
 static GUnixMountType
 guess_mount_type (const char *mount_path,
-		  const char *device_path,
-		  const char *filesystem_type)
+                  const char *device_path,
+                  const char *filesystem_type)
 {
   GUnixMountType type;
   char *basename;
@@ -3311,58 +3311,58 @@ guess_mount_type (const char *mount_path,
            (strcmp (filesystem_type, "nfs4") == 0))
     type = G_UNIX_MOUNT_TYPE_NFS;
   else if (g_str_has_prefix (device_path, "/vol/dev/diskette/") ||
-	   g_str_has_prefix (device_path, "/dev/fd") ||
-	   g_str_has_prefix (device_path, "/dev/floppy"))
+           g_str_has_prefix (device_path, "/dev/fd") ||
+           g_str_has_prefix (device_path, "/dev/floppy"))
     type = G_UNIX_MOUNT_TYPE_FLOPPY;
   else if (g_str_has_prefix (device_path, "/dev/cdrom") ||
-	   g_str_has_prefix (device_path, "/dev/acd") ||
-	   g_str_has_prefix (device_path, "/dev/cd"))
+           g_str_has_prefix (device_path, "/dev/acd") ||
+           g_str_has_prefix (device_path, "/dev/cd"))
     type = G_UNIX_MOUNT_TYPE_CDROM;
   else if (g_str_has_prefix (device_path, "/vol/"))
     {
       const char *name = mount_path + strlen ("/");
       
       if (g_str_has_prefix (name, "cdrom"))
-	type = G_UNIX_MOUNT_TYPE_CDROM;
+        type = G_UNIX_MOUNT_TYPE_CDROM;
       else if (g_str_has_prefix (name, "floppy") ||
-	       g_str_has_prefix (device_path, "/vol/dev/diskette/")) 
-	type = G_UNIX_MOUNT_TYPE_FLOPPY;
+               g_str_has_prefix (device_path, "/vol/dev/diskette/")) 
+        type = G_UNIX_MOUNT_TYPE_FLOPPY;
       else if (g_str_has_prefix (name, "rmdisk")) 
-	type = G_UNIX_MOUNT_TYPE_ZIP;
+        type = G_UNIX_MOUNT_TYPE_ZIP;
       else if (g_str_has_prefix (name, "jaz"))
-	type = G_UNIX_MOUNT_TYPE_JAZ;
+        type = G_UNIX_MOUNT_TYPE_JAZ;
       else if (g_str_has_prefix (name, "memstick"))
-	type = G_UNIX_MOUNT_TYPE_MEMSTICK;
+        type = G_UNIX_MOUNT_TYPE_MEMSTICK;
     }
   else
     {
       basename = g_path_get_basename (mount_path);
       
       if (g_str_has_prefix (basename, "cdr") ||
-	  g_str_has_prefix (basename, "cdwriter") ||
-	  g_str_has_prefix (basename, "burn") ||
-	  g_str_has_prefix (basename, "dvdr"))
-	type = G_UNIX_MOUNT_TYPE_CDROM;
+          g_str_has_prefix (basename, "cdwriter") ||
+          g_str_has_prefix (basename, "burn") ||
+          g_str_has_prefix (basename, "dvdr"))
+        type = G_UNIX_MOUNT_TYPE_CDROM;
       else if (g_str_has_prefix (basename, "floppy"))
-	type = G_UNIX_MOUNT_TYPE_FLOPPY;
+        type = G_UNIX_MOUNT_TYPE_FLOPPY;
       else if (g_str_has_prefix (basename, "zip"))
-	type = G_UNIX_MOUNT_TYPE_ZIP;
+        type = G_UNIX_MOUNT_TYPE_ZIP;
       else if (g_str_has_prefix (basename, "jaz"))
-	type = G_UNIX_MOUNT_TYPE_JAZ;
+        type = G_UNIX_MOUNT_TYPE_JAZ;
       else if (g_str_has_prefix (basename, "camera"))
-	type = G_UNIX_MOUNT_TYPE_CAMERA;
+        type = G_UNIX_MOUNT_TYPE_CAMERA;
       else if (g_str_has_prefix (basename, "memstick") ||
-	       g_str_has_prefix (basename, "memory_stick") ||
-	       g_str_has_prefix (basename, "ram"))
-	type = G_UNIX_MOUNT_TYPE_MEMSTICK;
+               g_str_has_prefix (basename, "memory_stick") ||
+               g_str_has_prefix (basename, "ram"))
+        type = G_UNIX_MOUNT_TYPE_MEMSTICK;
       else if (g_str_has_prefix (basename, "compact_flash"))
-	type = G_UNIX_MOUNT_TYPE_CF;
+        type = G_UNIX_MOUNT_TYPE_CF;
       else if (g_str_has_prefix (basename, "smart_media"))
-	type = G_UNIX_MOUNT_TYPE_SM;
+        type = G_UNIX_MOUNT_TYPE_SM;
       else if (g_str_has_prefix (basename, "sd_mmc"))
-	type = G_UNIX_MOUNT_TYPE_SDMMC;
+        type = G_UNIX_MOUNT_TYPE_SDMMC;
       else if (g_str_has_prefix (basename, "ipod"))
-	type = G_UNIX_MOUNT_TYPE_IPOD;
+        type = G_UNIX_MOUNT_TYPE_IPOD;
       
       g_free (basename);
     }
@@ -3393,8 +3393,8 @@ g_unix_mount_entry_guess_type (GUnixMountEntry *mount_entry)
   g_return_val_if_fail (mount_entry->filesystem_type != NULL, G_UNIX_MOUNT_TYPE_UNKNOWN);
 
   return guess_mount_type (mount_entry->mount_path,
-			   mount_entry->device_path,
-			   mount_entry->filesystem_type);
+                           mount_entry->device_path,
+                           mount_entry->filesystem_type);
 }
 
 /**
@@ -3417,8 +3417,8 @@ g_unix_mount_point_guess_type (GUnixMountPoint *mount_point)
   g_return_val_if_fail (mount_point->filesystem_type != NULL, G_UNIX_MOUNT_TYPE_UNKNOWN);
 
   return guess_mount_type (mount_point->mount_path,
-			   mount_point->device_path,
-			   mount_point->filesystem_type);
+                           mount_point->device_path,
+                           mount_point->filesystem_type);
 }
 
 static const char *
@@ -3932,15 +3932,15 @@ _resolve_dev_root (void)
           f = g_fopen ("/etc/mtab", "re");
           if (f != NULL) 
             {
-	      struct mntent *entp;
+              struct mntent *entp;
 #ifdef HAVE_GETMNTENT_R        
               struct mntent ent;
               char buf[1024];
               while ((entp = getmntent_r (f, &ent, buf, sizeof (buf))) != NULL) 
                 {
 #else
-	      G_LOCK (getmntent);
-	      while ((entp = getmntent (f)) != NULL) 
+              G_LOCK (getmntent);
+              while ((entp = getmntent (f)) != NULL) 
                 { 
 #endif          
                   if (stat (entp->mnt_fsname, &statbuf) == 0 &&
@@ -3961,7 +3961,7 @@ _resolve_dev_root (void)
 #endif
 
 #ifndef HAVE_GETMNTENT_R
-	      G_UNLOCK (getmntent);
+              G_UNLOCK (getmntent);
 #endif
             }                                        
       

@@ -50,24 +50,24 @@ static void       g_file_input_stream_seekable_iface_init    (GSeekableIface    
 static goffset    g_file_input_stream_seekable_tell          (GSeekable            *seekable);
 static gboolean   g_file_input_stream_seekable_can_seek      (GSeekable            *seekable);
 static gboolean   g_file_input_stream_seekable_seek          (GSeekable            *seekable,
-							      goffset               offset,
-							      GSeekType             type,
-							      GCancellable         *cancellable,
-							      GError              **error);
+                                                              goffset               offset,
+                                                              GSeekType             type,
+                                                              GCancellable         *cancellable,
+                                                              GError              **error);
 static gboolean   g_file_input_stream_seekable_can_truncate  (GSeekable            *seekable);
 static gboolean   g_file_input_stream_seekable_truncate      (GSeekable            *seekable,
-							      goffset               offset,
-							      GCancellable         *cancellable,
-							      GError              **error);
+                                                              goffset               offset,
+                                                              GCancellable         *cancellable,
+                                                              GError              **error);
 static void       g_file_input_stream_real_query_info_async  (GFileInputStream     *stream,
-							      const char           *attributes,
-							      int                   io_priority,
-							      GCancellable         *cancellable,
-							      GAsyncReadyCallback   callback,
-							      gpointer              user_data);
+                                                              const char           *attributes,
+                                                              int                   io_priority,
+                                                              GCancellable         *cancellable,
+                                                              GAsyncReadyCallback   callback,
+                                                              gpointer              user_data);
 static GFileInfo *g_file_input_stream_real_query_info_finish (GFileInputStream     *stream,
-							      GAsyncResult         *result,
-							      GError              **error);
+                                                              GAsyncResult         *result,
+                                                              GError              **error);
 
 
 struct _GFileInputStreamPrivate {
@@ -76,8 +76,8 @@ struct _GFileInputStreamPrivate {
 
 G_DEFINE_TYPE_WITH_CODE (GFileInputStream, g_file_input_stream, G_TYPE_INPUT_STREAM,
                          G_ADD_PRIVATE (GFileInputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-						g_file_input_stream_seekable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+                                                g_file_input_stream_seekable_iface_init))
 
 static void
 g_file_input_stream_class_init (GFileInputStreamClass *klass)
@@ -291,7 +291,7 @@ g_file_input_stream_can_seek (GFileInputStream *stream)
     {
       can_seek = TRUE;
       if (class->can_seek)
-	can_seek = class->can_seek (stream);
+        can_seek = class->can_seek (stream);
     }
   
   return can_seek;
@@ -305,10 +305,10 @@ g_file_input_stream_seekable_can_seek (GSeekable *seekable)
 
 static gboolean
 g_file_input_stream_seek (GFileInputStream  *stream,
-			  goffset            offset,
-			  GSeekType          type,
-			  GCancellable      *cancellable,
-			  GError           **error)
+                          goffset            offset,
+                          GSeekType          type,
+                          GCancellable      *cancellable,
+                          GError           **error)
 {
   GFileInputStreamClass *class;
   GInputStream *input_stream;
@@ -344,13 +344,13 @@ g_file_input_stream_seek (GFileInputStream  *stream,
 
 static gboolean
 g_file_input_stream_seekable_seek (GSeekable     *seekable,
-				   goffset        offset,
-				   GSeekType      type,
-				   GCancellable  *cancellable,
-				   GError       **error)
+                                   goffset        offset,
+                                   GSeekType      type,
+                                   GCancellable  *cancellable,
+                                   GError       **error)
 {
   return g_file_input_stream_seek (G_FILE_INPUT_STREAM (seekable),
-				   offset, type, cancellable, error);
+                                   offset, type, cancellable, error);
 }
 
 static gboolean
@@ -361,9 +361,9 @@ g_file_input_stream_seekable_can_truncate (GSeekable *seekable)
 
 static gboolean
 g_file_input_stream_seekable_truncate (GSeekable     *seekable,
-				       goffset        offset,
-				       GCancellable  *cancellable,
-				       GError       **error)
+                                       goffset        offset,
+                                       GCancellable  *cancellable,
+                                       GError       **error)
 {
   g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
                        _("Truncate not allowed on input stream"));

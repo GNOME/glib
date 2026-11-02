@@ -62,31 +62,31 @@ do_tree (GFile *f, unsigned int level, guint64 pattern)
   GFileInfo *info;
 
   info = g_file_query_info (f,
-			    G_FILE_ATTRIBUTE_STANDARD_TYPE ","
-			    G_FILE_ATTRIBUTE_STANDARD_TARGET_URI,
-			    0,
-			    NULL, NULL);
+                            G_FILE_ATTRIBUTE_STANDARD_TYPE ","
+                            G_FILE_ATTRIBUTE_STANDARD_TARGET_URI,
+                            0,
+                            NULL, NULL);
   if (info != NULL)
     {
       if (g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_STANDARD_TYPE) == G_FILE_TYPE_MOUNTABLE)
-	{
-	  /* don't process mountables; we avoid these by getting the target_uri below */
-	  g_object_unref (info);
-	  return;
-	}
+        {
+          /* don't process mountables; we avoid these by getting the target_uri below */
+          g_object_unref (info);
+          return;
+        }
       g_object_unref (info);
     }
 
   enumerator = g_file_enumerate_children (f,
-					  G_FILE_ATTRIBUTE_STANDARD_NAME ","
-					  G_FILE_ATTRIBUTE_STANDARD_TYPE ","
-					  G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN ","
-					  G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK ","
-					  G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET ","
-					  G_FILE_ATTRIBUTE_STANDARD_TARGET_URI,
-					  0,
-					  NULL,
-					  &error);
+                                          G_FILE_ATTRIBUTE_STANDARD_NAME ","
+                                          G_FILE_ATTRIBUTE_STANDARD_TYPE ","
+                                          G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN ","
+                                          G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK ","
+                                          G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET ","
+                                          G_FILE_ATTRIBUTE_STANDARD_TARGET_URI,
+                                          0,
+                                          NULL,
+                                          &error);
   if (enumerator != NULL)
     {
       GList *l;
@@ -94,124 +94,124 @@ do_tree (GFile *f, unsigned int level, guint64 pattern)
 
       info_list = NULL;
       while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL)
-	{
-	  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN) &&
-	      g_file_info_get_is_hidden (info) &&
-	      !show_hidden)
-	    {
-	      g_object_unref (info);
-	    }
-	  else
-	    {
-	      info_list = g_list_prepend (info_list, info);
-	    }
-	}
+        {
+          if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN) &&
+              g_file_info_get_is_hidden (info) &&
+              !show_hidden)
+            {
+              g_object_unref (info);
+            }
+          else
+            {
+              info_list = g_list_prepend (info_list, info);
+            }
+        }
       g_object_unref (enumerator);
 
       info_list = g_list_sort (info_list, (GCompareFunc) sort_info_by_name);
 
       for (l = info_list; l != NULL; l = l->next)
-	{
-	  const char *name;
-	  const char *target_uri;
-	  GFileType type;
-	  gboolean is_last_item;
+        {
+          const char *name;
+          const char *target_uri;
+          GFileType type;
+          gboolean is_last_item;
 
-	  info = l->data;
-	  is_last_item = (l->next == NULL);
+          info = l->data;
+          is_last_item = (l->next == NULL);
 
-	  name = g_file_info_get_name (info);
-	  type = g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_STANDARD_TYPE);
-	  if (name != NULL)
-	    {
+          name = g_file_info_get_name (info);
+          type = g_file_info_get_attribute_uint32 (info, G_FILE_ATTRIBUTE_STANDARD_TYPE);
+          if (name != NULL)
+            {
 
-	      for (n = 0; n < level; n++)
-		{
-		  if (pattern & (1<<n))
-		    {
-		      g_print ("|   ");
-		    }
-		  else
-		    {
-		      g_print ("    ");
-		    }
-		}
+              for (n = 0; n < level; n++)
+                {
+                  if (pattern & (1<<n))
+                    {
+                      g_print ("|   ");
+                    }
+                  else
+                    {
+                      g_print ("    ");
+                    }
+                }
 
-	      if (is_last_item)
-		{
-		  g_print ("`-- %s", name);
-		}
-	      else
-		{
-		  g_print ("|-- %s", name);
-		}
+              if (is_last_item)
+                {
+                  g_print ("`-- %s", name);
+                }
+              else
+                {
+                  g_print ("|-- %s", name);
+                }
 
-	      target_uri = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI);
-	      if (target_uri != NULL)
-		{
-		  g_print (" -> %s", target_uri);
-		}
-	      else
-		{
-		  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK) &&
-		      g_file_info_get_is_symlink (info))
-		    {
-		      const char *target;
-		      target = g_file_info_get_symlink_target (info);
-		      g_print (" -> %s", target);
-		    }
-		}
+              target_uri = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI);
+              if (target_uri != NULL)
+                {
+                  g_print (" -> %s", target_uri);
+                }
+              else
+                {
+                  if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK) &&
+                      g_file_info_get_is_symlink (info))
+                    {
+                      const char *target;
+                      target = g_file_info_get_symlink_target (info);
+                      g_print (" -> %s", target);
+                    }
+                }
 
-	      g_print ("\n");
+              g_print ("\n");
 
-	      if ((type & G_FILE_TYPE_DIRECTORY) &&
-		  (follow_symlinks ||
-		   !(g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK) &&
-		     g_file_info_get_is_symlink (info))))
-		{
-		  guint64 new_pattern;
-		  GFile *child;
+              if ((type & G_FILE_TYPE_DIRECTORY) &&
+                  (follow_symlinks ||
+                   !(g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK) &&
+                     g_file_info_get_is_symlink (info))))
+                {
+                  guint64 new_pattern;
+                  GFile *child;
 
-		  if (is_last_item)
-		    new_pattern = pattern;
-		  else
-		    new_pattern = pattern | (1<<level);
+                  if (is_last_item)
+                    new_pattern = pattern;
+                  else
+                    new_pattern = pattern | (1<<level);
 
-		  child = NULL;
-		  if (target_uri != NULL)
-		    {
-		      if (follow_symlinks)
-			child = g_file_new_for_uri (target_uri);
-		    }
-		  else
-		    {
-		      child = g_file_get_child (f, name);
-		    }
+                  child = NULL;
+                  if (target_uri != NULL)
+                    {
+                      if (follow_symlinks)
+                        child = g_file_new_for_uri (target_uri);
+                    }
+                  else
+                    {
+                      child = g_file_get_child (f, name);
+                    }
 
-		  if (child != NULL)
-		    {
-		      do_tree (child, level + 1, new_pattern);
-		      g_object_unref (child);
-		    }
-		}
-	    }
-	  g_object_unref (info);
-	}
+                  if (child != NULL)
+                    {
+                      do_tree (child, level + 1, new_pattern);
+                      g_object_unref (child);
+                    }
+                }
+            }
+          g_object_unref (info);
+        }
       g_list_free (info_list);
     }
   else
     {
       for (n = 0; n < level; n++)
-	{
-	  if (pattern & (1<<n))
-	    {
-	      g_print ("|   ");
-	    }
-	  else
-	    {
-	      g_print ("    ");
-	    }
-	}
+        {
+          if (pattern & (1<<n))
+            {
+              g_print ("|   ");
+            }
+          else
+            {
+              g_print ("    ");
+            }
+        }
 
       g_print ("    [%s]\n", error->message);
 

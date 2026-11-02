@@ -42,13 +42,13 @@ static void g_dummy_proxy_resolver_iface_init (GProxyResolverInterface *iface);
 
 #define g_dummy_proxy_resolver_get_type _g_dummy_proxy_resolver_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyProxyResolver, g_dummy_proxy_resolver, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
-						g_dummy_proxy_resolver_iface_init)
-			 _g_io_modules_ensure_extension_points_registered ();
-			 g_io_extension_point_implement (G_PROXY_RESOLVER_EXTENSION_POINT_NAME,
-							 g_define_type_id,
-							 "dummy",
-							 -100))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_PROXY_RESOLVER,
+                                                g_dummy_proxy_resolver_iface_init)
+                         _g_io_modules_ensure_extension_points_registered ();
+                         g_io_extension_point_implement (G_PROXY_RESOLVER_EXTENSION_POINT_NAME,
+                                                         g_define_type_id,
+                                                         "dummy",
+                                                         -100))
 
 static void
 g_dummy_proxy_resolver_finalize (GObject *object)
@@ -70,9 +70,9 @@ g_dummy_proxy_resolver_is_supported (GProxyResolver *resolver)
 
 static gchar **
 g_dummy_proxy_resolver_lookup (GProxyResolver  *resolver,
-			       const gchar     *uri,
-			       GCancellable    *cancellable,
-			       GError         **error)
+                               const gchar     *uri,
+                               GCancellable    *cancellable,
+                               GError         **error)
 {
   gchar **proxies;
 
@@ -87,10 +87,10 @@ g_dummy_proxy_resolver_lookup (GProxyResolver  *resolver,
 
 static void
 g_dummy_proxy_resolver_lookup_async (GProxyResolver      *resolver,
-				     const gchar         *uri,
-				     GCancellable        *cancellable,
-				     GAsyncReadyCallback  callback,
-				     gpointer             user_data)
+                                     const gchar         *uri,
+                                     GCancellable        *cancellable,
+                                     GAsyncReadyCallback  callback,
+                                     gpointer             user_data)
 {
   GError *error = NULL;
   GTask *task;
@@ -109,8 +109,8 @@ g_dummy_proxy_resolver_lookup_async (GProxyResolver      *resolver,
 
 static gchar **
 g_dummy_proxy_resolver_lookup_finish (GProxyResolver     *resolver,
-				      GAsyncResult       *result,
-				      GError            **error)
+                                      GAsyncResult       *result,
+                                      GError            **error)
 {
   g_return_val_if_fail (g_task_is_valid (result, resolver), NULL);
 

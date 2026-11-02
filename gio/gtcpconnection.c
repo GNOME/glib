@@ -34,34 +34,34 @@ struct _GTcpConnectionPrivate
 };
 
 G_DEFINE_TYPE_WITH_CODE (GTcpConnection, g_tcp_connection,
-			 G_TYPE_SOCKET_CONNECTION,
+                         G_TYPE_SOCKET_CONNECTION,
                          G_ADD_PRIVATE (GTcpConnection)
   g_socket_connection_factory_register_type (g_define_type_id,
-					     G_SOCKET_FAMILY_IPV4,
-					     G_SOCKET_TYPE_STREAM,
-					     G_SOCKET_PROTOCOL_DEFAULT);
+                                             G_SOCKET_FAMILY_IPV4,
+                                             G_SOCKET_TYPE_STREAM,
+                                             G_SOCKET_PROTOCOL_DEFAULT);
   g_socket_connection_factory_register_type (g_define_type_id,
-					     G_SOCKET_FAMILY_IPV6,
-					     G_SOCKET_TYPE_STREAM,
-					     G_SOCKET_PROTOCOL_DEFAULT);
+                                             G_SOCKET_FAMILY_IPV6,
+                                             G_SOCKET_TYPE_STREAM,
+                                             G_SOCKET_PROTOCOL_DEFAULT);
   g_socket_connection_factory_register_type (g_define_type_id,
-					     G_SOCKET_FAMILY_IPV4,
-					     G_SOCKET_TYPE_STREAM,
-					     G_SOCKET_PROTOCOL_TCP);
+                                             G_SOCKET_FAMILY_IPV4,
+                                             G_SOCKET_TYPE_STREAM,
+                                             G_SOCKET_PROTOCOL_TCP);
   g_socket_connection_factory_register_type (g_define_type_id,
-					     G_SOCKET_FAMILY_IPV6,
-					     G_SOCKET_TYPE_STREAM,
-					     G_SOCKET_PROTOCOL_TCP);
-			 );
+                                             G_SOCKET_FAMILY_IPV6,
+                                             G_SOCKET_TYPE_STREAM,
+                                             G_SOCKET_PROTOCOL_TCP);
+                         );
 
 static gboolean g_tcp_connection_close       (GIOStream            *stream,
-					      GCancellable         *cancellable,
-					      GError              **error);
+                                              GCancellable         *cancellable,
+                                              GError              **error);
 static void     g_tcp_connection_close_async (GIOStream            *stream,
-					      int                   io_priority,
-					      GCancellable         *cancellable,
-					      GAsyncReadyCallback   callback,
-					      gpointer              user_data);
+                                              int                   io_priority,
+                                              GCancellable         *cancellable,
+                                              GAsyncReadyCallback   callback,
+                                              gpointer              user_data);
 
 
 enum
@@ -79,40 +79,40 @@ g_tcp_connection_init (GTcpConnection *connection)
 
 static void
 g_tcp_connection_get_property (GObject    *object,
-			       guint       prop_id,
-			       GValue     *value,
-			       GParamSpec *pspec)
+                               guint       prop_id,
+                               GValue     *value,
+                               GParamSpec *pspec)
 {
   GTcpConnection *connection = G_TCP_CONNECTION (object);
 
   switch (prop_id)
     {
       case PROP_GRACEFUL_DISCONNECT:
-	g_value_set_boolean (value, connection->priv->graceful_disconnect);
-	break;
+        g_value_set_boolean (value, connection->priv->graceful_disconnect);
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
 static void
 g_tcp_connection_set_property (GObject      *object,
-			       guint         prop_id,
-			       const GValue *value,
-			       GParamSpec   *pspec)
+                               guint         prop_id,
+                               const GValue *value,
+                               GParamSpec   *pspec)
 {
   GTcpConnection *connection = G_TCP_CONNECTION (object);
 
   switch (prop_id)
     {
       case PROP_GRACEFUL_DISCONNECT:
-	g_tcp_connection_set_graceful_disconnect (connection,
-						  g_value_get_boolean (value));
-	break;
+        g_tcp_connection_set_graceful_disconnect (connection,
+                                                  g_value_get_boolean (value));
+        break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -136,16 +136,16 @@ g_tcp_connection_class_init (GTcpConnectionClass *class)
    * Since: 2.22
    */
   g_object_class_install_property (gobject_class, PROP_GRACEFUL_DISCONNECT,
-				   g_param_spec_boolean ("graceful-disconnect", NULL, NULL,
-							 FALSE,
-							 G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boolean ("graceful-disconnect", NULL, NULL,
+                                                         FALSE,
+                                                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
 }
 
 static gboolean
 g_tcp_connection_close (GIOStream     *stream,
-			GCancellable  *cancellable,
-			GError       **error)
+                        GCancellable  *cancellable,
+                        GError       **error)
 {
   GTcpConnection *connection = G_TCP_CONNECTION (stream);
   GSocket *socket;
@@ -160,26 +160,26 @@ g_tcp_connection_close (GIOStream     *stream,
       !g_cancellable_is_cancelled (cancellable) /* Cancelled -> close fast */)
     {
       if (!g_socket_shutdown (socket, FALSE, TRUE, error))
-	{
-	  error = NULL; /* Ignore further errors */
-	  had_error = TRUE;
-	}
+        {
+          error = NULL; /* Ignore further errors */
+          had_error = TRUE;
+        }
       else
-	{
-	  while (TRUE)
-	    {
-	      ret = g_socket_receive_with_blocking (socket,  buffer, sizeof (buffer),
-						    TRUE, cancellable, error);
-	      if (ret < 0)
-		{
-		  had_error = TRUE;
-		  error = NULL;
-		  break;
-		}
-	      if (ret == 0)
-		break;
-	    }
-	}
+        {
+          while (TRUE)
+            {
+              ret = g_socket_receive_with_blocking (socket,  buffer, sizeof (buffer),
+                                                    TRUE, cancellable, error);
+              if (ret < 0)
+                {
+                  had_error = TRUE;
+                  error = NULL;
+                  break;
+                }
+              if (ret == 0)
+                break;
+            }
+        }
     }
 
   return G_IO_STREAM_CLASS (g_tcp_connection_parent_class)
@@ -214,8 +214,8 @@ async_close_finish (GTask    *task,
 
 static gboolean
 close_read_ready (GSocket        *socket,
-		  GIOCondition    condition,
-		  GTask          *task)
+                  GIOCondition    condition,
+                  GTask          *task)
 {
   GError *error = NULL;
   char buffer[1024];
@@ -227,15 +227,15 @@ close_read_ready (GSocket        *socket,
   if (ret < 0)
     {
       if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
-	{
-	  g_error_free (error);
-	  return TRUE;
-	}
+        {
+          g_error_free (error);
+          return TRUE;
+        }
       else
-	{
-	  async_close_finish (task, error);
-	  return FALSE;
-	}
+        {
+          async_close_finish (task, error);
+          return FALSE;
+        }
     }
 
   if (ret == 0)
@@ -250,10 +250,10 @@ close_read_ready (GSocket        *socket,
 
 static void
 g_tcp_connection_close_async (GIOStream           *stream,
-			      int                  io_priority,
-			      GCancellable        *cancellable,
-			      GAsyncReadyCallback  callback,
-			      gpointer             user_data)
+                              int                  io_priority,
+                              GCancellable        *cancellable,
+                              GAsyncReadyCallback  callback,
+                              gpointer             user_data)
 {
   GTcpConnection *connection = G_TCP_CONNECTION (stream);
   GSocket *socket;
@@ -272,11 +272,11 @@ g_tcp_connection_close_async (GIOStream           *stream,
 
       error = NULL;
       if (!g_socket_shutdown (socket, FALSE, TRUE, &error))
-	{
-	  g_task_return_error (task, error);
-	  g_object_unref (task);
-	  return;
-	}
+        {
+          g_task_return_error (task, error);
+          g_object_unref (task);
+          return;
+        }
 
       source = g_socket_create_source (socket, G_IO_IN, cancellable);
       g_task_attach_source (task, source, (GSourceFunc) close_read_ready);
@@ -308,7 +308,7 @@ g_tcp_connection_close_async (GIOStream           *stream,
  */
 void
 g_tcp_connection_set_graceful_disconnect (GTcpConnection *connection,
-					  gboolean        graceful_disconnect)
+                                          gboolean        graceful_disconnect)
 {
   graceful_disconnect = !!graceful_disconnect;
   if (graceful_disconnect != connection->priv->graceful_disconnect)

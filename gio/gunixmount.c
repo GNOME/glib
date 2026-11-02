@@ -67,8 +67,8 @@ static void g_unix_mount_mount_iface_init (GMountIface *iface);
 
 #define g_unix_mount_get_type _g_unix_mount_get_type
 G_DEFINE_TYPE_WITH_CODE (GUnixMount, g_unix_mount, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_MOUNT,
-						g_unix_mount_mount_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_MOUNT,
+                                                g_unix_mount_mount_iface_init))
 
 
 static void

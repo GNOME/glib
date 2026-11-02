@@ -1686,9 +1686,9 @@ platform_get_argv0 (void)
   gsize len;
 
   if (!g_file_get_contents ("/proc/self/cmdline",
-			    &cmdline,
-			    &len,
-			    NULL))
+                            &cmdline,
+                            &len,
+                            NULL))
     return NULL;
 
   /* g_file_get_contents() guarantees to put a NUL immediately after the

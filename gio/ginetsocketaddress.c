@@ -96,12 +96,12 @@ g_inet_socket_address_get_property (GObject    *object,
         break;
 
       case PROP_FLOWINFO:
-	g_return_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6);
+        g_return_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6);
         g_value_set_uint (value, g_inet_socket_address_get_flowinfo (address));
         break;
 
       case PROP_SCOPE_ID:
-	g_return_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6);
+        g_return_if_fail (g_inet_address_get_family (address->priv->address) == G_SOCKET_FAMILY_IPV6);
         g_value_set_uint (value, g_inet_socket_address_get_scope_id (address));
         break;
 
@@ -129,9 +129,9 @@ g_inet_socket_address_set_property (GObject      *object,
         break;
 
       case PROP_FLOWINFO:
-	/* We can't test that address->priv->address is IPv6 here,
-	 * since this property might get set before PROP_ADDRESS.
-	 */
+        /* We can't test that address->priv->address is IPv6 here,
+         * since this property might get set before PROP_ADDRESS.
+         */
         address->priv->flowinfo = g_value_get_uint (value);
         break;
 
@@ -178,8 +178,8 @@ g_inet_socket_address_get_native_size (GSocketAddress *address)
 static gboolean
 g_inet_socket_address_to_native (GSocketAddress  *address,
                                  gpointer         dest,
-				 gsize            destlen,
-				 GError         **error)
+                                 gsize            destlen,
+                                 GError         **error)
 {
   GInetSocketAddress *addr;
   GSocketFamily family;
@@ -194,11 +194,11 @@ g_inet_socket_address_to_native (GSocketAddress  *address,
       struct sockaddr_in *sock = (struct sockaddr_in *) dest;
 
       if (destlen < sizeof (*sock))
-	{
-	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
-			       _("Not enough space for socket address"));
-	  return FALSE;
-	}
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+                               _("Not enough space for socket address"));
+          return FALSE;
+        }
 
       sock->sin_family = AF_INET;
       sock->sin_port = g_htons (addr->priv->port);
@@ -211,11 +211,11 @@ g_inet_socket_address_to_native (GSocketAddress  *address,
       struct sockaddr_in6 *sock = (struct sockaddr_in6 *) dest;
 
       if (destlen < sizeof (*sock))
-	{
-	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
-			       _("Not enough space for socket address"));
-	  return FALSE;
-	}
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+                               _("Not enough space for socket address"));
+          return FALSE;
+        }
 
       memset (sock, 0, sizeof (*sock));
       sock->sin6_family = AF_INET6;
@@ -228,7 +228,7 @@ g_inet_socket_address_to_native (GSocketAddress  *address,
   else
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			   _("Unsupported socket address"));
+                           _("Unsupported socket address"));
       return FALSE;
     }
 }
@@ -389,9 +389,9 @@ g_inet_socket_address_new (GInetAddress *address,
                            guint16       port)
 {
   return g_object_new (G_TYPE_INET_SOCKET_ADDRESS,
-		       "address", address,
-		       "port", port,
-		       NULL);
+                       "address", address,
+                       "port", port,
+                       NULL);
 }
 
 /**

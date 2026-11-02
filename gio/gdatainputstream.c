@@ -51,13 +51,13 @@ enum {
 };
 
 static void g_data_input_stream_set_property (GObject      *object,
-					      guint         prop_id,
-					      const GValue *value,
-					      GParamSpec   *pspec);
+                                              guint         prop_id,
+                                              const GValue *value,
+                                              GParamSpec   *pspec);
 static void g_data_input_stream_get_property (GObject      *object,
-					      guint         prop_id,
-					      GValue       *value,
-					      GParamSpec   *pspec);
+                                              guint         prop_id,
+                                              GValue       *value,
+                                              GParamSpec   *pspec);
 
 G_DEFINE_TYPE_WITH_PRIVATE (GDataInputStream,
                             g_data_input_stream,
@@ -103,9 +103,9 @@ g_data_input_stream_class_init (GDataInputStreamClass *klass)
 
 static void
 g_data_input_stream_set_property (GObject      *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GDataInputStream        *dstream;
 
@@ -197,7 +197,7 @@ g_data_input_stream_new (GInputStream *base_stream)
  **/
 void
 g_data_input_stream_set_byte_order (GDataInputStream     *stream,
-				    GDataStreamByteOrder  order)
+                                    GDataStreamByteOrder  order)
 {
   GDataInputStreamPrivate *priv;
 
@@ -243,7 +243,7 @@ g_data_input_stream_get_byte_order (GDataInputStream *stream)
  **/
 void
 g_data_input_stream_set_newline_type (GDataInputStream       *stream,
-				      GDataStreamNewlineType  type)
+                                      GDataStreamNewlineType  type)
 {
   GDataInputStreamPrivate *priv;
 
@@ -288,22 +288,22 @@ read_data (GDataInputStream  *stream,
   while ((available = g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (stream))) < size)
     {
       res = g_buffered_input_stream_fill (G_BUFFERED_INPUT_STREAM (stream),
-					  size - available,
-					  cancellable, error);
+                                          size - available,
+                                          cancellable, error);
       if (res < 0)
-	return FALSE;
+        return FALSE;
       if (res == 0)
-	{
-	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                                _("Unexpected early end-of-stream"));
-	  return FALSE;
-	}
+          return FALSE;
+        }
     }
   
   /* This should always succeed, since it's in the buffer */
   res = g_input_stream_read (G_INPUT_STREAM (stream),
-			     buffer, size,
-			     NULL, NULL);
+                             buffer, size,
+                             NULL, NULL);
   g_warn_if_fail (res >= 0 && (gsize) res == size);
   return TRUE;
 }
@@ -322,8 +322,8 @@ read_data (GDataInputStream  *stream,
  **/
 guchar
 g_data_input_stream_read_byte (GDataInputStream  *stream,
-			       GCancellable       *cancellable,
-			       GError            **error)
+                               GCancellable       *cancellable,
+                               GError            **error)
 {
   guchar c;
   
@@ -352,8 +352,8 @@ g_data_input_stream_read_byte (GDataInputStream  *stream,
  **/
 gint16
 g_data_input_stream_read_int16 (GDataInputStream  *stream,
-			       GCancellable       *cancellable,
-			       GError            **error)
+                               GCancellable       *cancellable,
+                               GError            **error)
 {
   gint16 v;
   
@@ -362,17 +362,17 @@ g_data_input_stream_read_int16 (GDataInputStream  *stream,
   if (read_data (stream, &v, 2, cancellable, error))
     {
       switch (stream->priv->byte_order)
-	{
-	case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-	  v = GINT16_FROM_BE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-	  v = GINT16_FROM_LE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-	default:
-	  break;
-	}
+        {
+        case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
+          v = GINT16_FROM_BE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
+          v = GINT16_FROM_LE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
+        default:
+          break;
+        }
       return v;
     }
   
@@ -396,8 +396,8 @@ g_data_input_stream_read_int16 (GDataInputStream  *stream,
  **/
 guint16
 g_data_input_stream_read_uint16 (GDataInputStream  *stream,
-				 GCancellable       *cancellable,
-				 GError            **error)
+                                 GCancellable       *cancellable,
+                                 GError            **error)
 {
   guint16 v;
   
@@ -406,17 +406,17 @@ g_data_input_stream_read_uint16 (GDataInputStream  *stream,
   if (read_data (stream, &v, 2, cancellable, error))
     {
       switch (stream->priv->byte_order)
-	{
-	case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-	  v = GUINT16_FROM_BE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-	  v = GUINT16_FROM_LE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-	default:
-	  break;
-	}
+        {
+        case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
+          v = GUINT16_FROM_BE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
+          v = GUINT16_FROM_LE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
+        default:
+          break;
+        }
       return v;
     }
   
@@ -444,8 +444,8 @@ g_data_input_stream_read_uint16 (GDataInputStream  *stream,
  **/
 gint32
 g_data_input_stream_read_int32 (GDataInputStream  *stream,
-				GCancellable       *cancellable,
-				GError            **error)
+                                GCancellable       *cancellable,
+                                GError            **error)
 {
   gint32 v;
   
@@ -454,17 +454,17 @@ g_data_input_stream_read_int32 (GDataInputStream  *stream,
   if (read_data (stream, &v, 4, cancellable, error))
     {
       switch (stream->priv->byte_order)
-	{
-	case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-	  v = GINT32_FROM_BE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-	  v = GINT32_FROM_LE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-	default:
-	  break;
-	}
+        {
+        case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
+          v = GINT32_FROM_BE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
+          v = GINT32_FROM_LE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
+        default:
+          break;
+        }
       return v;
     }
   
@@ -492,8 +492,8 @@ g_data_input_stream_read_int32 (GDataInputStream  *stream,
  **/
 guint32
 g_data_input_stream_read_uint32 (GDataInputStream  *stream,
-				 GCancellable       *cancellable,
-				 GError            **error)
+                                 GCancellable       *cancellable,
+                                 GError            **error)
 {
   guint32 v;
   
@@ -502,17 +502,17 @@ g_data_input_stream_read_uint32 (GDataInputStream  *stream,
   if (read_data (stream, &v, 4, cancellable, error))
     {
       switch (stream->priv->byte_order)
-	{
-	case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-	  v = GUINT32_FROM_BE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-	  v = GUINT32_FROM_LE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-	default:
-	  break;
-	}
+        {
+        case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
+          v = GUINT32_FROM_BE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
+          v = GUINT32_FROM_LE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
+        default:
+          break;
+        }
       return v;
     }
   
@@ -540,8 +540,8 @@ g_data_input_stream_read_uint32 (GDataInputStream  *stream,
  **/
 gint64
 g_data_input_stream_read_int64 (GDataInputStream  *stream,
-			       GCancellable       *cancellable,
-			       GError            **error)
+                               GCancellable       *cancellable,
+                               GError            **error)
 {
   gint64 v;
   
@@ -550,17 +550,17 @@ g_data_input_stream_read_int64 (GDataInputStream  *stream,
   if (read_data (stream, &v, 8, cancellable, error))
     {
       switch (stream->priv->byte_order)
-	{
-	case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-	  v = GINT64_FROM_BE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-	  v = GINT64_FROM_LE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-	default:
-	  break;
-	}
+        {
+        case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
+          v = GINT64_FROM_BE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
+          v = GINT64_FROM_LE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
+        default:
+          break;
+        }
       return v;
     }
   
@@ -588,8 +588,8 @@ g_data_input_stream_read_int64 (GDataInputStream  *stream,
  **/
 guint64
 g_data_input_stream_read_uint64 (GDataInputStream  *stream,
-				GCancellable       *cancellable,
-				GError            **error)
+                                GCancellable       *cancellable,
+                                GError            **error)
 {
   guint64 v;
   
@@ -598,17 +598,17 @@ g_data_input_stream_read_uint64 (GDataInputStream  *stream,
   if (read_data (stream, &v, 8, cancellable, error))
     {
       switch (stream->priv->byte_order)
-	{
-	case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-	  v = GUINT64_FROM_BE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-	  v = GUINT64_FROM_LE (v);
-	  break;
-	case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-	default:
-	  break;
-	}
+        {
+        case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
+          v = GUINT64_FROM_BE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
+          v = GUINT64_FROM_LE (v);
+          break;
+        case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
+        default:
+          break;
+        }
       return v;
     }
   
@@ -617,9 +617,9 @@ g_data_input_stream_read_uint64 (GDataInputStream  *stream,
 
 static gssize
 scan_for_newline (GDataInputStream *stream,
-		  gsize            *checked_out,
-		  gboolean         *last_saw_cr_out,
-		  int              *newline_len_out)
+                  gsize            *checked_out,
+                  gboolean         *last_saw_cr_out,
+                  int              *newline_len_out)
 {
   GBufferedInputStream *bstream;
   GDataInputStreamPrivate *priv;
@@ -648,62 +648,62 @@ scan_for_newline (GDataInputStream *stream,
   for (i = 0; checked < available && i < peeked; i++)
     {
       switch (priv->newline_type)
-	{
-	case G_DATA_STREAM_NEWLINE_TYPE_LF:
-	  if (buffer[i] == 10)
-	    {
-	      found_pos = start + i;
-	      newline_len = 1;
-	    }
-	  break;
-	case G_DATA_STREAM_NEWLINE_TYPE_CR:
-	  if (buffer[i] == 13)
-	    {
-	      found_pos = start + i;
-	      newline_len = 1;
-	    }
-	  break;
-	case G_DATA_STREAM_NEWLINE_TYPE_CR_LF:
-	  if (last_saw_cr && buffer[i] == 10)
-	    {
-	      found_pos = start + i - 1;
-	      newline_len = 2;
-	    }
-	  break;
-	default:
-	case G_DATA_STREAM_NEWLINE_TYPE_ANY:
-	  if (buffer[i] == 10) /* LF */
-	    {
-	      if (last_saw_cr)
-		{
-		  /* CR LF */
-		  found_pos = start + i - 1;
-		  newline_len = 2;
-		}
-	      else
-		{
-		  /* LF */
-		  found_pos = start + i;
-		  newline_len = 1;
-		}
-	    }
-	  else if (last_saw_cr)
-	    {
-	      /* Last was cr, this is not LF, end is CR */
-	      found_pos = start + i - 1;
-	      newline_len = 1;
-	    }
-	  /* Don't check for CR here, instead look at last_saw_cr on next byte */
-	  break;
-	}
-	
+        {
+        case G_DATA_STREAM_NEWLINE_TYPE_LF:
+          if (buffer[i] == 10)
+            {
+              found_pos = start + i;
+              newline_len = 1;
+            }
+          break;
+        case G_DATA_STREAM_NEWLINE_TYPE_CR:
+          if (buffer[i] == 13)
+            {
+              found_pos = start + i;
+              newline_len = 1;
+            }
+          break;
+        case G_DATA_STREAM_NEWLINE_TYPE_CR_LF:
+          if (last_saw_cr && buffer[i] == 10)
+            {
+              found_pos = start + i - 1;
+              newline_len = 2;
+            }
+          break;
+        default:
+        case G_DATA_STREAM_NEWLINE_TYPE_ANY:
+          if (buffer[i] == 10) /* LF */
+            {
+              if (last_saw_cr)
+                {
+                  /* CR LF */
+                  found_pos = start + i - 1;
+                  newline_len = 2;
+                }
+              else
+                {
+                  /* LF */
+                  found_pos = start + i;
+                  newline_len = 1;
+                }
+            }
+          else if (last_saw_cr)
+            {
+              /* Last was cr, this is not LF, end is CR */
+              found_pos = start + i - 1;
+              newline_len = 1;
+            }
+          /* Don't check for CR here, instead look at last_saw_cr on next byte */
+          break;
+        }
+        
       last_saw_cr = (buffer[i] == 13);
 
       if (found_pos != -1)
-	{
-	  *newline_len_out = newline_len;
-	  return found_pos;
-	}
+        {
+          *newline_len_out = newline_len;
+          return found_pos;
+        }
     }
 
   checked = end;
@@ -712,7 +712,7 @@ scan_for_newline (GDataInputStream *stream,
   *last_saw_cr_out = last_saw_cr;
   return -1;
 }
-		  
+                  
 
 /**
  * g_data_input_stream_read_line:
@@ -738,9 +738,9 @@ scan_for_newline (GDataInputStream *stream,
  **/
 char *
 g_data_input_stream_read_line (GDataInputStream  *stream,
-			       gsize             *length,
-			       GCancellable      *cancellable,
-			       GError           **error)
+                               gsize             *length,
+                               GCancellable      *cancellable,
+                               GError           **error)
 {
   GBufferedInputStream *bstream;
   gsize checked;
@@ -761,37 +761,37 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
   while ((found_pos = scan_for_newline (stream, &checked, &last_saw_cr, &newline_len)) == -1)
     {
       if (g_buffered_input_stream_get_available (bstream) ==
-	  g_buffered_input_stream_get_buffer_size (bstream))
-	g_buffered_input_stream_set_buffer_size (bstream,
-						 2 * g_buffered_input_stream_get_buffer_size (bstream));
+          g_buffered_input_stream_get_buffer_size (bstream))
+        g_buffered_input_stream_set_buffer_size (bstream,
+                                                 2 * g_buffered_input_stream_get_buffer_size (bstream));
 
       res = g_buffered_input_stream_fill (bstream, -1, cancellable, error);
       if (res < 0)
-	return NULL;
+        return NULL;
       if (res == 0)
-	{
-	  /* End of stream */
-	  if (g_buffered_input_stream_get_available (bstream) == 0)
-	    {
-	      if (length)
-		*length = 0;
-	      return NULL;
-	    }
-	  else
-	    {
-	      found_pos = checked;
-	      newline_len = 0;
-	      break;
-	    }
-	}
+        {
+          /* End of stream */
+          if (g_buffered_input_stream_get_available (bstream) == 0)
+            {
+              if (length)
+                *length = 0;
+              return NULL;
+            }
+          else
+            {
+              found_pos = checked;
+              newline_len = 0;
+              break;
+            }
+        }
     }
 
   line = g_malloc (found_pos + newline_len + 1);
 
   res = g_input_stream_read (G_INPUT_STREAM (stream),
-			     line,
-			     found_pos + newline_len,
-			     NULL, NULL);
+                             line,
+                             found_pos + newline_len,
+                             NULL, NULL);
   if (length)
     *length = (gsize)found_pos;
   g_warn_if_fail (res == found_pos + newline_len);
@@ -825,9 +825,9 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
  **/
 char *
 g_data_input_stream_read_line_utf8 (GDataInputStream  *stream,
-				    gsize             *length,
-				    GCancellable      *cancellable,
-				    GError           **error)
+                                    gsize             *length,
+                                    GCancellable      *cancellable,
+                                    GError           **error)
 {
   char *res;
 
@@ -838,8 +838,8 @@ g_data_input_stream_read_line_utf8 (GDataInputStream  *stream,
   if (!g_utf8_validate (res, -1, NULL))
     {
       g_set_error_literal (error, G_CONVERT_ERROR,
-			   G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-			   _("Invalid byte sequence in conversion input"));
+                           G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+                           _("Invalid byte sequence in conversion input"));
 
       if (length != NULL)
         *length = 0;
@@ -852,8 +852,8 @@ g_data_input_stream_read_line_utf8 (GDataInputStream  *stream,
 
 static gssize
 scan_for_chars (GDataInputStream *stream,
-		gsize            *checked_out,
-		const char       *stop_chars,
+                gsize            *checked_out,
+                const char       *stop_chars,
                 gsize             stop_chars_len)
 {
   GBufferedInputStream *bstream;
@@ -930,10 +930,10 @@ scan_for_chars (GDataInputStream *stream,
  */
 char *
 g_data_input_stream_read_until (GDataInputStream  *stream,
-			       const gchar        *stop_chars,
-			       gsize              *length,
-			       GCancellable       *cancellable,
-			       GError            **error)
+                               const gchar        *stop_chars,
+                               gsize              *length,
+                               GCancellable       *cancellable,
+                               GError            **error)
 {
   GBufferedInputStream *bstream;
   gchar *result;
@@ -1259,9 +1259,9 @@ g_data_input_stream_read_line_finish (GDataInputStream  *stream,
  */
 gchar *
 g_data_input_stream_read_line_finish_utf8 (GDataInputStream  *stream,
-					   GAsyncResult      *result,
-					   gsize             *length,
-					   GError           **error)
+                                           GAsyncResult      *result,
+                                           gsize             *length,
+                                           GError           **error)
 {
   gchar *res;
 
@@ -1272,8 +1272,8 @@ g_data_input_stream_read_line_finish_utf8 (GDataInputStream  *stream,
   if (!g_utf8_validate (res, -1, NULL))
     {
       g_set_error_literal (error, G_CONVERT_ERROR,
-			   G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-			   _("Invalid byte sequence in conversion input"));
+                           G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+                           _("Invalid byte sequence in conversion input"));
       g_free (res);
       return NULL;
     }

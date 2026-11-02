@@ -323,12 +323,12 @@ test_is_ip_addr (void)
   for (i = 0; i < num_ip_addr_tests; i++)
     {
       if (g_hostname_is_ip_address (ip_addr_tests[i].addr) != ip_addr_tests[i].is_addr)
-	{
-	  char *msg = g_strdup_printf ("g_hostname_is_ip_address (\"%s\") == %s",
-				       ip_addr_tests[i].addr,
-				       ip_addr_tests[i].is_addr ? "TRUE" : "FALSE");
-	  g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, msg);
-	}
+        {
+          char *msg = g_strdup_printf ("g_hostname_is_ip_address (\"%s\") == %s",
+                                       ip_addr_tests[i].addr,
+                                       ip_addr_tests[i].is_addr ? "TRUE" : "FALSE");
+          g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, msg);
+        }
     }
 }
 
@@ -371,19 +371,19 @@ main (int   argc,
       gchar *converted;
 
       if (g_hostname_is_non_ascii (hostname))
-	{
-	  converted = g_hostname_to_ascii (hostname);
-	  printf ("to_ascii: %s\n", converted);
-	  g_free (converted);
-	}
+        {
+          converted = g_hostname_to_ascii (hostname);
+          printf ("to_ascii: %s\n", converted);
+          g_free (converted);
+        }
       else if (g_hostname_is_ascii_encoded (hostname))
-	{
-	  converted = g_hostname_to_unicode (hostname);
-	  printf ("to_unicode: %s\n", converted);
-	  g_free (converted);
-	}
+        {
+          converted = g_hostname_to_unicode (hostname);
+          printf ("to_unicode: %s\n", converted);
+          g_free (converted);
+        }
       else
-	printf ("hostname is neither unicode nor ACE encoded\n");
+        printf ("hostname is neither unicode nor ACE encoded\n");
       return 0;
     }
 

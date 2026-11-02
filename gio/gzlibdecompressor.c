@@ -95,8 +95,8 @@ g_zlib_decompressor_set_gzheader (GZlibDecompressor *decompressor)
 }
 
 G_DEFINE_TYPE_WITH_CODE (GZlibDecompressor, g_zlib_decompressor, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_CONVERTER,
-						g_zlib_decompressor_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_CONVERTER,
+                                                g_zlib_decompressor_iface_init))
 
 static void
 g_zlib_decompressor_finalize (GObject *object)
@@ -120,9 +120,9 @@ g_zlib_decompressor_finalize (GObject *object)
 
 static void
 g_zlib_decompressor_set_property (GObject      *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+                                  guint         prop_id,
+                                  const GValue *value,
+                                  GParamSpec   *pspec)
 {
   GZlibDecompressor *decompressor;
 
@@ -143,9 +143,9 @@ g_zlib_decompressor_set_property (GObject      *object,
 
 static void
 g_zlib_decompressor_get_property (GObject    *object,
-				  guint       prop_id,
-				  GValue     *value,
-				  GParamSpec *pspec)
+                                  guint       prop_id,
+                                  GValue     *value,
+                                  GParamSpec *pspec)
 {
   GZlibDecompressor *decompressor;
 
@@ -223,12 +223,12 @@ g_zlib_decompressor_class_init (GZlibDecompressorClass *klass)
    * Since: 2.24
    */
   g_object_class_install_property (gobject_class,
-				   PROP_FORMAT,
-				   g_param_spec_enum ("format", NULL, NULL,
-						      G_TYPE_ZLIB_COMPRESSOR_FORMAT,
-						      G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
-						      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
-						      G_PARAM_STATIC_STRINGS));
+                                   PROP_FORMAT,
+                                   g_param_spec_enum ("format", NULL, NULL,
+                                                      G_TYPE_ZLIB_COMPRESSOR_FORMAT,
+                                                      G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
+                                                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_STRINGS));
 
   /**
    * GZlibDecompressor:file-info:
@@ -265,8 +265,8 @@ g_zlib_decompressor_new (GZlibCompressorFormat format)
   GZlibDecompressor *decompressor;
 
   decompressor = g_object_new (G_TYPE_ZLIB_DECOMPRESSOR,
-			       "format", format,
-			       NULL);
+                               "format", format,
+                               NULL);
 
   return decompressor;
 }
@@ -306,14 +306,14 @@ g_zlib_decompressor_reset (GConverter *converter)
 
 static GConverterResult
 g_zlib_decompressor_convert (GConverter *converter,
-			     const void *inbuf,
-			     gsize       inbuf_size,
-			     void       *outbuf,
-			     gsize       outbuf_size,
-			     GConverterFlags flags,
-			     gsize      *bytes_read,
-			     gsize      *bytes_written,
-			     GError    **error)
+                             const void *inbuf,
+                             gsize       inbuf_size,
+                             void       *outbuf,
+                             gsize       outbuf_size,
+                             GConverterFlags flags,
+                             gsize      *bytes_read,
+                             gsize      *bytes_written,
+                             GError    **error)
 {
   GZlibDecompressor *decompressor;
   int res;
@@ -331,36 +331,36 @@ g_zlib_decompressor_convert (GConverter *converter,
   if (res == Z_DATA_ERROR || res == Z_NEED_DICT)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA,
-			   _("Invalid compressed data"));
+                           _("Invalid compressed data"));
       return G_CONVERTER_ERROR;
     }
 
   if (res == Z_MEM_ERROR)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			   _("Not enough memory"));
+                           _("Not enough memory"));
       return G_CONVERTER_ERROR;
     }
 
     if (res == Z_STREAM_ERROR)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		   _("Internal error: %s"), decompressor->zstream.msg);
+                   _("Internal error: %s"), decompressor->zstream.msg);
       return G_CONVERTER_ERROR;
     }
 
     if (res == Z_BUF_ERROR)
       {
-	if (flags & G_CONVERTER_FLUSH)
-	  return G_CONVERTER_FLUSHED;
+        if (flags & G_CONVERTER_FLUSH)
+          return G_CONVERTER_FLUSHED;
 
-	/* Z_FINISH not set, so this means no progress could be made */
-	/* We do have output space, so this should only happen if we
-	   have no input but need some */
+        /* Z_FINISH not set, so this means no progress could be made */
+        /* We do have output space, so this should only happen if we
+           have no input but need some */
 
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT,
-			     _("Need more input"));
-	return G_CONVERTER_ERROR;
+        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT,
+                             _("Need more input"));
+        return G_CONVERTER_ERROR;
       }
 
   g_assert (res == Z_OK || res == Z_STREAM_END);

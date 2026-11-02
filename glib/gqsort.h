@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -37,10 +37,10 @@ G_BEGIN_DECLS
 
 GLIB_DEPRECATED_IN_2_82_FOR(g_sort_array)
 void g_qsort_with_data (gconstpointer    pbase,
-			gint             total_elems,
-			gsize            size,
-			GCompareDataFunc compare_func,
-			gpointer         user_data);
+                        gint             total_elems,
+                        gsize            size,
+                        GCompareDataFunc compare_func,
+                        gpointer         user_data);
 
 GLIB_AVAILABLE_IN_2_82
 void g_sort_array (const void       *array,

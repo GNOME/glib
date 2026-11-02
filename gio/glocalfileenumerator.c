@@ -82,11 +82,11 @@ struct _GLocalFileEnumerator
 G_DEFINE_TYPE (GLocalFileEnumerator, g_local_file_enumerator, G_TYPE_FILE_ENUMERATOR)
 
 static GFileInfo *g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
-						     GCancellable     *cancellable,
-						     GError          **error);
+                                                     GCancellable     *cancellable,
+                                                     GError          **error);
 static gboolean   g_local_file_enumerator_close     (GFileEnumerator  *enumerator,
-						     GCancellable     *cancellable,
-						     GError          **error);
+                                                     GCancellable     *cancellable,
+                                                     GError          **error);
 
 
 static void
@@ -98,7 +98,7 @@ free_entries (GLocalFileEnumerator *local)
   if (local->entries != NULL)
     {
       for (i = 0; local->entries[i].name != NULL; i++)
-	g_free (local->entries[i].name);
+        g_free (local->entries[i].name);
       
       g_free (local->entries);
     }
@@ -153,7 +153,7 @@ g_local_file_enumerator_init (GLocalFileEnumerator *local)
 #ifdef USE_GDIR
 static void
 convert_file_to_io_error (GError **error,
-			  GError  *file_error)
+                          GError  *file_error)
 {
   int new_code;
 
@@ -204,10 +204,10 @@ g_file_attribute_matcher_subtract_attributes (GFileAttributeMatcher *matcher,
 
 GFileEnumerator *
 _g_local_file_enumerator_new (GLocalFile *file,
-			      const char           *attributes,
-			      GFileQueryInfoFlags   flags,
-			      GCancellable         *cancellable,
-			      GError              **error)
+                              const char           *attributes,
+                              GFileQueryInfoFlags   flags,
+                              GCancellable         *cancellable,
+                              GError              **error)
 {
   GLocalFileEnumerator *local;
   char *filename = g_file_get_path (G_FILE (file));
@@ -221,10 +221,10 @@ _g_local_file_enumerator_new (GLocalFile *file,
   if (dir == NULL) 
     {
       if (error != NULL)
-	{
-	  convert_file_to_io_error (error, dir_error);
-	  g_error_free (dir_error);
-	}
+        {
+          convert_file_to_io_error (error, dir_error);
+          g_error_free (dir_error);
+        }
       g_free (filename);
       return NULL;
     }
@@ -316,35 +316,35 @@ next_file_helper (GLocalFileEnumerator *local, GFileType *file_type)
       (local->entries[local->entries_pos].name == NULL))
     {
       if (local->entries == NULL)
-	local->entries = g_new (DirEntry, CHUNK_SIZE + 1);
+        local->entries = g_new (DirEntry, CHUNK_SIZE + 1);
       else
-	{
-	  /* Restart by clearing old names */
-	  for (i = 0; local->entries[i].name != NULL; i++)
-	    g_free (local->entries[i].name);
-	}
+        {
+          /* Restart by clearing old names */
+          for (i = 0; local->entries[i].name != NULL; i++)
+            g_free (local->entries[i].name);
+        }
       
       for (i = 0; i < CHUNK_SIZE; i++)
-	{
-	  entry = readdir (local->dir);
-	  while (entry 
-		 && (0 == strcmp (entry->d_name, ".") ||
-		     0 == strcmp (entry->d_name, "..")))
-	    entry = readdir (local->dir);
+        {
+          entry = readdir (local->dir);
+          while (entry 
+                 && (0 == strcmp (entry->d_name, ".") ||
+                     0 == strcmp (entry->d_name, "..")))
+            entry = readdir (local->dir);
 
-	  if (entry)
-	    {
-	      local->entries[i].name = g_strdup (entry->d_name);
-	      local->entries[i].inode = entry->d_ino;
+          if (entry)
+            {
+              local->entries[i].name = g_strdup (entry->d_name);
+              local->entries[i].inode = entry->d_ino;
 #if HAVE_STRUCT_DIRENT_D_TYPE
               local->entries[i].type = file_type_from_dirent (entry->d_type);
 #else
               local->entries[i].type = G_FILE_TYPE_UNKNOWN;
 #endif
-	    }
-	  else
-	    break;
-	}
+            }
+          else
+            break;
+        }
       local->entries[i].name = NULL;
       local->entries_pos = 0;
       
@@ -366,8 +366,8 @@ next_file_helper (GLocalFileEnumerator *local, GFileType *file_type)
 
 static GFileInfo *
 g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
-				   GCancellable     *cancellable,
-				   GError          **error)
+                                   GCancellable     *cancellable,
+                                   GError          **error)
 {
   GLocalFileEnumerator *local = G_LOCAL_FILE_ENUMERATOR (enumerator);
   const char *filename;
@@ -432,12 +432,12 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
        * the file was removed between the readdir and the stat, so we
        * ignore the file. */
       if (g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-	{
-	  g_error_free (my_error);
-	  goto next_file;
-	}
+        {
+          g_error_free (my_error);
+          goto next_file;
+        }
       else
-	g_propagate_error (error, my_error);
+        g_propagate_error (error, my_error);
     }
 
   return info;
@@ -445,8 +445,8 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
 
 static gboolean
 g_local_file_enumerator_close (GFileEnumerator  *enumerator,
-			       GCancellable     *cancellable,
-			       GError          **error)
+                               GCancellable     *cancellable,
+                               GError          **error)
 {
   GLocalFileEnumerator *local = G_LOCAL_FILE_ENUMERATOR (enumerator);
 

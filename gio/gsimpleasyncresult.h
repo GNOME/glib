@@ -46,27 +46,27 @@ GType               g_simple_async_result_get_type         (void);
 
 GIO_DEPRECATED_IN_2_46_FOR(g_task_new)
 GSimpleAsyncResult *g_simple_async_result_new              (GObject                 *source_object,
-							    GAsyncReadyCallback      callback,
-							    gpointer                 user_data,
-							    gpointer                 source_tag);
+                                                            GAsyncReadyCallback      callback,
+                                                            gpointer                 user_data,
+                                                            gpointer                 source_tag);
 GIO_DEPRECATED_IN_2_46_FOR(g_task_new)
 GSimpleAsyncResult *g_simple_async_result_new_error        (GObject                 *source_object,
-							    GAsyncReadyCallback      callback,
-							    gpointer                 user_data,
-							    GQuark                   domain,
-							    gint                     code,
-							    const char              *format,
-							    ...) G_GNUC_PRINTF (6, 7);
+                                                            GAsyncReadyCallback      callback,
+                                                            gpointer                 user_data,
+                                                            GQuark                   domain,
+                                                            gint                     code,
+                                                            const char              *format,
+                                                            ...) G_GNUC_PRINTF (6, 7);
 GIO_DEPRECATED_IN_2_46_FOR(g_task_new)
 GSimpleAsyncResult *g_simple_async_result_new_from_error   (GObject                 *source_object,
-							    GAsyncReadyCallback      callback,
-							    gpointer                 user_data,
-							    const GError            *error);
+                                                            GAsyncReadyCallback      callback,
+                                                            gpointer                 user_data,
+                                                            const GError            *error);
 GIO_DEPRECATED_IN_2_46_FOR(g_task_new)
 GSimpleAsyncResult *g_simple_async_result_new_take_error   (GObject                 *source_object,
-							    GAsyncReadyCallback      callback,
-							    gpointer                 user_data,
-							    GError                  *error);
+                                                            GAsyncReadyCallback      callback,
+                                                            gpointer                 user_data,
+                                                            GError                  *error);
 
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
@@ -96,38 +96,38 @@ GIO_DEPRECATED_IN_2_46
 gpointer            g_simple_async_result_get_source_tag   (GSimpleAsyncResult      *simple);
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_set_handle_cancellation (GSimpleAsyncResult      *simple,
-								   gboolean          handle_cancellation);
+                                                                   gboolean          handle_cancellation);
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_complete         (GSimpleAsyncResult      *simple);
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_complete_in_idle (GSimpleAsyncResult      *simple);
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_run_in_thread    (GSimpleAsyncResult      *simple,
-							    GSimpleAsyncThreadFunc   func,
-							    int                      io_priority,
-							    GCancellable            *cancellable);
+                                                            GSimpleAsyncThreadFunc   func,
+                                                            int                      io_priority,
+                                                            GCancellable            *cancellable);
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
-							    const GError            *error);
+                                                            const GError            *error);
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_take_error       (GSimpleAsyncResult      *simple,
-							    GError            *error);
+                                                            GError            *error);
 GIO_DEPRECATED_IN_2_46
 gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
-							    GError                 **dest);
+                                                            GError                 **dest);
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
-							    GQuark                   domain,
-							    gint                     code,
-							    const char              *format,
-							    ...) G_GNUC_PRINTF (4, 5);
+                                                            GQuark                   domain,
+                                                            gint                     code,
+                                                            const char              *format,
+                                                            ...) G_GNUC_PRINTF (4, 5);
 GIO_DEPRECATED_IN_2_46
 void                g_simple_async_result_set_error_va     (GSimpleAsyncResult      *simple,
-							    GQuark                   domain,
-							    gint                     code,
-							    const char              *format,
-							    va_list                  args)
-							    G_GNUC_PRINTF(4, 0);
+                                                            GQuark                   domain,
+                                                            gint                     code,
+                                                            const char              *format,
+                                                            va_list                  args)
+                                                            G_GNUC_PRINTF(4, 0);
 GIO_DEPRECATED_IN_2_46
 gboolean            g_simple_async_result_is_valid         (GAsyncResult            *result,
                                                             GObject                 *source,
@@ -135,17 +135,17 @@ gboolean            g_simple_async_result_is_valid         (GAsyncResult        
 
 GIO_DEPRECATED_IN_2_46_FOR(g_task_report_error)
 void g_simple_async_report_error_in_idle  (GObject            *object,
-					   GAsyncReadyCallback callback,
-					   gpointer            user_data,
-					   GQuark              domain,
-					   gint                code,
-					   const char         *format,
-					   ...) G_GNUC_PRINTF(6, 7);
+                                           GAsyncReadyCallback callback,
+                                           gpointer            user_data,
+                                           GQuark              domain,
+                                           gint                code,
+                                           const char         *format,
+                                           ...) G_GNUC_PRINTF(6, 7);
 GIO_DEPRECATED_IN_2_46_FOR(g_task_report_error)
 void g_simple_async_report_gerror_in_idle (GObject            *object,
-					   GAsyncReadyCallback callback,
-					   gpointer            user_data,
-					   const GError       *error);
+                                           GAsyncReadyCallback callback,
+                                           gpointer            user_data,
+                                           const GError       *error);
 GIO_DEPRECATED_IN_2_46_FOR(g_task_report_error)
 void g_simple_async_report_take_gerror_in_idle (GObject            *object,
                                                 GAsyncReadyCallback callback,

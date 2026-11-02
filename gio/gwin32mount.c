@@ -101,8 +101,8 @@ static void g_win32_mount_mount_iface_init (GMountIface *iface);
 
 #define g_win32_mount_get_type _g_win32_mount_get_type
 G_DEFINE_TYPE_WITH_CODE (GWin32Mount, g_win32_mount, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_MOUNT,
-						g_win32_mount_mount_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_MOUNT,
+                                                g_win32_mount_mount_iface_init))
 
 
 static void
@@ -257,7 +257,7 @@ _g_win32_mount_unmounted (GWin32Mount *mount)
 
 void
 _g_win32_mount_unset_volume (GWin32Mount  *mount,
-			     GWin32Volume *volume)
+                             GWin32Volume *volume)
 {
   if (mount->volume == volume)
     {
@@ -397,15 +397,15 @@ g_win32_mount_get_icon (GMount *mount)
 
       if (get_icon_name_index (wfn, &icon_path, &icon_index))
         {
-	  gchar *id = g_strdup_printf ("%S,%i", icon_path, icon_index);
-	  g_free (icon_path);
-	  win32_mount->icon = g_themed_icon_new (id);
-	  g_free (id);
-	}
+          gchar *id = g_strdup_printf ("%S,%i", icon_path, icon_index);
+          g_free (icon_path);
+          win32_mount->icon = g_themed_icon_new (id);
+          g_free (id);
+        }
       else
         {
           win32_mount->icon = g_themed_icon_new_with_default_fallbacks (_win32_drive_type_to_icon (win32_mount->drive_type, FALSE));
-	}
+        }
 
       g_free (wfn);
     }
@@ -492,34 +492,34 @@ typedef struct {
 
 static void
 g_win32_mount_unmount (GMount              *mount,
-		       GMountUnmountFlags   flags,
-		       GCancellable        *cancellable,
-		       GAsyncReadyCallback  callback,
-		       gpointer             user_data)
+                       GMountUnmountFlags   flags,
+                       GCancellable        *cancellable,
+                       GAsyncReadyCallback  callback,
+                       gpointer             user_data)
 {
 }
 
 static gboolean
 g_win32_mount_unmount_finish (GMount        *mount,
-			      GAsyncResult  *result,
-			      GError       **error)
+                              GAsyncResult  *result,
+                              GError       **error)
 {
   return FALSE;
 }
 
 static void
 g_win32_mount_eject (GMount              *mount,
-		     GMountUnmountFlags   flags,
-		     GCancellable        *cancellable,
-		     GAsyncReadyCallback  callback,
-		     gpointer             user_data)
+                     GMountUnmountFlags   flags,
+                     GCancellable        *cancellable,
+                     GAsyncReadyCallback  callback,
+                     gpointer             user_data)
 {
 }
 
 static gboolean
 g_win32_mount_eject_finish (GMount        *mount,
-			    GAsyncResult  *result,
-			    GError       **error)
+                            GAsyncResult  *result,
+                            GError       **error)
 {
   return FALSE;
 }

@@ -77,38 +77,38 @@ GIO_AVAILABLE_IN_2_32
 gboolean           g_socket_connection_is_connected              (GSocketConnection  *connection);
 GIO_AVAILABLE_IN_2_32
 gboolean           g_socket_connection_connect                   (GSocketConnection  *connection,
-								  GSocketAddress     *address,
-								  GCancellable       *cancellable,
-								  GError            **error);
+                                                                  GSocketAddress     *address,
+                                                                  GCancellable       *cancellable,
+                                                                  GError            **error);
 GIO_AVAILABLE_IN_2_32
 void               g_socket_connection_connect_async             (GSocketConnection  *connection,
-								  GSocketAddress     *address,
-								  GCancellable       *cancellable,
-								  GAsyncReadyCallback callback,
-								  gpointer            user_data);
+                                                                  GSocketAddress     *address,
+                                                                  GCancellable       *cancellable,
+                                                                  GAsyncReadyCallback callback,
+                                                                  gpointer            user_data);
 GIO_AVAILABLE_IN_2_32
 gboolean           g_socket_connection_connect_finish            (GSocketConnection  *connection,
-								  GAsyncResult       *result,
-								  GError            **error);
+                                                                  GAsyncResult       *result,
+                                                                  GError            **error);
 
 GIO_AVAILABLE_IN_ALL
 GSocket           *g_socket_connection_get_socket                (GSocketConnection  *connection);
 GIO_AVAILABLE_IN_ALL
 GSocketAddress    *g_socket_connection_get_local_address         (GSocketConnection  *connection,
-								  GError            **error);
+                                                                  GError            **error);
 GIO_AVAILABLE_IN_ALL
 GSocketAddress    *g_socket_connection_get_remote_address        (GSocketConnection  *connection,
-								  GError            **error);
+                                                                  GError            **error);
 
 GIO_AVAILABLE_IN_ALL
 void               g_socket_connection_factory_register_type     (GType               g_type,
-								  GSocketFamily       family,
-								  GSocketType         type,
-								  gint                protocol);
+                                                                  GSocketFamily       family,
+                                                                  GSocketType         type,
+                                                                  gint                protocol);
 GIO_AVAILABLE_IN_ALL
 GType              g_socket_connection_factory_lookup_type       (GSocketFamily       family,
-								  GSocketType         type,
-								  gint                protocol_id);
+                                                                  GSocketType         type,
+                                                                  gint                protocol_id);
 GIO_AVAILABLE_IN_ALL
 GSocketConnection *g_socket_connection_factory_create_connection (GSocket            *socket);
 

@@ -71,9 +71,9 @@ g_tcp_wrapper_connection_get_output_stream (GIOStream *io_stream)
 
 static void
 g_tcp_wrapper_connection_get_property (GObject    *object,
-				       guint       prop_id,
-				       GValue     *value,
-				       GParamSpec *pspec)
+                                       guint       prop_id,
+                                       GValue     *value,
+                                       GParamSpec *pspec)
 {
   GTcpWrapperConnection *connection = G_TCP_WRAPPER_CONNECTION (object);
 
@@ -166,18 +166,18 @@ g_tcp_wrapper_connection_init (GTcpWrapperConnection *connection)
  */
 GSocketConnection *
 g_tcp_wrapper_connection_new (GIOStream *base_io_stream,
-			      GSocket   *socket)
+                              GSocket   *socket)
 {
   g_return_val_if_fail (G_IS_IO_STREAM (base_io_stream), NULL);
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
   g_return_val_if_fail (g_socket_get_family (socket) == G_SOCKET_FAMILY_IPV4 ||
-			g_socket_get_family (socket) == G_SOCKET_FAMILY_IPV6, NULL);
+                        g_socket_get_family (socket) == G_SOCKET_FAMILY_IPV6, NULL);
   g_return_val_if_fail (g_socket_get_socket_type (socket) == G_SOCKET_TYPE_STREAM, NULL);
 
   return g_object_new (G_TYPE_TCP_WRAPPER_CONNECTION,
-		       "base-io-stream", base_io_stream,
-		       "socket", socket,
-		       NULL);
+                       "base-io-stream", base_io_stream,
+                       "socket", socket,
+                       NULL);
 }
 
 /**

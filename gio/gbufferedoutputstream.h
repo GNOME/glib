@@ -66,17 +66,17 @@ GIO_AVAILABLE_IN_ALL
 GOutputStream* g_buffered_output_stream_new             (GOutputStream         *base_stream);
 GIO_AVAILABLE_IN_ALL
 GOutputStream* g_buffered_output_stream_new_sized       (GOutputStream         *base_stream,
-							 gsize                  size);
+                                                         gsize                  size);
 GIO_AVAILABLE_IN_ALL
 gsize          g_buffered_output_stream_get_buffer_size (GBufferedOutputStream *stream);
 GIO_AVAILABLE_IN_ALL
 void           g_buffered_output_stream_set_buffer_size (GBufferedOutputStream *stream,
-							 gsize                  size);
+                                                         gsize                  size);
 GIO_AVAILABLE_IN_ALL
 gboolean       g_buffered_output_stream_get_auto_grow   (GBufferedOutputStream *stream);
 GIO_AVAILABLE_IN_ALL
 void           g_buffered_output_stream_set_auto_grow   (GBufferedOutputStream *stream,
-							 gboolean               auto_grow);
+                                                         gboolean               auto_grow);
 
 G_END_DECLS
 

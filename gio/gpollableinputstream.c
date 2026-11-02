@@ -46,9 +46,9 @@ G_DEFINE_INTERFACE (GPollableInputStream, g_pollable_input_stream, G_TYPE_INPUT_
 
 static gboolean g_pollable_input_stream_default_can_poll         (GPollableInputStream *stream);
 static gssize   g_pollable_input_stream_default_read_nonblocking (GPollableInputStream  *stream,
-								  void                  *buffer,
-								  gsize                  count,
-								  GError               **error);
+                                                                  void                  *buffer,
+                                                                  gsize                  count,
+                                                                  GError               **error);
 
 static void
 g_pollable_input_stream_default_init (GPollableInputStreamInterface *iface)
@@ -141,19 +141,19 @@ g_pollable_input_stream_is_readable (GPollableInputStream *stream)
  */
 GSource *
 g_pollable_input_stream_create_source (GPollableInputStream *stream,
-				       GCancellable         *cancellable)
+                                       GCancellable         *cancellable)
 {
   g_return_val_if_fail (G_IS_POLLABLE_INPUT_STREAM (stream), NULL);
 
   return G_POLLABLE_INPUT_STREAM_GET_INTERFACE (stream)->
-	  create_source (stream, cancellable);
+          create_source (stream, cancellable);
 }
 
 static gssize
 g_pollable_input_stream_default_read_nonblocking (GPollableInputStream  *stream,
-						  void                  *buffer,
-						  gsize                  count,
-						  GError               **error)
+                                                  void                  *buffer,
+                                                  gsize                  count,
+                                                  GError               **error)
 {
   if (!g_pollable_input_stream_is_readable (stream))
     {
@@ -195,10 +195,10 @@ g_pollable_input_stream_default_read_nonblocking (GPollableInputStream  *stream,
  */
 gssize
 g_pollable_input_stream_read_nonblocking (GPollableInputStream  *stream,
-					  void                  *buffer,
-					  gsize                  count,
-					  GCancellable          *cancellable,
-					  GError               **error)
+                                          void                  *buffer,
+                                          gsize                  count,
+                                          GCancellable          *cancellable,
+                                          GError               **error)
 {
   gssize res;
 
@@ -214,7 +214,7 @@ g_pollable_input_stream_read_nonblocking (GPollableInputStream  *stream,
   if (((gssize) count) < 0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		   _("Too large count value passed to %s"), G_STRFUNC);
+                   _("Too large count value passed to %s"), G_STRFUNC);
       return -1;
     }
 

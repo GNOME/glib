@@ -137,13 +137,13 @@
  */
 
 static void     g_async_initable_real_init_async  (GAsyncInitable       *initable,
-						   int                   io_priority,
-						   GCancellable         *cancellable,
-						   GAsyncReadyCallback   callback,
-						   gpointer              user_data);
+                                                   int                   io_priority,
+                                                   GCancellable         *cancellable,
+                                                   GAsyncReadyCallback   callback,
+                                                   gpointer              user_data);
 static gboolean g_async_initable_real_init_finish (GAsyncInitable       *initable,
-						   GAsyncResult         *res,
-						   GError              **error);
+                                                   GAsyncResult         *res,
+                                                   GError              **error);
 
 
 typedef GAsyncInitableIface GAsyncInitableInterface;
@@ -206,10 +206,10 @@ g_async_initable_default_init (GAsyncInitableInterface *iface)
  */
 void
 g_async_initable_init_async (GAsyncInitable      *initable,
-			     int                  io_priority,
-			     GCancellable        *cancellable,
-			     GAsyncReadyCallback  callback,
-			     gpointer             user_data)
+                             int                  io_priority,
+                             GCancellable        *cancellable,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data)
 {
   GAsyncInitableIface *iface;
 
@@ -237,8 +237,8 @@ g_async_initable_init_async (GAsyncInitable      *initable,
  */
 gboolean
 g_async_initable_init_finish (GAsyncInitable  *initable,
-			      GAsyncResult    *res,
-			      GError         **error)
+                              GAsyncResult    *res,
+                              GError         **error)
 {
   GAsyncInitableIface *iface;
 
@@ -269,10 +269,10 @@ async_init_thread (GTask        *task,
 
 static void
 g_async_initable_real_init_async (GAsyncInitable      *initable,
-				  int                  io_priority,
-				  GCancellable        *cancellable,
-				  GAsyncReadyCallback  callback,
-				  gpointer             user_data)
+                                  int                  io_priority,
+                                  GCancellable        *cancellable,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data)
 {
   GTask *task;
 
@@ -287,8 +287,8 @@ g_async_initable_real_init_async (GAsyncInitable      *initable,
 
 static gboolean
 g_async_initable_real_init_finish (GAsyncInitable  *initable,
-				   GAsyncResult    *res,
-				   GError         **error)
+                                   GAsyncResult    *res,
+                                   GError         **error)
 {
   /* For backward compatibility we have to process GSimpleAsyncResults
    * even though g_async_initable_real_init_async doesn't generate
@@ -334,20 +334,20 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
  */
 void
 g_async_initable_new_async (GType                object_type,
-			    int                  io_priority,
-			    GCancellable        *cancellable,
-			    GAsyncReadyCallback  callback,
-			    gpointer             user_data,
-			    const gchar         *first_property_name,
-			    ...)
+                            int                  io_priority,
+                            GCancellable        *cancellable,
+                            GAsyncReadyCallback  callback,
+                            gpointer             user_data,
+                            const gchar         *first_property_name,
+                            ...)
 {
   va_list var_args;
 
   va_start (var_args, first_property_name);
   g_async_initable_new_valist_async (object_type,
-				     first_property_name, var_args,
-				     io_priority, cancellable,
-				     callback, user_data);
+                                     first_property_name, var_args,
+                                     io_priority, cancellable,
+                                     callback, user_data);
   va_end (var_args);
 }
 
@@ -376,12 +376,12 @@ g_async_initable_new_async (GType                object_type,
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_async_initable_newv_async (GType                object_type,
-			     guint                n_parameters,
-			     GParameter          *parameters,
-			     int                  io_priority,
-			     GCancellable        *cancellable,
-			     GAsyncReadyCallback  callback,
-			     gpointer             user_data)
+                             guint                n_parameters,
+                             GParameter          *parameters,
+                             int                  io_priority,
+                             GCancellable        *cancellable,
+                             GAsyncReadyCallback  callback,
+                             gpointer             user_data)
 {
   GObject *obj;
 
@@ -390,8 +390,8 @@ g_async_initable_newv_async (GType                object_type,
   obj = g_object_newv (object_type, n_parameters, parameters);
 
   g_async_initable_init_async (G_ASYNC_INITABLE (obj),
-			       io_priority, cancellable,
-			       callback, user_data);
+                               io_priority, cancellable,
+                               callback, user_data);
   g_object_unref (obj); /* Passed ownership to async call */
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -420,24 +420,24 @@ G_GNUC_END_IGNORE_DEPRECATIONS
  */
 void
 g_async_initable_new_valist_async (GType                object_type,
-				   const gchar         *first_property_name,
-				   va_list              var_args,
-				   int                  io_priority,
-				   GCancellable        *cancellable,
-				   GAsyncReadyCallback  callback,
-				   gpointer             user_data)
+                                   const gchar         *first_property_name,
+                                   va_list              var_args,
+                                   int                  io_priority,
+                                   GCancellable        *cancellable,
+                                   GAsyncReadyCallback  callback,
+                                   gpointer             user_data)
 {
   GObject *obj;
 
   g_return_if_fail (G_TYPE_IS_ASYNC_INITABLE (object_type));
 
   obj = g_object_new_valist (object_type,
-			     first_property_name,
-			     var_args);
+                             first_property_name,
+                             var_args);
 
   g_async_initable_init_async (G_ASYNC_INITABLE (obj),
-			       io_priority, cancellable,
-			       callback, user_data);
+                               io_priority, cancellable,
+                               callback, user_data);
   g_object_unref (obj); /* Passed ownership to async call */
 }
 
@@ -457,8 +457,8 @@ g_async_initable_new_valist_async (GType                object_type,
  */
 GObject *
 g_async_initable_new_finish (GAsyncInitable  *initable,
-			     GAsyncResult    *res,
-			     GError         **error)
+                             GAsyncResult    *res,
+                             GError         **error)
 {
   if (g_async_initable_init_finish (initable, res, error))
     return g_object_ref (G_OBJECT (initable));

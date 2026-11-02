@@ -36,7 +36,7 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(GDBusDaemon, g_object_unref)
 GType _g_dbus_daemon_get_type (void);
 
 GDBusDaemon *_g_dbus_daemon_new (const char *address,
-				 GCancellable *cancellable,
-				 GError **error);
+                                 GCancellable *cancellable,
+                                 GError **error);
 
 const char *_g_dbus_daemon_get_address (GDBusDaemon *daemon);

@@ -48,11 +48,11 @@ writer_thread (gpointer user_data)
   HANDLE out_handle;
 
   g_assert (DuplicateHandle (GetCurrentProcess (),
-			     (HANDLE) (gintptr) _get_osfhandle (writer_pipe[1]),
-			     GetCurrentProcess (),
-			     &out_handle,
-			     0, FALSE,
-			     DUPLICATE_SAME_ACCESS));
+                             (HANDLE) (gintptr) _get_osfhandle (writer_pipe[1]),
+                             GetCurrentProcess (),
+                             &out_handle,
+                             0, FALSE,
+                             DUPLICATE_SAME_ACCESS));
   close (writer_pipe[1]);
 
   out = g_win32_output_stream_new (out_handle, TRUE);
@@ -62,14 +62,14 @@ writer_thread (gpointer user_data)
 
       offset = 0;
       while (offset < sizeof (DATA))
-	{
-	  nwrote = g_output_stream_write (out, DATA + offset,
-					  sizeof (DATA) - offset,
-					  writer_cancel, &err);
-	  if (nwrote <= 0 || err != NULL)
-	    break;
-	  offset += nwrote;
-	}
+        {
+          nwrote = g_output_stream_write (out, DATA + offset,
+                                          sizeof (DATA) - offset,
+                                          writer_cancel, &err);
+          if (nwrote <= 0 || err != NULL)
+            break;
+          offset += nwrote;
+        }
 
       g_assert (nwrote > 0 || err != NULL);
     }
@@ -96,11 +96,11 @@ reader_thread (gpointer user_data)
   HANDLE in_handle;
 
   g_assert (DuplicateHandle (GetCurrentProcess (),
-			     (HANDLE) (gintptr) _get_osfhandle (reader_pipe[0]),
-			     GetCurrentProcess (),
-			     &in_handle,
-			     0, FALSE,
-			     DUPLICATE_SAME_ACCESS));
+                             (HANDLE) (gintptr) _get_osfhandle (reader_pipe[0]),
+                             GetCurrentProcess (),
+                             &in_handle,
+                             0, FALSE,
+                             DUPLICATE_SAME_ACCESS));
   close (reader_pipe[0]);
 
   in = g_win32_input_stream_new (in_handle, TRUE);
@@ -109,24 +109,24 @@ reader_thread (gpointer user_data)
     {
       total = 0;
       while (total < (gssize) sizeof (DATA))
-	{
-	  nread = g_input_stream_read (in, buf + total, sizeof (buf) - total,
-				       reader_cancel, &err);
-	  if (nread <= 0 || err != NULL)
-	    break;
-	  total += nread;
-	}
+        {
+          nread = g_input_stream_read (in, buf + total, sizeof (buf) - total,
+                                       reader_cancel, &err);
+          if (nread <= 0 || err != NULL)
+            break;
+          total += nread;
+        }
 
       if (err)
-	break;
+        break;
 
       if (nread == 0)
-	{
-	  g_assert (err == NULL);
-	  /* pipe closed */
-	  g_object_unref (in);
-	  return NULL;
-	}
+        {
+          g_assert (err == NULL);
+          /* pipe closed */
+          g_object_unref (in);
+          return NULL;
+        }
 
       g_assert_cmpstr (buf, ==, DATA);
       g_assert (!g_cancellable_is_cancelled (reader_cancel));
@@ -169,8 +169,8 @@ readable (GObject *source, GAsyncResult *res, gpointer user_data)
 
   main_offset = 0;
   g_output_stream_write_async (out, main_buf, main_len,
-			       G_PRIORITY_DEFAULT, main_cancel,
-			       writable, in);
+                               G_PRIORITY_DEFAULT, main_cancel,
+                               writable, in);
 }
 
 static void
@@ -196,15 +196,15 @@ writable (GObject *source, GAsyncResult *res, gpointer user_data)
   if (main_offset == main_len)
     {
       g_input_stream_read_async (in, main_buf, sizeof (main_buf),
-				 G_PRIORITY_DEFAULT, main_cancel,
-				 readable, out);
+                                 G_PRIORITY_DEFAULT, main_cancel,
+                                 readable, out);
     }
   else
     {
       g_output_stream_write_async (out, main_buf + main_offset,
-				   main_len - main_offset,
-				   G_PRIORITY_DEFAULT, main_cancel,
-				   writable, in);
+                                   main_len - main_offset,
+                                   G_PRIORITY_DEFAULT, main_cancel,
+                                   writable, in);
     }
 }
 
@@ -243,27 +243,27 @@ test_pipe_io (void)
   reader = g_thread_new ("reader", reader_thread, NULL);
 
   g_assert (DuplicateHandle (GetCurrentProcess (),
-			     (HANDLE) (gintptr) _get_osfhandle (writer_pipe[0]),
-			     GetCurrentProcess (),
-			     &in_handle,
-			     0, FALSE,
-			     DUPLICATE_SAME_ACCESS));
+                             (HANDLE) (gintptr) _get_osfhandle (writer_pipe[0]),
+                             GetCurrentProcess (),
+                             &in_handle,
+                             0, FALSE,
+                             DUPLICATE_SAME_ACCESS));
   close (writer_pipe[0]);
 
   g_assert (DuplicateHandle (GetCurrentProcess (),
-			     (HANDLE) (gintptr) _get_osfhandle (reader_pipe[1]),
-			     GetCurrentProcess (),
-			     &out_handle,
-			     0, FALSE,
-			     DUPLICATE_SAME_ACCESS));
+                             (HANDLE) (gintptr) _get_osfhandle (reader_pipe[1]),
+                             GetCurrentProcess (),
+                             &out_handle,
+                             0, FALSE,
+                             DUPLICATE_SAME_ACCESS));
   close (reader_pipe[1]);
 
   in = g_win32_input_stream_new (in_handle, TRUE);
   out = g_win32_output_stream_new (out_handle, TRUE);
 
   g_input_stream_read_async (in, main_buf, sizeof (main_buf),
-			     G_PRIORITY_DEFAULT, main_cancel,
-			     readable, out);
+                             G_PRIORITY_DEFAULT, main_cancel,
+                             readable, out);
 
   g_timeout_add (500, timeout, writer_cancel);
 

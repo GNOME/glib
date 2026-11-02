@@ -26,18 +26,18 @@
 
 typedef struct
 {
-	gchar*   dirname;
-	gchar*   filename;
-	gboolean cancelled;
-	gpointer user_data;
-	gboolean pair_moves;
-	gboolean hardlinks;
+        gchar*   dirname;
+        gchar*   filename;
+        gboolean cancelled;
+        gpointer user_data;
+        gboolean pair_moves;
+        gboolean hardlinks;
 } inotify_sub;
 
 inotify_sub *_ih_sub_new (const gchar  *dirname,
-			  const gchar  *basename,
-			  const gchar  *filename,
-			  gpointer      user_data);
+                          const gchar  *basename,
+                          const gchar  *filename,
+                          gpointer      user_data);
 void         _ih_sub_free (inotify_sub *sub);
 
 #endif /* __INOTIFY_SUB_H */

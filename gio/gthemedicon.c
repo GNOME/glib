@@ -71,8 +71,8 @@ enum
 static void g_themed_icon_update_names (GThemedIcon *themed);
 
 G_DEFINE_TYPE_WITH_CODE (GThemedIcon, g_themed_icon, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
-						g_themed_icon_icon_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
+                                                g_themed_icon_icon_iface_init))
 
 static void
 g_themed_icon_get_property (GObject    *object,
@@ -545,7 +545,7 @@ g_themed_icon_equal (GIcon *icon1,
   for (i = 0; themed1->names[i] != NULL && themed2->names[i] != NULL; i++)
     {
       if (!g_str_equal (themed1->names[i], themed2->names[i]))
-	return FALSE;
+        return FALSE;
     }
 
   return themed1->names[i] == NULL && themed2->names[i] == NULL;
@@ -554,7 +554,7 @@ g_themed_icon_equal (GIcon *icon1,
 
 static gboolean
 g_themed_icon_to_tokens (GIcon *icon,
-			 GPtrArray *tokens,
+                         GPtrArray *tokens,
                          gint  *out_version)
 {
   GThemedIcon *themed_icon = G_THEMED_ICON (icon);
@@ -566,7 +566,7 @@ g_themed_icon_to_tokens (GIcon *icon,
 
   for (n = 0; themed_icon->names[n] != NULL; n++)
     g_ptr_array_add (tokens,
-		     g_strdup (themed_icon->names[n]));
+                     g_strdup (themed_icon->names[n]));
   
   return TRUE;
 }

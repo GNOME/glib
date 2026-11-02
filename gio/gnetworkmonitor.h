@@ -50,20 +50,20 @@ struct _GNetworkMonitorInterface {
   GTypeInterface g_iface;
 
   void     (*network_changed)  (GNetworkMonitor      *monitor,
-				gboolean              network_available);
+                                gboolean              network_available);
 
   gboolean (*can_reach)        (GNetworkMonitor      *monitor,
-				GSocketConnectable   *connectable,
-				GCancellable         *cancellable,
-				GError              **error);
+                                GSocketConnectable   *connectable,
+                                GCancellable         *cancellable,
+                                GError              **error);
   void     (*can_reach_async)  (GNetworkMonitor      *monitor,
-				GSocketConnectable   *connectable,
-				GCancellable         *cancellable,
-				GAsyncReadyCallback   callback,
-				gpointer              user_data);
+                                GSocketConnectable   *connectable,
+                                GCancellable         *cancellable,
+                                GAsyncReadyCallback   callback,
+                                gpointer              user_data);
   gboolean (*can_reach_finish) (GNetworkMonitor      *monitor,
-				GAsyncResult         *result,
-				GError              **error);
+                                GAsyncResult         *result,
+                                GError              **error);
 };
 
 GIO_AVAILABLE_IN_2_32

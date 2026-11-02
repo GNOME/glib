@@ -71,32 +71,32 @@ lookup_funcs (void)
       funcs.pWinHttpWriteData = (BOOL (WINAPI *) (HINTERNET,LPCVOID,DWORD,LPDWORD)) GetProcAddress (winhttp, "WinHttpWriteData");
 
       if (funcs.pWinHttpCloseHandle &&
-	  funcs.pWinHttpCrackUrl &&
-	  funcs.pWinHttpConnect &&
-	  funcs.pWinHttpCreateUrl &&
-	  funcs.pWinHttpOpen &&
-	  funcs.pWinHttpOpenRequest &&
-	  funcs.pWinHttpQueryDataAvailable &&
-	  funcs.pWinHttpQueryHeaders &&
-	  funcs.pWinHttpReadData &&
-	  funcs.pWinHttpReceiveResponse &&
-	  funcs.pWinHttpSendRequest &&
-	  funcs.pWinHttpWriteData)
-	funcs_found = TRUE;
+          funcs.pWinHttpCrackUrl &&
+          funcs.pWinHttpConnect &&
+          funcs.pWinHttpCreateUrl &&
+          funcs.pWinHttpOpen &&
+          funcs.pWinHttpOpenRequest &&
+          funcs.pWinHttpQueryDataAvailable &&
+          funcs.pWinHttpQueryHeaders &&
+          funcs.pWinHttpReadData &&
+          funcs.pWinHttpReceiveResponse &&
+          funcs.pWinHttpSendRequest &&
+          funcs.pWinHttpWriteData)
+        funcs_found = TRUE;
     }
   lookup_done = TRUE;
 }
 
 #define g_winhttp_vfs_get_type _g_winhttp_vfs_get_type
 G_DEFINE_TYPE_WITH_CODE (GWinHttpVfs, g_winhttp_vfs, G_TYPE_VFS,
-			 {
-			   lookup_funcs ();
-			   if (funcs_found)
-			     g_io_extension_point_implement (G_VFS_EXTENSION_POINT_NAME,
-							     g_define_type_id,
-							     "winhttp",
-							     10);
-			 })
+                         {
+                           lookup_funcs ();
+                           if (funcs_found)
+                             g_io_extension_point_implement (G_VFS_EXTENSION_POINT_NAME,
+                                                             g_define_type_id,
+                                                             "winhttp",
+                                                             10);
+                         })
 
 static const gchar *winhttp_uri_schemes[] = { "http", "https" };
 

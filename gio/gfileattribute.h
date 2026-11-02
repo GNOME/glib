@@ -74,12 +74,12 @@ GIO_AVAILABLE_IN_ALL
 GFileAttributeInfoList *  g_file_attribute_info_list_dup    (GFileAttributeInfoList *list);
 GIO_AVAILABLE_IN_ALL
 const GFileAttributeInfo *g_file_attribute_info_list_lookup (GFileAttributeInfoList *list,
-							     const char             *name);
+                                                             const char             *name);
 GIO_AVAILABLE_IN_ALL
 void                      g_file_attribute_info_list_add    (GFileAttributeInfoList *list,
-							     const char             *name,
-							     GFileAttributeType      type,
-							     GFileAttributeInfoFlags flags);
+                                                             const char             *name,
+                                                             GFileAttributeType      type,
+                                                             GFileAttributeInfoFlags flags);
 
 G_END_DECLS
 

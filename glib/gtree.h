@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -137,8 +137,8 @@ gboolean g_tree_lookup_extended (GTree            *tree,
                                  gpointer         *value);
 GLIB_AVAILABLE_IN_ALL
 void     g_tree_foreach         (GTree            *tree,
-                                 GTraverseFunc	   func,
-                                 gpointer	   user_data);
+                                 GTraverseFunc     func,
+                                 gpointer          user_data);
 GLIB_AVAILABLE_IN_2_68
 void g_tree_foreach_node (GTree *tree,
                           GTraverseNodeFunc func,

@@ -52,44 +52,44 @@ struct _GProxyResolverInterface {
   /* Virtual Table */
   gboolean (* is_supported)  (GProxyResolver       *resolver);
 
-  gchar	** (* lookup)        (GProxyResolver       *resolver,
-			      const gchar          *uri,
-			      GCancellable         *cancellable,
-			      GError              **error);
+  gchar ** (* lookup)        (GProxyResolver       *resolver,
+                              const gchar          *uri,
+                              GCancellable         *cancellable,
+                              GError              **error);
 
   void     (* lookup_async)  (GProxyResolver       *resolver,
-			      const gchar          *uri,
-			      GCancellable         *cancellable,
-			      GAsyncReadyCallback   callback,
-			      gpointer              user_data);
+                              const gchar          *uri,
+                              GCancellable         *cancellable,
+                              GAsyncReadyCallback   callback,
+                              gpointer              user_data);
 
-  gchar	** (* lookup_finish) (GProxyResolver       *resolver,
-			      GAsyncResult         *result,
-			      GError              **error);
+  gchar ** (* lookup_finish) (GProxyResolver       *resolver,
+                              GAsyncResult         *result,
+                              GError              **error);
 };
 
 GIO_AVAILABLE_IN_ALL
-GType		g_proxy_resolver_get_type       (void);
+GType           g_proxy_resolver_get_type       (void);
 GIO_AVAILABLE_IN_ALL
 GProxyResolver *g_proxy_resolver_get_default    (void);
 
 GIO_AVAILABLE_IN_ALL
 gboolean        g_proxy_resolver_is_supported   (GProxyResolver       *resolver);
 GIO_AVAILABLE_IN_ALL
-gchar	      **g_proxy_resolver_lookup		(GProxyResolver       *resolver,
-						 const gchar          *uri,
-						 GCancellable         *cancellable,
-						 GError              **error);
+gchar         **g_proxy_resolver_lookup         (GProxyResolver       *resolver,
+                                                 const gchar          *uri,
+                                                 GCancellable         *cancellable,
+                                                 GError              **error);
 GIO_AVAILABLE_IN_ALL
-void		g_proxy_resolver_lookup_async   (GProxyResolver       *resolver,
-						 const gchar          *uri,
-						 GCancellable         *cancellable,
-						 GAsyncReadyCallback   callback,
-						 gpointer              user_data);
+void            g_proxy_resolver_lookup_async   (GProxyResolver       *resolver,
+                                                 const gchar          *uri,
+                                                 GCancellable         *cancellable,
+                                                 GAsyncReadyCallback   callback,
+                                                 gpointer              user_data);
 GIO_AVAILABLE_IN_ALL
-gchar	      **g_proxy_resolver_lookup_finish  (GProxyResolver       *resolver,
-						 GAsyncResult         *result,
-						 GError              **error);
+gchar         **g_proxy_resolver_lookup_finish  (GProxyResolver       *resolver,
+                                                 GAsyncResult         *result,
+                                                 GError              **error);
 
 
 G_END_DECLS

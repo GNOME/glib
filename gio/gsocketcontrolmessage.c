@@ -128,7 +128,7 @@ g_socket_control_message_get_msg_type (GSocketControlMessage *message)
  */
 void
 g_socket_control_message_serialize (GSocketControlMessage *message,
-				    gpointer               data)
+                                    gpointer               data)
 {
   g_return_if_fail (G_IS_SOCKET_CONTROL_MESSAGE (message));
 
@@ -179,9 +179,9 @@ try_deserialize_message_type (GType msgtype, int level, int type, gsize size, gp
  */
 GSocketControlMessage *
 g_socket_control_message_deserialize (int      level,
-				      int      type,
-				      gsize    size,
-				      gpointer data)
+                                      int      type,
+                                      gsize    size,
+                                      gpointer data)
 {
   GSocketControlMessage *message;
   GType *message_types;

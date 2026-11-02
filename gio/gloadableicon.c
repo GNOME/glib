@@ -36,14 +36,14 @@
  **/
 
 static void          g_loadable_icon_real_load_async  (GLoadableIcon        *icon,
-						       int                   size,
-						       GCancellable         *cancellable,
-						       GAsyncReadyCallback   callback,
-						       gpointer              user_data);
+                                                       int                   size,
+                                                       GCancellable         *cancellable,
+                                                       GAsyncReadyCallback   callback,
+                                                       gpointer              user_data);
 static GInputStream *g_loadable_icon_real_load_finish (GLoadableIcon        *icon,
-						       GAsyncResult         *res,
-						       char                **type,
-						       GError              **error);
+                                                       GAsyncResult         *res,
+                                                       char                **type,
+                                                       GError              **error);
 
 typedef GLoadableIconIface GLoadableIconInterface;
 G_DEFINE_INTERFACE(GLoadableIcon, g_loadable_icon, G_TYPE_ICON)
@@ -74,10 +74,10 @@ g_loadable_icon_default_init (GLoadableIconIface *iface)
  **/
 GInputStream *
 g_loadable_icon_load (GLoadableIcon  *icon,
-		      int             size,
-		      char          **type,
-		      GCancellable   *cancellable,
-		      GError        **error)
+                      int             size,
+                      char          **type,
+                      GCancellable   *cancellable,
+                      GError        **error)
 {
   GLoadableIconIface *iface;
 
@@ -133,9 +133,9 @@ g_loadable_icon_load_async (GLoadableIcon       *icon,
  **/
 GInputStream *
 g_loadable_icon_load_finish (GLoadableIcon  *icon,
-			     GAsyncResult   *res,
-			     char          **type,
-			     GError        **error)
+                             GAsyncResult   *res,
+                             char          **type,
+                             GError        **error)
 {
   GLoadableIconIface *iface;
   
@@ -192,10 +192,10 @@ load_async_thread (GTask        *task,
 
 static void
 g_loadable_icon_real_load_async (GLoadableIcon       *icon,
-				 int                  size,
-				 GCancellable        *cancellable,
-				 GAsyncReadyCallback  callback,
-				 gpointer             user_data)
+                                 int                  size,
+                                 GCancellable        *cancellable,
+                                 GAsyncReadyCallback  callback,
+                                 gpointer             user_data)
 {
   GTask *task;
   LoadData *data;
@@ -210,9 +210,9 @@ g_loadable_icon_real_load_async (GLoadableIcon       *icon,
 
 static GInputStream *
 g_loadable_icon_real_load_finish (GLoadableIcon        *icon,
-				  GAsyncResult         *res,
-				  char                **type,
-				  GError              **error)
+                                  GAsyncResult         *res,
+                                  char                **type,
+                                  GError              **error)
 {
   GTask *task;
   LoadData *data;

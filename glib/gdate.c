@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -31,9 +31,9 @@
 #include "config.h"
 #include "glibconfig.h"
 
-#define DEBUG_MSG(x)	/* */
+#define DEBUG_MSG(x)    /* */
 #ifdef G_ENABLE_DEBUG
-/* #define DEBUG_MSG(args)	g_message args ; */
+/* #define DEBUG_MSG(args)      g_message args ; */
 #endif
 
 #include <time.h>
@@ -508,7 +508,7 @@ g_date_valid_julian (guint32 j)
 gboolean     
 g_date_valid_dmy (GDateDay   d, 
                   GDateMonth m, 
-		  GDateYear  y)
+                  GDateYear  y)
 {
   /* No need to check the upper bound of @y, because #GDateYear is 16 bits wide,
    * just like #GDate.year. */
@@ -517,7 +517,7 @@ g_date_valid_dmy (GDateDay   d,
            (d > G_DATE_BAD_DAY)   && 
            (y > G_DATE_BAD_YEAR)  &&   /* must check before using g_date_is_leap_year */
            (d <=  (g_date_is_leap_year (y) ? 
-		   days_in_months[1][m] : days_in_months[0][m])) );
+                   days_in_months[1][m] : days_in_months[0][m])) );
 }
 
 
@@ -596,7 +596,7 @@ g_date_update_dmy (const GDate *const_d)
 #ifdef G_ENABLE_DEBUG
   if (!g_date_valid_dmy (day, m, y)) 
     g_warning ("OOPS julian: %u  computed dmy: %u %u %u",
-	       d->julian_days, day, m, y);
+               d->julian_days, day, m, y);
 #endif
   
   d->month = m;
@@ -864,7 +864,7 @@ g_date_get_iso8601_week_of_year (const GDate *d)
  */
 gint
 g_date_days_between (const GDate *d1,
-		     const GDate *d2)
+                     const GDate *d2)
 {
   g_return_val_if_fail (g_date_valid (d1), 0);
   g_return_val_if_fail (g_date_valid (d2), 0);
@@ -1095,24 +1095,24 @@ g_date_prepare_to_parse (const gchar      *str,
 
       while (i < 13) 
         {
-	  gchar *casefold;
-	  
+          gchar *casefold;
+          
           g_date_set_dmy (&d, 1, i, 1976);
-	  
+          
           g_return_if_fail (g_date_valid (&d));
-	  
+          
           g_date_strftime (buf, 127, "%b", &d);
 
-	  casefold = g_utf8_casefold (buf, -1);
+          casefold = g_utf8_casefold (buf, -1);
           g_free (short_month_names[i]);
           short_month_names[i] = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
-	  g_free (casefold);
-	  
+          g_free (casefold);
+          
           g_date_strftime (buf, 127, "%B", &d);
-	  casefold = g_utf8_casefold (buf, -1);
+          casefold = g_utf8_casefold (buf, -1);
           g_free (long_month_names[i]);
           long_month_names[i] = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
-	  g_free (casefold);
+          g_free (casefold);
           
           g_date_strftime (buf, 127, "%Ob", &d);
           casefold = g_utf8_casefold (buf, -1);
@@ -1188,7 +1188,7 @@ g_date_prepare_to_parse (const gchar      *str,
         }
       if (using_twodigit_years)
         {
-	  DEBUG_MSG (("**Using twodigit years with cutoff year: %u", twodigit_start_year));
+          DEBUG_MSG (("**Using twodigit years with cutoff year: %u", twodigit_start_year));
         }
       { 
         gchar *strings[3];
@@ -1282,7 +1282,7 @@ g_date_set_parse (GDate       *d,
   g_date_prepare_to_parse (str, &pt);
   
   DEBUG_MSG (("Found %d ints, '%d' '%d' '%d' and written out month %d",
-	      pt.num_ints, pt.n[0], pt.n[1], pt.n[2], pt.month));
+              pt.num_ints, pt.n[0], pt.n[1], pt.n[2], pt.month));
   
   
   if (pt.num_ints == 4) 
@@ -1303,44 +1303,44 @@ g_date_set_parse (GDate       *d,
           switch (dmy_order[j])
             {
             case G_DATE_MONTH:
-	    {
-	      if (pt.num_ints == 2 && pt.month != G_DATE_BAD_MONTH)
-		{
-		  m = pt.month;
-		  ++j;      /* skip months, but don't skip this number */
-		  continue;
-		}
-	      else 
-		m = pt.n[i];
-	    }
-	    break;
+            {
+              if (pt.num_ints == 2 && pt.month != G_DATE_BAD_MONTH)
+                {
+                  m = pt.month;
+                  ++j;      /* skip months, but don't skip this number */
+                  continue;
+                }
+              else 
+                m = pt.n[i];
+            }
+            break;
             case G_DATE_DAY:
-	    {
-	      if (pt.num_ints == 2 && pt.month == G_DATE_BAD_MONTH)
-		{
-		  day = 1;
-		  ++j;      /* skip days, since we may have month/year */
-		  continue;
-		}
-	      day = pt.n[i];
-	    }
-	    break;
+            {
+              if (pt.num_ints == 2 && pt.month == G_DATE_BAD_MONTH)
+                {
+                  day = 1;
+                  ++j;      /* skip days, since we may have month/year */
+                  continue;
+                }
+              day = pt.n[i];
+            }
+            break;
             case G_DATE_YEAR:
-	    {
-	      y  = pt.n[i];
-	      
-	      if (locale_era_adjust != 0)
-	        {
-		  y += locale_era_adjust;
-	        }
+            {
+              y  = pt.n[i];
+              
+              if (locale_era_adjust != 0)
+                {
+                  y += locale_era_adjust;
+                }
 
-	      y = convert_twodigit_year (y);
-	    }
-	    break;
+              y = convert_twodigit_year (y);
+            }
+            break;
             default:
               break;
             }
-	  
+          
           ++i;
           ++j;
         }
@@ -1357,10 +1357,10 @@ g_date_set_parse (GDate       *d,
             y = G_DATE_BAD_YEAR; /* avoids ambiguity */
         }
       else if (pt.num_ints == 2)
-	{
-	  if (m == G_DATE_BAD_MONTH && pt.month != G_DATE_BAD_MONTH)
-	    m = pt.month;
-	}
+        {
+          if (m == G_DATE_BAD_MONTH && pt.month != G_DATE_BAD_MONTH)
+            m = pt.month;
+        }
     }
   else if (pt.num_ints == 1) 
     {
@@ -1374,7 +1374,7 @@ g_date_set_parse (GDate       *d,
       else
         {
           /* Try yyyymmdd and yymmdd */
-	  
+          
           m   = (pt.n[0]/100) % 100;
           day = pt.n[0] % 100;
           y   = pt.n[0]/10000;
@@ -1450,7 +1450,7 @@ _g_localtime (time_t timet, struct tm *out_tm)
  */
 void         
 g_date_set_time_t (GDate *date,
-		   time_t timet)
+                   time_t timet)
 {
   struct tm tm;
   gboolean success;
@@ -1498,7 +1498,7 @@ g_date_set_time_t (GDate *date,
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_date_set_time (GDate *date,
-		 GTime  time_)
+                 GTime  time_)
 {
   g_date_set_time_t (date, (time_t) time_);
 }
@@ -1522,7 +1522,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_date_set_time_val (GDate    *date,
-		     GTimeVal *timeval)
+                     GTimeVal *timeval)
 {
   g_date_set_time_t (date, (time_t) timeval->tv_sec);
 }
@@ -2167,8 +2167,8 @@ g_date_to_struct_tm (const GDate *d,
  */
 void
 g_date_clamp (GDate       *date,
-	      const GDate *min_date,
-	      const GDate *max_date)
+              const GDate *min_date,
+              const GDate *max_date)
 {
   g_return_if_fail (g_date_valid (date));
 
@@ -2214,10 +2214,10 @@ g_date_order (GDate *date1,
 #ifdef G_OS_WIN32
 static gboolean
 append_month_name (GArray     *result,
-		   LCID        lcid,
-		   SYSTEMTIME *systemtime,
-		   gboolean    abbreviated,
-		   gboolean    alternative)
+                   LCID        lcid,
+                   SYSTEMTIME *systemtime,
+                   gboolean    abbreviated,
+                   gboolean    alternative)
 {
   int n;
   WORD base;
@@ -2261,8 +2261,8 @@ append_month_name (GArray     *result,
        * month name.
        */
       memmove (((wchar_t *) result->data) + result->len - n,
-	       ((wchar_t *) result->data) + result->len - n + 2,
-	       (n - 2) * sizeof (wchar_t));
+               ((wchar_t *) result->data) + result->len - n + 2,
+               (n - 2) * sizeof (wchar_t));
       g_array_set_size (result, result->len - 3);
     }
 
@@ -2271,10 +2271,10 @@ append_month_name (GArray     *result,
 
 static gsize
 win32_strftime_helper (const GDate     *d,
-		       const gchar     *format,
-		       const struct tm *tm,
-		       gchar           *s,
-		       gsize	        slen)
+                       const gchar     *format,
+                       const struct tm *tm,
+                       gchar           *s,
+                       gsize            slen)
 {
   SYSTEMTIME systemtime;
   TIME_ZONE_INFORMATION tzinfo;
@@ -2307,315 +2307,315 @@ win32_strftime_helper (const GDate     *d,
     {
       c = g_utf8_get_char (p);
       if (c == '%')
-	{
-	  p = g_utf8_next_char (p);
-	  if (!*p)
-	    {
-	      s[0] = '\0';
-	      g_array_free (result, TRUE);
+        {
+          p = g_utf8_next_char (p);
+          if (!*p)
+            {
+              s[0] = '\0';
+              g_array_free (result, TRUE);
 
-	      return 0;
-	    }
+              return 0;
+            }
 
-	  modifier = '\0';
-	  c = g_utf8_get_char (p);
-	  if (c == 'E' || c == 'O')
-	    {
-	      /* "%OB", "%Ob", and "%Oh" are supported, ignore other modified
-	       * conversion specifiers for now.
-	       */
-	      modifier = c;
-	      p = g_utf8_next_char (p);
-	      if (!*p)
-		{
-		  s[0] = '\0';
-		  g_array_free (result, TRUE);
+          modifier = '\0';
+          c = g_utf8_get_char (p);
+          if (c == 'E' || c == 'O')
+            {
+              /* "%OB", "%Ob", and "%Oh" are supported, ignore other modified
+               * conversion specifiers for now.
+               */
+              modifier = c;
+              p = g_utf8_next_char (p);
+              if (!*p)
+                {
+                  s[0] = '\0';
+                  g_array_free (result, TRUE);
 
-		  return 0;
-		}
+                  return 0;
+                }
 
-	      c = g_utf8_get_char (p);
-	    }
+              c = g_utf8_get_char (p);
+            }
 
-	  switch (c)
-	    {
-	    case 'a':
-	      if (systemtime.wDayOfWeek == 0)
-		k = 6;
-	      else
-		k = systemtime.wDayOfWeek - 1;
-	      n = GetLocaleInfoW (lcid, LOCALE_SABBREVDAYNAME1+k, NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetLocaleInfoW (lcid, LOCALE_SABBREVDAYNAME1+k, ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
-	      break;
-	    case 'A':
-	      if (systemtime.wDayOfWeek == 0)
-		k = 6;
-	      else
-		k = systemtime.wDayOfWeek - 1;
-	      n = GetLocaleInfoW (lcid, LOCALE_SDAYNAME1+k, NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetLocaleInfoW (lcid, LOCALE_SDAYNAME1+k, ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
-	      break;
-	    case 'b':
-	    case 'h':
+          switch (c)
+            {
+            case 'a':
+              if (systemtime.wDayOfWeek == 0)
+                k = 6;
+              else
+                k = systemtime.wDayOfWeek - 1;
+              n = GetLocaleInfoW (lcid, LOCALE_SABBREVDAYNAME1+k, NULL, 0);
+              g_array_set_size (result, result->len + n);
+              GetLocaleInfoW (lcid, LOCALE_SABBREVDAYNAME1+k, ((wchar_t *) result->data) + result->len - n, n);
+              g_array_set_size (result, result->len - 1);
+              break;
+            case 'A':
+              if (systemtime.wDayOfWeek == 0)
+                k = 6;
+              else
+                k = systemtime.wDayOfWeek - 1;
+              n = GetLocaleInfoW (lcid, LOCALE_SDAYNAME1+k, NULL, 0);
+              g_array_set_size (result, result->len + n);
+              GetLocaleInfoW (lcid, LOCALE_SDAYNAME1+k, ((wchar_t *) result->data) + result->len - n, n);
+              g_array_set_size (result, result->len - 1);
+              break;
+            case 'b':
+            case 'h':
               if (!append_month_name (result, lcid, &systemtime, TRUE, modifier == 'O'))
                 {
                   /* Ignore the error; this placeholder will be replaced with nothing */
                 }
-	      break;
-	    case 'B':
+              break;
+            case 'B':
               if (!append_month_name (result, lcid, &systemtime, FALSE, modifier == 'O'))
                 {
                   /* Ignore the error; this placeholder will be replaced with nothing */
                 }
-	      break;
-	    case 'c':
-	      n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
-	      if (n > 0)
-		{
-		  g_array_set_size (result, result->len + n);
-		  GetDateFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
-		  g_array_set_size (result, result->len - 1);
-		}
-	      g_array_append_vals (result, L" ", 1);
-	      n = GetTimeFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
-	      if (n > 0)
-		{
-		  g_array_set_size (result, result->len + n);
-		  GetTimeFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
-		  g_array_set_size (result, result->len - 1);
-		}
-	      break;
-	    case 'C':
-	      g_array_append_vals (result, digits + systemtime.wYear/1000, 1);
-	      g_array_append_vals (result, digits + (systemtime.wYear/1000)%10, 1);
-	      break;
-	    case 'd':
-	      g_array_append_vals (result, digits + systemtime.wDay/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wDay%10, 1);
-	      break;
-	    case 'D':
-	      g_array_append_vals (result, digits + systemtime.wMonth/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wMonth%10, 1);
-	      g_array_append_vals (result, L"/", 1);
-	      g_array_append_vals (result, digits + systemtime.wDay/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wDay%10, 1);
-	      g_array_append_vals (result, L"/", 1);
-	      g_array_append_vals (result, digits + (systemtime.wYear/10)%10, 1);
-	      g_array_append_vals (result, digits + systemtime.wYear%10, 1);
-	      break;
-	    case 'e':
-	      if (systemtime.wDay >= 10)
-		g_array_append_vals (result, digits + systemtime.wDay/10, 1);
-	      else
-		g_array_append_vals (result, L" ", 1);
-	      g_array_append_vals (result, digits + systemtime.wDay%10, 1);
-	      break;
+              break;
+            case 'c':
+              n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
+              if (n > 0)
+                {
+                  g_array_set_size (result, result->len + n);
+                  GetDateFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
+                  g_array_set_size (result, result->len - 1);
+                }
+              g_array_append_vals (result, L" ", 1);
+              n = GetTimeFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
+              if (n > 0)
+                {
+                  g_array_set_size (result, result->len + n);
+                  GetTimeFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
+                  g_array_set_size (result, result->len - 1);
+                }
+              break;
+            case 'C':
+              g_array_append_vals (result, digits + systemtime.wYear/1000, 1);
+              g_array_append_vals (result, digits + (systemtime.wYear/1000)%10, 1);
+              break;
+            case 'd':
+              g_array_append_vals (result, digits + systemtime.wDay/10, 1);
+              g_array_append_vals (result, digits + systemtime.wDay%10, 1);
+              break;
+            case 'D':
+              g_array_append_vals (result, digits + systemtime.wMonth/10, 1);
+              g_array_append_vals (result, digits + systemtime.wMonth%10, 1);
+              g_array_append_vals (result, L"/", 1);
+              g_array_append_vals (result, digits + systemtime.wDay/10, 1);
+              g_array_append_vals (result, digits + systemtime.wDay%10, 1);
+              g_array_append_vals (result, L"/", 1);
+              g_array_append_vals (result, digits + (systemtime.wYear/10)%10, 1);
+              g_array_append_vals (result, digits + systemtime.wYear%10, 1);
+              break;
+            case 'e':
+              if (systemtime.wDay >= 10)
+                g_array_append_vals (result, digits + systemtime.wDay/10, 1);
+              else
+                g_array_append_vals (result, L" ", 1);
+              g_array_append_vals (result, digits + systemtime.wDay%10, 1);
+              break;
 
-	      /* A GDate has no time fields, so for now we can
-	       * hardcode all time conversions into zeros (or 12 for
-	       * %I). The alternative code snippets in the #else
-	       * branches are here ready to be taken into use when
-	       * needed by a g_strftime() or g_date_and_time_format()
-	       * or whatever.
-	       */
-	    case 'H':
+              /* A GDate has no time fields, so for now we can
+               * hardcode all time conversions into zeros (or 12 for
+               * %I). The alternative code snippets in the #else
+               * branches are here ready to be taken into use when
+               * needed by a g_strftime() or g_date_and_time_format()
+               * or whatever.
+               */
+            case 'H':
 #if 1
-	      g_array_append_vals (result, L"00", 2);
+              g_array_append_vals (result, L"00", 2);
 #else
-	      g_array_append_vals (result, digits + systemtime.wHour/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wHour%10, 1);
+              g_array_append_vals (result, digits + systemtime.wHour/10, 1);
+              g_array_append_vals (result, digits + systemtime.wHour%10, 1);
 #endif
-	      break;
-	    case 'I':
+              break;
+            case 'I':
 #if 1
-	      g_array_append_vals (result, L"12", 2);
+              g_array_append_vals (result, L"12", 2);
 #else
-	      if (systemtime.wHour == 0)
-		g_array_append_vals (result, L"12", 2);
-	      else
-		{
-		  g_array_append_vals (result, digits + (systemtime.wHour%12)/10, 1);
-		  g_array_append_vals (result, digits + (systemtime.wHour%12)%10, 1);
-		}
+              if (systemtime.wHour == 0)
+                g_array_append_vals (result, L"12", 2);
+              else
+                {
+                  g_array_append_vals (result, digits + (systemtime.wHour%12)/10, 1);
+                  g_array_append_vals (result, digits + (systemtime.wHour%12)%10, 1);
+                }
 #endif
-	      break;
-	    case  'j':
-	      g_array_append_vals (result, digits + (tm->tm_yday+1)/100, 1);
-	      g_array_append_vals (result, digits + ((tm->tm_yday+1)/10)%10, 1);
-	      g_array_append_vals (result, digits + (tm->tm_yday+1)%10, 1);
-	      break;
-	    case 'm':
-	      g_array_append_vals (result, digits + systemtime.wMonth/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wMonth%10, 1);
-	      break;
-	    case 'M':
+              break;
+            case  'j':
+              g_array_append_vals (result, digits + (tm->tm_yday+1)/100, 1);
+              g_array_append_vals (result, digits + ((tm->tm_yday+1)/10)%10, 1);
+              g_array_append_vals (result, digits + (tm->tm_yday+1)%10, 1);
+              break;
+            case 'm':
+              g_array_append_vals (result, digits + systemtime.wMonth/10, 1);
+              g_array_append_vals (result, digits + systemtime.wMonth%10, 1);
+              break;
+            case 'M':
 #if 1
-	      g_array_append_vals (result, L"00", 2);
+              g_array_append_vals (result, L"00", 2);
 #else
-	      g_array_append_vals (result, digits + systemtime.wMinute/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wMinute%10, 1);
+              g_array_append_vals (result, digits + systemtime.wMinute/10, 1);
+              g_array_append_vals (result, digits + systemtime.wMinute%10, 1);
 #endif
-	      break;
-	    case 'n':
-	      g_array_append_vals (result, L"\n", 1);
-	      break;
-	    case 'p':
-	      n = GetTimeFormatW (lcid, 0, &systemtime, L"tt", NULL, 0);
-	      if (n > 0)
-		{
-		  g_array_set_size (result, result->len + n);
-		  GetTimeFormatW (lcid, 0, &systemtime, L"tt", ((wchar_t *) result->data) + result->len - n, n);
-		  g_array_set_size (result, result->len - 1);
-		}
-	      break;
-	    case 'r':
-	      /* This is a rather odd format. Hard to say what to do.
-	       * Let's always use the POSIX %I:%M:%S %p
-	       */
+              break;
+            case 'n':
+              g_array_append_vals (result, L"\n", 1);
+              break;
+            case 'p':
+              n = GetTimeFormatW (lcid, 0, &systemtime, L"tt", NULL, 0);
+              if (n > 0)
+                {
+                  g_array_set_size (result, result->len + n);
+                  GetTimeFormatW (lcid, 0, &systemtime, L"tt", ((wchar_t *) result->data) + result->len - n, n);
+                  g_array_set_size (result, result->len - 1);
+                }
+              break;
+            case 'r':
+              /* This is a rather odd format. Hard to say what to do.
+               * Let's always use the POSIX %I:%M:%S %p
+               */
 #if 1
-	      g_array_append_vals (result, L"12:00:00", 8);
+              g_array_append_vals (result, L"12:00:00", 8);
 #else
-	      if (systemtime.wHour == 0)
-		g_array_append_vals (result, L"12", 2);
-	      else
-		{
-		  g_array_append_vals (result, digits + (systemtime.wHour%12)/10, 1);
-		  g_array_append_vals (result, digits + (systemtime.wHour%12)%10, 1);
-		}
-	      g_array_append_vals (result, L":", 1);
-	      g_array_append_vals (result, digits + systemtime.wMinute/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wMinute%10, 1);
-	      g_array_append_vals (result, L":", 1);
-	      g_array_append_vals (result, digits + systemtime.wSecond/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wSecond%10, 1);
-	      g_array_append_vals (result, L" ", 1);
+              if (systemtime.wHour == 0)
+                g_array_append_vals (result, L"12", 2);
+              else
+                {
+                  g_array_append_vals (result, digits + (systemtime.wHour%12)/10, 1);
+                  g_array_append_vals (result, digits + (systemtime.wHour%12)%10, 1);
+                }
+              g_array_append_vals (result, L":", 1);
+              g_array_append_vals (result, digits + systemtime.wMinute/10, 1);
+              g_array_append_vals (result, digits + systemtime.wMinute%10, 1);
+              g_array_append_vals (result, L":", 1);
+              g_array_append_vals (result, digits + systemtime.wSecond/10, 1);
+              g_array_append_vals (result, digits + systemtime.wSecond%10, 1);
+              g_array_append_vals (result, L" ", 1);
 #endif
-	      n = GetTimeFormatW (lcid, 0, &systemtime, L"tt", NULL, 0);
-	      if (n > 0)
-		{
-		  g_array_set_size (result, result->len + n);
-		  GetTimeFormatW (lcid, 0, &systemtime, L"tt", ((wchar_t *) result->data) + result->len - n, n);
-		  g_array_set_size (result, result->len - 1);
-		}
-	      break;
-	    case 'R':
+              n = GetTimeFormatW (lcid, 0, &systemtime, L"tt", NULL, 0);
+              if (n > 0)
+                {
+                  g_array_set_size (result, result->len + n);
+                  GetTimeFormatW (lcid, 0, &systemtime, L"tt", ((wchar_t *) result->data) + result->len - n, n);
+                  g_array_set_size (result, result->len - 1);
+                }
+              break;
+            case 'R':
 #if 1
-	      g_array_append_vals (result, L"00:00", 5);
+              g_array_append_vals (result, L"00:00", 5);
 #else
-	      g_array_append_vals (result, digits + systemtime.wHour/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wHour%10, 1);
-	      g_array_append_vals (result, L":", 1);
-	      g_array_append_vals (result, digits + systemtime.wMinute/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wMinute%10, 1);
+              g_array_append_vals (result, digits + systemtime.wHour/10, 1);
+              g_array_append_vals (result, digits + systemtime.wHour%10, 1);
+              g_array_append_vals (result, L":", 1);
+              g_array_append_vals (result, digits + systemtime.wMinute/10, 1);
+              g_array_append_vals (result, digits + systemtime.wMinute%10, 1);
 #endif
-	      break;
-	    case 'S':
+              break;
+            case 'S':
 #if 1
-	      g_array_append_vals (result, L"00", 2);
+              g_array_append_vals (result, L"00", 2);
 #else
-	      g_array_append_vals (result, digits + systemtime.wSecond/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wSecond%10, 1);
+              g_array_append_vals (result, digits + systemtime.wSecond/10, 1);
+              g_array_append_vals (result, digits + systemtime.wSecond%10, 1);
 #endif
-	      break;
-	    case 't':
-	      g_array_append_vals (result, L"\t", 1);
-	      break;
-	    case 'T':
+              break;
+            case 't':
+              g_array_append_vals (result, L"\t", 1);
+              break;
+            case 'T':
 #if 1
-	      g_array_append_vals (result, L"00:00:00", 8);
+              g_array_append_vals (result, L"00:00:00", 8);
 #else
-	      g_array_append_vals (result, digits + systemtime.wHour/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wHour%10, 1);
-	      g_array_append_vals (result, L":", 1);
-	      g_array_append_vals (result, digits + systemtime.wMinute/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wMinute%10, 1);
-	      g_array_append_vals (result, L":", 1);
-	      g_array_append_vals (result, digits + systemtime.wSecond/10, 1);
-	      g_array_append_vals (result, digits + systemtime.wSecond%10, 1);
+              g_array_append_vals (result, digits + systemtime.wHour/10, 1);
+              g_array_append_vals (result, digits + systemtime.wHour%10, 1);
+              g_array_append_vals (result, L":", 1);
+              g_array_append_vals (result, digits + systemtime.wMinute/10, 1);
+              g_array_append_vals (result, digits + systemtime.wMinute%10, 1);
+              g_array_append_vals (result, L":", 1);
+              g_array_append_vals (result, digits + systemtime.wSecond/10, 1);
+              g_array_append_vals (result, digits + systemtime.wSecond%10, 1);
 #endif
-	      break;
-	    case 'u':
-	      if (systemtime.wDayOfWeek == 0)
-		g_array_append_vals (result, L"7", 1);
-	      else
-		g_array_append_vals (result, digits + systemtime.wDayOfWeek, 1);
-	      break;
-	    case 'U':
-	      n = g_date_get_sunday_week_of_year (d);
-	      g_array_append_vals (result, digits + n/10, 1);
-	      g_array_append_vals (result, digits + n%10, 1);
-	      break;
-	    case 'V':
-	      n = g_date_get_iso8601_week_of_year (d);
-	      g_array_append_vals (result, digits + n/10, 1);
-	      g_array_append_vals (result, digits + n%10, 1);
-	      break;
-	    case 'w':
-	      g_array_append_vals (result, digits + systemtime.wDayOfWeek, 1);
-	      break;
-	    case 'W':
-	      n = g_date_get_monday_week_of_year (d);
-	      g_array_append_vals (result, digits + n/10, 1);
-	      g_array_append_vals (result, digits + n%10, 1);
-	      break;
-	    case 'x':
-	      n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
-	      if (n > 0)
-		{
-		  g_array_set_size (result, result->len + n);
-		  GetDateFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
-		  g_array_set_size (result, result->len - 1);
-		}
-	      break;
-	    case 'X':
-	      n = GetTimeFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
-	      if (n > 0)
-		{
-		  g_array_set_size (result, result->len + n);
-		  GetTimeFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
-		  g_array_set_size (result, result->len - 1);
-		}
-	      break;
-	    case 'y':
-	      g_array_append_vals (result, digits + (systemtime.wYear/10)%10, 1);
-	      g_array_append_vals (result, digits + systemtime.wYear%10, 1);
-	      break;
-	    case 'Y':
-	      g_array_append_vals (result, digits + systemtime.wYear/1000, 1);
-	      g_array_append_vals (result, digits + (systemtime.wYear/100)%10, 1);
-	      g_array_append_vals (result, digits + (systemtime.wYear/10)%10, 1);
-	      g_array_append_vals (result, digits + systemtime.wYear%10, 1);
-	      break;
-	    case 'Z':
-	      n = GetTimeZoneInformation (&tzinfo);
-	      if (n == TIME_ZONE_ID_UNKNOWN || n == TIME_ZONE_ID_STANDARD)
-		g_array_append_vals (result, tzinfo.StandardName, wcslen (tzinfo.StandardName));
-	      else if (n == TIME_ZONE_ID_DAYLIGHT)
-		g_array_append_vals (result, tzinfo.DaylightName, wcslen (tzinfo.DaylightName));
-	      break;
-	    case '%':
-	      g_array_append_vals (result, L"%", 1);
-	      break;
-	    }      
-	} 
+              break;
+            case 'u':
+              if (systemtime.wDayOfWeek == 0)
+                g_array_append_vals (result, L"7", 1);
+              else
+                g_array_append_vals (result, digits + systemtime.wDayOfWeek, 1);
+              break;
+            case 'U':
+              n = g_date_get_sunday_week_of_year (d);
+              g_array_append_vals (result, digits + n/10, 1);
+              g_array_append_vals (result, digits + n%10, 1);
+              break;
+            case 'V':
+              n = g_date_get_iso8601_week_of_year (d);
+              g_array_append_vals (result, digits + n/10, 1);
+              g_array_append_vals (result, digits + n%10, 1);
+              break;
+            case 'w':
+              g_array_append_vals (result, digits + systemtime.wDayOfWeek, 1);
+              break;
+            case 'W':
+              n = g_date_get_monday_week_of_year (d);
+              g_array_append_vals (result, digits + n/10, 1);
+              g_array_append_vals (result, digits + n%10, 1);
+              break;
+            case 'x':
+              n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
+              if (n > 0)
+                {
+                  g_array_set_size (result, result->len + n);
+                  GetDateFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
+                  g_array_set_size (result, result->len - 1);
+                }
+              break;
+            case 'X':
+              n = GetTimeFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
+              if (n > 0)
+                {
+                  g_array_set_size (result, result->len + n);
+                  GetTimeFormatW (lcid, 0, &systemtime, NULL, ((wchar_t *) result->data) + result->len - n, n);
+                  g_array_set_size (result, result->len - 1);
+                }
+              break;
+            case 'y':
+              g_array_append_vals (result, digits + (systemtime.wYear/10)%10, 1);
+              g_array_append_vals (result, digits + systemtime.wYear%10, 1);
+              break;
+            case 'Y':
+              g_array_append_vals (result, digits + systemtime.wYear/1000, 1);
+              g_array_append_vals (result, digits + (systemtime.wYear/100)%10, 1);
+              g_array_append_vals (result, digits + (systemtime.wYear/10)%10, 1);
+              g_array_append_vals (result, digits + systemtime.wYear%10, 1);
+              break;
+            case 'Z':
+              n = GetTimeZoneInformation (&tzinfo);
+              if (n == TIME_ZONE_ID_UNKNOWN || n == TIME_ZONE_ID_STANDARD)
+                g_array_append_vals (result, tzinfo.StandardName, wcslen (tzinfo.StandardName));
+              else if (n == TIME_ZONE_ID_DAYLIGHT)
+                g_array_append_vals (result, tzinfo.DaylightName, wcslen (tzinfo.DaylightName));
+              break;
+            case '%':
+              g_array_append_vals (result, L"%", 1);
+              break;
+            }      
+        } 
       else if (c <= 0xFFFF)
-	{
-	  wchar_t wc = c;
-	  g_array_append_vals (result, &wc, 1);
-	}
+        {
+          wchar_t wc = c;
+          g_array_append_vals (result, &wc, 1);
+        }
       else
-	{
-	  glong nwc;
-	  wchar_t *ws;
+        {
+          glong nwc;
+          wchar_t *ws;
 
-	  ws = g_ucs4_to_utf16 (&c, 1, NULL, &nwc, NULL);
-	  g_array_append_vals (result, ws, nwc);
-	  g_free (ws);
-	}
+          ws = g_ucs4_to_utf16 (&c, 1, NULL, &nwc, NULL);
+          g_array_append_vals (result, ws, nwc);
+          g_free (ws);
+        }
       p = g_utf8_next_char (p);
     }
   

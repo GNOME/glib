@@ -86,7 +86,7 @@ assert_int_array_zero_terminated (const ArrayTestData *config,
 
 static void
 sum_up (gpointer data,
-	gpointer user_data)
+        gpointer user_data)
 {
   gint *sum = (gint *)user_data;
 

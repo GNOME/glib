@@ -47,8 +47,8 @@
 /* Workaround for bug in MSVCR80.DLL */
 static gsize
 msc_strxfrm_wrapper (char       *string1,
-		     const char *string2,
-		     gsize       count)
+                     const char *string2,
+                     gsize       count)
 {
   if (!string1 || count <= 0)
     {
@@ -82,7 +82,7 @@ msc_strxfrm_wrapper (char       *string1,
  **/
 gint
 g_utf8_collate (const gchar *str1,
-		const gchar *str2)
+                const gchar *str2)
 {
   gint result;
 
@@ -146,13 +146,13 @@ g_utf8_collate (const gchar *str1,
       gchar *str2_locale = g_convert (str2_norm, -1, charset, "UTF-8", NULL, NULL, NULL);
 
       if (str1_locale && str2_locale)
-	result =  strcoll (str1_locale, str2_locale);
+        result =  strcoll (str1_locale, str2_locale);
       else if (str1_locale)
-	result = -1;
+        result = -1;
       else if (str2_locale)
-	result = 1;
+        result = 1;
       else
-	result = strcmp (str1_norm, str2_norm);
+        result = strcmp (str1_norm, str2_norm);
 
       g_free (str1_locale);
       g_free (str2_locale);
@@ -185,7 +185,7 @@ utf8_encode (char *buf, wchar_t val)
   if (val < 0x80)
     {
       if (buf)
-	*buf++ = (char) val;
+        *buf++ = (char) val;
       retval = 1;
     }
   else
@@ -198,17 +198,17 @@ utf8_encode (char *buf, wchar_t val)
       retval = step;
 
       if (buf)
-	{
-	  *buf = (unsigned char) (~0xff >> step);
-	  --step;
-	  do
-	    {
-	      buf[step] = 0x80 | (val & 0x3f);
-	      val >>= 6;
-	    }
-	  while (--step > 0);
-	  *buf |= val;
-	}
+        {
+          *buf = (unsigned char) (~0xff >> step);
+          --step;
+          do
+            {
+              buf[step] = 0x80 | (val & 0x3f);
+              val >>= 6;
+            }
+          while (--step > 0);
+          *buf |= val;
+        }
     }
 
   return retval;
@@ -385,7 +385,7 @@ carbon_collate_key_for_filename (const gchar *str,
  **/
 gchar *
 g_utf8_collate_key (const gchar *str,
-		    gssize       len)
+                    gssize       len)
 {
   gchar *result;
 
@@ -452,22 +452,22 @@ g_utf8_collate_key (const gchar *str,
       gchar *str_locale = g_convert (str_norm, -1, charset, "UTF-8", NULL, NULL, NULL);
 
       if (str_locale)
-	{
-	  xfrm_len = strxfrm (NULL, str_locale, 0);
-	  if (xfrm_len >= G_MAXINT - 2)
-	    {
-	      g_free (str_locale);
-	      str_locale = NULL;
-	    }
-	}
+        {
+          xfrm_len = strxfrm (NULL, str_locale, 0);
+          if (xfrm_len >= G_MAXINT - 2)
+            {
+              g_free (str_locale);
+              str_locale = NULL;
+            }
+        }
       if (str_locale)
-	{
-	  result = g_malloc (xfrm_len + 2);
-	  result[0] = 'A';
-	  strxfrm (result + 1, str_locale, xfrm_len + 1);
-	  
-	  g_free (str_locale);
-	}
+        {
+          result = g_malloc (xfrm_len + 2);
+          result[0] = 'A';
+          strxfrm (result + 1, str_locale, xfrm_len + 1);
+          
+          g_free (str_locale);
+        }
     }
     
   if (!result) 
@@ -521,7 +521,7 @@ g_utf8_collate_key (const gchar *str,
  */
 gchar *
 g_utf8_collate_key_for_filename (const gchar *str,
-				 gssize       len)
+                                 gssize       len)
 {
 #ifndef HAVE_CARBON
   GString *result;
@@ -591,97 +591,97 @@ g_utf8_collate_key_for_filename (const gchar *str,
   for (prev = p = str; p < end; p++)
     {
       switch (*p)
-	{
-	case '.':
-	  if (prev != p) 
-	    {
-	      collate_key = g_utf8_collate_key (prev, p - prev);
-	      g_string_append (result, collate_key);
-	      g_free (collate_key);
-	    }
-	  
-	  g_string_append (result, COLLATION_SENTINEL "\1");
-	  
-	  /* skip the dot */
-	  prev = p + 1;
-	  break;
-	  
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	  if (prev != p) 
-	    {
-	      collate_key = g_utf8_collate_key (prev, p - prev);
-	      g_string_append (result, collate_key);
-	      g_free (collate_key);
-	    }
-	  
-	  g_string_append (result, COLLATION_SENTINEL "\2");
-	  
-	  prev = p;
-	  
-	  /* write d-1 colons */
-	  if (*p == '0')
-	    {
-	      leading_zeros = 1;
-	      digits = 0;
-	    }
-	  else
-	    {
-	      leading_zeros = 0;
-	      digits = 1;
-	    }
-	  
-	  while (++p < end)
-	    {
-	      if (*p == '0' && !digits)
-		++leading_zeros;
-	      else if (g_ascii_isdigit(*p))
-		++digits;
-	      else
+        {
+        case '.':
+          if (prev != p) 
+            {
+              collate_key = g_utf8_collate_key (prev, p - prev);
+              g_string_append (result, collate_key);
+              g_free (collate_key);
+            }
+          
+          g_string_append (result, COLLATION_SENTINEL "\1");
+          
+          /* skip the dot */
+          prev = p + 1;
+          break;
+          
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          if (prev != p) 
+            {
+              collate_key = g_utf8_collate_key (prev, p - prev);
+              g_string_append (result, collate_key);
+              g_free (collate_key);
+            }
+          
+          g_string_append (result, COLLATION_SENTINEL "\2");
+          
+          prev = p;
+          
+          /* write d-1 colons */
+          if (*p == '0')
+            {
+              leading_zeros = 1;
+              digits = 0;
+            }
+          else
+            {
+              leading_zeros = 0;
+              digits = 1;
+            }
+          
+          while (++p < end)
+            {
+              if (*p == '0' && !digits)
+                ++leading_zeros;
+              else if (g_ascii_isdigit(*p))
+                ++digits;
+              else
                 {
- 		  /* count an all-zero sequence as
+                  /* count an all-zero sequence as
                    * one digit plus leading zeros
                    */
-          	  if (!digits)
+                  if (!digits)
                     {
                       ++digits;
                       --leading_zeros;
                     }        
-		  break;
+                  break;
                 }
-	    }
+            }
 
-	  while (digits > 1)
-	    {
-	      g_string_append_c (result, ':');
-	      --digits;
-	    }
+          while (digits > 1)
+            {
+              g_string_append_c (result, ':');
+              --digits;
+            }
 
-	  if (leading_zeros > 0)
-	    {
-	      g_string_append_c (append, (char)leading_zeros);
-	      prev += leading_zeros;
-	    }
-	  
-	  /* write the number itself */
-	  g_string_append_len (result, prev, p - prev);
-	  
-	  prev = p;
-	  --p;	  /* go one step back to avoid disturbing outer loop */
-	  break;
-	  
-	default:
-	  /* other characters just accumulate */
-	  break;
-	}
+          if (leading_zeros > 0)
+            {
+              g_string_append_c (append, (char)leading_zeros);
+              prev += leading_zeros;
+            }
+          
+          /* write the number itself */
+          g_string_append_len (result, prev, p - prev);
+          
+          prev = p;
+          --p;    /* go one step back to avoid disturbing outer loop */
+          break;
+          
+        default:
+          /* other characters just accumulate */
+          break;
+        }
     }
   
   if (prev != p) 

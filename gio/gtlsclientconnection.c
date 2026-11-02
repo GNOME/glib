@@ -69,13 +69,13 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    * Deprecated: 2.72: Do not attempt to ignore validation errors.
    */
   g_object_interface_install_property (iface,
-				       g_param_spec_flags ("validation-flags", NULL, NULL,
-							   G_TYPE_TLS_CERTIFICATE_FLAGS,
-							   G_TLS_CERTIFICATE_VALIDATE_ALL,
-							   G_PARAM_READWRITE |
-							   G_PARAM_CONSTRUCT |
-							   G_PARAM_STATIC_STRINGS |
-							   G_PARAM_DEPRECATED));
+                                       g_param_spec_flags ("validation-flags", NULL, NULL,
+                                                           G_TYPE_TLS_CERTIFICATE_FLAGS,
+                                                           G_TLS_CERTIFICATE_VALIDATE_ALL,
+                                                           G_PARAM_READWRITE |
+                                                           G_PARAM_CONSTRUCT |
+                                                           G_PARAM_STATIC_STRINGS |
+                                                           G_PARAM_DEPRECATED));
 
   /**
    * GTlsClientConnection:server-identity:
@@ -98,11 +98,11 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    * Since: 2.28
    */
   g_object_interface_install_property (iface,
-				       g_param_spec_object ("server-identity", NULL, NULL,
-							    G_TYPE_SOCKET_CONNECTABLE,
-							    G_PARAM_READWRITE |
-							    G_PARAM_CONSTRUCT |
-							    G_PARAM_STATIC_STRINGS));
+                                       g_param_spec_object ("server-identity", NULL, NULL,
+                                                            G_TYPE_SOCKET_CONNECTABLE,
+                                                            G_PARAM_READWRITE |
+                                                            G_PARAM_CONSTRUCT |
+                                                            G_PARAM_STATIC_STRINGS));
 
   /**
    * GTlsClientConnection:use-ssl3:
@@ -115,12 +115,12 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    * Deprecated: 2.56: SSL 3.0 is insecure.
    */
   g_object_interface_install_property (iface,
-				       g_param_spec_boolean ("use-ssl3", NULL, NULL,
-							     FALSE,
-							     G_PARAM_READWRITE |
-							     G_PARAM_CONSTRUCT |
-							     G_PARAM_STATIC_STRINGS |
-							     G_PARAM_DEPRECATED));
+                                       g_param_spec_boolean ("use-ssl3", NULL, NULL,
+                                                             FALSE,
+                                                             G_PARAM_READWRITE |
+                                                             G_PARAM_CONSTRUCT |
+                                                             G_PARAM_STATIC_STRINGS |
+                                                             G_PARAM_DEPRECATED));
 
   /**
    * GTlsClientConnection:accepted-cas: (type GLib.List) (element-type GLib.ByteArray)
@@ -136,9 +136,9 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    * Since: 2.28
    */
   g_object_interface_install_property (iface,
-				       g_param_spec_pointer ("accepted-cas", NULL, NULL,
-							     G_PARAM_READABLE |
-							     G_PARAM_STATIC_STRINGS));
+                                       g_param_spec_pointer ("accepted-cas", NULL, NULL,
+                                                             G_PARAM_READABLE |
+                                                             G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -162,18 +162,18 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
  */
 GIOStream *
 g_tls_client_connection_new (GIOStream           *base_io_stream,
-			     GSocketConnectable  *server_identity,
-			     GError             **error)
+                             GSocketConnectable  *server_identity,
+                             GError             **error)
 {
   GObject *conn;
   GTlsBackend *backend;
 
   backend = g_tls_backend_get_default ();
   conn = g_initable_new (g_tls_backend_get_client_connection_type (backend),
-			 NULL, error,
-			 "base-io-stream", base_io_stream,
-			 "server-identity", server_identity,
-			 NULL);
+                         NULL, error,
+                         "base-io-stream", base_io_stream,
+                         "server-identity", server_identity,
+                         NULL);
   return G_IO_STREAM (conn);
 }
 
@@ -223,7 +223,7 @@ g_tls_client_connection_get_validation_flags (GTlsClientConnection *conn)
  */
 void
 g_tls_client_connection_set_validation_flags (GTlsClientConnection  *conn,
-					      GTlsCertificateFlags   flags)
+                                              GTlsCertificateFlags   flags)
 {
   g_return_if_fail (G_IS_TLS_CLIENT_CONNECTION (conn));
 
@@ -269,7 +269,7 @@ g_tls_client_connection_get_server_identity (GTlsClientConnection *conn)
  */
 void
 g_tls_client_connection_set_server_identity (GTlsClientConnection *conn,
-					     GSocketConnectable   *identity)
+                                             GSocketConnectable   *identity)
 {
   g_return_if_fail (G_IS_TLS_CLIENT_CONNECTION (conn));
 
@@ -322,7 +322,7 @@ g_tls_client_connection_get_use_ssl3 (GTlsClientConnection *conn)
  */
 void
 g_tls_client_connection_set_use_ssl3 (GTlsClientConnection *conn,
-				      gboolean              use_ssl3)
+                                      gboolean              use_ssl3)
 {
   g_return_if_fail (G_IS_TLS_CLIENT_CONNECTION (conn));
 

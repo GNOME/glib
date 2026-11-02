@@ -50,13 +50,13 @@
 G_DEFINE_ABSTRACT_TYPE (GTlsConnection, g_tls_connection, G_TYPE_IO_STREAM)
 
 static void g_tls_connection_get_property (GObject    *object,
-					   guint       prop_id,
-					   GValue     *value,
-					   GParamSpec *pspec);
+                                           guint       prop_id,
+                                           GValue     *value,
+                                           GParamSpec *pspec);
 static void g_tls_connection_set_property (GObject      *object,
-					   guint         prop_id,
-					   const GValue *value,
-					   GParamSpec   *pspec);
+                                           guint         prop_id,
+                                           const GValue *value,
+                                           GParamSpec   *pspec);
 
 enum {
   ACCEPT_CERTIFICATE,
@@ -103,11 +103,11 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_BASE_IO_STREAM,
-				   g_param_spec_object ("base-io-stream", NULL, NULL,
-							G_TYPE_IO_STREAM,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("base-io-stream", NULL, NULL,
+                                                        G_TYPE_IO_STREAM,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:use-system-certdb:
    *
@@ -118,12 +118,12 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * Deprecated: 2.30: Use GTlsConnection:database instead
    */
   g_object_class_install_property (gobject_class, PROP_USE_SYSTEM_CERTDB,
-				   g_param_spec_boolean ("use-system-certdb", NULL, NULL,
-							 TRUE,
-							 G_PARAM_READWRITE |
-							 G_PARAM_CONSTRUCT |
-							 G_PARAM_STATIC_STRINGS |
-							 G_PARAM_DEPRECATED));
+                                   g_param_spec_boolean ("use-system-certdb", NULL, NULL,
+                                                         TRUE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_STATIC_STRINGS |
+                                                         G_PARAM_DEPRECATED));
   /**
    * GTlsConnection:database: (nullable)
    *
@@ -147,10 +147,10 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * Since: 2.30
    */
   g_object_class_install_property (gobject_class, PROP_DATABASE,
-				   g_param_spec_object ("database", NULL, NULL,
-							 G_TYPE_TLS_DATABASE,
-							 G_PARAM_READWRITE |
-							 G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("database", NULL, NULL,
+                                                         G_TYPE_TLS_DATABASE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:interaction: (nullable)
    *
@@ -174,11 +174,11 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_REQUIRE_CLOSE_NOTIFY,
-				   g_param_spec_boolean ("require-close-notify", NULL, NULL,
-							 TRUE,
-							 G_PARAM_READWRITE |
-							 G_PARAM_CONSTRUCT |
-							 G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boolean ("require-close-notify", NULL, NULL,
+                                                         TRUE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:rehandshake-mode:
    *
@@ -190,13 +190,13 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * Deprecated: 2.60: The rehandshake mode is ignored.
    */
   g_object_class_install_property (gobject_class, PROP_REHANDSHAKE_MODE,
-				   g_param_spec_enum ("rehandshake-mode", NULL, NULL,
-						      G_TYPE_TLS_REHANDSHAKE_MODE,
-						      G_TLS_REHANDSHAKE_SAFELY,
-						      G_PARAM_READWRITE |
-						      G_PARAM_CONSTRUCT |
-						      G_PARAM_STATIC_STRINGS |
-						      G_PARAM_DEPRECATED));
+                                   g_param_spec_enum ("rehandshake-mode", NULL, NULL,
+                                                      G_TYPE_TLS_REHANDSHAKE_MODE,
+                                                      G_TLS_REHANDSHAKE_SAFELY,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT |
+                                                      G_PARAM_STATIC_STRINGS |
+                                                      G_PARAM_DEPRECATED));
   /**
    * GTlsConnection:certificate:
    *
@@ -206,10 +206,10 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_CERTIFICATE,
-				   g_param_spec_object ("certificate", NULL, NULL,
-							G_TYPE_TLS_CERTIFICATE,
-							G_PARAM_READWRITE |
-							G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("certificate", NULL, NULL,
+                                                        G_TYPE_TLS_CERTIFICATE,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:peer-certificate: (nullable)
    *
@@ -223,10 +223,10 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_PEER_CERTIFICATE,
-				   g_param_spec_object ("peer-certificate", NULL, NULL,
-							G_TYPE_TLS_CERTIFICATE,
-							G_PARAM_READABLE |
-							G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_object ("peer-certificate", NULL, NULL,
+                                                        G_TYPE_TLS_CERTIFICATE,
+                                                        G_PARAM_READABLE |
+                                                        G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:peer-certificate-errors:
    *
@@ -248,11 +248,11 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * Since: 2.28
    */
   g_object_class_install_property (gobject_class, PROP_PEER_CERTIFICATE_ERRORS,
-				   g_param_spec_flags ("peer-certificate-errors", NULL, NULL,
-						       G_TYPE_TLS_CERTIFICATE_FLAGS,
-						       0,
-						       G_PARAM_READABLE |
-						       G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_flags ("peer-certificate-errors", NULL, NULL,
+                                                       G_TYPE_TLS_CERTIFICATE_FLAGS,
+                                                       0,
+                                                       G_PARAM_READABLE |
+                                                       G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:advertised-protocols: (nullable)
    *
@@ -366,14 +366,14 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    */
   signals[ACCEPT_CERTIFICATE] =
     g_signal_new (I_("accept-certificate"),
-		  G_TYPE_TLS_CONNECTION,
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GTlsConnectionClass, accept_certificate),
-		  g_signal_accumulator_true_handled, NULL,
-		  _g_cclosure_marshal_BOOLEAN__OBJECT_FLAGS,
-		  G_TYPE_BOOLEAN, 2,
-		  G_TYPE_TLS_CERTIFICATE,
-		  G_TYPE_TLS_CERTIFICATE_FLAGS);
+                  G_TYPE_TLS_CONNECTION,
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GTlsConnectionClass, accept_certificate),
+                  g_signal_accumulator_true_handled, NULL,
+                  _g_cclosure_marshal_BOOLEAN__OBJECT_FLAGS,
+                  G_TYPE_BOOLEAN, 2,
+                  G_TYPE_TLS_CERTIFICATE,
+                  G_TYPE_TLS_CERTIFICATE_FLAGS);
   g_signal_set_va_marshaller (signals[ACCEPT_CERTIFICATE],
                               G_TYPE_FROM_CLASS (klass),
                               _g_cclosure_marshal_BOOLEAN__OBJECT_FLAGSv);
@@ -386,18 +386,18 @@ g_tls_connection_init (GTlsConnection *conn)
 
 static void
 g_tls_connection_get_property (GObject    *object,
-			       guint       prop_id,
-			       GValue     *value,
-			       GParamSpec *pspec)
+                               guint       prop_id,
+                               GValue     *value,
+                               GParamSpec *pspec)
 {
   G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 }
 
 static void
 g_tls_connection_set_property (GObject      *object,
-			       guint         prop_id,
-			       const GValue *value,
-			       GParamSpec   *pspec)
+                               guint         prop_id,
+                               const GValue *value,
+                               GParamSpec   *pspec)
 {
   G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 }
@@ -419,13 +419,13 @@ g_tls_connection_set_property (GObject      *object,
  */
 void
 g_tls_connection_set_use_system_certdb (GTlsConnection *conn,
-					gboolean        use_system_certdb)
+                                        gboolean        use_system_certdb)
 {
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
 
   g_object_set (G_OBJECT (conn),
-		"use-system-certdb", use_system_certdb,
-		NULL);
+                "use-system-certdb", use_system_certdb,
+                NULL);
 }
 
 /**
@@ -447,8 +447,8 @@ g_tls_connection_get_use_system_certdb (GTlsConnection *conn)
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), TRUE);
 
   g_object_get (G_OBJECT (conn),
-		"use-system-certdb", &use_system_certdb,
-		NULL);
+                "use-system-certdb", &use_system_certdb,
+                NULL);
   return use_system_certdb;
 }
 
@@ -479,8 +479,8 @@ g_tls_connection_set_database (GTlsConnection *conn,
   g_return_if_fail (database == NULL || G_IS_TLS_DATABASE (database));
 
   g_object_set (G_OBJECT (conn),
-		"database", database,
-		NULL);
+                "database", database,
+                NULL);
 }
 
 /**
@@ -502,8 +502,8 @@ g_tls_connection_get_database (GTlsConnection *conn)
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
 
   g_object_get (G_OBJECT (conn),
-		"database", &database,
-		NULL);
+                "database", &database,
+                NULL);
   if (database)
     g_object_unref (database);
   return database;
@@ -537,7 +537,7 @@ g_tls_connection_get_database (GTlsConnection *conn)
  */
 void
 g_tls_connection_set_certificate (GTlsConnection  *conn,
-				  GTlsCertificate *certificate)
+                                  GTlsCertificate *certificate)
 {
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
   g_return_if_fail (G_IS_TLS_CERTIFICATE (certificate));
@@ -708,13 +708,13 @@ g_tls_connection_get_peer_certificate_errors (GTlsConnection *conn)
  */
 void
 g_tls_connection_set_require_close_notify (GTlsConnection *conn,
-					   gboolean        require_close_notify)
+                                           gboolean        require_close_notify)
 {
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
 
   g_object_set (G_OBJECT (conn),
-		"require-close-notify", require_close_notify,
-		NULL);
+                "require-close-notify", require_close_notify,
+                NULL);
 }
 
 /**
@@ -738,8 +738,8 @@ g_tls_connection_get_require_close_notify (GTlsConnection *conn)
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), TRUE);
 
   g_object_get (G_OBJECT (conn),
-		"require-close-notify", &require_close_notify,
-		NULL);
+                "require-close-notify", &require_close_notify,
+                NULL);
   return require_close_notify;
 }
 
@@ -762,13 +762,13 @@ g_tls_connection_get_require_close_notify (GTlsConnection *conn)
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 void
 g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
-				       GTlsRehandshakeMode   mode)
+                                       GTlsRehandshakeMode   mode)
 {
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
 
   g_object_set (G_OBJECT (conn),
-		"rehandshake-mode", G_TLS_REHANDSHAKE_SAFELY,
-		NULL);
+                "rehandshake-mode", G_TLS_REHANDSHAKE_SAFELY,
+                NULL);
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
 
@@ -799,8 +799,8 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
    * ignored, so that behavior doesn’t change for derived classes.
    */
   g_object_get (G_OBJECT (conn),
-		"rehandshake-mode", &mode,
-		NULL);
+                "rehandshake-mode", &mode,
+                NULL);
   return G_TLS_REHANDSHAKE_SAFELY;
 }
 G_GNUC_END_IGNORE_DEPRECATIONS
@@ -969,8 +969,8 @@ g_tls_connection_get_channel_binding_data (GTlsConnection          *conn,
  */
 gboolean
 g_tls_connection_handshake (GTlsConnection   *conn,
-			    GCancellable     *cancellable,
-			    GError          **error)
+                            GCancellable     *cancellable,
+                            GError          **error)
 {
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), FALSE);
 
@@ -992,16 +992,16 @@ g_tls_connection_handshake (GTlsConnection   *conn,
  */
 void
 g_tls_connection_handshake_async (GTlsConnection       *conn,
-				  int                   io_priority,
-				  GCancellable         *cancellable,
-				  GAsyncReadyCallback   callback,
-				  gpointer              user_data)
+                                  int                   io_priority,
+                                  GCancellable         *cancellable,
+                                  GAsyncReadyCallback   callback,
+                                  gpointer              user_data)
 {
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
 
   G_TLS_CONNECTION_GET_CLASS (conn)->handshake_async (conn, io_priority,
-						      cancellable,
-						      callback, user_data);
+                                                      cancellable,
+                                                      callback, user_data);
 }
 
 /**
@@ -1020,8 +1020,8 @@ g_tls_connection_handshake_async (GTlsConnection       *conn,
  */
 gboolean
 g_tls_connection_handshake_finish (GTlsConnection  *conn,
-				   GAsyncResult    *result,
-				   GError         **error)
+                                   GAsyncResult    *result,
+                                   GError         **error)
 {
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), FALSE);
 
@@ -1118,12 +1118,12 @@ G_DEFINE_QUARK (g-tls-error-quark, g_tls_error)
  */
 gboolean
 g_tls_connection_emit_accept_certificate (GTlsConnection       *conn,
-					  GTlsCertificate      *peer_cert,
-					  GTlsCertificateFlags  errors)
+                                          GTlsCertificate      *peer_cert,
+                                          GTlsCertificateFlags  errors)
 {
   gboolean accept = FALSE;
 
   g_signal_emit (conn, signals[ACCEPT_CERTIFICATE], 0,
-		 peer_cert, errors, &accept);
+                 peer_cert, errors, &accept);
   return accept;
 }

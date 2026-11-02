@@ -136,57 +136,57 @@ next_enumerator (GProxyAddressEnumeratorPrivate *priv)
       priv->proxy_type = g_uri_parse_scheme (priv->proxy_uri);
 
       if (priv->proxy_type == NULL)
-	continue;
+        continue;
 
       /* Assumes hostnames are supported for unknown protocols */
       priv->supports_hostname = TRUE;
       proxy = g_proxy_get_default_for_protocol (priv->proxy_type);
       if (proxy)
         {
-	  priv->supports_hostname = g_proxy_supports_hostname (proxy);
-	  g_object_unref (proxy);
+          priv->supports_hostname = g_proxy_supports_hostname (proxy);
+          g_object_unref (proxy);
         }
 
       if (strcmp ("direct", priv->proxy_type) == 0)
-	{
-	  if (priv->connectable)
-	    connectable = g_object_ref (priv->connectable);
-	  else
-	    connectable = g_network_address_new (priv->dest_hostname,
-						 priv->dest_port);
-	}
+        {
+          if (priv->connectable)
+            connectable = g_object_ref (priv->connectable);
+          else
+            connectable = g_network_address_new (priv->dest_hostname,
+                                                 priv->dest_port);
+        }
       else
-	{
-	  GError *error = NULL;
-	  int default_port;
+        {
+          GError *error = NULL;
+          int default_port;
 
-	  default_port = GLIB_PRIVATE_CALL (g_uri_get_default_scheme_port) (priv->proxy_type);
-	  if (default_port == -1)
-	    default_port = 0;
+          default_port = GLIB_PRIVATE_CALL (g_uri_get_default_scheme_port) (priv->proxy_type);
+          if (default_port == -1)
+            default_port = 0;
 
-	  connectable = g_network_address_parse_uri (priv->proxy_uri, default_port, &error);
-	  if (error)
-	    {
-	      g_warning ("Invalid proxy URI '%s': %s",
-			 priv->proxy_uri, error->message);
-	      g_error_free (error);
-	    }
+          connectable = g_network_address_parse_uri (priv->proxy_uri, default_port, &error);
+          if (error)
+            {
+              g_warning ("Invalid proxy URI '%s': %s",
+                         priv->proxy_uri, error->message);
+              g_error_free (error);
+            }
 
-	  save_userinfo (priv, priv->proxy_uri);
-	}
+          save_userinfo (priv, priv->proxy_uri);
+        }
 
       if (connectable)
-	{
-	  priv->addr_enum = g_socket_connectable_enumerate (connectable);
-	  g_object_unref (connectable);
-	}
+        {
+          priv->addr_enum = g_socket_connectable_enumerate (connectable);
+          g_object_unref (connectable);
+        }
     }
 }
 
 static GSocketAddress *
 g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
-				 GCancellable              *cancellable,
-				 GError                   **error)
+                                 GCancellable              *cancellable,
+                                 GError                   **error)
 {
   GProxyAddressEnumeratorPrivate *priv = GET_PRIVATE (enumerator);
   GSocketAddress *result = NULL;
@@ -196,16 +196,16 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
     {
       g_assert (priv->proxies == NULL);
       priv->proxies = g_proxy_resolver_lookup (priv->proxy_resolver,
-					       priv->dest_uri,
-					       cancellable,
-					       error);
+                                               priv->dest_uri,
+                                               cancellable,
+                                               error);
       priv->next_proxy = priv->proxies;
 
       if (priv->proxies == NULL)
-	{
-	  priv->ever_enumerated = TRUE;
-	  return NULL;
-	}
+        {
+          priv->ever_enumerated = TRUE;
+          return NULL;
+        }
     }
 
   while (result == NULL && (*priv->next_proxy || priv->addr_enum))
@@ -219,72 +219,72 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
       next_enumerator (priv);
 
       if (!priv->addr_enum)
-	continue;
+        continue;
 
       if (priv->proxy_address == NULL)
-	{
-	  priv->proxy_address = g_socket_address_enumerator_next (
-				    priv->addr_enum,
-				    cancellable,
-				    first_error ? NULL : &first_error);
-	}
+        {
+          priv->proxy_address = g_socket_address_enumerator_next (
+                                    priv->addr_enum,
+                                    cancellable,
+                                    first_error ? NULL : &first_error);
+        }
 
       if (priv->proxy_address == NULL)
-	{
-	  g_object_unref (priv->addr_enum);
-	  priv->addr_enum = NULL;
+        {
+          g_object_unref (priv->addr_enum);
+          priv->addr_enum = NULL;
 
-	  if (priv->dest_ips)
-	    {
-	      g_resolver_free_addresses (priv->dest_ips);
-	      priv->dest_ips = NULL;
-	    }
+          if (priv->dest_ips)
+            {
+              g_resolver_free_addresses (priv->dest_ips);
+              priv->dest_ips = NULL;
+            }
 
-	  continue;
-	}
+          continue;
+        }
 
       if (strcmp ("direct", priv->proxy_type) == 0)
-	{
-	  result = priv->proxy_address;
-	  priv->proxy_address = NULL;
-	  continue;
-	}
+        {
+          result = priv->proxy_address;
+          priv->proxy_address = NULL;
+          continue;
+        }
 
       if (!priv->supports_hostname)
-	{
-	  GInetAddress *dest_ip;
+        {
+          GInetAddress *dest_ip;
 
-	  if (!priv->dest_ips)
-	    {
-	      GResolver *resolver;
+          if (!priv->dest_ips)
+            {
+              GResolver *resolver;
 
-	      resolver = g_resolver_get_default();
-	      priv->dest_ips = g_resolver_lookup_by_name (resolver,
-							  priv->dest_hostname,
-							  cancellable,
-							  first_error ? NULL : &first_error);
-	      g_object_unref (resolver);
+              resolver = g_resolver_get_default();
+              priv->dest_ips = g_resolver_lookup_by_name (resolver,
+                                                          priv->dest_hostname,
+                                                          cancellable,
+                                                          first_error ? NULL : &first_error);
+              g_object_unref (resolver);
 
-	      if (!priv->dest_ips)
-		{
-		  g_object_unref (priv->proxy_address);
-		  priv->proxy_address = NULL;
-		  continue;
-		}
-	    }
+              if (!priv->dest_ips)
+                {
+                  g_object_unref (priv->proxy_address);
+                  priv->proxy_address = NULL;
+                  continue;
+                }
+            }
 
-	  if (!priv->next_dest_ip)
-	    priv->next_dest_ip = priv->dest_ips;
-	
-	  dest_ip = G_INET_ADDRESS (priv->next_dest_ip->data);
-	  dest_hostname = g_inet_address_to_string (dest_ip);
+          if (!priv->next_dest_ip)
+            priv->next_dest_ip = priv->dest_ips;
+        
+          dest_ip = G_INET_ADDRESS (priv->next_dest_ip->data);
+          dest_hostname = g_inet_address_to_string (dest_ip);
 
-	  priv->next_dest_ip = g_list_next (priv->next_dest_ip);
-	}
+          priv->next_dest_ip = g_list_next (priv->next_dest_ip);
+        }
       else
-	{
-	  dest_hostname = g_strdup (priv->dest_hostname);
-	}
+        {
+          dest_hostname = g_strdup (priv->dest_hostname);
+        }
 
       g_assert (G_IS_INET_SOCKET_ADDRESS (priv->proxy_address));
 
@@ -295,24 +295,24 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
       port = g_inet_socket_address_get_port (inetsaddr);
 
       result = g_object_new (G_TYPE_PROXY_ADDRESS,
-			     "address", inetaddr,
-			     "port", port,
-			     "protocol", priv->proxy_type,
-			     "destination-protocol", dest_protocol,
-			     "destination-hostname", dest_hostname,
-			     "destination-port", priv->dest_port,
-			     "username", priv->proxy_username,
-			     "password", priv->proxy_password,
-			     "uri", priv->proxy_uri,
-			     NULL);
+                             "address", inetaddr,
+                             "port", port,
+                             "protocol", priv->proxy_type,
+                             "destination-protocol", dest_protocol,
+                             "destination-hostname", dest_hostname,
+                             "destination-port", priv->dest_port,
+                             "username", priv->proxy_username,
+                             "password", priv->proxy_password,
+                             "uri", priv->proxy_uri,
+                             NULL);
       g_free (dest_hostname);
       g_free (dest_protocol);
 
       if (priv->supports_hostname || priv->next_dest_ip == NULL)
-	{
-	  g_object_unref (priv->proxy_address);
-	  priv->proxy_address = NULL;
-	}
+        {
+          g_object_unref (priv->proxy_address);
+          priv->proxy_address = NULL;
+        }
     }
 
   if (result == NULL && first_error && (!priv->ever_enumerated || g_error_matches (first_error, G_IO_ERROR, G_IO_ERROR_CANCELLED)))
@@ -373,21 +373,21 @@ return_result (GTask *task)
       guint16 port;
 
       if (!priv->supports_hostname)
-	{
-	  GInetAddress *dest_ip;
+        {
+          GInetAddress *dest_ip;
 
-	  if (!priv->next_dest_ip)
-	    priv->next_dest_ip = priv->dest_ips;
+          if (!priv->next_dest_ip)
+            priv->next_dest_ip = priv->dest_ips;
 
-	  dest_ip = G_INET_ADDRESS (priv->next_dest_ip->data);
-	  dest_hostname = g_inet_address_to_string (dest_ip);
+          dest_ip = G_INET_ADDRESS (priv->next_dest_ip->data);
+          dest_hostname = g_inet_address_to_string (dest_ip);
 
-	  priv->next_dest_ip = g_list_next (priv->next_dest_ip);
-	}
+          priv->next_dest_ip = g_list_next (priv->next_dest_ip);
+        }
       else
-	{
-	  dest_hostname = g_strdup (priv->dest_hostname);
-	}
+        {
+          dest_hostname = g_strdup (priv->dest_hostname);
+        }
       dest_protocol = g_uri_parse_scheme (priv->dest_uri);
 
       g_assert (G_IS_INET_SOCKET_ADDRESS (priv->proxy_address));
@@ -397,24 +397,24 @@ return_result (GTask *task)
       port = g_inet_socket_address_get_port (inetsaddr);
 
       result = g_object_new (G_TYPE_PROXY_ADDRESS,
-			     "address", inetaddr,
-			     "port", port,
-			     "protocol", priv->proxy_type,
-			     "destination-protocol", dest_protocol,
-			     "destination-hostname", dest_hostname,
-			     "destination-port", priv->dest_port,
-			     "username", priv->proxy_username,
-			     "password", priv->proxy_password,
-			     "uri", priv->proxy_uri,
-			     NULL);
+                             "address", inetaddr,
+                             "port", port,
+                             "protocol", priv->proxy_type,
+                             "destination-protocol", dest_protocol,
+                             "destination-hostname", dest_hostname,
+                             "destination-port", priv->dest_port,
+                             "username", priv->proxy_username,
+                             "password", priv->proxy_password,
+                             "uri", priv->proxy_uri,
+                             NULL);
       g_free (dest_hostname);
       g_free (dest_protocol);
 
       if (priv->supports_hostname || priv->next_dest_ip == NULL)
-	{
-	  g_object_unref (priv->proxy_address);
-	  priv->proxy_address = NULL;
-	}
+        {
+          g_object_unref (priv->proxy_address);
+          priv->proxy_address = NULL;
+        }
     }
 
   priv->ever_enumerated = TRUE;
@@ -423,8 +423,8 @@ return_result (GTask *task)
 }
 
 static void address_enumerate_cb (GObject      *object,
-				  GAsyncResult *result,
-				  gpointer	user_data);
+                                  GAsyncResult *result,
+                                  gpointer      user_data);
 
 static void
 next_proxy (GTask *task)
@@ -437,21 +437,21 @@ next_proxy (GTask *task)
       priv->addr_enum = NULL;
 
       if (priv->dest_ips)
-	{
-	  g_resolver_free_addresses (priv->dest_ips);
-	  priv->dest_ips = NULL;
-	}
+        {
+          g_resolver_free_addresses (priv->dest_ips);
+          priv->dest_ips = NULL;
+        }
 
       next_enumerator (priv);
 
       if (priv->addr_enum)
-	{
-	  g_socket_address_enumerator_next_async (priv->addr_enum,
-						  g_task_get_cancellable (task),
-						  address_enumerate_cb,
-						  task);
-	  return;
-	}
+        {
+          g_socket_address_enumerator_next_async (priv->addr_enum,
+                                                  g_task_get_cancellable (task),
+                                                  address_enumerate_cb,
+                                                  task);
+          return;
+        }
     }
 
   complete_async (task);
@@ -459,16 +459,16 @@ next_proxy (GTask *task)
 
 static void
 dest_hostname_lookup_cb (GObject           *object,
-			 GAsyncResult      *result,
-			 gpointer           user_data)
+                         GAsyncResult      *result,
+                         gpointer           user_data)
 {
   GTask *task = user_data;
   GProxyAddressEnumeratorPrivate *priv = g_task_get_task_data (task);
 
   g_clear_error (&priv->last_error);
   priv->dest_ips = g_resolver_lookup_by_name_finish (G_RESOLVER (object),
-						     result,
-						     &priv->last_error);
+                                                     result,
+                                                     &priv->last_error);
   if (priv->dest_ips)
     return_result (task);
   else
@@ -479,9 +479,9 @@ dest_hostname_lookup_cb (GObject           *object,
 }
 
 static void
-address_enumerate_cb (GObject	   *object,
-		      GAsyncResult *result,
-		      gpointer	    user_data)
+address_enumerate_cb (GObject      *object,
+                      GAsyncResult *result,
+                      gpointer      user_data)
 {
   GTask *task = user_data;
   GProxyAddressEnumeratorPrivate *priv = g_task_get_task_data (task);
@@ -489,22 +489,22 @@ address_enumerate_cb (GObject	   *object,
   g_clear_error (&priv->last_error);
   priv->proxy_address =
     g_socket_address_enumerator_next_finish (priv->addr_enum,
-					     result,
-					     &priv->last_error);
+                                             result,
+                                             &priv->last_error);
   if (priv->proxy_address)
     {
       if (!priv->supports_hostname && !priv->dest_ips)
-	{
-	  GResolver *resolver;
-	  resolver = g_resolver_get_default();
-	  g_resolver_lookup_by_name_async (resolver,
-					   priv->dest_hostname,
-					   g_task_get_cancellable (task),
-					   dest_hostname_lookup_cb,
-					   task);
-	  g_object_unref (resolver);
-	  return;
-	}
+        {
+          GResolver *resolver;
+          resolver = g_resolver_get_default();
+          g_resolver_lookup_by_name_async (resolver,
+                                           priv->dest_hostname,
+                                           g_task_get_cancellable (task),
+                                           dest_hostname_lookup_cb,
+                                           task);
+          g_object_unref (resolver);
+          return;
+        }
 
       return_result (task);
     }
@@ -514,16 +514,16 @@ address_enumerate_cb (GObject	   *object,
 
 static void
 proxy_lookup_cb (GObject      *object,
-		 GAsyncResult *result,
-		 gpointer      user_data)
+                 GAsyncResult *result,
+                 gpointer      user_data)
 {
   GTask *task = user_data;
   GProxyAddressEnumeratorPrivate *priv = g_task_get_task_data (task);
 
   g_clear_error (&priv->last_error);
   priv->proxies = g_proxy_resolver_lookup_finish (G_PROXY_RESOLVER (object),
-						  result,
-						  &priv->last_error);
+                                                  result,
+                                                  &priv->last_error);
   priv->next_proxy = priv->proxies;
 
   if (priv->last_error)
@@ -535,13 +535,13 @@ proxy_lookup_cb (GObject      *object,
     {
       next_enumerator (priv);
       if (priv->addr_enum)
-	{
-	  g_socket_address_enumerator_next_async (priv->addr_enum,
-						  g_task_get_cancellable (task),
-						  address_enumerate_cb,
-						  task);
-	  return;
-	}
+        {
+          g_socket_address_enumerator_next_async (priv->addr_enum,
+                                                  g_task_get_cancellable (task),
+                                                  address_enumerate_cb,
+                                                  task);
+          return;
+        }
     }
 
   complete_async (task);
@@ -549,9 +549,9 @@ proxy_lookup_cb (GObject      *object,
 
 static void
 g_proxy_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
-				       GCancellable             *cancellable,
-				       GAsyncReadyCallback       callback,
-				       gpointer                  user_data)
+                                       GCancellable             *cancellable,
+                                       GAsyncReadyCallback       callback,
+                                       gpointer                  user_data)
 {
   GProxyAddressEnumeratorPrivate *priv = GET_PRIVATE (enumerator);
   GTask *task;
@@ -563,28 +563,28 @@ g_proxy_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
   if (priv->proxies == NULL)
     {
       g_proxy_resolver_lookup_async (priv->proxy_resolver,
-				     priv->dest_uri,
-				     cancellable,
-				     proxy_lookup_cb,
-				     task);
+                                     priv->dest_uri,
+                                     cancellable,
+                                     proxy_lookup_cb,
+                                     task);
       return;
     }
 
   if (priv->addr_enum)
     {
       if (priv->proxy_address)
-	{
-	  return_result (task);
-	  return;
-	}
+        {
+          return_result (task);
+          return;
+        }
       else
-	{
-	  g_socket_address_enumerator_next_async (priv->addr_enum,
-						  cancellable,
-						  address_enumerate_cb,
-						  task);
-	  return;
-	}
+        {
+          g_socket_address_enumerator_next_async (priv->addr_enum,
+                                                  cancellable,
+                                                  address_enumerate_cb,
+                                                  task);
+          return;
+        }
     }
 
   complete_async (task);
@@ -592,8 +592,8 @@ g_proxy_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
 
 static GSocketAddress *
 g_proxy_address_enumerator_next_finish (GSocketAddressEnumerator  *enumerator,
-					GAsyncResult              *result,
-					GError                   **error)
+                                        GAsyncResult              *result,
+                                        GError                   **error)
 {
   g_return_val_if_fail (g_task_is_valid (result, enumerator), NULL);
 
@@ -750,12 +750,12 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
    * The destination URI. Use `none://` for a generic socket.
    */
   g_object_class_install_property (object_class,
-				   PROP_URI,
-				   g_param_spec_string ("uri", NULL, NULL,
-							NULL,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   PROP_URI,
+                                   g_param_spec_string ("uri", NULL, NULL,
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GProxyAddressEnumerator:default-port:
@@ -766,8 +766,8 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
    * Since: 2.38
    */
   g_object_class_install_property (object_class,
-				   PROP_DEFAULT_PORT,
-				   g_param_spec_uint ("default-port", NULL, NULL,
+                                   PROP_DEFAULT_PORT,
+                                   g_param_spec_uint ("default-port", NULL, NULL,
                                                       0, 65535, 0,
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT_ONLY |
@@ -779,12 +779,12 @@ g_proxy_address_enumerator_class_init (GProxyAddressEnumeratorClass *proxy_enume
    * The connectable being enumerated.
    */
   g_object_class_install_property (object_class,
-				   PROP_CONNECTABLE,
-				   g_param_spec_object ("connectable", NULL, NULL,
-							G_TYPE_SOCKET_CONNECTABLE,
-							G_PARAM_READWRITE |
-							G_PARAM_CONSTRUCT_ONLY |
-							G_PARAM_STATIC_STRINGS));
+                                   PROP_CONNECTABLE,
+                                   g_param_spec_object ("connectable", NULL, NULL,
+                                                        G_TYPE_SOCKET_CONNECTABLE,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GProxyAddressEnumerator:proxy-resolver:

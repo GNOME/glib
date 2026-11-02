@@ -99,7 +99,7 @@ save (GFile *file)
     {
       res = read (STDIN_FILENO, buffer, STREAM_BUFFER_SIZE);
       if (res > 0)
-	{
+        {
           g_output_stream_write_all (out, buffer, res, NULL, NULL, &error);
           if (error != NULL)
             {
@@ -108,15 +108,15 @@ save (GFile *file)
               g_clear_error (&error);
               goto out;
             }
-	}
+        }
       else if (res < 0)
-	{
-	  save_res = FALSE;
+        {
+          save_res = FALSE;
           print_error ("%s", _("Error reading from standard input"));
-	  break;
-	}
+          break;
+        }
       else if (res == 0)
-	break;
+        break;
     }
 
  out:
@@ -135,10 +135,10 @@ save (GFile *file)
       etag = g_file_output_stream_get_etag (G_FILE_OUTPUT_STREAM (out));
 
       if (etag)
-	g_print ("Etag: %s\n", etag);
+        g_print ("Etag: %s\n", etag);
       else
-	/* Translators: The "etag" is a token allowing to verify whether a file has been modified */
-	g_print (_("Etag not available\n"));
+        /* Translators: The "etag" is a token allowing to verify whether a file has been modified */
+        g_print (_("Etag not available\n"));
       g_free (etag);
     }
 

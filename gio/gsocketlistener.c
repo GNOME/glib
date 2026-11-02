@@ -110,9 +110,9 @@ g_socket_listener_finalize (GObject *object)
 
 static void
 g_socket_listener_get_property (GObject    *object,
-				guint       prop_id,
-				GValue     *value,
-				GParamSpec *pspec)
+                                guint       prop_id,
+                                GValue     *value,
+                                GParamSpec *pspec)
 {
   GSocketListener *listener = G_SOCKET_LISTENER (object);
 
@@ -129,17 +129,17 @@ g_socket_listener_get_property (GObject    *object,
 
 static void
 g_socket_listener_set_property (GObject      *object,
-				guint         prop_id,
-				const GValue *value,
-				GParamSpec   *pspec)
+                                guint         prop_id,
+                                const GValue *value,
+                                GParamSpec   *pspec)
 {
   GSocketListener *listener = G_SOCKET_LISTENER (object);
 
   switch (prop_id)
     {
       case PROP_LISTEN_BACKLOG:
-	g_socket_listener_set_backlog (listener, g_value_get_int (value));
-	break;
+        g_socket_listener_set_backlog (listener, g_value_get_int (value));
+        break;
 
       default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -227,12 +227,12 @@ g_socket_listener_new (void)
 
 static gboolean
 check_listener (GSocketListener *listener,
-		GError **error)
+                GError **error)
 {
   if (listener->priv->closed)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_CLOSED,
-			   _("Listener is already closed"));
+                           _("Listener is already closed"));
       return FALSE;
     }
 
@@ -295,9 +295,9 @@ add_socket (GSocketListener *listener,
  */
 gboolean
 g_socket_listener_add_socket (GSocketListener  *listener,
-			      GSocket          *socket,
-			      GObject          *source_object,
-			      GError          **error)
+                              GSocket          *socket,
+                              GObject          *source_object,
+                              GError          **error)
 {
   if (!check_listener (listener, error))
     return FALSE;
@@ -307,7 +307,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
   if (g_socket_is_closed (socket))
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-			   _("Added socket is closed"));
+                           _("Added socket is closed"));
       return FALSE;
     }
 
@@ -359,12 +359,12 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  */
 gboolean
 g_socket_listener_add_address (GSocketListener  *listener,
-			       GSocketAddress   *address,
-			       GSocketType       type,
-			       GSocketProtocol   protocol,
-			       GObject          *source_object,
+                               GSocketAddress   *address,
+                               GSocketType       type,
+                               GSocketProtocol   protocol,
+                               GObject          *source_object,
                                GSocketAddress  **effective_address,
-			       GError          **error)
+                               GError          **error)
 {
   GSocketAddress *local_address;
   GSocketFamily family;
@@ -408,18 +408,18 @@ g_socket_listener_add_address (GSocketListener  *listener,
     {
       local_address = g_socket_get_local_address (socket, error);
       if (local_address == NULL)
-	{
-	  g_object_unref (socket);
-	  return FALSE;
-	}
+        {
+          g_object_unref (socket);
+          return FALSE;
+        }
     }
 
   if (!g_socket_listener_add_socket (listener, socket,
-				     source_object,
-				     error))
+                                     source_object,
+                                     error))
     {
       if (local_address)
-	g_object_unref (local_address);
+        g_object_unref (local_address);
       g_object_unref (socket);
       return FALSE;
     }
@@ -466,9 +466,9 @@ g_socket_listener_add_address (GSocketListener  *listener,
  */
 gboolean
 g_socket_listener_add_inet_port (GSocketListener  *listener,
-				 guint16           port,
-				 GObject          *source_object,
-				 GError          **error)
+                                 guint16           port,
+                                 GObject          *source_object,
+                                 GError          **error)
 {
   gboolean need_ipv4_socket = TRUE;
   GSocket *socket4 = NULL;
@@ -644,10 +644,10 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
 
 static GList *
 add_sources (GSocketListener   *listener,
-	     GSocketSourceFunc  callback,
-	     gpointer           callback_data,
-	     GCancellable      *cancellable,
-	     GMainContext      *context)
+             GSocketSourceFunc  callback,
+             gpointer           callback_data,
+             GCancellable      *cancellable,
+             GMainContext      *context)
 {
   GSocket *socket;
   GSource *source;
@@ -691,8 +691,8 @@ struct AcceptData {
 
 static gboolean
 accept_callback (GSocket      *socket,
-		 GIOCondition  condition,
-		 gpointer      user_data)
+                 GIOCondition  condition,
+                 gpointer      user_data)
 {
   struct AcceptData *data = user_data;
 
@@ -730,9 +730,9 @@ accept_callback (GSocket      *socket,
  */
 GSocket *
 g_socket_listener_accept_socket (GSocketListener  *listener,
-				 GObject         **source_object,
-				 GCancellable     *cancellable,
-				 GError          **error)
+                                 GObject         **source_object,
+                                 GCancellable     *cancellable,
+                                 GError          **error)
 {
   GSocket *accept_socket, *socket;
 
@@ -745,8 +745,8 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
     {
       accept_socket = listener->priv->sockets->pdata[0];
       if (!g_socket_condition_wait (accept_socket, G_IO_IN,
-				    cancellable, error))
-	return NULL;
+                                    cancellable, error))
+        return NULL;
     }
   else
     {
@@ -755,15 +755,15 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
       GMainLoop *loop;
 
       if (listener->priv->main_context == NULL)
-	listener->priv->main_context = g_main_context_new ();
+        listener->priv->main_context = g_main_context_new ();
 
       loop = g_main_loop_new (listener->priv->main_context, FALSE);
       data.loop = loop;
       sources = add_sources (listener,
-			     accept_callback,
-			     &data,
-			     cancellable,
-			     listener->priv->main_context);
+                             accept_callback,
+                             &data,
+                             cancellable,
+                             listener->priv->main_context);
       g_main_loop_run (loop);
       accept_socket = data.socket;
       free_sources (sources);
@@ -804,17 +804,17 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
  */
 GSocketConnection *
 g_socket_listener_accept (GSocketListener  *listener,
-			  GObject         **source_object,
-			  GCancellable     *cancellable,
-			  GError          **error)
+                          GObject         **source_object,
+                          GCancellable     *cancellable,
+                          GError          **error)
 {
   GSocketConnection *connection;
   GSocket *socket;
 
   socket = g_socket_listener_accept_socket (listener,
-					    source_object,
-					    cancellable,
-					    error);
+                                            source_object,
+                                            cancellable,
+                                            error);
   if (socket == NULL)
     return NULL;
 
@@ -838,8 +838,8 @@ accept_socket_async_data_free (AcceptSocketAsyncData *data)
 
 static gboolean
 accept_ready (GSocket      *accept_socket,
-	      GIOCondition  condition,
-	      gpointer      user_data)
+              GIOCondition  condition,
+              gpointer      user_data)
 {
   GTask *task = user_data;
   GError *error = NULL;
@@ -857,9 +857,9 @@ accept_ready (GSocket      *accept_socket,
     {
       source_object = g_object_get_qdata (G_OBJECT (accept_socket), source_quark);
       if (source_object)
-	g_object_set_qdata_full (G_OBJECT (task),
-				 source_quark,
-				 g_object_ref (source_object), g_object_unref);
+        g_object_set_qdata_full (G_OBJECT (task),
+                                 source_quark,
+                                 g_object_ref (source_object), g_object_unref);
       g_task_return_pointer (task, socket, g_object_unref);
     }
   else
@@ -917,9 +917,9 @@ accept_ready (GSocket      *accept_socket,
  */
 void
 g_socket_listener_accept_socket_async (GSocketListener     *listener,
-				       GCancellable        *cancellable,
-				       GAsyncReadyCallback  callback,
-				       gpointer             user_data)
+                                       GCancellable        *cancellable,
+                                       GAsyncReadyCallback  callback,
+                                       gpointer             user_data)
 {
   GTask *task;
   GError *error = NULL;
@@ -941,10 +941,10 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
    * that. */
   data = g_new0 (AcceptSocketAsyncData, 1);
   data->sources = add_sources (listener,
-			 accept_ready,
-			 task,
-			 cancellable,
-			 g_main_context_get_thread_default ());
+                         accept_ready,
+                         task,
+                         cancellable,
+                         g_main_context_get_thread_default ());
   g_task_set_task_data (task, g_steal_pointer (&data),
                         (GDestroyNotify) accept_socket_async_data_free);
 }
@@ -965,9 +965,9 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
  */
 GSocket *
 g_socket_listener_accept_socket_finish (GSocketListener  *listener,
-					GAsyncResult     *result,
-					GObject         **source_object,
-					GError          **error)
+                                        GAsyncResult     *result,
+                                        GObject         **source_object,
+                                        GError          **error)
 {
   g_return_val_if_fail (G_IS_SOCKET_LISTENER (listener), NULL);
   g_return_val_if_fail (g_task_is_valid (result, listener), NULL);
@@ -1000,9 +1000,9 @@ g_socket_listener_accept_async (GSocketListener     *listener,
                                 gpointer             user_data)
 {
   g_socket_listener_accept_socket_async (listener,
-					 cancellable,
-					 callback,
-					 user_data);
+                                         cancellable,
+                                         callback,
+                                         user_data);
 }
 
 /**
@@ -1021,17 +1021,17 @@ g_socket_listener_accept_async (GSocketListener     *listener,
  */
 GSocketConnection *
 g_socket_listener_accept_finish (GSocketListener  *listener,
-				 GAsyncResult     *result,
-				 GObject         **source_object,
-				 GError          **error)
+                                 GAsyncResult     *result,
+                                 GObject         **source_object,
+                                 GError          **error)
 {
   GSocket *socket;
   GSocketConnection *connection;
 
   socket = g_socket_listener_accept_socket_finish (listener,
-						   result,
-						   source_object,
-						   error);
+                                                   result,
+                                                   source_object,
+                                                   error);
   if (socket == NULL)
     return NULL;
 
@@ -1055,7 +1055,7 @@ g_socket_listener_accept_finish (GSocketListener  *listener,
  */
 void
 g_socket_listener_set_backlog (GSocketListener *listener,
-			       int              listen_backlog)
+                               int              listen_backlog)
 {
   GSocket *socket;
   guint i;
@@ -1131,7 +1131,7 @@ g_socket_listener_close (GSocketListener *listener)
  **/
 guint16
 g_socket_listener_add_any_inet_port (GSocketListener  *listener,
-				     GObject          *source_object,
+                                     GObject          *source_object,
                                      GError          **error)
 {
   GSList *sockets_to_close = NULL;

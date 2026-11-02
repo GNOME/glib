@@ -123,10 +123,10 @@ g_seekable_can_seek (GSeekable *seekable)
  **/
 gboolean
 g_seekable_seek (GSeekable     *seekable,
-		 goffset        offset,
-		 GSeekType      type,
-		 GCancellable  *cancellable,
-		 GError       **error)
+                 goffset        offset,
+                 GSeekType      type,
+                 GCancellable  *cancellable,
+                 GError       **error)
 {
   GSeekableIface *iface;
   
@@ -182,9 +182,9 @@ g_seekable_can_truncate (GSeekable *seekable)
  **/
 gboolean
 g_seekable_truncate (GSeekable     *seekable,
-		     goffset        offset,
-		     GCancellable  *cancellable,
-		     GError       **error)
+                     goffset        offset,
+                     GCancellable  *cancellable,
+                     GError       **error)
 {
   GSeekableIface *iface;
   

@@ -161,7 +161,7 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixMountPoint, g_unix_mount_point_free)
 
 GIO_AVAILABLE_IN_ALL
 gint           g_unix_mount_point_compare           (GUnixMountPoint    *mount1,
-						     GUnixMountPoint    *mount2);
+                                                     GUnixMountPoint    *mount2);
 GIO_AVAILABLE_IN_ALL
 const char *   g_unix_mount_point_get_mount_path    (GUnixMountPoint    *mount_point);
 GIO_AVAILABLE_IN_ALL
@@ -211,10 +211,10 @@ GUnixMountEntry **g_unix_mount_entries_get_from_file(const char          *table_
 
 GIO_DEPRECATED_IN_2_84_FOR(g_unix_mount_entry_at)
 GUnixMountEntry *g_unix_mount_at                    (const char         *mount_path,
-						     guint64            *time_read);
+                                                     guint64            *time_read);
 GIO_AVAILABLE_IN_2_84
 GUnixMountEntry *g_unix_mount_entry_at              (const char         *mount_path,
-						     guint64            *time_read);
+                                                     guint64            *time_read);
 
 GIO_DEPRECATED_IN_2_84_FOR(g_unix_mount_entry_for)
 GUnixMountEntry *g_unix_mount_for                   (const char         *file_path,

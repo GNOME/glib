@@ -86,15 +86,15 @@ main (int   argc,
    * full of times in a row, each time successfully activating the in-tree service
    */
   g_test_add ("/GTestDBus/Cycle1", TestFixture, NULL,
-  	      fixture_setup, test_gtest_dbus, fixture_teardown);
+              fixture_setup, test_gtest_dbus, fixture_teardown);
   g_test_add ("/GTestDBus/Cycle2", TestFixture, NULL,
-  	      fixture_setup, test_gtest_dbus, fixture_teardown);
+              fixture_setup, test_gtest_dbus, fixture_teardown);
   g_test_add ("/GTestDBus/Cycle3", TestFixture, NULL,
-  	      fixture_setup, test_gtest_dbus, fixture_teardown);
+              fixture_setup, test_gtest_dbus, fixture_teardown);
   g_test_add ("/GTestDBus/Cycle4", TestFixture, NULL,
-  	      fixture_setup, test_gtest_dbus, fixture_teardown);
+              fixture_setup, test_gtest_dbus, fixture_teardown);
   g_test_add ("/GTestDBus/Cycle5", TestFixture, NULL,
-  	      fixture_setup, test_gtest_dbus, fixture_teardown);
+              fixture_setup, test_gtest_dbus, fixture_teardown);
   
   return g_test_run ();
 }

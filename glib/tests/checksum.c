@@ -970,10 +970,10 @@ test_checksum (gconstpointer d)
     {
       checksum = g_checksum_new (test->checksum_type);
       for (p = FIXED_STR; p < FIXED_STR + test->length; p += chunk_length)
-	{
-	  g_checksum_update (checksum, (const guchar *)p,
-			     MIN (chunk_length, test->length - (p - FIXED_STR)));
-	}
+        {
+          g_checksum_update (checksum, (const guchar *)p,
+                             MIN (chunk_length, test->length - (p - FIXED_STR)));
+        }
       checksum2 = g_checksum_copy (checksum);
       g_assert_cmpstr (g_checksum_get_string (checksum), ==, test->sum);
       g_checksum_free (checksum);
@@ -1044,10 +1044,10 @@ test_checksum_reset (gconstpointer d)
   for (chunk_length = MIN (test->length, 1); chunk_length < test->length; chunk_length++)
     {
       for (p = FIXED_STR; p < FIXED_STR + test->length; p += chunk_length)
-	{
-	  g_checksum_update (checksum, (const guchar *)p,
-			     MIN (chunk_length, test->length - (p - FIXED_STR)));
-	}
+        {
+          g_checksum_update (checksum, (const guchar *)p,
+                             MIN (chunk_length, test->length - (p - FIXED_STR)));
+        }
 
       len2 = g_checksum_type_get_length (test->checksum_type);
       digest = sum_to_digest (test->sum, &len);

@@ -113,7 +113,7 @@ g_mapped_file_destroy (GMappedFile *file)
 
 static GMappedFile*
 mapped_file_new_from_fd (int           fd,
-			 gboolean      writable,
+                         gboolean      writable,
                          const gchar  *filename,
                          GError      **error)
 {
@@ -174,28 +174,28 @@ mapped_file_new_from_fd (int           fd,
     {      
       file->length = (gsize) st.st_size;
       file->contents = (gchar *) mmap (NULL,  file->length,
-				       writable ? PROT_READ|PROT_WRITE : PROT_READ,
-				       MAP_PRIVATE, fd, 0);
+                                       writable ? PROT_READ|PROT_WRITE : PROT_READ,
+                                       MAP_PRIVATE, fd, 0);
     }
 #endif
 #ifdef G_OS_WIN32
   file->length = st.st_size;
   file->mapping = CreateFileMapping ((HANDLE) _get_osfhandle (fd), NULL,
-				     writable ? PAGE_WRITECOPY : PAGE_READONLY,
-				     0, 0,
-				     NULL);
+                                     writable ? PAGE_WRITECOPY : PAGE_READONLY,
+                                     0, 0,
+                                     NULL);
   if (file->mapping != NULL)
     {
       file->contents = MapViewOfFile (file->mapping,
-				      writable ? FILE_MAP_COPY : FILE_MAP_READ,
-				      0, 0,
-				      0);
+                                      writable ? FILE_MAP_COPY : FILE_MAP_READ,
+                                      0, 0,
+                                      0);
       if (file->contents == NULL)
-	{
-	  file->contents = MAP_FAILED;
-	  CloseHandle (file->mapping);
-	  file->mapping = NULL;
-	}
+        {
+          file->contents = MAP_FAILED;
+          CloseHandle (file->mapping);
+          file->mapping = NULL;
+        }
     }
 #endif
 
@@ -260,8 +260,8 @@ error:
  */
 GMappedFile *
 g_mapped_file_new (const gchar  *filename,
-		   gboolean      writable,
-		   GError      **error)
+                   gboolean      writable,
+                   GError      **error)
 {
   GMappedFile *file;
   int fd;
@@ -322,8 +322,8 @@ g_mapped_file_new (const gchar  *filename,
  */
 GMappedFile *
 g_mapped_file_new_from_fd (gint          fd,
-			   gboolean      writable,
-			   GError      **error)
+                           gboolean      writable,
+                           GError      **error)
 {
   return mapped_file_new_from_fd (fd, writable, NULL, error);
 }
@@ -445,7 +445,7 @@ g_mapped_file_get_bytes (GMappedFile *file)
   g_return_val_if_fail (file != NULL, NULL);
 
   return g_bytes_new_with_free_func (file->contents,
-				     file->length,
-				     (GDestroyNotify) g_mapped_file_unref,
-				     g_mapped_file_ref (file));
+                                     file->length,
+                                     (GDestroyNotify) g_mapped_file_unref,
+                                     g_mapped_file_ref (file));
 }

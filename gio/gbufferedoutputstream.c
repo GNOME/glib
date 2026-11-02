@@ -107,22 +107,22 @@ static void     g_buffered_output_stream_seekable_iface_init (GSeekableIface  *i
 static goffset  g_buffered_output_stream_tell                (GSeekable       *seekable);
 static gboolean g_buffered_output_stream_can_seek            (GSeekable       *seekable);
 static gboolean g_buffered_output_stream_seek                (GSeekable       *seekable,
-							      goffset          offset,
-							      GSeekType        type,
-							      GCancellable    *cancellable,
-							      GError         **error);
+                                                              goffset          offset,
+                                                              GSeekType        type,
+                                                              GCancellable    *cancellable,
+                                                              GError         **error);
 static gboolean g_buffered_output_stream_can_truncate        (GSeekable       *seekable);
 static gboolean g_buffered_output_stream_truncate            (GSeekable       *seekable,
-							      goffset          offset,
-							      GCancellable    *cancellable,
-							      GError         **error);
+                                                              goffset          offset,
+                                                              GCancellable    *cancellable,
+                                                              GError         **error);
 
 G_DEFINE_TYPE_WITH_CODE (GBufferedOutputStream,
-			 g_buffered_output_stream,
-			 G_TYPE_FILTER_OUTPUT_STREAM,
+                         g_buffered_output_stream,
+                         G_TYPE_FILTER_OUTPUT_STREAM,
                          G_ADD_PRIVATE (GBufferedOutputStream)
-			 G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
-						g_buffered_output_stream_seekable_iface_init))
+                         G_IMPLEMENT_INTERFACE (G_TYPE_SEEKABLE,
+                                                g_buffered_output_stream_seekable_iface_init))
 
 
 static void
@@ -468,7 +468,7 @@ g_buffered_output_stream_write  (GOutputStream *stream,
       res = flush_buffer (bstream, cancellable, error);
       
       if (res == FALSE)
-	return -1;
+        return -1;
     }
 
   n = priv->len - priv->pos;
@@ -560,10 +560,10 @@ g_buffered_output_stream_can_seek (GSeekable *seekable)
 
 static gboolean
 g_buffered_output_stream_seek (GSeekable     *seekable,
-			       goffset        offset,
-			       GSeekType      type,
-			       GCancellable  *cancellable,
-			       GError       **error)
+                               goffset        offset,
+                               GSeekType      type,
+                               GCancellable  *cancellable,
+                               GError       **error)
 {
   GBufferedOutputStream *bstream;
   GOutputStream *base_stream;
@@ -599,9 +599,9 @@ g_buffered_output_stream_can_truncate (GSeekable *seekable)
 
 static gboolean
 g_buffered_output_stream_truncate (GSeekable     *seekable,
-				   goffset        offset,
-				   GCancellable  *cancellable,
-				   GError       **error)
+                                   goffset        offset,
+                                   GCancellable  *cancellable,
+                                   GError       **error)
 {
   GBufferedOutputStream        *bstream;
   GOutputStream *base_stream;

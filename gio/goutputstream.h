@@ -66,7 +66,7 @@ struct _GOutputStreamClass
                                  GOutputStreamSpliceFlags  flags,
                                  GCancellable             *cancellable,
                                  GError                  **error);
-  gboolean    (* flush)	        (GOutputStream            *stream,
+  gboolean    (* flush)         (GOutputStream            *stream,
                                  GCancellable             *cancellable,
                                  GError                  **error);
   gboolean    (* close_fn)      (GOutputStream            *stream,
@@ -146,32 +146,32 @@ GType    g_output_stream_get_type      (void);
 
 GIO_AVAILABLE_IN_ALL
 gssize   g_output_stream_write         (GOutputStream             *stream,
-					const void                *buffer,
-					gsize                      count,
-					GCancellable              *cancellable,
-					GError                   **error);
+                                        const void                *buffer,
+                                        gsize                      count,
+                                        GCancellable              *cancellable,
+                                        GError                   **error);
 GIO_AVAILABLE_IN_ALL
 gboolean g_output_stream_write_all     (GOutputStream             *stream,
-					const void                *buffer,
-					gsize                      count,
-					gsize                     *bytes_written,
-					GCancellable              *cancellable,
-					GError                   **error);
+                                        const void                *buffer,
+                                        gsize                      count,
+                                        gsize                     *bytes_written,
+                                        GCancellable              *cancellable,
+                                        GError                   **error);
 
 GIO_AVAILABLE_IN_2_60
 gboolean g_output_stream_writev        (GOutputStream             *stream,
-					const GOutputVector       *vectors,
-					gsize                      n_vectors,
-					gsize                     *bytes_written,
-					GCancellable              *cancellable,
-					GError                   **error);
+                                        const GOutputVector       *vectors,
+                                        gsize                      n_vectors,
+                                        gsize                     *bytes_written,
+                                        GCancellable              *cancellable,
+                                        GError                   **error);
 GIO_AVAILABLE_IN_2_60
 gboolean g_output_stream_writev_all    (GOutputStream             *stream,
-					GOutputVector             *vectors,
-					gsize                      n_vectors,
-					gsize                     *bytes_written,
-					GCancellable              *cancellable,
-					GError                   **error);
+                                        GOutputVector             *vectors,
+                                        gsize                      n_vectors,
+                                        gsize                     *bytes_written,
+                                        GCancellable              *cancellable,
+                                        GError                   **error);
 
 GIO_AVAILABLE_IN_2_40
 gboolean g_output_stream_printf        (GOutputStream             *stream,
@@ -189,35 +189,35 @@ gboolean g_output_stream_vprintf       (GOutputStream             *stream,
                                         va_list                    args) G_GNUC_PRINTF (5, 0);
 GIO_AVAILABLE_IN_2_34
 gssize   g_output_stream_write_bytes   (GOutputStream             *stream,
-					GBytes                    *bytes,
-					GCancellable              *cancellable,
-					GError                   **error);
+                                        GBytes                    *bytes,
+                                        GCancellable              *cancellable,
+                                        GError                   **error);
 GIO_AVAILABLE_IN_ALL
 gssize   g_output_stream_splice        (GOutputStream             *stream,
-					GInputStream              *source,
-					GOutputStreamSpliceFlags   flags,
-					GCancellable              *cancellable,
-					GError                   **error);
+                                        GInputStream              *source,
+                                        GOutputStreamSpliceFlags   flags,
+                                        GCancellable              *cancellable,
+                                        GError                   **error);
 GIO_AVAILABLE_IN_ALL
 gboolean g_output_stream_flush         (GOutputStream             *stream,
-					GCancellable              *cancellable,
-					GError                   **error);
+                                        GCancellable              *cancellable,
+                                        GError                   **error);
 GIO_AVAILABLE_IN_ALL
 gboolean g_output_stream_close         (GOutputStream             *stream,
-					GCancellable              *cancellable,
-					GError                   **error);
+                                        GCancellable              *cancellable,
+                                        GError                   **error);
 GIO_AVAILABLE_IN_ALL
 void     g_output_stream_write_async   (GOutputStream             *stream,
-					const void                *buffer,
-					gsize                      count,
-					int                        io_priority,
-					GCancellable              *cancellable,
-					GAsyncReadyCallback        callback,
-					gpointer                   user_data);
+                                        const void                *buffer,
+                                        gsize                      count,
+                                        int                        io_priority,
+                                        GCancellable              *cancellable,
+                                        GAsyncReadyCallback        callback,
+                                        gpointer                   user_data);
 GIO_AVAILABLE_IN_ALL
 gssize   g_output_stream_write_finish  (GOutputStream             *stream,
-					GAsyncResult              *result,
-					GError                   **error);
+                                        GAsyncResult              *result,
+                                        GError                   **error);
 
 GIO_AVAILABLE_IN_2_44
 void     g_output_stream_write_all_async (GOutputStream           *stream,
@@ -236,17 +236,17 @@ gboolean g_output_stream_write_all_finish (GOutputStream          *stream,
 
 GIO_AVAILABLE_IN_2_60
 void     g_output_stream_writev_async  (GOutputStream             *stream,
-					const GOutputVector       *vectors,
-					gsize                      n_vectors,
-					int                        io_priority,
-					GCancellable              *cancellable,
-					GAsyncReadyCallback        callback,
-					gpointer                   user_data);
+                                        const GOutputVector       *vectors,
+                                        gsize                      n_vectors,
+                                        int                        io_priority,
+                                        GCancellable              *cancellable,
+                                        GAsyncReadyCallback        callback,
+                                        gpointer                   user_data);
 GIO_AVAILABLE_IN_2_60
 gboolean g_output_stream_writev_finish (GOutputStream             *stream,
-					GAsyncResult              *result,
-					gsize                     *bytes_written,
-					GError                   **error);
+                                        GAsyncResult              *result,
+                                        gsize                     *bytes_written,
+                                        GError                   **error);
 
 GIO_AVAILABLE_IN_2_60
 void     g_output_stream_writev_all_async (GOutputStream           *stream,
@@ -265,47 +265,47 @@ gboolean g_output_stream_writev_all_finish (GOutputStream          *stream,
 
 GIO_AVAILABLE_IN_2_34
 void     g_output_stream_write_bytes_async  (GOutputStream             *stream,
-					     GBytes                    *bytes,
-					     int                        io_priority,
-					     GCancellable              *cancellable,
-					     GAsyncReadyCallback        callback,
-					     gpointer                   user_data);
+                                             GBytes                    *bytes,
+                                             int                        io_priority,
+                                             GCancellable              *cancellable,
+                                             GAsyncReadyCallback        callback,
+                                             gpointer                   user_data);
 GIO_AVAILABLE_IN_2_34
 gssize   g_output_stream_write_bytes_finish (GOutputStream             *stream,
-					     GAsyncResult              *result,
-					     GError                   **error);
+                                             GAsyncResult              *result,
+                                             GError                   **error);
 GIO_AVAILABLE_IN_ALL
 void     g_output_stream_splice_async  (GOutputStream             *stream,
-					GInputStream              *source,
-					GOutputStreamSpliceFlags   flags,
-					int                        io_priority,
-					GCancellable              *cancellable,
-					GAsyncReadyCallback        callback,
-					gpointer                   user_data);
+                                        GInputStream              *source,
+                                        GOutputStreamSpliceFlags   flags,
+                                        int                        io_priority,
+                                        GCancellable              *cancellable,
+                                        GAsyncReadyCallback        callback,
+                                        gpointer                   user_data);
 GIO_AVAILABLE_IN_ALL
 gssize   g_output_stream_splice_finish (GOutputStream             *stream,
-					GAsyncResult              *result,
-					GError                   **error);
+                                        GAsyncResult              *result,
+                                        GError                   **error);
 GIO_AVAILABLE_IN_ALL
 void     g_output_stream_flush_async   (GOutputStream             *stream,
-					int                        io_priority,
-					GCancellable              *cancellable,
-					GAsyncReadyCallback        callback,
-					gpointer                   user_data);
+                                        int                        io_priority,
+                                        GCancellable              *cancellable,
+                                        GAsyncReadyCallback        callback,
+                                        gpointer                   user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean g_output_stream_flush_finish  (GOutputStream             *stream,
-					GAsyncResult              *result,
-					GError                   **error);
+                                        GAsyncResult              *result,
+                                        GError                   **error);
 GIO_AVAILABLE_IN_ALL
 void     g_output_stream_close_async   (GOutputStream             *stream,
-					int                        io_priority,
-					GCancellable              *cancellable,
-					GAsyncReadyCallback        callback,
-					gpointer                   user_data);
+                                        int                        io_priority,
+                                        GCancellable              *cancellable,
+                                        GAsyncReadyCallback        callback,
+                                        gpointer                   user_data);
 GIO_AVAILABLE_IN_ALL
 gboolean g_output_stream_close_finish  (GOutputStream             *stream,
-					GAsyncResult              *result,
-					GError                   **error);
+                                        GAsyncResult              *result,
+                                        GError                   **error);
 
 GIO_AVAILABLE_IN_ALL
 gboolean g_output_stream_is_closed     (GOutputStream             *stream);
@@ -315,7 +315,7 @@ GIO_AVAILABLE_IN_ALL
 gboolean g_output_stream_has_pending   (GOutputStream             *stream);
 GIO_AVAILABLE_IN_ALL
 gboolean g_output_stream_set_pending   (GOutputStream             *stream,
-					GError                   **error);
+                                        GError                   **error);
 GIO_AVAILABLE_IN_ALL
 void     g_output_stream_clear_pending (GOutputStream             *stream);
 
