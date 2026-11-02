@@ -20,6 +20,8 @@
  * Authors: Jakub Adam <jakub.adam@collabora.com>
  */
 
+#include "config.h"
+
 #include <gio/gio.h>
 #include <gio/giptosmessage.h>
 #include <gio/gnetworking.h>
@@ -69,7 +71,9 @@ send_recv_control_message (GSocketFamily family, GSocketControlMessage *msg)
 
   if (family == G_SOCKET_FAMILY_IPV4)
     {
+#ifdef HAVE_IP_RECVTOS
       g_socket_set_option (rsock, IPPROTO_IP, IP_RECVTOS, 1, &error);
+#endif
     }
   else
     {
@@ -101,11 +105,10 @@ send_recv_control_message (GSocketFamily family, GSocketControlMessage *msg)
 
   return g_steal_pointer (&result);
 }
+#endif
 
 const guint8 DSCP = 0x25;
 const GEcnCodePoint ECN = G_ECN_ECT_0;
-
-#endif
 
 static void
 test_ip_tos (void)
@@ -114,12 +117,8 @@ test_ip_tos (void)
   g_test_skip ("GSocketControlMessage not supported on Windows.");
 #elif defined(__APPLE__)
   g_test_skip ("IP_TOS not supported on macOS.");
-#elif defined(__GNU__)
-  g_test_skip ("IP_RECVTOS not supported on Hurd");
-#elif defined(_AIX)
-  g_test_skip ("IP_RECVTOS not supported on AIX");
-#elif defined(__sun__)
-  g_test_skip ("IP_RECVTOS not supported on Solaris");
+#elif !defined(HAVE_IP_RECVTOS)
+  g_test_skip ("IP_RECVTOS not supported on this platform");
 #else
   GIPTosMessage *smsg;
   GIPTosMessage *rmsg;
