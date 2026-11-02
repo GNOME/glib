@@ -982,7 +982,7 @@ g_unix_fd_query_path (int      fd,
     }
 
   return g_strdup (kf.kf_path);
-#elif defined (__APPLE__) || defined (__NetBSD__) || defined (__OpenBSD__)
+#elif defined (__APPLE__) || defined (__NetBSD__)
   char file_path[MAXPATHLEN] = {0};
 
   if (fcntl (fd, F_GETPATH, file_path) < 0)
@@ -996,6 +996,13 @@ g_unix_fd_query_path (int      fd,
     }
 
   return g_strdup (file_path);
+#elif defined (__OpenBSD__)
+  /*
+   * OpenBSD cannot look up a file path from a file descriptor
+   */
+  g_set_error (error, G_FILE_ERROR, G_FILE_ERROR_NOSYS,
+               "g_unix_fd_query_path() not supported on OpenBSD");
+  return NULL;
 #elif defined (__GNU__)
   /*
    * Hurd allows to open("/dev/fd/%u") to open the very same fd, but it's not
