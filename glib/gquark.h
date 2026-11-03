@@ -52,12 +52,16 @@ const gchar *         g_quark_to_string          (GQuark       quark) G_GNUC_PUR
 GQuark                                                                  \
 q_n##_quark (void)                                                      \
 {                                                                       \
-  static GQuark q;                                                      \
+  static int q;                                                         \
+  int ql = g_atomic_int_get (&q);                                       \
                                                                         \
-  if G_UNLIKELY (q == 0)                                                \
-    q = g_quark_from_static_string (#QN);                               \
+  if G_UNLIKELY (ql == 0)                                               \
+    {                                                                   \
+      ql = (int) g_quark_from_static_string (#QN);                      \
+      g_atomic_int_set (&q, ql);                                        \
+    }                                                                   \
                                                                         \
-  return q;                                                             \
+  return (GQuark) ql;                                                   \
 }
 
 GLIB_AVAILABLE_IN_ALL
