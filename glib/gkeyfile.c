@@ -802,7 +802,7 @@ find_file_in_data_dirs (const gchar   *file,
           candidate_file++;
 
           g_free (sub_dir);
-          sub_dir = g_strndup (file, candidate_file - file - 1);
+          sub_dir = g_strndup (file, (size_t) (candidate_file - file - 1));
 
           for (p = sub_dir; *p != '\0'; p++)
             {
@@ -846,7 +846,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
     {
       int errsv = errno;
       g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errsv),
+                           (int) g_file_error_from_errno (errsv),
                            g_strerror (errsv));
       return FALSE;
     }
@@ -881,13 +881,13 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
             continue;
 
           g_set_error_literal (error, G_FILE_ERROR,
-                               g_file_error_from_errno (errsv),
+                               (int) g_file_error_from_errno (errsv),
                                g_strerror (errsv));
           return FALSE;
         }
 
       g_key_file_parse_data (key_file,
-                             read_buf, bytes_read,
+                             read_buf, (gsize) bytes_read,
                              &key_file_error);
     }
   while (!key_file_error);
@@ -948,7 +948,7 @@ g_key_file_load_from_file (GKeyFile       *key_file,
   if (fd == -1)
     {
       g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errsv),
+                           (int) g_file_error_from_errno (errsv),
                            g_strerror (errsv));
       return FALSE;
     }
@@ -1640,15 +1640,19 @@ g_key_file_parse_line (GKeyFile     *key_file,
     g_key_file_parse_comment (key_file, line, length, &parse_error);
   else if (g_key_file_line_is_group (line_start))
     g_key_file_parse_group (key_file, line_start,
-                            length - (line_start - line),
+                            length - (size_t) (line_start - line),
                             &parse_error);
   else if (g_key_file_line_is_key_value_pair (line_start))
     g_key_file_parse_key_value_pair (key_file, line_start,
-                                     length - (line_start - line),
+                                     length - (size_t) (line_start - line),
                                      &parse_error);
   else
     {
-      gchar *line_utf8 = g_utf8_make_valid (line, length);
+      gchar *line_utf8;
+
+      /* The line is held in memory, so its length fits in a gssize */
+      g_assert (length <= G_MAXSSIZE);
+      line_utf8 = g_utf8_make_valid (line, (gssize) length);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
                    _("Key file contains line “%s” which is not "
@@ -1701,8 +1705,14 @@ g_key_file_parse_group (GKeyFile     *key_file,
   while (*group_name_end != ']')
     group_name_end--;
 
-  group_name = g_strndup (group_name_start, 
-                          group_name_end - group_name_start);
+  /* g_key_file_line_is_group() checked that there is a ']' after the
+   * opening '[', so the loop above stops at or after group_name_start.
+   * The group name may still be empty here: g_key_file_is_group_name()
+   * rejects that below. */
+  g_assert (group_name_end >= group_name_start);
+
+  group_name = g_strndup (group_name_start,
+                          (size_t) (group_name_end - group_name_start));
   
   if (!g_key_file_is_group_name (group_name))
     {
@@ -1749,7 +1759,13 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
   while (g_ascii_isspace (*key_end))
     key_end--;
 
-  key_len = key_end - line + 2;
+  /* g_key_file_parse_line() skipped leading whitespace and
+   * g_key_file_line_is_key_value_pair() checked that the line does not
+   * start with '=', so the loop above stops at or after the start of the
+   * line. */
+  g_assert (key_end >= line);
+
+  key_len = (size_t) (key_end - line + 2);
 
   g_warn_if_fail (key_len <= length);
 
@@ -1768,7 +1784,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
   while (g_ascii_isspace (*value_start))
     value_start++;
 
-  value_len = line + length - value_start;
+  value_len = (size_t) (line + length - value_start);
 
   g_warn_if_fail (key_file->start_group != NULL);
 
@@ -1782,7 +1798,11 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
       if (value_len != strlen ("UTF-8") ||
           g_ascii_strncasecmp (value_start, "UTF-8", value_len) != 0)
         {
-          gchar *value_utf8 = g_utf8_make_valid (value_start, value_len);
+          gchar *value_utf8;
+
+          /* The value is held in memory, so its length fits in a gssize */
+          g_assert (value_len <= G_MAXSSIZE);
+          value_utf8 = g_utf8_make_valid (value_start, (gssize) value_len);
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                        _("Key file contains unsupported "
@@ -1866,9 +1886,8 @@ g_key_file_parse_data (GKeyFile     *key_file,
           if (key_file->parse_buffer->len > 0
               && (key_file->parse_buffer->str[key_file->parse_buffer->len - 1]
                   == '\r'))
-            g_string_erase (key_file->parse_buffer,
-                            key_file->parse_buffer->len - 1,
-                            1);
+            g_string_truncate (key_file->parse_buffer,
+                               key_file->parse_buffer->len - 1);
             
           /* When a newline is encountered flush the parse buffer so that the
            * line can be parsed.  Note that completely blank lines won't show
@@ -1898,9 +1917,9 @@ g_key_file_parse_data (GKeyFile     *key_file,
           if (end_of_line == NULL)
             end_of_line = data + length;
 
-          line_length = end_of_line - start_of_line;
+          line_length = (size_t) (end_of_line - start_of_line);
 
-          g_string_append_len (key_file->parse_buffer, start_of_line, line_length);
+          g_string_append_len (key_file->parse_buffer, start_of_line, end_of_line - start_of_line);
           i += line_length;
         }
     }
@@ -2417,7 +2436,7 @@ g_key_file_get_string_list (GKeyFile     *key_file,
 {
   GError *key_file_error = NULL;
   gchar *value, *string_value, **values;
-  gint i, len;
+  size_t i, len;
   GSList *p, *pieces = NULL;
 
   g_return_val_if_fail (key_file != NULL, NULL);
@@ -3283,9 +3302,9 @@ g_key_file_get_uint64 (GKeyFile     *key_file,
   gchar *s, *end;
   guint64 v;
 
-  g_return_val_if_fail (key_file != NULL, -1);
-  g_return_val_if_fail (group_name != NULL, -1);
-  g_return_val_if_fail (key != NULL, -1);
+  g_return_val_if_fail (key_file != NULL, 0);
+  g_return_val_if_fail (group_name != NULL, 0);
+  g_return_val_if_fail (key != NULL, 0);
 
   s = g_key_file_get_value (key_file, group_name, key, error);
 
@@ -4782,7 +4801,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
           *q = *p;
           if (pieces && (*p == key_file->list_separator))
             {
-              tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, q - q0));
+              tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, (size_t) (q - q0)));
               q0 = q + 1;
             }
         }
@@ -4798,7 +4817,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
   if (pieces)
     {
       if (q0 < q)
-        tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, q - q0));
+        tmp_pieces = g_slist_prepend (tmp_pieces, g_strndup (q0, (size_t) (q - q0)));
       *pieces = g_slist_reverse (tmp_pieces);
     }
 
@@ -4928,7 +4947,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
       return 0;
     }
 
-  int_value = long_value;
+  int_value = (gint) long_value;
   if (int_value != long_value || errsv == ERANGE)
     {
       gchar *value_utf8 = g_utf8_make_valid (value, -1);
@@ -4992,7 +5011,7 @@ g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
                                    GError      **error)
 {
   gchar *value_utf8;
-  gint i, length = 0;
+  size_t i, length = 0;
 
   /* Count the number of non-whitespace characters */
   for (i = 0; value[i]; i++)
@@ -5093,7 +5112,8 @@ g_key_file_parse_comment_as_value (GKeyFile      *key_file,
  * [method@GLib.KeyFile.to_data].
  *
  * This function can fail for any of the reasons that
- * [func@GLib.file_set_contents] may fail.
+ * [func@GLib.file_set_contents] may fail, or with
+ * [error@GLib.FileError.FAILED] if the contents are too long to write.
  *
  * Returns: true if successful, false otherwise
  *
@@ -5115,7 +5135,15 @@ g_key_file_save_to_file (GKeyFile     *key_file,
   contents = g_key_file_to_data (key_file, &length, NULL);
   g_assert (contents != NULL);
 
-  success = g_file_set_contents (filename, contents, length, error);
+  if (length > G_MAXSSIZE)
+    {
+      g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED,
+                           _("Key file contents are too long"));
+      g_free (contents);
+      return FALSE;
+    }
+
+  success = g_file_set_contents (filename, contents, (gssize) length, error);
   g_free (contents);
 
   return success;

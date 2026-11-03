@@ -105,7 +105,7 @@ check_string_list_value (GKeyFile    *keyfile,
                          const gchar *key,
                          ...)
 {
-  gint i;
+  size_t i;
   gchar *v, **value;
   va_list args;
   gsize len;
@@ -127,6 +127,9 @@ check_string_list_value (GKeyFile    *keyfile,
     }
 
   va_end (args);
+
+  g_assert_null (value[i]);
+  g_assert_cmpuint (len, ==, i);
 
   g_strfreev (value);
 }
@@ -670,11 +673,14 @@ test_boolean (void)
     "key4=0\n"
     "key5= true\n"
     "key6=true \n"
+    "key7=false \t \n"
     "[invalid]\n"
     "key1=t\n"
     "key2=f\n"
     "key3=yes\n"
-    "key4=no\n";
+    "key4=no\n"
+    "key5=true false\n"
+    "key6=0 1\n";
 
   keyfile = load_data (data, 0);
 
@@ -684,6 +690,7 @@ test_boolean (void)
   check_boolean_value (keyfile, "valid", "key4", FALSE);
   check_boolean_value (keyfile, "valid", "key5", TRUE);
   check_boolean_value (keyfile, "valid", "key6", TRUE);
+  check_boolean_value (keyfile, "valid", "key7", FALSE);
 
   g_key_file_get_boolean (keyfile, "invalid", "key1", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
@@ -695,6 +702,13 @@ test_boolean (void)
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 
   g_key_file_get_boolean (keyfile, "invalid", "key4", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  /* Only trailing whitespace is ignored */
+  g_key_file_get_boolean (keyfile, "invalid", "key5", &error);
+  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+
+  g_key_file_get_boolean (keyfile, "invalid", "key6", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 
   g_key_file_set_boolean (keyfile, "valid", "key1", FALSE);
@@ -944,7 +958,8 @@ test_lists (void)
     "key6=1;0;-1\n"
     "key7= 1 ; 0 ; -1 \n"
     "key8=v1\\,v2\n"
-    "key9=0;1.3456;-76532.456\n";
+    "key9=0;1.3456;-76532.456\n"
+    "key10=\n";
 
   keyfile = load_data (data, 0);
 
@@ -952,6 +967,7 @@ test_lists (void)
   check_string_list_value (keyfile, "valid", "key2", "v1", "v2", NULL);
   check_string_list_value (keyfile, "valid", "key3", "v1,v2", NULL);
   check_string_list_value (keyfile, "valid", "key4", "v1;v2", NULL);
+  check_string_list_value (keyfile, "valid", "key10", NULL);
   check_boolean_list_value (keyfile, "valid", "key5", TRUE, FALSE, -100);
   check_integer_list_value (keyfile, "valid", "key6", 1, 0, -1, -100);
   check_double_list_value (keyfile, "valid", "key9", 0.0, 1.3456, -76532.456, -100.0);
