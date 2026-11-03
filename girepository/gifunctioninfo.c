@@ -226,14 +226,7 @@ gi_function_info_get_vfunc (GIFunctionInfo *info)
  * Returns: error quark
  * Since: 2.80
  */
-GQuark
-gi_invoke_error_quark (void)
-{
-  static GQuark quark = 0;
-  if (quark == 0)
-    quark = g_quark_from_static_string ("gi-invoke-error-quark");
-  return quark;
-}
+G_DEFINE_QUARK (gi-invoke-error-quark, gi_invoke_error)
 
 /**
  * gi_function_info_invoke: (skip)
