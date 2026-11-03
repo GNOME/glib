@@ -24,55 +24,13 @@
 
 #include "glib/glib-private.h"
 
-static void
-test_quark_basic (void)
-{
-  GQuark quark;
-  const gchar *orig = "blargh";
-  gchar *copy;
-  const gchar *str;
-
-  quark = g_quark_try_string ("no-such-quark");
-  g_assert_cmpuint (quark, ==, 0);
-
-  copy = g_strdup (orig);
-  quark = g_quark_from_static_string (orig);
-  g_assert_cmpuint (quark, !=, 0);
-  g_assert_cmpuint (g_quark_from_string (orig), ==, quark);
-  g_assert_cmpuint (g_quark_from_string (copy), ==, quark);
-  g_assert_cmpuint (g_quark_try_string (orig), ==, quark);
-
-  str = g_quark_to_string (quark);
-  g_assert_cmpstr (str, ==, orig);
-
-  g_free (copy);
-}
-
-static void
-test_quark_string (void)
-{
-  const gchar *orig = "string1";
-  gchar *copy;
-  const gchar *str1;
-  const gchar *str2;
-
-  copy = g_strdup (orig);
-
-  str1 = g_intern_static_string (orig);
-  str2 = g_intern_string (copy);
-  g_assert_cmpstr (str1, ==, str2);
-  g_assert_true (str1 == str2);  /* also compare pointers */
-  g_assert_cmpstr (str1, ==, orig);
-  g_assert_true (str1 == orig);
-
-  g_free (copy);
-}
+static void test_dataset_id (void);
 
 static void
 test_dataset_basic (void)
 {
   gpointer location = (gpointer)test_dataset_basic;
-  gpointer other = (gpointer)test_quark_basic;
+  gpointer other = (gpointer)test_dataset_id;
   gpointer data = "test1";
   gpointer ret;
 
@@ -174,7 +132,7 @@ static void
 test_dataset_id (void)
 {
   gpointer location = (gpointer)test_dataset_id;
-  gpointer other = (gpointer)test_quark_basic;
+  gpointer other = (gpointer)test_dataset_basic;
   gpointer data = "test1";
   gpointer ret;
   GQuark quark;
@@ -549,8 +507,6 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/quark/basic", test_quark_basic);
-  g_test_add_func ("/quark/string", test_quark_string);
   g_test_add_func ("/dataset/basic", test_dataset_basic);
   g_test_add_func ("/dataset/id", test_dataset_id);
   g_test_add_func ("/dataset/full", test_dataset_full);

@@ -107,6 +107,7 @@ glib_tests = {
   },
   'private' : {},
   'protocol' : {},
+  'quark' : {},
   'queue' : {},
   'rand' : {},
   'rcbox' : {},
