@@ -1115,7 +1115,10 @@ desktop_file_dir_unindexed_read_interface_scopes (GHashTable *tweak_scopes,
                                                      NULL, NULL);
 
       if (desktop_file_ids == NULL || desktop_file_ids[0] == NULL)
-        continue;
+        {
+          g_strfreev (desktop_file_ids);
+          continue;
+        }
 
       if (!g_hash_table_steal_extended (tweak_scopes, scopes[i],
                                         (void **) &owned_key,
