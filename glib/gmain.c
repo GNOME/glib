@@ -6348,6 +6348,12 @@ g_child_watch_dispatch (GSource    *source,
                 return TRUE;
               }
           }
+        else if (errno == EINVAL)
+          {
+            /* Linux 5.3, and some Android kernels which have pidfd_open()
+             * backported, can poll a pidfd but do not support
+             * waitid (P_PIDFD, ...). Reap the child with waitpid() below. */
+          }
         else
           {
             int errsv = errno;
