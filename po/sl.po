@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-10-27 15:07+0000\n"
-"PO-Revision-Date: 2026-10-27 17:34+0100\n"
+"POT-Creation-Date: 2026-11-03 00:19+0000\n"
+"PO-Revision-Date: 2026-11-03 13:41+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -351,7 +351,7 @@ msgstr "Neveljavno zaporedje bajtov na vhodu pretvorbe"
 msgid "Error during conversion: %s"
 msgstr "Napaka med pretvorbo: %s"
 
-#: gio/gcharsetconverter.c:460 gio/gsocket.c:1241
+#: gio/gcharsetconverter.c:460 gio/gsocket.c:1242
 msgid "Cancellable initialization not supported"
 msgstr "Dejanje prekinitve zagona ni podprto"
 
@@ -565,19 +565,15 @@ msgstr ""
 msgid "Unknown bus type %d"
 msgstr "Neznana vrsta vodila %d"
 
-#: gio/gdbusauth.c:321
-msgid "Unexpected lack of content trying to read a line"
-msgstr "Nepričakovano pomanjkanje vsebine med branjem vrstice"
-
-#: gio/gdbusauth.c:359
+#: gio/gdbusauth.c:332
 msgid "Malformed D-Bus authentication line"
 msgstr "Napačno oblikovana vrstica overjanja D-Bus"
 
-#: gio/gdbusauth.c:377
+#: gio/gdbusauth.c:350
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "Nepričakovano pomanjkanje vsebine med (varnem) branjem vrstice"
 
-#: gio/gdbusauth.c:521
+#: gio/gdbusauth.c:494
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -585,15 +581,15 @@ msgstr ""
 "Izčrpani so vsi razpoložljivi overitveni mehanizmi (poskusi: %s) "
 "(razpoložljivih: %s)"
 
-#: gio/gdbusauth.c:1084
+#: gio/gdbusauth.c:1067
 msgid "Unexpected lack of content trying to read a byte"
 msgstr "Nepričakovano pomanjkanje vsebine med branjem podatkov"
 
-#: gio/gdbusauth.c:1235
+#: gio/gdbusauth.c:1218
 msgid "User IDs must be the same for peer and server"
 msgstr "Uporabniški ID mora biti enak za odjemalca in strežnik"
 
-#: gio/gdbusauth.c:1247
+#: gio/gdbusauth.c:1230
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Prekinjeno s strani GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -3618,7 +3614,7 @@ msgstr "Omrežje ni dosegljivo"
 
 #: gio/gnetworkmonitorbase.c:259 gio/gnetworkmonitorbase.c:290
 #: gio/gnetworkmonitornetlink.c:833 gio/gnetworkmonitornetlink.c:854
-#: gio/gnetworkmonitornetlink.c:911
+#: gio/gnetworkmonitornetlink.c:918 gio/gnetworkmonitornetlink.c:941
 msgid "Host unreachable"
 msgstr "Gostitelj ni dosegljiv"
 
@@ -4075,7 +4071,7 @@ msgstr "Neveljaven vtič, zaganjanje je spodletelo: %s"
 msgid "Socket is already closed"
 msgstr "Vtič je že zaprt"
 
-#: gio/gsocket.c:465 gio/gsocket.c:3360 gio/gsocket.c:4732 gio/gsocket.c:4790
+#: gio/gsocket.c:465 gio/gsocket.c:3361 gio/gsocket.c:4733 gio/gsocket.c:4791
 #: gio/gthreadedresolver.c:1572
 msgid "Socket I/O timed out"
 msgstr "Vtič V/I naprave je časovno potekel"
@@ -4098,148 +4094,148 @@ msgstr "Določena je neznana družina"
 msgid "Unknown protocol was specified"
 msgstr "Določen je neznan protokol"
 
-#: gio/gsocket.c:1267
+#: gio/gsocket.c:1268
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr "Ni mogoče uporabiti opravil datagrama na vtiču, ki jih ne podpira."
 
-#: gio/gsocket.c:1284
+#: gio/gsocket.c:1285
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
 "Ni mogoče uporabiti opravil datagrama na vtiču z nastavljenim časovnim "
 "pretekom"
 
-#: gio/gsocket.c:2094
+#: gio/gsocket.c:2095
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ni mogoče pridobiti krajevnega naslova: %s"
 
-#: gio/gsocket.c:2140
+#: gio/gsocket.c:2141
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ni mogoče pridobiti oddaljenega naslova: %s"
 
-#: gio/gsocket.c:2206
+#: gio/gsocket.c:2207
 #, c-format
 msgid "could not listen: %s"
 msgstr "ni mogoče slediti: %s"
 
-#: gio/gsocket.c:2310
+#: gio/gsocket.c:2311
 #, c-format
 msgid "Error binding to address %s: %s"
 msgstr "Napaka vezave na naslov %s: %s"
 
-#: gio/gsocket.c:2448
+#: gio/gsocket.c:2449
 #, c-format
 msgid "Interface name too long"
 msgstr "Ime vmesnika je predolgo"
 
-#: gio/gsocket.c:2461 gio/gsocket.c:2786
+#: gio/gsocket.c:2462 gio/gsocket.c:2787
 #, c-format
 msgid "Interface not found: %s"
 msgstr "Vmesnika ni mogoče najti: %s"
 
-#: gio/gsocket.c:2542 gio/gsocket.c:2579 gio/gsocket.c:2689 gio/gsocket.c:2714
-#: gio/gsocket.c:2760 gio/gsocket.c:2818 gio/gsocket.c:2836
+#: gio/gsocket.c:2543 gio/gsocket.c:2580 gio/gsocket.c:2690 gio/gsocket.c:2715
+#: gio/gsocket.c:2761 gio/gsocket.c:2819 gio/gsocket.c:2837
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Napaka povezovanja v skupino za večsmerno oddajanje: %s"
 
-#: gio/gsocket.c:2543 gio/gsocket.c:2580 gio/gsocket.c:2690 gio/gsocket.c:2715
-#: gio/gsocket.c:2761 gio/gsocket.c:2819 gio/gsocket.c:2837
+#: gio/gsocket.c:2544 gio/gsocket.c:2581 gio/gsocket.c:2691 gio/gsocket.c:2716
+#: gio/gsocket.c:2762 gio/gsocket.c:2820 gio/gsocket.c:2838
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Napaka zapuščanja skupine za večsmerno oddajanje: %s"
 
-#: gio/gsocket.c:2544
+#: gio/gsocket.c:2545
 msgid "No support for source-specific multicast"
 msgstr "Ni podpore za večsmerno oddajanje lastno viru"
 
-#: gio/gsocket.c:2691
+#: gio/gsocket.c:2692
 msgid "Unsupported socket family"
 msgstr "Nepodprta skupina vtiča"
 
-#: gio/gsocket.c:2716
+#: gio/gsocket.c:2717
 msgid "source-specific not an IPv4 address"
 msgstr "določeno po viru in ne po naslovu IPv4"
 
-#: gio/gsocket.c:2762
+#: gio/gsocket.c:2763
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Ni podpore za večsmerno oddajanje v protokolu IPv4"
 
-#: gio/gsocket.c:2820
+#: gio/gsocket.c:2821
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Ni podpore za večsmerno oddajanje v protokolu IPv6"
 
-#: gio/gsocket.c:3056
+#: gio/gsocket.c:3057
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Napaka med sprejemanjem povezave: %s"
 
-#: gio/gsocket.c:3185
+#: gio/gsocket.c:3186
 msgid "Connection in progress"
 msgstr "Povezava v teku"
 
-#: gio/gsocket.c:3236
+#: gio/gsocket.c:3237
 msgid "Unable to get pending error: "
 msgstr "Ni mogoče pridobiti uvrščene napake:"
 
-#: gio/gsocket.c:3425
+#: gio/gsocket.c:3426
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Napaka med prejemanjem podatkov: %s"
 
-#: gio/gsocket.c:3764
+#: gio/gsocket.c:3765
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Napaka med pošiljanjem podatkov: %s"
 
-#: gio/gsocket.c:3951
+#: gio/gsocket.c:3952
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Ni mogoče izklopiti vtiča: %s"
 
-#: gio/gsocket.c:4032
+#: gio/gsocket.c:4033
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Napaka med zapiranjem vtiča: %s"
 
-#: gio/gsocket.c:4725
+#: gio/gsocket.c:4726
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čakanje na stanje vtiča: %s"
 
-#: gio/gsocket.c:5115 gio/gsocket.c:5131 gio/gsocket.c:5144
+#: gio/gsocket.c:5116 gio/gsocket.c:5132 gio/gsocket.c:5145
 #, c-format
 msgid "Unable to send message: %s"
 msgstr "Ni mogoče poslati sporočila: %s"
 
-#: gio/gsocket.c:5116 gio/gsocket.c:5132 gio/gsocket.c:5145
+#: gio/gsocket.c:5117 gio/gsocket.c:5133 gio/gsocket.c:5146
 msgid "Message vectors too large"
 msgstr "Vektorji sporočila so preobsežni."
 
-#: gio/gsocket.c:5161 gio/gsocket.c:5163 gio/gsocket.c:5310 gio/gsocket.c:5395
-#: gio/gsocket.c:5573 gio/gsocket.c:5613 gio/gsocket.c:5615
+#: gio/gsocket.c:5162 gio/gsocket.c:5164 gio/gsocket.c:5311 gio/gsocket.c:5396
+#: gio/gsocket.c:5574 gio/gsocket.c:5614 gio/gsocket.c:5616
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Napaka med pošiljanjem sporočila: %s"
 
-#: gio/gsocket.c:5337
+#: gio/gsocket.c:5338
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "Predmet GSocketControlMessage na sistemih Windows ni podprt"
 
-#: gio/gsocket.c:5810 gio/gsocket.c:5886 gio/gsocket.c:6112
+#: gio/gsocket.c:5811 gio/gsocket.c:5887 gio/gsocket.c:6113
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Napaka med prejemanjem sporočila: %s"
 
-#: gio/gsocket.c:6397 gio/gsocket.c:6408 gio/gsocket.c:6471
+#: gio/gsocket.c:6398 gio/gsocket.c:6409 gio/gsocket.c:6472
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Ni mogoče prebrati poveril vtiča: %s."
 
-#: gio/gsocket.c:6480
+#: gio/gsocket.c:6481
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Operacijski sistem ne podpira možnosti g_socket_get_credentials"
 
@@ -5456,7 +5452,7 @@ msgstr "Veljavnega ključa v iskanih mapah ni mogoče najti"
 msgid "Not a regular file"
 msgstr "Ni običajna datoteka"
 
-#: glib/gkeyfile.c:1654
+#: glib/gkeyfile.c:1658
 #, c-format
 msgid ""
 "Key file contains line “%s” which is not a key-value pair, group, or comment"
@@ -5464,52 +5460,52 @@ msgstr ""
 "Datoteka ključa vsebuje vrstico »%s«, ki ni par ključ-vrednost, skupina ali "
 "opomba"
 
-#: glib/gkeyfile.c:1711
+#: glib/gkeyfile.c:1721
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Neveljavno ime skupine: %s"
 
-#: glib/gkeyfile.c:1736
+#: glib/gkeyfile.c:1746
 msgid "Key file does not start with a group"
 msgstr "Datoteka s ključem se ne začne s skupino"
 
-#: glib/gkeyfile.c:1760
+#: glib/gkeyfile.c:1776
 #, c-format
 msgid "Invalid key name: %.*s"
 msgstr "Neveljavno ime ključa: %.*s"
 
-#: glib/gkeyfile.c:1788
+#: glib/gkeyfile.c:1808
 #, c-format
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Datoteka ključa vsebuje nepodprto kodiranje »%s«"
 
-#: glib/gkeyfile.c:2035 glib/gkeyfile.c:2209 glib/gkeyfile.c:3685
-#: glib/gkeyfile.c:3787 glib/gkeyfile.c:3897 glib/gkeyfile.c:4026
-#: glib/gkeyfile.c:4170 glib/gkeyfile.c:4420 glib/gkeyfile.c:4494
+#: glib/gkeyfile.c:2054 glib/gkeyfile.c:2228 glib/gkeyfile.c:3704
+#: glib/gkeyfile.c:3806 glib/gkeyfile.c:3916 glib/gkeyfile.c:4045
+#: glib/gkeyfile.c:4189 glib/gkeyfile.c:4439 glib/gkeyfile.c:4513
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Datoteka s ključem ni del skupine »%s«"
 
-#: glib/gkeyfile.c:2165
+#: glib/gkeyfile.c:2184
 #, c-format
 msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Datoteka s ključem nima ključa »%s« v skupini »%s«"
 
-#: glib/gkeyfile.c:2326 glib/gkeyfile.c:2443
+#: glib/gkeyfile.c:2345 glib/gkeyfile.c:2462
 #, c-format
 msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "Datoteka ključa vsebuje ključ »%s« z vrednostjo »%s«, ki ni zapisan v naboru "
 "UTF-8"
 
-#: glib/gkeyfile.c:2346 glib/gkeyfile.c:2463 glib/gkeyfile.c:2925
+#: glib/gkeyfile.c:2365 glib/gkeyfile.c:2482 glib/gkeyfile.c:2944
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Datoteka ključa vsebuje ključ »%s« z vrednostjo, ki je ni mogoče tolmačiti."
 
-#: glib/gkeyfile.c:3139 glib/gkeyfile.c:3513
+#: glib/gkeyfile.c:3158 glib/gkeyfile.c:3532
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -5518,40 +5514,44 @@ msgstr ""
 "Datoteka ključa vsebuje ključ »%s« v skupini »%s« z vrednostjo, ki je ni "
 "mogoče tolmačiti."
 
-#: glib/gkeyfile.c:3220 glib/gkeyfile.c:3300
+#: glib/gkeyfile.c:3239 glib/gkeyfile.c:3319
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr ""
 "Ključ »%s« v skupini »%s« ima vrednost »%s«, pričakovana pa je vrednost %s."
 
-#: glib/gkeyfile.c:4750
+#: glib/gkeyfile.c:4769
 msgid "Key file contains escape character at end of line"
 msgstr "Datoteka s ključem vsebuje ubežni znak na koncu vrstice"
 
-#: glib/gkeyfile.c:4772
+#: glib/gkeyfile.c:4791
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Datoteka ključa vsebuje neveljavno ubežno zaporedje »%s«"
 
-#: glib/gkeyfile.c:4924
+#: glib/gkeyfile.c:4943
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Vrednosti »%s« ni mogoče obravnavati kot število."
 
-#: glib/gkeyfile.c:4938
+#: glib/gkeyfile.c:4957
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Celoštevilska vrednost »%s« je izven obsega"
 
-#: glib/gkeyfile.c:4971
+#: glib/gkeyfile.c:4990
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Vrednosti »%s« ni mogoče obravnavati kot število s plavajočo vejico."
 
-#: glib/gkeyfile.c:5010
+#: glib/gkeyfile.c:5029
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Vrednosti »%s« ni mogoče obravnavati kot logično Boolovo vrednost."
+
+#: glib/gkeyfile.c:5141
+msgid "Key file contents are too long"
+msgstr "Vsebina datoteke ključa je predolga"
 
 #: glib/gmappedfile.c:137
 #, c-format
