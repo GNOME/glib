@@ -36,6 +36,18 @@
 #include <pwd.h>
 #include <unistd.h>
 
+#ifdef HAVE_PIDFD
+#include <stddef.h>
+#include <sys/prctl.h>
+#include <sys/syscall.h>
+#include <sys/wait.h>
+
+/* <linux/wait.h> must come after <sys/wait.h> */
+#include <linux/filter.h>
+#include <linux/seccomp.h>
+#include <linux/wait.h> /* P_PIDFD */
+#endif
+
 #include "testutils.h"
 
 static void
@@ -922,6 +934,112 @@ test_child_wait (void)
     }
 }
 
+#ifdef HAVE_PIDFD
+/* Offset of the low 32 bits of the first syscall argument in seccomp_data */
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+#define SECCOMP_DATA_ARG0_LO (offsetof (struct seccomp_data, args[0]) + sizeof (guint32))
+#else
+#define SECCOMP_DATA_ARG0_LO (offsetof (struct seccomp_data, args[0]))
+#endif
+
+/* Make waitid (P_PIDFD, ...) fail with EINVAL, as it does on Linux 5.3 */
+static gboolean
+block_waitid_pidfd (void)
+{
+  struct sock_filter filter[] = {
+    BPF_STMT (BPF_LD | BPF_W | BPF_ABS, offsetof (struct seccomp_data, nr)),
+    BPF_JUMP (BPF_JMP | BPF_JEQ | BPF_K, SYS_waitid, 0, 3),
+    BPF_STMT (BPF_LD | BPF_W | BPF_ABS, SECCOMP_DATA_ARG0_LO),
+    BPF_JUMP (BPF_JMP | BPF_JEQ | BPF_K, P_PIDFD, 0, 1),
+    BPF_STMT (BPF_RET | BPF_K, SECCOMP_RET_ERRNO | EINVAL),
+    BPF_STMT (BPF_RET | BPF_K, SECCOMP_RET_ALLOW),
+  };
+  struct sock_fprog program = { G_N_ELEMENTS (filter), filter };
+
+  return (prctl (PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0) == 0 &&
+          syscall (SYS_seccomp, SECCOMP_SET_MODE_FILTER, 0, &program) == 0);
+}
+
+typedef struct
+{
+  gboolean exited;
+  gint wait_status;
+} ChildWaitResult;
+
+static void
+_child_wait_result_cb (GPid pid,
+                       gint wait_status,
+                       gpointer user_data)
+{
+  ChildWaitResult *result = user_data;
+
+  g_assert_false (result->exited);
+  result->exited = TRUE;
+  result->wait_status = wait_status;
+}
+#endif /* HAVE_PIDFD */
+
+static void
+test_child_wait_no_waitid_pidfd (void)
+{
+  g_test_summary ("Test that child watches work if the kernel supports "
+                  "pidfd_open() but not waitid (P_PIDFD, ...), like Linux 5.3");
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/issues/3298");
+
+#ifndef HAVE_PIDFD
+  g_test_skip ("Child watches do not use pidfds on this platform");
+#else
+  if (g_test_subprocess ())
+    {
+      ChildWaitResult result = { FALSE, 0 };
+      int pidfd;
+      pid_t pid, pid2;
+      int errsv;
+
+      /* Child watches only use a pidfd if the kernel supports pidfd_open() */
+      pidfd = (int) syscall (SYS_pidfd_open, getpid (), 0);
+      if (pidfd < 0)
+        {
+          g_test_skip ("" /* message from subprocess is not visible */);
+          return;
+        }
+      close (pidfd);
+
+      if (!block_waitid_pidfd ())
+        {
+          g_test_skip ("" /* message from subprocess is not visible */);
+          return;
+        }
+
+      pid = fork ();
+      g_assert_cmpint (pid, >=, 0);
+      if (pid == 0)
+        _exit (42);
+
+      g_child_watch_add (pid, _child_wait_result_cb, &result);
+
+      while (!result.exited)
+        g_main_context_iteration (NULL, TRUE);
+
+      g_assert_true (WIFEXITED (result.wait_status));
+      g_assert_cmpint (WEXITSTATUS (result.wait_status), ==, 42);
+
+      /* The child watch must have reaped the child. */
+      pid2 = waitpid (pid, NULL, WNOHANG);
+      errsv = errno;
+      g_assert_cmpint (pid2, ==, -1);
+      g_assert_cmpint (errsv, ==, ECHILD);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  if (g_test_trap_has_skipped ())
+    g_test_skip ("Requires pidfd_open() and seccomp filter support");
+  else
+    g_test_trap_assert_passed ();
+#endif
+}
+
 static void
 test_fd_query_path (void)
 {
@@ -1005,6 +1123,7 @@ main (int   argc,
   g_test_add_func ("/glib-unix/get-passwd-entry/root", test_get_passwd_entry_root);
   g_test_add_func ("/glib-unix/get-passwd-entry/nonexistent", test_get_passwd_entry_nonexistent);
   g_test_add_func ("/glib-unix/child-wait", test_child_wait);
+  g_test_add_func ("/glib-unix/child-wait/no-waitid-pidfd", test_child_wait_no_waitid_pidfd);
   g_test_add_func ("/glib-unix/fd-query-path", test_fd_query_path);
   g_test_add_func ("/glib-unix/fd-query-path-error", test_fd_query_path_error);
 
