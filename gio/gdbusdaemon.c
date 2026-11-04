@@ -1597,8 +1597,10 @@ initable_init (GInitable     *initable,
       daemon->address = g_strdup_printf ("unix:tmpdir=%s", daemon->tmpdir);
       flags |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER;
 #else
-      /* Don’t require authentication on Windows as that hasn’t been
-       * implemented yet. */
+      /* A nonce-tcp: connection has no peer credentials to check, as the
+       * ones of a Windows AF_UNIX socket do, so allow anonymous clients: the
+       * nonce is what keeps others out.
+       */
       daemon->address = g_strdup ("nonce-tcp:");
       flags |= G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS;
 #endif
