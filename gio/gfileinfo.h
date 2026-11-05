@@ -1375,7 +1375,7 @@ GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute             (GFileInfo  *info,
                                                           const char *attribute,
                                                           GFileAttributeType type,
-                                                          gpointer    value_p);
+                                                          gconstpointer value_p);
 GIO_AVAILABLE_IN_ALL
 void               g_file_info_set_attribute_string      (GFileInfo  *info,
                                                           const char *attribute,

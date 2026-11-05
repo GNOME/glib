@@ -1181,14 +1181,14 @@ void
 _g_file_info_set_attribute_by_id (GFileInfo                 *info,
                                   guint32                    attribute,
                                   GFileAttributeType         type,
-                                  gpointer                   value_p)
+                                  gconstpointer              value_p)
 {
   GFileAttributeValue *value;
 
   value = g_file_info_create_value (info, attribute);
 
   if (value)
-    _g_file_attribute_value_set_from_pointer (value, type, value_p, TRUE);
+    _g_file_attribute_value_set_from_pointer (value, type, (gpointer) value_p, TRUE);
 }
 
 /**
@@ -1205,7 +1205,7 @@ void
 g_file_info_set_attribute (GFileInfo                 *info,
                            const char                *attribute,
                            GFileAttributeType         type,
-                           gpointer                   value_p)
+                           gconstpointer              value_p)
 {
   g_return_if_fail (G_IS_FILE_INFO (info));
   g_return_if_fail (attribute != NULL && *attribute != '\0');

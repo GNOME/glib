@@ -129,7 +129,7 @@ gboolean           _g_file_attribute_matcher_matches_id         (GFileAttributeM
 void               _g_file_info_set_attribute_by_id             (GFileInfo             *info,
                                                                  guint32                attribute,
                                                                  GFileAttributeType     type,
-                                                                 gpointer               value_p);
+                                                                 gconstpointer          value_p);
 void               _g_file_info_set_attribute_string_by_id      (GFileInfo             *info,
                                                                  guint32                attribute,
                                                                  const char            *attr_value);
