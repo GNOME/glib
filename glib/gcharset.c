@@ -653,6 +653,9 @@ append_locale_variants (GPtrArray *array,
  *
  * This can be used to construct locale-dependent filenames or search paths, for
  * example. The returned list is sorted from most desirable to least desirable.
+ *
+ * On POSIX systems, @locale and the return values are in
+ * [POSIX locale format](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_02).
  * This function handles territory, charset and extra locale modifiers. See
  * [`setlocale(3)`](man:setlocale) for information about locales and their format.
  *
@@ -757,8 +760,15 @@ language_names_cache_free (gpointer data)
  * Computes a list of applicable locale names.
  *
  * This can be used to construct locale-dependent filenames or search paths, for
- * example. The returned list is sorted from most desirable to least desirable
- * and always contains the default `C` locale.
+ * example. The returned list is sorted from most desirable to least desirable.
+ *
+ * On POSIX systems, the return values are in
+ * [POSIX locale format](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_02).
+ * See [`setlocale(3)`](man:setlocale) for information about locales and their
+ * format.
+ *
+ * The default locale (`C` on POSIX systems) is guaranteed to be returned in the
+ * output.
  *
  * For example, if `LANGUAGE=de:en_US`, then the returned list is
  * `de`, `en_US`, `en`, `C`.
@@ -785,7 +795,15 @@ g_get_language_names (void)
  *
  * This can be used to construct fallback locale-dependent filenames or search
  * paths, for example. The returned list is sorted from most desirable to
- * least desirable and always contains the default `C` locale.
+ * least desirable.
+ *
+ * On POSIX systems, the return values are in
+ * [POSIX locale format](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_02).
+ * See [`setlocale(3)`](man:setlocale) for information about locales and their
+ * format, and about the valid @category_name values.
+ *
+ * The default locale (`C` on POSIX systems) is guaranteed to be returned in the
+ * output.
  *
  * This function consults the environment variables `LANGUAGE`, `LC_ALL`,
  * @category_name, and `LANG` to find the list of locales specified by the
