@@ -1468,6 +1468,11 @@ get_thumbnail_attributes (const char     *path,
   uri = g_filename_to_uri (path, NULL, NULL);
 
   checksum = g_checksum_new (G_CHECKSUM_MD5);
+  if (checksum == NULL)
+    {
+      g_free (uri);
+      return;
+    }
   g_checksum_update (checksum, (const guchar *) uri, strlen (uri));
 
   basename = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
