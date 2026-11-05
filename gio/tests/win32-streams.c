@@ -22,6 +22,7 @@
  */
 
 #include <glib/glib.h>
+#include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gwin32inputstream.h>
 #include <gio/gwin32outputstream.h>
@@ -541,6 +542,45 @@ test_pipe_io_cancel (void)
   g_free (name_utf16);
 }
 
+/* A file is not opened for overlapped I/O: reading it must go on from where
+ * the last read ended, not start from its beginning every time.
+ */
+static void
+test_file_io (void)
+{
+  GInputStream *in;
+  gchar *path = NULL;
+  gchar buf[8];
+  GError *err = NULL;
+  gsize nread;
+  HANDLE handle;
+  gint fd;
+
+  fd = g_file_open_tmp ("gtest-win32-streams-XXXXXX", &path, &err);
+  g_assert_no_error (err);
+  g_assert_cmpint (fd, >=, 0);
+  g_assert_cmpint (write (fd, DATA, strlen (DATA)), ==, strlen (DATA));
+  close (fd);
+
+  handle = CreateFileA (path, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE,
+                        NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+  g_assert (handle != INVALID_HANDLE_VALUE);
+
+  in = g_win32_input_stream_new (handle, TRUE);
+
+  g_assert_true (g_input_stream_read_all (in, buf, 8, &nread, NULL, &err));
+  g_assert_no_error (err);
+  g_assert_cmpmem (buf, nread, DATA, 8);
+
+  g_assert_true (g_input_stream_read_all (in, buf, 8, &nread, NULL, &err));
+  g_assert_no_error (err);
+  g_assert_cmpmem (buf, nread, DATA + 8, 8);
+
+  g_object_unref (in);
+  g_remove (path);
+  g_free (path);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -551,6 +591,7 @@ main (int   argc,
   g_test_add_func ("/win32-streams/pipe-io-cancel-test", test_pipe_io_cancel);
   g_test_add_func ("/win32-streams/pipe-io-overlap-test", test_pipe_io_overlap);
   g_test_add_func ("/win32-streams/pipe-io-concurrent-test", test_pipe_io_concurrent);
+  g_test_add_func ("/win32-streams/file-io-test", test_file_io);
 
   return g_test_run();
 }
