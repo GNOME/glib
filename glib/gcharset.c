@@ -175,31 +175,34 @@ charset_cache_free (gpointer data)
 /**
  * g_get_charset:
  * @charset: (out) (optional) (transfer none): return location for character set
- *   name, or %NULL.
+ *   name
  *
- * Obtains the character set for the [current locale](running.html#locale);
- * you might use this character set as an argument to g_convert(), to convert
- * from the current locale's encoding to some other encoding. (Frequently
- * g_locale_to_utf8() and g_locale_from_utf8() are nice shortcuts, though.)
+ * Obtains the character set for the [current locale](running.html#locale).
+ *
+ * You might use this character set as an argument to [func@GLib.convert], to
+ * convert from the current locale’s encoding to some other encoding. For
+ * converting to and from UTF-8, [func@GLib.locale_to_utf8] and
+ * [func@GLib.locale_from_utf8] make this simpler.
  *
  * On Windows the character set returned by this function is the
  * so-called system default ANSI code-page. That is the character set
- * used by the "narrow" versions of C library and Win32 functions that
+ * used by the ‘narrow’ versions of C library and Win32 functions that
  * handle file names. It might be different from the character set
- * used by the C library's current locale.
+ * used by the C library’s current locale.
  *
- * On Linux, the character set is found by consulting nl_langinfo() if
- * available. If not, the environment variables `LC_ALL`, `LC_CTYPE`, `LANG`
- * and `CHARSET` are queried in order. nl_langinfo() returns the C locale if
- * no locale has been loaded by setlocale().
+ * On Linux, the character set is found by consulting
+ * [`nl_langinfo()`](man:nl_langinfo(3)) if available. If not, the environment
+ * variables `LC_ALL`, `LC_CTYPE`, `LANG` and `CHARSET` are queried in order.
+ * `nl_langinfo()` returns the C locale if no locale has been loaded by
+ * [`setlocale()`](man:setlocale(3)).
  *
- * The return value is %TRUE if the locale's encoding is UTF-8, in that
- * case you can perhaps avoid calling g_convert().
+ * The return value is true if the locale’s encoding is UTF-8, which typically
+ * means it’s possible to skip calling [func@GLib.convert] on a string.
  *
  * The string returned in @charset is not allocated, and should not be
  * freed.
  *
- * Returns: %TRUE if the returned charset is UTF-8
+ * Returns: true if the returned charset is UTF-8; false otherwise
  */
 gboolean
 g_get_charset (const char **charset)
@@ -318,8 +321,7 @@ _g_get_ctype_charset (const char **charset)
  *
  * Gets the character set for the current locale.
  *
- * Returns: a newly allocated string containing the name
- *     of the character set. This string must be freed with g_free().
+ * Returns: (transfer full): the name of the character set
  */
 gchar *
 g_get_codeset (void)
@@ -334,28 +336,29 @@ g_get_codeset (void)
 /**
  * g_get_console_charset:
  * @charset: (out) (optional) (transfer none): return location for character set
- *   name, or %NULL.
+ *   name
  *
- * Obtains the character set used by the console attached to the process,
- * which is suitable for printing output to the terminal.
+ * Obtains the character set used by the console attached to the process.
  *
- * Usually this matches the result returned by g_get_charset(), but in
- * environments where the locale's character set does not match the encoding
+ * This is the character set which is suitable for printing output to the
+ * terminal.
+ *
+ * Usually this matches the result returned by [func@GLib.get_charset], but in
+ * environments where the locale’s character set does not match the encoding
  * of the console this function tries to guess a more suitable value instead.
  *
  * On Windows the character set returned by this function is the
  * output code page used by the console associated with the calling process.
- * If the codepage can't be determined (for example because there is no
+ * If the codepage can’t be determined (for example because there is no
  * console attached) UTF-8 is assumed.
  *
- * The return value is %TRUE if the locale's encoding is UTF-8, in that
- * case you can perhaps avoid calling g_convert().
+ * The return value is true if the locale’s encoding is UTF-8, which typically
+ * means it’s possible to skip calling [func@GLib.convert] on a string.
  *
  * The string returned in @charset is not allocated, and should not be
  * freed.
  *
- * Returns: %TRUE if the returned charset is UTF-8
- *
+ * Returns: true if the returned charset is UTF-8; false otherwise
  * Since: 2.62
  */
 gboolean
@@ -646,9 +649,13 @@ append_locale_variants (GPtrArray *array,
  * g_get_locale_variants:
  * @locale: a locale identifier
  *
- * Returns a list of derived variants of @locale, which can be used to
- * e.g. construct locale-dependent filenames or search paths. The returned
- * list is sorted from most desirable to least desirable.
+ * Gets a list of derived variants of @locale.
+ *
+ * This can be used to construct locale-dependent filenames or search paths, for
+ * example. The returned list is sorted from most desirable to least desirable.
+ *
+ * On POSIX systems, @locale and the return values are in
+ * [POSIX locale format](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_02).
  * This function handles territory, charset and extra locale modifiers. See
  * [`setlocale(3)`](man:setlocale) for information about locales and their format.
  *
@@ -659,13 +666,11 @@ append_locale_variants (GPtrArray *array,
  * is `en_GB.UTF-8@euro`, `en_GB.UTF-8`, `en_GB@euro`, `en_GB`, `en.UTF-8@euro`,
  * `en.UTF-8`, `en@euro`, `en`.
  *
- * If you need the list of variants for the current locale,
- * use g_get_language_names().
+ * If you need the list of variants for the _current_ locale,
+ * use [func@GLib.get_language_names].
  *
- * Returns: (transfer full) (array zero-terminated=1) (element-type utf8): a newly
- *   allocated array of newly allocated strings with the locale variants. Free with
- *   g_strfreev().
- *
+ * Returns: (transfer full) (array zero-terminated=1) (element-type utf8): a
+ *   non-empty array of the locale variants
  * Since: 2.28
  */
 gchar **
@@ -752,21 +757,28 @@ language_names_cache_free (gpointer data)
 /**
  * g_get_language_names:
  *
- * Computes a list of applicable locale names, which can be used to
- * e.g. construct locale-dependent filenames or search paths. The returned
- * list is sorted from most desirable to least desirable and always contains
- * the default locale "C".
+ * Computes a list of applicable locale names.
  *
- * For example, if LANGUAGE=de:en_US, then the returned list is
- * "de", "en_US", "en", "C".
+ * This can be used to construct locale-dependent filenames or search paths, for
+ * example. The returned list is sorted from most desirable to least desirable.
+ *
+ * On POSIX systems, the return values are in
+ * [POSIX locale format](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_02).
+ * See [`setlocale(3)`](man:setlocale) for information about locales and their
+ * format.
+ *
+ * The default locale (`C` on POSIX systems) is guaranteed to be returned in the
+ * output.
+ *
+ * For example, if `LANGUAGE=de:en_US`, then the returned list is
+ * `de`, `en_US`, `en`, `C`.
  *
  * This function consults the environment variables `LANGUAGE`, `LC_ALL`,
  * `LC_MESSAGES` and `LANG` to find the list of locales specified by the
  * user.
  *
- * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib
- *    that must not be modified or freed.
- *
+ * Returns: (array zero-terminated=1) (transfer none): a non-empty array of
+ *   language names
  * Since: 2.6
  */
 const gchar * const *
@@ -779,21 +791,31 @@ g_get_language_names (void)
  * g_get_language_names_with_category:
  * @category_name: a locale category name
  *
- * Computes a list of applicable locale names with a locale category name,
- * which can be used to construct the fallback locale-dependent filenames
- * or search paths. The returned list is sorted from most desirable to
- * least desirable and always contains the default locale "C".
+ * Computes a list of applicable locale names with a locale category name.
+ *
+ * This can be used to construct fallback locale-dependent filenames or search
+ * paths, for example. The returned list is sorted from most desirable to
+ * least desirable.
+ *
+ * On POSIX systems, the return values are in
+ * [POSIX locale format](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_02).
+ * See [`setlocale(3)`](man:setlocale) for information about locales and their
+ * format, and about the valid @category_name values.
+ *
+ * The default locale (`C` on POSIX systems) is guaranteed to be returned in the
+ * output.
  *
  * This function consults the environment variables `LANGUAGE`, `LC_ALL`,
  * @category_name, and `LANG` to find the list of locales specified by the
  * user.
  *
- * g_get_language_names() returns g_get_language_names_with_category("LC_MESSAGES").
+ * [func@GLib.get_language_names] is a shortcut for calling this function with
+ * a @category_name of `LC_MESSAGES`.
  *
- * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by
- *    the thread g_get_language_names_with_category was called from.
- *    It must not be modified or freed. It must be copied if planned to be used in another thread.
- *
+ * Returns: (array zero-terminated=1) (transfer none): an array of language
+ *   names, owned by the thread `g_get_language_names_with_category()` was
+ *   called from; it must not be modified or freed, and must be copied to be
+ *   used in another thread
  * Since: 2.58
  */
 const gchar * const *
