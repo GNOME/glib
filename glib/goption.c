@@ -777,7 +777,7 @@ g_option_context_get_help (GOptionContext *context,
               !(entry->flags & G_OPTION_FLAG_NOALIAS))
             {
               g_hash_table_insert (aliases, &entry->long_name,
-                                   g_strdup_printf ("%s-%s", g->name, entry->long_name));
+                                   g_strconcat (g->name, "-", entry->long_name, NULL));
             }
           else
             g_hash_table_insert (shadow_map, (gpointer)entry->long_name, entry);

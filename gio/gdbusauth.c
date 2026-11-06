@@ -848,7 +848,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                     {
                       gchar *encoded_data = _g_dbus_hexencode (data, data_len);
 
-                      s = g_strdup_printf ("DATA %s\r\n", encoded_data);
+                      s = g_strconcat ("DATA ", encoded_data, "\r\n", NULL);
                       g_free (encoded_data);
                     }
 
@@ -1232,7 +1232,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                         }
                       else
                         {
-                          s = g_strdup_printf ("OK %s\r\n", guid);
+                          s = g_strconcat ("OK ", guid, "\r\n", NULL);
                           debug_print ("SERVER: writing '%s'", s);
                           if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                             {
@@ -1277,7 +1277,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                               {
                                 gchar *encoded_data = _g_dbus_hexencode (data, data_len);
 
-                                s = g_strdup_printf ("DATA %s\r\n", encoded_data);
+                                s = g_strconcat ("DATA ", encoded_data, "\r\n", NULL);
                                 g_free (encoded_data);
                               }
 

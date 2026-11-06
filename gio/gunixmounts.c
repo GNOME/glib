@@ -3892,7 +3892,7 @@ _resolve_symlink (const char *file)
         }
     
       dir = g_path_get_dirname (f);
-      f1 = g_strdup_printf ("%s/%s", dir, link);
+      f1 = g_build_filename (dir, link, NULL);
       g_free (dir);
       g_free (link);
       g_free (f);

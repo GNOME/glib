@@ -305,9 +305,9 @@ print_paths (GDBusConnection *c,
       //g_printerr ("foo '%s'\n", node->nodes[n].path);
 
       if (g_strcmp0 (path, "/") == 0)
-        s = g_strdup_printf ("/%s", node->nodes[n]->path);
+        s = g_strconcat ("/", node->nodes[n]->path, NULL);
       else
-        s = g_strdup_printf ("%s/%s", path, node->nodes[n]->path);
+        s = g_strconcat (path, "/", node->nodes[n]->path, NULL);
 
       print_paths (c, name, s);
 
@@ -1724,9 +1724,9 @@ dump_node (GDBusConnection      *c,
               else
                 {
                   if (g_strcmp0 (object_path, "/") == 0)
-                    child_path = g_strdup_printf ("/%s", o->nodes[n]->path);
+                    child_path = g_strconcat ("/", o->nodes[n]->path, NULL);
                   else
-                    child_path = g_strdup_printf ("%s/%s", object_path, o->nodes[n]->path);
+                    child_path = g_strconcat (object_path, "/", o->nodes[n]->path, NULL);
                   introspect_do (c, child_path, indent + 2, use_colors);
                 }
               g_free (child_path);
