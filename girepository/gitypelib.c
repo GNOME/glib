@@ -2208,14 +2208,7 @@ gi_typelib_validate (GITypelib  *typelib,
  * Returns: quark representing the error domain
  * Since: 2.80
  */
-GQuark
-gi_typelib_error_quark (void)
-{
-  static GQuark quark = 0;
-  if (quark == 0)
-    quark = g_quark_from_static_string ("gi-typelib-error-quark");
-  return quark;
-}
+G_DEFINE_QUARK (gi-typelib-error-quark, gi_typelib_error)
 
 /* Note on the GModule flags used by this function:
 

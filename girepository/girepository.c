@@ -2203,14 +2203,7 @@ gi_repository_get_option_group (void)
   return group;
 }
 
-GQuark
-gi_repository_error_quark (void)
-{
-  static GQuark quark = 0;
-  if (quark == 0)
-    quark = g_quark_from_static_string ("g-irepository-error-quark");
-  return quark;
-}
+G_DEFINE_QUARK (gi-repository-error-quark, gi_repository_error)
 
 /**
  * gi_type_tag_to_string:
