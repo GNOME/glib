@@ -280,7 +280,9 @@ g_unix_socket_address_to_native (GSocketAddress *address,
       break;
 
     case G_UNIX_SOCKET_ADDRESS_PATH:
-      strcpy (sock->sun_path, addr->priv->path);
+      memcpy (sock->sun_path, addr->priv->path, addr->priv->path_len);
+      if (addr->priv->path_len < UNIX_PATH_MAX)
+        sock->sun_path[addr->priv->path_len] = '\0';
       break;
 
     case G_UNIX_SOCKET_ADDRESS_ABSTRACT:
