@@ -297,33 +297,6 @@ _g_dbus_auth_new (GIOStream *stream)
  */
 #define MAX_DATA_PAYLOAD_LENGTH_BYTES 4096
 
-/* ---------------------------------------------------------------------------------------------------- */
-/* like g_data_input_stream_read_line() but sets error if there's no content to read */
-static gchar *
-_my_g_data_input_stream_read_line (GDataInputStream  *dis,
-                                   gsize             *out_line_length,
-                                   GCancellable      *cancellable,
-                                   GError           **error)
-{
-  gchar *ret;
-
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  ret = g_data_input_stream_read_line (dis,
-                                       out_line_length,
-                                       cancellable,
-                                       error);
-  if (ret == NULL && error != NULL && *error == NULL)
-    {
-      g_set_error_literal (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_FAILED,
-                           _("Unexpected lack of content trying to read a line"));
-    }
-
-  return ret;
-}
-
 /* This function is to avoid situations like this
  *
  * BEGIN\r\nl\0\0\1...
@@ -604,7 +577,6 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                          GError       **error)
 {
   gchar *s;
-  GDataInputStream *dis;
   GDataOutputStream *dos;
   GCredentials *credentials;
   gchar *ret_guid;
@@ -630,12 +602,8 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
   negotiated_capabilities = 0;
   credentials = NULL;
 
-  dis = G_DATA_INPUT_STREAM (g_data_input_stream_new (g_io_stream_get_input_stream (auth->priv->stream)));
   dos = G_DATA_OUTPUT_STREAM (g_data_output_stream_new (g_io_stream_get_output_stream (auth->priv->stream)));
-  g_filter_input_stream_set_close_base_stream (G_FILTER_INPUT_STREAM (dis), FALSE);
   g_filter_output_stream_set_close_base_stream (G_FILTER_OUTPUT_STREAM (dos), FALSE);
-
-  g_data_input_stream_set_newline_type (dis, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
 
 #ifdef G_OS_UNIX
   if (G_IS_UNIX_CONNECTION (auth->priv->stream))
@@ -685,7 +653,11 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
         {
         case CLIENT_STATE_WAITING_FOR_REJECT:
           debug_print ("CLIENT: WaitingForReject");
-          line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
+          line = _my_g_input_stream_read_line_safe (g_io_stream_get_input_stream (auth->priv->stream),
+                                                    MAX_DATA_PAYLOAD_LENGTH_BYTES,
+                                                    &line_length,
+                                                    cancellable,
+                                                    error);
           if (line == NULL)
             goto out;
           debug_print ("CLIENT: WaitingForReject, read '%s'", line);
@@ -728,7 +700,11 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
 
         case CLIENT_STATE_WAITING_FOR_OK:
           debug_print ("CLIENT: WaitingForOK");
-          line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
+          line = _my_g_input_stream_read_line_safe (g_io_stream_get_input_stream (auth->priv->stream),
+                                                    MAX_DATA_PAYLOAD_LENGTH_BYTES,
+                                                    &line_length,
+                                                    cancellable,
+                                                    error);
           if (line == NULL)
             goto out;
           debug_print ("CLIENT: WaitingForOK, read '%s'", line);
@@ -784,7 +760,11 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
 
         case CLIENT_STATE_WAITING_FOR_AGREE_UNIX_FD:
           debug_print ("CLIENT: WaitingForAgreeUnixFD");
-          line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
+          line = _my_g_input_stream_read_line_safe (g_io_stream_get_input_stream (auth->priv->stream),
+                                                    MAX_DATA_PAYLOAD_LENGTH_BYTES,
+                                                    &line_length,
+                                                    cancellable,
+                                                    error);
           if (line == NULL)
             goto out;
           debug_print ("CLIENT: WaitingForAgreeUnixFD, read='%s'", line);
@@ -825,7 +805,11 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
 
         case CLIENT_STATE_WAITING_FOR_DATA:
           debug_print ("CLIENT: WaitingForData");
-          line = _my_g_data_input_stream_read_line (dis, &line_length, cancellable, error);
+          line = _my_g_input_stream_read_line_safe (g_io_stream_get_input_stream (auth->priv->stream),
+                                                    MAX_DATA_PAYLOAD_LENGTH_BYTES,
+                                                    &line_length,
+                                                    cancellable,
+                                                    error);
           if (line == NULL)
             goto out;
           debug_print ("CLIENT: WaitingForData, read='%s'", line);
@@ -910,7 +894,6 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
     g_object_unref (mech);
   g_ptr_array_unref (attempted_auth_mechs);
   g_strfreev (supported_auth_mechs);
-  g_object_unref (dis);
   g_object_unref (dos);
 
   /* ensure return value is NULL if error is set */
