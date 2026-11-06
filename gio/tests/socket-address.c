@@ -13,6 +13,8 @@ test_socket_address_native_cornercases (void)
   GSocketAddress *a;
   struct sockaddr_un sun;
   struct sockaddr_un too_big[2];
+  guint8 random_byte;
+  GError *error = NULL;
 
   /* no data */
   g_assert_null (g_socket_address_new_from_native (NULL, 0));
@@ -45,6 +47,14 @@ test_socket_address_native_cornercases (void)
   g_assert_nonnull (a);
   g_assert_true (G_IS_UNIX_SOCKET_ADDRESS (a));
   g_assert_cmpuint (g_unix_socket_address_get_path_len (G_UNIX_SOCKET_ADDRESS (a)), ==, sizeof (sun.sun_path));
+
+  /* check reading the path back out doesn't overflow */
+  random_byte = g_test_rand_int_range ('c', 'z' + 1);
+  memset (&too_big, random_byte, sizeof (too_big));
+  g_assert_true (g_socket_address_to_native (a, &too_big[0], sizeof (too_big[0]), &error));
+  g_assert_no_error (error);
+  g_assert_cmpuint (*(guint8 *) &too_big[1], ==, random_byte);
+
   g_object_unref (a);
 }
 
