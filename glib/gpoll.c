@@ -237,7 +237,7 @@ poll_rest (GPollFD *msg_fd,
       /* If no timeout and polling several handles, recurse to poll
        * the rest of them.
        */
-      if (timeout_ms == 0 && nhandles > 1)
+      if (timeout_ms == 0 && (nhandles > 1 || msg_fd != NULL))
         {
           /* Poll the handles with index > ready */
           HANDLE *shorter_handles;
@@ -248,7 +248,7 @@ poll_rest (GPollFD *msg_fd,
           shorter_handle_to_fd = &handle_to_fd[ready - WAIT_OBJECT_0 + 1];
           shorter_nhandles = nhandles - (ready - WAIT_OBJECT_0 + 1);
 
-          recursed_result = poll_rest (NULL, stop_fd, shorter_handles, shorter_handle_to_fd, shorter_nhandles, 0);
+          recursed_result = poll_rest (msg_fd, stop_fd, shorter_handles, shorter_handle_to_fd, shorter_nhandles, 0);
           return (recursed_result == -1) ? -1 : retval + recursed_result;
         }
       return retval;
