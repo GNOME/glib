@@ -1,7 +1,7 @@
 [wrap-git]
 directory=gvdb
 url=https://gitlab.gnome.org/GNOME/gvdb.git
-revision=2b42fc75f09dbe1cd1057580b5782b08f2dcb400
+revision=02e31790d05ce8dcc197f31f26a1783834496186
 depth=1
 
 [provide]
