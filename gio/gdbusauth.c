@@ -682,6 +682,10 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
 #endif
             }
           g_free (line);
+          /* Drop the mechanism that the server rejected or that was
+           * cancelled, before choosing the next one.
+           */
+          g_clear_object (&mech);
           mech = client_choose_mech_and_send_initial_response (auth,
                                                                credentials,
                                                                conn_flags,
@@ -860,8 +864,43 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                       goto out;
                     }
                   g_free (s);
+                  state = CLIENT_STATE_WAITING_FOR_OK;
                 }
-              state = CLIENT_STATE_WAITING_FOR_OK;
+              else if (_g_dbus_auth_mechanism_client_get_state (mech) == G_DBUS_AUTH_MECHANISM_STATE_REJECTED)
+                {
+                  gchar *reason;
+
+                  /* The mechanism cannot use the data, for example because
+                   * the cookie is not in the keyring of this user.  Give up
+                   * on it with CANCEL, as the server would otherwise wait for
+                   * a reply for ever, and go on with the mechanisms that are
+                   * left.
+                   */
+                  reason = _g_dbus_auth_mechanism_client_get_reject_reason (mech);
+                  debug_print ("CLIENT: Mechanism rejected the data: %s",
+                               reason != NULL ? reason : "no reason given");
+                  g_free (reason);
+
+                  s = "CANCEL\r\n";
+                  debug_print ("CLIENT: writing '%s'", s);
+                  if (!g_data_output_stream_put_string (dos, s, cancellable, error))
+                    goto out;
+                  state = CLIENT_STATE_WAITING_FOR_REJECT;
+                }
+              else if (_g_dbus_auth_mechanism_client_get_state (mech) == G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED)
+                {
+                  /* Nothing to send: wait for the server to say OK. */
+                  state = CLIENT_STATE_WAITING_FOR_OK;
+                }
+              else
+                {
+                  g_set_error (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_FAILED,
+                               "In WaitingForData: mechanism '%s' is in an unexpected state after the data",
+                               _g_dbus_auth_mechanism_get_name (G_OBJECT_TYPE (mech)));
+                  goto out;
+                }
             }
           else if (g_str_has_prefix (line, "REJECTED "))
             {
@@ -1345,6 +1384,24 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
               g_free (decoded_data);
               /* oh man, this goto-crap is so ugly.. really need to rewrite the state machine */
               goto change_state;
+            }
+          else if (g_strcmp0 (line, "CANCEL") == 0)
+            {
+              g_free (line);
+
+              /* The client gives up on the mechanism: say which ones can be
+               * used and wait for the next AUTH.
+               */
+              s = get_auth_mechanisms (auth, allow_anonymous, "REJECTED ", "\r\n", " ");
+              debug_print ("SERVER: writing '%s'", s);
+              if (!g_data_output_stream_put_string (dos, s, cancellable, error))
+                {
+                  g_free (s);
+                  goto out;
+                }
+              g_free (s);
+              state = SERVER_STATE_WAITING_FOR_AUTH;
+              break;
             }
           else
             {
