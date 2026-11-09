@@ -136,6 +136,21 @@ g_win32_input_stream_read (GInputStream  *stream,
   overlap.hEvent = CreateEvent (NULL, FALSE, FALSE, NULL);
   g_return_val_if_fail (overlap.hEvent != NULL, -1);
 
+  /* A file that is not opened for overlapped I/O is read from the offset in
+   * OVERLAPPED, not from where it is (and it moves on from there): without
+   * this, it is read from its start every time.  Pipes and the like have no
+   * position, which is fine.
+   */
+  {
+    LARGE_INTEGER position, zero = { 0, };
+
+    if (SetFilePointerEx (win32_stream->priv->handle, zero, &position, FILE_CURRENT))
+      {
+        overlap.Offset = position.LowPart;
+        overlap.OffsetHigh = position.HighPart;
+      }
+  }
+
   res = ReadFile (win32_stream->priv->handle, buffer, nbytes, &nread, &overlap);
   if (res)
     retval = nread;
