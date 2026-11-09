@@ -82,6 +82,7 @@ typedef struct {
   char *id;
   GDBusConnection *connection;
   GList *matches;
+  guint filter_id;
 } Client;
 
 typedef struct {
@@ -858,9 +859,9 @@ client_new (GDBusDaemon *daemon, GDBusConnection *connection)
     }
 
   g_signal_connect (connection, "closed", G_CALLBACK (connection_closed), client);
-  g_dbus_connection_add_filter (connection,
-                                filter_function,
-                                client, NULL);
+  client->filter_id = g_dbus_connection_add_filter (connection,
+                                                    filter_function,
+                                                    client, NULL);
 
   send_name_owner_changed (daemon, client->id, NULL, client->id);
 
@@ -872,6 +873,12 @@ client_free (Client *client)
 {
   GDBusDaemon *daemon = client->daemon;
   GList *l, *names;
+
+  /* The connection can outlive the client, when the daemon is destroyed before
+   * its clients have gone.  Then the handler of its "closed" signal is not to
+   * be called with the client that is freed here, nor the filter.
+   */
+  g_signal_handlers_disconnect_by_data (client->connection, client);
 
   g_dbus_interface_skeleton_unexport_from_connection (G_DBUS_INTERFACE_SKELETON (daemon),
                                                       client->connection);
@@ -899,6 +906,10 @@ client_free (Client *client)
   g_list_free (names);
 
   send_name_owner_changed (daemon, client->id, client->id, NULL);
+
+  /* The filter and the data of the connection point to the client too. */
+  g_dbus_connection_remove_filter (client->connection, client->filter_id);
+  g_object_set_data (G_OBJECT (client->connection), "client", NULL);
 
   g_object_unref (client->connection);
 

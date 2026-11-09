@@ -95,6 +95,9 @@ gio_tests = {
   },
   'g-icon' : {},
   'gdbus-addresses' : {},
+  'gdbus-daemon-teardown' : {
+    'extra_sources' : gdbus_daemon_sources,
+  },
   'gdbus-keyring-permissions' : {
     # The Windows functions that are tested are not exported
     'extra_sources' : host_system == 'windows' ? ['../gwin32security.c', '../gwin32sid.c'] : [],
