@@ -454,7 +454,7 @@ test_resource_data_corrupt_compression (void)
 static void
 test_resource_registered (void)
 {
-  GResource *resource;
+  GResource *resource, *second;
   GError *error = NULL;
   gboolean found, success;
   gsize size;
@@ -463,6 +463,9 @@ test_resource_registered (void)
   char **children;
   GInputStream *in;
   char buffer[128];
+  char long_path[300];
+  const char *missing_paths[] = { "/not/here", "", long_path };
+  const char *directories[] = { "/a_prefix", "/a_prefix/" };
 
   resource = g_resource_load (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL), &error);
   g_assert_nonnull (resource);
@@ -579,21 +582,40 @@ test_resource_registered (void)
   g_assert_cmpstr (g_bytes_get_data (data, NULL), ==, "test2\n");
   g_bytes_unref (data);
 
-  children = g_resources_enumerate_children ("/not/here",
-                                             G_RESOURCE_LOOKUP_FLAGS_NONE,
-                                             &error);
-  g_assert_null (children);
-  g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
-  g_clear_error (&error);
-
-  children = g_resources_enumerate_children ("/a_prefix",
-                                             G_RESOURCE_LOOKUP_FLAGS_NONE,
-                                             &error);
-  g_assert_nonnull (children);
+  second = g_resource_load (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL), &error);
   g_assert_no_error (error);
-  g_assert_cmpint (g_strv_length (children), ==, 2);
-  g_strfreev (children);
+  g_assert_nonnull (second);
+  g_resources_register (second);
 
+  memset (long_path, 'x', sizeof long_path - 1);
+  long_path[0] = '/';
+  long_path[sizeof long_path - 1] = 0;
+
+  for (guint i = 0; i < G_N_ELEMENTS (missing_paths); i++)
+    {
+      children = g_resources_enumerate_children (missing_paths[i],
+                                                 G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                                 &error);
+      g_assert_null (children);
+      g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+      g_clear_error (&error);
+    }
+
+  for (guint i = 0; i < G_N_ELEMENTS (directories); i++)
+    {
+      children = g_resources_enumerate_children (directories[i],
+                                                 G_RESOURCE_LOOKUP_FLAGS_NONE,
+                                                 &error);
+      g_assert_nonnull (children);
+      g_assert_no_error (error);
+      g_assert_cmpint (g_strv_length (children), ==, 2);
+      g_assert_true (g_strv_contains ((const char *const *) children, "test2.txt"));
+      g_assert_true (g_strv_contains ((const char *const *) children, "test2-alias.txt"));
+      g_strfreev (children);
+    }
+
+  g_resources_unregister (second);
+  g_resource_unref (second);
   g_resources_unregister (resource);
   g_resource_unref (resource);
 
