@@ -1322,6 +1322,10 @@ g_resources_enumerate_children (const gchar           *path,
   GList *l;
   char **children;
   int i;
+  char local_str[256];
+  const char *path_with_slash = NULL;
+  char *free_path = NULL;
+  guint32 path_hash = 0;
 
   /* This will enumerate actual files found in overlay directories but
    * will not enumerate the overlays themselves.  For example, if we
@@ -1334,6 +1338,12 @@ g_resources_enumerate_children (const gchar           *path,
    */
   g_resource_find_overlay (path, enumerate_overlay_dir, &hash);
 
+  if (*path != 0)
+    {
+      path_with_slash = ensure_slash_suffix (path, local_str, sizeof (local_str), &free_path);
+      path_hash = gvdb_hash_string (path_with_slash);
+    }
+
   register_lazy_static_resources ();
 
   g_rw_lock_reader_lock (&resources_lock);
@@ -1342,7 +1352,10 @@ g_resources_enumerate_children (const gchar           *path,
     {
       GResource *r = l->data;
 
-      children = g_resource_enumerate_children (r, path, 0, NULL);
+      if (path_with_slash != NULL)
+        children = gvdb_table_list_with_hash (r->table, path_with_slash, path_hash);
+      else
+        children = NULL;
 
       if (children != NULL)
         {
@@ -1357,6 +1370,8 @@ g_resources_enumerate_children (const gchar           *path,
     }
 
   g_rw_lock_reader_unlock (&resources_lock);
+
+  g_free (free_path);
 
   if (hash == NULL)
     {
