@@ -234,10 +234,10 @@ poll_rest (GPollFD *msg_fd,
       /* Do not count the stop_fd */
       retval = (f != stop_fd) ? 1 : 0;
 
-      /* If no timeout and polling several handles, recurse to poll
+      /* If no timeout and there is more handles after, recurse to poll
        * the rest of them.
        */
-      if (timeout_ms == 0 && (nhandles > 1 || msg_fd != NULL))
+      if (timeout_ms == 0 && (ready < (WAIT_OBJECT_0 + nhandles - 1) || msg_fd != NULL))
         {
           /* Poll the handles with index > ready */
           HANDLE *shorter_handles;
