@@ -1569,7 +1569,19 @@ g_dbus_daemon_finalize (GObject *object)
   g_hash_table_destroy (daemon->clients);
   g_hash_table_destroy (daemon->names);
 
-  g_object_unref (daemon->server);
+  /* g_dbus_server_start() holds a reference that only g_dbus_server_stop()
+   * drops, and the server removes its socket and its nonce file when it is
+   * stopped.
+   */
+  if (daemon->server != NULL)
+    {
+      /* A "new-connection" that is already waiting to be emitted must not
+       * reach the daemon that is being freed.
+       */
+      g_signal_handlers_disconnect_by_data (daemon->server, daemon);
+      g_dbus_server_stop (daemon->server);
+      g_clear_object (&daemon->server);
+    }
 
   if (daemon->tmpdir)
     {

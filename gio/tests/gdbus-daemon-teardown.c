@@ -144,6 +144,97 @@ test_client_closed_after_daemon (void)
   g_object_unref (daemon_side);
 }
 
+/* Returns the value of a key of a D-Bus address, or NULL if it has none. */
+static gchar *
+address_get_value (const gchar *address,
+                   const gchar *key)
+{
+  gchar *needle;
+  const gchar *start, *end;
+  gchar *escaped, *value;
+
+  needle = g_strdup_printf ("%s=", key);
+  start = strstr (address, needle);
+  while (start != NULL && start != address &&
+         start[-1] != ':' && start[-1] != ',')
+    start = strstr (start + 1, needle);
+  g_free (needle);
+
+  if (start == NULL)
+    return NULL;
+
+  start += strlen (key) + 1;
+  end = strchr (start, ',');
+  escaped = end != NULL ? g_strndup (start, end - start) : g_strdup (start);
+  value = g_uri_unescape_string (escaped, NULL);
+  g_free (escaped);
+
+  return value;
+}
+
+/* A daemon that is destroyed must not leave what its server created: the
+ * nonce file of nonce-tcp: on Windows, the socket and its directory on Unix.
+ */
+static void
+test_server_files_removed (void)
+{
+  GError *error = NULL;
+  GDBusDaemon *daemon;
+  gchar *address, *path, *dir = NULL;
+  const gchar *key;
+
+#ifdef G_OS_WIN32
+  key = "noncefile";
+#else
+  key = "path";
+#endif
+
+  daemon = _g_dbus_daemon_new (NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (daemon);
+
+  address = g_strdup (_g_dbus_daemon_get_address (daemon));
+  path = address_get_value (address, key);
+  if (path == NULL)
+    {
+      g_test_skip ("The address of the daemon has no file");
+      g_object_unref (daemon);
+      g_free (address);
+      return;
+    }
+  g_assert_true (g_file_test (path, G_FILE_TEST_EXISTS));
+#ifndef G_OS_WIN32
+  dir = g_path_get_dirname (path);
+  g_assert_true (g_file_test (dir, G_FILE_TEST_IS_DIR));
+#endif
+
+  g_object_unref (daemon);
+
+  g_assert_false (g_file_test (path, G_FILE_TEST_EXISTS));
+  if (dir != NULL)
+    g_assert_false (g_file_test (dir, G_FILE_TEST_EXISTS));
+
+  g_free (dir);
+  g_free (path);
+  g_free (address);
+}
+
+/* A daemon whose initialization has failed has no server, and is still
+ * finalized without a warning. g_test_init() makes warnings and criticals
+ * fatal, so unreffing the NULL server in finalize() would abort here.
+ */
+static void
+test_init_failed (void)
+{
+  GError *error = NULL;
+  GDBusDaemon *daemon;
+
+  daemon = _g_dbus_daemon_new ("unsupported-transport:", NULL, &error);
+  g_assert_nonnull (error);
+  g_assert_null (daemon);
+  g_clear_error (&error);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -152,6 +243,10 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/daemon/teardown/client-closed-after-daemon",
                    test_client_closed_after_daemon);
+  g_test_add_func ("/gdbus/daemon/teardown/server-files-removed",
+                   test_server_files_removed);
+  g_test_add_func ("/gdbus/daemon/teardown/init-failed",
+                   test_init_failed);
 
   return g_test_run ();
 }
