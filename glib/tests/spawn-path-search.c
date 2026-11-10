@@ -19,6 +19,7 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
 #include <sys/types.h>
@@ -332,6 +333,40 @@ test_search_path_fallback_in_environ (void)
   g_ptr_array_unref (argv);
 }
 
+#ifdef G_OS_UNIX
+static void
+test_search_path_fallback_without_parent_path (void)
+{
+  const char *argv[] = { "spawn-test-helper", NULL };
+  char *old_path = g_strdup (g_getenv ("PATH"));
+  char *old_directory = g_get_current_dir ();
+  char *test_directory = g_test_build_filename (G_TEST_BUILT, ".", NULL);
+  GError *error = NULL;
+  GPid pid = 0;
+  int status;
+
+  g_assert_cmpint (g_chdir (test_directory), ==, 0);
+  g_unsetenv ("PATH");
+
+  g_assert_true (g_spawn_async (NULL, (char **) argv, NULL,
+                                G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
+                                NULL, NULL, &pid, &error));
+
+  if (old_path != NULL)
+    g_setenv ("PATH", old_path, TRUE);
+  g_assert_cmpint (g_chdir (old_directory), ==, 0);
+
+  g_assert_no_error (error);
+  g_assert_cmpint (waitpid (pid, &status, 0), ==, pid);
+  g_assert_true (WIFEXITED (status));
+  g_assert_cmpint (WEXITSTATUS (status), ==, 0);
+  g_spawn_close_pid (pid);
+  g_free (test_directory);
+  g_free (old_directory);
+  g_free (old_path);
+}
+#endif
+
 static void
 test_search_path_fallback_in_envp (void)
 {
@@ -485,6 +520,10 @@ main (int    argc,
                    test_search_path_heap_allocation);
   g_test_add_func ("/spawn/search-path-fallback-in-environ",
                    test_search_path_fallback_in_environ);
+#ifdef G_OS_UNIX
+  g_test_add_func ("/spawn/search-path-fallback-without-parent-path",
+                   test_search_path_fallback_without_parent_path);
+#endif
   g_test_add_func ("/spawn/search-path-fallback-in-envp",
                    test_search_path_fallback_in_envp);
 

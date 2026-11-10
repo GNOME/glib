@@ -1326,6 +1326,7 @@ fork_exec (gboolean              intermediate_child,
   gint *source_fds_copy = NULL;
 #ifdef POSIX_SPAWN_AVAILABLE
   gboolean can_close_descriptors = !close_descriptors;
+  gboolean can_search_path;
   gboolean needs_standard_fd_relocation;
 #endif
 
@@ -1368,6 +1369,11 @@ fork_exec (gboolean              intermediate_child,
   child_close_fds[n_child_close_fds++] = -1;
 
 #ifdef POSIX_SPAWN_AVAILABLE
+  /* We search the current directory when PATH is unset. We can't rely
+   * on posix_spawnp() to do that on every platform.
+   */
+  can_search_path = !search_path || strchr (argv[0], '/') != NULL || g_getenv ("PATH") != NULL;
+
 #ifdef HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCLOSEFROM_NP
   if (close_descriptors)
     can_close_descriptors = n_fds == 0;
@@ -1389,7 +1395,7 @@ fork_exec (gboolean              intermediate_child,
     }
 
   if (!intermediate_child && working_directory == NULL && can_close_descriptors &&
-      !search_path_from_envp && child_setup == NULL &&
+      !search_path_from_envp && can_search_path && child_setup == NULL &&
       !needs_standard_fd_relocation)
     {
       g_trace_mark (G_TRACE_CURRENT_TIME, 0,
@@ -1442,11 +1448,12 @@ fork_exec (gboolean              intermediate_child,
     {
       g_trace_mark (G_TRACE_CURRENT_TIME, 0,
                     "GLib", "fork",
-                    "posix_spawn avoided %s%s%s%s%s%s",
+                    "posix_spawn avoided %s%s%s%s%s%s%s",
                     !intermediate_child ? "" : "(automatic reaping requested) ",
                     working_directory == NULL ? "" : "(workdir specified) ",
                     can_close_descriptors ? "" : "(fd close requested) ",
                     !search_path_from_envp ? "" : "(using envp for search path) ",
+                    can_search_path ? "" : "(using default search path) ",
                     child_setup == NULL ? "" : "(child_setup specified) ",
                     needs_standard_fd_relocation ? "(standard fd relocation required) " : "");
     }

@@ -423,6 +423,8 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * 6. The program is of a recognised binary format, or has a shebang.
  *    Otherwise, GLib will have to execute the program through the
  *    shell, which is not done using the optimized codepath.
+ * 7. `PATH` is set in the parent's environment if we're using
+ *    %G_SPAWN_SEARCH_PATH and the program name has no slash.
  *
  * If you are writing a GTK application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
