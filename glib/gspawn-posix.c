@@ -113,8 +113,6 @@ extern char **environ;
 
 #ifndef O_CLOEXEC
 #define O_CLOEXEC 0
-#else
-#define HAVE_O_CLOEXEC 1
 #endif
 
 static gint g_execute (const gchar  *file,
@@ -1045,8 +1043,6 @@ do_posix_spawn (const gchar * const *argv,
   const gchar * const *argv_pass;
   posix_spawnattr_t attr;
   posix_spawn_file_actions_t file_actions;
-  gint parent_close_fds[3];
-  gsize num_parent_close_fds = 0;
   GSList *child_close = NULL;
   GSList *elem;
   sigset_t mask;
@@ -1107,15 +1103,7 @@ do_posix_spawn (const gchar * const *argv,
   else if (!child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
-      gint read_null = safe_open ("/dev/null", O_RDONLY | O_CLOEXEC);
-      g_assert (read_null != -1);
-      parent_close_fds[num_parent_close_fds++] = read_null;
-
-#ifndef HAVE_O_CLOEXEC
-      fcntl (read_null, F_SETFD, FD_CLOEXEC);
-#endif
-
-      r = posix_spawn_file_actions_adddup2 (&file_actions, read_null, 0);
+      r = posix_spawn_file_actions_addopen (&file_actions, 0, "/dev/null", O_RDONLY, 0);
       if (r != 0)
         goto out_close_fds;
     }
@@ -1131,15 +1119,7 @@ do_posix_spawn (const gchar * const *argv,
     }
   else if (stdout_to_null)
     {
-      gint write_null = safe_open ("/dev/null", O_WRONLY | O_CLOEXEC);
-      g_assert (write_null != -1);
-      parent_close_fds[num_parent_close_fds++] = write_null;
-
-#ifndef HAVE_O_CLOEXEC
-      fcntl (write_null, F_SETFD, FD_CLOEXEC);
-#endif
-
-      r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 1);
+      r = posix_spawn_file_actions_addopen (&file_actions, 1, "/dev/null", O_WRONLY, 0);
       if (r != 0)
         goto out_close_fds;
     }
@@ -1155,15 +1135,7 @@ do_posix_spawn (const gchar * const *argv,
     }
   else if (stderr_to_null)
     {
-      gint write_null = safe_open ("/dev/null", O_WRONLY | O_CLOEXEC);
-      g_assert (write_null != -1);
-      parent_close_fds[num_parent_close_fds++] = write_null;
-
-#ifndef HAVE_O_CLOEXEC
-      fcntl (write_null, F_SETFD, FD_CLOEXEC);
-#endif
-
-      r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 2);
+      r = posix_spawn_file_actions_addopen (&file_actions, 2, "/dev/null", O_WRONLY, 0);
       if (r != 0)
         goto out_close_fds;
     }
@@ -1249,9 +1221,6 @@ do_posix_spawn (const gchar * const *argv,
     *child_pid = pid;
 
 out_close_fds:
-  for (i = 0; i < num_parent_close_fds; i++)
-    g_clear_fd (&parent_close_fds[i], NULL);
-
   if (duped_source_fds != NULL)
     {
       for (i = 0; i < n_fds; i++)
