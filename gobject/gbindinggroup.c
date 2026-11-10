@@ -380,7 +380,7 @@ g_binding_group_new (void)
  *
  * Gets the source object used for binding properties.
  *
- * Returns: (transfer none) (nullable) (type GObject): a #GObject or %NULL.
+ * Returns: (transfer full) (nullable) (type GObject): a #GObject or %NULL.
  *
  * Since: 2.72
  */
