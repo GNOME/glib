@@ -3394,6 +3394,10 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   /* Empty matches. */
   TEST_SPLIT_SIMPLE3("", "abc", "a", "b", "c");
   TEST_SPLIT_SIMPLE3(" *", "ab c", "a", "b", "c");
+  TEST_SPLIT_SIMPLE1("^", "abc", "abc");
+  TEST_SPLIT_SIMPLE2("(?=b)", "abc", "a", "bc");
+  TEST_SPLIT_SIMPLE2("(?=b)|$", "abc", "a", "bc");
+  TEST_SPLIT_SIMPLE3("(?=b)|c", "abcd", "a", "b", "d");
   /* Invalid patterns. */
   TEST_SPLIT_SIMPLE0("\\", "");
   TEST_SPLIT_SIMPLE0("[", "");
@@ -3430,6 +3434,17 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_SPLIT2(" *", "ab c", 0, 2, "a", "b c");
   TEST_SPLIT3(" *", "ab c", 0, 3, "a", "b", "c");
   TEST_SPLIT3(" *", "ab c", 0, 4, "a", "b", "c");
+  TEST_SPLIT1("^", "abc", 0, 0, "abc");
+  TEST_SPLIT2("(?=b)", "abc", 0, 0, "a", "bc");
+  TEST_SPLIT2("(?=b)", "abc", 0, 2, "a", "bc");
+  TEST_SPLIT2("(?<=a)", "abc", 0, 2, "a", "bc");
+  TEST_SPLIT2("(?=b)", EURO "bc", 0, 2, EURO, "bc");
+  TEST_SPLIT2("(?=b)", "xabc", 1, 2, "a", "bc");
+  TEST_SPLIT2("(?=b)|$", "abc", 0, 0, "a", "bc");
+  TEST_SPLIT3("(?=b)|c", "abcd", 0, 0, "a", "b", "d");
+  TEST_SPLIT2(",", "a,", 0, 2, "a", "");
+  TEST_SPLIT3(",", "a,b,", 0, 3, "a", "b", "");
+  TEST_SPLIT3("(,)", "a,", 0, 2, "a", ",", "");
 
   /* TEST_CHECK_REPLACEMENT(string_to_expand, expected, expected_refs) */
   TEST_CHECK_REPLACEMENT("", TRUE, FALSE);
