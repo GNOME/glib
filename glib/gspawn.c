@@ -415,7 +415,8 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * are met:
  *
  * 1. %G_SPAWN_DO_NOT_REAP_CHILD is set
- * 2. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set
+ * 2. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set, or we can use
+ *    `posix_spawn_file_actions_addclosefrom_np()` and there are no FD mappings
  * 3. %G_SPAWN_SEARCH_PATH_FROM_ENVP is not set
  * 4. @working_directory is %NULL
  * 5. @child_setup is %NULL
