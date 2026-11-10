@@ -916,6 +916,11 @@ if cc.has_function('posix_spawn', prefix : '#include <spawn.h>')
   glib_conf.set('HAVE_POSIX_SPAWN', 1)
 endif
 
+if cc.has_function('posix_spawn_file_actions_addclosefrom_np',
+                   prefix : '#include <spawn.h>', args : '-D_GNU_SOURCE')
+  glib_conf.set('HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCLOSEFROM_NP', 1)
+endif
+
 # Check whether strerror_r returns char *
 if have_func_strerror_r
   if cc.compiles('''#define _GNU_SOURCE
