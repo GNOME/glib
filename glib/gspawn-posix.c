@@ -1195,7 +1195,10 @@ do_posix_spawn (const gchar * const *argv,
     max_target_fd = MAX (max_target_fd, target_fds[i]);
 
   if (max_target_fd == G_MAXINT)
-    goto out_close_fds;
+    {
+      r = EINVAL;
+      goto out_close_fds;
+    }
 
   duped_source_fds = g_new (gint, n_fds);
   for (i = 0; i < n_fds; i++)
@@ -1204,7 +1207,10 @@ do_posix_spawn (const gchar * const *argv,
     {
       duped_source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
       if (duped_source_fds[i] < 0)
-        goto out_close_fds;
+        {
+          r = errno;
+          goto out_close_fds;
+        }
     }
 
   for (i = 0; i < n_fds; i++)
@@ -1386,7 +1392,7 @@ fork_exec (gboolean              intermediate_child,
         {
           g_set_error (error,
                        G_SPAWN_ERROR,
-                       G_SPAWN_ERROR_FAILED,
+                       _g_spawn_exec_err_to_g_error (status),
                        _("Failed to spawn child process “%s” (%s)"),
                        argv[0],
                        g_strerror (status));
