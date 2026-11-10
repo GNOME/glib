@@ -1041,7 +1041,7 @@ do_posix_spawn (const gchar * const *argv,
 {
   pid_t pid;
   gint *duped_source_fds = NULL;
-  gint max_target_fd = 0;
+  int max_target_fd = STDERR_FILENO;
   const gchar * const *argv_pass;
   posix_spawnattr_t attr;
   posix_spawn_file_actions_t file_actions;
@@ -1168,10 +1168,10 @@ do_posix_spawn (const gchar * const *argv,
         goto out_close_fds;
     }
 
-  /* If source_fds[i] != target_fds[i], we need to handle the case
-   * where the user has specified, e.g., 5 -> 4, 4 -> 6. We do this
-   * by duping the source fds, taking care to ensure the new fds are
-   * larger than any target fd to avoid introducing new conflicts.
+  /* A mapping like 5 -> 4, 4 -> 6 would overwrite fd 4 before we copy it.
+   * We avoid that by duplicating the source fds first. Those copies need
+   * to be above both stderr and all target fds so that redirecting streams
+   * or applying mappings won't overwrite them.
    *
    * If source_fds[i] == target_fds[i], then we just need to leak
    * the fd into the child process, which we *could* do by temporarily
