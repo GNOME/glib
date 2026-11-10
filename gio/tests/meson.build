@@ -251,7 +251,6 @@ python_tests = {
       have_gio_launch_desktop ? gio_launch_desktop : [],
     ],
     'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gio_tool.full_path())},
-    'can_fail' : host_system == 'windows',
   },
 }
 

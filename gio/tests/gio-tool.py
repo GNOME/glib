@@ -80,6 +80,9 @@ class TestGioTool(testprogramrunner.TestProgramRunner):
             )
             if sys.platform == "darwin":
                 self.assertIn("standard::content-type: public.text", result.out)
+            elif sys.platform == "win32":
+                # Zero-length files are not special-cased on Windows
+                self.assertIn("standard::content-type:", result.out)
             else:
                 self.assertIn(
                     "standard::content-type: application/x-zerosize", result.out
@@ -93,7 +96,10 @@ class TestGioTool(testprogramrunner.TestProgramRunner):
             self.assertIn("not supported on macOS", result.err)
 
 
-@unittest.skipIf(platform.system() == "Darwin", "gio launch not supported on darwin")
+@unittest.skipIf(
+    platform.system() in ("Darwin", "Windows"),
+    "gio launch not supported on darwin or windows",
+)
 class TestGioLaunchExpandsDesktopEntry(testprogramrunner.TestProgramRunner):
     """Integration test for `gio launch` with field code %k in the Exec line.
 
