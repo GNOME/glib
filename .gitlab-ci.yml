@@ -175,7 +175,13 @@ variables:
 .build-linux:
   before_script:
     - bash .gitlab-ci/show-execution-environment.sh
-    - cp -r "${HOME}"/subprojects/* subprojects/
+    # Keep checked-out submodules; the image's cached copies may be older.
+    - |
+      for subproject in "${HOME}"/subprojects/*; do
+        if [ ! -e "subprojects/${subproject##*/}" ]; then
+          cp -r "$subproject" subprojects/
+        fi
+      done
 
 # Fix "detected dubious ownership in repository" errors caused by GitLab using
 # different users to check out the repository vs the user running the CI job
@@ -639,6 +645,9 @@ thread-sanitizer:
   extends: .build-linux
   stage: build
   needs: []
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
+    GIT_SUBMODULE_DEPTH: 1
   artifacts:
     name: "glib-${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}"
     when: always
