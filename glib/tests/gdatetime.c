@@ -1643,11 +1643,6 @@ test_GDateTime_printf (void)
   gchar *old_lc_all;
   gchar *old_lc_messages;
 
-#ifdef G_OS_WIN32
-  gchar *current_tz = NULL;
-  DYNAMIC_TIME_ZONE_INFORMATION dtz_info;
-#endif
-
 #define TEST_PRINTF(f,o)                        G_STMT_START {  \
   const char *expected = (o);                                   \
   GDateTime *__dt = g_date_time_new_utc (2009, 10, 24, 0, 0, 0);\
@@ -1731,19 +1726,10 @@ test_GDateTime_printf (void)
   TEST_PRINTF ("%%", "%");
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
-#ifdef G_OS_UNIX
+  /* The date-time is created in UTC, so this does not depend on the
+   * local time zone on any platform. */
   TEST_PRINTF ("%Z", "UTC");
   TEST_PRINTF ("%#Z %Z", "utc UTC");
-#elif defined G_OS_WIN32
-  g_assert_cmpint (GetDynamicTimeZoneInformation (&dtz_info), !=, TIME_ZONE_ID_INVALID);
-  if (wcscmp (dtz_info.StandardName, L"") != 0)
-    current_tz = g_utf16_to_utf8 (dtz_info.StandardName, -1, NULL, NULL, NULL);
-  else
-    current_tz = g_utf16_to_utf8 (dtz_info.DaylightName, -1, NULL, NULL, NULL);
-
-  TEST_PRINTF ("%Z", current_tz);
-  g_free (current_tz);
-#endif
 
   if (old_lc_messages != NULL)
     g_setenv ("LC_MESSAGES", old_lc_messages, TRUE);
