@@ -1041,7 +1041,7 @@ do_posix_spawn (const gchar * const *argv,
 {
   pid_t pid;
   gint *duped_source_fds = NULL;
-  gint max_target_fd = 0;
+  int max_target_fd = STDERR_FILENO;
   const gchar * const *argv_pass;
   posix_spawnattr_t attr;
   posix_spawn_file_actions_t file_actions;
