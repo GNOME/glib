@@ -1066,12 +1066,14 @@ do_posix_spawn (const gchar *const *argv,
   if (r != 0)
     return r;
 
-  if (!close_descriptors && child_close_fds)
+  if (!close_descriptors && child_close_fds != NULL)
     {
-      int i = -1;
-      while (child_close_fds[++i] != -1)
-        child_close = g_slist_prepend (child_close,
-                                       GINT_TO_POINTER (child_close_fds[i]));
+      for (i = 0; child_close_fds[i] != -1; i++)
+        {
+          if (!IS_STD_FILENO (child_close_fds[i]))
+            child_close = g_slist_prepend (child_close,
+                                           GINT_TO_POINTER (child_close_fds[i]));
+        }
     }
 
   r = posix_spawnattr_setflags (&attr, POSIX_SPAWN_SETSIGDEF);
@@ -1094,9 +1096,9 @@ do_posix_spawn (const gchar *const *argv,
   if (r != 0)
     goto out_free_spawnattr;
 
-  if (close_descriptors && child_close_fds != NULL)
+  if (child_close_fds != NULL)
     {
-      /* The parent's pipe ends may have reused stdin, stdout, or stderr.
+      /* The parents pipe ends may have reused stdin, stdout, or stderr.
        * We need to close those in the child before dup2() replaces them.
        */
       for (i = 0; child_close_fds[i] != -1; i++)
@@ -1118,7 +1120,8 @@ do_posix_spawn (const gchar *const *argv,
       if (r != 0)
         goto out_close_fds;
 
-      if (!close_descriptors && !g_slist_find (child_close, GINT_TO_POINTER (stdin_fd)))
+      if (!close_descriptors && stdin_fd != STDIN_FILENO &&
+          !g_slist_find (child_close, GINT_TO_POINTER (stdin_fd)))
         child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stdin_fd));
     }
   else if (!child_inherits_stdin)
@@ -1135,7 +1138,8 @@ do_posix_spawn (const gchar *const *argv,
       if (r != 0)
         goto out_close_fds;
 
-      if (!close_descriptors && !g_slist_find (child_close, GINT_TO_POINTER (stdout_fd)))
+      if (!close_descriptors && stdout_fd != STDOUT_FILENO &&
+          !g_slist_find (child_close, GINT_TO_POINTER (stdout_fd)))
         child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stdout_fd));
     }
   else if (stdout_to_null)
@@ -1151,7 +1155,8 @@ do_posix_spawn (const gchar *const *argv,
       if (r != 0)
         goto out_close_fds;
 
-      if (!close_descriptors && !g_slist_find (child_close, GINT_TO_POINTER (stderr_fd)))
+      if (!close_descriptors && stderr_fd != STDERR_FILENO &&
+          !g_slist_find (child_close, GINT_TO_POINTER (stderr_fd)))
         child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stderr_fd));
     }
   else if (stderr_to_null)

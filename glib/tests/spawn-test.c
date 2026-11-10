@@ -427,6 +427,7 @@ test_spawn_closed_standard_fds (gconstpointer user_data)
 {
   GSpawnFlags flags = GPOINTER_TO_INT (user_data);
   const char *argv[] = { "/bin/sh", "-c", ":", NULL };
+  const char *output_argv[] = { "/bin/sh", "-c", "printf stdout; printf stderr >&2", NULL };
   const char *missing_argv[] = { "/nonexistent-glib-spawn-test", NULL };
   int saved_fds[3];
 
@@ -435,6 +436,10 @@ test_spawn_closed_standard_fds (gconstpointer user_data)
       GPid pid = 0;
       GError *error = NULL;
       int status;
+      int stdout_pipe = -1;
+      int stderr_pipe = -1;
+      char output[32];
+      ssize_t n_read;
 
       saved_fds[fd] = dup (fd);
       g_assert_cmpint (saved_fds[fd], >=, 0);
@@ -462,6 +467,48 @@ test_spawn_closed_standard_fds (gconstpointer user_data)
       g_assert_no_errno (close (saved_fds[fd]));
       g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
       g_clear_error (&error);
+
+      saved_fds[fd] = dup (fd);
+      g_assert_cmpint (saved_fds[fd], >=, 0);
+      g_assert_no_errno (close (fd));
+
+      g_assert_true (g_spawn_async_with_pipes (NULL, (char **) output_argv, NULL,
+                                               flags & ~(G_SPAWN_STDOUT_TO_DEV_NULL |
+                                                         G_SPAWN_STDERR_TO_DEV_NULL),
+                                               NULL, NULL, &pid, NULL,
+                                               &stdout_pipe, &stderr_pipe, &error));
+
+      if (stdout_pipe == fd)
+        {
+          stdout_pipe = dup (fd);
+          g_assert_cmpint (stdout_pipe, >=, 0);
+          g_assert_no_errno (close (fd));
+        }
+      if (stderr_pipe == fd)
+        {
+          stderr_pipe = dup (fd);
+          g_assert_cmpint (stderr_pipe, >=, 0);
+          g_assert_no_errno (close (fd));
+        }
+
+      g_assert_cmpint (dup2 (saved_fds[fd], fd), ==, fd);
+      g_assert_no_errno (close (saved_fds[fd]));
+      g_assert_no_error (error);
+      g_assert_cmpint (waitpid (pid, &status, 0), ==, pid);
+      g_assert_true (WIFEXITED (status));
+      g_assert_cmpint (WEXITSTATUS (status), ==, 0);
+      g_spawn_close_pid (pid);
+
+      n_read = read (stdout_pipe, output, sizeof output - 1);
+      g_assert_cmpint (n_read, ==, 6);
+      output[n_read] = 0;
+      g_assert_cmpstr (output, ==, "stdout");
+      n_read = read (stderr_pipe, output, sizeof output - 1);
+      g_assert_cmpint (n_read, ==, 6);
+      output[n_read] = 0;
+      g_assert_cmpstr (output, ==, "stderr");
+      g_assert_no_errno (close (stdout_pipe));
+      g_assert_no_errno (close (stderr_pipe));
     }
 }
 
