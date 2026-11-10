@@ -123,7 +123,7 @@ static gpointer         g_thread_pool_thread_proxy        (gpointer          dat
 static gboolean         g_thread_pool_start_thread        (GRealThreadPool  *pool,
                                                            GError          **error);
 static void             g_thread_pool_wakeup_and_stop_all (GRealThreadPool  *pool);
-static GRealThreadPool* g_thread_pool_wait_for_new_pool   (void);
+static GRealThreadPool *g_thread_pool_wait_for_new_pool   (int               last_wakeup_thread_serial);
 static gpointer         g_thread_pool_wait_for_new_task   (GRealThreadPool  *pool);
 
 static void
@@ -139,19 +139,17 @@ g_thread_pool_queue_push_unlocked (GRealThreadPool *pool,
     g_async_queue_push_unlocked (pool->queue, data);
 }
 
-static GRealThreadPool*
-g_thread_pool_wait_for_new_pool (void)
+static GRealThreadPool *
+g_thread_pool_wait_for_new_pool (int last_wakeup_thread_serial)
 {
   GRealThreadPool *pool;
   gint local_wakeup_thread_serial;
   guint local_max_unused_threads;
   gint local_max_idle_time;
-  gint last_wakeup_thread_serial;
   gboolean have_relayed_thread_marker = FALSE;
 
   local_max_unused_threads = (guint) g_atomic_int_get (&max_unused_threads);
   local_max_idle_time = g_atomic_int_get (&max_idle_time);
-  last_wakeup_thread_serial = g_atomic_int_get (&wakeup_thread_serial);
 
   do
     {
@@ -341,6 +339,7 @@ g_thread_pool_thread_proxy (gpointer data)
         {
           /* No task was received, so this thread goes to the global pool. */
           gboolean free_pool = FALSE;
+          int last_wakeup_thread_serial;
 
           DEBUG_MSG (("thread %p leaving pool %p for global pool.",
                       g_thread_self (), pool));
@@ -385,13 +384,16 @@ g_thread_pool_thread_proxy (gpointer data)
                 }
             }
 
+          g_async_queue_lock (unused_thread_queue);
+          last_wakeup_thread_serial = g_atomic_int_get (&wakeup_thread_serial);
           g_atomic_int_inc (&unused_threads);
+          g_async_queue_unlock (unused_thread_queue);
           g_async_queue_unlock (pool->queue);
 
           if (free_pool)
             g_thread_pool_free_internal (pool);
 
-          pool = g_thread_pool_wait_for_new_pool ();
+          pool = g_thread_pool_wait_for_new_pool (last_wakeup_thread_serial);
           g_atomic_int_add (&unused_threads, -1);
 
           if (pool == NULL)
@@ -1015,15 +1017,15 @@ g_thread_pool_set_max_unused_threads (gint max_threads)
 
   g_atomic_int_set (&max_unused_threads, max_threads);
 
-  if (max_threads != -1)
+  if (max_threads != -1 && g_atomic_int_get (&unused_threads) > max_threads)
     {
+      g_async_queue_lock (unused_thread_queue);
+
       max_threads -= g_atomic_int_get (&unused_threads);
       if (max_threads < 0)
         {
           g_atomic_int_set (&kill_unused_threads, -max_threads);
           g_atomic_int_inc (&wakeup_thread_serial);
-
-          g_async_queue_lock (unused_thread_queue);
 
           do
             {
@@ -1031,9 +1033,9 @@ g_thread_pool_set_max_unused_threads (gint max_threads)
                                            wakeup_thread_marker);
             }
           while (++max_threads);
-
-          g_async_queue_unlock (unused_thread_queue);
         }
+
+      g_async_queue_unlock (unused_thread_queue);
     }
 }
 
@@ -1186,15 +1188,14 @@ g_thread_pool_set_max_idle_time (guint interval)
   i = (guint) g_atomic_int_get (&unused_threads);
   if (i > 0)
     {
-      g_atomic_int_inc (&wakeup_thread_serial);
       g_async_queue_lock (unused_thread_queue);
+      g_atomic_int_inc (&wakeup_thread_serial);
 
-      do
+      for (i = (guint) g_atomic_int_get (&unused_threads); i > 0; i--)
         {
           g_async_queue_push_unlocked (unused_thread_queue,
                                        wakeup_thread_marker);
         }
-      while (--i);
 
       g_async_queue_unlock (unused_thread_queue);
     }
