@@ -3157,10 +3157,17 @@ g_regex_split_full (const GRegex      *regex,
               /* the last match was empty, so we have moved one char
                * after the real position to avoid empty matches at the
                * same position. */
-              const char *prev_char = PREV_CHAR (regex, &string[match_info->pos]);
-              g_assert (prev_char >= string);
-              match_info->pos = prev_char - string;
-              match_info->pos_valid = TRUE;
+              if (match_info->pos_valid)
+                {
+                  const char *prev_char = PREV_CHAR (regex, &string[match_info->pos]);
+                  g_assert (prev_char >= string);
+                  match_info->pos = prev_char - string;
+                }
+              else
+                {
+                  match_info->pos = string_len_unsigned;
+                  match_info->pos_valid = TRUE;
+                }
             }
 
           g_assert (match_info->pos_valid);

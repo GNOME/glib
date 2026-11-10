@@ -3408,6 +3408,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_SPLIT1(",", "a,b", 0, 1, "a,b");
   TEST_SPLIT1("(,)\\s*", "a", 0, 0, "a");
   TEST_SPLIT1(",", "a,b", 2, 0, "b");
+  TEST_SPLIT1("$", "abc", 0, 2, "abc");
   TEST_SPLIT2(",", "a,b", 0, 0, "a", "b");
   TEST_SPLIT2(",", "a,b,c", 0, 2, "a", "b,c");
   TEST_SPLIT2(",", "a,b", 1, 0, "", "b");
@@ -3417,6 +3418,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
   TEST_SPLIT3(",\\s*", "a, b, c", 0, 0, "a", "b", "c");
   TEST_SPLIT3("(,)\\s*", "a,b", 0, 0, "a", ",", "b");
   TEST_SPLIT3("(,)\\s*", "a, b", 0, 0, "a", ",", "b");
+  TEST_SPLIT3("", "abc", 0, 4, "a", "b", "c");
   /* Not matched sub-strings. */
   TEST_SPLIT2("a|(b)", "xay", 0, 0, "x", "y");
   TEST_SPLIT3("a|(b)", "xby", 0, -1, "x", "b", "y");
