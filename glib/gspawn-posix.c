@@ -1084,6 +1084,7 @@ do_posix_spawn (const gchar * const *argv,
   sigaddset (&mask, SIGTERM);
   sigaddset (&mask, SIGHUP);
 
+  sigaddset (&mask, SIGPIPE);
   r = posix_spawnattr_setsigdefault (&attr, &mask);
   if (r != 0)
     goto out_free_spawnattr;
