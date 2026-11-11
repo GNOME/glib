@@ -1993,24 +1993,33 @@ test_modifiers (void)
   setlocale (LC_ALL, "en_GB.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "en_GB") != NULL)
     {
-#ifndef __APPLE__
-      TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu 01 jan 2009 00:00:00 utc");
-      TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu 01 jan 2009 00:00:00 utc");
-#else
+#if defined(__APPLE__)
       /* macOS uses a figure space (U+2007) to pad the day */
       TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu " "\xe2\x80\x87" "1 jan 00:00:00 2009");
       TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu " "\xe2\x80\x87" "1 jan 00:00:00 2009");
+#elif !defined(HAVE_LANGINFO_TIME)
+      /* Without nl_langinfo() the built-in "%a %b %e %H:%M:%S %Y" format is
+       * used, where %e is padded with a figure space (U+2007) */
+      TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu jan \u20071 00:00:00 2009");
+      TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu jan \u20071 00:00:00 2009");
+#else
+      TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu 01 jan 2009 00:00:00 utc");
+      TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu 01 jan 2009 00:00:00 utc");
 #endif
 
       TEST_PRINTF_DATE (2009, 1, 1, "%C", "20");
       TEST_PRINTF_DATE (2009, 1, 1, "%EC", "20");
 
-#ifndef __APPLE__
-      TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/09");
-      TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/09");
-#else
+#if defined(__APPLE__)
       TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/2009");
       TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/2009");
+#elif !defined(HAVE_LANGINFO_TIME)
+      /* Built-in "%m/%d/%y" format used without nl_langinfo() */
+      TEST_PRINTF_DATE (2009, 1, 2, "%x", "01/02/09");
+      TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "01/02/09");
+#else
+      TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/09");
+      TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/09");
 #endif
 
       TEST_PRINTF_TIME (1, 2, 3, "%X", "01:02:03");
