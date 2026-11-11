@@ -58,15 +58,13 @@ gmodule_tests += {
     'export_dynamic' : true,
     'source': 'module-test.c',
     'depends': gmodule_test_libraries,
-    'c_args': ['-DMODULE_TYPE="library"'],
-    'can_fail': glib_build_static_only,
+    'c_args': ['-DMODULE_TYPE="library"', '-DTEST_MODULES_BUILT=@0@'.format(glib_build_shared ? 1 : 0)],
   },
   'module-test-plugin' : {
     'export_dynamic' : true,
     'source': 'module-test.c',
     'depends': gmodule_test_modules,
-    'c_args': ['-DMODULE_TYPE="plugin"'],
-    'can_fail': glib_build_static_only,
+    'c_args': ['-DMODULE_TYPE="plugin"', '-DTEST_MODULES_BUILT=@0@'.format(glib_build_shared ? 1 : 0)],
   },
 }
 
