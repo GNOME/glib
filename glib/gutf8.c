@@ -1614,7 +1614,7 @@ find_valid_and_complete_utf8_sequence (const char *string)
     {
       if (*iter < 128 ||
           ((*iter & 0xC0) == 0xC0 &&
-           g_utf8_get_char_validated ((const char*)iter, -1) < (gunichar2)-2))
+           g_utf8_get_char_validated ((const char*)iter, -1) < (gunichar)-2))
         {
           break;
         }
