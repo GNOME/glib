@@ -73,7 +73,7 @@ test_utf8_to_utf16_make_valid (void)
   size_t utf16_length = 0;
   const gunichar2 *iter = buffer;
 
-  g_utf8_to_utf16_make_valid (utf8->str,
+  g_utf8_to_utf16_make_valid (utf8->str, -1,
                               buffer, G_N_ELEMENTS (buffer),
                               &utf16, &utf16_length);
 
@@ -100,7 +100,7 @@ test_utf8_to_utf16_make_valid (void)
   g_assert_cmpint (*iter, ==, (gunichar2) 0);
 
   /* Test small buffer */
-  g_utf8_to_utf16_make_valid (utf8->str,
+  g_utf8_to_utf16_make_valid (utf8->str, -1,
                               buffer, 10,
                               &utf16, &utf16_length);
 
@@ -137,35 +137,144 @@ test_utf8_to_utf16_make_valid_backtrack (void)
   size_t utf16_offset = 0;
   size_t i;
 
-  g_utf8_to_utf16_make_valid (utf8, buffer, G_N_ELEMENTS (buffer), &utf16, NULL);
+  g_utf8_to_utf16_make_valid (utf8, -1, buffer, G_N_ELEMENTS (buffer), &utf16, NULL);
 
   for (i = 0; i <= 3; i++)
     {
-      utf8_offset = g_utf8_to_utf16_make_valid_backtrack (utf8, utf16_offset++);
+      utf8_offset = g_utf8_to_utf16_make_valid_backtrack (utf8, -1, utf16_offset++);
       g_assert_cmpint (utf8_offset, ==, i * (i + 1) / 2);
     }
 
   for (i = 0; i < 2; i++)
     {
-      utf8_offset = g_utf8_to_utf16_make_valid_backtrack (utf8, utf16_offset++);
+      utf8_offset = g_utf8_to_utf16_make_valid_backtrack (utf8, -1, utf16_offset++);
       g_assert_cmpint (utf8_offset, ==, 6 + 4);
     }
 
   for (i = 0; i < 2; i++)
     {
-      utf8_offset = g_utf8_to_utf16_make_valid_backtrack (utf8, utf16_offset++);
+      utf8_offset = g_utf8_to_utf16_make_valid_backtrack (utf8, -1, utf16_offset++);
       g_assert_cmpint (utf8_offset, ==, 6 + 4 + i + 1);
     }
 
   /* Passing overlong offsets is safe */
-  utf8_offset = g_utf8_to_utf16_make_valid_backtrack (utf8, 1000);
+  utf8_offset = g_utf8_to_utf16_make_valid_backtrack (utf8, -1, 1000);
   g_assert_cmpint (utf8_offset, ==, strlen (utf8));
 
   /* Edge case */
-  g_assert_cmpint (g_utf8_to_utf16_make_valid_backtrack ("", 0), ==, 0);
+  g_assert_cmpint (g_utf8_to_utf16_make_valid_backtrack ("", -1, 0), ==, 0);
 
   /* No need to call g_free */
   g_assert_true (buffer == utf16);
+}
+
+static void
+test_utf8_to_utf16_make_valid_length (void)
+{
+  /* Embedded NULs are valid characters when the length is explicit */
+  const char with_nul[] = "a" "\0" "\xce\xb1" "\0" "b";
+  /* Truncated sequence at the end of the explicit length, followed by
+   * a valid continuation byte that must not be read */
+  const char truncated[] = "a\xe2\x82\xac";
+  gunichar2 buffer[50];
+  gunichar2 *utf16;
+  size_t utf16_len;
+
+  g_utf8_to_utf16_make_valid (with_nul, sizeof (with_nul) - 1,
+                              buffer, G_N_ELEMENTS (buffer),
+                              &utf16, &utf16_len);
+  g_assert_true (utf16 == buffer);
+  g_assert_cmpuint (utf16_len, ==, 5);
+  g_assert_cmpuint (utf16[0], ==, 'a');
+  g_assert_cmpuint (utf16[1], ==, 0);
+  g_assert_cmpuint (utf16[2], ==, 0x3B1);
+  g_assert_cmpuint (utf16[3], ==, 0);
+  g_assert_cmpuint (utf16[4], ==, 'b');
+  g_assert_cmpuint (utf16[5], ==, 0);
+
+  /* The length bounds the conversion: only the first byte of the euro sign
+   * is included, so it is an incomplete sequence and becomes a single
+   * replacement character */
+  g_utf8_to_utf16_make_valid (truncated, 2, buffer, G_N_ELEMENTS (buffer),
+                              &utf16, &utf16_len);
+  g_assert_cmpuint (utf16_len, ==, 2);
+  g_assert_cmpuint (utf16[0], ==, 'a');
+  g_assert_cmpuint (utf16[1], ==, 0xFFFD);
+  g_assert_cmpuint (utf16[2], ==, 0);
+
+  g_utf8_to_utf16_make_valid (truncated, 0, buffer, G_N_ELEMENTS (buffer),
+                              &utf16, &utf16_len);
+  g_assert_cmpuint (utf16_len, ==, 0);
+  g_assert_cmpuint (utf16[0], ==, 0);
+
+  /* Backtrack across embedded NULs: 'a', NUL, alpha, NUL, 'b' */
+  g_assert_cmpuint (g_utf8_to_utf16_make_valid_backtrack (with_nul, sizeof (with_nul) - 1, 1), ==, 1);
+  g_assert_cmpuint (g_utf8_to_utf16_make_valid_backtrack (with_nul, sizeof (with_nul) - 1, 2), ==, 2);
+  g_assert_cmpuint (g_utf8_to_utf16_make_valid_backtrack (with_nul, sizeof (with_nul) - 1, 3), ==, 4);
+  g_assert_cmpuint (g_utf8_to_utf16_make_valid_backtrack (with_nul, sizeof (with_nul) - 1, 4), ==, 5);
+  g_assert_cmpuint (g_utf8_to_utf16_make_valid_backtrack (with_nul, sizeof (with_nul) - 1, 100), ==, sizeof (with_nul) - 1);
+}
+
+static void
+test_utf8_to_utf16_make_valid_truncated (void)
+{
+  /* Every case ends with an incomplete or stray sequence. The input is an
+   * exact-size heap copy without a trailing NUL, so that a read past the
+   * given length is caught by ASan or valgrind. */
+  static const struct
+  {
+    const char *utf8;
+    size_t len;
+  } tests[] = {
+    { "x" "\xc3", 2 },                     /* 2-byte sequence cut after 1 */
+    { "x" "\xe2", 2 },                     /* 3-byte sequence cut after 1 */
+    { "x" "\xe2\x82", 3 },                 /* 3-byte sequence cut after 2 */
+    { "x" "\xf0", 2 },                     /* 4-byte sequence cut after 1 */
+    { "x" "\xf0\x9f", 3 },                 /* 4-byte sequence cut after 2 */
+    { "x" "\xf0\x9f\x9a", 4 },             /* 4-byte sequence cut after 3 */
+    { "x" "\x80", 2 },                     /* stray continuation byte */
+  };
+  gunichar2 buffer[50];
+  gunichar2 reference[50];
+  gunichar2 *utf16;
+  size_t utf16_len, reference_len;
+  size_t i;
+  char *copy;
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      /* The NUL-terminated conversion of the same bytes is the reference */
+      g_utf8_to_utf16_make_valid (tests[i].utf8, -1,
+                                  reference, G_N_ELEMENTS (reference),
+                                  &utf16, &reference_len);
+      g_assert_true (utf16 == reference);
+
+      copy = g_memdup2 (tests[i].utf8, tests[i].len);
+      g_utf8_to_utf16_make_valid (copy, (gssize) tests[i].len,
+                                  buffer, G_N_ELEMENTS (buffer),
+                                  &utf16, &utf16_len);
+      g_assert_cmpuint (utf16_len, ==, reference_len);
+      g_assert_cmpmem (utf16, utf16_len * sizeof (gunichar2),
+                       reference, reference_len * sizeof (gunichar2));
+      g_assert_cmpuint (utf16[0], ==, 'x');
+      g_assert_cmpuint (utf16[1], ==, 0xFFFD);
+      g_assert_cmpuint (utf16[utf16_len], ==, 0);
+      if (utf16 != buffer)
+        g_free (utf16);
+      g_free (copy);
+    }
+
+  /* Several consecutive embedded NULs */
+  copy = g_memdup2 ("a" "\0\0\0" "b", 5);
+  g_utf8_to_utf16_make_valid (copy, 5, buffer, G_N_ELEMENTS (buffer),
+                              &utf16, &utf16_len);
+  g_assert_cmpuint (utf16_len, ==, 5);
+  g_assert_cmpuint (utf16[0], ==, 'a');
+  g_assert_cmpuint (utf16[1], ==, 0);
+  g_assert_cmpuint (utf16[2], ==, 0);
+  g_assert_cmpuint (utf16[3], ==, 0);
+  g_assert_cmpuint (utf16[4], ==, 'b');
+  g_free (copy);
 }
 
 static void
@@ -183,7 +292,7 @@ test_utf8_to_utf16_make_valid_supplementary (void)
   gunichar2 *utf16;
   size_t utf16_len;
 
-  g_utf8_to_utf16_make_valid (utf8, buffer, G_N_ELEMENTS (buffer), &utf16, &utf16_len);
+  g_utf8_to_utf16_make_valid (utf8, -1, buffer, G_N_ELEMENTS (buffer), &utf16, &utf16_len);
 
   g_assert_true (utf16 == buffer);
   g_assert_cmpuint (utf16_len, ==, 5);
@@ -204,6 +313,8 @@ main (int   argc,
   g_test_add_func ("/utf8/utf8-to-utf16-make-valid", test_utf8_to_utf16_make_valid);
   g_test_add_func ("/utf8/utf8-to-utf16-make-valid-backtrack", test_utf8_to_utf16_make_valid_backtrack);
   g_test_add_func ("/utf8/utf8-to-utf16-make-valid-supplementary", test_utf8_to_utf16_make_valid_supplementary);
+  g_test_add_func ("/utf8/utf8-to-utf16-make-valid-length", test_utf8_to_utf16_make_valid_length);
+  g_test_add_func ("/utf8/utf8-to-utf16-make-valid-truncated", test_utf8_to_utf16_make_valid_truncated);
 
   return g_test_run();
 }

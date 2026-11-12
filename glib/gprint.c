@@ -141,7 +141,7 @@ print_console_nolock (const char *string,
       size_t utf16_len = 0;
       DWORD utf16_written = 0;
 
-      g_utf8_to_utf16_make_valid (string,
+      g_utf8_to_utf16_make_valid (string, -1,
                                   buffer, G_N_ELEMENTS (buffer),
                                   &utf16, &utf16_len);
 
@@ -156,7 +156,7 @@ print_console_nolock (const char *string,
 
       if (utf16_written < utf16_len)
         {
-          written = g_utf8_to_utf16_make_valid_backtrack (string, utf16_written);
+          written = g_utf8_to_utf16_make_valid_backtrack (string, -1, utf16_written);
         }
       else
         {

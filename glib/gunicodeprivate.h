@@ -32,6 +32,7 @@ gunichar *_g_utf8_normalize_wc (const gchar    *str,
 
 void
 g_utf8_to_utf16_make_valid (const char  *utf8,
+                            gssize       utf8_len,
                             gunichar2   *buffer,
                             size_t       buffer_len,
                             gunichar2  **out_utf16,
@@ -39,6 +40,7 @@ g_utf8_to_utf16_make_valid (const char  *utf8,
 
 size_t
 g_utf8_to_utf16_make_valid_backtrack (const char *utf8,
+                                      gssize      utf8_len,
                                       size_t      utf16_len);
 
 G_END_DECLS

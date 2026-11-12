@@ -1581,17 +1581,28 @@ g_ucs4_to_utf16 (const gunichar  *str,
  * find_invalid_or_incomplete_utf8_sequence:
  *
  * @string: the source string.
+ * @stop: end of the source string (excluded). NUL bytes before @stop
+ *        are valid characters.
  *
  * Returns the first byte of a sequence that is either invalid
- * UTF-8 or incomplete UTF-8, or a pointer to the NULL terminator
- * if all of @string is valid UTF-8.
+ * UTF-8 or incomplete UTF-8, or @stop if all of @string is valid UTF-8.
  */
 static const char *
-find_invalid_or_incomplete_utf8_sequence (const char *string)
+find_invalid_or_incomplete_utf8_sequence (const char *string,
+                                          const char *stop)
 {
   const char *end = string;
 
-  g_utf8_validate (string, -1, &end);
+  while (end < stop)
+    {
+      g_utf8_validate (end, (gssize) (stop - end), &end);
+
+      /* g_utf8_validate() stops at embedded NULs, but they are valid */
+      if (end < stop && *end == '\0')
+        end++;
+      else
+        break;
+    }
 
   return end;
 }
@@ -1599,22 +1610,24 @@ find_invalid_or_incomplete_utf8_sequence (const char *string)
 /**< private >
  * find_valid_and_complete_utf8_sequence:
  *
- * @string: a NULL-terminated source string.
+ * @string: the source string.
+ * @stop: end of the source string (excluded).
  *
  * Returns the first byte of a sequence that is valid (and complete)
- * UTF-8, or a pointer to the NULL terminator if no such sequence
- * could be found.
+ * UTF-8, or @stop if no such sequence could be found.
  */
 static const char *
-find_valid_and_complete_utf8_sequence (const char *string)
+find_valid_and_complete_utf8_sequence (const char *string,
+                                       const char *stop)
 {
   const unsigned char *iter = (const unsigned char *)string;
 
-  for (;; iter++)
+  for (; (const char *)iter < stop; iter++)
     {
       if (*iter < 128 ||
           ((*iter & 0xC0) == 0xC0 &&
-           g_utf8_get_char_validated ((const char*)iter, -1) < (gunichar)-2))
+           g_utf8_get_char_validated ((const char*)iter,
+                                      (gssize) (stop - (const char *) iter)) < (gunichar)-2))
         {
           break;
         }
@@ -1782,12 +1795,13 @@ valid_utf8_to_utf16 (const char *start,
  */
 static size_t
 valid_utf8_to_utf16_backtrack (const char *start,
+                               const char *end,
                                size_t      output_length)
 {
   const char *iter = start;
   size_t count = 0;
 
-  for (; *iter != '\0'; iter = g_utf8_next_char (iter))
+  for (; iter < end; iter = g_utf8_next_char (iter))
     {
       if (output_length <= count)
         break;
@@ -1803,7 +1817,8 @@ valid_utf8_to_utf16_backtrack (const char *start,
 
 
 static size_t
-utf8_to_utf16_make_valid_get_output_length (const char *string)
+utf8_to_utf16_make_valid_get_output_length (const char *string,
+                                            const char *stop)
 {
   const char *start = string;
   size_t count = 0;
@@ -1812,19 +1827,19 @@ utf8_to_utf16_make_valid_get_output_length (const char *string)
     {
       const char *end = NULL;
 
-      end = find_invalid_or_incomplete_utf8_sequence (start);
+      end = find_invalid_or_incomplete_utf8_sequence (start, stop);
       count += valid_utf8_to_utf16_get_output_length (start, end);
       start = end;
 
-      if (start[0] == '\0')
+      if (start >= stop)
         break;
 
-      end = find_valid_and_complete_utf8_sequence (start);
+      end = find_valid_and_complete_utf8_sequence (start, stop);
       g_assert ((uintptr_t)end > (uintptr_t)start);
       count += invalidly_encoded_string_to_utf16_get_output_length (start, end);
       start = end;
 
-      if (start[0] == '\0')
+      if (start >= stop)
         break;
     }
 
@@ -1833,6 +1848,7 @@ utf8_to_utf16_make_valid_get_output_length (const char *string)
 
 static size_t
 utf8_to_utf16_make_valid_backtrack (const char *string,
+                                    const char *stop,
                                     size_t      output_length)
 {
   const char *start = string;
@@ -1843,18 +1859,18 @@ utf8_to_utf16_make_valid_backtrack (const char *string,
     {
       const char *end = NULL;
 
-      end = find_invalid_or_incomplete_utf8_sequence (start);
+      end = find_invalid_or_incomplete_utf8_sequence (start, stop);
       l = valid_utf8_to_utf16_get_output_length (start, end);
       if (output_length < count + l)
-        return count + valid_utf8_to_utf16_backtrack (start, output_length);
+        return count + valid_utf8_to_utf16_backtrack (start, end, output_length);
       count += (uintptr_t)end - (uintptr_t)start;
       output_length -= l;
       start = end;
 
-      if (start[0] == '\0')
+      if (start >= stop)
         return (uintptr_t)start - (uintptr_t)string;
 
-      end = find_valid_and_complete_utf8_sequence (start);
+      end = find_valid_and_complete_utf8_sequence (start, stop);
       g_assert ((uintptr_t)end > (uintptr_t)start);
       l = invalidly_encoded_string_to_utf16_get_output_length (start, end);
       if (output_length < l)
@@ -1863,7 +1879,7 @@ utf8_to_utf16_make_valid_backtrack (const char *string,
       output_length -= l;
       start = end;
 
-      if (start[0] == '\0')
+      if (start >= stop)
         return (uintptr_t)start - (uintptr_t)string;
     }
 
@@ -1873,6 +1889,7 @@ utf8_to_utf16_make_valid_backtrack (const char *string,
 
 static size_t
 utf8_to_utf16_make_valid (const char *string,
+                          const char *stop,
                           gunichar2  *output)
 {
   const char *start = string;
@@ -1882,19 +1899,19 @@ utf8_to_utf16_make_valid (const char *string,
     {
       const char *end = NULL;
 
-      end = find_invalid_or_incomplete_utf8_sequence (start);
+      end = find_invalid_or_incomplete_utf8_sequence (start, stop);
       count += valid_utf8_to_utf16 (start, end, &output[count]);
       start = end;
 
-      if (start[0] == '\0')
+      if (start >= stop)
         break;
 
-      end = find_valid_and_complete_utf8_sequence (start);
+      end = find_valid_and_complete_utf8_sequence (start, stop);
       g_assert ((uintptr_t)end > (uintptr_t)start);
       count += invalidly_encoded_string_to_utf16 (start, end, &output[count]);
       start = end;
 
-      if (start[0] == '\0')
+      if (start >= stop)
         break;
     }
 
@@ -1904,7 +1921,9 @@ utf8_to_utf16_make_valid (const char *string,
 /** < private >
  * g_utf8_to_utf16_make_valid:
  *
- * @utf8: source UTF-8 string. May contain invalid or incomplete sequences.
+ * @utf8: source UTF-8 string. May contain invalid or incomplete sequences,
+ *        and embedded NUL bytes if @utf8_len is not -1.
+ * @utf8_len: length of @utf8 in bytes, or -1 if it is NUL-terminated.
  * @buffer: optional auxiliary buffer where the output UTF-16 string will be
  *          stored if large enough to hold the output. Callers can pass NULL,
  *          in which case the output buffer is allocated on the heap.
@@ -1926,12 +1945,14 @@ utf8_to_utf16_make_valid (const char *string,
  */
 void
 g_utf8_to_utf16_make_valid (const char  *utf8,
+                            gssize       utf8_len,
                             gunichar2   *buffer,
                             size_t       buffer_len,
                             gunichar2  **out_utf16,
                             size_t      *out_utf16_len)
 {
-  size_t output_length = utf8_to_utf16_make_valid_get_output_length (utf8);
+  const char *stop = utf8 + (utf8_len < 0 ? strlen (utf8) : (size_t) utf8_len);
+  size_t output_length = utf8_to_utf16_make_valid_get_output_length (utf8, stop);
 
   if (output_length < buffer_len)
     {
@@ -1946,7 +1967,7 @@ g_utf8_to_utf16_make_valid (const char  *utf8,
       *out_utf16 = g_new (gunichar2, output_length + 1);
     }
 
-  utf8_to_utf16_make_valid (utf8, *out_utf16);
+  utf8_to_utf16_make_valid (utf8, stop, *out_utf16);
 
   /* Add the terminating NULL character */
   (*out_utf16)[output_length] = L'\0';
@@ -1959,6 +1980,7 @@ g_utf8_to_utf16_make_valid (const char  *utf8,
  * g_utf8_to_utf16_make_valid_backtrack:
  *
  * @utf8: source UTF-8 string. May contain invalid or incomplete sequences.
+ * @utf8_len: length of @utf8 in bytes, or -1 if it is NUL-terminated.
  * @utf16_len: length within the output UTF-16 string expressed as a count
  *             of gunichar2.
  *
@@ -1967,9 +1989,12 @@ g_utf8_to_utf16_make_valid (const char  *utf8,
  */
 size_t
 g_utf8_to_utf16_make_valid_backtrack (const char  *utf8,
+                                      gssize       utf8_len,
                                       size_t       utf16_len)
 {
-  return utf8_to_utf16_make_valid_backtrack (utf8, utf16_len);
+  const char *stop = utf8 + (utf8_len < 0 ? strlen (utf8) : (size_t) utf8_len);
+
+  return utf8_to_utf16_make_valid_backtrack (utf8, stop, utf16_len);
 }
 
 /* SIMD-based UTF-8 validation originates in the c-utf8 project from
