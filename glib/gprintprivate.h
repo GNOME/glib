@@ -32,6 +32,11 @@ int
 g_fputs (const char *string,
          FILE       *stream);
 
+int
+g_fputs_len (const char *string,
+             size_t      size,
+             FILE       *stream);
+
 char *
 g_print_convert (const char *string,
                  const char *charset);
