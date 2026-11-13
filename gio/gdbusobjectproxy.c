@@ -159,7 +159,7 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
                                                         G_PARAM_STATIC_STRINGS));
 
   /**
-   * GDBusObjectProxy:g-connection: (getter get-connection)
+   * GDBusObjectProxy:g-connection: (getter get_connection)
    *
    * The connection of the proxy.
    *
