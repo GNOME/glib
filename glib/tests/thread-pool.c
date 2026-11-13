@@ -333,6 +333,63 @@ test_thread_pool_full (gconstpointer shared_first)
     }
 }
 
+static void
+stop_unused_thread_func (gpointer data,
+                         gpointer user_data)
+{
+  g_async_queue_push (user_data, g_thread_ref (g_thread_self ()));
+  g_async_queue_pop (data);
+}
+
+static void
+stop_unused_free_func (gpointer data)
+{
+  g_thread_pool_stop_unused_threads ();
+}
+
+static void
+test_stop_unused_during_free (void)
+{
+  GAsyncQueue *started;
+  GAsyncQueue *release;
+  GThreadPool *pool;
+  GThread *thread;
+  GError *error = NULL;
+
+  g_test_summary ("Stopping unused threads during queued-item cleanup stops the worker.");
+
+  if (!g_test_subprocess ())
+    {
+      g_test_trap_subprocess (NULL, 5 * G_USEC_PER_SEC, G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_passed ();
+      return;
+    }
+
+  g_thread_pool_set_max_unused_threads (-1);
+  g_thread_pool_set_max_idle_time (0);
+  started = g_async_queue_new ();
+  release = g_async_queue_new ();
+
+  pool = g_thread_pool_new_full (stop_unused_thread_func, started,
+                                 stop_unused_free_func, 1, FALSE, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (pool);
+  g_assert_true (g_thread_pool_push (pool, release, &error));
+  g_assert_no_error (error);
+  thread = g_async_queue_pop (started);
+  g_assert_true (g_thread_pool_push (pool, release, &error));
+  g_assert_no_error (error);
+
+  g_thread_pool_free (pool, TRUE, FALSE);
+  g_async_queue_push (release, GINT_TO_POINTER (1));
+  g_thread_join (thread);
+
+  g_assert_cmpuint (g_thread_pool_get_num_unused_threads (), ==, 0);
+  g_assert_cmpint (g_thread_pool_get_max_unused_threads (), ==, -1);
+  g_async_queue_unref (started);
+  g_async_queue_unref (release);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -348,6 +405,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/thread_pool/create_shared_after_exclusive", GINT_TO_POINTER (FALSE), test_create_first_pool);
   g_test_add_data_func ("/thread_pool/create_full", NULL, test_thread_pool_full);
   g_test_add_data_func ("/thread_pool/create_exclusive_after_shared", GINT_TO_POINTER (TRUE), test_create_first_pool);
+  g_test_add_func ("/thread_pool/stop_unused_during_free", test_stop_unused_during_free);
 
   return g_test_run ();
 }
