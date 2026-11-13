@@ -1643,11 +1643,6 @@ test_GDateTime_printf (void)
   gchar *old_lc_all;
   gchar *old_lc_messages;
 
-#ifdef G_OS_WIN32
-  gchar *current_tz = NULL;
-  DYNAMIC_TIME_ZONE_INFORMATION dtz_info;
-#endif
-
 #define TEST_PRINTF(f,o)                        G_STMT_START {  \
   const char *expected = (o);                                   \
   GDateTime *__dt = g_date_time_new_utc (2009, 10, 24, 0, 0, 0);\
@@ -1731,19 +1726,10 @@ test_GDateTime_printf (void)
   TEST_PRINTF ("%%", "%");
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
-#ifdef G_OS_UNIX
+  /* The date-time is created in UTC, so this does not depend on the
+   * local time zone on any platform. */
   TEST_PRINTF ("%Z", "UTC");
   TEST_PRINTF ("%#Z %Z", "utc UTC");
-#elif defined G_OS_WIN32
-  g_assert_cmpint (GetDynamicTimeZoneInformation (&dtz_info), !=, TIME_ZONE_ID_INVALID);
-  if (wcscmp (dtz_info.StandardName, L"") != 0)
-    current_tz = g_utf16_to_utf8 (dtz_info.StandardName, -1, NULL, NULL, NULL);
-  else
-    current_tz = g_utf16_to_utf8 (dtz_info.DaylightName, -1, NULL, NULL, NULL);
-
-  TEST_PRINTF ("%Z", current_tz);
-  g_free (current_tz);
-#endif
 
   if (old_lc_messages != NULL)
     g_setenv ("LC_MESSAGES", old_lc_messages, TRUE);
@@ -2007,24 +1993,33 @@ test_modifiers (void)
   setlocale (LC_ALL, "en_GB.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "en_GB") != NULL)
     {
-#ifndef __APPLE__
-      TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu 01 jan 2009 00:00:00 utc");
-      TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu 01 jan 2009 00:00:00 utc");
-#else
+#if defined(__APPLE__)
       /* macOS uses a figure space (U+2007) to pad the day */
       TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu " "\xe2\x80\x87" "1 jan 00:00:00 2009");
       TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu " "\xe2\x80\x87" "1 jan 00:00:00 2009");
+#elif !defined(HAVE_LANGINFO_TIME)
+      /* Without nl_langinfo() the built-in "%a %b %e %H:%M:%S %Y" format is
+       * used, where %e is padded with a figure space (U+2007) */
+      TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu jan \u20071 00:00:00 2009");
+      TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu jan \u20071 00:00:00 2009");
+#else
+      TEST_PRINTF_DATE (2009, 1, 1, "%c", "thu 01 jan 2009 00:00:00 utc");
+      TEST_PRINTF_DATE (2009, 1, 1, "%Ec", "thu 01 jan 2009 00:00:00 utc");
 #endif
 
       TEST_PRINTF_DATE (2009, 1, 1, "%C", "20");
       TEST_PRINTF_DATE (2009, 1, 1, "%EC", "20");
 
-#ifndef __APPLE__
-      TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/09");
-      TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/09");
-#else
+#if defined(__APPLE__)
       TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/2009");
       TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/2009");
+#elif !defined(HAVE_LANGINFO_TIME)
+      /* Built-in "%m/%d/%y" format used without nl_langinfo() */
+      TEST_PRINTF_DATE (2009, 1, 2, "%x", "01/02/09");
+      TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "01/02/09");
+#else
+      TEST_PRINTF_DATE (2009, 1, 2, "%x", "02/01/09");
+      TEST_PRINTF_DATE (2009, 1, 2, "%Ex", "02/01/09");
 #endif
 
       TEST_PRINTF_TIME (1, 2, 3, "%X", "01:02:03");

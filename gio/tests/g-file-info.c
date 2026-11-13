@@ -911,7 +911,8 @@ test_internal_enhanced_stdio (void)
       g_assert_cmpuint (alsize_ps, <, 0x40000000);
       g_assert_cmpuint (size_ps, >, G_GUINT64_CONSTANT (0xFFFFFFFF));
       g_assert_cmpuint (statbuf_ps.st_size, >, 0);
-#if defined(_WIN64)
+#if defined(_WIN64) && defined(__MINGW64_VERSION_MAJOR)
+      /* MSVC's struct stat has a 32-bit st_size, see GStatBuf */
       g_assert_cmpuint (statbuf_ps.st_size, ==, G_GUINT64_CONSTANT (0x10000000f));
 #else
       g_assert_cmpuint (statbuf_ps.st_size, <=, 0xFFFFFFFF);

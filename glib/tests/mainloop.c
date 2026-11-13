@@ -1258,7 +1258,9 @@ clear_ready_time_dispatch (GSource     *source,
   uint64_t ready_time_ns;
 
   g_assert_cmpint (g_source_get_ready_time (source), !=, -1);
-  g_assert_cmpint (g_source_get_ready_time (source), <=, g_source_get_time (source));
+  /* g_source_get_ready_time() rounds up whereas g_source_get_time() rounds
+   * down, so they can differ by 1µs even if ready time <= current time. */
+  g_assert_cmpint (g_source_get_ready_time (source) - 1, <=, g_source_get_time (source));
   g_assert_true (g_source_get_ready_time_ns (source, &ready_time_ns));
   g_assert_cmpuint (ready_time_ns, <=, g_source_get_time_ns (source));
 

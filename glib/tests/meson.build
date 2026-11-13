@@ -42,7 +42,7 @@ glib_tests = {
     # musl: GDateTime/format_mixed/non_utf8_time_non_utf8_messages should be
     # skipped but it's not. The fix should be on musl side:
     # https://www.openwall.com/lists/musl/2023/08/10/3
-    'can_fail' : host_system == 'windows' or linux_libc == 'musl',
+    'can_fail' : linux_libc == 'musl',
   },
   'guuid' : {},
   'gvariant' : {

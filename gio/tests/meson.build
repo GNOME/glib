@@ -91,8 +91,7 @@ gio_tests = {
   'g-file' : {},
   'g-file-info' : {
     # FIXME: https://gitlab.gnome.org/GNOME/glib/-/issues/3148
-    'can_fail' : host_system in ['gnu'] or (
-      host_system in ['windows'] and cc.get_argument_syntax() != 'gcc'),
+    'can_fail' : host_system in ['gnu'],
   },
   'g-icon' : {},
   'gdbus-addresses' : {},
@@ -252,7 +251,6 @@ python_tests = {
       have_gio_launch_desktop ? gio_launch_desktop : [],
     ],
     'env': {'_G_TEST_PROGRAM_RUNNER_PATH': fs.parent(gio_tool.full_path())},
-    'can_fail' : host_system == 'windows',
   },
 }
 
