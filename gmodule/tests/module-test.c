@@ -43,8 +43,16 @@ g_clash_func (void)
   global_state = "global clash";
 }
 
+#ifndef TEST_MODULES_BUILT
+#error TEST_MODULES_BUILT must be defined by the build system
+#endif
+
 typedef void (*SimpleFunc) (void);
 typedef void (*GModuleFunc) (GModule *);
+
+/* The helpers below are only used by tests that need the test modules,
+ * which are only built with shared libraries */
+#if TEST_MODULES_BUILT
 
 static gchar **gplugin_a_state;
 static gchar **gplugin_b_state;
@@ -74,6 +82,8 @@ test_states (const gchar *global, const gchar *gplugin_a, const gchar *gplugin_b
 
 static SimpleFunc plugin_clash_func = NULL;
 
+#endif /* TEST_MODULES_BUILT */
+
 static void
 test_module_basics (void)
 {
@@ -83,6 +93,7 @@ test_module_basics (void)
       return;
     }
 
+#if TEST_MODULES_BUILT
   /* Run the actual test in a subprocess to avoid symbol table changes from
    * previous tests potentially affecting it. */
   if (g_test_subprocess ())
@@ -217,6 +228,10 @@ test_module_basics (void)
       g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
+#else
+  /* The test plugins and libraries are only built with shared libraries */
+  g_test_skip ("test modules are not built in static-only builds");
+#endif
 }
 
 static void
@@ -259,6 +274,7 @@ test_local_binding (void)
   return;
 #endif
 
+#if TEST_MODULES_BUILT
   /* Run the actual test in a subprocess to avoid symbol table changes from
    * previous tests potentially affecting it. */
   if (g_test_subprocess ())
@@ -293,6 +309,10 @@ test_local_binding (void)
       g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
       g_test_trap_assert_passed ();
     }
+#else
+  /* The test plugins and libraries are only built with shared libraries */
+  g_test_skip ("test modules are not built in static-only builds");
+#endif
 }
 
 int

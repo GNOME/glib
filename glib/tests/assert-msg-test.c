@@ -21,12 +21,22 @@
 #include "config.h"
 #include <glib.h>
 
+#ifdef G_OS_WIN32
+#include <stdlib.h>
+#endif
+
 int
 main (int    argc,
       char **argv)
 {
   /* We expect this test to abort, so try to avoid that creating a coredump */
   g_test_disable_crash_reporting ();
+
+#if defined(G_OS_WIN32) && defined(_UCRT)
+  /* Without this, abort() terminates the process with a fast-fail exception
+   * (0xC0000409) instead of exit code 3. g_test_init() does the same. */
+  _set_abort_behavior (0, _CALL_REPORTFAULT);
+#endif
 
   g_assert (42 < 0);
   return 0;
