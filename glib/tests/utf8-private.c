@@ -168,6 +168,33 @@ test_utf8_to_utf16_make_valid_backtrack (void)
   g_assert_true (buffer == utf16);
 }
 
+static void
+test_utf8_to_utf16_make_valid_supplementary (void)
+{
+  /* An invalid byte followed by a valid character outside the BMP: the
+   * conversion has to resume at the valid character instead of treating
+   * the rest of the string as invalid. */
+  const char *utf8 =
+    "x"
+    "\xf4"  /* invalid byte => U+FFFD */
+    "🚀"  /* U+1F680 ROCKET => 2 gunichar2 */
+    "y";
+  gunichar2 buffer[50];
+  gunichar2 *utf16;
+  size_t utf16_len;
+
+  g_utf8_to_utf16_make_valid (utf8, buffer, G_N_ELEMENTS (buffer), &utf16, &utf16_len);
+
+  g_assert_true (utf16 == buffer);
+  g_assert_cmpuint (utf16_len, ==, 5);
+  g_assert_cmpuint (utf16[0], ==, 'x');
+  g_assert_cmpuint (utf16[1], ==, 0xFFFD);
+  g_assert_cmpuint (utf16[2], ==, 0xD83D);
+  g_assert_cmpuint (utf16[3], ==, 0xDE80);
+  g_assert_cmpuint (utf16[4], ==, 'y');
+  g_assert_cmpuint (utf16[5], ==, 0);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -176,6 +203,7 @@ main (int   argc,
 
   g_test_add_func ("/utf8/utf8-to-utf16-make-valid", test_utf8_to_utf16_make_valid);
   g_test_add_func ("/utf8/utf8-to-utf16-make-valid-backtrack", test_utf8_to_utf16_make_valid_backtrack);
+  g_test_add_func ("/utf8/utf8-to-utf16-make-valid-supplementary", test_utf8_to_utf16_make_valid_supplementary);
 
   return g_test_run();
 }
