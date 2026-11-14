@@ -49,6 +49,9 @@ fuzz_targets = {
   'fuzz_variant_binary': {},
   'fuzz_variant_binary_byteswap': {},
   'fuzz_variant_text': {},
+  'fuzz_win32_expand_application_parameters': {
+    'extra_sources': [files('../gio/giowin32-private.c')],
+  },
 }
 
 deps = [libgmodule_dep, libgio_dep, libglib_dep, libgobject_dep, test_profile_dep]
