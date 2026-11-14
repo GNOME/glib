@@ -650,7 +650,7 @@ static GWin32RegistryKey *classes_root_key;
  *     _g_win32_fixup_broken_microsoft_rundll_commandline(),
  *     _g_win32_expand_application_parameters()
  */
-#include "giowin32-private.c"
+#include "giowin32-private.h"
 
 /* for g_win32_package_parser_enum_packages() */
 #include "gwin32packageparser.h"

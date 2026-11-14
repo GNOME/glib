@@ -25,7 +25,7 @@
 #include <gio/gio.h>
 #include <stdlib.h>
 
-#include "../giowin32-private.c"
+#include "../giowin32-private.h"
 
 static int
 g_utf16_cmp0 (const gunichar2 *str1,

@@ -18,8 +18,9 @@
  * along with this library; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "giowin32-private.h"
 
-static gsize
+gsize
 g_utf16_len (const gunichar2 *str)
 {
   gsize result;
@@ -30,7 +31,7 @@ g_utf16_len (const gunichar2 *str)
   return result;
 }
 
-static gunichar2 *
+gunichar2 *
 g_wcsdup (const gunichar2 *str, gssize str_len)
 {
   gsize str_len_unsigned;
@@ -59,7 +60,7 @@ g_utf16_wchr (const gunichar2 *str, const wchar_t wchr)
   return NULL;
 }
 
-static gboolean
+gboolean
 g_utf16_to_utf8_and_fold (const gunichar2  *str,
                           gssize            length,
                           gchar           **str_u8,
@@ -94,7 +95,7 @@ g_utf16_to_utf8_and_fold (const gunichar2  *str,
  * If the string does not contain separators, returns the
  * string itself.
  */
-static const gunichar2 *
+const gunichar2 *
 g_utf16_find_basename (const gunichar2 *filename,
                        gssize           len)
 {
@@ -129,7 +130,7 @@ g_utf16_find_basename (const gunichar2 *filename,
  * If the string does not contain separators, returns the
  * string itself.
  */
-static const gchar *
+const gchar *
 g_utf8_find_basename (const gchar *filename,
                       gssize       len)
 {
@@ -166,7 +167,7 @@ g_utf8_find_basename (const gchar *filename,
  * If @comma_separator is TRUE, accepts ',' as a separator between
  * the filename and the following argument.
  */
-static void
+void
 _g_win32_parse_filename (const gunichar2  *commandline,
                          gboolean          comma_separator,
                          const gunichar2 **executable_start,
@@ -262,7 +263,7 @@ _g_win32_parse_filename (const gunichar2  *commandline,
  * calling this function!
  * follow_class_chain_to_handler() does perform such validation.
  */
-static void
+void
 _g_win32_extract_executable (const gunichar2  *commandline,
                              gchar           **ex_out,
                              gchar           **ex_basename_out,
@@ -430,7 +431,7 @@ _g_win32_extract_executable (const gunichar2  *commandline,
  * a comma. This can be checked for with an extract_executable() call -
  * it should return a non-null dll_function.
  */
-static void
+void
 _g_win32_fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
 {
   const gunichar2 *first_argument;
@@ -450,12 +451,7 @@ _g_win32_fixup_broken_microsoft_rundll_commandline (gunichar2 *commandline)
    */
 }
 
-typedef struct _file_or_uri {
-  gchar *uri;
-  gchar *file;
-} file_or_uri;
-
-static void
+void
 free_file_or_uri (gpointer ptr)
 {
   file_or_uri *obj = ptr;
@@ -778,7 +774,7 @@ end_argument (GPtrArray  *args,
  * @objs is moved past the objects used; the caller launches the application
  * again with the rest.
  */
-static gboolean
+gboolean
 _g_win32_expand_application_parameters (const char  *app_name,
                                         const gchar *exec_line,
                                         GList      **objs,
