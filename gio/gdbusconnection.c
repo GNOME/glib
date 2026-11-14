@@ -550,6 +550,7 @@ struct _GDBusConnection
   /* Read-only construct properties, no locks needed */
   gchar *address;
   GDBusConnectionFlags flags;
+  guint max_message_unix_fds;
 
   /* Map used for managing method replies, protected by @lock */
   GHashTable *map_method_serial_to_task;  /* guint32 -> owned GTask* */
@@ -617,6 +618,7 @@ enum
   PROP_EXIT_ON_CLOSE,
   PROP_CAPABILITY_FLAGS,
   PROP_AUTHENTICATION_OBSERVER,
+  PROP_MAX_MESSAGE_UNIX_FDS,
 };
 
 static void distribute_signals (GDBusConnection  *connection,
@@ -864,6 +866,10 @@ g_dbus_connection_get_property (GObject    *object,
       g_value_set_flags (value, g_dbus_connection_get_flags (connection));
       break;
 
+    case PROP_MAX_MESSAGE_UNIX_FDS:
+      g_value_set_uint (value, connection->max_message_unix_fds);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -895,6 +901,10 @@ g_dbus_connection_set_property (GObject      *object,
 
     case PROP_FLAGS:
       connection->flags = g_value_get_flags (value);
+      break;
+
+    case PROP_MAX_MESSAGE_UNIX_FDS:
+      connection->max_message_unix_fds = g_value_get_uint (value);
       break;
 
     case PROP_EXIT_ON_CLOSE:
@@ -1010,6 +1020,26 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
                                                        G_PARAM_STATIC_NAME |
                                                        G_PARAM_STATIC_BLURB |
                                                        G_PARAM_STATIC_NICK));
+
+  /**
+   * GDBusConnection:max-message-unix-fds:
+   *
+   * The maximum number of Unix file descriptors that may be received in a
+   * single D-Bus message.
+   *
+   * Since: 2.92
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_MAX_MESSAGE_UNIX_FDS,
+                                   g_param_spec_uint ("max-message-unix-fds", NULL, NULL,
+                                                      0, G_MAXUINT,
+                                                      G_DBUS_DEFAULT_MAX_MESSAGE_UNIX_FDS,
+                                                      G_PARAM_READABLE |
+                                                      G_PARAM_WRITABLE |
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_NAME |
+                                                      G_PARAM_STATIC_BLURB |
+                                                      G_PARAM_STATIC_NICK));
 
   /**
    * GDBusConnection:guid:
@@ -2968,6 +2998,7 @@ initable_init (GInitable     *initable,
 
   connection->worker = _g_dbus_worker_new (connection->stream,
                                            connection->capabilities,
+                                           connection->max_message_unix_fds,
                                            ((connection->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) != 0),
                                            on_worker_message_received,
                                            on_worker_message_about_to_be_sent,

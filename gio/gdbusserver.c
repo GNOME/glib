@@ -102,6 +102,7 @@ struct _GDBusServer
   GDBusServerFlags flags;
   gchar *address;
   gchar *guid;
+  guint max_message_unix_fds;
 
   guchar *nonce;
   gchar *nonce_file;
@@ -154,6 +155,7 @@ enum
   PROP_GUID,
   PROP_ACTIVE,
   PROP_AUTHENTICATION_OBSERVER,
+  PROP_MAX_MESSAGE_UNIX_FDS,
 };
 
 enum
@@ -247,6 +249,10 @@ g_dbus_server_get_property (GObject    *object,
       g_value_set_object (value, server->authentication_observer);
       break;
 
+    case PROP_MAX_MESSAGE_UNIX_FDS:
+      g_value_set_uint (value, server->max_message_unix_fds);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -277,6 +283,10 @@ g_dbus_server_set_property (GObject      *object,
 
     case PROP_AUTHENTICATION_OBSERVER:
       server->authentication_observer = g_value_dup_object (value);
+      break;
+
+    case PROP_MAX_MESSAGE_UNIX_FDS:
+      server->max_message_unix_fds = g_value_get_uint (value);
       break;
 
     default:
@@ -401,6 +411,26 @@ g_dbus_server_class_init (GDBusServerClass *klass)
                                                         G_PARAM_STATIC_NAME |
                                                         G_PARAM_STATIC_BLURB |
                                                         G_PARAM_STATIC_NICK));
+
+  /**
+   * GDBusServer:max-message-unix-fds:
+   *
+   * The maximum number of Unix file descriptors that may be received in a
+   * single D-Bus message on connections accepted by the server.
+   *
+   * Since: 2.92
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_MAX_MESSAGE_UNIX_FDS,
+                                   g_param_spec_uint ("max-message-unix-fds", NULL, NULL,
+                                                      0, G_MAXUINT,
+                                                      G_DBUS_DEFAULT_MAX_MESSAGE_UNIX_FDS,
+                                                      G_PARAM_READABLE |
+                                                      G_PARAM_WRITABLE |
+                                                      G_PARAM_CONSTRUCT_ONLY |
+                                                      G_PARAM_STATIC_NAME |
+                                                      G_PARAM_STATIC_BLURB |
+                                                      G_PARAM_STATIC_NICK));
 
   /**
    * GDBusServer::new-connection:
@@ -1029,12 +1059,15 @@ on_run (GSocketService    *service,
   if (server->flags & G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER)
     connection_flags |= G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER;
 
-  connection = g_dbus_connection_new_sync (G_IO_STREAM (socket_connection),
-                                           server->guid,
-                                           connection_flags,
-                                           server->authentication_observer,
-                                           NULL,  /* GCancellable */
-                                           NULL); /* GError */
+  connection = g_initable_new (G_TYPE_DBUS_CONNECTION,
+                               NULL, /* GCancellable */
+                               NULL, /* GError */
+                               "stream", socket_connection,
+                               "guid", server->guid,
+                               "flags", connection_flags,
+                               "authentication-observer", server->authentication_observer,
+                               "max-message-unix-fds", server->max_message_unix_fds,
+                               NULL);
   if (connection == NULL)
       goto out;
 

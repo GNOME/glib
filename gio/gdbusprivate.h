@@ -72,6 +72,12 @@ G_BEGIN_DECLS
 
 typedef struct GDBusWorker GDBusWorker;
 
+/* Linux limits a single sendmsg() call to 253 file descriptors. Keeping the
+ * default at that limit permits relaying a message unchanged while bounding
+ * the resources consumed by an incomplete message.
+ */
+#define G_DBUS_DEFAULT_MAX_MESSAGE_UNIX_FDS 253
+
 typedef void (*GDBusWorkerMessageReceivedCallback) (GDBusWorker   *worker,
                                                     GDBusMessage  *message,
                                                     gpointer       user_data);
@@ -88,13 +94,14 @@ typedef void (*GDBusWorkerDisconnectedCallback)    (GDBusWorker   *worker,
 /* This function may be called from any thread - callbacks will be in the shared private message thread
  * and must not block.
  */
-GDBusWorker *_g_dbus_worker_new          (GIOStream                          *stream,
-                                          GDBusCapabilityFlags                capabilities,
-                                          gboolean                            initially_frozen,
-                                          GDBusWorkerMessageReceivedCallback  message_received_callback,
-                                          GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback,
-                                          GDBusWorkerDisconnectedCallback     disconnected_callback,
-                                          gpointer                            user_data);
+GDBusWorker *_g_dbus_worker_new (GIOStream *stream,
+                                 GDBusCapabilityFlags capabilities,
+                                 guint max_message_unix_fds,
+                                 gboolean initially_frozen,
+                                 GDBusWorkerMessageReceivedCallback message_received_callback,
+                                 GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback,
+                                 GDBusWorkerDisconnectedCallback disconnected_callback,
+                                 gpointer user_data);
 
 /* can be called from any thread - steals blob */
 void         _g_dbus_worker_send_message (GDBusWorker    *worker,
