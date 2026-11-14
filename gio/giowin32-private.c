@@ -455,6 +455,15 @@ typedef struct _file_or_uri {
   gchar *file;
 } file_or_uri;
 
+static void
+free_file_or_uri (gpointer ptr)
+{
+  file_or_uri *obj = ptr;
+  g_free (obj->file);
+  g_free (obj->uri);
+  g_free (obj);
+}
+
 static char *
 expand_macro_single (char macro, file_or_uri *obj)
 {

@@ -5065,16 +5065,6 @@ out:
   return completed;
 }
 
-static void
-free_file_or_uri (gpointer ptr)
-{
-  file_or_uri *obj = ptr;
-  g_free (obj->file);
-  g_free (obj->uri);
-  g_free (obj);
-}
-
-
 static gboolean
 g_win32_app_supports_uris (GWin32AppInfoApplication *app)
 {
