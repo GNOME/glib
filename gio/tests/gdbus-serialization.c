@@ -1269,6 +1269,16 @@ test_message_serialize_over_long_variant_signature (void)
                    "D-Bus signature exceeds maximum length of 255 bytes");
   g_assert_null (blob);
 
+  g_clear_error (&error);
+  g_dbus_message_set_body (message, NULL);
+  g_dbus_message_set_header (message, 42,
+                             g_variant_new_from_data (long_tuple_type, data, 256,
+                                                      TRUE, NULL, NULL));
+  blob = g_dbus_message_to_blob (message, &blob_size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert_cmpstr (error->message, ==, "D-Bus signature exceeds maximum length of 255 bytes");
+  g_assert_null (blob);
+
   g_free (data);
   g_free (long_tuple_type_string);
   g_free (long_signature);
@@ -2017,6 +2027,61 @@ test_message_parse_invalid_header_type (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+test_message_serialize_unknown_headers (void)
+{
+  const GDBusMessageByteOrder byte_orders[] = {
+    G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN,
+    G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN,
+  };
+
+  for (gsize i = 0; i < G_N_ELEMENTS (byte_orders); i++)
+    {
+      GDBusMessage *message;
+      GDBusMessage *recovered;
+      DBusMessage *dbus_message;
+      DBusError dbus_error;
+      GError *error = NULL;
+      guchar *blob;
+      gsize size;
+
+      message = g_dbus_message_new_signal ("/", "org.example.Test", "Changed");
+      g_dbus_message_set_serial (message, 1);
+      g_dbus_message_set_byte_order (message, byte_orders[i]);
+      g_dbus_message_set_body (message, g_variant_new ("(s)", "body"));
+      g_dbus_message_set_header (message, 42, g_variant_new_byte (7));
+      g_dbus_message_set_header (message, 43, g_variant_new_uint64 (G_MAXUINT64));
+      g_dbus_message_set_header (message, 44, g_variant_new ("(ys)", 3, "header"));
+      g_dbus_message_set_header (message, 45, g_variant_new_strv (NULL, 0));
+      g_dbus_message_set_header (message, 46, g_variant_new_variant (g_variant_new_boolean (TRUE)));
+
+      blob = g_dbus_message_to_blob (message, &size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
+      g_assert_no_error (error);
+      g_assert_nonnull (blob);
+
+      dbus_error_init (&dbus_error);
+      dbus_message = dbus_message_demarshal ((char *) blob, size, &dbus_error);
+      g_assert_false (dbus_error_is_set (&dbus_error));
+      g_assert_nonnull (dbus_message);
+      dbus_message_unref (dbus_message);
+      dbus_error_free (&dbus_error);
+
+      recovered = g_dbus_message_new_from_blob (blob, size, G_DBUS_CAPABILITY_FLAGS_NONE, &error);
+      g_assert_no_error (error);
+      g_assert_nonnull (recovered);
+      g_assert_true (g_variant_equal (g_dbus_message_get_body (message),
+                                      g_dbus_message_get_body (recovered)));
+
+      for (guint header = 42; header <= 46; header++)
+        g_assert_true (g_variant_equal (g_dbus_message_get_header (message, header),
+                                        g_dbus_message_get_header (recovered, header)));
+
+      g_object_unref (recovered);
+      g_object_unref (message);
+      g_free (blob);
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2026,6 +2091,8 @@ main (int   argc,
 
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
+  g_test_add_func ("/gdbus/message-serialize/unknown-headers",
+                   test_message_serialize_unknown_headers);
   g_test_add_func ("/gdbus/message-serialize/basic",
                    test_message_serialize_basic);
   g_test_add_func ("/gdbus/message-serialize/complex",

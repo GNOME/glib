@@ -2968,8 +2968,8 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   goffset body_len_offset;
   goffset body_start_offset;
   gsize body_size;
-  GVariant *header_fields;
-  GVariantBuilder builder;
+  gsize header_len_offset;
+  gsize header_start_offset;
   GHashTableIter hash_iter;
   gpointer key;
   GVariant *header_value;
@@ -3034,27 +3034,35 @@ g_dbus_message_to_blob (GDBusMessage          *message,
       goto out;
     }
 
-  g_variant_builder_init_static (&builder, G_VARIANT_TYPE ("a{yv}"));
+  header_len_offset = mbuf.pos;
+  g_memory_buffer_put_uint32 (&mbuf, 0);
+  header_start_offset = mbuf.pos;
+
   g_hash_table_iter_init (&hash_iter, message->headers);
   while (g_hash_table_iter_next (&hash_iter, &key, (gpointer) &header_value))
     {
-      g_variant_builder_add (&builder,
-                             "{yv}",
-                             (guchar) GPOINTER_TO_UINT (key),
-                             header_value);
-    }
-  header_fields = g_variant_builder_end (&builder);
+      const gchar *header_signature = g_variant_get_type_string (header_value);
+      gsize header_signature_len = strlen (header_signature);
 
-  if (!append_value_to_blob (header_fields,
-                             g_variant_get_type (header_fields),
-                             &mbuf,
-                             NULL,
-                             error))
-    {
-      g_variant_unref (header_fields);
-      goto out;
+      if (!validate_signature_length (header_signature_len, error))
+        goto out;
+
+      ensure_output_padding (&mbuf, 8);
+      g_memory_buffer_put_byte (&mbuf, (guchar) GPOINTER_TO_UINT (key));
+      g_memory_buffer_put_byte (&mbuf, (guchar) header_signature_len);
+      g_memory_buffer_write (&mbuf, header_signature, header_signature_len + 1);
+
+      if (!append_value_to_blob (header_value,
+                                 g_variant_get_type (header_value),
+                                 &mbuf,
+                                 NULL,
+                                 error))
+        goto out;
     }
-  g_variant_unref (header_fields);
+
+  mbuf.pos = header_len_offset;
+  g_memory_buffer_put_uint32 (&mbuf, mbuf.valid_len - header_start_offset);
+  mbuf.pos = mbuf.valid_len;
 
   /* header size must be a multiple of 8 */
   ensure_output_padding (&mbuf, 8);
