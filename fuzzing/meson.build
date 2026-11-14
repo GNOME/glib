@@ -16,44 +16,44 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-fuzz_targets = [
-  'fuzz_bookmark',
-  'fuzz_canonicalize_filename',
-  'fuzz_data_input_stream_read_line',
-  'fuzz_data_input_stream_read_line_utf8',
-  'fuzz_data_input_stream_read_upto',
-  'fuzz_date_parse',
-  'fuzz_date_time_new_from_iso8601',
-  'fuzz_dbus_message',
-  'fuzz_dbus_node_info_new_for_xml',
-  'fuzz_filename_from_uri',
-  'fuzz_filename_to_uri',
-  'fuzz_get_locale_variants',
-  'fuzz_inet_address_mask_new_from_string',
-  'fuzz_inet_address_new_from_string',
-  'fuzz_inet_socket_address_new_from_string',
-  'fuzz_key',
-  'fuzz_markup_escape_text',
-  'fuzz_network_address_parse',
-  'fuzz_network_address_parse_uri',
-  'fuzz_paths',
-  'fuzz_resolver',
-  'fuzz_special_dirs',
-  'fuzz_string',
-  'fuzz_uri_escape',
-  'fuzz_uri_parse',
-  'fuzz_uri_parse_params',
-  'fuzz_utf8_normalize',
-  'fuzz_utf8_validate',
-  'fuzz_uuid_string_is_valid',
-  'fuzz_variant_binary',
-  'fuzz_variant_binary_byteswap',
-  'fuzz_variant_text',
-]
+fuzz_targets = {
+  'fuzz_bookmark': {},
+  'fuzz_canonicalize_filename': {},
+  'fuzz_data_input_stream_read_line': {},
+  'fuzz_data_input_stream_read_line_utf8': {},
+  'fuzz_data_input_stream_read_upto': {},
+  'fuzz_date_parse': {},
+  'fuzz_date_time_new_from_iso8601': {},
+  'fuzz_dbus_message': {},
+  'fuzz_dbus_node_info_new_for_xml': {},
+  'fuzz_filename_from_uri': {},
+  'fuzz_filename_to_uri': {},
+  'fuzz_get_locale_variants': {},
+  'fuzz_inet_address_mask_new_from_string': {},
+  'fuzz_inet_address_new_from_string': {},
+  'fuzz_inet_socket_address_new_from_string': {},
+  'fuzz_key': {},
+  'fuzz_markup_escape_text': {},
+  'fuzz_network_address_parse': {},
+  'fuzz_network_address_parse_uri': {},
+  'fuzz_paths': {},
+  'fuzz_resolver': {},
+  'fuzz_special_dirs': {},
+  'fuzz_string': {},
+  'fuzz_uri_escape': {},
+  'fuzz_uri_parse': {},
+  'fuzz_uri_parse_params': {},
+  'fuzz_utf8_normalize': {},
+  'fuzz_utf8_validate': {},
+  'fuzz_uuid_string_is_valid': {},
+  'fuzz_variant_binary': {},
+  'fuzz_variant_binary_byteswap': {},
+  'fuzz_variant_text': {},
+}
 
 deps = [libgmodule_dep, libgio_dep, libglib_dep, libgobject_dep, test_profile_dep]
 
-extra_sources = []
+common_extra_sources = []
 extra_c_args = cc.get_supported_arguments('-Werror=unused-function')
 
 # Links in a static library provided by oss-fuzz, else a standalone driver.
@@ -66,12 +66,14 @@ endif
 if have_fuzzing_engine
   deps += fuzzing_engine
 else
-  extra_sources += 'driver.c'
+  common_extra_sources += 'driver.c'
 endif
 
 if have_fuzzing_engine or build_tests
-  foreach target_name : fuzz_targets
-    exe = executable(target_name, [extra_sources, target_name + '.c'],
+  foreach target_name, extra_args : fuzz_targets
+    extra_sources = extra_args.get('extra_sources', [])
+
+    exe = executable(target_name, [common_extra_sources, extra_sources, target_name + '.c'],
       c_args : extra_c_args,
       dependencies : deps,
     )
