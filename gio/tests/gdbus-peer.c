@@ -46,6 +46,8 @@
 
 #ifdef G_OS_WIN32
 #include <gio/giowin32-afunix.h>
+#include <windows.h>
+#include <sddl.h>
 #endif
 
 #include "gdbusprivate.h"
@@ -1859,7 +1861,7 @@ test_credentials (void)
 #endif
 
   same = g_credentials_is_same_user (c1, c2, &error);
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) || G_CREDENTIALS_USE_WIN32_PID
   g_assert (same);
   g_assert_no_error (error);
 #else
@@ -1868,12 +1870,336 @@ test_credentials (void)
   g_clear_error (&error);
 #endif
 
+#if G_CREDENTIALS_USE_WIN32_PID
+  {
+    /* A PID of 0 is what Windows gives when it does not know the peer; it
+     * must not be taken for this process.
+     */
+    DWORD unknown = 0;
+
+    g_credentials_set_native (c2, G_CREDENTIALS_TYPE_WIN32_PID, &unknown);
+    g_assert_false (g_credentials_is_same_user (c1, c2, &error));
+    g_assert_no_error (error);
+  }
+#endif
+
   desc = g_credentials_to_string (c1);
   g_assert (desc != NULL);
   g_free (desc);
 
   g_object_unref (c1);
   g_object_unref (c2);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+/* Test that a server that wants the same user lets the same user in, and
+ * that what a client says in EXTERNAL has to be the user of its process
+ */
+/* ---------------------------------------------------------------------------------------------------- */
+
+#if G_CREDENTIALS_SUPPORTED
+
+typedef struct
+{
+  GMainLoop *loop;
+  GDBusConnection *server_connection;
+  GDBusConnection *client_connection;
+  GError *client_error;
+} SameUserData;
+
+static gboolean
+same_user_on_new_connection (GDBusServer     *a_server,
+                             GDBusConnection *connection,
+                             gpointer         user_data)
+{
+  SameUserData *data = user_data;
+
+  data->server_connection = g_object_ref (connection);
+  if (data->client_connection != NULL || data->client_error != NULL)
+    g_main_loop_quit (data->loop);
+
+  return TRUE;
+}
+
+static void
+same_user_client_connected (GObject      *source,
+                            GAsyncResult *result,
+                            gpointer      user_data)
+{
+  SameUserData *data = user_data;
+
+  data->client_connection = g_dbus_connection_new_for_address_finish (result, &data->client_error);
+  if (data->server_connection != NULL || data->client_error != NULL)
+    g_main_loop_quit (data->loop);
+}
+
+static GDBusServer *
+same_user_server_new (SameUserData *data)
+{
+  GDBusServer *a_server;
+  GError *error = NULL;
+
+  setup_test_address ();
+  a_server = g_dbus_server_new_sync (tmp_address,
+                                     G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER,
+                                     test_guid,
+                                     NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_signal_connect (a_server, "new-connection", G_CALLBACK (same_user_on_new_connection), data);
+  g_dbus_server_start (a_server);
+
+  return a_server;
+}
+
+static void
+same_user_server_free (GDBusServer *a_server)
+{
+  g_dbus_server_stop (a_server);
+  g_object_unref (a_server);
+  teardown_test_address ();
+}
+
+#endif /* G_CREDENTIALS_SUPPORTED */
+
+static void
+test_same_user (void)
+{
+#if G_CREDENTIALS_SUPPORTED
+  SameUserData data = { 0 };
+  GDBusServer *a_server;
+  GCredentials *mine, *peer;
+  GError *error = NULL;
+
+  if (!is_unix && !af_unix_works ())
+    {
+      g_test_skip ("AF_UNIX sockets do not work here");
+      return;
+    }
+
+  test_guid = g_dbus_generate_guid ();
+  data.loop = g_main_loop_new (NULL, FALSE);
+  a_server = same_user_server_new (&data);
+
+  g_dbus_connection_new_for_address (g_dbus_server_get_client_address (a_server),
+                                     G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                     NULL, NULL, same_user_client_connected, &data);
+  g_main_loop_run (data.loop);
+
+  g_assert_no_error (data.client_error);
+  g_assert_nonnull (data.client_connection);
+  g_assert_nonnull (data.server_connection);
+
+  /* The server knows who is on the other end, and it is us */
+  peer = g_dbus_connection_get_peer_credentials (data.server_connection);
+  g_assert_nonnull (peer);
+  mine = g_credentials_new ();
+  g_assert_true (g_credentials_is_same_user (peer, mine, &error));
+  g_assert_no_error (error);
+
+  g_object_unref (mine);
+  g_dbus_connection_close_sync (data.client_connection, NULL, NULL);
+  g_dbus_connection_close_sync (data.server_connection, NULL, NULL);
+  g_object_unref (data.client_connection);
+  g_object_unref (data.server_connection);
+  same_user_server_free (a_server);
+  g_main_loop_unref (data.loop);
+  g_free (test_guid);
+#else
+  g_test_skip ("Credentials are not supported");
+#endif
+}
+
+#if G_CREDENTIALS_SUPPORTED && defined(G_OS_WIN32)
+
+typedef struct
+{
+  const gchar *address;
+  const gchar *auth;
+  gsize auth_len;
+  GMainLoop *loop;
+} ExternalClient;
+
+/* The SID of the user of this process, hex-encoded as EXTERNAL wants it */
+static gchar *
+current_sid_hex (void)
+{
+  HANDLE token = NULL;
+  DWORD size = 0;
+  TOKEN_USER *user;
+  gchar *sid_string = NULL;
+  GString *hex = g_string_new (NULL);
+  const guchar *p;
+
+  g_assert_true (OpenProcessToken (GetCurrentProcess (), TOKEN_QUERY, &token));
+  GetTokenInformation (token, TokenUser, NULL, 0, &size);
+  user = g_malloc (size);
+  g_assert_true (GetTokenInformation (token, TokenUser, user, size, &size));
+  g_assert_true (ConvertSidToStringSidA (user->User.Sid, &sid_string));
+
+  for (p = (const guchar *) sid_string; *p != '\0'; p++)
+    g_string_append_printf (hex, "%02x", *p);
+
+  LocalFree (sid_string);
+  g_free (user);
+  CloseHandle (token);
+
+  return g_string_free (hex, FALSE);
+}
+
+static gboolean
+external_client_done (gpointer user_data)
+{
+  g_main_loop_quit (user_data);
+
+  return G_SOURCE_REMOVE;
+}
+
+static gpointer
+external_client_thread (gpointer user_data)
+{
+  ExternalClient *client = user_data;
+  GIOStream *stream;
+  GError *error = NULL;
+  GString *reply = g_string_new (NULL);
+  gchar buffer[256];
+  gssize len;
+
+  stream = g_dbus_address_get_stream_sync (client->address, NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  g_output_stream_write_all (g_io_stream_get_output_stream (stream),
+                             client->auth, client->auth_len,
+                             NULL, NULL, &error);
+  g_assert_no_error (error);
+
+  while (strstr (reply->str, "\r\n") == NULL)
+    {
+      len = g_input_stream_read (g_io_stream_get_input_stream (stream),
+                                 buffer, sizeof (buffer), NULL, &error);
+      g_assert_no_error (error);
+      if (len <= 0)
+        break;
+      g_string_append_len (reply, buffer, len);
+    }
+
+  g_io_stream_close (stream, NULL, NULL);
+  g_object_unref (stream);
+  g_main_context_invoke (NULL, external_client_done, client->loop);
+
+  return g_string_free (reply, FALSE);
+}
+
+/* Sends the line for EXTERNAL that begins with the NUL byte, and returns what
+ * the server says to it
+ */
+static gchar *
+external_auth_reply (const gchar *line,
+                     gsize        line_len)
+{
+  SameUserData data = { 0 };
+  ExternalClient client = { NULL, line, line_len, NULL };
+  GDBusServer *a_server;
+  GThread *thread;
+  gchar *reply;
+
+  test_guid = g_dbus_generate_guid ();
+  data.loop = g_main_loop_new (NULL, FALSE);
+  a_server = same_user_server_new (&data);
+
+  /* The server needs the main loop while the client talks to it from
+   * another thread
+   */
+  client.address = g_dbus_server_get_client_address (a_server);
+  client.loop = data.loop;
+  thread = g_thread_new ("external-client", external_client_thread, &client);
+  g_main_loop_run (data.loop);
+  reply = g_thread_join (thread);
+
+  g_assert_null (data.server_connection);
+
+  same_user_server_free (a_server);
+  g_main_loop_unref (data.loop);
+  g_free (test_guid);
+
+  return reply;
+}
+
+/* The identity that EXTERNAL claims is hex-encoded: this one is the SID of
+ * nobody who runs this test
+ */
+#define WRONG_SID_AUTH "\0AUTH EXTERNAL 532d312d352d32312d312d322d332d34\r\n"
+
+#endif /* G_CREDENTIALS_SUPPORTED && G_OS_WIN32 */
+
+static void
+test_external_wrong_sid (void)
+{
+#if G_CREDENTIALS_SUPPORTED && defined(G_OS_WIN32)
+  gchar *reply;
+
+  if (!af_unix_works ())
+    {
+      g_test_skip ("AF_UNIX sockets do not work here");
+      return;
+    }
+
+  /* The process at the other end is ours, but it says it is somebody else */
+  reply = external_auth_reply (WRONG_SID_AUTH, sizeof (WRONG_SID_AUTH) - 1);
+  g_assert_true (g_str_has_prefix (reply, "REJECTED"));
+  g_free (reply);
+#else
+  g_test_skip ("EXTERNAL is only checked against the credentials on Windows");
+#endif
+}
+
+/* The same line, with the right SID in it, must be let in: or the test above
+ * could pass for another reason, like a mistake in the line
+ */
+static void
+test_external_right_sid (void)
+{
+#if G_CREDENTIALS_SUPPORTED && defined(G_OS_WIN32)
+  gchar *hex, *line, *reply;
+
+  if (!af_unix_works ())
+    {
+      g_test_skip ("AF_UNIX sockets do not work here");
+      return;
+    }
+
+  hex = current_sid_hex ();
+  line = g_strdup_printf ("%cAUTH EXTERNAL %s\r\n", '\0', hex);
+  reply = external_auth_reply (line, strlen (hex) + 17);
+  g_assert_true (g_str_has_prefix (reply, "OK "));
+
+  g_free (reply);
+  g_free (line);
+  g_free (hex);
+#else
+  g_test_skip ("EXTERNAL is only checked against the credentials on Windows");
+#endif
+}
+
+/* EXTERNAL without an identity means the user the credentials say it is */
+static void
+test_external_empty_sid (void)
+{
+#if G_CREDENTIALS_SUPPORTED && defined(G_OS_WIN32)
+  static const gchar line[] = "\0AUTH EXTERNAL\r\n";
+  gchar *reply;
+
+  if (!af_unix_works ())
+    {
+      g_test_skip ("AF_UNIX sockets do not work here");
+      return;
+    }
+
+  reply = external_auth_reply (line, sizeof (line) - 1);
+  g_assert_true (g_str_has_prefix (reply, "DATA") || g_str_has_prefix (reply, "OK "));
+  g_free (reply);
+#else
+  g_test_skip ("EXTERNAL is only checked against the credentials on Windows");
+#endif
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -2257,6 +2583,10 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/tcp-anonymous", test_tcp_anonymous);
   g_test_add_func ("/gdbus/credentials", test_credentials);
+  g_test_add_func ("/gdbus/peer-to-peer/same-user", test_same_user);
+  g_test_add_func ("/gdbus/peer-to-peer/external-wrong-sid", test_external_wrong_sid);
+  g_test_add_func ("/gdbus/peer-to-peer/external-right-sid", test_external_right_sid);
+  g_test_add_func ("/gdbus/peer-to-peer/external-empty-sid", test_external_empty_sid);
   g_test_add_func ("/gdbus/codegen-peer-to-peer", codegen_test_peer);
 
   ret = g_test_run ();

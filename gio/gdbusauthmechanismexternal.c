@@ -32,6 +32,7 @@
 #include "glibintl.h"
 
 #ifdef G_OS_WIN32
+#include "gcredentialsprivate.h"
 #include "gwin32sid.h"
 #endif
 
@@ -229,6 +230,31 @@ data_matches_credentials (const gchar  *data,
           {
             match = TRUE;
           }
+      }
+  }
+#elif defined(G_OS_WIN32) && G_CREDENTIALS_USE_WIN32_PID
+  {
+    SID *sid = _g_credentials_win32_get_sid (credentials);
+
+    /* The credentials say which process is at the other end, so what
+     * the client says it is has to be the user of that process.  An
+     * empty identity means whoever the credentials say we are, as on Unix.
+     */
+    if (sid != NULL)
+      {
+        if (data == NULL || data_len == 0)
+          match = TRUE;
+        else
+          {
+            gchar *sid_string = _g_win32_sid_to_string (sid, NULL);
+
+            match = sid_string != NULL &&
+                    strlen (sid_string) == data_len &&
+                    memcmp (sid_string, data, data_len) == 0;
+            g_free (sid_string);
+          }
+
+        g_free (sid);
       }
   }
 #else

@@ -35,6 +35,10 @@
 
 #include "glibintl.h"
 
+#ifdef G_OS_WIN32
+#include "gwin32sid.h"
+#endif
+
 /**
  * GCredentials:
  *
@@ -73,6 +77,12 @@
  *
  * Since GLib 2.72, on Windows, the native credentials may contain the PID of a
  * process. This corresponds to `G_CREDENTIALS_TYPE_WIN32_PID`.
+ *
+ * Since GLib 2.92, on Windows, [method@Gio.Credentials.is_same_user] looks up
+ * the user who owns each of the processes in the credentials, and compares the
+ * two.  The lookup is made when the method is called.  A process that is gone,
+ * or that cannot be inspected (as it is more privileged than the caller), is
+ * not the same user as anyone.
  *
  * Since: 2.26
  */
@@ -332,6 +342,50 @@ linux_ucred_check_valid (struct ucred  *native,
 }
 #endif
 
+#if G_CREDENTIALS_USE_WIN32_PID
+/*
+ * _g_credentials_win32_get_sid:
+ * @credentials: A #GCredentials.
+ *
+ * Gets the SID of the user of the process whose PID is in @credentials.
+ *
+ * Only the user of the process is looked at, as the user ID is on Unix: not
+ * its integrity level, its restrictions, or whether it is in an AppContainer.
+ * The process is looked up now, and not when the peer connected, so a PID
+ * that is reused in between is taken for the new process.  Authenticating
+ * the peer of a socket is not meant to protect against another user who can
+ * win that race, but it is why a process must not be trusted with more than
+ * its user.
+ *
+ * The PID of the peer of an AF_UNIX socket is 0 when Windows does not know
+ * it.  A 0 must not be given on to the function that looks the process up,
+ * as there it means "this process", which would make a peer the same user as
+ * ourselves.
+ *
+ * Returns: (transfer full): the SID, or %NULL.
+ */
+gpointer
+_g_credentials_win32_get_sid (GCredentials *credentials)
+{
+  GError *error = NULL;
+  gpointer sid;
+
+  if (credentials->native == 0)
+    return NULL;
+
+  sid = _g_win32_process_get_access_token_sid (credentials->native, &error);
+  if (sid == NULL)
+    {
+      g_debug ("Cannot get the user of process %lu: %s",
+               (gulong) credentials->native,
+               error != NULL ? error->message : "unknown error");
+      g_clear_error (&error);
+    }
+
+  return sid;
+}
+#endif
+
 /**
  * g_credentials_is_same_user:
  * @credentials: A #GCredentials.
@@ -342,6 +396,10 @@ linux_ucred_check_valid (struct ucred  *native,
  *
  * This operation can fail if #GCredentials is not supported on the
  * the OS.
+ *
+ * On Windows, since 2.92, the owners of the two processes are compared.  If
+ * one of the processes cannot be inspected, the result is %FALSE and @error
+ * is not set.
  *
  * Returns: %TRUE if @credentials and @other_credentials has the same
  * user, %FALSE otherwise or if @error is set.
@@ -380,6 +438,20 @@ g_credentials_is_same_user (GCredentials  *credentials,
 #elif G_CREDENTIALS_USE_SOLARIS_UCRED
   if (ucred_geteuid (credentials->native) == ucred_geteuid (other_credentials->native))
     ret = TRUE;
+#elif G_CREDENTIALS_USE_WIN32_PID
+  {
+    SID *sid = _g_credentials_win32_get_sid (credentials);
+    SID *other_sid = _g_credentials_win32_get_sid (other_credentials);
+
+    /* A process that cannot be looked at (it has gone, or it is more
+     * privileged than we are) is not the same user.
+     */
+    if (sid != NULL && other_sid != NULL && EqualSid (sid, other_sid))
+      ret = TRUE;
+
+    g_free (sid);
+    g_free (other_sid);
+  }
 #else
   g_set_error_literal (error,
                        G_IO_ERROR,

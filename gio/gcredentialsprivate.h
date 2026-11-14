@@ -182,6 +182,12 @@ void _g_credentials_set_local_peerid (GCredentials *credentials,
 #define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_HAS_PID 1
 
+/* The SID (a SID *, which is not named here to keep windows.h out of this
+ * header) of the user of the process in the credentials, or NULL if the
+ * process is not there or cannot be looked at.  Free with g_free().
+ */
+gpointer _g_credentials_win32_get_sid (GCredentials *credentials);
+
 #endif
 
 #endif /* __G_CREDENTIALS_PRIVATE_H__ */
