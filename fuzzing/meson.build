@@ -54,6 +54,13 @@ fuzz_targets = {
   },
 }
 
+# Fuzz tests buildable on Linux only
+if host_machine.system() != 'windows' and not glib_have_cocoa
+  fuzz_targets += {
+    'fuzz_desktop_app_info': {},
+  }
+endif
+
 deps = [libgmodule_dep, libgio_dep, libglib_dep, libgobject_dep, test_profile_dep]
 
 common_extra_sources = []
