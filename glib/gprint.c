@@ -89,10 +89,10 @@ g_print_convert (const char *string,
 
 static int
 print_console_nolock (const char *string,
+                      size_t      size,
                       FILE       *stream)
 {
   HANDLE handle = (HANDLE) _get_osfhandle (_fileno (stream));
-  size_t size = strlen (string);
   DWORD written = 0;
 
   if (size > INT_MAX)
@@ -141,7 +141,10 @@ print_console_nolock (const char *string,
       size_t utf16_len = 0;
       DWORD utf16_written = 0;
 
-      g_utf8_to_utf16_make_valid (string,
+      /* @string has @size bytes and may contain embedded NULs, which are
+       * converted to UTF-16 NULs.
+       */
+      g_utf8_to_utf16_make_valid (string, (gssize) size,
                                   buffer, G_N_ELEMENTS (buffer),
                                   &utf16, &utf16_len);
 
@@ -156,7 +159,7 @@ print_console_nolock (const char *string,
 
       if (utf16_written < utf16_len)
         {
-          written = g_utf8_to_utf16_make_valid_backtrack (string, utf16_written);
+          written = g_utf8_to_utf16_make_valid_backtrack (string, (gssize) size, utf16_written);
         }
       else
         {
@@ -175,6 +178,7 @@ print_console_nolock (const char *string,
 
 static int
 print_console (const char *string,
+               size_t      size,
                FILE       *stream)
 {
   int ret;
@@ -190,7 +194,7 @@ print_console (const char *string,
   fflush (stream);
 #endif
 
-  ret = print_console_nolock (string, stream);
+  ret = print_console_nolock (string, size, stream);
 
   _unlock_file (stream);
 
@@ -201,30 +205,37 @@ print_console (const char *string,
 
 static int
 print_string (char const *string,
+              size_t      size,
               FILE       *stream)
 {
-  size_t written = fwrite (string, 1, strlen (string), stream);
+  size_t written = fwrite (string, 1, size, stream);
 
   return MIN (written, INT_MAX);
 }
 
+/* Like g_fputs(), but writes exactly @size bytes of @string, so embedded NUL
+ * bytes are not special. Only the case where output goes to a terminal on
+ * Unix and the charset is not UTF-8 needs a conversion that works on
+ * NUL-terminated strings: there, output stops at the first embedded NUL.
+ */
 int
-g_fputs (char const *string,
-         FILE       *stream)
+g_fputs_len (char const *string,
+             size_t      size,
+             FILE       *stream)
 {
   int ret;
 
 #ifdef _WIN32
   if (g_win32_file_stream_is_console_output (stream))
     {
-      ret = print_console (string, stream);
+      ret = print_console (string, size, stream);
 
-      if (string[ret] != '\0')
-        ret += print_string (&string[ret], stream);
+      if ((size_t) ret < size)
+        ret += print_string (&string[ret], size - (size_t) ret, stream);
     }
   else
     {
-      ret = print_string (string, stream);
+      ret = print_string (string, size, stream);
     }
 #else
   const char *charset;
@@ -232,15 +243,28 @@ g_fputs (char const *string,
   if (isatty (fileno (stream)) &&
       !g_get_charset (&charset))
     {
-      char *converted = g_print_convert (string, charset);
-      ret = print_string (converted, stream);
+      /* g_print_convert() works on NUL-terminated strings: copy exactly
+       * @size bytes so that @string is never read past @size. Embedded NULs
+       * truncate the output on this (terminal, non-UTF-8) path. */
+      char *copy = g_strndup (string, size);
+      char *converted = g_print_convert (copy, charset);
+
+      ret = print_string (converted, strlen (converted), stream);
       g_free (converted);
+      g_free (copy);
     }
   else
     {
-      ret = print_string (string, stream);
+      ret = print_string (string, size, stream);
     }
 #endif
 
   return ret;
+}
+
+int
+g_fputs (char const *string,
+         FILE       *stream)
+{
+  return g_fputs_len (string, strlen (string), stream);
 }

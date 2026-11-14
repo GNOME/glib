@@ -28,6 +28,9 @@
 #include "gprintfint.h"
 #include "gprintprivate.h"
 
+#ifdef G_OS_WIN32
+#include "gwin32private.h"
+#endif
 
 /**
  * g_printf:
@@ -198,7 +201,11 @@ g_vprintf (gchar const *format,
 {
   g_return_val_if_fail (format != NULL, -1);
 
+#ifdef G_OS_WIN32
+  return g_vfprintf (stdout, format, args);
+#else
   return _g_vprintf (format, args);
+#endif
 }
 
 /**
@@ -223,6 +230,28 @@ g_vfprintf (FILE        *file,
             va_list      args)
 {
   g_return_val_if_fail (format != NULL, -1);
+
+#ifdef G_OS_WIN32
+  if (g_win32_file_stream_is_console_output (file))
+    {
+      /* Console output must go through the console writer so that the
+       * UTF-8 string is converted for the console. The explicit length keeps
+       * embedded NUL bytes (valid printf() output, see #3761) intact. */
+      char *result = NULL;
+      int rlength;
+
+      rlength = g_vasprintf (&result, format, args);
+      if (rlength < 0)
+        return rlength;
+
+      if (g_fputs_len (result, (size_t) rlength, file) < rlength)
+        rlength = -1;
+
+      g_free (result);
+
+      return rlength;
+    }
+#endif
 
   return _g_vfprintf (file, format, args);
 }
