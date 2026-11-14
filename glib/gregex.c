@@ -282,13 +282,10 @@
                                     G_REGEX_MATCH_NEWLINE_ANYCRLF)
 
 /* if the string is in UTF-8 use g_utf8_ functions, else use
- * use just +/- 1. */
+ * just + 1. */
 #define NEXT_CHAR(re, s) (((re)->regex_compile_opts & G_REGEX_RAW) ? \
                                 ((s) + 1) : \
                                 g_utf8_next_char (s))
-#define PREV_CHAR(re, s) (((re)->regex_compile_opts & G_REGEX_RAW) ? \
-                                ((s) - 1) : \
-                                g_utf8_prev_char (s))
 
 struct _GMatchInfo
 {
@@ -1168,7 +1165,11 @@ g_match_info_next (GMatchInfo  *match_info,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if (!match_info->pos_valid)
-    return FALSE;
+    {
+      /* make sure the match info gets updated */
+      match_info->matches = PCRE2_ERROR_NOMATCH;
+      return FALSE;
+    }
 
   prev_match_start = match_info->offsets != NULL ? match_info->offsets[0] : -1;
   prev_match_end = match_info->offsets != NULL ? match_info->offsets[1] : -1;
@@ -1291,7 +1292,7 @@ g_match_info_next (GMatchInfo  *match_info,
           match_info->matches = PCRE2_ERROR_NOMATCH;
           return FALSE;
         }
-      else if (match_info->pos > match_info->string_len)
+      else if (match_info->pos == match_info->string_len)
         {
           /* we have one last empty match at the end of the string */
           match_info->pos_valid = FALSE;
@@ -3137,7 +3138,7 @@ g_regex_split_full (const GRegex      *regex,
       else
         {
           /* if there was no match, copy to end of string. */
-          if (!last_match_is_empty)
+          if (!last_match_is_empty || last_separator_end < string_len_unsigned)
             {
               gchar *token = g_strndup (string + last_separator_end,
                                         match_info->string_len - last_separator_end);
@@ -3147,43 +3148,22 @@ g_regex_split_full (const GRegex      *regex,
           break;
         }
 
+      last_separator_end = match_info->offsets[1];
+
       /* -1 to leave room for the last part. */
       if (token_count >= max_tokens - 1)
         {
           /* we have reached the maximum number of tokens, so we copy
            * the remaining part of the string. */
-          if (last_match_is_empty)
+          if (!last_match_is_empty || last_separator_end < string_len_unsigned)
             {
-              /* the last match was empty, so we have moved one char
-               * after the real position to avoid empty matches at the
-               * same position. */
-              const char *prev_char = PREV_CHAR (regex, &string[match_info->pos]);
-              g_assert (prev_char >= string);
-              match_info->pos = prev_char - string;
-              match_info->pos_valid = TRUE;
-            }
-
-          g_assert (match_info->pos_valid);
-
-          /* the if is needed in the case we have terminated the available
-           * tokens, but we are at the end of the string, so there are no
-           * characters left to copy. */
-          if (string_len_unsigned > match_info->pos)
-            {
-              gchar *token = g_strndup (string + match_info->pos,
-                                        string_len_unsigned - match_info->pos);
+              gchar *token = g_strndup (string + last_separator_end,
+                                        string_len_unsigned - last_separator_end);
               list = g_list_prepend (list, token);
             }
           /* end the loop. */
           break;
         }
-
-      last_separator_end = match_info->pos;
-      if (last_match_is_empty)
-        /* if the last match was empty, g_match_info_next() has moved
-         * forward to avoid infinite loops, but we still need to copy that
-         * character. */
-        last_separator_end = PREV_CHAR (regex, &string[last_separator_end]) - string;
 
       match_ok = g_match_info_next (match_info, &tmp_error);
     }
