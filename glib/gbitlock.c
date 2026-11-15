@@ -353,7 +353,7 @@ g_bit_trylock (volatile gint *address,
                     "movzx %%al, %0"
                     : "=r" (result)
                     : "r" (address), "r" (lock_bit)
-                    : "cc", "memory");
+                    : "al", "cc", "memory");
 #ifdef __SANITIZE_THREAD__
   int *address_nonvolatile = (int *) address;
   __tsan_acquire (address_nonvolatile);
@@ -654,7 +654,7 @@ gboolean
                       "movzx %%al, %0"
                       : "=r" (result)
                       : "r" (address), "r" ((gsize) lock_bit)
-                      : "cc", "memory");
+                      : "al", "cc", "memory");
 #ifdef __SANITIZE_THREAD__
     void *address_nonvolatile = (void *) address;
     __tsan_acquire (address_nonvolatile);
