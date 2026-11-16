@@ -113,8 +113,6 @@ extern char **environ;
 
 #ifndef O_CLOEXEC
 #define O_CLOEXEC 0
-#else
-#define HAVE_O_CLOEXEC 1
 #endif
 
 static gint g_execute (const gchar  *file,
@@ -726,6 +724,20 @@ do_exec (gint                  child_err_report_fd,
     write_err_and_exit (child_err_report_fd,
                         CHILD_CHDIR_FAILED);
 
+  /* If a standard stream was closed before calling g_spawn_*(), the error
+   * pipe may reuse its fd. Move the write end before redirecting the streams.
+   */
+  if (IS_STD_FILENO (child_err_report_fd))
+    {
+      int old_fd = child_err_report_fd;
+
+      child_err_report_fd = dupfd_cloexec (old_fd, STDERR_FILENO + 1);
+      if (child_err_report_fd < 0)
+        write_err_and_exit (old_fd, CHILD_DUPFD_FAILED);
+
+      g_clear_fd (&old_fd, NULL);
+    }
+
   /* It's possible the caller assigned stdin to an fd with a
    * file number that is supposed to be reserved for
    * stdout or stderr.
@@ -762,7 +774,7 @@ do_exec (gint                  child_err_report_fd,
 
       set_cloexec (stdin_fd);
     }
-  else if (!child_inherits_stdin)
+  else if (!IS_VALID_FILENO (stdin_fd) && !child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
       gint read_null = safe_open ("/dev/null", O_RDONLY);
@@ -772,7 +784,8 @@ do_exec (gint                  child_err_report_fd,
       if (safe_dup2 (read_null, 0) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
-      g_clear_fd (&read_null, NULL);
+      if (read_null != STDIN_FILENO)
+        g_clear_fd (&read_null, NULL);
     }
 
   /* Like with stdin above, it's possible the caller assigned
@@ -800,7 +813,7 @@ do_exec (gint                  child_err_report_fd,
 
       set_cloexec (stdout_fd);
     }
-  else if (stdout_to_null)
+  else if (!IS_VALID_FILENO (stdout_fd) && stdout_to_null)
     {
       gint write_null = safe_open ("/dev/null", O_WRONLY);
       if (write_null < 0)
@@ -809,7 +822,8 @@ do_exec (gint                  child_err_report_fd,
       if (safe_dup2 (write_null, 1) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
-      g_clear_fd (&write_null, NULL);
+      if (write_null != STDOUT_FILENO)
+        g_clear_fd (&write_null, NULL);
     }
 
   if (IS_STD_FILENO (stderr_fd) && stderr_fd != STDERR_FILENO)
@@ -832,7 +846,7 @@ do_exec (gint                  child_err_report_fd,
 
       set_cloexec (stderr_fd);
     }
-  else if (stderr_to_null)
+  else if (!IS_VALID_FILENO (stderr_fd) && stderr_to_null)
     {
       gint write_null = safe_open ("/dev/null", O_WRONLY);
       if (write_null < 0)
@@ -841,7 +855,8 @@ do_exec (gint                  child_err_report_fd,
       if (safe_dup2 (write_null, 2) < 0)
         write_err_and_exit (child_err_report_fd,
                             CHILD_DUPFD_FAILED);
-      g_clear_fd (&write_null, NULL);
+      if (write_null != STDERR_FILENO)
+        g_clear_fd (&write_null, NULL);
     }
 
   /* Close all file descriptors but stdin, stdout and stderr, and any of source_fds,
@@ -1008,28 +1023,27 @@ read_ints (int      fd,
 static gboolean
 do_posix_spawn (const gchar * const *argv,
                 const gchar * const *envp,
-                gboolean    search_path,
-                gboolean    stdout_to_null,
-                gboolean    stderr_to_null,
-                gboolean    child_inherits_stdin,
-                gboolean    file_and_argv_zero,
-                GPid       *child_pid,
-                gint       *child_close_fds,
-                gint        stdin_fd,
-                gint        stdout_fd,
-                gint        stderr_fd,
-                const gint *source_fds,
-                const gint *target_fds,
-                gsize       n_fds)
+                gboolean             close_descriptors,
+                gboolean             search_path,
+                gboolean             stdout_to_null,
+                gboolean             stderr_to_null,
+                gboolean             child_inherits_stdin,
+                gboolean             file_and_argv_zero,
+                GPid                *child_pid,
+                gint                *child_close_fds,
+                gint                 stdin_fd,
+                gint                 stdout_fd,
+                gint                 stderr_fd,
+                const gint          *source_fds,
+                const gint          *target_fds,
+                gsize                n_fds)
 {
   pid_t pid;
   gint *duped_source_fds = NULL;
-  gint max_target_fd = 0;
+  int max_target_fd = STDERR_FILENO;
   const gchar * const *argv_pass;
   posix_spawnattr_t attr;
   posix_spawn_file_actions_t file_actions;
-  gint parent_close_fds[3];
-  gsize num_parent_close_fds = 0;
   GSList *child_close = NULL;
   GSList *elem;
   sigset_t mask;
@@ -1037,6 +1051,10 @@ do_posix_spawn (const gchar * const *argv,
   int r;
 
   g_assert (argv != NULL && argv[0] != NULL);
+  g_assert (!close_descriptors || n_fds == 0);
+#ifndef HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCLOSEFROM_NP
+  g_assert (!close_descriptors);
+#endif
 
   if (*argv[0] == '\0')
     {
@@ -1048,12 +1066,14 @@ do_posix_spawn (const gchar * const *argv,
   if (r != 0)
     return r;
 
-  if (child_close_fds)
+  if (!close_descriptors && child_close_fds != NULL)
     {
-      int i = -1;
-      while (child_close_fds[++i] != -1)
-        child_close = g_slist_prepend (child_close,
-                                       GINT_TO_POINTER (child_close_fds[i]));
+      for (i = 0; child_close_fds[i] != -1; i++)
+        {
+          if (!IS_STD_FILENO (child_close_fds[i]))
+            child_close = g_slist_prepend (child_close,
+                                           GINT_TO_POINTER (child_close_fds[i]));
+        }
     }
 
   r = posix_spawnattr_setflags (&attr, POSIX_SPAWN_SETSIGDEF);
@@ -1067,6 +1087,7 @@ do_posix_spawn (const gchar * const *argv,
   sigaddset (&mask, SIGTERM);
   sigaddset (&mask, SIGHUP);
 
+  sigaddset (&mask, SIGPIPE);
   r = posix_spawnattr_setsigdefault (&attr, &mask);
   if (r != 0)
     goto out_free_spawnattr;
@@ -1074,6 +1095,22 @@ do_posix_spawn (const gchar * const *argv,
   r = posix_spawn_file_actions_init (&file_actions);
   if (r != 0)
     goto out_free_spawnattr;
+
+  if (child_close_fds != NULL)
+    {
+      /* The parent's pipe ends may reuse standard fds. Close them in the
+       * child before dup2() replaces them.
+       */
+      for (i = 0; child_close_fds[i] != -1; i++)
+        {
+          if (!IS_STD_FILENO (child_close_fds[i]))
+            continue;
+
+          r = posix_spawn_file_actions_addclose (&file_actions, child_close_fds[i]);
+          if (r != 0)
+            goto out_close_fds;
+        }
+    }
 
   /* Redirect pipes as required */
 
@@ -1083,21 +1120,14 @@ do_posix_spawn (const gchar * const *argv,
       if (r != 0)
         goto out_close_fds;
 
-      if (!g_slist_find (child_close, GINT_TO_POINTER (stdin_fd)))
+      if (!close_descriptors && stdin_fd != STDIN_FILENO &&
+          !g_slist_find (child_close, GINT_TO_POINTER (stdin_fd)))
         child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stdin_fd));
     }
   else if (!child_inherits_stdin)
     {
       /* Keep process from blocking on a read of stdin */
-      gint read_null = safe_open ("/dev/null", O_RDONLY | O_CLOEXEC);
-      g_assert (read_null != -1);
-      parent_close_fds[num_parent_close_fds++] = read_null;
-
-#ifndef HAVE_O_CLOEXEC
-      fcntl (read_null, F_SETFD, FD_CLOEXEC);
-#endif
-
-      r = posix_spawn_file_actions_adddup2 (&file_actions, read_null, 0);
+      r = posix_spawn_file_actions_addopen (&file_actions, 0, "/dev/null", O_RDONLY, 0);
       if (r != 0)
         goto out_close_fds;
     }
@@ -1108,20 +1138,13 @@ do_posix_spawn (const gchar * const *argv,
       if (r != 0)
         goto out_close_fds;
 
-      if (!g_slist_find (child_close, GINT_TO_POINTER (stdout_fd)))
+      if (!close_descriptors && stdout_fd != STDOUT_FILENO &&
+          !g_slist_find (child_close, GINT_TO_POINTER (stdout_fd)))
         child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stdout_fd));
     }
   else if (stdout_to_null)
     {
-      gint write_null = safe_open ("/dev/null", O_WRONLY | O_CLOEXEC);
-      g_assert (write_null != -1);
-      parent_close_fds[num_parent_close_fds++] = write_null;
-
-#ifndef HAVE_O_CLOEXEC
-      fcntl (write_null, F_SETFD, FD_CLOEXEC);
-#endif
-
-      r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 1);
+      r = posix_spawn_file_actions_addopen (&file_actions, 1, "/dev/null", O_WRONLY, 0);
       if (r != 0)
         goto out_close_fds;
     }
@@ -1132,20 +1155,13 @@ do_posix_spawn (const gchar * const *argv,
       if (r != 0)
         goto out_close_fds;
 
-      if (!g_slist_find (child_close, GINT_TO_POINTER (stderr_fd)))
+      if (!close_descriptors && stderr_fd != STDERR_FILENO &&
+          !g_slist_find (child_close, GINT_TO_POINTER (stderr_fd)))
         child_close = g_slist_prepend (child_close, GINT_TO_POINTER (stderr_fd));
     }
   else if (stderr_to_null)
     {
-      gint write_null = safe_open ("/dev/null", O_WRONLY | O_CLOEXEC);
-      g_assert (write_null != -1);
-      parent_close_fds[num_parent_close_fds++] = write_null;
-
-#ifndef HAVE_O_CLOEXEC
-      fcntl (write_null, F_SETFD, FD_CLOEXEC);
-#endif
-
-      r = posix_spawn_file_actions_adddup2 (&file_actions, write_null, 2);
+      r = posix_spawn_file_actions_addopen (&file_actions, 2, "/dev/null", O_WRONLY, 0);
       if (r != 0)
         goto out_close_fds;
     }
@@ -1177,7 +1193,10 @@ do_posix_spawn (const gchar * const *argv,
     max_target_fd = MAX (max_target_fd, target_fds[i]);
 
   if (max_target_fd == G_MAXINT)
-    goto out_close_fds;
+    {
+      r = EINVAL;
+      goto out_close_fds;
+    }
 
   duped_source_fds = g_new (gint, n_fds);
   for (i = 0; i < n_fds; i++)
@@ -1186,7 +1205,10 @@ do_posix_spawn (const gchar * const *argv,
     {
       duped_source_fds[i] = dupfd_cloexec (source_fds[i], max_target_fd + 1);
       if (duped_source_fds[i] < 0)
-        goto out_close_fds;
+        {
+          r = errno;
+          goto out_close_fds;
+        }
     }
 
   for (i = 0; i < n_fds; i++)
@@ -1203,12 +1225,23 @@ do_posix_spawn (const gchar * const *argv,
    * and stderr (we must not close it before we have dupped it in both places,
    * and we must not attempt to close it twice).
    */
-  for (elem = child_close; elem != NULL; elem = elem->next)
+#ifdef HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCLOSEFROM_NP
+  if (close_descriptors)
     {
-      r = posix_spawn_file_actions_addclose (&file_actions,
-                                             GPOINTER_TO_INT (elem->data));
+      r = posix_spawn_file_actions_addclosefrom_np (&file_actions, STDERR_FILENO + 1);
       if (r != 0)
         goto out_close_fds;
+    }
+  else
+#endif
+    {
+      for (elem = child_close; elem != NULL; elem = elem->next)
+        {
+          r = posix_spawn_file_actions_addclose (&file_actions,
+                                                 GPOINTER_TO_INT (elem->data));
+          if (r != 0)
+            goto out_close_fds;
+        }
     }
 
   argv_pass = file_and_argv_zero ? argv + 1 : argv;
@@ -1225,9 +1258,6 @@ do_posix_spawn (const gchar * const *argv,
     *child_pid = pid;
 
 out_close_fds:
-  for (i = 0; i < num_parent_close_fds; i++)
-    g_clear_fd (&parent_close_fds[i], NULL);
-
   if (duped_source_fds != NULL)
     {
       for (i = 0; i < n_fds; i++)
@@ -1299,6 +1329,11 @@ fork_exec (gboolean              intermediate_child,
   gint child_close_fds[4] = { -1, -1, -1, -1 };
   gint n_child_close_fds = 0;
   gint *source_fds_copy = NULL;
+#ifdef POSIX_SPAWN_AVAILABLE
+  gboolean can_close_descriptors = !close_descriptors;
+  gboolean can_search_path;
+  gboolean needs_standard_fd_relocation;
+#endif
 
   g_assert (argv != NULL && argv[0] != NULL);
   g_assert (stdin_pipe_out == NULL || stdin_fd < 0);
@@ -1339,8 +1374,34 @@ fork_exec (gboolean              intermediate_child,
   child_close_fds[n_child_close_fds++] = -1;
 
 #ifdef POSIX_SPAWN_AVAILABLE
-  if (!intermediate_child && working_directory == NULL && !close_descriptors &&
-      !search_path_from_envp && child_setup == NULL)
+  /* When PATH is unset, GLib searches the current directory. posix_spawnp()
+   * does not do this on every platform.
+   */
+  can_search_path = !search_path || strchr (argv[0], '/') != NULL || g_getenv ("PATH") != NULL;
+
+#ifdef HAVE_POSIX_SPAWN_FILE_ACTIONS_ADDCLOSEFROM_NP
+  if (close_descriptors)
+    can_close_descriptors = n_fds == 0;
+#endif
+
+  needs_standard_fd_relocation =
+      (IS_STD_FILENO (stdin_fd) && stdin_fd != STDIN_FILENO) ||
+      (IS_STD_FILENO (stdout_fd) && stdout_fd != STDOUT_FILENO);
+
+  for (gsize i = 0; i < n_fds && !needs_standard_fd_relocation; i++)
+    {
+      if ((source_fds[i] == STDIN_FILENO &&
+           (stdin_fd >= 0 || !child_inherits_stdin)) ||
+          (source_fds[i] == STDOUT_FILENO &&
+           (stdout_fd >= 0 || stdout_to_null)) ||
+          (source_fds[i] == STDERR_FILENO &&
+           (stderr_fd >= 0 || stderr_to_null)))
+        needs_standard_fd_relocation = TRUE;
+    }
+
+  if (!intermediate_child && working_directory == NULL && can_close_descriptors &&
+      !search_path_from_envp && can_search_path && child_setup == NULL &&
+      !needs_standard_fd_relocation)
     {
       g_trace_mark (G_TRACE_CURRENT_TIME, 0,
                     "GLib", "posix_spawn",
@@ -1348,6 +1409,7 @@ fork_exec (gboolean              intermediate_child,
 
       status = do_posix_spawn (argv,
                                envp,
+                               close_descriptors,
                                search_path,
                                stdout_to_null,
                                stderr_to_null,
@@ -1364,34 +1426,40 @@ fork_exec (gboolean              intermediate_child,
       if (status == 0)
         goto success;
 
-      if (status != ENOEXEC)
+      /* addclosefrom_np() may fail if close_range() or /proc/self/fd is
+       * unavailable. We cannot distinguish that from an exec error, so
+       * retry with fork().
+       */
+      if (status != ENOEXEC && !close_descriptors)
         {
           g_set_error (error,
                        G_SPAWN_ERROR,
-                       G_SPAWN_ERROR_FAILED,
+                       _g_spawn_exec_err_to_g_error (status),
                        _("Failed to spawn child process “%s” (%s)"),
                        argv[0],
                        g_strerror (status));
           goto cleanup_and_fail;
-       }
+        }
 
       /* posix_spawn is not intended to support script execution. It does in
        * some situations on some glibc versions, but that will be fixed.
        * So if it fails with ENOEXEC, we fall through to the regular
        * gspawn codepath so that script execution can be attempted,
        * per standard gspawn behaviour. */
-      g_debug ("posix_spawn failed (ENOEXEC), fall back to regular gspawn");
+      g_debug ("posix_spawn failed (%s), fall back to regular gspawn", g_strerror (status));
     }
   else
     {
       g_trace_mark (G_TRACE_CURRENT_TIME, 0,
                     "GLib", "fork",
-                    "posix_spawn avoided %s%s%s%s%s",
+                    "posix_spawn avoided %s%s%s%s%s%s%s",
                     !intermediate_child ? "" : "(automatic reaping requested) ",
                     working_directory == NULL ? "" : "(workdir specified) ",
-                    !close_descriptors ? "" : "(fd close requested) ",
+                    can_close_descriptors ? "" : "(fd close requested) ",
                     !search_path_from_envp ? "" : "(using envp for search path) ",
-                    child_setup == NULL ? "" : "(child_setup specified) ");
+                    can_search_path ? "" : "(using default search path) ",
+                    child_setup == NULL ? "" : "(child_setup specified) ",
+                    needs_standard_fd_relocation ? "(standard fd relocation required) " : "");
     }
 #endif /* POSIX_SPAWN_AVAILABLE */
 

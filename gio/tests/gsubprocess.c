@@ -1836,7 +1836,8 @@ test_pass_fd_inherit_fds (void)
   /* Try to test the optimized posix_spawn codepath instead of
    * fork/exec. Currently this requires using INHERIT_FDS since gspawn's
    * posix_spawn codepath does not currently handle closing
-   * non-inherited fds. Note that using INHERIT_FDS means our testing of
+   * non-inherited fds when fd mappings are used. Note that using
+   * INHERIT_FDS means our testing of
    * g_subprocess_launcher_take_fd() is less-comprehensive than when
    * using G_SUBPROCESS_FLAGS_NONE.
    */
@@ -1996,7 +1997,7 @@ test_fd_conflation_inherit_fds (void)
   /* Try to test the optimized posix_spawn codepath instead of
    * fork/exec. Currently this requires using INHERIT_FDS since gspawn's
    * posix_spawn codepath does not currently handle closing
-   * non-inherited fds.
+   * non-inherited fds when fd mappings are used.
    */
   do_test_fd_conflation (G_SUBPROCESS_FLAGS_INHERIT_FDS, NULL, FALSE);
 }

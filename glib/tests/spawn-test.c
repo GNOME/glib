@@ -28,6 +28,7 @@
 #include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
+#include <sys/wait.h>
 #include <unistd.h>
 #endif
 
@@ -422,8 +423,100 @@ test_spawn_basics (void)
 
 #ifdef G_OS_UNIX
 static void
-test_spawn_stdio_overwrite (void)
+test_spawn_closed_standard_fds (gconstpointer user_data)
 {
+  GSpawnFlags flags = GPOINTER_TO_INT (user_data);
+  const char *argv[] = { "/bin/sh", "-c", ":", NULL };
+  const char *output_argv[] = { "/bin/sh", "-c", "printf stdout; printf stderr >&2", NULL };
+  const char *missing_argv[] = { "/nonexistent-glib-spawn-test", NULL };
+  int saved_fds[3];
+
+  for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd++)
+    {
+      GPid pid = 0;
+      GError *error = NULL;
+      int status;
+      int stdout_pipe = -1;
+      int stderr_pipe = -1;
+      char output[32];
+      ssize_t n_read;
+
+      saved_fds[fd] = dup (fd);
+      g_assert_cmpint (saved_fds[fd], >=, 0);
+      g_assert_no_errno (close (fd));
+
+      g_assert_true (g_spawn_async (NULL, (char **) argv, NULL, flags,
+                                    NULL, NULL, &pid, &error));
+
+      g_assert_cmpint (dup2 (saved_fds[fd], fd), ==, fd);
+      g_assert_no_errno (close (saved_fds[fd]));
+      g_assert_no_error (error);
+      g_assert_cmpint (waitpid (pid, &status, 0), ==, pid);
+      g_assert_true (WIFEXITED (status));
+      g_assert_cmpint (WEXITSTATUS (status), ==, 0);
+      g_spawn_close_pid (pid);
+
+      saved_fds[fd] = dup (fd);
+      g_assert_cmpint (saved_fds[fd], >=, 0);
+      g_assert_no_errno (close (fd));
+
+      g_assert_false (g_spawn_async (NULL, (char **) missing_argv, NULL, flags,
+                                     NULL, NULL, &pid, &error));
+
+      g_assert_cmpint (dup2 (saved_fds[fd], fd), ==, fd);
+      g_assert_no_errno (close (saved_fds[fd]));
+      g_assert_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+      g_clear_error (&error);
+
+      saved_fds[fd] = dup (fd);
+      g_assert_cmpint (saved_fds[fd], >=, 0);
+      g_assert_no_errno (close (fd));
+
+      g_assert_true (g_spawn_async_with_pipes (NULL, (char **) output_argv, NULL,
+                                               flags & ~(G_SPAWN_STDOUT_TO_DEV_NULL |
+                                                         G_SPAWN_STDERR_TO_DEV_NULL),
+                                               NULL, NULL, &pid, NULL,
+                                               &stdout_pipe, &stderr_pipe, &error));
+
+      if (stdout_pipe == fd)
+        {
+          stdout_pipe = dup (fd);
+          g_assert_cmpint (stdout_pipe, >=, 0);
+          g_assert_no_errno (close (fd));
+        }
+
+      if (stderr_pipe == fd)
+        {
+          stderr_pipe = dup (fd);
+          g_assert_cmpint (stderr_pipe, >=, 0);
+          g_assert_no_errno (close (fd));
+        }
+
+      g_assert_cmpint (dup2 (saved_fds[fd], fd), ==, fd);
+      g_assert_no_errno (close (saved_fds[fd]));
+      g_assert_no_error (error);
+      g_assert_cmpint (waitpid (pid, &status, 0), ==, pid);
+      g_assert_true (WIFEXITED (status));
+      g_assert_cmpint (WEXITSTATUS (status), ==, 0);
+      g_spawn_close_pid (pid);
+
+      n_read = read (stdout_pipe, output, sizeof output - 1);
+      g_assert_cmpint (n_read, ==, 6);
+      output[n_read] = 0;
+      g_assert_cmpstr (output, ==, "stdout");
+      n_read = read (stderr_pipe, output, sizeof output - 1);
+      g_assert_cmpint (n_read, ==, 6);
+      output[n_read] = 0;
+      g_assert_cmpstr (output, ==, "stderr");
+      g_assert_no_errno (close (stdout_pipe));
+      g_assert_no_errno (close (stderr_pipe));
+    }
+}
+
+static void
+test_spawn_stdio_overwrite (gconstpointer user_data)
+{
+  GSpawnFlags flags = GPOINTER_TO_INT (user_data);
   gboolean result;
   int ret;
   GError *error = NULL;
@@ -486,10 +579,10 @@ test_spawn_stdio_overwrite (void)
         g_clear_pointer (&command_line, g_free);
 
         result = g_spawn_sync (NULL,
-                               argv, envp, G_SPAWN_SEARCH_PATH_FROM_ENVP,
+                               argv, envp, flags,
                                NULL, NULL,
-                               output_return_state == OPENED? &standard_output : NULL,
-                               error_return_state == OPENED? &standard_error: NULL,
+                               output_return_state == OPENED ? &standard_output : NULL,
+                               error_return_state == OPENED ? &standard_error : NULL,
                                NULL,
                                &error);
         g_clear_pointer (&argv, g_strfreev);
@@ -546,7 +639,23 @@ main (int   argc,
 
   g_test_add_func ("/spawn/basics", test_spawn_basics);
 #ifdef G_OS_UNIX
-  g_test_add_func ("/spawn/stdio-overwrite", test_spawn_stdio_overwrite);
+  g_test_add_data_func ("/spawn/closed-standard-fds",
+                        GINT_TO_POINTER (G_SPAWN_DO_NOT_REAP_CHILD |
+                                         G_SPAWN_STDOUT_TO_DEV_NULL |
+                                         G_SPAWN_STDERR_TO_DEV_NULL),
+                        test_spawn_closed_standard_fds);
+  g_test_add_data_func ("/spawn/closed-standard-fds/leave-open",
+                        GINT_TO_POINTER (G_SPAWN_DO_NOT_REAP_CHILD |
+                                         G_SPAWN_LEAVE_DESCRIPTORS_OPEN |
+                                         G_SPAWN_STDOUT_TO_DEV_NULL |
+                                         G_SPAWN_STDERR_TO_DEV_NULL),
+                        test_spawn_closed_standard_fds);
+  g_test_add_data_func ("/spawn/stdio-overwrite",
+                        GINT_TO_POINTER (G_SPAWN_SEARCH_PATH_FROM_ENVP),
+                        test_spawn_stdio_overwrite);
+  g_test_add_data_func ("/spawn/stdio-overwrite/default",
+                        GINT_TO_POINTER (G_SPAWN_DEFAULT),
+                        test_spawn_stdio_overwrite);
 #endif
 
   ret_val = g_test_run ();

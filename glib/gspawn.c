@@ -415,13 +415,16 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * are met:
  *
  * 1. %G_SPAWN_DO_NOT_REAP_CHILD is set
- * 2. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set
+ * 2. %G_SPAWN_LEAVE_DESCRIPTORS_OPEN is set, or we can use
+ *    `posix_spawn_file_actions_addclosefrom_np()` and there are no FD mappings
  * 3. %G_SPAWN_SEARCH_PATH_FROM_ENVP is not set
  * 4. @working_directory is %NULL
  * 5. @child_setup is %NULL
  * 6. The program is of a recognised binary format, or has a shebang.
  *    Otherwise, GLib will have to execute the program through the
  *    shell, which is not done using the optimized codepath.
+ * 7. `PATH` is set in the parent's environment if we're using
+ *    %G_SPAWN_SEARCH_PATH and the program name has no slash.
  *
  * If you are writing a GTK application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
