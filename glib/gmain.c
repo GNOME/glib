@@ -4983,9 +4983,19 @@ g_main_context_poll_unlocked (GMainContext *context,
           struct timespec spec;
           struct timespec *spec_p = NULL;
 
-          if (has_timeout)
+          /* On some platforms, the tv_sec field of struct timespec is 32
+           * bits wide, so a timeout of more than G_MAXINT seconds would
+           * wrap spec.tv_sec to a negative value; ppoll() would then
+           * fail with EINVAL on every iteration, putting the main loop
+           * into a tight error-warning loop.  
+           * Treat any timeout which can't be represented in a time_t
+           * as no timeout, as it is effectively infinite.
+           */
+          uint64_t timeout_sec = timeout_ns / G_NSEC_PER_SEC;
+          spec.tv_sec = (time_t) timeout_sec;
+          gboolean tv_sec_truncated = (uint64_t) spec.tv_sec != timeout_sec;
+          if (has_timeout && !tv_sec_truncated)
             {
-              spec.tv_sec = timeout_ns / G_NSEC_PER_SEC;
               spec.tv_nsec = timeout_ns % G_NSEC_PER_SEC;
               spec_p = &spec;
             }

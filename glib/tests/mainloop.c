@@ -23,6 +23,7 @@
  */
 
 #include <glib.h>
+#include <glib/gthread.h>
 #include <glib/gstdio.h>
 #include "glib-private.h"
 #include "gvalgrind.h"
@@ -1513,6 +1514,188 @@ test_recursive_loop_child_sources (void)
 
 #include <glib-unix.h>
 #include <unistd.h>
+#include <sys/socket.h>
+
+/*
+ * A timeout of more than G_MAXINT seconds does not fit into the
+ * tv_sec field of a 32-bit struct timespec; the ppoll() path of
+ * g_main_context_poll_unlocked() must treat it as infinite instead of
+ * wrapping tv_sec negative, which made ppoll() fail with EINVAL on
+ * every iteration (a tight warning loop that never blocked).
+ *
+ * This test arms such a timeout, then verifies from a second thread
+ * that (1) a ready fd still wakes and dispatches the loop and (2) no
+ * warning is emitted while the loop is waiting.  On 64-bit platforms
+ * the timeout fits into the timespec and the test simply checks that
+ * the fd wakes the loop.  Fails (fast) on an unpatched 32-bit build.
+ *
+ * The two threads are synchronised with an idle source (which proves
+ * the worker loop is running and has completed one poll cycle) and a
+ * condition variable (which is signalled when the watch is
+ * dispatched), rather than with sleeps.
+ */
+static GCond ppoll_huge_cond;
+static GMutex ppoll_huge_mutex;
+static gint ppoll_huge_warn_count;  /* (atomic) */
+static gint ppoll_huge_watch_ran;   /* (atomic) */
+static gint ppoll_huge_loop_ran;    /* protected by ppoll_huge_mutex */
+
+static void
+ppoll_huge_count_warning (const gchar   *log_domain,
+                         GLogLevelFlags log_level,
+                         const gchar   *message,
+                         gpointer       user_data)
+{
+  g_atomic_int_inc (&ppoll_huge_warn_count);
+}
+
+static gboolean
+ppoll_huge_timeout_cb (gpointer user_data)
+{
+  /* 0xCCCCCCCC seconds is ~109 years: must never fire */
+  g_assert_not_reached ();
+  return G_SOURCE_REMOVE;
+}
+
+static gboolean
+ppoll_huge_idle_cb (gpointer user_data)
+{
+  /*
+   * Synchronisation point: an idle source is only dispatched once the
+   * worker loop is actually running, and in this test it is attached
+   * before any other source can become ready.  By the time this
+   * callback runs, the worker has therefore completed at least one
+   * poll cycle with the huge timeout, so on an unpatched 32-bit build
+   * the ppoll() failure warnings have already been counted.  Tell the
+   * test thread it can now make the fd readable.
+   */
+  g_mutex_lock (&ppoll_huge_mutex);
+  ppoll_huge_loop_ran = TRUE;
+  g_cond_signal (&ppoll_huge_cond);
+  g_mutex_unlock (&ppoll_huge_mutex);
+
+  return G_SOURCE_REMOVE;
+}
+
+static gboolean
+ppoll_huge_watch_dispatch (GIOChannel   *channel,
+                          GIOCondition  condition,
+                          gpointer      user_data)
+{
+  GMainLoop *loop = user_data;
+
+  g_atomic_int_set (&ppoll_huge_watch_ran, TRUE);
+  g_mutex_lock (&ppoll_huge_mutex);
+  g_cond_signal (&ppoll_huge_cond);
+  g_mutex_unlock (&ppoll_huge_mutex);
+  g_main_loop_quit (loop);
+
+  return G_SOURCE_REMOVE;
+}
+
+static gpointer
+ppoll_huge_run_loop (gpointer user_data)
+{
+  g_main_loop_run (user_data);
+
+  return NULL;
+}
+
+static void
+test_ppoll_huge_timeout (void)
+{
+  GMainContext *ctx;
+  GMainLoop *loop;
+  GSource *timeout_source, *io_source, *idle_source;
+  GIOChannel *io;
+  gint fds[2];
+  GThread *thread;
+  gint handler_id;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/work_items/4061");
+
+  if (socketpair (AF_UNIX, SOCK_STREAM, 0, fds) != 0)
+    g_error ("socketpair() failed");
+
+  g_cond_init (&ppoll_huge_cond);
+  g_mutex_init (&ppoll_huge_mutex);
+  ppoll_huge_loop_ran = 0;
+  ppoll_huge_warn_count = 0;
+  ppoll_huge_watch_ran = 0;
+  handler_id = g_log_set_handler ("GLib", G_LOG_LEVEL_WARNING,
+                                  ppoll_huge_count_warning, NULL);
+
+  ctx = g_main_context_new ();
+  loop = g_main_loop_new (ctx, TRUE);
+
+  /* Bigger than G_MAXINT seconds. */
+  timeout_source = g_timeout_source_new_seconds ((guint) 0xCCCCCCCC);
+  g_source_set_callback (timeout_source, (GSourceFunc) ppoll_huge_timeout_cb,
+                         NULL, NULL);
+  g_source_attach (timeout_source, ctx);
+
+  io = g_io_channel_unix_new (fds[0]);
+  io_source = g_io_create_watch (io, G_IO_IN);
+  g_source_set_callback (io_source, (GSourceFunc) ppoll_huge_watch_dispatch,
+                         loop, NULL);
+  g_source_attach (io_source, ctx);
+  g_io_channel_unref (io);
+
+  thread = g_thread_new ("ppoll huge timeout", ppoll_huge_run_loop, loop);
+
+  /* Synchronise with the worker thread: attach an idle source and wake 
+   * the loop so that the worker dispatches it.  A patched build
+   * is blocking in ppoll() with no timeout at this point,
+   * so g_main_context_wakeup() is needed to break out of it; an
+   * unpatched 32-bit build is spinning through ppoll() failures and
+   * will pick the idle source up on its next iteration.  When the idle
+   * callback has run, the worker has necessarily completed at least
+   * one poll cycle with the huge timeout. */
+  idle_source = g_idle_source_new ();
+  g_source_set_callback (idle_source, (GSourceFunc) ppoll_huge_idle_cb,
+                         NULL, NULL);
+  g_source_attach (idle_source, ctx);
+  g_main_context_wakeup (ctx);
+
+  g_mutex_lock (&ppoll_huge_mutex);
+  while (!ppoll_huge_loop_ran)
+    g_cond_wait (&ppoll_huge_cond, &ppoll_huge_mutex);
+  g_mutex_unlock (&ppoll_huge_mutex);
+  if (!ppoll_huge_loop_ran)
+    g_error ("the worker thread did not start its main loop in time");
+  g_source_unref (idle_source);
+
+  g_assert_no_errno (write (fds[1], "x", 1));
+
+  /* Wait for the watch to be dispatched, then for the thread to exit.
+   */
+  g_mutex_lock (&ppoll_huge_mutex);
+  while (!g_atomic_int_get (&ppoll_huge_watch_ran))
+    g_cond_wait (&ppoll_huge_cond, &ppoll_huge_mutex);
+  g_mutex_unlock (&ppoll_huge_mutex);
+
+  g_main_loop_quit (loop);
+  g_thread_join (thread);
+
+  g_cond_clear (&ppoll_huge_cond);
+  g_mutex_clear (&ppoll_huge_mutex);
+
+  g_log_remove_handler ("GLib", handler_id);
+
+  /* The write must have woken the loop and dispatched the watch ... */
+  g_assert_true (g_atomic_int_get (&ppoll_huge_watch_ran));
+  /* ... and the wait itself must not have produced poll(2) errors. */
+  g_assert_cmpint (g_atomic_int_get (&ppoll_huge_warn_count), ==, 0);
+
+  g_source_destroy (io_source);
+  g_source_unref (io_source);
+  g_source_destroy (timeout_source);
+  g_source_unref (timeout_source);
+  g_main_loop_unref (loop);
+  g_main_context_unref (ctx);
+  close (fds[0]);
+  close (fds[1]);
+}
 
 static gchar zeros[1024];
 
@@ -3009,6 +3192,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/wait", test_mainloop_wait);
   g_test_add_func ("/mainloop/unix-file-poll", test_unix_file_poll);
   g_test_add_func ("/mainloop/unix-fd-priority", test_unix_fd_priority);
+  g_test_add_func ("/mainloop/ppoll-huge-timeout", test_ppoll_huge_timeout);
 #endif
   g_test_add_func ("/mainloop/nfds", test_nfds);
   g_test_add_func ("/mainloop/steal-fd", test_steal_fd);
