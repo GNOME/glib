@@ -732,9 +732,6 @@ msys2-mingw32:
 
 # See the note about msys2 CI job failure policy above.
 msys2-clang64:
-  # FIXME: Currently disabled because fetching python3 fails
-  # See https://gitlab.gnome.org/GNOME/glib/-/work_items/4125
-  when: manual
   extends: .only-default-and-merges
   stage: build
   tags:
