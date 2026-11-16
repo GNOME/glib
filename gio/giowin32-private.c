@@ -751,7 +751,9 @@ end_argument (GPtrArray  *args,
  * which is also how g_spawn_async() quotes each element of @argv again for
  * the new process. Whitespace before the program name is skipped, and an
  * argument that comes out empty (such as a field code with no value) is
- * left out, unless it is quoted.
+ * left out, unless it is quoted. It fails if the command line comes out
+ * empty, or if its program name (the first argument) does, as nothing
+ * could be launched from either.
  *
  * A field code is expanded inside the argument it appears in: its value
  * becomes part of that element of @argv as is, and is never parsed again,
@@ -908,6 +910,15 @@ _g_win32_expand_application_parameters (const char  *app_name,
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                            "Command line is empty");
+      g_ptr_array_unref (args);
+      return FALSE;
+    }
+
+  /* A quoted program name can come out empty, as in `""` or `"%s" %f` */
+  if (*(const char *) g_ptr_array_index (args, 0) == '\0')
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Program name is empty");
       g_ptr_array_unref (args);
       return FALSE;
     }

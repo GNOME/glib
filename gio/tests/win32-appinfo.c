@@ -792,7 +792,11 @@ test_win32_expand_application_parameters_working_dir (void)
 static void
 test_win32_expand_application_parameters_empty (void)
 {
-  const char *commands[] = { "", "  \t ", "%1", "%U %F" };
+  const char *commands[] = {
+    "", "  \t ", "%1", "%U %F",
+    /* The program name comes out empty */
+    "\"\"", "\"%s\" %f", "\"%1\" app.exe", "\"\" app.exe %F",
+  };
   gsize i;
 
   for (i = 0; i < G_N_ELEMENTS (commands); i++)
