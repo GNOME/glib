@@ -749,7 +749,7 @@ compare_verbs (gconstpointer a,
 
   if (is_open_ca && !is_open_cb)
     return -1;
-  else if (is_open_ca && !is_open_cb)
+  else if (!is_open_ca && is_open_cb)
     return 1;
 
   return _wcsicmp (ca->name, cb->name);
