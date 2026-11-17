@@ -720,29 +720,34 @@ reg_verb_free (gpointer p)
  * then "open", then the rest of the verbs
  * are sorted alphabetically
  */
-static gint
+static int
 compare_verbs (gconstpointer a,
                gconstpointer b,
                gpointer user_data)
 {
   const reg_verb *ca = (const reg_verb *) a;
   const reg_verb *cb = (const reg_verb *) b;
-  const gunichar2 *def = (const gunichar2 *) user_data;
-  gboolean is_open_ca;
-  gboolean is_open_cb;
+  const gunichar2 *default_verb = (const gunichar2 *) user_data;
 
-  if (def != NULL)
+  if (default_verb != NULL)
     {
-      if (_wcsicmp (ca->name, def) == 0)
+      bool is_default_ca = (_wcsicmp (ca->name, default_verb) == 0);
+      bool is_default_cb = (_wcsicmp (cb->name, default_verb) == 0);
+
+      if (is_default_ca && is_default_cb)
+        return 0;
+      else if (is_default_ca && !is_default_cb)
         return -1;
-      else if (_wcsicmp (cb->name, def) == 0)
+      else if (!is_default_ca && is_default_cb)
         return 1;
     }
 
-  is_open_ca = is_open (ca->name);
-  is_open_cb = is_open (cb->name);
+  bool is_open_ca = is_open (ca->name);
+  bool is_open_cb = is_open (cb->name);
 
-  if (is_open_ca && !is_open_cb)
+  if (is_open_ca && is_open_cb)
+    return 0;
+  else if (is_open_ca && !is_open_cb)
     return -1;
   else if (!is_open_ca && is_open_cb)
     return 1;
