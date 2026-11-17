@@ -1917,15 +1917,20 @@ g_app_launch_context_launch_failed (GAppLaunchContext *context,
  *  - [func@Gio.AppInfo.get_default_for_type]
  *  - [func@Gio.AppInfo.get_fallback_for_type]
  *  - [func@Gio.AppInfo.get_recommended_for_type]
- *  - [`g_desktop_app_info_get_implementations()`](../gio-unix/type_func.DesktopAppInfo.get_implementation.html)
+ *
+ * The following functions will re-arm the [signal@Gio.AppInfoMonitor::changed]
+ * signal if using [`GDesktopAppInfo`](../gio-unix/class.DesktopAppInfo.html)
+ * from `gio-unix-2.0.pc` (GIR namespace `GioUnix-2.0`):
+ *  - [method@Gio.AppInfo.launch_uris]
+ *  - [method@Gio.AppInfo.launch_uris_async]
+ *  - [`g_desktop_app_info_launch_uris_as_manager_with_fds()`](../gio-unix/type_func.DesktopAppInfo.g_desktop_app_info_launch_uris_as_manager_with_fds.html)
+ *  - [`g_desktop_app_info_get_for_intent()`](../gio-unix/type_func.DesktopAppInfo.get_for_intent.html)
+ *  - [`g_desktop_app_info_get_default_for_intent()`](../gio-unix/type_func.DesktopAppInfo.get_default_for_intent.html)
+ *
  *  - [`g_desktop_app_info_new()`](../gio-unix/ctor.DesktopAppInfo.new.html)
  *  - [`g_desktop_app_info_new_from_filename()`](../gio-unix/ctor.DesktopAppInfo.new_from_filename.html)
  *  - [`g_desktop_app_info_new_from_keyfile()`](../gio-unix/ctor.DesktopAppInfo.new_from_keyfile.html)
  *  - [`g_desktop_app_info_search()`](../gio-unix/type_func.DesktopAppInfo.search.html)
- *
- * The latter functions are available if using
- * [`GDesktopAppInfo`](../gio-unix/class.DesktopAppInfo.html) from
- * `gio-unix-2.0.pc` (GIR namespace `GioUnix-2.0`).
  *
  * In the usual case, applications should try to make note of the change
  * (doing things like invalidating caches) but not act on it. In
