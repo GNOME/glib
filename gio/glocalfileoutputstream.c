@@ -887,7 +887,10 @@ handle_overwrite_open (const char    *filename,
        * but then the next open will fail too. */
       is_symlink = TRUE;
       if (!replace_destination_set)
-        fd = g_open (filename, open_flags, mode);
+        {
+          fd = g_open (filename, open_flags, mode);
+          errsv = errno;
+        }
     }
 #else  /* if !O_NOFOLLOW */
   /* This is racy, but we do it as soon as possible to minimize the race */
