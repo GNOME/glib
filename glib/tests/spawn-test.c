@@ -26,6 +26,7 @@
 
 #include <glib.h>
 #include <glib/gstdio.h>
+#include "gvalgrind.h"
 
 #ifdef G_OS_UNIX
 #include <sys/wait.h>
@@ -192,6 +193,36 @@ remove_environment_variables (GList *list)
 #endif /* G_OS_WIN32 */
 
 static void
+test_spawn_nonexistent (void)
+{
+  gboolean result;
+  GError *err = NULL;
+
+#if defined (ENABLE_VALGRIND)
+  /* Valgrind can report success for a failed posix_spawn() exec; see #4127. */
+  if (RUNNING_ON_VALGRIND)
+    {
+      g_test_skip ("Valgrind does not report exec errors from posix_spawn()");
+      return;
+    }
+#endif
+
+  result =
+    g_spawn_command_line_sync ("nonexistent_application foo 'bar baz' blah blah",
+                               NULL, NULL, NULL, &err);
+  g_assert_false (result);
+  g_assert_error (err, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+  g_clear_error (&err);
+
+  result =
+    g_spawn_command_line_async ("nonexistent_application foo bar baz \"blah blah\"",
+                                &err);
+  g_assert_false (result);
+  g_assert_error (err, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
+  g_clear_error (&err);
+}
+
+static void
 test_spawn_basics (void)
 {
   gboolean result;
@@ -220,22 +251,6 @@ test_spawn_basics (void)
   g_snprintf (spawn_binary, sizeof (spawn_binary),
               "%s\\spawn-test-win32-gui.exe", dirname);
 #endif
-
-  err = NULL;
-  result =
-    g_spawn_command_line_sync ("nonexistent_application foo 'bar baz' blah blah",
-                               NULL, NULL, NULL, &err);
-  g_assert_false (result);
-  g_assert_error (err, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
-  g_clear_error (&err);
-
-  err = NULL;
-  result =
-    g_spawn_command_line_async ("nonexistent_application foo bar baz \"blah blah\"",
-                                &err);
-  g_assert_false (result);
-  g_assert_error (err, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT);
-  g_clear_error (&err);
 
   err = NULL;
 #ifdef G_OS_UNIX
@@ -430,6 +445,15 @@ test_spawn_closed_standard_fds (gconstpointer user_data)
   const char *output_argv[] = { "/bin/sh", "-c", "printf stdout; printf stderr >&2", NULL };
   const char *missing_argv[] = { "/nonexistent-glib-spawn-test", NULL };
   int saved_fds[3];
+
+#if defined (ENABLE_VALGRIND)
+  /* Valgrind can report success for a failed posix_spawn() exec; see #4127. */
+  if (RUNNING_ON_VALGRIND)
+    {
+      g_test_skip ("Valgrind does not report exec errors from posix_spawn()");
+      return;
+    }
+#endif
 
   for (int fd = STDIN_FILENO; fd <= STDERR_FILENO; fd++)
     {
@@ -638,6 +662,7 @@ main (int   argc,
   g_test_init (&argc, &argv, G_TEST_OPTION_ISOLATE_DIRS, NULL);
 
   g_test_add_func ("/spawn/basics", test_spawn_basics);
+  g_test_add_func ("/spawn/nonexistent", test_spawn_nonexistent);
 #ifdef G_OS_UNIX
   g_test_add_data_func ("/spawn/closed-standard-fds",
                         GINT_TO_POINTER (G_SPAWN_DO_NOT_REAP_CHILD |

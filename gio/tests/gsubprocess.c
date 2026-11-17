@@ -1,4 +1,5 @@
 #include "glib-private.h"
+#include "gvalgrind.h"
 #include <gio/gio.h>
 #include <string.h>
 
@@ -1357,6 +1358,15 @@ test_fail_initialization (void)
 {
   GError *local_error = NULL;
   GSubprocess *proc;
+
+#if defined (ENABLE_VALGRIND)
+  /* Valgrind can report success for a failed posix_spawn() exec; see #4127. */
+  if (RUNNING_ON_VALGRIND)
+    {
+      g_test_skip ("Valgrind does not report exec errors from posix_spawn()");
+      return;
+    }
+#endif
 
   proc = g_subprocess_new (G_SUBPROCESS_FLAGS_NONE,
                            &local_error,

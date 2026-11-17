@@ -30,6 +30,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <glib/gstdio.h>
+#include "gvalgrind.h"
 
 #ifdef G_OS_UNIX
 #include <glib-unix.h>
@@ -498,6 +499,15 @@ test_spawn_nonexistent (void)
   GPtrArray *argv = NULL;
   gchar *stdout_str = NULL;
   gint wait_status = -1;
+
+#if defined (ENABLE_VALGRIND)
+  /* Valgrind can report success for a failed posix_spawn() exec; see #4127. */
+  if (RUNNING_ON_VALGRIND)
+    {
+      g_test_skip ("Valgrind does not report exec errors from posix_spawn()");
+      return;
+    }
+#endif
 
   argv = g_ptr_array_new ();
   g_ptr_array_add (argv, "this does not exist");
