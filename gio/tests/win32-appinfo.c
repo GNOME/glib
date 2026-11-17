@@ -424,6 +424,395 @@ test_win32_parse_filename (void)
     }
 }
 
+static const struct
+  {
+    const char *command;
+    struct {
+      const char *file;
+      const char *uri;
+    } objects[4];  /* ends at the first one with neither a file nor a URI */
+    const char *argv[8];
+    unsigned int n_objects_left;
+  }
+expand_commandlines[] =
+  {
+    {
+      "app.exe --new-window",
+      { { NULL, NULL } },
+      { "app.exe", "--new-window", NULL },
+      0,
+    },
+    {
+      "app.exe %f",
+      { { "C:/Users/me/a.txt", NULL }, { "C:/Users/me/b.txt", NULL } },
+      { "app.exe", "C:/Users/me/a.txt", NULL },
+      1,
+    },
+    {
+      "app.exe %F",
+      { { "C:/a.txt", NULL }, { "C:/b.txt", NULL } },
+      { "app.exe", "C:/a.txt", "C:/b.txt", NULL },
+      0,
+    },
+    {
+      "app.exe %u",
+      { { NULL, "https://example.com/a" } },
+      { "app.exe", "https://example.com/a", NULL },
+      0,
+    },
+    /* No field code: the first file is passed as with %f */
+    {
+      "app.exe",
+      { { "C:/a.txt", NULL }, { "C:/b.txt", NULL } },
+      { "app.exe", "C:/a.txt", NULL },
+      1,
+    },
+    {
+      "app.exe",
+      { { NULL, "https://example.com/a" } },
+      { "app.exe", NULL },
+      0,
+    },
+    /* A field code with no value is no argument, unless it is quoted */
+    {
+      "app.exe %1 \"%1\" %U",
+      { { NULL, NULL } },
+      { "app.exe", "", NULL },
+      0,
+    },
+    {
+      "app.exe 100%%",
+      { { NULL, NULL } },
+      { "app.exe", "100%", NULL },
+      0,
+    },
+    /* https://gitlab.gnome.org/GNOME/glib/-/issues/4032 */
+    {
+      "\"C:\\Program Files\\App\\app.exe\" %f",
+      { { "C:\\Users\\me\\x' --injected 'z.txt", NULL } },
+      { "C:\\Program Files\\App\\app.exe", "C:\\Users\\me\\x' --injected 'z.txt", NULL },
+      0,
+    },
+    {
+      "\"C:\\Program Files\\App\\app.exe\" %u",
+      { { NULL, "https://example.com/x' --injected 'z" } },
+      { "C:\\Program Files\\App\\app.exe", "https://example.com/x' --injected 'z", NULL },
+      0,
+    },
+    {
+      "\"C:\\Program Files\\App\\app.exe\"",
+      { { "C:\\it's.txt", NULL }, { "C:\\b.txt", NULL } },
+      { "C:\\Program Files\\App\\app.exe", "C:\\it's.txt", NULL },
+      1,
+    },
+    /* Values are kept as they are, in the argument their field code is in */
+    {
+      "\"C:\\Program Files\\App\\app.exe\" \"%1\"",
+      { { "C:\\Users\\me\\it's a file.txt", NULL } },
+      { "C:\\Program Files\\App\\app.exe", "C:\\Users\\me\\it's a file.txt", NULL },
+      0,
+    },
+    {
+      "C:\\Windows\\notepad.exe %1",
+      { { "C:\\My Documents\\a \"b\" c.txt", NULL } },
+      { "C:\\Windows\\notepad.exe", "C:\\My Documents\\a \"b\" c.txt", NULL },
+      0,
+    },
+    {
+      "\"app.exe\" \"%1\" %1",
+      { { "C:\\some dir\\", NULL }, { "C:\\other dir\\\\", NULL } },
+      { "app.exe", "C:\\some dir\\", "C:\\other dir\\\\", NULL },
+      0,
+    },
+    {
+      "app.exe --file=%1 --verbose",
+      { { "C:\\a b\\c.txt", NULL } },
+      { "app.exe", "--file=C:\\a b\\c.txt", "--verbose", NULL },
+      0,
+    },
+    {
+      "app.exe --title %c",
+      { { NULL, NULL } },
+      { "app.exe", "--title", "Bob's App", NULL },
+      0,
+    },
+    {
+      "app.exe %*",
+      { { "C:\\a b.txt", NULL }, { "C:\\it's.txt", NULL }, { "C:\\c\\", NULL } },
+      { "app.exe", "C:\\a b.txt", "C:\\it's.txt", "C:\\c\\", NULL },
+      0,
+    },
+    {
+      "app.exe %*\t--",
+      { { "C:\\a b.txt", NULL }, { "C:\\c.txt", NULL } },
+      { "app.exe", "C:\\a b.txt", "C:\\c.txt", "--", NULL },
+      0,
+    },
+    {
+      "app.exe \"%*\"",
+      { { "C:\\a.txt", NULL }, { "C:\\b.txt", NULL } },
+      { "app.exe", "C:\\a.txt C:\\b.txt", NULL },
+      0,
+    },
+    {
+      "app.exe --files=%F",
+      { { "C:\\a b.txt", NULL }, { "C:\\c.txt", NULL } },
+      { "app.exe", "--files=C:\\a b.txt C:\\c.txt", NULL },
+      0,
+    },
+    {
+      "app.exe %F --",
+      { { "C:\\a b.txt", NULL }, { "C:\\it's \"c\".txt", NULL } },
+      { "app.exe", "C:\\a b.txt", "C:\\it's \"c\".txt", "--", NULL },
+      0,
+    },
+    {
+      "app.exe %U",
+      { { NULL, "https://example.com/a b" }, { NULL, "https://example.com/'c'\\d" } },
+      { "app.exe", "https://example.com/a b", "https://example.com/'c'\\d", NULL },
+      0,
+    },
+    {
+      "\"%1\" %*",
+      { { "C:\\Program Files\\x y.exe", NULL } },
+      { "C:\\Program Files\\x y.exe", NULL },
+      0,
+    },
+    /* A field code for files gives a URI with no file path as it is */
+    {
+      "app.exe %1 %*",
+      { { NULL, "https://example.com/a" }, { NULL, "file:///" }, { NULL, "file:///C:/a%2Fb.txt" } },
+      { "app.exe", "https://example.com/a", "file:///", "file:///C:/a%2Fb.txt", NULL },
+      0,
+    },
+    /* Field codes with no value here use no object */
+    {
+      "app.exe %s%h %i \"%v\" %m %n %N %D",
+      { { "C:\\a.txt", NULL } },
+      { "app.exe", "", "C:\\a.txt", NULL },
+      0,
+    },
+    /* Splitting the command line itself */
+    {
+      "  app.exe\t \"a \\\"quoted\\\" word\" C:\\dir\\file \"C:\\dir\\\\\" a\\\\\\\"b \"x\"\"y\" un\"quo ted\" ",
+      { { NULL, NULL } },
+      { "app.exe", "a \"quoted\" word", "C:\\dir\\file", "C:\\dir\\", "a\\\"b", "x\"y", "unquo ted", NULL },
+      0,
+    },
+    {
+      "\"C:\\Program Files\\App\\\"app.exe \"unterminated",
+      { { NULL, NULL } },
+      { "C:\\Program Files\\App\\app.exe", "unterminated", NULL },
+      0,
+    },
+  };
+
+static void
+free_object (gpointer data)
+{
+  file_or_uri *obj = data;
+
+  g_free (obj->file);
+  g_free (obj->uri);
+  g_free (obj);
+}
+
+static void
+test_win32_expand_application_parameters (void)
+{
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (expand_commandlines); i++)
+    {
+      GList *objs = NULL;
+      GList *objs_left;
+      int argc = 0;
+      char **argv = NULL;
+      GError *error = NULL;
+      gboolean success;
+      gsize j;
+
+      g_test_message ("Command line: %s", expand_commandlines[i].command);
+
+      for (j = 0; expand_commandlines[i].objects[j].file != NULL ||
+                  expand_commandlines[i].objects[j].uri != NULL; j++)
+        {
+          file_or_uri *obj = g_new0 (file_or_uri, 1);
+
+          obj->file = g_strdup (expand_commandlines[i].objects[j].file);
+          obj->uri = g_strdup (expand_commandlines[i].objects[j].uri);
+          objs = g_list_append (objs, obj);
+        }
+
+      objs_left = objs;
+      success = _g_win32_expand_application_parameters ("Bob's App",
+                                                        expand_commandlines[i].command,
+                                                        &objs_left,
+                                                        &argc,
+                                                        &argv,
+                                                        &error);
+      g_assert_no_error (error);
+      g_assert_true (success);
+      g_assert_cmpstrv (argv, expand_commandlines[i].argv);
+      g_assert_cmpint (argc, ==, g_strv_length (argv));
+      g_assert_cmpuint (g_list_length (objs_left), ==, expand_commandlines[i].n_objects_left);
+
+      g_strfreev (argv);
+      g_list_free_full (objs, free_object);
+    }
+}
+
+static void
+test_win32_expand_application_parameters_file_uri (void)
+{
+  /* A field code for files gives the path of a file URI */
+  const char *uri = "file:///C:/Users/me/it's%20a%20file.txt";
+  file_or_uri *obj = g_new0 (file_or_uri, 1);
+  GList *objs = NULL;
+  GList *objs_left;
+  int argc = 0;
+  char **argv = NULL;
+  char *path = NULL;
+  char *expected_arg = NULL;
+  GError *error = NULL;
+  gboolean success;
+
+  obj->uri = g_strdup (uri);
+  objs = g_list_append (objs, obj);
+
+  path = g_filename_from_uri (uri, NULL, &error);
+  g_assert_no_error (error);
+  expected_arg = g_strconcat ("--file=", path, NULL);
+
+  objs_left = objs;
+  success = _g_win32_expand_application_parameters (NULL, "app.exe --file=%1",
+                                                    &objs_left, &argc, &argv, &error);
+  g_assert_no_error (error);
+  g_assert_true (success);
+  g_assert_cmpint (argc, ==, 2);
+  g_assert_cmpstr (argv[0], ==, "app.exe");
+  g_assert_cmpstr (argv[1], ==, expected_arg);
+  g_assert_null (argv[2]);
+  g_assert_null (objs_left);
+
+  g_strfreev (argv);
+  g_free (expected_arg);
+  g_free (path);
+  g_list_free_full (objs, free_object);
+}
+
+static void
+test_win32_expand_application_parameters_numbered (void)
+{
+  /* %2 to %9 take one object, after skipping as many objects as their
+   * number (so %2 takes the third one), and use up all the objects */
+  char n;
+
+  for (n = '2'; n <= '9'; n++)
+    {
+      GList *objs = NULL;
+      GList *objs_left;
+      char *command = NULL;
+      char *expected_arg = NULL;
+      int argc = 0;
+      char **argv = NULL;
+      GError *error = NULL;
+      gboolean success;
+      unsigned int i;
+
+      for (i = 1; i <= 10; i++)
+        {
+          file_or_uri *obj = g_new0 (file_or_uri, 1);
+
+          obj->file = g_strdup_printf ("C:\\file%u.txt", i);
+          objs = g_list_append (objs, obj);
+        }
+
+      command = g_strdup_printf ("app.exe %%%c", n);
+      expected_arg = g_strdup_printf ("C:\\file%d.txt", n - '0' + 1);
+      g_test_message ("Command line: %s", command);
+
+      objs_left = objs;
+      success = _g_win32_expand_application_parameters (NULL, command,
+                                                        &objs_left, &argc, &argv, &error);
+      g_assert_no_error (error);
+      g_assert_true (success);
+      g_assert_cmpint (argc, ==, 2);
+      g_assert_cmpstr (argv[0], ==, "app.exe");
+      g_assert_cmpstr (argv[1], ==, expected_arg);
+      g_assert_null (argv[2]);
+      g_assert_null (objs_left);
+
+      g_strfreev (argv);
+      g_free (expected_arg);
+      g_free (command);
+      g_list_free_full (objs, free_object);
+    }
+}
+
+static void
+test_win32_expand_application_parameters_working_dir (void)
+{
+  /* %w is the working directory, and uses no object */
+  file_or_uri *obj = g_new0 (file_or_uri, 1);
+  GList *objs = NULL;
+  GList *objs_left;
+  int argc = 0;
+  char **argv = NULL;
+  char *current_dir = NULL;
+  char *expected_arg = NULL;
+  GError *error = NULL;
+  gboolean success;
+
+  obj->file = g_strdup ("C:\\a.txt");
+  objs = g_list_append (objs, obj);
+
+  current_dir = g_get_current_dir ();
+  expected_arg = g_strconcat ("--dir=", current_dir, NULL);
+
+  objs_left = objs;
+  success = _g_win32_expand_application_parameters (NULL, "app.exe %w --dir=%w %f",
+                                                    &objs_left, &argc, &argv, &error);
+  g_assert_no_error (error);
+  g_assert_true (success);
+  g_assert_cmpint (argc, ==, 4);
+  g_assert_cmpstr (argv[0], ==, "app.exe");
+  g_assert_cmpstr (argv[1], ==, current_dir);
+  g_assert_cmpstr (argv[2], ==, expected_arg);
+  g_assert_cmpstr (argv[3], ==, "C:\\a.txt");
+  g_assert_null (argv[4]);
+  g_assert_null (objs_left);
+
+  g_strfreev (argv);
+  g_free (expected_arg);
+  g_free (current_dir);
+  g_list_free_full (objs, free_object);
+}
+
+static void
+test_win32_expand_application_parameters_empty (void)
+{
+  const char *commands[] = { "", "  \t ", "%1", "%U %F" };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (commands); i++)
+    {
+      GList *objs = NULL;
+      int argc = 0;
+      char **argv = NULL;
+      GError *error = NULL;
+      gboolean success;
+
+      g_test_message ("Command line: %s", commands[i]);
+
+      success = _g_win32_expand_application_parameters (NULL, commands[i], &objs, &argc, &argv, &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+      g_assert_false (success);
+      g_assert_null (argv);
+      g_clear_error (&error);
+    }
+}
+
 static void
 do_fail_on_broken_utf16_1 (void)
 {
@@ -465,6 +854,11 @@ main (int   argc,
   g_test_add_func ("/appinfo/win32-rundll32-fixup", test_win32_rundll32_fixup);
   g_test_add_func ("/appinfo/win32-parse-filename", test_win32_parse_filename);
   g_test_add_func ("/appinfo/win32-utf16-conversion-fail", test_fail_on_broken_utf16);
+  g_test_add_func ("/appinfo/win32-expand-application-parameters/commands", test_win32_expand_application_parameters);
+  g_test_add_func ("/appinfo/win32-expand-application-parameters/file-uri", test_win32_expand_application_parameters_file_uri);
+  g_test_add_func ("/appinfo/win32-expand-application-parameters/numbered", test_win32_expand_application_parameters_numbered);
+  g_test_add_func ("/appinfo/win32-expand-application-parameters/working-dir", test_win32_expand_application_parameters_working_dir);
+  g_test_add_func ("/appinfo/win32-expand-application-parameters/empty", test_win32_expand_application_parameters_empty);
 
   g_test_add_func ("/appinfo/subprocess/win32-assert-broken-utf16_1", do_fail_on_broken_utf16_1);
   g_test_add_func ("/appinfo/subprocess/win32-assert-broken-utf16_2", do_fail_on_broken_utf16_2);
