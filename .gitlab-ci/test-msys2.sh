@@ -25,7 +25,6 @@ if [[ "${MSYSTEM}" != "MINGW32" ]]; then
 else
     pacman --noconfirm -S --needed \
         base-devel \
-        "${MINGW_PACKAGE_PREFIX}"-ccache \
         "${MINGW_PACKAGE_PREFIX}"-meson \
         "${MINGW_PACKAGE_PREFIX}"-toolchain
 fi
