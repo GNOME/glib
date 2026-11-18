@@ -2661,6 +2661,57 @@ test_6_days_until_end_of_the_month (void)
 }
 
 static void
+test_zero_offset (void)
+{
+#ifdef G_OS_UNIX
+  GTimeZone *tz;
+  GDateTime *dt;
+  gchar *p;
+#endif
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/work_items/4114");
+
+#ifdef G_OS_UNIX
+  /* This is the footertz string from `Europe/Dublin` from tzdata 2020b. It’s
+   * used by GLib when the tzdata file was compiled with `zic -b slim`, which is
+   * the default in tzcode ≥2020b.
+   *
+   * The unusual bit is the `0` after the alternate `GMT` timezone. That
+   * indicates a zero offset from UTC. Omitting it should default to one hour
+   * ahead of UTC. This was triggering bug #4114.
+   *
+   * References:
+   *  - https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap08.html#tag_08_03
+   */
+  tz = g_time_zone_new_identifier ("IST-1GMT0,M10.5.0,M3.5.0/1");
+  g_assert_nonnull (tz);
+  dt = g_date_time_new (tz, 2026, 1, 15, 12, 0, 0);
+
+  p = g_date_time_format (dt, "%Y-%m-%d %H:%M:%S%z");
+  /* Incorrect output is  "2026-01-15 12:00:00+0200" */
+  g_assert_cmpstr (p, ==, "2026-01-15 12:00:00+0000");
+  g_free (p);
+
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
+
+  /* Now try again with the offset missing, so the default value is used. */
+  tz = g_time_zone_new_identifier ("IST-1GMT,M10.5.0,M3.5.0/1");
+  g_assert_nonnull (tz);
+  dt = g_date_time_new (tz, 2026, 1, 15, 12, 0, 0);
+
+  p = g_date_time_format (dt, "%Y-%m-%d %H:%M:%S%z");
+  g_assert_cmpstr (p, ==, "2026-01-15 12:00:00+0200");
+  g_free (p);
+
+  g_date_time_unref (dt);
+  g_time_zone_unref (tz);
+#else
+  g_test_skip ("IST timezone not defined separately from GMT on Windows");
+#endif
+}
+
+static void
 test_format_iso8601 (void)
 {
   GTimeZone *tz = NULL;
@@ -3829,6 +3880,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/set_date_time", test_GDateTime_set_date_time);
   g_test_add_func ("/GDateTime/test-6-days-until-end-of-the-month", test_6_days_until_end_of_the_month);
+  g_test_add_func ("/GDateTime/test-zero-offset", test_zero_offset);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
   g_test_add_func ("/GDateTime/format_unrepresentable", test_format_unrepresentable);
