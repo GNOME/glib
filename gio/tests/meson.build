@@ -95,6 +95,11 @@ gio_tests = {
   },
   'g-icon' : {},
   'gdbus-addresses' : {},
+  'gdbus-keyring-permissions' : {
+    # The Windows functions that are tested are not exported
+    'extra_sources' : host_system == 'windows' ? ['../gwin32security.c', '../gwin32sid.c'] : [],
+    'c_args' : host_system == 'windows' ? ['-DGIO_COMPILATION'] : [],
+  },
   'gdbus-message' : {},
   'gdbus-peer' : {
     'dependencies' : [libgdbus_example_objectmanager_dep],

@@ -177,6 +177,7 @@ gio/gvolumemonitor.c
 gio/gwin32appinfo.c
 gio/gwin32inputstream.c
 gio/gwin32outputstream.c
+gio/gwin32security.c
 gio/gzlibcompressor.c
 gio/gzlibdecompressor.c
 gio/tests/gdbus-daemon.c

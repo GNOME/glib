@@ -482,6 +482,8 @@ else
     'gwin32notificationbackend.c',
     'gwin32sid.c',
     'gwin32sid.h',
+    'gwin32security.c',
+    'gwin32security.h',
   )
 
   if glib_build_shared

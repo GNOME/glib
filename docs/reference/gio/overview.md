@@ -371,6 +371,9 @@ environment.
   permissions of the directory used to store the keyring used in the
   `DBUS_COOKIE_SHA1` authentication mechanism won’t be checked. Normally the
   directory must be readable only by the user.
+  On Windows the directory and its files must have the DACLs described in the
+  [D-Bus specification](https://dbus.freedesktop.org/doc/dbus-specification.html#auth-mechanisms-sha).
+  With this set, neither is checked.
 
 ## Extending GIO
 
