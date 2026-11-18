@@ -270,7 +270,7 @@ g_unix_socket_address_to_native (GSocketAddress *address,
     }
 
   sock = (struct sockaddr_un *) dest;
-  memset (sock, 0, socklen);
+  memset (sock, 0, destlen);  /* clear the whole dest, as per #4128 */
   sock->sun_family = AF_UNIX;
 
   switch (addr->priv->address_type)
