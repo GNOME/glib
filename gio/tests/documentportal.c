@@ -57,6 +57,7 @@ test_document_portal_add_uri (void)
   const char *app_id;
   const char *document_portal_mount_point;
   char *basename;
+  char *doc_path;
   char *expected_uri;
 
   /* Run a fake-document-portal */
@@ -77,8 +78,8 @@ test_document_portal_add_uri (void)
   g_assert_no_error (error);
 
   basename = g_file_get_basename (file);
-  expected_uri = g_strdup_printf ("file:%s/document-id-0/%s",
-                                   document_portal_mount_point, basename);
+  doc_path = g_build_filename (document_portal_mount_point, "document-id-0", basename, NULL);
+  expected_uri = g_filename_to_uri (doc_path, NULL, NULL);
 
   g_assert_cmpuint (g_list_length (portal_uris), ==, 1);
   g_assert_cmpstr (g_list_nth_data (portal_uris, 0), ==, expected_uri);
@@ -86,6 +87,7 @@ test_document_portal_add_uri (void)
   g_fake_document_portal_thread_stop (thread);
   g_clear_object (&thread);
   g_clear_object (&file);
+  g_clear_pointer (&doc_path, g_free);
   g_clear_pointer (&expected_uri, g_free);
   g_clear_pointer (&basename, g_free);
   g_clear_list (&uris, g_free);
@@ -147,6 +149,8 @@ test_document_portal_add_existent_and_not_existent_uris (void)
   const char *document_portal_mount_point;
   const char *invalid_uri;
   char *basename;
+  char *expected_uri0;
+  char *expected_uri1;
 
   /* Run a fake-document-portal */
   app_id = "org.gnome.glib.gio.mixed-uris";
@@ -177,10 +181,13 @@ test_document_portal_add_existent_and_not_existent_uris (void)
   expected_file1 = g_file_new_build_filename (document_portal_mount_point,
                                               "document-id-1", basename, NULL);
 
+  expected_uri0 = g_filename_to_uri (g_file_peek_path (expected_file0), NULL, NULL);
+  expected_uri1 = g_filename_to_uri (g_file_peek_path (expected_file1), NULL, NULL);
+
   g_assert_cmpuint (g_list_length (portal_uris), ==, 4);
-  g_assert_cmpstr ((char * ) g_list_nth_data (portal_uris, 0) + strlen ("file:"), ==, g_file_peek_path (expected_file0));
+  g_assert_cmpstr (g_list_nth_data (portal_uris, 0), ==, expected_uri0);
   g_assert_cmpstr (g_list_nth_data (portal_uris, 1), ==, invalid_uri);
-  g_assert_cmpstr ((char * ) g_list_nth_data (portal_uris, 2) + strlen ("file:"), ==, g_file_peek_path (expected_file1));
+  g_assert_cmpstr (g_list_nth_data (portal_uris, 2), ==, expected_uri1);
   g_assert_cmpstr (g_list_nth_data (portal_uris, 3), ==, invalid_uri);
 
   g_assert_true (g_file_test (g_file_peek_path (expected_file0), G_FILE_TEST_IS_REGULAR));
@@ -192,6 +199,8 @@ test_document_portal_add_existent_and_not_existent_uris (void)
   g_clear_object (&expected_file1);
   g_clear_object (&expected_file0);
   g_clear_pointer (&basename, g_free);
+  g_clear_pointer (&expected_uri0, g_free);
+  g_clear_pointer (&expected_uri1, g_free);
   g_clear_list (&uris, g_free);
   g_clear_list (&portal_uris, g_free);
 }
@@ -215,6 +224,7 @@ test_document_portal_add_symlink_uri (void)
   const char *document_portal_mount_point;
   char *tmpdir_path;
   char *basename;
+  char *doc_path;
   char *expected_uri;
 
   /* Run a fake-document-portal */
@@ -261,13 +271,15 @@ test_document_portal_add_symlink_uri (void)
   basename = g_file_get_basename (target);
   g_assert_cmpuint (g_list_length (portal_uris), ==, 2);
 
-  expected_uri = g_strdup_printf ("file:%s/document-id-0/%s",
-                                   document_portal_mount_point, basename);
+  doc_path = g_build_filename (document_portal_mount_point, "document-id-0", basename, NULL);
+  expected_uri = g_filename_to_uri (doc_path, NULL, NULL);
+  g_clear_pointer (&doc_path, g_free);
   g_assert_cmpstr (g_list_nth_data (portal_uris, 0), ==, expected_uri);
   g_clear_pointer (&expected_uri, g_free);
 
-  expected_uri = g_strdup_printf ("file:%s/document-id-1/%s",
-                                   document_portal_mount_point, basename);
+  doc_path = g_build_filename (document_portal_mount_point, "document-id-1", basename, NULL);
+  expected_uri = g_filename_to_uri (doc_path, NULL, NULL);
+  g_clear_pointer (&doc_path, g_free);
   g_assert_cmpstr (g_list_nth_data (portal_uris, 1), ==, expected_uri);
   g_clear_pointer (&expected_uri, g_free);
 
@@ -280,6 +292,68 @@ test_document_portal_add_symlink_uri (void)
   g_clear_pointer (&expected_uri, g_free);
   g_clear_pointer (&basename, g_free);
   g_clear_pointer (&tmpdir_path, g_free);
+  g_clear_list (&uris, g_free);
+  g_clear_list (&portal_uris, g_free);
+}
+
+static void
+test_document_portal_add_uri_with_special_chars (void)
+{
+  if (skip_if_fd_query_path_unsupported ())
+    return;
+
+  GFakeDocumentPortalThread *thread = NULL;
+  GFile *file;
+  GList *uris = NULL;  /* (element-type utf8) */
+  GList *portal_uris = NULL;  /* (element-type utf8) */
+  GFileOutputStream *ostream = NULL;
+  GError *error = NULL;
+  const char *app_id;
+  const char *document_portal_mount_point;
+  const char *filename = "test file? with [special] chars!.txt";
+  char *tmpdir_path;
+  char *expected_path;
+  char *expected_uri;
+  char *portal_path;
+
+  /* Run a fake-document-portal */
+  app_id = "org.gnome.glib.gio.special-chars";
+  thread = g_fake_document_portal_thread_new (session_bus_get_address (), app_id);
+  g_fake_document_portal_thread_run (thread);
+  document_portal_mount_point = g_fake_document_portal_thread_get_mount_point (thread);
+
+  tmpdir_path = g_dir_make_tmp ("test_document_portal_special_chars_XXXXXX", &error);
+  g_assert_no_error (error);
+
+  file = g_file_new_build_filename (tmpdir_path, filename, NULL);
+  ostream = g_file_create (file, G_FILE_CREATE_NONE, NULL, &error);
+  g_assert_no_error (error);
+  g_output_stream_close (G_OUTPUT_STREAM (ostream), NULL, &error);
+  g_assert_no_error (error);
+  g_clear_object (&ostream);
+
+  uris = g_list_append (uris, g_file_get_uri (file));
+  portal_uris = g_document_portal_add_documents (uris, app_id, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpuint (g_list_length (portal_uris), ==, 1);
+
+  expected_path = g_build_filename (document_portal_mount_point,
+                                    "document-id-0", filename, NULL);
+  expected_uri = g_filename_to_uri (expected_path, NULL, NULL);
+  g_assert_cmpstr (g_list_nth_data (portal_uris, 0), ==, expected_uri);
+
+  portal_path = g_filename_from_uri (g_list_nth_data (portal_uris, 0), NULL, NULL);
+  g_assert_cmpstr (portal_path, ==, expected_path);
+
+  g_fake_document_portal_thread_stop (thread);
+  g_file_delete (file, NULL, NULL);
+  g_clear_object (&thread);
+  g_clear_object (&file);
+  g_clear_pointer (&tmpdir_path, g_free);
+  g_clear_pointer (&expected_path, g_free);
+  g_clear_pointer (&expected_uri, g_free);
+  g_clear_pointer (&portal_path, g_free);
   g_clear_list (&uris, g_free);
   g_clear_list (&portal_uris, g_free);
 }
@@ -367,6 +441,7 @@ main (int   argc,
   g_test_add_func ("/document-portal/add-not-existent-uri", test_document_portal_add_not_existent_uri);
   g_test_add_func ("/document-portal/add-existent-and-not-existent-uri", test_document_portal_add_existent_and_not_existent_uris);
   g_test_add_func ("/document-portal/add-symlink-uri", test_document_portal_add_symlink_uri);
+  g_test_add_func ("/document-portal/add-uri-with-special-chars", test_document_portal_add_uri_with_special_chars);
   g_test_add_func ("/document-portal/add-uri-with-missing-doc-id-path", test_document_portal_add_uri_with_missing_doc_id_path);
   g_test_add_func ("/document-portal/add-uri-with-missing-doc-file", test_document_portal_add_uri_with_missing_doc_file);
 

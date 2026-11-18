@@ -247,10 +247,9 @@ g_document_portal_add_documents (GList       *uris,
                   goto out;
                 }
 
-              ruri = g_strconcat ("file:",
-                                  documents_mountpoint, G_DIR_SEPARATOR_S,
-                                  doc_ids[j], G_DIR_SEPARATOR_S,
-                                  doc_name, NULL);
+              doc_path = g_build_filename (documents_mountpoint, doc_ids[j], doc_name, NULL);
+              ruri = g_filename_to_uri (doc_path, NULL, NULL);
+              g_clear_pointer (&doc_path, g_free);
 
               g_clear_pointer (&doc_dir, g_dir_close);
               j++;
