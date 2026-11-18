@@ -650,7 +650,7 @@ static GWin32RegistryKey *classes_root_key;
  *     _g_win32_fixup_broken_microsoft_rundll_commandline(),
  *     _g_win32_expand_application_parameters()
  */
-#include "giowin32-private.c"
+#include "giowin32-private.h"
 
 /* for g_win32_package_parser_enum_packages() */
 #include "gwin32packageparser.h"
@@ -5069,16 +5069,6 @@ out:
 
   return completed;
 }
-
-static void
-free_file_or_uri (gpointer ptr)
-{
-  file_or_uri *obj = ptr;
-  g_free (obj->file);
-  g_free (obj->uri);
-  g_free (obj);
-}
-
 
 static gboolean
 g_win32_app_supports_uris (GWin32AppInfoApplication *app)

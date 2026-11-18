@@ -455,7 +455,10 @@ if host_system != 'windows'
     )
   endif
 else
-  win32_sources += files('gwin32appinfo.c')
+  win32_sources += files(
+    'gwin32appinfo.c',
+    'giowin32-private.c',
+  )
   contenttype_sources += files('gcontenttype-win32.c')
   platform_deps += [cc.find_library('shlwapi'),
                     cc.find_library('dnsapi'),
