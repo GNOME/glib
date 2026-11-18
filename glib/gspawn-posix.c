@@ -679,6 +679,15 @@ safe_open (const char *path, gint mode)
   return ret;
 }
 
+/* This function is called between fork() and exec() and hence must be
+ * async-signal-safe (see signal-safety(7)). */
+static inline void
+safe_assert (int expr)
+{
+  if (G_UNLIKELY (!expr))
+    _exit (1);
+}
+
 enum
 {
   CHILD_CHDIR_FAILED,
@@ -737,6 +746,11 @@ do_exec (gint                  child_err_report_fd,
 
       g_clear_fd (&old_fd, NULL);
     }
+
+  /* We always need a child_err_report_fd, and the caller always provides one,
+   * but because of the above IS_STD_FILENO check, the static analyser believes
+   * it could be < 0. Add an assertion to help. */
+  safe_assert (child_err_report_fd >= STDERR_FILENO + 1);
 
   /* It's possible the caller assigned stdin to an fd with a
    * file number that is supposed to be reserved for

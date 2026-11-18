@@ -697,6 +697,8 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
 
   if (bytes_read == -1)
     {
+      g_assert (error != NULL);
+
       if (G_UNLIKELY (_g_dbus_debug_transport ()))
         {
           _g_dbus_debug_print_lock ();
