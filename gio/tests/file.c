@@ -1953,6 +1953,18 @@ test_replace (gconstpointer test_data)
         FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
       },
 
+      /* Replacing a symlink to a read-only file should report a permission
+       * error and leave both the symlink and its target unchanged. */
+      {
+        FALSE, G_FILE_CREATE_NONE, NULL,
+        FILE_TEST_DIRECTORY_SETUP_TYPE_NORMAL,
+        FILE_TEST_SETUP_TYPE_SYMLINK_VALID, 0444,
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, TRUE,
+        FALSE, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED,
+        2, FILE_TEST_SETUP_TYPE_SYMLINK_VALID, 0444, "source-target",
+        FILE_TEST_SETUP_TYPE_NONEXISTENT, 0, NULL,
+      },
+
       /* A symlink in an unwriteable directory, with the need to replace the
        * destination and make a backup, tests the fallback backup code path. It
        * can’t succeed, because even if the file replace would work, the backup
