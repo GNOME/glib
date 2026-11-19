@@ -35,6 +35,7 @@
 #ifdef G_OS_WIN32
 #include <io.h>
 #include "gwin32sid.h"
+#include "gwin32security.h"
 #endif
 
 #ifndef O_CLOEXEC
@@ -270,7 +271,37 @@ random_blob (guint len)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* ensure keyring dir exists and permissions are correct */
+#ifdef G_OS_WIN32
+static gboolean
+keyring_ignores_permissions (void)
+{
+  return g_getenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION") != NULL;
+}
+#endif
+
+/* Reads a keyring file.  On Windows it is checked as the specification says,
+ * with %G_IO_ERROR_PERMISSION_DENIED if it fails.
+ */
+static gboolean
+keyring_read_file (const gchar  *path,
+                   gchar       **contents,
+                   GError      **error)
+{
+#ifdef G_OS_WIN32
+  if (!keyring_ignores_permissions ())
+    return g_win32_read_private_file (path, contents, error);
+#endif
+
+  return g_file_get_contents (path, contents, NULL, error);
+}
+
+/* ensure keyring dir exists and permissions are correct
+ *
+ * On Windows the DACLs are checked as the specification says
+ * (https://dbus.freedesktop.org/doc/dbus-specification.html#auth-mechanisms-sha)
+ * and nothing is checked if G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION
+ * is set.
+ */
 static gchar *
 ensure_keyring_directory (GError **error)
 {
@@ -278,6 +309,10 @@ ensure_keyring_directory (GError **error)
   const gchar *e;
 #ifdef G_OS_UNIX
   struct stat statbuf;
+#endif
+#ifdef G_OS_WIN32
+  gboolean ignore_permissions = keyring_ignores_permissions ();
+  GError *local_error = NULL;
 #endif
 
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -343,16 +378,35 @@ ensure_keyring_directory (GError **error)
       return g_steal_pointer (&path);
     }
 #else  /* if !G_OS_UNIX */
-  /* On non-Unix platforms, check that it exists as a directory, but don’t do
-   * permissions checks at the moment. */
+#ifdef G_OS_WIN32
+  if (!ignore_permissions)
+    {
+      /* An existing directory is never changed */
+      if (!g_win32_ensure_private_directory (path, &local_error))
+        {
+          g_propagate_prefixed_error (error, local_error,
+                                      _("Cannot use the directory “%s” (remove it, or set "
+                                        "G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION to use it anyway): "),
+                                      path);
+          g_clear_pointer (&path, g_free);
+          return NULL;
+        }
+
+      return g_steal_pointer (&path);
+    }
+#endif  /* if G_OS_WIN32 */
+
+  /* On non-Unix platforms, check that it exists as a directory */
   if (g_file_test (path, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR))
     {
+#ifndef G_OS_WIN32
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic warning "-Wcpp"
 #warning Please implement permission checking on this non-UNIX platform
 #pragma GCC diagnostic pop
 #endif  /* __GNUC__ */
+#endif  /* if !G_OS_WIN32 */
       return g_steal_pointer (&path);
     }
 #endif  /* if !G_OS_UNIX */
@@ -403,10 +457,7 @@ keyring_lookup_entry (const gchar  *cookie_context,
 
   path = g_build_filename (keyring_dir, cookie_context, NULL);
 
-  if (!g_file_get_contents (path,
-                            &contents,
-                            NULL,
-                            error))
+  if (!keyring_read_file (path, &contents, error))
     {
       g_prefix_error (error,
                       _("Error opening keyring “%s” for reading: "),
@@ -726,16 +777,25 @@ keyring_generate_entry (const gchar  *cookie_context,
     goto out;
 
   contents = NULL;
-  if (!g_file_get_contents (path,
-                            &contents,
-                            NULL,
-                            &local_error))
+
+  if (!keyring_read_file (path, &contents, &local_error))
     {
-      if (local_error->domain == G_FILE_ERROR && local_error->code == G_FILE_ERROR_NOENT)
+      if (g_error_matches (local_error, G_FILE_ERROR, G_FILE_ERROR_NOENT) ||
+          g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
         {
           /* file doesn't have to exist */
           g_clear_error (&local_error);
         }
+#ifdef G_OS_WIN32
+      else if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_PERMISSION_DENIED))
+        {
+          /* The cookies of a file that fails the check may be known, so it
+           * is replaced with a new private file
+           */
+          _log ("Not using the keyring '%s': %s", path, local_error->message);
+          g_clear_error (&local_error);
+        }
+#endif
       else
         {
           g_propagate_prefixed_error (error,
@@ -902,12 +962,27 @@ keyring_generate_entry (const gchar  *cookie_context,
   /* and now actually write the cookie file if there are changes (this is atomic) */
   if (changed_file)
     {
-      if (!g_file_set_contents_full (path,
-                                     new_contents->str,
-                                     -1,
-                                     G_FILE_SET_CONTENTS_CONSISTENT,
-                                     0600,
-                                     error))
+      gboolean written;
+
+#ifdef G_OS_WIN32
+      /* The new file is private, unless the permissions are ignored, as the
+       * volume may not keep them
+       */
+      if (!keyring_ignores_permissions ())
+        written = g_win32_set_contents_private (path,
+                                                new_contents->str,
+                                                new_contents->len,
+                                                error);
+      else
+#endif
+        written = g_file_set_contents_full (path,
+                                            new_contents->str,
+                                            -1,
+                                            G_FILE_SET_CONTENTS_CONSISTENT,
+                                            0600,
+                                            error);
+
+      if (!written)
         {
           *out_id = 0;
           g_free (*out_cookie);
