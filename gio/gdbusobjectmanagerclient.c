@@ -1040,6 +1040,14 @@ signal_cb (GDBusConnection *connection,
           GVariant *changed_properties;
           const gchar **invalidated_properties;
 
+          if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sa{sv}as)")))
+            {
+              g_warning ("Ignoring PropertiesChanged signal with unexpected type '%s'",
+                         g_variant_get_type_string (parameters));
+              g_object_unref (manager);
+              goto out;
+            }
+
           g_variant_get (parameters,
                          "(&s@a{sv}^a&s)",
                          &properties_interface_name,
@@ -1732,6 +1740,13 @@ process_get_all_result (GDBusObjectManagerClient *manager,
 
   g_return_if_fail (name_owner == NULL || g_dbus_is_unique_name (name_owner));
 
+  if (!g_variant_is_of_type (value, G_VARIANT_TYPE ("(a{oa{sa{sv}}})")))
+    {
+      g_warning ("Ignoring GetManagedObjects reply with unexpected type '%s'",
+                 g_variant_get_type_string (value));
+      return;
+    }
+
   arg0 = g_variant_get_child_value (value, 0);
   g_variant_iter_init (&iter, arg0);
   while (g_variant_iter_next (&iter,
@@ -1766,6 +1781,13 @@ on_control_proxy_g_signal (GDBusProxy   *proxy,
     {
       GVariant *ifaces_and_properties;
 
+      if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(oa{sa{sv}})")))
+        {
+          g_warning ("Ignoring InterfacesAdded signal with unexpected type '%s'",
+                     g_variant_get_type_string (parameters));
+          goto out;
+        }
+
       g_variant_get (parameters,
                      "(&o@a{sa{sv}})",
                      &object_path,
@@ -1777,6 +1799,13 @@ on_control_proxy_g_signal (GDBusProxy   *proxy,
     {
       const gchar **ifaces;
 
+      if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(oas)")))
+        {
+          g_warning ("Ignoring InterfacesRemoved signal with unexpected type '%s'",
+                     g_variant_get_type_string (parameters));
+          goto out;
+        }
+
       g_variant_get (parameters,
                      "(&o^a&s)",
                      &object_path,
@@ -1785,6 +1814,7 @@ on_control_proxy_g_signal (GDBusProxy   *proxy,
       g_free (ifaces);
     }
 
+out:
   g_object_unref (manager);
 }
 
