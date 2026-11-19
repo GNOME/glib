@@ -2482,6 +2482,119 @@ test_object_manager (void)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+typedef struct
+{
+  GDBusObjectManager *manager;
+  GMutex mutex;
+  GCond cond;
+  gboolean destroy;
+} ObjectManagerTeardownData;
+
+static gpointer
+destroy_object_manager_in_thread (gpointer user_data)
+{
+  ObjectManagerTeardownData *data = user_data;
+
+  g_mutex_lock (&data->mutex);
+  while (!data->destroy)
+    g_cond_wait (&data->cond, &data->mutex);
+  g_mutex_unlock (&data->mutex);
+
+  g_clear_object (&data->manager);
+
+  return NULL;
+}
+
+static void
+test_object_manager_cross_thread_teardown (void)
+{
+  GDBusConnection *connection;
+  GDBusObjectManagerServer *server;
+  GDBusObjectManager *client;
+  ObjectManagerTeardownData data = { 0, };
+  GWeakRef client_weak;
+  GThread *thread;
+  GMainContext *context;
+  GVariant *result;
+  GError *error = NULL;
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert_no_error (error);
+
+  server = g_dbus_object_manager_server_new ("/managed");
+  g_dbus_object_manager_server_set_connection (server, connection);
+
+  client = g_dbus_object_manager_client_new_sync (connection,
+                                                   G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE,
+                                                   g_dbus_connection_get_unique_name (connection),
+                                                   "/managed",
+                                                   NULL,
+                                                   NULL,
+                                                   NULL,
+                                                   NULL,
+                                                   &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (client);
+
+  g_weak_ref_init (&client_weak, G_OBJECT (client));
+  data.manager = client;
+  g_mutex_init (&data.mutex);
+  g_cond_init (&data.cond);
+  thread = g_thread_new ("destroy-object-manager",
+                         destroy_object_manager_in_thread,
+                         &data);
+
+  /* Keep the delivery context from dispatching the signal until the client
+   * has been finalized on the other thread. */
+  context = g_main_context_default ();
+  g_assert_true (g_main_context_acquire (context));
+
+  g_assert_true (g_dbus_connection_emit_signal (connection,
+                                                 NULL,
+                                                 "/managed/object",
+                                                 "org.project.Bar",
+                                                 "TestSignal",
+                                                 g_variant_new ("()"),
+                                                 &error));
+  g_assert_no_error (error);
+
+  /* D-Bus messages are processed in order, so the reply confirms that the
+   * signal has already been processed by the client's D-Bus worker thread. */
+  result = g_dbus_connection_call_sync (connection,
+                                        g_dbus_connection_get_unique_name (connection),
+                                        "/managed",
+                                        DBUS_INTERFACE_PEER,
+                                        "Ping",
+                                        NULL,
+                                        NULL,
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        -1,
+                                        NULL,
+                                        &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (result);
+  g_variant_unref (result);
+
+  g_mutex_lock (&data.mutex);
+  data.destroy = TRUE;
+  g_cond_signal (&data.cond);
+  g_mutex_unlock (&data.mutex);
+  g_thread_join (thread);
+  g_assert_null (g_weak_ref_get (&client_weak));
+
+  g_main_context_release (context);
+  while (g_main_context_pending (context))
+    g_main_context_iteration (context, FALSE);
+
+  g_weak_ref_clear (&client_weak);
+  g_cond_clear (&data.cond);
+  g_mutex_clear (&data.mutex);
+  g_clear_object (&server);
+  g_clear_object (&connection);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
 /* This checks that forcing names via org.gtk.GDBus.Name works (see test-codegen.xml) */
 
 extern gpointer name_forcing_1;
@@ -2820,6 +2933,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/codegen/annotations", test_annotations);
   g_test_add_func ("/gdbus/codegen/interface_stability", test_interface_stability);
   g_test_add_func ("/gdbus/codegen/object-manager", test_object_manager);
+  g_test_add_func ("/gdbus/codegen/object-manager/cross-thread-teardown", test_object_manager_cross_thread_teardown);
   g_test_add_func ("/gdbus/codegen/property-naming", test_property_naming);
   g_test_add_func ("/gdbus/codegen/autocleanups", test_autocleanups);
   g_test_add_func ("/gdbus/codegen/deprecations", test_deprecations);
