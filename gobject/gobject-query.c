@@ -29,7 +29,6 @@
 
 
 static gchar *indent_inc = NULL;
-static guint spacing = 1;
 static FILE *f_out = NULL;
 static GType root = 0;
 static gboolean recursion = TRUE;
@@ -87,13 +86,12 @@ show_nodes (GType        type,
 static gint
 help (const gchar *arg)
 {
-  g_fprintf (stdout, "usage: gobject-query <qualifier> [-r <type>] [-{i|b} \"\"] [-s #] [-{h|x|y}]\n");
+  g_fprintf (stdout, "usage: gobject-query <qualifier> [-r <type>] [-{i|b} \"\"] [-{h|x|y}]\n");
   g_fprintf (stdout, "       -r       specify root type\n");
   g_fprintf (stdout, "       -n       don't descend type tree\n");
   g_fprintf (stdout, "       -h       show help\n");
   g_fprintf (stdout, "       -b       specify indent string\n");
   g_fprintf (stdout, "       -i       specify incremental indent string\n");
-  g_fprintf (stdout, "       -s       specify line spacing\n");
   g_fprintf (stdout, "qualifiers:\n");
   g_fprintf (stdout, "       froots   iterate over fundamental roots\n");
   g_fprintf (stdout, "       tree     print type tree\n");
@@ -121,13 +119,7 @@ main (gint   argc,
 
   for (i = 1; i < argc; i++)
     {
-      if (strcmp ("-s", argv[i]) == 0)
-	{
-	  i++;
-	  if (i < argc)
-	    spacing = atoi (argv[i]);
-	}
-      else if (strcmp ("-i", argv[i]) == 0)
+      if (strcmp ("-i", argv[i]) == 0)
 	{
 	  i++;
 	  if (i < argc)

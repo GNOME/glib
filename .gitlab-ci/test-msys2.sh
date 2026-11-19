@@ -15,7 +15,7 @@ if [[ "${MSYSTEM}" != "MINGW32" ]]; then
         "${MINGW_PACKAGE_PREFIX}"-libffi \
         "${MINGW_PACKAGE_PREFIX}"-meson \
         "${MINGW_PACKAGE_PREFIX}"-pcre2 \
-        "${MINGW_PACKAGE_PREFIX}"-python3 \
+        "${MINGW_PACKAGE_PREFIX}"-python \
         "${MINGW_PACKAGE_PREFIX}"-python-docutils \
         "${MINGW_PACKAGE_PREFIX}"-python-pip \
         "${MINGW_PACKAGE_PREFIX}"-toolchain \
@@ -25,7 +25,6 @@ if [[ "${MSYSTEM}" != "MINGW32" ]]; then
 else
     pacman --noconfirm -S --needed \
         base-devel \
-        "${MINGW_PACKAGE_PREFIX}"-ccache \
         "${MINGW_PACKAGE_PREFIX}"-meson \
         "${MINGW_PACKAGE_PREFIX}"-toolchain
 fi

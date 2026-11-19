@@ -26,7 +26,7 @@
 
 static guint foo_signal_id = 0;
 static guint bar_signal_id = 0;
-static guint baz_signal_id = 0;
+static guint baz_signal_id G_GNUC_UNUSED = 0;
 
 static GType test_i_get_type (void);
 static GType test_a_get_type (void);

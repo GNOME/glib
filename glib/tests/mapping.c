@@ -29,7 +29,9 @@
 #endif
 
 static gboolean stop = FALSE;
+#ifndef G_OS_WIN32
 static gint parent_pid;
+#endif
 
 /* Passing argc and argv through global variables */
 static char **local_argv;
@@ -110,7 +112,9 @@ child_main (void)
   global_filename = g_build_filename (dir, "maptest", NULL);
   childname = g_build_filename (dir, "mapchild", NULL);
 
+#ifndef G_OS_WIN32
   parent_pid = atoi (local_argv[2]);
+#endif
   map = map_or_die (global_filename, FALSE);
 
 #ifndef G_OS_WIN32

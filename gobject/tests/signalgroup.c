@@ -614,7 +614,7 @@ struct _SignalThingInterface
 
 G_DEFINE_INTERFACE (SignalThing, signal_thing, G_TYPE_OBJECT)
 
-static guint signal_thing_changed;
+static guint signal_thing_changed G_GNUC_UNUSED;
 
 static void
 signal_thing_default_init (SignalThingInterface *iface)
