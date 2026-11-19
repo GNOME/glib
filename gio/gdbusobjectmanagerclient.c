@@ -188,6 +188,8 @@ G_DEFINE_TYPE_WITH_CODE (GDBusObjectManagerClient, g_dbus_object_manager_client,
                          G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT_MANAGER, dbus_object_manager_interface_init))
 
 static void maybe_unsubscribe_signals (GDBusObjectManagerClient *manager);
+static GWeakRef *weak_ref_new (GObject *object);
+static void weak_ref_free (GWeakRef *weak_ref);
 
 static void on_control_proxy_g_signal (GDBusProxy   *proxy,
                                        const gchar  *sender_name,
@@ -1009,9 +1011,14 @@ signal_cb (GDBusConnection *connection,
            GVariant        *parameters,
            gpointer         user_data)
 {
-  GDBusObjectManagerClient *manager = G_DBUS_OBJECT_MANAGER_CLIENT (user_data);
+  GWeakRef *manager_weak = user_data;
+  GDBusObjectManagerClient *manager =
+    G_DBUS_OBJECT_MANAGER_CLIENT (g_weak_ref_get (manager_weak));
   GDBusObjectProxy *object_proxy;
   GDBusInterface *interface;
+
+  if (manager == NULL)
+    return;
 
   g_mutex_lock (&manager->priv->lock);
   object_proxy = g_hash_table_lookup (manager->priv->map_object_path_to_object_proxy, object_path);
@@ -1025,7 +1032,6 @@ signal_cb (GDBusConnection *connection,
 
   //g_debug ("yay, signal_cb %s %s: %s\n", signal_name, object_path, g_variant_print (parameters, TRUE));
 
-  g_object_ref (manager);
   if (g_strcmp0 (interface_name, DBUS_INTERFACE_PROPERTIES) == 0)
     {
       if (g_strcmp0 (signal_name, "PropertiesChanged") == 0)
@@ -1107,10 +1113,9 @@ signal_cb (GDBusConnection *connection,
           g_object_unref (interface);
         }
     }
-  g_object_unref (manager);
-
  out:
   g_clear_object (&object_proxy);
+  g_object_unref (manager);
 }
 
 static void
@@ -1175,8 +1180,8 @@ subscribe_signals (GDBusObjectManagerClient *manager,
                                             G_DBUS_SIGNAL_FLAGS_NONE |
                                             G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE,
                                             signal_cb,
-                                            manager,
-                                            NULL); /* user_data_free_func */
+                                            weak_ref_new (G_OBJECT (manager)),
+                                            (GDestroyNotify) weak_ref_free);
 
     }
   else
@@ -1207,8 +1212,8 @@ subscribe_signals (GDBusObjectManagerClient *manager,
                                             NULL, /* arg0 */
                                             G_DBUS_SIGNAL_FLAGS_NONE,
                                             signal_cb,
-                                            manager,
-                                            NULL); /* user_data_free_func */
+                                            weak_ref_new (G_OBJECT (manager)),
+                                            (GDestroyNotify) weak_ref_free);
     }
 }
 
@@ -1760,6 +1765,7 @@ on_control_proxy_g_signal (GDBusProxy   *proxy,
   if (g_strcmp0 (signal_name, "InterfacesAdded") == 0)
     {
       GVariant *ifaces_and_properties;
+
       g_variant_get (parameters,
                      "(&o@a{sa{sv}})",
                      &object_path,
@@ -1770,6 +1776,7 @@ on_control_proxy_g_signal (GDBusProxy   *proxy,
   else if (g_strcmp0 (signal_name, "InterfacesRemoved") == 0)
     {
       const gchar **ifaces;
+
       g_variant_get (parameters,
                      "(&o^a&s)",
                      &object_path,
