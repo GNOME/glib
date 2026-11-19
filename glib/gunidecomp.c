@@ -26,6 +26,7 @@
 #include "gunicode.h"
 #include "gunidecomp.h"
 #include "gmem.h"
+#include "gqsort.h"
 #include "gtestutils.h"
 #include "gunicomp.h"
 #include "gunicodeprivate.h"
@@ -75,6 +76,19 @@ g_unichar_combining_class (gunichar uc)
 #define NCount (VCount * TCount)
 #define SCount (LCount * NCount)
 
+static int
+compare_combining_classes (const void *a,
+                           const void *b,
+                           void       *user_data)
+{
+  const gunichar unichar_a = *((gunichar *) a);
+  const gunichar unichar_b = *((gunichar *) b);
+  const int cc_a = COMBINING_CLASS (unichar_a);
+  const int cc_b = COMBINING_CLASS (unichar_b);
+
+  return cc_a - cc_b;
+}
+
 /**
  * g_unicode_canonical_ordering:
  * @string: (array length=len) (element-type gunichar): a UCS-4 encoded string.
@@ -82,43 +96,56 @@ g_unichar_combining_class (gunichar uc)
  *
  * Computes the canonical ordering of a string in-place.  
  * This rearranges decomposed characters in the string 
- * according to their combining classes.  See the Unicode 
- * manual for more information. 
+ * according to their combining classes.  See the [Unicode
+ * manual](https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-3/#G49591)
+ * for more information.
  **/
 void
 g_unicode_canonical_ordering (gunichar *string,
                               gsize     len)
 {
-  gsize i;
-  int swap = 1;
+  size_t segment_start, segment_end = 0;
 
-  while (swap)
+  while (segment_end < len)
     {
-      int last;
-      swap = 0;
-      last = COMBINING_CLASS (string[0]);
-      for (i = 0; i < len - 1; ++i)
+      gboolean segment_unordered = FALSE;
+      int cc, prev_cc;
+      segment_start = segment_end;
+
+      if (len - segment_start < 2)
+        break;
+
+      /* Skip the leading combining class zero character */
+      cc = COMBINING_CLASS (string[segment_start]);
+      if (cc == 0)
         {
-          int next = COMBINING_CLASS (string[i + 1]);
-          if (next != 0 && last > next)
-            {
-              gsize j;
-              /* Percolate item leftward through string.  */
-              for (j = i + 1; j > 0; --j)
-                {
-                  gunichar t;
-                  if (COMBINING_CLASS (string[j - 1]) <= next)
-                    break;
-                  t = string[j];
-                  string[j] = string[j - 1];
-                  string[j - 1] = t;
-                  swap = 1;
-                }
-              /* We're re-entering the loop looking at the old
-                 character again.  */
-              next = last;
-            }
-          last = next;
+          segment_start++;
+          cc = COMBINING_CLASS (string[segment_start]);
+        }
+
+      /* Find the next character with combining class of zero. */
+      for (segment_end = segment_start + 1; segment_end < len; segment_end++)
+        {
+          prev_cc = cc;
+          cc = COMBINING_CLASS (string[segment_end]);
+
+          if (cc == 0)
+            break;
+          if (cc < prev_cc)
+            segment_unordered = TRUE;
+        }
+
+      /* In this segment (sequence of decomposed characters with non-zero
+       * combining classes, between two characters with combining classes of
+       * zero), we need to sort the decomposed characters in ascending order of
+       * combining class. The sort needs to be stable. */
+      if (segment_unordered && segment_end - segment_start > 1)
+        {
+          g_sort_array (string + segment_start,
+                        segment_end - segment_start,
+                        sizeof (*string),
+                        compare_combining_classes,
+                        NULL);
         }
     }
 }
