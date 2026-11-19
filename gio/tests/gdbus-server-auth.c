@@ -215,7 +215,7 @@ libdbus_call_task_cb (GTask *task,
 #endif /* HAVE_DBUS1 */
 
 static void
-store_result_cb (G_GNUC_UNUSED GObject *source_object,
+async_result_cb (G_GNUC_UNUSED GObject *source_object,
                  GAsyncResult *res,
                  gpointer user_data)
 {
@@ -224,6 +224,7 @@ store_result_cb (G_GNUC_UNUSED GObject *source_object,
   g_assert_nonnull (result);
   g_assert_null (*result);
   *result = g_object_ref (res);
+  g_main_context_wakeup (g_main_context_get_thread_default ());
 }
 
 static void
@@ -368,7 +369,7 @@ do_test_server_auth (InteropFlags flags)
   result = NULL;
   g_dbus_connection_new_for_address (connectable_address,
                                      G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
-                                     NULL, NULL, store_result_cb, &result);
+                                     NULL, NULL, async_result_cb, &result);
 
   while (result == NULL)
     g_main_context_iteration (NULL, TRUE);
@@ -380,7 +381,7 @@ do_test_server_auth (InteropFlags flags)
 
   g_dbus_connection_call (client, NULL, "/", "com.example.Test", "WhoAmI",
                           NULL, G_VARIANT_TYPE ("(xx)"),
-                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, store_result_cb,
+                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, async_result_cb,
                           &result);
 
   while (result == NULL)
@@ -430,7 +431,7 @@ do_test_server_auth (InteropFlags flags)
         g_error ("Out of memory");
 
       result = NULL;
-      task = g_task_new (NULL, NULL, store_result_cb, &result);
+      task = g_task_new (NULL, NULL, async_result_cb, &result);
       g_task_set_task_data (task, &libdbus_call, NULL);
       g_task_run_in_thread (task, libdbus_call_task_cb);
 
@@ -537,6 +538,123 @@ test_server_auth_sha1_tcp (void)
   do_test_server_auth (INTEROP_FLAGS_SHA1 | INTEROP_FLAGS_TCP);
 }
 
+static gpointer
+run_main_loop_thread (gpointer user_data)
+{
+  GMainLoop *loop = user_data;
+
+  g_main_loop_run (loop);
+
+  return NULL;
+}
+
+/* The client cannot find the cookie that the server has put in its keyring,
+ * because it looks in another directory: it has to give up on
+ * DBUS_COOKIE_SHA1 and fail, not wait for the server for ever.  The client is
+ * a subprocess of the test, which has the other keyring directory.
+ */
+static void
+test_server_auth_sha1_cookie_not_found (void)
+{
+  GError *error = NULL;
+
+  if (g_test_subprocess ())
+    {
+      GDBusConnection *client;
+      const char *address = g_getenv ("GDBUS_TEST_AUTH_ADDRESS");
+
+      g_assert_nonnull (address);
+
+      client = g_dbus_connection_new_for_address_sync (address,
+                                                       G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                                       NULL, NULL, &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+      g_assert_null (client);
+      /* The error comes from the client giving up on the mechanism with
+       * CANCEL and having none left, not from another failure.
+       */
+      g_assert_true (g_str_has_prefix (error->message,
+                                       "Exhausted all available authentication mechanisms"));
+      g_clear_error (&error);
+    }
+  else
+    {
+      gchar *server_keyring = NULL;
+      gchar *guid = NULL;
+      GDBusServer *server;
+      GDBusAuthObserver *observer;
+      gchar *client_keyring = NULL;
+      gchar **envp;
+      GMainContext *server_context;
+      GMainLoop *server_loop;
+      GThread *server_thread;
+
+      /* In the temporary directory of this test, which is removed at the
+       * end of it.
+       */
+      server_keyring = g_build_filename (g_getenv ("G_TEST_TMPDIR"),
+                                         "server-keyring", NULL);
+
+      /* The server reads the variable when it authenticates a client. */
+      g_setenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR", server_keyring, TRUE);
+
+      observer = g_dbus_auth_observer_new ();
+      g_signal_connect (observer, "allow-mechanism",
+                        G_CALLBACK (allow_sha1_cb), NULL);
+
+      /* The test waits for the client in a main loop of its own, which does
+       * not run the default main context where a server accepts connections.
+       * So the server runs in a thread, with a main context of its own.
+       */
+      server_context = g_main_context_new ();
+      g_main_context_push_thread_default (server_context);
+
+      guid = g_dbus_generate_guid ();
+      server = g_dbus_server_new_sync ("tcp:host=127.0.0.1",
+                                       G_DBUS_SERVER_FLAGS_RUN_IN_THREAD,
+                                       guid,
+                                       observer,
+                                       NULL,
+                                       &error);
+      g_assert_no_error (error);
+      g_assert_nonnull (server);
+      g_signal_connect (server, "new-connection", G_CALLBACK (new_connection_cb), NULL);
+      g_dbus_server_start (server);
+
+      g_main_context_pop_thread_default (server_context);
+      server_loop = g_main_loop_new (server_context, FALSE);
+      server_thread = g_thread_new ("server", run_main_loop_thread, server_loop);
+
+      /* The client looks for the cookie in a keyring in another directory
+       * than the one of the server.
+       */
+      client_keyring = g_build_filename (g_getenv ("G_TEST_TMPDIR"),
+                                         "client-keyring", NULL);
+      envp = g_get_environ ();
+      envp = g_environ_setenv (envp, "G_DBUS_COOKIE_SHA1_KEYRING_DIR",
+                               client_keyring, TRUE);
+      envp = g_environ_setenv (envp, "GDBUS_TEST_AUTH_ADDRESS",
+                               g_dbus_server_get_client_address (server), TRUE);
+
+      g_test_trap_subprocess_with_envp (NULL, (const gchar * const *) envp, 0,
+                                        G_TEST_SUBPROCESS_DEFAULT);
+      g_test_trap_assert_passed ();
+
+      g_dbus_server_stop (server);
+      g_main_loop_quit (server_loop);
+      g_thread_join (server_thread);
+      g_clear_object (&server);
+      g_main_loop_unref (server_loop);
+      g_main_context_unref (server_context);
+      g_clear_object (&observer);
+      g_strfreev (envp);
+      g_unsetenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR");
+      g_free (guid);
+      g_free (client_keyring);
+      g_free (server_keyring);
+    }
+}
+
 static void
 test_server_path_in_use (void)
 {
@@ -596,6 +714,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/server-auth/external/require-same-user", test_server_auth_external_require_same_user);
   g_test_add_func ("/gdbus/server-auth/sha1", test_server_auth_sha1);
   g_test_add_func ("/gdbus/server-auth/sha1/tcp", test_server_auth_sha1_tcp);
+  g_test_add_func ("/gdbus/server-auth/sha1/cookie-not-found", test_server_auth_sha1_cookie_not_found);
   g_test_add_func ("/gdbus/server-auth/path-in-use", test_server_path_in_use);
 
   return g_test_run();
