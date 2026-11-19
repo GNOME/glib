@@ -2506,28 +2506,92 @@ destroy_object_manager_in_thread (gpointer user_data)
   return NULL;
 }
 
+typedef struct
+{
+  GDBusConnection *connection;
+  GMainLoop *loop;
+  gchar *name;
+  GError *error;
+  GMutex mutex;
+  GCond cond;
+  gboolean ready;
+} ObjectManagerServerData;
+
+static gpointer
+run_object_manager_server_in_thread (gpointer user_data)
+{
+  ObjectManagerServerData *data = user_data;
+  GMainContext *context;
+  GDBusObjectManagerServer *server = NULL;
+  GError *error = NULL;
+
+  context = g_main_context_new ();
+  g_main_context_push_thread_default (context);
+
+  data->connection = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, &error);
+  if (data->connection != NULL)
+    {
+      server = g_dbus_object_manager_server_new ("/managed");
+      g_dbus_object_manager_server_set_connection (server, data->connection);
+      data->name = g_strdup (g_dbus_connection_get_unique_name (data->connection));
+      data->loop = g_main_loop_new (context, FALSE);
+    }
+
+  g_mutex_lock (&data->mutex);
+  data->error = error;
+  data->ready = TRUE;
+  g_cond_signal (&data->cond);
+  g_mutex_unlock (&data->mutex);
+
+  if (data->loop != NULL)
+    g_main_loop_run (data->loop);
+
+  g_clear_object (&server);
+  g_clear_object (&data->connection);
+  g_main_context_pop_thread_default (context);
+  g_main_context_unref (context);
+
+  return NULL;
+}
+
 static void
 test_object_manager_cross_thread_teardown (void)
 {
-  GDBusConnection *connection;
-  GDBusObjectManagerServer *server;
+  ObjectManagerServerData server_data = { 0, };
+  GDBusConnection *server_connection;
+  GDBusConnection *client_connection;
   GDBusObjectManager *client;
   ObjectManagerTeardownData data = { 0, };
   GWeakRef client_weak;
-  GThread *thread;
+  GThread *server_thread;
+  GThread *destroy_thread;
   GMainContext *context;
   GVariant *result;
   GError *error = NULL;
+  gchar *server_name;
 
-  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_mutex_init (&server_data.mutex);
+  g_cond_init (&server_data.cond);
+  server_thread = g_thread_new ("object-manager-server",
+                                run_object_manager_server_in_thread,
+                                &server_data);
+
+  g_mutex_lock (&server_data.mutex);
+  while (!server_data.ready)
+    g_cond_wait (&server_data.cond, &server_data.mutex);
+  g_assert_no_error (server_data.error);
+  server_connection = g_object_ref (server_data.connection);
+  server_name = g_strdup (server_data.name);
+  g_mutex_unlock (&server_data.mutex);
+
+  context = g_main_context_new ();
+  g_main_context_push_thread_default (context);
+  client_connection = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
 
-  server = g_dbus_object_manager_server_new ("/managed");
-  g_dbus_object_manager_server_set_connection (server, connection);
-
-  client = g_dbus_object_manager_client_new_sync (connection,
+  client = g_dbus_object_manager_client_new_sync (client_connection,
                                                    G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE,
-                                                   g_dbus_connection_get_unique_name (connection),
+                                                   server_name,
                                                    "/managed",
                                                    NULL,
                                                    NULL,
@@ -2536,21 +2600,21 @@ test_object_manager_cross_thread_teardown (void)
                                                    &error);
   g_assert_no_error (error);
   g_assert_nonnull (client);
+  g_main_context_pop_thread_default (context);
 
   g_weak_ref_init (&client_weak, G_OBJECT (client));
   data.manager = client;
   g_mutex_init (&data.mutex);
   g_cond_init (&data.cond);
-  thread = g_thread_new ("destroy-object-manager",
-                         destroy_object_manager_in_thread,
-                         &data);
+  destroy_thread = g_thread_new ("destroy-object-manager",
+                                 destroy_object_manager_in_thread,
+                                 &data);
 
   /* Keep the delivery context from dispatching the signal until the client
    * has been finalized on the other thread. */
-  context = g_main_context_default ();
   g_assert_true (g_main_context_acquire (context));
 
-  g_assert_true (g_dbus_connection_emit_signal (connection,
+  g_assert_true (g_dbus_connection_emit_signal (server_connection,
                                                  NULL,
                                                  "/managed/object",
                                                  "org.project.Bar",
@@ -2561,8 +2625,8 @@ test_object_manager_cross_thread_teardown (void)
 
   /* D-Bus messages are processed in order, so the reply confirms that the
    * signal has already been processed by the client's D-Bus worker thread. */
-  result = g_dbus_connection_call_sync (connection,
-                                        g_dbus_connection_get_unique_name (connection),
+  result = g_dbus_connection_call_sync (client_connection,
+                                        server_name,
                                         "/managed",
                                         DBUS_INTERFACE_PEER,
                                         "Ping",
@@ -2580,7 +2644,7 @@ test_object_manager_cross_thread_teardown (void)
   data.destroy = TRUE;
   g_cond_signal (&data.cond);
   g_mutex_unlock (&data.mutex);
-  g_thread_join (thread);
+  g_thread_join (destroy_thread);
   g_assert_null (g_weak_ref_get (&client_weak));
 
   g_main_context_release (context);
@@ -2590,8 +2654,18 @@ test_object_manager_cross_thread_teardown (void)
   g_weak_ref_clear (&client_weak);
   g_cond_clear (&data.cond);
   g_mutex_clear (&data.mutex);
-  g_clear_object (&server);
-  g_clear_object (&connection);
+  g_clear_object (&client_connection);
+  g_clear_object (&server_connection);
+  g_free (server_name);
+
+  g_main_loop_quit (server_data.loop);
+  g_thread_join (server_thread);
+  g_clear_error (&server_data.error);
+  g_clear_pointer (&server_data.loop, g_main_loop_unref);
+  g_free (server_data.name);
+  g_cond_clear (&server_data.cond);
+  g_mutex_clear (&server_data.mutex);
+  g_main_context_unref (context);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
