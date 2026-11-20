@@ -226,6 +226,63 @@ test_zlib_compressor_flush_small_buffer (void)
     }
 }
 
+static void
+test_gzip_unset_header (void)
+{
+  const char *data = "Hello World";
+  GBytes *bytes;
+  GZlibCompressor *compressor;
+  GFileInfo *info;
+  GError *error = NULL;
+  GBytes *result;
+  const guint8 *encoded;
+
+  g_test_summary ("Test that unsetting the file-info and os properties of a "
+                  "gzip compressor removes them from the gzip header");
+
+  bytes = g_bytes_new_static (data, strlen (data));
+
+  /* The compressor holds the only reference to the file info, so unsetting
+   * the property frees it. */
+  compressor = g_zlib_compressor_new (G_ZLIB_COMPRESSOR_FORMAT_GZIP, 9);
+  info = g_file_info_new ();
+  g_file_info_set_name (info, "some-file-name.txt");
+  g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_TIME_MODIFIED, 1000000000);
+  g_zlib_compressor_set_file_info (compressor, info);
+  g_object_unref (info);
+  g_zlib_compressor_set_file_info (compressor, NULL);
+
+  result = g_converter_convert_bytes (G_CONVERTER (compressor), bytes, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (result);
+
+  /* No FNAME flag and no modification time, see RFC 1952 */
+  g_assert_cmpuint (g_bytes_get_size (result), >, 10);
+  encoded = g_bytes_get_data (result, NULL);
+  g_assert_cmpuint (encoded[3] & 0x08, ==, 0);
+  g_assert_cmpuint (encoded[4] | encoded[5] | encoded[6] | encoded[7], ==, 0);
+
+  g_bytes_unref (result);
+  g_object_unref (compressor);
+
+  compressor = g_zlib_compressor_new (G_ZLIB_COMPRESSOR_FORMAT_GZIP, 9);
+  g_zlib_compressor_set_os (compressor, 42);
+  g_zlib_compressor_set_os (compressor, -1);
+
+  result = g_converter_convert_bytes (G_CONVERTER (compressor), bytes, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (result);
+
+  /* The OS is stored in the 10th byte of the header, see RFC 1952 */
+  g_assert_cmpuint (g_bytes_get_size (result), >, 10);
+  encoded = g_bytes_get_data (result, NULL);
+  g_assert_cmpint (encoded[9], !=, 42);
+
+  g_bytes_unref (result);
+  g_object_unref (compressor);
+  g_bytes_unref (bytes);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -238,6 +295,7 @@ main (int   argc,
   g_test_add_func ("/converter/extra-bytes-at-end", test_extra_bytes_at_end);
   g_test_add_func ("/converter/gzip-os-property", test_gzip_os_property);
   g_test_add_func ("/converter/zlib-compressor/flush-small-buffer", test_zlib_compressor_flush_small_buffer);
+  g_test_add_func ("/converter/gzip-unset-header", test_gzip_unset_header);
 
   return g_test_run();
 }

@@ -71,10 +71,18 @@ g_zlib_compressor_set_gzheader (GZlibCompressor *compressor)
 #if !defined (G_OS_WIN32) || ZLIB_VERNUM >= 0x1240
   const gchar *filename;
 
-  if (compressor->format != G_ZLIB_COMPRESSOR_FORMAT_GZIP ||
-      (compressor->file_info == NULL &&
-       compressor->os < 0))
+  if (compressor->format != G_ZLIB_COMPRESSOR_FORMAT_GZIP)
     return;
+
+  if (compressor->file_info == NULL && compressor->os < 0)
+    {
+      /* Nothing to put into the header: unregister any header set before, so
+       * that zlib writes its default header rather than the previous file
+       * name, time and OS (the file name may have been freed since). */
+      if (deflateSetHeader (&compressor->zstream, NULL) != Z_OK)
+        g_warning ("unexpected zlib error: %s", compressor->zstream.msg);
+      return;
+    }
 
   memset (&compressor->gzheader, 0, sizeof (gz_header));
 
