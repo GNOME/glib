@@ -2145,6 +2145,48 @@ test_signals_invalid_name (gconstpointer test_data)
 }
 
 static void
+test_signals_n_params_limit (void)
+{
+  GType param_types[256];
+  GSignalQuery query;
+  guint signal_id;
+  gsize i;
+
+  g_test_bug ("https://gitlab.gnome.org/GNOME/glib/-/work_items/4107");
+  g_test_summary ("Check that g_signal_newv() accepts 255 parameters and "
+                  "rejects 256 instead of truncating the signature.");
+
+  for (i = 0; i < G_N_ELEMENTS (param_types); i++)
+    param_types[i] = G_TYPE_INT;
+
+  if (g_test_subprocess ())
+    {
+      signal_id = g_signal_newv ("too-many-params",
+                                 test_get_type (),
+                                 G_SIGNAL_RUN_LAST,
+                                 NULL, NULL, NULL, NULL,
+                                 G_TYPE_NONE,
+                                 256, param_types);
+      g_assert_cmpuint (signal_id, ==, 0);
+      return;
+    }
+
+  signal_id = g_signal_newv ("max-params",
+                             test_get_type (),
+                             G_SIGNAL_RUN_LAST,
+                             NULL, NULL, NULL, NULL,
+                             G_TYPE_NONE,
+                             255, param_types);
+  g_assert_cmpuint (signal_id, !=, 0);
+  g_signal_query (signal_id, &query);
+  g_assert_cmpuint (query.n_params, ==, 255);
+
+  g_test_trap_subprocess (NULL, 0, G_TEST_SUBPROCESS_DEFAULT);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*n_params <= SIGNAL_MAX_N_PARAMS*");
+}
+
+static void
 test_signal_is_valid_name (void)
 {
   const gchar *valid_names[] =
@@ -2385,6 +2427,7 @@ main (int argc,
   g_test_add_data_func ("/gobject/signals/invalid-name/first-char", "7zip", test_signals_invalid_name);
   g_test_add_data_func ("/gobject/signals/invalid-name/empty", "", test_signals_invalid_name);
   g_test_add_func ("/gobject/signals/is-valid-name", test_signal_is_valid_name);
+  g_test_add_func ("/gobject/signals/n-params-limit", test_signals_n_params_limit);
   g_test_add_func ("/gobject/signals/weak-ref-disconnect", test_weak_ref_disconnect);
 
   return g_test_run ();
