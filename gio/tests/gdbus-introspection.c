@@ -332,6 +332,29 @@ test_invalid (void)
     }
 }
 
+static void
+test_nested_annotations (void)
+{
+  GString *xml;
+  GDBusNodeInfo *node;
+  GError *error = NULL;
+  guint i;
+
+  xml = g_string_new ("<node>");
+  for (i = 0; i < 2; i++)
+    g_string_append_printf (xml, "<annotation name='a%u' value='v'>", i);
+  for (i = 0; i < 2; i++)
+    g_string_append (xml, "</annotation>");
+  g_string_append (xml, "</node>");
+
+  node = g_dbus_node_info_new_for_xml (xml->str, &error);
+  g_assert_null (node);
+  g_assert_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT);
+  g_assert_nonnull (strstr (error->message, "<annotation> elements can only be embedded"));
+  g_clear_error (&error);
+  g_string_free (xml, TRUE);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -350,6 +373,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/introspection/default-direction", test_default_direction);
   g_test_add_func ("/gdbus/introspection/extra-data", test_extra_data);
   g_test_add_func ("/gdbus/introspection/invalid", test_invalid);
+  g_test_add_func ("/gdbus/introspection/nested-annotations", test_nested_annotations);
 
   ret = session_bus_run ();
 

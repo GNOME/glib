@@ -1536,13 +1536,12 @@ parser_start_element (GMarkupParseContext  *context,
            strcmp (stack->next->data, "signal") != 0 &&
            strcmp (stack->next->data, "method") != 0 &&
            strcmp (stack->next->data, "property") != 0 &&
-           strcmp (stack->next->data, "arg") != 0 &&
-           strcmp (stack->next->data, "annotation") != 0))
+           strcmp (stack->next->data, "arg") != 0))
         {
           g_set_error_literal (error,
                                G_MARKUP_ERROR,
                                G_MARKUP_ERROR_INVALID_CONTENT,
-                               "<annotation> elements can only be embedded in <node>, <interface>, <signal>, <method>, <property>, <arg> or <annotation> elements");
+                               "<annotation> elements can only be embedded in <node>, <interface>, <signal>, <method>, <property> or <arg> elements");
           goto out;
         }
 
