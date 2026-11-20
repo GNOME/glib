@@ -448,7 +448,7 @@ g_rand_int_range (GRand  *rand,
                   gint32  begin,
                   gint32  end)
 {
-  guint32 dist = end - begin;
+  guint32 dist = (guint32) end - (guint32) begin;
   guint32 random = 0;
 
   g_return_val_if_fail (rand != NULL, begin);
