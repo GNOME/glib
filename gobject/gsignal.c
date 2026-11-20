@@ -156,6 +156,9 @@ struct _SignalNode
   GClosure *single_va_closure;
 };
 
+/* Must fit in SignalNode.n_params. */
+#define SIGNAL_MAX_N_PARAMS 255
+
 #define SINGLE_VA_CLOSURE_EMPTY_MAGIC GINT_TO_POINTER(1)        /* indicates single_va_closure is valid but empty */
 
 struct _SignalKey
@@ -1390,7 +1393,7 @@ g_signal_query (guint         signal_id,
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or %G_TYPE_NONE for a signal
  *  without a return value.
- * @n_params: the number of parameter types to follow.
+ * @n_params: the number of parameter types to follow; at most 255.
  * @...: a list of types, one for each parameter.
  *
  * Creates a new signal. (This is usually done in the class initializer.)
@@ -1466,7 +1469,7 @@ g_signal_new (const gchar        *signal_name,
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or %G_TYPE_NONE for a signal
  *  without a return value.
- * @n_params: the number of parameter types to follow.
+ * @n_params: the number of parameter types to follow; at most 255.
  * @...: a list of types, one for each parameter.
  *
  * Creates a new signal. (This is usually done in the class initializer.)
@@ -1604,7 +1607,7 @@ signal_add_class_closure (SignalNode *node,
  *     invocations or %NULL
  * @return_type: the type of return value, or %G_TYPE_NONE for a signal
  *     without a return value
- * @n_params: the length of @param_types
+ * @n_params: the length of @param_types; at most 255
  * @param_types: (array length=n_params) (nullable): an array of types, one for
  *     each parameter (may be %NULL if @n_params is zero)
  *
@@ -1642,6 +1645,7 @@ g_signal_newv (const gchar       *signal_name,
   g_return_val_if_fail (G_TYPE_IS_INSTANTIATABLE (itype) || G_TYPE_IS_INTERFACE (itype), 0);
   if (n_params)
     g_return_val_if_fail (param_types != NULL, 0);
+  g_return_val_if_fail (n_params <= SIGNAL_MAX_N_PARAMS, 0);
   g_return_val_if_fail ((return_type & G_SIGNAL_TYPE_STATIC_SCOPE) == 0, 0);
   if (return_type == (G_TYPE_NONE & ~G_SIGNAL_TYPE_STATIC_SCOPE))
     g_return_val_if_fail (accumulator == NULL, 0);
@@ -1864,7 +1868,7 @@ g_signal_set_va_marshaller (guint              signal_id,
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or %G_TYPE_NONE for a signal
  *  without a return value.
- * @n_params: the number of parameter types in @args.
+ * @n_params: the number of parameter types in @args; at most 255.
  * @args: va_list of #GType, one for each parameter.
  *
  * Creates a new signal. (This is usually done in the class initializer.)
