@@ -170,6 +170,37 @@ test_double_range (void)
   g_assert_cmpfloat (d, <, G_MAXDOUBLE);
 }
 
+static void
+test_int_range_wide (void)
+{
+  GRand *rand = g_rand_new_with_seed (42);
+  const struct
+  {
+    gint32 begin;
+    gint32 end;
+  } ranges[] = {
+    { -2000000000, 2000000000 },
+    { G_MININT32, G_MAXINT32 },
+    { G_MININT32, 0 },
+    { -1, G_MAXINT32 },
+  };
+
+  g_test_summary ("Test g_rand_int_range() with ranges wider than G_MAXINT32");
+
+  for (gsize i = 0; i < G_N_ELEMENTS (ranges); i++)
+    {
+      for (gsize j = 0; j < 1000; j++)
+        {
+          gint32 r = g_rand_int_range (rand, ranges[i].begin, ranges[i].end);
+
+          g_assert_cmpint (r, >=, ranges[i].begin);
+          g_assert_cmpint (r, <, ranges[i].end);
+        }
+    }
+
+  g_rand_free (rand);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -178,6 +209,7 @@ main (int   argc,
 
   g_test_add_func ("/rand/test-rand", test_rand);
   g_test_add_func ("/rand/double-range", test_double_range);
+  g_test_add_func ("/rand/int-range/wide", test_int_range_wide);
 
   return g_test_run();
 }
