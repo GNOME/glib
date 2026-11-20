@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/glib/-/issues\n"
-"POT-Creation-Date: 2026-11-19 17:19+0000\n"
-"PO-Revision-Date: 2026-11-19 18:28+0100\n"
+"POT-Creation-Date: 2026-11-20 14:32+0000\n"
+"PO-Revision-Date: 2026-11-20 22:56+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -335,6 +335,7 @@ msgid "Incomplete multibyte sequence in input"
 msgstr "Neveljavno večbitno zaporedje na vhodu"
 
 #: gio/gcharsetconverter.c:330 gio/gcharsetconverter.c:339
+#: gio/gzlibcompressor.c:491
 msgid "Not enough space in destination"
 msgstr "Ni dovolj prostora za cilju"
 
@@ -4615,7 +4616,7 @@ msgid "Error writing to handle: %s"
 msgstr "Napaka pisanja v ročnik: %s."
 
 #: gio/gwin32security.c:74
-#, fuzzy, c-format
+#, c-format
 msgid "%s failed: %s"
 msgstr "%s je spodletelo: %s"
 
@@ -4649,22 +4650,22 @@ msgstr "Pravice dostopa za »%s« niso veljavne"
 msgid ""
 "The access rights of “%s” have an entry of the type %d, which is not "
 "supported"
-msgstr ""
+msgstr "Pravice dostopa za »%s« imajo vnos vrste %d, ki ni podprt"
 
 #: gio/gwin32security.c:206
 #, c-format
 msgid "The access rights of “%s” have an entry that is not valid"
-msgstr ""
+msgstr "Pravice dostopa za »%s« imajo vnos, ki ni veljaven"
 
 #: gio/gwin32security.c:227
-#, fuzzy, c-format
+#, c-format
 msgid "The access rights of “%s” give write access to %s"
 msgstr "Pravice dostopa za »%s« dajejo pravico pisanja %s"
 
 #: gio/gwin32security.c:228
 #, c-format
 msgid "The access rights of “%s” give access to %s"
-msgstr ""
+msgstr "Pravice dostopa za »%s« dajejo pravico dostopa %s"
 
 #: gio/gwin32security.c:262
 #, c-format
@@ -4672,11 +4673,13 @@ msgid ""
 "The volume of “%s” cannot be shown to keep access rights, so nothing on it "
 "is private"
 msgstr ""
+"Nosilca »%s« ni možno pokazati, da bi obdržali pravice dostopa, tako da nič "
+"na njem ni zasebnega"
 
 #: gio/gwin32security.c:287
 #, c-format
 msgid "“%s” is owned by %s, not by the user, SYSTEM or the administrators"
-msgstr ""
+msgstr "Lastnik »%s« je %s, ne uporabnik, SISTEM ali skrbniki"
 
 #: gio/gwin32security.c:374
 #, c-format
@@ -4693,16 +4696,16 @@ msgstr "Datoteke »%s« ni mogoče uporabiti"
 msgid "Error writing to file “%s”: %s"
 msgstr "Napaka pri zapisovanju v datoteko »%s«: %s"
 
-#: gio/gzlibcompressor.c:492 gio/gzlibdecompressor.c:341
+#: gio/gzlibcompressor.c:502 gio/gzlibdecompressor.c:341
 msgid "Not enough memory"
 msgstr "Ni dovolj pomnilnika"
 
-#: gio/gzlibcompressor.c:499 gio/gzlibdecompressor.c:348
+#: gio/gzlibcompressor.c:509 gio/gzlibdecompressor.c:348
 #, c-format
 msgid "Internal error: %s"
 msgstr "Notranja napaka: %s"
 
-#: gio/gzlibcompressor.c:512 gio/gzlibdecompressor.c:362
+#: gio/gzlibcompressor.c:522 gio/gzlibdecompressor.c:362
 msgid "Need more input"
 msgstr "Zahteva več vhoda"
 
