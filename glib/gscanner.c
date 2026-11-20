@@ -1106,11 +1106,11 @@ g_scanner_input_file (GScanner *scanner,
   if (scanner->input_fd >= 0)
     g_scanner_sync_file_offset (scanner);
 
-  scanner->token = G_TOKEN_NONE;
+  g_scanner_free_value (&scanner->token, &scanner->value);
   scanner->value.v_int64 = 0;
   scanner->line = 1;
   scanner->position = 0;
-  scanner->next_token = G_TOKEN_NONE;
+  g_scanner_free_value (&scanner->next_token, &scanner->next_value);
 
   scanner->input_fd = input_fd;
   scanner->text = NULL;
@@ -1142,11 +1142,11 @@ g_scanner_input_text (GScanner    *scanner,
   if (scanner->input_fd >= 0)
     g_scanner_sync_file_offset (scanner);
 
-  scanner->token = G_TOKEN_NONE;
+  g_scanner_free_value (&scanner->token, &scanner->value);
   scanner->value.v_int64 = 0;
   scanner->line = 1;
   scanner->position = 0;
-  scanner->next_token = G_TOKEN_NONE;
+  g_scanner_free_value (&scanner->next_token, &scanner->next_value);
 
   scanner->input_fd = -1;
   scanner->text = text;

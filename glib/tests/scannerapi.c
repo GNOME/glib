@@ -299,6 +299,70 @@ test_scanner_fd_input_rewind (void)
   g_scanner_destroy (scanner);
 }
 
+static void
+test_scanner_input_text_frees_values (void)
+{
+  GScanner *scanner = NULL;
+  const char first[] = "\"current\" \"peeked\"";
+  const char second[] = "\"next\"";
+
+  g_test_summary ("Test that switching the input with g_scanner_input_text() "
+                  "frees the values of the current and the peeked token");
+
+  scanner = g_scanner_new (NULL);
+
+  g_scanner_input_text (scanner, first, strlen (first));
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_STRING);
+  g_assert_cmpstr (g_scanner_cur_value (scanner).v_string, ==, "current");
+  g_assert_cmpint (g_scanner_peek_next_token (scanner), ==, G_TOKEN_STRING);
+
+  /* Both string values must be freed here, or they leak. */
+  g_scanner_input_text (scanner, second, strlen (second));
+  g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_NONE);
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_STRING);
+  g_assert_cmpstr (g_scanner_cur_value (scanner).v_string, ==, "next");
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_EOF);
+
+  g_scanner_destroy (scanner);
+}
+
+static void
+test_scanner_input_file_frees_values (void)
+{
+  GScanner *scanner = NULL;
+  const char first[] = "\"current\" \"peeked\"";
+  const char second[] = "\"next\"";
+  char *filename = NULL;
+  int fd = -1;
+
+  g_test_summary ("Test that switching the input with g_scanner_input_file() "
+                  "frees the values of the current and the peeked token");
+
+  scanner = g_scanner_new (NULL);
+
+  g_scanner_input_text (scanner, first, strlen (first));
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_STRING);
+  g_assert_cmpint (g_scanner_peek_next_token (scanner), ==, G_TOKEN_STRING);
+
+  filename = g_strdup ("scanner-input-file-frees-values-XXXXXX");
+  fd = g_mkstemp (filename);
+  g_assert_cmpint (fd, >=, 0);
+  g_assert_cmpint (write (fd, second, strlen (second)), ==, strlen (second));
+  g_assert_no_errno (lseek (fd, 0, SEEK_SET));
+
+  /* Both string values must be freed here, or they leak. */
+  g_scanner_input_file (scanner, fd);
+  g_assert_cmpint (g_scanner_cur_token (scanner), ==, G_TOKEN_NONE);
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_STRING);
+  g_assert_cmpstr (g_scanner_cur_value (scanner).v_string, ==, "next");
+  g_assert_cmpint (g_scanner_get_next_token (scanner), ==, G_TOKEN_EOF);
+
+  g_scanner_destroy (scanner);
+  g_close (fd, NULL);
+  g_remove (filename);
+  g_free (filename);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -313,6 +377,8 @@ main (int   argc,
   g_test_add_func ("/scanner/int-to-float", test_scanner_int_to_float);
   g_test_add_func ("/scanner/fd-input", test_scanner_fd_input);
   g_test_add_func ("/scanner/fd-input/rewind", test_scanner_fd_input_rewind);
+  g_test_add_func ("/scanner/input-text/frees-values", test_scanner_input_text_frees_values);
+  g_test_add_func ("/scanner/input-file/frees-values", test_scanner_input_file_frees_values);
 
   return g_test_run();
 }
