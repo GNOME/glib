@@ -482,7 +482,17 @@ g_zlib_compressor_convert (GConverter *converter,
   if (flags & G_CONVERTER_INPUT_AT_END)
     flush = Z_FINISH;
   else if (flags & G_CONVERTER_FLUSH)
-    flush = Z_SYNC_FLUSH;
+    {
+      /* zlib: avail_out must be greater than six with Z_SYNC_FLUSH,
+       * otherwise every call that fills the buffer emits another marker */
+      if (outbuf_size < 7)
+        {
+          g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE,
+                               _("Not enough space in destination"));
+          return G_CONVERTER_ERROR;
+        }
+      flush = Z_SYNC_FLUSH;
+    }
 
   res = deflate (&compressor->zstream, flush);
 

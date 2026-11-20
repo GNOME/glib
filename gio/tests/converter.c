@@ -168,6 +168,64 @@ test_gzip_os_property (void)
   g_bytes_unref (bytes);
 }
 
+static void
+test_zlib_compressor_flush_small_buffer (void)
+{
+  const GZlibCompressorFormat formats[] = {
+    G_ZLIB_COMPRESSOR_FORMAT_ZLIB,
+    G_ZLIB_COMPRESSOR_FORMAT_GZIP,
+    G_ZLIB_COMPRESSOR_FORMAT_RAW,
+  };
+  const char data[] = "Hello World, Hello World, Hello World";
+
+  g_test_summary ("Test that flushing a GZlibCompressor into an output buffer "
+                  "that is too small fails with G_IO_ERROR_NO_SPACE instead of "
+                  "never returning G_CONVERTER_FLUSHED");
+
+  for (gsize i = 0; i < G_N_ELEMENTS (formats); i++)
+    {
+      GZlibCompressor *compressor;
+      GConverterResult res;
+      GError *error = NULL;
+      guint8 out[64];
+      gsize bytes_read = 0, bytes_written = 0;
+      guint n_calls = 0;
+
+      compressor = g_zlib_compressor_new (formats[i], -1);
+
+      res = g_converter_convert (G_CONVERTER (compressor),
+                                 data, sizeof (data), out, sizeof (out),
+                                 G_CONVERTER_NO_FLAGS,
+                                 &bytes_read, &bytes_written, &error);
+      g_assert_no_error (error);
+      g_assert_cmpint (res, ==, G_CONVERTER_CONVERTED);
+      g_assert_cmpuint (bytes_read, ==, sizeof (data));
+
+      /* zlib needs more than six bytes of output space for a sync flush. */
+      res = g_converter_convert (G_CONVERTER (compressor),
+                                 NULL, 0, out, 1, G_CONVERTER_FLUSH,
+                                 &bytes_read, &bytes_written, &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NO_SPACE);
+      g_assert_cmpint (res, ==, G_CONVERTER_ERROR);
+      g_clear_error (&error);
+
+      /* With a large enough buffer the flush completes. */
+      do
+        {
+          res = g_converter_convert (G_CONVERTER (compressor),
+                                     NULL, 0, out, 7, G_CONVERTER_FLUSH,
+                                     &bytes_read, &bytes_written, &error);
+          g_assert_no_error (error);
+          n_calls++;
+        }
+      while (res == G_CONVERTER_CONVERTED && n_calls < 100);
+
+      g_assert_cmpint (res, ==, G_CONVERTER_FLUSHED);
+
+      g_object_unref (compressor);
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -179,6 +237,7 @@ main (int   argc,
   g_test_add_func ("/converter/bytes", test_convert_bytes);
   g_test_add_func ("/converter/extra-bytes-at-end", test_extra_bytes_at_end);
   g_test_add_func ("/converter/gzip-os-property", test_gzip_os_property);
+  g_test_add_func ("/converter/zlib-compressor/flush-small-buffer", test_zlib_compressor_flush_small_buffer);
 
   return g_test_run();
 }
