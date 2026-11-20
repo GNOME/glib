@@ -332,6 +332,57 @@ test_invalid (void)
     }
 }
 
+static void
+test_nested_annotations (void)
+{
+  GString *xml;
+  GDBusNodeInfo *node;
+  GError *error = NULL;
+  guint i;
+
+  xml = g_string_new ("<node>");
+  for (i = 0; i < 2; i++)
+    g_string_append_printf (xml, "<annotation name='a%u' value='v'>", i);
+  for (i = 0; i < 2; i++)
+    g_string_append (xml, "</annotation>");
+  g_string_append (xml, "</node>");
+
+  node = g_dbus_node_info_new_for_xml (xml->str, &error);
+  g_assert_null (node);
+  g_assert_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT);
+  g_assert_nonnull (strstr (error->message, "<annotation> elements can only be embedded"));
+  g_clear_error (&error);
+  g_string_free (xml, TRUE);
+}
+
+static void
+test_deep_node_nesting (void)
+{
+  const guint depth = 1024;
+  GString *xml;
+  GString *generated_xml;
+  GDBusNodeInfo *node;
+  GError *error = NULL;
+  guint i;
+
+  xml = g_string_new (NULL);
+  for (i = 0; i < depth; i++)
+    g_string_append (xml, "<node>");
+  for (i = 0; i < depth; i++)
+    g_string_append (xml, "</node>");
+
+  node = g_dbus_node_info_new_for_xml (xml->str, &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (node);
+
+  generated_xml = g_string_new (NULL);
+  g_dbus_node_info_generate_xml (node, 0, generated_xml);
+  g_assert_nonnull (strstr (generated_xml->str, "</node>"));
+  g_string_free (generated_xml, TRUE);
+  g_dbus_node_info_unref (node);
+  g_string_free (xml, TRUE);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -350,6 +401,8 @@ main (int   argc,
   g_test_add_func ("/gdbus/introspection/default-direction", test_default_direction);
   g_test_add_func ("/gdbus/introspection/extra-data", test_extra_data);
   g_test_add_func ("/gdbus/introspection/invalid", test_invalid);
+  g_test_add_func ("/gdbus/introspection/nested-annotations", test_nested_annotations);
+  g_test_add_func ("/gdbus/introspection/deep-node-nesting", test_deep_node_nesting);
 
   ret = session_bus_run ();
 

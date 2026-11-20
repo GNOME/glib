@@ -77,6 +77,14 @@ typedef struct
 
 } ParseData;
 
+typedef struct
+{
+  GDBusNodeInfo *info;
+  guint indent;
+  guint next_child;
+  gboolean started;
+} NodeInfoGenerateData;
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
@@ -393,16 +401,38 @@ g_dbus_interface_info_unref (GDBusInterfaceInfo *info)
 void
 g_dbus_node_info_unref (GDBusNodeInfo *info)
 {
-  if (g_atomic_int_get (&info->ref_count) == -1)
-    return;
-  if (g_atomic_int_dec_and_test (&info->ref_count))
+  GPtrArray *nodes;
+
+  nodes = g_ptr_array_new ();
+  g_ptr_array_add (nodes, info);
+
+  while (nodes->len > 0)
     {
+      GDBusNodeInfo **children;
+      guint n;
+
+      info = g_ptr_array_steal_index (nodes, nodes->len - 1);
+
+      if (g_atomic_int_get (&info->ref_count) == -1 ||
+          !g_atomic_int_dec_and_test (&info->ref_count))
+        continue;
+
+      children = g_steal_pointer (&info->nodes);
+
       g_free (info->path);
       free_null_terminated_array (info->interfaces, (GDestroyNotify) g_dbus_interface_info_unref);
-      free_null_terminated_array (info->nodes, (GDestroyNotify) g_dbus_node_info_unref);
       free_null_terminated_array (info->annotations, (GDestroyNotify) g_dbus_annotation_info_unref);
       g_free (info);
+
+      n = 0;
+      while (children != NULL && children[n] != NULL)
+        n++;
+      while (n > 0)
+        g_ptr_array_add (nodes, children[--n]);
+      g_free (children);
     }
+
+  g_ptr_array_unref (nodes);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -827,37 +857,59 @@ g_dbus_node_info_generate_xml (GDBusNodeInfo *info,
                                guint          indent,
                                GString       *string_builder)
 {
-  guint n;
+  GArray *node_stack;
+  NodeInfoGenerateData root = { info, indent, 0, FALSE };
 
-  g_string_append_printf (string_builder, "%*s<node", indent, "");
-  if (info->path != NULL)
-    g_string_append_printf (string_builder, " name=\"%s\"", info->path);
+  node_stack = g_array_new (FALSE, FALSE, sizeof (NodeInfoGenerateData));
+  g_array_append_val (node_stack, root);
 
-  if (info->interfaces == NULL && info->nodes == NULL && info->annotations == NULL)
+  while (node_stack->len > 0)
     {
-      g_string_append (string_builder, "/>\n");
+      NodeInfoGenerateData *node = &g_array_index (node_stack, NodeInfoGenerateData, node_stack->len - 1);
+
+      if (!node->started)
+        {
+          guint n;
+
+          node->started = TRUE;
+          g_string_append_printf (string_builder, "%*s<node", node->indent, "");
+          if (node->info->path != NULL)
+            g_string_append_printf (string_builder, " name=\"%s\"", node->info->path);
+
+          if (node->info->interfaces == NULL && node->info->nodes == NULL && node->info->annotations == NULL)
+            {
+              g_string_append (string_builder, "/>\n");
+              g_array_set_size (node_stack, node_stack->len - 1);
+              continue;
+            }
+
+          g_string_append (string_builder, ">\n");
+
+          for (n = 0; node->info->annotations != NULL && node->info->annotations[n] != NULL; n++)
+            g_dbus_annotation_info_generate_xml (node->info->annotations[n],
+                                                 node->indent + 2,
+                                                 string_builder);
+
+          for (n = 0; node->info->interfaces != NULL && node->info->interfaces[n] != NULL; n++)
+            g_dbus_interface_info_generate_xml (node->info->interfaces[n],
+                                                node->indent + 2,
+                                                string_builder);
+        }
+
+      if (node->info->nodes != NULL && node->info->nodes[node->next_child] != NULL)
+        {
+          NodeInfoGenerateData child =
+            { node->info->nodes[node->next_child++], node->indent + 2, 0, FALSE };
+          g_array_append_val (node_stack, child);
+        }
+      else
+        {
+          g_string_append_printf (string_builder, "%*s</node>\n", node->indent, "");
+          g_array_set_size (node_stack, node_stack->len - 1);
+        }
     }
-  else
-    {
-      g_string_append (string_builder, ">\n");
 
-      for (n = 0; info->annotations != NULL && info->annotations[n] != NULL; n++)
-        g_dbus_annotation_info_generate_xml (info->annotations[n],
-                                             indent + 2,
-                                             string_builder);
-
-      for (n = 0; info->interfaces != NULL && info->interfaces[n] != NULL; n++)
-        g_dbus_interface_info_generate_xml (info->interfaces[n],
-                                            indent + 2,
-                                            string_builder);
-
-      for (n = 0; info->nodes != NULL && info->nodes[n] != NULL; n++)
-        g_dbus_node_info_generate_xml (info->nodes[n],
-                                       indent + 2,
-                                       string_builder);
-
-      g_string_append_printf (string_builder, "%*s</node>\n", indent, "");
-    }
+  g_array_unref (node_stack);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1536,13 +1588,12 @@ parser_start_element (GMarkupParseContext  *context,
            strcmp (stack->next->data, "signal") != 0 &&
            strcmp (stack->next->data, "method") != 0 &&
            strcmp (stack->next->data, "property") != 0 &&
-           strcmp (stack->next->data, "arg") != 0 &&
-           strcmp (stack->next->data, "annotation") != 0))
+           strcmp (stack->next->data, "arg") != 0))
         {
           g_set_error_literal (error,
                                G_MARKUP_ERROR,
                                G_MARKUP_ERROR_INVALID_CONTENT,
-                               "<annotation> elements can only be embedded in <node>, <interface>, <signal>, <method>, <property>, <arg> or <annotation> elements");
+                               "<annotation> elements can only be embedded in <node>, <interface>, <signal>, <method>, <property> or <arg> elements");
           goto out;
         }
 
