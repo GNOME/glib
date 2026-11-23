@@ -389,17 +389,11 @@ g_zlib_compressor_set_file_info (GZlibCompressor *compressor,
 {
   g_return_if_fail (G_IS_ZLIB_COMPRESSOR (compressor));
 
-  if (file_info == compressor->file_info)
-    return;
-
-  if (compressor->file_info)
-    g_object_unref (compressor->file_info);
-  if (file_info)
-    g_object_ref (file_info);
-  compressor->file_info = file_info;
-  g_object_notify (G_OBJECT (compressor), "file-info");
-
-  g_zlib_compressor_set_gzheader (compressor);
+  if (g_set_object (&compressor->file_info, file_info))
+    {
+      g_object_notify (G_OBJECT (compressor), "file-info");
+      g_zlib_compressor_set_gzheader (compressor);
+    }
 }
 
 /**
