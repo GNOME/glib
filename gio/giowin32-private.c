@@ -277,7 +277,7 @@ _g_win32_extract_executable (const gunichar2  *commandline,
   const gunichar2 *executable;
   const gunichar2 *executable_basename;
   gboolean quoted;
-  gboolean folded;
+  gboolean folded G_GNUC_UNUSED  /* when compiling with G_DISABLE_ASSERT */;
   gssize execlen;
 
   _g_win32_parse_filename (commandline, FALSE, &executable, &execlen, &executable_basename, &first_argument);
