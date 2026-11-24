@@ -388,6 +388,7 @@ g_zlib_compressor_set_file_info (GZlibCompressor *compressor,
                                  GFileInfo       *file_info)
 {
   g_return_if_fail (G_IS_ZLIB_COMPRESSOR (compressor));
+  g_return_if_fail (file_info == NULL || G_IS_FILE_INFO (file_info));
 
   if (g_set_object (&compressor->file_info, file_info))
     {
