@@ -1,3 +1,209 @@
+Overview of changes in GLib 2.91.0, 2026-11-25
+==============================================
+
+* Various security fixes
+
+* Add `g_get_process_executable_dir()` helper API (#31, work by Emmanuel Fleury)
+
+* Use libffi call plan machinery from 3.7.0 if available, to speed up libffi
+  dispatches (#4002, work by Christian Hergert)
+
+* Depend on MINGW-w64 ≥ 12.0.0 to simplify build on MinGW-w64 (#4065, work by
+  otaxhu)
+
+* Use `posix_spawn()` in more cases with `closefrom()` file actions (#4096, work
+  by Christian Hergert)
+
+* Fix DST offset in Europe/Dublin time zone when using slim TZif files (#4114,
+  work by Philip Withnall)
+
+* Add new APIs to support XDG Intents in `GAppInfo` (!4797, work by Ignacy
+  Kuchciński and Sebastian Wick)
+
+* Add `G_SAVE_ERRNO` macro to save and restore `errno` in a scope (!5302, work
+  by Simon McVittie)
+
+* Add `G_MOUNT_MOUNT_READ_ONLY` flag to request read-only mounting (!5320, work
+  by SnoutFirst)
+
+* Add `G_DISABLE_CLEANUP` macro to force disabling GLib’s cleanup macros, for
+  code bases which can’t use them (!5371, work by Christian Hergert)
+
+* Handle the `org.freedesktop.Notifications.ActivationToken` signal in
+  notifications (!5384, work by Alessandro Astone)
+
+* Require Windows ≥ 10 and deprecate UWP-only apps (!5415, work by otaxhu)
+
+* Bugs fixed:
+  - #31 Binary relocatability API for glib (Emmanuel Fleury)
+  - GNOME/gtksourceview#341 Changes in symlinked file cannot be saved (Christian
+    Hergert)
+  - #3298 glib-compile-resources crashes on Linux 4.19 (Leo Conforti)
+  - #3996 G_REGEX_OPTIMIZE flag violates GRegex threadsafety guarantee (Samy)
+  - #4002 Use libffi call plan machinery from 3.7.0 (Christian Hergert)
+  - #4003 (#YWH-PGM9867-266) SUID Path Traversal on GLib GDesktopAppInfo through
+    g_app_info_create_from_commandline() in glib/gio/gdesktopappinfo.c via
+    `application_name` allows root-owned file creation outside
+    XDG_DATA_HOME/applications directory (Samy)
+  - #4026 gpoll-win32: recursive poll_rest call incorrectly discards msg_fd
+    (otaxhu)
+  - #4032 (CVE-2026-102038) Windows Argument Injection in GWin32AppInfo via
+    Post-Quote Backslash Rewriting (Ana Bobillo)
+  - #4039 g_build_filename does not consider the path separator following a
+    drive letter in the first element on Windows (John Thacker)
+  - #4049 g_inet_address_new_from_string() doesn't accept all hostnames that
+    pass g_hostname_is_ip_address()
+  - #4050 kqueue monitor race can leave stale `ev.udata` and trigger UAF
+  - #4061 g_timeout_add_seconds on 32-bit time_t has a conversion bug which
+    hangs event loop on ppoll() EINVAL (Jonah Petri)
+  - #4065 Define a minimum required version for MINGW-w64 on meson
+  - #4069 g_file_copy() reports no progress on FreeBSD: copy_file_range() copies
+    the whole file in one call (Sam Sheridan)
+  - #4071 Stack buffer overflow in GRegex (Benjamin Otte)
+  - #4072 Leak in fdo-notification-backend (Philip Withnall)
+  - #4073 Implement g_get_process_executable_dir() on FreeBSD (Philip Withnall)
+  - #4074 Implement g_get_process_executable_dir() on Hurd
+  - #4078 Deadlock getting various singletons during
+    `GNetworkMonitorNetlink.can_reach_async()` with `GProxyResolverGnome`
+    (Thomas Hebb)
+  - #4089 Local DoS through SCM_RIGHTS FD accumulation in GDBus
+  - #4090 UBSan alignment warning in glocalfile (Philip Withnall)
+  - #4091 -Wsign-conversion warning on arm64 OpenBSD in GString tests
+  - #4093 GZlibCompressor: unsetting file-info keeps the old gzip header;
+    deflate() reads the freed file name (heap-use-after-free) (Pu Cheng)
+  - #4095 gdbusconnection: use-after-free in property calls to unregistered
+    objects and to subtrees
+  - #4096 Add support for posix_spawn_file_actions_addclosefrom_np to gspawn-
+    posix.c
+  - #4100 GDBus client authentication can exhaust memory on unterminated peer
+    input (Nieves Montero Fernandez)
+  - #4101 Potential use-after-free in GDBusObjectManagerClient signal delivery
+    during cross-thread teardown (Nieves Montero Fernandez)
+  - #4102 gdbus-auth test intermittently fails with socket error (Nieves Montero
+    Fernandez)
+  - #4107 Unchecked `SignalNode.n_params` narrowing silently changes a
+    registered GLib signal signature (IMZGforever)
+  - #4108 Limit D-Bus introspection XML nesting to prevent stack-exhaustion
+    crashes (Nieves Montero Fernandez)
+  - #4109 GDBusWorker eagerly allocates up to 128 MiB from an authenticated
+    peer’s message header (Nieves Montero Fernandez)
+  - #4110 Buffer overflow in g_unix_socket_address_to_native (Benjamin Otte)
+  - #4112 g_binding_group_dup_source() is annotated (transfer none) but returns
+    a new reference (vbxf)
+  - #4114 gtimezone: explicit zero DST offset in POSIX TZ string is treated as
+    absent (breaks Europe/Dublin) (Philip Withnall)
+  - #4117 GDBusObjectManagerClient crashes on malformed D-Bus variant payloads
+    (Nieves Montero Fernandez)
+  - #4125 msys2-clang64 CI fails with mingw-w64-clang-x86_64-python3 target not
+    found pacman error
+  - #4127 spawn tests fail under valgrind (Christian Hergert)
+  - #4128 gdbus-server-auth test uses uninitialised memory under valgrind
+    (Philip Withnall)
+  - !4797 Add support for XDG Intents
+  - !5302 macros: Add G_SAVE_ERRNO to save and restore errno in a scope
+  - !5320 gio: Add G_MOUNT_MOUNT_READ_ONLY flag
+  - !5321 Meson: Define O_CLOEXEC as O_NOINHERIT on Windows
+  - !5322 array: Handle GArrays adding their own elements
+  - !5324 gstdio.h: Adjust check for __GI_SCANNER__
+  - !5341 docs: Note where synchronous calls keep their completion bookkeeping
+  - !5350 Port internal application spawning to async GTask
+  - !5367 gregex: Avoid match-info overhead for boolean searches
+  - !5371 glib/macros: Add macro to disable cleanup attribute
+  - !5378 Simplify locking when adding interfaces
+  - !5384 gfdonotificationbackend: Activate window with the activation-token
+  - !5390 build: Mark timer test as failing on 32-bit x86
+  - !5391 build: Post-release version bump
+  - !5395 gtimezone: Fix leak of TimeZoneKeyName buffer on Windows
+  - !5398 Update Slovenian translation
+  - !5399 gmessages: Fix an unused variable warning
+  - !5400 win32: Fix g_get_process_executable_dir() path resolution
+  - !5403 glib.supp: Mark a TLS variable as not really a leak again
+  - !5407 gvariant: Fix transfer annotations for floating values
+  - !5408 Update Georgian translation
+  - !5409 gdir: Annotate directory exhaustion as nullable
+  - !5410 gvalue: Annotate reset result as borrowed
+  - !5414 Update Portuguese translation
+  - !5415 win32: require Windows 10+ and deprecate UWP-only apps
+  - !5416 Minor fixes to GDesktopAppInfo
+  - !5417 gfileenumerator: Annotate nullable iteration outputs
+  - !5419 Do not use recvmmsg and sendmmsg on AIX and IBM i
+  - !5420 girepository: Disable fatal warnings for some g-ir-scanner calls
+  - !5421 gactiongroup: Annotate nullable query outputs
+  - !5424 glocalfile: Move file system types to a const array
+  - !5425 Update Slovenian translation
+  - !5427 Win32 file monitor: 'renamed_file' leaks on every reported rename
+  - !5428 Implement g_get_process_executable_dir() on OpenBSD
+  - !5432 gloadableicon: Annotate nullable content types
+  - !5433 giochannel: Annotate nullable line output
+  - !5435 gdesktopappinfo: Fix small leak on error paths
+  - !5436 gdesktopappinfo: Check for relatively symlinked mimeapps.list
+  - !5439 Update Slovenian translation
+  - !5440 gsocket: Annotate nullable sender addresses
+  - !5441 gsettingsbackend: Annotate nullable flattened path
+  - !5442 gutf8: Annotate UCS-4 conversion results as arrays
+  - !5444 gthread: Use thread_switch for g_thread_yield on GNU Hurd
+  - !5446 tests: Add a performance regression test for g_thread_yield()
+  - !5451 Remove all tab characters from source files
+  - !5453 Avoid setting TCP_NODELAY on AF_UNIX sockets.
+  - !5454 OpenBSD: account for IP_RECVTOS not being available
+  - !5455 g_unix_fd_query_path: return NULL on OpenBSD
+  - !5456 Use g_strconcat for Concatenating Strings in Loops
+  - !5458 gkeyfile: Fix -Wsign-conversion warnings
+  - !5461 gquark: Fix data race in G_DEFINE_QUARK
+  - !5462 gdesktopappinfo: Fix a minor leak in an unlikely branch
+  - !5463 Update Slovenian translation
+  - !5464 tests: Fix tab in string literal in gdatetime tests
+  - !5465 Check size_t using specific pointer warning
+  - !5466 gdesktopappinfo: Quote field codes for the quotes they are in
+  - !5468 gcharset: Reformat docs and clarify locale format in documentation
+  - !5469 gwin32inputstream: Read a Windows file stream from where it is, not
+    from its start
+  - !5470 gdbus: Support EXTERNAL and same-user checks for Windows AF_UNIX peers
+  - !5472 glocalfileinfo: Handle g_checksum_new() returning NULL
+  - !5477 Add British English translation
+  - !5478 gpoll-win32: Avoid redundant recursive poll when last handle is ready
+  - !5479 gio/gresource: use gvdb_table_list_with_hash() for enumeration
+  - !5480 gdocumentportal: Percent-encode document portal URIs
+  - !5481 Update Romanian translation
+  - !5483 gdbusmessage: write headers directly into message blobs
+  - !5484 gthreadpool: synchronize idle registration with wakeups
+  - !5485 gdbus: Check the permissions of the D-Bus keyring directory on Windows
+  - !5487 tests: Fix Windows CI test failures
+  - !5491 tests: Fix assert-msg-test on UCRT and module-test in static-only
+    builds
+  - !5492 gprintf: Write Windows console output with an explicit length
+  - !5493 gutf8: Fix resync after invalid bytes before non-BMP characters
+  - !5495 gdbusobjectproxy: Fix getter annotation for g-connection
+  - !5502 fuzzing: Add fuzz tests for GDesktopAppInfo and
+    _g_win32_expand_application_parameters()
+  - !5504 gdbusauth: Don't wait forever when the client rejects the server's
+    data
+  - !5505 gdbusdaemon: Fix use after free and leaks when the daemon is destroyed
+  - !5506 gbitlock: fix GOTO_ASM clobber
+  - !5507 ci: Temporarily disable msys2-clang64 CI
+  - !5516 gappinfo: Update GAppInfoMonitor documentation
+  - !5517 CI: Drop ccache for MSYS2-MINGW32 job
+  - !5519 gdbusprivate, gspawn-posix: Add a couple of assertions to help the
+    static analyser
+  - !5520 gwin32appinfo: Fail to expand a command line with an empty program
+    name
+  - !5532 Update Slovenian translation
+  - !5533 gscanner: Free the current and peeked token values when switching
+    input
+  - !5534 gzlibcompressor: Fail a flush into a too small buffer with NO_SPACE
+  - !5535 grand: Avoid signed overflow computing the range in g_rand_int_range()
+  - !5541 Update Slovenian translation
+  - !5543 gzlibcompressor: Simplify g_zlib_compressor_set_file_info()
+  - !5544 giowin32-private: Mark an assertion variable as unused
+
+* Translation updates:
+  - English (United Kingdom) (Bruce Cowan)
+  - Georgian (Ekaterine Papava)
+  - Portuguese (Hugo Carvalho)
+  - Romanian (Antonio Marin)
+  - Slovenian (Martin)
+
+
 Overview of changes in GLib 2.90.1, 2026-10-06
 ==============================================
 
