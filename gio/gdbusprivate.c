@@ -889,9 +889,28 @@ _g_dbus_worker_do_read_unlocked (GDBusWorker *worker)
   /* ensure we have a (big enough) buffer */
   if (worker->read_buffer == NULL || worker->read_buffer_bytes_wanted > worker->read_buffer_allocated_size)
     {
+      gchar *buffer;
+      gsize allocated_size;
+      GError *error = NULL;
+
       /* TODO: 4096 is randomly chosen; might want a better chosen default minimum */
-      worker->read_buffer_allocated_size = MAX (worker->read_buffer_bytes_wanted, 4096);
-      worker->read_buffer = g_realloc (worker->read_buffer, worker->read_buffer_allocated_size);
+      allocated_size = MAX (worker->read_buffer_bytes_wanted, 4096);
+      buffer = g_try_realloc (worker->read_buffer, allocated_size);
+
+      if (buffer == NULL)
+        {
+          g_set_error (&error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_NO_SPACE,
+                       "Not enough memory to read D-Bus message of %" G_GSIZE_FORMAT " bytes",
+                       worker->read_buffer_bytes_wanted);
+          _g_dbus_worker_emit_disconnected (worker, FALSE, error);
+          clear_read_fd_list (worker);
+          g_error_free (error);
+          return;
+        }
+      worker->read_buffer = buffer;
+      worker->read_buffer_allocated_size = allocated_size;
     }
 
   if (worker->socket == NULL)
