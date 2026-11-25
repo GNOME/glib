@@ -1,3 +1,66 @@
+Overview of changes in GLib 2.90.2, 2026-11-25
+==============================================
+
+* Various security fixes
+
+* Bugs fixed:
+  - #4032 (CVE-2026-102038) Windows Argument Injection in GWin32AppInfo via
+    Post-Quote Backslash Rewriting (Ana Bobillo)
+  - #4071 Stack buffer overflow in GRegex (Benjamin Otte)
+  - #4078 Deadlock getting various singletons during
+    `GNetworkMonitorNetlink.can_reach_async()` with `GProxyResolverGnome`
+    (Thomas Hebb)
+  - #4100 GDBus client authentication can exhaust memory on unterminated peer
+    input (Nieves Montero Fernandez)
+  - #4102 gdbus-auth test intermittently fails with socket error (Nieves Montero
+    Fernandez)
+  - #4110 Buffer overflow in g_unix_socket_address_to_native (Benjamin Otte)
+  - #4128 gdbus-server-auth test uses uninitialised memory under valgrind
+    (Philip Withnall)
+  - !5396 Backport !5395 “gtimezone: Fix leak of TimeZoneKeyName buffer on
+    Windows” to glib-2-90
+  - !5402 Backport !5399 “gmessages: Fix an unused variable warning” to
+    glib-2-90
+  - !5411 Update Portuguese translation
+  - !5430 Backport !5427 “win32: Fix leak of the new name in file monitor
+    renames” to glib-2-90
+  - !5437 Backport !5436 “gdesktopappinfo: Check for relatively symlinked
+    mimeapps.list” to glib-2-90
+  - !5443 Backport !5438 and !5447 “gdbusauth: bound client authentication line
+    length” to glib-2-90
+  - !5445 Backport !5444 “gthread: Only use nanosleep for g_thread_yield on
+    select kernels” to glib-2-90
+  - !5459 Backport !5453 “Avoid setting TCP_NODELAY on AF_UNIX sockets.” to
+    glib-2-90
+  - !5460 Backport !5418 “gnetworkmonitornetlink: Avoid deadlock by creating
+    enumerator directly in can_reach_async()” to glib-2-90
+  - !5474 Backport !5473 “unixsocketaddress: Don't use strcpy()” to glib-2-90
+  - !5476 Update British English translation
+  - !5494 Update Indonesian translation
+  - !5496 Backport !5493 “gutf8: Fix resync after invalid bytes before non-BMP
+    characters” to glib-2-90
+  - !5498 Backport !5426 “gdbus: bound received UNIX FDs and reject unnegotiated
+    passing” to glib-2-90
+  - !5499 Backport !5480 “gdocumentportal: Percent-encode document portal URIs”
+    to glib-2-90
+  - !5500 Backport !5423 “gregex: Fix thinko in branch condition” to glib-2-90
+  - !5501 Backport !5449 and !5466: gwin32appinfo and gdesktopappinfo: Various
+    field codes quoting fixes to glib-2-90
+  - !5509 Backport !5507 “ci: Temporarily disable msys2-clang64 CI” to glib-2-90
+  - !5510 Backport !5506 “gbitlock: fix GOTO_ASM clobber” to glib-2-90
+  - !5514 Backport !5512 “gdbusconnection: use-after-free in property calls to
+    unregistered objects and to subtrees” to glib-2-90
+  - !5515 Backport !5513 “test-msys2.sh: Adapt for change in package name
+    (python3 => python)” to glib-2-90
+  - !5518 Backport !5517 “CI: Drop ccache for MSYS2-MINGW32 job” to glib-2-90
+  - !5538 Update Portuguese translation
+
+* Translation updates:
+  - English (United Kingdom) (Bruce Cowan)
+  - Indonesian (Herpiko Dwi Aguno)
+  - Portuguese (Hugo Carvalho)
+
+
 Overview of changes in GLib 2.90.1, 2026-10-06
 ==============================================
 
