@@ -1656,10 +1656,11 @@ rules_from_identifier (const gchar   *identifier,
   /* Format 2 */
   if (!(set_tz_name (&pos, tzr.dlt_name, NAME_SIZE)))
     return 0;
-  parse_offset (&pos, &(tzr.dlt_offset));
-  if (tzr.dlt_offset == 0) /* No daylight offset given, assume it's 1
-                              hour earlier that standard */
-    tzr.dlt_offset = tzr.std_offset - 3600;
+  if (!parse_offset (&pos, &(tzr.dlt_offset)))
+    {
+      /* No daylight offset given, assume it's 1 hour earlier than standard */
+      tzr.dlt_offset = tzr.std_offset - 3600;
+    }
   if (*pos == '\0')
 #ifdef G_OS_WIN32
     /* Windows allows us to use the US DST boundaries if they're not given */
