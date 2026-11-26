@@ -250,8 +250,8 @@ test_string_append (void)
 
   /* append_len */
   string = g_string_new ("firsthalf");
-  g_string_append_len (string, "lasthalfjunkjunk", strlen ("last"));
-  (g_string_append_len) (string, "halfjunkjunk", strlen ("half"));
+  g_string_append_len (string, "lasthalfjunkjunk", (gssize) strlen ("last"));
+  (g_string_append_len) (string, "halfjunkjunk", (gssize) strlen ("half"));
   g_string_append_len (string, "more", -1);
   (g_string_append_len) (string, "ore", -1);
 
@@ -369,7 +369,7 @@ test_string_prepend (void)
 
   /* prepend_len */
   string = g_string_new ("lasthalf");
-  g_string_prepend_len (string, "firsthalfjunkjunk", strlen ("firsthalf"));
+  g_string_prepend_len (string, "firsthalfjunkjunk", (gssize) strlen ("firsthalf"));
   g_assert_cmpstr (string->str, ==, "firsthalflasthalf");
   g_string_free (string, TRUE);
 }
@@ -387,19 +387,19 @@ test_string_insert (void)
 
   /* insert with pos == end of the string */
   string = g_string_new ("firstmiddle");
-  g_string_insert (string, strlen ("firstmiddle"), "last");
+  g_string_insert (string, (gssize) strlen ("firstmiddle"), "last");
   g_assert_cmpstr (string->str, ==, "firstmiddlelast");
   g_string_free (string, TRUE);
   
   /* insert_len */
   string = g_string_new ("firstlast");
-  g_string_insert_len (string, 5, "middlejunkjunk", strlen ("middle"));
+  g_string_insert_len (string, 5, "middlejunkjunk", (gssize) strlen ("middle"));
   g_assert_cmpstr (string->str, ==, "firstmiddlelast");
   g_string_free (string, TRUE);
 
   /* insert_len with magic -1 pos for append */
   string = g_string_new ("first");
-  g_string_insert_len (string, -1, "lastjunkjunk", strlen ("last"));
+  g_string_insert_len (string, -1, "lastjunkjunk", (gssize) strlen ("last"));
   g_assert_cmpstr (string->str, ==, "firstlast");
   g_string_free (string, TRUE);
   
@@ -791,7 +791,7 @@ test_string_copy (void)
   g_string_free (string2, TRUE);
 
   string1 = g_string_sized_new (200);
-  g_string_append_len (string1, "test with embedded\0nuls", sizeof ("test with embedded\0nuls"));
+  g_string_append_len (string1, "test with embedded\0nuls", (gssize) sizeof ("test with embedded\0nuls"));
   string2 = g_string_copy (string1);
   g_assert_cmpmem (string1->str, string1->len, string2->str, string2->len);
   g_assert_true (string1->str != string2->str);
