@@ -135,6 +135,25 @@ g_poll (GPollFD *fds,
 
 #ifdef G_OS_WIN32
 
+static DWORD
+poll_win32_msg (gint nhandles, HANDLE *handles, DWORD timeout_ms)
+{
+  if (_g_main_poll_debug)
+    g_print ("  MsgWaitForMultipleObjectsEx(%d, %lu)\n", nhandles, timeout_ms);
+
+  DWORD ret = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout_ms, QS_ALLINPUT,
+                                           MWMO_ALERTABLE | MWMO_INPUTAVAILABLE);
+
+  if (ret == WAIT_FAILED)
+    {
+      gchar *emsg = g_win32_error_message (GetLastError ());
+      g_warning ("MsgWaitForMultipleObjectsEx failed: %s", emsg);
+      g_free (emsg);
+    }
+
+  return ret;
+}
+
 static int
 poll_rest (GPollFD *msg_fd,
            GPollFD *stop_fd,
@@ -150,20 +169,10 @@ poll_rest (GPollFD *msg_fd,
   if (msg_fd != NULL)
     {
       /* Wait for either messages or handles
-       * -> Use MsgWaitForMultipleObjectsEx
+       * -> Use poll_win32_msg
        */
-      if (_g_main_poll_debug)
-        g_print ("  MsgWaitForMultipleObjectsEx(%d, %lu)\n", nhandles, timeout_ms);
 
-      ready = MsgWaitForMultipleObjectsEx (nhandles, handles, timeout_ms,
-                                           QS_ALLINPUT, MWMO_ALERTABLE);
-
-      if (ready == WAIT_FAILED)
-        {
-          gchar *emsg = g_win32_error_message (GetLastError ());
-          g_warning ("MsgWaitForMultipleObjectsEx failed: %s", emsg);
-          g_free (emsg);
-        }
+      ready = poll_win32_msg (nhandles, handles, timeout_ms);
     }
   else if (nhandles == 0)
     {
@@ -485,8 +494,7 @@ g_poll (GPollFD *fds,
 
   /* Wait for at least one worker to return */
   if (msg_fd != NULL)
-    ready = MsgWaitForMultipleObjectsEx (1, worker_completed_handles, timeout,
-                                         QS_ALLINPUT, MWMO_ALERTABLE);
+    ready = poll_win32_msg (1, worker_completed_handles, timeout);
   else
     ready = WaitForMultipleObjects (1, worker_completed_handles, FALSE, timeout);
 
