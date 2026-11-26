@@ -494,7 +494,7 @@ g_set_error (GError      **err,
     *err = new;
   else
     {
-      g_warning (ERROR_OVERWRITTEN_WARNING, new->message);
+      g_critical (ERROR_OVERWRITTEN_WARNING, new->message);
       g_error_free (new);
     }
 }
@@ -526,7 +526,7 @@ g_set_error_literal (GError      **err,
   if (*err == NULL)
     *err = g_error_new_literal (domain, code, message);
   else
-    g_warning (ERROR_OVERWRITTEN_WARNING, message);
+    g_critical (ERROR_OVERWRITTEN_WARNING, message);
 }
 
 /**
@@ -558,7 +558,7 @@ g_propagate_error (GError **dest,
     {
       if (*dest != NULL)
         {
-          g_warning (ERROR_OVERWRITTEN_WARNING, src->message);
+          g_critical (ERROR_OVERWRITTEN_WARNING, src->message);
           g_error_free (src);
         }
       else
